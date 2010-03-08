@@ -1,0 +1,120 @@
+package org.anddev.andengine.opengl.view;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.engine.Engine;
+
+import android.content.Context;
+import android.opengl.GLSurfaceView;
+import android.opengl.GLU;
+
+/**
+ * @author Nicolas Gramlich
+ * @since 11:57:29 - 08.03.2010
+ */
+public class RenderSurfaceView extends GLSurfaceView {
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	private Renderer mWorldRenderer;
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+
+	public RenderSurfaceView(final Context pContext, final Engine pEngine) {
+		super(pContext);
+		this.mWorldRenderer = new Renderer(pEngine);
+		this.setRenderer(this.mWorldRenderer);
+	}
+
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+	/**
+	 * @author Nicolas Gramlich
+	 * @since 11:45:59 - 08.03.2010
+	 */
+	public class Renderer implements android.opengl.GLSurfaceView.Renderer {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+		
+		private final Engine mEngine;
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+		
+		public Renderer(final Engine pEngine) {
+			this.mEngine = pEngine;
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+		
+		@Override
+		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
+			pGL.glViewport(0, 0, pWidth, pHeight);
+			pGL.glMatrixMode(GL10.GL_PROJECTION);
+			pGL.glLoadIdentity();
+			this.setOrthographicProjection(pGL);
+		}
+
+		@Override
+		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
+			pGL.glClearColor(0, 0, 0, 1);
+			pGL.glEnable(GL10.GL_BLEND);
+			pGL.glDisable(GL10.GL_LIGHTING);
+			pGL.glDisable(GL10.GL_DITHER);
+			pGL.glDisable(GL10.GL_DEPTH_TEST);
+			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+			this.setOrthographicProjection(pGL);
+		}
+
+		@Override
+		public void onDrawFrame(final GL10 pGL) {
+			this.mEngine.onDrawFrame(pGL);
+		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		private void setOrthographicProjection(final GL10 pGL) {
+	        GLU.gluOrtho2D(pGL, 0, this.mEngine.getGameWidth(), this.mEngine.getGameHeight(), 0);
+		}
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
+
+}

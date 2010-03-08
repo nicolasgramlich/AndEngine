@@ -1,17 +1,12 @@
-package org.anddev.andengine.engine;
+package org.anddev.andengine.opengl;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.Scene;
-import org.anddev.andengine.opengl.texture.TextureAtlas;
-import org.anddev.andengine.opengl.texture.TextureManager;
-
-
 /**
  * @author Nicolas Gramlich
- * @since 12:21:31 - 08.03.2010
+ * @since 18:00:43 - 08.03.2010
  */
-public class Engine {
+public class GLHelper {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,37 +15,13 @@ public class Engine {
 	// Fields
 	// ===========================================================
 
-	private final int mGameWidth;
-	private final int mGameHeight;
-	
-	private Scene mScene;
-	
-	private TextureManager mTextureManager = new TextureManager();
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public Engine(final int pGameWidth, final int pGameHeight) {
-		this.mGameWidth = pGameWidth;
-		this.mGameHeight = pGameHeight;		
-	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public void setScene(final Scene pScene) {
-		this.mScene = pScene;
-	}
-
-	public int getGameWidth() {
-		return this.mGameWidth;
-	}
-
-	public int getGameHeight() {
-		return this.mGameHeight;
-	}	
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -60,13 +31,8 @@ public class Engine {
 	// Methods
 	// ===========================================================
 
-	public void onDrawFrame(final GL10 pGL) {
-		if(this.mScene != null)
-			this.mScene.onDraw(pGL);
-	}
-	
-	public void loadTextureAtlas(final TextureAtlas pTextureAtlas) {
-		this.mTextureManager.addTextureAtlasPendingForBeingLoadedToHardware(pTextureAtlas);
+	public static void enableTextures2D(final GL10 pGL) {
+		pGL.glDisable(GL10.GL_TEXTURE_2D);
 	}
 
 	// ===========================================================

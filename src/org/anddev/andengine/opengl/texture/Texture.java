@@ -20,12 +20,14 @@ public class Texture {
 	protected int mAtlasPositionX;
 	protected int mAtlasPositionY;
 	protected TextureAtlas mTextureAtlas;
+	private final ITextureSource mTextureSource;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	Texture(final TextureAtlas pTextureAtlas, final int pAtlasPositionX, final int pAtlasPositionY, final int pWidth, final int pHeight) {
+		this.mTextureSource = null;
 		this.mTextureAtlas = pTextureAtlas;
 		this.mAtlasPositionX = pAtlasPositionX;
 		this.mAtlasPositionY = pAtlasPositionY;
@@ -34,6 +36,7 @@ public class Texture {
 	}
 
 	public Texture(final ITextureSource pTextureSource) {
+		this.mTextureSource = pTextureSource;
 		this.mWidth = pTextureSource.getWidth();
 		this.mHeight = pTextureSource.getHeight();
 	}
@@ -61,6 +64,10 @@ public class Texture {
 
 	public int getAtlasPositionY() {
 		return this.mAtlasPositionY;
+	}
+
+	public Bitmap getBitmap() {
+		return this.mTextureSource.getBitmap();
 	}
 
 	// ===========================================================

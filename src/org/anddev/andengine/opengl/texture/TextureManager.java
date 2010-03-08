@@ -1,17 +1,14 @@
-package org.anddev.andengine.engine;
+package org.anddev.andengine.opengl.texture;
+
+import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.Scene;
-import org.anddev.andengine.opengl.texture.TextureAtlas;
-import org.anddev.andengine.opengl.texture.TextureManager;
-
-
 /**
  * @author Nicolas Gramlich
- * @since 12:21:31 - 08.03.2010
+ * @since 17:48:46 - 08.03.2010
  */
-public class Engine {
+public class TextureManager {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,38 +16,20 @@ public class Engine {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private final int mGameWidth;
-	private final int mGameHeight;
 	
-	private Scene mScene;
-	
-	private TextureManager mTextureManager = new TextureManager();
+	private ArrayList<TextureAtlas> mPendingTextureAtlas = new ArrayList<TextureAtlas>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public Engine(final int pGameWidth, final int pGameHeight) {
-		this.mGameWidth = pGameWidth;
-		this.mGameHeight = pGameHeight;		
+	public TextureManager() {
+		
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public void setScene(final Scene pScene) {
-		this.mScene = pScene;
-	}
-
-	public int getGameWidth() {
-		return this.mGameWidth;
-	}
-
-	public int getGameHeight() {
-		return this.mGameHeight;
-	}	
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -60,13 +39,23 @@ public class Engine {
 	// Methods
 	// ===========================================================
 
-	public void onDrawFrame(final GL10 pGL) {
-		if(this.mScene != null)
-			this.mScene.onDraw(pGL);
+	public void addTextureAtlasPendingForBeingLoadedToHardware(final TextureAtlas pTextureAtlas) {
+		this.mPendingTextureAtlas.add(pTextureAtlas);
 	}
 	
-	public void loadTextureAtlas(final TextureAtlas pTextureAtlas) {
-		this.mTextureManager.addTextureAtlasPendingForBeingLoadedToHardware(pTextureAtlas);
+	public void loadPendingTextureAtlasToHardware(final GL10 pGL) {
+		final ArrayList<TextureAtlas> pendingTextureAtlas = this.mPendingTextureAtlas;
+		final int pendingTexutureAtlasCount = pendingTextureAtlas.size();
+		if(pendingTexutureAtlasCount > 0){
+			for(int i = 0; i < pendingTexutureAtlasCount; i++){
+				if(!pendingTextureAtlas.get(i).isLoadedToHardware()){
+					pendingTextureAtlas.get(i).loadToHardware(pGL);
+				}
+			}
+			
+			pendingTextureAtlas.clear();
+			System.gc();
+		}
 	}
 
 	// ===========================================================

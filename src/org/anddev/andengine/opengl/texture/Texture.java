@@ -1,5 +1,7 @@
 package org.anddev.andengine.opengl.texture;
 
+import org.anddev.andengine.opengl.texture.source.ITextureSource;
+
 import android.graphics.Bitmap;
 
 /**
@@ -21,6 +23,7 @@ public class Texture {
 	protected int mAtlasPositionY;
 	protected TextureAtlas mTextureAtlas;
 	private final ITextureSource mTextureSource;
+	private final TextureBuffer mTextureBuffer;
 
 	// ===========================================================
 	// Constructors
@@ -33,12 +36,14 @@ public class Texture {
 		this.mAtlasPositionY = pAtlasPositionY;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
+		this.mTextureBuffer = new TextureBuffer(this);
 	}
 
 	public Texture(final ITextureSource pTextureSource) {
 		this.mTextureSource = pTextureSource;
 		this.mWidth = pTextureSource.getWidth();
 		this.mHeight = pTextureSource.getHeight();
+		this.mTextureBuffer = new TextureBuffer(this);
 	}
 
 	// ===========================================================
@@ -65,9 +70,22 @@ public class Texture {
 	public int getAtlasPositionY() {
 		return this.mAtlasPositionY;
 	}
+	
+	public void setTextureAtlas(final TextureAtlas pTextureAtlas) {
+		this.mTextureAtlas = pTextureAtlas;
+		this.mTextureBuffer.update();
+	}
+
+	public TextureAtlas getTextureAtlas() {
+		return this.mTextureAtlas;
+	}
 
 	public Bitmap getBitmap() {
 		return this.mTextureSource.getBitmap();
+	}
+	
+	public TextureBuffer getTextureBuffer() {
+		return this.mTextureBuffer;
 	}
 
 	// ===========================================================
@@ -81,18 +99,4 @@ public class Texture {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	protected static interface ITextureSource {
-		// ===========================================================
-		// Final Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public int getWidth();
-		public int getHeight();
-		public Bitmap getBitmap();
-	}
 }

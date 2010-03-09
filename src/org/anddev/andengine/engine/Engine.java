@@ -61,6 +61,8 @@ public class Engine {
 	// ===========================================================
 
 	public void onDrawFrame(final GL10 pGL) {
+		this.mTextureManager.loadPendingTextureAtlasToHardware(pGL);
+		
 		if(this.mScene != null)
 			this.mScene.onDraw(pGL);
 	}

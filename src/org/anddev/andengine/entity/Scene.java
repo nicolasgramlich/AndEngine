@@ -61,10 +61,8 @@ public class Scene extends BaseEntity {
 
 	@Override
 	public void onUpdate(float pSecondsElapsed) {
-		final Layer[] layers = this.mLayers;
-		final int layerCount = layers.length;
-		for(int i = 0; i < layerCount; i++)
-			layers[i].onUpdate(pSecondsElapsed);
+		updateBackground(pSecondsElapsed);
+		updateLayers(pSecondsElapsed);
 	}
 
 	// ===========================================================
@@ -75,6 +73,18 @@ public class Scene extends BaseEntity {
 		final Layer[] layers = this.mLayers;
 		for(int i = layers.length - 1; i >= 0; i--)
 			layers[i] = new Layer();
+	}
+
+	private void updateBackground(float pSecondsElapsed) {
+		if(this.hasBackground())
+			this.mBackground.onUpdate(pSecondsElapsed);
+	}
+
+	private void updateLayers(float pSecondsElapsed) {
+		final Layer[] layers = this.mLayers;
+		final int layerCount = layers.length;
+		for(int i = 0; i < layerCount; i++)
+			layers[i].onUpdate(pSecondsElapsed);
 	}
 
 	private void drawBackground(final GL10 pGL) {

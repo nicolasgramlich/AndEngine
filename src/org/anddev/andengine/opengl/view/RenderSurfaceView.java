@@ -4,6 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.Engine;
+import org.anddev.andengine.opengl.GLHelper;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -85,22 +86,44 @@ public class RenderSurfaceView extends GLSurfaceView {
 			pGL.glViewport(0, 0, pWidth, pHeight);
 			pGL.glMatrixMode(GL10.GL_PROJECTION);
 			pGL.glLoadIdentity();
+
+			pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
+
+			pGL.glShadeModel(GL10.GL_FLAT);
+			pGL.glDisable(GL10.GL_DITHER);
+			pGL.glDisable(GL10.GL_MULTISAMPLE);
+
+			pGL.glEnable(GL10.GL_BLEND);
+
+			GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+			GLHelper.enableTextures(pGL);
+			GLHelper.enableTexCoordArray(pGL);
+			GLHelper.enableVertexArray(pGL);
+
 			this.setOrthographicProjection(pGL);
 		}
 
 		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
+			pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 			pGL.glClearColor(0, 0, 0, 1);
-			pGL.glEnable(GL10.GL_BLEND);
 			pGL.glDisable(GL10.GL_LIGHTING);
 			pGL.glDisable(GL10.GL_DITHER);
 			pGL.glDisable(GL10.GL_DEPTH_TEST);
 			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+			
+            GLHelper.enableTextures(pGL);
+            GLHelper.enableTexCoordArray(pGL);
+            GLHelper.enableVertexArray(pGL);
+
 			this.setOrthographicProjection(pGL);
 		}
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
+			pGL.glMatrixMode(GL10.GL_MODELVIEW);
+			pGL.glLoadIdentity();
 			this.mEngine.onDrawFrame(pGL);
 		}
 
@@ -108,7 +131,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// Methods
 		// ===========================================================
 
-		private void setOrthographicProjection(final GL10 pGL) {
+		private void setOrthographicProjection(final GL10 pGL) { 	
 	        GLU.gluOrtho2D(pGL, 0, this.mEngine.getGameWidth(), this.mEngine.getGameHeight(), 0);
 		}
 

@@ -7,6 +7,10 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.GLHelper;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.opengl.GLUtils;
 
 /**
@@ -56,6 +60,14 @@ public class TextureAtlas {
 	public boolean isLoadedToHardware() {
 		return this.mLoadedToHardware;
 	}
+	
+	public int getWidth() {
+		return this.mWidth;
+	}
+	
+	public int getHeight() {
+		return this.mHeight;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -67,6 +79,7 @@ public class TextureAtlas {
 
 	public void insert(final Texture pTexture, final int pX, final int pY) {
 		this.mTextures.add(pTexture);
+		pTexture.setTextureAtlas(this);
 		pTexture.setAtlasPosition(pX, pY);
 	}
 
@@ -75,7 +88,7 @@ public class TextureAtlas {
 	}
 
 	public void loadToHardware(final GL10 pGL) {
-		GLHelper.enableTextures2D(pGL);
+		GLHelper.enableTextures(pGL);
 
 		this.mHardwareTextureID = allocateAndBindTextureOnHardware(pGL, this.mWidth, this.mHeight);
 
@@ -125,6 +138,11 @@ public class TextureAtlas {
 
 	private static void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
 		final Bitmap atlasBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.ARGB_8888);
+		final Canvas c = new Canvas(atlasBitmap);
+		final Paint paint = new Paint();
+		paint.setStyle(Style.FILL_AND_STROKE);
+		paint.setColor(Color.GREEN);
+		c.drawRect(2,2,40,40, paint);
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, atlasBitmap, 0);
 		atlasBitmap.recycle();
 	}

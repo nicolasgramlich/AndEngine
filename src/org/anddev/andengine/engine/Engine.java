@@ -20,8 +20,7 @@ public class Engine {
 	// Fields
 	// ===========================================================
 
-	private final int mGameWidth;
-	private final int mGameHeight;
+	private final EngineOptions mEngineOptions;
 	
 	private Scene mScene;
 	
@@ -31,9 +30,8 @@ public class Engine {
 	// Constructors
 	// ===========================================================
 	
-	public Engine(final int pGameWidth, final int pGameHeight) {
-		this.mGameWidth = pGameWidth;
-		this.mGameHeight = pGameHeight;		
+	public Engine(final EngineOptions pEngineOptions) {
+		this.mEngineOptions = pEngineOptions;		
 	}
 
 	// ===========================================================
@@ -43,13 +41,17 @@ public class Engine {
 	public void setScene(final Scene pScene) {
 		this.mScene = pScene;
 	}
+	
+	public EngineOptions getEngineOptions() {
+		return this.mEngineOptions;
+	}
 
 	public int getGameWidth() {
-		return this.mGameWidth;
+		return this.mEngineOptions.mGameWidth;
 	}
 
 	public int getGameHeight() {
-		return this.mGameHeight;
+		return this.mEngineOptions.mGameHeight;
 	}	
 
 	// ===========================================================

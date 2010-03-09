@@ -1,13 +1,15 @@
-package org.anddev.andengine.entity.sprite;
+package org.anddev.andengine.entity;
 
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TiledTexture;
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.constants.TimeConstants;
 
 /**
  * @author Nicolas Gramlich
- * @since 19:30:13 - 09.03.2010
+ * @since 19:52:31 - 09.03.2010
  */
-public class TiledSprite extends BaseSprite {
+public class FPSCounter implements IEntity, TimeConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,14 +17,13 @@ public class TiledSprite extends BaseSprite {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private long mTimestampLastLogged = System.currentTimeMillis();
+	private int mFramesInThisSecond;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public TiledSprite(final int pX, final int pY, final Texture pTexture) {
-		super(pX, pY, pTexture);
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -33,30 +34,20 @@ public class TiledSprite extends BaseSprite {
 	// ===========================================================
 
 	@Override
-	public int getWidth() {
-		return getTexture().getTileWidth();
+	public void onUpdate(final float pSecondsElapsed) {
+		this.mFramesInThisSecond++;
+		final long now = System.currentTimeMillis();
+		final long diff = now - this.mTimestampLastLogged;
+		if(diff > TimeConstants.MILLISECONDSPERSECOND){
+			Debug.d("FPS: " + ((float)this.mFramesInThisSecond * 1000 / diff) + " ms");	
+			this.mTimestampLastLogged = now;
+			this.mFramesInThisSecond = 0;
+		}
 	}
-	
+
 	@Override
-	public int getHeight() {
-		return getTexture().getTileHeight();
-	}
-	
-	@Override
-	public TiledTexture getTexture() {
-		return (TiledTexture)super.getTexture();
-	}
-	
-	public void setCurrentTileIndex(final int pTileIndex) {
-		getTexture().setCurrentTileIndex(pTileIndex);
-	}
-	
-	public void setCurrentTileIndex(final int pTileColumn, final int pTileRow) {
-		getTexture().setCurrentTileIndex(pTileColumn, pTileRow);
-	}
-	
-	public void nextTile() {
-		getTexture().nextTile();
+	public void onDraw(final GL10 pGL) {
+		
 	}
 
 	// ===========================================================

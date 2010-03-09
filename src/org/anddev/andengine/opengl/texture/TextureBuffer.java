@@ -58,22 +58,32 @@ public class TextureBuffer {
 	
 	public void update() {
 		final Texture texture = this.mTexture;
-		final ByteBuffer buffer = this.mByteBffer;
+		final TextureAtlas textureAtlas = texture.getTextureAtlas();
 		
-		if(texture.getTextureAtlas() == null) {
+		if(textureAtlas == null) {
 			return;
 		}
 
-		final float x1 = (float)texture.getAtlasPositionX()  / texture.getTextureAtlas().getWidth();
-		final float y1 = (float)texture.getAtlasPositionY() / texture.getTextureAtlas().getHeight();
-		final float x2 = (float)(texture.getAtlasPositionX() + texture.getWidth()) / texture.getTextureAtlas().getWidth();
-		final float y2 = (float)(texture.getAtlasPositionY() + texture.getHeight()) / texture.getTextureAtlas().getHeight();
+		final float x1 = (float)texture.getAtlasPositionX() / textureAtlas.getWidth();
+		final float y1 = (float)texture.getAtlasPositionY() / textureAtlas.getHeight();
+		final float x2 = (float)(texture.getAtlasPositionX() + texture.getWidth()) / textureAtlas.getWidth();
+		final float y2 = (float)(texture.getAtlasPositionY() + texture.getHeight()) / textureAtlas.getHeight();
 		
+		final ByteBuffer buffer = this.mByteBffer;
 		buffer.position(0);
-		buffer.putFloat(x1); buffer.putFloat(y1);
-		buffer.putFloat(x2); buffer.putFloat(y1);
-		buffer.putFloat(x1); buffer.putFloat(y2);
-		buffer.putFloat(x2); buffer.putFloat(y2);
+		
+		buffer.putFloat(x1); 
+		buffer.putFloat(y1);
+		
+		buffer.putFloat(x2);
+		buffer.putFloat(y1);
+		
+		buffer.putFloat(x1);
+		buffer.putFloat(y2);
+		
+		buffer.putFloat(x2);
+		buffer.putFloat(y2);
+		
 		buffer.position(0);
 	}
 

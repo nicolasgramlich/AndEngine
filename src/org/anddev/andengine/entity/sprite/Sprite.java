@@ -20,10 +20,10 @@ public class Sprite extends BaseEntity {
 	// Fields
 	// ===========================================================
 	
-	private float mRed = 1; // TODO Background-Colors !?!
+	private float mRed = 1;
 	private float mGreen = 1;
 	private float mBlue = 1;
-	private float mAlpha = 0.5f;
+	private float mAlpha = 1f;
 
 	private int mX = 0;
 	private int mY = 0;
@@ -38,6 +38,8 @@ public class Sprite extends BaseEntity {
 	// ===========================================================
 	
 	public Sprite(final int pX, final int pY, final Texture pTexture) {
+		assert(pTexture != null);
+		
 		this.mX = pX;
 		this.mY = pY;
 		setTexture(pTexture);
@@ -56,10 +58,6 @@ public class Sprite extends BaseEntity {
 		return this.mY;
 	}
 
-	private boolean hasTexture() {
-		return this.mTexture != null;
-	}
-
 	private void setTexture(final Texture pTexture) {
 		this.mTexture = pTexture;
 		this.mWidth = pTexture.getWidth();
@@ -73,6 +71,10 @@ public class Sprite extends BaseEntity {
 	public int getHeight() {
 		return this.mHeight;
 	}
+	
+	public void setAlpha(final float pAlpha) {
+		this.mAlpha = pAlpha;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -81,37 +83,28 @@ public class Sprite extends BaseEntity {
 	@Override
 	public void onManagedDraw(final GL10 pGL) {
 		GLHelper.color4f(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
-		
-//        if(this.hasCustomBlendFunction())
-//                GLHelper.blendMode(_blendFunction);
-//        else
-		GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        GLHelper.enableVertexArray(pGL);
+        GLHelper.enableTextures(pGL);
+        GLHelper.enableTexCoordArray(pGL);
+		GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA); // TODO "Default" and "Custom(Sprite-specific)" blend functions.
         
         pGL.glPushMatrix();              
-        GLHelper.enableVertexArray(pGL);
         GLHelper.vertexPointer(pGL, this.mVertexBuffer.getByteBuffer(), GL10.GL_FLOAT);
         
         /* Translate */
-        pGL.glTranslatef(getX(), getY(), 0);
+        onApplyTranslation(pGL);
         
         /* Rotate */
+        onApplyRotation(pGL);
         
         /* Scale */
+        onApplyScale(pGL);
         
         /* Texture */
-        if(this.hasTexture()){
-            GLHelper.enableTextures(pGL);
-            GLHelper.enableTexCoordArray(pGL);
-            GLHelper.bindTexture(pGL, this.mTexture.getTextureAtlas().getHardwareTextureID());            
-            GLHelper.texCoordPointer(pGL, this.mTexture.getTextureBuffer().getUVMappingByteBuffer(), GL10.GL_FLOAT);
-        }else{
-            GLHelper.disableTexCoordArray(pGL);
-            GLHelper.disableTextures(pGL);
-        }
+        onApplyTexture(pGL);
         
         pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
         pGL.glPopMatrix();
-
 	}
 
 	@Override
@@ -122,6 +115,23 @@ public class Sprite extends BaseEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private void onApplyTranslation(final GL10 pGL) {
+        pGL.glTranslatef(getX(), getY(), 0);
+	}
+
+	private void onApplyRotation(GL10 pGL) {
+		
+	}
+
+	private void onApplyScale(GL10 pGL) {
+		
+	}
+
+	private void onApplyTexture(final GL10 pGL) {
+		GLHelper.bindTexture(pGL, this.mTexture.getTextureAtlas().getHardwareTextureID());            
+		GLHelper.texCoordPointer(pGL, this.mTexture.getTextureBuffer().getUVMappingByteBuffer(), GL10.GL_FLOAT);
+	}
 	
     private void updateVertexBuffer() {
         this.mVertexBuffer = new VertexBuffer();

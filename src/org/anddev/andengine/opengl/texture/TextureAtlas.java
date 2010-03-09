@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.opengl.GLUtils;
 
 /**
@@ -44,6 +41,8 @@ public class TextureAtlas {
 	}
 
 	public TextureAtlas(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) {
+		assert(MathUtils.isPowerOfTwo(pWidth) && MathUtils.isPowerOfTwo(pHeight));
+		
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mTextureOptions = pTextureOptions;
@@ -138,11 +137,7 @@ public class TextureAtlas {
 
 	private static void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
 		final Bitmap atlasBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.ARGB_8888);
-		final Canvas c = new Canvas(atlasBitmap);
-		final Paint paint = new Paint();
-		paint.setStyle(Style.FILL_AND_STROKE);
-		paint.setColor(Color.GREEN);
-		c.drawRect(2,2,40,40, paint);
+		
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, atlasBitmap, 0);
 		atlasBitmap.recycle();
 	}
@@ -158,7 +153,7 @@ public class TextureAtlas {
 		public final int mTextureEnvironment;
 
 		public TextureOptions() {
-			this(GL10.GL_NEAREST_MIPMAP_NEAREST, GL10.GL_NEAREST, GL10.GL_MODULATE);
+			this(GL10.GL_NEAREST, GL10.GL_LINEAR, GL10.GL_MODULATE);
 		}
 
 		public TextureOptions(final int pMinFilter, final int pMagFilter) {

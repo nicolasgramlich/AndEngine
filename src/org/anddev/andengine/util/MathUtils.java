@@ -1,40 +1,27 @@
-package org.anddev.andengine.opengl.vertex;
+package org.anddev.andengine.util;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import android.os.Build;
 /**
  * @author Nicolas Gramlich
- * @since 12:16:18 - 09.03.2010
+ * @since 20:42:15 - 17.12.2009
  */
-public class VertexBuffer {
+public class MathUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	public static final double LOG_2 = Math.log(2);
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private ByteBuffer mByteBuffer;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public VertexBuffer() {
-		allocateByteBuffer();
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ByteBuffer getByteBuffer() {
-		return this.mByteBuffer;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -43,37 +30,26 @@ public class VertexBuffer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private void allocateByteBuffer() {
-		if(Build.VERSION.SDK_INT == 3) {
-			this.mByteBuffer = ByteBuffer.allocate(8*4);
-		} else {
-			this.mByteBuffer = ByteBuffer.allocateDirect(8*4);
-		}
+	
+	public static boolean isPowerOfTwo(final int n) {
+		return ((n != 0) && (n & (n - 1)) == 0);
 	}
-
-	public void update(final float pX, final float pY, final float pWidth, final float pHeight) {
-		final ByteBuffer buffer = this.mByteBuffer;
-		buffer.position(0);
+	
+	public static int nextPowerOfTwo(final int n) {
+		int k = n;
 		
-		buffer.putFloat(pX);
-		buffer.putFloat(pY);
+		if (k == 0)
+			return 1;
 		
-		buffer.putFloat(pX + pWidth);
-		buffer.putFloat(pY);
+		k--;
 		
-		buffer.putFloat(pX);
-		buffer.putFloat(pY + pHeight);
+		for (int i = 1; i < 32; i <<= 1)
+			k = k | k >> i;
 		
-		buffer.putFloat(pX + pWidth);
-		buffer.putFloat(pY + pHeight);
-		
-		buffer.position(0);
+		return k + 1;
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
 }
-

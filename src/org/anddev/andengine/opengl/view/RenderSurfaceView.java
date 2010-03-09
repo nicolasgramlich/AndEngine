@@ -95,7 +95,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 			pGL.glEnable(GL10.GL_BLEND);
 
-			GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+//			GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);

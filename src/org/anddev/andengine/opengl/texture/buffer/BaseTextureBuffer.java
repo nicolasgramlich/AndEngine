@@ -1,11 +1,16 @@
-package org.anddev.andengine.opengl.texture;
+package org.anddev.andengine.opengl.texture.buffer;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
-import android.os.Build;
+import org.anddev.andengine.opengl.BaseBuffer;
+import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.TextureAtlas;
 
-public class TextureBuffer {
+/**
+ * @author Nicolas Gramlich
+ * @since 19:05:50 - 09.03.2010
+ */
+public abstract class BaseTextureBuffer extends BaseBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -14,27 +19,20 @@ public class TextureBuffer {
 	// Fields
 	// ===========================================================
 
-	private ByteBuffer mByteBffer;
-	private final Texture mTexture;
+	protected final Texture mTexture;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TextureBuffer(final Texture pTexture) {
+	public BaseTextureBuffer(final Texture pTexture) {
 		this.mTexture = pTexture;
-		allocateByteBuffer();
-		this.mByteBffer.order(ByteOrder.nativeOrder());
 		this.update();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ByteBuffer getUVMappingByteBuffer() {
-		return this.mByteBffer;
-	}
 
 	public Texture getTexture() {
 		return this.mTexture;
@@ -44,46 +42,43 @@ public class TextureBuffer {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract float getX1();
+	protected abstract float getY1();
+	protected abstract float getX2();
+	protected abstract float getY2();
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	private void allocateByteBuffer() {
-		if(Build.VERSION.SDK_INT == 3) {
-			this.mByteBffer = ByteBuffer.allocate(8*4);
-		} else {
-			this.mByteBffer = ByteBuffer.allocateDirect(8*4);
-		}
-	}
-	
 	public void update() {
 		final Texture texture = this.mTexture;
 		final TextureAtlas textureAtlas = texture.getTextureAtlas();
-		
+
 		if(textureAtlas == null) {
 			return;
 		}
 
-		final float x1 = (float)texture.getAtlasPositionX() / textureAtlas.getWidth();
-		final float y1 = (float)texture.getAtlasPositionY() / textureAtlas.getHeight();
-		final float x2 = (float)(texture.getAtlasPositionX() + texture.getWidth()) / textureAtlas.getWidth();
-		final float y2 = (float)(texture.getAtlasPositionY() + texture.getHeight()) / textureAtlas.getHeight();
-		
-		final ByteBuffer buffer = this.mByteBffer;
+		final float x1 = getX1();
+		final float y1 = getY1();
+		final float x2 = getX2();
+		final float y2 = getY2();
+
+		final ByteBuffer buffer = this.getByteBuffer();
 		buffer.position(0);
-		
+
 		buffer.putFloat(x1); 
 		buffer.putFloat(y1);
-		
+
 		buffer.putFloat(x2);
 		buffer.putFloat(y1);
-		
+
 		buffer.putFloat(x1);
 		buffer.putFloat(y2);
-		
+
 		buffer.putFloat(x2);
 		buffer.putFloat(y2);
-		
+
 		buffer.position(0);
 	}
 
@@ -91,3 +86,4 @@ public class TextureBuffer {
 	// Inner and Anonymous Classes
 	// ===========================================================
 }
+

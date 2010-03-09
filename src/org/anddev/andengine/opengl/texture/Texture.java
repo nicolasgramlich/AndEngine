@@ -1,5 +1,6 @@
 package org.anddev.andengine.opengl.texture;
 
+import org.anddev.andengine.opengl.texture.buffer.TextureBuffer;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 import android.graphics.Bitmap;
@@ -36,14 +37,14 @@ public class Texture {
 		this.mAtlasPositionY = pAtlasPositionY;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		this.mTextureBuffer = new TextureBuffer(this);
+		this.mTextureBuffer = onCreateTextureBuffer();
 	}
 
 	public Texture(final ITextureSource pTextureSource) {
 		this.mTextureSource = pTextureSource;
 		this.mWidth = pTextureSource.getWidth();
 		this.mHeight = pTextureSource.getHeight();
-		this.mTextureBuffer = new TextureBuffer(this);
+		this.mTextureBuffer = onCreateTextureBuffer();
 	}
 
 	// ===========================================================
@@ -61,6 +62,7 @@ public class Texture {
 	public void setAtlasPosition(final int pX, final int pY) {
 		this.mAtlasPositionX = pX;
 		this.mAtlasPositionY = pY;
+		this.mTextureBuffer.update();
 	}
 
 	public int getAtlasPositionX() {
@@ -95,6 +97,14 @@ public class Texture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	protected void updateTextureBuffer() {
+		this.mTextureBuffer.update();
+	}
+
+	protected TextureBuffer onCreateTextureBuffer() {
+		return new TextureBuffer(this);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

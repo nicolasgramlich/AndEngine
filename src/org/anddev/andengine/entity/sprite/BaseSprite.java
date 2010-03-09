@@ -11,7 +11,7 @@ import org.anddev.andengine.opengl.vertex.VertexBuffer;
  * @author Nicolas Gramlich
  * @since 11:38:53 - 08.03.2010
  */
-public class Sprite extends BaseEntity {
+public abstract class BaseSprite extends BaseEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,23 +27,23 @@ public class Sprite extends BaseEntity {
 
 	private int mX = 0;
 	private int mY = 0;
-	private int mWidth;
-	private int mHeight;
 	
-	private Texture mTexture;
-	private VertexBuffer mVertexBuffer;
+	protected VertexBuffer mVertexBuffer = new VertexBuffer();
+	
+	protected Texture mTexture;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public Sprite(final int pX, final int pY, final Texture pTexture) {
-		assert(pTexture != null);
-		
+	public BaseSprite(final int pX, final int pY, final Texture pTexture) {
 		this.mX = pX;
 		this.mY = pY;
-		setTexture(pTexture);
-		updateVertexBuffer();
+		
+		assert(pTexture != null);
+		this.mTexture = pTexture;
+		
+		onUpdateVertexBuffer();
 	}
 
 	// ===========================================================
@@ -57,28 +57,26 @@ public class Sprite extends BaseEntity {
 	public int getY() {
 		return this.mY;
 	}
-
-	private void setTexture(final Texture pTexture) {
-		this.mTexture = pTexture;
-		this.mWidth = pTexture.getWidth();
-		this.mHeight = pTexture.getHeight();
-	}
-	
-	public int getWidth() {
-		return this.mWidth;
-	}
-	
-	public int getHeight() {
-		return this.mHeight;
-	}
 	
 	public void setAlpha(final float pAlpha) {
 		this.mAlpha = pAlpha;
+	}
+	
+	public Texture getTexture() {
+		return this.mTexture;
+	}
+	
+	public void setTexture(final Texture pTexture){
+		this.mTexture = pTexture;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	public abstract int getWidth();
+	
+	public abstract int getHeight();
 
 	@Override
 	public void onManagedDraw(final GL10 pGL) {
@@ -116,27 +114,26 @@ public class Sprite extends BaseEntity {
 	// Methods
 	// ===========================================================
 
-	private void onApplyTranslation(final GL10 pGL) {
+	protected void onApplyTranslation(final GL10 pGL) {
         pGL.glTranslatef(getX(), getY(), 0);
 	}
 
-	private void onApplyRotation(GL10 pGL) {
+	protected void onApplyRotation(GL10 pGL) {
 		
 	}
 
-	private void onApplyScale(GL10 pGL) {
+	protected void onApplyScale(GL10 pGL) {
 		
-	}
-
-	private void onApplyTexture(final GL10 pGL) {
-		GLHelper.bindTexture(pGL, this.mTexture.getTextureAtlas().getHardwareTextureID());            
-		GLHelper.texCoordPointer(pGL, this.mTexture.getTextureBuffer().getUVMappingByteBuffer(), GL10.GL_FLOAT);
 	}
 	
-    private void updateVertexBuffer() {
-        this.mVertexBuffer = new VertexBuffer();
+    protected void onUpdateVertexBuffer(){
         this.mVertexBuffer.update(0, 0, getWidth(), getHeight());
     }
+
+	protected void onApplyTexture(final GL10 pGL) {
+		GLHelper.bindTexture(pGL, this.mTexture.getTextureAtlas().getHardwareTextureID());            
+		GLHelper.texCoordPointer(pGL, this.mTexture.getTextureBuffer().getByteBuffer(), GL10.GL_FLOAT);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

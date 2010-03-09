@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.texture.TextureAtlas;
 import org.anddev.andengine.opengl.texture.TextureManager;
+import org.anddev.andengine.util.constants.TimeConstants;
 
 
 /**
@@ -25,6 +26,8 @@ public class Engine {
 	private Scene mScene;
 	
 	private TextureManager mTextureManager = new TextureManager();
+
+	private long mLastTick;
 
 	// ===========================================================
 	// Constructors
@@ -64,9 +67,22 @@ public class Engine {
 
 	public void onDrawFrame(final GL10 pGL) {
 		this.mTextureManager.loadPendingTextureAtlasToHardware(pGL);
+		final float secondsElapsed = getSecondsElapsed();
 		
-		if(this.mScene != null)
+		if(this.mScene != null){
+			this.mScene.onUpdate(secondsElapsed);
+		}
+		
+		if(this.mScene != null){
 			this.mScene.onDraw(pGL);
+		}
+	}
+
+	private float getSecondsElapsed() {
+		final long now = System.nanoTime();
+		final float secondsElapsed = (float)(now  - this.mLastTick) / TimeConstants.NANOSECONDSPERSECOND;
+		this.mLastTick = now;
+		return secondsElapsed;
 	}
 	
 	public void loadTextureAtlas(final TextureAtlas pTextureAtlas) {

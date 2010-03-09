@@ -1,14 +1,13 @@
-package org.anddev.andengine.opengl.texture;
+package org.anddev.andengine.entity.sprite;
 
-import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
-
-import android.content.Context;
+import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.TiledTexture;
 
 /**
  * @author Nicolas Gramlich
- * @since 14:31:39 - 08.03.2010
+ * @since 19:30:13 - 09.03.2010
  */
-public class AssetTexture extends Texture {
+public class TiledSprite extends BaseSprite {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,8 +20,8 @@ public class AssetTexture extends Texture {
 	// Constructors
 	// ===========================================================
 
-	public AssetTexture(final Context pContext, final String pAssetPath) {
-		super(new AssetTextureSource(pContext, pAssetPath));
+	public TiledSprite(final int pX, final int pY, final Texture pTexture) {
+		super(pX, pY, pTexture);
 	}
 
 	// ===========================================================
@@ -32,6 +31,29 @@ public class AssetTexture extends Texture {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public int getWidth() {
+		return getTexture().getTileWidth();
+	}
+	
+	@Override
+	public int getHeight() {
+		return getTexture().getTileHeight();
+	}
+	
+	@Override
+	public TiledTexture getTexture() {
+		return (TiledTexture)super.getTexture();
+	}
+	
+	public void setCurrentTile(final int pTileIndex) {
+		getTexture().setCurrentTileIndex(pTileIndex);
+	}
+	
+	public void setCurrentTile(final int pTileColumn, final int pTileRow) {
+		getTexture().setCurrentTileIndex(pTileColumn, pTileRow);
+	}
 
 	// ===========================================================
 	// Methods

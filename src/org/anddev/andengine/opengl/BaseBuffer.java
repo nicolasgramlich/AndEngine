@@ -1,14 +1,15 @@
-package org.anddev.andengine.opengl.texture;
+package org.anddev.andengine.opengl;
 
-import org.anddev.andengine.opengl.texture.source.ResourceTextureSource;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
-import android.content.Context;
+import android.os.Build;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:10:01 - 09.03.2010
+ * @since 18:54:39 - 09.03.2010
  */
-public class ResourceTexture extends Texture {
+public abstract class BaseBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,17 +18,24 @@ public class ResourceTexture extends Texture {
 	// Fields
 	// ===========================================================
 
+	private final ByteBuffer mByteBuffer;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ResourceTexture(final Context pContext, final int pDrawableResourceID) {
-		super(new ResourceTextureSource(pContext, pDrawableResourceID));
+	public BaseBuffer() {
+		this.mByteBuffer = allocateByteBuffer();
+		this.mByteBuffer.order(ByteOrder.nativeOrder());
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public ByteBuffer getByteBuffer() {
+		return this.mByteBuffer;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -36,6 +44,14 @@ public class ResourceTexture extends Texture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private ByteBuffer allocateByteBuffer() {
+		if(Build.VERSION.SDK_INT == 3) {
+			return ByteBuffer.allocate(8*4);
+		} else {
+			return ByteBuffer.allocateDirect(8*4);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

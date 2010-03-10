@@ -107,9 +107,11 @@ public abstract class BaseSprite extends DynamicEntity {
 
 	protected void applyRotation(final GL10 pGL) {
 		final float angleClockwise = getAngleClockwise();
-		pGL.glTranslatef(this.getWidth() / 2, this.getHeight() / 2, 0);
-		pGL.glRotatef(angleClockwise, 0, 0, 0x1000);
-		pGL.glTranslatef(-this.getWidth() / 2, -this.getHeight() / 2, 0);
+		if(angleClockwise != 0) {
+			pGL.glTranslatef(this.getWidth() / 2, this.getHeight() / 2, 0);
+			pGL.glRotatef(angleClockwise, 0, 0, 1);
+			pGL.glTranslatef(-this.getWidth() / 2, -this.getHeight() / 2, 0);
+		}
 	}
 
 	protected void applyScale(final GL10 pGL) {

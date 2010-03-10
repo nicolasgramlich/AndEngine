@@ -4,6 +4,7 @@ import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.EngineOptions;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
+import org.anddev.andengine.sensor.accelerometer.AccelerometerListener;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -88,6 +89,10 @@ public abstract class BaseGameActivity extends Activity {
 		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		window.requestFeature(Window.FEATURE_NO_TITLE);
+	}
+	
+	protected void enableAccelerometer(final AccelerometerListener pAccelerometerListener) {
+		this.mEngine.enableAccelerometer(this, pAccelerometerListener);
 	}
 
 	// ===========================================================

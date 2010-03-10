@@ -23,7 +23,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 	// Fields
 	// ===========================================================
 
-	private Renderer mWorldRenderer;
+	private Renderer mRenderer;
 
 	// ===========================================================
 	// Constructors
@@ -31,8 +31,8 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 	public RenderSurfaceView(final Context pContext, final Engine pEngine) {
 		super(pContext);
-		this.mWorldRenderer = new Renderer(pEngine);
-		this.setRenderer(this.mWorldRenderer);
+		this.mRenderer = new Renderer(pEngine);
+		this.setRenderer(this.mRenderer);
 	}
 
 	// ===========================================================

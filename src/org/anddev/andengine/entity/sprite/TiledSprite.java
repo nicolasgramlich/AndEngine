@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.sprite;
 
-import org.anddev.andengine.opengl.texture.TextureRegion;
 import org.anddev.andengine.opengl.texture.TiledTextureRegion;
 
 /**
@@ -20,8 +19,8 @@ public class TiledSprite extends BaseSprite {
 	// Constructors
 	// ===========================================================
 
-	public TiledSprite(final int pX, final int pY, final TextureRegion pTextureRegion) {
-		super(pX, pY, pTextureRegion);
+	public TiledSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion) {
+		super(pX, pY, pTiledTextureRegion.getTileWidth(), pTiledTextureRegion.getTileHeight(), pTiledTextureRegion);
 	}
 
 	// ===========================================================
@@ -31,21 +30,15 @@ public class TiledSprite extends BaseSprite {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public int getWidth() {
-		return getTextureRegion().getTileWidth();
-	}
-	
-	@Override
-	public int getHeight() {
-		return getTextureRegion().getTileHeight();
-	}
 	
 	@Override
 	public TiledTextureRegion getTextureRegion() {
 		return (TiledTextureRegion)super.getTextureRegion();
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 	
 	public void setCurrentTileIndex(final int pTileIndex) {
 		getTextureRegion().setCurrentTileIndex(pTileIndex);
@@ -58,10 +51,6 @@ public class TiledSprite extends BaseSprite {
 	public void nextTile() {
 		getTextureRegion().nextTile();
 	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
 
 	// ===========================================================
 	// Inner and Anonymous Classes

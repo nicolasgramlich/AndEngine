@@ -27,7 +27,7 @@ public class Engine {
 	
 	private TextureManager mTextureManager = new TextureManager();
 
-	private long mLastTick;
+	private long mLastTick = System.nanoTime();
 
 	// ===========================================================
 	// Constructors

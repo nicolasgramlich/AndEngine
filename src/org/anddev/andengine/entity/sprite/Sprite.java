@@ -19,8 +19,8 @@ public class Sprite extends BaseSprite {
 	// Constructors
 	// ===========================================================
 
-	public Sprite(final int pX, final int pY, final TextureRegion pTextureRegion) {
-		super(pX, pY, pTextureRegion);
+	public Sprite(final float pX, final float pY, final TextureRegion pTextureRegion) {
+		super(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion);
 	}
 
 	// ===========================================================
@@ -30,16 +30,6 @@ public class Sprite extends BaseSprite {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public int getWidth() {
-		return super.mTextureRegion.getWidth();
-	}
-	
-	@Override
-	public int getHeight() {
-		return super.mTextureRegion.getHeight();
-	}
 
 	// ===========================================================
 	// Methods

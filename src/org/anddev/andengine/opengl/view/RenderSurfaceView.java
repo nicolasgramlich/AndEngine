@@ -54,7 +54,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 	 * @author Nicolas Gramlich
 	 * @since 11:45:59 - 08.03.2010
 	 */
-	public class Renderer implements android.opengl.GLSurfaceView.Renderer {
+	public static class Renderer implements android.opengl.GLSurfaceView.Renderer {
 		// ===========================================================
 		// Constants
 		// ===========================================================

@@ -29,16 +29,15 @@ public class Engine implements SensorEventListener {
 	// Fields
 	// ===========================================================
 
+	private long mLastTick = System.nanoTime();
+
 	private final EngineOptions mEngineOptions;
 	
 	private Scene mScene;
 	
 	private TextureManager mTextureManager = new TextureManager();
 
-	private long mLastTick = System.nanoTime();
-
 	private AccelerometerListener mAccelerometerListener;
-
 	private AccelerometerData mAccelerometerData;
 
 	// ===========================================================

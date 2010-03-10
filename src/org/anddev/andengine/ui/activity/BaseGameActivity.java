@@ -1,4 +1,4 @@
-package org.anddev.andengine.game;
+package org.anddev.andengine.ui.activity;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.EngineOptions;
@@ -35,13 +35,13 @@ public abstract class BaseGameActivity extends Activity {
 	protected void onCreate(final Bundle pSavedInstanceState) {
 		super.onCreate(pSavedInstanceState);
 
-		this.mEngine = this.onCreateEngine();
+		this.mEngine = this.onLoadEngine();
 		applyEngineOptions(this.mEngine.getEngineOptions());
 
 		this.setContentView(new RenderSurfaceView(this, this.mEngine));
 
 		this.onLoadResources();
-		this.mEngine.setScene(this.onCreateScene());
+		this.mEngine.setScene(this.onLoadScene());
 		this.onLoadComplete();
 	}
 
@@ -57,13 +57,13 @@ public abstract class BaseGameActivity extends Activity {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract Scene onCreateScene();
+	protected abstract Scene onLoadScene();
 
 	protected abstract void onLoadResources();
 
 	protected abstract void onLoadComplete();
 
-	protected abstract Engine onCreateEngine();
+	protected abstract Engine onLoadEngine();
 
 	// ===========================================================
 	// Methods

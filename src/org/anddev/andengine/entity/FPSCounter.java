@@ -36,10 +36,10 @@ public class FPSCounter implements IEntity, TimeConstants {
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		this.mFramesInThisSecond++;
-		final long now = System.currentTimeMillis();
+		final long now = System.nanoTime();
 		final long diff = now - this.mTimestampLastLogged;
-		if(diff > TimeConstants.MILLISECONDSPERSECOND){
-			Debug.d("FPS: " + ((float)this.mFramesInThisSecond * 1000 / diff) + " ms");	
+		if(diff > TimeConstants.NANOSECONDSPERSECOND){
+			Debug.d("FPS: " + (((float)this.mFramesInThisSecond * NANOSECONDSPERSECOND) / diff) + " ms");	
 			this.mTimestampLastLogged = now;
 			this.mFramesInThisSecond = 0;
 		}

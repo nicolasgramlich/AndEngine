@@ -48,6 +48,19 @@ public class MathUtils {
 		
 		return k + 1;
 	}
+	
+	public static int sum(final int[] pValues) {
+		int sum = 0;
+		for(int i = pValues.length - 1; i >= 0; i--)
+			sum += pValues[i];
+			
+		return sum;
+	}
+
+	public static void arraySumInternal(final int[] pValues) {
+		for(int i = 1; i < pValues.length; i++)
+			pValues[i] = pValues[i-1] + pValues[i];
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

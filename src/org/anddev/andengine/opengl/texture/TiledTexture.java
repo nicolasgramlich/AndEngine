@@ -19,7 +19,7 @@ public class TiledTexture extends Texture {
 
 	private final int mTileColumns;
 	private final int mTileRows;
-	private int mCurrentTileColumn;
+	private int mCurrentTileColumn; // TODO Think if it is smarter to have the Sprites handle the index, so multiple Sprites can have the same texture but different tile-indexes. 
 	private int mCurrentTileRow;
 
 	// ===========================================================

@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.sprite;
 
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.TextureRegion;
 
 /**
  * @author Nicolas Gramlich
@@ -19,8 +19,8 @@ public class Sprite extends BaseSprite {
 	// Constructors
 	// ===========================================================
 
-	public Sprite(final int pX, final int pY, final Texture pTexture) {
-		super(pX, pY, pTexture);
+	public Sprite(final int pX, final int pY, final TextureRegion pTextureRegion) {
+		super(pX, pY, pTextureRegion);
 	}
 
 	// ===========================================================
@@ -33,12 +33,12 @@ public class Sprite extends BaseSprite {
 
 	@Override
 	public int getWidth() {
-		return super.mTexture.getWidth();
+		return super.mTextureRegion.getWidth();
 	}
 	
 	@Override
 	public int getHeight() {
-		return this.mTexture.getHeight();
+		return super.mTextureRegion.getHeight();
 	}
 
 	// ===========================================================

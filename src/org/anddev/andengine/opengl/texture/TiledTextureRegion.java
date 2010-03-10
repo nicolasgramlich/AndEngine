@@ -1,14 +1,13 @@
 package org.anddev.andengine.opengl.texture;
 
-import org.anddev.andengine.opengl.texture.buffer.TextureBuffer;
-import org.anddev.andengine.opengl.texture.buffer.TiledTextureBuffer;
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.buffer.TextureRegionBuffer;
+import org.anddev.andengine.opengl.texture.buffer.TiledTextureRegionBuffer;
 
 /**
  * @author Nicolas Gramlich
  * @since 18:14:42 - 09.03.2010
  */
-public class TiledTexture extends Texture {
+public class TiledTextureRegion extends TextureRegion {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -26,8 +25,8 @@ public class TiledTexture extends Texture {
 	// Constructors
 	// ===========================================================
 
-	public TiledTexture(final ITextureSource pTextureSource, final int pTileColumns, final int pTileRows) {
-		super(pTextureSource);
+	public TiledTextureRegion(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
+		super(pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 		this.mTileColumns = pTileColumns;
 		this.mTileRows = pTileRows;
 		this.mCurrentTileColumn = 0;
@@ -74,12 +73,12 @@ public class TiledTexture extends Texture {
 		}
 	}
 
-	public float getAtlasPositionOfCurrentTileX() {
-		return super.getAtlasPositionX() + this.mCurrentTileColumn * this.getTileWidth();
+	public float getTexturePositionOfCurrentTileX() {
+		return super.getTexturePositionX() + this.mCurrentTileColumn * this.getTileWidth();
 	}
 	
-	public float getAtlasPositionOfCurrentTileY() {
-		return super.getAtlasPositionY() + this.mCurrentTileRow * this.getTileHeight();
+	public float getTexturePositionOfCurrentTileY() {
+		return super.getTexturePositionY() + this.mCurrentTileRow * this.getTileHeight();
 	}
 
 	// ===========================================================
@@ -87,8 +86,16 @@ public class TiledTexture extends Texture {
 	// ===========================================================
 	
 	@Override
-	protected TextureBuffer onCreateTextureBuffer() {
-		return new TiledTextureBuffer(this);
+	public TiledTextureRegion clone() {
+		final TiledTextureRegion clone = new TiledTextureRegion(this.getTexturePositionX(), this.getTexturePositionY(), this.getWidth(), this.getHeight(), this.mTileColumns, this.mTileRows);
+		clone.setTexture(this.getTexture());
+		clone.setCurrentTileIndex(this.mCurrentTileColumn, this.mCurrentTileRow);
+		return clone;
+	}
+	
+	@Override
+	protected TextureRegionBuffer onCreateTextureRegionBuffer() {
+		return new TiledTextureRegionBuffer(this);
 	}
 
 	// ===========================================================

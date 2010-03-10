@@ -3,7 +3,7 @@ package org.anddev.andengine.engine;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.Scene;
-import org.anddev.andengine.opengl.texture.TextureAtlas;
+import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -66,7 +66,7 @@ public class Engine {
 	// ===========================================================
 
 	public void onDrawFrame(final GL10 pGL) {
-		this.mTextureManager.loadPendingTextureAtlasToHardware(pGL);
+		this.mTextureManager.loadPendingTextureToHardware(pGL);
 		final float secondsElapsed = getSecondsElapsed();
 		
 		if(this.mScene != null){
@@ -85,8 +85,8 @@ public class Engine {
 		return secondsElapsed;
 	}
 	
-	public void loadTextureAtlas(final TextureAtlas pTextureAtlas) {
-		this.mTextureManager.addTextureAtlasPendingForBeingLoadedToHardware(pTextureAtlas);
+	public void loadTexture(final Texture pTexture) {
+		this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTexture);
 	}
 
 	// ===========================================================

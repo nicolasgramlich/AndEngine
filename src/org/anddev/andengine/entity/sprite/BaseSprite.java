@@ -4,7 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.BaseEntity;
 import org.anddev.andengine.opengl.GLHelper;
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.TextureRegion;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
@@ -30,18 +30,18 @@ public abstract class BaseSprite extends BaseEntity {
 	
 	protected VertexBuffer mVertexBuffer = new VertexBuffer();
 	
-	protected Texture mTexture;
+	protected TextureRegion mTextureRegion;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public BaseSprite(final int pX, final int pY, final Texture pTexture) {
+	public BaseSprite(final int pX, final int pY, final TextureRegion pTextureRegion) {
 		this.mX = pX;
 		this.mY = pY;
 		
-		assert(pTexture != null);
-		this.mTexture = pTexture;
+		assert(pTextureRegion != null);
+		this.mTextureRegion = pTextureRegion;
 		
 		onUpdateVertexBuffer();
 	}
@@ -62,12 +62,12 @@ public abstract class BaseSprite extends BaseEntity {
 		this.mAlpha = pAlpha;
 	}
 	
-	public Texture getTexture() {
-		return this.mTexture;
+	public TextureRegion getTextureRegion() {
+		return this.mTextureRegion;
 	}
 	
-	public void setTexture(final Texture pTexture){
-		this.mTexture = pTexture;
+	public void setTextureRegion(final TextureRegion pTextureRegion){
+		this.mTextureRegion = pTextureRegion;
 	}
 
 	// ===========================================================
@@ -131,8 +131,8 @@ public abstract class BaseSprite extends BaseEntity {
     }
 
 	protected void onApplyTexture(final GL10 pGL) {
-		GLHelper.bindTexture(pGL, this.mTexture.getTextureAtlas().getHardwareTextureID());            
-		GLHelper.texCoordPointer(pGL, this.mTexture.getTextureBuffer().getByteBuffer(), GL10.GL_FLOAT);
+		GLHelper.bindTexture(pGL, this.mTextureRegion.getTexture().getHardwareTextureID());            
+		GLHelper.texCoordPointer(pGL, this.mTextureRegion.getTextureBuffer().getByteBuffer(), GL10.GL_FLOAT);
 	}
 
 	// ===========================================================

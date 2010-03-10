@@ -1,13 +1,19 @@
 package org.anddev.andengine.opengl.texture;
 
-import org.anddev.andengine.opengl.texture.buffer.TextureBuffer;
+import java.util.ArrayList;
+
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Bitmap;
+import android.opengl.GLUtils;
 
 /**
  * @author Nicolas Gramlich
- * @since 14:29:59 - 08.03.2010
+ * @since 14:55:02 - 08.03.2010
  */
 public class Texture {
 	// ===========================================================
@@ -18,76 +24,49 @@ public class Texture {
 	// Fields
 	// ===========================================================
 
-	protected final int mWidth;
-	protected final int mHeight;
-	protected int mAtlasPositionX;
-	protected int mAtlasPositionY;
-	protected TextureAtlas mTextureAtlas;
-	private final ITextureSource mTextureSource;
-	private final TextureBuffer mTextureBuffer;
+	private final int mWidth;
+	private final int mHeight;
+
+	private int mHardwareTextureID = -1;
+
+	private final ArrayList<TextureSourceWithLocation> mTextureSources = new ArrayList<TextureSourceWithLocation>();
+	private final TextureOptions mTextureOptions;
+	private boolean mLoadedToHardware;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	Texture(final TextureAtlas pTextureAtlas, final int pAtlasPositionX, final int pAtlasPositionY, final int pWidth, final int pHeight) {
-		this.mTextureSource = null;
-		this.mTextureAtlas = pTextureAtlas;
-		this.mAtlasPositionX = pAtlasPositionX;
-		this.mAtlasPositionY = pAtlasPositionY;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
-		this.mTextureBuffer = onCreateTextureBuffer();
+	public Texture(final int pWidth, final int pHeight) {
+		this(pWidth, pHeight, new TextureOptions());
 	}
 
-	public Texture(final ITextureSource pTextureSource) {
-		this.mTextureSource = pTextureSource;
-		this.mWidth = pTextureSource.getWidth();
-		this.mHeight = pTextureSource.getHeight();
-		this.mTextureBuffer = onCreateTextureBuffer();
+	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) {
+		assert(MathUtils.isPowerOfTwo(pWidth) && MathUtils.isPowerOfTwo(pHeight));
+		
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
+		this.mTextureOptions = pTextureOptions;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
+	
+	public int getHardwareTextureID() {
+		return this.mHardwareTextureID;
+	}
+	
+	public boolean isLoadedToHardware() {
+		return this.mLoadedToHardware;
+	}
+	
 	public int getWidth() {
 		return this.mWidth;
 	}
-
+	
 	public int getHeight() {
 		return this.mHeight;
-	}
-
-	public void setAtlasPosition(final int pX, final int pY) {
-		this.mAtlasPositionX = pX;
-		this.mAtlasPositionY = pY;
-		this.mTextureBuffer.update();
-	}
-
-	public int getAtlasPositionX() {
-		return this.mAtlasPositionX;
-	}
-
-	public int getAtlasPositionY() {
-		return this.mAtlasPositionY;
-	}
-	
-	public void setTextureAtlas(final TextureAtlas pTextureAtlas) {
-		this.mTextureAtlas = pTextureAtlas;
-		this.mTextureBuffer.update();
-	}
-
-	public TextureAtlas getTextureAtlas() {
-		return this.mTextureAtlas;
-	}
-
-	public Bitmap getBitmap() {
-		return this.mTextureSource.getBitmap();
-	}
-	
-	public TextureBuffer getTextureBuffer() {
-		return this.mTextureBuffer;
 	}
 
 	// ===========================================================
@@ -97,16 +76,129 @@ public class Texture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	protected void updateTextureBuffer() {
-		this.mTextureBuffer.update();
+
+	public void insertTextureRegion(final TextureRegion pTextureRegion, final ITextureSource pTextureSource) {
+		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTextureRegion.getTexturePositionX(), pTextureRegion.getTexturePositionY()));
+		pTextureRegion.setTexture(this);
 	}
 
-	protected TextureBuffer onCreateTextureBuffer() {
-		return new TextureBuffer(this);
+	public void associateTextureRegion(final TextureRegion pTextureRegion) {
+		pTextureRegion.setTexture(this);
+	}
+
+	public void loadToHardware(final GL10 pGL) {
+		GLHelper.enableTextures(pGL);
+
+		this.mHardwareTextureID = allocateAndBindTextureOnHardware(pGL, this.mWidth, this.mHeight);
+
+		applyTextureOptions(pGL, this.mTextureOptions);
+
+		writeTextureToHardware(this.mTextureSources);
+
+		this.mLoadedToHardware = true;     
+	}
+
+	private static void writeTextureToHardware(final ArrayList<TextureSourceWithLocation> pTextureSources) {
+		final int textureSourceCount = pTextureSources.size();
+		for(int j = 0; j < textureSourceCount; j++) {
+			final TextureSourceWithLocation textureSource = pTextureSources.get(j);
+			if(textureSource != null) {
+				final Bitmap bmp = textureSource.getBitmap();
+				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
+				bmp.recycle();
+			}
+		}
+	}
+
+	private static void applyTextureOptions(final GL10 pGL, final TextureOptions pTextureOptions) {
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, pTextureOptions.mMinFilter);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, pTextureOptions.mMagFilter);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+		pGL.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, pTextureOptions.mTextureEnvironment);
+	}
+
+	private static int allocateAndBindTextureOnHardware(final GL10 pGL, final int pWidth, final int pHeight) {
+		final int hardwareTextureID = generateHardwareTextureID(pGL);
+		
+		pGL.glBindTexture(GL10.GL_TEXTURE_2D, hardwareTextureID);
+
+		sendPlaceholderBitmapToHardware(pWidth, pHeight);
+		
+		return hardwareTextureID;
+	}
+
+	private static int generateHardwareTextureID(final GL10 pGL) {
+		final int[] hardwareTextureIDFether = new int[1];
+		pGL.glGenTextures(1, hardwareTextureIDFether, 0);
+		
+		return hardwareTextureIDFether[0];
+	}
+
+	private static void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
+		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.ARGB_8888);
+		
+		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);
+		textureBitmap.recycle();
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	public class TextureSourceWithLocation implements ITextureSource {
+		
+		private final ITextureSource mTextureSource;
+		private final int mTexturePositionX;
+		private final int mTexturePositionY;
+
+		public TextureSourceWithLocation(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
+			this.mTextureSource = pTextureSource;
+			this.mTexturePositionX = pTexturePositionX;
+			this.mTexturePositionY = pTexturePositionY;
+		}
+
+		public int getTexturePositionX() {
+			return this.mTexturePositionX;
+		}
+
+		public int getTexturePositionY() {
+			return this.mTexturePositionY;
+		}
+
+		@Override
+		public int getWidth() {
+			return this.mTextureSource.getWidth();
+		}
+
+		@Override
+		public int getHeight() {
+			return this.mTextureSource.getHeight();
+		}
+
+		@Override
+		public Bitmap getBitmap() {
+			return this.mTextureSource.getBitmap();
+		}
+	}
+
+	public static class TextureOptions {
+		public final int mMagFilter;
+		public final int mMinFilter;
+		public final int mTextureEnvironment;
+
+		public TextureOptions() {
+			this(GL10.GL_NEAREST, GL10.GL_LINEAR, GL10.GL_MODULATE);
+		}
+
+		public TextureOptions(final int pMinFilter, final int pMagFilter) {
+			this(pMinFilter, pMagFilter, GL10.GL_MODULATE);
+		}
+
+		public TextureOptions(final int pMinFilter, final int pMagFilter, final int pTextureEnvironment) {
+			this.mMinFilter = pMinFilter;
+			this.mMagFilter = pMagFilter;
+			this.mTextureEnvironment = pTextureEnvironment;
+		}
+	}
 }

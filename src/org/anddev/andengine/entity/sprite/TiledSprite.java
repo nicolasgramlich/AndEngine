@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.sprite;
 
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TiledTexture;
+import org.anddev.andengine.opengl.texture.TextureRegion;
+import org.anddev.andengine.opengl.texture.TiledTextureRegion;
 
 /**
  * @author Nicolas Gramlich
@@ -20,8 +20,8 @@ public class TiledSprite extends BaseSprite {
 	// Constructors
 	// ===========================================================
 
-	public TiledSprite(final int pX, final int pY, final Texture pTexture) {
-		super(pX, pY, pTexture);
+	public TiledSprite(final int pX, final int pY, final TextureRegion pTextureRegion) {
+		super(pX, pY, pTextureRegion);
 	}
 
 	// ===========================================================
@@ -34,29 +34,29 @@ public class TiledSprite extends BaseSprite {
 
 	@Override
 	public int getWidth() {
-		return getTexture().getTileWidth();
+		return getTextureRegion().getTileWidth();
 	}
 	
 	@Override
 	public int getHeight() {
-		return getTexture().getTileHeight();
+		return getTextureRegion().getTileHeight();
 	}
 	
 	@Override
-	public TiledTexture getTexture() {
-		return (TiledTexture)super.getTexture();
+	public TiledTextureRegion getTextureRegion() {
+		return (TiledTextureRegion)super.getTextureRegion();
 	}
 	
 	public void setCurrentTileIndex(final int pTileIndex) {
-		getTexture().setCurrentTileIndex(pTileIndex);
+		getTextureRegion().setCurrentTileIndex(pTileIndex);
 	}
 	
 	public void setCurrentTileIndex(final int pTileColumn, final int pTileRow) {
-		getTexture().setCurrentTileIndex(pTileColumn, pTileRow);
+		getTextureRegion().setCurrentTileIndex(pTileColumn, pTileRow);
 	}
 	
 	public void nextTile() {
-		getTexture().nextTile();
+		getTextureRegion().nextTile();
 	}
 
 	// ===========================================================

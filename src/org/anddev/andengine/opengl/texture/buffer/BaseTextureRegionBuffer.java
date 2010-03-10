@@ -3,14 +3,14 @@ package org.anddev.andengine.opengl.texture.buffer;
 import java.nio.ByteBuffer;
 
 import org.anddev.andengine.opengl.BaseBuffer;
+import org.anddev.andengine.opengl.texture.TextureRegion;
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureAtlas;
 
 /**
  * @author Nicolas Gramlich
  * @since 19:05:50 - 09.03.2010
  */
-public abstract class BaseTextureBuffer extends BaseBuffer {
+public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,14 +19,14 @@ public abstract class BaseTextureBuffer extends BaseBuffer {
 	// Fields
 	// ===========================================================
 
-	protected final Texture mTexture;
+	protected final TextureRegion mTextureRegion;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseTextureBuffer(final Texture pTexture) {
-		this.mTexture = pTexture;
+	public BaseTextureRegionBuffer(final TextureRegion pTextureRegion) {
+		this.mTextureRegion = pTextureRegion;
 		this.update();
 	}
 
@@ -34,8 +34,8 @@ public abstract class BaseTextureBuffer extends BaseBuffer {
 	// Getter & Setter
 	// ===========================================================
 
-	public Texture getTexture() {
-		return this.mTexture;
+	public TextureRegion getTextureRegion() {
+		return this.mTextureRegion;
 	}
 
 	// ===========================================================
@@ -52,10 +52,10 @@ public abstract class BaseTextureBuffer extends BaseBuffer {
 	// ===========================================================
 
 	public void update() {
-		final Texture texture = this.mTexture;
-		final TextureAtlas textureAtlas = texture.getTextureAtlas();
+		final TextureRegion textureRegion = this.mTextureRegion;
+		final Texture texture = textureRegion.getTexture();
 
-		if(textureAtlas == null) {
+		if(texture == null) {
 			return;
 		}
 

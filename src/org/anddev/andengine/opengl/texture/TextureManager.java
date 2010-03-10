@@ -17,7 +17,7 @@ public class TextureManager {
 	// Fields
 	// ===========================================================
 	
-	private ArrayList<TextureAtlas> mPendingTextureAtlas = new ArrayList<TextureAtlas>();
+	private ArrayList<Texture> mPendingTextures = new ArrayList<Texture>();
 
 	// ===========================================================
 	// Constructors
@@ -39,21 +39,21 @@ public class TextureManager {
 	// Methods
 	// ===========================================================
 
-	public void addTextureAtlasPendingForBeingLoadedToHardware(final TextureAtlas pTextureAtlas) {
-		this.mPendingTextureAtlas.add(pTextureAtlas);
+	public void addTexturePendingForBeingLoadedToHardware(final Texture pTexture) {
+		this.mPendingTextures.add(pTexture);
 	}
 	
-	public void loadPendingTextureAtlasToHardware(final GL10 pGL) {
-		final ArrayList<TextureAtlas> pendingTextureAtlas = this.mPendingTextureAtlas;
-		final int pendingTexutureAtlasCount = pendingTextureAtlas.size();
-		if(pendingTexutureAtlasCount > 0){
-			for(int i = 0; i < pendingTexutureAtlasCount; i++){
-				if(!pendingTextureAtlas.get(i).isLoadedToHardware()){
-					pendingTextureAtlas.get(i).loadToHardware(pGL);
+	public void loadPendingTextureToHardware(final GL10 pGL) {
+		final ArrayList<Texture> pendingTextures = this.mPendingTextures;
+		final int pendingTexutureCount = pendingTextures.size();
+		if(pendingTexutureCount > 0){
+			for(int i = 0; i < pendingTexutureCount; i++){
+				if(!pendingTextures.get(i).isLoadedToHardware()){
+					pendingTextures.get(i).loadToHardware(pGL);
 				}
 			}
 			
-			pendingTextureAtlas.clear();
+			pendingTextures.clear();
 			System.gc();
 		}
 	}

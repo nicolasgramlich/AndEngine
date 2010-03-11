@@ -15,5 +15,10 @@ public interface ICollisionCallback {
 	// Methods
 	// ===========================================================
 	
-	public void onCollision(final StaticEntity pCheckEntity, final StaticEntity pTargetStaticEntity);
+	/**
+	 * @param pCheckEntity
+	 * @param pTargetStaticEntity
+	 * @return <code>true</code> to proceed, <code>false</code> to stop further collosion-checks.
+	 */
+	public boolean onCollision(final StaticEntity pCheckEntity, final StaticEntity pTargetStaticEntity);
 }

@@ -54,9 +54,14 @@ public class CollisionHandler implements IUpdateHandler {
 		final StaticEntity checkStaticEntity = this.mCheckStaticEntity;
 		final ArrayList<? extends StaticEntity> staticEntities = this.mTargetStaticEntities;
 		final int staticEntityCount = staticEntities.size();
-		for(int i = 0; i < staticEntityCount; i++)
-			if(checkStaticEntity.collidesWith(staticEntities.get(i)))
-				this.mCollisionCallback.onCollision(checkStaticEntity, staticEntities.get(i));
+		
+		for(int i = 0; i < staticEntityCount; i++){
+			if(checkStaticEntity.collidesWith(staticEntities.get(i))){
+				final boolean proceed = this.mCollisionCallback.onCollision(checkStaticEntity, staticEntities.get(i));
+				if(!proceed)
+					return;
+			}
+		}
 	}
 
 	// ===========================================================

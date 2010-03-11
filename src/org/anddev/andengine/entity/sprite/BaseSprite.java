@@ -66,7 +66,7 @@ public abstract class BaseSprite extends DynamicEntity {
 	// ===========================================================
 	
 	@Override
-	protected void onPositionChancged() {
+	protected void onPositionChanged() {
 		updateVertexBuffer();
 	}
 
@@ -106,6 +106,7 @@ public abstract class BaseSprite extends DynamicEntity {
 	}
 
 	protected void applyRotation(final GL10 pGL) {
+		// TODO Offset needs to be taken into account.
 		final float angleClockwise = getAngleClockwise();
 		if(angleClockwise != 0) {
 			pGL.glTranslatef(this.getWidth() / 2, this.getHeight() / 2, 0);
@@ -124,7 +125,7 @@ public abstract class BaseSprite extends DynamicEntity {
 	}
 
 	protected void updateVertexBuffer(){
-		this.mVertexBuffer.update(0, 0, this.getWidth(), this.getHeight());
+		this.mVertexBuffer.update(this.getOffsetX(), this.getOffsetY(), this.getWidth(), this.getHeight());
 	}
 
 	// ===========================================================

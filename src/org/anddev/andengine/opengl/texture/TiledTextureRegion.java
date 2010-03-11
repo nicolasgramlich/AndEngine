@@ -69,7 +69,7 @@ public class TiledTextureRegion extends TextureRegion {
 	
 	public void setCurrentTileIndex(final int pTileIndex) {
 		if(pTileIndex < this.getTileCount()) {
-			this.setCurrentTileIndex(pTileIndex / this.mTileColumns, pTileIndex % this.mTileColumns);
+			this.setCurrentTileIndex(pTileIndex % this.mTileColumns, pTileIndex / this.mTileColumns);
 		}
 	}
 

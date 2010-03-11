@@ -23,6 +23,9 @@ public abstract class DynamicEntity extends BaseEntity {
 
 	private float mX = 0;
 	private float mY = 0;
+	
+	private float mOffsetX = 0;
+	private float mOffsetY = 0;
 
 	private final int mWidth;
 	private final int mHeight;
@@ -48,6 +51,14 @@ public abstract class DynamicEntity extends BaseEntity {
 
 	public float getY() {
 		return this.mY;
+	}
+	
+	public float getOffsetX() {
+		return this.mOffsetX;
+	}
+	
+	public float getOffsetY() {
+		return this.mOffsetY;
 	}
 
 	public int getWidth() {
@@ -91,12 +102,26 @@ public abstract class DynamicEntity extends BaseEntity {
 	public void setAngleClockwise(final float pAngleClockwise) {
 		this.mAngleClockwise = pAngleClockwise;
 	}
+	
+	public void setOffsetX(final float pOffsetX) {
+		this.mOffsetX = pOffsetX;
+	}
+	
+	public void setOffsetY(final float pOffsetY) {
+		this.mOffsetY = pOffsetY;
+	}
+	
+	public void setOffset(final float pOffsetX, final float pOffsetY) {
+		this.mOffsetX = pOffsetX;
+		this.mOffsetY = pOffsetY;
+		onPositionChanged();
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onPositionChancged();
+	protected abstract void onPositionChanged();
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
@@ -107,7 +132,7 @@ public abstract class DynamicEntity extends BaseEntity {
 			}
 			this.mX += this.mVelocityX * pSecondsElapsed;
 			this.mY += this.mVelocityY * pSecondsElapsed;
-			onPositionChancged();
+			onPositionChanged();
 		}
 	}
 

@@ -28,6 +28,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	private int mFirstTileIndex;
 	private long mAnimationStart;
 	private boolean mLoop;
+	private IAnimationListener mAnimationListener;
 
 	// ===========================================================
 	// Constructors
@@ -82,6 +83,8 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	private void stopAnimationIfDurationExceeded(final long now) {
 		if(now - this.mAnimationStart > this.mAnimationDuration){
 			this.mAnimationRunning = false;
+			if(this.mAnimationListener != null)
+				this.mAnimationListener.onAnimationEnd(this);
 		}
 	}
 
@@ -102,9 +105,13 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 	
 	public void animate(final int pFrameDurationEach, final boolean pLoop) {
+		this.animate(pFrameDurationEach, pLoop, null);
+	}
+	
+	public void animate(final int pFrameDurationEach, final boolean pLoop, final IAnimationListener pAnimationListener) {
 		final int[] frameDurations = new int[this.getTextureRegion().getTileCount() - 1];
 		Arrays.fill(frameDurations, pFrameDurationEach);
-		this.animate(frameDurations, true);
+		this.animate(frameDurations, pLoop, pAnimationListener);
 	}
 	
 	public void animate(final int[] pFrameDurations) {
@@ -112,7 +119,15 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 	
 	public void animate(final int[] pFrameDurations, final boolean pLoop) {
-		this.animate(pFrameDurations, 0, this.getTextureRegion().getTileCount() - 1, pLoop);
+		this.animate(pFrameDurations, pLoop, null);
+	}
+	
+	public void animate(final int[] pFrameDurations, final boolean pLoop, final IAnimationListener pAnimationListener) {
+		this.animate(pFrameDurations, 0, this.getTextureRegion().getTileCount() - 1, pLoop, pAnimationListener);
+	}
+	
+	public void animate(final int[] pFrameDurations, final int pFirstTileIndex, final int pLastTileIndex, final boolean pLoop) {
+		animate(pFrameDurations, pFirstTileIndex, pLastTileIndex, pLoop, null);
 	}
 
 	/**
@@ -120,9 +135,11 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	 * @param pFirstTileIndex
 	 * @param pLastTileIndex
 	 */
-	public void animate(final int[] pFrameDurations, final int pFirstTileIndex, final int pLastTileIndex, final boolean pLoop) {
+	public void animate(final int[] pFrameDurations, final int pFirstTileIndex, final int pLastTileIndex, final boolean pLoop, final IAnimationListener pAnimationListener) {
 		assert(pLastTileIndex - pFirstTileIndex >= 2);
 		assert(pFrameDurations.length == (pLastTileIndex - pFirstTileIndex) - 1);
+		
+		this.mAnimationListener = pAnimationListener;
 
 		this.mLoop = pLoop;
 		this.mFirstTileIndex = pFirstTileIndex;
@@ -141,4 +158,8 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	public static interface IAnimationListener {
+		public void onAnimationEnd(final AnimatedSprite pAnimatedSprite);
+	}
 }

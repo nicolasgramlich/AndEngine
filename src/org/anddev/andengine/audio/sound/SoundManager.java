@@ -14,7 +14,7 @@ public class SoundManager {
 	// Constants
 	// ===========================================================
 
-	private static final int DEFAULT_MAX_SIMULTANEOUS_STREAMS = 2;
+	private static final int DEFAULT_MAX_SIMULTANEOUS_STREAMS = 4;
 
 	// ===========================================================
 	// Fields
@@ -65,8 +65,9 @@ public class SoundManager {
 	
 	public void releaseAll() {
 		final ArrayList<Sound> sounds = this.mSounds;
-		for(int i = sounds.size() - 1; i >= 0; i--)
+		for(int i = sounds.size() - 1; i >= 0; i--) {
 			sounds.get(i).stop();
+		}
 		
 		this.mSoundPool.release();
 	}

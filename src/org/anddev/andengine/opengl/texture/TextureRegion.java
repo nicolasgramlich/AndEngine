@@ -72,6 +72,22 @@ public class TextureRegion {
 	public TextureRegionBuffer getTextureBuffer() {
 		return this.mTextureBuffer;
 	}
+	
+	public boolean isFlippedHorizontal() {
+		return this.mTextureBuffer.isFlippedHorizontal();
+	}
+	
+	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
+		this.mTextureBuffer.setFlippedHorizontal(pFlippedHorizontal);
+	}
+	
+	public boolean isFlippedVertical() {
+		return this.mTextureBuffer.isFlippedVertical();
+	}
+	
+	public void setFlippedVertical(final boolean pFlippedVertical) {
+		this.mTextureBuffer.setFlippedVertical(pFlippedVertical);
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

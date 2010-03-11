@@ -43,6 +43,7 @@ public abstract class BaseGameActivity extends Activity {
 		this.onLoadResources();
 		this.mEngine.setScene(this.onLoadScene());
 		this.onLoadComplete();
+		this.mEngine.start();
 	}
 
 	// ===========================================================

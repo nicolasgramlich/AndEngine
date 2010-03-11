@@ -32,6 +32,8 @@ public class Engine implements SensorEventListener {
 	// Fields
 	// ===========================================================
 
+	private boolean mRunning = false;
+	
 	private long mLastTick = System.nanoTime();
 
 	private final EngineOptions mEngineOptions;
@@ -44,7 +46,6 @@ public class Engine implements SensorEventListener {
 	private AccelerometerData mAccelerometerData;
 
 	private ArrayList<IUpdateHandler> mPreDrawHandlers = new ArrayList<IUpdateHandler>();
-
 	private ArrayList<IUpdateHandler> mPostDrawHandlers = new ArrayList<IUpdateHandler>();
 
 	// ===========================================================
@@ -58,6 +59,21 @@ public class Engine implements SensorEventListener {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public void start() {
+		if(!this.mRunning){
+			this.mLastTick = System.nanoTime();
+		}
+		this.mRunning = true;
+	}
+	
+	public void stop() {
+		this.mRunning = false;
+	}
+	
+	public Scene getScene() {
+		return this.mScene;
+	}
 
 	public void setScene(final Scene pScene) {
 		this.mScene = pScene;
@@ -104,7 +120,9 @@ public class Engine implements SensorEventListener {
 		switch(pSensor.getType()){
 			case Sensor.TYPE_ACCELEROMETER:
 				this.mAccelerometerData.setAccuracy(pAccuracy);
-				this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+				if(this.mRunning){
+					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+				}
 				break;
 		}
 	}
@@ -114,7 +132,9 @@ public class Engine implements SensorEventListener {
 		switch(pEvent.sensor.getType()){
 			case Sensor.TYPE_ACCELEROMETER:
 				this.mAccelerometerData.setValues(pEvent.values);
-				this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+				if(this.mRunning){
+					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+				}
 				break;
 		}
 	}
@@ -124,20 +144,22 @@ public class Engine implements SensorEventListener {
 	// ===========================================================
 
 	public void onDrawFrame(final GL10 pGL) {
-		this.mTextureManager.loadPendingTextureToHardware(pGL);
-		final float secondsElapsed = getSecondsElapsed();
-		
-		updatePreDrawHandlers(secondsElapsed);
-		
-		if(this.mScene != null){
-			this.mScene.onUpdate(secondsElapsed);
+		if(this.mRunning) {
+			this.mTextureManager.loadPendingTextureToHardware(pGL);
+			final float secondsElapsed = getSecondsElapsed();
+			
+			updatePreDrawHandlers(secondsElapsed);
+			
+			if(this.mScene != null){
+				this.mScene.onUpdate(secondsElapsed);
+			}
+			
+			if(this.mScene != null){
+				this.mScene.onDraw(pGL);
+			}
+	
+			updatePostDrawHandlers(secondsElapsed);
 		}
-		
-		if(this.mScene != null){
-			this.mScene.onDraw(pGL);
-		}
-
-		updatePostDrawHandlers(secondsElapsed);
 	}
 
 	private void updatePreDrawHandlers(final float pSecondsElapsed) {

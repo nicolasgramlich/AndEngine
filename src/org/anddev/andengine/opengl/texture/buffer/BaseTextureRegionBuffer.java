@@ -20,6 +20,8 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 	// ===========================================================
 
 	protected final TextureRegion mTextureRegion;
+	private boolean mFlippedVertical;
+	private boolean mFlippedHorizontal;
 
 	// ===========================================================
 	// Constructors
@@ -36,6 +38,28 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 
 	public TextureRegion getTextureRegion() {
 		return this.mTextureRegion;
+	}
+	
+	public boolean isFlippedHorizontal() {
+		return this.mFlippedHorizontal;
+	}
+	
+	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
+		if(this.mFlippedHorizontal != pFlippedHorizontal){
+			this.mFlippedHorizontal = pFlippedHorizontal;
+			update();
+		}
+	}
+	
+	public boolean isFlippedVertical() {
+		return this.mFlippedVertical;
+	}
+
+	public void setFlippedVertical(final boolean pFlippedVertical) {
+		if(this.mFlippedVertical != pFlippedVertical){
+			this.mFlippedVertical = pFlippedVertical;
+			update();
+		}
 	}
 
 	// ===========================================================
@@ -67,17 +91,43 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 		final ByteBuffer buffer = this.getByteBuffer();
 		buffer.position(0);
 
-		buffer.putFloat(x1); 
-		buffer.putFloat(y1);
-
-		buffer.putFloat(x2);
-		buffer.putFloat(y1);
-
-		buffer.putFloat(x1);
-		buffer.putFloat(y2);
-
-		buffer.putFloat(x2);
-		buffer.putFloat(y2);
+		if(this.mFlippedVertical) {
+			if(this.mFlippedHorizontal){
+				buffer.putFloat(x2); buffer.putFloat(y2);
+	
+				buffer.putFloat(x1); buffer.putFloat(y2);
+	
+				buffer.putFloat(x2); buffer.putFloat(y1);
+	
+				buffer.putFloat(x1); buffer.putFloat(y1);	
+			} else {
+				buffer.putFloat(x1); buffer.putFloat(y2);
+	
+				buffer.putFloat(x2); buffer.putFloat(y2);
+	
+				buffer.putFloat(x1); buffer.putFloat(y1);
+	
+				buffer.putFloat(x2); buffer.putFloat(y1);				
+			}
+		} else {
+			if(this.mFlippedHorizontal){
+				buffer.putFloat(x2); buffer.putFloat(y1);
+	
+				buffer.putFloat(x1); buffer.putFloat(y1);
+	
+				buffer.putFloat(x2); buffer.putFloat(y2);
+	
+				buffer.putFloat(x1); buffer.putFloat(y2);
+			} else {
+				buffer.putFloat(x1); buffer.putFloat(y1);
+	
+				buffer.putFloat(x2); buffer.putFloat(y1);
+	
+				buffer.putFloat(x1); buffer.putFloat(y2);
+	
+				buffer.putFloat(x2); buffer.putFloat(y2);
+			}
+		}
 
 		buffer.position(0);
 	}

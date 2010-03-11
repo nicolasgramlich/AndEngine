@@ -43,7 +43,7 @@ public class Sound {
 	
 	public void play() {
 		final float actualVolume = this.getActualVolume();
-		this.mStreamID = this.mSoundManager.getSoundPool().play(this.mSoundID, actualVolume, actualVolume, 0, this.mLoopCount, this.mRate);
+		this.mStreamID = this.mSoundManager.getSoundPool().play(this.mSoundID, actualVolume, actualVolume, 1, this.mLoopCount, this.mRate);
 	}
 	
 	public void pause() {

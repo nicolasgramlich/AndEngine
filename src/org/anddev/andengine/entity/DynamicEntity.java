@@ -20,6 +20,7 @@ public abstract class DynamicEntity extends StaticEntity {
 	private float mVelocityY = 0;
 	
 	private float mRotationAngleClockwise = 0;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================

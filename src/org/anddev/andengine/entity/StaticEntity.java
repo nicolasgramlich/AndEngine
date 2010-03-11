@@ -13,8 +13,11 @@ public abstract class StaticEntity extends BaseEntity {
 	// Fields
 	// ===========================================================
 
-	protected float mX = 0;
-	protected float mY = 0;
+	protected final float mInitialX;
+	protected final float mInitialY;
+	
+	protected float mX;
+	protected float mY;
 
 	protected float mOffsetX = 0;
 	protected float mOffsetY = 0;
@@ -27,6 +30,8 @@ public abstract class StaticEntity extends BaseEntity {
 	// ===========================================================
 
 	public StaticEntity(final float pX, final float pY, final int pWidth, final int pHeight) {
+		this.mInitialX = pX;
+		this.mInitialY = pY;
 		this.mX = pX;
 		this.mY = pY;
 		this.mWidth = pWidth;
@@ -43,6 +48,25 @@ public abstract class StaticEntity extends BaseEntity {
 
 	public float getY() {
 		return this.mY;
+	}
+	
+	public void set(final float pX, final float pY) {
+		this.mX = pX;
+		this.mY = pY;
+	}
+	
+	public float getInitialX() {
+		return this.mInitialX;
+	}
+	
+	public float getInitialY() {
+		return this.mInitialY;
+	}
+	
+	public void resetInitialPosition() {
+		this.mX = this.mInitialX;
+		this.mY = this.mInitialY;
+		onPositionChanged();
 	}
 
 	public float getOffsetX() {

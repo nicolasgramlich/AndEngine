@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -9,7 +7,7 @@ import org.anddev.andengine.util.constants.TimeConstants;
  * @author Nicolas Gramlich
  * @since 19:52:31 - 09.03.2010
  */
-public class FPSCounter implements IEntity, TimeConstants {
+public class FPSCounter implements IUpdateHandler, TimeConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -43,11 +41,6 @@ public class FPSCounter implements IEntity, TimeConstants {
 			this.mTimestampLastLogged = now;
 			this.mFramesInThisSecond = 0;
 		}
-	}
-
-	@Override
-	public void onDraw(final GL10 pGL) {
-		
 	}
 
 	// ===========================================================

@@ -71,7 +71,7 @@ public abstract class DynamicEntity extends StaticEntity {
 	// ===========================================================
 
 	@Override
-	public void onUpdate(final float pSecondsElapsed) {
+	public void onManagedUpdate(final float pSecondsElapsed) {
 		if(this.mAccelerationX != 0 || this.mAccelerationY != 0 || this.mVelocityX != 0 || this.mVelocityY != 0) {
 			if(this.mAccelerationX != 0 || this.mAccelerationY != 0) {
 				this.mVelocityX += this.mAccelerationX * pSecondsElapsed;

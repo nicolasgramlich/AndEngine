@@ -17,6 +17,7 @@ public abstract class BaseEntity implements IEntity {
 	// ===========================================================
 	
 	private boolean mVisible = true;
+	private boolean mIgnoreUpdate;
 
 	// ===========================================================
 	// Constructors
@@ -34,6 +35,14 @@ public abstract class BaseEntity implements IEntity {
 		this.mVisible = pVisible;
 	}
 
+	private boolean isIgnoringUpdate() {
+		return this.mIgnoreUpdate;
+	}
+	
+	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
+		this.mIgnoreUpdate = pIgnoreUpdate;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -44,6 +53,14 @@ public abstract class BaseEntity implements IEntity {
 	public final void onDraw(final GL10 pGL) {
 		if(this.isVisible())
 			this.onManagedDraw(pGL);
+	}
+	
+	protected abstract void onManagedUpdate(final float pSecondsElapsed);
+
+	@Override
+	public void onUpdate(final float pSecondsElapsed) {
+		if(!this.isIgnoringUpdate())
+			this.onManagedUpdate(pSecondsElapsed);
 	}
 
 	// ===========================================================

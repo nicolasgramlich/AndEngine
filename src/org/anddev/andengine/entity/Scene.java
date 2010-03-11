@@ -60,7 +60,7 @@ public class Scene extends BaseEntity {
 	}
 
 	@Override
-	public void onUpdate(float pSecondsElapsed) {
+	public void onManagedUpdate(float pSecondsElapsed) {
 		updateBackground(pSecondsElapsed);
 		updateLayers(pSecondsElapsed);
 	}

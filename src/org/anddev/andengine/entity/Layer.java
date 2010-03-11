@@ -45,7 +45,7 @@ public class Layer extends BaseEntity {
 	}
 
 	@Override
-	public void onUpdate(final float pSecondsElapsed) {
+	public void onManagedUpdate(final float pSecondsElapsed) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		final int entityCount = entities.size();
 		for(int i = 0; i < entityCount; i++)

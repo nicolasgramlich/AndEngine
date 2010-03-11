@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity.sprite;
 
+import java.util.Arrays;
+
 import org.anddev.andengine.opengl.texture.TiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
@@ -48,8 +50,8 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 
 	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		super.onUpdate(pSecondsElapsed);
+	public void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
 		if(this.mAnimationRunning) {
 			final long now = System.nanoTime();
 			final long elapsedSinceFrameStart = now - this.mFrameStart;
@@ -86,6 +88,16 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		return frameCount - 1;
 	}
 
+	public void animate(final int pFrameDurationEach) {
+		this.animate(pFrameDurationEach, true);
+	}
+	
+	public void animate(final int pFrameDurationEach, final boolean pLoop) {
+		final int[] frameDurations = new int[this.getTextureRegion().getTileCount() - 1];
+		Arrays.fill(frameDurations, pFrameDurationEach);
+		this.animate(frameDurations, true);
+	}
+	
 	public void animate(final int[] pFrameDurations) {
 		this.animate(pFrameDurations, true);
 	}

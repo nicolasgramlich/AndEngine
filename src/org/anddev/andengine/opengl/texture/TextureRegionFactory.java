@@ -1,8 +1,5 @@
-package org.anddev.andengine.opengl.texture.factory;
+package org.anddev.andengine.opengl.texture;
 
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureRegion;
-import org.anddev.andengine.opengl.texture.TiledTextureRegion;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.texture.source.ResourceTextureSource;

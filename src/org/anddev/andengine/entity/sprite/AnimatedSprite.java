@@ -69,6 +69,15 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void stopAnimation() {
+		this.mAnimationRunning = false;
+	}
+	
+	public void stopAnimation(final int pTileIndex) {
+		this.mAnimationRunning = false;
+		this.setCurrentTileIndex(pTileIndex);
+	}
 
 	private void stopAnimationIfDurationExceeded(final long now) {
 		if(now - this.mAnimationStart > this.mAnimationDuration){

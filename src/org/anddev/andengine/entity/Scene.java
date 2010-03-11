@@ -48,6 +48,10 @@ public class Scene extends BaseEntity {
 	public boolean hasBackground() {
 		return this.mBackground != null;
 	}
+	
+	public int getLayerCount() {
+		return this.mLayers.length;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

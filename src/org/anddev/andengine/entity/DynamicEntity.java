@@ -5,7 +5,7 @@ package org.anddev.andengine.entity;
  * @author Nicolas Gramlich
  * @since 14:22:22 - 10.03.2010
  */
-public abstract class DynamicEntity extends BaseEntity {
+public abstract class DynamicEntity extends StaticEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,55 +19,18 @@ public abstract class DynamicEntity extends BaseEntity {
 	private float mVelocityX = 0;
 	private float mVelocityY = 0;
 	
-	private float mAngleClockwise = 0;
-
-	private float mX = 0;
-	private float mY = 0;
-	
-	private float mOffsetX = 0;
-	private float mOffsetY = 0;
-
-	private final int mWidth;
-	private final int mHeight;
-
+	private float mRotationAngleClockwise = 0;
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public DynamicEntity(final float pX, final float pY, final int pWidth, final int pHeight) {
-		this.mX = pX;
-		this.mY = pY;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+		super(pX, pY, pWidth, pHeight);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public float getX() {
-		return this.mX;
-	}
-
-	public float getY() {
-		return this.mY;
-	}
-	
-	public float getOffsetX() {
-		return this.mOffsetX;
-	}
-	
-	public float getOffsetY() {
-		return this.mOffsetY;
-	}
-
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	public int getHeight() {
-		return this.mHeight;
-	}
 
 	public float getVelocityX() {
 		return this.mVelocityX;
@@ -95,33 +58,17 @@ public abstract class DynamicEntity extends BaseEntity {
 		this.mAccelerationY = pAccelerationY;
 	}
 	
-	public float getAngleClockwise() {
-		return this.mAngleClockwise;
+	public float getRotationAngleClockwise() {
+		return this.mRotationAngleClockwise;
 	}
 	
-	public void setAngleClockwise(final float pAngleClockwise) {
-		this.mAngleClockwise = pAngleClockwise;
-	}
-	
-	public void setOffsetX(final float pOffsetX) {
-		this.mOffsetX = pOffsetX;
-	}
-	
-	public void setOffsetY(final float pOffsetY) {
-		this.mOffsetY = pOffsetY;
-	}
-	
-	public void setOffset(final float pOffsetX, final float pOffsetY) {
-		this.mOffsetX = pOffsetX;
-		this.mOffsetY = pOffsetY;
-		onPositionChanged();
+	public void setRotationAngleClockwise(final float pRotationAngleClockwise) {
+		this.mRotationAngleClockwise = pRotationAngleClockwise;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	protected abstract void onPositionChanged();
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {

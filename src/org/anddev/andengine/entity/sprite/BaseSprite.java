@@ -107,10 +107,10 @@ public abstract class BaseSprite extends DynamicEntity {
 
 	protected void applyRotation(final GL10 pGL) {
 		// TODO Offset needs to be taken into account.
-		final float angleClockwise = getAngleClockwise();
-		if(angleClockwise != 0) {
+		final float rotationAngleClockwise = getRotationAngleClockwise();
+		if(rotationAngleClockwise != 0) {
 			pGL.glTranslatef(this.getWidth() / 2, this.getHeight() / 2, 0);
-			pGL.glRotatef(angleClockwise, 0, 0, 1);
+			pGL.glRotatef(rotationAngleClockwise, 0, 0, 1);
 			pGL.glTranslatef(-this.getWidth() / 2, -this.getHeight() / 2, 0);
 		}
 	}

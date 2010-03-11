@@ -1,7 +1,10 @@
 package org.anddev.andengine.engine;
 
+import java.util.ArrayList;
+
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureManager;
@@ -40,6 +43,10 @@ public class Engine implements SensorEventListener {
 	private AccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
 
+	private ArrayList<IUpdateHandler> mPreDrawHandlers = new ArrayList<IUpdateHandler>();
+
+	private ArrayList<IUpdateHandler> mPostDrawHandlers = new ArrayList<IUpdateHandler>();
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -70,6 +77,22 @@ public class Engine implements SensorEventListener {
 	
 	public AccelerometerData getAccelerometerData() {
 		return this.mAccelerometerData;
+	}
+	
+	public void registerPreDrawHandler(final IUpdateHandler pUpdateHandler) {
+		this.mPreDrawHandlers.add(pUpdateHandler);
+	}
+	
+	public void registerPostDrawHandler(final IUpdateHandler pUpdateHandler) {
+		this.mPostDrawHandlers.add(pUpdateHandler);
+	}
+	
+	public void unregisterPreDrawHandler(final IUpdateHandler pUpdateHandler) {
+		this.mPreDrawHandlers.remove(pUpdateHandler);
+	}
+	
+	public void unregisterPostDrawHandler(final IUpdateHandler pUpdateHandler) {
+		this.mPostDrawHandlers.remove(pUpdateHandler);
 	}
 
 	// ===========================================================
@@ -104,6 +127,8 @@ public class Engine implements SensorEventListener {
 		this.mTextureManager.loadPendingTextureToHardware(pGL);
 		final float secondsElapsed = getSecondsElapsed();
 		
+		updatePreDrawHandlers(secondsElapsed);
+		
 		if(this.mScene != null){
 			this.mScene.onUpdate(secondsElapsed);
 		}
@@ -111,6 +136,24 @@ public class Engine implements SensorEventListener {
 		if(this.mScene != null){
 			this.mScene.onDraw(pGL);
 		}
+
+		updatePostDrawHandlers(secondsElapsed);
+	}
+
+	private void updatePreDrawHandlers(final float pSecondsElapsed) {
+		final ArrayList<IUpdateHandler> updateHandlers = this.mPreDrawHandlers;
+		updateHandlers(pSecondsElapsed, updateHandlers);
+	}
+
+	private void updatePostDrawHandlers(final float pSecondsElapsed) {
+		final ArrayList<IUpdateHandler> updateHandlers = this.mPostDrawHandlers;
+		updateHandlers(pSecondsElapsed, updateHandlers);
+	}
+
+	private void updateHandlers(final float pSecondsElapsed, final ArrayList<IUpdateHandler> pUpdateHandlers) {
+		final int layerCount = pUpdateHandlers.size();
+		for(int i = 0; i < layerCount; i++)
+			pUpdateHandlers.get(i).onUpdate(pSecondsElapsed);
 	}
 
 	private float getSecondsElapsed() {

@@ -1,13 +1,12 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.handler.collision;
 
-import org.anddev.andengine.opengl.IRenderable;
-
+import org.anddev.andengine.entity.StaticEntity;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:20:25 - 08.03.2010
+ * @since 12:05:39 - 11.03.2010
  */
-public interface IEntity extends IRenderable, IUpdateHandler {
+public interface ICollisionCallback {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -15,4 +14,6 @@ public interface IEntity extends IRenderable, IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void onCollision(final StaticEntity pCheckEntity, final StaticEntity pTargetStaticEntity);
 }

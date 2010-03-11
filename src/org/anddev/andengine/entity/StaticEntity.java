@@ -85,7 +85,7 @@ public abstract class StaticEntity extends BaseEntity {
 	// Methods
 	// ===========================================================
 
-	public boolean checkCollision(final StaticEntity pOther) {
+	public boolean collidesWith(final StaticEntity pOther) {
 		final float left = this.mX;
 		final float top = this.mY;
 		final float right = this.mWidth + left;
@@ -98,7 +98,7 @@ public abstract class StaticEntity extends BaseEntity {
 		
 		return (left < otherRight &&
 				otherLeft < right &&
-				otherLeft < otherBottom &&
+				top < otherBottom &&
 				otherTop < bottom);
 	}
 

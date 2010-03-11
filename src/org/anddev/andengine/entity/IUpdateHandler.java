@@ -1,13 +1,10 @@
 package org.anddev.andengine.entity;
 
-import org.anddev.andengine.opengl.IRenderable;
-
-
 /**
  * @author Nicolas Gramlich
- * @since 11:20:25 - 08.03.2010
+ * @since 12:24:09 - 11.03.2010
  */
-public interface IEntity extends IRenderable, IUpdateHandler {
+public interface IUpdateHandler {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -15,4 +12,6 @@ public interface IEntity extends IRenderable, IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+    public void onUpdate(final float pSecondsElapsed);
 }

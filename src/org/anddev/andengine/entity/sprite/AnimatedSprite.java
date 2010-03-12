@@ -52,13 +52,13 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 
 	@Override
-	public void onManagedUpdate(final float pSecondsElapsed) {
+	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 		if(this.mAnimationRunning) {
 			final long now = System.nanoTime();
-			final long elapsedSinceFrameStart = now - this.mFrameStart;
-			final long elapsedNanosecondsInFrame = elapsedSinceFrameStart % this.mAnimationDuration;
-			final int currentFrameIndex = this.determineCurrentFrameIndex((int)(elapsedNanosecondsInFrame / NANOSECONDSPERMILLISECOND));
+			final long elapsedNanosecondsInFrame = calculateElapsedNanosecondsInFrame(now);
+			
+			final int currentFrameIndex = this.calculateCurrentFrameIndex((int)(elapsedNanosecondsInFrame / NANOSECONDSPERMILLISECOND));
 			this.setCurrentTileIndex(this.mFirstTileIndex + currentFrameIndex);
 
 			this.mFrameStart = now - elapsedNanosecondsInFrame;
@@ -93,7 +93,12 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		}
 	}
 
-	private int determineCurrentFrameIndex(final int pElapsedRelativeInFrame) {
+	private long calculateElapsedNanosecondsInFrame(final long now) {
+		final long elapsedSinceFrameStart = now - this.mFrameStart;
+		return elapsedSinceFrameStart % this.mAnimationDuration;
+	}
+
+	private int calculateCurrentFrameIndex(final int pElapsedRelativeInFrame) {
 		final int[] frameEnds = this.mFrameEndsInMilliseconds;
 		final int frameCount = frameEnds.length;
 		for(int i = 0; i < frameCount; i++) {

@@ -71,7 +71,7 @@ public abstract class BaseSprite extends DynamicEntity {
 	}
 
 	@Override
-	public void onManagedDraw(final GL10 pGL) {
+	protected void onManagedDraw(final GL10 pGL) {
 		GLHelper.color4f(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 		GLHelper.enableVertexArray(pGL);
 		GLHelper.enableTextures(pGL);

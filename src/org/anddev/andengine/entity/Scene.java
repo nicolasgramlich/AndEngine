@@ -58,13 +58,13 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 
 	@Override
-	public void onManagedDraw(final GL10 pGL) {
+	protected void onManagedDraw(final GL10 pGL) {
 		drawBackground(pGL);
 		drawLayers(pGL);
 	}
 
 	@Override
-	public void onManagedUpdate(float pSecondsElapsed) {
+	protected void onManagedUpdate(float pSecondsElapsed) {
 		updateBackground(pSecondsElapsed);
 		updateLayers(pSecondsElapsed);
 	}

@@ -44,7 +44,7 @@ public class FixedColorBackground extends BaseBackground {
     }
 
 	@Override
-	public void onManagedUpdate(final float pSecondsElapsed) { }
+	protected void onManagedUpdate(final float pSecondsElapsed) { }
 
 	// ===========================================================
 	// Methods

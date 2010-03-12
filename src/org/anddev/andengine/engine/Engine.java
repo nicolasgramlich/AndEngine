@@ -84,11 +84,11 @@ public class Engine implements SensorEventListener {
 	}
 
 	public int getGameWidth() {
-		return this.mEngineOptions.mGameWidth;
+		return this.mEngineOptions.getGameWidth();
 	}
 
 	public int getGameHeight() {
-		return this.mEngineOptions.mGameHeight;
+		return this.mEngineOptions.getGameHeight();
 	}	
 	
 	public AccelerometerData getAccelerometerData() {

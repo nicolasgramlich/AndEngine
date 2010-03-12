@@ -71,11 +71,11 @@ public abstract class BaseGameActivity extends Activity {
 	// ===========================================================
 
 	private void applyEngineOptions(EngineOptions pEngineOptions) {
-		if(pEngineOptions.mFullscreen) {
+		if(pEngineOptions.isFullscreen()) {
 			applyFullscreen();
 		}
 
-		switch(pEngineOptions.mScreenOrientation){
+		switch(pEngineOptions.getScreenOrientation()){
 			case LANDSCAPE:
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 				break;

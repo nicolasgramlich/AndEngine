@@ -1,13 +1,12 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.handler.timer;
 
-import javax.microedition.khronos.opengles.GL10;
-
+import org.anddev.andengine.entity.IUpdateHandler;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:00:48 - 08.03.2010
+ * @since 16:23:58 - 12.03.2010
  */
-public abstract class BaseEntity implements IEntity {
+public class TimerHandler implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,51 +15,37 @@ public abstract class BaseEntity implements IEntity {
 	// Fields
 	// ===========================================================
 	
-	private boolean mVisible = true;
-	private boolean mIgnoreUpdate;
+	private final float mTimerSeconds;
+	private float mSecondsPassed;
+	private boolean mCallbackTriggered = false;
+	private final ITimerCallback mTimerCallback;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public TimerHandler(final float pTimerSeconds, final ITimerCallback pTimerCallback) {
+		this.mTimerSeconds = pTimerSeconds;
+		this.mTimerCallback = pTimerCallback;
+	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isVisible() {
-		return this.mVisible;
-	}
-
-	public void setVisible(final boolean pVisible) {
-		this.mVisible = pVisible;
-	}
-
-	private boolean isIgnoringUpdate() {
-		return this.mIgnoreUpdate;
-	}
-	
-	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
-		this.mIgnoreUpdate = pIgnoreUpdate;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onManagedDraw(final GL10 pGL);
-
 	@Override
-	public final void onDraw(final GL10 pGL) {
-		if(this.isVisible())
-			this.onManagedDraw(pGL);
-	}
-	
-	protected abstract void onManagedUpdate(final float pSecondsElapsed);
-
-	@Override
-	public final void onUpdate(final float pSecondsElapsed) {
-		if(!this.isIgnoringUpdate())
-			this.onManagedUpdate(pSecondsElapsed);
+	public void onUpdate(final float pSecondsElapsed) {
+		if(!this.mCallbackTriggered) {
+			this.mSecondsPassed += pSecondsElapsed;
+			if(this.mSecondsPassed >= this.mTimerSeconds) {
+				this.mCallbackTriggered = true;
+				this.mTimerCallback.onTimePassed();
+			}
+		}
 	}
 
 	// ===========================================================

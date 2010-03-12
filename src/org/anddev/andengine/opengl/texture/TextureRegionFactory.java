@@ -48,13 +48,13 @@ public class TextureRegionFactory {
 	// Worker-Methods
 	// ===========================================================
 	
-	private static TextureRegion createFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
+	public static TextureRegion createFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		final TextureRegion textureRegion = new TextureRegion(pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight());
 		pTexture.insertTextureRegion(textureRegion, pTextureSource);
 		return textureRegion;
 	}
 
-	private static TiledTextureRegion createTiledFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
+	public static TiledTextureRegion createTiledFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
 		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight(), pTileColumns, pTileRows);
 		pTexture.insertTextureRegion(tiledTextureRegion, pTextureSource);
 		return tiledTextureRegion;

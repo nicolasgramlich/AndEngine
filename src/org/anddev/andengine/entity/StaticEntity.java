@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity;
 
+import org.anddev.andengine.physics.collision.CollisionChecker;
+
 /**
  * @author Nicolas Gramlich
  * @since 12:06:43 - 11.03.2010
@@ -50,9 +52,14 @@ public abstract class StaticEntity extends BaseEntity {
 		return this.mY;
 	}
 	
-	public void set(final float pX, final float pY) {
+	public void setPosition(final float pX, final float pY) {
 		this.mX = pX;
 		this.mY = pY;
+	}
+	
+	public void setPosition(final StaticEntity pOtherStaticEntity) {
+		this.mX = pOtherStaticEntity.getX();
+		this.mY = pOtherStaticEntity.getY();
 	}
 	
 	public float getInitialX() {
@@ -63,7 +70,7 @@ public abstract class StaticEntity extends BaseEntity {
 		return this.mInitialY;
 	}
 	
-	public void resetInitialPosition() {
+	public void setInitialPosition() {
 		this.mX = this.mInitialX;
 		this.mY = this.mInitialY;
 		onPositionChanged();
@@ -120,10 +127,7 @@ public abstract class StaticEntity extends BaseEntity {
 		final float otherRight = pOther.mWidth + otherLeft;
 		final float otherBottom = pOther.mHeight + otherTop;
 		
-		return (left < otherRight &&
-				otherLeft < right &&
-				top < otherBottom &&
-				otherTop < bottom);
+		return CollisionChecker.checkAxisAlignedBoxCollision(left, top, right, bottom, otherLeft, otherTop, otherRight, otherBottom);
 	}
 
 	// ===========================================================

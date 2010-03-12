@@ -4,7 +4,7 @@ package org.anddev.andengine.physics.collision;
  * @author Nicolas Gramlich
  * @since 11:50:19 - 11.03.2010
  */
-public class Intersector {
+public class CollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -29,7 +29,14 @@ public class Intersector {
 	// Methods
 	// ===========================================================
 
-	public static boolean linesIntersect(final double pX1, final double pY1, final double pX2, final double pY2, final double pX3, final double pY3, final double pX4, final double pY4) {
+	public static boolean checkAxisAlignedBoxCollision(final float pLeftA, final float pTopA, final float pRightA, final float pBottomA, final float pLeftB, final float pTopB, final float pRightB, final float pBottomB) {
+		return (pLeftA < pRightB &&
+				pLeftB < pRightA &&
+				pTopA < pBottomB &&
+				pTopB < pBottomA);
+	}
+
+	public static boolean checkLineCollision(final double pX1, final double pY1, final double pX2, final double pY2, final double pX3, final double pY3, final double pX4, final double pY4) {
 		return ((relativeCCW(pX1, pY1, pX2, pY2, pX3, pY3) * relativeCCW(pX1, pY1, pX2, pY2, pX4, pY4) <= 0)
 				&& (relativeCCW(pX3, pY3, pX4, pY4, pX1, pY1) * relativeCCW(pX3, pY3, pX4, pY4, pX2, pY2) <= 0));
 	}

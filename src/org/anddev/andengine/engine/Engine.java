@@ -95,19 +95,19 @@ public class Engine implements SensorEventListener {
 		return this.mAccelerometerData;
 	}
 	
-	public void registerPreDrawHandler(final IUpdateHandler pUpdateHandler) {
+	public void registerPreFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPreDrawHandlers.add(pUpdateHandler);
 	}
 	
-	public void registerPostDrawHandler(final IUpdateHandler pUpdateHandler) {
+	public void registerPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostDrawHandlers.add(pUpdateHandler);
 	}
 	
-	public void unregisterPreDrawHandler(final IUpdateHandler pUpdateHandler) {
+	public void unregisterPreFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPreDrawHandlers.remove(pUpdateHandler);
 	}
 	
-	public void unregisterPostDrawHandler(final IUpdateHandler pUpdateHandler) {
+	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostDrawHandlers.remove(pUpdateHandler);
 	}
 
@@ -148,7 +148,7 @@ public class Engine implements SensorEventListener {
 			this.mTextureManager.loadPendingTextureToHardware(pGL);
 			final float secondsElapsed = getSecondsElapsed();
 			
-			updatePreDrawHandlers(secondsElapsed);
+			updatePreFrameHandlers(secondsElapsed);
 			
 			if(this.mScene != null){
 				this.mScene.onUpdate(secondsElapsed);
@@ -158,16 +158,16 @@ public class Engine implements SensorEventListener {
 				this.mScene.onDraw(pGL);
 			}
 	
-			updatePostDrawHandlers(secondsElapsed);
+			updatePostFrameHandlers(secondsElapsed);
 		}
 	}
 
-	private void updatePreDrawHandlers(final float pSecondsElapsed) {
+	private void updatePreFrameHandlers(final float pSecondsElapsed) {
 		final ArrayList<IUpdateHandler> updateHandlers = this.mPreDrawHandlers;
 		updateHandlers(pSecondsElapsed, updateHandlers);
 	}
 
-	private void updatePostDrawHandlers(final float pSecondsElapsed) {
+	private void updatePostFrameHandlers(final float pSecondsElapsed) {
 		final ArrayList<IUpdateHandler> updateHandlers = this.mPostDrawHandlers;
 		updateHandlers(pSecondsElapsed, updateHandlers);
 	}

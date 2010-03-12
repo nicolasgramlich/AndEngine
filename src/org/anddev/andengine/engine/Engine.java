@@ -45,8 +45,8 @@ public class Engine implements SensorEventListener {
 	private AccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
 
-	private ArrayList<IUpdateHandler> mPreDrawHandlers = new ArrayList<IUpdateHandler>();
-	private ArrayList<IUpdateHandler> mPostDrawHandlers = new ArrayList<IUpdateHandler>();
+	private ArrayList<IUpdateHandler> mPreFrameHandlers = new ArrayList<IUpdateHandler>();
+	private ArrayList<IUpdateHandler> mPostFrameHandlers = new ArrayList<IUpdateHandler>();
 
 	// ===========================================================
 	// Constructors
@@ -95,20 +95,28 @@ public class Engine implements SensorEventListener {
 		return this.mAccelerometerData;
 	}
 	
+	public void clearPreFrameHandlers() {
+		this.mPreFrameHandlers.clear();
+	}
+	
+	public void clearPostFrameHandlers() {
+		this.mPostFrameHandlers.clear();
+	}
+	
 	public void registerPreFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPreDrawHandlers.add(pUpdateHandler);
+		this.mPreFrameHandlers.add(pUpdateHandler);
 	}
 	
 	public void registerPostFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPostDrawHandlers.add(pUpdateHandler);
+		this.mPostFrameHandlers.add(pUpdateHandler);
 	}
 	
 	public void unregisterPreFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPreDrawHandlers.remove(pUpdateHandler);
+		this.mPreFrameHandlers.remove(pUpdateHandler);
 	}
 	
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPostDrawHandlers.remove(pUpdateHandler);
+		this.mPostFrameHandlers.remove(pUpdateHandler);
 	}
 
 	// ===========================================================
@@ -163,12 +171,12 @@ public class Engine implements SensorEventListener {
 	}
 
 	private void updatePreFrameHandlers(final float pSecondsElapsed) {
-		final ArrayList<IUpdateHandler> updateHandlers = this.mPreDrawHandlers;
+		final ArrayList<IUpdateHandler> updateHandlers = this.mPreFrameHandlers;
 		updateHandlers(pSecondsElapsed, updateHandlers);
 	}
 
 	private void updatePostFrameHandlers(final float pSecondsElapsed) {
-		final ArrayList<IUpdateHandler> updateHandlers = this.mPostDrawHandlers;
+		final ArrayList<IUpdateHandler> updateHandlers = this.mPostFrameHandlers;
 		updateHandlers(pSecondsElapsed, updateHandlers);
 	}
 

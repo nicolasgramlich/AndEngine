@@ -1,11 +1,15 @@
-package org.anddev.andengine.opengl.vertex;
+package org.anddev.andengine.entity.primitives;
 
-import org.anddev.andengine.opengl.BaseBuffer;
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+
 /**
  * @author Nicolas Gramlich
- * @since 12:16:18 - 09.03.2010
+ * @since 12:18:49 - 13.03.2010
  */
-public abstract class VertexBuffer extends BaseBuffer {
+public class Rectangle extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,9 +21,9 @@ public abstract class VertexBuffer extends BaseBuffer {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public VertexBuffer() {
-		super();
+	
+	public Rectangle(final float pX, final float pY, final int pWidth, final int pHeight) {
+		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer());
 	}
 
 	// ===========================================================
@@ -29,6 +33,22 @@ public abstract class VertexBuffer extends BaseBuffer {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	protected void onInitDraw(GL10 pGL) {
+		super.onInitDraw(pGL);
+		GLHelper.disableTextures(pGL);
+		GLHelper.disableTexCoordArray(pGL);
+	}
+	
+	@Override
+	public RectangleVertexBuffer getVertexBuffer() {
+		return (RectangleVertexBuffer)super.getVertexBuffer();
+	}
+	
+	protected void updateVertexBuffer(){
+		this.getVertexBuffer().update(this.getOffsetX(), this.getOffsetY(), this.getWidth(), this.getHeight());
+	}
 
 	// ===========================================================
 	// Methods
@@ -37,6 +57,4 @@ public abstract class VertexBuffer extends BaseBuffer {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
 }
-

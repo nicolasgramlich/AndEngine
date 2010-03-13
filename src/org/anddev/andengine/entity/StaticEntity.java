@@ -24,8 +24,8 @@ public abstract class StaticEntity extends BaseEntity {
 	protected float mOffsetX = 0;
 	protected float mOffsetY = 0;
 
-	protected final int mWidth;
-	protected final int mHeight;
+	protected int mWidth;
+	protected int mHeight;
 
 	// ===========================================================
 	// Constructors
@@ -73,7 +73,7 @@ public abstract class StaticEntity extends BaseEntity {
 	public void setInitialPosition() {
 		this.mX = this.mInitialX;
 		this.mY = this.mInitialY;
-		onPositionChanged();
+		this.onPositionChanged();
 	}
 
 	public float getOffsetX() {
@@ -91,6 +91,16 @@ public abstract class StaticEntity extends BaseEntity {
 	public int getHeight() {
 		return this.mHeight;
 	}
+	
+	public void setWidth(final int pWidth) {
+		this.mWidth = pWidth;
+		this.onPositionChanged();
+	}
+	
+	public void setHeight(final int pHeight) {
+		this.mHeight = pHeight;
+		this.onPositionChanged();
+	}
 
 	public void setOffsetX(final float pOffsetX) {
 		this.mOffsetX = pOffsetX;
@@ -103,7 +113,7 @@ public abstract class StaticEntity extends BaseEntity {
 	public void setOffset(final float pOffsetX, final float pOffsetY) {
 		this.mOffsetX = pOffsetX;
 		this.mOffsetY = pOffsetY;
-		onPositionChanged();
+		this.onPositionChanged();
 	}
 
 	// ===========================================================

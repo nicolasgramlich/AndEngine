@@ -1,11 +1,12 @@
 package org.anddev.andengine.opengl.vertex;
 
-import org.anddev.andengine.opengl.BaseBuffer;
+import java.nio.ByteBuffer;
+
 /**
  * @author Nicolas Gramlich
- * @since 12:16:18 - 09.03.2010
+ * @since 13:07:25 - 13.03.2010
  */
-public abstract class VertexBuffer extends BaseBuffer {
+public class RectangleVertexBuffer extends VertexBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,10 +18,6 @@ public abstract class VertexBuffer extends BaseBuffer {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public VertexBuffer() {
-		super();
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -34,9 +31,26 @@ public abstract class VertexBuffer extends BaseBuffer {
 	// Methods
 	// ===========================================================
 
+	public void update(final float pX, final float pY, final float pWidth, final float pHeight) {
+		final ByteBuffer buffer = this.getByteBuffer();
+		buffer.position(0);
+		
+		buffer.putFloat(pX);
+		buffer.putFloat(pY);
+		
+		buffer.putFloat(pX + pWidth);
+		buffer.putFloat(pY);
+		
+		buffer.putFloat(pX);
+		buffer.putFloat(pY + pHeight);
+		
+		buffer.putFloat(pX + pWidth);
+		buffer.putFloat(pY + pHeight);
+		
+		buffer.position(0);
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
 }
-

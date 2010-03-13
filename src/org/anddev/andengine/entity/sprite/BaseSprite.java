@@ -2,16 +2,15 @@ package org.anddev.andengine.entity.sprite;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.DynamicEntity;
+import org.anddev.andengine.entity.primitives.Rectangle;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.texture.TextureRegion;
-import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
  * @author Nicolas Gramlich
  * @since 11:38:53 - 08.03.2010
  */
-public abstract class BaseSprite extends DynamicEntity {
+public abstract class BaseSprite extends Rectangle {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,13 +18,6 @@ public abstract class BaseSprite extends DynamicEntity {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private final VertexBuffer mVertexBuffer = new VertexBuffer();
-
-	private final float mRed = 1;
-	private final float mGreen = 1;
-	private final float mBlue = 1;
-	private float mAlpha = 1f;
 
 	protected TextureRegion mTextureRegion;
 
@@ -38,20 +30,11 @@ public abstract class BaseSprite extends DynamicEntity {
 
 		assert(pTextureRegion != null);
 		this.mTextureRegion = pTextureRegion;
-		this.updateVertexBuffer();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public VertexBuffer getVertexBuffer() {
-		return this.mVertexBuffer;
-	}
-
-	public void setAlpha(final float pAlpha) {
-		this.mAlpha = pAlpha;
-	}
 
 	public TextureRegion getTextureRegion() {
 		return this.mTextureRegion;
@@ -66,66 +49,26 @@ public abstract class BaseSprite extends DynamicEntity {
 	// ===========================================================
 	
 	@Override
-	protected void onPositionChanged() {
-		updateVertexBuffer();
-	}
-
-	@Override
-	protected void onManagedDraw(final GL10 pGL) {
-		GLHelper.color4f(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
-		GLHelper.enableVertexArray(pGL);
+	protected void onInitDraw(GL10 pGL) {
+		super.onInitDraw(pGL);
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
 		GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA); // TODO "Default" and "Custom(Sprite-specific)" blend functions.
-
-		pGL.glPushMatrix();
-		GLHelper.vertexPointer(pGL, this.getVertexBuffer().getByteBuffer(), GL10.GL_FLOAT);
-
-		/* Translate */
-		this.applyTranslation(pGL);
-
-		/* Rotate */
-		this.applyRotation(pGL);
-
-		/* Scale */
-		this.applyScale(pGL);
-
-		/* Texture */
-		this.applyTexture(pGL);
-
-		pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-		pGL.glPopMatrix();
+	}
+	
+	@Override
+	protected void onPostTransformations(final GL10 pGL) {
+		super.onPostTransformations(pGL);
+		applyTexture(pGL);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	protected void applyTranslation(final GL10 pGL) {
-		pGL.glTranslatef(this.getX(), this.getY(), 0);
-	}
-
-	protected void applyRotation(final GL10 pGL) {
-		// TODO Offset needs to be taken into account.
-		final float rotationAngleClockwise = getRotationAngleClockwise();
-		if(rotationAngleClockwise != 0) {
-			pGL.glTranslatef(this.getWidth() / 2, this.getHeight() / 2, 0);
-			pGL.glRotatef(rotationAngleClockwise, 0, 0, 1);
-			pGL.glTranslatef(-this.getWidth() / 2, -this.getHeight() / 2, 0);
-		}
-	}
-
-	protected void applyScale(final GL10 pGL) {
-
-	}
-
 	protected void applyTexture(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mTextureRegion.getTexture().getHardwareTextureID());
 		GLHelper.texCoordPointer(pGL, this.mTextureRegion.getTextureBuffer().getByteBuffer(), GL10.GL_FLOAT);
-	}
-
-	protected void updateVertexBuffer(){
-		this.mVertexBuffer.update(this.getOffsetX(), this.getOffsetY(), this.getWidth(), this.getHeight());
 	}
 
 	// ===========================================================

@@ -7,8 +7,11 @@ import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerListener;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -26,6 +29,7 @@ public abstract class BaseGameActivity extends Activity {
 	// ===========================================================
 
 	private Engine mEngine;
+	private WakeLock mWakeLock;
 
 	// ===========================================================
 	// Constructors
@@ -44,6 +48,18 @@ public abstract class BaseGameActivity extends Activity {
 		this.mEngine.setScene(this.onLoadScene());
 		this.onLoadComplete();
 		this.mEngine.start();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		this.acquireWakeLock();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		this.releaseWakeLock();
 	}
 
 	// ===========================================================
@@ -69,6 +85,17 @@ public abstract class BaseGameActivity extends Activity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private void acquireWakeLock() {
+		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "AndEngine");
+		this.mWakeLock.acquire();
+	}
+	
+	private void releaseWakeLock() {
+		if(this.mWakeLock != null)
+			this.mWakeLock.release();
+	}
 
 	private void applyEngineOptions(EngineOptions pEngineOptions) {
 		if(pEngineOptions.isFullscreen()) {

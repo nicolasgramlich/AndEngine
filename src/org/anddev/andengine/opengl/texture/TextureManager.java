@@ -18,6 +18,7 @@ public class TextureManager {
 	// ===========================================================
 	
 	private ArrayList<Texture> mPendingTextures = new ArrayList<Texture>();
+	private ArrayList<Texture> mLoadedTextures = new ArrayList<Texture>();
 
 	// ===========================================================
 	// Constructors
@@ -43,13 +44,25 @@ public class TextureManager {
 		this.mPendingTextures.add(pTexture);
 	}
 	
+	public void reloadLoadedToPendingTextures() {		
+		final ArrayList<Texture> loadedTextures = this.mLoadedTextures;
+		for(int i = loadedTextures.size() - 1; i >= 0; i--)
+			loadedTextures.get(i).setLoadedToHardware(false);
+
+		this.mPendingTextures.addAll(loadedTextures);
+		
+		loadedTextures.clear();
+	}
+	
 	public void loadPendingTextureToHardware(final GL10 pGL) {
 		final ArrayList<Texture> pendingTextures = this.mPendingTextures;
 		final int pendingTexutureCount = pendingTextures.size();
 		if(pendingTexutureCount > 0){
 			for(int i = 0; i < pendingTexutureCount; i++){
-				if(!pendingTextures.get(i).isLoadedToHardware()){
-					pendingTextures.get(i).loadToHardware(pGL);
+				final Texture pendingTexture = pendingTextures.get(i);
+				if(!pendingTexture.isLoadedToHardware()){
+					pendingTexture.loadToHardware(pGL);
+					this.mLoadedTextures.add(pendingTexture);
 				}
 			}
 			

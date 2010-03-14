@@ -61,6 +61,10 @@ public class Texture {
 		return this.mLoadedToHardware;
 	}
 	
+	void setLoadedToHardware(final boolean pLoadedToHardware) {
+		this.mLoadedToHardware = pLoadedToHardware;
+	}
+	
 	public int getWidth() {
 		return this.mWidth;
 	}

@@ -45,7 +45,8 @@ public abstract class BaseGameActivity extends Activity {
 		this.setContentView(new RenderSurfaceView(this, this.mEngine));
 
 		this.onLoadResources();
-		this.mEngine.setScene(this.onLoadScene());
+		final Scene scene = this.onLoadScene();
+		this.mEngine.onLoadComplete(scene);
 		this.onLoadComplete();
 		this.mEngine.start();
 	}

@@ -6,10 +6,17 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.Scene;
+import org.anddev.andengine.entity.handler.timer.ITimerCallback;
+import org.anddev.andengine.entity.handler.timer.TimerHandler;
+import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureManager;
+import org.anddev.andengine.opengl.texture.TextureRegion;
+import org.anddev.andengine.opengl.texture.TextureRegionFactory;
+import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerListener;
+import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
 import android.content.Context;
@@ -33,13 +40,13 @@ public class Engine implements SensorEventListener {
 	// ===========================================================
 
 	private boolean mRunning = false;
-	
+
 	private long mLastTick = System.nanoTime();
 
 	private final EngineOptions mEngineOptions;
-	
+
 	private Scene mScene;
-	
+
 	private TextureManager mTextureManager = new TextureManager();
 
 	private AccelerometerListener mAccelerometerListener;
@@ -51,26 +58,27 @@ public class Engine implements SensorEventListener {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public Engine(final EngineOptions pEngineOptions) {
-		this.mEngineOptions = pEngineOptions;		
+		this.mEngineOptions = pEngineOptions;
+		initLoadingScreen();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public void start() {
 		if(!this.mRunning){
 			this.mLastTick = System.nanoTime();
 		}
 		this.mRunning = true;
 	}
-	
+
 	public void stop() {
 		this.mRunning = false;
 	}
-	
+
 	public Scene getScene() {
 		return this.mScene;
 	}
@@ -78,7 +86,7 @@ public class Engine implements SensorEventListener {
 	public void setScene(final Scene pScene) {
 		this.mScene = pScene;
 	}
-	
+
 	public EngineOptions getEngineOptions() {
 		return this.mEngineOptions;
 	}
@@ -90,31 +98,31 @@ public class Engine implements SensorEventListener {
 	public int getGameHeight() {
 		return this.mEngineOptions.getGameHeight();
 	}	
-	
+
 	public AccelerometerData getAccelerometerData() {
 		return this.mAccelerometerData;
 	}
-	
+
 	public void clearPreFrameHandlers() {
 		this.mPreFrameHandlers.clear();
 	}
-	
+
 	public void clearPostFrameHandlers() {
 		this.mPostFrameHandlers.clear();
 	}
-	
+
 	public void registerPreFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPreFrameHandlers.add(pUpdateHandler);
 	}
-	
+
 	public void registerPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.add(pUpdateHandler);
 	}
-	
+
 	public void unregisterPreFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPreFrameHandlers.remove(pUpdateHandler);
 	}
-	
+
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.remove(pUpdateHandler);
 	}
@@ -151,21 +159,44 @@ public class Engine implements SensorEventListener {
 	// Methods
 	// ===========================================================
 
+	private void initLoadingScreen() {
+		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
+		final int loadingScreenWidth = loadingScreenTextureSource.getWidth();
+		final int loadingScreenHeight = loadingScreenTextureSource.getHeight();
+		final Texture loadingScreenTexture = new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight));
+		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
+		final Sprite loadingScreenSprite = new Sprite(0, 0, this.getGameWidth(), this.getGameHeight(), loadingScreenTextureRegion);
+
+		this.loadTexture(loadingScreenTexture);
+
+		final Scene loadingScene = new Scene(1);
+		loadingScene.getLayer(0).addEntity(loadingScreenSprite);
+		this.setScene(loadingScene);
+	}
+
+	public void onLoadComplete(final Scene pScene) {
+//		final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
+		this.registerPreFrameHandler(new TimerHandler(2, new ITimerCallback() {
+			@Override
+			public void onTimePassed() {
+				Engine.this.setScene(pScene);
+			}
+		}));
+	}
+
 	public void onDrawFrame(final GL10 pGL) {
-		if(this.mRunning) {
-			this.mTextureManager.loadPendingTextureToHardware(pGL);
-			final float secondsElapsed = getSecondsElapsed();
-			
+		final float secondsElapsed = getSecondsElapsed();
+		this.mTextureManager.loadPendingTextureToHardware(pGL);
+
+		if(this.mRunning) {				
 			updatePreFrameHandlers(secondsElapsed);
-			
+
 			if(this.mScene != null){
 				this.mScene.onUpdate(secondsElapsed);
-			}
-			
-			if(this.mScene != null){
+
 				this.mScene.onDraw(pGL);
 			}
-	
+
 			updatePostFrameHandlers(secondsElapsed);
 		}
 	}
@@ -193,20 +224,24 @@ public class Engine implements SensorEventListener {
 		return secondsElapsed;
 	}
 	
+	public void reloadTextures() {
+		this.mTextureManager.reloadLoadedToPendingTextures();
+	}
+
 	public void loadTexture(final Texture pTexture) {
 		this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTexture);
 	}
-	
+
 	public boolean enableAccelerometer(final Context pContext, final AccelerometerListener pAccelerometerListener) {		
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if (isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
-			
+
 			this.mAccelerometerListener = pAccelerometerListener;
 			if(this.mAccelerometerData == null) {
 				this.mAccelerometerData = new AccelerometerData();
 			}
-			
+
 			return true;
 		} else {
 			return false;

@@ -1,10 +1,12 @@
 package org.anddev.andengine.ui.activity;
 
+import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.EngineOptions;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
-import org.anddev.andengine.sensor.accelerometer.AccelerometerListener;
+import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
+import org.anddev.andengine.ui.IGameInterface;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,7 +21,7 @@ import android.view.WindowManager;
  * @author Nicolas Gramlich
  * @since 11:27:06 - 08.03.2010
  */
-public abstract class BaseGameActivity extends Activity {
+public abstract class BaseGameActivity extends Activity implements IGameInterface {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -30,6 +32,7 @@ public abstract class BaseGameActivity extends Activity {
 
 	private Engine mEngine;
 	private WakeLock mWakeLock;
+	private SoundManager mSoundManager = new SoundManager();
 
 	// ===========================================================
 	// Constructors
@@ -40,7 +43,7 @@ public abstract class BaseGameActivity extends Activity {
 		super.onCreate(pSavedInstanceState);
 
 		this.mEngine = this.onLoadEngine();
-		applyEngineOptions(this.mEngine.getEngineOptions());
+		this.applyEngineOptions(this.mEngine.getEngineOptions());
 
 		this.setContentView(new RenderSurfaceView(this, this.mEngine));
 
@@ -70,18 +73,14 @@ public abstract class BaseGameActivity extends Activity {
 	public Engine getEngine() {
 		return this.mEngine;
 	}
+	
+	public SoundManager getSoundManager() {
+		return this.mSoundManager;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	protected abstract Scene onLoadScene();
-
-	protected abstract void onLoadResources();
-
-	protected abstract void onLoadComplete();
-
-	protected abstract Engine onLoadEngine();
 
 	// ===========================================================
 	// Methods
@@ -120,7 +119,7 @@ public abstract class BaseGameActivity extends Activity {
 		window.requestFeature(Window.FEATURE_NO_TITLE);
 	}
 	
-	protected void enableAccelerometer(final AccelerometerListener pAccelerometerListener) {
+	protected void enableAccelerometer(final IAccelerometerListener pAccelerometerListener) {
 		this.mEngine.enableAccelerometer(this, pAccelerometerListener);
 	}
 

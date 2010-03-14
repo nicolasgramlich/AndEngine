@@ -28,6 +28,10 @@ public class AccelerometerData {
 	// Getter & Setter
 	// ===========================================================
 	
+	public float[] getValues() {
+		return this.mValues;
+	}
+	
 	public void setValues(final float[] pValues) {
 		this.mValues[SensorManager.DATA_X] = pValues[SensorManager.DATA_X];
 		this.mValues[SensorManager.DATA_Y] = pValues[SensorManager.DATA_Y];
@@ -45,6 +49,18 @@ public class AccelerometerData {
 	public float getZ() {
 		return this.mValues[SensorManager.DATA_Z];
 	}
+	
+	public void setX(final float pX) {
+		this.mValues[SensorManager.DATA_X] = pX;
+	}
+	
+	public void setY(final float pY) {
+		this.mValues[SensorManager.DATA_Y] = pY;
+	}
+	
+	public void setZ(final float pZ) {
+		this.mValues[SensorManager.DATA_Z]  = pZ;
+	}	
 
 	public void setAccuracy(final int pAccuracy) {
 		this.mAccuracy = pAccuracy;		

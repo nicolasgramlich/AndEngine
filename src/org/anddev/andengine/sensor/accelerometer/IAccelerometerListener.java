@@ -4,7 +4,7 @@ package org.anddev.andengine.sensor.accelerometer;
  * @author Nicolas Gramlich
  * @since 16:58:38 - 10.03.2010
  */
-public interface AccelerometerListener {
+public interface IAccelerometerListener {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================

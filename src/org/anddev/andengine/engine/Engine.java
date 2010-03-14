@@ -15,7 +15,7 @@ import org.anddev.andengine.opengl.texture.TextureRegion;
 import org.anddev.andengine.opengl.texture.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
-import org.anddev.andengine.sensor.accelerometer.AccelerometerListener;
+import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -49,7 +49,7 @@ public class Engine implements SensorEventListener {
 
 	private TextureManager mTextureManager = new TextureManager();
 
-	private AccelerometerListener mAccelerometerListener;
+	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
 
 	private ArrayList<IUpdateHandler> mPreFrameHandlers = new ArrayList<IUpdateHandler>();
@@ -232,7 +232,7 @@ public class Engine implements SensorEventListener {
 		this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTexture);
 	}
 
-	public boolean enableAccelerometer(final Context pContext, final AccelerometerListener pAccelerometerListener) {		
+	public boolean enableAccelerometer(final Context pContext, final IAccelerometerListener pAccelerometerListener) {		
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if (isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);

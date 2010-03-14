@@ -39,6 +39,22 @@ public abstract class Shape extends DynamicEntity {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public float getRed() {
+		return this.mRed;
+	}
+	
+	public float getGreen() {
+		return this.mGreen;
+	}
+	
+	public float getBlue() {
+		return this.mBlue;
+	}
+	
+	public float getAlpha() {
+		return this.mAlpha;
+	}
 
 	public VertexBuffer getVertexBuffer() {
 		return this.mVertexBuffer;
@@ -86,6 +102,14 @@ public abstract class Shape extends DynamicEntity {
 	// Methods
 	// ===========================================================
 
+	public void reset() {
+		super.reset();
+		this.mRed = 1.0f;
+		this.mGreen = 1.0f;
+		this.mBlue = 1.0f;
+		this.mAlpha = 1.0f;
+	}
+
 	protected void onInitDraw(final GL10 pGL) {
 		GLHelper.color4f(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 		GLHelper.enableVertexArray(pGL);
@@ -114,8 +138,8 @@ public abstract class Shape extends DynamicEntity {
 		// TODO Offset needs to be taken into account.
 		final float rotationAngleClockwise = getRotationAngleClockwise();
 		if(rotationAngleClockwise != 0) {
-			final int halfWidth = this.getWidth() / 2;
-			final int halfHeight = this.getHeight() / 2;
+			final float halfWidth = this.getWidth() / 2;
+			final float halfHeight = this.getHeight() / 2;
 			
 			pGL.glTranslatef(halfWidth, halfHeight, 0);
 			pGL.glRotatef(rotationAngleClockwise, 0, 0, 1);

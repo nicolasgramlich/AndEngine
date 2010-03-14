@@ -1,15 +1,14 @@
-package org.anddev.andengine.entity.primitives;
+package org.anddev.andengine.entity.particle.modifier;
 
-import javax.microedition.khronos.opengles.GL10;
-
-import org.anddev.andengine.opengl.GLHelper;
-import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+import org.anddev.andengine.entity.particle.IParticleModifier;
+import org.anddev.andengine.entity.particle.Particle;
+import org.anddev.andengine.util.constants.TimeConstants;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:18:49 - 13.03.2010
+ * @since 21:21:10 - 14.03.2010
  */
-public class Rectangle extends Shape {
+public class ExpireModifier implements IParticleModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,12 +17,20 @@ public class Rectangle extends Shape {
 	// Fields
 	// ===========================================================
 
+	private final long mMinLifeTime;
+	private final long mMaxLifeTime;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public Rectangle(final float pX, final float pY, final int pWidth, final int pHeight) {
-		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer());
+
+	public ExpireModifier(final float pLifeTime) {
+		this(pLifeTime, pLifeTime);
+	}
+
+	public ExpireModifier(final float pMinLifeTime, final float pMaxLifeTime) {
+		this.mMinLifeTime = (long)(pMinLifeTime * TimeConstants.NANOSECONDSPERSECOND);
+		this.mMaxLifeTime = (long)(pMaxLifeTime * TimeConstants.NANOSECONDSPERSECOND);
 	}
 
 	// ===========================================================
@@ -33,21 +40,15 @@ public class Rectangle extends Shape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
-	protected void onInitDraw(final GL10 pGL) {
-		super.onInitDraw(pGL);
-		GLHelper.disableTextures(pGL); // TODO Maybe costly when this is always set...
-		GLHelper.disableTexCoordArray(pGL);
+	public void onInitializeParticle(final Particle pParticle) {
+		pParticle.setDeathTime(pParticle.getBirthTime() + (long)((float)Math.random() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime));
 	}
-	
+
 	@Override
-	public RectangleVertexBuffer getVertexBuffer() {
-		return (RectangleVertexBuffer)super.getVertexBuffer();
-	}
-	
-	protected void updateVertexBuffer(){
-		this.getVertexBuffer().update(this.getOffsetX(), this.getOffsetY(), this.getWidth(), this.getHeight());
+	public void onUpdateParticle(final Particle pParticle) {
+
 	}
 
 	// ===========================================================

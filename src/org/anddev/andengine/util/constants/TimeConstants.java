@@ -29,8 +29,8 @@ public interface TimeConstants {
 	
 	public static final int MILLISECONDSPERSECOND = 1000;
 	
-	public static final int NANOSECONDSPERSECOND = 1000000000;
-	public static final int NANOSECONDSPERMILLISECOND = NANOSECONDSPERSECOND / MILLISECONDSPERSECOND;
+	public static final long NANOSECONDSPERSECOND = 1000000000;
+	public static final long NANOSECONDSPERMILLISECOND = NANOSECONDSPERSECOND / MILLISECONDSPERSECOND;
 
 	// ===========================================================
 	// Methods

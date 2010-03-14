@@ -88,6 +88,15 @@ public abstract class DynamicEntity extends StaticEntity {
 	// Methods
 	// ===========================================================
 
+	public void reset() {
+		super.reset();
+		this.mAccelerationX = 0;
+		this.mAccelerationY = 0;
+		this.mVelocityX = 0;
+		this.mVelocityY = 0;
+		this.mRotationAngleClockwise = 0;
+	}
+
 	public void accelerate(final float pAccelerationX, final float pAccelerationY) {
 		this.mAccelerationX += pAccelerationX;
 		this.mAccelerationY += pAccelerationY;

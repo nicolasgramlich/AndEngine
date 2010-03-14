@@ -67,6 +67,11 @@ public abstract class BaseEntity implements IEntity {
 	// Methods
 	// ===========================================================
 
+	public void reset() {
+		this.mVisible = true;
+		this.mIgnoreUpdate = false;
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

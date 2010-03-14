@@ -17,6 +17,8 @@ public abstract class StaticEntity extends BaseEntity {
 
 	protected final float mInitialX;
 	protected final float mInitialY;
+	protected final float mInitialWidth;
+	protected final float mInitialHeight;
 	
 	protected float mX;
 	protected float mY;
@@ -24,16 +26,19 @@ public abstract class StaticEntity extends BaseEntity {
 	protected float mOffsetX = 0;
 	protected float mOffsetY = 0;
 
-	protected int mWidth;
-	protected int mHeight;
+	protected float mWidth;
+	protected float mHeight;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public StaticEntity(final float pX, final float pY, final int pWidth, final int pHeight) {
+	public StaticEntity(final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.mInitialX = pX;
 		this.mInitialY = pY;
+		this.mInitialWidth = pWidth;
+		this.mInitialHeight = pHeight;
+		
 		this.mX = pX;
 		this.mY = pY;
 		this.mWidth = pWidth;
@@ -75,6 +80,12 @@ public abstract class StaticEntity extends BaseEntity {
 		this.mY = this.mInitialY;
 		this.onPositionChanged();
 	}
+	
+	public void setInitialSize() {
+		this.mWidth = this.mInitialWidth;
+		this.mHeight = this.mInitialHeight;
+		this.onPositionChanged();
+	}
 
 	public float getOffsetX() {
 		return this.mOffsetX;
@@ -84,11 +95,11 @@ public abstract class StaticEntity extends BaseEntity {
 		return this.mOffsetY;
 	}
 
-	public int getWidth() {
+	public float getWidth() {
 		return this.mWidth;
 	}
 
-	public int getHeight() {
+	public float getHeight() {
 		return this.mHeight;
 	}
 	
@@ -125,6 +136,14 @@ public abstract class StaticEntity extends BaseEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void reset() {
+		super.reset();
+		setInitialPosition();
+		setInitialSize();
+		this.mOffsetX = 0;
+		this.mOffsetY = 0;
+	}
 
 	public boolean collidesWith(final StaticEntity pOther) {
 		final float left = this.mX;

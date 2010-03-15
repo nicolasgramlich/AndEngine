@@ -30,7 +30,7 @@ public abstract class Shape extends DynamicEntity {
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final int pWidth, final int pHeight, final VertexBuffer pVertexBuffer) {
+	public Shape(final float pX, final float pY, final float pWidth, final float pHeight, final VertexBuffer pVertexBuffer) {
 		super(pX, pY, pWidth, pHeight);
 		this.mVertexBuffer = pVertexBuffer;
 		this.updateVertexBuffer();

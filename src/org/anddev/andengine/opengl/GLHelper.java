@@ -73,7 +73,7 @@ public class GLHelper {
 		pGL.glVertexPointer(2, pType, 0, pByteBuffer);
 	}
 	
-	public static void blendMode(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
+	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
 		pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 	}
 

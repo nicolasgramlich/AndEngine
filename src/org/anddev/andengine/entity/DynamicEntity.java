@@ -25,7 +25,7 @@ public abstract class DynamicEntity extends StaticEntity {
 	// Constructors
 	// ===========================================================
 
-	public DynamicEntity(final float pX, final float pY, final int pWidth, final int pHeight) {
+	public DynamicEntity(final float pX, final float pY, final float pWidth, final float pHeight) {
 		super(pX, pY, pWidth, pHeight);
 	}
 

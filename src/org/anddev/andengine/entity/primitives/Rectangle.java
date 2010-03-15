@@ -22,7 +22,7 @@ public class Rectangle extends Shape {
 	// Constructors
 	// ===========================================================
 	
-	public Rectangle(final float pX, final float pY, final int pWidth, final int pHeight) {
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
 		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer());
 	}
 

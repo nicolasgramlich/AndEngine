@@ -20,12 +20,14 @@ public abstract class BaseSprite extends Rectangle {
 	// ===========================================================
 
 	protected TextureRegion mTextureRegion;
+	protected int mSourceBlendFunction = GL10.GL_ONE;
+	protected int mDestinationBlendFunction = GL10.GL_ONE_MINUS_SRC_ALPHA;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseSprite(final float pX, final float pY, final int pWidth, final int pHeight, final TextureRegion pTextureRegion) {
+	public BaseSprite(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion) {
 		super(pX, pY, pWidth, pHeight);
 
 		assert(pTextureRegion != null);
@@ -43,6 +45,11 @@ public abstract class BaseSprite extends Rectangle {
 	public void setTextureRegion(final TextureRegion pTextureRegion){
 		this.mTextureRegion = pTextureRegion;
 	}
+	
+	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
+		this.mSourceBlendFunction = pSourceBlendFunction;
+		this.mDestinationBlendFunction = pDestinationBlendFunction;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -53,7 +60,7 @@ public abstract class BaseSprite extends Rectangle {
 		super.onInitDraw(pGL);
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
-		GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA); // TODO "Default" and "Custom(Sprite-specific)" blend functions.
+		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
 	}
 	
 	@Override

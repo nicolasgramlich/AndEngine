@@ -12,7 +12,7 @@ import org.anddev.andengine.opengl.texture.TextureRegion;
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
  */
-public class ParticleEngine extends DynamicEntity {
+public class ParticleSystem extends DynamicEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -37,7 +37,7 @@ public class ParticleEngine extends DynamicEntity {
 	// Constructors
 	// ===========================================================
 
-	public ParticleEngine(final float pX, final float pY, final int pWidth, final int pHeight, final float pMinRate, final float pMaxRate, final TextureRegion pTextureRegion) {
+	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pMinRate, final float pMaxRate, final TextureRegion pTextureRegion) {
 		super(pX, pY, pWidth, pHeight);
 		this.mMinRate = pMinRate;
 		this.mMaxRate = pMaxRate;

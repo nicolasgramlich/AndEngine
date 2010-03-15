@@ -50,7 +50,7 @@ public class AccelerationModifier implements IParticleModifier {
 
 	@Override
 	public void onInitializeParticle(final Particle pParticle) {
-		pParticle.accelerate(deteminAccelerationX(), deteminAccelerationY());
+		pParticle.accelerate(determineAccelerationX(), determineAccelerationY());
 	}
 
 	@Override
@@ -62,14 +62,14 @@ public class AccelerationModifier implements IParticleModifier {
 	// Methods
 	// ===========================================================
 
-	private float deteminAccelerationX() {
+	private float determineAccelerationX() {
 		if(this.mMinAccelerationX == this.mMaxAccelerationX)
 			return this.mMaxAccelerationX;
 		else
 			return (float)Math.random() * (this.mMaxAccelerationX - this.mMinAccelerationX) + this.mMinAccelerationX;
 	}
 	
-	private float deteminAccelerationY() {
+	private float determineAccelerationY() {
 		if(this.mMinAccelerationY == this.mMaxAccelerationY)
 			return this.mMaxAccelerationY;
 		else

@@ -25,6 +25,10 @@ public class EngineOptions {
 	// Constructors
 	// ===========================================================
 
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final int pGameWidth, final int pGameHeight) {
+		this(null, pFullscreen, pScreenOrientation, pGameWidth, pGameHeight);
+	}
+
 	public EngineOptions(final ITextureSource pLoadingScreenTextureSource, final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final int pGameWidth, final int pGameHeight) {
 		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
 		this.mFullscreen = pFullscreen;

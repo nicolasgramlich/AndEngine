@@ -13,6 +13,7 @@
 	<property name="targetfile_2" value="../HeliTaxiShared/lib/andengine.jar" />
 	<property name="targetfile_3" value="../HeliTaxi/lib/andengine.jar" />
 	<property name="targetfile_4" value="../HeliTaxiLiveWallpaper/lib/andengine.jar" />
+	<property name="targetfile_5" value="../VolcanoLiveWallpaper/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<jar destfile="${binfile}">
@@ -31,5 +32,6 @@
 		<copy file="${binfile}" tofile="${targetfile_2}"/>
 		<copy file="${binfile}" tofile="${targetfile_3}"/>
 		<copy file="${binfile}" tofile="${targetfile_4}"/>
+		<copy file="${binfile}" tofile="${targetfile_5}"/>
     </target>
 </project>

@@ -61,7 +61,9 @@ public class Engine implements SensorEventListener {
 
 	public Engine(final EngineOptions pEngineOptions) {
 		this.mEngineOptions = pEngineOptions;
-		initLoadingScreen();
+		if(this.mEngineOptions.hasLoadingScreen()) {
+			initLoadingScreen();
+		}
 	}
 
 	// ===========================================================
@@ -176,12 +178,16 @@ public class Engine implements SensorEventListener {
 
 	public void onLoadComplete(final Scene pScene) {
 //		final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
-		this.registerPreFrameHandler(new TimerHandler(2, new ITimerCallback() {
-			@Override
-			public void onTimePassed() {
-				Engine.this.setScene(pScene);
-			}
-		}));
+		if(this.mEngineOptions.hasLoadingScreen()){
+			this.registerPreFrameHandler(new TimerHandler(2, new ITimerCallback() {
+				@Override
+				public void onTimePassed() {
+					Engine.this.setScene(pScene);
+				}
+			}));
+		} else {
+			this.setScene(pScene);
+		}
 	}
 
 	public void onDrawFrame(final GL10 pGL) {

@@ -69,6 +69,13 @@ public abstract class Shape extends DynamicEntity {
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 	}
+	
+	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.mRed = pRed;
+		this.mGreen = pGreen;
+		this.mBlue = pBlue;
+		this.mAlpha = pAlpha;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

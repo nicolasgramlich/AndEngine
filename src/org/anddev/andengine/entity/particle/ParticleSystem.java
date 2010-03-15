@@ -32,15 +32,17 @@ public class ParticleSystem extends DynamicEntity {
 	private final TextureRegion mTextureRegion;
 	
 	private float mParticlesDueToSpawn;
+	private final int mMaxParticles;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pMinRate, final float pMaxRate, final TextureRegion pTextureRegion) {
+	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
 		super(pX, pY, pWidth, pHeight);
 		this.mMinRate = pMinRate;
 		this.mMaxRate = pMaxRate;
+		this.mMaxParticles = pMaxParticles;
 		this.mTextureRegion = pTextureRegion;
 	}
 
@@ -104,7 +106,7 @@ public class ParticleSystem extends DynamicEntity {
 		
 		this.mParticlesDueToSpawn += newParticlesThisFrame;
 		
-		final int particlesToSpawnThisFrame = (int)Math.floor(this.mParticlesDueToSpawn);
+		final int particlesToSpawnThisFrame = Math.min(this.mMaxParticles - this.mParticles.size(), (int)Math.floor(this.mParticlesDueToSpawn));
 		this.mParticlesDueToSpawn -= particlesToSpawnThisFrame;
 		
 		for(int i = 0; i < particlesToSpawnThisFrame; i++){

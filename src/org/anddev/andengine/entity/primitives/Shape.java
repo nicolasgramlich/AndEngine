@@ -155,7 +155,10 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	protected void applyScale(final GL10 pGL) {
-
+		final float scale = getScale();
+		if(scale != 1) {
+			pGL.glScalef(scale, scale, 1);
+		}
 	}
 
 	protected void onPostTransformations(final GL10 pGL) {

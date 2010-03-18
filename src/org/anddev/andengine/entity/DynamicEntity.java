@@ -21,6 +21,8 @@ public abstract class DynamicEntity extends StaticEntity {
 	
 	private float mRotationAngleClockwise = 0;
 	
+	private float mScale = 1;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -44,6 +46,14 @@ public abstract class DynamicEntity extends StaticEntity {
 	public void setVelocity(final float pVelocityX, final float pVelocityY) {
 		this.mVelocityX = pVelocityX;
 		this.mVelocityY = pVelocityY;
+	}
+	
+	public float getScale() {
+		return this.mScale;
+	}
+	
+	public void setScale(final float pScale) {
+		this.mScale = pScale;
 	}
 
 	public float getAccelerationX() {

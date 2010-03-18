@@ -33,7 +33,7 @@ public class GLHelper {
 	// Methods
 	// ===========================================================
 
-	public static void color4f(final GL10 pGL, float pRed, float pGreen, float pBlue, final float pAlpha) {
+	public static void color4f(final GL10 pGL, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		pGL.glColor4f(pRed, pGreen, pBlue, pAlpha);
 	}
 
@@ -72,7 +72,7 @@ public class GLHelper {
 	public static void vertexPointer(final GL10 pGL, final ByteBuffer pByteBuffer, final int pType) {
 		pGL.glVertexPointer(2, pType, 0, pByteBuffer);
 	}
-	
+
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
 		pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 	}

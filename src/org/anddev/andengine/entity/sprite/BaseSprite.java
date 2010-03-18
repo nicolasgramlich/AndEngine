@@ -15,13 +15,17 @@ public abstract class BaseSprite extends Rectangle {
 	// Constants
 	// ===========================================================
 
+	public static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_SRC_ALPHA;
+	public static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
+	
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
+	
 	protected TextureRegion mTextureRegion;
-	protected int mSourceBlendFunction = GL10.GL_ONE;
-	protected int mDestinationBlendFunction = GL10.GL_ONE_MINUS_SRC_ALPHA;
+	
+	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
+	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	// ===========================================================
 	// Constructors

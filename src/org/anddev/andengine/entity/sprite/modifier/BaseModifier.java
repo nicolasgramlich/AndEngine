@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.sprite.modifier;
 
-import org.anddev.andengine.util.Debug;
-import org.anddev.andengine.util.constants.TimeConstants;
+import org.anddev.andengine.entity.sprite.BaseSprite;
+import org.anddev.andengine.entity.sprite.ISpriteModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 19:52:31 - 09.03.2010
+ * @since 16:10:42 - 19.03.2010
  */
-public class FPSCounter implements IUpdateHandler, TimeConstants {
+public abstract class BaseModifier implements ISpriteModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,34 +16,35 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	// Fields
 	// ===========================================================
 	
-	private long mTimestampLastLogged;
-	private int mFramesInThisSecond;
+	private boolean mExpired;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public FPSCounter() {
-		this.mTimestampLastLogged = System.nanoTime();
-	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	public boolean isExpired() {
+		return this.mExpired;
+	}
+
+	public void setExpired(final boolean pExpired) {
+		this.mExpired = pExpired;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite);
+
 	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		this.mFramesInThisSecond++;
-		final long now = System.nanoTime();
-		final long diff = now - this.mTimestampLastLogged;
-		if(diff > TimeConstants.NANOSECONDSPERSECOND){
-			Debug.d("FPS: " + (((float)this.mFramesInThisSecond * NANOSECONDSPERSECOND) / diff) + " ms");	
-			this.mTimestampLastLogged = now;
-			this.mFramesInThisSecond = 0;
+	public final void onUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
+		if(!this.isExpired()){
+			
+			onManagedUpdateSprite(pSecondsElapsed, pBaseSprite);
 		}
 	}
 

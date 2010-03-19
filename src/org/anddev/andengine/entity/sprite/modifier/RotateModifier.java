@@ -1,13 +1,12 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.sprite.modifier;
 
-import org.anddev.andengine.util.Debug;
-import org.anddev.andengine.util.constants.TimeConstants;
+import org.anddev.andengine.entity.sprite.BaseSprite;
 
 /**
  * @author Nicolas Gramlich
- * @since 19:52:31 - 09.03.2010
+ * @since 16:12:52 - 19.03.2010
  */
-public class FPSCounter implements IUpdateHandler, TimeConstants {
+public class RotateModifier extends BaseModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,17 +14,10 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private long mTimestampLastLogged;
-	private int mFramesInThisSecond;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public FPSCounter() {
-		this.mTimestampLastLogged = System.nanoTime();
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -36,15 +28,8 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	// ===========================================================
 
 	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		this.mFramesInThisSecond++;
-		final long now = System.nanoTime();
-		final long diff = now - this.mTimestampLastLogged;
-		if(diff > TimeConstants.NANOSECONDSPERSECOND){
-			Debug.d("FPS: " + (((float)this.mFramesInThisSecond * NANOSECONDSPERSECOND) / diff) + " ms");	
-			this.mTimestampLastLogged = now;
-			this.mFramesInThisSecond = 0;
-		}
+	protected void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
+		
 	}
 
 	// ===========================================================

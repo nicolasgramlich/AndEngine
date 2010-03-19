@@ -54,6 +54,7 @@ public class AlphaModifier implements IParticleModifier, TimeConstants {
 
 	@Override
 	public void onUpdateParticle(final Particle pParticle) {
+		//TODO Test, maybe create abstract superclass, as other classes could use the calculations made here. 
 		final long now = System.nanoTime();
 		final long birthTime = pParticle.getBirthTime();
 		if(now > birthTime + this.mFromNanoSeconds && now < birthTime + this.mToNanoSeconds) {

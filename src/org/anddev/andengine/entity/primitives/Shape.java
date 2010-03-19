@@ -151,7 +151,7 @@ public abstract class Shape extends DynamicEntity {
 
 			pGL.glTranslatef(halfWidth, halfHeight, 0);
 			pGL.glRotatef(rotationAngleClockwise, 0, 0, 1);
-			pGL.glTranslatef(-halfWidth, -halfHeight / 2, 0);
+			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
 		}
 	}
 

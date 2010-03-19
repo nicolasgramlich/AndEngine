@@ -5,9 +5,9 @@ import org.anddev.andengine.entity.sprite.IModifierListener;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 23:29:22 - 19.03.2010
  */
-public class RotateModifier extends BaseFromToModifier {
+public abstract class BaseFromToModifier extends BaseModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,17 +15,22 @@ public class RotateModifier extends BaseFromToModifier {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private float mValuePerSecond;
+	private final float mFromValue;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle) {
-		this(pDuration, pFromAngle, pToAngle, null);
+	
+	public BaseFromToModifier(final float pDuration, final float pFromValue, final float pToValue) {
+		this(pDuration, pFromValue, pToValue, null);
 	}
-
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle, final IModifierListener pModiferListener) {
-		super(pDuration, pFromAngle, pToAngle, pModiferListener);
+	
+	public BaseFromToModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener pModiferListener) {
+		super(pDuration, pModiferListener);
+		this.mFromValue = pFromValue;
+		this.mValuePerSecond = (pToValue - pFromValue) / pDuration;
 	}
 
 	// ===========================================================
@@ -35,15 +40,18 @@ public class RotateModifier extends BaseFromToModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
+	
+	protected abstract void onSetInitialValue(final float pValue, final BaseSprite pBaseSprite);
+	protected abstract void onSetValue(final float pValue, final BaseSprite pBaseSprite);
+	
 	@Override
-	protected void onSetInitialValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setRotationAngleClockwise(pValue);
+	protected void onManagedInitializeSprite(final BaseSprite pBaseSprite) {
+		onSetInitialValue(this.mFromValue, pBaseSprite);
 	}
 
 	@Override
-	protected void onSetValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setRotationAngleClockwise(pValue);
+	protected void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
+		onSetValue(this.mFromValue + this.getTotalSecondsElapsed() * this.mValuePerSecond, pBaseSprite);
 	}
 
 	// ===========================================================

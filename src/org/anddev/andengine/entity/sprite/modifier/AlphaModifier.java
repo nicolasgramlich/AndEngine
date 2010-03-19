@@ -5,9 +5,9 @@ import org.anddev.andengine.entity.sprite.IModifierListener;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 23:13:01 - 19.03.2010
  */
-public class RotateModifier extends BaseFromToModifier {
+public class AlphaModifier extends BaseFromToModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,12 +20,12 @@ public class RotateModifier extends BaseFromToModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle) {
-		this(pDuration, pFromAngle, pToAngle, null);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha) {
+		this(pDuration, pFromAlpha, pToAlpha, null);
 	}
 
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle, final IModifierListener pModiferListener) {
-		super(pDuration, pFromAngle, pToAngle, pModiferListener);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IModifierListener pModiferListener) {
+		super(pDuration, pFromAlpha, pToAlpha, pModiferListener);
 	}
 
 	// ===========================================================
@@ -38,12 +38,12 @@ public class RotateModifier extends BaseFromToModifier {
 
 	@Override
 	protected void onSetInitialValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setRotationAngleClockwise(pValue);
+		pBaseSprite.setAlpha(pValue);
 	}
 
 	@Override
 	protected void onSetValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setRotationAngleClockwise(pValue);
+		pBaseSprite.setAlpha(pValue);
 	}
 
 	// ===========================================================

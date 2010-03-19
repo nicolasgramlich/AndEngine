@@ -10,13 +10,14 @@
 	
 	<property name="binfile" value="bin/andengine.jar" />
 	<property name="targetfile_1" value="../AndEngineLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_2" value="../HeliTaxiShared/lib/andengine.jar" />
-	<property name="targetfile_3" value="../HeliTaxi/lib/andengine.jar" />
-	<property name="targetfile_4" value="../HeliTaxiLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_5" value="../VolcanoLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_6" value="../CampfireLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_7" value="../CigaretteLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_8" value="../LavaLampLiveWallpaper/lib/andengine.jar" />
+	<property name="targetfile_2" value="../AndEnginePlayground/lib/andengine.jar" />
+	<property name="targetfile_3" value="../HeliTaxiShared/lib/andengine.jar" />
+	<property name="targetfile_4" value="../HeliTaxi/lib/andengine.jar" />
+	<property name="targetfile_5" value="../HeliTaxiLiveWallpaper/lib/andengine.jar" />
+	<property name="targetfile_6" value="../VolcanoLiveWallpaper/lib/andengine.jar" />
+	<property name="targetfile_7" value="../CampfireLiveWallpaper/lib/andengine.jar" />
+	<property name="targetfile_8" value="../CigaretteLiveWallpaper/lib/andengine.jar" />
+	<property name="targetfile_9" value="../LavaLampLiveWallpaper/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<jar destfile="${binfile}">
@@ -39,5 +40,6 @@
 		<copy file="${binfile}" tofile="${targetfile_6}"/>
 		<copy file="${binfile}" tofile="${targetfile_7}"/>
 		<copy file="${binfile}" tofile="${targetfile_8}"/>
+		<copy file="${binfile}" tofile="${targetfile_9}"/>
     </target>
 </project>

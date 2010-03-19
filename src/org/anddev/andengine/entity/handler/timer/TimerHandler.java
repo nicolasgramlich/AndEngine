@@ -14,7 +14,7 @@ public class TimerHandler implements IUpdateHandler {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final float mTimerSeconds;
 	private float mSecondsPassed;
 	private boolean mCallbackTriggered = false;
@@ -23,7 +23,7 @@ public class TimerHandler implements IUpdateHandler {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public TimerHandler(final float pTimerSeconds, final ITimerCallback pTimerCallback) {
 		this.mTimerSeconds = pTimerSeconds;
 		this.mTimerCallback = pTimerCallback;

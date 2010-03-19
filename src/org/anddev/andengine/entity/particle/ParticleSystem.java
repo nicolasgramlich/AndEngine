@@ -31,7 +31,7 @@ public class ParticleSystem extends DynamicEntity {
 	private final float mMaxRate;
 
 	private final TextureRegion mTextureRegion;
-	
+
 	private float mParticlesDueToSpawn;
 	private final int mMaxParticles;
 
@@ -53,7 +53,7 @@ public class ParticleSystem extends DynamicEntity {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
@@ -79,45 +79,45 @@ public class ParticleSystem extends DynamicEntity {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-		
+
 		this.spawnParticles(pSecondsElapsed);
 
 		final ArrayList<Particle> particles = this.mParticles;
 		final LinkedList<Particle> particlesToRecycle = this.mParticlesToRecycle;
 		for(int i = particles.size() - 1; i >= 0; i--) {
 			final Particle particle = particles.get(i);
-			
+
 			this.applyParticleModifiersOnUpdate(particle);
 			particle.onUpdate(pSecondsElapsed);
 			if(particle.isDead()){
 				particlesToRecycle.add(particle);
 			}
 		}
-		
+
 		particles.removeAll(particlesToRecycle);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void addParticleModifier(final IParticleModifier pParticleModifier) {
 		this.mParticleModifiers.add(pParticleModifier);
 	}
-	
+
 	public void removeParticleModifier(final IParticleModifier pParticleModifier) {
 		this.mParticleModifiers.remove(pParticleModifier);
 	}
 
 	private void spawnParticles(final float pSecondsElapsed) {
-		final float currentRate = determineCurrentRate();
+		final float currentRate = this.determineCurrentRate();
 		final float newParticlesThisFrame = currentRate * pSecondsElapsed;
-		
+
 		this.mParticlesDueToSpawn += newParticlesThisFrame;
-		
+
 		final int particlesToSpawnThisFrame = Math.min(this.mMaxParticles - this.mParticles.size(), (int)Math.floor(this.mParticlesDueToSpawn));
 		this.mParticlesDueToSpawn -= particlesToSpawnThisFrame;
-		
+
 		for(int i = 0; i < particlesToSpawnThisFrame; i++){
 			this.spawnParticle();
 		}
@@ -134,8 +134,8 @@ public class ParticleSystem extends DynamicEntity {
 			particle = new Particle(x, y, this.mTextureRegion);
 		}
 		particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
-		
-		applyParticleModifiersOnInitialize(particle);
+
+		this.applyParticleModifiersOnInitialize(particle);
 		this.mParticles.add(particle);
 	}
 
@@ -153,7 +153,7 @@ public class ParticleSystem extends DynamicEntity {
 			particleModifiers.get(i).onUpdateParticle(pParticle);
 		}
 	}
-	
+
 	private void applyParticleModifiersOnInitialize(final Particle pParticle) {
 		final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
 		for(int i = particleModifiers.size() - 1; i >= 0; i--) {

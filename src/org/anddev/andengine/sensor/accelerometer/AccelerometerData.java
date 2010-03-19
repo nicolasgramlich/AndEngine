@@ -16,7 +16,7 @@ public class AccelerometerData {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final float[] mValues = new float[3];
 	private int mAccuracy;
 
@@ -27,45 +27,45 @@ public class AccelerometerData {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public float[] getValues() {
 		return this.mValues;
 	}
-	
+
 	public void setValues(final float[] pValues) {
 		this.mValues[SensorManager.DATA_X] = pValues[SensorManager.DATA_X];
 		this.mValues[SensorManager.DATA_Y] = pValues[SensorManager.DATA_Y];
 		this.mValues[SensorManager.DATA_Z] = pValues[SensorManager.DATA_Z];
 	}
-	
+
 	public float getX() {
 		return this.mValues[SensorManager.DATA_X];
 	}
-	
+
 	public float getY() {
 		return this.mValues[SensorManager.DATA_Y];
 	}
-	
+
 	public float getZ() {
 		return this.mValues[SensorManager.DATA_Z];
 	}
-	
+
 	public void setX(final float pX) {
 		this.mValues[SensorManager.DATA_X] = pX;
 	}
-	
+
 	public void setY(final float pY) {
 		this.mValues[SensorManager.DATA_Y] = pY;
 	}
-	
+
 	public void setZ(final float pZ) {
 		this.mValues[SensorManager.DATA_Z]  = pZ;
-	}	
+	}
 
 	public void setAccuracy(final int pAccuracy) {
-		this.mAccuracy = pAccuracy;		
+		this.mAccuracy = pAccuracy;
 	}
-	
+
 	public int getAccuracy() {
 		return this.mAccuracy;
 	}
@@ -73,7 +73,7 @@ public class AccelerometerData {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public String toString() {
 		return "Values: " + Arrays.toString(this.mValues);

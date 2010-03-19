@@ -2,13 +2,12 @@ package org.anddev.andengine.entity.particle.modifier;
 
 import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
-import org.anddev.andengine.util.constants.TimeConstants;
 
 /**
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class AlphaModifier implements IParticleModifier, TimeConstants {
+public class AlphaModifier implements IParticleModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,24 +18,24 @@ public class AlphaModifier implements IParticleModifier, TimeConstants {
 
 	private final float mFromAlpha;
 	private final float mToAlpha;
-	private final long mFromNanoSeconds;
-	private final long mToNanoSeconds;
+	private final float mFromTime;
+	private final float mToTime;
 
-	private final long mDurationNanoSeconds;
+	private final float mDuration;
 	private final float mSpanAlpha;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public AlphaModifier(final float pFromAlpha, final float pToAlpha, final float pFromSeconds, final float pToSeconds) {
+
+	public AlphaModifier(final float pFromAlpha, final float pToAlpha, final float pFromTime, final float pToTime) {
 		this.mFromAlpha = pFromAlpha;
 		this.mToAlpha = pToAlpha;
-		this.mFromNanoSeconds = (long)(pFromSeconds * NANOSECONDSPERSECOND);
-		this.mToNanoSeconds = (long)(pToSeconds * NANOSECONDSPERSECOND);
-		
+		this.mFromTime = pFromTime;
+		this.mToTime = pToTime;
+
 		this.mSpanAlpha = this.mToAlpha - this.mFromAlpha;
-		this.mDurationNanoSeconds = this.mToNanoSeconds - this.mFromNanoSeconds;
+		this.mDuration = this.mToTime - this.mFromTime;
 	}
 
 	// ===========================================================
@@ -54,13 +53,11 @@ public class AlphaModifier implements IParticleModifier, TimeConstants {
 
 	@Override
 	public void onUpdateParticle(final Particle pParticle) {
-		//TODO Test, maybe create abstract superclass, as other classes could use the calculations made here. 
-		final long now = System.nanoTime();
-		final long birthTime = pParticle.getBirthTime();
-		if(now > birthTime + this.mFromNanoSeconds && now < birthTime + this.mToNanoSeconds) {
-			final long percent = (now - this.mFromNanoSeconds) / this.mDurationNanoSeconds;
+		final float lifeTime = pParticle.getLifeTime();
+		if(lifeTime > this.mFromTime && lifeTime < this.mToTime) {
+			final float percent = (lifeTime - this.mFromTime) / this.mDuration;
 			final float alpha = this.mFromAlpha + this.mSpanAlpha * percent;
-			
+
 			pParticle.setAlpha(alpha);
 		}
 	}

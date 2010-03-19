@@ -39,9 +39,9 @@ public class FixedColorBackground extends BaseBackground {
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
-        pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, 1.0f);
-        pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
-    }
+		pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, 1.0f);
+		pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
+	}
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) { }

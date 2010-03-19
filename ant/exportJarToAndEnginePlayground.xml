@@ -8,7 +8,7 @@
 	<property name="bin" value="bin" />
 	<property name="src" value="src" />
 	
-	<property name="targetfile" value="../AndEngineLiveWallpaper/lib/andengine.jar" />
+	<property name="targetfile" value="../AndEnginePlayground/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<jar destfile="${targetfile}">

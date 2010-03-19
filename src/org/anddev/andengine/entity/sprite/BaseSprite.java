@@ -19,16 +19,16 @@ public abstract class BaseSprite extends Rectangle {
 
 	public static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_SRC_ALPHA;
 	public static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
-	
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	protected TextureRegion mTextureRegion;
-	
+
 	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
-	
+
 	private final ArrayList<ISpriteModifier> mSpriteModifiers = new ArrayList<ISpriteModifier>();
 
 	// ===========================================================
@@ -53,7 +53,7 @@ public abstract class BaseSprite extends Rectangle {
 	public void setTextureRegion(final TextureRegion pTextureRegion){
 		this.mTextureRegion = pTextureRegion;
 	}
-	
+
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
@@ -62,7 +62,7 @@ public abstract class BaseSprite extends Rectangle {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
@@ -70,28 +70,28 @@ public abstract class BaseSprite extends Rectangle {
 		GLHelper.enableTexCoordArray(pGL);
 		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
 	}
-	
+
 	@Override
 	protected void onPostTransformations(final GL10 pGL) {
 		super.onPostTransformations(pGL);
-		applyTexture(pGL);
+		this.applyTexture(pGL);
 	}
-	
+
 	@Override
-	protected void onManagedUpdate(float pSecondsElapsed) {
+	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-		
+
 		this.applySpriteModifiers(pSecondsElapsed);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void addSpriteModifier(final ISpriteModifier pSpriteModifier) {
 		this.mSpriteModifiers.add(pSpriteModifier);
 	}
-	
+
 	public void removeSpriteModifier(final ISpriteModifier pSpriteModifier) {
 		this.mSpriteModifiers.remove(pSpriteModifier);
 	}

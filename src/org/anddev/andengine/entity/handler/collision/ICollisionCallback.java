@@ -14,7 +14,7 @@ public interface ICollisionCallback {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	/**
 	 * @param pCheckEntity
 	 * @param pTargetStaticEntity

@@ -2,13 +2,12 @@ package org.anddev.andengine.entity.particle.modifier;
 
 import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
-import org.anddev.andengine.util.constants.TimeConstants;
 
 /**
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class ExpireModifier implements IParticleModifier, TimeConstants {
+public class ExpireModifier implements IParticleModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,8 +16,8 @@ public class ExpireModifier implements IParticleModifier, TimeConstants {
 	// Fields
 	// ===========================================================
 
-	private long mMinLifeTimeNanoSeconds;
-	private long mMaxLifeTimeNanoSeconds;
+	private float mMinLifeTime;
+	private float mMaxLifeTime;
 
 	// ===========================================================
 	// Constructors
@@ -29,30 +28,30 @@ public class ExpireModifier implements IParticleModifier, TimeConstants {
 	}
 
 	public ExpireModifier(final float pMinLifeTime, final float pMaxLifeTime) {
-		this.mMinLifeTimeNanoSeconds = (long)(pMinLifeTime * NANOSECONDSPERSECOND);
-		this.mMaxLifeTimeNanoSeconds = (long)(pMaxLifeTime * NANOSECONDSPERSECOND);
+		this.mMinLifeTime = pMinLifeTime;
+		this.mMaxLifeTime = pMaxLifeTime;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public long getMinLifeTimeNanoSeconds() {
-		return this.mMinLifeTimeNanoSeconds;
+	public float getMinLifeTime() {
+		return this.mMinLifeTime;
 	}
 
-	public long getMaxLifeTimeNanoSeconds() {
-		return this.mMaxLifeTimeNanoSeconds;
+	public float getMaxLifeTime() {
+		return this.mMaxLifeTime;
 	}
 
-	public void setLifeTimeNanoSeconds(final long pLifeTimeNanoSeconds) {
-		this.mMinLifeTimeNanoSeconds = pLifeTimeNanoSeconds;
-		this.mMaxLifeTimeNanoSeconds = pLifeTimeNanoSeconds;
+	public void setLifeTime(final float pLifeTime) {
+		this.mMinLifeTime = pLifeTime;
+		this.mMaxLifeTime = pLifeTime;
 	}
 
-	public void setLifeTimeNanoSeconds(final long pMinLifeTimeNanoSeconds, final long pMaxLifeTimeNanoSeconds) {
-		this.mMinLifeTimeNanoSeconds = pMinLifeTimeNanoSeconds;
-		this.mMaxLifeTimeNanoSeconds = pMaxLifeTimeNanoSeconds;
+	public void setLifeTime(final float pMinLifeTime, final float pMaxLifeTime) {
+		this.mMinLifeTime = pMinLifeTime;
+		this.mMaxLifeTime = pMaxLifeTime;
 	}
 
 	// ===========================================================
@@ -61,7 +60,7 @@ public class ExpireModifier implements IParticleModifier, TimeConstants {
 
 	@Override
 	public void onInitializeParticle(final Particle pParticle) {
-		pParticle.setDeathTime(pParticle.getBirthTime() + (long)((float)Math.random() * (this.mMaxLifeTimeNanoSeconds - this.mMinLifeTimeNanoSeconds) + this.mMinLifeTimeNanoSeconds));
+		pParticle.setDeathTime(((float)Math.random() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime));
 	}
 
 	@Override

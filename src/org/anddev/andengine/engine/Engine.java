@@ -47,13 +47,13 @@ public class Engine implements SensorEventListener {
 
 	private Scene mScene;
 
-	private TextureManager mTextureManager = new TextureManager();
+	private final TextureManager mTextureManager = new TextureManager();
 
 	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
 
-	private ArrayList<IUpdateHandler> mPreFrameHandlers = new ArrayList<IUpdateHandler>();
-	private ArrayList<IUpdateHandler> mPostFrameHandlers = new ArrayList<IUpdateHandler>();
+	private final ArrayList<IUpdateHandler> mPreFrameHandlers = new ArrayList<IUpdateHandler>();
+	private final ArrayList<IUpdateHandler> mPostFrameHandlers = new ArrayList<IUpdateHandler>();
 
 	// ===========================================================
 	// Constructors
@@ -62,7 +62,7 @@ public class Engine implements SensorEventListener {
 	public Engine(final EngineOptions pEngineOptions) {
 		this.mEngineOptions = pEngineOptions;
 		if(this.mEngineOptions.hasLoadingScreen()) {
-			initLoadingScreen();
+			this.initLoadingScreen();
 		}
 	}
 
@@ -99,7 +99,7 @@ public class Engine implements SensorEventListener {
 
 	public int getGameHeight() {
 		return this.mEngineOptions.getGameHeight();
-	}	
+	}
 
 	public AccelerometerData getAccelerometerData() {
 		return this.mAccelerometerData;
@@ -146,7 +146,7 @@ public class Engine implements SensorEventListener {
 	}
 
 	@Override
-	public void onSensorChanged(SensorEvent pEvent) {
+	public void onSensorChanged(final SensorEvent pEvent) {
 		switch(pEvent.sensor.getType()){
 			case Sensor.TYPE_ACCELEROMETER:
 				this.mAccelerometerData.setValues(pEvent.values);
@@ -177,7 +177,7 @@ public class Engine implements SensorEventListener {
 	}
 
 	public void onLoadComplete(final Scene pScene) {
-//		final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
+		//		final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
 		if(this.mEngineOptions.hasLoadingScreen()){
 			this.registerPreFrameHandler(new TimerHandler(2, new ITimerCallback() {
 				@Override
@@ -191,11 +191,11 @@ public class Engine implements SensorEventListener {
 	}
 
 	public void onDrawFrame(final GL10 pGL) {
-		final float secondsElapsed = getSecondsElapsed();
+		final float secondsElapsed = this.getSecondsElapsed();
 		this.mTextureManager.loadPendingTextureToHardware(pGL);
 
-		if(this.mRunning) {				
-			updatePreFrameHandlers(secondsElapsed);
+		if(this.mRunning) {
+			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
 				this.mScene.onUpdate(secondsElapsed);
@@ -203,24 +203,25 @@ public class Engine implements SensorEventListener {
 				this.mScene.onDraw(pGL);
 			}
 
-			updatePostFrameHandlers(secondsElapsed);
+			this.updatePostFrameHandlers(secondsElapsed);
 		}
 	}
 
 	private void updatePreFrameHandlers(final float pSecondsElapsed) {
 		final ArrayList<IUpdateHandler> updateHandlers = this.mPreFrameHandlers;
-		updateHandlers(pSecondsElapsed, updateHandlers);
+		this.updateHandlers(pSecondsElapsed, updateHandlers);
 	}
 
 	private void updatePostFrameHandlers(final float pSecondsElapsed) {
 		final ArrayList<IUpdateHandler> updateHandlers = this.mPostFrameHandlers;
-		updateHandlers(pSecondsElapsed, updateHandlers);
+		this.updateHandlers(pSecondsElapsed, updateHandlers);
 	}
 
 	private void updateHandlers(final float pSecondsElapsed, final ArrayList<IUpdateHandler> pUpdateHandlers) {
 		final int layerCount = pUpdateHandlers.size();
-		for(int i = 0; i < layerCount; i++)
+		for(int i = 0; i < layerCount; i++) {
 			pUpdateHandlers.get(i).onUpdate(pSecondsElapsed);
+		}
 	}
 
 	private float getSecondsElapsed() {
@@ -229,7 +230,7 @@ public class Engine implements SensorEventListener {
 		this.mLastTick = now;
 		return secondsElapsed;
 	}
-	
+
 	public void reloadTextures() {
 		this.mTextureManager.reloadLoadedToPendingTextures();
 	}
@@ -238,10 +239,10 @@ public class Engine implements SensorEventListener {
 		this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTexture);
 	}
 
-	public boolean enableAccelerometer(final Context pContext, final IAccelerometerListener pAccelerometerListener) {		
+	public boolean enableAccelerometer(final Context pContext, final IAccelerometerListener pAccelerometerListener) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if (isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
-			registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
+		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
+			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
 
 			this.mAccelerometerListener = pAccelerometerListener;
 			if(this.mAccelerometerData == null) {

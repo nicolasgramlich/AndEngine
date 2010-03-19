@@ -17,15 +17,15 @@ public class Layer extends BaseEntity {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final ArrayList<IEntity> mEntities = new ArrayList<IEntity>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public Layer() {
-		
+
 	}
 
 	// ===========================================================
@@ -40,22 +40,24 @@ public class Layer extends BaseEntity {
 	protected void onManagedDraw(final GL10 pGL) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		final int entityCount = entities.size();
-		for(int i = 0; i < entityCount; i++)
+		for(int i = 0; i < entityCount; i++) {
 			entities.get(i).onDraw(pGL);
+		}
 	}
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		final int entityCount = entities.size();
-		for(int i = 0; i < entityCount; i++)
+		for(int i = 0; i < entityCount; i++) {
 			entities.get(i).onUpdate(pSecondsElapsed);
+		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void addEntity(final IEntity pEntity) {
 		this.mEntities.add(pEntity);
 	}

@@ -13,6 +13,6 @@ public interface ISpriteModifier {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void onUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite);
 }

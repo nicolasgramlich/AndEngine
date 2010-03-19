@@ -14,12 +14,12 @@ public interface EngineHook {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-    public void updateScene(final Scene pScene);
-    public void updateInput();
-    public void updateAI();
-    public void updatePhysics();
-    public void updateSound();
+
+	public void updateScene(final Scene pScene);
+	public void updateInput();
+	public void updateAI();
+	public void updatePhysics();
+	public void updateSound();
 
 	// ===========================================================
 	// Inner and Anonymous Classes

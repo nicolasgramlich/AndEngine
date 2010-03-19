@@ -43,7 +43,7 @@ public class Texture {
 
 	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) {
 		assert(MathUtils.isPowerOfTwo(pWidth) && MathUtils.isPowerOfTwo(pHeight));
-		
+
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mTextureOptions = pTextureOptions;
@@ -52,23 +52,23 @@ public class Texture {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public int getHardwareTextureID() {
 		return this.mHardwareTextureID;
 	}
-	
+
 	public boolean isLoadedToHardware() {
 		return this.mLoadedToHardware;
 	}
-	
+
 	void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
 	}
-	
+
 	public int getWidth() {
 		return this.mWidth;
 	}
-	
+
 	public int getHeight() {
 		return this.mHeight;
 	}
@@ -99,7 +99,7 @@ public class Texture {
 
 		writeTextureToHardware(this.mTextureSources);
 
-		this.mLoadedToHardware = true;     
+		this.mLoadedToHardware = true;
 	}
 
 	private static void writeTextureToHardware(final ArrayList<TextureSourceWithLocation> pTextureSources) {
@@ -124,24 +124,24 @@ public class Texture {
 
 	private static int allocateAndBindTextureOnHardware(final GL10 pGL, final int pWidth, final int pHeight) {
 		final int hardwareTextureID = generateHardwareTextureID(pGL);
-		
+
 		pGL.glBindTexture(GL10.GL_TEXTURE_2D, hardwareTextureID);
 
 		sendPlaceholderBitmapToHardware(pWidth, pHeight);
-		
+
 		return hardwareTextureID;
 	}
 
 	private static int generateHardwareTextureID(final GL10 pGL) {
 		final int[] hardwareTextureIDFether = new int[1];
 		pGL.glGenTextures(1, hardwareTextureIDFether, 0);
-		
+
 		return hardwareTextureIDFether[0];
 	}
 
 	private static void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
 		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.ARGB_8888);
-		
+
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);
 		textureBitmap.recycle();
 	}
@@ -149,9 +149,9 @@ public class Texture {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	public class TextureSourceWithLocation implements ITextureSource {
-		
+
 		private final ITextureSource mTextureSource;
 		private final int mTexturePositionX;
 		private final int mTexturePositionY;

@@ -18,7 +18,7 @@ public class TiledTextureRegionBuffer extends TextureRegionBuffer {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public TiledTextureRegionBuffer(final TiledTextureRegion pTextureRegion) {
 		super(pTextureRegion);
 	}
@@ -26,7 +26,7 @@ public class TiledTextureRegionBuffer extends TextureRegionBuffer {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	@Override
 	public TiledTextureRegion getTextureRegion() {
 		return (TiledTextureRegion)super.getTextureRegion();
@@ -35,29 +35,29 @@ public class TiledTextureRegionBuffer extends TextureRegionBuffer {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected float getX1() {
 		final TiledTextureRegion textureRegion = this.getTextureRegion();
-		return (float)textureRegion.getTexturePositionOfCurrentTileX() / textureRegion.getTexture().getWidth();
+		return textureRegion.getTexturePositionOfCurrentTileX() / textureRegion.getTexture().getWidth();
 	}
-	
+
 	@Override
 	protected float getX2() {
 		final TiledTextureRegion textureRegion = this.getTextureRegion();
-		return (float)(textureRegion.getTexturePositionOfCurrentTileX() + textureRegion.getTileWidth()) / textureRegion.getTexture().getWidth();
+		return (textureRegion.getTexturePositionOfCurrentTileX() + textureRegion.getTileWidth()) / textureRegion.getTexture().getWidth();
 	}
-	
+
 	@Override
 	protected float getY1() {
 		final TiledTextureRegion textureRegion = this.getTextureRegion();
-		return (float)textureRegion.getTexturePositionOfCurrentTileY() / textureRegion.getTexture().getHeight();
+		return textureRegion.getTexturePositionOfCurrentTileY() / textureRegion.getTexture().getHeight();
 	}
-	
+
 	@Override
 	protected float getY2() {
 		final TiledTextureRegion textureRegion = this.getTextureRegion();
-		return (float)(textureRegion.getTexturePositionOfCurrentTileY() + textureRegion.getTileHeight()) / textureRegion.getTexture().getHeight();
+		return (textureRegion.getTexturePositionOfCurrentTileY() + textureRegion.getTileHeight()) / textureRegion.getTexture().getHeight();
 	}
 
 	// ===========================================================

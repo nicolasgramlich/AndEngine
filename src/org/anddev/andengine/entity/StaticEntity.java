@@ -19,7 +19,7 @@ public abstract class StaticEntity extends BaseEntity {
 	protected final float mInitialY;
 	protected final float mInitialWidth;
 	protected final float mInitialHeight;
-	
+
 	protected float mX;
 	protected float mY;
 
@@ -38,7 +38,7 @@ public abstract class StaticEntity extends BaseEntity {
 		this.mInitialY = pY;
 		this.mInitialWidth = pWidth;
 		this.mInitialHeight = pHeight;
-		
+
 		this.mX = pX;
 		this.mY = pY;
 		this.mWidth = pWidth;
@@ -56,31 +56,31 @@ public abstract class StaticEntity extends BaseEntity {
 	public float getY() {
 		return this.mY;
 	}
-	
+
 	public void setPosition(final float pX, final float pY) {
 		this.mX = pX;
 		this.mY = pY;
 	}
-	
+
 	public void setPosition(final StaticEntity pOtherStaticEntity) {
 		this.mX = pOtherStaticEntity.getX();
 		this.mY = pOtherStaticEntity.getY();
 	}
-	
+
 	public float getInitialX() {
 		return this.mInitialX;
 	}
-	
+
 	public float getInitialY() {
 		return this.mInitialY;
 	}
-	
+
 	public void setInitialPosition() {
 		this.mX = this.mInitialX;
 		this.mY = this.mInitialY;
 		this.onPositionChanged();
 	}
-	
+
 	public void setInitialSize() {
 		this.mWidth = this.mInitialWidth;
 		this.mHeight = this.mInitialHeight;
@@ -102,12 +102,12 @@ public abstract class StaticEntity extends BaseEntity {
 	public float getHeight() {
 		return this.mHeight;
 	}
-	
+
 	public void setWidth(final int pWidth) {
 		this.mWidth = pWidth;
 		this.onPositionChanged();
 	}
-	
+
 	public void setHeight(final int pHeight) {
 		this.mHeight = pHeight;
 		this.onPositionChanged();
@@ -137,10 +137,11 @@ public abstract class StaticEntity extends BaseEntity {
 	// Methods
 	// ===========================================================
 
+	@Override
 	public void reset() {
 		super.reset();
-		setInitialPosition();
-		setInitialSize();
+		this.setInitialPosition();
+		this.setInitialSize();
 		this.mOffsetX = 0;
 		this.mOffsetY = 0;
 	}
@@ -150,12 +151,12 @@ public abstract class StaticEntity extends BaseEntity {
 		final float top = this.mY;
 		final float right = this.mWidth + left;
 		final float bottom = this.mHeight + top;
-		
+
 		final float otherLeft = pOther.mX;
-		final float otherTop = pOther.mY;		
+		final float otherTop = pOther.mY;
 		final float otherRight = pOther.mWidth + otherLeft;
 		final float otherBottom = pOther.mHeight + otherTop;
-		
+
 		return CollisionChecker.checkAxisAlignedBoxCollision(left, top, right, bottom, otherLeft, otherTop, otherRight, otherBottom);
 	}
 

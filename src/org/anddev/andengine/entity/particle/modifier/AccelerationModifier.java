@@ -28,7 +28,7 @@ public class AccelerationModifier implements IParticleModifier {
 	public AccelerationModifier(final float pAcceleration) {
 		this(pAcceleration, pAcceleration);
 	}
-	
+
 	public AccelerationModifier(final float pAccelerationX, final float pAccelerationY) {
 		this(pAccelerationX, pAccelerationX, pAccelerationY, pAccelerationY);
 	}
@@ -50,7 +50,7 @@ public class AccelerationModifier implements IParticleModifier {
 
 	@Override
 	public void onInitializeParticle(final Particle pParticle) {
-		pParticle.accelerate(determineAccelerationX(), determineAccelerationY());
+		pParticle.accelerate(this.determineAccelerationX(), this.determineAccelerationY());
 	}
 
 	@Override
@@ -63,17 +63,19 @@ public class AccelerationModifier implements IParticleModifier {
 	// ===========================================================
 
 	private float determineAccelerationX() {
-		if(this.mMinAccelerationX == this.mMaxAccelerationX)
+		if(this.mMinAccelerationX == this.mMaxAccelerationX) {
 			return this.mMaxAccelerationX;
-		else
+		} else {
 			return (float)Math.random() * (this.mMaxAccelerationX - this.mMinAccelerationX) + this.mMinAccelerationX;
+		}
 	}
-	
+
 	private float determineAccelerationY() {
-		if(this.mMinAccelerationY == this.mMaxAccelerationY)
+		if(this.mMinAccelerationY == this.mMaxAccelerationY) {
 			return this.mMaxAccelerationY;
-		else
+		} else {
 			return (float)Math.random() * (this.mMaxAccelerationY - this.mMinAccelerationY) + this.mMinAccelerationY;
+		}
 	}
 
 	// ===========================================================

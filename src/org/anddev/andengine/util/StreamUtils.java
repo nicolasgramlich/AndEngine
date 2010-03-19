@@ -38,7 +38,7 @@ public class StreamUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static final String readFully(final InputStream in) throws IOException {
 		final StringBuilder sb = new StringBuilder();
 		final Scanner sc = new Scanner(in);
@@ -51,7 +51,7 @@ public class StreamUtils {
 	public static byte[] streamToBytes(final InputStream in) throws IOException {
 		return streamToBytes(in, -1);
 	}
-	
+
 	public static byte[] streamToBytes(final InputStream in, final int pReadLimit) throws IOException {
 		final ByteArrayOutputStream os = new ByteArrayOutputStream(Math.min(pReadLimit, IO_BUFFER_SIZE));
 		copy(in, os, pReadLimit);
@@ -108,7 +108,7 @@ public class StreamUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * Flushes and closes the specified stream.
 	 *
@@ -124,7 +124,7 @@ public class StreamUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * Flushes and closes the specified stream.
 	 *

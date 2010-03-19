@@ -21,7 +21,7 @@ public class Rectangle extends Shape {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
 		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer());
 	}
@@ -33,19 +33,20 @@ public class Rectangle extends Shape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
 		GLHelper.disableTextures(pGL); // TODO Maybe costly when this is always set...
 		GLHelper.disableTexCoordArray(pGL);
 	}
-	
+
 	@Override
 	public RectangleVertexBuffer getVertexBuffer() {
 		return (RectangleVertexBuffer)super.getVertexBuffer();
 	}
-	
+
+	@Override
 	protected void updateVertexBuffer(){
 		this.getVertexBuffer().update(this.getOffsetX(), this.getOffsetY(), this.getWidth(), this.getHeight());
 	}

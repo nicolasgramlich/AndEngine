@@ -23,7 +23,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 	// Fields
 	// ===========================================================
 
-	private Renderer mRenderer;
+	private final Renderer mRenderer;
 
 	// ===========================================================
 	// Constructors
@@ -62,13 +62,13 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// ===========================================================
 		// Fields
 		// ===========================================================
-		
+
 		private final Engine mEngine;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
-		
+
 		public Renderer(final Engine pEngine) {
 			this.mEngine = pEngine;
 		}
@@ -80,7 +80,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
-		
+
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
 			pGL.glViewport(0, 0, pWidth, pHeight);
@@ -95,7 +95,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 			pGL.glEnable(GL10.GL_BLEND);
 
-//			GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+			//			GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
@@ -112,10 +112,10 @@ public class RenderSurfaceView extends GLSurfaceView {
 			pGL.glDisable(GL10.GL_DITHER);
 			pGL.glDisable(GL10.GL_DEPTH_TEST);
 			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-			
-            GLHelper.enableTextures(pGL);
-            GLHelper.enableTexCoordArray(pGL);
-            GLHelper.enableVertexArray(pGL);
+
+			GLHelper.enableTextures(pGL);
+			GLHelper.enableTexCoordArray(pGL);
+			GLHelper.enableVertexArray(pGL);
 
 			this.setOrthographicProjection(pGL);
 		}
@@ -131,8 +131,8 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// Methods
 		// ===========================================================
 
-		private void setOrthographicProjection(final GL10 pGL) { 	
-	        GLU.gluOrtho2D(pGL, 0, this.mEngine.getGameWidth(), this.mEngine.getGameHeight(), 0);
+		private void setOrthographicProjection(final GL10 pGL) {
+			GLU.gluOrtho2D(pGL, 0, this.mEngine.getGameWidth(), this.mEngine.getGameHeight(), 0);
 		}
 
 		// ===========================================================

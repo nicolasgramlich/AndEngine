@@ -28,7 +28,7 @@ public class ScreenCapture implements IEntity {
 
 	private int mWidth;
 	private int mHeight;
-	
+
 	private boolean mScreenCapturePending = false;
 	private IScreenCaptureCallback mScreenCaptureCallback;
 	private String mFilePath;
@@ -49,7 +49,7 @@ public class ScreenCapture implements IEntity {
 	public void onDraw(final GL10 pGL) {
 		if(this.mScreenCapturePending) {
 			saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
-			
+
 			this.mScreenCaptureCallback.onScreenCaptured(this.mFilePath);
 
 			this.mScreenCapturePending = false;
@@ -66,12 +66,12 @@ public class ScreenCapture implements IEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void capture(final int pWidth, final int pHeight, final String pFilePath, final IScreenCaptureCallback pScreenCaptureCallback) {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mFilePath = pFilePath;
-		this.mScreenCaptureCallback = pScreenCaptureCallback;	
+		this.mScreenCaptureCallback = pScreenCaptureCallback;
 		this.mScreenCapturePending = true;
 	}
 
@@ -114,7 +114,7 @@ public class ScreenCapture implements IEntity {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	public static interface IScreenCaptureCallback {
 		public void onScreenCaptured(final String pFilePath);
 	}

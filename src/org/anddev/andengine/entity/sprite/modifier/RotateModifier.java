@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.sprite.modifier;
 
 import org.anddev.andengine.entity.sprite.BaseSprite;
+import org.anddev.andengine.entity.sprite.IModificationListener;
 
 /**
  * @author Nicolas Gramlich
@@ -14,10 +15,21 @@ public class RotateModifier extends BaseModifier {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private float mAnglePerSecond;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle) {
+		this(pDuration, pFromAngle, pToAngle, null);
+	}
+	
+	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle, final IModificationListener pModificationListener) {
+		super(pDuration, pModificationListener);
+		this.mAnglePerSecond = (pToAngle - pFromAngle) / pDuration;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -29,7 +41,7 @@ public class RotateModifier extends BaseModifier {
 
 	@Override
 	protected void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
-		
+		pBaseSprite.setRotationAngleClockwise(pBaseSprite.getRotationAngleClockwise() + this.mAnglePerSecond * pSecondsElapsed);
 	}
 
 	// ===========================================================

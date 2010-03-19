@@ -1,10 +1,10 @@
-package org.anddev.andengine.entity.handler.timer;
+package org.anddev.andengine.entity.sprite;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:23:25 - 12.03.2010
+ * @since 18:37:22 - 19.03.2010
  */
-public interface ITimerCallback {
+public interface IModificationListener {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -12,6 +12,6 @@ public interface ITimerCallback {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void onTimePassed();
+	
+	public void onFinished(final ISpriteModifier pSpriteModifier, final BaseSprite pBaseSprite);
 }

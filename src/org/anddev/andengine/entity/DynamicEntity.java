@@ -18,11 +18,11 @@ public abstract class DynamicEntity extends StaticEntity {
 	private float mAccelerationY = 0;
 	private float mVelocityX = 0;
 	private float mVelocityY = 0;
-	
+
 	private float mRotationAngleClockwise = 0;
-	
+
 	private float mScale = 1;
-	
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -42,16 +42,16 @@ public abstract class DynamicEntity extends StaticEntity {
 	public float getVelocityY() {
 		return this.mVelocityY;
 	}
-	
+
 	public void setVelocity(final float pVelocityX, final float pVelocityY) {
 		this.mVelocityX = pVelocityX;
 		this.mVelocityY = pVelocityY;
 	}
-	
+
 	public float getScale() {
 		return this.mScale;
 	}
-	
+
 	public void setScale(final float pScale) {
 		this.mScale = pScale;
 	}
@@ -68,11 +68,11 @@ public abstract class DynamicEntity extends StaticEntity {
 		this.mAccelerationX = pAccelerationX;
 		this.mAccelerationY = pAccelerationY;
 	}
-	
+
 	public float getRotationAngleClockwise() {
 		return this.mRotationAngleClockwise;
 	}
-	
+
 	public void setRotationAngleClockwise(final float pRotationAngleClockwise) {
 		this.mRotationAngleClockwise = pRotationAngleClockwise;
 	}
@@ -90,7 +90,7 @@ public abstract class DynamicEntity extends StaticEntity {
 			}
 			this.mX += this.mVelocityX * pSecondsElapsed;
 			this.mY += this.mVelocityY * pSecondsElapsed;
-			onPositionChanged();
+			this.onPositionChanged();
 		}
 	}
 
@@ -98,6 +98,7 @@ public abstract class DynamicEntity extends StaticEntity {
 	// Methods
 	// ===========================================================
 
+	@Override
 	public void reset() {
 		super.reset();
 		this.mAccelerationX = 0;

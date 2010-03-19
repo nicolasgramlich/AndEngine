@@ -18,7 +18,7 @@ public class TiledTextureRegion extends TextureRegion {
 
 	private final int mTileColumns;
 	private final int mTileRows;
-	private int mCurrentTileColumn; 
+	private int mCurrentTileColumn;
 	private int mCurrentTileRow;
 
 	// ===========================================================
@@ -36,7 +36,7 @@ public class TiledTextureRegion extends TextureRegion {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public int getTileCount() {
 		return this.mTileColumns * this.mTileRows;
 	}
@@ -48,25 +48,25 @@ public class TiledTextureRegion extends TextureRegion {
 	public int getTileHeight() {
 		return super.getHeight() / this.mTileRows;
 	}
-	
+
 	public int getCurrentTileColumn() {
 		return this.mCurrentTileColumn;
 	}
-	
+
 	public int getCurrentTileRow() {
 		return this.mCurrentTileRow;
 	}
-	
+
 	public int getCurrentTileIndex() {
 		return this.mCurrentTileRow * this.mTileColumns + this.mCurrentTileColumn;
 	}
-	
+
 	public void setCurrentTileIndex(final int pTileColumn, final int pTileRow) {
 		this.mCurrentTileColumn = pTileColumn;
 		this.mCurrentTileRow = pTileRow;
 		super.updateTextureBuffer();
 	}
-	
+
 	public void setCurrentTileIndex(final int pTileIndex) {
 		if(pTileIndex < this.getTileCount()) {
 			this.setCurrentTileIndex(pTileIndex % this.mTileColumns, pTileIndex / this.mTileColumns);
@@ -76,7 +76,7 @@ public class TiledTextureRegion extends TextureRegion {
 	public float getTexturePositionOfCurrentTileX() {
 		return super.getTexturePositionX() + this.mCurrentTileColumn * this.getTileWidth();
 	}
-	
+
 	public float getTexturePositionOfCurrentTileY() {
 		return super.getTexturePositionY() + this.mCurrentTileRow * this.getTileHeight();
 	}
@@ -84,7 +84,7 @@ public class TiledTextureRegion extends TextureRegion {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public TiledTextureRegion clone() {
 		final TiledTextureRegion clone = new TiledTextureRegion(this.getTexturePositionX(), this.getTexturePositionY(), this.getWidth(), this.getHeight(), this.mTileColumns, this.mTileRows);
@@ -92,7 +92,7 @@ public class TiledTextureRegion extends TextureRegion {
 		clone.setCurrentTileIndex(this.mCurrentTileColumn, this.mCurrentTileRow);
 		return clone;
 	}
-	
+
 	@Override
 	protected TextureRegionBuffer onCreateTextureRegionBuffer() {
 		return new TiledTextureRegionBuffer(this);
@@ -101,7 +101,7 @@ public class TiledTextureRegion extends TextureRegion {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void nextTile() {
 		final int tileIndex = (this.getCurrentTileIndex() + 1) % this.getTileCount();
 		this.setCurrentTileIndex(tileIndex);

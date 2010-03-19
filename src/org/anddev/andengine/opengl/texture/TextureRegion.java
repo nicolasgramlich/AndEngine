@@ -31,9 +31,9 @@ public class TextureRegion {
 		this.mTexturePositionY = pTexturePositionY;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		this.mTextureBuffer = onCreateTextureRegionBuffer();
+		this.mTextureBuffer = this.onCreateTextureRegionBuffer();
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -59,7 +59,7 @@ public class TextureRegion {
 	public int getTexturePositionY() {
 		return this.mTexturePositionY;
 	}
-	
+
 	public void setTexture(final Texture pTexture) {
 		this.mTexture = pTexture;
 		this.mTextureBuffer.update();
@@ -68,23 +68,23 @@ public class TextureRegion {
 	public Texture getTexture() {
 		return this.mTexture;
 	}
-	
+
 	public TextureRegionBuffer getTextureBuffer() {
 		return this.mTextureBuffer;
 	}
-	
+
 	public boolean isFlippedHorizontal() {
 		return this.mTextureBuffer.isFlippedHorizontal();
 	}
-	
+
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
 		this.mTextureBuffer.setFlippedHorizontal(pFlippedHorizontal);
 	}
-	
+
 	public boolean isFlippedVertical() {
 		return this.mTextureBuffer.isFlippedVertical();
 	}
-	
+
 	public void setFlippedVertical(final boolean pFlippedVertical) {
 		this.mTextureBuffer.setFlippedVertical(pFlippedVertical);
 	}
@@ -92,7 +92,7 @@ public class TextureRegion {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public TextureRegion clone() {
 		final TextureRegion clone = new TextureRegion(this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
@@ -103,7 +103,7 @@ public class TextureRegion {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	protected void updateTextureBuffer() {
 		this.mTextureBuffer.update();
 	}

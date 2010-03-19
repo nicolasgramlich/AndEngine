@@ -15,7 +15,7 @@ public abstract class BaseEntity implements IEntity {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private boolean mVisible = true;
 	private boolean mIgnoreUpdate;
 
@@ -38,7 +38,7 @@ public abstract class BaseEntity implements IEntity {
 	private boolean isIgnoringUpdate() {
 		return this.mIgnoreUpdate;
 	}
-	
+
 	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
 		this.mIgnoreUpdate = pIgnoreUpdate;
 	}
@@ -51,16 +51,18 @@ public abstract class BaseEntity implements IEntity {
 
 	@Override
 	public final void onDraw(final GL10 pGL) {
-		if(this.isVisible())
+		if(this.isVisible()) {
 			this.onManagedDraw(pGL);
+		}
 	}
-	
+
 	protected abstract void onManagedUpdate(final float pSecondsElapsed);
 
 	@Override
 	public final void onUpdate(final float pSecondsElapsed) {
-		if(!this.isIgnoringUpdate())
+		if(!this.isIgnoringUpdate()) {
 			this.onManagedUpdate(pSecondsElapsed);
+		}
 	}
 
 	// ===========================================================

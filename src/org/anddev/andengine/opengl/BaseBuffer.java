@@ -19,20 +19,20 @@ public abstract class BaseBuffer {
 	// ===========================================================
 
 	private final ByteBuffer mByteBuffer;
-	
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public BaseBuffer() {
-		this.mByteBuffer = allocateByteBuffer();
+		this.mByteBuffer = this.allocateByteBuffer();
 		this.mByteBuffer.order(ByteOrder.nativeOrder());
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public ByteBuffer getByteBuffer() {
 		return this.mByteBuffer;
 	}

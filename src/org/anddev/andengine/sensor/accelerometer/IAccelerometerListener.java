@@ -12,6 +12,6 @@ public interface IAccelerometerListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void onAccelerometerChanged(final AccelerometerData pAccelerometerData);
 }

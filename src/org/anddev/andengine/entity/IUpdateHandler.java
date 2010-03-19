@@ -13,5 +13,5 @@ public interface IUpdateHandler {
 	// Methods
 	// ===========================================================
 
-    public void onUpdate(final float pSecondsElapsed);
+	public void onUpdate(final float pSecondsElapsed);
 }

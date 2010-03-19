@@ -15,17 +15,17 @@ public class ResourceTextureSource implements ITextureSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final int mWidth;
 	private final int mHeight;
 
 	private final int mDrawableResourceID;
 	private final Context mContext;
-	
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -33,12 +33,12 @@ public class ResourceTextureSource implements ITextureSource {
 	public ResourceTextureSource(final Context pContext, final int pDrawableResourceID) {
 		this.mContext = pContext;
 		this.mDrawableResourceID = pDrawableResourceID;
-		
+
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inJustDecodeBounds = true;
-		
+
 		BitmapFactory.decodeResource(pContext.getResources(), pDrawableResourceID, decodeOptions);
-		
+
 		this.mWidth = decodeOptions.outWidth;
 		this.mHeight = decodeOptions.outHeight;
 	}
@@ -46,7 +46,7 @@ public class ResourceTextureSource implements ITextureSource {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -60,7 +60,7 @@ public class ResourceTextureSource implements ITextureSource {
 	public int getWidth() {
 		return this.mWidth;
 	}
-	
+
 	@Override
 	public Bitmap getBitmap() {
 		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID);

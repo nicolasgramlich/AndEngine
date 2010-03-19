@@ -34,19 +34,19 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	public void update(final float pX, final float pY, final float pWidth, final float pHeight) {
 		final ByteBuffer buffer = this.getByteBuffer();
 		buffer.position(0);
-		
+
 		buffer.putFloat(pX);
 		buffer.putFloat(pY);
-		
+
 		buffer.putFloat(pX + pWidth);
 		buffer.putFloat(pY);
-		
+
 		buffer.putFloat(pX);
 		buffer.putFloat(pY + pHeight);
-		
+
 		buffer.putFloat(pX + pWidth);
 		buffer.putFloat(pY + pHeight);
-		
+
 		buffer.position(0);
 	}
 

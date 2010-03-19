@@ -24,7 +24,7 @@ public class VelocityModifier implements IParticleModifier {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public VelocityModifier(final float pVelocityX, final float pVelocityY) {
 		this(pVelocityX, pVelocityX, pVelocityY, pVelocityY);
 	}
@@ -54,28 +54,28 @@ public class VelocityModifier implements IParticleModifier {
 
 	public float getMaxVelocityY() {
 		return this.mMaxVelocityY;
-	}	
-	
+	}
+
 	public void setVelocityX(final float pVelocityX) {
 		this.mMinVelocityX = pVelocityX;
 		this.mMaxVelocityX = pVelocityX;
 	}
-	
+
 	public void setVelocityY(final float pVelocityY) {
 		this.mMinVelocityY = pVelocityY;
 		this.mMaxVelocityY = pVelocityY;
 	}
-	
+
 	public void setVelocityX(final float pMinVelocityX, final float pMaxVelocityX) {
 		this.mMinVelocityX = pMinVelocityX;
 		this.mMaxVelocityX = pMaxVelocityX;
 	}
-	
+
 	public void setVelocityY(final float pMinVelocityY, final float pMaxVelocityY) {
 		this.mMinVelocityY = pMinVelocityY;
 		this.mMaxVelocityY = pMaxVelocityY;
 	}
-	
+
 	public void setVelocity(final float pMinVelocityX, final float pMaxVelocityX, final float pMinVelocityY, final float pMaxVelocityY) {
 		this.mMinVelocityX = pMinVelocityX;
 		this.mMaxVelocityX = pMaxVelocityX;
@@ -89,7 +89,7 @@ public class VelocityModifier implements IParticleModifier {
 
 	@Override
 	public void onInitializeParticle(final Particle pParticle) {
-		pParticle.setVelocity(determineVelocityX(), determineVelocityY());
+		pParticle.setVelocity(this.determineVelocityX(), this.determineVelocityY());
 	}
 
 	@Override
@@ -102,17 +102,19 @@ public class VelocityModifier implements IParticleModifier {
 	// ===========================================================
 
 	private float determineVelocityX() {
-		if(this.mMinVelocityX == this.mMaxVelocityX)
+		if(this.mMinVelocityX == this.mMaxVelocityX) {
 			return this.mMaxVelocityX;
-		else
+		} else {
 			return (float)Math.random() * (this.mMaxVelocityX - this.mMinVelocityX) + this.mMinVelocityX;
+		}
 	}
-	
+
 	private float determineVelocityY() {
-		if(this.mMinVelocityY == this.mMaxVelocityY)
+		if(this.mMinVelocityY == this.mMaxVelocityY) {
 			return this.mMaxVelocityY;
-		else
+		} else {
 			return (float)Math.random() * (this.mMaxVelocityY - this.mMinVelocityY) + this.mMinVelocityY;
+		}
 	}
 
 	// ===========================================================

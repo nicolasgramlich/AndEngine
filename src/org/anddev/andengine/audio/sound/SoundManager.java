@@ -19,7 +19,7 @@ public class SoundManager {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final SoundPool mSoundPool;
 	private final ArrayList<Sound> mSounds = new ArrayList<Sound>();
 	private float mMasterVolume = 1.0f;
@@ -31,15 +31,15 @@ public class SoundManager {
 	public SoundManager() {
 		this(DEFAULT_MAX_SIMULTANEOUS_STREAMS);
 	}
-	
+
 	public SoundManager(final int pMaxSimultaneousStreams) {
-		 this.mSoundPool = new SoundPool(pMaxSimultaneousStreams, AudioManager.STREAM_MUSIC, 0);
+		this.mSoundPool = new SoundPool(pMaxSimultaneousStreams, AudioManager.STREAM_MUSIC, 0);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	SoundPool getSoundPool() {
 		return this.mSoundPool;
 	}
@@ -47,12 +47,13 @@ public class SoundManager {
 	public float getMasterVolume() {
 		return this.mMasterVolume;
 	}
-	
+
 	public void setMasterVolume(final float pMasterVolume) {
 		this.mMasterVolume = pMasterVolume;
 		final ArrayList<Sound> sounds = this.mSounds;
-		for(int i = sounds.size() - 1; i >= 0; i--)
+		for(int i = sounds.size() - 1; i >= 0; i--) {
 			sounds.get(i).onMasterVolumeChanged();
+		}
 	}
 
 	// ===========================================================
@@ -62,13 +63,13 @@ public class SoundManager {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void releaseAll() {
 		final ArrayList<Sound> sounds = this.mSounds;
 		for(int i = sounds.size() - 1; i >= 0; i--) {
 			sounds.get(i).stop();
 		}
-		
+
 		this.mSoundPool.release();
 	}
 

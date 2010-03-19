@@ -12,8 +12,8 @@ public interface IParticleModifier {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void onInitializeParticle(final Particle pParticle);
-	
+
 	public void onUpdateParticle(final Particle pParticle);
 }

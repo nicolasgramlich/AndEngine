@@ -40,7 +40,7 @@ public class EngineOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public int getGameWidth() {
 		return this.mGameWidth;
 	}
@@ -56,11 +56,11 @@ public class EngineOptions {
 	public boolean isFullscreen() {
 		return this.mFullscreen;
 	}
-	
+
 	public ITextureSource getLoadingScreenTextureSource() {
 		return this.mLoadingScreenTextureSource;
 	}
-	
+
 	public boolean hasLoadingScreen() {
 		return this.mLoadingScreenTextureSource != null;
 	}

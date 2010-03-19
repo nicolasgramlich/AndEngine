@@ -14,6 +14,6 @@ public interface IRenderable {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-    public void onDraw(final GL10 pGL);
+
+	public void onDraw(final GL10 pGL);
 }

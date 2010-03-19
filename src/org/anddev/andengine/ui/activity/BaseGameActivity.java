@@ -32,7 +32,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 
 	private Engine mEngine;
 	private WakeLock mWakeLock;
-	private SoundManager mSoundManager = new SoundManager();
+	private final SoundManager mSoundManager = new SoundManager();
 
 	// ===========================================================
 	// Constructors
@@ -53,7 +53,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 		this.onLoadComplete();
 		this.mEngine.start();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -73,7 +73,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	public Engine getEngine() {
 		return this.mEngine;
 	}
-	
+
 	public SoundManager getSoundManager() {
 		return this.mSoundManager;
 	}
@@ -87,38 +87,39 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	// ===========================================================
 
 	private void acquireWakeLock() {
-		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "AndEngine");
 		this.mWakeLock.acquire();
 	}
-	
+
 	private void releaseWakeLock() {
-		if(this.mWakeLock != null)
+		if(this.mWakeLock != null) {
 			this.mWakeLock.release();
+		}
 	}
 
-	private void applyEngineOptions(EngineOptions pEngineOptions) {
+	private void applyEngineOptions(final EngineOptions pEngineOptions) {
 		if(pEngineOptions.isFullscreen()) {
-			applyFullscreen();
+			this.applyFullscreen();
 		}
 
 		switch(pEngineOptions.getScreenOrientation()){
 			case LANDSCAPE:
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 				break;
 			case PORTRAIT:
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 				break;
 		}
 	}
 
 	private void applyFullscreen() {
-		final Window window = getWindow();
+		final Window window = this.getWindow();
 		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		window.requestFeature(Window.FEATURE_NO_TITLE);
 	}
-	
+
 	protected void enableAccelerometer(final IAccelerometerListener pAccelerometerListener) {
 		this.mEngine.enableAccelerometer(this, pAccelerometerListener);
 	}

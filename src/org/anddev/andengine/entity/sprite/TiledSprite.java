@@ -30,7 +30,7 @@ public class TiledSprite extends BaseSprite {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public TiledTextureRegion getTextureRegion() {
 		return (TiledTextureRegion)super.getTextureRegion();
@@ -39,17 +39,17 @@ public class TiledSprite extends BaseSprite {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void setCurrentTileIndex(final int pTileIndex) {
-		getTextureRegion().setCurrentTileIndex(pTileIndex);
+		this.getTextureRegion().setCurrentTileIndex(pTileIndex);
 	}
-	
+
 	public void setCurrentTileIndex(final int pTileColumn, final int pTileRow) {
-		getTextureRegion().setCurrentTileIndex(pTileColumn, pTileRow);
+		this.getTextureRegion().setCurrentTileIndex(pTileColumn, pTileRow);
 	}
-	
+
 	public void nextTile() {
-		getTextureRegion().nextTile();
+		this.getTextureRegion().nextTile();
 	}
 
 	// ===========================================================

@@ -15,17 +15,13 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private long mTimestampLastLogged;
+
+	private float mSecondsElapsed;
 	private int mFramesInThisSecond;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public FPSCounter() {
-		this.mTimestampLastLogged = System.nanoTime();
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -38,11 +34,10 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		this.mFramesInThisSecond++;
-		final long now = System.nanoTime();
-		final long diff = now - this.mTimestampLastLogged;
-		if(diff > TimeConstants.NANOSECONDSPERSECOND){
-			Debug.d("FPS: " + (((float)this.mFramesInThisSecond * NANOSECONDSPERSECOND) / diff) + " ms");	
-			this.mTimestampLastLogged = now;
+		this.mSecondsElapsed += pSecondsElapsed;
+		if(this.mSecondsElapsed > 1){
+			Debug.d("FPS: " + (this.mFramesInThisSecond / this.mSecondsElapsed) + " ms");
+			this.mSecondsElapsed = 0;
 			this.mFramesInThisSecond = 0;
 		}
 	}

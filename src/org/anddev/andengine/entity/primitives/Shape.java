@@ -39,19 +39,19 @@ public abstract class Shape extends DynamicEntity {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public float getRed() {
 		return this.mRed;
 	}
-	
+
 	public float getGreen() {
 		return this.mGreen;
 	}
-	
+
 	public float getBlue() {
 		return this.mBlue;
 	}
-	
+
 	public float getAlpha() {
 		return this.mAlpha;
 	}
@@ -63,13 +63,13 @@ public abstract class Shape extends DynamicEntity {
 	public void setAlpha(final float pAlpha) {
 		this.mAlpha = pAlpha;
 	}
-	
+
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 	}
-	
+
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
@@ -80,12 +80,12 @@ public abstract class Shape extends DynamicEntity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected void onPositionChanged() {
-		updateVertexBuffer();
+		this.updateVertexBuffer();
 	}
-	
+
 	protected abstract void updateVertexBuffer();
 
 	@Override
@@ -109,6 +109,7 @@ public abstract class Shape extends DynamicEntity {
 	// Methods
 	// ===========================================================
 
+	@Override
 	public void reset() {
 		super.reset();
 		this.mRed = 1.0f;
@@ -123,7 +124,7 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	protected void onPreTransformations(final GL10 pGL) {
-		
+
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {
@@ -143,11 +144,11 @@ public abstract class Shape extends DynamicEntity {
 
 	protected void applyRotation(final GL10 pGL) {
 		// TODO Offset needs to be taken into account.
-		final float rotationAngleClockwise = getRotationAngleClockwise();
+		final float rotationAngleClockwise = this.getRotationAngleClockwise();
 		if(rotationAngleClockwise != 0) {
 			final float halfWidth = this.getWidth() / 2;
 			final float halfHeight = this.getHeight() / 2;
-			
+
 			pGL.glTranslatef(halfWidth, halfHeight, 0);
 			pGL.glRotatef(rotationAngleClockwise, 0, 0, 1);
 			pGL.glTranslatef(-halfWidth, -halfHeight / 2, 0);
@@ -155,14 +156,14 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	protected void applyScale(final GL10 pGL) {
-		final float scale = getScale();
+		final float scale = this.getScale();
 		if(scale != 1) {
 			pGL.glScalef(scale, scale, 1);
 		}
 	}
 
 	protected void onPostTransformations(final GL10 pGL) {
-		
+
 	}
 
 	// ===========================================================

@@ -25,7 +25,7 @@ public abstract class BaseModifier implements ISpriteModifier {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public BaseModifier() {
 		this(-1, null);
 	}
@@ -33,7 +33,7 @@ public abstract class BaseModifier implements ISpriteModifier {
 	public BaseModifier(final float pDuration) {
 		this(pDuration, null);
 	}
-	
+
 	public BaseModifier(final float pDuration, final IModifierListener pModiferListener) {
 		this.mDuration = pDuration;
 		this.mModiferListener = pModiferListener;
@@ -50,16 +50,16 @@ public abstract class BaseModifier implements ISpriteModifier {
 	public void setExpired(final boolean pExpired) {
 		this.mExpired = pExpired;
 	}
-	
+
 	protected float getTotalSecondsElapsed() {
 		return this.mTotalSecondsElapsed;
 	}
-	
+
 	public IModifierListener getModiferListener() {
 		return this.mModiferListener;
 	}
-	
-	public void setModiferListener(IModifierListener pModiferListener) {
+
+	public void setModiferListener(final IModifierListener pModiferListener) {
 		this.mModiferListener = pModiferListener;
 	}
 
@@ -69,10 +69,15 @@ public abstract class BaseModifier implements ISpriteModifier {
 
 	protected abstract void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite);
 
+	protected abstract void onManagedInitializeSprite(final BaseSprite pBaseSprite);
+
 	@Override
 	public final void onUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
 		if(!this.isExpired()){
-			
+			if(this.mTotalSecondsElapsed == 0) {
+				this.onManagedInitializeSprite(pBaseSprite);
+			}
+
 			final float secondsToElapse;
 			if(this.mTotalSecondsElapsed + pSecondsElapsed < this.mDuration) {
 				secondsToElapse = pSecondsElapsed;
@@ -82,13 +87,14 @@ public abstract class BaseModifier implements ISpriteModifier {
 
 			this.mTotalSecondsElapsed += secondsToElapse;
 			this.onManagedUpdateSprite(secondsToElapse, pBaseSprite);
-			
+
 			if(this.mDuration != -1 && this.mTotalSecondsElapsed >= this.mDuration) {
 				this.mTotalSecondsElapsed = this.mDuration;
 				this.setExpired(true);
-				if(this.mModiferListener != null)
+				if(this.mModiferListener != null) {
 					this.mModiferListener.onModifierFinished(this, pBaseSprite);
-			} 
+				}
+			}
 		}
 	}
 

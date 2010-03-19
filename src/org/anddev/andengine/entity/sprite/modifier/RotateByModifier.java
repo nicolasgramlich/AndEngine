@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.sprite.IModifierListener;
  * @author Nicolas Gramlich
  * @since 16:12:52 - 19.03.2010
  */
-public class RotateModifier extends BaseModifier {
+public class RotateByModifier extends BaseModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,20 +17,18 @@ public class RotateModifier extends BaseModifier {
 	// ===========================================================
 	
 	private float mAnglePerSecond;
-	private final float mFromAngle;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle) {
-		this(pDuration, pFromAngle, pToAngle, null);
+	public RotateByModifier(final float pDuration, final float pAngle) {
+		this(pDuration, pAngle, null);
 	}
 	
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle, final IModifierListener pModiferListener) {
+	public RotateByModifier(final float pDuration, final float pAngle, final IModifierListener pModiferListener) {
 		super(pDuration, pModiferListener);
-		this.mFromAngle = pFromAngle;
-		this.mAnglePerSecond = (pToAngle - pFromAngle) / pDuration;
+		this.mAnglePerSecond = pAngle / pDuration;
 	}
 
 	// ===========================================================
@@ -43,12 +41,12 @@ public class RotateModifier extends BaseModifier {
 	
 	@Override
 	protected void onManagedInitializeSprite(final BaseSprite pBaseSprite) {
-		pBaseSprite.setRotationAngleClockwise(this.mFromAngle);
+		
 	}
 
 	@Override
 	protected void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
-		pBaseSprite.setRotationAngleClockwise(this.mFromAngle + this.getTotalSecondsElapsed() * this.mAnglePerSecond);
+		pBaseSprite.setRotationAngleClockwise(pBaseSprite.getRotationAngleClockwise() + this.mAnglePerSecond * pSecondsElapsed);
 	}
 
 	// ===========================================================

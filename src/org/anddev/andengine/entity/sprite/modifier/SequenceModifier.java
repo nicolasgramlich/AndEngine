@@ -17,7 +17,7 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 	// Fields
 	// ===========================================================
 
-	private final IModifierListener mModiferListener;
+	private IModifierListener mModiferListener;
 	private final BaseModifier[] mSpriteModifiers;
 	private int mCurrentSpriteModifier;
 	private boolean mExpired;
@@ -45,6 +45,14 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 
 	public void setExpired(final boolean pExpired) {
 		this.mExpired = pExpired;
+	}
+
+	public IModifierListener getModiferListener() {
+		return this.mModiferListener;
+	}
+
+	public void setModiferListener(final IModifierListener pModiferListener) {
+		this.mModiferListener = pModiferListener;
 	}
 
 	// ===========================================================

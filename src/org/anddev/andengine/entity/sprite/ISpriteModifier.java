@@ -15,4 +15,7 @@ public interface ISpriteModifier {
 	// ===========================================================
 
 	public void onUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite);
+	
+	public IModifierListener getModiferListener();
+	public void setModiferListener(final IModifierListener pModiferListener);
 }

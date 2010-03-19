@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.sprite.modifier;
 
 import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModificationListener;
+import org.anddev.andengine.entity.sprite.IModifierListener;
 import org.anddev.andengine.entity.sprite.ISpriteModifier;
 
 /**
@@ -20,24 +20,28 @@ public abstract class BaseModifier implements ISpriteModifier {
 	private boolean mExpired;
 	private float mTotalSecondsElapsed;
 	private final float mDuration;
-	private final IModificationListener mModificationListener;
+	private IModifierListener mModiferListener;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
+	
+	public BaseModifier() {
+		this(-1, null);
+	}
 
 	public BaseModifier(final float pDuration) {
 		this(pDuration, null);
 	}
 	
-	public BaseModifier(final float pDuration, final IModificationListener pModificationListener) {
+	public BaseModifier(final float pDuration, final IModifierListener pModiferListener) {
 		this.mDuration = pDuration;
-		this.mModificationListener = pModificationListener;
+		this.mModiferListener = pModiferListener;
 	}
+
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
 
 	public boolean isExpired() {
 		return this.mExpired;
@@ -50,6 +54,14 @@ public abstract class BaseModifier implements ISpriteModifier {
 	protected float getTotalSecondsElapsed() {
 		return this.mTotalSecondsElapsed;
 	}
+	
+	public IModifierListener getModiferListener() {
+		return this.mModiferListener;
+	}
+	
+	public void setModiferListener(IModifierListener pModiferListener) {
+		this.mModiferListener = pModiferListener;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -60,7 +72,7 @@ public abstract class BaseModifier implements ISpriteModifier {
 	@Override
 	public final void onUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
 		if(!this.isExpired()){
-
+			
 			final float secondsToElapse;
 			if(this.mTotalSecondsElapsed + pSecondsElapsed < this.mDuration) {
 				secondsToElapse = pSecondsElapsed;
@@ -71,11 +83,11 @@ public abstract class BaseModifier implements ISpriteModifier {
 			this.mTotalSecondsElapsed += secondsToElapse;
 			this.onManagedUpdateSprite(secondsToElapse, pBaseSprite);
 			
-			if(this.mTotalSecondsElapsed >= this.mDuration) {
+			if(this.mDuration != -1 && this.mTotalSecondsElapsed >= this.mDuration) {
 				this.mTotalSecondsElapsed = this.mDuration;
 				this.setExpired(true);
-				if(this.mModificationListener != null)
-					this.mModificationListener.onFinished(this, pBaseSprite);
+				if(this.mModiferListener != null)
+					this.mModiferListener.onModifierFinished(this, pBaseSprite);
 			} 
 		}
 	}

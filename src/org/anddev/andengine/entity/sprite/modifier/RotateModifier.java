@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.sprite.modifier;
 
 import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModificationListener;
+import org.anddev.andengine.entity.sprite.IModifierListener;
 
 /**
  * @author Nicolas Gramlich
@@ -26,8 +26,8 @@ public class RotateModifier extends BaseModifier {
 		this(pDuration, pFromAngle, pToAngle, null);
 	}
 	
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle, final IModificationListener pModificationListener) {
-		super(pDuration, pModificationListener);
+	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle, final IModifierListener pModiferListener) {
+		super(pDuration, pModiferListener);
 		this.mAnglePerSecond = (pToAngle - pFromAngle) / pDuration;
 	}
 

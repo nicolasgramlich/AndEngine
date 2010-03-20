@@ -128,6 +128,9 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {
+		/* Offset */
+		this.applyOffset(pGL);
+		
 		/* Translate */
 		this.applyTranslation(pGL);
 
@@ -138,6 +141,10 @@ public abstract class Shape extends DynamicEntity {
 		this.applyScale(pGL);
 	}
 
+	private void applyOffset(final GL10 pGL) {
+		pGL.glTranslatef(this.getOffsetX(), this.getOffsetY(), 0);
+	}
+
 	protected void applyTranslation(final GL10 pGL) {
 		pGL.glTranslatef(this.getX(), this.getY(), 0);
 	}
@@ -146,8 +153,8 @@ public abstract class Shape extends DynamicEntity {
 		// TODO Offset needs to be taken into account.
 		final float rotationAngleClockwise = this.getRotationAngleClockwise();
 		if(rotationAngleClockwise != 0) {
-			final float halfWidth = this.getWidth() / 2;
-			final float halfHeight = this.getHeight() / 2;
+			final float halfWidth = this.getInitialWidth() / 2;
+			final float halfHeight = this.getInitialHeight() / 2;
 
 			pGL.glTranslatef(halfWidth, halfHeight, 0);
 			pGL.glRotatef(rotationAngleClockwise, 0, 0, 1);
@@ -158,7 +165,12 @@ public abstract class Shape extends DynamicEntity {
 	protected void applyScale(final GL10 pGL) {
 		final float scale = this.getScale();
 		if(scale != 1) {
+			final float halfWidth = this.getInitialWidth() / 2;
+			final float halfHeight = this.getInitialHeight() / 2;
+			
+			pGL.glTranslatef(halfWidth, halfHeight, 0);
 			pGL.glScalef(scale, scale, 1);
+			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
 		}
 	}
 

@@ -55,6 +55,16 @@ public abstract class DynamicEntity extends StaticEntity {
 	public void setScale(final float pScale) {
 		this.mScale = pScale;
 	}
+	
+	@Override
+	public float getWidth() {
+		return super.getWidth() * this.mScale;
+	}
+	
+	@Override
+	public float getHeight() {
+		return super.getHeight() * this.mScale;
+	}
 
 	public float getAccelerationX() {
 		return this.mAccelerationX;

@@ -102,6 +102,14 @@ public abstract class StaticEntity extends BaseEntity {
 	public float getHeight() {
 		return this.mHeight;
 	}
+	
+	public float getInitialWidth() {
+		return this.mInitialWidth;
+	}
+	
+	public float getInitialHeight() {
+		return this.mInitialHeight;
+	}
 
 	public void setWidth(final int pWidth) {
 		this.mWidth = pWidth;

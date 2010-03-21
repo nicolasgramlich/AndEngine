@@ -1,13 +1,10 @@
-package org.anddev.andengine.entity.sprite.modifier;
-
-import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModifierListener;
+package org.anddev.andengine.physics;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 19:58:01 - 20.03.2010
  */
-public class RotateModifier extends BaseFromToModifier {
+public class PhysicsData {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,16 +13,20 @@ public class RotateModifier extends BaseFromToModifier {
 	// Fields
 	// ===========================================================
 
+	public final float mMass;
+	public final float mFricition;
+	public final float mElasticity;
+	public final PhysicsShape mPhysicsShape;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle) {
-		this(pDuration, pFromAngle, pToAngle, null);
-	}
-
-	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle, final IModifierListener pModiferListener) {
-		super(pDuration, pFromAngle, pToAngle, pModiferListener);
+	public PhysicsData(final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape) {
+		this.mMass = pMass;
+		this.mFricition = pFricition;
+		this.mElasticity = pElasticity;
+		this.mPhysicsShape = pPhysicsShape;
 	}
 
 	// ===========================================================
@@ -35,16 +36,6 @@ public class RotateModifier extends BaseFromToModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected void onSetInitialValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setAngle(pValue);
-	}
-
-	@Override
-	protected void onSetValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setAngle(pValue);
-	}
 
 	// ===========================================================
 	// Methods

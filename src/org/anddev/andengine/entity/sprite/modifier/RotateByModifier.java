@@ -46,7 +46,7 @@ public class RotateByModifier extends BaseModifier {
 
 	@Override
 	protected void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
-		pBaseSprite.setRotationAngleClockwise(pBaseSprite.getRotationAngleClockwise() + this.mAnglePerSecond * pSecondsElapsed);
+		pBaseSprite.setAngle(pBaseSprite.getAngle() + this.mAnglePerSecond * pSecondsElapsed);
 	}
 
 	// ===========================================================

@@ -19,9 +19,10 @@ public abstract class DynamicEntity extends StaticEntity {
 	private float mVelocityX = 0;
 	private float mVelocityY = 0;
 
-	private float mRotationAngleClockwise = 0;
+	private float mAngle = 0;
 
 	private float mScale = 1;
+	private boolean mUpdatePhysicsSelf;
 
 	// ===========================================================
 	// Constructors
@@ -79,12 +80,20 @@ public abstract class DynamicEntity extends StaticEntity {
 		this.mAccelerationY = pAccelerationY;
 	}
 
-	public float getRotationAngleClockwise() {
-		return this.mRotationAngleClockwise;
+	public float getAngle() {
+		return this.mAngle;
 	}
 
-	public void setRotationAngleClockwise(final float pRotationAngleClockwise) {
-		this.mRotationAngleClockwise = pRotationAngleClockwise;
+	public void setAngle(final float pAngle) {
+		this.mAngle = pAngle;
+	}
+	
+	public boolean isUpdatePhysicsSelf() {
+		return this.mUpdatePhysicsSelf;
+	}
+	
+	public void setUpdatePhysicsSelf(final boolean pUpdatePhysicsSelf) {
+		this.mUpdatePhysicsSelf = pUpdatePhysicsSelf;
 	}
 
 	// ===========================================================
@@ -93,14 +102,16 @@ public abstract class DynamicEntity extends StaticEntity {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if(this.mAccelerationX != 0 || this.mAccelerationY != 0 || this.mVelocityX != 0 || this.mVelocityY != 0) {
-			if(this.mAccelerationX != 0 || this.mAccelerationY != 0) {
-				this.mVelocityX += this.mAccelerationX * pSecondsElapsed;
-				this.mVelocityY += this.mAccelerationY * pSecondsElapsed;
+		if(isUpdatePhysicsSelf()) {
+			if(this.mAccelerationX != 0 || this.mAccelerationY != 0 || this.mVelocityX != 0 || this.mVelocityY != 0) {
+				if(this.mAccelerationX != 0 || this.mAccelerationY != 0) {
+					this.mVelocityX += this.mAccelerationX * pSecondsElapsed;
+					this.mVelocityY += this.mAccelerationY * pSecondsElapsed;
+				}
+				this.mX += this.mVelocityX * pSecondsElapsed;
+				this.mY += this.mVelocityY * pSecondsElapsed;
+				this.onPositionChanged();
 			}
-			this.mX += this.mVelocityX * pSecondsElapsed;
-			this.mY += this.mVelocityY * pSecondsElapsed;
-			this.onPositionChanged();
 		}
 	}
 
@@ -115,7 +126,7 @@ public abstract class DynamicEntity extends StaticEntity {
 		this.mAccelerationY = 0;
 		this.mVelocityX = 0;
 		this.mVelocityY = 0;
-		this.mRotationAngleClockwise = 0;
+		this.mAngle = 0;
 	}
 
 	public void accelerate(final float pAccelerationX, final float pAccelerationY) {

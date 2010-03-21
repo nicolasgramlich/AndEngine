@@ -151,13 +151,13 @@ public abstract class Shape extends DynamicEntity {
 
 	protected void applyRotation(final GL10 pGL) {
 		// TODO Offset needs to be taken into account.
-		final float rotationAngleClockwise = this.getRotationAngleClockwise();
-		if(rotationAngleClockwise != 0) {
+		final float angle = this.getAngle();
+		if(angle != 0) {
 			final float halfWidth = this.getInitialWidth() / 2;
 			final float halfHeight = this.getInitialHeight() / 2;
 
 			pGL.glTranslatef(halfWidth, halfHeight, 0);
-			pGL.glRotatef(rotationAngleClockwise, 0, 0, 1);
+			pGL.glRotatef(angle, 0, 0, 1);
 			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
 		}
 	}

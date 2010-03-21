@@ -18,6 +18,7 @@
 	<property name="targetfile_7" value="../CampfireLiveWallpaper/lib/andengine.jar" />
 	<property name="targetfile_8" value="../CigaretteLiveWallpaper/lib/andengine.jar" />
 	<property name="targetfile_9" value="../LavaLampLiveWallpaper/lib/andengine.jar" />
+	<property name="targetfile_10" value="../AndEnginePhysicsBox2D/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<jar destfile="${binfile}">
@@ -41,5 +42,6 @@
 		<copy file="${binfile}" tofile="${targetfile_7}"/>
 		<copy file="${binfile}" tofile="${targetfile_8}"/>
 		<copy file="${binfile}" tofile="${targetfile_9}"/>
+		<copy file="${binfile}" tofile="${targetfile_10}"/>
     </target>
 </project>

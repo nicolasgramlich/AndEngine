@@ -33,6 +33,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		super(pContext);
 		this.mRenderer = new Renderer(pEngine);
 		this.setRenderer(this.mRenderer);
+//		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
 	}
 
 	// ===========================================================
@@ -83,6 +84,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
+//			Debug.d("onSurfaceChanged");
 			pGL.glViewport(0, 0, pWidth, pHeight);
 			pGL.glMatrixMode(GL10.GL_PROJECTION);
 			pGL.glLoadIdentity();
@@ -106,6 +108,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
+//			Debug.d("onSurfaceCreated");
 			pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 			pGL.glClearColor(0, 0, 0, 1);
 			pGL.glDisable(GL10.GL_LIGHTING);
@@ -122,6 +125,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
+//			Debug.d("onDrawFrame");
 			pGL.glMatrixMode(GL10.GL_MODELVIEW);
 			pGL.glLoadIdentity();
 			this.mEngine.onDrawFrame(pGL);

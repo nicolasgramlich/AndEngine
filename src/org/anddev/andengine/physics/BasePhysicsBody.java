@@ -1,10 +1,12 @@
 package org.anddev.andengine.physics;
 
+import org.anddev.andengine.entity.StaticEntity;
+
 /**
  * @author Nicolas Gramlich
  * @since 19:58:01 - 20.03.2010
  */
-public class PhysicsData {
+public abstract class BasePhysicsBody {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,7 +24,7 @@ public class PhysicsData {
 	// Constructors
 	// ===========================================================
 
-	public PhysicsData(final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape) {
+	public BasePhysicsBody(final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape) {
 		this.mMass = pMass;
 		this.mFricition = pFricition;
 		this.mElasticity = pElasticity;
@@ -32,6 +34,8 @@ public class PhysicsData {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public abstract StaticEntity getEntity();
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

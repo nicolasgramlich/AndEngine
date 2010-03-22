@@ -1,8 +1,6 @@
 package org.anddev.andengine.physics;
 
-import org.anddev.andengine.entity.DynamicEntity;
 import org.anddev.andengine.entity.IUpdateHandler;
-import org.anddev.andengine.entity.StaticEntity;
 
 /**
  * @author Nicolas Gramlich
@@ -19,13 +17,11 @@ public interface IPhysicsSpace extends IUpdateHandler {
 	
 	public void createWorld(final float pX, final float pY, final float pWidth, final float pHeight);
 	
-	public void addStaticEntity(final StaticEntity pStaticEntity, final PhysicsData pPhysicsData);
-	
-	public void addDynamicEntity(final DynamicEntity pDynamicEntity, final PhysicsData pPhysicsData);
+	public void addStaticEntity(final StaticPhysicsBody pStaticPhysicsBody);
+
+	public void addDynamicEntity(final DynamicPhysicsBody pDynamicPhysicsBody);
 
 	public void setGravity(final float pGravityX, final float pGravityY);
 	
-	public void setVelocity(final DynamicEntity pDynamicEntity, final float pVelocityX, final float pVelocityY);
-	
-	// TODO Collision-Handling/Callbacks
+	public void setVelocity(final DynamicPhysicsBody pDynamicPhysicsBody, final float pVelocityX, final float pVelocityY);
 }

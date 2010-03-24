@@ -18,18 +18,20 @@ public class DynamicPhysicsBody extends BasePhysicsBody {
 
 	private final DynamicEntity mDynamicEntity;
 	private final ICollisionCallback mCollisionCallback;
+	private final boolean mFixedRotation;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public DynamicPhysicsBody(final DynamicEntity pDynamicEntity, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape) {
-		this(pDynamicEntity, pMass, pFricition, pElasticity, pPhysicsShape, null);
+	public DynamicPhysicsBody(final DynamicEntity pDynamicEntity, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final boolean pFixedRotation) {
+		this(pDynamicEntity, pMass, pFricition, pElasticity, pPhysicsShape, pFixedRotation, null);
 	}
 	
-	public DynamicPhysicsBody(final DynamicEntity pDynamicEntity, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final ICollisionCallback pCollisionCallback) {
+	public DynamicPhysicsBody(final DynamicEntity pDynamicEntity, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final boolean pFixedRotation, final ICollisionCallback pCollisionCallback) {
 		super(pMass, pFricition, pElasticity, pPhysicsShape);
 		this.mDynamicEntity = pDynamicEntity;
+		this.mFixedRotation = pFixedRotation;
 		this.mCollisionCallback = pCollisionCallback;
 	}
 
@@ -43,6 +45,10 @@ public class DynamicPhysicsBody extends BasePhysicsBody {
 	
 	public ICollisionCallback getCollisionCallback() {
 		return this.mCollisionCallback;
+	}
+	
+	public boolean isFixedRotation() {
+		return this.mFixedRotation;
 	}
 
 	// ===========================================================

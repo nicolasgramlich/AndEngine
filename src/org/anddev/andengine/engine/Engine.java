@@ -24,6 +24,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Debug;
 
 
 /**
@@ -127,6 +128,14 @@ public class Engine implements SensorEventListener {
 
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.remove(pUpdateHandler);
+	}
+	
+	public void startPerformanceTracing(final String pTraceFileName) {
+		Debug.startMethodTracing("AndEngine/" + pTraceFileName);
+	}
+	
+	public void stopPerformanceTracing() {
+		Debug.stopMethodTracing();
 	}
 
 	// ===========================================================

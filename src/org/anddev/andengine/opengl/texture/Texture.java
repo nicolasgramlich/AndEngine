@@ -86,8 +86,9 @@ public class Texture {
 		pTextureRegion.setTexture(this);
 	}
 
-	public void associateTextureRegion(final TextureRegion pTextureRegion) {
+	public TextureRegion associateTextureRegion(final TextureRegion pTextureRegion) {
 		pTextureRegion.setTexture(this);
+		return pTextureRegion;
 	}
 
 	public void loadToHardware(final GL10 pGL) {

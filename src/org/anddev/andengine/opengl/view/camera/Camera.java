@@ -26,15 +26,15 @@ public class Camera {
 	private float mMinY;
 	private float mMaxY;
 	
-	private int mSurfaceWidth = 1; // 1 to prevent accidential DIV/0
-	private int mSurfaceHeight = 1; // 1 to prevent accidential DIV/0
+	private int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
+	private int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Camera(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY) {
-		this.set(pMinX, pMaxX, pMinY, pMaxY);
+	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
+		this.set(pX, pX + pWidth, pY, pY + pHeight);
 	}
 
 	// ===========================================================

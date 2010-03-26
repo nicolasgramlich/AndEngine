@@ -2,8 +2,6 @@ package org.anddev.andengine.entity;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.background.BaseBackground;
-
 /**
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
@@ -18,7 +16,10 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 
 	private final Layer[] mLayers;
-	private BaseBackground mBackground;
+
+	private float mRed;
+	private float mGreen;
+	private float mBlue;
 
 	// ===========================================================
 	// Constructors
@@ -37,16 +38,10 @@ public class Scene extends BaseEntity {
 		return this.mLayers[pLayerIndex];
 	}
 
-	public void setBackground(final BaseBackground pBackground) {
-		this.mBackground = pBackground;
-	}
-
-	public BaseBackground getBackground() {
-		return this.mBackground;
-	}
-
-	public boolean hasBackground() {
-		return this.mBackground != null;
+	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
+		this.mRed = pRed;
+		this.mGreen = pGreen;
+		this.mBlue = pBlue;
 	}
 
 	public int getLayerCount() {
@@ -65,7 +60,6 @@ public class Scene extends BaseEntity {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		this.updateBackground(pSecondsElapsed);
 		this.updateLayers(pSecondsElapsed);
 	}
 
@@ -80,12 +74,6 @@ public class Scene extends BaseEntity {
 		}
 	}
 
-	private void updateBackground(final float pSecondsElapsed) {
-		if(this.hasBackground()) {
-			this.mBackground.onUpdate(pSecondsElapsed);
-		}
-	}
-
 	private void updateLayers(final float pSecondsElapsed) {
 		final Layer[] layers = this.mLayers;
 		final int layerCount = layers.length;
@@ -95,9 +83,8 @@ public class Scene extends BaseEntity {
 	}
 
 	private void drawBackground(final GL10 pGL) {
-		if(this.hasBackground()) {
-			this.mBackground.onDraw(pGL);
-		}
+		pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, 1.0f);
+		pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
 	}
 
 	private void drawLayers(final GL10 pGL) {

@@ -226,8 +226,8 @@ public class Engine implements SensorEventListener {
 	}
 
 	private void updateHandlers(final float pSecondsElapsed, final ArrayList<IUpdateHandler> pUpdateHandlers) {
-		final int layerCount = pUpdateHandlers.size();
-		for(int i = 0; i < layerCount; i++) {
+		final int handlerCount = pUpdateHandlers.size();
+		for(int i = 0; i < handlerCount; i++) {
 			pUpdateHandlers.get(i).onUpdate(pSecondsElapsed);
 		}
 	}
@@ -245,6 +245,12 @@ public class Engine implements SensorEventListener {
 
 	public void loadTexture(final Texture pTexture) {
 		this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTexture);
+	}
+	
+	public void loadTextures(final Texture ... pTextures) {
+		for(int i = pTextures.length - 1; i >= 0; i--) {
+			this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTextures[i]);
+		}
 	}
 
 	public boolean enableAccelerometer(final Context pContext, final IAccelerometerListener pAccelerometerListener) {

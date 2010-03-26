@@ -40,20 +40,19 @@ public class Camera {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-
+	
 	public float getMinX() {
 		return this.mMinX;
 	}
-
+	
 	public float getMaxX() {
 		return this.mMaxX;
 	}
-
+	
 	public float getMinY() {
 		return this.mMinY;
 	}
-
+	
 	public float getMaxY() {
 		return this.mMaxY;
 	}
@@ -84,7 +83,7 @@ public class Camera {
 		this.mMaxY += dY;
 	}
 
-	public void set(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY) {
+	private void set(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY) {
 		assert(pMinX < pMaxX);
 		assert(pMinY < pMaxY);
 		
@@ -116,7 +115,7 @@ public class Camera {
 		return CollisionChecker.checkAxisAlignedBoxCollision(this.mMinX, this.mMinY, this.mMaxX, this.mMaxY, otherLeft, otherTop, otherRight, otherBottom);
 	}
 
-	public void setViewPort(final GL10 pGL) {// TODO Think of a better name for this method
+	public void onApply(final GL10 pGL) {
 		GLU.gluOrtho2D(pGL, this.mMinX, this.mMaxX, this.mMaxY, this.mMinY);
 	}
 

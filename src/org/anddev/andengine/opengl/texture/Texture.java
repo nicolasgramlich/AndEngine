@@ -38,7 +38,7 @@ public class Texture {
 	// ===========================================================
 
 	public Texture(final int pWidth, final int pHeight) {
-		this(pWidth, pHeight, new TextureOptions());
+		this(pWidth, pHeight, TextureOptions.DEFAULT);
 	}
 
 	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) {
@@ -80,6 +80,10 @@ public class Texture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void selectOnHardware(final GL10 pGL) {
+		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
+	}
 
 	public void insertTextureRegion(final TextureRegion pTextureRegion, final ITextureSource pTextureSource) {
 		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTextureRegion.getTexturePositionX(), pTextureRegion.getTexturePositionY()));
@@ -94,7 +98,7 @@ public class Texture {
 	public void loadToHardware(final GL10 pGL) {
 		GLHelper.enableTextures(pGL);
 
-		this.mHardwareTextureID = allocateAndBindTextureOnHardware(pGL, this.mWidth, this.mHeight);
+		allocateAndBindTextureOnHardware(pGL, this.mWidth, this.mHeight);
 
 		applyTextureOptions(pGL, this.mTextureOptions);
 
@@ -118,19 +122,17 @@ public class Texture {
 	private static void applyTextureOptions(final GL10 pGL, final TextureOptions pTextureOptions) {
 		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, pTextureOptions.mMinFilter);
 		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, pTextureOptions.mMagFilter);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, pTextureOptions.mWrapS);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, pTextureOptions.mWrapT);
 		pGL.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, pTextureOptions.mTextureEnvironment);
 	}
 
-	private static int allocateAndBindTextureOnHardware(final GL10 pGL, final int pWidth, final int pHeight) {
-		final int hardwareTextureID = generateHardwareTextureID(pGL);
+	private void allocateAndBindTextureOnHardware(final GL10 pGL, final int pWidth, final int pHeight) {
+		this.mHardwareTextureID = generateHardwareTextureID(pGL);
 
-		pGL.glBindTexture(GL10.GL_TEXTURE_2D, hardwareTextureID);
+		this.selectOnHardware(pGL);
 
 		sendPlaceholderBitmapToHardware(pWidth, pHeight);
-
-		return hardwareTextureID;
 	}
 
 	private static int generateHardwareTextureID(final GL10 pGL) {
@@ -188,21 +190,19 @@ public class Texture {
 	}
 
 	public static class TextureOptions {
+		public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_LINEAR, GL10.GL_MODULATE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE);
+		
 		public final int mMagFilter;
 		public final int mMinFilter;
+		public final float mWrapT;
+		public final float mWrapS;
 		public final int mTextureEnvironment;
 
-		public TextureOptions() {
-			this(GL10.GL_NEAREST, GL10.GL_LINEAR, GL10.GL_MODULATE);
-		}
-
-		public TextureOptions(final int pMinFilter, final int pMagFilter) {
-			this(pMinFilter, pMagFilter, GL10.GL_MODULATE);
-		}
-
-		public TextureOptions(final int pMinFilter, final int pMagFilter, final int pTextureEnvironment) {
+		public TextureOptions(final int pMinFilter, final int pMagFilter, final int pWrapT, final int pWrapS, final int pTextureEnvironment) {
 			this.mMinFilter = pMinFilter;
 			this.mMagFilter = pMagFilter;
+			this.mWrapT = pWrapT;
+			this.mWrapS = pWrapS;
 			this.mTextureEnvironment = pTextureEnvironment;
 		}
 	}

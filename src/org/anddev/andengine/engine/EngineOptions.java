@@ -1,6 +1,7 @@
 package org.anddev.andengine.engine;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.view.camera.Camera;
 
 /**
  * @author  Nicolas Gramlich
@@ -15,39 +16,29 @@ public class EngineOptions {
 	// Fields
 	// ===========================================================
 
-	private final int mGameWidth;
-	private final int mGameHeight;
 	private final ScreenOrientation mScreenOrientation;
 	private final boolean mFullscreen;
 	private final ITextureSource mLoadingScreenTextureSource;
+	private final Camera mCamera;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final int pGameWidth, final int pGameHeight) {
-		this(null, pFullscreen, pScreenOrientation, pGameWidth, pGameHeight);
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pCamera) {
+		this(null, pFullscreen, pScreenOrientation, pCamera);
 	}
 
-	public EngineOptions(final ITextureSource pLoadingScreenTextureSource, final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final int pGameWidth, final int pGameHeight) {
+	public EngineOptions(final ITextureSource pLoadingScreenTextureSource, final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pCamera) {
 		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
 		this.mFullscreen = pFullscreen;
 		this.mScreenOrientation = pScreenOrientation;
-		this.mGameWidth = pGameWidth;
-		this.mGameHeight = pGameHeight;
+		this.mCamera = pCamera;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public int getGameWidth() {
-		return this.mGameWidth;
-	}
-
-	public int getGameHeight() {
-		return this.mGameHeight;
-	}
 
 	public ScreenOrientation getScreenOrientation() {
 		return this.mScreenOrientation;
@@ -63,6 +54,10 @@ public class EngineOptions {
 
 	public boolean hasLoadingScreen() {
 		return this.mLoadingScreenTextureSource != null;
+	}
+
+	public Camera getCamera() {
+		return this.mCamera;
 	}
 
 	// ===========================================================

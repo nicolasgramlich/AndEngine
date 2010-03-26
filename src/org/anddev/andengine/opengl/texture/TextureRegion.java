@@ -15,8 +15,8 @@ public class TextureRegion {
 	// Fields
 	// ===========================================================
 
-	private final int mWidth;
-	private final int mHeight;
+	private int mWidth;
+	private int mHeight;
 	private int mTexturePositionX;
 	private int mTexturePositionY;
 	private Texture mTexture;
@@ -44,6 +44,16 @@ public class TextureRegion {
 
 	public int getHeight() {
 		return this.mHeight;
+	}
+	
+	public void setWidth(final int pWidth) {
+		this.mWidth = pWidth;
+		this.mTextureBuffer.update();
+	}
+	
+	public void setHeight(final int pHeight) {
+		this.mHeight = pHeight;
+		this.mTextureBuffer.update();
 	}
 
 	public void setTexturePosition(final int pX, final int pY) {

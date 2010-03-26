@@ -8,7 +8,6 @@ import org.anddev.andengine.opengl.GLHelper;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.opengl.GLU;
 
 /**
  * @author Nicolas Gramlich
@@ -84,9 +83,8 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
-//			Debug.d("onSurfaceChanged");
+			this.mEngine.getCamera().setSurfaceSize(pWidth, pHeight);
 			pGL.glViewport(0, 0, pWidth, pHeight);
-			pGL.glMatrixMode(GL10.GL_PROJECTION);
 			pGL.glLoadIdentity();
 
 			pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
@@ -97,18 +95,16 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 			pGL.glEnable(GL10.GL_BLEND);
 
-			//			GLHelper.blendMode(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
 
-			this.setOrthographicProjection(pGL);
+			pGL.glMatrixMode(GL10.GL_PROJECTION);
+			this.mEngine.getCamera().setViewPort(pGL);
 		}
 
 		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
-//			Debug.d("onSurfaceCreated");
 			pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 			pGL.glClearColor(0, 0, 0, 1);
 			pGL.glDisable(GL10.GL_LIGHTING);
@@ -120,12 +116,16 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
 
-			this.setOrthographicProjection(pGL);
+			pGL.glMatrixMode(GL10.GL_PROJECTION);
+			this.mEngine.getCamera().setViewPort(pGL);
 		}
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
-//			Debug.d("onDrawFrame");
+			pGL.glMatrixMode(GL10.GL_PROJECTION);
+			pGL.glLoadIdentity();
+			this.mEngine.getCamera().setViewPort(pGL);
+			
 			pGL.glMatrixMode(GL10.GL_MODELVIEW);
 			pGL.glLoadIdentity();
 			this.mEngine.onDrawFrame(pGL);
@@ -134,10 +134,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// ===========================================================
 		// Methods
 		// ===========================================================
-
-		private void setOrthographicProjection(final GL10 pGL) {
-			GLU.gluOrtho2D(pGL, 0, this.mEngine.getGameWidth(), this.mEngine.getGameHeight(), 0);
-		}
 
 		// ===========================================================
 		// Inner and Anonymous Classes

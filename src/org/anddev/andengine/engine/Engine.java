@@ -14,6 +14,7 @@ import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureRegion;
 import org.anddev.andengine.opengl.texture.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.view.camera.Camera;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.util.MathUtils;
@@ -94,12 +95,8 @@ public class Engine implements SensorEventListener {
 		return this.mEngineOptions;
 	}
 
-	public int getGameWidth() {
-		return this.mEngineOptions.getGameWidth();
-	}
-
-	public int getGameHeight() {
-		return this.mEngineOptions.getGameHeight();
+	public Camera getCamera() {
+		return this.mEngineOptions.getCamera();
 	}
 
 	public AccelerometerData getAccelerometerData() {
@@ -176,7 +173,9 @@ public class Engine implements SensorEventListener {
 		final int loadingScreenHeight = loadingScreenTextureSource.getHeight();
 		final Texture loadingScreenTexture = new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight));
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
-		final Sprite loadingScreenSprite = new Sprite(0, 0, this.getGameWidth(), this.getGameHeight(), loadingScreenTextureRegion);
+		
+		final Camera cam = this.getCamera(); 
+		final Sprite loadingScreenSprite = new Sprite(cam.getMinX(), cam.getMinY(), cam.getWidth(), cam.getHeight(), loadingScreenTextureRegion);
 
 		this.loadTexture(loadingScreenTexture);
 

@@ -134,7 +134,7 @@ public abstract class StaticEntity extends BaseEntity {
 		this.mOffsetY = pOffsetY;
 		this.onPositionChanged();
 	}
-
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

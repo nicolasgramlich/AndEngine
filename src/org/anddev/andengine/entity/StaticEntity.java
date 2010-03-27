@@ -57,16 +57,6 @@ public abstract class StaticEntity extends BaseEntity {
 		return this.mY;
 	}
 
-	public void setPosition(final float pX, final float pY) {
-		this.mX = pX;
-		this.mY = pY;
-	}
-
-	public void setPosition(final StaticEntity pOtherStaticEntity) {
-		this.mX = pOtherStaticEntity.getX();
-		this.mY = pOtherStaticEntity.getY();
-	}
-
 	public float getInitialX() {
 		return this.mInitialX;
 	}
@@ -74,19 +64,6 @@ public abstract class StaticEntity extends BaseEntity {
 	public float getInitialY() {
 		return this.mInitialY;
 	}
-
-	public void setInitialPosition() {
-		this.mX = this.mInitialX;
-		this.mY = this.mInitialY;
-		this.onPositionChanged();
-	}
-
-	public void setInitialSize() {
-		this.mWidth = this.mInitialWidth;
-		this.mHeight = this.mInitialHeight;
-		this.onPositionChanged();
-	}
-
 	public float getOffsetX() {
 		return this.mOffsetX;
 	}
@@ -109,16 +86,6 @@ public abstract class StaticEntity extends BaseEntity {
 	
 	public float getInitialHeight() {
 		return this.mInitialHeight;
-	}
-
-	public void setWidth(final int pWidth) {
-		this.mWidth = pWidth;
-		this.onPositionChanged();
-	}
-
-	public void setHeight(final int pHeight) {
-		this.mHeight = pHeight;
-		this.onPositionChanged();
 	}
 
 	public void setOffsetX(final float pOffsetX) {
@@ -148,8 +115,6 @@ public abstract class StaticEntity extends BaseEntity {
 	@Override
 	public void reset() {
 		super.reset();
-		this.setInitialPosition();
-		this.setInitialSize();
 		this.mOffsetX = 0;
 		this.mOffsetY = 0;
 	}

@@ -1,12 +1,11 @@
 package org.anddev.andengine.opengl.view.camera;
 
-import org.anddev.andengine.entity.IUpdateHandler;
 
 /**
  * @author Nicolas Gramlich
  * @since 22:11:17 - 25.03.2010
  */
-public class SmoothCamera extends Camera implements IUpdateHandler {
+public class SmoothCamera extends Camera {
 	// ===========================================================
 	// Constants
 	// ===========================================================

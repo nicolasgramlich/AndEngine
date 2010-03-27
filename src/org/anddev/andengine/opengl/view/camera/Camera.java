@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.view.camera;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.StaticEntity;
 import org.anddev.andengine.physics.collision.CollisionChecker;
 
@@ -12,7 +13,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 10:24:18 - 25.03.2010
  */
-public class Camera {
+public class Camera implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -101,6 +102,11 @@ public class Camera {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public void onUpdate(final float pSecondsElapsed) {
+		/* Nothing. */
+	}
 
 	// ===========================================================
 	// Methods

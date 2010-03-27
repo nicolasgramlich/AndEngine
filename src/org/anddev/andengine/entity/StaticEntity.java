@@ -64,6 +64,15 @@ public abstract class StaticEntity extends BaseEntity {
 	public float getInitialY() {
 		return this.mInitialY;
 	}
+	
+	public float getCenterX() {
+		return this.mX + this.getWidth() / 2;
+	}
+
+	public float getCenterY() {
+		return this.mY + this.getHeight() / 2;
+	}
+	
 	public float getOffsetX() {
 		return this.mOffsetX;
 	}
@@ -90,10 +99,12 @@ public abstract class StaticEntity extends BaseEntity {
 
 	public void setOffsetX(final float pOffsetX) {
 		this.mOffsetX = pOffsetX;
+		this.onPositionChanged();
 	}
 
 	public void setOffsetY(final float pOffsetY) {
 		this.mOffsetY = pOffsetY;
+		this.onPositionChanged();
 	}
 
 	public void setOffset(final float pOffsetX, final float pOffsetY) {

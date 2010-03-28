@@ -43,7 +43,7 @@ public class SplitScreenEngine extends Engine {
 	}
 	
 	public Camera getSecondCamera() {
-		return super.getCamera();
+		return getEngineOptions().getSecondCamera();
 	}
 
 	// ===========================================================

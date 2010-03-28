@@ -85,7 +85,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
+	
 	private void acquireWakeLock() {
 		final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "AndEngine");

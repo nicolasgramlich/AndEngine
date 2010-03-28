@@ -7,7 +7,6 @@ import org.anddev.andengine.entity.StaticEntity;
 import org.anddev.andengine.physics.collision.CollisionChecker;
 
 import android.opengl.GLU;
-import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -26,9 +25,6 @@ public class Camera implements IUpdateHandler {
 	private float mMaxX;
 	private float mMinY;
 	private float mMaxY;
-	
-	private int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
-	private int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
 
 	// ===========================================================
 	// Constructors
@@ -94,9 +90,12 @@ public class Camera implements IUpdateHandler {
 		this.mMaxY = pMaxY;
 	}
 
-	public void setSurfaceSize(final int pSurfaceWidth, final int pSurfaceHeight) {
-		this.mSurfaceWidth = pSurfaceWidth;
-		this.mSurfaceHeight = pSurfaceHeight;
+	public float relativeToAbsoluteX(final float pRelativeX) {
+		return this.mMinX + pRelativeX * (this.mMaxX - this.mMinX);
+	}
+	
+	public float relativeToAbsoluteY(final float pRelativeY) {
+		return this.mMinY + pRelativeY * (this.mMaxY - this.mMinY);
 	}
 
 	// ===========================================================
@@ -122,13 +121,9 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApply(final GL10 pGL) {
+		pGL.glMatrixMode(GL10.GL_PROJECTION);
+		pGL.glLoadIdentity();
 		GLU.gluOrtho2D(pGL, this.mMinX, this.mMaxX, this.mMaxY, this.mMinY);
-	}
-
-	public void surfaceToSceneMotionEvent(final MotionEvent pMotionEvent) {
-		final float x = this.mMinX + (pMotionEvent.getX() / this.mSurfaceWidth) * (this.mMaxX - this.mMinX);
-		final float y = this.mMinY + (pMotionEvent.getY() / this.mSurfaceHeight) * (this.mMaxY - this.mMinY);
-		pMotionEvent.setLocation(x, y);
 	}
 
 	// ===========================================================

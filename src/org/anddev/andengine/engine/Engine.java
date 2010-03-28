@@ -26,6 +26,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Debug;
+import android.view.MotionEvent;
 
 
 /**
@@ -56,6 +57,9 @@ public class Engine implements SensorEventListener {
 
 	private final ArrayList<IUpdateHandler> mPreFrameHandlers = new ArrayList<IUpdateHandler>();
 	private final ArrayList<IUpdateHandler> mPostFrameHandlers = new ArrayList<IUpdateHandler>();
+	
+	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
+	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
 
 	// ===========================================================
 	// Constructors
@@ -97,6 +101,19 @@ public class Engine implements SensorEventListener {
 
 	public Camera getCamera() {
 		return this.mEngineOptions.getCamera();
+	}
+
+	public void setSurfaceSize(final int pSurfaceWidth, final int pSurfaceHeight) {
+		this.mSurfaceWidth = pSurfaceWidth;
+		this.mSurfaceHeight = pSurfaceHeight;
+	}
+	
+	public int getSurfaceWidth() {
+		return this.mSurfaceWidth;
+	}
+	
+	public int getSurfaceHeight() {
+		return this.mSurfaceHeight;
 	}
 
 	public AccelerometerData getAccelerometerData() {
@@ -167,6 +184,15 @@ public class Engine implements SensorEventListener {
 	// Methods
 	// ===========================================================
 
+	public void surfaceToSceneMotionEvent(final MotionEvent pMotionEvent) {
+		final Camera camera = this.getCamera();
+
+		final float x = camera.relativeToAbsoluteX(pMotionEvent.getX() / this.mSurfaceWidth);
+		final float y = camera.relativeToAbsoluteY(pMotionEvent.getY() / this.mSurfaceHeight);
+		
+		pMotionEvent.setLocation(x, y);
+	}
+
 	private void initLoadingScreen() {
 		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
 		final int loadingScreenWidth = loadingScreenTextureSource.getWidth();
@@ -185,7 +211,8 @@ public class Engine implements SensorEventListener {
 	}
 
 	public void onLoadComplete(final Scene pScene) {
-		//		final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
+		// final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
+		// TODO Pre/PostFrame Handlers already react!
 		if(this.mEngineOptions.hasLoadingScreen()){
 			this.registerPreFrameHandler(new TimerHandler(2, new ITimerCallback() {
 				@Override
@@ -208,11 +235,15 @@ public class Engine implements SensorEventListener {
 			if(this.mScene != null){
 				this.mScene.onUpdate(secondsElapsed);
 
-				this.mScene.onDraw(pGL);
+				this.onDrawScene(pGL);
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
 		}
+	}
+
+	protected void onDrawScene(final GL10 pGL) {
+		this.mScene.onDraw(pGL);
 	}
 
 	private void updatePreFrameHandlers(final float pSecondsElapsed) {

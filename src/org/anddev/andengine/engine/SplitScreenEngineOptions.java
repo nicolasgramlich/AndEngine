@@ -4,10 +4,10 @@ import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.view.camera.Camera;
 
 /**
- * @author  Nicolas Gramlich
- * @since  15:59:52 - 09.03.2010
+ * @author Nicolas Gramlich
+ * @since 22:33:05 - 27.03.2010
  */
-public class EngineOptions {
+public class SplitScreenEngineOptions extends EngineOptions {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,49 +16,39 @@ public class EngineOptions {
 	// Fields
 	// ===========================================================
 
-	private final ScreenOrientation mScreenOrientation;
-	private final boolean mFullscreen;
-	private final ITextureSource mLoadingScreenTextureSource;
-	private final Camera mCamera;
+	private final Camera mSecondCamera;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pCamera) {
-		this(null, pFullscreen, pScreenOrientation, pCamera);
+	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pFirstCamera, final Camera pSecondCamera) {
+		super(pFullscreen, pScreenOrientation, pFirstCamera);
+		this.mSecondCamera = pSecondCamera;
 	}
 
-	public EngineOptions(final ITextureSource pLoadingScreenTextureSource, final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pCamera) {
-		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
-		this.mFullscreen = pFullscreen;
-		this.mScreenOrientation = pScreenOrientation;
-		this.mCamera = pCamera;
+	public SplitScreenEngineOptions(final ITextureSource pLoadingScreenTextureSource, final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pFirstCamera, final Camera pSecondCamera) {
+		super(pLoadingScreenTextureSource, pFullscreen, pScreenOrientation, pFirstCamera);
+		this.mSecondCamera = pSecondCamera;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ScreenOrientation getScreenOrientation() {
-		return this.mScreenOrientation;
-	}
-
-	public boolean isFullscreen() {
-		return this.mFullscreen;
-	}
-
-	public ITextureSource getLoadingScreenTextureSource() {
-		return this.mLoadingScreenTextureSource;
-	}
-
-	public boolean hasLoadingScreen() {
-		return this.mLoadingScreenTextureSource != null;
-	}
-
+	
+	@Deprecated
+	@Override
 	public Camera getCamera() {
-		return this.mCamera;
+		return super.getCamera();
 	}
+	
+	public Camera getFirstCamera() {
+		return super.getCamera();
+	}
+	
+	public Camera getSecondCamera() {
+		return this.mSecondCamera;
+	}	
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -71,8 +61,4 @@ public class EngineOptions {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static enum ScreenOrientation {
-		LANDSCAPE, PORTRAIT
-	}
 }

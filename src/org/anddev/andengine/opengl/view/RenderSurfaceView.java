@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.view.camera.Camera;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -83,7 +84,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
-			this.mEngine.getCamera().setSurfaceSize(pWidth, pHeight);
+			this.mEngine.setSurfaceSize(pWidth, pHeight);
 			pGL.glViewport(0, 0, pWidth, pHeight);
 			pGL.glLoadIdentity();
 
@@ -122,18 +123,25 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
-			pGL.glMatrixMode(GL10.GL_PROJECTION);
-			pGL.glLoadIdentity();
-			this.mEngine.getCamera().onApply(pGL);
+			setCameraMatrix(pGL, this.mEngine.getCamera());
 			
-			pGL.glMatrixMode(GL10.GL_MODELVIEW);
-			pGL.glLoadIdentity();
+			setModelViewMatrix(pGL);
+			
 			this.mEngine.onDrawFrame(pGL);
 		}
 
 		// ===========================================================
 		// Methods
 		// ===========================================================
+
+		public static void setCameraMatrix(final GL10 pGL, final Camera pCamera) { // TODO Put to GLHelper
+			pCamera.onApply(pGL);
+		}
+
+		public static void setModelViewMatrix(final GL10 pGL) { // TODO Put to GLHelper
+			pGL.glMatrixMode(GL10.GL_MODELVIEW);
+			pGL.glLoadIdentity();
+		}
 
 		// ===========================================================
 		// Inner and Anonymous Classes

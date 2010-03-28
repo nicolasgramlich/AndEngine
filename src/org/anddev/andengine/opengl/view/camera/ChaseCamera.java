@@ -42,7 +42,9 @@ public class ChaseCamera extends Camera {
 	public void onUpdate(float pSecondsElapsed) {
 		super.onUpdate(pSecondsElapsed);
 		
-		this.setCenter(this.mChaseEntity.getCenterX(), this.mChaseEntity.getCenterY());
+		if(this.mChaseEntity != null) {
+			this.setCenter(this.mChaseEntity.getCenterX(), this.mChaseEntity.getCenterY());
+		}
 	}
 
 	// ===========================================================

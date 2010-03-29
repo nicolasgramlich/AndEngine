@@ -82,7 +82,7 @@ public class Scene extends BaseEntity {
 		}
 	}
 
-	private void drawBackground(final GL10 pGL) {
+	protected void drawBackground(final GL10 pGL) {
 		pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, 1.0f);
 		pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
 	}

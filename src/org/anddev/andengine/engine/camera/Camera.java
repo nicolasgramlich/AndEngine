@@ -2,6 +2,7 @@ package org.anddev.andengine.engine.camera;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.StaticEntity;
 import org.anddev.andengine.physics.collision.CollisionChecker;
@@ -25,6 +26,8 @@ public class Camera implements IUpdateHandler {
 	private float mMaxX;
 	private float mMinY;
 	private float mMaxY;
+	
+	private HUD mHUD;
 
 	// ===========================================================
 	// Constructors
@@ -97,6 +100,14 @@ public class Camera implements IUpdateHandler {
 	public float relativeToAbsoluteY(final float pRelativeY) {
 		return this.mMinY + pRelativeY * (this.mMaxY - this.mMinY);
 	}
+	
+	public HUD getHUD() {
+		return this.mHUD;
+	}
+	
+	public void setHUD(final HUD pHUD) {
+		this.mHUD = pHUD;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -104,12 +115,31 @@ public class Camera implements IUpdateHandler {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		/* Nothing. */
+		if(this.mHUD != null) {
+			this.mHUD.onUpdate(pSecondsElapsed);
+		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void flip() {
+		float tmp = this.mMinX;
+		this.mMinX = this.mMaxX;
+		this.mMaxX = tmp;
+
+		tmp = this.mMinY;
+		this.mMinY = this.mMaxY;
+		this.mMaxY = tmp;
+	}
+	
+	public void onDrawHUD(final GL10 pGL) {
+		if(this.mHUD != null) {
+			pGL.glTranslatef(this.mMinX, this.mMinY, 0);
+			this.mHUD.onDraw(pGL);
+		}
+	}
 
 	public boolean isEntityVisible(final StaticEntity pStaticEntity) {
 		final float otherLeft = pStaticEntity.getX();

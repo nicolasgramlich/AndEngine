@@ -49,7 +49,7 @@ public class Engine implements SensorEventListener {
 
 	private final EngineOptions mEngineOptions;
 
-	private Scene mScene;
+	protected Scene mScene;
 
 	private final TextureManager mTextureManager = new TextureManager();
 
@@ -246,14 +246,16 @@ public class Engine implements SensorEventListener {
 
 	protected void onDrawScene(final GL10 pGL) {
 		this.mScene.onDraw(pGL);
+		this.getCamera().onDrawHUD(pGL);
 	}
 
-	private void updatePreFrameHandlers(final float pSecondsElapsed) {
+	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
+		this.getCamera().onUpdate(pSecondsElapsed);
 		final ArrayList<IUpdateHandler> updateHandlers = this.mPreFrameHandlers;
 		this.updateHandlers(pSecondsElapsed, updateHandlers);
 	}
 
-	private void updatePostFrameHandlers(final float pSecondsElapsed) {
+	protected void updatePostFrameHandlers(final float pSecondsElapsed) {
 		final ArrayList<IUpdateHandler> updateHandlers = this.mPostFrameHandlers;
 		this.updateHandlers(pSecondsElapsed, updateHandlers);
 	}

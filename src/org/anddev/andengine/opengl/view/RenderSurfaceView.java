@@ -4,8 +4,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.Engine;
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.GLHelper;
-import org.anddev.andengine.opengl.view.camera.Camera;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;

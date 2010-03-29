@@ -2,9 +2,9 @@ package org.anddev.andengine.engine;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.SplitScreenEngineOptions;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
-import org.anddev.andengine.opengl.view.camera.Camera;
 
 import android.view.MotionEvent;
 

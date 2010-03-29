@@ -1,8 +1,8 @@
 package org.anddev.andengine.engine.options;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
-import org.anddev.andengine.opengl.view.camera.Camera;
 
 /**
  * @author  Nicolas Gramlich

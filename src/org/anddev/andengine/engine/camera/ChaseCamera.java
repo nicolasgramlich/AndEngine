@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.view.camera;
+package org.anddev.andengine.engine.camera;
 
 import org.anddev.andengine.entity.DynamicEntity;
 

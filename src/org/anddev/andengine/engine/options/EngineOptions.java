@@ -1,5 +1,6 @@
-package org.anddev.andengine.engine;
+package org.anddev.andengine.engine.options;
 
+import org.anddev.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.view.camera.Camera;
 
@@ -20,20 +21,22 @@ public class EngineOptions {
 	private final boolean mFullscreen;
 	private final ITextureSource mLoadingScreenTextureSource;
 	private final Camera mCamera;
+	private final IResolutionPolicy mResolutionPolicy;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pCamera) {
-		this(null, pFullscreen, pScreenOrientation, pCamera);
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera) {
+		this(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera, null);
 	}
 
-	public EngineOptions(final ITextureSource pLoadingScreenTextureSource, final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pCamera) {
-		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final ITextureSource pLoadingScreenTextureSource) {
 		this.mFullscreen = pFullscreen;
 		this.mScreenOrientation = pScreenOrientation;
+		this.mResolutionPolicy = pResolutionPolicy;
 		this.mCamera = pCamera;
+		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
 	}
 
 	// ===========================================================
@@ -42,6 +45,10 @@ public class EngineOptions {
 
 	public ScreenOrientation getScreenOrientation() {
 		return this.mScreenOrientation;
+	}
+	
+	public IResolutionPolicy getResolutionPolicy() {
+		return this.mResolutionPolicy;
 	}
 
 	public boolean isFullscreen() {

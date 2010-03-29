@@ -1,13 +1,14 @@
-package org.anddev.andengine.engine;
+package org.anddev.andengine.engine.options.resolutionpolicy;
 
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
-import org.anddev.andengine.opengl.view.camera.Camera;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.widget.FrameLayout.LayoutParams;
 
 /**
  * @author Nicolas Gramlich
- * @since 22:33:05 - 27.03.2010
+ * @since 11:23:00 - 29.03.2010
  */
-public class SplitScreenEngineOptions extends EngineOptions {
+public class RatioResolutionPolicy implements IResolutionPolicy {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,43 +17,47 @@ public class SplitScreenEngineOptions extends EngineOptions {
 	// Fields
 	// ===========================================================
 
-	private final Camera mSecondCamera;
+	private final float mRatio;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pFirstCamera, final Camera pSecondCamera) {
-		super(pFullscreen, pScreenOrientation, pFirstCamera);
-		this.mSecondCamera = pSecondCamera;
+	public RatioResolutionPolicy(final float pRatio) {
+		this.mRatio = pRatio;
 	}
 
-	public SplitScreenEngineOptions(final ITextureSource pLoadingScreenTextureSource, final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final Camera pFirstCamera, final Camera pSecondCamera) {
-		super(pLoadingScreenTextureSource, pFullscreen, pScreenOrientation, pFirstCamera);
-		this.mSecondCamera = pSecondCamera;
+	public RatioResolutionPolicy(final int pWidthRatio, final int pHeightRatio) {
+		this.mRatio = (float)pWidthRatio / pHeightRatio;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	@Deprecated
-	@Override
-	public Camera getCamera() {
-		return super.getCamera();
-	}
-	
-	public Camera getFirstCamera() {
-		return super.getCamera();
-	}
-	
-	public Camera getSecondCamera() {
-		return this.mSecondCamera;
-	}	
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public LayoutParams createLayoutParams(final DisplayMetrics pDisplayMetrics) {
+		final float realRatio = (float)pDisplayMetrics.widthPixels / pDisplayMetrics.heightPixels;
+
+		final int width;
+		final int height;
+		if(realRatio < this.mRatio) {
+			width = pDisplayMetrics.widthPixels;
+			height = Math.round(width / this.mRatio);
+		} else {
+			height = pDisplayMetrics.heightPixels;
+			width = Math.round(height * this.mRatio);
+		}
+
+		final LayoutParams layoutParams = new LayoutParams(width, height);
+
+		layoutParams.gravity = Gravity.CENTER;
+		return layoutParams;
+	}
 
 	// ===========================================================
 	// Methods

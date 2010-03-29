@@ -2,7 +2,7 @@ package org.anddev.andengine.ui.activity;
 
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.engine.EngineOptions;
+import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
@@ -14,8 +14,13 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 
 /**
  * @author Nicolas Gramlich
@@ -33,6 +38,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	private Engine mEngine;
 	private WakeLock mWakeLock;
 	private final SoundManager mSoundManager = new SoundManager();
+	private RenderSurfaceView mRenderSurfaceView;
 
 	// ===========================================================
 	// Constructors
@@ -45,7 +51,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 		this.mEngine = this.onLoadEngine();
 		this.applyEngineOptions(this.mEngine.getEngineOptions());
 
-		this.setContentView(new RenderSurfaceView(this, this.mEngine));
+		this.onSetContentView();
 
 		this.onLoadResources();
 		final Scene scene = this.onLoadScene();
@@ -85,7 +91,27 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
+	private void onSetContentView() {
+		this.mRenderSurfaceView = new RenderSurfaceView(this, this.mEngine);
+
+		final DisplayMetrics displayMetrics = new DisplayMetrics();
+		this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+		final LayoutParams layoutParams = this.mEngine.getEngineOptions().getResolutionPolicy().createLayoutParams(displayMetrics);
+		this.mRenderSurfaceView.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(final View pV, final MotionEvent pMotionEvent) {
+				return BaseGameActivity.this.onSceneTouchEvent(BaseGameActivity.this.getEngine().surfaceToSceneMotionEvent(pMotionEvent));
+			}
+		});
+		this.setContentView(this.mRenderSurfaceView, layoutParams);
+	}
+
+	protected boolean onSceneTouchEvent(final MotionEvent pMotionEvent) {
+		return false;
+	}
+
 	private void acquireWakeLock() {
 		final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "AndEngine");

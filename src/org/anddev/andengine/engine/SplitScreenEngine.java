@@ -2,6 +2,7 @@ package org.anddev.andengine.engine;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.options.SplitScreenEngineOptions;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.opengl.view.camera.Camera;
 
@@ -80,7 +81,7 @@ public class SplitScreenEngine extends Engine {
 	}
 	
 	@Override
-	public void surfaceToSceneMotionEvent(final MotionEvent pMotionEvent) {
+	public MotionEvent surfaceToSceneMotionEvent(final MotionEvent pMotionEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth / 2;
 		
 		final Camera camera;
@@ -101,6 +102,7 @@ public class SplitScreenEngine extends Engine {
 		final float y = camera.relativeToAbsoluteY(relativeY);
 		
 		pMotionEvent.setLocation(x, y);
+		return pMotionEvent;
 	}
 
 	// ===========================================================

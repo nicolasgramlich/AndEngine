@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.entity.handler.timer.ITimerCallback;
@@ -184,13 +185,14 @@ public class Engine implements SensorEventListener {
 	// Methods
 	// ===========================================================
 
-	public void surfaceToSceneMotionEvent(final MotionEvent pMotionEvent) {
+	public MotionEvent surfaceToSceneMotionEvent(final MotionEvent pMotionEvent) {
 		final Camera camera = this.getCamera();
 
 		final float x = camera.relativeToAbsoluteX(pMotionEvent.getX() / this.mSurfaceWidth);
 		final float y = camera.relativeToAbsoluteY(pMotionEvent.getY() / this.mSurfaceHeight);
 		
 		pMotionEvent.setLocation(x, y);
+		return pMotionEvent;
 	}
 
 	private void initLoadingScreen() {

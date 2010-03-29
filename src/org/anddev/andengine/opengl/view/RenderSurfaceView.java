@@ -100,8 +100,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
 
-			pGL.glMatrixMode(GL10.GL_PROJECTION);
-			this.mEngine.getCamera().onApply(pGL);
+			setCameraMatrix(pGL, this.mEngine.getCamera());
 		}
 
 		@Override
@@ -117,8 +116,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
 
-			pGL.glMatrixMode(GL10.GL_PROJECTION);
-			this.mEngine.getCamera().onApply(pGL);
+			setCameraMatrix(pGL, this.mEngine.getCamera());
 		}
 
 		@Override

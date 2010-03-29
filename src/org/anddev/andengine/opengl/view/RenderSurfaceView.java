@@ -87,11 +87,17 @@ public class RenderSurfaceView extends GLSurfaceView {
 			this.mEngine.setSurfaceSize(pWidth, pHeight);
 			pGL.glViewport(0, 0, pWidth, pHeight);
 			pGL.glLoadIdentity();
+		}
 
+		@Override
+		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
 			pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 
 			pGL.glShadeModel(GL10.GL_FLAT);
+			
+			pGL.glDisable(GL10.GL_LIGHTING);
 			pGL.glDisable(GL10.GL_DITHER);
+			pGL.glDisable(GL10.GL_DEPTH_TEST);
 			pGL.glDisable(GL10.GL_MULTISAMPLE);
 
 			pGL.glEnable(GL10.GL_BLEND);
@@ -99,24 +105,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
-
-			setCameraMatrix(pGL, this.mEngine.getCamera());
-		}
-
-		@Override
-		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
-			pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
-			pGL.glClearColor(0, 0, 0, 1);
-			pGL.glDisable(GL10.GL_LIGHTING);
-			pGL.glDisable(GL10.GL_DITHER);
-			pGL.glDisable(GL10.GL_DEPTH_TEST);
-			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-
-			GLHelper.enableTextures(pGL);
-			GLHelper.enableTexCoordArray(pGL);
-			GLHelper.enableVertexArray(pGL);
-
-			setCameraMatrix(pGL, this.mEngine.getCamera());
 		}
 
 		@Override

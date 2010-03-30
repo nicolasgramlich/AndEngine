@@ -156,7 +156,7 @@ public class Camera implements IUpdateHandler {
 		return CollisionChecker.checkAxisAlignedBoxCollision(this.mMinX, this.mMinY, this.mMaxX, this.mMaxY, otherLeft, otherTop, otherRight, otherBottom);
 	}
 
-	public void onApply(final GL10 pGL) {
+	public void onApplyMatrix(final GL10 pGL) {
 		pGL.glMatrixMode(GL10.GL_PROJECTION);
 		pGL.glLoadIdentity();
 		GLU.gluOrtho2D(pGL, this.mMinX, this.mMaxX, this.mMaxY, this.mMinY);

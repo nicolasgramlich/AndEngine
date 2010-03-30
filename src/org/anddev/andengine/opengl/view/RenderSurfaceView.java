@@ -4,7 +4,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.GLHelper;
 
 import android.content.Context;
@@ -91,16 +90,16 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
-			pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
+			GLHelper.setPerspectiveCorrectionHintFastest(pGL);
 
-			pGL.glShadeModel(GL10.GL_FLAT);
-			
-			pGL.glDisable(GL10.GL_LIGHTING);
-			pGL.glDisable(GL10.GL_DITHER);
-			pGL.glDisable(GL10.GL_DEPTH_TEST);
-			pGL.glDisable(GL10.GL_MULTISAMPLE);
+			GLHelper.setShadeModelFlat(pGL);
 
-			pGL.glEnable(GL10.GL_BLEND);
+			GLHelper.disableLightning(pGL);
+			GLHelper.disableDither(pGL);
+			GLHelper.disableDepthTest(pGL);
+			GLHelper.disableMultisample(pGL);
+
+			GLHelper.enableBlend(pGL);
 
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
@@ -109,9 +108,9 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
-			setCameraMatrix(pGL, this.mEngine.getCamera());
+			this.mEngine.getCamera().onApplyMatrix(pGL);
 			
-			setModelViewMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
 			
 			this.mEngine.onDrawFrame(pGL);
 		}
@@ -119,15 +118,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// ===========================================================
 		// Methods
 		// ===========================================================
-
-		public static void setCameraMatrix(final GL10 pGL, final Camera pCamera) { // TODO Put to GLHelper
-			pCamera.onApply(pGL);
-		}
-
-		public static void setModelViewMatrix(final GL10 pGL) { // TODO Put to GLHelper
-			pGL.glMatrixMode(GL10.GL_MODELVIEW);
-			pGL.glLoadIdentity();
-		}
 
 		// ===========================================================
 		// Inner and Anonymous Classes

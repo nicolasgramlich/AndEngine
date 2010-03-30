@@ -119,7 +119,7 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	protected void onInitDraw(final GL10 pGL) {
-		GLHelper.color4f(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
+		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 		GLHelper.enableVertexArray(pGL);
 	}
 

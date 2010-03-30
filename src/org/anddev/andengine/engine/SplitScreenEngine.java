@@ -4,7 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.SplitScreenEngineOptions;
-import org.anddev.andengine.opengl.view.RenderSurfaceView;
+import org.anddev.andengine.opengl.GLHelper;
 
 import android.view.MotionEvent;
 
@@ -73,8 +73,8 @@ public class SplitScreenEngine extends Engine {
 		pGL.glScissor(surfaceWidth / 2, 0, surfaceWidth / 2, surfaceHeight);
 		pGL.glViewport(surfaceWidth / 2, 0, surfaceWidth / 2, surfaceHeight);
 
-		RenderSurfaceView.Renderer.setCameraMatrix(pGL, this.getEngineOptions().getSecondCamera());
-		RenderSurfaceView.Renderer.setModelViewMatrix(pGL);
+		this.getEngineOptions().getSecondCamera().onApplyMatrix(pGL);
+		GLHelper.setModelViewIdentityMatrix(pGL);
 
 		super.mScene.onDraw(pGL);
 		this.getSecondCamera().onDrawHUD(pGL);

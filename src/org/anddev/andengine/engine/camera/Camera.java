@@ -8,6 +8,7 @@ import org.anddev.andengine.entity.StaticEntity;
 import org.anddev.andengine.physics.collision.CollisionChecker;
 
 import android.opengl.GLU;
+import android.util.DisplayMetrics;
 
 /**
  * @author Nicolas Gramlich
@@ -33,6 +34,14 @@ public class Camera implements IUpdateHandler {
 	// Constructors
 	// ===========================================================
 
+	public Camera(final float pCenterX, final float pCenterY, final DisplayMetrics pDisplayMetrics) {
+		this.mMinX = 0;
+		this.mMinY = 0;
+		this.mMaxX = pDisplayMetrics.widthPixels;
+		this.mMaxY = pDisplayMetrics.heightPixels;
+		this.setCenter(pCenterX, pCenterY);
+	}
+	
 	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.set(pX, pX + pWidth, pY, pY + pHeight);
 	}
@@ -83,10 +92,7 @@ public class Camera implements IUpdateHandler {
 		this.mMaxY += dY;
 	}
 
-	private void set(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY) {
-		assert(pMinX < pMaxX);
-		assert(pMinY < pMaxY);
-		
+	private void set(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY) {		
 		this.mMinX = pMinX;
 		this.mMaxX = pMaxX;
 		this.mMinY = pMinY;

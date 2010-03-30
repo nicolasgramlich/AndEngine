@@ -119,15 +119,22 @@ public abstract class StaticEntity extends BaseEntity {
 
 	protected abstract void onPositionChanged();
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
 	@Override
 	public void reset() {
 		super.reset();
 		this.mOffsetX = 0;
 		this.mOffsetY = 0;
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+	
+	public boolean contains(final int pX, final int pY) {
+		return pX >= this.mX 
+			&& pY >= this.mY 
+			&& pX <= this.mX + this.mWidth 
+			&& pY <= this.mY + this.mHeight;
 	}
 
 	public boolean collidesWith(final StaticEntity pOther) {

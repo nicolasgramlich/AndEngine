@@ -187,9 +187,37 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 
 	@Override
-	public boolean onTouch(final View pV, final MotionEvent pMotionEvent) {
-		if(this.mScene != null && this.mScene.hasOnSceneTouchListener()) {
-			return this.mScene.onSceneTouchEvent(this.surfaceToSceneMotionEvent(pMotionEvent));
+	public boolean onTouch(final View pView, final MotionEvent pMotionEvent) {
+		final Camera camera = this.getCameraFromSurfaceMotionEvent(pMotionEvent);
+		final MotionEvent sceneMotionEvent = this.convertSurfaceToSceneMotionEvent(camera, pMotionEvent);
+		
+		if(onTouchHUD(camera, pMotionEvent)) {
+			return true;
+		} else {
+			/* If HUD didn't handle it, Scene may handle it. */
+			return onTouchScene(sceneMotionEvent, pMotionEvent);
+		}
+	}
+
+	protected boolean onTouchHUD(final Camera pCamera, final MotionEvent pSceneMotionEvent) {
+		if(pCamera.hasHUD()) {
+			this.convertSceneToHUDMotionEvent(pCamera, pSceneMotionEvent);
+			
+			final boolean handled = pCamera.getHUD().onSceneTouchEvent(pSceneMotionEvent);
+			if(handled) {
+				return true;
+			} else {
+				this.convertHUDtoSceneMotionEvent(pCamera, pSceneMotionEvent);
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	protected boolean onTouchScene(final MotionEvent pSceneMotionEvent, final MotionEvent pRawMotionEvent) {
+		if(this.mScene != null) {
+			return this.mScene.onSceneTouchEvent(pSceneMotionEvent);
 		} else {
 			return false;
 		}
@@ -199,14 +227,23 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// Methods
 	// ===========================================================
 
-	public MotionEvent surfaceToSceneMotionEvent(final MotionEvent pMotionEvent) {
-		final Camera camera = this.getCamera();
+	protected Camera getCameraFromSurfaceMotionEvent(MotionEvent pMotionEvent) {
+		return this.getCamera();
+	}
 
-		final float x = camera.relativeToAbsoluteX(pMotionEvent.getX() / this.mSurfaceWidth);
-		final float y = camera.relativeToAbsoluteY(pMotionEvent.getY() / this.mSurfaceHeight);
-		
-		pMotionEvent.setLocation(x, y);
-		return pMotionEvent;
+	protected MotionEvent convertSceneToHUDMotionEvent(final Camera pCamera, final MotionEvent pSceneMotionEvent) {
+		pCamera.convertSceneToHUDMotionEvent(pSceneMotionEvent);
+		return pSceneMotionEvent;
+	}
+	
+	protected MotionEvent convertHUDtoSceneMotionEvent(final Camera pCamera, final MotionEvent pHUDMotionEvent) {
+		pCamera.convertHUDToSceneMotionEvent(pHUDMotionEvent);
+		return pHUDMotionEvent;
+	}
+
+	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
+		pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, this.mSurfaceWidth, this.mSurfaceHeight);
+		return pSurfaceMotionEvent;
 	}
 
 	private void initLoadingScreen() {

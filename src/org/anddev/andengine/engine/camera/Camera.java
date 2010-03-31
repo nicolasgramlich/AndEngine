@@ -5,10 +5,12 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.StaticEntity;
+import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.physics.collision.CollisionChecker;
 
 import android.opengl.GLU;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -29,6 +31,8 @@ public class Camera implements IUpdateHandler {
 	private float mMaxY;
 	
 	private HUD mHUD;
+	
+	private boolean mFlipped;
 
 	// ===========================================================
 	// Constructors
@@ -98,14 +102,6 @@ public class Camera implements IUpdateHandler {
 		this.mMinY = pMinY;
 		this.mMaxY = pMaxY;
 	}
-
-	public float relativeToAbsoluteX(final float pRelativeX) {
-		return this.mMinX + pRelativeX * (this.mMaxX - this.mMinX);
-	}
-	
-	public float relativeToAbsoluteY(final float pRelativeY) {
-		return this.mMinY + pRelativeY * (this.mMaxY - this.mMinY);
-	}
 	
 	public HUD getHUD() {
 		return this.mHUD;
@@ -113,6 +109,10 @@ public class Camera implements IUpdateHandler {
 	
 	public void setHUD(final HUD pHUD) {
 		this.mHUD = pHUD;
+	}
+	
+	public boolean hasHUD() {
+		return this.mHUD != null;
 	}
 
 	// ===========================================================
@@ -129,20 +129,23 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private float relativeToAbsoluteX(final float pRelativeX) {
+		return this.mMinX + pRelativeX * (this.mMaxX - this.mMinX);
+	}
+	
+	private float relativeToAbsoluteY(final float pRelativeY) {
+		return this.mMinY + pRelativeY * (this.mMaxY - this.mMinY);
+	}
 	
 	public void flip() {
-		float tmp = this.mMinX;
-		this.mMinX = this.mMaxX;
-		this.mMaxX = tmp;
-
-		tmp = this.mMinY;
-		this.mMinY = this.mMaxY;
-		this.mMaxY = tmp;
+		this.mFlipped = !this.mFlipped;
 	}
 	
 	public void onDrawHUD(final GL10 pGL) {
 		if(this.mHUD != null) {
-			pGL.glTranslatef(this.mMinX, this.mMinY, 0);
+			this.onApplyHUDMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
 			this.mHUD.onDraw(pGL);
 		}
 	}
@@ -150,7 +153,7 @@ public class Camera implements IUpdateHandler {
 	public boolean isEntityVisible(final StaticEntity pStaticEntity) {
 		final float otherLeft = pStaticEntity.getX();
 		final float otherTop = pStaticEntity.getY();
-		final float otherRight = pStaticEntity.getWidth()+ otherLeft;
+		final float otherRight = pStaticEntity.getWidth() + otherLeft;
 		final float otherBottom = pStaticEntity.getHeight() + otherTop;
 
 		return CollisionChecker.checkAxisAlignedBoxCollision(this.mMinX, this.mMinY, this.mMaxX, this.mMaxY, otherLeft, otherTop, otherRight, otherBottom);
@@ -159,7 +162,56 @@ public class Camera implements IUpdateHandler {
 	public void onApplyMatrix(final GL10 pGL) {
 		pGL.glMatrixMode(GL10.GL_PROJECTION);
 		pGL.glLoadIdentity();
+		
 		GLU.gluOrtho2D(pGL, this.mMinX, this.mMaxX, this.mMaxY, this.mMinY);
+		
+		if(this.mFlipped) {
+			rotateHalfAround(pGL, this.getCenterX(), this.getCenterY());
+		}
+	}
+	
+	public void onApplyHUDMatrix(final GL10 pGL) {
+		pGL.glMatrixMode(GL10.GL_PROJECTION);
+		pGL.glLoadIdentity();
+		
+		GLU.gluOrtho2D(pGL, 0, this.getWidth(), this.getHeight(), 0);
+
+		if(this.mFlipped) {
+			rotateHalfAround(pGL, this.getWidth() / 2, this.getHeight() / 2);
+		}
+	}
+
+	private void rotateHalfAround(final GL10 pGL, final float pCenterX, final float pCenterY) {		
+		pGL.glTranslatef(pCenterX, pCenterY, 0);
+		pGL.glRotatef(180, 0, 0, 1);
+		pGL.glTranslatef(-pCenterX, -pCenterY, 0);
+	}
+
+	public void convertSceneToHUDMotionEvent(final MotionEvent pSceneMotionEvent) {
+		final float x = pSceneMotionEvent.getX() + this.mMinX;
+		final float y = pSceneMotionEvent.getY() + this.mMinY;
+		pSceneMotionEvent.setLocation(x, y);
+	}	
+
+	public void convertHUDToSceneMotionEvent(final MotionEvent pHUDMotionEvent) {
+		final float x = pHUDMotionEvent.getX() - this.mMinX;
+		final float y = pHUDMotionEvent.getY() - this.mMinY;
+		pHUDMotionEvent.setLocation(x, y);
+	}
+
+	public void convertSurfaceToSceneMotionEvent(final MotionEvent pSurfaceMotionEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
+		final float x;
+		final float y;
+		
+		if(this.mFlipped) {
+			x = this.relativeToAbsoluteX(1 - (pSurfaceMotionEvent.getX() / pSurfaceWidth));
+			y = this.relativeToAbsoluteY(1 - (pSurfaceMotionEvent.getY() / pSurfaceHeight));
+		} else {
+			x = this.relativeToAbsoluteX(pSurfaceMotionEvent.getX() / pSurfaceWidth);
+			y = this.relativeToAbsoluteY(pSurfaceMotionEvent.getY() / pSurfaceHeight);
+		}
+		
+		pSurfaceMotionEvent.setLocation(x, y);
 	}
 
 	// ===========================================================

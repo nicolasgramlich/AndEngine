@@ -58,22 +58,25 @@ public class SplitScreenEngine extends Engine {
 
 	@Override
 	protected void onDrawScene(final GL10 pGL) {
-		pGL.glEnable(GL10.GL_SCISSOR_TEST);
 		final int surfaceWidth = this.mSurfaceWidth;
+		final int surfaceWidthHalf = surfaceWidth / 2;
+		
 		final int surfaceHeight = this.mSurfaceHeight;
+		
+		pGL.glEnable(GL10.GL_SCISSOR_TEST);
 
-		/* First Screen. Simply with half the width. */
-		pGL.glScissor(0, 0, surfaceWidth / 2, surfaceHeight);
-		pGL.glViewport(0, 0, surfaceWidth / 2, surfaceHeight);
+		/* First Screen. With first camera, on the left half of the screens width. */
+		pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
+		pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
 		super.mScene.onDraw(pGL);
 		this.getFirstCamera().onDrawHUD(pGL);
 
 
-		/* Second Screen. With second Camera, */
-		pGL.glScissor(surfaceWidth / 2, 0, surfaceWidth / 2, surfaceHeight);
-		pGL.glViewport(surfaceWidth / 2, 0, surfaceWidth / 2, surfaceHeight);
+		/* Second Screen. With second camera, on the right half of the screens width. */
+		pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+		pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 
-		this.getEngineOptions().getSecondCamera().onApplyMatrix(pGL);
+		this.getSecondCamera().onApplyMatrix(pGL);
 		GLHelper.setModelViewIdentityMatrix(pGL);
 
 		super.mScene.onDraw(pGL);
@@ -81,30 +84,26 @@ public class SplitScreenEngine extends Engine {
 
 		pGL.glDisable(GL10.GL_SCISSOR_TEST);
 	}
+	
+	@Override
+	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
+		if(pMotionEvent.getX() <= this.mSurfaceWidth / 2)
+			return getFirstCamera();
+		else
+			return getSecondCamera();
+	}
 
 	@Override
-	public MotionEvent surfaceToSceneMotionEvent(final MotionEvent pMotionEvent) {
+	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth / 2;
-
-		final Camera camera;
-		final float relativeX;
-		final float relativeY = pMotionEvent.getY() / this.mSurfaceHeight;
-
-		if(pMotionEvent.getX() < surfaceWidthHalf) {
-			camera = this.getFirstCamera();
-
-			relativeX = pMotionEvent.getX() / surfaceWidthHalf;
+		
+		if(pCamera == this.getFirstCamera()) {
+			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);			
 		} else {
-			camera = this.getSecondCamera();
-
-			relativeX = (pMotionEvent.getX() - surfaceWidthHalf) / surfaceWidthHalf;
+			pSurfaceMotionEvent.offsetLocation(-surfaceWidthHalf, 0);
+			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);			
 		}
-
-		final float x = camera.relativeToAbsoluteX(relativeX);
-		final float y = camera.relativeToAbsoluteY(relativeY);
-
-		pMotionEvent.setLocation(x, y);
-		return pMotionEvent;
+		return pSurfaceMotionEvent;
 	}
 
 	@Override

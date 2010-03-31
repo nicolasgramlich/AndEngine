@@ -2,6 +2,7 @@ package org.anddev.andengine.ui.activity;
 
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
+import org.anddev.andengine.engine.ISceneTouchListener;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
@@ -15,18 +16,15 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 
 /**
  * @author Nicolas Gramlich
  * @since 11:27:06 - 08.03.2010
  */
-public abstract class BaseGameActivity extends Activity implements IGameInterface {
+public abstract class BaseGameActivity extends Activity implements IGameInterface, ISceneTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -49,6 +47,8 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 		super.onCreate(pSavedInstanceState);
 
 		this.mEngine = this.onLoadEngine();
+		
+		this.mEngine.setSceneTouchListener(this);
 		this.applyEngineOptions(this.mEngine.getEngineOptions());
 
 		this.onSetContentView();
@@ -99,17 +99,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 		this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
 		final LayoutParams layoutParams = this.mEngine.getEngineOptions().getResolutionPolicy().createLayoutParams(displayMetrics);
-		this.mRenderSurfaceView.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(final View pV, final MotionEvent pMotionEvent) {
-				return BaseGameActivity.this.onSceneTouchEvent(BaseGameActivity.this.getEngine().surfaceToSceneMotionEvent(pMotionEvent));
-			}
-		});
 		this.setContentView(this.mRenderSurfaceView, layoutParams);
-	}
-
-	protected boolean onSceneTouchEvent(final MotionEvent pMotionEvent) {
-		return false;
 	}
 
 	private void acquireWakeLock() {

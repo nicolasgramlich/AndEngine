@@ -28,13 +28,15 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Debug;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 
 
 /**
  * @author Nicolas Gramlich
  * @since 12:21:31 - 08.03.2010
  */
-public class Engine implements SensorEventListener {
+public class Engine implements SensorEventListener, OnTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -50,6 +52,8 @@ public class Engine implements SensorEventListener {
 	private final EngineOptions mEngineOptions;
 
 	protected Scene mScene;
+
+	private ISceneTouchListener mSceneTouchListener;
 
 	private final TextureManager mTextureManager = new TextureManager();
 
@@ -76,6 +80,10 @@ public class Engine implements SensorEventListener {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public boolean isRunning() {
+		return this.mRunning;
+	}
 
 	public void start() {
 		if(!this.mRunning){
@@ -152,6 +160,10 @@ public class Engine implements SensorEventListener {
 	public void stopPerformanceTracing() {
 		Debug.stopMethodTracing();
 	}
+	
+	public void setSceneTouchListener(ISceneTouchListener pSceneTouchListener) {
+		this.mSceneTouchListener = pSceneTouchListener;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -178,6 +190,15 @@ public class Engine implements SensorEventListener {
 					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
 				}
 				break;
+		}
+	}
+
+	@Override
+	public boolean onTouch(final View pV, final MotionEvent pMotionEvent) {
+		if(this.mSceneTouchListener != null) {
+			return this.mSceneTouchListener.onSceneTouchEvent(this.surfaceToSceneMotionEvent(pMotionEvent));
+		} else {
+			return false;
 		}
 	}
 

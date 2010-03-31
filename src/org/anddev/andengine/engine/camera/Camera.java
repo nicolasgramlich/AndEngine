@@ -38,16 +38,14 @@ public class Camera implements IUpdateHandler {
 	// Constructors
 	// ===========================================================
 
-	public Camera(final float pCenterX, final float pCenterY, final DisplayMetrics pDisplayMetrics) {
-		this.mMinX = 0;
-		this.mMinY = 0;
-		this.mMaxX = pDisplayMetrics.widthPixels;
-		this.mMaxY = pDisplayMetrics.heightPixels;
-		this.setCenter(pCenterX, pCenterY);
-	}
-
 	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.set(pX, pX + pWidth, pY, pY + pHeight);
+	}
+	
+	public static Camera createFromDisplayMetrics(final float pCenterX, final float pCenterY, final DisplayMetrics pDisplayMetrics) {
+		final float width = pDisplayMetrics.widthPixels;
+		final float height = pDisplayMetrics.widthPixels;
+		return new Camera(pCenterX - width / 2, pCenterY - height / 2, width, height);
 	}
 
 	// ===========================================================

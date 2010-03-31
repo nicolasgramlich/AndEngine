@@ -47,6 +47,14 @@ public class Scene extends BaseEntity {
 	public int getLayerCount() {
 		return this.mLayers.length;
 	}
+	
+	public Layer getBottomLayer() {
+		return this.mLayers[0];
+	}
+	
+	public Layer getTopLayer() {
+		return this.mLayers[this.mLayers.length - 1];
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

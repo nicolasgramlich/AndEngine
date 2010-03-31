@@ -2,7 +2,6 @@ package org.anddev.andengine.ui.activity;
 
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.engine.ISceneTouchListener;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
@@ -24,7 +23,7 @@ import android.view.ViewGroup.LayoutParams;
  * @author Nicolas Gramlich
  * @since 11:27:06 - 08.03.2010
  */
-public abstract class BaseGameActivity extends Activity implements IGameInterface, ISceneTouchListener {
+public abstract class BaseGameActivity extends Activity implements IGameInterface {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -48,7 +47,6 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 
 		this.mEngine = this.onLoadEngine();
 		
-		this.mEngine.setSceneTouchListener(this);
 		this.applyEngineOptions(this.mEngine.getEngineOptions());
 
 		this.onSetContentView();

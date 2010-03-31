@@ -52,8 +52,6 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	protected Scene mScene;
 
-	private ISceneTouchListener mSceneTouchListener;
-
 	private final TextureManager mTextureManager = new TextureManager();
 
 	private IAccelerometerListener mAccelerometerListener;
@@ -159,10 +157,6 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public void stopPerformanceTracing() {
 		Debug.stopMethodTracing();
 	}
-	
-	public void setSceneTouchListener(ISceneTouchListener pSceneTouchListener) {
-		this.mSceneTouchListener = pSceneTouchListener;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -194,8 +188,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	@Override
 	public boolean onTouch(final View pV, final MotionEvent pMotionEvent) {
-		if(this.mSceneTouchListener != null) {
-			return this.mSceneTouchListener.onSceneTouchEvent(this.surfaceToSceneMotionEvent(pMotionEvent));
+		if(this.mScene != null && this.mScene.hasOnSceneTouchListener()) {
+			return this.mScene.getOnSceneTouchListener().onSceneTouchEvent(this.surfaceToSceneMotionEvent(pMotionEvent));
 		} else {
 			return false;
 		}
@@ -255,7 +249,6 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
-
 				this.mScene.updatePreFrameHandlers(secondsElapsed);
 						
 				this.mScene.onUpdate(secondsElapsed);

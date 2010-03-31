@@ -2,6 +2,8 @@ package org.anddev.andengine.entity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.view.MotionEvent;
+
 /**
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
@@ -23,6 +25,8 @@ public class Scene extends BaseEntity {
 
 	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
 	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
+
+	private IOnSceneTouchListener mOnSceneTouchListener;
 
 	// ===========================================================
 	// Constructors
@@ -81,6 +85,18 @@ public class Scene extends BaseEntity {
 
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.remove(pUpdateHandler);
+	}
+	
+	public void setOnSceneTouchListener(final IOnSceneTouchListener pOnSceneTouchListener) {
+		this.mOnSceneTouchListener = pOnSceneTouchListener;
+	}
+	
+	public IOnSceneTouchListener getOnSceneTouchListener() {
+		return this.mOnSceneTouchListener;
+	}
+	
+	public boolean hasOnSceneTouchListener() {
+		return this.mOnSceneTouchListener != null;
 	}
 
 	// ===========================================================
@@ -141,4 +157,17 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	public static interface IOnSceneTouchListener {
+		// ===========================================================
+		// Final Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent);
+	}
+
 }

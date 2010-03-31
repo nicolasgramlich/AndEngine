@@ -189,7 +189,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	@Override
 	public boolean onTouch(final View pV, final MotionEvent pMotionEvent) {
 		if(this.mScene != null && this.mScene.hasOnSceneTouchListener()) {
-			return this.mScene.getOnSceneTouchListener().onSceneTouchEvent(this.surfaceToSceneMotionEvent(pMotionEvent));
+			return this.mScene.onSceneTouchEvent(this.surfaceToSceneMotionEvent(pMotionEvent));
 		} else {
 			return false;
 		}

@@ -8,7 +8,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
  */
-public class Scene extends BaseEntity {
+public class Scene extends BaseEntity implements IOnSceneTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -114,6 +114,15 @@ public class Scene extends BaseEntity {
 		this.updateLayers(pSecondsElapsed);
 	}
 
+	@Override
+	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
+		if(this.mOnSceneTouchListener != null){
+			return this.mOnSceneTouchListener.onSceneTouchEvent(pSceneMotionEvent);
+		} else {
+			return false;
+		}
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -157,17 +166,4 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
-	public static interface IOnSceneTouchListener {
-		// ===========================================================
-		// Final Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent);
-	}
-
 }

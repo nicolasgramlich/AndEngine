@@ -1,12 +1,10 @@
-package org.anddev.andengine.entity;
-
-import android.view.MotionEvent;
+package org.anddev.andengine.input.touch;
 
 /**
  * @author Nicolas Gramlich
- * @since 10:59:10 - 31.03.2010
+ * @since 11:14:29 - 31.03.2010
  */
-public interface IOnSceneTouchListener {
+public interface ITouchArea {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -14,6 +12,6 @@ public interface IOnSceneTouchListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent);
+	
+	public boolean contains(final float pX, final float pY);
 }

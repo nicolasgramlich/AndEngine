@@ -188,14 +188,14 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void convertSceneToHUDMotionEvent(final MotionEvent pSceneMotionEvent) {
-		final float x = pSceneMotionEvent.getX() + this.mMinX;
-		final float y = pSceneMotionEvent.getY() + this.mMinY;
+		final float x = pSceneMotionEvent.getX() - this.mMinX;
+		final float y = pSceneMotionEvent.getY() - this.mMinY;
 		pSceneMotionEvent.setLocation(x, y);
 	}	
 
 	public void convertHUDToSceneMotionEvent(final MotionEvent pHUDMotionEvent) {
-		final float x = pHUDMotionEvent.getX() - this.mMinX;
-		final float y = pHUDMotionEvent.getY() - this.mMinY;
+		final float x = pHUDMotionEvent.getX() + this.mMinX;
+		final float y = pHUDMotionEvent.getY() + this.mMinY;
 		pHUDMotionEvent.setLocation(x, y);
 	}
 

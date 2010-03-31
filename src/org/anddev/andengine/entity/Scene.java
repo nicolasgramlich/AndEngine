@@ -1,6 +1,12 @@
 package org.anddev.andengine.entity;
 
+import java.util.ArrayList;
+
 import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.input.touch.IOnSceneTouchListener;
+import org.anddev.andengine.input.touch.ITouchArea;
+import org.anddev.andengine.input.touch.IOnAreaTouchListener;
 
 import android.view.MotionEvent;
 
@@ -8,7 +14,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
  */
-public class Scene extends BaseEntity implements IOnSceneTouchListener {
+public class Scene extends BaseEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,6 +24,8 @@ public class Scene extends BaseEntity implements IOnSceneTouchListener {
 	// ===========================================================
 
 	private final Layer[] mLayers;
+	
+	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
 	private float mRed;
 	private float mGreen;
@@ -27,6 +35,8 @@ public class Scene extends BaseEntity implements IOnSceneTouchListener {
 	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
 
 	private IOnSceneTouchListener mOnSceneTouchListener;
+
+	private IOnAreaTouchListener mOnAreaTouchListener;
 
 	// ===========================================================
 	// Constructors
@@ -63,12 +73,20 @@ public class Scene extends BaseEntity implements IOnSceneTouchListener {
 		return this.mLayers[this.mLayers.length - 1];
 	}
 
+	public void clearTouchAreas() {
+		this.mTouchAreas.clear();
+	}
+	
 	public void clearPreFrameHandlers() {
 		this.mPreFrameHandlers.clear();
 	}
 
 	public void clearPostFrameHandlers() {
 		this.mPostFrameHandlers.clear();
+	}
+
+	public void registerTouchArea(final ITouchArea pTouchArea) {
+		this.mTouchAreas.add(pTouchArea);
 	}
 
 	public void registerPreFrameHandler(final IUpdateHandler pUpdateHandler) {
@@ -79,13 +97,17 @@ public class Scene extends BaseEntity implements IOnSceneTouchListener {
 		this.mPostFrameHandlers.add(pUpdateHandler);
 	}
 
+	public void unregisterTouchArea(final ITouchArea pTouchArea) {
+		this.mTouchAreas.remove(pTouchArea);
+	}
+
 	public void unregisterPreFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPreFrameHandlers.remove(pUpdateHandler);
 	}
 
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.remove(pUpdateHandler);
-	}
+	}	
 	
 	public void setOnSceneTouchListener(final IOnSceneTouchListener pOnSceneTouchListener) {
 		this.mOnSceneTouchListener = pOnSceneTouchListener;
@@ -97,6 +119,18 @@ public class Scene extends BaseEntity implements IOnSceneTouchListener {
 	
 	public boolean hasOnSceneTouchListener() {
 		return this.mOnSceneTouchListener != null;
+	}
+	
+	public void setOnAreaTouchListener(final IOnAreaTouchListener pOnAreaTouchListener) {
+		this.mOnAreaTouchListener = pOnAreaTouchListener;
+	}
+	
+	public IOnAreaTouchListener getOnAreaTouchListener() {
+		return this.mOnAreaTouchListener;
+	}
+	
+	public boolean hasOnAreaTouchListener() {
+		return this.mOnAreaTouchListener != null;
 	}
 
 	// ===========================================================
@@ -114,8 +148,18 @@ public class Scene extends BaseEntity implements IOnSceneTouchListener {
 		this.updateLayers(pSecondsElapsed);
 	}
 
-	@Override
 	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
+		if(this.mOnAreaTouchListener != null) {
+			final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
+			final int touchAreaCount = touchAreas.size();
+			if(touchAreaCount > 0) {
+				for(int i = 0; i < touchAreaCount; i++) {
+					if(touchAreas.get(i).contains(pSceneMotionEvent.getX(), pSceneMotionEvent.getY()))
+						return this.mOnAreaTouchListener.onAreaTouched(touchAreas.get(i), pSceneMotionEvent);
+				}
+			}
+		}
+		/* If no area was touched, the Scene itself was touched as a fallback. */
 		if(this.mOnSceneTouchListener != null){
 			return this.mOnSceneTouchListener.onSceneTouchEvent(pSceneMotionEvent);
 		} else {

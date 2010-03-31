@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity;
 
+import org.anddev.andengine.input.touch.ITouchArea;
 import org.anddev.andengine.physics.collision.CollisionChecker;
 
 /**
@@ -130,7 +131,7 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	// Methods
 	// ===========================================================
 	
-	public boolean contains(final int pX, final int pY) {
+	public boolean contains(final float pX, final float pY) {
 		return pX >= this.mX 
 			&& pY >= this.mY 
 			&& pX <= this.mX + this.mWidth 

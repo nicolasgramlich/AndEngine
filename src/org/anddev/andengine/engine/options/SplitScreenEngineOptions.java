@@ -36,20 +36,20 @@ public class SplitScreenEngineOptions extends EngineOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	@Deprecated
 	@Override
 	public Camera getCamera() {
 		return super.getCamera();
 	}
-	
+
 	public Camera getFirstCamera() {
 		return super.getCamera();
 	}
-	
+
 	public Camera getSecondCamera() {
 		return this.mSecondCamera;
-	}	
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

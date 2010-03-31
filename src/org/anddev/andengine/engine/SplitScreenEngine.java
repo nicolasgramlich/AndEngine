@@ -60,9 +60,9 @@ public class SplitScreenEngine extends Engine {
 	protected void onDrawScene(final GL10 pGL) {
 		final int surfaceWidth = this.mSurfaceWidth;
 		final int surfaceWidthHalf = surfaceWidth / 2;
-		
+
 		final int surfaceHeight = this.mSurfaceHeight;
-		
+
 		pGL.glEnable(GL10.GL_SCISSOR_TEST);
 
 		/* First Screen. With first camera, on the left half of the screens width. */
@@ -84,24 +84,25 @@ public class SplitScreenEngine extends Engine {
 
 		pGL.glDisable(GL10.GL_SCISSOR_TEST);
 	}
-	
+
 	@Override
 	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
-		if(pMotionEvent.getX() <= this.mSurfaceWidth / 2)
-			return getFirstCamera();
-		else
-			return getSecondCamera();
+		if(pMotionEvent.getX() <= this.mSurfaceWidth / 2) {
+			return this.getFirstCamera();
+		} else {
+			return this.getSecondCamera();
+		}
 	}
 
 	@Override
 	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth / 2;
-		
+
 		if(pCamera == this.getFirstCamera()) {
-			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);			
+			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		} else {
 			pSurfaceMotionEvent.offsetLocation(-surfaceWidthHalf, 0);
-			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);			
+			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		}
 		return pSurfaceMotionEvent;
 	}

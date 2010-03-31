@@ -65,7 +65,7 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	public float getInitialY() {
 		return this.mInitialY;
 	}
-	
+
 	public float getCenterX() {
 		return this.mX + this.getWidth() / 2;
 	}
@@ -73,7 +73,7 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	public float getCenterY() {
 		return this.mY + this.getHeight() / 2;
 	}
-	
+
 	public float getOffsetX() {
 		return this.mOffsetX;
 	}
@@ -89,11 +89,11 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	public float getHeight() {
 		return this.mHeight;
 	}
-	
+
 	public float getInitialWidth() {
 		return this.mInitialWidth;
 	}
-	
+
 	public float getInitialHeight() {
 		return this.mInitialHeight;
 	}
@@ -113,7 +113,7 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 		this.mOffsetY = pOffsetY;
 		this.onPositionChanged();
 	}
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -130,12 +130,12 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public boolean contains(final float pX, final float pY) {
-		return pX >= this.mX 
-			&& pY >= this.mY 
-			&& pX <= this.mX + this.mWidth 
-			&& pY <= this.mY + this.mHeight;
+		return pX >= this.mX
+		&& pY >= this.mY
+		&& pX <= this.mX + this.mWidth
+		&& pY <= this.mY + this.mHeight;
 	}
 
 	public boolean collidesWith(final StaticEntity pOther) {

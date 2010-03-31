@@ -46,7 +46,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 		super.onCreate(pSavedInstanceState);
 
 		this.mEngine = this.onLoadEngine();
-		
+
 		this.applyEngineOptions(this.mEngine.getEngineOptions());
 
 		this.onSetContentView();

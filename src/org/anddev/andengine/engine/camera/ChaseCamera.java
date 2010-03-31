@@ -21,7 +21,7 @@ public class ChaseCamera extends Camera {
 	// Constructors
 	// ===========================================================
 
-	public ChaseCamera(float pX, float pY, float pWidth, float pHeight, final DynamicEntity pChaseEntity) {
+	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final DynamicEntity pChaseEntity) {
 		super(pX, pY, pWidth, pHeight);
 		this.mChaseEntity = pChaseEntity;
 	}
@@ -29,19 +29,19 @@ public class ChaseCamera extends Camera {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public void setChaseEntity(DynamicEntity pDynamicEntity) {
+
+	public void setChaseEntity(final DynamicEntity pDynamicEntity) {
 		this.mChaseEntity = pDynamicEntity;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
-	public void onUpdate(float pSecondsElapsed) {
+	public void onUpdate(final float pSecondsElapsed) {
 		super.onUpdate(pSecondsElapsed);
-		
+
 		if(this.mChaseEntity != null) {
 			this.setCenter(this.mChaseEntity.getCenterX(), this.mChaseEntity.getCenterY());
 		}

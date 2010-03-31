@@ -27,7 +27,7 @@ public class DynamicPhysicsBody extends BasePhysicsBody {
 	public DynamicPhysicsBody(final DynamicEntity pDynamicEntity, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final boolean pFixedRotation) {
 		this(pDynamicEntity, pMass, pFricition, pElasticity, pPhysicsShape, pFixedRotation, null);
 	}
-	
+
 	public DynamicPhysicsBody(final DynamicEntity pDynamicEntity, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final boolean pFixedRotation, final ICollisionCallback pCollisionCallback) {
 		super(pMass, pFricition, pElasticity, pPhysicsShape);
 		this.mDynamicEntity = pDynamicEntity;
@@ -38,15 +38,15 @@ public class DynamicPhysicsBody extends BasePhysicsBody {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public boolean hasCollisionCallback() {
 		return this.mCollisionCallback != null;
 	}
-	
+
 	public ICollisionCallback getCollisionCallback() {
 		return this.mCollisionCallback;
 	}
-	
+
 	public boolean isFixedRotation() {
 		return this.mFixedRotation;
 	}

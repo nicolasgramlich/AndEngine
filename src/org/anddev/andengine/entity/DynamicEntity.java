@@ -56,12 +56,12 @@ public abstract class DynamicEntity extends StaticEntity {
 	public void setScale(final float pScale) {
 		this.mScale = pScale;
 	}
-	
+
 	@Override
 	public float getWidth() {
 		return super.getWidth() * this.mScale;
 	}
-	
+
 	@Override
 	public float getHeight() {
 		return super.getHeight() * this.mScale;
@@ -119,11 +119,11 @@ public abstract class DynamicEntity extends StaticEntity {
 	public void setAngle(final float pAngle) {
 		this.mAngle = pAngle;
 	}
-	
+
 	public boolean isUpdatePhysicsSelf() {
 		return this.mUpdatePhysicsSelf;
 	}
-	
+
 	public void setUpdatePhysicsSelf(final boolean pUpdatePhysicsSelf) {
 		this.mUpdatePhysicsSelf = pUpdatePhysicsSelf;
 	}
@@ -134,7 +134,7 @@ public abstract class DynamicEntity extends StaticEntity {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if(isUpdatePhysicsSelf()) {
+		if(this.isUpdatePhysicsSelf()) {
 			if(this.mAccelerationX != 0 || this.mAccelerationY != 0 || this.mVelocityX != 0 || this.mVelocityY != 0) {
 				if(this.mAccelerationX != 0 || this.mAccelerationY != 0) {
 					this.mVelocityX += this.mAccelerationX * pSecondsElapsed;

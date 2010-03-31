@@ -38,7 +38,7 @@ public class StaticPhysicsBody extends BasePhysicsBody {
 	public StaticEntity getEntity() {
 		return this.mStaticEntity;
 	}
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

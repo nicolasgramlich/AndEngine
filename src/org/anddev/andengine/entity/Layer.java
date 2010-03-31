@@ -25,11 +25,11 @@ public class Layer extends BaseEntity {
 	// ===========================================================
 
 	public Layer() {
-		 this.mEntities = new ArrayList<IEntity>();
+		this.mEntities = new ArrayList<IEntity>();
 	}
-	
+
 	public Layer(final int pExpectedEntityCount) {
-		 this.mEntities = new ArrayList<IEntity>(pExpectedEntityCount);
+		this.mEntities = new ArrayList<IEntity>(pExpectedEntityCount);
 	}
 
 	// ===========================================================

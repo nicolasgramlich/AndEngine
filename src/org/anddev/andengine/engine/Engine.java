@@ -59,7 +59,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
 	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
-	
+
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
 
@@ -77,7 +77,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public boolean isRunning() {
 		return this.mRunning;
 	}
@@ -113,11 +113,11 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
 	}
-	
+
 	public int getSurfaceWidth() {
 		return this.mSurfaceWidth;
 	}
-	
+
 	public int getSurfaceHeight() {
 		return this.mSurfaceHeight;
 	}
@@ -149,11 +149,11 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.remove(pUpdateHandler);
 	}
-	
+
 	public void startPerformanceTracing(final String pTraceFileName) {
 		Debug.startMethodTracing("AndEngine/" + pTraceFileName);
 	}
-	
+
 	public void stopPerformanceTracing() {
 		Debug.stopMethodTracing();
 	}
@@ -190,19 +190,19 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public boolean onTouch(final View pView, final MotionEvent pMotionEvent) {
 		final Camera camera = this.getCameraFromSurfaceMotionEvent(pMotionEvent);
 		final MotionEvent sceneMotionEvent = this.convertSurfaceToSceneMotionEvent(camera, pMotionEvent);
-		
-		if(onTouchHUD(camera, pMotionEvent)) {
+
+		if(this.onTouchHUD(camera, pMotionEvent)) {
 			return true;
 		} else {
 			/* If HUD didn't handle it, Scene may handle it. */
-			return onTouchScene(sceneMotionEvent, pMotionEvent);
+			return this.onTouchScene(sceneMotionEvent, pMotionEvent);
 		}
 	}
 
 	protected boolean onTouchHUD(final Camera pCamera, final MotionEvent pSceneMotionEvent) {
 		if(pCamera.hasHUD()) {
 			this.convertSceneToHUDMotionEvent(pCamera, pSceneMotionEvent);
-			
+
 			final boolean handled = pCamera.getHUD().onSceneTouchEvent(pSceneMotionEvent);
 			if(handled) {
 				return true;
@@ -227,7 +227,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// Methods
 	// ===========================================================
 
-	protected Camera getCameraFromSurfaceMotionEvent(MotionEvent pMotionEvent) {
+	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
 		return this.getCamera();
 	}
 
@@ -235,7 +235,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		pCamera.convertSceneToHUDMotionEvent(pSceneMotionEvent);
 		return pSceneMotionEvent;
 	}
-	
+
 	protected MotionEvent convertHUDtoSceneMotionEvent(final Camera pCamera, final MotionEvent pHUDMotionEvent) {
 		pCamera.convertHUDToSceneMotionEvent(pHUDMotionEvent);
 		return pHUDMotionEvent;
@@ -252,8 +252,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		final int loadingScreenHeight = loadingScreenTextureSource.getHeight();
 		final Texture loadingScreenTexture = new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight));
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
-		
-		final Camera cam = this.getCamera(); 
+
+		final Camera cam = this.getCamera();
 		final Sprite loadingScreenSprite = new Sprite(cam.getMinX(), cam.getMinY(), cam.getWidth(), cam.getHeight(), loadingScreenTextureRegion);
 
 		this.loadTexture(loadingScreenTexture);
@@ -286,18 +286,18 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 			if(this.mScene != null){
 				this.mScene.updatePreFrameHandlers(secondsElapsed);
-						
+
 				this.mScene.onUpdate(secondsElapsed);
 
 				this.onDrawScene(pGL);
-				
+
 				this.mScene.updatePostFrameHandlers(secondsElapsed);
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
 		}
 	}
-	
+
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
 		this.getCamera().onUpdate(pSecondsElapsed);
 		this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
@@ -326,7 +326,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public void loadTexture(final Texture pTexture) {
 		this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTexture);
 	}
-	
+
 	public void loadTextures(final Texture ... pTextures) {
 		for(int i = pTextures.length - 1; i >= 0; i--) {
 			this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTextures[i]);

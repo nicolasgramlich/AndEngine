@@ -15,17 +15,17 @@ public class RotateByModifier extends BaseModifier {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private float mAnglePerSecond;
+
+	private final float mAnglePerSecond;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public RotateByModifier(final float pDuration, final float pAngle) {
 		this(pDuration, pAngle, null);
 	}
-	
+
 	public RotateByModifier(final float pDuration, final float pAngle, final IModifierListener pModiferListener) {
 		super(pDuration, pModiferListener);
 		this.mAnglePerSecond = pAngle / pDuration;
@@ -38,10 +38,10 @@ public class RotateByModifier extends BaseModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected void onManagedInitializeSprite(final BaseSprite pBaseSprite) {
-		
+
 	}
 
 	@Override

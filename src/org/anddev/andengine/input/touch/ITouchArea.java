@@ -12,6 +12,6 @@ public interface ITouchArea {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public boolean contains(final float pX, final float pY);
 }

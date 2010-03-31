@@ -46,7 +46,7 @@ public class EngineOptions {
 	public ScreenOrientation getScreenOrientation() {
 		return this.mScreenOrientation;
 	}
-	
+
 	public IResolutionPolicy getResolutionPolicy() {
 		return this.mResolutionPolicy;
 	}

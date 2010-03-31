@@ -45,12 +45,12 @@ public class TextureRegion {
 	public int getHeight() {
 		return this.mHeight;
 	}
-	
+
 	public void setWidth(final int pWidth) {
 		this.mWidth = pWidth;
 		this.mTextureBuffer.update();
 	}
-	
+
 	public void setHeight(final int pHeight) {
 		this.mHeight = pHeight;
 		this.mTextureBuffer.update();

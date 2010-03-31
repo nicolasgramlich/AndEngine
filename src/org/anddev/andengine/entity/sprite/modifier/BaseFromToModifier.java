@@ -15,18 +15,18 @@ public abstract class BaseFromToModifier extends BaseModifier {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private float mValuePerSecond;
+
+	private final float mValuePerSecond;
 	private final float mFromValue;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public BaseFromToModifier(final float pDuration, final float pFromValue, final float pToValue) {
 		this(pDuration, pFromValue, pToValue, null);
 	}
-	
+
 	public BaseFromToModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener pModiferListener) {
 		super(pDuration, pModiferListener);
 		this.mFromValue = pFromValue;
@@ -40,18 +40,18 @@ public abstract class BaseFromToModifier extends BaseModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	protected abstract void onSetInitialValue(final float pValue, final BaseSprite pBaseSprite);
 	protected abstract void onSetValue(final float pValue, final BaseSprite pBaseSprite);
-	
+
 	@Override
 	protected void onManagedInitializeSprite(final BaseSprite pBaseSprite) {
-		onSetInitialValue(this.mFromValue, pBaseSprite);
+		this.onSetInitialValue(this.mFromValue, pBaseSprite);
 	}
 
 	@Override
 	protected void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
-		onSetValue(this.mFromValue + this.getTotalSecondsElapsed() * this.mValuePerSecond, pBaseSprite);
+		this.onSetValue(this.mFromValue + this.getTotalSecondsElapsed() * this.mValuePerSecond, pBaseSprite);
 	}
 
 	// ===========================================================

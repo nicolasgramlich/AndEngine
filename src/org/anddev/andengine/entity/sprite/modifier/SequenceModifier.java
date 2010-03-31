@@ -28,7 +28,7 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 
 	public SequenceModifier(final IModifierListener pModiferListener, final BaseModifier ... pSpriteModifiers) {
 		assert(pSpriteModifiers.length > 0);
-		
+
 		this.mModiferListener = pModiferListener;
 		this.mSpriteModifiers = pSpriteModifiers;
 
@@ -66,8 +66,9 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 			this.mSpriteModifiers[this.mCurrentSpriteModifier].setModiferListener(this);
 		} else {
 			this.setExpired(true);
-			if(this.mModiferListener != null)
+			if(this.mModiferListener != null) {
 				this.mModiferListener.onModifierFinished(this, pBaseSprite);
+			}
 		}
 	}
 

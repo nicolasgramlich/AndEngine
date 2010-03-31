@@ -130,7 +130,7 @@ public abstract class Shape extends DynamicEntity {
 	protected void onApplyTransformations(final GL10 pGL) {
 		/* Offset */
 		this.applyOffset(pGL);
-		
+
 		/* Translate */
 		this.applyTranslation(pGL);
 
@@ -167,7 +167,7 @@ public abstract class Shape extends DynamicEntity {
 		if(scale != 1) {
 			final float halfWidth = this.getInitialWidth() / 2;
 			final float halfHeight = this.getInitialHeight() / 2;
-			
+
 			pGL.glTranslatef(halfWidth, halfHeight, 0);
 			pGL.glScalef(scale, scale, 1);
 			pGL.glTranslatef(-halfWidth, -halfHeight, 0);

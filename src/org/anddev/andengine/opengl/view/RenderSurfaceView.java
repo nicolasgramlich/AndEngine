@@ -33,7 +33,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		this.setOnTouchListener(pEngine);
 		this.mRenderer = new Renderer(pEngine);
 		this.setRenderer(this.mRenderer);
-//		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
+		//		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
 	}
 
 	// ===========================================================
@@ -110,9 +110,9 @@ public class RenderSurfaceView extends GLSurfaceView {
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
 			this.mEngine.getCamera().onApplyMatrix(pGL);
-			
+
 			GLHelper.setModelViewIdentityMatrix(pGL);
-			
+
 			this.mEngine.onDrawFrame(pGL);
 		}
 

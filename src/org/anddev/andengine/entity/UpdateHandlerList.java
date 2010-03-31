@@ -10,7 +10,7 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final long serialVersionUID = -8842562717687229277L;
 
 	// ===========================================================
@@ -30,7 +30,7 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	// ===========================================================
 
 	@Override
-	public void onUpdate(float pSecondsElapsed) {
+	public void onUpdate(final float pSecondsElapsed) {
 		final int handlerCount = this.size();
 		for(int i = 0; i < handlerCount; i++) {
 			this.get(i).onUpdate(pSecondsElapsed);

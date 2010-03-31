@@ -29,9 +29,9 @@ public class Camera implements IUpdateHandler {
 	private float mMaxX;
 	private float mMinY;
 	private float mMaxY;
-	
+
 	private HUD mHUD;
-	
+
 	private boolean mFlipped;
 
 	// ===========================================================
@@ -45,7 +45,7 @@ public class Camera implements IUpdateHandler {
 		this.mMaxY = pDisplayMetrics.heightPixels;
 		this.setCenter(pCenterX, pCenterY);
 	}
-	
+
 	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.set(pX, pX + pWidth, pY, pY + pHeight);
 	}
@@ -53,19 +53,19 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public float getMinX() {
 		return this.mMinX;
 	}
-	
+
 	public float getMaxX() {
 		return this.mMaxX;
 	}
-	
+
 	public float getMinY() {
 		return this.mMinY;
 	}
-	
+
 	public float getMaxY() {
 		return this.mMaxY;
 	}
@@ -96,21 +96,21 @@ public class Camera implements IUpdateHandler {
 		this.mMaxY += dY;
 	}
 
-	private void set(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY) {		
+	private void set(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY) {
 		this.mMinX = pMinX;
 		this.mMaxX = pMaxX;
 		this.mMinY = pMinY;
 		this.mMaxY = pMaxY;
 	}
-	
+
 	public HUD getHUD() {
 		return this.mHUD;
 	}
-	
+
 	public void setHUD(final HUD pHUD) {
 		this.mHUD = pHUD;
 	}
-	
+
 	public boolean hasHUD() {
 		return this.mHUD != null;
 	}
@@ -133,15 +133,15 @@ public class Camera implements IUpdateHandler {
 	private float relativeToAbsoluteX(final float pRelativeX) {
 		return this.mMinX + pRelativeX * (this.mMaxX - this.mMinX);
 	}
-	
+
 	private float relativeToAbsoluteY(final float pRelativeY) {
 		return this.mMinY + pRelativeY * (this.mMaxY - this.mMinY);
 	}
-	
+
 	public void flip() {
 		this.mFlipped = !this.mFlipped;
 	}
-	
+
 	public void onDrawHUD(final GL10 pGL) {
 		if(this.mHUD != null) {
 			this.onApplyHUDMatrix(pGL);
@@ -162,26 +162,26 @@ public class Camera implements IUpdateHandler {
 	public void onApplyMatrix(final GL10 pGL) {
 		pGL.glMatrixMode(GL10.GL_PROJECTION);
 		pGL.glLoadIdentity();
-		
+
 		GLU.gluOrtho2D(pGL, this.mMinX, this.mMaxX, this.mMaxY, this.mMinY);
-		
+
 		if(this.mFlipped) {
-			rotateHalfAround(pGL, this.getCenterX(), this.getCenterY());
+			this.rotateHalfAround(pGL, this.getCenterX(), this.getCenterY());
 		}
 	}
-	
+
 	public void onApplyHUDMatrix(final GL10 pGL) {
 		pGL.glMatrixMode(GL10.GL_PROJECTION);
 		pGL.glLoadIdentity();
-		
+
 		GLU.gluOrtho2D(pGL, 0, this.getWidth(), this.getHeight(), 0);
 
 		if(this.mFlipped) {
-			rotateHalfAround(pGL, this.getWidth() / 2, this.getHeight() / 2);
+			this.rotateHalfAround(pGL, this.getWidth() / 2, this.getHeight() / 2);
 		}
 	}
 
-	private void rotateHalfAround(final GL10 pGL, final float pCenterX, final float pCenterY) {		
+	private void rotateHalfAround(final GL10 pGL, final float pCenterX, final float pCenterY) {
 		pGL.glTranslatef(pCenterX, pCenterY, 0);
 		pGL.glRotatef(180, 0, 0, 1);
 		pGL.glTranslatef(-pCenterX, -pCenterY, 0);
@@ -191,7 +191,7 @@ public class Camera implements IUpdateHandler {
 		final float x = pSceneMotionEvent.getX() - this.mMinX;
 		final float y = pSceneMotionEvent.getY() - this.mMinY;
 		pSceneMotionEvent.setLocation(x, y);
-	}	
+	}
 
 	public void convertHUDToSceneMotionEvent(final MotionEvent pHUDMotionEvent) {
 		final float x = pHUDMotionEvent.getX() + this.mMinX;
@@ -202,7 +202,7 @@ public class Camera implements IUpdateHandler {
 	public void convertSurfaceToSceneMotionEvent(final MotionEvent pSurfaceMotionEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
 		final float x;
 		final float y;
-		
+
 		if(this.mFlipped) {
 			x = this.relativeToAbsoluteX(1 - (pSurfaceMotionEvent.getX() / pSurfaceWidth));
 			y = this.relativeToAbsoluteY(1 - (pSurfaceMotionEvent.getY() / pSurfaceHeight));
@@ -210,7 +210,7 @@ public class Camera implements IUpdateHandler {
 			x = this.relativeToAbsoluteX(pSurfaceMotionEvent.getX() / pSurfaceWidth);
 			y = this.relativeToAbsoluteY(pSurfaceMotionEvent.getY() / pSurfaceHeight);
 		}
-		
+
 		pSurfaceMotionEvent.setLocation(x, y);
 	}
 

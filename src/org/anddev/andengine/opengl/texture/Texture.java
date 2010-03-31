@@ -80,7 +80,7 @@ public class Texture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void selectOnHardware(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
 	}
@@ -98,7 +98,7 @@ public class Texture {
 	public void loadToHardware(final GL10 pGL) {
 		GLHelper.enableTextures(pGL);
 
-		allocateAndBindTextureOnHardware(pGL, this.mWidth, this.mHeight);
+		this.allocateAndBindTextureOnHardware(pGL, this.mWidth, this.mHeight);
 
 		applyTextureOptions(pGL, this.mTextureOptions);
 
@@ -192,7 +192,7 @@ public class Texture {
 	public static class TextureOptions {
 		public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_LINEAR, GL10.GL_MODULATE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE);
 		public static final TextureOptions DEFAULT_REPEATING = new TextureOptions(GL10.GL_NEAREST, GL10.GL_LINEAR, GL10.GL_MODULATE, GL10.GL_REPEAT, GL10.GL_REPEAT);
-		
+
 		public final int mMagFilter;
 		public final int mMinFilter;
 		public final float mWrapT;

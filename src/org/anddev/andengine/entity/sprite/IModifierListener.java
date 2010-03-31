@@ -12,6 +12,6 @@ public interface IModifierListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void onModifierFinished(final ISpriteModifier pSpriteModifier, final BaseSprite pBaseSprite);
 }

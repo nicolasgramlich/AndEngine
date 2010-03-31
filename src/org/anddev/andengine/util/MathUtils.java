@@ -10,7 +10,7 @@ public class MathUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	public static Random RANDOM = new Random();
 
 	public static final float PI = (float) Math.PI;

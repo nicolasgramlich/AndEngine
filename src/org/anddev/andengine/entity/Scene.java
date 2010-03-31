@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.input.touch.IOnAreaTouchListener;
 import org.anddev.andengine.input.touch.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.ITouchArea;
-import org.anddev.andengine.input.touch.IOnAreaTouchListener;
 
 import android.view.MotionEvent;
 
@@ -24,7 +24,7 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 
 	private final Layer[] mLayers;
-	
+
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
 	private float mRed;
@@ -64,11 +64,11 @@ public class Scene extends BaseEntity {
 	public int getLayerCount() {
 		return this.mLayers.length;
 	}
-	
+
 	public Layer getBottomLayer() {
 		return this.mLayers[0];
 	}
-	
+
 	public Layer getTopLayer() {
 		return this.mLayers[this.mLayers.length - 1];
 	}
@@ -76,7 +76,7 @@ public class Scene extends BaseEntity {
 	public void clearTouchAreas() {
 		this.mTouchAreas.clear();
 	}
-	
+
 	public void clearPreFrameHandlers() {
 		this.mPreFrameHandlers.clear();
 	}
@@ -107,28 +107,28 @@ public class Scene extends BaseEntity {
 
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.remove(pUpdateHandler);
-	}	
-	
+	}
+
 	public void setOnSceneTouchListener(final IOnSceneTouchListener pOnSceneTouchListener) {
 		this.mOnSceneTouchListener = pOnSceneTouchListener;
 	}
-	
+
 	public IOnSceneTouchListener getOnSceneTouchListener() {
 		return this.mOnSceneTouchListener;
 	}
-	
+
 	public boolean hasOnSceneTouchListener() {
 		return this.mOnSceneTouchListener != null;
 	}
-	
+
 	public void setOnAreaTouchListener(final IOnAreaTouchListener pOnAreaTouchListener) {
 		this.mOnAreaTouchListener = pOnAreaTouchListener;
 	}
-	
+
 	public IOnAreaTouchListener getOnAreaTouchListener() {
 		return this.mOnAreaTouchListener;
 	}
-	
+
 	public boolean hasOnAreaTouchListener() {
 		return this.mOnAreaTouchListener != null;
 	}
@@ -154,8 +154,9 @@ public class Scene extends BaseEntity {
 			final int touchAreaCount = touchAreas.size();
 			if(touchAreaCount > 0) {
 				for(int i = 0; i < touchAreaCount; i++) {
-					if(touchAreas.get(i).contains(pSceneMotionEvent.getX(), pSceneMotionEvent.getY()))
+					if(touchAreas.get(i).contains(pSceneMotionEvent.getX(), pSceneMotionEvent.getY())) {
 						return this.mOnAreaTouchListener.onAreaTouched(touchAreas.get(i), pSceneMotionEvent);
+					}
 				}
 			}
 		}

@@ -16,7 +16,7 @@ public class GLHelper {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static int mCurrentHardwareTexture = -1;
 
 	// ===========================================================
@@ -47,7 +47,7 @@ public class GLHelper {
 		pGL.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	}
 
-	public static void enableBlend(GL10 pGL) {
+	public static void enableBlend(final GL10 pGL) {
 		pGL.glEnable(GL10.GL_BLEND);
 	}
 
@@ -55,19 +55,19 @@ public class GLHelper {
 		pGL.glEnable(GL10.GL_TEXTURE_2D);
 	}
 
-	public static void disableLightning(GL10 pGL) {
+	public static void disableLightning(final GL10 pGL) {
 		pGL.glDisable(GL10.GL_LIGHTING);
 	}
 
-	public static void disableDither(GL10 pGL) {
+	public static void disableDither(final GL10 pGL) {
 		pGL.glDisable(GL10.GL_DITHER);
 	}
 
-	public static void disableDepthTest(GL10 pGL) {
+	public static void disableDepthTest(final GL10 pGL) {
 		pGL.glDisable(GL10.GL_DEPTH_TEST);
 	}
 
-	public static void disableMultisample(GL10 pGL) {
+	public static void disableMultisample(final GL10 pGL) {
 		pGL.glDisable(GL10.GL_MULTISAMPLE);
 	}
 
@@ -102,17 +102,17 @@ public class GLHelper {
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
 		pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 	}
-	
+
 	public static void setModelViewIdentityMatrix(final GL10 pGL) {
 		pGL.glMatrixMode(GL10.GL_MODELVIEW);
 		pGL.glLoadIdentity();
 	}
 
-	public static void setShadeModelFlat(GL10 pGL) {
+	public static void setShadeModelFlat(final GL10 pGL) {
 		pGL.glShadeModel(GL10.GL_FLAT);
 	}
 
-	public static void setPerspectiveCorrectionHintFastest(GL10 pGL) {
+	public static void setPerspectiveCorrectionHintFastest(final GL10 pGL) {
 		pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 	}
 

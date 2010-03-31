@@ -228,7 +228,6 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public void onLoadComplete(final Scene pScene) {
 		// final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
-		// TODO Pre/PostFrame Handlers already react!
 		if(this.mEngineOptions.hasLoadingScreen()){
 			this.registerPreFrameHandler(new TimerHandler(2, new ITimerCallback() {
 				@Override

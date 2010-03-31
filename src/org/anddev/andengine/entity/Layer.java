@@ -18,14 +18,18 @@ public class Layer extends BaseEntity {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<IEntity> mEntities = new ArrayList<IEntity>();
+	private final ArrayList<IEntity> mEntities;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public Layer() {
-
+		 this.mEntities = new ArrayList<IEntity>();
+	}
+	
+	public Layer(final int pExpectedEntityCount) {
+		 this.mEntities = new ArrayList<IEntity>(pExpectedEntityCount);
 	}
 
 	// ===========================================================

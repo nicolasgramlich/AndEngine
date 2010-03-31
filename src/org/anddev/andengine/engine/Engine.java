@@ -1,13 +1,12 @@
 package org.anddev.andengine.engine;
 
-import java.util.ArrayList;
-
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.Scene;
+import org.anddev.andengine.entity.UpdateHandlerList;
 import org.anddev.andengine.entity.handler.timer.ITimerCallback;
 import org.anddev.andengine.entity.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.sprite.Sprite;
@@ -60,8 +59,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
 
-	private final ArrayList<IUpdateHandler> mPreFrameHandlers = new ArrayList<IUpdateHandler>();
-	private final ArrayList<IUpdateHandler> mPostFrameHandlers = new ArrayList<IUpdateHandler>();
+	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
+	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
 	
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
@@ -256,36 +255,32 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
+
+				this.mScene.updatePreFrameHandlers(secondsElapsed);
+						
 				this.mScene.onUpdate(secondsElapsed);
 
 				this.onDrawScene(pGL);
+				
+				this.mScene.updatePostFrameHandlers(secondsElapsed);
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
 		}
 	}
+	
+	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
+		this.getCamera().onUpdate(pSecondsElapsed);
+		this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
+	}
+
+	protected void updatePostFrameHandlers(final float pSecondsElapsed) {
+		this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
+	}
 
 	protected void onDrawScene(final GL10 pGL) {
 		this.mScene.onDraw(pGL);
 		this.getCamera().onDrawHUD(pGL);
-	}
-
-	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
-		this.getCamera().onUpdate(pSecondsElapsed);
-		final ArrayList<IUpdateHandler> updateHandlers = this.mPreFrameHandlers;
-		this.updateHandlers(pSecondsElapsed, updateHandlers);
-	}
-
-	protected void updatePostFrameHandlers(final float pSecondsElapsed) {
-		final ArrayList<IUpdateHandler> updateHandlers = this.mPostFrameHandlers;
-		this.updateHandlers(pSecondsElapsed, updateHandlers);
-	}
-
-	private void updateHandlers(final float pSecondsElapsed, final ArrayList<IUpdateHandler> pUpdateHandlers) {
-		final int handlerCount = pUpdateHandlers.size();
-		for(int i = 0; i < handlerCount; i++) {
-			pUpdateHandlers.get(i).onUpdate(pSecondsElapsed);
-		}
 	}
 
 	private float getSecondsElapsed() {

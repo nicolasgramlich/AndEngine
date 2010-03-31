@@ -21,6 +21,9 @@ public class Scene extends BaseEntity {
 	private float mGreen;
 	private float mBlue;
 
+	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
+	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -54,6 +57,30 @@ public class Scene extends BaseEntity {
 	
 	public Layer getTopLayer() {
 		return this.mLayers[this.mLayers.length - 1];
+	}
+
+	public void clearPreFrameHandlers() {
+		this.mPreFrameHandlers.clear();
+	}
+
+	public void clearPostFrameHandlers() {
+		this.mPostFrameHandlers.clear();
+	}
+
+	public void registerPreFrameHandler(final IUpdateHandler pUpdateHandler) {
+		this.mPreFrameHandlers.add(pUpdateHandler);
+	}
+
+	public void registerPostFrameHandler(final IUpdateHandler pUpdateHandler) {
+		this.mPostFrameHandlers.add(pUpdateHandler);
+	}
+
+	public void unregisterPreFrameHandler(final IUpdateHandler pUpdateHandler) {
+		this.mPreFrameHandlers.remove(pUpdateHandler);
+	}
+
+	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
+		this.mPostFrameHandlers.remove(pUpdateHandler);
 	}
 
 	// ===========================================================
@@ -101,6 +128,14 @@ public class Scene extends BaseEntity {
 		for(int i = 0; i < layerCount; i++) {
 			layers[i].onDraw(pGL);
 		}
+	}
+
+	public void updatePreFrameHandlers(final float pSecondsElapsed) {
+		this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
+	}
+
+	public void updatePostFrameHandlers(final float pSecondsElapsed) {
+		this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
 	}
 
 	// ===========================================================

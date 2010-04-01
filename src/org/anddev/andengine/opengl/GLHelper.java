@@ -102,6 +102,14 @@ public class GLHelper {
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
 		pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 	}
+	
+	public static void switchToModelViewMatrix(final GL10 pGL) {
+		pGL.glMatrixMode(GL10.GL_MODELVIEW);
+	}
+	
+	public static void switchToProjectionMatrix(final GL10 pGL) {
+		pGL.glMatrixMode(GL10.GL_PROJECTION);
+	}
 
 	public static void setModelViewIdentityMatrix(final GL10 pGL) {
 		pGL.glMatrixMode(GL10.GL_MODELVIEW);

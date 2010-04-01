@@ -172,10 +172,13 @@ public class Camera implements IUpdateHandler {
 		pGL.glMatrixMode(GL10.GL_PROJECTION);
 		pGL.glLoadIdentity();
 
-		GLU.gluOrtho2D(pGL, 0, this.getWidth(), this.getHeight(), 0);
+		final float width = this.getWidth();
+		final float height = this.getHeight();
+		
+		GLU.gluOrtho2D(pGL, 0, width, height, 0);
 
 		if(this.mFlipped) {
-			this.rotateHalfAround(pGL, this.getWidth() / 2, this.getHeight() / 2);
+			this.rotateHalfAround(pGL, width / 2, height / 2);
 		}
 	}
 

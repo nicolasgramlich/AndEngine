@@ -18,7 +18,7 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 	// ===========================================================
 
 	private IModifierListener mModiferListener;
-	private final BaseModifier[] mSpriteModifiers;
+	private final ISpriteModifier[] mSpriteModifiers;
 	private int mCurrentSpriteModifier;
 	private boolean mExpired;
 
@@ -26,11 +26,11 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 	// Constructors
 	// ===========================================================
 	
-	public SequenceModifier(final BaseModifier ... pSpriteModifiers) {
+	public SequenceModifier(final ISpriteModifier ... pSpriteModifiers) {
 		this(null, pSpriteModifiers);
 	}
 
-	public SequenceModifier(final IModifierListener pModiferListener, final BaseModifier ... pSpriteModifiers) {
+	public SequenceModifier(final IModifierListener pModiferListener, final ISpriteModifier ... pSpriteModifiers) {
 		assert(pSpriteModifiers.length > 0);
 
 		this.mModiferListener = pModiferListener;
@@ -80,6 +80,17 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 	public void onUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
 		if(!this.isExpired()) {
 			this.mSpriteModifiers[this.mCurrentSpriteModifier].onUpdateSprite(pSecondsElapsed, pBaseSprite);
+		}
+	}
+	
+	@Override
+	public void reset() {
+		this.mCurrentSpriteModifier = 0;
+		this.mExpired = false;
+		
+		final ISpriteModifier[] spriteModifiers = this.mSpriteModifiers;
+		for(int i = spriteModifiers.length - 1; i >= 0; i--) {
+			spriteModifiers[i].reset();
 		}
 	}
 

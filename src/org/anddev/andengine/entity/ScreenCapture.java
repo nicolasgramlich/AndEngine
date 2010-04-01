@@ -62,7 +62,7 @@ public class ScreenCapture implements IEntity {
 	public void onUpdate(final float pSecondsElapsed) {
 		/* Nothing. */
 	}
-	
+
 	@Override
 	public void reset() {
 		/* Nothing */

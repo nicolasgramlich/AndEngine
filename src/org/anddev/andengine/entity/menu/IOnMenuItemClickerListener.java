@@ -12,6 +12,6 @@ public interface IOnMenuItemClickerListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void onMenuItemClicked(final MenuScene pMenuScene, final MenuItem pMenuItem);
 }

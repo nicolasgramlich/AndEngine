@@ -44,10 +44,12 @@ public abstract class BasePairFromToModifier extends BaseFromToModifier {
 	protected abstract void onSetInitialValues(final float pValueA, final float pValueB, final BaseSprite pBaseSprite);
 	protected abstract void onSetValues(final float pValueA, final float pValueB, final BaseSprite pBaseSprite);
 
+	@Override
 	protected final void onSetInitialValue(final float pValueA, final BaseSprite pBaseSprite) {
 		this.onSetInitialValues(pValueA, this.mFromValueB, pBaseSprite);
 	}
-	
+
+	@Override
 	protected final void onSetValue(final float pValueA, final BaseSprite pBaseSprite) {
 		this.onSetValues(pValueA, this.mFromValueB + this.getTotalSecondsElapsed() * this.mValuePerSecondB, pBaseSprite);
 	}

@@ -60,9 +60,9 @@ public class CameraScene extends Scene {
 			return false;
 		} else {
 			this.mCamera.convertSceneToHUDMotionEvent(pSceneMotionEvent);
-			
+
 			final boolean handled = super.onSceneTouchEvent(pSceneMotionEvent);
-			
+
 			if(handled) {
 				return true;
 			} else {

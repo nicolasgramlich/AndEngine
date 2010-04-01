@@ -62,14 +62,14 @@ public abstract class BaseSprite extends Rectangle {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public void reset() {
 		super.reset();
 
 		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
-		
+
 		final ArrayList<ISpriteModifier> spriteModifiers = this.mSpriteModifiers;
 		for(int i = spriteModifiers.size() - 1; i >= 0; i--) {
 			spriteModifiers.get(i).reset();

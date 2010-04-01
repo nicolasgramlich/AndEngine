@@ -72,7 +72,7 @@ public class Scene extends BaseEntity {
 	public boolean isBackgroundEnabled() {
 		return this.mBackgroundEnabled;
 	}
-	
+
 	public void setBackgroundEnabled(final boolean pEnabled) {
 		this.mBackgroundEnabled  = pEnabled;
 	}
@@ -178,7 +178,7 @@ public class Scene extends BaseEntity {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void reset() {
 		super.reset();

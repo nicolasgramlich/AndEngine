@@ -97,7 +97,7 @@ public abstract class BaseModifier implements ISpriteModifier {
 			}
 		}
 	}
-	
+
 	public void reset() {
 		this.mExpired = false;
 		this.mTotalSecondsElapsed = 0;

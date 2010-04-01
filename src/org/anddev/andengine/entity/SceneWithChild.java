@@ -32,32 +32,33 @@ public class SceneWithChild extends Scene {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public boolean hasChildScene() {
 		return this.mChildScene != null;
 	}
-	
+
 	public Scene getChildScene() {
 		return this.mChildScene;
 	}
-	
+
 	public void setChildScene(final Scene pChildScene) {
 		this.setChildSceneModal(pChildScene, true, true);
 	}
-	
+
 	public void setChildSceneModal(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate) {
 		this.mChildScene = pChildScene;
 		this.mChildSceneModalDraw = pModalDraw;
 		this.mChildSceneModalUpdate = pModalUpdate;
 	}
-	
+
 	public void clearChildScene() {
 		this.mChildScene = null;
 	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
 		if(this.mChildScene == null) {
@@ -82,27 +83,29 @@ public class SceneWithChild extends Scene {
 		if(this.mChildScene == null || !this.mChildSceneModalUpdate) {
 			super.onManagedUpdate(pSecondsElapsed);
 		}
-		
-		if(this.mChildScene != null) {			
+
+		if(this.mChildScene != null) {
 			this.mChildScene.onUpdate(pSecondsElapsed);
 		}
 	}
-	
+
+	@Override
 	public void updatePreFrameHandlers(final float pSecondsElapsed) {
 		if(this.mChildScene == null && !this.mChildSceneModalUpdate) {
 			super.updatePreFrameHandlers(pSecondsElapsed);
-		} 
-		
+		}
+
 		if (this.mChildScene != null) {
 			this.mChildScene.updatePreFrameHandlers(pSecondsElapsed);
 		}
 	}
 
+	@Override
 	public void updatePostFrameHandlers(final float pSecondsElapsed) {
 		if(this.mChildScene == null  && !this.mChildSceneModalUpdate) {
 			super.updatePostFrameHandlers(pSecondsElapsed);
-		} 
-		
+		}
+
 		if (this.mChildScene != null) {
 			this.mChildScene.updatePostFrameHandlers(pSecondsElapsed);
 		}

@@ -25,7 +25,7 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public SequenceModifier(final ISpriteModifier ... pSpriteModifiers) {
 		this(null, pSpriteModifiers);
 	}
@@ -82,12 +82,12 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 			this.mSpriteModifiers[this.mCurrentSpriteModifier].onUpdateSprite(pSecondsElapsed, pBaseSprite);
 		}
 	}
-	
+
 	@Override
 	public void reset() {
 		this.mCurrentSpriteModifier = 0;
 		this.mExpired = false;
-		
+
 		final ISpriteModifier[] spriteModifiers = this.mSpriteModifiers;
 		for(int i = spriteModifiers.length - 1; i >= 0; i--) {
 			spriteModifiers[i].reset();

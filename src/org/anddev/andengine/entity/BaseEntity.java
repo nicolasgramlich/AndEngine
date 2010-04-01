@@ -69,6 +69,7 @@ public abstract class BaseEntity implements IEntity {
 	// Methods
 	// ===========================================================
 
+	@Override
 	public void reset() {
 		this.mVisible = true;
 		this.mIgnoreUpdate = false;

@@ -30,7 +30,7 @@ public class MenuItem extends Sprite {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public int getMenuID() {
 		return this.mMenuID;
 	}

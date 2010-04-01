@@ -9,7 +9,7 @@ import org.anddev.andengine.entity.Scene;
 /**
  * While you can add a {@link HUD} to {@link Scene}, you should not do so.
  * {@link HUD}s are meant to be added to {@link Camera}s via {@link Camera#setHUD(HUD)}.
- *  
+ * 
  * @author Nicolas Gramlich
  * @since 14:13:13 - 01.04.2010
  */
@@ -25,7 +25,7 @@ public class HUD extends CameraScene {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public HUD() {
 		this(1);
 	}

@@ -191,7 +191,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		if(this.mRunning) {
 			final Camera camera = this.getCameraFromSurfaceMotionEvent(pMotionEvent);
 			final MotionEvent sceneMotionEvent = this.convertSurfaceToSceneMotionEvent(camera, pMotionEvent);
-	
+
 			if(this.onTouchHUD(camera, pMotionEvent)) {
 				return true;
 			} else {
@@ -226,7 +226,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
 		return this.getCamera();
 	}
-	
+
 	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
 		pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 		return pSurfaceMotionEvent;

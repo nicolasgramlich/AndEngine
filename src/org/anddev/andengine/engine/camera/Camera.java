@@ -40,7 +40,7 @@ public class Camera implements IUpdateHandler {
 	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.set(pX, pX + pWidth, pY, pY + pHeight);
 	}
-	
+
 	public static Camera createFromDisplayMetrics(final float pCenterX, final float pCenterY, final DisplayMetrics pDisplayMetrics) {
 		final float width = pDisplayMetrics.widthPixels;
 		final float height = pDisplayMetrics.widthPixels;
@@ -172,7 +172,7 @@ public class Camera implements IUpdateHandler {
 
 		final float width = this.getWidth();
 		final float height = this.getHeight();
-		
+
 		GLU.gluOrtho2D(pGL, 0, width, height, 0);
 
 		if(this.mFlipped) {

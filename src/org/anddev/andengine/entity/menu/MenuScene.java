@@ -36,7 +36,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public MenuScene() {
 		this(null, null);
 	}
@@ -44,7 +44,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	public MenuScene(final IOnMenuItemClickerListener pOnMenuItemClickerListener) {
 		this(pOnMenuItemClickerListener, null);
 	}
-	
+
 	public MenuScene(final Camera pCamera) {
 		this(null, pCamera);
 	}

@@ -57,7 +57,7 @@ public class Layer extends BaseEntity {
 			entities.get(i).onUpdate(pSecondsElapsed);
 		}
 	}
-	
+
 	@Override
 	public void reset() {
 		super.reset();

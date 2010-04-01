@@ -15,6 +15,6 @@ public interface IEntity extends IRenderable, IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void reset();
 }

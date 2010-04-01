@@ -37,13 +37,13 @@ public class AlphaModifier extends BaseFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setAlpha(pValue);
+	protected void onSetInitialValue(final float pAlpha, final BaseSprite pBaseSprite) {
+		pBaseSprite.setAlpha(pAlpha);
 	}
 
 	@Override
-	protected void onSetValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setAlpha(pValue);
+	protected void onSetValue(final float pAlpha, final BaseSprite pBaseSprite) {
+		pBaseSprite.setAlpha(pAlpha);
 	}
 
 	// ===========================================================

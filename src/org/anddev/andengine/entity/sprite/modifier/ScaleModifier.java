@@ -37,13 +37,13 @@ public class ScaleModifier extends BaseFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setScale(pValue);
+	protected void onSetInitialValue(final float pScale, final BaseSprite pBaseSprite) {
+		pBaseSprite.setScale(pScale);
 	}
 
 	@Override
-	protected void onSetValue(final float pValue, final BaseSprite pBaseSprite) {
-		pBaseSprite.setScale(pValue);
+	protected void onSetValue(final float pScale, final BaseSprite pBaseSprite) {
+		pBaseSprite.setScale(pScale);
 	}
 
 	// ===========================================================

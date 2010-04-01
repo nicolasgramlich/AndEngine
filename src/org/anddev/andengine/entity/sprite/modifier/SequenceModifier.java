@@ -25,6 +25,10 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public SequenceModifier(final BaseModifier ... pSpriteModifiers) {
+		this(null, pSpriteModifiers);
+	}
 
 	public SequenceModifier(final IModifierListener pModiferListener, final BaseModifier ... pSpriteModifiers) {
 		assert(pSpriteModifiers.length > 0);

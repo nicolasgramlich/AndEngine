@@ -62,6 +62,18 @@ public abstract class BaseSprite extends Rectangle {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public void reset() {
+		super.reset();
+
+		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
+		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+		
+		for(int i = this.mSpriteModifiers.size() - 1; i >= 0; i++) {
+			this.mSpriteModifiers.get(i).reset();
+		}
+	}
 
 	@Override
 	protected void onInitDraw(final GL10 pGL) {

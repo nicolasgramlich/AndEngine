@@ -117,7 +117,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	public void animate(final long pFrameDurationEach, final int pLoopCount, final IAnimationListener pAnimationListener) {
-		final long[] frameDurations = new long[this.getTextureRegion().getTileCount() - 1];
+		final long[] frameDurations = new long[this.getTextureRegion().getTileCount()];
 		Arrays.fill(frameDurations, pFrameDurationEach);
 		this.animate(frameDurations, pLoopCount, pAnimationListener);
 	}

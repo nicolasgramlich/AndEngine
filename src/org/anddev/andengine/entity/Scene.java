@@ -178,6 +178,16 @@ public class Scene extends BaseEntity {
 			return false;
 		}
 	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+
+		final Layer[] layers = this.mLayers;
+		for(int i = layers.length - 1; i >= 0; i--) {
+			layers[i].reset();
+		}
+	}
 
 	// ===========================================================
 	// Methods

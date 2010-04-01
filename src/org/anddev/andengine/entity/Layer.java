@@ -57,6 +57,16 @@ public class Layer extends BaseEntity {
 			entities.get(i).onUpdate(pSecondsElapsed);
 		}
 	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+
+		final ArrayList<IEntity> entities = this.mEntities;
+		for(int i = entities.size() - 1; i >= 0; i--) {
+			entities.get(i).reset();
+		}
+	}
 
 	// ===========================================================
 	// Methods

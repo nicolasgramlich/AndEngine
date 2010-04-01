@@ -28,7 +28,7 @@ public abstract class BasePairFromToModifier extends BaseFromToModifier {
 	}
 
 	public BasePairFromToModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener pModiferListener) {
-		super(pDuration, pFromValueA, pFromValueB, pModiferListener);
+		super(pDuration, pFromValueA, pToValueA, pModiferListener);
 		this.mFromValueB = pFromValueB;
 		this.mValuePerSecondB = (pToValueB - pFromValueB) / pDuration;
 	}

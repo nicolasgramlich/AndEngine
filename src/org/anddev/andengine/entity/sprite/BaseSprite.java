@@ -70,8 +70,9 @@ public abstract class BaseSprite extends Rectangle {
 		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 		
-		for(int i = this.mSpriteModifiers.size() - 1; i >= 0; i++) {
-			this.mSpriteModifiers.get(i).reset();
+		final ArrayList<ISpriteModifier> spriteModifiers = this.mSpriteModifiers;
+		for(int i = spriteModifiers.size() - 1; i >= 0; i--) {
+			spriteModifiers.get(i).reset();
 		}
 	}
 

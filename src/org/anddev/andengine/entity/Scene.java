@@ -38,6 +38,8 @@ public class Scene extends BaseEntity {
 
 	private IOnAreaTouchListener mOnAreaTouchListener;
 
+	private boolean mBackgroundEnabled = true;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -55,12 +57,6 @@ public class Scene extends BaseEntity {
 		return this.mLayers[pLayerIndex];
 	}
 
-	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
-	}
-
 	public int getLayerCount() {
 		return this.mLayers.length;
 	}
@@ -71,6 +67,20 @@ public class Scene extends BaseEntity {
 
 	public Layer getTopLayer() {
 		return this.mLayers[this.mLayers.length - 1];
+	}
+
+	public boolean isBackgroundEnabled() {
+		return this.mBackgroundEnabled;
+	}
+	
+	public void setBackgroundEnabled(final boolean pEnabled) {
+		this.mBackgroundEnabled  = pEnabled;
+	}
+
+	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
+		this.mRed = pRed;
+		this.mGreen = pGreen;
+		this.mBlue = pBlue;
 	}
 
 	public void clearTouchAreas() {
@@ -154,8 +164,9 @@ public class Scene extends BaseEntity {
 			final int touchAreaCount = touchAreas.size();
 			if(touchAreaCount > 0) {
 				for(int i = 0; i < touchAreaCount; i++) {
-					if(touchAreas.get(i).contains(pSceneMotionEvent.getX(), pSceneMotionEvent.getY())) {
-						return this.mOnAreaTouchListener.onAreaTouched(touchAreas.get(i), pSceneMotionEvent);
+					final ITouchArea touchArea = touchAreas.get(i);
+					if(touchArea.contains(pSceneMotionEvent.getX(), pSceneMotionEvent.getY())) {
+						return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
 					}
 				}
 			}
@@ -188,8 +199,10 @@ public class Scene extends BaseEntity {
 	}
 
 	protected void drawBackground(final GL10 pGL) {
-		pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, 1.0f);
-		pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		if(this.mBackgroundEnabled) {
+			pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, 1.0f);
+			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		}
 	}
 
 	private void drawLayers(final GL10 pGL) {

@@ -164,52 +164,48 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	@Override
 	public void onAccuracyChanged(final Sensor pSensor, final int pAccuracy) {
-		switch(pSensor.getType()){
-			case Sensor.TYPE_ACCELEROMETER:
-				this.mAccelerometerData.setAccuracy(pAccuracy);
-				if(this.mRunning){
+		if(this.mRunning){
+			switch(pSensor.getType()){
+				case Sensor.TYPE_ACCELEROMETER:
+					this.mAccelerometerData.setAccuracy(pAccuracy);
 					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
-				}
-				break;
+					break;
+			}
 		}
 	}
 
 	@Override
 	public void onSensorChanged(final SensorEvent pEvent) {
-		switch(pEvent.sensor.getType()){
-			case Sensor.TYPE_ACCELEROMETER:
-				this.mAccelerometerData.setValues(pEvent.values);
-				if(this.mRunning){
+		if(this.mRunning){
+			switch(pEvent.sensor.getType()){
+				case Sensor.TYPE_ACCELEROMETER:
+					this.mAccelerometerData.setValues(pEvent.values);
 					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
-				}
-				break;
+					break;
+			}
 		}
 	}
 
 	@Override
 	public boolean onTouch(final View pView, final MotionEvent pMotionEvent) {
-		final Camera camera = this.getCameraFromSurfaceMotionEvent(pMotionEvent);
-		final MotionEvent sceneMotionEvent = this.convertSurfaceToSceneMotionEvent(camera, pMotionEvent);
-
-		if(this.onTouchHUD(camera, pMotionEvent)) {
-			return true;
+		if(this.mRunning) {
+			final Camera camera = this.getCameraFromSurfaceMotionEvent(pMotionEvent);
+			final MotionEvent sceneMotionEvent = this.convertSurfaceToSceneMotionEvent(camera, pMotionEvent);
+	
+			if(this.onTouchHUD(camera, pMotionEvent)) {
+				return true;
+			} else {
+				/* If HUD didn't handle it, Scene may handle it. */
+				return this.onTouchScene(sceneMotionEvent, pMotionEvent);
+			}
 		} else {
-			/* If HUD didn't handle it, Scene may handle it. */
-			return this.onTouchScene(sceneMotionEvent, pMotionEvent);
+			return false;
 		}
 	}
 
 	protected boolean onTouchHUD(final Camera pCamera, final MotionEvent pSceneMotionEvent) {
 		if(pCamera.hasHUD()) {
-			this.convertSceneToHUDMotionEvent(pCamera, pSceneMotionEvent);
-
-			final boolean handled = pCamera.getHUD().onSceneTouchEvent(pSceneMotionEvent);
-			if(handled) {
-				return true;
-			} else {
-				this.convertHUDtoSceneMotionEvent(pCamera, pSceneMotionEvent);
-				return false;
-			}
+			return pCamera.getHUD().onSceneTouchEvent(pSceneMotionEvent);
 		} else {
 			return false;
 		}
@@ -230,17 +226,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
 		return this.getCamera();
 	}
-
-	protected MotionEvent convertSceneToHUDMotionEvent(final Camera pCamera, final MotionEvent pSceneMotionEvent) {
-		pCamera.convertSceneToHUDMotionEvent(pSceneMotionEvent);
-		return pSceneMotionEvent;
-	}
-
-	protected MotionEvent convertHUDtoSceneMotionEvent(final Camera pCamera, final MotionEvent pHUDMotionEvent) {
-		pCamera.convertHUDToSceneMotionEvent(pHUDMotionEvent);
-		return pHUDMotionEvent;
-	}
-
+	
 	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
 		pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 		return pSurfaceMotionEvent;
@@ -295,6 +281,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
+		} else {
+			if(this.mScene != null){
+				this.onDrawScene(pGL);
+			}
 		}
 	}
 

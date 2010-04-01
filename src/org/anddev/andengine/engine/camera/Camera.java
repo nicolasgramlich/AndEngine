@@ -5,7 +5,6 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.StaticEntity;
-import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.physics.collision.CollisionChecker;
 
 import android.opengl.GLU;
@@ -107,6 +106,7 @@ public class Camera implements IUpdateHandler {
 
 	public void setHUD(final HUD pHUD) {
 		this.mHUD = pHUD;
+		pHUD.setCamera(this);
 	}
 
 	public boolean hasHUD() {
@@ -142,8 +142,6 @@ public class Camera implements IUpdateHandler {
 
 	public void onDrawHUD(final GL10 pGL) {
 		if(this.mHUD != null) {
-			this.onApplyHUDMatrix(pGL);
-			GLHelper.setModelViewIdentityMatrix(pGL);
 			this.mHUD.onDraw(pGL);
 		}
 	}
@@ -168,7 +166,7 @@ public class Camera implements IUpdateHandler {
 		}
 	}
 
-	public void onApplyHUDMatrix(final GL10 pGL) {
+	public void onApplyPositionIndependentMatrix(final GL10 pGL) {
 		pGL.glMatrixMode(GL10.GL_PROJECTION);
 		pGL.glLoadIdentity();
 

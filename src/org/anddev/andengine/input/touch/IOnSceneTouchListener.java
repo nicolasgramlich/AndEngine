@@ -1,5 +1,7 @@
 package org.anddev.andengine.input.touch;
 
+import org.anddev.andengine.entity.Scene;
+
 import android.view.MotionEvent;
 
 /**
@@ -15,5 +17,5 @@ public interface IOnSceneTouchListener {
 	// Methods
 	// ===========================================================
 
-	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent);
+	public boolean onSceneTouchEvent(final Scene pScene, final MotionEvent pSceneMotionEvent);
 }

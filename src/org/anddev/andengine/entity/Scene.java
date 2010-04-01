@@ -162,7 +162,7 @@ public class Scene extends BaseEntity {
 		}
 		/* If no area was touched, the Scene itself was touched as a fallback. */
 		if(this.mOnSceneTouchListener != null){
-			return this.mOnSceneTouchListener.onSceneTouchEvent(pSceneMotionEvent);
+			return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneMotionEvent);
 		} else {
 			return false;
 		}

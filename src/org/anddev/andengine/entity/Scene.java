@@ -283,7 +283,7 @@ public class Scene extends BaseEntity {
 	}
 
 	public void updatePreFrameHandlers(final float pSecondsElapsed) {
-		if(this.mChildScene == null && !this.mChildSceneModalUpdate) {
+		if(this.mChildScene == null || !this.mChildSceneModalUpdate) {
 			this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
 		}
 
@@ -293,7 +293,7 @@ public class Scene extends BaseEntity {
 	}
 
 	public void updatePostFrameHandlers(final float pSecondsElapsed) {
-		if(this.mChildScene == null  && !this.mChildSceneModalUpdate) {
+		if(this.mChildScene == null || !this.mChildSceneModalUpdate) {
 			this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
 		}
 

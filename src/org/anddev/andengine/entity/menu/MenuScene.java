@@ -2,10 +2,9 @@ package org.anddev.andengine.entity.menu;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.CameraScene;
+import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.input.touch.IOnAreaTouchListener;
 import org.anddev.andengine.input.touch.ITouchArea;
 
@@ -28,13 +27,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 
 	private IOnMenuItemClickerListener mOnMenuItemClickerListener;
 	
-	private MenuScene mParentMenuScene;
-	
 	private IMenuAnimator mMenuAnimator = IMenuAnimator.DEFAULT;
-
-	private MenuScene mSubMenuScene;
-	private boolean mSubMenuSceneModalDraw;
-	private boolean mSubMenuSceneModalUpdate;
 
 	// ===========================================================
 	// Constructors
@@ -80,34 +73,24 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		this.registerTouchArea(pMenuItem);
 	}
 	
-	private void setParentMenuScene(final MenuScene pParentMenuScene) {
-		this.mParentMenuScene = pParentMenuScene;
+	@Override
+	public MenuScene getChildScene() {
+		return (MenuScene)super.getChildScene();
+	}
+	
+	@Override
+	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate) {
+		if(pChildScene instanceof MenuScene) {
+			super.setChildScene(pChildScene, pModalDraw, pModalUpdate);
+		} else {
+			throw new IllegalArgumentException("MenuScene accepts only MenuScenes as a ChildScene.");
+		}
 	}
 
-	public boolean hasSubMenuScene() {
-		return this.mSubMenuScene != null;
-	}
-
-	public MenuScene getSubMenuScene() {
-		return this.mSubMenuScene;
-	}
-
-	public void setSubMenuSceneModal(final MenuScene pSubMenuScene) {
-		this.setSubMenuScene(pSubMenuScene, true, true);
-	}
-
-	public void setSubMenuScene(final MenuScene pSubMenuScene, final boolean pModalDraw, final boolean pModalUpdate) {
-		pSubMenuScene.setParentMenuScene(this);
-		this.mSubMenuScene = pSubMenuScene;
-		this.mSubMenuSceneModalDraw = pModalDraw;
-		this.mSubMenuSceneModalUpdate = pModalUpdate;
-	}
-
-	public void clearSubMenu() {
-		if(this.mSubMenuScene != null) {
-			this.mSubMenuScene.clearSubMenu();
-			this.mSubMenuScene.reset();
-			this.mSubMenuScene = null;
+	public void clearChildScene() {
+		if(this.getChildScene() != null) {
+			this.getChildScene().reset();
+			super.clearChildScene();
 		}
 	}
 	
@@ -128,69 +111,29 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		}
 		return true;
 	}
-
+	
 	@Override
-	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
-		if(this.mSubMenuScene == null) {
-			return super.onSceneTouchEvent(pSceneMotionEvent);
-		} else {
-			return this.mSubMenuScene.onSceneTouchEvent(pSceneMotionEvent);
-		}
+	public void back() {
+		super.back();
+		
+		this.reset();
 	}
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL) {
-		if(this.mSubMenuScene == null || !this.mSubMenuSceneModalDraw) {
-			super.onManagedDraw(pGL);
+	public void reset() {
+		super.reset();
+		
+		final ArrayList<MenuItem> menuItems = this.mMenuItems;
+		for(int i = menuItems.size() - 1; i >= 0; i--) {
+			menuItems.get(i).reset();
 		}
-		if(this.mSubMenuScene != null) {
-			this.mSubMenuScene.onDraw(pGL);
-		}
-	}
-
-	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if(this.mSubMenuScene == null || !this.mSubMenuSceneModalUpdate) {
-			super.onManagedUpdate(pSecondsElapsed);
-		}
-
-		if(this.mSubMenuScene != null) {
-			this.mSubMenuScene.onUpdate(pSecondsElapsed);
-		}
-	}
-
-	@Override
-	public void updatePreFrameHandlers(final float pSecondsElapsed) {
-		if(this.mSubMenuScene == null && !this.mSubMenuSceneModalUpdate) {
-			super.updatePreFrameHandlers(pSecondsElapsed);
-		}
-
-		if (this.mSubMenuScene != null) {
-			this.mSubMenuScene.updatePreFrameHandlers(pSecondsElapsed);
-		}
-	}
-
-	@Override
-	public void updatePostFrameHandlers(final float pSecondsElapsed) {
-		if(this.mSubMenuScene == null  && !this.mSubMenuSceneModalUpdate) {
-			super.updatePostFrameHandlers(pSecondsElapsed);
-		}
-
-		if (this.mSubMenuScene != null) {
-			this.mSubMenuScene.updatePostFrameHandlers(pSecondsElapsed);
-		}
+		
+		this.prepareAnimations();
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	public void back() {
-		if(this.mParentMenuScene != null) {
-			this.mParentMenuScene.clearSubMenu();
-			this.mParentMenuScene = null;
-		}
-	}
 
 	public void buildAnimations() {
 		this.prepareAnimations();
@@ -204,17 +147,6 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		final float cameraHeight = this.mCamera.getHeight();
 		final float cameraWidth = this.mCamera.getWidth();
 		this.mMenuAnimator.prepareAnimations(this.mMenuItems, cameraWidth, cameraHeight);
-	}
-
-	@Override
-	public void reset() {
-		final ArrayList<MenuItem> menuItems = this.mMenuItems;
-		for(int i = menuItems.size() - 1; i >= 0; i--) {
-			menuItems.get(i).reset();
-		}
-		this.clearSubMenu();
-		
-		this.prepareAnimations();
 	}
 
 	// ===========================================================

@@ -14,6 +14,11 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 	// Constants
 	// ===========================================================
 
+	private static final float DURATION = 1.0f;
+
+	private static final float ALPHA_FROM = 0.0f;
+	private static final float ALPHA_TO = 1.0f;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -33,9 +38,7 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 	@Override
 	public void buildAnimations(final ArrayList<MenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
 		for(int i = 0; i < pMenuItems.size(); i++) {
-			final MenuItem menuItem = pMenuItems.get(i);
-			
-			menuItem.addSpriteModifier(new AlphaModifier(2, 0, 1));
+			pMenuItems.get(i).addSpriteModifier(new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO));
 		}
 	}
 
@@ -52,6 +55,7 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 			final MenuItem menuItem = pMenuItems.get(i);
 			
 			menuItem.setPosition(baseX, baseY + offsetY);
+			menuItem.setAlpha(ALPHA_FROM);
 			
 			offsetY += menuItem.getHeight();
 		}

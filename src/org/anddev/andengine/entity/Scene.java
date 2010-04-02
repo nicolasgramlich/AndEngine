@@ -22,6 +22,12 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private Scene mParentScene;
+
+	private Scene mChildScene;
+	private boolean mChildSceneModalDraw;
+	private boolean mChildSceneModalUpdate;
 
 	private final Layer[] mLayers;
 
@@ -142,6 +148,33 @@ public class Scene extends BaseEntity {
 	public boolean hasOnAreaTouchListener() {
 		return this.mOnAreaTouchListener != null;
 	}
+	
+	private void setParentScene(final Scene pParentScene) {
+		this.mParentScene = pParentScene;
+	}
+
+	public boolean hasChildScene() {
+		return this.mChildScene != null;
+	}
+
+	public Scene getChildScene() {
+		return this.mChildScene;
+	}
+
+	public void setChildSceneModal(final Scene pChildScene) {
+		this.setChildScene(pChildScene, true, true);
+	}
+
+	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate) {
+		pChildScene.setParentScene(this);
+		this.mChildScene = pChildScene;
+		this.mChildSceneModalDraw = pModalDraw;
+		this.mChildSceneModalUpdate = pModalUpdate;
+	}
+
+	public void clearChildScene() {
+		this.mChildScene = null;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -149,39 +182,56 @@ public class Scene extends BaseEntity {
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
-		this.drawBackground(pGL);
-		this.drawLayers(pGL);
+		if(this.mChildScene == null || !this.mChildSceneModalDraw) {
+			this.drawBackground(pGL);
+			this.drawLayers(pGL);
+		}
+		if(this.mChildScene != null) {
+			this.mChildScene.onDraw(pGL);
+		}
 	}
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		this.updateLayers(pSecondsElapsed);
+		if(this.mChildScene == null || !this.mChildSceneModalUpdate) {
+			this.updateLayers(pSecondsElapsed);
+		}
+
+		if(this.mChildScene != null) {
+			this.mChildScene.onUpdate(pSecondsElapsed);
+		}
 	}
 
 	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
-		if(this.mOnAreaTouchListener != null) {
-			final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
-			final int touchAreaCount = touchAreas.size();
-			if(touchAreaCount > 0) {
-				for(int i = 0; i < touchAreaCount; i++) {
-					final ITouchArea touchArea = touchAreas.get(i);
-					if(touchArea.contains(pSceneMotionEvent.getX(), pSceneMotionEvent.getY())) {
-						return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+		if(this.mChildScene == null) {
+			if(this.mOnAreaTouchListener != null) {
+				final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
+				final int touchAreaCount = touchAreas.size();
+				if(touchAreaCount > 0) {
+					for(int i = 0; i < touchAreaCount; i++) {
+						final ITouchArea touchArea = touchAreas.get(i);
+						if(touchArea.contains(pSceneMotionEvent.getX(), pSceneMotionEvent.getY())) {
+							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+						}
 					}
 				}
 			}
-		}
-		/* If no area was touched, the Scene itself was touched as a fallback. */
-		if(this.mOnSceneTouchListener != null){
-			return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneMotionEvent);
+			/* If no area was touched, the Scene itself was touched as a fallback. */
+			if(this.mOnSceneTouchListener != null){
+				return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneMotionEvent);
+			} else {
+				return false;
+			}
 		} else {
-			return false;
+			return this.mChildScene.onSceneTouchEvent(pSceneMotionEvent);
 		}
 	}
 
 	@Override
 	public void reset() {
 		super.reset();
+		
+		this.clearChildScene();
 
 		final Layer[] layers = this.mLayers;
 		for(int i = layers.length - 1; i >= 0; i--) {
@@ -192,6 +242,15 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void back() {
+		this.clearChildScene();
+		
+		if(this.mParentScene != null) {
+			this.mParentScene.clearChildScene();
+			this.mParentScene = null;
+		}
+	}
 
 	private void createLayers() {
 		final Layer[] layers = this.mLayers;
@@ -224,11 +283,23 @@ public class Scene extends BaseEntity {
 	}
 
 	public void updatePreFrameHandlers(final float pSecondsElapsed) {
-		this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
+		if(this.mChildScene == null && !this.mChildSceneModalUpdate) {
+			this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
+		}
+
+		if (this.mChildScene != null) {
+			this.mChildScene.updatePreFrameHandlers(pSecondsElapsed);
+		}
 	}
 
 	public void updatePostFrameHandlers(final float pSecondsElapsed) {
-		this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
+		if(this.mChildScene == null  && !this.mChildSceneModalUpdate) {
+			this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
+		}
+
+		if (this.mChildScene != null) {
+			this.mChildScene.updatePostFrameHandlers(pSecondsElapsed);
+		}
 	}
 
 	// ===========================================================

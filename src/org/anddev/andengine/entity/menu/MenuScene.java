@@ -96,7 +96,10 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	}
 
 	public void clearSubMenu() {
-		this.mSubMenuScene = null;
+		if(this.mSubMenuScene != null) {
+			this.mSubMenuScene.reset();
+			this.mSubMenuScene = null;
+		}
 	}
 
 	// ===========================================================

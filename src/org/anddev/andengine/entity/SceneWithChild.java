@@ -41,17 +41,18 @@ public class SceneWithChild extends Scene {
 		return this.mChildScene;
 	}
 
-	public void setChildScene(final Scene pChildScene) {
-		this.setChildSceneModal(pChildScene, true, true);
+	public void setChildSceneModal(final Scene pChildScene) {
+		this.setChildScene(pChildScene, true, true);
 	}
 
-	public void setChildSceneModal(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate) {
+	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate) {
 		this.mChildScene = pChildScene;
 		this.mChildSceneModalDraw = pModalDraw;
 		this.mChildSceneModalUpdate = pModalUpdate;
 	}
 
 	public void clearChildScene() {
+		// TODO Maybe add this.mChildScene.reset() here...
 		this.mChildScene = null;
 	}
 

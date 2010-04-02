@@ -6,7 +6,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.CameraScene;
-import org.anddev.andengine.entity.sprite.modifier.MoveModifier;
 import org.anddev.andengine.input.touch.IOnAreaTouchListener;
 import org.anddev.andengine.input.touch.ITouchArea;
 
@@ -28,6 +27,10 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	private final ArrayList<MenuItem> mMenuItems = new ArrayList<MenuItem>();
 
 	private IOnMenuItemClickerListener mOnMenuItemClickerListener;
+	
+	private MenuScene mParentMenuScene;
+	
+	private IMenuAnimator mMenuAnimator = IMenuAnimator.DEFAULT;
 
 	private MenuScene mSubMenuScene;
 	private boolean mSubMenuSceneModalDraw;
@@ -76,6 +79,10 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		this.getBottomLayer().addEntity(pMenuItem);
 		this.registerTouchArea(pMenuItem);
 	}
+	
+	private void setParentMenuScene(final MenuScene pParentMenuScene) {
+		this.mParentMenuScene = pParentMenuScene;
+	}
 
 	public boolean hasSubMenuScene() {
 		return this.mSubMenuScene != null;
@@ -85,11 +92,12 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		return this.mSubMenuScene;
 	}
 
-	public void setSubMenuScene(final MenuScene pSubMenuScene) {
-		this.setSubMenuSceneModal(pSubMenuScene, true, true);
+	public void setSubMenuSceneModal(final MenuScene pSubMenuScene) {
+		this.setSubMenuScene(pSubMenuScene, true, true);
 	}
 
-	public void setSubMenuSceneModal(final MenuScene pSubMenuScene, final boolean pModalDraw, final boolean pModalUpdate) {
+	public void setSubMenuScene(final MenuScene pSubMenuScene, final boolean pModalDraw, final boolean pModalUpdate) {
+		pSubMenuScene.setParentMenuScene(this);
 		this.mSubMenuScene = pSubMenuScene;
 		this.mSubMenuSceneModalDraw = pModalDraw;
 		this.mSubMenuSceneModalUpdate = pModalUpdate;
@@ -97,9 +105,14 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 
 	public void clearSubMenu() {
 		if(this.mSubMenuScene != null) {
+			this.mSubMenuScene.clearSubMenu();
 			this.mSubMenuScene.reset();
 			this.mSubMenuScene = null;
 		}
+	}
+	
+	public void setMenuAnimator(final IMenuAnimator pMenuAnimator) {
+		this.mMenuAnimator = pMenuAnimator;
 	}
 
 	// ===========================================================
@@ -171,15 +184,26 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void build() {
-		//		final float cameraHeight = this.mCamera.getHeight();
-		//		final float cameraWidth = this.mCamera.getWidth();
-
-		final ArrayList<MenuItem> menuItems = this.mMenuItems;
-		for(int i = menuItems.size() - 1; i >= 0; i--) {
-			menuItems.get(i).addSpriteModifier(new MoveModifier(3, 0, 150, 0, 50 + i * 100)); // TODO Vernünftige Formel
+	
+	public void back() {
+		if(this.mParentMenuScene != null) {
+			this.mParentMenuScene.clearSubMenu();
+			this.mParentMenuScene = null;
 		}
+	}
+
+	public void buildAnimations() {
+		this.prepareAnimations();
+		
+		final float cameraHeight = this.mCamera.getHeight();
+		final float cameraWidth = this.mCamera.getWidth();
+		this.mMenuAnimator.buildAnimations(this.mMenuItems, cameraWidth, cameraHeight);
+	}
+	
+	public void prepareAnimations() {
+		final float cameraHeight = this.mCamera.getHeight();
+		final float cameraWidth = this.mCamera.getWidth();
+		this.mMenuAnimator.prepareAnimations(this.mMenuItems, cameraWidth, cameraHeight);
 	}
 
 	@Override
@@ -188,6 +212,9 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		for(int i = menuItems.size() - 1; i >= 0; i--) {
 			menuItems.get(i).reset();
 		}
+		this.clearSubMenu();
+		
+		this.prepareAnimations();
 	}
 
 	// ===========================================================

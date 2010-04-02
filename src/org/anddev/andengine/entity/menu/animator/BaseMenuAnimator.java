@@ -14,13 +14,26 @@ public abstract class BaseMenuAnimator implements IMenuAnimator {
 	// Constants
 	// ===========================================================
 
+	protected static final float DURATION = 1.0f;
+	private static final float DEFAULT_MENUITEMSPACING = 1.0f;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	protected final float mMenuItemSpacing;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public BaseMenuAnimator() {
+		this(DEFAULT_MENUITEMSPACING);
+	}
+	
+	public BaseMenuAnimator(final float pMenuItemSpacing) {
+		this.mMenuItemSpacing = pMenuItemSpacing;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -41,6 +54,8 @@ public abstract class BaseMenuAnimator implements IMenuAnimator {
 			final MenuItem menuItem = pMenuItems.get(i);
 			overallHeight += menuItem.getHeight();
 		}
+		
+		overallHeight += (pMenuItems.size() - 1) * this.mMenuItemSpacing; 
 		return overallHeight;
 	}
 

@@ -86,7 +86,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	}
 
 	public void setSubMenuScene(final MenuScene pSubMenuScene) {
-		this.mSubMenuScene = pSubMenuScene;
+		this.setSubMenuSceneModal(pSubMenuScene, true, true);
 	}
 
 	public void setSubMenuSceneModal(final MenuScene pSubMenuScene, final boolean pModalDraw, final boolean pModalUpdate) {

@@ -7,7 +7,7 @@ package org.anddev.andengine.opengl.text;
  * @author Nicolas Gramlich
  * @since 10:29:21 - 03.04.2010
  */
-public class Rectangle {
+class Size {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,8 +16,6 @@ public class Rectangle {
 	// Fields
 	// ===========================================================
 
-	public float mX;
-	public float mY;
 	public float mWidth;
 	public float mHeight;
 
@@ -25,13 +23,11 @@ public class Rectangle {
 	// Constructors
 	// ===========================================================
 
-	public Rectangle() {
-		this(0, 0, 0, 0);
+	public Size() {
+		this(0, 0);
 	}
 
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this.mX = pX;
-		this.mY = pY;
+	public Size(final float pWidth, final float pHeight) {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 	}

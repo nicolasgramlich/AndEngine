@@ -8,7 +8,7 @@ import org.anddev.andengine.entity.primitives.Shape;
 import org.anddev.andengine.opengl.BaseBuffer;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.text.Font;
-import org.anddev.andengine.opengl.text.Glyph;
+import org.anddev.andengine.opengl.text.Letter;
 import org.anddev.andengine.opengl.texture.buffer.TextureBuffer;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 import org.anddev.andengine.util.StringUtils;
@@ -43,12 +43,16 @@ public class Text extends Shape {
 	private final int[] mWidths;
 	
 	private final Font mFont;
+	
+	private final HorizontalAlign mHorizontalAlign;
+	
+	private final int mMaximumeLineWidth;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Text(final float pX, final float pY, final Font pFont, final String pText) {
+	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
 		super(pX, pY, 0, 0, new VertexBuffer(2 * VERTICES_PER_CHARACTER * BaseBuffer.BYTES_PER_FLOAT * (pText.length() - StringUtils.countOccurences(pText, "\n"))));
 		
 		this.mVertexCount = VERTICES_PER_CHARACTER * (pText.length() - StringUtils.countOccurences(pText, "\n"));
@@ -56,6 +60,7 @@ public class Text extends Shape {
 		this.mTextureBuffer = new TextureBuffer(2 * this.mVertexCount * BaseBuffer.BYTES_PER_FLOAT);
 		this.mFont = pFont;
 		this.mText = pText;
+		this.mHorizontalAlign = pHorizontalAlign;
 
 		/* Init Metrics. */
 		{
@@ -66,9 +71,15 @@ public class Text extends Shape {
 			this.mWidths = new int[lineCount];
 			final int[] widths = this.mWidths;
 			
+			int maximumLineWidth = 0;
+			
 			for (int i = lineCount - 1; i >= 0; i--) {
 				widths[i] = pFont.getStringWidth(lines[i]);
+				maximumLineWidth = Math.max(maximumLineWidth, widths[i]);
 			}
+			this.mMaximumeLineWidth = maximumLineWidth;
+			super.mWidth = this.mMaximumeLineWidth;
+//			this.setHeight(lineCount)
 		}
 		
 		this.initTextureBuffer();
@@ -105,41 +116,49 @@ public class Text extends Shape {
 	
 			final int lineHeight = font.getLineHeight();
 			final String[] lines = this.mLines;
-
-			final float baseX = this.mX;
-			final float baseY = this.mY;
-	
+			
 			final int lineCount = lines.length;
-			for (int i = 0; i < lineCount; i++) {
-				final String line = lines[i];
-				int x = 0;
-				int y = 0;
-	
-				y += i * (font.getLineHeight() + font.getLineGap());
+			for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
+				final String line = lines[lineIndex];
+
+				int lineX;
+				switch(this.mHorizontalAlign) {
+					case RIGHT:
+						lineX = this.mMaximumeLineWidth - this.mWidths[lineIndex];
+						break;
+					case CENTER:
+						lineX = (this.mMaximumeLineWidth - this.mWidths[lineIndex]) / 2;
+						break;
+					case LEFT: 
+					default:
+						lineX = 0;
+				}
+				
+				final int lineY = lineIndex * (font.getLineHeight() + font.getLineGap());
 	
 				final int lineLength = line.length();
-				for (int j = 0; j < lineLength; j++) {
-					final Glyph glyph = font.getGlyph(line.charAt(j));
+				for (int letterIndex = 0; letterIndex < lineLength; letterIndex++) {
+					final Letter letter = font.getLetter(line.charAt(letterIndex));
 	
-					vertexByteBuffer.putFloat(baseX + x);
-					vertexByteBuffer.putFloat(baseY + y);
+					vertexByteBuffer.putFloat(lineX);
+					vertexByteBuffer.putFloat(lineY);
 					
-					vertexByteBuffer.putFloat(baseX + x + glyph.mWidth);
-					vertexByteBuffer.putFloat(baseY + y);
+					vertexByteBuffer.putFloat(lineX + letter.mWidth);
+					vertexByteBuffer.putFloat(lineY);
 					
-					vertexByteBuffer.putFloat(baseX + x + glyph.mWidth);
-					vertexByteBuffer.putFloat(baseY + y + lineHeight);
+					vertexByteBuffer.putFloat(lineX + letter.mWidth);
+					vertexByteBuffer.putFloat(lineY + lineHeight);
 					
-					vertexByteBuffer.putFloat(baseX + x + glyph.mWidth);
-					vertexByteBuffer.putFloat(baseY + y + lineHeight);
+					vertexByteBuffer.putFloat(lineX + letter.mWidth);
+					vertexByteBuffer.putFloat(lineY + lineHeight);
 					
-					vertexByteBuffer.putFloat(baseX + x);
-					vertexByteBuffer.putFloat(baseY + y + lineHeight);
+					vertexByteBuffer.putFloat(lineX);
+					vertexByteBuffer.putFloat(lineY + lineHeight);
 
-					vertexByteBuffer.putFloat(baseX + x);
-					vertexByteBuffer.putFloat(baseY + y);
+					vertexByteBuffer.putFloat(lineX);
+					vertexByteBuffer.putFloat(lineY);
 					
-					x += glyph.mAdvance;
+					lineX += letter.mAdvance;
 				}
 			}
 			vertexByteBuffer.position(0);
@@ -174,30 +193,30 @@ public class Text extends Shape {
 
 			final int lineLength = line.length();
 			for (int j = 0; j < lineLength; j++) {
-				final Glyph glyph = font.getGlyph(line.charAt(j));
+				final Letter letter = font.getLetter(line.charAt(j));
 
-				final float glyphTextureX = glyph.mTextureX;
-				final float glyphTextureY = glyph.mTextureY;
-				final float glyphTextureWidth = glyph.mTextureWidth;
-				final float glyphTextureHeight = glyph.mTextureHeight;
+				final float letterTextureX = letter.mTextureX;
+				final float letterTextureY = letter.mTextureY;
+				final float letterTextureWidth = letter.mTextureWidth;
+				final float letterTextureHeight = letter.mTextureHeight;
 
-				textureByteBuffer.putFloat(glyphTextureX);
-				textureByteBuffer.putFloat(glyphTextureY);
+				textureByteBuffer.putFloat(letterTextureX);
+				textureByteBuffer.putFloat(letterTextureY);
 				
-				textureByteBuffer.putFloat(glyphTextureX + glyphTextureWidth);
-				textureByteBuffer.putFloat(glyphTextureY);
+				textureByteBuffer.putFloat(letterTextureX + letterTextureWidth);
+				textureByteBuffer.putFloat(letterTextureY);
 				
-				textureByteBuffer.putFloat(glyphTextureX + glyphTextureWidth);
-				textureByteBuffer.putFloat(glyphTextureY + glyphTextureHeight);
+				textureByteBuffer.putFloat(letterTextureX + letterTextureWidth);
+				textureByteBuffer.putFloat(letterTextureY + letterTextureHeight);
 				
-				textureByteBuffer.putFloat(glyphTextureX + glyphTextureWidth);
-				textureByteBuffer.putFloat(glyphTextureY + glyphTextureHeight);
+				textureByteBuffer.putFloat(letterTextureX + letterTextureWidth);
+				textureByteBuffer.putFloat(letterTextureY + letterTextureHeight);
 				
-				textureByteBuffer.putFloat(glyphTextureX);
-				textureByteBuffer.putFloat(glyphTextureY + glyphTextureHeight);
+				textureByteBuffer.putFloat(letterTextureX);
+				textureByteBuffer.putFloat(letterTextureY + letterTextureHeight);
 
-				textureByteBuffer.putFloat(glyphTextureX);
-				textureByteBuffer.putFloat(glyphTextureY);
+				textureByteBuffer.putFloat(letterTextureX);
+				textureByteBuffer.putFloat(letterTextureY);
 			}
 		}
 		textureByteBuffer.position(0);
@@ -206,4 +225,8 @@ public class Text extends Shape {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	public enum HorizontalAlign {
+		LEFT, CENTER, RIGHT;
+	}
 }

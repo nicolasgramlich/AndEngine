@@ -7,7 +7,7 @@ package org.anddev.andengine.opengl.text;
  * @author Nicolas Gramlich
  * @since 10:30:22 - 03.04.2010
  */
-public class Glyph {
+public class Letter {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,14 +28,14 @@ public class Glyph {
 	// Constructors
 	// ===========================================================
 
-	public Glyph(final int pAdvance, final int pWidth, final int pHeight, final float pTextureU, final float pTextureV, final float pTextureWidthU, final float pTextureHeightV) {
+	public Letter(final int pAdvance, final int pWidth, final int pHeight, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight) {
 		this.mAdvance = pAdvance;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		this.mTextureX = pTextureU;
-		this.mTextureY = pTextureV;
-		this.mTextureWidth = pTextureWidthU;
-		this.mTextureHeight = pTextureHeightV;
+		this.mTextureX = pTextureX;
+		this.mTextureY = pTextureY;
+		this.mTextureWidth = pTextureWidth;
+		this.mTextureHeight = pTextureHeight;
 	}
 
 	// ===========================================================

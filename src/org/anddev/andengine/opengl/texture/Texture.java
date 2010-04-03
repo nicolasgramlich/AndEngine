@@ -98,7 +98,7 @@ public class Texture {
 	public void loadToHardware(final GL10 pGL) {
 		GLHelper.enableTextures(pGL);
 
-		this.allocateAndBindTextureOnHardware(pGL, this.mWidth, this.mHeight);
+		this.allocateAndBindTextureOnHardware(pGL);
 
 		this.applyTextureOptions(pGL);
 
@@ -129,17 +129,17 @@ public class Texture {
 		pGL.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, textureOptions.mTextureEnvironment);
 	}
 
-	private void allocateAndBindTextureOnHardware(final GL10 pGL, final int pWidth, final int pHeight) {
-		this.mHardwareTextureID = generateHardwareTextureID(pGL);
+	private void allocateAndBindTextureOnHardware(final GL10 pGL) {
+		this.mHardwareTextureID = this.generateHardwareTextureID(pGL);
 
 		this.selectOnHardware(pGL);
 
-		sendPlaceholderBitmapToHardware(pWidth, pHeight);
+		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
 	}
 
 	private int generateHardwareTextureID(final GL10 pGL) {
 		final int[] hardwareTextureIDFether = new int[1];
-		
+
 		pGL.glGenTextures(1, hardwareTextureIDFether, 0);
 
 		return hardwareTextureIDFether[0];
@@ -149,7 +149,7 @@ public class Texture {
 		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.ARGB_8888);
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);
-		
+
 		textureBitmap.recycle();
 	}
 

@@ -33,30 +33,43 @@ public class Font {
 	// Fields
 	// ===========================================================
 
-	private final HashMap<Character, Glyph> mCharacterToGlyphMap = new HashMap<Character, Glyph>();
-	private final HashMap<Glyph, Bitmap> mGlyhpsPendingToBeDrawnToTexture = new HashMap<Glyph, Bitmap>();
+	private final HashMap<Character, Letter> mCharacterToLetterMap = new HashMap<Character, Letter>();
+	private final HashMap<Letter, Bitmap> mLettersPendingToBeDrawnToTexture = new HashMap<Letter, Bitmap>();
 
 	private final Typeface mTypeface;
 	private final Paint mPaint;
+	private final Paint mBackgroundPaint;
 	private final FontMetrics mFontMetrics;
 	private final Texture mTexture;
 
-	private final Rect mTemporaryRect = new Rect();
-
 	private int mCurrentTextureX = 0;
 	private int mCurrentTextureY = 0;
+
+
+	private final Size mCreateLetterTemporarySize = new Size();
+	private final Rect mGetLetterBitmapTemporaryRect = new Rect();
+	private final Rect mGetStringWidthTemporaryRect = new Rect();
+	private final Rect mGetLetterBoundsTemporaryRect = new Rect();
+	private final float[] mTemporaryTextWidthFetchers = new float[1];
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Font(final Texture pTexture, final int size, final Typeface pTypeFace) {
+	public Font(final Texture pTexture, final Typeface pTypeFace, final float pSize, final boolean pAntiAlias, final int pColor) {
 		this.mTexture = pTexture;
 		this.mTypeface = pTypeFace;
+
 		this.mPaint = new Paint();
 		this.mPaint.setTypeface(this.mTypeface);
-		this.mPaint.setTextSize(size);
-		this.mPaint.setAntiAlias(false);
+		this.mPaint.setColor(pColor);
+		this.mPaint.setTextSize(pSize);
+		this.mPaint.setAntiAlias(pAntiAlias);
+
+		this.mBackgroundPaint = new Paint();
+		this.mBackgroundPaint.setColor(Color.TRANSPARENT);
+		this.mBackgroundPaint.setStyle(Style.FILL);
+
 		this.mFontMetrics = this.mPaint.getFontMetrics();
 	}
 
@@ -72,26 +85,22 @@ public class Font {
 	// Methods
 	// ===========================================================
 
-	public int getGlyphAdvance(final char pCharacter) {
-		final float[] width = new float[1]; // TODO Kill allocation
-		this.mPaint.getTextWidths("" + pCharacter, width);
-		return (int) (Math.ceil(width[0]));
+	public int getLetterAdvance(final char pCharacter) {
+		this.mPaint.getTextWidths("" + pCharacter, this.mTemporaryTextWidthFetchers);
+		return (int) (Math.ceil(this.mTemporaryTextWidthFetchers[0]));
 	}
 
-	public Bitmap getGlyphBitmap(final char pCharacter) {
-		final Rect rect = new Rect(); // TODO Kill allocation
-		this.mPaint.getTextBounds("" + pCharacter, 0, 1, rect);
+	public Bitmap getLetterBitmap(final char pCharacter) {		
+		final String characterAsString = "" + pCharacter;
+		this.mPaint.getTextBounds(characterAsString, 0, 1, this.mGetLetterBitmapTemporaryRect);
 
-		final Bitmap bitmap = Bitmap.createBitmap(rect.width() == 0 ? 1 : rect.width() + 5, this.getLineHeight(), Bitmap.Config.ARGB_8888);
+		final Bitmap bitmap = Bitmap.createBitmap(this.mGetLetterBitmapTemporaryRect.width() == 0 ? 1 : this.mGetLetterBitmapTemporaryRect.width() + 5, this.getLineHeight(), Bitmap.Config.ARGB_8888);
 		final Canvas canvas = new Canvas(bitmap);
 
 		/* Make background transparent. */
-		this.mPaint.setColor(Color.TRANSPARENT);
-		this.mPaint.setStyle(Style.FILL);
-		canvas.drawRect(new Rect(0, 0, rect.width() + 5, this.getLineHeight()), this.mPaint); // TODO Kill allocation
+		canvas.drawRect(0, 0, this.mGetLetterBitmapTemporaryRect.width() + 5, this.getLineHeight(), this.mBackgroundPaint);
 
-		this.mPaint.setColor(Color.BLACK);
-		canvas.drawText("" + pCharacter, 0, -this.mFontMetrics.ascent, this.mPaint);
+		canvas.drawText(characterAsString, 0, -this.mFontMetrics.ascent, this.mPaint);
 		return bitmap;
 	}
 
@@ -104,57 +113,62 @@ public class Font {
 	}
 
 	public int getStringWidth(final String pText) {
-		final Rect rect = new Rect();// TODO Kill allocation
-		this.mPaint.getTextBounds(pText, 0, pText.length(), rect);
-		return rect.width();
+		this.mPaint.getTextBounds(pText, 0, pText.length(), this.mGetStringWidthTemporaryRect);
+		return this.mGetStringWidthTemporaryRect.width();
 	}
 
-	public void getGlyphBounds(final char pCharacter, final Rectangle pRectangle) {
-		this.mPaint.getTextBounds("" + pCharacter, 0, 1, this.mTemporaryRect);
-		pRectangle.mWidth = this.mTemporaryRect.width() + 5;
-		pRectangle.mHeight = this.getLineHeight();
+	private void getLetterBounds(final char pCharacter, final Size pSize) {
+		this.mPaint.getTextBounds("" + pCharacter, 0, 1, this.mGetLetterBoundsTemporaryRect);
+		pSize.mWidth = this.mGetLetterBoundsTemporaryRect.width() + 5;
+		pSize.mHeight = this.getLineHeight();
 	}
 
 	public Texture getTexture() {
 		return this.mTexture;
 	}
 
-	public Glyph getGlyph(final char pCharacter) {
-		Glyph glyph = this.mCharacterToGlyphMap.get(pCharacter);
-		if (glyph == null) {
-			glyph = this.createGlyph(pCharacter);
-			this.mCharacterToGlyphMap.put(pCharacter, glyph);
+	public Letter getLetter(final char pCharacter) {
+		Letter letter = this.mCharacterToLetterMap.get(pCharacter);
+		if (letter == null) {
+			letter = this.createLetter(pCharacter);
+			this.mCharacterToLetterMap.put(pCharacter, letter);
 		}
-		return glyph;
+		return letter;
 	}
 
-	private Glyph createGlyph(final char pCharacter) {
-		final Bitmap bitmap = this.getGlyphBitmap(pCharacter);
-		final Rectangle rect = new Rectangle(); // TODO Kill allocation
-		this.getGlyphBounds(pCharacter, rect);
+	private Letter createLetter(final char pCharacter) {
+		final Bitmap bitmap = this.getLetterBitmap(pCharacter);
+		this.getLetterBounds(pCharacter, this.mCreateLetterTemporarySize);
 
-		if (this.mCurrentTextureX + rect.mWidth >= TEXTURE_SIZE) {
+		if (this.mCurrentTextureX + mCreateLetterTemporarySize.mWidth >= TEXTURE_SIZE) {
 			this.mCurrentTextureX = 0;
 			this.mCurrentTextureY += this.getLineGap() + this.getLineHeight();
 		}
 
-		final Glyph glyph = new Glyph(this.getGlyphAdvance(pCharacter), (int) rect.mWidth, (int) rect.mHeight, this.mCurrentTextureX / TEXTURE_SIZE, this.mCurrentTextureY / TEXTURE_SIZE, rect.mWidth / TEXTURE_SIZE, rect.mHeight / TEXTURE_SIZE);
-		this.mCurrentTextureX += rect.mWidth;
+		final int letterWidth = (int) this.mCreateLetterTemporarySize.mWidth;
+		final int letterHeight = (int) this.mCreateLetterTemporarySize.mHeight;
+		final float textureX = this.mCurrentTextureX / TEXTURE_SIZE;
+		final float textureY = this.mCurrentTextureY / TEXTURE_SIZE;
+		final float textureWidth = this.mCreateLetterTemporarySize.mWidth / TEXTURE_SIZE;
+		final float textureHeight = this.mCreateLetterTemporarySize.mHeight / TEXTURE_SIZE;
 		
-		this.mGlyhpsPendingToBeDrawnToTexture.put(glyph, bitmap);
-		
-		return glyph;
+		final Letter letter = new Letter(this.getLetterAdvance(pCharacter), letterWidth, letterHeight, textureX, textureY, textureWidth, textureHeight);
+		this.mCurrentTextureX += this.mCreateLetterTemporarySize.mWidth;
+
+		this.mLettersPendingToBeDrawnToTexture.put(letter, bitmap);
+
+		return letter;
 	}
 
 	public void update(final GL10 pGL) {
-		if(this.mGlyhpsPendingToBeDrawnToTexture.size() > 0) {
+		if(this.mLettersPendingToBeDrawnToTexture.size() > 0) {
 
-			for (Entry<Glyph, Bitmap> entry : this.mGlyhpsPendingToBeDrawnToTexture.entrySet()) {  
-				final Glyph glyph = entry.getKey();  
-				GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());		
-				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(glyph.mTextureX * TEXTURE_SIZE), (int)(glyph.mTextureY * TEXTURE_SIZE), entry.getValue());	
+			for (final Entry<Letter, Bitmap> entry : this.mLettersPendingToBeDrawnToTexture.entrySet()) {
+				final Letter letter = entry.getKey();
+				GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
+				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * TEXTURE_SIZE), (int)(letter.mTextureY * TEXTURE_SIZE), entry.getValue());
 			}
-			this.mGlyhpsPendingToBeDrawnToTexture.clear();
+			this.mLettersPendingToBeDrawnToTexture.clear();
 			System.gc();
 		}
 	}

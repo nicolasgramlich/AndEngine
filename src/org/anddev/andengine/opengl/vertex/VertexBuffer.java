@@ -1,11 +1,12 @@
 package org.anddev.andengine.opengl.vertex;
 
 import org.anddev.andengine.opengl.BaseBuffer;
+
 /**
  * @author Nicolas Gramlich
  * @since 12:16:18 - 09.03.2010
  */
-public abstract class VertexBuffer extends BaseBuffer {
+public class VertexBuffer extends BaseBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,8 +19,8 @@ public abstract class VertexBuffer extends BaseBuffer {
 	// Constructors
 	// ===========================================================
 
-	public VertexBuffer() {
-		super();
+	public VertexBuffer(final int pByteCount) {
+		super(pByteCount);
 	}
 
 	// ===========================================================
@@ -39,4 +40,3 @@ public abstract class VertexBuffer extends BaseBuffer {
 	// ===========================================================
 
 }
-

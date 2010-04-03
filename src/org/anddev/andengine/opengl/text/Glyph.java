@@ -1,43 +1,46 @@
-package org.anddev.andengine.opengl;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import android.os.Build;
+/**
+ * 
+ */
+package org.anddev.andengine.opengl.text;
 
 /**
  * @author Nicolas Gramlich
- * @since 18:54:39 - 09.03.2010
+ * @since 10:30:22 - 03.04.2010
  */
-public abstract class BaseBuffer {
+public class Glyph {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	public static final int BYTES_PER_FLOAT = 4;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final ByteBuffer mByteBuffer;
+	public final int mAdvance;
+	public final int mWidth;
+	public final int mHeight;
+	public final float mTextureX;
+	public final float mTextureY;
+	public final float mTextureWidth;
+	public final float mTextureHeight;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseBuffer(final int pByteCount) {
-		this.mByteBuffer = this.allocateByteBuffer(pByteCount);
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
+	public Glyph(final int pAdvance, final int pWidth, final int pHeight, final float pTextureU, final float pTextureV, final float pTextureWidthU, final float pTextureHeightV) {
+		this.mAdvance = pAdvance;
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
+		this.mTextureX = pTextureU;
+		this.mTextureY = pTextureV;
+		this.mTextureWidth = pTextureWidthU;
+		this.mTextureHeight = pTextureHeightV;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ByteBuffer getByteBuffer() {
-		return this.mByteBuffer;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -46,14 +49,6 @@ public abstract class BaseBuffer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private ByteBuffer allocateByteBuffer(final int pByteCount) {
-		if(Build.VERSION.SDK_INT == 3) {
-			return ByteBuffer.allocate(pByteCount);
-		} else {
-			return ByteBuffer.allocateDirect(pByteCount);
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

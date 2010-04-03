@@ -1,43 +1,28 @@
-package org.anddev.andengine.opengl;
+package org.anddev.andengine.util;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import android.os.Build;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * @author Nicolas Gramlich
- * @since 18:54:39 - 09.03.2010
+ * @since 19:03:16 - 03.04.2010
  */
-public abstract class BaseBuffer {
+public class StringUtilsTest {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	public static final int BYTES_PER_FLOAT = 4;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final ByteBuffer mByteBuffer;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseBuffer(final int pByteCount) {
-		this.mByteBuffer = this.allocateByteBuffer(pByteCount);
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ByteBuffer getByteBuffer() {
-		return this.mByteBuffer;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -46,13 +31,30 @@ public abstract class BaseBuffer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private ByteBuffer allocateByteBuffer(final int pByteCount) {
-		if(Build.VERSION.SDK_INT == 3) {
-			return ByteBuffer.allocate(pByteCount);
-		} else {
-			return ByteBuffer.allocateDirect(pByteCount);
-		}
+	
+	@Test
+	public void testCountOccurrenceFollowUp() {
+		assertEquals(2, StringUtils.countOccurences("aabbccdd", "b"));
+	}
+	
+	@Test
+	public void testCountOccurrenceEmpty() {
+		assertEquals(0, StringUtils.countOccurences("", "b"));
+	}
+	
+	@Test
+	public void testCountOccurrenceNone() {
+		assertEquals(0, StringUtils.countOccurences("aaaaaaaa", "b"));
+	}
+	
+	@Test
+	public void testCountOccurrenceBeginning() {
+		assertEquals(1, StringUtils.countOccurences("baaaaa", "b"));
+	}
+	
+	@Test
+	public void testCountOccurrenceBeginningAndEnd() {
+		assertEquals(2, StringUtils.countOccurences("baaaaab", "b"));
 	}
 
 	// ===========================================================

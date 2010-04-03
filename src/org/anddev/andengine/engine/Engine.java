@@ -10,6 +10,8 @@ import org.anddev.andengine.entity.UpdateHandlerList;
 import org.anddev.andengine.entity.handler.timer.ITimerCallback;
 import org.anddev.andengine.entity.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.text.Font;
+import org.anddev.andengine.opengl.texture.FontManager;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureRegion;
@@ -53,6 +55,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	protected Scene mScene;
 
 	private final TextureManager mTextureManager = new TextureManager();
+	private final FontManager mFontManager = new FontManager();
 
 	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
@@ -265,7 +268,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public void onDrawFrame(final GL10 pGL) {
 		final float secondsElapsed = this.getSecondsElapsed();
-		this.mTextureManager.loadPendingTextureToHardware(pGL);
+		this.mTextureManager.loadPendingTexturesToHardware(pGL);
+		this.mFontManager.updateFonts(pGL);
 
 		if(this.mRunning) {
 			this.updatePreFrameHandlers(secondsElapsed);
@@ -311,6 +315,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public void reloadTextures() {
 		this.mTextureManager.reloadLoadedToPendingTextures();
+	}
+	
+	public void loadFont(final Font pFont) {
+		this.mFontManager.addFont(pFont);
 	}
 
 	public void loadTexture(final Texture pTexture) {

@@ -1,43 +1,31 @@
-package org.anddev.andengine.opengl;
+package org.anddev.andengine.opengl.texture.buffer;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import android.os.Build;
+import org.anddev.andengine.opengl.BaseBuffer;
 
 /**
  * @author Nicolas Gramlich
- * @since 18:54:39 - 09.03.2010
+ * @since 11:05:56 - 03.04.2010
  */
-public abstract class BaseBuffer {
+public class TextureBuffer extends BaseBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	public static final int BYTES_PER_FLOAT = 4;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final ByteBuffer mByteBuffer;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public BaseBuffer(final int pByteCount) {
-		this.mByteBuffer = this.allocateByteBuffer(pByteCount);
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
+	
+	public TextureBuffer(final int pByteCount) {
+		super(pByteCount);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ByteBuffer getByteBuffer() {
-		return this.mByteBuffer;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -46,14 +34,6 @@ public abstract class BaseBuffer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private ByteBuffer allocateByteBuffer(final int pByteCount) {
-		if(Build.VERSION.SDK_INT == 3) {
-			return ByteBuffer.allocate(pByteCount);
-		} else {
-			return ByteBuffer.allocateDirect(pByteCount);
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -55,11 +55,11 @@ public class TextureManager {
 		loadedTextures.clear();
 	}
 
-	public void loadPendingTextureToHardware(final GL10 pGL) {
+	public void loadPendingTexturesToHardware(final GL10 pGL) {
 		final ArrayList<Texture> pendingTextures = this.mPendingTextures;
-		final int pendingTexutureCount = pendingTextures.size();
-		if(pendingTexutureCount > 0){
-			for(int i = 0; i < pendingTexutureCount; i++){
+		final int pendingTextureCount = pendingTextures.size();
+		if(pendingTextureCount > 0){
+			for(int i = 0; i < pendingTextureCount; i++){
 				final Texture pendingTexture = pendingTextures.get(i);
 				if(!pendingTexture.isLoadedToHardware()){
 					pendingTexture.loadToHardware(pGL);

@@ -1,43 +1,44 @@
-package org.anddev.andengine.opengl;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import android.os.Build;
+/**
+ * 
+ */
+package org.anddev.andengine.opengl.text;
 
 /**
  * @author Nicolas Gramlich
- * @since 18:54:39 - 09.03.2010
+ * @since 10:29:21 - 03.04.2010
  */
-public abstract class BaseBuffer {
+public class Rectangle {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	public static final int BYTES_PER_FLOAT = 4;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final ByteBuffer mByteBuffer;
+	public float mX;
+	public float mY;
+	public float mWidth;
+	public float mHeight;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseBuffer(final int pByteCount) {
-		this.mByteBuffer = this.allocateByteBuffer(pByteCount);
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
+	public Rectangle() {
+		this(0, 0, 0, 0);
+	}
+
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
+		this.mX = pX;
+		this.mY = pY;
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ByteBuffer getByteBuffer() {
-		return this.mByteBuffer;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -46,14 +47,6 @@ public abstract class BaseBuffer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private ByteBuffer allocateByteBuffer(final int pByteCount) {
-		if(Build.VERSION.SDK_INT == 3) {
-			return ByteBuffer.allocate(pByteCount);
-		} else {
-			return ByteBuffer.allocateDirect(pByteCount);
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

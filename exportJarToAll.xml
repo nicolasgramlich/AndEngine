@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="createjar" name="AndEngine">
+<project basedir="." default="createjars" name="AndEngine">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	
 	<property environment="env" />
 	<property name="ECLIPSE_HOME" value="E:/eclipse/galileo-android" />
 	<property name="debuglevel" value="source,lines,vars" />
@@ -9,21 +12,29 @@
 	<property name="src" value="src" />
 	
 	<property name="binfile" value="bin/andengine.jar" />
-	<property name="targetfile_0" value="../AndEngineExamples/lib/andengine.jar" />
-	<property name="targetfile_1" value="../AndEngineLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_2" value="../AndEnginePlayground/lib/andengine.jar" />
-	<property name="targetfile_3" value="../HeliTaxiShared/lib/andengine.jar" />
-	<property name="targetfile_4" value="../HeliTaxi/lib/andengine.jar" />
-	<property name="targetfile_5" value="../HeliTaxiLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_6" value="../VolcanoLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_7" value="../CampfireLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_8" value="../CigaretteLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_9" value="../LavaLampLiveWallpaper/lib/andengine.jar" />
-	<property name="targetfile_10" value="../AndEnginePhysicsBox2D/lib/andengine.jar" />
-	<property name="targetfile_11" value="../SuperDroid/lib/andengine.jar" />
-	<property name="targetfile_12" value="../HighRise/lib/andengine.jar" />
+	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar,
+	../AndEngineLiveWallpaper/lib/andengine.jar,
+	../AndEnginePlayground/lib/andengine.jar,
+	../HeliTaxiShared/lib/andengine.jar,
+	../HeliTaxi/lib/andengine.jar,
+	../HeliTaxiLiveWallpaper/lib/andengine.jar,
+	../VolcanoLiveWallpaper/lib/andengine.jar,
+	../CampfireLiveWallpaper/lib/andengine.jar,
+	../CigaretteLiveWallpaper/lib/andengine.jar,
+	../LavaLampLiveWallpaper/lib/andengine.jar,
+	../AndEnginePhysicsBox2D/lib/andengine.jar,
+	../SuperDroid/lib/andengine.jar,
+	../HighRise/lib/andengine.jar" />
    
 	<target name="createjar" >
+		<echo>${targetfile}</echo>
+        
+		<copy file="${binfile}" tofile="${targetfile}"/>
+		
+		<eclipse.refreshLocal resource="${targetfile}" depth="infinite"/>
+    </target>
+    
+   	<target name="createjars">
 		<jar destfile="${binfile}">
 			<zipfileset dir="${src}">
 				<include name="**/*.*" />
@@ -34,20 +45,8 @@
 				<exclude name="**/R.class" />
 				<exclude name="**/R$*.class" />
 			</zipfileset>
-        </jar>
-        
-		<copy file="${binfile}" tofile="${targetfile_0}"/>
-		<copy file="${binfile}" tofile="${targetfile_1}"/>
-		<copy file="${binfile}" tofile="${targetfile_2}"/>
-		<copy file="${binfile}" tofile="${targetfile_3}"/>
-		<copy file="${binfile}" tofile="${targetfile_4}"/>
-		<copy file="${binfile}" tofile="${targetfile_5}"/>
-		<copy file="${binfile}" tofile="${targetfile_6}"/>
-		<copy file="${binfile}" tofile="${targetfile_7}"/>
-		<copy file="${binfile}" tofile="${targetfile_8}"/>
-		<copy file="${binfile}" tofile="${targetfile_9}"/>
-		<copy file="${binfile}" tofile="${targetfile_10}"/>
-		<copy file="${binfile}" tofile="${targetfile_11}"/>
-		<copy file="${binfile}" tofile="${targetfile_12}"/>
-    </target>
+		</jar>
+		
+		<foreach list="${targetlist}" target="createjar" param="targetfile" delimiter="," trim="true" />
+   	</target>
 </project>

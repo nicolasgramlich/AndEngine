@@ -18,6 +18,10 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public RectangleVertexBuffer() {
+		super(8 * BYTES_PER_FLOAT);
+	}
 
 	// ===========================================================
 	// Getter & Setter

@@ -100,17 +100,18 @@ public class Texture {
 
 		this.allocateAndBindTextureOnHardware(pGL, this.mWidth, this.mHeight);
 
-		applyTextureOptions(pGL, this.mTextureOptions);
+		this.applyTextureOptions(pGL);
 
-		writeTextureToHardware(this.mTextureSources);
+		this.writeTextureToHardware();
 
 		this.mLoadedToHardware = true;
 	}
 
-	private static void writeTextureToHardware(final ArrayList<TextureSourceWithLocation> pTextureSources) {
-		final int textureSourceCount = pTextureSources.size();
+	private void writeTextureToHardware() {
+		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
+		final int textureSourceCount = textureSources.size();
 		for(int j = 0; j < textureSourceCount; j++) {
-			final TextureSourceWithLocation textureSource = pTextureSources.get(j);
+			final TextureSourceWithLocation textureSource = textureSources.get(j);
 			if(textureSource != null) {
 				final Bitmap bmp = textureSource.getBitmap();
 				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
@@ -119,12 +120,13 @@ public class Texture {
 		}
 	}
 
-	private static void applyTextureOptions(final GL10 pGL, final TextureOptions pTextureOptions) {
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, pTextureOptions.mMinFilter);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, pTextureOptions.mMagFilter);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, pTextureOptions.mWrapS);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, pTextureOptions.mWrapT);
-		pGL.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, pTextureOptions.mTextureEnvironment);
+	private void applyTextureOptions(final GL10 pGL) {
+		final TextureOptions textureOptions = this.mTextureOptions;
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, textureOptions.mMinFilter);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, textureOptions.mMagFilter);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, textureOptions.mWrapS);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, textureOptions.mWrapT);
+		pGL.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, textureOptions.mTextureEnvironment);
 	}
 
 	private void allocateAndBindTextureOnHardware(final GL10 pGL, final int pWidth, final int pHeight) {
@@ -135,17 +137,19 @@ public class Texture {
 		sendPlaceholderBitmapToHardware(pWidth, pHeight);
 	}
 
-	private static int generateHardwareTextureID(final GL10 pGL) {
+	private int generateHardwareTextureID(final GL10 pGL) {
 		final int[] hardwareTextureIDFether = new int[1];
+		
 		pGL.glGenTextures(1, hardwareTextureIDFether, 0);
 
 		return hardwareTextureIDFether[0];
 	}
 
-	private static void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
+	private void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
 		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.ARGB_8888);
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);
+		
 		textureBitmap.recycle();
 	}
 
@@ -190,8 +194,8 @@ public class Texture {
 	}
 
 	public static class TextureOptions {
-		public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_LINEAR, GL10.GL_MODULATE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE);
-		public static final TextureOptions DEFAULT_REPEATING = new TextureOptions(GL10.GL_NEAREST, GL10.GL_LINEAR, GL10.GL_MODULATE, GL10.GL_REPEAT, GL10.GL_REPEAT);
+		public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_MODULATE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE);
+		public static final TextureOptions DEFAULT_REPEATING = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_MODULATE, GL10.GL_REPEAT, GL10.GL_REPEAT);
 
 		public final int mMagFilter;
 		public final int mMinFilter;

@@ -1,43 +1,25 @@
-package org.anddev.andengine.opengl;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import android.os.Build;
+package org.anddev.andengine.util;
 
 /**
  * @author Nicolas Gramlich
- * @since 18:54:39 - 09.03.2010
+ * @since 19:01:08 - 03.04.2010
  */
-public abstract class BaseBuffer {
+public class StringUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	public static final int BYTES_PER_FLOAT = 4;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final ByteBuffer mByteBuffer;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseBuffer(final int pByteCount) {
-		this.mByteBuffer = this.allocateByteBuffer(pByteCount);
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ByteBuffer getByteBuffer() {
-		return this.mByteBuffer;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -46,13 +28,18 @@ public abstract class BaseBuffer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static int countOccurences(final String pText, final String pToken) {
+		int count = 0;
 
-	private ByteBuffer allocateByteBuffer(final int pByteCount) {
-		if(Build.VERSION.SDK_INT == 3) {
-			return ByteBuffer.allocate(pByteCount);
-		} else {
-			return ByteBuffer.allocateDirect(pByteCount);
+		int lastIndex = pText.indexOf(pToken, 0);
+		
+		while (lastIndex != -1) {
+			count++;
+			lastIndex = pText.indexOf(pToken, lastIndex + 1);
 		}
+		
+		return count;
 	}
 
 	// ===========================================================

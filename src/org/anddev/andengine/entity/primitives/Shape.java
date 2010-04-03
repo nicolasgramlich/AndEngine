@@ -93,7 +93,8 @@ public abstract class Shape extends DynamicEntity {
 		this.onInitDraw(pGL);
 
 		pGL.glPushMatrix();
-		GLHelper.vertexPointer(pGL, this.getVertexBuffer().getByteBuffer(), GL10.GL_FLOAT);
+		
+		this.onApplyVertices(pGL);
 
 		this.onPreTransformations(pGL);
 
@@ -101,13 +102,9 @@ public abstract class Shape extends DynamicEntity {
 
 		this.onPostTransformations(pGL);
 
-		pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+		this.drawVertices(pGL);
 		pGL.glPopMatrix();
 	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
 
 	@Override
 	public void reset() {
@@ -118,9 +115,17 @@ public abstract class Shape extends DynamicEntity {
 		this.mAlpha = 1.0f;
 	}
 
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
 	protected void onInitDraw(final GL10 pGL) {
 		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 		GLHelper.enableVertexArray(pGL);
+	}
+
+	private void onApplyVertices(final GL10 pGL) {
+		GLHelper.vertexPointer(pGL, this.getVertexBuffer().getByteBuffer(), GL10.GL_FLOAT);
 	}
 
 	protected void onPreTransformations(final GL10 pGL) {
@@ -147,6 +152,10 @@ public abstract class Shape extends DynamicEntity {
 
 	protected void applyTranslation(final GL10 pGL) {
 		pGL.glTranslatef(this.getX(), this.getY(), 0);
+	}
+
+	protected void drawVertices(final GL10 pGL) {
+		pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 	}
 
 	protected void applyRotation(final GL10 pGL) {

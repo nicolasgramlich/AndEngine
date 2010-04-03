@@ -28,6 +28,7 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 	// ===========================================================
 
 	public BaseTextureRegionBuffer(final TextureRegion pTextureRegion) {
+		super(8 * BYTES_PER_FLOAT);
 		this.mTextureRegion = pTextureRegion;
 		this.update();
 	}

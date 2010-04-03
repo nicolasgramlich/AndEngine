@@ -1,43 +1,37 @@
-package org.anddev.andengine.opengl;
+package org.anddev.andengine.opengl.texture;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import java.util.ArrayList;
 
-import android.os.Build;
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.opengl.text.Font;
 
 /**
  * @author Nicolas Gramlich
- * @since 18:54:39 - 09.03.2010
+ * @since 17:48:46 - 08.03.2010
  */
-public abstract class BaseBuffer {
+public class FontManager {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	public static final int BYTES_PER_FLOAT = 4;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final ByteBuffer mByteBuffer;
+	private final ArrayList<Font> mFonts = new ArrayList<Font>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseBuffer(final int pByteCount) {
-		this.mByteBuffer = this.allocateByteBuffer(pByteCount);
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
+	public FontManager() {
+
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public ByteBuffer getByteBuffer() {
-		return this.mByteBuffer;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -47,11 +41,17 @@ public abstract class BaseBuffer {
 	// Methods
 	// ===========================================================
 
-	private ByteBuffer allocateByteBuffer(final int pByteCount) {
-		if(Build.VERSION.SDK_INT == 3) {
-			return ByteBuffer.allocate(pByteCount);
-		} else {
-			return ByteBuffer.allocateDirect(pByteCount);
+	public void addFont(final Font pFont) {
+		this.mFonts.add(pFont);
+	}
+
+	public void updateFonts(final GL10 pGL) {
+		final ArrayList<Font> fonts = this.mFonts;
+		final int fontCount = fonts.size();
+		if(fontCount > 0){
+			for(int i = 0; i < fontCount; i++){
+				fonts.get(i).update(pGL);
+			}
 		}
 	}
 

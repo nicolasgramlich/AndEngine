@@ -35,8 +35,8 @@ public class Text extends Shape {
 
 	private final TextureBuffer mTextureBuffer;
 
-	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
-	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+	private int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
+	private int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	private final String mText;
 	private final String[] mLines;
@@ -175,7 +175,7 @@ public class Text extends Shape {
 	// Methods
 	// ===========================================================
 
-	protected void applyTexture(final GL10 pGL) {
+	private void applyTexture(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
 		GLHelper.texCoordPointer(pGL, this.mTextureBuffer.getByteBuffer(), GL10.GL_FLOAT);
 	}

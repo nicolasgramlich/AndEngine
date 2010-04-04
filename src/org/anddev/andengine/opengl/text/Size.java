@@ -16,18 +16,18 @@ class Size {
 	// Fields
 	// ===========================================================
 
-	public float mWidth;
-	public float mHeight;
+	float mWidth;
+	float mHeight;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Size() {
+	Size() {
 		this(0, 0);
 	}
 
-	public Size(final float pWidth, final float pHeight) {
+	Size(final float pWidth, final float pHeight) {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 	}

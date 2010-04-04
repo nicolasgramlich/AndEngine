@@ -85,12 +85,12 @@ public class Font {
 	// Methods
 	// ===========================================================
 
-	public int getLetterAdvance(final char pCharacter) {
+	private int getLetterAdvance(final char pCharacter) {
 		this.mPaint.getTextWidths("" + pCharacter, this.mTemporaryTextWidthFetchers);
 		return (int) (Math.ceil(this.mTemporaryTextWidthFetchers[0]));
 	}
 
-	public Bitmap getLetterBitmap(final char pCharacter) {		
+	private Bitmap getLetterBitmap(final char pCharacter) {		
 		final String characterAsString = "" + pCharacter;
 		this.mPaint.getTextBounds(characterAsString, 0, 1, this.mGetLetterBitmapTemporaryRect);
 

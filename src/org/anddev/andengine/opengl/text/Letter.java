@@ -28,7 +28,7 @@ public class Letter {
 	// Constructors
 	// ===========================================================
 
-	public Letter(final int pAdvance, final int pWidth, final int pHeight, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight) {
+	Letter(final int pAdvance, final int pWidth, final int pHeight, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight) {
 		this.mAdvance = pAdvance;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;

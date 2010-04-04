@@ -18,6 +18,20 @@ public class GLHelper {
 	// ===========================================================
 
 	private static int mCurrentHardwareTexture = -1;
+	private static int mCurrentMatrix = -1;
+
+	private static int mCurrentSourceBlendMode;
+	private static int mCurrentDestionationBlendMode;
+
+	private static boolean mEnableDither = true;
+	private static boolean mEnableLightning = true;
+	private static boolean mEnableDepthTest = true;
+	private static boolean mEnableMultisample = true;
+
+	private static boolean mEnableBlend = false;
+	private static boolean mEnableTextures = false;
+	private static boolean mEnableTexCoordArray = false;
+	private static boolean mEnableVertexArray = false;
 
 	// ===========================================================
 	// Constructors
@@ -40,47 +54,107 @@ public class GLHelper {
 	}
 
 	public static void enableVertexArray(final GL10 pGL) {
-		pGL.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+		if(!GLHelper.mEnableVertexArray) {
+			GLHelper.mEnableVertexArray = true;
+			pGL.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+		}
+	}
+	public static void disableVertexArray(final GL10 pGL) {
+		if(GLHelper.mEnableVertexArray) {
+			GLHelper.mEnableVertexArray = false;
+			pGL.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+		}
 	}
 
 	public static void enableTexCoordArray(final GL10 pGL) {
-		pGL.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		if(!GLHelper.mEnableTexCoordArray) {
+			GLHelper.mEnableTexCoordArray = true;
+			pGL.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		}
+	}
+	public static void disableTexCoordArray(final GL10 pGL) {
+		if(GLHelper.mEnableTexCoordArray) {
+			GLHelper.mEnableTexCoordArray = false;
+			pGL.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		}
 	}
 
 	public static void enableBlend(final GL10 pGL) {
-		pGL.glEnable(GL10.GL_BLEND);
+		if(!GLHelper.mEnableBlend) {
+			GLHelper.mEnableBlend = true;
+			pGL.glEnable(GL10.GL_BLEND);
+		}
+	}
+	public static void disableBlend(final GL10 pGL) {
+		if(GLHelper.mEnableBlend) {
+			GLHelper.mEnableBlend = false;
+			pGL.glDisable(GL10.GL_BLEND);
+		}
 	}
 
 	public static void enableTextures(final GL10 pGL) {
-		pGL.glEnable(GL10.GL_TEXTURE_2D);
+		if(!GLHelper.mEnableTextures) {
+			GLHelper.mEnableTextures = true;
+			pGL.glEnable(GL10.GL_TEXTURE_2D);
+		}
 	}
-
-	public static void disableLightning(final GL10 pGL) {
-		pGL.glDisable(GL10.GL_LIGHTING);
-	}
-
-	public static void disableDither(final GL10 pGL) {
-		pGL.glDisable(GL10.GL_DITHER);
-	}
-
-	public static void disableDepthTest(final GL10 pGL) {
-		pGL.glDisable(GL10.GL_DEPTH_TEST);
-	}
-
-	public static void disableMultisample(final GL10 pGL) {
-		pGL.glDisable(GL10.GL_MULTISAMPLE);
-	}
-
 	public static void disableTextures(final GL10 pGL) {
-		pGL.glDisable(GL10.GL_TEXTURE_2D);
+		if(GLHelper.mEnableTextures) {
+			GLHelper.mEnableTextures = false;
+			pGL.glDisable(GL10.GL_TEXTURE_2D);
+		}
 	}
 
-	public static void disableVertexArray(final GL10 pGL) {
-		pGL.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+	public static void enableLightning(final GL10 pGL) {
+		if(!GLHelper.mEnableLightning) {
+			GLHelper.mEnableLightning = true;
+			pGL.glEnable(GL10.GL_LIGHTING);
+		}
+	}
+	public static void disableLightning(final GL10 pGL) {
+		if(GLHelper.mEnableLightning) {
+			GLHelper.mEnableLightning = false;
+			pGL.glDisable(GL10.GL_LIGHTING);
+		}
 	}
 
-	public static void disableTexCoordArray(final GL10 pGL) {
-		pGL.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+	public static void enableDither(final GL10 pGL) {
+		if(!GLHelper.mEnableDither) {
+			GLHelper.mEnableDither = true;
+			pGL.glEnable(GL10.GL_DITHER);
+		}
+	}
+	public static void disableDither(final GL10 pGL) {
+		if(GLHelper.mEnableDither) {
+			GLHelper.mEnableDither = false;
+			pGL.glDisable(GL10.GL_DITHER);
+		}
+	}
+
+	public static void enableDepthTest(final GL10 pGL) {
+		if(!GLHelper.mEnableDepthTest) {
+			GLHelper.mEnableDepthTest = true;
+			pGL.glEnable(GL10.GL_DEPTH_TEST);
+		}
+	}
+	public static void disableDepthTest(final GL10 pGL) {
+		if(GLHelper.mEnableDepthTest) {
+			GLHelper.mEnableDepthTest = false;
+			pGL.glDisable(GL10.GL_DEPTH_TEST);
+		}
+	}
+
+	public static void enableMultisample(final GL10 pGL) {
+		if(!GLHelper.mEnableMultisample) {
+			GLHelper.mEnableMultisample = true;
+			pGL.glEnable(GL10.GL_MULTISAMPLE);
+		}
+	}
+	public static void disableMultisample(final GL10 pGL) {
+		if(GLHelper.mEnableMultisample) {
+			GLHelper.mEnableMultisample = false;
+			pGL.glDisable(GL10.GL_MULTISAMPLE);
+		}
 	}
 
 	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {
@@ -92,27 +166,46 @@ public class GLHelper {
 	}
 
 	public static void texCoordPointer(final GL10 pGL, final ByteBuffer pUVMappingByteBuffer, final int pType) {
+		// TODO Cache
 		pGL.glTexCoordPointer(2, pType, 0, pUVMappingByteBuffer);
 	}
 
 	public static void vertexPointer(final GL10 pGL, final ByteBuffer pByteBuffer, final int pType) {
+		// TODO Cache
 		pGL.glVertexPointer(2, pType, 0, pByteBuffer);
 	}
 
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
-		pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
+		if(GLHelper.mCurrentSourceBlendMode != pSourceBlendMode || GLHelper.mCurrentDestionationBlendMode != pDestinationBlendMode) {
+			GLHelper.mCurrentSourceBlendMode = pSourceBlendMode;
+			GLHelper.mCurrentDestionationBlendMode = pDestinationBlendMode;
+			pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
+		}
 	}
 
 	public static void switchToModelViewMatrix(final GL10 pGL) {
-		pGL.glMatrixMode(GL10.GL_MODELVIEW);
+		/* Reduce unnecessary matrix switching calls. */
+		if(GLHelper.mCurrentMatrix != GL10.GL_MODELVIEW) {
+			GLHelper.mCurrentMatrix = GL10.GL_MODELVIEW;
+			pGL.glMatrixMode(GL10.GL_MODELVIEW);
+		}
 	}
 
 	public static void switchToProjectionMatrix(final GL10 pGL) {
-		pGL.glMatrixMode(GL10.GL_PROJECTION);
+		/* Reduce unnecessary matrix switching calls. */
+		if(GLHelper.mCurrentMatrix != GL10.GL_PROJECTION) {
+			GLHelper.mCurrentMatrix = GL10.GL_PROJECTION;
+			pGL.glMatrixMode(GL10.GL_PROJECTION);
+		}
+	}
+
+	public static void setProjectionIdentityMatrix(final GL10 pGL) {
+		GLHelper.switchToProjectionMatrix(pGL);
+		pGL.glLoadIdentity();
 	}
 
 	public static void setModelViewIdentityMatrix(final GL10 pGL) {
-		pGL.glMatrixMode(GL10.GL_MODELVIEW);
+		GLHelper.switchToModelViewMatrix(pGL);
 		pGL.glLoadIdentity();
 	}
 

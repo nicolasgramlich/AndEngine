@@ -101,7 +101,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.disableMultisample(pGL);
 
 			GLHelper.enableBlend(pGL);
-
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);

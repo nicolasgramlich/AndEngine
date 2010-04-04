@@ -141,7 +141,7 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	private void onApplyVertices(final GL10 pGL) {
-		GLHelper.vertexPointer(pGL, this.getVertexBuffer().getByteBuffer(), GL10.GL_FLOAT);
+		GLHelper.vertexPointer(pGL, this.getVertexBuffer().getByteBuffer());
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {

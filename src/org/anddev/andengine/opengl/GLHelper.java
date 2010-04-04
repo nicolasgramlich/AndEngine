@@ -20,8 +20,11 @@ public class GLHelper {
 	private static int mCurrentHardwareTexture = -1;
 	private static int mCurrentMatrix = -1;
 
-	private static int mCurrentSourceBlendMode;
-	private static int mCurrentDestionationBlendMode;
+	private static int mCurrentSourceBlendMode = -1;
+	private static int mCurrentDestionationBlendMode = -1;
+
+	private static ByteBuffer mCurrentTextureByteBuffer = null;
+	private static ByteBuffer mCurrentVertexByteBuffer = null;
 
 	private static boolean mEnableDither = true;
 	private static boolean mEnableLightning = true;
@@ -48,6 +51,27 @@ public class GLHelper {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static void reset() {
+		GLHelper.mCurrentHardwareTexture = -1;
+		GLHelper.mCurrentMatrix = -1;
+
+		GLHelper.mCurrentSourceBlendMode = -1;
+		GLHelper.mCurrentDestionationBlendMode = -1;
+
+		GLHelper.mCurrentTextureByteBuffer = null;
+		GLHelper.mCurrentVertexByteBuffer = null;
+		
+		GLHelper.mEnableDither = true;
+		GLHelper.mEnableLightning = true;
+		GLHelper.mEnableDepthTest = true;
+		GLHelper.mEnableMultisample = true;
+
+		GLHelper.mEnableBlend = false;
+		GLHelper.mEnableTextures = false;
+		GLHelper.mEnableTexCoordArray = false;
+		GLHelper.mEnableVertexArray = false;
+	}
 
 	public static void setColor(final GL10 pGL, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		pGL.glColor4f(pRed, pGreen, pBlue, pAlpha);
@@ -165,14 +189,18 @@ public class GLHelper {
 		}
 	}
 
-	public static void texCoordPointer(final GL10 pGL, final ByteBuffer pUVMappingByteBuffer, final int pType) {
-		// TODO Cache
-		pGL.glTexCoordPointer(2, pType, 0, pUVMappingByteBuffer);
+	public static void texCoordPointer(final GL10 pGL, final ByteBuffer pTextureByteBuffer) {
+		if(GLHelper.mCurrentTextureByteBuffer  != pTextureByteBuffer) {
+			GLHelper.mCurrentTextureByteBuffer = pTextureByteBuffer;
+			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureByteBuffer);
+		}
 	}
 
-	public static void vertexPointer(final GL10 pGL, final ByteBuffer pByteBuffer, final int pType) {
-		// TODO Cache
-		pGL.glVertexPointer(2, pType, 0, pByteBuffer);
+	public static void vertexPointer(final GL10 pGL, final ByteBuffer pVertexByteBuffer) {
+		if(GLHelper.mCurrentVertexByteBuffer  != pVertexByteBuffer) {
+			GLHelper.mCurrentVertexByteBuffer = pVertexByteBuffer;
+			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexByteBuffer);
+		}
 	}
 
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {

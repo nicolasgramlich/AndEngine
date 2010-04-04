@@ -84,6 +84,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
+			GLHelper.reset();
 			this.mEngine.setSurfaceSize(pWidth, pHeight);
 			pGL.glViewport(0, 0, pWidth, pHeight);
 			pGL.glLoadIdentity();

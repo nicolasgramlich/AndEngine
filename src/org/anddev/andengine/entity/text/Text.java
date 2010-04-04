@@ -177,7 +177,7 @@ public class Text extends RectangularShape {
 
 	private void applyTexture(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
-		GLHelper.texCoordPointer(pGL, this.mTextureBuffer.getByteBuffer(), GL10.GL_FLOAT);
+		GLHelper.texCoordPointer(pGL, this.mTextureBuffer.getByteBuffer());
 	}
 
 	private void initTextureBuffer() {

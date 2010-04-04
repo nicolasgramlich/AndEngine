@@ -1,6 +1,6 @@
 package org.anddev.andengine.physics;
 
-import org.anddev.andengine.entity.StaticEntity;
+import org.anddev.andengine.entity.primitives.Shape;
 
 /**
  * @author Nicolas Gramlich
@@ -35,7 +35,7 @@ public abstract class BasePhysicsBody {
 	// Getter & Setter
 	// ===========================================================
 
-	public abstract StaticEntity getEntity();
+	public abstract Shape getShape();
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

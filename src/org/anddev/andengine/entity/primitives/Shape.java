@@ -76,6 +76,11 @@ public abstract class Shape extends DynamicEntity {
 		this.mBlue = pBlue;
 		this.mAlpha = pAlpha;
 	}
+	
+	public abstract float getWidth();
+	public abstract float getHeight();
+	public abstract float getBaseWidth();
+	public abstract float getBaseHeight();
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

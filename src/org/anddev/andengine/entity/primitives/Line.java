@@ -37,13 +37,26 @@ public class Line extends Shape {
 	// Getter & Setter
 	// ===========================================================
 
-	private float getWidth() {
+	@Override
+	public float getBaseHeight() {
+		return this.mY2 - this.mY;
+	}
+
+	@Override
+	public float getBaseWidth() {
 		return this.mX2 - this.mX;
 	}
 
-	private float getHeight() {
-		return this.mY2 - this.mY;
+	@Override
+	public float getHeight() {
+		return (this.mY2 - this.mY) * this.getScale();
 	}
+
+	@Override
+	public float getWidth() {
+		return (this.mX2 - this.mX) * this.getScale();
+	}
+
 
 	/** Instead use {@link Line#setPosition(float, float, float, float)}.
 	 * @see org.anddev.andengine.entity.DynamicEntity#setPosition(float, float)
@@ -72,12 +85,12 @@ public class Line extends Shape {
 
 	@Override
 	public float getCenterX() {
-		return 0; // TODO
+		return (this.mX + this.mX2) / 2;
 	}
 
 	@Override
 	public float getCenterY() {
-		return 0; // TODO
+		return (this.mY + this.mY2) / 2;
 	}
 
 	@Override
@@ -123,12 +136,12 @@ public class Line extends Shape {
 		// TODO Offset needs to be taken into account.
 		final float angle = this.getAngle();
 		if(angle != 0) {
-			final float halfWidth = this.getWidth() / 2;
-			final float halfHeight = this.getHeight() / 2;
+			final float halfDeltaX = getBaseWidth() / 2;
+			final float halfDeltaY = getBaseHeight() / 2;
 
-			pGL.glTranslatef(halfWidth, halfHeight, 0);
+			pGL.glTranslatef(halfDeltaX, halfDeltaY, 0);
 			pGL.glRotatef(angle, 0, 0, 1);
-			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
+			pGL.glTranslatef(-halfDeltaX, -halfDeltaY, 0);
 		}
 	}
 
@@ -136,12 +149,12 @@ public class Line extends Shape {
 	protected void applyScale(final GL10 pGL) {
 		final float scale = this.getScale();
 		if(scale != 1) {
-			final float halfWidth = this.getWidth() / 2;
-			final float halfHeight = this.getWidth() / 2;
+			final float halfDeltaX = getBaseWidth() / 2;
+			final float halfDeltaY = getBaseHeight() / 2;
 
-			pGL.glTranslatef(halfWidth, halfHeight, 0);
+			pGL.glTranslatef(halfDeltaX, halfDeltaY, 0);
 			pGL.glScalef(scale, scale, 1);
-			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
+			pGL.glTranslatef(-halfDeltaX, -halfDeltaY, 0);
 		}
 	}
 
@@ -164,7 +177,7 @@ public class Line extends Shape {
 			return false;
 		}
 	}
-
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================

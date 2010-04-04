@@ -17,9 +17,9 @@ public interface IPhysicsSpace extends IUpdateHandler {
 
 	public void createWorld(final float pX, final float pY, final float pWidth, final float pHeight);
 
-	public void addStaticEntity(final StaticPhysicsBody pStaticPhysicsBody);
+	public void addStaticBody(final StaticPhysicsBody pStaticPhysicsBody);
 
-	public void addDynamicEntity(final DynamicPhysicsBody pDynamicPhysicsBody);
+	public void addDynamicBody(final DynamicPhysicsBody pDynamicPhysicsBody);
 
 	public void setGravity(final float pGravityX, final float pGravityY);
 

@@ -1,7 +1,7 @@
 package org.anddev.andengine.physics;
 
-import org.anddev.andengine.entity.DynamicEntity;
 import org.anddev.andengine.entity.handler.collision.ICollisionCallback;
+import org.anddev.andengine.entity.primitives.Shape;
 
 /**
  * @author Nicolas Gramlich
@@ -16,7 +16,7 @@ public class DynamicPhysicsBody extends BasePhysicsBody {
 	// Fields
 	// ===========================================================
 
-	private final DynamicEntity mDynamicEntity;
+	private final Shape mShape;
 	private final ICollisionCallback mCollisionCallback;
 	private final boolean mFixedRotation;
 
@@ -24,13 +24,13 @@ public class DynamicPhysicsBody extends BasePhysicsBody {
 	// Constructors
 	// ===========================================================
 
-	public DynamicPhysicsBody(final DynamicEntity pDynamicEntity, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final boolean pFixedRotation) {
-		this(pDynamicEntity, pMass, pFricition, pElasticity, pPhysicsShape, pFixedRotation, null);
+	public DynamicPhysicsBody(final Shape pShape, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final boolean pFixedRotation) {
+		this(pShape, pMass, pFricition, pElasticity, pPhysicsShape, pFixedRotation, null);
 	}
 
-	public DynamicPhysicsBody(final DynamicEntity pDynamicEntity, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final boolean pFixedRotation, final ICollisionCallback pCollisionCallback) {
+	public DynamicPhysicsBody(final Shape pShape, final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape, final boolean pFixedRotation, final ICollisionCallback pCollisionCallback) {
 		super(pMass, pFricition, pElasticity, pPhysicsShape);
-		this.mDynamicEntity = pDynamicEntity;
+		this.mShape = pShape;
 		this.mFixedRotation = pFixedRotation;
 		this.mCollisionCallback = pCollisionCallback;
 	}
@@ -56,8 +56,8 @@ public class DynamicPhysicsBody extends BasePhysicsBody {
 	// ===========================================================
 
 	@Override
-	public DynamicEntity getEntity() {
-		return this.mDynamicEntity;
+	public Shape getShape() {
+		return this.mShape;
 	}
 
 	// ===========================================================

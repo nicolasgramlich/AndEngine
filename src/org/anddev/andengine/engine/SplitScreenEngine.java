@@ -63,7 +63,7 @@ public class SplitScreenEngine extends Engine {
 
 		final int surfaceHeight = this.mSurfaceHeight;
 
-		pGL.glEnable(GL10.GL_SCISSOR_TEST);
+		pGL.glEnable(GL10.GL_SCISSOR_TEST); // TODO --> GLHelper
 
 		/* First Screen. With first camera, on the left half of the screens width. */
 		pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);

@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.primitives.RectangularShape;
+import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.physics.collision.CollisionChecker;
 
 import android.opengl.GLU;
@@ -156,8 +157,7 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplyMatrix(final GL10 pGL) {
-		pGL.glMatrixMode(GL10.GL_PROJECTION);
-		pGL.glLoadIdentity();
+		GLHelper.setProjectionIdentityMatrix(pGL);
 
 		GLU.gluOrtho2D(pGL, this.mMinX, this.mMaxX, this.mMaxY, this.mMinY);
 
@@ -167,8 +167,7 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplyPositionIndependentMatrix(final GL10 pGL) {
-		pGL.glMatrixMode(GL10.GL_PROJECTION);
-		pGL.glLoadIdentity();
+		GLHelper.setProjectionIdentityMatrix(pGL);
 
 		final float width = this.getWidth();
 		final float height = this.getHeight();

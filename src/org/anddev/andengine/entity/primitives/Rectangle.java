@@ -9,7 +9,7 @@ import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
  * @author Nicolas Gramlich
  * @since 12:18:49 - 13.03.2010
  */
-public class Rectangle extends Shape {
+public class Rectangle extends RectangularShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -48,9 +48,9 @@ public class Rectangle extends Shape {
 
 	@Override
 	protected void updateVertexBuffer(){
-		this.getVertexBuffer().update(0, 0, this.getInitialWidth(), this.getInitialHeight());
+		this.getVertexBuffer().update(0, 0, this.getBaseWidth(), this.getBaseHeight());
 	}
-
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================

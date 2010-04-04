@@ -28,8 +28,8 @@ public abstract class DynamicEntity extends StaticEntity {
 	// Constructors
 	// ===========================================================
 
-	public DynamicEntity(final float pX, final float pY, final float pWidth, final float pHeight) {
-		super(pX, pY, pWidth, pHeight);
+	public DynamicEntity(final float pX, final float pY) {
+		super(pX, pY);
 	}
 
 	// ===========================================================
@@ -57,45 +57,19 @@ public abstract class DynamicEntity extends StaticEntity {
 		this.mScale = pScale;
 	}
 
-	@Override
-	public float getWidth() {
-		return super.getWidth() * this.mScale;
-	}
-
-	@Override
-	public float getHeight() {
-		return super.getHeight() * this.mScale;
-	}
-
-	public void setWidth(final int pWidth) {
-		this.mWidth = pWidth;
-		this.onPositionChanged();
-	}
-
-	public void setHeight(final int pHeight) {
-		this.mHeight = pHeight;
-		this.onPositionChanged();
+	public void setPosition(final StaticEntity pOtherStaticEntity) {
+		this.setPosition(pOtherStaticEntity.getX(), pOtherStaticEntity.getY());
 	}
 
 	public void setPosition(final float pX, final float pY) {
 		this.mX = pX;
 		this.mY = pY;
-	}
-
-	public void setPosition(final StaticEntity pOtherStaticEntity) {
-		this.mX = pOtherStaticEntity.getX();
-		this.mY = pOtherStaticEntity.getY();
-	}
-
-	public void setInitialPosition() {
-		this.mX = this.mInitialX;
-		this.mY = this.mInitialY;
 		this.onPositionChanged();
 	}
-
-	public void setInitialSize() {
-		this.mWidth = this.mInitialWidth;
-		this.mHeight = this.mInitialHeight;
+	
+	public void setBasePosition() {
+		this.mX = this.mBaseX;
+		this.mY = this.mBaseY;
 		this.onPositionChanged();
 	}
 
@@ -154,8 +128,7 @@ public abstract class DynamicEntity extends StaticEntity {
 	@Override
 	public void reset() {
 		super.reset();
-		this.setInitialPosition();
-		this.setInitialSize();
+		this.setBasePosition();
 		this.mAccelerationX = 0;
 		this.mAccelerationY = 0;
 		this.mVelocityX = 0;

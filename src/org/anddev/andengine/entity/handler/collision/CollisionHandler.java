@@ -3,7 +3,7 @@ package org.anddev.andengine.entity.handler.collision;
 import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IUpdateHandler;
-import org.anddev.andengine.entity.StaticEntity;
+import org.anddev.andengine.entity.primitives.Shape;
 import org.anddev.andengine.util.ListUtils;
 
 /**
@@ -20,24 +20,24 @@ public class CollisionHandler implements IUpdateHandler {
 	// ===========================================================
 
 	private final ICollisionCallback mCollisionCallback;
-	private final StaticEntity mCheckStaticEntity;
-	private final ArrayList<? extends StaticEntity> mTargetStaticEntities;
+	private final Shape mCheckShape;
+	private final ArrayList<? extends Shape> mTargetStaticEntities;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public CollisionHandler(final ICollisionCallback pCollisionCallback, final StaticEntity pCheckStaticEntity, final StaticEntity pTargetStaticEntity) {
-		this(pCollisionCallback, pCheckStaticEntity, ListUtils.toList(pTargetStaticEntity));
+	public CollisionHandler(final ICollisionCallback pCollisionCallback, final Shape pCheckShape, final Shape pTargetShape) {
+		this(pCollisionCallback, pCheckShape, ListUtils.toList(pTargetShape));
 	}
 
-	public CollisionHandler(final ICollisionCallback pCollisionCallback, final StaticEntity pCheckStaticEntity, final ArrayList<? extends StaticEntity> pTargetStaticEntities) {
+	public CollisionHandler(final ICollisionCallback pCollisionCallback, final Shape pCheckShape, final ArrayList<? extends Shape> pTargetStaticEntities) {
 		assert (pCollisionCallback != null);
-		assert (pCheckStaticEntity != null);
+		assert (pCheckShape != null);
 		assert (pTargetStaticEntities != null);
 
 		this.mCollisionCallback = pCollisionCallback;
-		this.mCheckStaticEntity = pCheckStaticEntity;
+		this.mCheckShape = pCheckShape;
 		this.mTargetStaticEntities = pTargetStaticEntities;
 	}
 
@@ -51,13 +51,13 @@ public class CollisionHandler implements IUpdateHandler {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		final StaticEntity checkStaticEntity = this.mCheckStaticEntity;
-		final ArrayList<? extends StaticEntity> staticEntities = this.mTargetStaticEntities;
+		final Shape checkShape = this.mCheckShape;
+		final ArrayList<? extends Shape> staticEntities = this.mTargetStaticEntities;
 		final int staticEntityCount = staticEntities.size();
 
 		for(int i = 0; i < staticEntityCount; i++){
-			if(checkStaticEntity.collidesWith(staticEntities.get(i))){
-				final boolean proceed = this.mCollisionCallback.onCollision(checkStaticEntity, staticEntities.get(i));
+			if(checkShape.collidesWith(staticEntities.get(i))){
+				final boolean proceed = this.mCollisionCallback.onCollision(checkShape, staticEntities.get(i));
 				if(!proceed) {
 					return;
 				}

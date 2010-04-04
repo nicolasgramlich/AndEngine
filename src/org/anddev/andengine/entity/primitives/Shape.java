@@ -30,8 +30,8 @@ public abstract class Shape extends DynamicEntity {
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final float pWidth, final float pHeight, final VertexBuffer pVertexBuffer) {
-		super(pX, pY, pWidth, pHeight);
+	public Shape(final float pX, final float pY, final VertexBuffer pVertexBuffer) {
+		super(pX, pY);
 		this.mVertexBuffer = pVertexBuffer;
 		this.updateVertexBuffer();
 	}
@@ -106,6 +106,14 @@ public abstract class Shape extends DynamicEntity {
 		pGL.glPopMatrix();
 	}
 
+	protected abstract void onPreTransformations(final GL10 pGL);
+	protected abstract void applyOffset(final GL10 pGL);
+	protected abstract void applyTranslation(final GL10 pGL);
+	protected abstract void applyRotation(final GL10 pGL);
+	protected abstract void applyScale(final GL10 pGL);
+	protected abstract void drawVertices(final GL10 pGL);
+	protected abstract void onPostTransformations(final GL10 pGL);
+
 	@Override
 	public void reset() {
 		super.reset();
@@ -114,6 +122,10 @@ public abstract class Shape extends DynamicEntity {
 		this.mBlue = 1.0f;
 		this.mAlpha = 1.0f;
 	}
+
+	public abstract boolean contains(final float pX, final float pY);
+
+	public abstract boolean collidesWith(final Shape pOtherShape);
 
 	// ===========================================================
 	// Methods
@@ -128,63 +140,14 @@ public abstract class Shape extends DynamicEntity {
 		GLHelper.vertexPointer(pGL, this.getVertexBuffer().getByteBuffer(), GL10.GL_FLOAT);
 	}
 
-	protected void onPreTransformations(final GL10 pGL) {
-
-	}
-
 	protected void onApplyTransformations(final GL10 pGL) {
-		/* Offset */
 		this.applyOffset(pGL);
 
-		/* Translate */
 		this.applyTranslation(pGL);
 
-		/* Rotate */
 		this.applyRotation(pGL);
-
-		/* Scale */
+		
 		this.applyScale(pGL);
-	}
-
-	private void applyOffset(final GL10 pGL) {
-		pGL.glTranslatef(this.getOffsetX(), this.getOffsetY(), 0);
-	}
-
-	protected void applyTranslation(final GL10 pGL) {
-		pGL.glTranslatef(this.getX(), this.getY(), 0);
-	}
-
-	protected void drawVertices(final GL10 pGL) {
-		pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-	}
-
-	protected void applyRotation(final GL10 pGL) {
-		// TODO Offset needs to be taken into account.
-		final float angle = this.getAngle();
-		if(angle != 0) {
-			final float halfWidth = this.getInitialWidth() / 2;
-			final float halfHeight = this.getInitialHeight() / 2;
-
-			pGL.glTranslatef(halfWidth, halfHeight, 0);
-			pGL.glRotatef(angle, 0, 0, 1);
-			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
-		}
-	}
-
-	protected void applyScale(final GL10 pGL) {
-		final float scale = this.getScale();
-		if(scale != 1) {
-			final float halfWidth = this.getInitialWidth() / 2;
-			final float halfHeight = this.getInitialHeight() / 2;
-
-			pGL.glTranslatef(halfWidth, halfHeight, 0);
-			pGL.glScalef(scale, scale, 1);
-			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
-		}
-	}
-
-	protected void onPostTransformations(final GL10 pGL) {
-
 	}
 
 	// ===========================================================

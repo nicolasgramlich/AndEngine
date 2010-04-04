@@ -4,7 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.entity.IUpdateHandler;
-import org.anddev.andengine.entity.StaticEntity;
+import org.anddev.andengine.entity.primitives.RectangularShape;
 import org.anddev.andengine.physics.collision.CollisionChecker;
 
 import android.opengl.GLU;
@@ -146,11 +146,11 @@ public class Camera implements IUpdateHandler {
 		}
 	}
 
-	public boolean isEntityVisible(final StaticEntity pStaticEntity) {
-		final float otherLeft = pStaticEntity.getX();
-		final float otherTop = pStaticEntity.getY();
-		final float otherRight = pStaticEntity.getWidth() + otherLeft;
-		final float otherBottom = pStaticEntity.getHeight() + otherTop;
+	public boolean isRectangularShapeVisible(final RectangularShape pRectangularShape) {
+		final float otherLeft = pRectangularShape.getX();
+		final float otherTop = pRectangularShape.getY();
+		final float otherRight = pRectangularShape.getWidth() + otherLeft;
+		final float otherBottom = pRectangularShape.getHeight() + otherTop;
 
 		return CollisionChecker.checkAxisAlignedBoxCollision(this.mMinX, this.mMinY, this.mMaxX, this.mMaxY, otherLeft, otherTop, otherRight, otherBottom);
 	}

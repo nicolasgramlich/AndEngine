@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.primitives.Shape;
+import org.anddev.andengine.entity.primitives.RectangularShape;
 import org.anddev.andengine.opengl.BaseBuffer;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.text.Font;
@@ -17,7 +17,7 @@ import org.anddev.andengine.util.StringUtils;
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
  */
-public class Text extends Shape {
+public class Text extends RectangularShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================

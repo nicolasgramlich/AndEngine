@@ -9,7 +9,8 @@ public enum PhysicsShape {
 	// Elements
 	// ===========================================================
 
-	CIRCLE, RECTANGLE;
+//	CIRCLE, 
+	RECTANGLE;
 
 	// ===========================================================
 	// Constants

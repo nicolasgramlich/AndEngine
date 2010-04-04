@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.DynamicEntity;
+import org.anddev.andengine.entity.primitives.Rectangle;
 import org.anddev.andengine.entity.sprite.BaseSprite;
 import org.anddev.andengine.opengl.texture.TextureRegion;
 
@@ -13,7 +13,7 @@ import org.anddev.andengine.opengl.texture.TextureRegion;
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
  */
-public class ParticleSystem extends DynamicEntity {
+public class ParticleSystem extends Rectangle {
 	// ===========================================================
 	// Constants
 	// ===========================================================

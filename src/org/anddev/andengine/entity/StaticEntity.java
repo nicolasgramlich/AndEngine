@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity;
 
 import org.anddev.andengine.input.touch.ITouchArea;
-import org.anddev.andengine.physics.collision.CollisionChecker;
 
 /**
  * @author Nicolas Gramlich
@@ -16,10 +15,8 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	// Fields
 	// ===========================================================
 
-	protected final float mInitialX;
-	protected final float mInitialY;
-	protected final float mInitialWidth;
-	protected final float mInitialHeight;
+	protected final float mBaseX;
+	protected final float mBaseY;
 
 	protected float mX;
 	protected float mY;
@@ -27,23 +24,16 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	protected float mOffsetX = 0;
 	protected float mOffsetY = 0;
 
-	protected float mWidth;
-	protected float mHeight;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public StaticEntity(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this.mInitialX = pX;
-		this.mInitialY = pY;
-		this.mInitialWidth = pWidth;
-		this.mInitialHeight = pHeight;
+	public StaticEntity(final float pX, final float pY) {
+		this.mBaseX = pX;
+		this.mBaseY = pY;
 
 		this.mX = pX;
 		this.mY = pY;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
 	}
 
 	// ===========================================================
@@ -58,21 +48,17 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 		return this.mY;
 	}
 
-	public float getInitialX() {
-		return this.mInitialX;
+	public float getBaseX() {
+		return this.mBaseX;
 	}
 
-	public float getInitialY() {
-		return this.mInitialY;
+	public float getBaseY() {
+		return this.mBaseY;
 	}
 
-	public float getCenterX() {
-		return this.mX + this.getWidth() / 2;
-	}
+	public abstract float getCenterX();
 
-	public float getCenterY() {
-		return this.mY + this.getHeight() / 2;
-	}
+	public abstract float getCenterY();
 
 	public float getOffsetX() {
 		return this.mOffsetX;
@@ -80,22 +66,6 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 
 	public float getOffsetY() {
 		return this.mOffsetY;
-	}
-
-	public float getWidth() {
-		return this.mWidth;
-	}
-
-	public float getHeight() {
-		return this.mHeight;
-	}
-
-	public float getInitialWidth() {
-		return this.mInitialWidth;
-	}
-
-	public float getInitialHeight() {
-		return this.mInitialHeight;
 	}
 
 	public void setOffsetX(final float pOffsetX) {
@@ -123,6 +93,7 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	@Override
 	public void reset() {
 		super.reset();
+		// TODO Fehlt hier setBasePosition ?
 		this.mOffsetX = 0;
 		this.mOffsetY = 0;
 	}
@@ -130,27 +101,6 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public boolean contains(final float pX, final float pY) {
-		return pX >= this.mX
-		&& pY >= this.mY
-		&& pX <= this.mX + this.mWidth
-		&& pY <= this.mY + this.mHeight;
-	}
-
-	public boolean collidesWith(final StaticEntity pOther) {
-		final float left = this.mX;
-		final float top = this.mY;
-		final float right = this.mWidth + left;
-		final float bottom = this.mHeight + top;
-
-		final float otherLeft = pOther.mX;
-		final float otherTop = pOther.mY;
-		final float otherRight = pOther.mWidth + otherLeft;
-		final float otherBottom = pOther.mHeight + otherTop;
-
-		return CollisionChecker.checkAxisAlignedBoxCollision(left, top, right, bottom, otherLeft, otherTop, otherRight, otherBottom);
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

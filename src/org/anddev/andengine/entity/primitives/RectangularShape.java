@@ -36,6 +36,7 @@ public abstract class RectangularShape extends Shape {
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
+		this.updateVertexBuffer();
 	}
 
 	// ===========================================================

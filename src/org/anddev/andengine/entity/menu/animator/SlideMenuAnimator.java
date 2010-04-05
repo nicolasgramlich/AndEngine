@@ -3,7 +3,7 @@ package org.anddev.andengine.entity.menu.animator;
 import java.util.ArrayList;
 
 import org.anddev.andengine.entity.menu.MenuItem;
-import org.anddev.andengine.entity.sprite.modifier.MoveModifier;
+import org.anddev.andengine.entity.shape.modifier.MoveModifier;
 
 /**
  * @author Nicolas Gramlich
@@ -46,7 +46,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 		for(int i = 0; i < pMenuItems.size(); i++) {
 			final MenuItem menuItem = pMenuItems.get(i);
 
-			pMenuItems.get(i).addSpriteModifier(new MoveModifier(DURATION, -maximumWidth, baseX, baseY + offsetY, baseY + offsetY));
+			pMenuItems.get(i).addShapeModifier(new MoveModifier(DURATION, -maximumWidth, baseX, baseY + offsetY, baseY + offsetY));
 			
 			offsetY += menuItem.getHeight() + this.mMenuItemSpacing;
 		}

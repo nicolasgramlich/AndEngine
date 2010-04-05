@@ -3,7 +3,7 @@ package org.anddev.andengine.entity.handler.collision;
 import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IUpdateHandler;
-import org.anddev.andengine.entity.primitives.Shape;
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.util.ListUtils;
 
 /**

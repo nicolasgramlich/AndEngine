@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.sprite.modifier;
+package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModifierListener;
+import org.anddev.andengine.entity.shape.IModifierListener;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 22:55:13 - 19.03.2010
  */
-public class MoveModifier extends BasePairFromToModifier {
+public class DelayModifier extends BaseModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,12 +20,12 @@ public class MoveModifier extends BasePairFromToModifier {
 	// Constructors
 	// ===========================================================
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY) {
-		this(pDuration, pFromX, pToX, pFromY, pToY, null);
+	public DelayModifier(final float pDuration, final IModifierListener pModiferListener) {
+		super(pDuration, pModiferListener);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IModifierListener pModiferListener) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pModiferListener);
+	public DelayModifier(final float pDuration) {
+		super(pDuration);
 	}
 
 	// ===========================================================
@@ -37,13 +37,13 @@ public class MoveModifier extends BasePairFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValues(final float pX, final float pY, final BaseSprite pBaseSprite) {
-		pBaseSprite.setPosition(pX, pY);
+	protected void onManagedInitializeShape(final Shape pShape) {
+
 	}
 
 	@Override
-	protected void onSetValues(final float pX, final float pY, final BaseSprite pBaseSprite) {
-		pBaseSprite.setPosition(pX, pY);
+	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+
 	}
 
 	// ===========================================================

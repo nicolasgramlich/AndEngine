@@ -1,11 +1,12 @@
-package org.anddev.andengine.entity.sprite;
+package org.anddev.andengine.entity.shape;
+
 
 
 /**
  * @author Nicolas Gramlich
  * @since 11:17:50 - 19.03.2010
  */
-public interface ISpriteModifier {
+public interface IShapeModifier {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -16,7 +17,7 @@ public interface ISpriteModifier {
 
 	public void reset();
 
-	public void onUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite);
+	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape);
 
 	public IModifierListener getModiferListener();
 	public void setModiferListener(final IModifierListener pModiferListener);

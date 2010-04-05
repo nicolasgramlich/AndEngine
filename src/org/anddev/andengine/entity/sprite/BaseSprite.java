@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity.sprite;
 
-import java.util.ArrayList;
-
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.primitives.Rectangle;
@@ -25,8 +23,6 @@ public abstract class BaseSprite extends Rectangle {
 	// ===========================================================
 
 	protected TextureRegion mTextureRegion;
-
-	private final ArrayList<ISpriteModifier> mSpriteModifiers = new ArrayList<ISpriteModifier>();
 
 	// ===========================================================
 	// Constructors
@@ -57,16 +53,6 @@ public abstract class BaseSprite extends Rectangle {
 	// ===========================================================
 
 	@Override
-	public void reset() {
-		super.reset();
-
-		final ArrayList<ISpriteModifier> spriteModifiers = this.mSpriteModifiers;
-		for(int i = spriteModifiers.size() - 1; i >= 0; i--) {
-			spriteModifiers.get(i).reset();
-		}
-	}
-
-	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
 		GLHelper.enableTextures(pGL);
@@ -79,34 +65,9 @@ public abstract class BaseSprite extends Rectangle {
 		this.applyTexture(pGL);
 	}
 
-	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
-		this.applySpriteModifiers(pSecondsElapsed);
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void addSpriteModifier(final ISpriteModifier pSpriteModifier) {
-		this.mSpriteModifiers.add(pSpriteModifier);
-	}
-
-	public void removeSpriteModifier(final ISpriteModifier pSpriteModifier) {
-		this.mSpriteModifiers.remove(pSpriteModifier);
-	}
-
-	private void applySpriteModifiers(final float pSecondsElapsed) {
-		final ArrayList<ISpriteModifier> spriteModifiers = this.mSpriteModifiers;
-		final int spriteModifierCount = spriteModifiers.size();
-		if(spriteModifierCount > 0) {
-			for(int i = spriteModifierCount - 1; i >= 0; i--) {
-				spriteModifiers.get(i).onUpdateSprite(pSecondsElapsed, this);
-			}
-		}
-	}
 
 	protected void applyTexture(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mTextureRegion.getTexture().getHardwareTextureID());

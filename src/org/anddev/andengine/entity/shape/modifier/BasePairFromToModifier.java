@@ -1,7 +1,7 @@
-package org.anddev.andengine.entity.sprite.modifier;
+package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModifierListener;
+import org.anddev.andengine.entity.shape.IModifierListener;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
@@ -41,17 +41,17 @@ public abstract class BasePairFromToModifier extends BaseFromToModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValues(final float pValueA, final float pValueB, final BaseSprite pBaseSprite);
-	protected abstract void onSetValues(final float pValueA, final float pValueB, final BaseSprite pBaseSprite);
+	protected abstract void onSetInitialValues(final float pValueA, final float pValueB, final Shape pShape);
+	protected abstract void onSetValues(final float pValueA, final float pValueB, final Shape pShape);
 
 	@Override
-	protected final void onSetInitialValue(final float pValueA, final BaseSprite pBaseSprite) {
-		this.onSetInitialValues(pValueA, this.mFromValueB, pBaseSprite);
+	protected final void onSetInitialValue(final float pValueA, final Shape pShape) {
+		this.onSetInitialValues(pValueA, this.mFromValueB, pShape);
 	}
 
 	@Override
-	protected final void onSetValue(final float pValueA, final BaseSprite pBaseSprite) {
-		this.onSetValues(pValueA, this.mFromValueB + this.getTotalSecondsElapsed() * this.mValuePerSecondB, pBaseSprite);
+	protected final void onSetValue(final float pValueA, final Shape pShape) {
+		this.onSetValues(pValueA, this.mFromValueB + this.getTotalSecondsElapsed() * this.mValuePerSecondB, pShape);
 	}
 
 	// ===========================================================

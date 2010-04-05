@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.sprite.modifier;
+package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModifierListener;
+import org.anddev.andengine.entity.shape.IModifierListener;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
- * @since 23:13:01 - 19.03.2010
+ * @since 16:12:52 - 19.03.2010
  */
-public class AlphaModifier extends BaseFromToModifier {
+public class RotateByModifier extends BaseModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,16 +16,19 @@ public class AlphaModifier extends BaseFromToModifier {
 	// Fields
 	// ===========================================================
 
+	private final float mAnglePerSecond;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha) {
-		this(pDuration, pFromAlpha, pToAlpha, null);
+	public RotateByModifier(final float pDuration, final float pAngle) {
+		this(pDuration, pAngle, null);
 	}
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IModifierListener pModiferListener) {
-		super(pDuration, pFromAlpha, pToAlpha, pModiferListener);
+	public RotateByModifier(final float pDuration, final float pAngle, final IModifierListener pModiferListener) {
+		super(pDuration, pModiferListener);
+		this.mAnglePerSecond = pAngle / pDuration;
 	}
 
 	// ===========================================================
@@ -37,13 +40,13 @@ public class AlphaModifier extends BaseFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final float pAlpha, final BaseSprite pBaseSprite) {
-		pBaseSprite.setAlpha(pAlpha);
+	protected void onManagedInitializeShape(final Shape pShape) {
+
 	}
 
 	@Override
-	protected void onSetValue(final float pAlpha, final BaseSprite pBaseSprite) {
-		pBaseSprite.setAlpha(pAlpha);
+	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+		pShape.setAngle(pShape.getAngle() + this.mAnglePerSecond * pSecondsElapsed);
 	}
 
 	// ===========================================================

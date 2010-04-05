@@ -1,14 +1,14 @@
-package org.anddev.andengine.entity.sprite.modifier;
+package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModifierListener;
-import org.anddev.andengine.entity.sprite.ISpriteModifier;
+import org.anddev.andengine.entity.shape.IModifierListener;
+import org.anddev.andengine.entity.shape.IShapeModifier;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
  * @since 19:39:25 - 19.03.2010
  */
-public class SequenceModifier implements ISpriteModifier, IModifierListener {
+public class SequenceModifier implements IShapeModifier, IModifierListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,25 +18,25 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 	// ===========================================================
 
 	private IModifierListener mModiferListener;
-	private final ISpriteModifier[] mSpriteModifiers;
-	private int mCurrentSpriteModifier;
+	private final IShapeModifier[] mShapeModifiers;
+	private int mCurrentShapeModifier;
 	private boolean mExpired;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SequenceModifier(final ISpriteModifier ... pSpriteModifiers) {
-		this(null, pSpriteModifiers);
+	public SequenceModifier(final IShapeModifier ... pShapeModifiers) {
+		this(null, pShapeModifiers);
 	}
 
-	public SequenceModifier(final IModifierListener pModiferListener, final ISpriteModifier ... pSpriteModifiers) {
-		assert(pSpriteModifiers.length > 0);
+	public SequenceModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) {
+		assert(pShapeModifiers.length > 0);
 
 		this.mModiferListener = pModiferListener;
-		this.mSpriteModifiers = pSpriteModifiers;
+		this.mShapeModifiers = pShapeModifiers;
 
-		pSpriteModifiers[0].setModiferListener(this);
+		pShapeModifiers[0].setModiferListener(this);
 	}
 
 	// ===========================================================
@@ -64,33 +64,33 @@ public class SequenceModifier implements ISpriteModifier, IModifierListener {
 	// ===========================================================
 
 	@Override
-	public void onModifierFinished(final ISpriteModifier pSpriteModifier, final BaseSprite pBaseSprite) {
-		this.mCurrentSpriteModifier++;
-		if(this.mCurrentSpriteModifier < this.mSpriteModifiers.length) {
-			this.mSpriteModifiers[this.mCurrentSpriteModifier].setModiferListener(this);
+	public void onModifierFinished(final IShapeModifier pShapeModifier, final Shape pShape) {
+		this.mCurrentShapeModifier++;
+		if(this.mCurrentShapeModifier < this.mShapeModifiers.length) {
+			this.mShapeModifiers[this.mCurrentShapeModifier].setModiferListener(this);
 		} else {
 			this.setExpired(true);
 			if(this.mModiferListener != null) {
-				this.mModiferListener.onModifierFinished(this, pBaseSprite);
+				this.mModiferListener.onModifierFinished(this, pShape);
 			}
 		}
 	}
 
 	@Override
-	public void onUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
+	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
 		if(!this.isExpired()) {
-			this.mSpriteModifiers[this.mCurrentSpriteModifier].onUpdateSprite(pSecondsElapsed, pBaseSprite);
+			this.mShapeModifiers[this.mCurrentShapeModifier].onUpdateShape(pSecondsElapsed, pShape);
 		}
 	}
 
 	@Override
 	public void reset() {
-		this.mCurrentSpriteModifier = 0;
+		this.mCurrentShapeModifier = 0;
 		this.mExpired = false;
 
-		final ISpriteModifier[] spriteModifiers = this.mSpriteModifiers;
-		for(int i = spriteModifiers.length - 1; i >= 0; i--) {
-			spriteModifiers[i].reset();
+		final IShapeModifier[] ShapeModifiers = this.mShapeModifiers;
+		for(int i = ShapeModifiers.length - 1; i >= 0; i--) {
+			ShapeModifiers[i].reset();
 		}
 	}
 

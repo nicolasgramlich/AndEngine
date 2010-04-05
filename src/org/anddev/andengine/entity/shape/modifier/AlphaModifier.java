@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.sprite.modifier;
+package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModifierListener;
+import org.anddev.andengine.entity.shape.IModifierListener;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
- * @since 22:55:13 - 19.03.2010
+ * @since 23:13:01 - 19.03.2010
  */
-public class DelayModifier extends BaseModifier {
+public class AlphaModifier extends BaseFromToModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,12 +20,12 @@ public class DelayModifier extends BaseModifier {
 	// Constructors
 	// ===========================================================
 
-	public DelayModifier(final float pDuration, final IModifierListener pModiferListener) {
-		super(pDuration, pModiferListener);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha) {
+		this(pDuration, pFromAlpha, pToAlpha, null);
 	}
 
-	public DelayModifier(final float pDuration) {
-		super(pDuration);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IModifierListener pModiferListener) {
+		super(pDuration, pFromAlpha, pToAlpha, pModiferListener);
 	}
 
 	// ===========================================================
@@ -37,13 +37,13 @@ public class DelayModifier extends BaseModifier {
 	// ===========================================================
 
 	@Override
-	protected void onManagedInitializeSprite(final BaseSprite pBaseSprite) {
-
+	protected void onSetInitialValue(final float pAlpha, final Shape pShape) {
+		pShape.setAlpha(pAlpha);
 	}
 
 	@Override
-	protected void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
-
+	protected void onSetValue(final float pAlpha, final Shape pShape) {
+		pShape.setAlpha(pAlpha);
 	}
 
 	// ===========================================================

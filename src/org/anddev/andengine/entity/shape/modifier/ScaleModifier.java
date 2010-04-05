@@ -1,7 +1,7 @@
-package org.anddev.andengine.entity.sprite.modifier;
+package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModifierListener;
+import org.anddev.andengine.entity.shape.IModifierListener;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
@@ -37,13 +37,13 @@ public class ScaleModifier extends BaseFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final float pScale, final BaseSprite pBaseSprite) {
-		pBaseSprite.setScale(pScale);
+	protected void onSetInitialValue(final float pScale, final Shape pShape) {
+		pShape.setScale(pScale);
 	}
 
 	@Override
-	protected void onSetValue(final float pScale, final BaseSprite pBaseSprite) {
-		pBaseSprite.setScale(pScale);
+	protected void onSetValue(final float pScale, final Shape pShape) {
+		pShape.setScale(pScale);
 	}
 
 	// ===========================================================

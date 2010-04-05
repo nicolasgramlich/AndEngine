@@ -1,4 +1,5 @@
-package org.anddev.andengine.entity.sprite;
+package org.anddev.andengine.entity.shape;
+
 
 /**
  * @author Nicolas Gramlich
@@ -13,5 +14,5 @@ public interface IModifierListener {
 	// Methods
 	// ===========================================================
 
-	public void onModifierFinished(final ISpriteModifier pSpriteModifier, final BaseSprite pBaseSprite);
+	public void onModifierFinished(final IShapeModifier pShapeModifier, final Shape pShape);
 }

@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.sprite.modifier;
+package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.entity.sprite.IModifierListener;
+import org.anddev.andengine.entity.shape.IModifierListener;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
  * @since 16:12:52 - 19.03.2010
  */
-public class RotateByModifier extends BaseModifier {
+public class RotateModifier extends BaseFromToModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,19 +16,16 @@ public class RotateByModifier extends BaseModifier {
 	// Fields
 	// ===========================================================
 
-	private final float mAnglePerSecond;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotateByModifier(final float pDuration, final float pAngle) {
-		this(pDuration, pAngle, null);
+	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle) {
+		this(pDuration, pFromAngle, pToAngle, null);
 	}
 
-	public RotateByModifier(final float pDuration, final float pAngle, final IModifierListener pModiferListener) {
-		super(pDuration, pModiferListener);
-		this.mAnglePerSecond = pAngle / pDuration;
+	public RotateModifier(final float pDuration, final float pFromAngle, final float pToAngle, final IModifierListener pModiferListener) {
+		super(pDuration, pFromAngle, pToAngle, pModiferListener);
 	}
 
 	// ===========================================================
@@ -40,13 +37,13 @@ public class RotateByModifier extends BaseModifier {
 	// ===========================================================
 
 	@Override
-	protected void onManagedInitializeSprite(final BaseSprite pBaseSprite) {
-
+	protected void onSetInitialValue(final float pAngle, final Shape pShape) {
+		pShape.setAngle(pAngle);
 	}
 
 	@Override
-	protected void onManagedUpdateSprite(final float pSecondsElapsed, final BaseSprite pBaseSprite) {
-		pBaseSprite.setAngle(pBaseSprite.getAngle() + this.mAnglePerSecond * pSecondsElapsed);
+	protected void onSetValue(final float pAngle, final Shape pShape) {
+		pShape.setAngle(pAngle);
 	}
 
 	// ===========================================================

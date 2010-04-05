@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.primitives;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
 import org.anddev.andengine.physics.collision.CollisionChecker;

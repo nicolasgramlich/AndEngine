@@ -1,6 +1,6 @@
 package org.anddev.andengine.physics;
 
-import org.anddev.andengine.entity.primitives.Shape;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich

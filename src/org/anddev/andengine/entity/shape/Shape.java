@@ -1,4 +1,6 @@
-package org.anddev.andengine.entity.primitives;
+package org.anddev.andengine.entity.shape;
+
+import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -31,6 +33,8 @@ public abstract class Shape extends DynamicEntity {
 
 	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+
+	private final ArrayList<IShapeModifier> mShapeModifiers = new ArrayList<IShapeModifier>();
 
 	// ===========================================================
 	// Constructors
@@ -95,6 +99,13 @@ public abstract class Shape extends DynamicEntity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	protected void onManagedUpdate(float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+
+		this.applyShapeModifiers(pSecondsElapsed);
+	}
 
 	@Override
 	protected void onPositionChanged() {
@@ -139,6 +150,11 @@ public abstract class Shape extends DynamicEntity {
 
 		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+
+		final ArrayList<IShapeModifier> ShapeModifiers = this.mShapeModifiers;
+		for(int i = ShapeModifiers.size() - 1; i >= 0; i--) {
+			ShapeModifiers.get(i).reset();
+		}
 	}
 
 	public abstract boolean contains(final float pX, final float pY);
@@ -148,6 +164,24 @@ public abstract class Shape extends DynamicEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void addShapeModifier(final IShapeModifier pShapeModifier) {
+		this.mShapeModifiers.add(pShapeModifier);
+	}
+
+	public void removeShapeModifier(final IShapeModifier pShapeModifier) {
+		this.mShapeModifiers.remove(pShapeModifier);
+	}
+
+	private void applyShapeModifiers(final float pSecondsElapsed) {
+		final ArrayList<IShapeModifier> ShapeModifiers = this.mShapeModifiers;
+		final int ShapeModifierCount = ShapeModifiers.size();
+		if(ShapeModifierCount > 0) {
+			for(int i = ShapeModifierCount - 1; i >= 0; i--) {
+				ShapeModifiers.get(i).onUpdateShape(pSecondsElapsed, this);
+			}
+		}
+	}
 
 	protected void onInitDraw(final GL10 pGL) {
 		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);

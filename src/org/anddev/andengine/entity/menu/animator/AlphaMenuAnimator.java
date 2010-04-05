@@ -3,7 +3,7 @@ package org.anddev.andengine.entity.menu.animator;
 import java.util.ArrayList;
 
 import org.anddev.andengine.entity.menu.MenuItem;
-import org.anddev.andengine.entity.sprite.modifier.AlphaModifier;
+import org.anddev.andengine.entity.shape.modifier.AlphaModifier;
 
 /**
  * @author Nicolas Gramlich
@@ -40,7 +40,7 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 	@Override
 	public void buildAnimations(final ArrayList<MenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
 		for(int i = 0; i < pMenuItems.size(); i++) {
-			pMenuItems.get(i).addSpriteModifier(new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO));
+			pMenuItems.get(i).addShapeModifier(new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO));
 		}
 	}
 

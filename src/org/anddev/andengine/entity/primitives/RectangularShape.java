@@ -36,25 +36,28 @@ public abstract class RectangularShape extends Shape {
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		this.updateVertexBuffer();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public float getWidth() {
 		return this.mWidth * this.getScale();
 	}
 
+	@Override
 	public float getHeight() {
 		return this.mHeight * this.getScale();
 	}
 
+	@Override
 	public float getBaseWidth() {
 		return this.mBaseWidth;
 	}
 
+	@Override
 	public float getBaseHeight() {
 		return this.mBaseHeight;
 	}
@@ -71,12 +74,14 @@ public abstract class RectangularShape extends Shape {
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
-	// ===========================================================	
-	
+	// ===========================================================
+
+	@Override
 	public float getCenterX() {
 		return this.mX + this.getWidth() / 2;
 	}
 
+	@Override
 	public float getCenterY() {
 		return this.mY + this.getHeight() / 2;
 	}
@@ -137,13 +142,14 @@ public abstract class RectangularShape extends Shape {
 	protected void onPostTransformations(final GL10 pGL) {
 
 	}
-	
+
 	@Override
 	public void reset() {
 		super.reset();
 		this.setBaseSize();
 	}
 
+	@Override
 	public boolean contains(final float pX, final float pY) {
 		return pX >= this.mX
 		&& pY >= this.mY
@@ -151,20 +157,21 @@ public abstract class RectangularShape extends Shape {
 		&& pY <= this.mY + this.mHeight;
 	}
 
+	@Override
 	public boolean collidesWith(final Shape pOtherShape) {
 		if(pOtherShape instanceof RectangularShape) {
 			final RectangularShape pOtherRectangularShape = (RectangularShape) pOtherShape;
-			
+
 			final float left = this.mX;
 			final float top = this.mY;
 			final float right = this.mWidth + left;
 			final float bottom = this.mHeight + top;
-	
+
 			final float otherLeft = pOtherRectangularShape.mX;
 			final float otherTop = pOtherRectangularShape.mY;
 			final float otherRight = pOtherRectangularShape.mWidth + otherLeft;
 			final float otherBottom = pOtherRectangularShape.mHeight + otherTop;
-	
+
 			return CollisionChecker.checkAxisAlignedBoxCollision(left, top, right, bottom, otherLeft, otherTop, otherRight, otherBottom);
 		} else {
 			return false;

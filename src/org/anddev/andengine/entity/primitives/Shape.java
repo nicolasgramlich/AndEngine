@@ -15,6 +15,9 @@ public abstract class Shape extends DynamicEntity {
 	// Constants
 	// ===========================================================
 
+	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_ONE;
+	private static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -25,6 +28,9 @@ public abstract class Shape extends DynamicEntity {
 	private float mGreen = 1;
 	private float mBlue = 1;
 	private float mAlpha = 1f;
+
+	private int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
+	private int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	// ===========================================================
 	// Constructors
@@ -74,6 +80,11 @@ public abstract class Shape extends DynamicEntity {
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 		this.mAlpha = pAlpha;
+	}
+
+	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
+		this.mSourceBlendFunction = pSourceBlendFunction;
+		this.mDestinationBlendFunction = pDestinationBlendFunction;
 	}
 	
 	public abstract float getWidth();
@@ -125,6 +136,9 @@ public abstract class Shape extends DynamicEntity {
 		this.mGreen = 1.0f;
 		this.mBlue = 1.0f;
 		this.mAlpha = 1.0f;
+
+		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
+		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 	}
 
 	public abstract boolean contains(final float pX, final float pY);
@@ -138,6 +152,7 @@ public abstract class Shape extends DynamicEntity {
 	protected void onInitDraw(final GL10 pGL) {
 		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 		GLHelper.enableVertexArray(pGL);
+		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
 	}
 
 	private void onApplyVertices(final GL10 pGL) {

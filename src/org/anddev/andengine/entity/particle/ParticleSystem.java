@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.primitives.Rectangle;
-import org.anddev.andengine.entity.sprite.BaseSprite;
 import org.anddev.andengine.opengl.texture.TextureRegion;
 
 /**
@@ -34,10 +33,6 @@ public class ParticleSystem extends Rectangle {
 
 	private float mParticlesDueToSpawn;
 	private final int mMaxParticles;
-
-	private int mSourceBlendFunction = BaseSprite.BLENDFUNCTION_SOURCE_DEFAULT;
-	private int mDestinationBlendFunction = BaseSprite.BLENDFUNCTION_DESTINATION_DEFAULT;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -53,11 +48,6 @@ public class ParticleSystem extends Rectangle {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
-		this.mSourceBlendFunction = pSourceBlendFunction;
-		this.mDestinationBlendFunction = pDestinationBlendFunction;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -133,8 +123,7 @@ public class ParticleSystem extends Rectangle {
 			final float y = this.getY() + (float)Math.random() * this.getHeight();
 			particle = new Particle(x, y, this.mTextureRegion);
 		}
-		particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
-
+		
 		this.applyParticleModifiersOnInitialize(particle);
 		this.mParticles.add(particle);
 	}

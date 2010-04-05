@@ -26,9 +26,6 @@ public abstract class BaseSprite extends Rectangle {
 
 	protected TextureRegion mTextureRegion;
 
-	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
-	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
-
 	private final ArrayList<ISpriteModifier> mSpriteModifiers = new ArrayList<ISpriteModifier>();
 
 	// ===========================================================
@@ -40,6 +37,7 @@ public abstract class BaseSprite extends Rectangle {
 
 		assert(pTextureRegion != null);
 		this.mTextureRegion = pTextureRegion;
+		setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
 	}
 
 	// ===========================================================
@@ -54,11 +52,6 @@ public abstract class BaseSprite extends Rectangle {
 		this.mTextureRegion = pTextureRegion;
 	}
 
-	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
-		this.mSourceBlendFunction = pSourceBlendFunction;
-		this.mDestinationBlendFunction = pDestinationBlendFunction;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -66,9 +59,6 @@ public abstract class BaseSprite extends Rectangle {
 	@Override
 	public void reset() {
 		super.reset();
-
-		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
-		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 		final ArrayList<ISpriteModifier> spriteModifiers = this.mSpriteModifiers;
 		for(int i = spriteModifiers.size() - 1; i >= 0; i--) {
@@ -81,7 +71,6 @@ public abstract class BaseSprite extends Rectangle {
 		super.onInitDraw(pGL);
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
-		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
 	}
 
 	@Override

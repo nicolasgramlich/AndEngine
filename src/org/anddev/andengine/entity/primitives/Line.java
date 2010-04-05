@@ -96,7 +96,7 @@ public class Line extends Shape {
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
-		GLHelper.disableTextures(pGL); // TODO Maybe costly when methods like this are not cached...
+		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
 	}
 

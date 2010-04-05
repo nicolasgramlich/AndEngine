@@ -22,9 +22,6 @@ public class Text extends RectangularShape {
 	// Constants
 	// ===========================================================
 
-	public static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_ONE;
-	public static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
-
 	private static final int VERTICES_PER_CHARACTER = 6;
 
 	// ===========================================================
@@ -34,9 +31,6 @@ public class Text extends RectangularShape {
 	private final int mVertexCount;
 
 	private final TextureBuffer mTextureBuffer;
-
-	private int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
-	private int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	private final String mText;
 	private final String[] mLines;
@@ -99,7 +93,6 @@ public class Text extends RectangularShape {
 		super.onInitDraw(pGL);
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
-		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
 	}
 	
 	@Override

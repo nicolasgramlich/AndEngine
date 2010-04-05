@@ -24,6 +24,7 @@ public class Rectangle extends RectangularShape {
 
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
 		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer());
+		this.updateVertexBuffer();
 	}
 
 	// ===========================================================
@@ -37,7 +38,7 @@ public class Rectangle extends RectangularShape {
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
-		GLHelper.disableTextures(pGL); // TODO Maybe costly when methods like this are not cached...
+		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
 	}
 

@@ -192,23 +192,4 @@ public class Texture {
 			return this.mTextureSource.getBitmap();
 		}
 	}
-
-	public static class TextureOptions {
-		public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_MODULATE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE);
-		public static final TextureOptions DEFAULT_REPEATING = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_MODULATE, GL10.GL_REPEAT, GL10.GL_REPEAT);
-
-		public final int mMagFilter;
-		public final int mMinFilter;
-		public final float mWrapT;
-		public final float mWrapS;
-		public final int mTextureEnvironment;
-
-		public TextureOptions(final int pMinFilter, final int pMagFilter, final int pWrapT, final int pWrapS, final int pTextureEnvironment) {
-			this.mMinFilter = pMinFilter;
-			this.mMagFilter = pMagFilter;
-			this.mWrapT = pWrapT;
-			this.mWrapS = pWrapS;
-			this.mTextureEnvironment = pTextureEnvironment;
-		}
-	}
 }

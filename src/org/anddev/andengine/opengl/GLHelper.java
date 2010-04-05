@@ -61,6 +61,8 @@ public class GLHelper {
 		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
 		GLHelper.disableVertexArray(pGL);
+		
+		GLHelper.EXTENSIONS_VERXTEXBUFFEROBJECTS = false;
 	}
 
 	public static void enableExtensions(GL10 pGL) {

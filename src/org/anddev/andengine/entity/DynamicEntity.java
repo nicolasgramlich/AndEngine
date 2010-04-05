@@ -22,7 +22,7 @@ public abstract class DynamicEntity extends StaticEntity {
 	private float mAngle = 0;
 
 	private float mScale = 1;
-	private boolean mUpdatePhysicsSelf;
+	private boolean mUpdatePhysicsSelf = true;
 
 	// ===========================================================
 	// Constructors

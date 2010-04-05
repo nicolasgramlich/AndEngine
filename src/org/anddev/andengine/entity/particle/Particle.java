@@ -59,7 +59,7 @@ public class Particle extends Sprite {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if(!this.isDead()){
+		if(!this.mDead){
 			this.mLifeTime += pSecondsElapsed;
 			super.onManagedUpdate(pSecondsElapsed);
 			if(this.mDeathTime != -1 && this.mLifeTime > this.mDeathTime) {

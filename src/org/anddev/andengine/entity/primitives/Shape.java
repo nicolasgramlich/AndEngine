@@ -24,13 +24,13 @@ public abstract class Shape extends DynamicEntity {
 
 	protected final VertexBuffer mVertexBuffer;
 
-	private float mRed = 1;
-	private float mGreen = 1;
-	private float mBlue = 1;
-	private float mAlpha = 1f;
+	protected float mRed = 1;
+	protected float mGreen = 1;
+	protected float mBlue = 1;
+	protected float mAlpha = 1f;
 
-	private int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
-	private int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
+	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	// ===========================================================
 	// Constructors

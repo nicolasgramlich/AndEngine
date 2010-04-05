@@ -17,8 +17,8 @@ public abstract class BaseSprite extends Rectangle {
 	// Constants
 	// ===========================================================
 
-	public static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_SRC_ALPHA;
-	public static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
+	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_SRC_ALPHA;
+	private static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
 
 	// ===========================================================
 	// Fields
@@ -37,7 +37,7 @@ public abstract class BaseSprite extends Rectangle {
 
 		assert(pTextureRegion != null);
 		this.mTextureRegion = pTextureRegion;
-		setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
+		this.setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
 	}
 
 	// ===========================================================

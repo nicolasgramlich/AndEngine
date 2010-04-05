@@ -35,10 +35,6 @@ public abstract class BaseEntity implements IEntity {
 		this.mVisible = pVisible;
 	}
 
-	private boolean isIgnoringUpdate() {
-		return this.mIgnoreUpdate;
-	}
-
 	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
 		this.mIgnoreUpdate = pIgnoreUpdate;
 	}
@@ -51,7 +47,7 @@ public abstract class BaseEntity implements IEntity {
 
 	@Override
 	public final void onDraw(final GL10 pGL) {
-		if(this.isVisible()) {
+		if(this.mVisible) {
 			this.onManagedDraw(pGL);
 		}
 	}
@@ -60,7 +56,7 @@ public abstract class BaseEntity implements IEntity {
 
 	@Override
 	public final void onUpdate(final float pSecondsElapsed) {
-		if(!this.isIgnoringUpdate()) {
+		if(!this.mIgnoreUpdate) {
 			this.onManagedUpdate(pSecondsElapsed);
 		}
 	}

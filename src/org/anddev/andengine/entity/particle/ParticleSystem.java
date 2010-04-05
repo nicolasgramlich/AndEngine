@@ -33,6 +33,7 @@ public class ParticleSystem extends Rectangle {
 
 	private float mParticlesDueToSpawn;
 	private final int mMaxParticles;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -123,6 +124,7 @@ public class ParticleSystem extends Rectangle {
 			final float y = this.getY() + (float)Math.random() * this.getHeight();
 			particle = new Particle(x, y, this.mTextureRegion);
 		}
+		particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 		
 		this.applyParticleModifiersOnInitialize(particle);
 		this.mParticles.add(particle);

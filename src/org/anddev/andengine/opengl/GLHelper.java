@@ -35,24 +35,14 @@ public class GLHelper {
 	private static boolean mEnableTextures = false;
 	private static boolean mEnableTexCoordArray = false;
 	private static boolean mEnableVertexArray = false;
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
+	
+	public static boolean EXTENSIONS_VERXTEXBUFFEROBJECTS = false;
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 	
-	public static void reset() {
+	public static void reset(final GL10 pGL) {
 		GLHelper.mCurrentHardwareTexture = -1;
 		GLHelper.mCurrentMatrix = -1;
 
@@ -62,15 +52,20 @@ public class GLHelper {
 		GLHelper.mCurrentTextureByteBuffer = null;
 		GLHelper.mCurrentVertexByteBuffer = null;
 		
-		GLHelper.mEnableDither = true;
-		GLHelper.mEnableLightning = true;
-		GLHelper.mEnableDepthTest = true;
-		GLHelper.mEnableMultisample = true;
+		GLHelper.enableDither(pGL);
+		GLHelper.enableLightning(pGL);
+		GLHelper.enableDepthTest(pGL);
+		GLHelper.enableMultisample(pGL);
 
-		GLHelper.mEnableBlend = false;
-		GLHelper.mEnableTextures = false;
-		GLHelper.mEnableTexCoordArray = false;
-		GLHelper.mEnableVertexArray = false;
+		GLHelper.disableBlend(pGL);
+		GLHelper.disableTextures(pGL);
+		GLHelper.disableTexCoordArray(pGL);
+		GLHelper.disableVertexArray(pGL);
+	}
+
+	public static void enableExtensions(GL10 pGL) {
+		final String extensions = pGL.glGetString(GL10.GL_EXTENSIONS);
+		GLHelper.EXTENSIONS_VERXTEXBUFFEROBJECTS = extensions.contains("GL_OES_draw_texture");
 	}
 
 	public static void setColor(final GL10 pGL, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
@@ -244,7 +239,7 @@ public class GLHelper {
 	public static void setPerspectiveCorrectionHintFastest(final GL10 pGL) {
 		pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 	}
-
+	
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

@@ -84,7 +84,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
-			GLHelper.reset();
 			this.mEngine.setSurfaceSize(pWidth, pHeight);
 			pGL.glViewport(0, 0, pWidth, pHeight);
 			pGL.glLoadIdentity();
@@ -92,6 +91,8 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
+			GLHelper.reset(pGL);
+			
 			GLHelper.setPerspectiveCorrectionHintFastest(pGL);
 
 			GLHelper.setShadeModelFlat(pGL);
@@ -105,6 +106,8 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
+			
+			GLHelper.enableExtensions(pGL);
 		}
 
 		@Override

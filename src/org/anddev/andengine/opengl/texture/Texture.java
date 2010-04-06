@@ -19,6 +19,8 @@ public class Texture {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final int[] HARDWARETEXTUREID_FETCHER = new int[1];
 
 	// ===========================================================
 	// Fields
@@ -138,11 +140,9 @@ public class Texture {
 	}
 
 	private int generateHardwareTextureID(final GL10 pGL) {
-		final int[] hardwareTextureIDFether = new int[1];
+		pGL.glGenTextures(1, Texture.HARDWARETEXTUREID_FETCHER, 0);
 
-		pGL.glGenTextures(1, hardwareTextureIDFether, 0);
-
-		return hardwareTextureIDFether[0];
+		return Texture.HARDWARETEXTUREID_FETCHER[0];
 	}
 
 	private void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {

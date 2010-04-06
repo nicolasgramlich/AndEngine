@@ -47,10 +47,17 @@ public abstract class BaseSprite extends Rectangle {
 	public void setTextureRegion(final TextureRegion pTextureRegion){
 		this.mTextureRegion = pTextureRegion;
 	}
-
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public void reset() {
+		super.reset();
+
+		this.setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
+	}
 
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
@@ -62,17 +69,13 @@ public abstract class BaseSprite extends Rectangle {
 	@Override
 	protected void onPostTransformations(final GL10 pGL) {
 		super.onPostTransformations(pGL);
-		this.applyTexture(pGL);
+		
+		this.mTextureRegion.onApply(pGL);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	protected void applyTexture(final GL10 pGL) {
-		GLHelper.bindTexture(pGL, this.mTextureRegion.getTexture().getHardwareTextureID());
-		GLHelper.texCoordPointer(pGL, this.mTextureRegion.getTextureBuffer().getFloatBuffer());
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

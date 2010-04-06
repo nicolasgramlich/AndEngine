@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.shape;
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.DynamicEntity;
 import org.anddev.andengine.opengl.GLHelper;
@@ -19,11 +20,15 @@ public abstract class Shape extends DynamicEntity {
 
 	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_ONE;
 	private static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
+	
+	private static final int[] HARDWAREBUFFERID_FETCHER = new int[1];
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
+	private int mHardwareVertexBufferID = -1;
+	private boolean mHardwareVertexBufferNeedsUpdate = true;
 	protected final VertexBuffer mVertexBuffer;
 
 	protected float mRed = 1;
@@ -90,7 +95,7 @@ public abstract class Shape extends DynamicEntity {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
 	}
-	
+
 	public abstract float getWidth();
 	public abstract float getHeight();
 	public abstract float getBaseWidth();
@@ -99,7 +104,7 @@ public abstract class Shape extends DynamicEntity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
@@ -109,17 +114,17 @@ public abstract class Shape extends DynamicEntity {
 
 	@Override
 	protected void onPositionChanged() {
-		this.updateVertexBuffer();
+		
 	}
 
-	protected abstract void updateVertexBuffer();
+	protected abstract void onUpdateVertexBuffer();
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
 		this.onInitDraw(pGL);
 
 		pGL.glPushMatrix();
-		
+
 		this.onApplyVertices(pGL);
 
 		this.onPreTransformations(pGL);
@@ -165,6 +170,13 @@ public abstract class Shape extends DynamicEntity {
 	// Methods
 	// ===========================================================
 
+	protected void updateVertexBuffer() {
+		this.onUpdateVertexBuffer();
+		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
+            this.mHardwareVertexBufferNeedsUpdate = true;
+		}
+	}
+
 	public void addShapeModifier(final IShapeModifier pShapeModifier) {
 		this.mShapeModifiers.add(pShapeModifier);
 	}
@@ -185,12 +197,31 @@ public abstract class Shape extends DynamicEntity {
 
 	protected void onInitDraw(final GL10 pGL) {
 		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
+		
 		GLHelper.enableVertexArray(pGL);
 		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
 	}
 
 	private void onApplyVertices(final GL10 pGL) {
-		GLHelper.vertexPointer(pGL, this.getVertexBuffer().getFloatBuffer());
+		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
+			final GL11 gl11 = (GL11)pGL;
+			
+			if(this.mHardwareVertexBufferID  == -1) {
+				gl11.glGenBuffers(1, HARDWAREBUFFERID_FETCHER, 0);
+				this.mHardwareVertexBufferID = HARDWAREBUFFERID_FETCHER[0];
+			}
+			
+			if(this.mHardwareVertexBufferNeedsUpdate) {
+				this.mHardwareVertexBufferNeedsUpdate = false;
+				GLHelper.bindBuffer(gl11, this.mHardwareVertexBufferID);
+				GLHelper.bufferData(gl11, this.mVertexBuffer, GL11.GL_DYNAMIC_DRAW);
+			}
+			
+			GLHelper.bindBuffer(gl11, this.mHardwareVertexBufferID);
+			GLHelper.vertexZeroPointer(gl11);
+		} else {
+			GLHelper.vertexPointer(pGL, this.getVertexBuffer().getFloatBuffer());
+		}
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {
@@ -199,7 +230,7 @@ public abstract class Shape extends DynamicEntity {
 		this.applyTranslation(pGL);
 
 		this.applyRotation(pGL);
-		
+
 		this.applyScale(pGL);
 	}
 

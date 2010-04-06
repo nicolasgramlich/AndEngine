@@ -48,7 +48,7 @@ public class Rectangle extends RectangularShape {
 	}
 
 	@Override
-	protected void updateVertexBuffer(){
+	protected void onUpdateVertexBuffer(){
 		this.getVertexBuffer().update(0, 0, this.getBaseWidth(), this.getBaseHeight());
 	}
 	

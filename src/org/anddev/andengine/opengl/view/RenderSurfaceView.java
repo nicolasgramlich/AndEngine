@@ -35,7 +35,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		this.setRenderer(this.mRenderer);
 		//		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
 	}
-
+	
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -81,6 +81,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
+		
 
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {

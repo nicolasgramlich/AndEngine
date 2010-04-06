@@ -23,11 +23,14 @@ public abstract class BaseBuffer {
 
 	private final FloatBuffer mFloatBuffer;
 
+	private final int mByteCount;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public BaseBuffer(final int pByteCount) {
+		this.mByteCount = pByteCount;
 		final ByteBuffer byteBuffer = this.allocateByteBuffer(pByteCount);
 		byteBuffer.order(ByteOrder.nativeOrder());
 		this.mFloatBuffer = byteBuffer.asFloatBuffer();
@@ -39,6 +42,10 @@ public abstract class BaseBuffer {
 
 	public FloatBuffer getFloatBuffer() {
 		return this.mFloatBuffer;
+	}
+
+	public int getByteCount() {
+		return this.mByteCount;
 	}
 
 	// ===========================================================

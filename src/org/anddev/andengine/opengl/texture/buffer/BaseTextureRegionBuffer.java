@@ -76,7 +76,7 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 	// Methods
 	// ===========================================================
 
-	public void update() {
+	public void update() {		
 		final TextureRegion textureRegion = this.mTextureRegion;
 		final Texture texture = textureRegion.getTexture();
 

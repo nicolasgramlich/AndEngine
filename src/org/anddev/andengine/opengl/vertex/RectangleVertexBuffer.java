@@ -41,6 +41,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 		final FloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 
+		// TODO Maybe use put(float []) instead of put(float) ...
 		buffer.put(pX);
 		buffer.put(pY);
 

@@ -77,7 +77,10 @@ public class Line extends Shape {
 	public void setPosition(final float pX1, final float pY1, final float pX2, final float pY2) {
 		this.mX2 = pX2;
 		this.mY2 = pY2;
+		
 		super.setPosition(pX1, pY1);
+		
+		this.updateVertexBuffer();
 	}
 
 	// ===========================================================
@@ -107,7 +110,7 @@ public class Line extends Shape {
 	}
 
 	@Override
-	protected void updateVertexBuffer() {
+	protected void onUpdateVertexBuffer() {
 		this.getVertexBuffer().update(0, 0, this.mX2 - this.mX, this.mY2 - this.mY);
 	}
 

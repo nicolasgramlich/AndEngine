@@ -66,11 +66,13 @@ public abstract class RectangularShape extends Shape {
 	public void setWidth(final int pWidth) {
 		this.mWidth = pWidth;
 		this.onPositionChanged();
+		this.updateVertexBuffer();
 	}
 
 	public void setHeight(final int pHeight) {
 		this.mHeight = pHeight;
 		this.onPositionChanged();
+		this.updateVertexBuffer();
 	}
 
 	// ===========================================================
@@ -86,10 +88,12 @@ public abstract class RectangularShape extends Shape {
 	public float getCenterY() {
 		return this.mY + this.getHeight() / 2;
 	}
+	
 	public void setBaseSize() {
 		this.mWidth = this.mBaseWidth;
 		this.mHeight = this.mBaseHeight;
 		this.onPositionChanged();
+		this.updateVertexBuffer();
 	}
 
 	@Override

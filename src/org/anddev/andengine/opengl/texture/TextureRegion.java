@@ -1,5 +1,9 @@
 package org.anddev.andengine.opengl.texture;
 
+import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
+
+import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.texture.buffer.TextureRegionBuffer;
 
 /**
@@ -10,6 +14,8 @@ public class TextureRegion {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final int[] HARDWAREBUFFERID_FETCHER = new int[1];
 
 	// ===========================================================
 	// Fields
@@ -21,6 +27,9 @@ public class TextureRegion {
 	private int mTexturePositionY;
 	private Texture mTexture;
 	private final TextureRegionBuffer mTextureBuffer;
+	
+	private int mHardwareTextureBufferID = -1;
+	private boolean mHardwareTextureBufferNeedsUpdate = true;
 
 	// ===========================================================
 	// Constructors
@@ -116,10 +125,38 @@ public class TextureRegion {
 
 	protected void updateTextureBuffer() {
 		this.mTextureBuffer.update();
+
+		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
+            this.mHardwareTextureBufferNeedsUpdate  = true;
+		}
 	}
 
 	protected TextureRegionBuffer onCreateTextureRegionBuffer() {
 		return new TextureRegionBuffer(this);
+	}
+
+	public void onApply(final GL10 pGL) {
+		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
+			final GL11 gl11 = (GL11)pGL;
+			if(this.mHardwareTextureBufferID == -1) {
+				gl11.glGenBuffers(1, HARDWAREBUFFERID_FETCHER, 0);
+				this.mHardwareTextureBufferID = HARDWAREBUFFERID_FETCHER[0];
+			}
+			
+			if(this.mHardwareTextureBufferNeedsUpdate) {
+				this.mHardwareTextureBufferNeedsUpdate = false;
+				GLHelper.bindBuffer(gl11, this.mHardwareTextureBufferID);
+				GLHelper.bufferData(gl11, this.mTextureBuffer, GL11.GL_STATIC_DRAW);
+			}
+			
+			GLHelper.bindBuffer(gl11, this.mHardwareTextureBufferID);
+
+			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
+			GLHelper.texCoordZeroPointer(gl11);
+		} else {
+			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
+			GLHelper.texCoordPointer(pGL, this.mTextureBuffer.getFloatBuffer());	
+		}
 	}
 
 	// ===========================================================

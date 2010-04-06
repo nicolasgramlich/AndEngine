@@ -3,6 +3,9 @@ package org.anddev.andengine.opengl;
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
+
+import org.anddev.andengine.util.Debug;
 
 /**
  * @author Nicolas Gramlich
@@ -17,7 +20,8 @@ public class GLHelper {
 	// Fields
 	// ===========================================================
 
-	private static int mCurrentHardwareTexture = -1;
+	private static int mCurrentHardwareBufferID = -1;
+	private static int mCurrentHardwareTextureID = -1;
 	private static int mCurrentMatrix = -1;
 
 	private static int mCurrentSourceBlendMode = -1;
@@ -36,14 +40,15 @@ public class GLHelper {
 	private static boolean mEnableTexCoordArray = false;
 	private static boolean mEnableVertexArray = false;
 	
-	public static boolean EXTENSIONS_VERXTEXBUFFEROBJECTS = false;
+	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 	
 	public static void reset(final GL10 pGL) {
-		GLHelper.mCurrentHardwareTexture = -1;
+		GLHelper.mCurrentHardwareBufferID = -1;
+		GLHelper.mCurrentHardwareTextureID = -1;
 		GLHelper.mCurrentMatrix = -1;
 
 		GLHelper.mCurrentSourceBlendMode = -1;
@@ -62,12 +67,16 @@ public class GLHelper {
 		GLHelper.disableTexCoordArray(pGL);
 		GLHelper.disableVertexArray(pGL);
 		
-		GLHelper.EXTENSIONS_VERXTEXBUFFEROBJECTS = false;
+		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 	}
 
-	public static void enableExtensions(GL10 pGL) {
+	public static void enableExtensions(final GL10 pGL) {
+		final String version = pGL.glGetString(GL10.GL_VERSION);
+		Debug.d("VERSION: " + version);
 		final String extensions = pGL.glGetString(GL10.GL_EXTENSIONS);
-		GLHelper.EXTENSIONS_VERXTEXBUFFEROBJECTS = extensions.contains("GL_OES_draw_texture");
+		Debug.d("EXTENSIONS: " + extensions);
+		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = extensions.contains("_vertex_buffer_object") || !version.endsWith("1.0");
+		Debug.d("EXTENSIONS_VERXTEXBUFFEROBJECTS = " + EXTENSIONS_VERTEXBUFFEROBJECTS);
 	}
 
 	public static void setColor(final GL10 pGL, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
@@ -178,10 +187,18 @@ public class GLHelper {
 		}
 	}
 
+	public static void bindBuffer(final GL11 pGL11, final int pHardwareBufferID) {
+		/* Reduce unnecessary buffer switching calls. */
+		if(GLHelper.mCurrentHardwareBufferID != pHardwareBufferID) {
+			GLHelper.mCurrentHardwareBufferID = pHardwareBufferID;
+			pGL11.glBindBuffer(GL11.GL_ARRAY_BUFFER, pHardwareBufferID);
+		}		
+	}
+
 	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {
 		/* Reduce unnecessary texture switching calls. */
-		if(GLHelper.mCurrentHardwareTexture != pHardwareTextureID) {
-			GLHelper.mCurrentHardwareTexture = pHardwareTextureID;
+		if(GLHelper.mCurrentHardwareTextureID != pHardwareTextureID) {
+			GLHelper.mCurrentHardwareTextureID = pHardwareTextureID;
 			pGL.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
 		}
 	}
@@ -193,6 +210,10 @@ public class GLHelper {
 		}
 	}
 
+	public static void texCoordZeroPointer(final GL11 pGL11) {
+		pGL11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, 0);
+	}
+
 	public static void vertexPointer(final GL10 pGL, final FloatBuffer pVertexFloatBuffer) {
 		if(GLHelper.mCurrentVertexFloatBuffer != pVertexFloatBuffer) {
 			GLHelper.mCurrentVertexFloatBuffer = pVertexFloatBuffer;
@@ -200,6 +221,10 @@ public class GLHelper {
 		}
 	}
 
+	public static void vertexZeroPointer(final GL11 pGL11) {
+		pGL11.glVertexPointer(2, GL10.GL_FLOAT, 0, 0);
+	}
+	
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
 		if(GLHelper.mCurrentSourceBlendMode != pSourceBlendMode || GLHelper.mCurrentDestionationBlendMode != pDestinationBlendMode) {
 			GLHelper.mCurrentSourceBlendMode = pSourceBlendMode;
@@ -240,6 +265,10 @@ public class GLHelper {
 
 	public static void setPerspectiveCorrectionHintFastest(final GL10 pGL) {
 		pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
+	}
+
+	public static void bufferData(final GL11 pGL11, final BaseBuffer pBaseBuffer, final int pUsage) {
+		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pBaseBuffer.getByteCount(), pBaseBuffer.getFloatBuffer(), pUsage);
 	}
 	
 	// ===========================================================

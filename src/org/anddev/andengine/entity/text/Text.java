@@ -101,7 +101,7 @@ public class Text extends RectangularShape {
 	}
 
 	@Override
-	protected void updateVertexBuffer() {
+	protected void onUpdateVertexBuffer() {
 		final Font font = this.mFont;
 		if(font != null) {
 			final FloatBuffer vertexFloatBuffer = this.getVertexBuffer().getFloatBuffer();

@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
 import android.os.Build;
 
@@ -20,23 +21,24 @@ public abstract class BaseBuffer {
 	// Fields
 	// ===========================================================
 
-	private final ByteBuffer mByteBuffer;
+	private final FloatBuffer mFloatBuffer;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public BaseBuffer(final int pByteCount) {
-		this.mByteBuffer = this.allocateByteBuffer(pByteCount);
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
+		final ByteBuffer byteBuffer = this.allocateByteBuffer(pByteCount);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		this.mFloatBuffer = byteBuffer.asFloatBuffer();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public ByteBuffer getByteBuffer() {
-		return this.mByteBuffer;
+	public FloatBuffer getFloatBuffer() {
+		return this.mFloatBuffer;
 	}
 
 	// ===========================================================

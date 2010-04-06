@@ -1,6 +1,6 @@
 package org.anddev.andengine.opengl;
 
-import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -23,8 +23,8 @@ public class GLHelper {
 	private static int mCurrentSourceBlendMode = -1;
 	private static int mCurrentDestionationBlendMode = -1;
 
-	private static ByteBuffer mCurrentTextureByteBuffer = null;
-	private static ByteBuffer mCurrentVertexByteBuffer = null;
+	private static FloatBuffer mCurrentTextureFloatBuffer = null;
+	private static FloatBuffer mCurrentVertexFloatBuffer = null;
 
 	private static boolean mEnableDither = true;
 	private static boolean mEnableLightning = true;
@@ -49,8 +49,8 @@ public class GLHelper {
 		GLHelper.mCurrentSourceBlendMode = -1;
 		GLHelper.mCurrentDestionationBlendMode = -1;
 
-		GLHelper.mCurrentTextureByteBuffer = null;
-		GLHelper.mCurrentVertexByteBuffer = null;
+		GLHelper.mCurrentTextureFloatBuffer = null;
+		GLHelper.mCurrentVertexFloatBuffer = null;
 		
 		GLHelper.enableDither(pGL);
 		GLHelper.enableLightning(pGL);
@@ -186,17 +186,17 @@ public class GLHelper {
 		}
 	}
 
-	public static void texCoordPointer(final GL10 pGL, final ByteBuffer pTextureByteBuffer) {
-		if(GLHelper.mCurrentTextureByteBuffer  != pTextureByteBuffer) {
-			GLHelper.mCurrentTextureByteBuffer = pTextureByteBuffer;
-			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureByteBuffer);
+	public static void texCoordPointer(final GL10 pGL, final FloatBuffer pTextureFloatBuffer) {
+		if(GLHelper.mCurrentTextureFloatBuffer  != pTextureFloatBuffer) {
+			GLHelper.mCurrentTextureFloatBuffer = pTextureFloatBuffer;
+			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureFloatBuffer);
 		}
 	}
 
-	public static void vertexPointer(final GL10 pGL, final ByteBuffer pVertexByteBuffer) {
-		if(GLHelper.mCurrentVertexByteBuffer  != pVertexByteBuffer) {
-			GLHelper.mCurrentVertexByteBuffer = pVertexByteBuffer;
-			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexByteBuffer);
+	public static void vertexPointer(final GL10 pGL, final FloatBuffer pVertexFloatBuffer) {
+		if(GLHelper.mCurrentVertexFloatBuffer != pVertexFloatBuffer) {
+			GLHelper.mCurrentVertexFloatBuffer = pVertexFloatBuffer;
+			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexFloatBuffer);
 		}
 	}
 

@@ -1,6 +1,6 @@
 package org.anddev.andengine.opengl.vertex;
 
-import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -38,14 +38,14 @@ public class LineVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public void update(final float pX1, final float pY1, final float pX2, final float pY2) {
-		final ByteBuffer buffer = this.getByteBuffer();
+		final FloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 
-		buffer.putFloat(pX1);
-		buffer.putFloat(pY1);
+		buffer.put(pX1);
+		buffer.put(pY1);
 
-		buffer.putFloat(pX2);
-		buffer.putFloat(pY2);
+		buffer.put(pX2);
+		buffer.put(pY2);
 
 		buffer.position(0);
 	}

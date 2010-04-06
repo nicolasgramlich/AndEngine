@@ -71,7 +71,7 @@ public abstract class BaseSprite extends Rectangle {
 
 	protected void applyTexture(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mTextureRegion.getTexture().getHardwareTextureID());
-		GLHelper.texCoordPointer(pGL, this.mTextureRegion.getTextureBuffer().getByteBuffer());
+		GLHelper.texCoordPointer(pGL, this.mTextureRegion.getTextureBuffer().getFloatBuffer());
 	}
 
 	// ===========================================================

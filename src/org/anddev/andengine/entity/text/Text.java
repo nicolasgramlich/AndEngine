@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.text;
 
-import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -104,8 +104,8 @@ public class Text extends RectangularShape {
 	protected void updateVertexBuffer() {
 		final Font font = this.mFont;
 		if(font != null) {
-			final ByteBuffer vertexByteBuffer = this.getVertexBuffer().getByteBuffer();
-			vertexByteBuffer.position(0);
+			final FloatBuffer vertexFloatBuffer = this.getVertexBuffer().getFloatBuffer();
+			vertexFloatBuffer.position(0);
 	
 			final int lineHeight = font.getLineHeight();
 			final String[] lines = this.mLines;
@@ -133,28 +133,28 @@ public class Text extends RectangularShape {
 				for (int letterIndex = 0; letterIndex < lineLength; letterIndex++) {
 					final Letter letter = font.getLetter(line.charAt(letterIndex));
 	
-					vertexByteBuffer.putFloat(lineX);
-					vertexByteBuffer.putFloat(lineY);
+					vertexFloatBuffer.put(lineX);
+					vertexFloatBuffer.put(lineY);
 					
-					vertexByteBuffer.putFloat(lineX + letter.mWidth);
-					vertexByteBuffer.putFloat(lineY);
+					vertexFloatBuffer.put(lineX + letter.mWidth);
+					vertexFloatBuffer.put(lineY);
 					
-					vertexByteBuffer.putFloat(lineX + letter.mWidth);
-					vertexByteBuffer.putFloat(lineY + lineHeight);
+					vertexFloatBuffer.put(lineX + letter.mWidth);
+					vertexFloatBuffer.put(lineY + lineHeight);
 					
-					vertexByteBuffer.putFloat(lineX + letter.mWidth);
-					vertexByteBuffer.putFloat(lineY + lineHeight);
+					vertexFloatBuffer.put(lineX + letter.mWidth);
+					vertexFloatBuffer.put(lineY + lineHeight);
 					
-					vertexByteBuffer.putFloat(lineX);
-					vertexByteBuffer.putFloat(lineY + lineHeight);
+					vertexFloatBuffer.put(lineX);
+					vertexFloatBuffer.put(lineY + lineHeight);
 
-					vertexByteBuffer.putFloat(lineX);
-					vertexByteBuffer.putFloat(lineY);
+					vertexFloatBuffer.put(lineX);
+					vertexFloatBuffer.put(lineY);
 					
 					lineX += letter.mAdvance;
 				}
 			}
-			vertexByteBuffer.position(0);
+			vertexFloatBuffer.position(0);
 		}
 	}
 	
@@ -170,12 +170,12 @@ public class Text extends RectangularShape {
 
 	private void applyTexture(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
-		GLHelper.texCoordPointer(pGL, this.mTextureBuffer.getByteBuffer());
+		GLHelper.texCoordPointer(pGL, this.mTextureBuffer.getFloatBuffer());
 	}
 
 	private void initTextureBuffer() {
-		final ByteBuffer textureByteBuffer = this.mTextureBuffer.getByteBuffer();
-		textureByteBuffer.position(0);
+		final FloatBuffer textureFloatBuffer = this.mTextureBuffer.getFloatBuffer();
+		textureFloatBuffer.position(0);
 
 		final Font font = this.mFont;
 		final String[] lines = this.mLines;
@@ -193,26 +193,26 @@ public class Text extends RectangularShape {
 				final float letterTextureWidth = letter.mTextureWidth;
 				final float letterTextureHeight = letter.mTextureHeight;
 
-				textureByteBuffer.putFloat(letterTextureX);
-				textureByteBuffer.putFloat(letterTextureY);
+				textureFloatBuffer.put(letterTextureX);
+				textureFloatBuffer.put(letterTextureY);
 				
-				textureByteBuffer.putFloat(letterTextureX + letterTextureWidth);
-				textureByteBuffer.putFloat(letterTextureY);
+				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
+				textureFloatBuffer.put(letterTextureY);
 				
-				textureByteBuffer.putFloat(letterTextureX + letterTextureWidth);
-				textureByteBuffer.putFloat(letterTextureY + letterTextureHeight);
+				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
+				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
 				
-				textureByteBuffer.putFloat(letterTextureX + letterTextureWidth);
-				textureByteBuffer.putFloat(letterTextureY + letterTextureHeight);
+				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
+				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
 				
-				textureByteBuffer.putFloat(letterTextureX);
-				textureByteBuffer.putFloat(letterTextureY + letterTextureHeight);
+				textureFloatBuffer.put(letterTextureX);
+				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
 
-				textureByteBuffer.putFloat(letterTextureX);
-				textureByteBuffer.putFloat(letterTextureY);
+				textureFloatBuffer.put(letterTextureX);
+				textureFloatBuffer.put(letterTextureY);
 			}
 		}
-		textureByteBuffer.position(0);
+		textureFloatBuffer.position(0);
 	}
 
 	// ===========================================================

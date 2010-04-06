@@ -1,6 +1,6 @@
 package org.anddev.andengine.opengl.texture.buffer;
 
-import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import org.anddev.andengine.opengl.BaseBuffer;
 import org.anddev.andengine.opengl.texture.Texture;
@@ -89,44 +89,44 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 		final float x2 = this.getX2();
 		final float y2 = this.getY2();
 
-		final ByteBuffer buffer = this.getByteBuffer();
+		final FloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 
 		if(this.mFlippedVertical) {
 			if(this.mFlippedHorizontal){
-				buffer.putFloat(x2); buffer.putFloat(y2);
+				buffer.put(x2); buffer.put(y2);
 
-				buffer.putFloat(x1); buffer.putFloat(y2);
+				buffer.put(x1); buffer.put(y2);
 
-				buffer.putFloat(x2); buffer.putFloat(y1);
+				buffer.put(x2); buffer.put(y1);
 
-				buffer.putFloat(x1); buffer.putFloat(y1);
+				buffer.put(x1); buffer.put(y1);
 			} else {
-				buffer.putFloat(x1); buffer.putFloat(y2);
+				buffer.put(x1); buffer.put(y2);
 
-				buffer.putFloat(x2); buffer.putFloat(y2);
+				buffer.put(x2); buffer.put(y2);
 
-				buffer.putFloat(x1); buffer.putFloat(y1);
+				buffer.put(x1); buffer.put(y1);
 
-				buffer.putFloat(x2); buffer.putFloat(y1);
+				buffer.put(x2); buffer.put(y1);
 			}
 		} else {
 			if(this.mFlippedHorizontal){
-				buffer.putFloat(x2); buffer.putFloat(y1);
+				buffer.put(x2); buffer.put(y1);
 
-				buffer.putFloat(x1); buffer.putFloat(y1);
+				buffer.put(x1); buffer.put(y1);
 
-				buffer.putFloat(x2); buffer.putFloat(y2);
+				buffer.put(x2); buffer.put(y2);
 
-				buffer.putFloat(x1); buffer.putFloat(y2);
+				buffer.put(x1); buffer.put(y2);
 			} else {
-				buffer.putFloat(x1); buffer.putFloat(y1);
+				buffer.put(x1); buffer.put(y1);
 
-				buffer.putFloat(x2); buffer.putFloat(y1);
+				buffer.put(x2); buffer.put(y1);
 
-				buffer.putFloat(x1); buffer.putFloat(y2);
+				buffer.put(x1); buffer.put(y2);
 
-				buffer.putFloat(x2); buffer.putFloat(y2);
+				buffer.put(x2); buffer.put(y2);
 			}
 		}
 

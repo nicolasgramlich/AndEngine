@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.anddev.andengine.opengl.text;
+package org.anddev.andengine.opengl.font;
 
 /**
  * @author Nicolas Gramlich

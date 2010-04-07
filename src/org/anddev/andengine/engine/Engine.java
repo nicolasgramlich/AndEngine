@@ -10,8 +10,7 @@ import org.anddev.andengine.entity.UpdateHandlerList;
 import org.anddev.andengine.entity.handler.timer.ITimerCallback;
 import org.anddev.andengine.entity.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.text.Font;
-import org.anddev.andengine.opengl.texture.FontManager;
+import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureRegion;
@@ -53,9 +52,6 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	private final EngineOptions mEngineOptions;
 
 	protected Scene mScene;
-
-	private final TextureManager mTextureManager = new TextureManager();
-	private final FontManager mFontManager = new FontManager();
 
 	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
@@ -245,7 +241,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		final Camera cam = this.getCamera();
 		final Sprite loadingScreenSprite = new Sprite(cam.getMinX(), cam.getMinY(), cam.getWidth(), cam.getHeight(), loadingScreenTextureRegion);
 
-		this.loadTexture(loadingScreenTexture);
+		TextureManager.loadTexture(loadingScreenTexture);
 
 		final Scene loadingScene = new Scene(1);
 		loadingScene.getLayer(0).addEntity(loadingScreenSprite);
@@ -268,8 +264,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public void onDrawFrame(final GL10 pGL) {
 		final float secondsElapsed = this.getSecondsElapsed();
-		this.mTextureManager.loadPendingTexturesToHardware(pGL);
-		this.mFontManager.updateFonts(pGL);
+		TextureManager.ensureTexturesLoadedToHardware(pGL);
+		FontManager.ensureFontsLoadedToHardware(pGL);
 
 		if(this.mRunning) {
 			this.updatePreFrameHandlers(secondsElapsed);
@@ -311,24 +307,6 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		final float secondsElapsed = (float)(now  - this.mLastTick) / TimeConstants.NANOSECONDSPERSECOND;
 		this.mLastTick = now;
 		return secondsElapsed;
-	}
-
-	public void reloadTextures() {
-		this.mTextureManager.reloadLoadedToPendingTextures();
-	}
-	
-	public void loadFont(final Font pFont) {
-		this.mFontManager.addFont(pFont);
-	}
-
-	public void loadTexture(final Texture pTexture) {
-		this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTexture);
-	}
-
-	public void loadTextures(final Texture ... pTextures) {
-		for(int i = pTextures.length - 1; i >= 0; i--) {
-			this.mTextureManager.addTexturePendingForBeingLoadedToHardware(pTextures[i]);
-		}
 	}
 
 	public boolean enableAccelerometer(final Context pContext, final IAccelerometerListener pAccelerometerListener) {

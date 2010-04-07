@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.text;
+package org.anddev.andengine.opengl.font;
 
 import java.util.HashMap;
 import java.util.Map.Entry;

@@ -1,10 +1,9 @@
-package org.anddev.andengine.opengl.texture;
+package org.anddev.andengine.opengl.font;
 
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.text.Font;
 
 /**
  * @author Nicolas Gramlich
@@ -19,15 +18,11 @@ public class FontManager {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Font> mFonts = new ArrayList<Font>();
+	private static final ArrayList<Font> mFonts = new ArrayList<Font>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public FontManager() {
-
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -41,12 +36,12 @@ public class FontManager {
 	// Methods
 	// ===========================================================
 
-	public void addFont(final Font pFont) {
-		this.mFonts.add(pFont);
+	public static void loadFont(final Font pFont) {
+		FontManager.mFonts.add(pFont);
 	}
 
-	public void updateFonts(final GL10 pGL) {
-		final ArrayList<Font> fonts = this.mFonts;
+	public static void ensureFontsLoadedToHardware(final GL10 pGL) {
+		final ArrayList<Font> fonts = FontManager.mFonts;
 		final int fontCount = fonts.size();
 		if(fontCount > 0){
 			for(int i = 0; i < fontCount; i++){

@@ -4,6 +4,7 @@ import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.Scene;
+import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.ui.IGameInterface;
@@ -63,7 +64,7 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 		super.onResume();
 		this.mRenderSurfaceView.onResume();
 		this.acquireWakeLock();
-		this.mEngine.reloadTextures();
+		TextureManager.reloadTextures();
 	}
 
 	@Override

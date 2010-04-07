@@ -7,6 +7,8 @@ import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.util.Debug;
 
+import android.os.Build;
+
 /**
  * @author Nicolas Gramlich
  * @since 18:00:43 - 08.03.2010
@@ -39,13 +41,14 @@ public class GLHelper {
 	private static boolean mEnableTextures = false;
 	private static boolean mEnableTexCoordArray = false;
 	private static boolean mEnableVertexArray = false;
-	
+
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
+	public static boolean EXTENSIONS_DRAWTEXTURE = false;
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static void reset(final GL10 pGL) {
 		GLHelper.mCurrentHardwareBufferID = -1;
 		GLHelper.mCurrentHardwareTextureID = -1;
@@ -56,7 +59,7 @@ public class GLHelper {
 
 		GLHelper.mCurrentTextureFloatBuffer = null;
 		GLHelper.mCurrentVertexFloatBuffer = null;
-		
+
 		GLHelper.enableDither(pGL);
 		GLHelper.enableLightning(pGL);
 		GLHelper.enableDepthTest(pGL);
@@ -66,17 +69,43 @@ public class GLHelper {
 		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
 		GLHelper.disableVertexArray(pGL);
-		
+
 		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
+		GLHelper.EXTENSIONS_DRAWTEXTURE = false;
 	}
 
 	public static void enableExtensions(final GL10 pGL) {
 		final String version = pGL.glGetString(GL10.GL_VERSION);
-		Debug.d("VERSION: " + version);
+		final String renderer = pGL.glGetString(GL10.GL_RENDERER);
 		final String extensions = pGL.glGetString(GL10.GL_EXTENSIONS);
+
+		Debug.d("RENDERER: " + renderer);
+		Debug.d("VERSION: " + version);
 		Debug.d("EXTENSIONS: " + extensions);
-		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = extensions.contains("_vertex_buffer_object") || !version.endsWith("1.0");
+
+		final boolean isOpenGL10 = version.endsWith("1.0");
+		final boolean isSoftwareRenderer = renderer.contains("PixelFlinger");
+		final boolean isVBOCapable = extensions.contains("_vertex_buffer_object");
+		final boolean isDrawTextureCapable = extensions.contains("draw_texture");
+
+		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
+		GLHelper.EXTENSIONS_DRAWTEXTURE  = isDrawTextureCapable;
+
+		GLHelper.hackBrokenDevices();
 		Debug.d("EXTENSIONS_VERXTEXBUFFEROBJECTS = " + EXTENSIONS_VERTEXBUFFEROBJECTS);
+		Debug.d("EXTENSIONS_DRAWTEXTURE = " + EXTENSIONS_DRAWTEXTURE);
+	}
+
+	private static void hackBrokenDevices() {
+		if (Build.PRODUCT.contains("morrison")) {
+			// This is the Motorola Cliq. This device LIES and says it supports
+			// VBOs, which it actually does not (or, more likely, the extensions string
+			// is correct and the GL JNI glue is broken).
+			GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
+			// TODO: if Motorola fixes this, I should switch to using the fingerprint
+			// (blur/morrison/morrison/morrison:1.5/CUPCAKE/091007:user/ota-rel-keys,release-keys)
+			// instead of the product name so that newer versions use VBOs.
+		}
 	}
 
 	public static void setColor(final GL10 pGL, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
@@ -224,7 +253,7 @@ public class GLHelper {
 	public static void vertexZeroPointer(final GL11 pGL11) {
 		pGL11.glVertexPointer(2, GL10.GL_FLOAT, 0, 0);
 	}
-	
+
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
 		if(GLHelper.mCurrentSourceBlendMode != pSourceBlendMode || GLHelper.mCurrentDestionationBlendMode != pDestinationBlendMode) {
 			GLHelper.mCurrentSourceBlendMode = pSourceBlendMode;
@@ -270,7 +299,7 @@ public class GLHelper {
 	public static void bufferData(final GL11 pGL11, final BaseBuffer pBaseBuffer, final int pUsage) {
 		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pBaseBuffer.getByteCount(), pBaseBuffer.getFloatBuffer(), pUsage);
 	}
-	
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

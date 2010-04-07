@@ -77,8 +77,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	// ===========================================================
 
 	@Override
-	public void onUpdated() {		
-		super.onUpdated();
+	public void onUpdated() {	
 		final TextureRegion textureRegion = this.mTextureRegion;
 		final Texture texture = textureRegion.getTexture();
 
@@ -131,8 +130,9 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 				buffer.put(x2); buffer.put(y2);
 			}
 		}
-
 		buffer.position(0);
+		
+		super.onUpdated();
 	}
 
 	// ===========================================================

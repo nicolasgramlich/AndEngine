@@ -38,5 +38,4 @@ public abstract class VertexBuffer extends BufferObject {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
 }

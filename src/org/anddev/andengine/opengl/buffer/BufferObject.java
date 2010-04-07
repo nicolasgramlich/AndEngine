@@ -78,7 +78,7 @@ public abstract class BufferObject extends BaseBuffer {
 			GLHelper.bufferData(pGL11, this, this.mDrawType);
 		}
 		
-		GLHelper.bindBuffer(pGL11, this.mHardwareBufferID);
+		GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // Muss der immer gebindet werden oder gibts da quasi je immer einen für Texture/Vertex etc...
 	}
 
 	public void loadToHardware(final GL11 pGL11) {

@@ -1,5 +1,6 @@
-package org.anddev.andengine.opengl.texture;
+package org.anddev.andengine.opengl.texture.region;
 
+import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.texture.source.ResourceTextureSource;

@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.menu;
 
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.texture.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 /**
  * @author Nicolas Gramlich

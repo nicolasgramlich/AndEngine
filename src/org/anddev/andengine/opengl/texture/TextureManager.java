@@ -17,7 +17,7 @@ public class TextureManager {
 	// Fields
 	// ===========================================================
 
-	private static final ArrayList<Texture> mPendingTextures = new ArrayList<Texture>();
+	private static final ArrayList<Texture> mTexturesToBeLoaded = new ArrayList<Texture>();
 	private static final ArrayList<Texture> mLoadedTextures = new ArrayList<Texture>();
 
 	// ===========================================================
@@ -36,13 +36,18 @@ public class TextureManager {
 	// Methods
 	// ===========================================================
 	
+	public static void clear() {
+		TextureManager.mTexturesToBeLoaded.clear();
+		TextureManager.mLoadedTextures.clear();
+	}
+	
 	public static void loadTexture(final Texture pTexture) {
-		TextureManager.mPendingTextures.add(pTexture);
+		TextureManager.mTexturesToBeLoaded.add(pTexture);
 	}
 
 	public static void loadTextures(final Texture ... pTextures) {
 		for(int i = pTextures.length - 1; i >= 0; i--) {
-			TextureManager.mPendingTextures.add(pTextures[i]);
+			TextureManager.mTexturesToBeLoaded.add(pTextures[i]);
 		}
 	}
 
@@ -52,13 +57,13 @@ public class TextureManager {
 			loadedTextures.get(i).setLoadedToHardware(false);
 		}
 
-		TextureManager.mPendingTextures.addAll(loadedTextures);
+		TextureManager.mTexturesToBeLoaded.addAll(loadedTextures);
 
 		loadedTextures.clear();
 	}
 
 	public static void ensureTexturesLoadedToHardware(final GL10 pGL) {
-		final ArrayList<Texture> pendingTextures = TextureManager.mPendingTextures;
+		final ArrayList<Texture> pendingTextures = TextureManager.mTexturesToBeLoaded;
 		final int pendingTextureCount = pendingTextures.size();
 		if(pendingTextureCount > 0){
 			for(int i = 0; i < pendingTextureCount; i++){

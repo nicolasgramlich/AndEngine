@@ -1,6 +1,7 @@
 package org.anddev.andengine.engine;
 
 import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -10,11 +11,13 @@ import org.anddev.andengine.entity.UpdateHandlerList;
 import org.anddev.andengine.entity.handler.timer.ITimerCallback;
 import org.anddev.andengine.entity.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureManager;
-import org.anddev.andengine.opengl.texture.TextureRegion;
-import org.anddev.andengine.opengl.texture.TextureRegionFactory;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
@@ -71,6 +74,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		if(this.mEngineOptions.hasLoadingScreen()) {
 			this.initLoadingScreen();
 		}
+		
+		TextureManager.clear();
+		BufferObjectManager.clear();
+		FontManager.clear();
 	}
 
 	// ===========================================================
@@ -222,6 +229,15 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// Methods
 	// ===========================================================
 
+	public void onResume() {
+		TextureManager.reloadTextures();
+		BufferObjectManager.reloadBufferObjects();
+	}
+
+	public void onPause() {
+		this.stop();
+	}
+
 	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
 		return this.getCamera();
 	}
@@ -264,8 +280,12 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public void onDrawFrame(final GL10 pGL) {
 		final float secondsElapsed = this.getSecondsElapsed();
+		
 		TextureManager.ensureTexturesLoadedToHardware(pGL);
 		FontManager.ensureFontsLoadedToHardware(pGL);
+		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
+			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
+		}
 
 		if(this.mRunning) {
 			this.updatePreFrameHandlers(secondsElapsed);

@@ -1,16 +1,15 @@
 package org.anddev.andengine.entity.text;
 
-import java.nio.FloatBuffer;
-
 import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.primitives.RectangularShape;
-import org.anddev.andengine.opengl.BaseBuffer;
 import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.buffer.BaseBuffer;
+import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.Font;
-import org.anddev.andengine.opengl.font.Letter;
-import org.anddev.andengine.opengl.texture.buffer.TextureBuffer;
-import org.anddev.andengine.opengl.vertex.VertexBuffer;
+import org.anddev.andengine.opengl.texture.buffer.TextTextureBuffer;
+import org.anddev.andengine.opengl.vertex.TextVertexBuffer;
 import org.anddev.andengine.util.StringUtils;
 
 /**
@@ -22,15 +21,13 @@ public class Text extends RectangularShape {
 	// Constants
 	// ===========================================================
 
-	private static final int VERTICES_PER_CHARACTER = 6;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private final int mVertexCount;
 
-	private final TextureBuffer mTextureBuffer;
+	private final TextTextureBuffer mTextTextureBuffer;
 
 	private final String mText;
 	private final String[] mLines;
@@ -38,23 +35,21 @@ public class Text extends RectangularShape {
 	
 	private final Font mFont;
 	
-	private final HorizontalAlign mHorizontalAlign;
-	
-	private final int mMaximumeLineWidth;
+	private final int mMaximumLineWidth;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
-		super(pX, pY, 0, 0, new VertexBuffer(2 * VERTICES_PER_CHARACTER * BaseBuffer.BYTES_PER_FLOAT * (pText.length() - StringUtils.countOccurences(pText, "\n"))));
+		super(pX, pY, 0, 0, new TextVertexBuffer(pText, pHorizontalAlign, GL11.GL_STATIC_DRAW));
 		
-		this.mVertexCount = VERTICES_PER_CHARACTER * (pText.length() - StringUtils.countOccurences(pText, "\n"));
+		this.mVertexCount = TextVertexBuffer.VERTICES_PER_CHARACTER * (pText.length() - StringUtils.countOccurences(pText, "\n"));
 		
-		this.mTextureBuffer = new TextureBuffer(2 * this.mVertexCount * BaseBuffer.BYTES_PER_FLOAT);
+		this.mTextTextureBuffer = new TextTextureBuffer(2 * this.mVertexCount * BaseBuffer.BYTES_PER_FLOAT, GL11.GL_STATIC_DRAW);
+		BufferObjectManager.loadBufferObject(this.mTextTextureBuffer); // TODO Unload irgendwann oder so...
 		this.mFont = pFont;
 		this.mText = pText;
-		this.mHorizontalAlign = pHorizontalAlign;
 
 		/* Init Metrics. */
 		{
@@ -71,18 +66,23 @@ public class Text extends RectangularShape {
 				widths[i] = pFont.getStringWidth(lines[i]);
 				maximumLineWidth = Math.max(maximumLineWidth, widths[i]);
 			}
-			this.mMaximumeLineWidth = maximumLineWidth;
-			super.mWidth = this.mMaximumeLineWidth;
+			this.mMaximumLineWidth = maximumLineWidth;
+			super.mWidth = this.mMaximumLineWidth;
 //			this.setHeight(lineCount)
 		}
 		
-		this.initTextureBuffer();
+		this.mTextTextureBuffer.update(this.mFont, this.mLines);
 		this.updateVertexBuffer();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	@Override
+	public TextVertexBuffer getVertexBuffer() {
+		return (TextVertexBuffer)super.getVertexBuffer();
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -104,59 +104,10 @@ public class Text extends RectangularShape {
 	protected void onUpdateVertexBuffer() {
 		final Font font = this.mFont;
 		if(font != null) {
-			final FloatBuffer vertexFloatBuffer = this.getVertexBuffer().getFloatBuffer();
-			vertexFloatBuffer.position(0);
-	
-			final int lineHeight = font.getLineHeight();
-			final String[] lines = this.mLines;
-			
-			final int lineCount = lines.length;
-			for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
-				final String line = lines[lineIndex];
-
-				int lineX;
-				switch(this.mHorizontalAlign) {
-					case RIGHT:
-						lineX = this.mMaximumeLineWidth - this.mWidths[lineIndex];
-						break;
-					case CENTER:
-						lineX = (this.mMaximumeLineWidth - this.mWidths[lineIndex]) / 2;
-						break;
-					case LEFT: 
-					default:
-						lineX = 0;
-				}
-				
-				final int lineY = lineIndex * (font.getLineHeight() + font.getLineGap());
-	
-				final int lineLength = line.length();
-				for (int letterIndex = 0; letterIndex < lineLength; letterIndex++) {
-					final Letter letter = font.getLetter(line.charAt(letterIndex));
-	
-					vertexFloatBuffer.put(lineX);
-					vertexFloatBuffer.put(lineY);
-					
-					vertexFloatBuffer.put(lineX + letter.mWidth);
-					vertexFloatBuffer.put(lineY);
-					
-					vertexFloatBuffer.put(lineX + letter.mWidth);
-					vertexFloatBuffer.put(lineY + lineHeight);
-					
-					vertexFloatBuffer.put(lineX + letter.mWidth);
-					vertexFloatBuffer.put(lineY + lineHeight);
-					
-					vertexFloatBuffer.put(lineX);
-					vertexFloatBuffer.put(lineY + lineHeight);
-
-					vertexFloatBuffer.put(lineX);
-					vertexFloatBuffer.put(lineY);
-					
-					lineX += letter.mAdvance;
-				}
-			}
-			vertexFloatBuffer.position(0);
+			this.getVertexBuffer().update(this.mFont, this.mMaximumLineWidth, this.mWidths, this.mLines);
 		}
 	}
+
 	
 	@Override
 	protected void onPostTransformations(final GL10 pGL) {
@@ -169,50 +120,17 @@ public class Text extends RectangularShape {
 	// ===========================================================
 
 	private void applyTexture(final GL10 pGL) {
-		GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
-		GLHelper.texCoordPointer(pGL, this.mTextureBuffer.getFloatBuffer());
-	}
+		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
+			final GL11 gl11 = (GL11)pGL;
+			
+			this.mTextTextureBuffer.selectOnHardware(gl11);
 
-	private void initTextureBuffer() {
-		final FloatBuffer textureFloatBuffer = this.mTextureBuffer.getFloatBuffer();
-		textureFloatBuffer.position(0);
-
-		final Font font = this.mFont;
-		final String[] lines = this.mLines;
-
-		final int lineCount = lines.length;
-		for (int i = 0; i < lineCount; i++) {
-			final String line = lines[i];
-
-			final int lineLength = line.length();
-			for (int j = 0; j < lineLength; j++) {
-				final Letter letter = font.getLetter(line.charAt(j));
-
-				final float letterTextureX = letter.mTextureX;
-				final float letterTextureY = letter.mTextureY;
-				final float letterTextureWidth = letter.mTextureWidth;
-				final float letterTextureHeight = letter.mTextureHeight;
-
-				textureFloatBuffer.put(letterTextureX);
-				textureFloatBuffer.put(letterTextureY);
-				
-				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
-				textureFloatBuffer.put(letterTextureY);
-				
-				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
-				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
-				
-				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
-				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
-				
-				textureFloatBuffer.put(letterTextureX);
-				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
-
-				textureFloatBuffer.put(letterTextureX);
-				textureFloatBuffer.put(letterTextureY);
-			}
+			GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
+			GLHelper.texCoordZeroPointer(gl11);
+		} else {
+			GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
+			GLHelper.texCoordPointer(pGL, this.mTextTextureBuffer.getFloatBuffer());
 		}
-		textureFloatBuffer.position(0);
 	}
 
 	// ===========================================================

@@ -4,7 +4,6 @@ import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.Scene;
-import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.ui.IGameInterface;
@@ -56,20 +55,21 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 		final Scene scene = this.onLoadScene();
 		this.mEngine.onLoadComplete(scene);
 		this.onLoadComplete();
-		this.mEngine.start();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		this.mEngine.onResume();
+		this.mEngine.start();
 		this.mRenderSurfaceView.onResume();
 		this.acquireWakeLock();
-		TextureManager.reloadTextures();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		this.mEngine.onPause();
 		this.mRenderSurfaceView.onPause();
 		this.releaseWakeLock();
 	}

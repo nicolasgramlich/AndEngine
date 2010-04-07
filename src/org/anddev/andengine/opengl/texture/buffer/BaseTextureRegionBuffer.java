@@ -2,15 +2,15 @@ package org.anddev.andengine.opengl.texture.buffer;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.opengl.BaseBuffer;
+import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 /**
  * @author Nicolas Gramlich
  * @since 19:05:50 - 09.03.2010
  */
-public abstract class BaseTextureRegionBuffer extends BaseBuffer {
+abstract class BaseTextureRegionBuffer extends BufferObject {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,10 +27,10 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 	// Constructors
 	// ===========================================================
 
-	public BaseTextureRegionBuffer(final TextureRegion pTextureRegion) {
-		super(8 * BYTES_PER_FLOAT);
+	public BaseTextureRegionBuffer(final TextureRegion pTextureRegion, final int pDrawType) {
+		super(8 * BYTES_PER_FLOAT, pDrawType);
 		this.mTextureRegion = pTextureRegion;
-		this.update();
+		this.onUpdated();
 	}
 
 	// ===========================================================
@@ -48,7 +48,7 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
 		if(this.mFlippedHorizontal != pFlippedHorizontal){
 			this.mFlippedHorizontal = pFlippedHorizontal;
-			this.update();
+			this.onUpdated();
 		}
 	}
 
@@ -59,7 +59,7 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 	public void setFlippedVertical(final boolean pFlippedVertical) {
 		if(this.mFlippedVertical != pFlippedVertical){
 			this.mFlippedVertical = pFlippedVertical;
-			this.update();
+			this.onUpdated();
 		}
 	}
 
@@ -76,7 +76,9 @@ public abstract class BaseTextureRegionBuffer extends BaseBuffer {
 	// Methods
 	// ===========================================================
 
-	public void update() {		
+	@Override
+	public void onUpdated() {		
+		super.onUpdated();
 		final TextureRegion textureRegion = this.mTextureRegion;
 		final Texture texture = textureRegion.getTexture();
 

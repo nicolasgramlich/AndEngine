@@ -35,6 +35,10 @@ public class FontManager {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static void clear() {
+		FontManager.mFonts.clear();
+	}
 
 	public static void loadFont(final Font pFont) {
 		FontManager.mFonts.add(pFont);

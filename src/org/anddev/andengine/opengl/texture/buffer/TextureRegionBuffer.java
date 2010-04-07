@@ -1,6 +1,6 @@
 package org.anddev.andengine.opengl.texture.buffer;
 
-import org.anddev.andengine.opengl.texture.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 public class TextureRegionBuffer extends BaseTextureRegionBuffer {
 	// ===========================================================
@@ -15,8 +15,8 @@ public class TextureRegionBuffer extends BaseTextureRegionBuffer {
 	// Constructors
 	// ===========================================================
 
-	public TextureRegionBuffer(final TextureRegion pTextureRegion) {
-		super(pTextureRegion);
+	public TextureRegionBuffer(final TextureRegion pTextureRegion, final int pDrawType) {
+		super(pTextureRegion, pDrawType);
 	}
 
 	// ===========================================================

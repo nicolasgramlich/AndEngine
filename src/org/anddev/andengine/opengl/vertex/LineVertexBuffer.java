@@ -21,8 +21,8 @@ public class LineVertexBuffer extends VertexBuffer {
 	// Constructors
 	// ===========================================================
 	
-	public LineVertexBuffer() {
-		super(2 * VERTICES_PER_LINE * BYTES_PER_FLOAT);
+	public LineVertexBuffer(final int pDrawType) {
+		super(2 * VERTICES_PER_LINE * BYTES_PER_FLOAT, pDrawType);
 	}
 
 	// ===========================================================
@@ -48,6 +48,8 @@ public class LineVertexBuffer extends VertexBuffer {
 		buffer.put(pY2);
 
 		buffer.position(0);
+
+		super.onUpdated();
 	}
 
 	// ===========================================================

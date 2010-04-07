@@ -1,6 +1,6 @@
 package org.anddev.andengine.opengl.texture.buffer;
 
-import org.anddev.andengine.opengl.texture.TiledTextureRegion;
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 /**
  * @author Nicolas Gramlich
@@ -19,8 +19,8 @@ public class TiledTextureRegionBuffer extends TextureRegionBuffer {
 	// Constructors
 	// ===========================================================
 
-	public TiledTextureRegionBuffer(final TiledTextureRegion pTextureRegion) {
-		super(pTextureRegion);
+	public TiledTextureRegionBuffer(final TiledTextureRegion pTextureRegion, final int pDrawType) {
+		super(pTextureRegion, pDrawType);
 	}
 
 	// ===========================================================

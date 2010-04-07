@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.util.Debug;
 
 import android.os.Build;
@@ -296,8 +297,8 @@ public class GLHelper {
 		pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 	}
 
-	public static void bufferData(final GL11 pGL11, final BaseBuffer pBaseBuffer, final int pUsage) {
-		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pBaseBuffer.getByteCount(), pBaseBuffer.getFloatBuffer(), pUsage);
+	public static void bufferData(final GL11 pGL11, final BufferObject pBufferObject, final int pUsage) {
+		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pBufferObject.getByteCount(), pBufferObject.getFloatBuffer(), pUsage);
 	}
 
 	// ===========================================================

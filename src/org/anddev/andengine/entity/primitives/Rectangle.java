@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.primitives;
 
 import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
@@ -23,7 +24,7 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer());
+		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer(GL11.GL_DYNAMIC_DRAW));
 		this.updateVertexBuffer();
 	}
 
@@ -49,7 +50,7 @@ public class Rectangle extends RectangularShape {
 
 	@Override
 	protected void onUpdateVertexBuffer(){
-		this.getVertexBuffer().update(0, 0, this.getBaseWidth(), this.getBaseHeight());
+		this.getVertexBuffer().onUpdate(0, 0, this.getBaseWidth(), this.getBaseHeight());
 	}
 	
 	// ===========================================================

@@ -1,4 +1,6 @@
-package org.anddev.andengine.opengl.texture;
+package org.anddev.andengine.opengl.texture.region;
+
+import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.texture.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.texture.buffer.TiledTextureRegionBuffer;
@@ -95,7 +97,7 @@ public class TiledTextureRegion extends TextureRegion {
 
 	@Override
 	protected TextureRegionBuffer onCreateTextureRegionBuffer() {
-		return new TiledTextureRegionBuffer(this);
+		return new TiledTextureRegionBuffer(this, GL11.GL_STATIC_DRAW);
 	}
 
 	// ===========================================================

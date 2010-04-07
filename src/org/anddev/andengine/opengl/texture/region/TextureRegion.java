@@ -1,9 +1,11 @@
-package org.anddev.andengine.opengl.texture;
+package org.anddev.andengine.opengl.texture.region;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.buffer.BufferObjectManager;
+import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.buffer.TextureRegionBuffer;
 
 /**
@@ -14,22 +16,20 @@ public class TextureRegion {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	private static final int[] HARDWAREBUFFERID_FETCHER = new int[1];
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
+	private Texture mTexture;
+	
+	private final TextureRegionBuffer mTextureRegionBuffer;
+	
 	private int mWidth;
 	private int mHeight;
+	
 	private int mTexturePositionX;
 	private int mTexturePositionY;
-	private Texture mTexture;
-	private final TextureRegionBuffer mTextureBuffer;
-	
-	private int mHardwareTextureBufferID = -1;
-	private boolean mHardwareTextureBufferNeedsUpdate = true;
 
 	// ===========================================================
 	// Constructors
@@ -40,7 +40,8 @@ public class TextureRegion {
 		this.mTexturePositionY = pTexturePositionY;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		this.mTextureBuffer = this.onCreateTextureRegionBuffer();
+		this.mTextureRegionBuffer = this.onCreateTextureRegionBuffer();
+		BufferObjectManager.loadBufferObject(this.mTextureRegionBuffer);
 	}
 
 	// ===========================================================
@@ -57,18 +58,18 @@ public class TextureRegion {
 
 	public void setWidth(final int pWidth) {
 		this.mWidth = pWidth;
-		this.mTextureBuffer.update();
+		this.mTextureRegionBuffer.onUpdated();
 	}
 
 	public void setHeight(final int pHeight) {
 		this.mHeight = pHeight;
-		this.mTextureBuffer.update();
+		this.mTextureRegionBuffer.onUpdated();
 	}
 
 	public void setTexturePosition(final int pX, final int pY) {
 		this.mTexturePositionX = pX;
 		this.mTexturePositionY = pY;
-		this.mTextureBuffer.update();
+		this.mTextureRegionBuffer.onUpdated();
 	}
 
 	public int getTexturePositionX() {
@@ -81,7 +82,7 @@ public class TextureRegion {
 
 	public void setTexture(final Texture pTexture) {
 		this.mTexture = pTexture;
-		this.mTextureBuffer.update();
+		this.mTextureRegionBuffer.onUpdated();
 	}
 
 	public Texture getTexture() {
@@ -89,23 +90,23 @@ public class TextureRegion {
 	}
 
 	public TextureRegionBuffer getTextureBuffer() {
-		return this.mTextureBuffer;
+		return this.mTextureRegionBuffer;
 	}
 
 	public boolean isFlippedHorizontal() {
-		return this.mTextureBuffer.isFlippedHorizontal();
+		return this.mTextureRegionBuffer.isFlippedHorizontal();
 	}
 
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
-		this.mTextureBuffer.setFlippedHorizontal(pFlippedHorizontal);
+		this.mTextureRegionBuffer.setFlippedHorizontal(pFlippedHorizontal);
 	}
 
 	public boolean isFlippedVertical() {
-		return this.mTextureBuffer.isFlippedVertical();
+		return this.mTextureRegionBuffer.isFlippedVertical();
 	}
 
 	public void setFlippedVertical(final boolean pFlippedVertical) {
-		this.mTextureBuffer.setFlippedVertical(pFlippedVertical);
+		this.mTextureRegionBuffer.setFlippedVertical(pFlippedVertical);
 	}
 
 	// ===========================================================
@@ -124,38 +125,24 @@ public class TextureRegion {
 	// ===========================================================
 
 	protected void updateTextureBuffer() {
-		this.mTextureBuffer.update();
-
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-            this.mHardwareTextureBufferNeedsUpdate  = true;
-		}
+		this.mTextureRegionBuffer.onUpdated();
 	}
 
 	protected TextureRegionBuffer onCreateTextureRegionBuffer() {
-		return new TextureRegionBuffer(this);
+		return new TextureRegionBuffer(this, GL11.GL_STATIC_DRAW);
 	}
 
 	public void onApply(final GL10 pGL) {
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
 			final GL11 gl11 = (GL11)pGL;
-			if(this.mHardwareTextureBufferID == -1) {
-				gl11.glGenBuffers(1, HARDWAREBUFFERID_FETCHER, 0);
-				this.mHardwareTextureBufferID = HARDWAREBUFFERID_FETCHER[0];
-			}
-			
-			if(this.mHardwareTextureBufferNeedsUpdate) {
-				this.mHardwareTextureBufferNeedsUpdate = false;
-				GLHelper.bindBuffer(gl11, this.mHardwareTextureBufferID);
-				GLHelper.bufferData(gl11, this.mTextureBuffer, GL11.GL_STATIC_DRAW);
-			}
-			
-			GLHelper.bindBuffer(gl11, this.mHardwareTextureBufferID);
+
+			this.mTextureRegionBuffer.selectOnHardware(gl11);
 
 			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
 			GLHelper.texCoordZeroPointer(gl11);
 		} else {
 			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
-			GLHelper.texCoordPointer(pGL, this.mTextureBuffer.getFloatBuffer());	
+			GLHelper.texCoordPointer(pGL, this.mTextureRegionBuffer.getFloatBuffer());	
 		}
 	}
 

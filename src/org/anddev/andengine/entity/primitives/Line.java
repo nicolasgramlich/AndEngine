@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.primitives;
 
 import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.GLHelper;
@@ -28,7 +29,7 @@ public class Line extends Shape {
 	// ===========================================================
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
-		super(pX1, pY1, new LineVertexBuffer());
+		super(pX1, pY1, new LineVertexBuffer(GL11.GL_DYNAMIC_DRAW));
 		this.mX2 = pX2;
 		this.mY2 = pY2;
 		this.updateVertexBuffer();

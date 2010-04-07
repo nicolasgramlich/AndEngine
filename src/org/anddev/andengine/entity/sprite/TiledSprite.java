@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.sprite;
 
-import org.anddev.andengine.opengl.texture.TiledTextureRegion;
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 /**
  * @author Nicolas Gramlich

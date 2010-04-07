@@ -4,7 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.entity.primitives.Rectangle;
 import org.anddev.andengine.opengl.GLHelper;
-import org.anddev.andengine.opengl.texture.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 /**
  * @author Nicolas Gramlich

@@ -90,10 +90,12 @@ public abstract class RectangularShape extends Shape {
 	}
 	
 	public void setBaseSize() {
-		this.mWidth = this.mBaseWidth;
-		this.mHeight = this.mBaseHeight;
-		this.onPositionChanged();
-		this.updateVertexBuffer();
+		if(this.mWidth != this.mBaseWidth && this.mHeight != this.mBaseHeight) {
+			this.mWidth = this.mBaseWidth;
+			this.mHeight = this.mBaseHeight;
+			this.onPositionChanged();
+			this.updateVertexBuffer();
+		}
 	}
 
 	@Override

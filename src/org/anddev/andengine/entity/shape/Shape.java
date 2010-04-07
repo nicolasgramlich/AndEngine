@@ -7,6 +7,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.DynamicEntity;
 import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
@@ -20,15 +21,11 @@ public abstract class Shape extends DynamicEntity {
 
 	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_ONE;
 	private static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
-	
-	private static final int[] HARDWAREBUFFERID_FETCHER = new int[1];
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private int mHardwareVertexBufferID = -1;
-	private boolean mHardwareVertexBufferNeedsUpdate = true;
 	protected final VertexBuffer mVertexBuffer;
 
 	protected float mRed = 1;
@@ -48,6 +45,7 @@ public abstract class Shape extends DynamicEntity {
 	public Shape(final float pX, final float pY, final VertexBuffer pVertexBuffer) {
 		super(pX, pY);
 		this.mVertexBuffer = pVertexBuffer;
+		BufferObjectManager.loadBufferObject(this.mVertexBuffer);
 	}
 
 	// ===========================================================
@@ -114,7 +112,7 @@ public abstract class Shape extends DynamicEntity {
 
 	@Override
 	protected void onPositionChanged() {
-		
+
 	}
 
 	protected abstract void onUpdateVertexBuffer();
@@ -172,9 +170,6 @@ public abstract class Shape extends DynamicEntity {
 
 	protected void updateVertexBuffer() {
 		this.onUpdateVertexBuffer();
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-            this.mHardwareVertexBufferNeedsUpdate = true;
-		}
 	}
 
 	public void addShapeModifier(final IShapeModifier pShapeModifier) {
@@ -197,7 +192,7 @@ public abstract class Shape extends DynamicEntity {
 
 	protected void onInitDraw(final GL10 pGL) {
 		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha); // TODO Subclasses eventually dont need this (only alpha might be important --> if(alpha < 1.0f)...
-		
+
 		GLHelper.enableVertexArray(pGL);
 		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
 	}
@@ -205,19 +200,8 @@ public abstract class Shape extends DynamicEntity {
 	private void onApplyVertices(final GL10 pGL) {
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
 			final GL11 gl11 = (GL11)pGL;
-			
-			if(this.mHardwareVertexBufferID  == -1) {
-				gl11.glGenBuffers(1, HARDWAREBUFFERID_FETCHER, 0);
-				this.mHardwareVertexBufferID = HARDWAREBUFFERID_FETCHER[0];
-			}
-			
-			if(this.mHardwareVertexBufferNeedsUpdate) {
-				this.mHardwareVertexBufferNeedsUpdate = false;
-				GLHelper.bindBuffer(gl11, this.mHardwareVertexBufferID);
-				GLHelper.bufferData(gl11, this.mVertexBuffer, GL11.GL_DYNAMIC_DRAW);
-			}
-			
-			GLHelper.bindBuffer(gl11, this.mHardwareVertexBufferID);
+
+			this.mVertexBuffer.selectOnHardware(gl11);
 			GLHelper.vertexZeroPointer(gl11);
 		} else {
 			GLHelper.vertexPointer(pGL, this.getVertexBuffer().getFloatBuffer());

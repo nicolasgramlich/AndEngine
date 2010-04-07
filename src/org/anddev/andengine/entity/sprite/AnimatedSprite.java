@@ -2,7 +2,7 @@ package org.anddev.andengine.entity.sprite;
 
 import java.util.Arrays;
 
-import org.anddev.andengine.opengl.texture.TiledTextureRegion;
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 

@@ -21,8 +21,8 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// Constructors
 	// ===========================================================
 	
-	public RectangleVertexBuffer() {
-		super(2 * VERTICES_PER_RECTANGLE * BYTES_PER_FLOAT);
+	public RectangleVertexBuffer(final int pDrawType) {
+		super(2 * VERTICES_PER_RECTANGLE * BYTES_PER_FLOAT, pDrawType);
 	}
 
 	// ===========================================================
@@ -37,7 +37,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// Methods
 	// ===========================================================
 
-	public void update(final float pX, final float pY, final float pWidth, final float pHeight) {
+	public void onUpdate(final float pX, final float pY, final float pWidth, final float pHeight) {
 		final FloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 
@@ -55,6 +55,8 @@ public class RectangleVertexBuffer extends VertexBuffer {
 		buffer.put(pY + pHeight);
 
 		buffer.position(0);
+
+		super.onUpdated();
 	}
 
 	// ===========================================================

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.util.MathUtils;
 
@@ -83,10 +84,6 @@ public class Texture {
 	// Methods
 	// ===========================================================
 
-	public void selectOnHardware(final GL10 pGL) {
-		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
-	}
-
 	public void insertTextureRegion(final TextureRegion pTextureRegion, final ITextureSource pTextureSource) {
 		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTextureRegion.getTexturePositionX(), pTextureRegion.getTexturePositionY()));
 		pTextureRegion.setTexture(this);
@@ -99,6 +96,8 @@ public class Texture {
 
 	public void loadToHardware(final GL10 pGL) {
 		GLHelper.enableTextures(pGL);
+
+		this.mHardwareTextureID = this.generateHardwareTextureID(pGL);
 
 		this.allocateAndBindTextureOnHardware(pGL);
 
@@ -132,9 +131,7 @@ public class Texture {
 	}
 
 	private void allocateAndBindTextureOnHardware(final GL10 pGL) {
-		this.mHardwareTextureID = this.generateHardwareTextureID(pGL);
-
-		this.selectOnHardware(pGL);
+		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
 
 		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
 	}

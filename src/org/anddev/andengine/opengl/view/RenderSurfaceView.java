@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.util.Debug;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -51,6 +52,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
 	/**
 	 * @author Nicolas Gramlich
 	 * @since 11:45:59 - 08.03.2010
@@ -81,10 +83,10 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
-		
 
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
+			Debug.d("onSurfaceChanged");
 			this.mEngine.setSurfaceSize(pWidth, pHeight);
 			pGL.glViewport(0, 0, pWidth, pHeight);
 			pGL.glLoadIdentity();
@@ -92,6 +94,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
+			Debug.d("onSurfaceCreated");
 			GLHelper.reset(pGL);
 			
 			GLHelper.setPerspectiveCorrectionHintFastest(pGL);

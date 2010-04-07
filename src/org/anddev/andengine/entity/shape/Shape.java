@@ -196,7 +196,7 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	protected void onInitDraw(final GL10 pGL) {
-		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
+		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha); // TODO Subclasses eventually dont need this (only alpha might be important --> if(alpha < 1.0f)...
 		
 		GLHelper.enableVertexArray(pGL);
 		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);

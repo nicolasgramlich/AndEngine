@@ -22,16 +22,16 @@ public class TextVertexBuffer extends VertexBuffer {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final HorizontalAlign mHorizontalAlign;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public TextVertexBuffer(final String pText, final HorizontalAlign pHorizontalAlign, final int pDrawType) {
 		super(2 * VERTICES_PER_CHARACTER * BaseBuffer.BYTES_PER_FLOAT * (pText.length() - StringUtils.countOccurences(pText, "\n")), pDrawType);
-		
+
 		this.mHorizontalAlign = pHorizontalAlign;
 	}
 
@@ -46,13 +46,13 @@ public class TextVertexBuffer extends VertexBuffer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void update(final Font font, final int pMaximumLineWidth, final int[] pWidths, final String[] pLines) {
 		final FloatBuffer vertexFloatBuffer = this.getFloatBuffer();
 		vertexFloatBuffer.position(0);
 
 		final int lineHeight = font.getLineHeight();
-		
+
 		final int lineCount = pLines.length;
 		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
 			final String line = pLines[lineIndex];
@@ -65,11 +65,11 @@ public class TextVertexBuffer extends VertexBuffer {
 				case CENTER:
 					lineX = (pMaximumLineWidth - pWidths[lineIndex]) / 2;
 					break;
-				case LEFT: 
+				case LEFT:
 				default:
 					lineX = 0;
 			}
-			
+
 			final int lineY = lineIndex * (font.getLineHeight() + font.getLineGap());
 
 			final int lineLength = line.length();
@@ -78,22 +78,22 @@ public class TextVertexBuffer extends VertexBuffer {
 
 				vertexFloatBuffer.put(lineX);
 				vertexFloatBuffer.put(lineY);
-				
+
 				vertexFloatBuffer.put(lineX + letter.mWidth);
 				vertexFloatBuffer.put(lineY);
-				
+
 				vertexFloatBuffer.put(lineX + letter.mWidth);
 				vertexFloatBuffer.put(lineY + lineHeight);
-				
+
 				vertexFloatBuffer.put(lineX + letter.mWidth);
 				vertexFloatBuffer.put(lineY + lineHeight);
-				
+
 				vertexFloatBuffer.put(lineX);
 				vertexFloatBuffer.put(lineY + lineHeight);
 
 				vertexFloatBuffer.put(lineX);
 				vertexFloatBuffer.put(lineY);
-				
+
 				lineX += letter.mAdvance;
 			}
 		}

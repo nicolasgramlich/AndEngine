@@ -104,7 +104,7 @@ public abstract class Shape extends DynamicEntity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedUpdate(float pSecondsElapsed) {
+	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.applyShapeModifiers(pSecondsElapsed);

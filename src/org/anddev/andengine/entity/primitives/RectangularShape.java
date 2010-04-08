@@ -88,7 +88,7 @@ public abstract class RectangularShape extends Shape {
 	public float getCenterY() {
 		return this.mY + this.getHeight() / 2;
 	}
-	
+
 	public void setBaseSize() {
 		if(this.mWidth != this.mBaseWidth && this.mHeight != this.mBaseHeight) {
 			this.mWidth = this.mBaseWidth;

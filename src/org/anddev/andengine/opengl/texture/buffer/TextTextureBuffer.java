@@ -22,7 +22,7 @@ public class TextTextureBuffer extends BufferObject {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public TextTextureBuffer(final int pByteCount, final int pDrawType) {
 		super(pByteCount, pDrawType);
 	}
@@ -61,16 +61,16 @@ public class TextTextureBuffer extends BufferObject {
 
 				textureFloatBuffer.put(letterTextureX);
 				textureFloatBuffer.put(letterTextureY);
-				
+
 				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
 				textureFloatBuffer.put(letterTextureY);
-				
+
 				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
 				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
-				
+
 				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
 				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
-				
+
 				textureFloatBuffer.put(letterTextureX);
 				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
 
@@ -79,7 +79,7 @@ public class TextTextureBuffer extends BufferObject {
 			}
 		}
 		textureFloatBuffer.position(0);
-		
+
 		this.onUpdated();
 	}
 

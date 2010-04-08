@@ -22,12 +22,12 @@ public class TextureRegion {
 	// ===========================================================
 
 	private Texture mTexture;
-	
+
 	private final TextureRegionBuffer mTextureRegionBuffer;
-	
+
 	private int mWidth;
 	private int mHeight;
-	
+
 	private int mTexturePositionX;
 	private int mTexturePositionY;
 
@@ -142,7 +142,7 @@ public class TextureRegion {
 			GLHelper.texCoordZeroPointer(gl11);
 		} else {
 			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
-			GLHelper.texCoordPointer(pGL, this.mTextureRegionBuffer.getFloatBuffer());	
+			GLHelper.texCoordPointer(pGL, this.mTextureRegionBuffer.getFloatBuffer());
 		}
 	}
 

@@ -222,7 +222,7 @@ public class GLHelper {
 		if(GLHelper.mCurrentHardwareBufferID != pHardwareBufferID) {
 			GLHelper.mCurrentHardwareBufferID = pHardwareBufferID;
 			pGL11.glBindBuffer(GL11.GL_ARRAY_BUFFER, pHardwareBufferID);
-		}		
+		}
 	}
 
 	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {

@@ -24,9 +24,9 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public AlphaMenuAnimator() {
-		
+
 	}
 
 	// ===========================================================
@@ -46,19 +46,19 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 
 	@Override
 	public void prepareAnimations(final ArrayList<MenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
-		final float maximumWidth = getMaximumWidth(pMenuItems);
-		final float overallHeight = getOverallHeight(pMenuItems);
-		
+		final float maximumWidth = this.getMaximumWidth(pMenuItems);
+		final float overallHeight = this.getOverallHeight(pMenuItems);
+
 		final float baseX = pCameraWidth / 2 - maximumWidth / 2;
 		final float baseY = pCameraHeight / 2 - overallHeight / 2;
-		
+
 		float offsetY = 0;
 		for(int i = 0; i < pMenuItems.size(); i++) {
 			final MenuItem menuItem = pMenuItems.get(i);
-			
+
 			menuItem.setPosition(baseX, baseY + offsetY);
 			menuItem.setAlpha(ALPHA_FROM);
-			
+
 			offsetY += menuItem.getHeight() + this.mMenuItemSpacing;
 		}
 	}

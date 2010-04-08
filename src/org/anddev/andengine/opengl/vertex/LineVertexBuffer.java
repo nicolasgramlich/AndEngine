@@ -10,7 +10,7 @@ public class LineVertexBuffer extends VertexBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final int VERTICES_PER_LINE = 2;
 
 	// ===========================================================
@@ -20,7 +20,7 @@ public class LineVertexBuffer extends VertexBuffer {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public LineVertexBuffer(final int pDrawType) {
 		super(2 * VERTICES_PER_LINE * BYTES_PER_FLOAT, pDrawType);
 	}
@@ -41,7 +41,7 @@ public class LineVertexBuffer extends VertexBuffer {
 		final FloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 		// TODO Maybe use put(float []) instead of put(float) ...
-		// 
+		//
 		buffer.put(pX1);
 		buffer.put(pY1);
 

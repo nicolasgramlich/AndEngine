@@ -22,7 +22,7 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private Scene mParentScene;
 
 	private Scene mChildScene;
@@ -148,7 +148,7 @@ public class Scene extends BaseEntity {
 	public boolean hasOnAreaTouchListener() {
 		return this.mOnAreaTouchListener != null;
 	}
-	
+
 	private void setParentScene(final Scene pParentScene) {
 		this.mParentScene = pParentScene;
 	}
@@ -233,7 +233,7 @@ public class Scene extends BaseEntity {
 	@Override
 	public void reset() {
 		super.reset();
-		
+
 		this.clearChildScene();
 
 		final Layer[] layers = this.mLayers;
@@ -245,10 +245,10 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void back() {
 		this.clearChildScene();
-		
+
 		if(this.mParentScene != null) {
 			this.mParentScene.clearChildScene();
 			this.mParentScene = null;

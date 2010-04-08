@@ -35,7 +35,7 @@ public class FontManager {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static void clear() {
 		FontManager.mFonts.clear();
 	}

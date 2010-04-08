@@ -32,9 +32,9 @@ public class Text extends RectangularShape {
 	private final String mText;
 	private final String[] mLines;
 	private final int[] mWidths;
-	
+
 	private final Font mFont;
-	
+
 	private final int mMaximumLineWidth;
 
 	// ===========================================================
@@ -43,9 +43,9 @@ public class Text extends RectangularShape {
 
 	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
 		super(pX, pY, 0, 0, new TextVertexBuffer(pText, pHorizontalAlign, GL11.GL_STATIC_DRAW));
-		
+
 		this.mVertexCount = TextVertexBuffer.VERTICES_PER_CHARACTER * (pText.length() - StringUtils.countOccurences(pText, "\n"));
-		
+
 		this.mTextTextureBuffer = new TextTextureBuffer(2 * this.mVertexCount * BaseBuffer.BYTES_PER_FLOAT, GL11.GL_STATIC_DRAW);
 		BufferObjectManager.loadBufferObject(this.mTextTextureBuffer); // TODO Unload irgendwann oder so...
 		this.mFont = pFont;
@@ -56,21 +56,21 @@ public class Text extends RectangularShape {
 			this.mLines = this.mText.split("\n");
 			final String[] lines = this.mLines;
 			final int lineCount = lines.length;
-			
+
 			this.mWidths = new int[lineCount];
 			final int[] widths = this.mWidths;
-			
+
 			int maximumLineWidth = 0;
-			
+
 			for (int i = lineCount - 1; i >= 0; i--) {
 				widths[i] = pFont.getStringWidth(lines[i]);
 				maximumLineWidth = Math.max(maximumLineWidth, widths[i]);
 			}
 			this.mMaximumLineWidth = maximumLineWidth;
 			super.mWidth = this.mMaximumLineWidth;
-//			this.setHeight(lineCount)
+			//			this.setHeight(lineCount)
 		}
-		
+
 		this.mTextTextureBuffer.update(this.mFont, this.mLines);
 		this.updateVertexBuffer();
 	}
@@ -78,7 +78,7 @@ public class Text extends RectangularShape {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	@Override
 	public TextVertexBuffer getVertexBuffer() {
 		return (TextVertexBuffer)super.getVertexBuffer();
@@ -87,14 +87,14 @@ public class Text extends RectangularShape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
 	}
-	
+
 	@Override
 	protected void drawVertices(final GL10 pGL) {
 		pGL.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mVertexCount);
@@ -108,7 +108,7 @@ public class Text extends RectangularShape {
 		}
 	}
 
-	
+
 	@Override
 	protected void onPostTransformations(final GL10 pGL) {
 		super.onPostTransformations(pGL);
@@ -122,7 +122,7 @@ public class Text extends RectangularShape {
 	private void applyTexture(final GL10 pGL) {
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
 			final GL11 gl11 = (GL11)pGL;
-			
+
 			this.mTextTextureBuffer.selectOnHardware(gl11);
 
 			GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
@@ -136,7 +136,7 @@ public class Text extends RectangularShape {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	public enum HorizontalAlign {
 		LEFT, CENTER, RIGHT;
 	}

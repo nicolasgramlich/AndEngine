@@ -66,7 +66,7 @@ public abstract class DynamicEntity extends StaticEntity {
 		this.mY = pY;
 		this.onPositionChanged();
 	}
-	
+
 	public void setBasePosition() {
 		this.mX = this.mBaseX;
 		this.mY = this.mBaseY;

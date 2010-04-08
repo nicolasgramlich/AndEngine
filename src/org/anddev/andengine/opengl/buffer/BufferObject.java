@@ -13,7 +13,7 @@ public abstract class BufferObject extends BaseBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final int[] HARDWAREBUFFERID_FETCHER = new int[1];
 
 	// ===========================================================
@@ -52,7 +52,7 @@ public abstract class BufferObject extends BaseBuffer {
 	void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
 	}
-	
+
 	public void setHardwareBufferNeedsUpdate(final boolean pHardwareBufferNeedsUpdate) {
 		this.mHardwareBufferNeedsUpdate = pHardwareBufferNeedsUpdate;
 	}
@@ -73,11 +73,11 @@ public abstract class BufferObject extends BaseBuffer {
 		if(this.mHardwareBufferNeedsUpdate && this.mHardwareBufferID != -1) {
 			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
 			this.mHardwareBufferNeedsUpdate = false;
-			
+
 			GLHelper.bindBuffer(pGL11, this.mHardwareBufferID);
 			GLHelper.bufferData(pGL11, this, this.mDrawType);
 		}
-		
+
 		GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // Muss der immer gebindet werden oder gibts da quasi je immer einen für Texture/Vertex etc...
 	}
 
@@ -87,10 +87,10 @@ public abstract class BufferObject extends BaseBuffer {
 
 		this.mLoadedToHardware = true;
 	}
-	
+
 	private int generateHardwareBufferID(final GL11 pGL11) {
 		pGL11.glGenBuffers(1, HARDWAREBUFFERID_FETCHER, 0);
-		
+
 		return HARDWAREBUFFERID_FETCHER[0];
 	}
 

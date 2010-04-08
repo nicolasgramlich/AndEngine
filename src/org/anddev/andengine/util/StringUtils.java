@@ -28,17 +28,17 @@ public class StringUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static int countOccurences(final String pText, final String pToken) {
 		int count = 0;
 
 		int lastIndex = pText.indexOf(pToken, 0);
-		
+
 		while (lastIndex != -1) {
 			count++;
 			lastIndex = pText.indexOf(pToken, lastIndex + 1);
 		}
-		
+
 		return count;
 	}
 

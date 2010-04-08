@@ -12,7 +12,7 @@ public interface IMenuAnimator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	public static final IMenuAnimator DEFAULT = new AlphaMenuAnimator();
 
 	// ===========================================================

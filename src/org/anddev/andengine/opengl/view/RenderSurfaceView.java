@@ -36,7 +36,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		this.setRenderer(this.mRenderer);
 		//		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -96,7 +96,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
 			Debug.d("onSurfaceCreated");
 			GLHelper.reset(pGL);
-			
+
 			GLHelper.setPerspectiveCorrectionHintFastest(pGL);
 
 			GLHelper.setShadeModelFlat(pGL);
@@ -110,7 +110,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
-			
+
 			GLHelper.enableExtensions(pGL);
 		}
 

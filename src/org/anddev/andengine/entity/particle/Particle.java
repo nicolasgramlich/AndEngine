@@ -29,7 +29,7 @@ public class Particle extends Sprite {
 		super(pX, pY, pTextureRegion);
 		this.mLifeTime = 0;
 	}
-	
+
 	public Particle(final float pX, final float pY, final TextureRegion pTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
 		super(pX, pY, pTextureRegion, pRectangleVertexBuffer);
 		this.mLifeTime = 0;

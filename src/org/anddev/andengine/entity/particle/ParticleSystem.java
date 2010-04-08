@@ -33,7 +33,7 @@ public class ParticleSystem extends Rectangle {
 
 	private float mParticlesDueToSpawn;
 	private final int mMaxParticles;
-	
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -129,7 +129,7 @@ public class ParticleSystem extends Rectangle {
 			}
 		}
 		particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
-		
+
 		this.applyParticleModifiersOnInitialize(particle);
 		this.mParticles.add(particle);
 	}

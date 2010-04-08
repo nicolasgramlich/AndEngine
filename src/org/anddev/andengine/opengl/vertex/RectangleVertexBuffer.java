@@ -10,7 +10,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final int VERTICES_PER_RECTANGLE = 4;
 
 	// ===========================================================
@@ -20,7 +20,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public RectangleVertexBuffer(final int pDrawType) {
 		super(2 * VERTICES_PER_RECTANGLE * BYTES_PER_FLOAT, pDrawType);
 	}

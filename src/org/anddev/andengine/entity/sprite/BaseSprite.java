@@ -31,11 +31,11 @@ public abstract class BaseSprite extends Rectangle {
 
 	public BaseSprite(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion) {
 		super(pX, pY, pWidth, pHeight);
-		
+
 		this.mTextureRegion = pTextureRegion;
 		this.setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
 	}
-	
+
 	public BaseSprite(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
 		super(pX, pY, pWidth, pHeight, pRectangleVertexBuffer);
 
@@ -50,11 +50,11 @@ public abstract class BaseSprite extends Rectangle {
 	public TextureRegion getTextureRegion() {
 		return this.mTextureRegion;
 	}
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public void reset() {
 		super.reset();
@@ -72,7 +72,7 @@ public abstract class BaseSprite extends Rectangle {
 	@Override
 	protected void onPostTransformations(final GL10 pGL) {
 		super.onPostTransformations(pGL);
-		
+
 		this.mTextureRegion.onApply(pGL);
 	}
 

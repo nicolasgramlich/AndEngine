@@ -78,9 +78,9 @@ public class Line extends Shape {
 	public void setPosition(final float pX1, final float pY1, final float pX2, final float pY2) {
 		this.mX2 = pX2;
 		this.mY2 = pY2;
-		
+
 		super.setPosition(pX1, pY1);
-		
+
 		this.updateVertexBuffer();
 	}
 
@@ -141,8 +141,8 @@ public class Line extends Shape {
 		// TODO Offset needs to be taken into account.
 		final float angle = this.mAngle;
 		if(angle != 0) {
-			final float halfDeltaX = getBaseWidth() / 2;
-			final float halfDeltaY = getBaseHeight() / 2;
+			final float halfDeltaX = this.getBaseWidth() / 2;
+			final float halfDeltaY = this.getBaseHeight() / 2;
 
 			pGL.glTranslatef(halfDeltaX, halfDeltaY, 0);
 			pGL.glRotatef(angle, 0, 0, 1);
@@ -182,7 +182,7 @@ public class Line extends Shape {
 			return false;
 		}
 	}
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

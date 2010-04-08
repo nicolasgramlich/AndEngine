@@ -74,7 +74,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		if(this.mEngineOptions.hasLoadingScreen()) {
 			this.initLoadingScreen();
 		}
-		
+
 		TextureManager.clear();
 		BufferObjectManager.clear();
 		FontManager.clear();
@@ -280,7 +280,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public void onDrawFrame(final GL10 pGL) {
 		final float secondsElapsed = this.getSecondsElapsed();
-		
+
 		TextureManager.ensureTexturesLoadedToHardware(pGL);
 		FontManager.ensureFontsLoadedToHardware(pGL);
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {

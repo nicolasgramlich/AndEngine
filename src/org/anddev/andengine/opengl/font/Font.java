@@ -90,7 +90,7 @@ public class Font {
 		return (int) (Math.ceil(this.mTemporaryTextWidthFetchers[0]));
 	}
 
-	private Bitmap getLetterBitmap(final char pCharacter) {		
+	private Bitmap getLetterBitmap(final char pCharacter) {
 		final String characterAsString = "" + pCharacter;
 		this.mPaint.getTextBounds(characterAsString, 0, 1, this.mGetLetterBitmapTemporaryRect);
 
@@ -140,7 +140,7 @@ public class Font {
 		final Bitmap bitmap = this.getLetterBitmap(pCharacter);
 		this.getLetterBounds(pCharacter, this.mCreateLetterTemporarySize);
 
-		if (this.mCurrentTextureX + mCreateLetterTemporarySize.mWidth >= TEXTURE_SIZE) {
+		if (this.mCurrentTextureX + this.mCreateLetterTemporarySize.mWidth >= TEXTURE_SIZE) {
 			this.mCurrentTextureX = 0;
 			this.mCurrentTextureY += this.getLineGap() + this.getLineHeight();
 		}
@@ -151,7 +151,7 @@ public class Font {
 		final float textureY = this.mCurrentTextureY / TEXTURE_SIZE;
 		final float textureWidth = this.mCreateLetterTemporarySize.mWidth / TEXTURE_SIZE;
 		final float textureHeight = this.mCreateLetterTemporarySize.mHeight / TEXTURE_SIZE;
-		
+
 		final Letter letter = new Letter(this.getLetterAdvance(pCharacter), letterWidth, letterHeight, textureX, textureY, textureWidth, textureHeight);
 		this.mCurrentTextureX += this.mCreateLetterTemporarySize.mWidth;
 

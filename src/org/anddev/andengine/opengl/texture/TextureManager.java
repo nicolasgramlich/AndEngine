@@ -35,12 +35,12 @@ public class TextureManager {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static void clear() {
 		TextureManager.mTexturesToBeLoaded.clear();
 		TextureManager.mLoadedTextures.clear();
 	}
-	
+
 	public static void loadTexture(final Texture pTexture) {
 		TextureManager.mTexturesToBeLoaded.add(pTexture);
 	}

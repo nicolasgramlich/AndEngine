@@ -27,7 +27,7 @@ public class Sprite extends BaseSprite {
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion) {
 		super(pX, pY, pWidth, pHeight, pTextureRegion);
 	}
-	
+
 	public Sprite(final float pX, final float pY, final TextureRegion pTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
 		super(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pRectangleVertexBuffer);
 	}

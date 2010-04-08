@@ -26,7 +26,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	private final ArrayList<MenuItem> mMenuItems = new ArrayList<MenuItem>();
 
 	private IOnMenuItemClickerListener mOnMenuItemClickerListener;
-	
+
 	private IMenuAnimator mMenuAnimator = IMenuAnimator.DEFAULT;
 
 	// ===========================================================
@@ -72,12 +72,12 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		this.getBottomLayer().addEntity(pMenuItem);
 		this.registerTouchArea(pMenuItem);
 	}
-	
+
 	@Override
 	public MenuScene getChildScene() {
 		return (MenuScene)super.getChildScene();
 	}
-	
+
 	@Override
 	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate) {
 		if(pChildScene instanceof MenuScene) {
@@ -87,13 +87,14 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		}
 	}
 
+	@Override
 	public void clearChildScene() {
 		if(this.getChildScene() != null) {
 			this.getChildScene().reset();
 			super.clearChildScene();
 		}
 	}
-	
+
 	public void setMenuAnimator(final IMenuAnimator pMenuAnimator) {
 		this.mMenuAnimator = pMenuAnimator;
 	}
@@ -111,23 +112,23 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void back() {
 		super.back();
-		
+
 		this.reset();
 	}
 
 	@Override
 	public void reset() {
 		super.reset();
-		
+
 		final ArrayList<MenuItem> menuItems = this.mMenuItems;
 		for(int i = menuItems.size() - 1; i >= 0; i--) {
 			menuItems.get(i).reset();
 		}
-		
+
 		this.prepareAnimations();
 	}
 
@@ -137,12 +138,12 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 
 	public void buildAnimations() {
 		this.prepareAnimations();
-		
+
 		final float cameraHeight = this.mCamera.getHeight();
 		final float cameraWidth = this.mCamera.getWidth();
 		this.mMenuAnimator.buildAnimations(this.mMenuItems, cameraWidth, cameraHeight);
 	}
-	
+
 	public void prepareAnimations() {
 		final float cameraHeight = this.mCamera.getHeight();
 		final float cameraWidth = this.mCamera.getWidth();

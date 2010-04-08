@@ -35,17 +35,17 @@ public class BufferObjectManager {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static void clear() {
 		BufferObjectManager.mBufferObjectsToBeLoaded.clear();
 		BufferObjectManager.mLoadedBufferObjects.clear();
 	}
-	
+
 	public static void loadBufferObject(final BufferObject pBufferObject) {
 		// TODO Abfrage ob !isLoadedToHardware ? --> Nicht doppelt laden
-//		if(!pBufferObject.isLoadedToHardware()) {
-			BufferObjectManager.mBufferObjectsToBeLoaded.add(pBufferObject);
-//		}
+		//		if(!pBufferObject.isLoadedToHardware()) {
+		BufferObjectManager.mBufferObjectsToBeLoaded.add(pBufferObject);
+		//		}
 	}
 
 	public static void loadBufferObjects(final BufferObject ... pBufferObjects) {
@@ -79,7 +79,7 @@ public class BufferObjectManager {
 			}
 
 			pendingBufferObjects.clear();
-//			System.gc();
+			//			System.gc();
 		}
 	}
 

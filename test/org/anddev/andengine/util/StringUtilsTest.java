@@ -1,7 +1,8 @@
 package org.anddev.andengine.util;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * @author Nicolas Gramlich
@@ -31,27 +32,27 @@ public class StringUtilsTest {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	@Test
 	public void testCountOccurrenceFollowUp() {
 		assertEquals(2, StringUtils.countOccurences("aabbccdd", "b"));
 	}
-	
+
 	@Test
 	public void testCountOccurrenceEmpty() {
 		assertEquals(0, StringUtils.countOccurences("", "b"));
 	}
-	
+
 	@Test
 	public void testCountOccurrenceNone() {
 		assertEquals(0, StringUtils.countOccurences("aaaaaaaa", "b"));
 	}
-	
+
 	@Test
 	public void testCountOccurrenceBeginning() {
 		assertEquals(1, StringUtils.countOccurences("baaaaa", "b"));
 	}
-	
+
 	@Test
 	public void testCountOccurrenceBeginningAndEnd() {
 		assertEquals(2, StringUtils.countOccurences("baaaaab", "b"));

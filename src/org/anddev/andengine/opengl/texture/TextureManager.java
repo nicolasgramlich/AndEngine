@@ -42,6 +42,7 @@ public class TextureManager {
 	public static void clear() {
 		TextureManager.mTexturesToBeLoaded.clear();
 		TextureManager.mLoadedTextures.clear();
+		TextureManager.mManagedTextures.clear();
 	}
 
 	public static void loadTexture(final Texture pTexture) {

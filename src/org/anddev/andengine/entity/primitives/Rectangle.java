@@ -22,10 +22,14 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
+	
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
 		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer(GL11.GL_DYNAMIC_DRAW));
 		this.updateVertexBuffer();
+	}
+
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final RectangleVertexBuffer pRectangleVertexBuffer) {
+		super(pX, pY, pWidth, pHeight, pRectangleVertexBuffer);
 	}
 
 	// ===========================================================

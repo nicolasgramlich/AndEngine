@@ -131,5 +131,4 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// Inner and Anonymous Classes
 		// ===========================================================
 	}
-
 }

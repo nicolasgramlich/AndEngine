@@ -154,7 +154,7 @@ public class Texture {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class TextureSourceWithLocation implements ITextureSource {
+	public static class TextureSourceWithLocation implements ITextureSource {
 
 		private final ITextureSource mTextureSource;
 		private final int mTexturePositionX;

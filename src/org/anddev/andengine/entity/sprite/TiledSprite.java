@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -21,6 +22,10 @@ public class TiledSprite extends BaseSprite {
 
 	public TiledSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion) {
 		super(pX, pY, pTiledTextureRegion.getTileWidth(), pTiledTextureRegion.getTileHeight(), pTiledTextureRegion);
+	}
+	
+	public TiledSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
+		super(pX, pY, pTiledTextureRegion.getTileWidth(), pTiledTextureRegion.getTileHeight(), pTiledTextureRegion, pRectangleVertexBuffer);
 	}
 
 	// ===========================================================

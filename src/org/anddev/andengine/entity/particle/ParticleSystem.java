@@ -122,7 +122,11 @@ public class ParticleSystem extends Rectangle {
 		}else{
 			final float x = this.getX() + (float)Math.random() * this.getWidth();
 			final float y = this.getY() + (float)Math.random() * this.getHeight();
-			particle = new Particle(x, y, this.mTextureRegion);
+			if(this.mParticles.size() > 0) {
+				particle = new Particle(x, y, this.mTextureRegion, this.mParticles.get(0).getVertexBuffer());
+			} else {
+				particle = new Particle(x, y, this.mTextureRegion);
+			}
 		}
 		particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 		

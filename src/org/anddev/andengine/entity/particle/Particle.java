@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.particle;
 
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -26,6 +27,11 @@ public class Particle extends Sprite {
 
 	public Particle(final float pX, final float pY, final TextureRegion pTextureRegion) {
 		super(pX, pY, pTextureRegion);
+		this.mLifeTime = 0;
+	}
+	
+	public Particle(final float pX, final float pY, final TextureRegion pTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
+		super(pX, pY, pTextureRegion, pRectangleVertexBuffer);
 		this.mLifeTime = 0;
 	}
 

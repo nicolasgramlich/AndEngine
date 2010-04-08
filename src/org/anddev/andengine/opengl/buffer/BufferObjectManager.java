@@ -43,7 +43,9 @@ public class BufferObjectManager {
 	
 	public static void loadBufferObject(final BufferObject pBufferObject) {
 		// TODO Abfrage ob !isLoadedToHardware ? --> Nicht doppelt laden
-		BufferObjectManager.mBufferObjectsToBeLoaded.add(pBufferObject);
+//		if(!pBufferObject.isLoadedToHardware()) {
+			BufferObjectManager.mBufferObjectsToBeLoaded.add(pBufferObject);
+//		}
 	}
 
 	public static void loadBufferObjects(final BufferObject ... pBufferObjects) {

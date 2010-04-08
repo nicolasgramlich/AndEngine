@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.sprite;
 import java.util.Arrays;
 
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -37,7 +38,10 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	public AnimatedSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion) {
 		super(pX, pY, pTiledTextureRegion);
 	}
-
+	
+	public AnimatedSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
+		super(pX, pY, pTiledTextureRegion, pRectangleVertexBuffer);
+	}
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

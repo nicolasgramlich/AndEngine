@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.entity.primitives.Rectangle;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -22,7 +23,7 @@ public abstract class BaseSprite extends Rectangle {
 	// Fields
 	// ===========================================================
 
-	protected TextureRegion mTextureRegion;
+	private final TextureRegion mTextureRegion;
 
 	// ===========================================================
 	// Constructors
@@ -30,8 +31,14 @@ public abstract class BaseSprite extends Rectangle {
 
 	public BaseSprite(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion) {
 		super(pX, pY, pWidth, pHeight);
+		
+		this.mTextureRegion = pTextureRegion;
+		this.setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
+	}
+	
+	public BaseSprite(final float pX, final float pY, final float pWidth, final float pHeight, final TextureRegion pTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
+		super(pX, pY, pWidth, pHeight, pRectangleVertexBuffer);
 
-		assert(pTextureRegion != null);
 		this.mTextureRegion = pTextureRegion;
 		this.setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
 	}
@@ -42,10 +49,6 @@ public abstract class BaseSprite extends Rectangle {
 
 	public TextureRegion getTextureRegion() {
 		return this.mTextureRegion;
-	}
-
-	public void setTextureRegion(final TextureRegion pTextureRegion){
-		this.mTextureRegion = pTextureRegion;
 	}
 	
 	// ===========================================================

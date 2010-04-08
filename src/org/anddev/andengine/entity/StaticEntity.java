@@ -93,7 +93,7 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	@Override
 	public void reset() {
 		super.reset();
-		// TODO Fehlt hier setBasePosition ?
+
 		this.mOffsetX = 0;
 		this.mOffsetY = 0;
 	}

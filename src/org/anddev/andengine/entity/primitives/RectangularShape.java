@@ -45,12 +45,12 @@ public abstract class RectangularShape extends Shape {
 
 	@Override
 	public float getWidth() {
-		return this.mWidth * this.getScale();
+		return this.mWidth * this.mScale;
 	}
 
 	@Override
 	public float getHeight() {
-		return this.mHeight * this.getScale();
+		return this.mHeight * this.mScale;
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public abstract class RectangularShape extends Shape {
 	@Override
 	protected void applyRotation(final GL10 pGL) {
 		// TODO Offset needs to be taken into account.
-		final float angle = this.getAngle();
+		final float angle = this.mAngle;
 		if(angle != 0) {
 			final float halfWidth = this.getBaseWidth() / 2;
 			final float halfHeight = this.getBaseHeight() / 2;
@@ -134,7 +134,7 @@ public abstract class RectangularShape extends Shape {
 
 	@Override
 	protected void applyScale(final GL10 pGL) {
-		final float scale = this.getScale();
+		final float scale = this.mScale;
 		if(scale != 1) {
 			final float halfWidth = this.getBaseWidth() / 2;
 			final float halfHeight = this.getBaseHeight() / 2;

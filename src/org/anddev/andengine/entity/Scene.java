@@ -182,28 +182,31 @@ public class Scene extends BaseEntity {
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
-		if(this.mChildScene == null || !this.mChildSceneModalDraw) {
+		final Scene childScene = this.mChildScene;
+		if(childScene == null || !this.mChildSceneModalDraw) {
 			this.drawBackground(pGL);
 			this.drawLayers(pGL);
 		}
-		if(this.mChildScene != null) {
-			this.mChildScene.onDraw(pGL);
+		if(childScene != null) {
+			childScene.onDraw(pGL);
 		}
 	}
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if(this.mChildScene == null || !this.mChildSceneModalUpdate) {
+		final Scene childScene = this.mChildScene;
+		if(childScene == null || !this.mChildSceneModalUpdate) {
 			this.updateLayers(pSecondsElapsed);
 		}
 
-		if(this.mChildScene != null) {
-			this.mChildScene.onUpdate(pSecondsElapsed);
+		if(childScene != null) {
+			childScene.onUpdate(pSecondsElapsed);
 		}
 	}
 
 	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
-		if(this.mChildScene == null) {
+		final Scene childScene = this.mChildScene;
+		if(childScene == null) {
 			if(this.mOnAreaTouchListener != null) {
 				final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
 				final int touchAreaCount = touchAreas.size();
@@ -223,7 +226,7 @@ public class Scene extends BaseEntity {
 				return false;
 			}
 		} else {
-			return this.mChildScene.onSceneTouchEvent(pSceneMotionEvent);
+			return childScene.onSceneTouchEvent(pSceneMotionEvent);
 		}
 	}
 

@@ -14,14 +14,14 @@ public abstract class DynamicEntity extends StaticEntity {
 	// Fields
 	// ===========================================================
 
-	private float mAccelerationX = 0;
-	private float mAccelerationY = 0;
-	private float mVelocityX = 0;
-	private float mVelocityY = 0;
+	protected float mAccelerationX = 0;
+	protected float mAccelerationY = 0;
+	protected float mVelocityX = 0;
+	protected float mVelocityY = 0;
 
-	private float mAngle = 0;
+	protected float mAngle = 0;
 
-	private float mScale = 1;
+	protected float mScale = 1;
 	private boolean mUpdatePhysicsSelf = true;
 
 	// ===========================================================
@@ -108,14 +108,18 @@ public abstract class DynamicEntity extends StaticEntity {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if(this.isUpdatePhysicsSelf()) {
-			if(this.mAccelerationX != 0 || this.mAccelerationY != 0 || this.mVelocityX != 0 || this.mVelocityY != 0) {
-				if(this.mAccelerationX != 0 || this.mAccelerationY != 0) {
-					this.mVelocityX += this.mAccelerationX * pSecondsElapsed;
-					this.mVelocityY += this.mAccelerationY * pSecondsElapsed;
-				}
-				this.mX += this.mVelocityX * pSecondsElapsed;
-				this.mY += this.mVelocityY * pSecondsElapsed;
+		if(this.mUpdatePhysicsSelf) {
+			final float accelerationX = this.mAccelerationX;
+			final float accelerationY = this.mAccelerationY;
+			if(accelerationX != 0 || accelerationY != 0) {
+				this.mVelocityX += accelerationX * pSecondsElapsed;
+				this.mVelocityY += accelerationY * pSecondsElapsed;
+			}
+			final float velocityX = this.mVelocityX;
+			final float velocityY = this.mVelocityY;
+			if(velocityX != 0 || velocityY != 0) {
+				this.mX += velocityX * pSecondsElapsed;
+				this.mY += velocityY * pSecondsElapsed;
 				this.onPositionChanged();
 			}
 		}

@@ -1,5 +1,7 @@
 package org.anddev.andengine.engine;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
@@ -64,6 +66,30 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
+	
+	private final ReentrantLock mThreadLock = new ReentrantLock(true);
+//	{
+//		public void lock() {
+//			org.anddev.andengine.util.Debug.d("Lock by:     " + Thread.currentThread().getName());
+//			super.lock();
+//			org.anddev.andengine.util.Debug.d("Locked by:   " + Thread.currentThread().getName());
+//		};
+//		
+//		public void unlock() {
+//			org.anddev.andengine.util.Debug.d("UnLock by:   " + Thread.currentThread().getName());
+//			super.unlock();
+//			org.anddev.andengine.util.Debug.d("UnLocked by: " + Thread.currentThread().getName());
+//		};
+//	};
+
+	private Thread mUpdateThread = new Thread(new Runnable() {
+		@Override
+		public void run() {
+			while(true) {
+				Engine.this.onUpdate();
+			}
+		}
+	}, "UpdateThread");
 
 	// ===========================================================
 	// Constructors
@@ -78,6 +104,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		TextureManager.clear();
 		BufferObjectManager.clear();
 		FontManager.clear();
+		this.mUpdateThread.start();
 	}
 
 	// ===========================================================
@@ -278,34 +305,40 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		}
 	}
 
-	public void onDrawFrame(final GL10 pGL) {
+	protected void onUpdate() {
 		final float secondsElapsed = this.getSecondsElapsed();
 
-		TextureManager.ensureTexturesLoadedToHardware(pGL);
-		FontManager.ensureFontsLoadedToHardware(pGL);
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
-		}
-
 		if(this.mRunning) {
+			this.mThreadLock.lock();
 			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
 				this.mScene.updatePreFrameHandlers(secondsElapsed);
 
 				this.mScene.onUpdate(secondsElapsed);
+				this.mThreadLock.unlock();
 
-				this.onDrawScene(pGL);
-
+				this.mThreadLock.lock();
 				this.mScene.updatePostFrameHandlers(secondsElapsed);
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
-		} else {
-			if(this.mScene != null){
-				this.onDrawScene(pGL);
-			}
+			this.mThreadLock.unlock();
 		}
+	}
+
+	public void onDrawFrame(final GL10 pGL) {
+		this.mThreadLock.lock();
+		
+		TextureManager.ensureTexturesLoadedToHardware(pGL);
+		FontManager.ensureFontsLoadedToHardware(pGL);
+		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
+			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
+		}
+		
+		this.onDrawScene(pGL);
+
+		this.mThreadLock.unlock();
 	}
 
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {

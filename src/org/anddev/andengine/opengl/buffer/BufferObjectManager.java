@@ -1,6 +1,7 @@
 package org.anddev.andengine.opengl.buffer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -19,6 +20,8 @@ public class BufferObjectManager {
 
 	private static final ArrayList<BufferObject> mBufferObjectsToBeLoaded = new ArrayList<BufferObject>();
 	private static final ArrayList<BufferObject> mLoadedBufferObjects = new ArrayList<BufferObject>();
+	
+	private static final HashSet<BufferObject> mManagedBufferObjects = new HashSet<BufferObject>();
 
 	// ===========================================================
 	// Constructors
@@ -39,13 +42,14 @@ public class BufferObjectManager {
 	public static void clear() {
 		BufferObjectManager.mBufferObjectsToBeLoaded.clear();
 		BufferObjectManager.mLoadedBufferObjects.clear();
+		BufferObjectManager.mManagedBufferObjects.clear();
 	}
 
 	public static void loadBufferObject(final BufferObject pBufferObject) {
-		// TODO Abfrage ob !isLoadedToHardware ? --> Nicht doppelt laden
-		//		if(!pBufferObject.isLoadedToHardware()) {
-		BufferObjectManager.mBufferObjectsToBeLoaded.add(pBufferObject);
-		//		}
+		if(BufferObjectManager.mManagedBufferObjects.contains(pBufferObject) == false){
+			BufferObjectManager.mManagedBufferObjects.add(pBufferObject);
+			BufferObjectManager.mBufferObjectsToBeLoaded.add(pBufferObject);
+		}
 	}
 
 	public static void loadBufferObjects(final BufferObject ... pBufferObjects) {
@@ -74,8 +78,8 @@ public class BufferObjectManager {
 				if(!pendingBufferObject.isLoadedToHardware()){
 					pendingBufferObject.loadToHardware(pGL11);
 					pendingBufferObject.setHardwareBufferNeedsUpdate(true);
-					BufferObjectManager.mLoadedBufferObjects.add(pendingBufferObject);
-				}
+				} 
+				BufferObjectManager.mLoadedBufferObjects.add(pendingBufferObject);
 			}
 
 			pendingBufferObjects.clear();

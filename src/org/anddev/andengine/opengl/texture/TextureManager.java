@@ -1,6 +1,7 @@
 package org.anddev.andengine.opengl.texture;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -19,6 +20,8 @@ public class TextureManager {
 
 	private static final ArrayList<Texture> mTexturesToBeLoaded = new ArrayList<Texture>();
 	private static final ArrayList<Texture> mLoadedTextures = new ArrayList<Texture>();
+
+	private static final HashSet<Texture> mManagedTextures = new HashSet<Texture>();
 
 	// ===========================================================
 	// Constructors
@@ -42,12 +45,15 @@ public class TextureManager {
 	}
 
 	public static void loadTexture(final Texture pTexture) {
-		TextureManager.mTexturesToBeLoaded.add(pTexture);
+		if(TextureManager.mManagedTextures.contains(pTexture) == false) {
+			TextureManager.mManagedTextures.add(pTexture);
+			TextureManager.mTexturesToBeLoaded.add(pTexture);
+		}
 	}
 
 	public static void loadTextures(final Texture ... pTextures) {
 		for(int i = pTextures.length - 1; i >= 0; i--) {
-			TextureManager.mTexturesToBeLoaded.add(pTextures[i]);
+			TextureManager.loadTexture(pTextures[i]);
 		}
 	}
 
@@ -70,8 +76,8 @@ public class TextureManager {
 				final Texture pendingTexture = pendingTextures.get(i);
 				if(!pendingTexture.isLoadedToHardware()){
 					pendingTexture.loadToHardware(pGL);
-					TextureManager.mLoadedTextures.add(pendingTexture);
 				}
+				TextureManager.mLoadedTextures.add(pendingTexture);
 			}
 
 			pendingTextures.clear();

@@ -105,7 +105,7 @@ public class GLHelper {
 			GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 			// TODO: if Motorola fixes this, I should switch to using the fingerprint
 			// (blur/morrison/morrison/morrison:1.5/CUPCAKE/091007:user/ota-rel-keys,release-keys)
-			// instead of the product name so that newer versions use VBOs.
+			// instead of the product name so that newer versions use VBOs
 		}
 	}
 

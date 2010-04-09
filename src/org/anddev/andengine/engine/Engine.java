@@ -21,6 +21,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
+import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -29,7 +30,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Debug;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -65,6 +65,17 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
 
+	private final Thread mUpdateThread = new Thread(new Runnable() {
+		@Override
+		public void run() {
+			while(true) {
+				Engine.this.onUpdate();
+			}
+		}
+	}, "UpdateThread");
+
+	private final State mThreadLocker = new State();
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -78,6 +89,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		TextureManager.clear();
 		BufferObjectManager.clear();
 		FontManager.clear();
+		this.mUpdateThread.start();
 	}
 
 	// ===========================================================
@@ -157,11 +169,11 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 
 	public void startPerformanceTracing(final String pTraceFileName) {
-		Debug.startMethodTracing("AndEngine/" + pTraceFileName);
+		android.os.Debug.startMethodTracing("AndEngine/" + pTraceFileName);
 	}
 
 	public void stopPerformanceTracing() {
-		Debug.stopMethodTracing();
+		android.os.Debug.stopMethodTracing();
 	}
 
 	// ===========================================================
@@ -278,14 +290,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		}
 	}
 
-	public void onDrawFrame(final GL10 pGL) {
-		final float secondsElapsed = this.getSecondsElapsed();
-
-		TextureManager.ensureTexturesLoadedToHardware(pGL);
-		FontManager.ensureFontsLoadedToHardware(pGL);
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
-		}
+	protected void onUpdate() {
+		final float secondsElapsed = getSecondsElapsed();
 
 		if(this.mRunning) {
 			this.updatePreFrameHandlers(secondsElapsed);
@@ -295,17 +301,36 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 				this.mScene.onUpdate(secondsElapsed);
 
-				this.onDrawScene(pGL);
+				this.mThreadLocker.notifyCanDraw();
+				this.mThreadLocker.waitUntilCanUpdate();
 
 				this.mScene.updatePostFrameHandlers(secondsElapsed);
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
 		} else {
-			if(this.mScene != null){
-				this.onDrawScene(pGL);
+			this.mThreadLocker.notifyCanDraw();
+			try {
+				Thread.sleep(16);
+			} catch (InterruptedException e) {
+				Debug.e("UpdateThread interrupted from sleep.", e);
 			}
+			this.mThreadLocker.waitUntilCanUpdate();
 		}
+	}
+
+	public void onDrawFrame(final GL10 pGL) {
+		this.mThreadLocker.waitUntilCanDraw();
+
+		TextureManager.ensureTexturesLoadedToHardware(pGL);
+		FontManager.ensureFontsLoadedToHardware(pGL);
+		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
+			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
+		}
+
+		this.onDrawScene(pGL);
+
+		this.mThreadLocker.notifyCanUpdate();
 	}
 
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
@@ -357,4 +382,42 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	private static class State {
+		private boolean mDrawing = false;
+
+		public synchronized void notifyCanDraw() {
+			//			Debug.d(">>> notifyCanDraw");
+			this.mDrawing = true;
+			this.notifyAll();
+			//			Debug.d("<<< notifyCanDraw");
+		}
+
+		public synchronized void notifyCanUpdate() {
+			//			Debug.d(">>> notifyCanUpdate");
+			this.mDrawing = false;
+			this.notifyAll();
+			//			Debug.d("<<< notifyCanUpdate");
+		}
+
+		public synchronized void waitUntilCanDraw() {
+			//			Debug.d(">>> waitUntilCanDraw");
+			while (this.mDrawing == false) {
+				try {
+					this.wait();
+				} catch (final InterruptedException e) { }
+			}
+			//			Debug.d("<<< waitUntilCanDraw");
+		}
+
+		public synchronized void waitUntilCanUpdate() {
+			//			Debug.d(">>> waitUntilCanUpdate");
+			while (this.mDrawing == true) {
+				try {
+					this.wait();
+				} catch (final InterruptedException e) { }
+			}
+			//			Debug.d("<<< waitUntilCanUpdate");
+		}		
+	}
 }

@@ -3,7 +3,6 @@ package org.anddev.andengine.opengl.buffer;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.GLHelper;
-import org.anddev.andengine.util.Debug;
 
 /**
  * @author Nicolas Gramlich
@@ -71,19 +70,19 @@ public abstract class BufferObject extends BaseBuffer {
 
 	public void selectOnHardware(final GL11 pGL11) {
 		if(this.mHardwareBufferNeedsUpdate && this.mHardwareBufferID != -1) {
-			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
+//			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
 			this.mHardwareBufferNeedsUpdate = false;
 
 			GLHelper.bindBuffer(pGL11, this.mHardwareBufferID);
 			GLHelper.bufferData(pGL11, this, this.mDrawType);
 		}
 
-		GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // Muss der immer gebindet werden oder gibts da quasi je immer einen für Texture/Vertex etc...
+		GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // TODO Muss der immer gebindet werden oder gibts da quasi je immer einen für Texture/Vertex etc...
 	}
 
 	public void loadToHardware(final GL11 pGL11) {
 		this.mHardwareBufferID = this.generateHardwareBufferID(pGL11);
-		Debug.d("BufferObject.loadToHardware(): ID = " + this.mHardwareBufferID);
+//		Debug.d("BufferObject.loadToHardware(): ID = " + this.mHardwareBufferID);
 
 		this.mLoadedToHardware = true;
 	}

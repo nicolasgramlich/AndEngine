@@ -17,7 +17,11 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	// ===========================================================
 
 	private float mSecondsElapsed;
+	
 	private int mFramesInThisSecond;
+	
+	private float mShortestFrame = Float.MAX_VALUE;
+	private float mLongestFrame = Float.MIN_VALUE;
 
 	// ===========================================================
 	// Constructors
@@ -35,10 +39,19 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	public void onUpdate(final float pSecondsElapsed) {
 		this.mFramesInThisSecond++;
 		this.mSecondsElapsed += pSecondsElapsed;
+		
+		this.mShortestFrame = Math.min(this.mShortestFrame, pSecondsElapsed);
+		
+		this.mLongestFrame = Math.max(this.mLongestFrame, pSecondsElapsed);
+		
 		if(this.mSecondsElapsed > 1){
-			Debug.d("FPS: " + (this.mFramesInThisSecond / this.mSecondsElapsed));
+			Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)", (this.mFramesInThisSecond / this.mSecondsElapsed), this.mShortestFrame * 1000, this.mLongestFrame * 1000));
+			
 			this.mSecondsElapsed = 0;
 			this.mFramesInThisSecond = 0;
+			
+			this.mLongestFrame = Float.MIN_VALUE;
+			this.mShortestFrame = Float.MAX_VALUE;
 		}
 	}
 

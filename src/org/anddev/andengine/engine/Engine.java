@@ -1,7 +1,5 @@
 package org.anddev.andengine.engine;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
@@ -23,6 +21,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
+import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -31,7 +30,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Debug;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -66,23 +64,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
-	
-	private final ReentrantLock mThreadLock = new ReentrantLock(true);
-//	{
-//		public void lock() {
-//			org.anddev.andengine.util.Debug.d("Lock by:     " + Thread.currentThread().getName());
-//			super.lock();
-//			org.anddev.andengine.util.Debug.d("Locked by:   " + Thread.currentThread().getName());
-//		};
-//		
-//		public void unlock() {
-//			org.anddev.andengine.util.Debug.d("UnLock by:   " + Thread.currentThread().getName());
-//			super.unlock();
-//			org.anddev.andengine.util.Debug.d("UnLocked by: " + Thread.currentThread().getName());
-//		};
-//	};
 
-	private Thread mUpdateThread = new Thread(new Runnable() {
+	private final Thread mUpdateThread = new Thread(new Runnable() {
 		@Override
 		public void run() {
 			while(true) {
@@ -90,6 +73,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			}
 		}
 	}, "UpdateThread");
+
+	private final State mThreadLocker = new State();
 
 	// ===========================================================
 	// Constructors
@@ -184,11 +169,11 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 
 	public void startPerformanceTracing(final String pTraceFileName) {
-		Debug.startMethodTracing("AndEngine/" + pTraceFileName);
+		android.os.Debug.startMethodTracing("AndEngine/" + pTraceFileName);
 	}
 
 	public void stopPerformanceTracing() {
-		Debug.stopMethodTracing();
+		android.os.Debug.stopMethodTracing();
 	}
 
 	// ===========================================================
@@ -306,39 +291,46 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 
 	protected void onUpdate() {
-		final float secondsElapsed = this.getSecondsElapsed();
+		final float secondsElapsed = getSecondsElapsed();
 
 		if(this.mRunning) {
-			this.mThreadLock.lock();
 			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
 				this.mScene.updatePreFrameHandlers(secondsElapsed);
 
 				this.mScene.onUpdate(secondsElapsed);
-				this.mThreadLock.unlock();
 
-				this.mThreadLock.lock();
+				this.mThreadLocker.notifyCanDraw();
+				this.mThreadLocker.waitUntilCanUpdate();
+
 				this.mScene.updatePostFrameHandlers(secondsElapsed);
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
-			this.mThreadLock.unlock();
+		} else {
+			this.mThreadLocker.notifyCanDraw();
+			try {
+				Thread.sleep(16);
+			} catch (InterruptedException e) {
+				Debug.e("UpdateThread interrupted from sleep.", e);
+			}
+			this.mThreadLocker.waitUntilCanUpdate();
 		}
 	}
 
 	public void onDrawFrame(final GL10 pGL) {
-		this.mThreadLock.lock();
-		
+		this.mThreadLocker.waitUntilCanDraw();
+
 		TextureManager.ensureTexturesLoadedToHardware(pGL);
 		FontManager.ensureFontsLoadedToHardware(pGL);
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
 			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
 		}
-		
+
 		this.onDrawScene(pGL);
 
-		this.mThreadLock.unlock();
+		this.mThreadLocker.notifyCanUpdate();
 	}
 
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
@@ -390,4 +382,42 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	private static class State {
+		private boolean mDrawing = false;
+
+		public synchronized void notifyCanDraw() {
+			//			Debug.d(">>> notifyCanDraw");
+			this.mDrawing = true;
+			this.notifyAll();
+			//			Debug.d("<<< notifyCanDraw");
+		}
+
+		public synchronized void notifyCanUpdate() {
+			//			Debug.d(">>> notifyCanUpdate");
+			this.mDrawing = false;
+			this.notifyAll();
+			//			Debug.d("<<< notifyCanUpdate");
+		}
+
+		public synchronized void waitUntilCanDraw() {
+			//			Debug.d(">>> waitUntilCanDraw");
+			while (this.mDrawing == false) {
+				try {
+					this.wait();
+				} catch (final InterruptedException e) { }
+			}
+			//			Debug.d("<<< waitUntilCanDraw");
+		}
+
+		public synchronized void waitUntilCanUpdate() {
+			//			Debug.d(">>> waitUntilCanUpdate");
+			while (this.mDrawing == true) {
+				try {
+					this.wait();
+				} catch (final InterruptedException e) { }
+			}
+			//			Debug.d("<<< waitUntilCanUpdate");
+		}		
+	}
 }

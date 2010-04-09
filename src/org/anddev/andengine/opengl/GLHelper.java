@@ -44,6 +44,7 @@ public class GLHelper {
 	private static boolean mEnableVertexArray = false;
 
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
+	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS_FORCE_DISABLE = false; // TODO A better place would be the EngineOptions->Extras or so...
 	public static boolean EXTENSIONS_DRAWTEXTURE = false;
 
 	// ===========================================================
@@ -89,7 +90,7 @@ public class GLHelper {
 		final boolean isVBOCapable = extensions.contains("_vertex_buffer_object");
 		final boolean isDrawTextureCapable = extensions.contains("draw_texture");
 
-		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
+		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !EXTENSIONS_VERTEXBUFFEROBJECTS_FORCE_DISABLE && !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
 		GLHelper.EXTENSIONS_DRAWTEXTURE  = isDrawTextureCapable;
 
 		GLHelper.hackBrokenDevices();

@@ -42,6 +42,11 @@ public class GLHelper {
 	private static boolean mEnableTextures = false;
 	private static boolean mEnableTexCoordArray = false;
 	private static boolean mEnableVertexArray = false;
+	
+	private static float mRed = -1f;
+	private static float mGreen = -1f;
+	private static float mBlue = -1f;
+	private static float mAlpha = -1f;
 
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS_FORCE_DISABLE = false; // TODO A better place would be the EngineOptions->Extras or so...
@@ -111,7 +116,13 @@ public class GLHelper {
 	}
 
 	public static void setColor(final GL10 pGL, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		pGL.glColor4f(pRed, pGreen, pBlue, pAlpha);
+		if(pAlpha != GLHelper.mAlpha || pRed != GLHelper.mRed || pGreen != GLHelper.mGreen || pBlue != GLHelper.mBlue) {
+			GLHelper.mAlpha = pAlpha;
+			GLHelper.mRed = pRed;
+			GLHelper.mGreen = pGreen;
+			GLHelper.mBlue = pBlue;
+			pGL.glColor4f(pRed, pGreen, pBlue, pAlpha);
+		}
 	}
 
 	public static void enableVertexArray(final GL10 pGL) {

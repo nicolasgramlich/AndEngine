@@ -2,7 +2,7 @@ package org.anddev.andengine.entity.sprite;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.primitives.Rectangle;
+import org.anddev.andengine.entity.primitives.BaseRectangle;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
@@ -11,7 +11,7 @@ import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
  * @author Nicolas Gramlich
  * @since 11:38:53 - 08.03.2010
  */
-public abstract class BaseSprite extends Rectangle {
+public abstract class BaseSprite extends BaseRectangle {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -76,17 +76,17 @@ public class ParticleSystem extends Rectangle {
 
 		final ArrayList<Particle> particles = this.mParticles;
 		final ArrayList<Particle> particlesToRecycle = this.mParticlesToRecycle;
+		
 		for(int i = particles.size() - 1; i >= 0; i--) {
 			final Particle particle = particles.get(i);
 
 			this.applyParticleModifiersOnUpdate(particle);
 			particle.onUpdate(pSecondsElapsed);
 			if(particle.isDead()){
+				particles.remove(i);
 				particlesToRecycle.add(particle);
 			}
 		}
-
-		particles.removeAll(particlesToRecycle); // TODO Somehow remove this as it internally uses an iterator!
 	}
 
 	// ===========================================================
@@ -121,7 +121,7 @@ public class ParticleSystem extends Rectangle {
 		final Particle particle;
 		
 		if(!particlesToRecycle.isEmpty()){
-			particle = particlesToRecycle.get(particlesToRecycle.size() - 1);
+			particle = particlesToRecycle.remove(particlesToRecycle.size() - 1);
 			particle.reset();
 		}else{
 			final float x = this.getX() + (float)Math.random() * this.getWidth();

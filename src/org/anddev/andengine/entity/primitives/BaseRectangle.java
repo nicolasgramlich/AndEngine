@@ -1,15 +1,14 @@
 package org.anddev.andengine.entity.primitives;
 
-import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:18:49 - 13.03.2010
+ * @since 19:05:49 - 11.04.2010
  */
-public class Rectangle extends BaseRectangle {
+public abstract class BaseRectangle extends RectangularShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,11 +21,12 @@ public class Rectangle extends BaseRectangle {
 	// Constructors
 	// ===========================================================
 
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		super(pX, pY, pWidth, pHeight);
+	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
+		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer(GL11.GL_DYNAMIC_DRAW));
+		this.updateVertexBuffer();
 	}
 
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final RectangleVertexBuffer pRectangleVertexBuffer) {
+	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight, final RectangleVertexBuffer pRectangleVertexBuffer) {
 		super(pX, pY, pWidth, pHeight, pRectangleVertexBuffer);
 	}
 
@@ -39,10 +39,13 @@ public class Rectangle extends BaseRectangle {
 	// ===========================================================
 
 	@Override
-	protected void onInitDraw(final GL10 pGL) {
-		super.onInitDraw(pGL);
-		GLHelper.disableTextures(pGL);
-		GLHelper.disableTexCoordArray(pGL);
+	public RectangleVertexBuffer getVertexBuffer() {
+		return (RectangleVertexBuffer)super.getVertexBuffer();
+	}
+
+	@Override
+	protected void onUpdateVertexBuffer(){
+		this.getVertexBuffer().onUpdate(0, 0, this.getBaseWidth(), this.getBaseHeight());
 	}
 
 	// ===========================================================

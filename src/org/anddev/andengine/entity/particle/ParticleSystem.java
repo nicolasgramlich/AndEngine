@@ -86,7 +86,7 @@ public class ParticleSystem extends Rectangle {
 			}
 		}
 
-		particles.removeAll(particlesToRecycle);
+		particles.removeAll(particlesToRecycle); // TODO Somehow remove this as it internally uses an iterator!
 	}
 
 	// ===========================================================

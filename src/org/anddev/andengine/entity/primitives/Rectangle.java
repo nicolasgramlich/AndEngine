@@ -43,8 +43,8 @@ public class Rectangle extends RectangularShape {
 	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
-		GLHelper.disableTextures(pGL);
-		GLHelper.disableTexCoordArray(pGL);
+		GLHelper.disableTextures(pGL); // TODO Unnötig, weil sowieso fast immer wieder aktiviert wird ?
+		GLHelper.disableTexCoordArray(pGL); // TODO Unnötig, weil sowieso fast immer wieder aktiviert wird ?
 	}
 
 	@Override

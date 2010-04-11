@@ -76,6 +76,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	private final State mThreadLocker = new State();
 
+	private boolean mIsMethodTracing;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -167,13 +169,23 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.remove(pUpdateHandler);
 	}
-
-	public void startPerformanceTracing(final String pTraceFileName) {
-		android.os.Debug.startMethodTracing("AndEngine/" + pTraceFileName);
+	
+	public boolean isMethodTracing() {
+		return this.mIsMethodTracing;
 	}
 
-	public void stopPerformanceTracing() {
-		android.os.Debug.stopMethodTracing();
+	public void startMethodTracing(final String pTraceFileName) {
+		if(!this.mIsMethodTracing) {
+			this.mIsMethodTracing = true;
+			android.os.Debug.startMethodTracing(pTraceFileName);
+		}
+	}
+
+	public void stopMethodTracing() {
+		if(this.mIsMethodTracing) {
+			android.os.Debug.stopMethodTracing();
+			this.mIsMethodTracing = false;
+		}
 	}
 
 	// ===========================================================

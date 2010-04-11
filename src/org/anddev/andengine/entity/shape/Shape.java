@@ -181,11 +181,11 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	private void applyShapeModifiers(final float pSecondsElapsed) {
-		final ArrayList<IShapeModifier> ShapeModifiers = this.mShapeModifiers;
-		final int ShapeModifierCount = ShapeModifiers.size();
+		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
+		final int ShapeModifierCount = shapeModifiers.size();
 		if(ShapeModifierCount > 0) {
 			for(int i = ShapeModifierCount - 1; i >= 0; i--) {
-				ShapeModifiers.get(i).onUpdateShape(pSecondsElapsed, this);
+				shapeModifiers.get(i).onUpdateShape(pSecondsElapsed, this);
 			}
 		}
 	}

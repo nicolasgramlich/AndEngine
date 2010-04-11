@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.particle;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -21,10 +20,10 @@ public class ParticleSystem extends Rectangle {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Particle> mParticles = new ArrayList<Particle>();
+	private final ArrayList<Particle> mParticles;
+	private final ArrayList<Particle> mParticlesToRecycle;
+	
 	private final ArrayList<IParticleModifier> mParticleModifiers = new ArrayList<IParticleModifier>();
-
-	private final LinkedList<Particle> mParticlesToRecycle = new LinkedList<Particle>();
 
 	private final float mMinRate;
 	private final float mMaxRate;
@@ -40,6 +39,8 @@ public class ParticleSystem extends Rectangle {
 
 	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
 		super(pX, pY, pWidth, pHeight);
+		this.mParticles = new ArrayList<Particle>(pMaxParticles);
+		this.mParticlesToRecycle = new ArrayList<Particle>(pMaxParticles);
 		this.mMinRate = pMinRate;
 		this.mMaxRate = pMaxRate;
 		this.mMaxParticles = pMaxParticles;
@@ -74,7 +75,7 @@ public class ParticleSystem extends Rectangle {
 		this.spawnParticles(pSecondsElapsed);
 
 		final ArrayList<Particle> particles = this.mParticles;
-		final LinkedList<Particle> particlesToRecycle = this.mParticlesToRecycle;
+		final ArrayList<Particle> particlesToRecycle = this.mParticlesToRecycle;
 		for(int i = particles.size() - 1; i >= 0; i--) {
 			final Particle particle = particles.get(i);
 
@@ -115,15 +116,18 @@ public class ParticleSystem extends Rectangle {
 	}
 
 	private void spawnParticle() {
+		final ArrayList<Particle> particles = this.mParticles;
+		final ArrayList<Particle> particlesToRecycle = this.mParticlesToRecycle;
 		final Particle particle;
-		if(!this.mParticlesToRecycle.isEmpty()){
-			particle = this.mParticlesToRecycle.poll();
+		
+		if(!particlesToRecycle.isEmpty()){
+			particle = particlesToRecycle.get(particlesToRecycle.size() - 1);
 			particle.reset();
 		}else{
 			final float x = this.getX() + (float)Math.random() * this.getWidth();
 			final float y = this.getY() + (float)Math.random() * this.getHeight();
-			if(this.mParticles.size() > 0) {
-				particle = new Particle(x, y, this.mTextureRegion, this.mParticles.get(0).getVertexBuffer());
+			if(particles.size() > 0) {
+				particle = new Particle(x, y, this.mTextureRegion, particles.get(0).getVertexBuffer());
 			} else {
 				particle = new Particle(x, y, this.mTextureRegion);
 			}
@@ -131,7 +135,7 @@ public class ParticleSystem extends Rectangle {
 		particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 
 		this.applyParticleModifiersOnInitialize(particle);
-		this.mParticles.add(particle);
+		particles.add(particle);
 	}
 
 	private float determineCurrentRate() {

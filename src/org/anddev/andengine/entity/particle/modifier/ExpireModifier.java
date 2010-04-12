@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity.particle.modifier;
 
+import static org.anddev.andengine.util.MathUtils.RANDOM;
+
 import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
 
@@ -60,7 +62,7 @@ public class ExpireModifier implements IParticleModifier {
 
 	@Override
 	public void onInitializeParticle(final Particle pParticle) {
-		pParticle.setDeathTime(((float)Math.random() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime));
+		pParticle.setDeathTime((RANDOM.nextFloat() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime));
 	}
 
 	@Override

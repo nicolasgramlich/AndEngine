@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity.particle;
 
+import static org.anddev.andengine.util.MathUtils.RANDOM;
+
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -124,8 +126,8 @@ public class ParticleSystem extends Rectangle {
 			particle = particlesToRecycle.remove(particlesToRecycle.size() - 1);
 			particle.reset();
 		}else{
-			final float x = this.getX() + (float)Math.random() * this.getWidth();
-			final float y = this.getY() + (float)Math.random() * this.getHeight();
+			final float x = this.getX() + RANDOM.nextFloat() * this.getWidth();
+			final float y = this.getY() + RANDOM.nextFloat() * this.getHeight();
 			if(particles.size() > 0) {
 				particle = new Particle(x, y, this.mTextureRegion, particles.get(0).getVertexBuffer());
 			} else {
@@ -142,7 +144,7 @@ public class ParticleSystem extends Rectangle {
 		if(this.mMinRate == this.mMaxRate){
 			return this.mMinRate;
 		} else {
-			return (float)(Math.random() * (this.mMaxRate - this.mMinRate)) + this.mMinRate;
+			return (RANDOM.nextFloat() * (this.mMaxRate - this.mMinRate)) + this.mMinRate;
 		}
 	}
 

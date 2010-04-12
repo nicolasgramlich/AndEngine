@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity.particle.modifier;
 
+import static org.anddev.andengine.util.MathUtils.RANDOM;
+
 import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
 
@@ -105,7 +107,7 @@ public class VelocityModifier implements IParticleModifier {
 		if(this.mMinVelocityX == this.mMaxVelocityX) {
 			return this.mMaxVelocityX;
 		} else {
-			return (float)Math.random() * (this.mMaxVelocityX - this.mMinVelocityX) + this.mMinVelocityX;
+			return RANDOM.nextFloat() * (this.mMaxVelocityX - this.mMinVelocityX) + this.mMinVelocityX;
 		}
 	}
 
@@ -113,7 +115,7 @@ public class VelocityModifier implements IParticleModifier {
 		if(this.mMinVelocityY == this.mMaxVelocityY) {
 			return this.mMaxVelocityY;
 		} else {
-			return (float)Math.random() * (this.mMaxVelocityY - this.mMinVelocityY) + this.mMinVelocityY;
+			return RANDOM.nextFloat() * (this.mMaxVelocityY - this.mMinVelocityY) + this.mMinVelocityY;
 		}
 	}
 

@@ -11,7 +11,7 @@ public class MathUtils {
 	// Constants
 	// ===========================================================
 
-	public static Random RANDOM = new Random();
+	public static Random RANDOM = new Random(System.nanoTime());
 
 	public static final float PI = (float) Math.PI;
 	public static final float DEG_TO_RAD = PI / 180.0f;

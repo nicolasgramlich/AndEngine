@@ -8,7 +8,7 @@
 	<property name="bin" value="bin" />
 	<property name="src" value="src" />
 	
-	<property name="binfile" value="bin/andengine.jar" />
+	<property name="binfile" value="andengine.jar" />
    
 	<target name="hudson" >
 		<jar destfile="${binfile}">

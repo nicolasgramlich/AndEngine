@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="hudson" name="AndEngine">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	
+	<property environment="env" />
+	<property name="ECLIPSE_HOME" value="E:/eclipse/galileo-android" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.6" />
+	<property name="source" value="1.6" />
+	<property name="bin" value="bin" />
+	<property name="src" value="src" />
+	
+	<property name="binfile" value="bin/andengine.jar" />
+   
+	<target name="hudson" >
+		<jar destfile="${binfile}">
+			<zipfileset dir="${src}">
+				<include name="**/*.*" />
+				<exclude name="**/R.java" />
+			</zipfileset>
+			<zipfileset dir="${bin}">
+				<include name="**/*.class" />
+				<exclude name="**/R.class" />
+				<exclude name="**/R$*.class" />
+			</zipfileset>
+		</jar>
+    </target>
+</project>

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="hudson" name="AndEngine">
-
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
-	
+<project basedir="." default="hudson" name="AndEngine">	
 	<property environment="env" />
 	<property name="ECLIPSE_HOME" value="E:/eclipse/galileo-android" />
 	<property name="debuglevel" value="source,lines,vars" />

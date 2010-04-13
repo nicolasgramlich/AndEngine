@@ -28,6 +28,15 @@ public class DelayModifier extends BaseModifier {
 		super(pDuration);
 	}
 
+	public DelayModifier(final DelayModifier pDelayModifier) {
+		super(pDelayModifier);
+	}
+	
+	@Override
+	public DelayModifier clone(){
+		return new DelayModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

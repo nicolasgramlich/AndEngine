@@ -31,6 +31,16 @@ public class RotateByModifier extends BaseModifier {
 		this.mAnglePerSecond = pAngle / pDuration;
 	}
 
+	public RotateByModifier(final RotateByModifier pRotateByModifier) {
+		super(pRotateByModifier);
+		this.mAnglePerSecond = pRotateByModifier.mAnglePerSecond;
+	}
+	
+	@Override
+	public RotateByModifier clone(){
+		return new RotateByModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

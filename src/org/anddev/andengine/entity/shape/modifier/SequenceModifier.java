@@ -39,6 +39,26 @@ public class SequenceModifier implements IShapeModifier, IModifierListener {
 		pShapeModifiers[0].setModiferListener(this);
 	}
 
+	public SequenceModifier(final SequenceModifier pSequenceModifier) {
+		this.mModiferListener = pSequenceModifier.mModiferListener;
+		
+		final IShapeModifier[] otherShapeModifiers = pSequenceModifier.mShapeModifiers;
+		this.mShapeModifiers = new IShapeModifier[otherShapeModifiers.length];
+		
+		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
+		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
+			shapeModifiers[i] = otherShapeModifiers[i].clone();
+		}
+
+
+		shapeModifiers[0].setModiferListener(this);
+	}
+	
+	@Override
+	public SequenceModifier clone(){
+		return new SequenceModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

@@ -19,7 +19,7 @@ public abstract class BaseModifier implements IShapeModifier {
 
 	private boolean mExpired;
 	private float mTotalSecondsElapsed;
-	private final float mDuration;
+	protected final float mDuration;
 	private IModifierListener mModiferListener;
 
 	// ===========================================================
@@ -39,10 +39,13 @@ public abstract class BaseModifier implements IShapeModifier {
 		this.mModiferListener = pModiferListener;
 	}
 
+	BaseModifier(final BaseModifier pBaseModifier) {
+		this(pBaseModifier.mDuration, pBaseModifier.mModiferListener);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
 	public boolean isExpired() {
 		return this.mExpired;
 	}
@@ -66,6 +69,9 @@ public abstract class BaseModifier implements IShapeModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public abstract IShapeModifier clone();
 
 	protected abstract void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape);
 

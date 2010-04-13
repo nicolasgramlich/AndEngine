@@ -28,6 +28,15 @@ public class AlphaModifier extends BaseFromToModifier {
 		super(pDuration, pFromAlpha, pToAlpha, pModiferListener);
 	}
 
+	public AlphaModifier(final AlphaModifier pAlphaModifier) {
+		super(pAlphaModifier);
+	}
+	
+	@Override
+	public AlphaModifier clone(){
+		return new AlphaModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

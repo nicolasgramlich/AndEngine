@@ -28,6 +28,15 @@ public class MoveModifier extends BasePairFromToModifier {
 		super(pDuration, pFromX, pToX, pFromY, pToY, pModiferListener);
 	}
 
+	public MoveModifier(final MoveModifier pMoveModifier) {
+		super(pMoveModifier);
+	}
+	
+	@Override
+	public MoveModifier clone(){
+		return new MoveModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

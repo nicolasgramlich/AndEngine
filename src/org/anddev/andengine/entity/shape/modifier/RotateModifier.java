@@ -28,6 +28,15 @@ public class RotateModifier extends BaseFromToModifier {
 		super(pDuration, pFromAngle, pToAngle, pModiferListener);
 	}
 
+	public RotateModifier(final RotateModifier pRotateModifier) {
+		super(pRotateModifier);
+	}
+	
+	@Override
+	public RotateModifier clone(){
+		return new RotateModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

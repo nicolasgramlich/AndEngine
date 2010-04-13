@@ -32,6 +32,12 @@ public abstract class BaseFromToModifier extends BaseModifier {
 		this.mFromValue = pFromValue;
 		this.mValuePerSecond = (pToValue - pFromValue) / pDuration;
 	}
+	
+	public BaseFromToModifier(final BaseFromToModifier pBaseFromToModifier) {
+		super(pBaseFromToModifier);
+		this.mFromValue = pBaseFromToModifier.mFromValue;
+		this.mValuePerSecond = pBaseFromToModifier.mValuePerSecond;
+	}
 
 	// ===========================================================
 	// Getter & Setter

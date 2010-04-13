@@ -28,6 +28,15 @@ public class ScaleModifier extends BaseFromToModifier {
 		super(pDuration, pFromScale, pToScale, pModiferListener);
 	}
 
+	public ScaleModifier(final ScaleModifier pScaleModifier) {
+		super(pScaleModifier);
+	}
+	
+	@Override
+	public ScaleModifier clone(){
+		return new ScaleModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

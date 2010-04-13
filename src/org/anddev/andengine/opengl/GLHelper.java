@@ -43,10 +43,10 @@ public class GLHelper {
 	private static boolean mEnableTexCoordArray = false;
 	private static boolean mEnableVertexArray = false;
 	
-	private static float mRed = -1f;
-	private static float mGreen = -1f;
-	private static float mBlue = -1f;
-	private static float mAlpha = -1f;
+	private static float mRed = -1;
+	private static float mGreen = -1;
+	private static float mBlue = -1;
+	private static float mAlpha = -1;
 
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS_FORCE_DISABLE = false; // TODO A better place would be the EngineOptions->Extras or so...
@@ -76,6 +76,11 @@ public class GLHelper {
 		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
 		GLHelper.disableVertexArray(pGL);
+		
+		GLHelper.mRed = -1;
+		GLHelper.mGreen = -1;
+		GLHelper.mBlue = -1;
+		GLHelper.mAlpha = -1;
 
 		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 		GLHelper.EXTENSIONS_DRAWTEXTURE = false;

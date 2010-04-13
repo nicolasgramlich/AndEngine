@@ -51,12 +51,12 @@ public class Line extends Shape {
 
 	@Override
 	public float getHeight() {
-		return (this.mY2 - this.mY) * this.mScale;
+		return (this.mY2 - this.mY);
 	}
 
 	@Override
 	public float getWidth() {
-		return (this.mX2 - this.mX) * this.mScale;
+		return (this.mX2 - this.mX);
 	}
 
 

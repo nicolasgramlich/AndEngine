@@ -43,7 +43,7 @@ public abstract class BaseMenuAnimator implements IMenuAnimator {
 		float maximumWidth = Float.MIN_VALUE;
 		for(int i = pMenuItems.size() - 1; i >= 0; i--) {
 			final MenuItem menuItem = pMenuItems.get(i);
-			maximumWidth = Math.max(maximumWidth, menuItem.getWidth());
+			maximumWidth = Math.max(maximumWidth, menuItem.getWidthScaled());
 		}
 		return maximumWidth;
 	}

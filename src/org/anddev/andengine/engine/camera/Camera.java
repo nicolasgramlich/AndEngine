@@ -150,8 +150,8 @@ public class Camera implements IUpdateHandler {
 	public boolean isRectangularShapeVisible(final RectangularShape pRectangularShape) {
 		final float otherLeft = pRectangularShape.getX();
 		final float otherTop = pRectangularShape.getY();
-		final float otherRight = pRectangularShape.getWidth() + otherLeft;
-		final float otherBottom = pRectangularShape.getHeight() + otherTop;
+		final float otherRight = pRectangularShape.getWidthScaled() + otherLeft;
+		final float otherBottom = pRectangularShape.getHeightScaled() + otherTop;
 
 		return CollisionChecker.checkAxisAlignedBoxCollision(this.mMinX, this.mMinY, this.mMaxX, this.mMaxY, otherLeft, otherTop, otherRight, otherBottom);
 	}

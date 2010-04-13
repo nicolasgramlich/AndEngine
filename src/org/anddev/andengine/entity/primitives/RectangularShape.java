@@ -45,12 +45,12 @@ public abstract class RectangularShape extends Shape {
 
 	@Override
 	public float getWidth() {
-		return this.mWidth * this.mScale;
+		return this.mWidth;
 	}
 
 	@Override
 	public float getHeight() {
-		return this.mHeight * this.mScale;
+		return this.mHeight;
 	}
 
 	@Override
@@ -63,13 +63,13 @@ public abstract class RectangularShape extends Shape {
 		return this.mBaseHeight;
 	}
 
-	public void setWidth(final int pWidth) {
+	public void setWidth(final float pWidth) {
 		this.mWidth = pWidth;
 		this.onPositionChanged();
 		this.updateVertexBuffer();
 	}
 
-	public void setHeight(final int pHeight) {
+	public void setHeight(final float pHeight) {
 		this.mHeight = pHeight;
 		this.onPositionChanged();
 		this.updateVertexBuffer();

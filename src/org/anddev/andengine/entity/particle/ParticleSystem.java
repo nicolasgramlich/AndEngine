@@ -126,8 +126,8 @@ public class ParticleSystem extends Rectangle {
 			particle = particlesToRecycle.remove(particlesToRecycle.size() - 1);
 			particle.reset();
 		}else{
-			final float x = this.getX() + RANDOM.nextFloat() * this.getWidth();
-			final float y = this.getY() + RANDOM.nextFloat() * this.getHeight();
+			final float x = this.getX() + RANDOM.nextFloat() * this.getWidthScaled();
+			final float y = this.getY() + RANDOM.nextFloat() * this.getHeightScaled();
 			if(particles.size() > 0) {
 				particle = new Particle(x, y, this.mTextureRegion, particles.get(0).getVertexBuffer());
 			} else {

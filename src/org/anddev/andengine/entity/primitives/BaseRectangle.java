@@ -45,7 +45,7 @@ public abstract class BaseRectangle extends RectangularShape {
 
 	@Override
 	protected void onUpdateVertexBuffer(){
-		this.getVertexBuffer().onUpdate(0, 0, this.getBaseWidth(), this.getBaseHeight());
+		this.getVertexBuffer().onUpdate(0, 0, this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================

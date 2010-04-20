@@ -76,20 +76,23 @@ public class TextVertexBuffer extends VertexBuffer {
 			for (int letterIndex = 0; letterIndex < lineLength; letterIndex++) {
 				final Letter letter = font.getLetter(line.charAt(letterIndex));
 
+				final int lineY2 = lineY + lineHeight;
+				final int lineX2 = lineX + letter.mWidth;
+
 				vertexFloatBuffer.put(lineX);
 				vertexFloatBuffer.put(lineY);
 
-				vertexFloatBuffer.put(lineX + letter.mWidth);
-				vertexFloatBuffer.put(lineY);
-
-				vertexFloatBuffer.put(lineX + letter.mWidth);
-				vertexFloatBuffer.put(lineY + lineHeight);
-
-				vertexFloatBuffer.put(lineX + letter.mWidth);
-				vertexFloatBuffer.put(lineY + lineHeight);
-
 				vertexFloatBuffer.put(lineX);
-				vertexFloatBuffer.put(lineY + lineHeight);
+				vertexFloatBuffer.put(lineY2);
+
+				vertexFloatBuffer.put(lineX2);
+				vertexFloatBuffer.put(lineY2);
+
+				vertexFloatBuffer.put(lineX2);
+				vertexFloatBuffer.put(lineY2);
+
+				vertexFloatBuffer.put(lineX2);
+				vertexFloatBuffer.put(lineY);
 
 				vertexFloatBuffer.put(lineX);
 				vertexFloatBuffer.put(lineY);

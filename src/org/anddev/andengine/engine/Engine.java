@@ -226,7 +226,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 				return true;
 			} else {
 				/* If HUD didn't handle it, Scene may handle it. */
-				return this.onTouchScene(sceneMotionEvent, pMotionEvent);
+				final Scene scene = this.getSceneFromSurfaceMotionEvent(pMotionEvent);
+				return this.onTouchScene(scene, sceneMotionEvent, pMotionEvent);
 			}
 		} else {
 			return false;
@@ -241,9 +242,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		}
 	}
 
-	protected boolean onTouchScene(final MotionEvent pSceneMotionEvent, final MotionEvent pRawMotionEvent) {
-		if(this.mScene != null) {
-			return this.mScene.onSceneTouchEvent(pSceneMotionEvent);
+	protected boolean onTouchScene(final Scene pScene, final MotionEvent pSceneMotionEvent, final MotionEvent pRawMotionEvent) {
+		if(pScene != null) {
+			return pScene.onSceneTouchEvent(pSceneMotionEvent);
 		} else {
 			return false;
 		}
@@ -264,6 +265,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
 		return this.getCamera();
+	}
+	
+	protected Scene getSceneFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
+		return this.mScene;
 	}
 
 	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
@@ -309,14 +314,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
-				this.mScene.updatePreFrameHandlers(secondsElapsed);
+				onUpdateScenePreFrameHandlers(secondsElapsed);
 
-				this.mScene.onUpdate(secondsElapsed);
+				onUpdateScene(secondsElapsed);
 
 				this.mThreadLocker.notifyCanDraw();
 				this.mThreadLocker.waitUntilCanUpdate();
 
-				this.mScene.updatePostFrameHandlers(secondsElapsed);
+				onUpdateScenePostFrameHandlers(secondsElapsed);
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
@@ -343,6 +348,18 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		this.onDrawScene(pGL);
 
 		this.mThreadLocker.notifyCanUpdate();
+	}
+
+	protected void onUpdateScene(final float secondsElapsed) {
+		this.mScene.onUpdate(secondsElapsed);
+	}
+
+	protected void onUpdateScenePostFrameHandlers(final float secondsElapsed) {
+		this.mScene.updatePostFrameHandlers(secondsElapsed);
+	}
+
+	protected void onUpdateScenePreFrameHandlers(final float secondsElapsed) {
+		this.mScene.updatePreFrameHandlers(secondsElapsed);
 	}
 
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {

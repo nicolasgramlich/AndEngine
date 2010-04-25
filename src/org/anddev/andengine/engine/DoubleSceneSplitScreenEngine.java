@@ -4,6 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.SplitScreenEngineOptions;
+import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.GLHelper;
 
 import android.view.MotionEvent;
@@ -12,7 +13,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 22:28:34 - 27.03.2010
  */
-public class SplitScreenEngine extends Engine {
+public class DoubleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,12 +21,14 @@ public class SplitScreenEngine extends Engine {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private Scene mSecondScene;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SplitScreenEngine(final SplitScreenEngineOptions pSplitScreenEngineOptions) {
+	public DoubleSceneSplitScreenEngine(final SplitScreenEngineOptions pSplitScreenEngineOptions) {
 		super(pSplitScreenEngineOptions);
 	}
 
@@ -45,6 +48,34 @@ public class SplitScreenEngine extends Engine {
 
 	public Camera getSecondCamera() {
 		return this.getEngineOptions().getSecondCamera();
+	}
+
+	@Deprecated
+	@Override
+	public Scene getScene() {
+		return super.getScene();
+	}
+	
+	public Scene getFirstScene() {
+		return super.getScene();
+	}
+
+	public Scene getSecondScene() {
+		return this.mSecondScene;
+	}
+	
+	@Deprecated
+	@Override
+	public void setScene(final Scene pScene) {
+		super.setScene(pScene);
+	}
+	
+	public void setFirstScene(final Scene pScene) {
+		super.setScene(pScene);
+	}
+	
+	public void setSecondScene(final Scene pScene) {
+		this.mSecondScene = pScene;
 	}
 
 	// ===========================================================
@@ -79,7 +110,7 @@ public class SplitScreenEngine extends Engine {
 		this.getSecondCamera().onApplyMatrix(pGL);
 		GLHelper.setModelViewIdentityMatrix(pGL);
 
-		super.mScene.onDraw(pGL);
+		this.mSecondScene.onDraw(pGL);
 		this.getSecondCamera().onDrawHUD(pGL);
 
 		pGL.glDisable(GL10.GL_SCISSOR_TEST);
@@ -91,6 +122,39 @@ public class SplitScreenEngine extends Engine {
 			return this.getFirstCamera();
 		} else {
 			return this.getSecondCamera();
+		}
+	}
+	
+	@Override
+	protected Scene getSceneFromSurfaceMotionEvent(MotionEvent pMotionEvent) {
+		if(pMotionEvent.getX() <= this.mSurfaceWidth / 2) {
+			return this.getFirstScene();
+		} else {
+			return this.getSecondScene();
+		}
+	}
+	
+	@Override
+	protected void onUpdateScene(final float pSecondsElapsed) {
+		super.onUpdateScene(pSecondsElapsed);
+		if(this.mSecondScene != null) {
+			this.mSecondScene.onUpdate(pSecondsElapsed);
+		}
+	}
+	
+	@Override
+	protected void onUpdateScenePreFrameHandlers(float pSecondsElapsed) {
+		super.onUpdateScenePreFrameHandlers(pSecondsElapsed);
+		if(this.mSecondScene != null) {
+			this.mSecondScene.updatePreFrameHandlers(pSecondsElapsed);
+		}
+	}
+	
+	@Override
+	protected void onUpdateScenePostFrameHandlers(float pSecondsElapsed) {
+		super.onUpdateScenePostFrameHandlers(pSecondsElapsed);
+		if(this.mSecondScene != null) {
+			this.mSecondScene.updatePostFrameHandlers(pSecondsElapsed);
 		}
 	}
 

@@ -24,7 +24,7 @@
 	../LavaLampLiveWallpaper/lib/andengine.jar,
 	../AndEnginePhysicsBox2D/lib/andengine.jar,
 	../SuperDroid/lib/andengine.jar,
-	../HighRise/lib/andengine.jar,
+	../BoxFaceStacker/lib/andengine.jar,
 	../BoxFacePhysicsLiveWallpaper/lib/andengine.jar" />
    
 	<target name="createjar" >

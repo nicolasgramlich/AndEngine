@@ -281,7 +281,6 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public void onPause() {
 		this.stop();
-		this.mThreadLocker.notifyCanDraw();
 	}
 
 	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
@@ -333,13 +332,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 			this.updatePostFrameHandlers(secondsElapsed);
 		} else {
+			this.mThreadLocker.notifyCanDraw();
 			this.mThreadLocker.waitUntilCanUpdate();
+			
 			try {
 				Thread.sleep(16);
 			} catch (InterruptedException e) {
 				Debug.e("UpdateThread interrupted from sleep.", e);
 			}
-			this.mThreadLocker.notifyCanDraw();
 		}
 	}
 

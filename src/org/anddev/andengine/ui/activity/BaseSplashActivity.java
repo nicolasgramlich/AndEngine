@@ -12,6 +12,7 @@ import org.anddev.andengine.entity.handler.timer.TimerHandler;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureManager;
+import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
@@ -74,7 +75,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	@Override
 	public Scene onLoadScene() {
-		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(this.mSplashTextureSource);
+		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(this.mSplashTextureSource, TextureOptions.BILINEAR);
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
 		
 		TextureManager.loadTexture(loadingScreenTexture);
@@ -83,15 +84,9 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 		
 		splashScene.registerPreFrameHandler(new TimerHandler(this.getSplashDuration(), new ITimerCallback() {
 			@Override
-			public void onTimePassed() {
-//				runOnUiThread(new Runnable() {
-//					@Override
-//					public void run() {
-//						
-//					}
-//				});
-				
-				startActivity(new Intent(BaseSplashActivity.this, BaseSplashActivity.this.getFollowUpActivity()));
+			public void onTimePassed() {				
+				BaseSplashActivity.this.startActivity(new Intent(BaseSplashActivity.this, BaseSplashActivity.this.getFollowUpActivity()));
+				BaseSplashActivity.this.finish();
 			}
 		}));
 		return splashScene;

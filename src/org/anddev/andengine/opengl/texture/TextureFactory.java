@@ -21,9 +21,13 @@ public class TextureFactory {
 	// ===========================================================
 	
 	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource) {
+		return createForTextureSourceSize(pTextureSource, TextureOptions.DEFAULT);
+	}
+	
+	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource, final TextureOptions pTextureOptions) {
 		final int loadingScreenWidth = pTextureSource.getWidth();
 		final int loadingScreenHeight = pTextureSource.getHeight();
-		return new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight));
+		return new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight), pTextureOptions);
 	}
 
 	// ===========================================================

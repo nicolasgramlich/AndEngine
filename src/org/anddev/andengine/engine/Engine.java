@@ -43,6 +43,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final float LOADING_SCREEN_DURATION = 2;
 
 	// ===========================================================
 	// Fields
@@ -260,7 +262,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		final ITextureSource loadingScreenTextureSource = this.getEngineOptions().getLoadingScreenTextureSource();
 		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
-		this.setScene(new SplashScene(this.getCamera(), loadingScreenTextureRegion));
+		this.setScene(new SplashScene(this.getCamera(), loadingScreenTextureRegion, LOADING_SCREEN_DURATION));
 	}
 
 	public void onResume() {
@@ -288,7 +290,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public void onLoadComplete(final Scene pScene) {
 		// final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
 		if(this.mEngineOptions.hasLoadingScreen()){
-			this.registerPreFrameHandler(new TimerHandler(2, new ITimerCallback() {
+			this.registerPreFrameHandler(new TimerHandler(LOADING_SCREEN_DURATION, new ITimerCallback() {
 				@Override
 				public void onTimePassed() {
 					Engine.this.setScene(pScene);

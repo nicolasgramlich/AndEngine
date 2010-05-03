@@ -54,6 +54,10 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	protected abstract Class<? extends Activity> getFollowUpActivity();
 
+	protected float getSplashScaleTo() {
+		return 1f;
+	}
+
 	@Override
 	public void onLoadComplete() {
 	}
@@ -79,10 +83,11 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
 		
 		TextureManager.loadTexture(loadingScreenTexture);
+		final float splashDuration = this.getSplashDuration();
 		
-		final SplashScene splashScene = new SplashScene(this.mCamera, loadingScreenTextureRegion);
+		final SplashScene splashScene = new SplashScene(this.mCamera, loadingScreenTextureRegion, splashDuration, this.getSplashScaleTo());
 		
-		splashScene.registerPreFrameHandler(new TimerHandler(this.getSplashDuration(), new ITimerCallback() {
+		splashScene.registerPreFrameHandler(new TimerHandler(splashDuration, new ITimerCallback() {
 			@Override
 			public void onTimePassed() {				
 				BaseSplashActivity.this.startActivity(new Intent(BaseSplashActivity.this, BaseSplashActivity.this.getFollowUpActivity()));

@@ -60,9 +60,9 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	@Override
 	protected void onResume() {
 		super.onResume();
+		this.mRenderSurfaceView.onResume();
 		this.mEngine.onResume();
 		this.mEngine.start();
-		this.mRenderSurfaceView.onResume();
 		this.acquireWakeLock();
 	}
 

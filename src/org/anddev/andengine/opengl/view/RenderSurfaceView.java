@@ -8,7 +8,6 @@ import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.util.Debug;
 
 import android.content.Context;
-import android.opengl.GLSurfaceView;
 
 /**
  * @author Nicolas Gramlich
@@ -57,7 +56,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 	 * @author Nicolas Gramlich
 	 * @since 11:45:59 - 08.03.2010
 	 */
-	public static class Renderer implements android.opengl.GLSurfaceView.Renderer {
+	public static class Renderer implements GLSurfaceView.Renderer {
 		// ===========================================================
 		// Constants
 		// ===========================================================

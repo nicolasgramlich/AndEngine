@@ -56,6 +56,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	private final EngineOptions mEngineOptions;
 
+	private TextureManager mTextureManager = new TextureManager();
+	private FontManager mFontManager = new FontManager();
+
 	protected Scene mScene;
 
 	private IAccelerometerListener mAccelerometerListener;
@@ -87,9 +90,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public Engine(final EngineOptions pEngineOptions) {
 		this.mEngineOptions = pEngineOptions;
 
-		TextureManager.clear();
 		BufferObjectManager.clear();
-		FontManager.clear();
 		
 		if(this.mEngineOptions.hasLoadingScreen()) {
 			initLoadingScreen();
@@ -148,6 +149,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public AccelerometerData getAccelerometerData() {
 		return this.mAccelerometerData;
+	}
+
+	public TextureManager getTextureManager() {
+		return this.mTextureManager;
+	}
+
+	public FontManager getFontManager() {
+		return this.mFontManager;
 	}
 
 	public void clearPreFrameHandlers() {
@@ -266,7 +275,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 
 	public void onResume() {
-		TextureManager.reloadTextures();
+		this.mTextureManager.reloadTextures();
 		BufferObjectManager.reloadBufferObjects();
 	}
 
@@ -336,8 +345,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public void onDrawFrame(final GL10 pGL) {
 		this.mThreadLocker.waitUntilCanDraw();
 
-		TextureManager.ensureTexturesLoadedToHardware(pGL);
-		FontManager.ensureFontsLoadedToHardware(pGL);
+		this.mTextureManager.ensureTexturesLoadedToHardware(pGL);
+		this.mFontManager.ensureFontsLoadedToHardware(pGL);
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
 			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
 		}

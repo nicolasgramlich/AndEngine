@@ -18,7 +18,7 @@ public class FontManager {
 	// Fields
 	// ===========================================================
 
-	private static final ArrayList<Font> mFonts = new ArrayList<Font>();
+	private final ArrayList<Font> mFonts = new ArrayList<Font>();
 
 	// ===========================================================
 	// Constructors
@@ -36,16 +36,16 @@ public class FontManager {
 	// Methods
 	// ===========================================================
 
-	public static void clear() {
-		FontManager.mFonts.clear();
+	public void clear() {
+		this.mFonts.clear();
 	}
 
-	public static void loadFont(final Font pFont) {
-		FontManager.mFonts.add(pFont);
+	public void loadFont(final Font pFont) {
+		this.mFonts.add(pFont);
 	}
 
-	public static void ensureFontsLoadedToHardware(final GL10 pGL) {
-		final ArrayList<Font> fonts = FontManager.mFonts;
+	public void ensureFontsLoadedToHardware(final GL10 pGL) {
+		final ArrayList<Font> fonts = this.mFonts;
 		final int fontCount = fonts.size();
 		if(fontCount > 0){
 			for(int i = 0; i < fontCount; i++){

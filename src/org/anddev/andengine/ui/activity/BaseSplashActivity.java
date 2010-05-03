@@ -11,7 +11,6 @@ import org.anddev.andengine.entity.handler.timer.ITimerCallback;
 import org.anddev.andengine.entity.handler.timer.TimerHandler;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureFactory;
-import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
@@ -82,7 +81,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(this.mSplashTextureSource, TextureOptions.BILINEAR);
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
 		
-		TextureManager.loadTexture(loadingScreenTexture);
+		this.getEngine().getTextureManager().loadTexture(loadingScreenTexture);
 		final float splashDuration = this.getSplashDuration();
 		
 		final SplashScene splashScene = new SplashScene(this.mCamera, loadingScreenTextureRegion, splashDuration, this.getSplashScaleTo());

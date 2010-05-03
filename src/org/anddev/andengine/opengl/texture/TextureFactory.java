@@ -1,5 +1,6 @@
 package org.anddev.andengine.opengl.texture;
 
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.util.MathUtils;
 
@@ -19,6 +20,16 @@ public class TextureFactory {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public static Texture createForTextureSourceSize(final TextureRegion pTextureRegion) {
+		return createForTextureRegionSize(pTextureRegion, TextureOptions.DEFAULT);
+	}
+	
+	public static Texture createForTextureRegionSize(final TextureRegion pTextureRegion, final TextureOptions pTextureOptions) {
+		final int loadingScreenWidth = pTextureRegion.getWidth();
+		final int loadingScreenHeight = pTextureRegion.getHeight();
+		return new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight), pTextureOptions);
+	}
 	
 	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource) {
 		return createForTextureSourceSize(pTextureSource, TextureOptions.DEFAULT);

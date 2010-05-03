@@ -22,16 +22,16 @@ public class SplashScene extends Scene {
 	// Constructors
 	// ===========================================================
 
-	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion, final float pDuration) {
-		this(pCamera, pTextureRegion, pDuration, 1f);
+	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion) {
+		this(pCamera, pTextureRegion, -1, 1);
 	}
 
 	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion, final float pDuration, final float pScaleTo) {
 		super(1);
 
 		final Sprite loadingScreenSprite = new Sprite(pCamera.getMinX(), pCamera.getMinY(), pCamera.getWidth(), pCamera.getHeight(), pTextureRegion);
-		if(pScaleTo != 1f) {
-			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, 1f, 1.1f));
+		if(pScaleTo != 1) {
+			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, 1, pScaleTo));
 		}
 
 		this.getLayer(0).addEntity(loadingScreenSprite);

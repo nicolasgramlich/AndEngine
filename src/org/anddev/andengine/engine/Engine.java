@@ -262,7 +262,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		final ITextureSource loadingScreenTextureSource = this.getEngineOptions().getLoadingScreenTextureSource();
 		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
-		this.setScene(new SplashScene(this.getCamera(), loadingScreenTextureRegion, LOADING_SCREEN_DURATION));
+		this.setScene(new SplashScene(this.getCamera(), loadingScreenTextureRegion));
 	}
 
 	public void onResume() {

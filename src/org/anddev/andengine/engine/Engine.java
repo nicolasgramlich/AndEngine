@@ -7,14 +7,15 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.Scene;
+import org.anddev.andengine.entity.SplashScene;
 import org.anddev.andengine.entity.UpdateHandlerList;
 import org.anddev.andengine.entity.handler.timer.ITimerCallback;
 import org.anddev.andengine.entity.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
@@ -22,7 +23,6 @@ import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.util.Debug;
-import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
 import android.content.Context;
@@ -84,13 +84,15 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public Engine(final EngineOptions pEngineOptions) {
 		this.mEngineOptions = pEngineOptions;
-		if(this.mEngineOptions.hasLoadingScreen()) {
-			this.initLoadingScreen();
-		}
 
 		TextureManager.clear();
 		BufferObjectManager.clear();
 		FontManager.clear();
+		
+		if(this.mEngineOptions.hasLoadingScreen()) {
+			initLoadingScreen();
+		}
+		
 		this.mUpdateThread.start();
 	}
 
@@ -254,6 +256,13 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// Methods
 	// ===========================================================
 
+	private void initLoadingScreen() {
+		final ITextureSource loadingScreenTextureSource = this.getEngineOptions().getLoadingScreenTextureSource();
+		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
+		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
+		this.setScene(new SplashScene(this.getCamera(), loadingScreenTextureRegion));
+	}
+
 	public void onResume() {
 		TextureManager.reloadTextures();
 		BufferObjectManager.reloadBufferObjects();
@@ -274,23 +283,6 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
 		pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 		return pSurfaceMotionEvent;
-	}
-
-	private void initLoadingScreen() {
-		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
-		final int loadingScreenWidth = loadingScreenTextureSource.getWidth();
-		final int loadingScreenHeight = loadingScreenTextureSource.getHeight();
-		final Texture loadingScreenTexture = new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight));
-		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
-
-		final Camera cam = this.getCamera();
-		final Sprite loadingScreenSprite = new Sprite(cam.getMinX(), cam.getMinY(), cam.getWidth(), cam.getHeight(), loadingScreenTextureRegion);
-
-		TextureManager.loadTexture(loadingScreenTexture);
-
-		final Scene loadingScene = new Scene(1);
-		loadingScene.getLayer(0).addEntity(loadingScreenSprite);
-		this.setScene(loadingScene);
 	}
 
 	public void onLoadComplete(final Scene pScene) {
@@ -322,6 +314,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 				this.mThreadLocker.waitUntilCanUpdate();
 
 				onUpdateScenePostFrameHandlers(secondsElapsed);
+			} else {
+				this.mThreadLocker.notifyCanDraw();
+				this.mThreadLocker.waitUntilCanUpdate();
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);

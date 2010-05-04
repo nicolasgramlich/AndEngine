@@ -47,17 +47,17 @@ public abstract class BaseFromToModifier extends BaseModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValue(final float pValue, final Shape pShape);
-	protected abstract void onSetValue(final float pValue, final Shape pShape);
+	protected abstract void onSetInitialValue(final Shape pShape, final float pValue);
+	protected abstract void onSetValue(final Shape pShape, final float pValue);
 
 	@Override
 	protected void onManagedInitializeShape(final Shape pShape) {
-		this.onSetInitialValue(this.mFromValue, pShape);
+		this.onSetInitialValue(pShape, this.mFromValue);
 	}
 
 	@Override
 	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
-		this.onSetValue(this.mFromValue + this.getTotalSecondsElapsed() * this.mValuePerSecond, pShape);
+		this.onSetValue(pShape, this.mFromValue + this.getTotalSecondsElapsed() * this.mValuePerSecond);
 	}
 
 	// ===========================================================

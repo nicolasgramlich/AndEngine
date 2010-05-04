@@ -1,15 +1,12 @@
 package org.anddev.andengine.entity.particle.modifier;
 
-import static org.anddev.andengine.util.MathUtils.RANDOM;
-
-import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class VelocityModifier implements IParticleModifier {
+public class VelocityModifier extends BasePairInitializeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -26,16 +23,17 @@ public class VelocityModifier implements IParticleModifier {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public VelocityModifier(final float pVelocity) {
+		this(pVelocity, pVelocity, pVelocity, pVelocity);
+	}
 
 	public VelocityModifier(final float pVelocityX, final float pVelocityY) {
 		this(pVelocityX, pVelocityX, pVelocityY, pVelocityY);
 	}
 
 	public VelocityModifier(final float pMinVelocityX, final float pMaxVelocityX, final float pMinVelocityY, final float pMaxVelocityY) {
-		this.mMinVelocityX = pMinVelocityX;
-		this.mMaxVelocityX = pMaxVelocityX;
-		this.mMinVelocityY = pMinVelocityY;
-		this.mMaxVelocityY = pMaxVelocityY;
+		super(pMinVelocityX, pMaxVelocityX, pMinVelocityY, pMaxVelocityY);
 	}
 
 	// ===========================================================
@@ -90,35 +88,14 @@ public class VelocityModifier implements IParticleModifier {
 	// ===========================================================
 
 	@Override
-	public void onInitializeParticle(final Particle pParticle) {
-		pParticle.setVelocity(this.determineVelocityX(), this.determineVelocityY());
-	}
-
-	@Override
-	public void onUpdateParticle(final Particle pParticle) {
-
+	public void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB) {
+		pParticle.setVelocity(pValueA, pValueB);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private float determineVelocityX() {
-		if(this.mMinVelocityX == this.mMaxVelocityX) {
-			return this.mMaxVelocityX;
-		} else {
-			return RANDOM.nextFloat() * (this.mMaxVelocityX - this.mMinVelocityX) + this.mMinVelocityX;
-		}
-	}
-
-	private float determineVelocityY() {
-		if(this.mMinVelocityY == this.mMaxVelocityY) {
-			return this.mMaxVelocityY;
-		} else {
-			return RANDOM.nextFloat() * (this.mMaxVelocityY - this.mMinVelocityY) + this.mMinVelocityY;
-		}
-	}
-
+	
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

@@ -46,12 +46,12 @@ public class MoveModifier extends BasePairFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValues(final float pX, final float pY, final Shape pShape) {
+	protected void onSetInitialValues(final Shape pShape, final float pX, final float pY) {
 		pShape.setPosition(pX, pY);
 	}
 
 	@Override
-	protected void onSetValues(final float pX, final float pY, final Shape pShape) {
+	protected void onSetValues(final Shape pShape, final float pX, final float pY) {
 		pShape.setPosition(pX, pY);
 	}
 

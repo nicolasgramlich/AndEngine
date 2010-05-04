@@ -17,7 +17,7 @@ public abstract class BaseModifier implements IShapeModifier {
 	// Fields
 	// ===========================================================
 
-	private boolean mExpired;
+	private boolean mFinished;
 	private float mTotalSecondsElapsed;
 	protected final float mDuration;
 	private IModifierListener mModiferListener;
@@ -46,12 +46,13 @@ public abstract class BaseModifier implements IShapeModifier {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	public boolean isExpired() {
-		return this.mExpired;
+	
+	public boolean isFinished() {
+		return this.mFinished;
 	}
 
-	public void setExpired(final boolean pExpired) {
-		this.mExpired = pExpired;
+	public void setFinished(final boolean pFinished) {
+		this.mFinished = pFinished;
 	}
 
 	protected float getTotalSecondsElapsed() {
@@ -79,7 +80,7 @@ public abstract class BaseModifier implements IShapeModifier {
 
 	@Override
 	public final void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
-		if(!this.isExpired()){
+		if(!this.isFinished()){
 			if(this.mTotalSecondsElapsed == 0) {
 				this.onManagedInitializeShape(pShape);
 			}
@@ -96,7 +97,7 @@ public abstract class BaseModifier implements IShapeModifier {
 
 			if(this.mDuration != -1 && this.mTotalSecondsElapsed >= this.mDuration) {
 				this.mTotalSecondsElapsed = this.mDuration;
-				this.setExpired(true);
+				this.setFinished(true);
 				if(this.mModiferListener != null) {
 					this.mModiferListener.onModifierFinished(this, pShape);
 				}
@@ -105,7 +106,7 @@ public abstract class BaseModifier implements IShapeModifier {
 	}
 
 	public void reset() {
-		this.mExpired = false;
+		this.mFinished = false;
 		this.mTotalSecondsElapsed = 0;
 	}
 

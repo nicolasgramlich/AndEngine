@@ -4,9 +4,9 @@ import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 21:21:10 - 14.03.2010
+ * @since 20:37:27 - 04.05.2010
  */
-public class AlphaModifier extends BaseFromToModifier {
+public class ScaleModifier extends BaseFromToModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,8 +19,8 @@ public class AlphaModifier extends BaseFromToModifier {
 	// Constructors
 	// ===========================================================
 
-	public AlphaModifier(final float pFromAlpha, final float pToAlpha, final float pFromTime, final float pToTime) {
-		super(pFromAlpha, pToAlpha, pFromTime, pToTime);
+	public ScaleModifier(final float pFromScale, final float pToScale, final float pFromTime, final float pToTime) {
+		super(pFromScale, pToScale, pFromTime, pToTime);
 	}
 
 	// ===========================================================
@@ -33,12 +33,12 @@ public class AlphaModifier extends BaseFromToModifier {
 
 	@Override
 	protected void onSetInitialValue(final Particle pParticle, final float pValue) {
-		pParticle.setAlpha(pValue);
+		pParticle.setScale(pValue);
 	}
 
 	@Override
 	protected void onSetValue(final Particle pParticle, final float pValue) {
-		pParticle.setAlpha(pValue);
+		pParticle.setScale(pValue);
 	}
 
 	// ===========================================================

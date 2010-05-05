@@ -70,8 +70,12 @@ public class Text extends RectangularShape {
 				maximumLineWidth = Math.max(maximumLineWidth, widths[i]);
 			}
 			this.mMaximumLineWidth = maximumLineWidth;
+			
 			super.mWidth = this.mMaximumLineWidth;
-			//			this.setHeight(lineCount)
+			super.mBaseWidth = super.mWidth;
+			
+			super.mHeight = lineCount * this.mFont.getLineHeight() + (lineCount - 1) * this.mFont.getLineGap();
+			super.mBaseHeight = super.mHeight;
 		}
 
 		this.mTextTextureBuffer.update(this.mFont, this.mLines);

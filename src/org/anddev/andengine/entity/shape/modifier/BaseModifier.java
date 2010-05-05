@@ -66,6 +66,10 @@ public abstract class BaseModifier implements IShapeModifier {
 	public void setModiferListener(final IModifierListener pModiferListener) {
 		this.mModiferListener = pModiferListener;
 	}
+	
+	public float getDuration() {
+		return this.mDuration;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

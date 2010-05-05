@@ -19,8 +19,8 @@ public abstract class RectangularShape extends Shape {
 	// Fields
 	// ===========================================================
 
-	protected final float mBaseWidth;
-	protected final float mBaseHeight;
+	protected float mBaseWidth;
+	protected float mBaseHeight;
 
 	protected float mWidth;
 	protected float mHeight;

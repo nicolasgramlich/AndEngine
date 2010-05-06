@@ -1,8 +1,6 @@
 package org.anddev.andengine.entity.sprite;
 
 import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
-import javax.microedition.khronos.opengles.GL11Ext;
 
 import org.anddev.andengine.entity.primitives.BaseRectangle;
 import org.anddev.andengine.opengl.GLHelper;
@@ -69,23 +67,6 @@ public abstract class BaseSprite extends BaseRectangle {
 		super.onInitDraw(pGL);
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
-	}
-	
-	@Override
-	protected void onManagedDraw(GL10 pGL) {
-		if(GLHelper.EXTENSIONS_DRAWTEXTURE && this.mAngle == 0) {
-			GLHelper.setColor(pGL, 1, 0, 0, 0.5f);
-			GLHelper.disableBlend(pGL);
-			GLHelper.enableTextures(pGL);
-			GLHelper.bindTexture(pGL, this.mTextureRegion.getTexture().getHardwareTextureID());
-
-			((GL11) pGL).glTexParameterfv(GL10.GL_TEXTURE_2D, GL11Ext.GL_TEXTURE_CROP_RECT_OES, this.mTextureRegion.getTextureBuffer().getFloatBuffer());
-
-            ((GL11Ext) pGL).glDrawTexfOES(this.mX, this.mY, 0, this.getWidthScaled(), this.getHeightScaled());
-			GLHelper.enableBlend(pGL);
-		} else {
-			super.onManagedDraw(pGL);
-		}
 	}
 
 	@Override

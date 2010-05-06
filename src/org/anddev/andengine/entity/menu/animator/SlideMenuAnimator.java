@@ -25,6 +25,10 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 	public SlideMenuAnimator() {
 
 	}
+	
+	public SlideMenuAnimator(final float pMenuItemSpacing) {
+		super(pMenuItemSpacing);
+	}
 
 	// ===========================================================
 	// Getter & Setter

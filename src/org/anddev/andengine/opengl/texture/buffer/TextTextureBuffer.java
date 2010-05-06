@@ -56,23 +56,23 @@ public class TextTextureBuffer extends BufferObject {
 
 				final float letterTextureX = letter.mTextureX;
 				final float letterTextureY = letter.mTextureY;
-				final float letterTextureWidth = letter.mTextureWidth;
-				final float letterTextureHeight = letter.mTextureHeight;
+				final float letterTextureX2 = letterTextureX + letter.mTextureWidth;
+				final float letterTextureY2 = letterTextureY + letter.mTextureHeight;
 
 				textureFloatBuffer.put(letterTextureX);
 				textureFloatBuffer.put(letterTextureY);
 
-				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
-				textureFloatBuffer.put(letterTextureY);
-
-				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
-				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
-
-				textureFloatBuffer.put(letterTextureX + letterTextureWidth);
-				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
-
 				textureFloatBuffer.put(letterTextureX);
-				textureFloatBuffer.put(letterTextureY + letterTextureHeight);
+				textureFloatBuffer.put(letterTextureY2);
+
+				textureFloatBuffer.put(letterTextureX2);
+				textureFloatBuffer.put(letterTextureY2);
+
+				textureFloatBuffer.put(letterTextureX2);
+				textureFloatBuffer.put(letterTextureY2);
+
+				textureFloatBuffer.put(letterTextureX2);
+				textureFloatBuffer.put(letterTextureY);
 
 				textureFloatBuffer.put(letterTextureX);
 				textureFloatBuffer.put(letterTextureY);

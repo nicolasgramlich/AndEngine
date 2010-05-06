@@ -11,6 +11,8 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final float AVERAGE_DURATION = 5;
 
 	// ===========================================================
 	// Fields
@@ -39,15 +41,17 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	public void onUpdate(final float pSecondsElapsed) {
 		this.mFramesInThisSecond++;
 		this.mSecondsElapsed += pSecondsElapsed;
-		
+
+//		Debug.d("Elapsed: " + pSecondsElapsed);
+				
 		this.mShortestFrame = Math.min(this.mShortestFrame, pSecondsElapsed);
 		
 		this.mLongestFrame = Math.max(this.mLongestFrame, pSecondsElapsed);
 		
-		if(this.mSecondsElapsed > 1){
+		if(this.mSecondsElapsed > AVERAGE_DURATION){
 			Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)", (this.mFramesInThisSecond / this.mSecondsElapsed), this.mShortestFrame * 1000, this.mLongestFrame * 1000));
 			
-			this.mSecondsElapsed = 0;
+			this.mSecondsElapsed -= AVERAGE_DURATION;
 			this.mFramesInThisSecond = 0;
 			
 			this.mLongestFrame = Float.MIN_VALUE;

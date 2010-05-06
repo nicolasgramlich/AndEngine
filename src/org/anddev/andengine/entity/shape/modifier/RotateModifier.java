@@ -46,12 +46,12 @@ public class RotateModifier extends BaseFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final float pAngle, final Shape pShape) {
+	protected void onSetInitialValue(final Shape pShape, final float pAngle) {
 		pShape.setAngle(pAngle);
 	}
 
 	@Override
-	protected void onSetValue(final float pAngle, final Shape pShape) {
+	protected void onSetValue(final Shape pShape, final float pAngle) {
 		pShape.setAngle(pAngle);
 	}
 

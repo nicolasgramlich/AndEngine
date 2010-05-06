@@ -12,9 +12,11 @@
 	<property name="src" value="src" />
 	
 	<property name="binfile" value="bin/andengine.jar" />
+	
 	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar,
-	../AndEngineLiveWallpaper/lib/andengine.jar,
+	../AndEngineLiveWallpaperExtension/lib/andengine.jar,
 	../AndEnginePlayground/lib/andengine.jar,
+	../AndEngineServerExtension/lib/andengine.jar,
 	../HeliTaxiShared/lib/andengine.jar,
 	../HeliTaxi/lib/andengine.jar,
 	../HeliTaxiLiveWallpaper/lib/andengine.jar,
@@ -22,9 +24,9 @@
 	../CampfireLiveWallpaper/lib/andengine.jar,
 	../CigaretteLiveWallpaper/lib/andengine.jar,
 	../LavaLampLiveWallpaper/lib/andengine.jar,
-	../AndEnginePhysicsBox2D/lib/andengine.jar,
+	../AndEnginePhysicsBox2DExtension/lib/andengine.jar,
 	../SuperDroid/lib/andengine.jar,
-	../HighRise/lib/andengine.jar,
+	../BoxFaceStacker/lib/andengine.jar,
 	../BoxFacePhysicsLiveWallpaper/lib/andengine.jar" />
    
 	<target name="createjar" >

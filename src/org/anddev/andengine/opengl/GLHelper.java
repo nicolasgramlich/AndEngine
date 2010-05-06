@@ -39,6 +39,7 @@ public class GLHelper {
 	private static boolean mEnableMultisample = true;
 
 	private static boolean mEnableBlend = false;
+	private static boolean mEnableCulling = false;
 	private static boolean mEnableTextures = false;
 	private static boolean mEnableTexCoordArray = false;
 	private static boolean mEnableVertexArray = false;
@@ -73,6 +74,7 @@ public class GLHelper {
 		GLHelper.enableMultisample(pGL);
 
 		GLHelper.disableBlend(pGL);
+		GLHelper.disableCulling(pGL);
 		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
 		GLHelper.disableVertexArray(pGL);
@@ -166,6 +168,19 @@ public class GLHelper {
 		if(GLHelper.mEnableBlend) {
 			GLHelper.mEnableBlend = false;
 			pGL.glDisable(GL10.GL_BLEND);
+		}
+	}
+	
+	public static void enableCulling(final GL10 pGL) {
+		if(!GLHelper.mEnableCulling) {
+			GLHelper.mEnableCulling = true;
+			pGL.glEnable(GL10.GL_CULL_FACE);
+		}
+	}
+	public static void disableCulling(final GL10 pGL) {
+		if(GLHelper.mEnableCulling) {
+			GLHelper.mEnableCulling = false;
+			pGL.glDisable(GL10.GL_CULL_FACE);
 		}
 	}
 

@@ -25,7 +25,7 @@ public class Text extends RectangularShape {
 	// Fields
 	// ===========================================================
 
-	private final int mVertexCount;
+	protected final int mVertexCount;
 
 	private final TextTextureBuffer mTextTextureBuffer;
 
@@ -37,6 +37,8 @@ public class Text extends RectangularShape {
 
 	private final int mMaximumLineWidth;
 
+	protected final int mCharacterCount;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -44,7 +46,8 @@ public class Text extends RectangularShape {
 	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
 		super(pX, pY, 0, 0, new TextVertexBuffer(pText, pHorizontalAlign, GL11.GL_STATIC_DRAW));
 
-		this.mVertexCount = TextVertexBuffer.VERTICES_PER_CHARACTER * (pText.length() - StringUtils.countOccurences(pText, "\n"));
+		this.mCharacterCount = pText.length() - StringUtils.countOccurences(pText, "\n");
+		this.mVertexCount = TextVertexBuffer.VERTICES_PER_CHARACTER * this.mCharacterCount;
 
 		this.mTextTextureBuffer = new TextTextureBuffer(2 * this.mVertexCount * BaseBuffer.BYTES_PER_FLOAT, GL11.GL_STATIC_DRAW);
 		BufferObjectManager.loadBufferObject(this.mTextTextureBuffer); // TODO Unload irgendwann oder so...
@@ -67,8 +70,12 @@ public class Text extends RectangularShape {
 				maximumLineWidth = Math.max(maximumLineWidth, widths[i]);
 			}
 			this.mMaximumLineWidth = maximumLineWidth;
+			
 			super.mWidth = this.mMaximumLineWidth;
-			//			this.setHeight(lineCount)
+			super.mBaseWidth = super.mWidth;
+			
+			super.mHeight = lineCount * this.mFont.getLineHeight() + (lineCount - 1) * this.mFont.getLineGap();
+			super.mBaseHeight = super.mHeight;
 		}
 
 		this.mTextTextureBuffer.update(this.mFont, this.mLines);
@@ -78,6 +85,10 @@ public class Text extends RectangularShape {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public int getCharacterCount() {
+		return this.mCharacterCount;
+	}
 
 	@Override
 	public TextVertexBuffer getVertexBuffer() {

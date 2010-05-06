@@ -1,15 +1,15 @@
-package org.anddev.andengine.opengl.font;
+package org.anddev.andengine.entity;
 
-import java.util.ArrayList;
-
-import javax.microedition.khronos.opengles.GL10;
-
+import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.shape.modifier.ScaleModifier;
+import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 /**
  * @author Nicolas Gramlich
- * @since 17:48:46 - 08.03.2010
+ * @since 09:45:02 - 03.05.2010
  */
-public class FontManager {
+public class SplashScene extends Scene {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,11 +18,24 @@ public class FontManager {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Font> mFonts = new ArrayList<Font>();
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion) {
+		this(pCamera, pTextureRegion, -1, 1);
+	}
+
+	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion, final float pDuration, final float pScaleTo) {
+		super(1);
+
+		final Sprite loadingScreenSprite = new Sprite(pCamera.getMinX(), pCamera.getMinY(), pCamera.getWidth(), pCamera.getHeight(), pTextureRegion);
+		if(pScaleTo != 1) {
+			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, 1, pScaleTo));
+		}
+
+		this.getLayer(0).addEntity(loadingScreenSprite);
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -35,24 +48,6 @@ public class FontManager {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void clear() {
-		this.mFonts.clear();
-	}
-
-	public void loadFont(final Font pFont) {
-		this.mFonts.add(pFont);
-	}
-
-	public void ensureFontsLoadedToHardware(final GL10 pGL) {
-		final ArrayList<Font> fonts = this.mFonts;
-		final int fontCount = fonts.size();
-		if(fontCount > 0){
-			for(int i = 0; i < fontCount; i++){
-				fonts.get(i).update(pGL);
-			}
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

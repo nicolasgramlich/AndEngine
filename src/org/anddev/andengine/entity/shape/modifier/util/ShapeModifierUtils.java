@@ -1,15 +1,12 @@
-package org.anddev.andengine.opengl.font;
+package org.anddev.andengine.entity.shape.modifier.util;
 
-import java.util.ArrayList;
-
-import javax.microedition.khronos.opengles.GL10;
-
+import org.anddev.andengine.entity.shape.IShapeModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 17:48:46 - 08.03.2010
+ * @since 13:04:17 - 05.05.2010
  */
-public class FontManager {
+public class ShapeModifierUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,8 +14,6 @@ public class FontManager {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private final ArrayList<Font> mFonts = new ArrayList<Font>();
 
 	// ===========================================================
 	// Constructors
@@ -35,23 +30,30 @@ public class FontManager {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void clear() {
-		this.mFonts.clear();
-	}
-
-	public void loadFont(final Font pFont) {
-		this.mFonts.add(pFont);
-	}
-
-	public void ensureFontsLoadedToHardware(final GL10 pGL) {
-		final ArrayList<Font> fonts = this.mFonts;
-		final int fontCount = fonts.size();
-		if(fontCount > 0){
-			for(int i = 0; i < fontCount; i++){
-				fonts.get(i).update(pGL);
+	
+	public static IShapeModifier getShapeModifierWithLongestDuration(final IShapeModifier[] pShapeModifiers){
+		IShapeModifier out = null;
+		float longestDuration = Float.MIN_VALUE;
+		
+		for(int i = pShapeModifiers.length - 1; i >= 0; i--) {
+			final float duration = pShapeModifiers[i].getDuration();
+			if(duration > longestDuration) {
+				longestDuration = duration;
+				out = pShapeModifiers[i];
 			}
 		}
+		
+		return out;
+	}
+	
+	public static float getSequenceDurationOfShapeModifier(final IShapeModifier[] pShapeModifiers){
+		float duration = Float.MIN_VALUE;
+		
+		for(int i = pShapeModifiers.length - 1; i >= 0; i--) {
+			duration += pShapeModifiers[i].getDuration();
+		}
+		
+		return duration;
 	}
 
 	// ===========================================================

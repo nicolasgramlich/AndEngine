@@ -7,14 +7,15 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.entity.Scene;
+import org.anddev.andengine.entity.SplashScene;
 import org.anddev.andengine.entity.UpdateHandlerList;
 import org.anddev.andengine.entity.handler.timer.ITimerCallback;
 import org.anddev.andengine.entity.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
@@ -22,7 +23,6 @@ import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.util.Debug;
-import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
 import android.content.Context;
@@ -43,6 +43,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final float LOADING_SCREEN_DURATION = 2;
 
 	// ===========================================================
 	// Fields
@@ -53,6 +55,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	private long mLastTick = System.nanoTime();
 
 	private final EngineOptions mEngineOptions;
+
+	private TextureManager mTextureManager = new TextureManager();
+	private FontManager mFontManager = new FontManager();
 
 	protected Scene mScene;
 
@@ -84,13 +89,13 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public Engine(final EngineOptions pEngineOptions) {
 		this.mEngineOptions = pEngineOptions;
-		if(this.mEngineOptions.hasLoadingScreen()) {
-			this.initLoadingScreen();
-		}
 
-		TextureManager.clear();
 		BufferObjectManager.clear();
-		FontManager.clear();
+		
+		if(this.mEngineOptions.hasLoadingScreen()) {
+			initLoadingScreen();
+		}
+		
 		this.mUpdateThread.start();
 	}
 
@@ -144,6 +149,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public AccelerometerData getAccelerometerData() {
 		return this.mAccelerometerData;
+	}
+
+	public TextureManager getTextureManager() {
+		return this.mTextureManager;
+	}
+
+	public FontManager getFontManager() {
+		return this.mFontManager;
 	}
 
 	public void clearPreFrameHandlers() {
@@ -226,7 +239,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 				return true;
 			} else {
 				/* If HUD didn't handle it, Scene may handle it. */
-				return this.onTouchScene(sceneMotionEvent, pMotionEvent);
+				final Scene scene = this.getSceneFromSurfaceMotionEvent(pMotionEvent);
+				return this.onTouchScene(scene, sceneMotionEvent, pMotionEvent);
 			}
 		} else {
 			return false;
@@ -241,9 +255,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		}
 	}
 
-	protected boolean onTouchScene(final MotionEvent pSceneMotionEvent, final MotionEvent pRawMotionEvent) {
-		if(this.mScene != null) {
-			return this.mScene.onSceneTouchEvent(pSceneMotionEvent);
+	protected boolean onTouchScene(final Scene pScene, final MotionEvent pSceneMotionEvent, final MotionEvent pRawMotionEvent) {
+		if(pScene != null) {
+			return pScene.onSceneTouchEvent(pSceneMotionEvent);
 		} else {
 			return false;
 		}
@@ -253,8 +267,15 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// Methods
 	// ===========================================================
 
+	private void initLoadingScreen() {
+		final ITextureSource loadingScreenTextureSource = this.getEngineOptions().getLoadingScreenTextureSource();
+		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
+		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
+		this.setScene(new SplashScene(this.getCamera(), loadingScreenTextureRegion));
+	}
+
 	public void onResume() {
-		TextureManager.reloadTextures();
+		this.mTextureManager.reloadTextures();
 		BufferObjectManager.reloadBufferObjects();
 	}
 
@@ -265,33 +286,20 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
 		return this.getCamera();
 	}
+	
+	protected Scene getSceneFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
+		return this.mScene;
+	}
 
 	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
 		pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 		return pSurfaceMotionEvent;
 	}
 
-	private void initLoadingScreen() {
-		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
-		final int loadingScreenWidth = loadingScreenTextureSource.getWidth();
-		final int loadingScreenHeight = loadingScreenTextureSource.getHeight();
-		final Texture loadingScreenTexture = new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight));
-		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
-
-		final Camera cam = this.getCamera();
-		final Sprite loadingScreenSprite = new Sprite(cam.getMinX(), cam.getMinY(), cam.getWidth(), cam.getHeight(), loadingScreenTextureRegion);
-
-		TextureManager.loadTexture(loadingScreenTexture);
-
-		final Scene loadingScene = new Scene(1);
-		loadingScene.getLayer(0).addEntity(loadingScreenSprite);
-		this.setScene(loadingScene);
-	}
-
 	public void onLoadComplete(final Scene pScene) {
 		// final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
 		if(this.mEngineOptions.hasLoadingScreen()){
-			this.registerPreFrameHandler(new TimerHandler(2, new ITimerCallback() {
+			this.registerPreFrameHandler(new TimerHandler(LOADING_SCREEN_DURATION, new ITimerCallback() {
 				@Override
 				public void onTimePassed() {
 					Engine.this.setScene(pScene);
@@ -309,33 +317,37 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
-				this.mScene.updatePreFrameHandlers(secondsElapsed);
+				onUpdateScenePreFrameHandlers(secondsElapsed);
 
-				this.mScene.onUpdate(secondsElapsed);
+				onUpdateScene(secondsElapsed);
 
 				this.mThreadLocker.notifyCanDraw();
 				this.mThreadLocker.waitUntilCanUpdate();
 
-				this.mScene.updatePostFrameHandlers(secondsElapsed);
+				onUpdateScenePostFrameHandlers(secondsElapsed);
+			} else {
+				this.mThreadLocker.notifyCanDraw();
+				this.mThreadLocker.waitUntilCanUpdate();
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
 		} else {
 			this.mThreadLocker.notifyCanDraw();
+			this.mThreadLocker.waitUntilCanUpdate();
+			
 			try {
 				Thread.sleep(16);
 			} catch (InterruptedException e) {
 				Debug.e("UpdateThread interrupted from sleep.", e);
 			}
-			this.mThreadLocker.waitUntilCanUpdate();
 		}
 	}
 
 	public void onDrawFrame(final GL10 pGL) {
 		this.mThreadLocker.waitUntilCanDraw();
 
-		TextureManager.ensureTexturesLoadedToHardware(pGL);
-		FontManager.ensureFontsLoadedToHardware(pGL);
+		this.mTextureManager.ensureTexturesLoadedToHardware(pGL);
+		this.mFontManager.ensureFontsLoadedToHardware(pGL);
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
 			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
 		}
@@ -343,6 +355,18 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		this.onDrawScene(pGL);
 
 		this.mThreadLocker.notifyCanUpdate();
+	}
+
+	protected void onUpdateScene(final float secondsElapsed) {
+		this.mScene.onUpdate(secondsElapsed);
+	}
+
+	protected void onUpdateScenePostFrameHandlers(final float secondsElapsed) {
+		this.mScene.updatePostFrameHandlers(secondsElapsed);
+	}
+
+	protected void onUpdateScenePreFrameHandlers(final float secondsElapsed) {
+		this.mScene.updatePreFrameHandlers(secondsElapsed);
 	}
 
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {

@@ -46,12 +46,12 @@ public class AlphaModifier extends BaseFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final float pAlpha, final Shape pShape) {
+	protected void onSetInitialValue(final Shape pShape, final float pAlpha) {
 		pShape.setAlpha(pAlpha);
 	}
 
 	@Override
-	protected void onSetValue(final float pAlpha, final Shape pShape) {
+	protected void onSetValue(final Shape pShape, final float pAlpha) {
 		pShape.setAlpha(pAlpha);
 	}
 

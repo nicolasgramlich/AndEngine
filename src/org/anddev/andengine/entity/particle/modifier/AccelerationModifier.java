@@ -1,15 +1,12 @@
 package org.anddev.andengine.entity.particle.modifier;
 
-import static org.anddev.andengine.util.MathUtils.RANDOM;
-
-import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class AccelerationModifier implements IParticleModifier {
+public class AccelerationModifier extends BasePairInitializeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,11 +14,6 @@ public class AccelerationModifier implements IParticleModifier {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private final float mMinAccelerationX;
-	private final float mMaxAccelerationX;
-	private final float mMinAccelerationY;
-	private final float mMaxAccelerationY;
 
 	// ===========================================================
 	// Constructors
@@ -36,10 +28,7 @@ public class AccelerationModifier implements IParticleModifier {
 	}
 
 	public AccelerationModifier(final float pMinAccelerationX, final float pMaxAccelerationX, final float pMinAccelerationY, final float pMaxAccelerationY) {
-		this.mMinAccelerationX = pMinAccelerationX;
-		this.mMaxAccelerationX = pMaxAccelerationX;
-		this.mMinAccelerationY = pMinAccelerationY;
-		this.mMaxAccelerationY = pMaxAccelerationY;
+		super(pMinAccelerationX, pMaxAccelerationX, pMinAccelerationY, pMaxAccelerationY);
 	}
 
 	// ===========================================================
@@ -51,34 +40,13 @@ public class AccelerationModifier implements IParticleModifier {
 	// ===========================================================
 
 	@Override
-	public void onInitializeParticle(final Particle pParticle) {
-		pParticle.accelerate(this.determineAccelerationX(), this.determineAccelerationY());
-	}
-
-	@Override
-	public void onUpdateParticle(final Particle pParticle) {
-
+	public void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB) {
+		pParticle.accelerate(pValueA, pValueB);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private float determineAccelerationX() {
-		if(this.mMinAccelerationX == this.mMaxAccelerationX) {
-			return this.mMaxAccelerationX;
-		} else {
-			return RANDOM.nextFloat() * (this.mMaxAccelerationX - this.mMinAccelerationX) + this.mMinAccelerationX;
-		}
-	}
-
-	private float determineAccelerationY() {
-		if(this.mMinAccelerationY == this.mMaxAccelerationY) {
-			return this.mMaxAccelerationY;
-		} else {
-			return RANDOM.nextFloat() * (this.mMaxAccelerationY - this.mMinAccelerationY) + this.mMinAccelerationY;
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

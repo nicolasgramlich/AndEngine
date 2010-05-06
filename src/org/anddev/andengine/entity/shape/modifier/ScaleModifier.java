@@ -46,12 +46,12 @@ public class ScaleModifier extends BaseFromToModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final float pScale, final Shape pShape) {
+	protected void onSetInitialValue(final Shape pShape, final float pScale) {
 		pShape.setScale(pScale);
 	}
 
 	@Override
-	protected void onSetValue(final float pScale, final Shape pShape) {
+	protected void onSetValue(final Shape pShape, final float pScale) {
 		pShape.setScale(pScale);
 	}
 

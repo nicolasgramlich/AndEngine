@@ -8,7 +8,6 @@ import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.util.Debug;
 
 import android.content.Context;
-import android.opengl.GLSurfaceView;
 
 /**
  * @author Nicolas Gramlich
@@ -57,7 +56,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 	 * @author Nicolas Gramlich
 	 * @since 11:45:59 - 08.03.2010
 	 */
-	public static class Renderer implements android.opengl.GLSurfaceView.Renderer {
+	public static class Renderer implements GLSurfaceView.Renderer {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -110,6 +109,10 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
+			
+			GLHelper.enableCulling(pGL);
+			pGL.glFrontFace(GL10.GL_CCW);
+			pGL.glCullFace(GL10.GL_BACK);
 
 			GLHelper.enableExtensions(pGL);
 		}

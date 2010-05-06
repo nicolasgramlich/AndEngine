@@ -12,9 +12,11 @@
 	<property name="src" value="src" />
 	
 	<property name="binfile" value="bin/andengine.jar" />
+	
 	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar,
 	../AndEngineLiveWallpaperExtension/lib/andengine.jar,
 	../AndEnginePlayground/lib/andengine.jar,
+	../AndEngineServerExtension/lib/andengine.jar,
 	../HeliTaxiShared/lib/andengine.jar,
 	../HeliTaxi/lib/andengine.jar,
 	../HeliTaxiLiveWallpaper/lib/andengine.jar,

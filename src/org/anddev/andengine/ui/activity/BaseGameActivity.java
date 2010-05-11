@@ -32,10 +32,10 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	// Fields
 	// ===========================================================
 
-	private Engine mEngine;
+	protected Engine mEngine;
 	private WakeLock mWakeLock;
 	private final SoundManager mSoundManager = new SoundManager();
-	private RenderSurfaceView mRenderSurfaceView;
+	protected RenderSurfaceView mRenderSurfaceView;
 
 	// ===========================================================
 	// Constructors
@@ -69,9 +69,9 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	@Override
 	protected void onPause() {
 		super.onPause();
+		this.releaseWakeLock();
 		this.mEngine.onPause();
 		this.mRenderSurfaceView.onPause();
-		this.releaseWakeLock();
 	}
 
 	// ===========================================================
@@ -94,14 +94,10 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 	// Methods
 	// ===========================================================
 
-	private void onSetContentView() {
+	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this, this.mEngine);
 
-		final DisplayMetrics displayMetrics = new DisplayMetrics();
-		this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-		final LayoutParams layoutParams = this.mEngine.getEngineOptions().getResolutionPolicy().createLayoutParams(displayMetrics);
-		this.setContentView(this.mRenderSurfaceView, layoutParams);
+		this.setContentView(this.mRenderSurfaceView, createSurfaceViewLayoutParams());
 	}
 
 	private void acquireWakeLock() {
@@ -129,6 +125,13 @@ public abstract class BaseGameActivity extends Activity implements IGameInterfac
 				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 				break;
 		}
+	}
+
+	protected LayoutParams createSurfaceViewLayoutParams() {
+		final DisplayMetrics displayMetrics = new DisplayMetrics();
+		this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+		return this.mEngine.getEngineOptions().getResolutionPolicy().createLayoutParams(displayMetrics);
 	}
 
 	private void applyFullscreen() {

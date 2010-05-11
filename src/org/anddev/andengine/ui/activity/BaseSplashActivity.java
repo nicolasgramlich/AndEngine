@@ -34,6 +34,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	private Camera mCamera;
 	private ITextureSource mSplashTextureSource;
+	private TextureRegion mLoadingScreenTextureRegion;
 
 	// ===========================================================
 	// Constructors
@@ -47,12 +48,18 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract ScreenOrientation getScreenOrientation();
+
 	protected abstract ITextureSource onGetSplashTextureSource();
 
 	protected abstract float getSplashDuration();
 
 	protected abstract Class<? extends Activity> getFollowUpActivity();
 
+	protected float getSplashScaleFrom() {
+		return 1f;
+	}
+	
 	protected float getSplashScaleTo() {
 		return 1f;
 	}
@@ -69,30 +76,31 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 		final int height = this.mSplashTextureSource.getHeight();
 
 		this.mCamera = new Camera(0, 0, width, height);
-		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(width, height), this.mCamera));
+		return new Engine(new EngineOptions(true, this.getScreenOrientation(), new RatioResolutionPolicy(width, height), this.mCamera));
 	}
 
 	@Override
 	public void onLoadResources() {
+		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(this.mSplashTextureSource, TextureOptions.BILINEAR);
+		this.mLoadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
+
+		this.getEngine().getTextureManager().loadTexture(loadingScreenTexture);
 	}
 
 	@Override
 	public Scene onLoadScene() {
-		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(this.mSplashTextureSource, TextureOptions.BILINEAR);
-		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
-		
-		this.getEngine().getTextureManager().loadTexture(loadingScreenTexture);
 		final float splashDuration = this.getSplashDuration();
-		
-		final SplashScene splashScene = new SplashScene(this.mCamera, loadingScreenTextureRegion, splashDuration, this.getSplashScaleTo());
-		
+
+		final SplashScene splashScene = new SplashScene(this.mCamera, this.mLoadingScreenTextureRegion, splashDuration, this.getSplashScaleFrom(), this.getSplashScaleTo());
+
 		splashScene.registerPreFrameHandler(new TimerHandler(splashDuration, new ITimerCallback() {
 			@Override
-			public void onTimePassed() {				
+			public void onTimePassed() {
 				BaseSplashActivity.this.startActivity(new Intent(BaseSplashActivity.this, BaseSplashActivity.this.getFollowUpActivity()));
 				BaseSplashActivity.this.finish();
 			}
 		}));
+		
 		return splashScene;
 	}
 

@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.menu.animator;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.entity.HorizontalAlign;
 import org.anddev.andengine.entity.menu.IMenuAnimator;
 import org.anddev.andengine.entity.menu.MenuItem;
 
@@ -15,13 +16,17 @@ public abstract class BaseMenuAnimator implements IMenuAnimator {
 	// ===========================================================
 
 	protected static final float DURATION = 1.0f;
+	
 	private static final float DEFAULT_MENUITEMSPACING = 1.0f;
+	
+	private static final HorizontalAlign DEFAULT_HORIZONTALALIGN = HorizontalAlign.CENTER;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	protected final float mMenuItemSpacing;
+	protected final HorizontalAlign mHorizontalAlign;
 
 	// ===========================================================
 	// Constructors
@@ -32,6 +37,15 @@ public abstract class BaseMenuAnimator implements IMenuAnimator {
 	}
 
 	public BaseMenuAnimator(final float pMenuItemSpacing) {
+		this(DEFAULT_HORIZONTALALIGN, pMenuItemSpacing);
+	}
+
+	public BaseMenuAnimator(HorizontalAlign pHorizontalAlign) {
+		this(pHorizontalAlign, DEFAULT_MENUITEMSPACING);
+	}
+
+	public BaseMenuAnimator(final HorizontalAlign pHorizontalAlign, final float pMenuItemSpacing) {
+		this.mHorizontalAlign = pHorizontalAlign;
 		this.mMenuItemSpacing = pMenuItemSpacing;
 	}
 

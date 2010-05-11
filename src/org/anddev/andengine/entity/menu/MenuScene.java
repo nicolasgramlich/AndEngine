@@ -25,7 +25,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 
 	private final ArrayList<MenuItem> mMenuItems = new ArrayList<MenuItem>();
 
-	private IOnMenuItemClickerListener mOnMenuItemClickerListener;
+	private IOnMenuItemClickListener mOnMenuItemClickListener;
 
 	private IMenuAnimator mMenuAnimator = IMenuAnimator.DEFAULT;
 
@@ -37,17 +37,17 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		this(null, null);
 	}
 
-	public MenuScene(final IOnMenuItemClickerListener pOnMenuItemClickerListener) {
-		this(null, pOnMenuItemClickerListener);
+	public MenuScene(final IOnMenuItemClickListener pOnMenuItemClickListener) {
+		this(null, pOnMenuItemClickListener);
 	}
 
 	public MenuScene(final Camera pCamera) {
 		this(pCamera, null);
 	}
 
-	public MenuScene(final Camera pCamera, final IOnMenuItemClickerListener pOnMenuItemClickerListener) {
+	public MenuScene(final Camera pCamera, final IOnMenuItemClickListener pOnMenuItemClickListener) {
 		super(1, pCamera);
-		this.mOnMenuItemClickerListener = pOnMenuItemClickerListener;
+		this.mOnMenuItemClickListener = pOnMenuItemClickListener;
 		this.setOnAreaTouchListener(this);
 	}
 
@@ -55,12 +55,12 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	// Getter & Setter
 	// ===========================================================
 
-	public IOnMenuItemClickerListener getOnMenuItemClickerListener() {
-		return this.mOnMenuItemClickerListener;
+	public IOnMenuItemClickListener getOnMenuItemClickListener() {
+		return this.mOnMenuItemClickListener;
 	}
 
-	public void setOnMenuItemClickerListener(final IOnMenuItemClickerListener pOnMenuItemClickerListener) {
-		this.mOnMenuItemClickerListener = pOnMenuItemClickerListener;
+	public void setOnMenuItemClickListener(final IOnMenuItemClickListener pOnMenuItemClickListener) {
+		this.mOnMenuItemClickListener = pOnMenuItemClickListener;
 	}
 
 	public int getMenuItemCount() {
@@ -105,9 +105,9 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 
 	@Override
 	public boolean onAreaTouched(final ITouchArea pTouchArea, final MotionEvent pSceneMotionEvent) {
-		if(this.mOnMenuItemClickerListener != null) {
+		if(this.mOnMenuItemClickListener != null) {
 			if(pSceneMotionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-				this.mOnMenuItemClickerListener.onMenuItemClicked(this, (MenuItem)pTouchArea);
+				this.mOnMenuItemClickListener.onMenuItemClicked(this, (MenuItem)pTouchArea);
 			}
 		}
 		return true;

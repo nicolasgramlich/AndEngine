@@ -2,7 +2,7 @@ package org.anddev.andengine.opengl.vertex;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.entity.text.Text.HorizontalAlign;
+import org.anddev.andengine.entity.HorizontalAlign;
 import org.anddev.andengine.opengl.buffer.BaseBuffer;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;

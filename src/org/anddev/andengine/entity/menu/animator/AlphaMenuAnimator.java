@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.menu.animator;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.entity.HorizontalAlign;
 import org.anddev.andengine.entity.menu.MenuItem;
 import org.anddev.andengine.entity.shape.modifier.AlphaModifier;
 
@@ -24,9 +25,13 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public AlphaMenuAnimator(){
+		super();
+	}
 
-	public AlphaMenuAnimator() {
-
+	public AlphaMenuAnimator(final HorizontalAlign pHorizontalAlign) {
+		super(pHorizontalAlign);
 	}
 	
 	public AlphaMenuAnimator(final float pMenuItemSpacing) {
@@ -56,14 +61,30 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 		final float baseX = pCameraWidth / 2 - maximumWidth / 2;
 		final float baseY = pCameraHeight / 2 - overallHeight / 2;
 
+		final float menuItemSpacing = this.mMenuItemSpacing;
+		
 		float offsetY = 0;
 		for(int i = 0; i < pMenuItems.size(); i++) {
 			final MenuItem menuItem = pMenuItems.get(i);
 
-			menuItem.setPosition(baseX, baseY + offsetY);
+			final float offsetX;
+			switch(this.mHorizontalAlign) {
+				case LEFT:
+					offsetX = 0;
+					break;
+				case RIGHT:
+					offsetX = maximumWidth - menuItem.getWidthScaled();
+					break;
+				case CENTER:
+				default:
+					offsetX = (maximumWidth - menuItem.getWidthScaled()) / 2;
+					break;
+			}
+			menuItem.setPosition(baseX + offsetX , baseY + offsetY);
+			
 			menuItem.setAlpha(ALPHA_FROM);
 
-			offsetY += menuItem.getHeight() + this.mMenuItemSpacing;
+			offsetY += menuItem.getHeight() + menuItemSpacing;
 		}
 	}
 

@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.text;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.entity.HorizontalAlign;
 import org.anddev.andengine.entity.primitives.RectangularShape;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.buffer.BaseBuffer;
@@ -147,8 +148,4 @@ public class Text extends RectangularShape {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public enum HorizontalAlign {
-		LEFT, CENTER, RIGHT;
-	}
 }

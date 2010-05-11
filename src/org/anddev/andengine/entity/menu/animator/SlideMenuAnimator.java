@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.menu.animator;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.entity.HorizontalAlign;
 import org.anddev.andengine.entity.menu.MenuItem;
 import org.anddev.andengine.entity.shape.modifier.MoveModifier;
 
@@ -22,12 +23,20 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 	// Constructors
 	// ===========================================================
 
-	public SlideMenuAnimator() {
+	public SlideMenuAnimator(){
+		super();
+	}
 
+	public SlideMenuAnimator(final HorizontalAlign pHorizontalAlign) {
+		super(pHorizontalAlign);
 	}
 	
 	public SlideMenuAnimator(final float pMenuItemSpacing) {
 		super(pMenuItemSpacing);
+	}
+	
+	public SlideMenuAnimator(final HorizontalAlign pHorizontalAlign, final float pMenuItemSpacing) {
+		super(pHorizontalAlign, pMenuItemSpacing);
 	}
 
 	// ===========================================================
@@ -49,8 +58,22 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 		float offsetY = 0;
 		for(int i = 0; i < pMenuItems.size(); i++) {
 			final MenuItem menuItem = pMenuItems.get(i);
-
-			pMenuItems.get(i).addShapeModifier(new MoveModifier(DURATION, -maximumWidth, baseX, baseY + offsetY, baseY + offsetY));
+			
+			final float offsetX;
+			switch(this.mHorizontalAlign) {
+				case LEFT:
+					offsetX = 0;
+					break;
+				case RIGHT:
+					offsetX = maximumWidth - menuItem.getWidthScaled();
+					break;
+				case CENTER:
+				default:
+					offsetX = (maximumWidth - menuItem.getWidthScaled()) / 2;
+					break;
+			}
+			
+			pMenuItems.get(i).addShapeModifier(new MoveModifier(DURATION, -maximumWidth, baseX + offsetX, baseY + offsetY, baseY + offsetY));
 
 			offsetY += menuItem.getHeight() + this.mMenuItemSpacing;
 		}
@@ -63,13 +86,15 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 
 		final float baseY = pCameraHeight / 2 - overallHeight / 2;
 
+		final float menuItemSpacing = this.mMenuItemSpacing;
+
 		float offsetY = 0;
 		for(int i = 0; i < pMenuItems.size(); i++) {
 			final MenuItem menuItem = pMenuItems.get(i);
 
 			menuItem.setPosition(-maximumWidth, baseY + offsetY);
 
-			offsetY += menuItem.getHeight() + this.mMenuItemSpacing;
+			offsetY += menuItem.getHeight() + menuItemSpacing;
 		}
 	}
 

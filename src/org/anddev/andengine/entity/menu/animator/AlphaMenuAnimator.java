@@ -38,6 +38,10 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 		super(pMenuItemSpacing);
 	}
 
+	public AlphaMenuAnimator(final HorizontalAlign pHorizontalAlign, final float pMenuItemSpacing) {
+		super(pHorizontalAlign, pMenuItemSpacing);
+	}
+	
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

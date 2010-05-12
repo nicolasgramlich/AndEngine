@@ -71,6 +71,10 @@ public class Layer extends BaseEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void clear() {
+		this.mEntities.clear();
+	}
 
 	public void addEntity(final IEntity pEntity) {
 		this.mEntities.add(pEntity);

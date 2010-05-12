@@ -22,6 +22,7 @@ public class TiledTextureRegion extends TextureRegion {
 	private final int mTileRows;
 	private int mCurrentTileColumn;
 	private int mCurrentTileRow;
+	private int mTileCount;
 
 	// ===========================================================
 	// Constructors
@@ -31,6 +32,7 @@ public class TiledTextureRegion extends TextureRegion {
 		super(pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 		this.mTileColumns = pTileColumns;
 		this.mTileRows = pTileRows;
+		this.mTileCount = this.mTileColumns * this.mTileRows;
 		this.mCurrentTileColumn = 0;
 		this.mCurrentTileRow = 0;
 	}
@@ -40,7 +42,7 @@ public class TiledTextureRegion extends TextureRegion {
 	// ===========================================================
 
 	public int getTileCount() {
-		return this.mTileColumns * this.mTileRows;
+		return this.mTileCount;
 	}
 
 	public int getTileWidth() {
@@ -64,14 +66,17 @@ public class TiledTextureRegion extends TextureRegion {
 	}
 
 	public void setCurrentTileIndex(final int pTileColumn, final int pTileRow) {
-		this.mCurrentTileColumn = pTileColumn;
-		this.mCurrentTileRow = pTileRow;
-		super.updateTextureBuffer();
+		if(pTileColumn != this.mCurrentTileColumn || pTileRow != this.mCurrentTileRow) {
+			this.mCurrentTileColumn = pTileColumn;
+			this.mCurrentTileRow = pTileRow;
+			super.updateTextureBuffer();
+		}
 	}
 
 	public void setCurrentTileIndex(final int pTileIndex) {
-		if(pTileIndex < this.getTileCount()) {
-			this.setCurrentTileIndex(pTileIndex % this.mTileColumns, pTileIndex / this.mTileColumns);
+		if(pTileIndex < this.mTileCount) {
+			final int tileColumns = this.mTileColumns;
+			this.setCurrentTileIndex(pTileIndex % tileColumns, pTileIndex / tileColumns);
 		}
 	}
 

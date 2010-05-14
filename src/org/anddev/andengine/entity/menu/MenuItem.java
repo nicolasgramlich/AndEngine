@@ -16,23 +16,23 @@ public class MenuItem extends Sprite {
 	// Fields
 	// ===========================================================
 
-	private final int mMenuID;
+	private final int mID;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public MenuItem(final int pMenuID, final TextureRegion pTextureRegion) {
+	public MenuItem(final int pID, final TextureRegion pTextureRegion) {
 		super(0, 0, pTextureRegion);
-		this.mMenuID = pMenuID;
+		this.mID = pID;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public int getMenuID() {
-		return this.mMenuID;
+	public int getID() {
+		return this.mID;
 	}
 
 	// ===========================================================

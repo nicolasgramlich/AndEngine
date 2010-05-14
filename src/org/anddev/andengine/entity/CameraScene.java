@@ -73,6 +73,19 @@ public class CameraScene extends Scene {
 	}
 
 	@Override
+	protected boolean onChildSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
+		final boolean childIsCameraScene = this.mChildScene instanceof CameraScene;
+		if(childIsCameraScene) {
+			this.mCamera.convertHUDToSceneMotionEvent(pSceneMotionEvent);
+			final boolean result = super.onChildSceneTouchEvent(pSceneMotionEvent);
+			this.mCamera.convertSceneToHUDMotionEvent(pSceneMotionEvent);
+			return result;
+		} else {
+			return super.onChildSceneTouchEvent(pSceneMotionEvent);
+		}
+	}
+
+	@Override
 	protected void onManagedDraw(final GL10 pGL) {
 		if(this.mCamera != null) {
 			GLHelper.switchToProjectionMatrix(pGL);

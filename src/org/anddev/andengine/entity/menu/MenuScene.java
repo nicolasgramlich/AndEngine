@@ -107,10 +107,10 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	public boolean onAreaTouched(final ITouchArea pTouchArea, final MotionEvent pSceneMotionEvent) {
 		if(this.mOnMenuItemClickListener != null) {
 			if(pSceneMotionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-				this.mOnMenuItemClickListener.onMenuItemClicked(this, (MenuItem)pTouchArea);
+				return this.mOnMenuItemClickListener.onMenuItemClicked(this, (MenuItem)pTouchArea);
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override

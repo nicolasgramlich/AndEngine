@@ -159,7 +159,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
+	protected void convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth / 2;
 
 		if(pCamera == this.getFirstCamera()) {
@@ -168,7 +168,6 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 			pSurfaceMotionEvent.offsetLocation(-surfaceWidthHalf, 0);
 			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		}
-		return pSurfaceMotionEvent;
 	}
 
 	@Override

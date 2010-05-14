@@ -25,7 +25,7 @@ public class Scene extends BaseEntity {
 
 	private Scene mParentScene;
 
-	private Scene mChildScene;
+	protected Scene mChildScene;
 	private boolean mChildSceneModalDraw;
 	private boolean mChildSceneModalUpdate;
 
@@ -226,8 +226,12 @@ public class Scene extends BaseEntity {
 				return false;
 			}
 		} else {
-			return childScene.onSceneTouchEvent(pSceneMotionEvent);
+			return onChildSceneTouchEvent(pSceneMotionEvent);
 		}
+	}
+
+	protected boolean onChildSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
+		return this.mChildScene.onSceneTouchEvent(pSceneMotionEvent);
 	}
 
 	@Override

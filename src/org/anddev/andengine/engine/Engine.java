@@ -233,14 +233,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public boolean onTouch(final View pView, final MotionEvent pMotionEvent) {
 		if(this.mRunning) {
 			final Camera camera = this.getCameraFromSurfaceMotionEvent(pMotionEvent);
-			final MotionEvent sceneMotionEvent = this.convertSurfaceToSceneMotionEvent(camera, pMotionEvent);
+			this.convertSurfaceToSceneMotionEvent(camera, pMotionEvent);
 
 			if(this.onTouchHUD(camera, pMotionEvent)) {
 				return true;
 			} else {
 				/* If HUD didn't handle it, Scene may handle it. */
 				final Scene scene = this.getSceneFromSurfaceMotionEvent(pMotionEvent);
-				return this.onTouchScene(scene, sceneMotionEvent, pMotionEvent);
+				return this.onTouchScene(scene, pMotionEvent);
 			}
 		} else {
 			return false;
@@ -255,7 +255,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		}
 	}
 
-	protected boolean onTouchScene(final Scene pScene, final MotionEvent pSceneMotionEvent, final MotionEvent pRawMotionEvent) {
+	protected boolean onTouchScene(final Scene pScene, final MotionEvent pSceneMotionEvent) {
 		if(pScene != null) {
 			return pScene.onSceneTouchEvent(pSceneMotionEvent);
 		} else {
@@ -291,9 +291,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		return this.mScene;
 	}
 
-	protected MotionEvent convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
+	protected void convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
 		pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, this.mSurfaceWidth, this.mSurfaceHeight);
-		return pSurfaceMotionEvent;
 	}
 
 	public void onLoadComplete(final Scene pScene) {
@@ -408,7 +407,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	private void registerSelfAsSensorListener(final SensorManager pSensorManager, final int pType) {
 		final Sensor accelerometer = pSensorManager.getSensorList(pType).get(0);
-		pSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+		pSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
 	}
 
 	private boolean isSensorSupported(final SensorManager pSensorManager, final int pType) {

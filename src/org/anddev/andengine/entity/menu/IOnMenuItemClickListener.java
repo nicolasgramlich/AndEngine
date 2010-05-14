@@ -13,5 +13,5 @@ public interface IOnMenuItemClickListener {
 	// Methods
 	// ===========================================================
 
-	public void onMenuItemClicked(final MenuScene pMenuScene, final MenuItem pMenuItem);
+	public boolean onMenuItemClicked(final MenuScene pMenuScene, final MenuItem pMenuItem);
 }

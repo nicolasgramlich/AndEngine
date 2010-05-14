@@ -1,0 +1,105 @@
+package org.anddev.andengine.ui.dialog;
+
+import org.anddev.andengine.util.Callback;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
+import android.widget.EditText;
+import android.widget.Toast;
+
+/**
+ * @author Nicolas Gramlich
+ * @since 09:35:55 - 14.12.2009
+ */
+public abstract class GenericInputDialogBuilder<T> {
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	protected final Callback<T> mSuccessCallback;
+	protected final OnCancelListener mOnCancelListener;
+	protected final int mTitleResID;
+	protected final int mMessageResID;
+	protected final int mIconResID;
+	protected final Context mContext;
+	private final int mErrorResID;
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+
+	public GenericInputDialogBuilder(final Context pContext, final int pTitleResID, final int pMessageResID, final int pErrorResID, final int pIconResID, final Callback<T> pSuccessCallback, final OnCancelListener pOnCancelListener){
+		this.mContext = pContext;
+		this.mTitleResID = pTitleResID;
+		this.mMessageResID = pMessageResID;
+		this.mErrorResID = pErrorResID;
+		this.mIconResID = pIconResID;
+		this.mSuccessCallback = pSuccessCallback;
+		this.mOnCancelListener = pOnCancelListener;
+	}
+
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	protected abstract T generateResult(final String pInput);
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	public Dialog create() {
+		final EditText etInput = new EditText(this.mContext);
+
+		final AlertDialog.Builder ab = new AlertDialog.Builder(this.mContext);
+		if(this.mTitleResID != 0) {
+			ab.setTitle(this.mTitleResID);
+		}
+		if(this.mMessageResID != 0) {
+			ab.setMessage(this.mMessageResID);
+		}
+		if(this.mIconResID != 0) {
+			ab.setIcon(this.mIconResID);
+		}
+
+		ab.setView(etInput)
+		.setOnCancelListener(this.mOnCancelListener)
+		.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface pDialog, final int pWhich) {
+				try{
+					final T result = GenericInputDialogBuilder.this.generateResult(etInput.getText().toString());
+					GenericInputDialogBuilder.this.mSuccessCallback.onCallback(result);
+					pDialog.dismiss();
+				} catch (final IllegalArgumentException e) {
+					Toast.makeText(GenericInputDialogBuilder.this.mContext, GenericInputDialogBuilder.this.mErrorResID, Toast.LENGTH_SHORT).show();
+				}
+			}
+		})
+		.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface pDialog, final int pWhich) {
+				GenericInputDialogBuilder.this.mOnCancelListener.onCancel(pDialog);
+				pDialog.dismiss();
+			}
+		});
+
+		return ab.create();
+	}
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+}

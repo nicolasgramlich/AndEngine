@@ -230,17 +230,19 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 
 	@Override
-	public boolean onTouch(final View pView, final MotionEvent pMotionEvent) {
+	public boolean onTouch(final View pView, final MotionEvent pSurfaceMotionEvent) {
 		if(this.mRunning) {
-			final Camera camera = this.getCameraFromSurfaceMotionEvent(pMotionEvent);
-			this.convertSurfaceToSceneMotionEvent(camera, pMotionEvent);
+			/* Let the engine determine which scene and camera this event should be handled by. */
+			final Scene scene = this.getSceneFromSurfaceMotionEvent(pSurfaceMotionEvent);
+			final Camera camera = this.getCameraFromSurfaceMotionEvent(pSurfaceMotionEvent);
+			
+			this.convertSurfaceToSceneMotionEvent(camera, pSurfaceMotionEvent);
 
-			if(this.onTouchHUD(camera, pMotionEvent)) {
+			if(this.onTouchHUD(camera, pSurfaceMotionEvent)) {
 				return true;
 			} else {
 				/* If HUD didn't handle it, Scene may handle it. */
-				final Scene scene = this.getSceneFromSurfaceMotionEvent(pMotionEvent);
-				return this.onTouchScene(scene, pMotionEvent);
+				return this.onTouchScene(scene, pSurfaceMotionEvent);
 			}
 		} else {
 			return false;

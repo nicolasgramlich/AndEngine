@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.HorizontalAlign;
 import org.anddev.andengine.entity.menu.MenuItem;
-import org.anddev.andengine.entity.shape.modifier.AlphaModifier;
 
 /**
  * @author Nicolas Gramlich

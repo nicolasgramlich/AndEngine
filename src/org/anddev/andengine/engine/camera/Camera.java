@@ -124,6 +124,11 @@ public class Camera implements IUpdateHandler {
 			this.mHUD.onUpdate(pSecondsElapsed);
 		}
 	}
+	
+	@Override
+	public void reset() {
+		
+	}
 
 	// ===========================================================
 	// Methods

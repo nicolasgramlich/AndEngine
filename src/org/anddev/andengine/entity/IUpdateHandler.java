@@ -14,4 +14,5 @@ public interface IUpdateHandler {
 	// ===========================================================
 
 	public void onUpdate(final float pSecondsElapsed);
+	public void reset();
 }

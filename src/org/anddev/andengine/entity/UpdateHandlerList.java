@@ -36,6 +36,14 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 			this.get(i).onUpdate(pSecondsElapsed);
 		}
 	}
+	
+	@Override
+	public void reset() {
+		final int handlerCount = this.size();
+		for(int i = 0; i < handlerCount; i++) {
+			this.get(i).reset();
+		}
+	}
 
 	// ===========================================================
 	// Methods

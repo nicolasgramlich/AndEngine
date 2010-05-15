@@ -47,6 +47,12 @@ public class TimerHandler implements IUpdateHandler {
 			}
 		}
 	}
+	
+	@Override
+	public void reset() {
+		this.mCallbackTriggered = false;
+		this.mSecondsPassed = 0;
+	}
 
 	// ===========================================================
 	// Methods

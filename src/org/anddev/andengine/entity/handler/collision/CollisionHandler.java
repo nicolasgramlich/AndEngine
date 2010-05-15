@@ -64,6 +64,11 @@ public class CollisionHandler implements IUpdateHandler {
 			}
 		}
 	}
+	
+	@Override
+	public void reset() {
+		
+	}
 
 	// ===========================================================
 	// Methods

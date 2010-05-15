@@ -25,6 +25,8 @@ public class Scene extends BaseEntity {
 
 	private Scene mParentScene;
 
+	private float mSecondsElapsedTotal;
+
 	protected Scene mChildScene;
 	private boolean mChildSceneModalDraw;
 	private boolean mChildSceneModalUpdate;
@@ -58,6 +60,10 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public float getSecondsElapsedTotal() {
+		return this.mSecondsElapsedTotal;
+	}
 
 	public Layer getLayer(final int pLayerIndex) throws ArrayIndexOutOfBoundsException {
 		return this.mLayers[pLayerIndex];
@@ -194,6 +200,8 @@ public class Scene extends BaseEntity {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
+		this.mSecondsElapsedTotal += pSecondsElapsed;
+		
 		final Scene childScene = this.mChildScene;
 		if(childScene == null || !this.mChildSceneModalUpdate) {
 			this.updateLayers(pSecondsElapsed);

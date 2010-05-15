@@ -53,6 +53,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	private boolean mRunning = false;
 
 	private long mLastTick = System.nanoTime();
+	private float mSecondsElapsedTotal = 0;
 
 	private final EngineOptions mEngineOptions;
 
@@ -132,6 +133,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public Camera getCamera() {
 		return this.mEngineOptions.getCamera();
+	}
+	
+	public float getSecondsElapsedTotal() {
+		return this.mSecondsElapsedTotal;
 	}
 
 	public void setSurfaceSize(final int pSurfaceWidth, final int pSurfaceHeight) {
@@ -388,6 +393,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		final long now = System.nanoTime();
 		final float secondsElapsed = (float)(now  - this.mLastTick) / TimeConstants.NANOSECONDSPERSECOND;
 		this.mLastTick = now;
+		
+		this.mSecondsElapsedTotal += secondsElapsed;
+		
 		return secondsElapsed;
 	}
 

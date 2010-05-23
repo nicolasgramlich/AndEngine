@@ -1,6 +1,7 @@
 package org.anddev.andengine.ui.dialog;
 
 import org.anddev.andengine.util.Callback;
+import org.anddev.andengine.util.Debug;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -79,13 +80,16 @@ public abstract class GenericInputDialogBuilder<T> {
 		.setPositiveButton(android.R.string.ok, new OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface pDialog, final int pWhich) {
+				final T result; 
 				try{
-					final T result = GenericInputDialogBuilder.this.generateResult(etInput.getText().toString());
-					GenericInputDialogBuilder.this.mSuccessCallback.onCallback(result);
-					pDialog.dismiss();
+					result = GenericInputDialogBuilder.this.generateResult(etInput.getText().toString());
 				} catch (final IllegalArgumentException e) {
+					Debug.e("Error in GenericInputDialogBuilder.generateResult()", e);
 					Toast.makeText(GenericInputDialogBuilder.this.mContext, GenericInputDialogBuilder.this.mErrorResID, Toast.LENGTH_SHORT).show();
+					return;
 				}
+				GenericInputDialogBuilder.this.mSuccessCallback.onCallback(result);
+				pDialog.dismiss();
 			}
 		})
 		.setNegativeButton(android.R.string.cancel, new OnClickListener() {

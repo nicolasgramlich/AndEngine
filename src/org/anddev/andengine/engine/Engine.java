@@ -22,6 +22,8 @@ import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
+import org.anddev.andengine.sensor.orientation.IOrientationListener;
+import org.anddev.andengine.sensor.orientation.OrientationData;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -64,6 +66,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
+	
+	private IOrientationListener mOrientationListener;
+	private OrientationData mOrientationData ;
 
 	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
 	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
@@ -229,6 +234,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 				case Sensor.TYPE_ACCELEROMETER:
 					this.mAccelerometerData.setValues(pEvent.values);
 					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+					break;
+				case Sensor.TYPE_ORIENTATION:
+					this.mOrientationData.setValues(pEvent.values);
+					this.mOrientationListener.onOrientationChanged(this.mOrientationData);
 					break;
 			}
 		}
@@ -399,7 +408,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		return secondsElapsed;
 	}
 
-	public boolean enableAccelerometer(final Context pContext, final IAccelerometerListener pAccelerometerListener) {
+	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
@@ -407,6 +416,22 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			this.mAccelerometerListener = pAccelerometerListener;
 			if(this.mAccelerometerData == null) {
 				this.mAccelerometerData = new AccelerometerData();
+			}
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener) {
+		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
+		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
+			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION);
+
+			this.mOrientationListener = pOrientationListener;
+			if(this.mOrientationData == null) {
+				this.mOrientationData = new OrientationData();
 			}
 
 			return true;

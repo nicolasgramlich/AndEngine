@@ -1,4 +1,4 @@
-package org.anddev.andengine.sensor.accelerometer;
+package org.anddev.andengine.sensor.orientation;
 
 import java.util.Arrays;
 
@@ -8,9 +8,9 @@ import android.hardware.SensorManager;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:50:44 - 10.03.2010
+ * @since 11:30:33 - 25.05.2010
  */
-public class AccelerometerData extends BaseSensorData {
+public class OrientationData extends BaseSensorData {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,41 +18,29 @@ public class AccelerometerData extends BaseSensorData {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public AccelerometerData() {
+	public OrientationData() {
 		super(3);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public float getX() {
-		return this.mValues[SensorManager.DATA_X];
+	
+	public float getRoll() {
+		return super.mValues[SensorManager.DATA_Z];
 	}
-
-	public float getY() {
-		return this.mValues[SensorManager.DATA_Y];
+	
+	public float getPitch() {
+		return super.mValues[SensorManager.DATA_Y];
 	}
-
-	public float getZ() {
-		return this.mValues[SensorManager.DATA_Z];
-	}
-
-	public void setX(final float pX) {
-		this.mValues[SensorManager.DATA_X] = pX;
-	}
-
-	public void setY(final float pY) {
-		this.mValues[SensorManager.DATA_Y] = pY;
-	}
-
-	public void setZ(final float pZ) {
-		this.mValues[SensorManager.DATA_Z]  = pZ;
+	
+	public float getYaw() {
+		return super.mValues[SensorManager.DATA_X];
 	}
 
 	// ===========================================================
@@ -61,7 +49,7 @@ public class AccelerometerData extends BaseSensorData {
 
 	@Override
 	public String toString() {
-		return "Accelerometer: " + Arrays.toString(this.mValues);
+		return "Orientation: " + Arrays.toString(this.mValues);
 	}
 
 	// ===========================================================

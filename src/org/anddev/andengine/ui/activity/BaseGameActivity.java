@@ -6,6 +6,7 @@ import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
+import org.anddev.andengine.sensor.orientation.IOrientationListener;
 import org.anddev.andengine.ui.IGameInterface;
 
 import android.content.Context;
@@ -95,6 +96,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this, this.mEngine);
+		this.mRenderSurfaceView.applyRenderer();
 
 		this.setContentView(this.mRenderSurfaceView, createSurfaceViewLayoutParams());
 	}
@@ -140,8 +142,12 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		window.requestFeature(Window.FEATURE_NO_TITLE);
 	}
 
-	protected void enableAccelerometer(final IAccelerometerListener pAccelerometerListener) {
-		this.mEngine.enableAccelerometer(this, pAccelerometerListener);
+	protected void enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
+		this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
+	}
+	
+	protected void enableOrientationSensor(final IOrientationListener pOrientationListener) {
+		this.mEngine.enableOrientationSensor(this, pOrientationListener);
 	}
 
 	// ===========================================================

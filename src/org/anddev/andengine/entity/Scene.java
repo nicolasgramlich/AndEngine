@@ -35,9 +35,10 @@ public class Scene extends BaseEntity {
 
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
-	private float mRed;
-	private float mGreen;
-	private float mBlue;
+	private float mRed = 0.0f;
+	private float mGreen = 0.0f;
+	private float mBlue = 0.0f;
+	private float mAlpha = 1.0f;
 
 	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
 	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
@@ -93,6 +94,13 @@ public class Scene extends BaseEntity {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
+	}
+	
+	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.mRed = pRed;
+		this.mGreen = pGreen;
+		this.mBlue = pBlue;
+		this.mAlpha = pAlpha;
 	}
 
 	public void clearTouchAreas() {
@@ -284,7 +292,7 @@ public class Scene extends BaseEntity {
 
 	protected void drawBackground(final GL10 pGL) {
 		if(this.mBackgroundEnabled) {
-			pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, 1.0f);
+			pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		}
 	}

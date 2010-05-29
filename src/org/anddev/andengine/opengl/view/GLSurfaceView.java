@@ -641,7 +641,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
         protected int[] mConfigSpec;
     }
 
-    private static class ComponentSizeChooser extends BaseConfigChooser {
+    public static class ComponentSizeChooser extends BaseConfigChooser {
         public ComponentSizeChooser(int redSize, int greenSize, int blueSize,
                 int alphaSize, int depthSize, int stencilSize) {
             super(new int[] {

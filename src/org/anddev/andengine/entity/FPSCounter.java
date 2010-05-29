@@ -42,14 +42,14 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 		this.mFramesInThisSecond++;
 		this.mSecondsElapsed += pSecondsElapsed;
 
-		Debug.d("Elapsed: " + pSecondsElapsed);
+//		Debug.d("Elapsed: " + pSecondsElapsed);
 
 		this.mShortestFrame = Math.min(this.mShortestFrame, pSecondsElapsed);
 
 		this.mLongestFrame = Math.max(this.mLongestFrame, pSecondsElapsed);
 
 		if(this.mSecondsElapsed > AVERAGE_DURATION){
-//			Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)", (this.mFramesInThisSecond / this.mSecondsElapsed), this.mShortestFrame * 1000, this.mLongestFrame * 1000));
+			Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)", (this.mFramesInThisSecond / this.mSecondsElapsed), this.mShortestFrame * 1000, this.mLongestFrame * 1000));
 
 			this.mSecondsElapsed -= AVERAGE_DURATION;
 			this.mFramesInThisSecond = 0;

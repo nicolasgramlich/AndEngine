@@ -3,6 +3,7 @@ package org.anddev.andengine.engine;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.IUpdateHandler;
@@ -59,8 +60,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	private final EngineOptions mEngineOptions;
 
-	private TextureManager mTextureManager = new TextureManager();
-	private FontManager mFontManager = new FontManager();
+	private SoundManager mSoundManager;
+	private final TextureManager mTextureManager = new TextureManager();
+	private final FontManager mFontManager = new FontManager();
 
 	protected Scene mScene;
 
@@ -97,6 +99,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		this.mEngineOptions = pEngineOptions;
 
 		BufferObjectManager.clear();
+		
+		if(this.mEngineOptions.needsSound()) {
+			this.mSoundManager = new SoundManager();
+		}
 		
 		if(this.mEngineOptions.hasLoadingScreen()) {
 			initLoadingScreen();
@@ -159,6 +165,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	public AccelerometerData getAccelerometerData() {
 		return this.mAccelerometerData;
+	}
+	
+	public OrientationData getOrientationData() {
+		return this.mOrientationData;
+	}
+	
+	public SoundManager getSoundManager() {
+		return this.mSoundManager;
 	}
 
 	public TextureManager getTextureManager() {

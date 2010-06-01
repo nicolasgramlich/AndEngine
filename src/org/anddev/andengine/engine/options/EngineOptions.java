@@ -22,20 +22,22 @@ public class EngineOptions {
 	private final ITextureSource mLoadingScreenTextureSource;
 	private final Camera mCamera;
 	private final IResolutionPolicy mResolutionPolicy;
+	private final boolean mNeedsSound;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera) {
-		this(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera, null);
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsSound) {
+		this(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera, pNeedsSound, null);
 	}
 
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final ITextureSource pLoadingScreenTextureSource) {
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsSound, final ITextureSource pLoadingScreenTextureSource) {
 		this.mFullscreen = pFullscreen;
 		this.mScreenOrientation = pScreenOrientation;
 		this.mResolutionPolicy = pResolutionPolicy;
 		this.mCamera = pCamera;
+		this.mNeedsSound = pNeedsSound;
 		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
 	}
 
@@ -65,6 +67,10 @@ public class EngineOptions {
 
 	public Camera getCamera() {
 		return this.mCamera;
+	}
+
+	public boolean needsSound() {
+		return this.mNeedsSound;
 	}
 
 	// ===========================================================

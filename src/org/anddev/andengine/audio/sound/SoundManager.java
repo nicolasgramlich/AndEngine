@@ -14,7 +14,7 @@ public class SoundManager {
 	// Constants
 	// ===========================================================
 
-	private static final int DEFAULT_MAX_SIMULTANEOUS_STREAMS = 5;
+	private static final int MAX_SIMULTANEOUS_STREAMS_DEFAULT = 5;
 
 	// ===========================================================
 	// Fields
@@ -29,7 +29,7 @@ public class SoundManager {
 	// ===========================================================
 
 	public SoundManager() {
-		this(DEFAULT_MAX_SIMULTANEOUS_STREAMS);
+		this(MAX_SIMULTANEOUS_STREAMS_DEFAULT);
 	}
 
 	public SoundManager(final int pMaxSimultaneousStreams) {

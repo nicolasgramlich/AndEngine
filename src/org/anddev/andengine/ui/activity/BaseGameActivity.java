@@ -34,7 +34,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	protected Engine mEngine;
 	private WakeLock mWakeLock;
-	private final SoundManager mSoundManager = new SoundManager();
 	protected RenderSurfaceView mRenderSurfaceView;
 
 	// ===========================================================
@@ -83,7 +82,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	public SoundManager getSoundManager() {
-		return this.mSoundManager;
+		return this.mEngine.getSoundManager();
 	}
 
 	// ===========================================================

@@ -172,7 +172,11 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 	
 	public SoundManager getSoundManager() {
-		return this.mSoundManager;
+		if(this.mSoundManager != null) {
+			return this.mSoundManager;
+		} else {
+			throw new IllegalStateException("To enable the SoundManager, check the EngineOptions!");
+		}
 	}
 
 	public TextureManager getTextureManager() {

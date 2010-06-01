@@ -23,13 +23,13 @@ public class SplitScreenEngineOptions extends EngineOptions {
 	// Constructors
 	// ===========================================================
 
-	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera) {
-		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera);
+	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsSound) {
+		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsSound);
 		this.mSecondCamera = pSecondCamera;
 	}
 
-	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final ITextureSource pLoadingScreenTextureSource) {
-		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pLoadingScreenTextureSource);
+	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsSound, final ITextureSource pLoadingScreenTextureSource) {
+		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsSound, pLoadingScreenTextureSource);
 		this.mSecondCamera = pSecondCamera;
 	}
 

@@ -1,4 +1,4 @@
-package org.anddev.andengine.physics.collision;
+package org.anddev.andengine.collision;
 
 /**
  * @author Nicolas Gramlich

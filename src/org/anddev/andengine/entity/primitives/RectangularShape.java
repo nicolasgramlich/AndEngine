@@ -2,9 +2,9 @@ package org.anddev.andengine.entity.primitives;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.collision.CollisionChecker;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
-import org.anddev.andengine.physics.collision.CollisionChecker;
 
 /**
  * @author Nicolas Gramlich

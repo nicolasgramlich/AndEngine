@@ -1,12 +1,15 @@
-package org.anddev.andengine.physics;
+package org.anddev.andengine.ui.dialog;
 
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.util.Callback;
+
+import android.content.Context;
+import android.content.DialogInterface.OnCancelListener;
 
 /**
  * @author Nicolas Gramlich
- * @since 19:58:01 - 20.03.2010
+ * @since 09:46:00 - 14.12.2009
  */
-public abstract class BasePhysicsBody {
+public class StringInputDialogBuilder extends GenericInputDialogBuilder<String> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,31 +18,30 @@ public abstract class BasePhysicsBody {
 	// Fields
 	// ===========================================================
 
-	public final float mMass;
-	public final float mFricition;
-	public final float mElasticity;
-	public final PhysicsShape mPhysicsShape;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BasePhysicsBody(final float pMass, final float pFricition, final float pElasticity, final PhysicsShape pPhysicsShape) {
-		this.mMass = pMass;
-		this.mFricition = pFricition;
-		this.mElasticity = pElasticity;
-		this.mPhysicsShape = pPhysicsShape;
+	public StringInputDialogBuilder(final Context pContext, final int pTitleResID, final int pMessageResID, final int pErrorResID, final int pIconResID, final Callback<String> pSuccessCallback, final OnCancelListener pOnCancelListener) {
+		super(pContext, pTitleResID, pMessageResID, pErrorResID, pIconResID, pSuccessCallback, pOnCancelListener);
+	}
+	
+	public StringInputDialogBuilder(final Context pContext, final int pTitleResID, final int pMessageResID, final int pErrorResID, final int pIconResID, final String pDefaultText, final Callback<String> pSuccessCallback, final OnCancelListener pOnCancelListener) {
+		super(pContext, pTitleResID, pMessageResID, pErrorResID, pIconResID, pDefaultText, pSuccessCallback, pOnCancelListener);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public abstract Shape getShape();
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	protected String generateResult(final String pInput) {
+		return pInput;
+	}
 
 	// ===========================================================
 	// Methods

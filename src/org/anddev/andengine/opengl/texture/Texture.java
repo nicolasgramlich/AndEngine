@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.GLHelper;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.util.MathUtils;
 
@@ -84,8 +83,8 @@ public class Texture {
 	// Methods
 	// ===========================================================
 
-	public void insertTextureSource(final ITextureSource pTextureSource, final TextureRegion pTextureRegion) {
-		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTextureRegion.getTexturePositionX(), pTextureRegion.getTexturePositionY()));
+	public void addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
+		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTexturePositionX, pTexturePositionY));
 	}
 
 	public void loadToHardware(final GL10 pGL) {

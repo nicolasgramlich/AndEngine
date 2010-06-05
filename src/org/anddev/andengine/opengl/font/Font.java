@@ -33,18 +33,20 @@ public class Font {
 	// Fields
 	// ===========================================================
 
-	private final HashMap<Character, Letter> mCharacterToLetterMap = new HashMap<Character, Letter>();
-	private final HashMap<Letter, Bitmap> mLettersPendingToBeDrawnToTexture = new HashMap<Letter, Bitmap>();
-
-	private final Typeface mTypeface;
-	private final Paint mPaint;
-	private final Paint mBackgroundPaint;
-	private final FontMetrics mFontMetrics;
 	private final Texture mTexture;
-
 	private int mCurrentTextureX = 0;
 	private int mCurrentTextureY = 0;
 
+	private final HashMap<Character, Letter> mCharacterToLetterMap = new HashMap<Character, Letter>();
+	private final HashMap<Letter, Bitmap> mLettersPendingToBeDrawnToTexture = new HashMap<Letter, Bitmap>();
+	
+	private final Paint mPaint;
+	private final Paint mBackgroundPaint;
+
+	private final Typeface mTypeface;
+	private final FontMetrics mFontMetrics;
+	private final int mLineHeight;
+	private final int mLineGap;
 
 	private final Size mCreateLetterTemporarySize = new Size();
 	private final Rect mGetLetterBitmapTemporaryRect = new Rect();
@@ -71,6 +73,8 @@ public class Font {
 		this.mBackgroundPaint.setStyle(Style.FILL);
 
 		this.mFontMetrics = this.mPaint.getFontMetrics();
+		this.mLineHeight = (int) Math.ceil(Math.abs(this.mFontMetrics.ascent) + Math.abs(this.mFontMetrics.descent));
+		this.mLineGap = (int) (Math.ceil(this.mFontMetrics.leading));
 	}
 
 	// ===========================================================
@@ -107,11 +111,11 @@ public class Font {
 	}
 
 	public int getLineGap() {
-		return (int) (Math.ceil(this.mFontMetrics.leading));
+		return this.mLineGap;
 	}
 
 	public int getLineHeight() {
-		return (int) Math.ceil(Math.abs(this.mFontMetrics.ascent) + Math.abs(this.mFontMetrics.descent));
+		return this.mLineHeight;
 	}
 
 	public int getStringWidth(final String pText) {
@@ -139,11 +143,13 @@ public class Font {
 	}
 
 	private Letter createLetter(final char pCharacter) {
-		final Bitmap bitmap = this.getLetterBitmap(pCharacter);
-		this.getLetterBounds(pCharacter, this.mCreateLetterTemporarySize);
+		final Size createLetterTemporarySize = this.mCreateLetterTemporarySize;
 
-		final float letterWidth = this.mCreateLetterTemporarySize.getWidth();
-		final float letterHeight = this.mCreateLetterTemporarySize.getHeight();
+		final Bitmap bitmap = this.getLetterBitmap(pCharacter);
+		this.getLetterBounds(pCharacter, createLetterTemporarySize);
+
+		final float letterWidth = createLetterTemporarySize.getWidth();
+		final float letterHeight = createLetterTemporarySize.getHeight();
 
 		if (this.mCurrentTextureX + letterWidth >= TEXTURE_SIZE) {
 			this.mCurrentTextureX = 0;
@@ -170,10 +176,10 @@ public class Font {
 			for (final Entry<Letter, Bitmap> entry : lettersPendingToBeDrawnToTexture.entrySet()) {
 				final Letter letter = entry.getKey();
 				final Bitmap bitmap = entry.getValue();
-				
+
 				GLHelper.bindTexture(pGL, hardwareTextureID);
 				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * TEXTURE_SIZE), (int)(letter.mTextureY * TEXTURE_SIZE), bitmap);
-				
+
 				// TODO is bitmap.recycle() possible? Probably yes, until the texture is lost and needs to be redrawn.
 			}
 			lettersPendingToBeDrawnToTexture.clear();

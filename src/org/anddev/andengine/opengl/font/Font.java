@@ -86,19 +86,21 @@ public class Font {
 	// ===========================================================
 
 	private int getLetterAdvance(final char pCharacter) {
-		this.mPaint.getTextWidths("" + pCharacter, this.mTemporaryTextWidthFetchers);
+		this.mPaint.getTextWidths(String.valueOf(pCharacter), this.mTemporaryTextWidthFetchers);
 		return (int) (Math.ceil(this.mTemporaryTextWidthFetchers[0]));
 	}
 
 	private Bitmap getLetterBitmap(final char pCharacter) {
-		final String characterAsString = "" + pCharacter;
-		this.mPaint.getTextBounds(characterAsString, 0, 1, this.mGetLetterBitmapTemporaryRect);
+		final Rect getLetterBitmapTemporaryRect = this.mGetLetterBitmapTemporaryRect;
+		final String characterAsString = String.valueOf(pCharacter);
+		this.mPaint.getTextBounds(characterAsString, 0, 1, getLetterBitmapTemporaryRect);
 
-		final Bitmap bitmap = Bitmap.createBitmap(this.mGetLetterBitmapTemporaryRect.width() == 0 ? 1 : this.mGetLetterBitmapTemporaryRect.width() + 5, this.getLineHeight(), Bitmap.Config.ARGB_8888);
+		final int lineHeight = this.getLineHeight();
+		final Bitmap bitmap = Bitmap.createBitmap(getLetterBitmapTemporaryRect.width() == 0 ? 1 : getLetterBitmapTemporaryRect.width() + 5, lineHeight, Bitmap.Config.ARGB_8888);
 		final Canvas canvas = new Canvas(bitmap);
 
 		/* Make background transparent. */
-		canvas.drawRect(0, 0, this.mGetLetterBitmapTemporaryRect.width() + 5, this.getLineHeight(), this.mBackgroundPaint);
+		canvas.drawRect(0, 0, getLetterBitmapTemporaryRect.width() + 5, lineHeight, this.mBackgroundPaint);
 
 		canvas.drawText(characterAsString, 0, -this.mFontMetrics.ascent, this.mPaint);
 		return bitmap;
@@ -118,9 +120,8 @@ public class Font {
 	}
 
 	private void getLetterBounds(final char pCharacter, final Size pSize) {
-		this.mPaint.getTextBounds("" + pCharacter, 0, 1, this.mGetLetterBoundsTemporaryRect);
-		pSize.mWidth = this.mGetLetterBoundsTemporaryRect.width() + 5;
-		pSize.mHeight = this.getLineHeight();
+		this.mPaint.getTextBounds(String.valueOf(pCharacter), 0, 1, this.mGetLetterBoundsTemporaryRect);
+		pSize.set(this.mGetLetterBoundsTemporaryRect.width() + 5, this.getLineHeight());
 	}
 
 	public Texture getTexture() {
@@ -128,10 +129,11 @@ public class Font {
 	}
 
 	public Letter getLetter(final char pCharacter) {
-		Letter letter = this.mCharacterToLetterMap.get(pCharacter);
+		final HashMap<Character, Letter> characterToLetterMap = this.mCharacterToLetterMap;
+		Letter letter = characterToLetterMap.get(pCharacter);
 		if (letter == null) {
 			letter = this.createLetter(pCharacter);
-			this.mCharacterToLetterMap.put(pCharacter, letter);
+			characterToLetterMap.put(pCharacter, letter);
 		}
 		return letter;
 	}
@@ -140,20 +142,21 @@ public class Font {
 		final Bitmap bitmap = this.getLetterBitmap(pCharacter);
 		this.getLetterBounds(pCharacter, this.mCreateLetterTemporarySize);
 
-		if (this.mCurrentTextureX + this.mCreateLetterTemporarySize.mWidth >= TEXTURE_SIZE) {
+		final float letterWidth = this.mCreateLetterTemporarySize.getWidth();
+		final float letterHeight = this.mCreateLetterTemporarySize.getHeight();
+
+		if (this.mCurrentTextureX + letterWidth >= TEXTURE_SIZE) {
 			this.mCurrentTextureX = 0;
 			this.mCurrentTextureY += this.getLineGap() + this.getLineHeight();
 		}
 
-		final int letterWidth = (int) this.mCreateLetterTemporarySize.mWidth;
-		final int letterHeight = (int) this.mCreateLetterTemporarySize.mHeight;
 		final float textureX = this.mCurrentTextureX / TEXTURE_SIZE;
 		final float textureY = this.mCurrentTextureY / TEXTURE_SIZE;
-		final float textureWidth = this.mCreateLetterTemporarySize.mWidth / TEXTURE_SIZE;
-		final float textureHeight = this.mCreateLetterTemporarySize.mHeight / TEXTURE_SIZE;
+		final float textureWidth = letterWidth / TEXTURE_SIZE;
+		final float textureHeight = letterHeight / TEXTURE_SIZE;
 
-		final Letter letter = new Letter(this.getLetterAdvance(pCharacter), letterWidth, letterHeight, textureX, textureY, textureWidth, textureHeight);
-		this.mCurrentTextureX += this.mCreateLetterTemporarySize.mWidth;
+		final Letter letter = new Letter(this.getLetterAdvance(pCharacter), (int)letterWidth, (int)letterHeight, textureX, textureY, textureWidth, textureHeight);
+		this.mCurrentTextureX += letterWidth;
 
 		this.mLettersPendingToBeDrawnToTexture.put(letter, bitmap);
 
@@ -161,14 +164,19 @@ public class Font {
 	}
 
 	public void update(final GL10 pGL) {
-		if(this.mLettersPendingToBeDrawnToTexture.size() > 0) {
-
-			for (final Entry<Letter, Bitmap> entry : this.mLettersPendingToBeDrawnToTexture.entrySet()) {
+		final HashMap<Letter, Bitmap> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
+		if(lettersPendingToBeDrawnToTexture.size() > 0) {
+			final int hardwareTextureID = this.mTexture.getHardwareTextureID();
+			for (final Entry<Letter, Bitmap> entry : lettersPendingToBeDrawnToTexture.entrySet()) {
 				final Letter letter = entry.getKey();
-				GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
-				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * TEXTURE_SIZE), (int)(letter.mTextureY * TEXTURE_SIZE), entry.getValue());
+				final Bitmap bitmap = entry.getValue();
+				
+				GLHelper.bindTexture(pGL, hardwareTextureID);
+				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * TEXTURE_SIZE), (int)(letter.mTextureY * TEXTURE_SIZE), bitmap);
+				
+				// TODO is bitmap.recycle() possible? Probably yes, until the texture is lost and needs to be redrawn.
 			}
-			this.mLettersPendingToBeDrawnToTexture.clear();
+			lettersPendingToBeDrawnToTexture.clear();
 			System.gc();
 		}
 	}

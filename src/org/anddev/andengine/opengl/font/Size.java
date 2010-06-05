@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.anddev.andengine.opengl.font;
 
 /**
@@ -16,25 +13,46 @@ class Size {
 	// Fields
 	// ===========================================================
 
-	float mWidth;
-	float mHeight;
+	private float mWidth;
+	private float mHeight;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	Size() {
+	public Size() {
 		this(0, 0);
 	}
 
-	Size(final float pWidth, final float pHeight) {
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+	public Size(final float pWidth, final float pHeight) {
+		this.setWidth(pWidth);
+		this.setHeight(pHeight);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public void setWidth(float width) {
+		this.mWidth = width;
+	}
+
+	public float getWidth() {
+		return this.mWidth;
+	}
+
+	public void setHeight(float height) {
+		this.mHeight = height;
+	}
+
+	public float getHeight() {
+		return this.mHeight;
+	}
+
+	public void set(final int pWidth, final int pHeight) {
+		this.setWidth(pWidth);
+		this.setHeight(pHeight);
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

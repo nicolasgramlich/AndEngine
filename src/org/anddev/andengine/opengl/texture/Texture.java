@@ -84,14 +84,8 @@ public class Texture {
 	// Methods
 	// ===========================================================
 
-	public void insertTextureRegion(final TextureRegion pTextureRegion, final ITextureSource pTextureSource) {
+	public void insertTextureSource(final ITextureSource pTextureSource, final TextureRegion pTextureRegion) {
 		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTextureRegion.getTexturePositionX(), pTextureRegion.getTexturePositionY()));
-		pTextureRegion.setTexture(this);
-	}
-
-	public TextureRegion associateTextureRegion(final TextureRegion pTextureRegion) {
-		pTextureRegion.setTexture(this);
-		return pTextureRegion;
 	}
 
 	public void loadToHardware(final GL10 pGL) {

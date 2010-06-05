@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.texture.region;
 
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.texture.buffer.TiledTextureRegionBuffer;
 
@@ -28,8 +29,8 @@ public class TiledTextureRegion extends TextureRegion {
 	// Constructors
 	// ===========================================================
 
-	public TiledTextureRegion(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
-		super(pTexturePositionX, pTexturePositionY, pWidth, pHeight);
+	public TiledTextureRegion(final Texture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
+		super(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 		this.mTileColumns = pTileColumns;
 		this.mTileRows = pTileRows;
 		this.mTileCount = this.mTileColumns * this.mTileRows;
@@ -94,8 +95,7 @@ public class TiledTextureRegion extends TextureRegion {
 
 	@Override
 	public TiledTextureRegion clone() {
-		final TiledTextureRegion clone = new TiledTextureRegion(this.getTexturePositionX(), this.getTexturePositionY(), this.getWidth(), this.getHeight(), this.mTileColumns, this.mTileRows);
-		clone.setTexture(this.getTexture());
+		final TiledTextureRegion clone = new TiledTextureRegion(this.mTexture, this.getTexturePositionX(), this.getTexturePositionY(), this.getWidth(), this.getHeight(), this.mTileColumns, this.mTileRows);
 		clone.setCurrentTileIndex(this.mCurrentTileColumn, this.mCurrentTileRow);
 		return clone;
 	}

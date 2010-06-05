@@ -21,7 +21,7 @@ public class TextureRegion {
 	// Fields
 	// ===========================================================
 
-	private Texture mTexture;
+	protected final Texture mTexture;
 
 	private final TextureRegionBuffer mTextureRegionBuffer;
 
@@ -35,13 +35,18 @@ public class TextureRegion {
 	// Constructors
 	// ===========================================================
 
-	public TextureRegion(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
+	public TextureRegion(final Texture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
+		this.mTexture = pTexture;
 		this.mTexturePositionX = pTexturePositionX;
 		this.mTexturePositionY = pTexturePositionY;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
+		
 		this.mTextureRegionBuffer = this.onCreateTextureRegionBuffer();
+		
 		BufferObjectManager.loadBufferObject(this.mTextureRegionBuffer);
+		
+		this.mTextureRegionBuffer.onUpdated();
 	}
 
 	// ===========================================================
@@ -80,11 +85,6 @@ public class TextureRegion {
 		return this.mTexturePositionY;
 	}
 
-	public void setTexture(final Texture pTexture) {
-		this.mTexture = pTexture;
-		this.mTextureRegionBuffer.onUpdated();
-	}
-
 	public Texture getTexture() {
 		return this.mTexture;
 	}
@@ -115,9 +115,7 @@ public class TextureRegion {
 
 	@Override
 	public TextureRegion clone() {
-		final TextureRegion clone = new TextureRegion(this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
-		clone.setTexture(this.getTexture());
-		return clone;
+		return new TextureRegion(this.mTexture, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================

@@ -16,6 +16,10 @@ public class TextureRegionFactory {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	public static TextureRegion extractFromTexture(final Texture pTexture, int pTexturePositionX, int pTexturePositionY, int pWidth, int pHeight) {
+		return new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
+	}
 
 	// ===========================================================
 	// From Asset
@@ -50,14 +54,14 @@ public class TextureRegionFactory {
 	// ===========================================================
 
 	public static TextureRegion createFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
-		final TextureRegion textureRegion = new TextureRegion(pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight());
-		pTexture.insertTextureRegion(textureRegion, pTextureSource);
+		final TextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight());
+		pTexture.insertTextureSource(pTextureSource, textureRegion);
 		return textureRegion;
 	}
 
 	public static TiledTextureRegion createTiledFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
-		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight(), pTileColumns, pTileRows);
-		pTexture.insertTextureRegion(tiledTextureRegion, pTextureSource);
+		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight(), pTileColumns, pTileRows);
+		pTexture.insertTextureSource(pTextureSource, tiledTextureRegion);
 		return tiledTextureRegion;
 	}
 }

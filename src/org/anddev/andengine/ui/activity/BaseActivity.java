@@ -6,11 +6,11 @@ import org.anddev.andengine.util.AsyncCallable;
 import org.anddev.andengine.util.Callback;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.ProgressCallable;
-import org.anddev.andengine.util.UserTask;
 import org.anddev.progressmonitor.IProgressListener;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.widget.Toast;
 
 /**
@@ -52,7 +52,7 @@ public abstract class BaseActivity extends Activity {
 	 * @param pCallback
 	 */
 	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final int pErrorMessageResID, final Callable<T> pCallable, final Callback<T> pCallback){
-		new UserTask<Void, Void, T>() {
+		new AsyncTask<Void, Void, T>() {
 			private ProgressDialog mPD;
 
 			@Override
@@ -123,7 +123,7 @@ public abstract class BaseActivity extends Activity {
 	}	
 
 	protected <T> void doProgressAsync(final int pTitleResID, final int pErrorMessageResID, final ProgressCallable<T> pCallable, final Callback<T> pCallback){
-		new UserTask<Void, Integer, T>() {
+		new AsyncTask<Void, Integer, T>() {
 			private ProgressDialog mPD;
 
 			@Override

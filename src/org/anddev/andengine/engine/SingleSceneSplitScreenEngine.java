@@ -58,6 +58,9 @@ public class SingleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected void onDrawScene(final GL10 pGL) {
+		final Camera firstCamera = this.getFirstCamera();
+		final Camera secondCamera = this.getSecondCamera();
+
 		final int surfaceWidth = this.mSurfaceWidth;
 		final int surfaceWidthHalf = surfaceWidth / 2;
 
@@ -66,22 +69,29 @@ public class SingleSceneSplitScreenEngine extends Engine {
 		pGL.glEnable(GL10.GL_SCISSOR_TEST); // TODO --> GLHelper
 
 		/* First Screen. With first camera, on the left half of the screens width. */
-		pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
-		pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
-		super.mScene.onDraw(pGL);
-		this.getFirstCamera().onDrawHUD(pGL);
+		{
+			pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
+			pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
 
+			firstCamera.onApplyMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
+
+			super.mScene.onDraw(pGL);
+			firstCamera.onDrawHUD(pGL);
+		}
 
 		/* Second Screen. With second camera, on the right half of the screens width. */
-		pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
-		pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+		{
+			pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+			pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 
-		this.getSecondCamera().onApplyMatrix(pGL);
-		GLHelper.setModelViewIdentityMatrix(pGL);
+			secondCamera.onApplyMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
 
-		super.mScene.onDraw(pGL);
-		this.getSecondCamera().onDrawHUD(pGL);
-
+			super.mScene.onDraw(pGL);
+			secondCamera.onDrawHUD(pGL);
+		}
+		
 		pGL.glDisable(GL10.GL_SCISSOR_TEST);
 	}
 

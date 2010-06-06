@@ -21,7 +21,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private Scene mSecondScene;
 
 	// ===========================================================
@@ -55,7 +55,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	public Scene getScene() {
 		return super.getScene();
 	}
-	
+
 	public Scene getFirstScene() {
 		return super.getScene();
 	}
@@ -63,17 +63,17 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	public Scene getSecondScene() {
 		return this.mSecondScene;
 	}
-	
+
 	@Deprecated
 	@Override
 	public void setScene(final Scene pScene) {
 		super.setScene(pScene);
 	}
-	
+
 	public void setFirstScene(final Scene pScene) {
 		super.setScene(pScene);
 	}
-	
+
 	public void setSecondScene(final Scene pScene) {
 		this.mSecondScene = pScene;
 	}
@@ -97,22 +97,29 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		pGL.glEnable(GL10.GL_SCISSOR_TEST); // TODO --> GLHelper
 
 		/* First Screen. With first camera, on the left half of the screens width. */
-		pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
-		pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
-		super.mScene.onDraw(pGL);
-		this.getFirstCamera().onDrawHUD(pGL);
+		{
+			pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
+			pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
 
+			this.getFirstCamera().onApplyMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
+
+			super.mScene.onDraw(pGL);
+			this.getFirstCamera().onDrawHUD(pGL);
+		}
 
 		/* Second Screen. With second camera, on the right half of the screens width. */
-		pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
-		pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+		{
+			pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+			pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 
-		this.getSecondCamera().onApplyMatrix(pGL);
-		GLHelper.setModelViewIdentityMatrix(pGL);
+			this.getSecondCamera().onApplyMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
 
-		this.mSecondScene.onDraw(pGL);
-		this.getSecondCamera().onDrawHUD(pGL);
-
+			this.mSecondScene.onDraw(pGL);
+			this.getSecondCamera().onDrawHUD(pGL);
+		}
+		
 		pGL.glDisable(GL10.GL_SCISSOR_TEST);
 	}
 
@@ -124,7 +131,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 			return this.getSecondCamera();
 		}
 	}
-	
+
 	@Override
 	protected Scene getSceneFromSurfaceMotionEvent(MotionEvent pMotionEvent) {
 		if(pMotionEvent.getX() <= this.mSurfaceWidth / 2) {
@@ -133,7 +140,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 			return this.getSecondScene();
 		}
 	}
-	
+
 	@Override
 	protected void onUpdateScene(final float pSecondsElapsed) {
 		super.onUpdateScene(pSecondsElapsed);
@@ -141,7 +148,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 			this.mSecondScene.onUpdate(pSecondsElapsed);
 		}
 	}
-	
+
 	@Override
 	protected void onUpdateScenePreFrameHandlers(float pSecondsElapsed) {
 		super.onUpdateScenePreFrameHandlers(pSecondsElapsed);
@@ -149,7 +156,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 			this.mSecondScene.updatePreFrameHandlers(pSecondsElapsed);
 		}
 	}
-	
+
 	@Override
 	protected void onUpdateScenePostFrameHandlers(float pSecondsElapsed) {
 		super.onUpdateScenePostFrameHandlers(pSecondsElapsed);

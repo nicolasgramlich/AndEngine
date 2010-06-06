@@ -34,6 +34,10 @@ public abstract class BaseEntity implements IEntity {
 	public void setVisible(final boolean pVisible) {
 		this.mVisible = pVisible;
 	}
+	
+	public boolean isIgnoreUpdate() {
+		return this.mIgnoreUpdate;
+	}
 
 	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
 		this.mIgnoreUpdate = pIgnoreUpdate;

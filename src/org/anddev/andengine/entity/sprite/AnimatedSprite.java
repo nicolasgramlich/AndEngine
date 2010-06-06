@@ -42,6 +42,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	public AnimatedSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
 		super(pX, pY, pTiledTextureRegion, pRectangleVertexBuffer);
 	}
+	
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

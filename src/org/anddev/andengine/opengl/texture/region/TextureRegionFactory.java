@@ -1,5 +1,6 @@
 package org.anddev.andengine.opengl.texture.region;
 
+
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
@@ -16,8 +17,22 @@ public class TextureRegionFactory {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	public static TextureRegion extractFromTexture(final Texture pTexture, int pTexturePositionX, int pTexturePositionY, int pWidth, int pHeight) {
+
+	private static String sAssetBasePath = "";
+
+	// ===========================================================
+	// Usability-Methods
+	// ===========================================================
+
+	public static void setAssetBasePath(final String pAssetBasePath) {
+		TextureRegionFactory.sAssetBasePath = pAssetBasePath;
+	}
+
+	// ===========================================================
+	// Extraction
+	// ===========================================================
+
+	public static TextureRegion extractFromTexture(final Texture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		return new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 	}
 
@@ -26,12 +41,12 @@ public class TextureRegionFactory {
 	// ===========================================================
 
 	public static TextureRegion createFromAsset(final Texture pTexture, final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY) {
-		final ITextureSource textureSource = new AssetTextureSource(pContext, pAssetPath);
+		final ITextureSource textureSource = new AssetTextureSource(pContext, TextureRegionFactory.sAssetBasePath + pAssetPath);
 		return createFromSource(pTexture, textureSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	public static TiledTextureRegion createTiledFromAsset(final Texture pTexture, final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
-		final ITextureSource textureSource = new AssetTextureSource(pContext, pAssetPath);
+		final ITextureSource textureSource = new AssetTextureSource(pContext, TextureRegionFactory.sAssetBasePath + pAssetPath);
 		return createTiledFromSource(pTexture, textureSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows);
 	}
 

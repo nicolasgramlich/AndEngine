@@ -29,7 +29,7 @@ public class Line extends Shape {
 	// ===========================================================
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
-		super(pX1, pY1, new LineVertexBuffer(GL11.GL_DYNAMIC_DRAW));
+		super(pX1, pY1, new LineVertexBuffer(GL11.GL_STATIC_DRAW));
 		this.mX2 = pX2;
 		this.mY2 = pY2;
 		this.updateVertexBuffer();

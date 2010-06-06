@@ -12,7 +12,7 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	// Constants
 	// ===========================================================
 
-	private static final float AVERAGE_DURATION = 5;
+	private static final float AVERAGE_DURATION_DEFAULT = 5;
 
 	// ===========================================================
 	// Fields
@@ -25,9 +25,19 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 	private float mShortestFrame = Float.MAX_VALUE;
 	private float mLongestFrame = Float.MIN_VALUE;
 
+	private final float mAverageDuration;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public FPSCounter() {
+		this(AVERAGE_DURATION_DEFAULT);
+	}
+
+	public FPSCounter(final float pAverageDuration) {
+		this.mAverageDuration = pAverageDuration;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -48,10 +58,10 @@ public class FPSCounter implements IUpdateHandler, TimeConstants {
 
 		this.mLongestFrame = Math.max(this.mLongestFrame, pSecondsElapsed);
 
-		if(this.mSecondsElapsed > AVERAGE_DURATION){
-			Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)", (this.mFramesInThisSecond / this.mSecondsElapsed), this.mShortestFrame * 1000, this.mLongestFrame * 1000));
+		if(this.mSecondsElapsed > this.mAverageDuration){
+			Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)", (this.mFramesInThisSecond / this.mSecondsElapsed), this.mShortestFrame * MILLISECONDSPERSECOND, this.mLongestFrame * MILLISECONDSPERSECOND));
 
-			this.mSecondsElapsed -= AVERAGE_DURATION;
+			this.mSecondsElapsed -= this.mAverageDuration;
 			this.mFramesInThisSecond = 0;
 
 			this.mLongestFrame = Float.MIN_VALUE;

@@ -44,7 +44,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected void onCreate(final Bundle pSavedInstanceState) {
 		super.onCreate(pSavedInstanceState);
 
-		this.mEngine = this.onLoadEngine();
+		this.mEngine = this.onCreateEngine();
 
 		this.applyEngineOptions(this.mEngine.getEngineOptions());
 

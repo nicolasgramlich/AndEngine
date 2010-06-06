@@ -16,11 +16,11 @@ public interface IGameInterface {
 	// Methods
 	// ===========================================================
 
-	public Scene onLoadScene();
+	public Engine onCreateEngine();
 
 	public void onLoadResources();
 
-	public void onLoadComplete();
+	public Scene onLoadScene();
 
-	public Engine onLoadEngine();
+	public void onLoadComplete();
 }

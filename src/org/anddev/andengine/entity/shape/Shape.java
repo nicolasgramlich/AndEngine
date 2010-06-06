@@ -162,9 +162,9 @@ public abstract class Shape extends DynamicEntity {
 		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
-		final ArrayList<IShapeModifier> ShapeModifiers = this.mShapeModifiers;
-		for(int i = ShapeModifiers.size() - 1; i >= 0; i--) {
-			ShapeModifiers.get(i).reset();
+		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
+		for(int i = shapeModifiers.size() - 1; i >= 0; i--) {
+			shapeModifiers.get(i).reset();
 		}
 	}
 

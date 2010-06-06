@@ -411,9 +411,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
 	}
 
-	protected void onDrawScene(final GL10 pGL) {
+	protected void onDrawScene(final GL10 pGL) {		
+		final Camera camera = this.getCamera();
+		
+		camera.onApplyMatrix(pGL);
+		GLHelper.setModelViewIdentityMatrix(pGL);
+		
 		this.mScene.onDraw(pGL);
-		this.getCamera().onDrawHUD(pGL);
+		camera.onDrawHUD(pGL);
 	}
 
 	private float getSecondsElapsed() {

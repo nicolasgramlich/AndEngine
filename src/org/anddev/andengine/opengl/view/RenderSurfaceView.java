@@ -122,10 +122,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
-			this.mEngine.getCamera().onApplyMatrix(pGL);
-
-			GLHelper.setModelViewIdentityMatrix(pGL);
-
 			this.mEngine.onDrawFrame(pGL);
 		}
 

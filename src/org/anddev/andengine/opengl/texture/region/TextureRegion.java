@@ -6,7 +6,7 @@ import javax.microedition.khronos.opengles.GL11;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.buffer.TextureRegionBuffer;
+import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -23,7 +23,7 @@ public class TextureRegion {
 
 	protected final Texture mTexture;
 
-	private final TextureRegionBuffer mTextureRegionBuffer;
+	protected final TextureRegionBuffer mTextureRegionBuffer;
 
 	private int mWidth;
 	private int mHeight;
@@ -45,8 +45,12 @@ public class TextureRegion {
 		this.mTextureRegionBuffer = this.onCreateTextureRegionBuffer();
 		
 		BufferObjectManager.loadBufferObject(this.mTextureRegionBuffer);
-		
-		this.mTextureRegionBuffer.onUpdated();
+
+		this.initTextureBuffer();
+	}
+
+	protected void initTextureBuffer() {
+		this.updateTextureRegionBuffer();
 	}
 
 	// ===========================================================
@@ -63,18 +67,18 @@ public class TextureRegion {
 
 	public void setWidth(final int pWidth) {
 		this.mWidth = pWidth;
-		this.mTextureRegionBuffer.onUpdated();
+		this.updateTextureRegionBuffer();
 	}
 
 	public void setHeight(final int pHeight) {
 		this.mHeight = pHeight;
-		this.mTextureRegionBuffer.onUpdated();
+		this.updateTextureRegionBuffer();
 	}
 
 	public void setTexturePosition(final int pX, final int pY) {
 		this.mTexturePositionX = pX;
 		this.mTexturePositionY = pY;
-		this.mTextureRegionBuffer.onUpdated();
+		this.updateTextureRegionBuffer();
 	}
 
 	public int getTexturePositionX() {
@@ -122,8 +126,8 @@ public class TextureRegion {
 	// Methods
 	// ===========================================================
 
-	protected void updateTextureBuffer() {
-		this.mTextureRegionBuffer.onUpdated();
+	protected void updateTextureRegionBuffer() {
+		this.mTextureRegionBuffer.update();
 	}
 
 	protected TextureRegionBuffer onCreateTextureRegionBuffer() {

@@ -59,7 +59,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 
 		buffer.position(0);
 
-		super.onUpdated();
+		super.update();
 	}
 
 	// ===========================================================

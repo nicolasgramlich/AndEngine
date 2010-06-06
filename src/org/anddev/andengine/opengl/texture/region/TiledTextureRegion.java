@@ -3,8 +3,8 @@ package org.anddev.andengine.opengl.texture.region;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.buffer.TextureRegionBuffer;
-import org.anddev.andengine.opengl.texture.buffer.TiledTextureRegionBuffer;
+import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
+import org.anddev.andengine.opengl.texture.region.buffer.TiledTextureRegionBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -36,11 +36,25 @@ public class TiledTextureRegion extends TextureRegion {
 		this.mTileCount = this.mTileColumns * this.mTileRows;
 		this.mCurrentTileColumn = 0;
 		this.mCurrentTileRow = 0;
+
+		this.initTextureBuffer();
+	}
+	
+	@Override
+	protected void initTextureBuffer() {
+		if(this.mTileRows != 0 && this.mTileColumns != 0) {
+			super.initTextureBuffer();
+		}
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	@Override
+	public TiledTextureRegionBuffer getTextureBuffer() {
+		return (TiledTextureRegionBuffer)this.mTextureRegionBuffer;
+	}
 
 	public int getTileCount() {
 		return this.mTileCount;
@@ -70,7 +84,7 @@ public class TiledTextureRegion extends TextureRegion {
 		if(pTileColumn != this.mCurrentTileColumn || pTileRow != this.mCurrentTileRow) {
 			this.mCurrentTileColumn = pTileColumn;
 			this.mCurrentTileRow = pTileRow;
-			super.updateTextureBuffer();
+			super.updateTextureRegionBuffer();
 		}
 	}
 

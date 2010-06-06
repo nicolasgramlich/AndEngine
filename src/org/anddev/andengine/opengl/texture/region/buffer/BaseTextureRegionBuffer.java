@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.texture.buffer;
+package org.anddev.andengine.opengl.texture.region.buffer;
 
 import java.nio.FloatBuffer;
 
@@ -30,7 +30,6 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	public BaseTextureRegionBuffer(final TextureRegion pTextureRegion, final int pDrawType) {
 		super(8 * BYTES_PER_FLOAT, pDrawType);
 		this.mTextureRegion = pTextureRegion;
-		this.onUpdated();
 	}
 
 	// ===========================================================
@@ -48,7 +47,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
 		if(this.mFlippedHorizontal != pFlippedHorizontal){
 			this.mFlippedHorizontal = pFlippedHorizontal;
-			this.onUpdated();
+			this.update();
 		}
 	}
 
@@ -59,7 +58,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	public void setFlippedVertical(final boolean pFlippedVertical) {
 		if(this.mFlippedVertical != pFlippedVertical){
 			this.mFlippedVertical = pFlippedVertical;
-			this.onUpdated();
+			this.update();
 		}
 	}
 
@@ -77,7 +76,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	// ===========================================================
 
 	@Override
-	public void onUpdated() {
+	public void update() {
 		final TextureRegion textureRegion = this.mTextureRegion;
 		final Texture texture = textureRegion.getTexture();
 
@@ -132,7 +131,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 		}
 		buffer.position(0);
 
-		super.onUpdated();
+		super.update();
 	}
 
 	// ===========================================================

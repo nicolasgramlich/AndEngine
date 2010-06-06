@@ -1,12 +1,8 @@
-package org.anddev.andengine.opengl.texture.buffer;
+package org.anddev.andengine.opengl.texture.region.buffer;
 
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
-/**
- * @author Nicolas Gramlich
- * @since 19:01:11 - 09.03.2010
- */
-public class TiledTextureRegionBuffer extends TextureRegionBuffer {
+public class TextureRegionBuffer extends BaseTextureRegionBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,7 +15,7 @@ public class TiledTextureRegionBuffer extends TextureRegionBuffer {
 	// Constructors
 	// ===========================================================
 
-	public TiledTextureRegionBuffer(final TiledTextureRegion pTextureRegion, final int pDrawType) {
+	public TextureRegionBuffer(final TextureRegion pTextureRegion, final int pDrawType) {
 		super(pTextureRegion, pDrawType);
 	}
 
@@ -27,37 +23,32 @@ public class TiledTextureRegionBuffer extends TextureRegionBuffer {
 	// Getter & Setter
 	// ===========================================================
 
-	@Override
-	public TiledTextureRegion getTextureRegion() {
-		return (TiledTextureRegion)super.getTextureRegion();
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
 	protected float getX1() {
-		final TiledTextureRegion textureRegion = this.getTextureRegion();
-		return textureRegion.getTexturePositionOfCurrentTileX() / textureRegion.getTexture().getWidth();
+		final TextureRegion textureRegion = this.getTextureRegion();
+		return (float)textureRegion.getTexturePositionX() / textureRegion.getTexture().getWidth();
 	}
 
 	@Override
 	protected float getX2() {
-		final TiledTextureRegion textureRegion = this.getTextureRegion();
-		return (textureRegion.getTexturePositionOfCurrentTileX() + textureRegion.getTileWidth()) / textureRegion.getTexture().getWidth();
+		final TextureRegion textureRegion = this.getTextureRegion();
+		return (float)(textureRegion.getTexturePositionX() + textureRegion.getWidth()) / textureRegion.getTexture().getWidth();
 	}
 
 	@Override
 	protected float getY1() {
-		final TiledTextureRegion textureRegion = this.getTextureRegion();
-		return textureRegion.getTexturePositionOfCurrentTileY() / textureRegion.getTexture().getHeight();
+		final TextureRegion textureRegion = this.getTextureRegion();
+		return (float)textureRegion.getTexturePositionY() / textureRegion.getTexture().getHeight();
 	}
 
 	@Override
 	protected float getY2() {
-		final TiledTextureRegion textureRegion = this.getTextureRegion();
-		return (textureRegion.getTexturePositionOfCurrentTileY() + textureRegion.getTileHeight()) / textureRegion.getTexture().getHeight();
+		final TextureRegion textureRegion = this.getTextureRegion();
+		return (float)(textureRegion.getTexturePositionY() + textureRegion.getHeight()) / textureRegion.getTexture().getHeight();
 	}
 
 	// ===========================================================

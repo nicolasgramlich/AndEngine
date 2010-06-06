@@ -102,7 +102,7 @@ public class TextVertexBuffer extends VertexBuffer {
 		}
 		vertexFloatBuffer.position(0);
 
-		super.onUpdated();
+		super.update();
 	}
 
 	// ===========================================================

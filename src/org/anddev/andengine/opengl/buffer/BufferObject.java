@@ -60,7 +60,7 @@ public abstract class BufferObject extends BaseBuffer {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public void onUpdated(){
+	public void update(){
 		this.mHardwareBufferNeedsUpdate = true;
 	}
 

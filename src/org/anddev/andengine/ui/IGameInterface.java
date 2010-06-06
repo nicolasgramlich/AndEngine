@@ -16,7 +16,7 @@ public interface IGameInterface {
 	// Methods
 	// ===========================================================
 
-	public Engine onCreateEngine();
+	public Engine onLoadEngine();
 
 	public void onLoadResources();
 

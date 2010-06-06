@@ -69,7 +69,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 	}
 
 	@Override
-	public Engine onCreateEngine() {
+	public Engine onLoadEngine() {
 		this.mSplashTextureSource = this.onGetSplashTextureSource();
 
 		final int width = this.mSplashTextureSource.getWidth();

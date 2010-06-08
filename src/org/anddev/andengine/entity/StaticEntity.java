@@ -88,7 +88,9 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onPositionChanged();
+	protected void onPositionChanged(){
+		
+	}
 
 	@Override
 	public void reset() {

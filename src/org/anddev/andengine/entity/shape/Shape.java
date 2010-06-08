@@ -118,11 +118,6 @@ public abstract class Shape extends DynamicEntity {
 		this.applyShapeModifiers(pSecondsElapsed);
 	}
 
-	@Override
-	protected void onPositionChanged() {
-
-	}
-
 	protected abstract void onUpdateVertexBuffer();
 
 	@Override

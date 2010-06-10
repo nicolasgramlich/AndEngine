@@ -18,10 +18,18 @@ public class TextureRegionFactory {
 	// Constants
 	// ===========================================================
 
+	// ===========================================================
+	// Fields
+	// ===========================================================
+	
 	private static String sAssetBasePath = "";
 
 	// ===========================================================
-	// Usability-Methods
+	// Constructors
+	// ===========================================================
+
+	// ===========================================================
+	// Getter & Setter
 	// ===========================================================
 
 	public static void setAssetBasePath(final String pAssetBasePath) {
@@ -29,16 +37,17 @@ public class TextureRegionFactory {
 	}
 
 	// ===========================================================
-	// Extraction
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
 	// ===========================================================
 
 	public static TextureRegion extractFromTexture(final Texture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		return new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 	}
 
-	// ===========================================================
-	// From Asset
-	// ===========================================================
 
 	public static TextureRegion createFromAsset(final Texture pTexture, final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY) {
 		final ITextureSource textureSource = new AssetTextureSource(pContext, TextureRegionFactory.sAssetBasePath + pAssetPath);
@@ -50,9 +59,6 @@ public class TextureRegionFactory {
 		return createTiledFromSource(pTexture, textureSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows);
 	}
 
-	// ===========================================================
-	// From Resource
-	// ===========================================================
 
 	public static TextureRegion createFromResource(final Texture pTexture, final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY) {
 		final ITextureSource textureSource = new ResourceTextureSource(pContext, pDrawableResourceID);
@@ -64,9 +70,6 @@ public class TextureRegionFactory {
 		return createTiledFromSource(pTexture, textureSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows);
 	}
 
-	// ===========================================================
-	// Worker-Methods
-	// ===========================================================
 
 	public static TextureRegion createFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		final TextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight());
@@ -79,4 +82,8 @@ public class TextureRegionFactory {
 		pTexture.addTextureSource(pTextureSource, tiledTextureRegion.getTexturePositionX(), tiledTextureRegion.getTexturePositionY());
 		return tiledTextureRegion;
 	}
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
 }

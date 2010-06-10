@@ -17,6 +17,8 @@ public class SoundFactory {
 	// Fields
 	// ===========================================================
 
+	private static String sAssetBasePath = "";
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -24,6 +26,10 @@ public class SoundFactory {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public static void setAssetBasePath(final String pAssetBasePath) {
+		SoundFactory.sAssetBasePath = pAssetBasePath;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -34,7 +40,7 @@ public class SoundFactory {
 	// ===========================================================
 
 	public static Sound createSoundFromAsset(final SoundManager pSoundManager, final Context pContext, final String pAssetPath) throws IOException {
-		final int soundID = pSoundManager.getSoundPool().load(pContext.getAssets().openFd(pAssetPath), 1);
+		final int soundID = pSoundManager.getSoundPool().load(pContext.getAssets().openFd(SoundFactory.sAssetBasePath + pAssetPath), 1);
 		final Sound sound = new Sound(pSoundManager, soundID);
 		pSoundManager.addSound(sound);
 		return sound;

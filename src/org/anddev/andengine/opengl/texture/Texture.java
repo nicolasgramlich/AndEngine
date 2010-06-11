@@ -100,6 +100,14 @@ public class Texture {
 
 		this.mLoadedToHardware = true;
 	}
+	
+	public void unloadFromHardware(final GL10 pGL) {
+		GLHelper.enableTextures(pGL);
+
+		this.deleteTextureOnHardware(pGL);
+
+		this.mLoadedToHardware = false;
+	}
 
 	private void writeTextureToHardware() {
 		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
@@ -127,6 +135,10 @@ public class Texture {
 		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
 
 		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
+	}
+	
+	private void deleteTextureOnHardware(final GL10 pGL) {
+		GLHelper.deleteTexture(pGL, this.mHardwareTextureID);
 	}
 
 	private int generateHardwareTextureID(final GL10 pGL) {

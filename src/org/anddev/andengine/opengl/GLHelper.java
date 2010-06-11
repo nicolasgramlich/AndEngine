@@ -19,35 +19,37 @@ public class GLHelper {
 	// Constants
 	// ===========================================================
 
+	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1]; 
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private static int mCurrentHardwareBufferID = -1;
-	private static int mCurrentHardwareTextureID = -1;
-	private static int mCurrentMatrix = -1;
+	private static int sCurrentHardwareBufferID = -1;
+	private static int sCurrentHardwareTextureID = -1;
+	private static int sCurrentMatrix = -1;
 
-	private static int mCurrentSourceBlendMode = -1;
-	private static int mCurrentDestionationBlendMode = -1;
+	private static int sCurrentSourceBlendMode = -1;
+	private static int sCurrentDestionationBlendMode = -1;
 
-	private static FloatBuffer mCurrentTextureFloatBuffer = null;
-	private static FloatBuffer mCurrentVertexFloatBuffer = null;
+	private static FloatBuffer sCurrentTextureFloatBuffer = null;
+	private static FloatBuffer sCurrentVertexFloatBuffer = null;
 
-	private static boolean mEnableDither = true;
-	private static boolean mEnableLightning = true;
-	private static boolean mEnableDepthTest = true;
-	private static boolean mEnableMultisample = true;
+	private static boolean sEnableDither = true;
+	private static boolean sEnableLightning = true;
+	private static boolean sEnableDepthTest = true;
+	private static boolean sEnableMultisample = true;
 
-	private static boolean mEnableBlend = false;
-	private static boolean mEnableCulling = false;
-	private static boolean mEnableTextures = false;
-	private static boolean mEnableTexCoordArray = false;
-	private static boolean mEnableVertexArray = false;
+	private static boolean sEnableBlend = false;
+	private static boolean sEnableCulling = false;
+	private static boolean sEnableTextures = false;
+	private static boolean sEnableTexCoordArray = false;
+	private static boolean sEnableVertexArray = false;
 	
-	private static float mRed = -1;
-	private static float mGreen = -1;
-	private static float mBlue = -1;
-	private static float mAlpha = -1;
+	private static float sRed = -1;
+	private static float sGreen = -1;
+	private static float sBlue = -1;
+	private static float sAlpha = -1;
 
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS_FORCE_DISABLE = false; // TODO A better place would be the EngineOptions->Extras or so...
@@ -58,15 +60,15 @@ public class GLHelper {
 	// ===========================================================
 
 	public static void reset(final GL10 pGL) {
-		GLHelper.mCurrentHardwareBufferID = -1;
-		GLHelper.mCurrentHardwareTextureID = -1;
-		GLHelper.mCurrentMatrix = -1;
+		GLHelper.sCurrentHardwareBufferID = -1;
+		GLHelper.sCurrentHardwareTextureID = -1;
+		GLHelper.sCurrentMatrix = -1;
 
-		GLHelper.mCurrentSourceBlendMode = -1;
-		GLHelper.mCurrentDestionationBlendMode = -1;
+		GLHelper.sCurrentSourceBlendMode = -1;
+		GLHelper.sCurrentDestionationBlendMode = -1;
 
-		GLHelper.mCurrentTextureFloatBuffer = null;
-		GLHelper.mCurrentVertexFloatBuffer = null;
+		GLHelper.sCurrentTextureFloatBuffer = null;
+		GLHelper.sCurrentVertexFloatBuffer = null;
 
 		GLHelper.enableDither(pGL);
 		GLHelper.enableLightning(pGL);
@@ -79,10 +81,10 @@ public class GLHelper {
 		GLHelper.disableTexCoordArray(pGL);
 		GLHelper.disableVertexArray(pGL);
 		
-		GLHelper.mRed = -1;
-		GLHelper.mGreen = -1;
-		GLHelper.mBlue = -1;
-		GLHelper.mAlpha = -1;
+		GLHelper.sRed = -1;
+		GLHelper.sGreen = -1;
+		GLHelper.sBlue = -1;
+		GLHelper.sAlpha = -1;
 
 		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 		GLHelper.EXTENSIONS_DRAWTEXTURE = false;
@@ -123,151 +125,157 @@ public class GLHelper {
 	}
 
 	public static void setColor(final GL10 pGL, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(pAlpha != GLHelper.mAlpha || pRed != GLHelper.mRed || pGreen != GLHelper.mGreen || pBlue != GLHelper.mBlue) {
-			GLHelper.mAlpha = pAlpha;
-			GLHelper.mRed = pRed;
-			GLHelper.mGreen = pGreen;
-			GLHelper.mBlue = pBlue;
+		if(pAlpha != GLHelper.sAlpha || pRed != GLHelper.sRed || pGreen != GLHelper.sGreen || pBlue != GLHelper.sBlue) {
+			GLHelper.sAlpha = pAlpha;
+			GLHelper.sRed = pRed;
+			GLHelper.sGreen = pGreen;
+			GLHelper.sBlue = pBlue;
 			pGL.glColor4f(pRed, pGreen, pBlue, pAlpha);
 		}
 	}
 
 	public static void enableVertexArray(final GL10 pGL) {
-		if(!GLHelper.mEnableVertexArray) {
-			GLHelper.mEnableVertexArray = true;
+		if(!GLHelper.sEnableVertexArray) {
+			GLHelper.sEnableVertexArray = true;
 			pGL.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		}
 	}
 	public static void disableVertexArray(final GL10 pGL) {
-		if(GLHelper.mEnableVertexArray) {
-			GLHelper.mEnableVertexArray = false;
+		if(GLHelper.sEnableVertexArray) {
+			GLHelper.sEnableVertexArray = false;
 			pGL.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		}
 	}
 
 	public static void enableTexCoordArray(final GL10 pGL) {
-		if(!GLHelper.mEnableTexCoordArray) {
-			GLHelper.mEnableTexCoordArray = true;
+		if(!GLHelper.sEnableTexCoordArray) {
+			GLHelper.sEnableTexCoordArray = true;
 			pGL.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		}
 	}
 	public static void disableTexCoordArray(final GL10 pGL) {
-		if(GLHelper.mEnableTexCoordArray) {
-			GLHelper.mEnableTexCoordArray = false;
+		if(GLHelper.sEnableTexCoordArray) {
+			GLHelper.sEnableTexCoordArray = false;
 			pGL.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		}
 	}
 
 	public static void enableBlend(final GL10 pGL) {
-		if(!GLHelper.mEnableBlend) {
-			GLHelper.mEnableBlend = true;
+		if(!GLHelper.sEnableBlend) {
+			GLHelper.sEnableBlend = true;
 			pGL.glEnable(GL10.GL_BLEND);
 		}
 	}
 	public static void disableBlend(final GL10 pGL) {
-		if(GLHelper.mEnableBlend) {
-			GLHelper.mEnableBlend = false;
+		if(GLHelper.sEnableBlend) {
+			GLHelper.sEnableBlend = false;
 			pGL.glDisable(GL10.GL_BLEND);
 		}
 	}
 	
 	public static void enableCulling(final GL10 pGL) {
-		if(!GLHelper.mEnableCulling) {
-			GLHelper.mEnableCulling = true;
+		if(!GLHelper.sEnableCulling) {
+			GLHelper.sEnableCulling = true;
 			pGL.glEnable(GL10.GL_CULL_FACE);
 		}
 	}
 	public static void disableCulling(final GL10 pGL) {
-		if(GLHelper.mEnableCulling) {
-			GLHelper.mEnableCulling = false;
+		if(GLHelper.sEnableCulling) {
+			GLHelper.sEnableCulling = false;
 			pGL.glDisable(GL10.GL_CULL_FACE);
 		}
 	}
 
 	public static void enableTextures(final GL10 pGL) {
-		if(!GLHelper.mEnableTextures) {
-			GLHelper.mEnableTextures = true;
+		if(!GLHelper.sEnableTextures) {
+			GLHelper.sEnableTextures = true;
 			pGL.glEnable(GL10.GL_TEXTURE_2D);
 		}
 	}
 	public static void disableTextures(final GL10 pGL) {
-		if(GLHelper.mEnableTextures) {
-			GLHelper.mEnableTextures = false;
+		if(GLHelper.sEnableTextures) {
+			GLHelper.sEnableTextures = false;
 			pGL.glDisable(GL10.GL_TEXTURE_2D);
 		}
 	}
 
 	public static void enableLightning(final GL10 pGL) {
-		if(!GLHelper.mEnableLightning) {
-			GLHelper.mEnableLightning = true;
+		if(!GLHelper.sEnableLightning) {
+			GLHelper.sEnableLightning = true;
 			pGL.glEnable(GL10.GL_LIGHTING);
 		}
 	}
 	public static void disableLightning(final GL10 pGL) {
-		if(GLHelper.mEnableLightning) {
-			GLHelper.mEnableLightning = false;
+		if(GLHelper.sEnableLightning) {
+			GLHelper.sEnableLightning = false;
 			pGL.glDisable(GL10.GL_LIGHTING);
 		}
 	}
 
 	public static void enableDither(final GL10 pGL) {
-		if(!GLHelper.mEnableDither) {
-			GLHelper.mEnableDither = true;
+		if(!GLHelper.sEnableDither) {
+			GLHelper.sEnableDither = true;
 			pGL.glEnable(GL10.GL_DITHER);
 		}
 	}
 	public static void disableDither(final GL10 pGL) {
-		if(GLHelper.mEnableDither) {
-			GLHelper.mEnableDither = false;
+		if(GLHelper.sEnableDither) {
+			GLHelper.sEnableDither = false;
 			pGL.glDisable(GL10.GL_DITHER);
 		}
 	}
 
 	public static void enableDepthTest(final GL10 pGL) {
-		if(!GLHelper.mEnableDepthTest) {
-			GLHelper.mEnableDepthTest = true;
+		if(!GLHelper.sEnableDepthTest) {
+			GLHelper.sEnableDepthTest = true;
 			pGL.glEnable(GL10.GL_DEPTH_TEST);
 		}
 	}
 	public static void disableDepthTest(final GL10 pGL) {
-		if(GLHelper.mEnableDepthTest) {
-			GLHelper.mEnableDepthTest = false;
+		if(GLHelper.sEnableDepthTest) {
+			GLHelper.sEnableDepthTest = false;
 			pGL.glDisable(GL10.GL_DEPTH_TEST);
 		}
 	}
 
 	public static void enableMultisample(final GL10 pGL) {
-		if(!GLHelper.mEnableMultisample) {
-			GLHelper.mEnableMultisample = true;
+		if(!GLHelper.sEnableMultisample) {
+			GLHelper.sEnableMultisample = true;
 			pGL.glEnable(GL10.GL_MULTISAMPLE);
 		}
 	}
 	public static void disableMultisample(final GL10 pGL) {
-		if(GLHelper.mEnableMultisample) {
-			GLHelper.mEnableMultisample = false;
+		if(GLHelper.sEnableMultisample) {
+			GLHelper.sEnableMultisample = false;
 			pGL.glDisable(GL10.GL_MULTISAMPLE);
 		}
 	}
 
 	public static void bindBuffer(final GL11 pGL11, final int pHardwareBufferID) {
 		/* Reduce unnecessary buffer switching calls. */
-		if(GLHelper.mCurrentHardwareBufferID != pHardwareBufferID) {
-			GLHelper.mCurrentHardwareBufferID = pHardwareBufferID;
+		if(GLHelper.sCurrentHardwareBufferID != pHardwareBufferID) {
+			GLHelper.sCurrentHardwareBufferID = pHardwareBufferID;
 			pGL11.glBindBuffer(GL11.GL_ARRAY_BUFFER, pHardwareBufferID);
 		}
 	}
 
 	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {
 		/* Reduce unnecessary texture switching calls. */
-		if(GLHelper.mCurrentHardwareTextureID != pHardwareTextureID) {
-			GLHelper.mCurrentHardwareTextureID = pHardwareTextureID;
+		if(GLHelper.sCurrentHardwareTextureID != pHardwareTextureID) {
+			GLHelper.sCurrentHardwareTextureID = pHardwareTextureID;
 			pGL.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
 		}
 	}
+	
+	public static void deleteTexture(final GL10 pGL, final int pHardwareTextureID) {
+		/* Reduce unnecessary texture switching calls. */
+		GLHelper.HARDWARETEXTUREID_CONTAINER[0] = pHardwareTextureID;
+		pGL.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);
+	}
 
 	public static void texCoordPointer(final GL10 pGL, final FloatBuffer pTextureFloatBuffer) {
-		if(GLHelper.mCurrentTextureFloatBuffer  != pTextureFloatBuffer) {
-			GLHelper.mCurrentTextureFloatBuffer = pTextureFloatBuffer;
+		if(GLHelper.sCurrentTextureFloatBuffer  != pTextureFloatBuffer) {
+			GLHelper.sCurrentTextureFloatBuffer = pTextureFloatBuffer;
 			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureFloatBuffer);
 		}
 	}
@@ -277,8 +285,8 @@ public class GLHelper {
 	}
 
 	public static void vertexPointer(final GL10 pGL, final FloatBuffer pVertexFloatBuffer) {
-		if(GLHelper.mCurrentVertexFloatBuffer != pVertexFloatBuffer) {
-			GLHelper.mCurrentVertexFloatBuffer = pVertexFloatBuffer;
+		if(GLHelper.sCurrentVertexFloatBuffer != pVertexFloatBuffer) {
+			GLHelper.sCurrentVertexFloatBuffer = pVertexFloatBuffer;
 			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexFloatBuffer);
 		}
 	}
@@ -288,25 +296,25 @@ public class GLHelper {
 	}
 
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
-		if(GLHelper.mCurrentSourceBlendMode != pSourceBlendMode || GLHelper.mCurrentDestionationBlendMode != pDestinationBlendMode) {
-			GLHelper.mCurrentSourceBlendMode = pSourceBlendMode;
-			GLHelper.mCurrentDestionationBlendMode = pDestinationBlendMode;
+		if(GLHelper.sCurrentSourceBlendMode != pSourceBlendMode || GLHelper.sCurrentDestionationBlendMode != pDestinationBlendMode) {
+			GLHelper.sCurrentSourceBlendMode = pSourceBlendMode;
+			GLHelper.sCurrentDestionationBlendMode = pDestinationBlendMode;
 			pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 		}
 	}
 
 	public static void switchToModelViewMatrix(final GL10 pGL) {
 		/* Reduce unnecessary matrix switching calls. */
-		if(GLHelper.mCurrentMatrix != GL10.GL_MODELVIEW) {
-			GLHelper.mCurrentMatrix = GL10.GL_MODELVIEW;
+		if(GLHelper.sCurrentMatrix != GL10.GL_MODELVIEW) {
+			GLHelper.sCurrentMatrix = GL10.GL_MODELVIEW;
 			pGL.glMatrixMode(GL10.GL_MODELVIEW);
 		}
 	}
 
 	public static void switchToProjectionMatrix(final GL10 pGL) {
 		/* Reduce unnecessary matrix switching calls. */
-		if(GLHelper.mCurrentMatrix != GL10.GL_PROJECTION) {
-			GLHelper.mCurrentMatrix = GL10.GL_PROJECTION;
+		if(GLHelper.sCurrentMatrix != GL10.GL_PROJECTION) {
+			GLHelper.sCurrentMatrix = GL10.GL_PROJECTION;
 			pGL.glMatrixMode(GL10.GL_PROJECTION);
 		}
 	}

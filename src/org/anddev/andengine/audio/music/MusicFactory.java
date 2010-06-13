@@ -1,14 +1,17 @@
-package org.anddev.andengine.audio.sound;
+package org.anddev.andengine.audio.music;
 
 import java.io.IOException;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
+
 
 /**
  * @author Nicolas Gramlich
- * @since 14:23:03 - 11.03.2010
+ * @since 15:05:49 - 13.06.2010
  */
-public class SoundFactory {
+public class MusicFactory {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,7 +31,7 @@ public class SoundFactory {
 	// ===========================================================
 
 	public static void setAssetBasePath(final String pAssetBasePath) {
-		SoundFactory.sAssetBasePath = pAssetBasePath;
+		MusicFactory.sAssetBasePath = pAssetBasePath;
 	}
 
 	// ===========================================================
@@ -39,18 +42,27 @@ public class SoundFactory {
 	// Methods
 	// ===========================================================
 
-	public static Sound createSoundFromAsset(final SoundManager pSoundManager, final Context pContext, final String pAssetPath) throws IOException {
-		final int soundID = pSoundManager.getSoundPool().load(pContext.getAssets().openFd(SoundFactory.sAssetBasePath + pAssetPath), 1);
-		final Sound sound = new Sound(pSoundManager, soundID);
-		pSoundManager.add(sound);
-		return sound;
+	public static Music createMusicFromAsset(final MusicManager pMusicManager, final Context pContext, final String pAssetPath) throws IOException {
+		final MediaPlayer mediaPlayer = new MediaPlayer();
+		
+		final AssetFileDescriptor assetFileDescritor = pContext.getAssets().openFd(MusicFactory.sAssetBasePath + pAssetPath);
+		mediaPlayer.setDataSource(assetFileDescritor.getFileDescriptor(), assetFileDescritor.getStartOffset(), assetFileDescritor.getLength());
+		mediaPlayer.prepare();
+		
+		final Music music = new Music(pMusicManager, mediaPlayer);
+		pMusicManager.add(music);
+		
+		return music;
 	}
 
-	public static Sound createSoundFromResource(final SoundManager pSoundManager, final Context pContext, final int pSoundResID) {
-		final int soundID = pSoundManager.getSoundPool().load(pContext, pSoundResID, 1);
-		final Sound sound = new Sound(pSoundManager, soundID);
-		pSoundManager.add(sound);
-		return sound;
+	public static Music createSoundFromResource(final MusicManager pMusicManager, final Context pContext, final int pMusicResID) throws IOException {
+		final MediaPlayer mediaPlayer = MediaPlayer.create(pContext, pMusicResID);
+		mediaPlayer.prepare();
+		
+		final Music music = new Music(pMusicManager, mediaPlayer);
+		pMusicManager.add(music);
+		
+		return music;
 	}
 
 	// ===========================================================

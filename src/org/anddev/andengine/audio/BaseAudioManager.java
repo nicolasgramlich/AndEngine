@@ -1,60 +1,69 @@
-package org.anddev.andengine.audio.sound;
+package org.anddev.andengine.audio;
 
-import org.anddev.andengine.audio.BaseAudioManager;
-
-import android.media.AudioManager;
-import android.media.SoundPool;
+import java.util.ArrayList;
 
 /**
  * @author Nicolas Gramlich
- * @since 13:22:59 - 11.03.2010
+ * @since 18:07:02 - 13.06.2010
  */
-public class SoundManager extends BaseAudioManager<Sound> {
+public abstract class BaseAudioManager<T extends IAudioEntity> implements IAudioManager<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final int MAX_SIMULTANEOUS_STREAMS_DEFAULT = 5;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final SoundPool mSoundPool;
+	protected final ArrayList<T> mAudioEntities = new ArrayList<T>();
+
+	protected float mMasterVolume = 1.0f;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SoundManager() {
-		this(MAX_SIMULTANEOUS_STREAMS_DEFAULT);
-	}
-
-	public SoundManager(final int pMaxSimultaneousStreams) {
-		this.mSoundPool = new SoundPool(pMaxSimultaneousStreams, AudioManager.STREAM_MUSIC, 0);
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	SoundPool getSoundPool() {
-		return this.mSoundPool;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	public float getMasterVolume() {
+		return this.mMasterVolume;
+	}
+
+	public void setMasterVolume(final float pMasterVolume) {
+		this.mMasterVolume = pMasterVolume;
+
+		final ArrayList<T> audioEntities = this.mAudioEntities;
+		for(int i = audioEntities.size() - 1; i >= 0; i--) {
+			final T audioEntity = audioEntities.get(i);
+
+			audioEntity.onMasterVolumeChanged(pMasterVolume);
+		}
+	}
+
+	public void add(final T pAudioEntity) {
+		this.mAudioEntities.add(pAudioEntity);
+	}
+
+	@Override
+	public void releaseAll() {
+		final ArrayList<T> audioEntities = this.mAudioEntities;
+		for(int i = audioEntities.size() - 1; i >= 0; i--) {
+			final T audioEntity = audioEntities.get(i);
+
+			audioEntity.stop();
+			audioEntity.release();
+		}
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	public void releaseAll() {
-		super.releaseAll();
-
-		this.mSoundPool.release();
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

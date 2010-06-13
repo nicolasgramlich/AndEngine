@@ -1,10 +1,12 @@
 package org.anddev.andengine.audio.sound;
 
+import org.anddev.andengine.audio.BaseAudioEntity;
+
 /**
  * @author Nicolas Gramlich
  * @since 13:22:15 - 11.03.2010
  */
-public class Sound {
+public class Sound extends BaseAudioEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -14,9 +16,8 @@ public class Sound {
 	// ===========================================================
 
 	private final int mSoundID;
-	private final SoundManager mSoundManager;
-	private float mLocalVolume = 1.0f;
 	private int mStreamID = 0;
+
 	private int mLoopCount = 0;
 	private float mRate = 1.0f;
 
@@ -24,14 +25,28 @@ public class Sound {
 	// Constructors
 	// ===========================================================
 
-	public Sound(final SoundManager pSoundManager, final int pSoundID) {
-		this.mSoundManager = pSoundManager;
+	Sound(final SoundManager pSoundManager, final int pSoundID) {
+		super(pSoundManager);
 		this.mSoundID = pSoundID;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public void setLoopCount(final int pLoopCount) {
+		this.mLoopCount = pLoopCount;
+		if(this.mStreamID != 0) {
+			this.getAudioManager().getSoundPool().setLoop(this.mStreamID, pLoopCount);
+		}
+	}
+
+	public void setRate(final float pRate) {
+		this.mRate  = pRate;
+		if(this.mStreamID != 0) {
+			this.getAudioManager().getSoundPool().setRate(this.mStreamID, pRate);
+		}
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -40,62 +55,61 @@ public class Sound {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void play() {
-		final float actualVolume = this.getActualVolume();
-		this.mStreamID = this.mSoundManager.getSoundPool().play(this.mSoundID, actualVolume, actualVolume, 1, this.mLoopCount, this.mRate);
+	
+	@Override
+	protected SoundManager getAudioManager() {
+		return (SoundManager)super.getAudioManager();
 	}
 
-	public void pause() {
-		if(this.mStreamID != 0) {
-			this.mSoundManager.getSoundPool().pause(this.mStreamID);
-		}
+	public void play() {
+		final float masterVolume = this.getMasterVolume();
+		final float leftVolume = this.mLeftVolume * masterVolume;
+		final float rightVolume = this.mRightVolume * masterVolume;
+		this.mStreamID = this.getAudioManager().getSoundPool().play(this.mSoundID, leftVolume, rightVolume, 1, this.mLoopCount, this.mRate);
 	}
 
 	public void stop() {
 		if(this.mStreamID != 0) {
-			this.mSoundManager.getSoundPool().stop(this.mStreamID);
+			this.getAudioManager().getSoundPool().stop(this.mStreamID);
 		}
 	}
 
 	public void resume() {
 		if(this.mStreamID != 0) {
-			this.mSoundManager.getSoundPool().resume(this.mStreamID);
+			this.getAudioManager().getSoundPool().resume(this.mStreamID);
 		}
 	}
 
-	public void setLooping() {
-		this.setLoopCount(-1);
-	}
-
-	public void setLoopCount(final int pLoopCount) {
-		this.mLoopCount = pLoopCount;
+	public void pause() {
 		if(this.mStreamID != 0) {
-			this.mSoundManager.getSoundPool().setLoop(this.mStreamID, pLoopCount);
+			this.getAudioManager().getSoundPool().pause(this.mStreamID);
 		}
 	}
-
-	public void setRate(final float pRate) {
-		this.mRate  = pRate;
-		if(this.mStreamID != 0) {
-			this.mSoundManager.getSoundPool().setRate(this.mStreamID, pRate);
-		}
+	
+	@Override
+	public void release() {
+		
 	}
 
-	public void setVolume(final float pVolume) {
-		this.mLocalVolume = pVolume;
+	public void setLooping(final boolean pLooping) {
+		this.setLoopCount((pLooping) ? -1 : 0);
+	}
+
+	@Override
+	public void setVolume(float pLeftVolume, float pRightVolume) {
+		super.setVolume(pLeftVolume, pRightVolume);
 		if(this.mStreamID != 0){
-			final float actualVolume = this.getActualVolume();
-			this.mSoundManager.getSoundPool().setVolume(this.mStreamID, actualVolume, actualVolume);
+			final float masterVolume = this.getMasterVolume();
+			final float leftVolume = this.mLeftVolume * masterVolume;
+			final float rightVolume = this.mRightVolume * masterVolume;
+
+			this.getAudioManager().getSoundPool().setVolume(this.mStreamID, leftVolume, rightVolume);
 		}
 	}
-
-	private float getActualVolume() {
-		return this.mLocalVolume * this.mSoundManager.getMasterVolume();
-	}
-
-	void onMasterVolumeChanged() {
-		this.setVolume(this.mLocalVolume);
+	
+	@Override
+	public void onMasterVolumeChanged(final float pMasterVolume) {
+		this.setVolume(this.mLeftVolume, this.mRightVolume);
 	}
 
 	// ===========================================================

@@ -3,6 +3,7 @@ package org.anddev.andengine.engine;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.audio.music.MusicManager;
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -61,6 +62,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	private final EngineOptions mEngineOptions;
 
 	private SoundManager mSoundManager;
+	private MusicManager mMusicManager;
 	private final TextureManager mTextureManager = new TextureManager();
 	private final FontManager mFontManager = new FontManager();
 
@@ -102,6 +104,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		
 		if(this.mEngineOptions.needsSound()) {
 			this.mSoundManager = new SoundManager();
+		}
+		
+		if(this.mEngineOptions.needsMusic()) {
+			this.mMusicManager = new MusicManager();
 		}
 		
 		if(this.mEngineOptions.hasLoadingScreen()) {
@@ -176,6 +182,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			return this.mSoundManager;
 		} else {
 			throw new IllegalStateException("To enable the SoundManager, check the EngineOptions!");
+		}
+	}
+	
+	public MusicManager getMusicManager() {
+		if(this.mMusicManager != null) {
+			return this.mMusicManager;
+		} else {
+			throw new IllegalStateException("To enable the MusicManager, check the EngineOptions!");
 		}
 	}
 

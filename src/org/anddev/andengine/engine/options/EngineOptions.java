@@ -23,21 +23,27 @@ public class EngineOptions {
 	private final Camera mCamera;
 	private final IResolutionPolicy mResolutionPolicy;
 	private final boolean mNeedsSound;
+	private final boolean mNeedsMusic;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsSound) {
-		this(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera, pNeedsSound, null);
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsAudio) {
+		this(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera, pNeedsAudio, pNeedsAudio, null);
+	}
+	
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsSound, final boolean pNeedsMusic) {
+		this(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera, pNeedsSound, pNeedsMusic, null);
 	}
 
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsSound, final ITextureSource pLoadingScreenTextureSource) {
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsSound, final boolean pNeedsMusic, final ITextureSource pLoadingScreenTextureSource) {
 		this.mFullscreen = pFullscreen;
 		this.mScreenOrientation = pScreenOrientation;
 		this.mResolutionPolicy = pResolutionPolicy;
 		this.mCamera = pCamera;
 		this.mNeedsSound = pNeedsSound;
+		this.mNeedsMusic = pNeedsMusic;
 		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
 	}
 
@@ -71,6 +77,10 @@ public class EngineOptions {
 
 	public boolean needsSound() {
 		return this.mNeedsSound;
+	}
+
+	public boolean needsMusic() {
+		return this.mNeedsMusic;
 	}
 
 	// ===========================================================

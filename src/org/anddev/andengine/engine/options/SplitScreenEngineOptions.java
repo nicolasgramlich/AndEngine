@@ -23,13 +23,18 @@ public class SplitScreenEngineOptions extends EngineOptions {
 	// Constructors
 	// ===========================================================
 
-	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsSound) {
-		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsSound);
+	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsAudio) {
+		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsAudio, pNeedsAudio);
+		this.mSecondCamera = pSecondCamera;
+	}
+	
+	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsSound, final boolean pNeedsMusic) {
+		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsSound, pNeedsMusic);
 		this.mSecondCamera = pSecondCamera;
 	}
 
-	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsSound, final ITextureSource pLoadingScreenTextureSource) {
-		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsSound, pLoadingScreenTextureSource);
+	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsSound, final boolean pNeedsMusic, final ITextureSource pLoadingScreenTextureSource) {
+		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsSound, pNeedsMusic, pLoadingScreenTextureSource);
 		this.mSecondCamera = pSecondCamera;
 	}
 

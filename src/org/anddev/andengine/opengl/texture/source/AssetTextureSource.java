@@ -76,6 +76,11 @@ public class AssetTextureSource implements ITextureSource {
 			return null;
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + "(" + this.mAssetPath + ")";
+	}
 
 	// ===========================================================
 	// Methods

@@ -65,6 +65,11 @@ public class ResourceTextureSource implements ITextureSource {
 	public Bitmap getBitmap() {
 		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID);
 	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + "(" + this.mDrawableResourceID + ")";
+	}
 
 	// ===========================================================
 	// Methods

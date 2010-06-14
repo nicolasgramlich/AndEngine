@@ -6,6 +6,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Bitmap;
@@ -116,8 +117,12 @@ public class Texture {
 			final TextureSourceWithLocation textureSource = textureSources.get(j);
 			if(textureSource != null) {
 				final Bitmap bmp = textureSource.getBitmap();
-				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
-				bmp.recycle();
+				if(bmp != null) {
+					GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
+					bmp.recycle();
+				} else {
+					Debug.e("Bitmap was null! TextureSource: " + textureSource.toString(), new IllegalArgumentException());
+				}
 			}
 		}
 	}
@@ -192,6 +197,11 @@ public class Texture {
 		@Override
 		public Bitmap getBitmap() {
 			return this.mTextureSource.getBitmap();
+		}
+		
+		@Override
+		public String toString() {
+			return this.mTextureSource.toString();
 		}
 	}
 }

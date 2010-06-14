@@ -3,7 +3,9 @@ package org.anddev.andengine.engine;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.audio.music.MusicManager;
+import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -98,6 +100,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	// ===========================================================
 
 	public Engine(final EngineOptions pEngineOptions) {
+		TextureRegionFactory.setAssetBasePath("");
+		SoundFactory.setAssetBasePath("");
+		MusicFactory.setAssetBasePath("");
+		
 		this.mEngineOptions = pEngineOptions;
 
 		BufferObjectManager.clear();

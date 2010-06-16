@@ -40,11 +40,11 @@ public class FontFactory {
 	// Methods
 	// ===========================================================
 		
-	public Font create(final Texture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+	public static Font create(final Texture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
 		return new Font(pTexture, pTypeface, pSize, pAntiAlias, pColor);
 	}
 	
-	public Font createFromAsset(final Texture pTexture, final Context pContext, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor) {
+	public static Font createFromAsset(final Texture pTexture, final Context pContext, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor) {
 		return new Font(pTexture, Typeface.createFromAsset(pContext.getAssets(), FontFactory.sAssetBasePath + pAssetPath), pSize, pAntiAlias, pColor);
 	}
 

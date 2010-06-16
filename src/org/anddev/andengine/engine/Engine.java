@@ -17,6 +17,7 @@ import org.anddev.andengine.entity.handler.timer.ITimerCallback;
 import org.anddev.andengine.entity.handler.timer.TimerHandler;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
+import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureFactory;
@@ -103,6 +104,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		TextureRegionFactory.setAssetBasePath("");
 		SoundFactory.setAssetBasePath("");
 		MusicFactory.setAssetBasePath("");
+		FontFactory.setAssetBasePath("");
 		
 		this.mEngineOptions = pEngineOptions;
 

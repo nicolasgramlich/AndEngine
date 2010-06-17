@@ -79,6 +79,10 @@ public class Layer extends BaseEntity {
 	public void addEntity(final IEntity pEntity) {
 		this.mEntities.add(pEntity);
 	}
+	
+	public boolean removeEntity(final IEntity pEntity) {
+		return this.mEntities.remove(pEntity);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

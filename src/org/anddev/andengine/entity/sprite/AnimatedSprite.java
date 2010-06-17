@@ -24,7 +24,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 
 	private long mAnimationProgress;
 	private long mAnimationDuration;
-	private long[] mFrameEnds;
+	private long[] mFrameEndsInNanoseconds;
 
 	private int mFirstTileIndex;
 	private int mInitialLoopCount;
@@ -94,7 +94,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 
 	private int calculateCurrentFrameIndex() {
 		final long animationProgress = this.mAnimationProgress;
-		final long[] frameEnds = this.mFrameEnds;
+		final long[] frameEnds = this.mFrameEndsInNanoseconds;
 		final int frameCount = frameEnds.length;
 		for(int i = 0; i < frameCount; i++) {
 			if(frameEnds[i] > animationProgress) {
@@ -171,9 +171,9 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		this.mFirstTileIndex = pFirstTileIndex;
 
 		MathUtils.arraySumInternal(pFrameDurations, NANOSECONDSPERMILLISECOND);
-		this.mFrameEnds = pFrameDurations;
+		this.mFrameEndsInNanoseconds = pFrameDurations;
 
-		final long lastFrameEnd = this.mFrameEnds[this.mFrameEnds.length - 1];
+		final long lastFrameEnd = this.mFrameEndsInNanoseconds[this.mFrameEndsInNanoseconds.length - 1];
 		this.mAnimationDuration = lastFrameEnd;
 
 		this.mAnimationProgress = 0;

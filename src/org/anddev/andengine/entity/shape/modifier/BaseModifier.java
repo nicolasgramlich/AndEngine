@@ -84,7 +84,7 @@ public abstract class BaseModifier implements IShapeModifier {
 
 	@Override
 	public final void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
-		if(!this.isFinished()){
+		if(!this.mFinished){
 			if(this.mTotalSecondsElapsed == 0) {
 				this.onManagedInitializeShape(pShape);
 			}

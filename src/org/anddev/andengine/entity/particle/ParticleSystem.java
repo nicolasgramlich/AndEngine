@@ -9,6 +9,8 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.entity.primitives.Rectangle;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
+import android.util.FloatMath;
+
 /**
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
@@ -109,7 +111,7 @@ public class ParticleSystem extends Rectangle {
 
 		this.mParticlesDueToSpawn += newParticlesThisFrame;
 
-		final int particlesToSpawnThisFrame = Math.min(this.mMaxParticles - this.mParticles.size(), (int)Math.floor(this.mParticlesDueToSpawn));
+		final int particlesToSpawnThisFrame = Math.min(this.mMaxParticles - this.mParticles.size(), (int)FloatMath.floor(this.mParticlesDueToSpawn));
 		this.mParticlesDueToSpawn -= particlesToSpawnThisFrame;
 
 		for(int i = 0; i < particlesToSpawnThisFrame; i++){

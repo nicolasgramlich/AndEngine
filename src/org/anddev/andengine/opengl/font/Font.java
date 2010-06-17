@@ -17,6 +17,7 @@ import android.graphics.Typeface;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.opengl.GLUtils;
+import android.util.FloatMath;
 
 /**
  * @author Nicolas Gramlich
@@ -73,8 +74,8 @@ public class Font {
 		this.mBackgroundPaint.setStyle(Style.FILL);
 
 		this.mFontMetrics = this.mPaint.getFontMetrics();
-		this.mLineHeight = (int) Math.ceil(Math.abs(this.mFontMetrics.ascent) + Math.abs(this.mFontMetrics.descent));
-		this.mLineGap = (int) (Math.ceil(this.mFontMetrics.leading));
+		this.mLineHeight = (int) FloatMath.ceil(Math.abs(this.mFontMetrics.ascent) + Math.abs(this.mFontMetrics.descent));
+		this.mLineGap = (int) (FloatMath.ceil(this.mFontMetrics.leading));
 	}
 
 	// ===========================================================
@@ -91,7 +92,7 @@ public class Font {
 
 	private int getLetterAdvance(final char pCharacter) {
 		this.mPaint.getTextWidths(String.valueOf(pCharacter), this.mTemporaryTextWidthFetchers);
-		return (int) (Math.ceil(this.mTemporaryTextWidthFetchers[0]));
+		return (int) (FloatMath.ceil(this.mTemporaryTextWidthFetchers[0]));
 	}
 
 	private Bitmap getLetterBitmap(final char pCharacter) {

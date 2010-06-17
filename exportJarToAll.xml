@@ -15,6 +15,7 @@
 	
 	<property name="targetlist" value="../AndEngineAugmentedRealityExtension/lib/andengine.jar,
 	../AndEngineExamples/lib/andengine.jar,
+	../AndEngineMinimalWorkingExample/lib/andengine.jar,
 	../AndEngineAdsenseMobileExtension/lib/andengine.jar,
 	../AndEnginePhysicsBox2DExtension/lib/andengine.jar,
 	../AndEngineLiveWallpaperExtension/lib/andengine.jar,

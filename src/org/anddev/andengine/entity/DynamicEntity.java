@@ -19,7 +19,7 @@ public abstract class DynamicEntity extends StaticEntity {
 	protected float mVelocityX = 0;
 	protected float mVelocityY = 0;
 
-	protected float mAngle = 0;
+	protected float mRotation = 0;
 
 	protected float mScale = 1;
 	private boolean mUpdatePhysicsSelf = true;
@@ -86,12 +86,12 @@ public abstract class DynamicEntity extends StaticEntity {
 		this.mAccelerationY = pAccelerationY;
 	}
 
-	public float getAngle() {
-		return this.mAngle;
+	public float getRotation() {
+		return this.mRotation;
 	}
 
-	public void setAngle(final float pAngle) {
-		this.mAngle = pAngle;
+	public void setRotation(final float pRotation) {
+		this.mRotation = pRotation;
 	}
 
 	public boolean isUpdatePhysicsSelf() {
@@ -137,7 +137,7 @@ public abstract class DynamicEntity extends StaticEntity {
 		this.mAccelerationY = 0;
 		this.mVelocityX = 0;
 		this.mVelocityY = 0;
-		this.mAngle = 0;
+		this.mRotation = 0;
 	}
 
 	public void accelerate(final float pAccelerationX, final float pAccelerationY) {

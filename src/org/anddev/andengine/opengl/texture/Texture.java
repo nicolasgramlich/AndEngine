@@ -45,7 +45,7 @@ public class Texture {
 	}
 
 	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) {
-		assert(MathUtils.isPowerOfTwo(pWidth) && MathUtils.isPowerOfTwo(pHeight));
+		assert(MathUtils.isPowerOfTwo(pWidth) && MathUtils.isPowerOfTwo(pHeight)) : "Width and Height must be a power of 2!";
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;

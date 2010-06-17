@@ -139,13 +139,13 @@ public class Line extends Shape {
 	@Override
 	protected void applyRotation(final GL10 pGL) {
 		// TODO Offset needs to be taken into account.
-		final float angle = this.mAngle;
-		if(angle != 0) {
+		final float rotation = this.mRotation;
+		if(rotation != 0) {
 			final float halfDeltaX = this.getBaseWidth() / 2;
 			final float halfDeltaY = this.getBaseHeight() / 2;
 
 			pGL.glTranslatef(halfDeltaX, halfDeltaY, 0);
-			pGL.glRotatef(angle, 0, 0, 1);
+			pGL.glRotatef(rotation, 0, 0, 1);
 			pGL.glTranslatef(-halfDeltaX, -halfDeltaY, 0);
 		}
 	}

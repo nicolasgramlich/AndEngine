@@ -20,8 +20,10 @@ public class ParallelModifier implements IShapeModifier {
 
 	private IModifierListener mModiferListener;
 	private final IShapeModifier[] mShapeModifiers;
-	private boolean mExpired;
-	private float mDuration;
+
+	private final float mDuration;
+
+	private boolean mFinished;
 
 	// ===========================================================
 	// Constructors
@@ -32,7 +34,7 @@ public class ParallelModifier implements IShapeModifier {
 	}
 
 	public ParallelModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) {
-		assert(pShapeModifiers.length > 0);
+		assert(pShapeModifiers.length > 0) : "pShapeModifiers must not be empty!";
 
 		this.mModiferListener = pModiferListener;
 		this.mShapeModifiers = pShapeModifiers;
@@ -44,10 +46,10 @@ public class ParallelModifier implements IShapeModifier {
 
 	public ParallelModifier(final ParallelModifier pSequenceModifier) {
 		this.mModiferListener = pSequenceModifier.mModiferListener;
-		
+
 		final IShapeModifier[] otherShapeModifiers = pSequenceModifier.mShapeModifiers;
 		this.mShapeModifiers = new IShapeModifier[otherShapeModifiers.length];
-		
+
 		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
 			shapeModifiers[i] = otherShapeModifiers[i].clone();
@@ -57,7 +59,7 @@ public class ParallelModifier implements IShapeModifier {
 		this.mDuration = shapeModifierWithLongestDuration.getDuration();
 		shapeModifierWithLongestDuration.setModiferListener(new InternalModifierListener());
 	}
-	
+
 	@Override
 	public ParallelModifier clone(){
 		return new ParallelModifier(this);
@@ -67,14 +69,15 @@ public class ParallelModifier implements IShapeModifier {
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isExpired() {
-		return this.mExpired;
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	@Override
+	public boolean isFinished() {
+		return this.mFinished;
 	}
 
-	public void setExpired(final boolean pExpired) {
-		this.mExpired = pExpired;
-	}
-	
 	@Override
 	public float getDuration() {
 		return this.mDuration;
@@ -88,10 +91,6 @@ public class ParallelModifier implements IShapeModifier {
 		this.mModiferListener = pModiferListener;
 	}
 
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-
 	@Override
 	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
 		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
@@ -102,7 +101,7 @@ public class ParallelModifier implements IShapeModifier {
 
 	@Override
 	public void reset() {
-		this.mExpired = false;
+		this.mFinished = false;
 
 		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
@@ -117,11 +116,11 @@ public class ParallelModifier implements IShapeModifier {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	private class InternalModifierListener implements IModifierListener  {
 		@Override
-		public void onModifierFinished(IShapeModifier pShapeModifier, Shape pShape) {
-			ParallelModifier.this.setExpired(true);
+		public void onModifierFinished(final IShapeModifier pShapeModifier, final Shape pShape) {
+			ParallelModifier.this.mFinished = true;
 			if(ParallelModifier.this.mModiferListener != null) {
 				ParallelModifier.this.mModiferListener.onModifierFinished(ParallelModifier.this, pShape);
 			}

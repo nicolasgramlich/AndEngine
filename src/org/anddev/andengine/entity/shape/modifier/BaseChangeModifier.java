@@ -1,12 +1,13 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.entity.shape.IModifierListener;
 import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 15:34:35 - 17.06.2010
  */
-public class RotateByModifier extends BaseChangeModifier {
+public abstract class BaseChangeModifier extends BaseModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,21 +16,24 @@ public class RotateByModifier extends BaseChangeModifier {
 	// Fields
 	// ===========================================================
 
+	private final float mValueChangePerSecond;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotateByModifier(final float pDuration, final float pRotation) {
-		super(pDuration, pRotation);
+	public BaseChangeModifier(final float pDuration, final float pValueChange) {
+		this(pDuration, pValueChange, null);
 	}
 
-	public RotateByModifier(final RotateByModifier pRotateByModifier) {
-		super(pRotateByModifier);
+	public BaseChangeModifier(final float pDuration, final float pValueChange, final IModifierListener pModiferListener) {
+		super(pDuration, pModiferListener);
+		this.mValueChangePerSecond = pValueChange / pDuration;
 	}
 
-	@Override
-	public RotateByModifier clone(){
-		return new RotateByModifier(this);
+	public BaseChangeModifier(final BaseChangeModifier pByModifier) {
+		super(pByModifier);
+		this.mValueChangePerSecond = pByModifier.mValueChangePerSecond;
 	}
 
 	// ===========================================================
@@ -40,9 +44,16 @@ public class RotateByModifier extends BaseChangeModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onChangeValue(final Shape pShape, final float pValue);
+
 	@Override
-	protected void onChangeValue(final Shape pShape, final float pValue) {
-		pShape.setRotation(pShape.getRotation() + pValue);
+	protected void onManagedInitializeShape(final Shape pShape) {
+
+	}
+
+	@Override
+	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+		this.onChangeValue(pShape, this.mValueChangePerSecond * pSecondsElapsed);
 	}
 
 	// ===========================================================

@@ -46,17 +46,18 @@ public abstract class BaseModifier implements IShapeModifier {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public boolean isFinished() {
-		return this.mFinished;
-	}
-
-	public void setFinished(final boolean pFinished) {
-		this.mFinished = pFinished;
-	}
 
 	protected float getTotalSecondsElapsed() {
 		return this.mTotalSecondsElapsed;
+	}
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	@Override
+	public boolean isFinished() {
+		return this.mFinished;
 	}
 
 	public IModifierListener getModiferListener() {
@@ -66,15 +67,11 @@ public abstract class BaseModifier implements IShapeModifier {
 	public void setModiferListener(final IModifierListener pModiferListener) {
 		this.mModiferListener = pModiferListener;
 	}
-	
+
 	public float getDuration() {
 		return this.mDuration;
 	}
 
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-	
 	@Override
 	public abstract IShapeModifier clone();
 
@@ -101,7 +98,7 @@ public abstract class BaseModifier implements IShapeModifier {
 
 			if(this.mDuration != -1 && this.mTotalSecondsElapsed >= this.mDuration) {
 				this.mTotalSecondsElapsed = this.mDuration;
-				this.setFinished(true);
+				this.mFinished = true;
 				if(this.mModiferListener != null) {
 					this.mModiferListener.onModifierFinished(this, pShape);
 				}

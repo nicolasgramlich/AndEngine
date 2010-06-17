@@ -19,10 +19,14 @@ public class SequenceModifier implements IShapeModifier {
 	// ===========================================================
 
 	private IModifierListener mModiferListener;
-	private final IShapeModifier[] mShapeModifiers;
-	private int mCurrentShapeModifier;
-	private boolean mExpired;
+	private ISubSequenceModifierListener mSubSequenceModiferListener;
+
+	private final IShapeModifier[] mSubSequenceShapeModifiers;
+	private int mCurrentSubSequenceShapeModifier;
+
 	private final float mDuration;
+
+	private boolean mFinished;
 
 	// ===========================================================
 	// Constructors
@@ -33,10 +37,15 @@ public class SequenceModifier implements IShapeModifier {
 	}
 
 	public SequenceModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) {
-		assert(pShapeModifiers.length > 0);
+		this(pModiferListener, null, pShapeModifiers);
+	}
+
+	public SequenceModifier(final IModifierListener pModiferListener, final ISubSequenceModifierListener pSubSequenceModifierListener, final IShapeModifier ... pShapeModifiers) {
+		assert(pShapeModifiers.length > 0) : "pShapeModifiers must not be empty!";
 
 		this.mModiferListener = pModiferListener;
-		this.mShapeModifiers = pShapeModifiers;
+		this.mSubSequenceModiferListener = pSubSequenceModifierListener;
+		this.mSubSequenceShapeModifiers = pShapeModifiers;
 
 		this.mDuration = ShapeModifierUtils.getSequenceDurationOfShapeModifier(pShapeModifiers);
 
@@ -45,13 +54,14 @@ public class SequenceModifier implements IShapeModifier {
 
 	public SequenceModifier(final SequenceModifier pSequenceModifier) {
 		this.mModiferListener = pSequenceModifier.mModiferListener;
+		this.mSubSequenceModiferListener = pSequenceModifier.mSubSequenceModiferListener;
 
 		this.mDuration = pSequenceModifier.mDuration;
 
-		final IShapeModifier[] otherShapeModifiers = pSequenceModifier.mShapeModifiers;
-		this.mShapeModifiers = new IShapeModifier[otherShapeModifiers.length];
+		final IShapeModifier[] otherShapeModifiers = pSequenceModifier.mSubSequenceShapeModifiers;
+		this.mSubSequenceShapeModifiers = new IShapeModifier[otherShapeModifiers.length];
 
-		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
+		final IShapeModifier[] shapeModifiers = this.mSubSequenceShapeModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
 			shapeModifiers[i] = otherShapeModifiers[i].clone();
 		}
@@ -68,20 +78,26 @@ public class SequenceModifier implements IShapeModifier {
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isExpired() {
-		return this.mExpired;
-	}
-
-	public void setExpired(final boolean pExpired) {
-		this.mExpired = pExpired;
+	@Override
+	public boolean isFinished() {
+		return this.mFinished;
 	}
 
 	public IModifierListener getModiferListener() {
 		return this.mModiferListener;
 	}
 
+	@Override
 	public void setModiferListener(final IModifierListener pModiferListener) {
 		this.mModiferListener = pModiferListener;
+	}
+
+	public ISubSequenceModifierListener getSubSequenceModiferListener() {
+		return this.mSubSequenceModiferListener;
+	}
+
+	public void setSubSequenceModiferListener(final ISubSequenceModifierListener pSubSequenceModiferListener) {
+		this.mSubSequenceModiferListener = pSubSequenceModiferListener;
 	}
 
 	@Override
@@ -95,17 +111,17 @@ public class SequenceModifier implements IShapeModifier {
 
 	@Override
 	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
-		if(!this.isExpired()) {
-			this.mShapeModifiers[this.mCurrentShapeModifier].onUpdateShape(pSecondsElapsed, pShape);
+		if(!this.mFinished) {
+			this.mSubSequenceShapeModifiers[this.mCurrentSubSequenceShapeModifier].onUpdateShape(pSecondsElapsed, pShape);
 		}
 	}
 
 	@Override
 	public void reset() {
-		this.mCurrentShapeModifier = 0;
-		this.mExpired = false;
+		this.mCurrentSubSequenceShapeModifier = 0;
+		this.mFinished = false;
 
-		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
+		final IShapeModifier[] shapeModifiers = this.mSubSequenceShapeModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
 			shapeModifiers[i].reset();
 		}
@@ -119,15 +135,27 @@ public class SequenceModifier implements IShapeModifier {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
+	public interface ISubSequenceModifierListener {
+		public void onSubSequenceFinished(final IShapeModifier pShapeModifier, final Shape pShape, final int pIndex);
+	}
+
 	private class InternalModifierListener implements IModifierListener  {
 		@Override
 		public void onModifierFinished(final IShapeModifier pShapeModifier, final Shape pShape) {
 			final SequenceModifier wrappingSequenceModifier = SequenceModifier.this;
-			wrappingSequenceModifier.mCurrentShapeModifier++;
-			if(wrappingSequenceModifier.mCurrentShapeModifier < wrappingSequenceModifier.mShapeModifiers.length) {
-				wrappingSequenceModifier.mShapeModifiers[wrappingSequenceModifier.mCurrentShapeModifier].setModiferListener(this);
+
+			wrappingSequenceModifier.mCurrentSubSequenceShapeModifier++;
+
+			if(wrappingSequenceModifier.mCurrentSubSequenceShapeModifier < wrappingSequenceModifier.mSubSequenceShapeModifiers.length) {
+				final IShapeModifier nextSubSequenceModifier = wrappingSequenceModifier.mSubSequenceShapeModifiers[wrappingSequenceModifier.mCurrentSubSequenceShapeModifier];
+				nextSubSequenceModifier.setModiferListener(this);
+
+				if(wrappingSequenceModifier.mSubSequenceModiferListener != null) {
+					wrappingSequenceModifier.mSubSequenceModiferListener.onSubSequenceFinished(pShapeModifier, pShape, wrappingSequenceModifier.mCurrentSubSequenceShapeModifier);
+				}
 			} else {
-				wrappingSequenceModifier.setExpired(true);
+				wrappingSequenceModifier.mFinished = true;
+
 				if(wrappingSequenceModifier.mModiferListener != null) {
 					wrappingSequenceModifier.mModiferListener.onModifierFinished(wrappingSequenceModifier, pShape);
 				}

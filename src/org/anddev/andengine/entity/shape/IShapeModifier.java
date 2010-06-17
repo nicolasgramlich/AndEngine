@@ -16,9 +16,11 @@ public interface IShapeModifier {
 	// ===========================================================
 
 	public void reset();
-	
+
+	public boolean isFinished();
+
 	public IShapeModifier clone();
-	
+
 	public float getDuration();
 
 	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape);

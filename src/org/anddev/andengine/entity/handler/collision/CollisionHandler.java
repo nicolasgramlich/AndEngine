@@ -32,9 +32,9 @@ public class CollisionHandler implements IUpdateHandler {
 	}
 
 	public CollisionHandler(final ICollisionCallback pCollisionCallback, final Shape pCheckShape, final ArrayList<? extends Shape> pTargetStaticEntities) {
-		assert (pCollisionCallback != null);
-		assert (pCheckShape != null);
-		assert (pTargetStaticEntities != null);
+		assert (pCollisionCallback != null) : "pCollisionCallback must not be null!";
+		assert (pCheckShape != null) : "pCheckShape must not be null!";
+		assert (pTargetStaticEntities != null) : "pTargetStaticEntities must not be null!";
 
 		this.mCollisionCallback = pCollisionCallback;
 		this.mCheckShape = pCheckShape;

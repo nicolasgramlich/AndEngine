@@ -40,6 +40,10 @@ public class Debug implements Constants {
 	public static void d(final String pMessage){
 		Log.d(DEBUGTAG, pMessage);
 	}
+	
+	public static void w(final Throwable pThrowable){
+		Debug.w("Warning", pThrowable);
+	}
 
 	public static void w(final String pMessage, final Throwable pThrowable){
 		if(pThrowable == null){
@@ -49,6 +53,10 @@ public class Debug implements Constants {
 			Log.w(DEBUGTAG, pMessage, pThrowable);
 		}
 	}
+
+	public static void e(final Throwable pThrowable){
+		Debug.e("Error", pThrowable);
+	}	
 
 	public static void e(final String pMessage, final Throwable pThrowable){
 		if(pThrowable == null){

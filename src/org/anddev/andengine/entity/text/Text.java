@@ -44,6 +44,10 @@ public class Text extends RectangularShape {
 	// Constructors
 	// ===========================================================
 
+	public Text(final float pX, final float pY, final Font pFont, final String pText) {
+		this(pX, pY, pFont, pText, HorizontalAlign.LEFT);
+	}
+
 	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
 		super(pX, pY, 0, 0, new TextVertexBuffer(pText, pHorizontalAlign, GL11.GL_STATIC_DRAW));
 

@@ -48,6 +48,8 @@ public class Scene extends BaseEntity {
 	private IOnAreaTouchListener mOnAreaTouchListener;
 
 	private boolean mBackgroundEnabled = true;
+	
+	private boolean mOnAreaTouchTraversalBackToFront = true;
 
 	// ===========================================================
 	// Constructors
@@ -189,6 +191,14 @@ public class Scene extends BaseEntity {
 	public void clearChildScene() {
 		this.mChildScene = null;
 	}
+	
+	public void setOnAreaTouchTraversalBackToFront() {
+		this.mOnAreaTouchTraversalBackToFront = true;
+	}
+	
+	public void setOnAreaTouchTraversalFrontToBack() {
+		this.mOnAreaTouchTraversalBackToFront = false;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -227,10 +237,21 @@ public class Scene extends BaseEntity {
 				final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
 				final int touchAreaCount = touchAreas.size();
 				if(touchAreaCount > 0) {
-					for(int i = 0; i < touchAreaCount; i++) {
-						final ITouchArea touchArea = touchAreas.get(i);
-						if(touchArea.contains(pSceneMotionEvent.getX(), pSceneMotionEvent.getY())) {
-							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+					final float sceneMotionEventX = pSceneMotionEvent.getX();
+					final float sceneMotionEventY = pSceneMotionEvent.getY();
+					if(this.mOnAreaTouchTraversalBackToFront) {
+						for(int i = 0; i < touchAreaCount; i++) {
+							final ITouchArea touchArea = touchAreas.get(i);
+							if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
+								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+							}
+						}
+					} else {
+						for(int i = touchAreaCount - 1; i >= 0; i--) {
+							final ITouchArea touchArea = touchAreas.get(i);
+							if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
+								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+							}
 						}
 					}
 				}

@@ -13,8 +13,8 @@
 	
 	<property name="binfile" value="bin/andengine.jar" />
 	
-	<property name="targetlist" value="../AndEngineAugmentedRealityExtension/lib/andengine.jar,
-	../MauAndMau/lib/andengine.jar,
+	<property name="targetlist" value="../AndCards/lib/andengine.jar,
+	../AndEngineAugmentedRealityExtension/lib/andengine.jar,
 	../AndEngineExamples/lib/andengine.jar,
 	../AndEngineMinimalWorkingExample/lib/andengine.jar,
 	../AndEngineAdsenseMobileExtension/lib/andengine.jar,

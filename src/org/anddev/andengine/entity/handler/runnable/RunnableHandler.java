@@ -50,7 +50,7 @@ public class RunnableHandler implements IUpdateHandler {
 	// Methods
 	// ===========================================================
 	
-	public void addRunnable(final Runnable pRunnable) {
+	public void postRunnable(final Runnable pRunnable) {
 		this.mRunnables.add(pRunnable);
 	}
 

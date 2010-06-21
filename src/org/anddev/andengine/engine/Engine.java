@@ -37,6 +37,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -95,6 +96,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	private final State mThreadLocker = new State();
 
 	private boolean mIsMethodTracing;
+
+	private Vibrator mVibrator;
 
 	// ===========================================================
 	// Constructors
@@ -185,7 +188,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		return this.mOrientationData;
 	}
 	
-	public SoundManager getSoundManager() {
+	public SoundManager getSoundManager() throws IllegalStateException {
 		if(this.mSoundManager != null) {
 			return this.mSoundManager;
 		} else {
@@ -193,7 +196,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		}
 	}
 	
-	public MusicManager getMusicManager() {
+	public MusicManager getMusicManager() throws IllegalStateException {
 		if(this.mMusicManager != null) {
 			return this.mMusicManager;
 		} else {
@@ -451,6 +454,19 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		this.mSecondsElapsedTotal += secondsElapsed;
 		
 		return secondsElapsed;
+	}
+	
+	public boolean enableVibrator(final Context pContext) {
+		this.mVibrator = (Vibrator)pContext.getSystemService(Context.VIBRATOR_SERVICE);
+		return this.mVibrator != null;
+	}
+	
+	public void vibrate(final long pMilliseconds) throws IllegalStateException {
+		if(this.mVibrator != null) {
+			this.mVibrator.vibrate(pMilliseconds);
+		} else {
+			throw new IllegalStateException("You need to enable the Vibrator before you can use it!");
+		}
 	}
 
 	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener) {

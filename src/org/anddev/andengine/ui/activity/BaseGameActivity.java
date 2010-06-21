@@ -140,13 +140,17 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		window.requestFeature(Window.FEATURE_NO_TITLE);
 	}
+	
+	protected void enableVibrator() {
+		this.mEngine.enableVibrator(this);
+	}
 
-	protected void enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
-		this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
+	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
+		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
 	}
 	
-	protected void enableOrientationSensor(final IOrientationListener pOrientationListener) {
-		this.mEngine.enableOrientationSensor(this, pOrientationListener);
+	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener) {
+		return this.mEngine.enableOrientationSensor(this, pOrientationListener);
 	}
 
 	// ===========================================================

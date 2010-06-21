@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.util.IEntityMatcher;
+
 
 /**
  * @author Nicolas Gramlich
@@ -82,6 +84,28 @@ public class Layer extends BaseEntity {
 	
 	public boolean removeEntity(final IEntity pEntity) {
 		return this.mEntities.remove(pEntity);
+	}
+	
+	public boolean removeEntity(final IEntityMatcher pEntityMatcher) {
+		final ArrayList<IEntity> entities = this.mEntities;
+		for(int i = entities.size() - 1; i >= 0; i--) {
+			if(pEntityMatcher.matches(entities.get(i))) {
+				entities.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public IEntity findEntity(final IEntityMatcher pEntityMatcher) {
+		final ArrayList<IEntity> entities = this.mEntities;
+		for(int i = entities.size() - 1; i >= 0; i--) {
+			final IEntity entity = entities.get(i);
+			if(pEntityMatcher.matches(entity)) {
+				return entity;
+			}
+		}
+		return null;
 	}
 
 	// ===========================================================

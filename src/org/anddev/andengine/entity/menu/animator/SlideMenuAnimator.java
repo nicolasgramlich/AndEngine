@@ -73,7 +73,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 					break;
 			}
 			
-			pMenuItems.get(i).addShapeModifier(new MoveModifier(DURATION, -maximumWidth, baseX + offsetX, baseY + offsetY, baseY + offsetY));
+			menuItem.addShapeModifier(new MoveModifier(DURATION, -maximumWidth, baseX + offsetX, baseY + offsetY, baseY + offsetY));
 
 			offsetY += menuItem.getHeight() + this.mMenuItemSpacing;
 		}

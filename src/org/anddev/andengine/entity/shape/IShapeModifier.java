@@ -18,6 +18,7 @@ public interface IShapeModifier {
 	public void reset();
 
 	public boolean isFinished();
+	public boolean isRemoveWhenFinished();
 
 	public IShapeModifier clone();
 

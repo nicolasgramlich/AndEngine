@@ -24,6 +24,7 @@ public class ParallelModifier implements IShapeModifier {
 	private final float mDuration;
 
 	private boolean mFinished;
+	private boolean mRemoveWhenFinished = true;
 
 	// ===========================================================
 	// Constructors
@@ -69,6 +70,10 @@ public class ParallelModifier implements IShapeModifier {
 	// Getter & Setter
 	// ===========================================================
 
+	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
+		this.mRemoveWhenFinished = pRemoveWhenFinished;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -76,6 +81,11 @@ public class ParallelModifier implements IShapeModifier {
 	@Override
 	public boolean isFinished() {
 		return this.mFinished;
+	}
+	
+	@Override
+	public final boolean isRemoveWhenFinished() {
+		return this.mRemoveWhenFinished;
 	}
 
 	@Override

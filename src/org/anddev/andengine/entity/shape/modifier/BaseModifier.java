@@ -18,6 +18,7 @@ public abstract class BaseModifier implements IShapeModifier {
 	// ===========================================================
 
 	private boolean mFinished;
+	private boolean mRemoveWhenFinished = true;
 	private float mTotalSecondsElapsed;
 	protected final float mDuration;
 	private IModifierListener mModiferListener;
@@ -51,6 +52,10 @@ public abstract class BaseModifier implements IShapeModifier {
 		return this.mTotalSecondsElapsed;
 	}
 
+	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
+		this.mRemoveWhenFinished = pRemoveWhenFinished;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -58,6 +63,11 @@ public abstract class BaseModifier implements IShapeModifier {
 	@Override
 	public boolean isFinished() {
 		return this.mFinished;
+	}
+	
+	@Override
+	public final boolean isRemoveWhenFinished() {
+		return this.mRemoveWhenFinished;
 	}
 
 	public IModifierListener getModiferListener() {

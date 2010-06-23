@@ -119,6 +119,10 @@ public class PathModifier implements IShapeModifier {
 	public Path getPath() {
 		return this.mPath;
 	}
+	
+	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
+		this.mSequenceModifier.setRemoveWhenFinished(pRemoveWhenFinished);
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -127,6 +131,11 @@ public class PathModifier implements IShapeModifier {
 	@Override
 	public boolean isFinished() {
 		return this.mSequenceModifier.isFinished();
+	}
+	
+	@Override
+	public final boolean isRemoveWhenFinished() {
+		return this.mSequenceModifier.isRemoveWhenFinished();
 	}
 
 	@Override

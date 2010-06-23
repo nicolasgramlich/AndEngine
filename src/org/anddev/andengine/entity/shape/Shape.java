@@ -9,6 +9,7 @@ import org.anddev.andengine.entity.DynamicEntity;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
+import org.anddev.andengine.util.Debug;
 
 /**
  * @author Nicolas Gramlich
@@ -115,7 +116,7 @@ public abstract class Shape extends DynamicEntity {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.applyShapeModifiers(pSecondsElapsed);
+		this.updateShapeModifiers(pSecondsElapsed);
 	}
 
 	protected abstract void onUpdateVertexBuffer();
@@ -183,12 +184,17 @@ public abstract class Shape extends DynamicEntity {
 		this.mShapeModifiers.remove(pShapeModifier);
 	}
 
-	private void applyShapeModifiers(final float pSecondsElapsed) {
+	private void updateShapeModifiers(final float pSecondsElapsed) {
 		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
 		final int ShapeModifierCount = shapeModifiers.size();
 		if(ShapeModifierCount > 0) {
 			for(int i = ShapeModifierCount - 1; i >= 0; i--) {
-				shapeModifiers.get(i).onUpdateShape(pSecondsElapsed, this);
+				final IShapeModifier shapeModifier = shapeModifiers.get(i);
+				shapeModifier.onUpdateShape(pSecondsElapsed, this);
+				if(shapeModifier.isFinished() && shapeModifier.isRemoveWhenFinished()) { // TODO <-- could be combined into one function.
+					Debug.d("Removed ShapeModifier.");
+					shapeModifiers.remove(i);
+				}
 			}
 		}
 	}

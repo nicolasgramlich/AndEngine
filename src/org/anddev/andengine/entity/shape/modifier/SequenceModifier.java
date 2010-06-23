@@ -27,6 +27,7 @@ public class SequenceModifier implements IShapeModifier {
 	private final float mDuration;
 
 	private boolean mFinished;
+	private boolean mRemoveWhenFinished = true;
 
 	// ===========================================================
 	// Constructors
@@ -78,9 +79,35 @@ public class SequenceModifier implements IShapeModifier {
 	// Getter & Setter
 	// ===========================================================
 
+	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
+		this.mRemoveWhenFinished = pRemoveWhenFinished;
+	}
+
+	public ISubSequenceModifierListener getSubSequenceModiferListener() {
+		return this.mSubSequenceModiferListener;
+	}
+
+	public void setSubSequenceModiferListener(final ISubSequenceModifierListener pSubSequenceModiferListener) {
+		this.mSubSequenceModiferListener = pSubSequenceModiferListener;
+	}
+	
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	@Override
+	public float getDuration() {
+		return this.mDuration;
+	}
+
 	@Override
 	public boolean isFinished() {
 		return this.mFinished;
+	}
+	
+	@Override
+	public final boolean isRemoveWhenFinished() {
+		return this.mRemoveWhenFinished;
 	}
 
 	public IModifierListener getModiferListener() {
@@ -91,23 +118,6 @@ public class SequenceModifier implements IShapeModifier {
 	public void setModiferListener(final IModifierListener pModiferListener) {
 		this.mModiferListener = pModiferListener;
 	}
-
-	public ISubSequenceModifierListener getSubSequenceModiferListener() {
-		return this.mSubSequenceModiferListener;
-	}
-
-	public void setSubSequenceModiferListener(final ISubSequenceModifierListener pSubSequenceModiferListener) {
-		this.mSubSequenceModiferListener = pSubSequenceModiferListener;
-	}
-
-	@Override
-	public float getDuration() {
-		return this.mDuration;
-	}
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
 
 	@Override
 	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {

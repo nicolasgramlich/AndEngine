@@ -53,7 +53,9 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 	@Override
 	public void buildAnimations(final ArrayList<MenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
 		for(int i = 0; i < pMenuItems.size(); i++) {
-			pMenuItems.get(i).addShapeModifier(new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO));
+			final AlphaModifier alphaModifier = new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO);
+			alphaModifier.setRemoveWhenFinished(false);
+			pMenuItems.get(i).addShapeModifier(alphaModifier);
 		}
 	}
 

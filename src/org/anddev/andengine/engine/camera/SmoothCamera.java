@@ -5,7 +5,7 @@ package org.anddev.andengine.engine.camera;
  * @author Nicolas Gramlich
  * @since 22:11:17 - 25.03.2010
  */
-public class SmoothCamera extends Camera {
+public class SmoothCamera extends ZoomCamera {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,21 +16,27 @@ public class SmoothCamera extends Camera {
 
 	private final float mMaxVelocityX;
 	private final float mMaxVelocityY;
+	private final float mMaxZoomFactorChange;
 
 	private float mTargetCenterX;
 	private float mTargetCenterY;
+
+	private float mTargetZoomFactor;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SmoothCamera(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY, final float pMaxVelocityX, final float pMaxVelocityY) {
+	public SmoothCamera(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY, final float pMaxVelocityX, final float pMaxVelocityY, final float pMaxZoomFactorChange) {
 		super(pMinX, pMaxX, pMinY, pMaxY);
 		this.mMaxVelocityX = pMaxVelocityX;
 		this.mMaxVelocityY = pMaxVelocityY;
+		this.mMaxZoomFactorChange = pMaxZoomFactorChange;
 
 		this.mTargetCenterX = this.getCenterX();
 		this.mTargetCenterY = this.getCenterY();
+		
+		this.mTargetZoomFactor = 1.0f;
 	}
 
 	// ===========================================================
@@ -43,37 +49,67 @@ public class SmoothCamera extends Camera {
 		this.mTargetCenterY = pCenterY;
 	}
 
+	@Override
+	public void setZoomFactor(final float pZoomFactor) {
+		this.mTargetZoomFactor = pZoomFactor;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
+		/* Update center. */
 		final float currentCenterX = this.getCenterX();
 		final float currentCenterY = this.getCenterY();
+		
+		final float targetCenterX = this.mTargetCenterX;
+		final float targetCenterY = this.mTargetCenterY;
+		
+		if(currentCenterX != targetCenterX || currentCenterY != targetCenterY) {
+			final float diffX = targetCenterX - currentCenterX;
+			final float dX = this.cutToMaxVelocityX(diffX, pSecondsElapsed);
+	
+			final float diffY = targetCenterY - currentCenterY;
+			final float dY = this.cutToMaxVelocityY(diffY, pSecondsElapsed);
+	
+			super.setCenter(currentCenterX + dX, currentCenterY + dY);
+		}
 
-		final float diffX = this.mTargetCenterX - currentCenterX;
-		final float dX = this.cutToMaxVelocityX(diffX, pSecondsElapsed);
-
-		final float diffY = this.mTargetCenterY - currentCenterY;
-		final float dY = this.cutToMaxVelocityY(diffY, pSecondsElapsed);
-
-		super.setCenter(currentCenterX + dX, currentCenterY + dY);
+		/* Update zoom. */
+		final float currentZoom = this.getZoomFactor();
+		
+		final float targetZoomFactor = this.mTargetZoomFactor;
+		
+		if(currentZoom != targetZoomFactor) {
+			final float diffZoom = targetZoomFactor - currentZoom;
+			final float dZoom = this.cutToMaxZoomFactorChange(diffZoom, pSecondsElapsed);
+			super.setZoomFactor(currentZoom + dZoom);
+		}
 	}
 
 	private float cutToMaxVelocityX(final float pValue, final float pSecondsElapsed) {
 		if(pValue > 0) {
-			return Math.min(this.mMaxVelocityX * pSecondsElapsed, pValue);
+			return Math.min(pValue, this.mMaxVelocityX * pSecondsElapsed);
 		} else {
-			return Math.max(-this.mMaxVelocityX * pSecondsElapsed, pValue);
+			return Math.max(pValue, -this.mMaxVelocityX * pSecondsElapsed);
 		}
 	}
 
 	private float cutToMaxVelocityY(final float pValue, final float pSecondsElapsed) {
 		if(pValue > 0) {
-			return Math.min(this.mMaxVelocityY * pSecondsElapsed, pValue);
+			return Math.min(pValue, this.mMaxVelocityY * pSecondsElapsed);
 		} else {
-			return Math.max(-this.mMaxVelocityY * pSecondsElapsed, pValue);
+			return Math.max(pValue, -this.mMaxVelocityY * pSecondsElapsed);
+		}
+	}
+	
+	private float cutToMaxZoomFactorChange(final float pValue, final float pSecondsElapsed) {
+		if(pValue > 0) {
+			return Math.min(pValue, this.mMaxZoomFactorChange * pSecondsElapsed);
+		} else {
+			return Math.max(pValue, -this.mMaxZoomFactorChange * pSecondsElapsed);
 		}
 	}
 

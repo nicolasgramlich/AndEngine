@@ -389,6 +389,14 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
+//			if(secondsElapsed < 0.033f) {
+//				try {
+//					final int sleepTimeMilliseconds = (int)((0.033f - secondsElapsed) * 1000);
+//					Thread.sleep(sleepTimeMilliseconds);
+//				} catch (InterruptedException e) {
+//					Debug.e("UpdateThread interrupted from sleep.", e);
+//				}
+//			}
 		} else {
 			this.mThreadLocker.notifyCanDraw();
 			this.mThreadLocker.waitUntilCanUpdate();

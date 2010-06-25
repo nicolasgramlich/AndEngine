@@ -7,6 +7,8 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.entity.handler.runnable.RunnableHandler;
 import org.anddev.andengine.util.IEntityMatcher;
 
+import android.speech.tts.TextToSpeech.Engine;
+
 
 /**
  * @author Nicolas Gramlich
@@ -84,10 +86,11 @@ public class Layer extends BaseEntity {
 	}
 	
 	/**
-	 * <b><i>WARNING:</i> This function should be called from an
-	 * {@link RunnableHandler}, because otherwise it may throw an
-	 * {@link ArrayIndexOutOfBoundsException} in the Update-Thread or the
-	 * GL-Thread!</b>
+	 * <b><i>WARNING:</i> This function should be called from within
+	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered 
+	 * to a {@link Scene} or the {@link Engine} itself, because otherwise 
+	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the 
+	 * Update-Thread or the GL-Thread!</b>
 	 */
 	public boolean removeEntity(final IEntity pEntity) {
 		return this.mEntities.remove(pEntity);

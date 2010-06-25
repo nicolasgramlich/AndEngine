@@ -1,5 +1,6 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.util;
 
+import org.anddev.andengine.entity.IUpdateHandler;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.constants.TimeConstants;
 

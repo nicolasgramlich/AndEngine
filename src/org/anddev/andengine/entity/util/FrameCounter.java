@@ -1,13 +1,12 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.util;
 
-import org.anddev.andengine.util.Debug;
-import org.anddev.andengine.util.constants.TimeConstants;
+import org.anddev.andengine.entity.IUpdateHandler;
 
 /**
  * @author Nicolas Gramlich
- * @since 19:52:31 - 09.03.2010
+ * @since 11:00:55 - 22.06.2010
  */
-public class FrameLengthLogger implements IUpdateHandler, TimeConstants {
+public class FrameCounter implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,22 +15,19 @@ public class FrameLengthLogger implements IUpdateHandler, TimeConstants {
 	// Fields
 	// ===========================================================
 
-	private int mFramesLeft;
-
-	private final float[] mFrameLengths;
+	private int mFrames;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public FrameLengthLogger(final int pFrameCount) {
-		this.mFramesLeft = pFrameCount;
-		this.mFrameLengths = new float[pFrameCount];
-	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public int getFrames() {
+		return this.mFrames;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -39,23 +35,12 @@ public class FrameLengthLogger implements IUpdateHandler, TimeConstants {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		this.mFramesLeft--;
-		
-		final float[] frameLengths = this.mFrameLengths;
-		if(this.mFramesLeft >= 0) {
-			frameLengths[this.mFramesLeft] = pSecondsElapsed;
-		} else {
-			for(int i = frameLengths.length - 1; i >= 0; i--) {
-				Debug.d("Elapsed: " + frameLengths[i]);
-			}
-			
-			throw new RuntimeException();
-		}
+		this.mFrames++;
 	}
-	
+
 	@Override
 	public void reset() {
-		
+		this.mFrames = 0;
 	}
 
 	// ===========================================================

@@ -2,8 +2,8 @@ package org.anddev.andengine.entity.menu.animator;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.entity.HorizontalAlign;
 import org.anddev.andengine.entity.menu.MenuItem;
+import org.anddev.andengine.util.HorizontalAlign;
 
 /**
  * @author Nicolas Gramlich

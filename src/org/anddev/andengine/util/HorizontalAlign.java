@@ -1,10 +1,16 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.util;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:00:55 - 22.06.2010
+ * @since 10:47:33 - 11.05.2010
  */
-public class FrameCounter implements IUpdateHandler {
+public enum HorizontalAlign {
+	// ===========================================================
+	// Elements
+	// ===========================================================
+
+	LEFT, CENTER, RIGHT;
+
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -12,8 +18,6 @@ public class FrameCounter implements IUpdateHandler {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private int mFrames;
 
 	// ===========================================================
 	// Constructors
@@ -23,23 +27,9 @@ public class FrameCounter implements IUpdateHandler {
 	// Getter & Setter
 	// ===========================================================
 
-	public int getFrames() {
-		return this.mFrames;
-	}
-
 	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
+	// Methods from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		this.mFrames++;
-	}
-
-	@Override
-	public void reset() {
-		this.mFrames = 0;
-	}
 
 	// ===========================================================
 	// Methods

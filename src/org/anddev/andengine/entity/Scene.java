@@ -4,10 +4,6 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.input.touch.IOnAreaTouchListener;
-import org.anddev.andengine.input.touch.IOnSceneTouchListener;
-import org.anddev.andengine.input.touch.ITouchArea;
-
 import android.view.MotionEvent;
 
 /**
@@ -48,7 +44,7 @@ public class Scene extends BaseEntity {
 	private IOnAreaTouchListener mOnAreaTouchListener;
 
 	private boolean mBackgroundEnabled = true;
-	
+
 	private boolean mOnAreaTouchTraversalBackToFront = true;
 
 	// ===========================================================
@@ -63,7 +59,7 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public float getSecondsElapsedTotal() {
 		return this.mSecondsElapsedTotal;
 	}
@@ -97,7 +93,7 @@ public class Scene extends BaseEntity {
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 	}
-	
+
 	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
@@ -191,11 +187,11 @@ public class Scene extends BaseEntity {
 	public void clearChildScene() {
 		this.mChildScene = null;
 	}
-	
+
 	public void setOnAreaTouchTraversalBackToFront() {
 		this.mOnAreaTouchTraversalBackToFront = true;
 	}
-	
+
 	public void setOnAreaTouchTraversalFrontToBack() {
 		this.mOnAreaTouchTraversalBackToFront = false;
 	}
@@ -219,7 +215,7 @@ public class Scene extends BaseEntity {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		this.mSecondsElapsedTotal += pSecondsElapsed;
-		
+
 		final Scene childScene = this.mChildScene;
 		if(childScene == null || !this.mChildSceneModalUpdate) {
 			this.updateLayers(pSecondsElapsed);
@@ -263,7 +259,7 @@ public class Scene extends BaseEntity {
 				return false;
 			}
 		} else {
-			return onChildSceneTouchEvent(pSceneMotionEvent);
+			return this.onChildSceneTouchEvent(pSceneMotionEvent);
 		}
 	}
 
@@ -349,4 +345,40 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static interface ITouchArea {
+		// ===========================================================
+		// Final Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public boolean contains(final float pX, final float pY);
+	}
+
+	public static interface IOnAreaTouchListener {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public boolean onAreaTouched(final ITouchArea pTouchArea, final MotionEvent pSceneMotionEvent);
+	}
+
+	public static interface IOnSceneTouchListener {
+		// ===========================================================
+		// Final Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public boolean onSceneTouchEvent(final Scene pScene, final MotionEvent pSceneMotionEvent);
+	}
 }

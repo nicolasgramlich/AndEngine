@@ -2,9 +2,9 @@ package org.anddev.andengine.entity.text;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.HorizontalAlign;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.vertex.TextVertexBuffer;
+import org.anddev.andengine.util.HorizontalAlign;
 
 /**
  * @author Nicolas Gramlich

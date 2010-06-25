@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.CameraScene;
 import org.anddev.andengine.entity.Scene;
-import org.anddev.andengine.input.touch.IOnAreaTouchListener;
-import org.anddev.andengine.input.touch.ITouchArea;
+import org.anddev.andengine.entity.Scene.IOnAreaTouchListener;
 
 import android.view.MotionEvent;
 

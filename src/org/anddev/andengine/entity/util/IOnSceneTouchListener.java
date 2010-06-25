@@ -1,4 +1,4 @@
-package org.anddev.andengine.input.touch;
+package org.anddev.andengine.entity.util;
 
 import org.anddev.andengine.entity.Scene;
 

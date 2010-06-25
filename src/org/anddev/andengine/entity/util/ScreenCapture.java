@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,6 +6,7 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 

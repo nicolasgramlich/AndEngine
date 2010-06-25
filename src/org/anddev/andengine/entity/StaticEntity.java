@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity;
 
-import org.anddev.andengine.input.touch.ITouchArea;
+import org.anddev.andengine.entity.Scene.ITouchArea;
 
 /**
  * @author Nicolas Gramlich

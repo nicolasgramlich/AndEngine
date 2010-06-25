@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.entity.handler.runnable.RunnableHandler;
 import org.anddev.andengine.util.IEntityMatcher;
 
 
@@ -82,6 +83,12 @@ public class Layer extends BaseEntity {
 		this.mEntities.add(pEntity);
 	}
 	
+	/**
+	 * <b><i>WARNING:</i> This function should be called from an
+	 * {@link RunnableHandler}, because otherwise it may throw an
+	 * {@link ArrayIndexOutOfBoundsException} in the Update-Thread or the
+	 * GL-Thread!</b>
+	 */
 	public boolean removeEntity(final IEntity pEntity) {
 		return this.mEntities.remove(pEntity);
 	}

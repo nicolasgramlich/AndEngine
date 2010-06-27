@@ -359,7 +359,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		if(this.mEngineOptions.hasLoadingScreen()){
 			this.registerPreFrameHandler(new TimerHandler(LOADING_SCREEN_DURATION, new ITimerCallback() {
 				@Override
-				public void onTimePassed() {
+				public void onTimePassed(final TimerHandler pTimerHandler) {
+					Engine.this.unregisterPreFrameHandler(pTimerHandler);
 					Engine.this.setScene(pScene);
 				}
 			}));

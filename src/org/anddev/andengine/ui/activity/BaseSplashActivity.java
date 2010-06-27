@@ -95,7 +95,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 		splashScene.registerPreFrameHandler(new TimerHandler(splashDuration, new ITimerCallback() {
 			@Override
-			public void onTimePassed() {
+			public void onTimePassed(final TimerHandler pTimerHandler) {
 				BaseSplashActivity.this.startActivity(new Intent(BaseSplashActivity.this, BaseSplashActivity.this.getFollowUpActivity()));
 				BaseSplashActivity.this.finish();
 			}

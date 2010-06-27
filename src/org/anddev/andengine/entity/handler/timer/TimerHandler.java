@@ -43,7 +43,7 @@ public class TimerHandler implements IUpdateHandler {
 			this.mSecondsPassed += pSecondsElapsed;
 			if(this.mSecondsPassed >= this.mTimerSeconds) {
 				this.mCallbackTriggered = true;
-				this.mTimerCallback.onTimePassed();
+				this.mTimerCallback.onTimePassed(this);
 			}
 		}
 	}

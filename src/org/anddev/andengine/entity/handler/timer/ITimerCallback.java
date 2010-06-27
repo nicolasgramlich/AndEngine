@@ -13,5 +13,5 @@ public interface ITimerCallback {
 	// Methods
 	// ===========================================================
 
-	public void onTimePassed();
+	public void onTimePassed(final TimerHandler pTimerHandler);
 }

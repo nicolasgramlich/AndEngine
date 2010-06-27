@@ -45,6 +45,8 @@ public class GLHelper {
 	private static boolean sEnableTextures = false;
 	private static boolean sEnableTexCoordArray = false;
 	private static boolean sEnableVertexArray = false;
+
+	private static float sLineWidth = 1;
 	
 	private static float sRed = -1;
 	private static float sGreen = -1;
@@ -80,6 +82,8 @@ public class GLHelper {
 		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
 		GLHelper.disableVertexArray(pGL);
+		
+		GLHelper.sLineWidth = 1;
 		
 		GLHelper.sRed = -1;
 		GLHelper.sGreen = -1;
@@ -300,6 +304,13 @@ public class GLHelper {
 			GLHelper.sCurrentSourceBlendMode = pSourceBlendMode;
 			GLHelper.sCurrentDestionationBlendMode = pDestinationBlendMode;
 			pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
+		}
+	}
+	
+	public static void lineWidth(final GL10 pGL, final float pLineWidth) {
+		if(GLHelper.sLineWidth  != pLineWidth) {
+			GLHelper.sLineWidth = pLineWidth;
+			pGL.glLineWidth(pLineWidth);
 		}
 	}
 

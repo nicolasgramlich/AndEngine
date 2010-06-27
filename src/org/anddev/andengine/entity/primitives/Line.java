@@ -17,27 +17,43 @@ public class Line extends Shape {
 	// Constants
 	// ===========================================================
 
+	private static final float LINEWIDTH_DEFAULT = 1.0f;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private float mX2;
 	private float mY2;
+	private float mLineWidth;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
+		this(pX1, pY1, pX2, pY2, LINEWIDTH_DEFAULT);
+	}
+
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
 		super(pX1, pY1, new LineVertexBuffer(GL11.GL_STATIC_DRAW));
 		this.mX2 = pX2;
 		this.mY2 = pY2;
+		this.mLineWidth = pLineWidth;
 		this.updateVertexBuffer();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public float getLineWidth() {
+		return this.mLineWidth;
+	}
+
+	public void setLineWidth(final float pLineWidth) {
+		this.mLineWidth = pLineWidth;
+	}
 
 	@Override
 	public float getBaseHeight() {
@@ -103,6 +119,7 @@ public class Line extends Shape {
 		super.onInitDraw(pGL);
 		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
+		GLHelper.lineWidth(pGL, this.mLineWidth);
 	}
 
 	@Override

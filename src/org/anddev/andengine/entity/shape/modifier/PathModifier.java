@@ -41,7 +41,9 @@ public class PathModifier implements IShapeModifier {
 	public PathModifier(final float pDuration, final Path pPath, final IModifierListener pModiferListener, final IPathModifierListener pPathModifierListener) {
 		final int pathSize = pPath.getSize();
 
-		assert(pathSize >= 2) : "Path needs at least 2 waypoints!";
+		if (pathSize < 2) {
+			throw new IllegalArgumentException("Path needs at least 2 waypoints!");
+		}
 
 		this.mPath = pPath;
 		this.mModifierListener = pModiferListener;

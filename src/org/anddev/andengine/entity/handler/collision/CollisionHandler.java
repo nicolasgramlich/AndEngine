@@ -27,14 +27,20 @@ public class CollisionHandler implements IUpdateHandler {
 	// Constructors
 	// ===========================================================
 
-	public CollisionHandler(final ICollisionCallback pCollisionCallback, final Shape pCheckShape, final Shape pTargetShape) {
+	public CollisionHandler(final ICollisionCallback pCollisionCallback, final Shape pCheckShape, final Shape pTargetShape) throws IllegalArgumentException {
 		this(pCollisionCallback, pCheckShape, ListUtils.toList(pTargetShape));
 	}
 
-	public CollisionHandler(final ICollisionCallback pCollisionCallback, final Shape pCheckShape, final ArrayList<? extends Shape> pTargetStaticEntities) {
-		assert (pCollisionCallback != null) : "pCollisionCallback must not be null!";
-		assert (pCheckShape != null) : "pCheckShape must not be null!";
-		assert (pTargetStaticEntities != null) : "pTargetStaticEntities must not be null!";
+	public CollisionHandler(final ICollisionCallback pCollisionCallback, final Shape pCheckShape, final ArrayList<? extends Shape> pTargetStaticEntities) throws IllegalArgumentException {
+		if (pCollisionCallback == null) {
+			throw new IllegalArgumentException( "pCollisionCallback must not be null!");
+		}
+		if (pCheckShape == null) {
+			throw new IllegalArgumentException( "pCheckShape must not be null!");
+		}
+		if (pTargetStaticEntities == null) {
+			throw new IllegalArgumentException( "pTargetStaticEntities must not be null!");
+		}
 
 		this.mCollisionCallback = pCollisionCallback;
 		this.mCheckShape = pCheckShape;

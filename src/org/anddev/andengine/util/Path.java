@@ -35,8 +35,10 @@ public class Path {
 		this.mLengthChanged = false;
 	}
 
-	public Path(final float[] pCoordinatesX, final float[] pCoordinatesY) {
-		assert(pCoordinatesX.length == pCoordinatesY.length) : "Coordinate-Arrays must have the same length.";
+	public Path(final float[] pCoordinatesX, final float[] pCoordinatesY) throws IllegalArgumentException {
+		if (pCoordinatesX.length != pCoordinatesY.length) {
+			throw new IllegalArgumentException("Coordinate-Arrays must have the same length.");
+		}
 
 		this.mCoordinatesX = pCoordinatesX;
 		this.mCoordinatesY = pCoordinatesY;

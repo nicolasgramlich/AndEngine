@@ -33,16 +33,18 @@ public class SequenceModifier implements IShapeModifier {
 	// Constructors
 	// ===========================================================
 
-	public SequenceModifier(final IShapeModifier ... pShapeModifiers) {
+	public SequenceModifier(final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
 		this(null, pShapeModifiers);
 	}
 
-	public SequenceModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) {
+	public SequenceModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
 		this(pModiferListener, null, pShapeModifiers);
 	}
 
-	public SequenceModifier(final IModifierListener pModiferListener, final ISubSequenceModifierListener pSubSequenceModifierListener, final IShapeModifier ... pShapeModifiers) {
-		assert(pShapeModifiers.length > 0) : "pShapeModifiers must not be empty!";
+	public SequenceModifier(final IModifierListener pModiferListener, final ISubSequenceModifierListener pSubSequenceModifierListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
+		if (pShapeModifiers.length == 0) {
+			throw new IllegalArgumentException("pShapeModifiers must not be empty!");
+		}
 
 		this.mModiferListener = pModiferListener;
 		this.mSubSequenceModiferListener = pSubSequenceModifierListener;

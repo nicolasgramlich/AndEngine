@@ -40,12 +40,23 @@ public class Texture {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 */
 	public Texture(final int pWidth, final int pHeight) {
 		this(pWidth, pHeight, TextureOptions.DEFAULT);
 	}
-
-	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) {
-		assert(MathUtils.isPowerOfTwo(pWidth) && MathUtils.isPowerOfTwo(pHeight)) : "Width and Height must be a power of 2!";
+	
+	/**
+	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureOptions the (quality) settings of the Texture.
+	 */
+	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) throws IllegalArgumentException {
+		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
+			throw new IllegalArgumentException("Width and Height of a Texture must be a power of 2!");
+		}
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;

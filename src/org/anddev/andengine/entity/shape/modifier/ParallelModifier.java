@@ -30,12 +30,14 @@ public class ParallelModifier implements IShapeModifier {
 	// Constructors
 	// ===========================================================
 
-	public ParallelModifier(final IShapeModifier ... pShapeModifiers) {
+	public ParallelModifier(final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
 		this(null, pShapeModifiers);
 	}
 
-	public ParallelModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) {
-		assert(pShapeModifiers.length > 0) : "pShapeModifiers must not be empty!";
+	public ParallelModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
+		if(pShapeModifiers.length == 0) {
+			throw new IllegalArgumentException("pShapeModifiers must not be empty!");
+		}
 
 		this.mModiferListener = pModiferListener;
 		this.mShapeModifiers = pShapeModifiers;

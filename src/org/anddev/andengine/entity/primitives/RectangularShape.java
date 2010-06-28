@@ -81,12 +81,12 @@ public abstract class RectangularShape extends Shape {
 
 	@Override
 	public float getCenterX() {
-		return this.mX + this.getWidth() / 2;
+		return this.mX + this.getWidth() * 0.5f;
 	}
 
 	@Override
 	public float getCenterY() {
-		return this.mY + this.getHeight() / 2;
+		return this.mY + this.getHeight() * 0.5f;
 	}
 
 	public void setBaseSize() {
@@ -123,8 +123,8 @@ public abstract class RectangularShape extends Shape {
 		// TODO Offset needs to be taken into account.
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			final float halfWidth = this.getBaseWidth() / 2;
-			final float halfHeight = this.getBaseHeight() / 2;
+			final float halfWidth = this.getBaseWidth() * 0.5f;
+			final float halfHeight = this.getBaseHeight() * 0.5f;
 
 			pGL.glTranslatef(halfWidth, halfHeight, 0);
 			pGL.glRotatef(rotation, 0, 0, 1);
@@ -136,8 +136,8 @@ public abstract class RectangularShape extends Shape {
 	protected void applyScale(final GL10 pGL) {
 		final float scale = this.mScale;
 		if(scale != 1) {
-			final float halfWidth = this.getBaseWidth() / 2;
-			final float halfHeight = this.getBaseHeight() / 2;
+			final float halfWidth = this.getBaseWidth() * 0.5f;
+			final float halfHeight = this.getBaseHeight() * 0.5f;
 
 			pGL.glTranslatef(halfWidth, halfHeight, 0);
 			pGL.glScalef(scale, scale, 1);

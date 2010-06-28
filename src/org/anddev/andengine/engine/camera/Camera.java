@@ -48,7 +48,7 @@ public class Camera implements IUpdateHandler {
 	public static Camera createFromDisplayMetrics(final float pCenterX, final float pCenterY, final DisplayMetrics pDisplayMetrics) {
 		final float width = pDisplayMetrics.widthPixels;
 		final float height = pDisplayMetrics.widthPixels;
-		return new Camera(pCenterX - width / 2, pCenterY - height / 2, width, height);
+		return new Camera(pCenterX - width * 0.5f, pCenterY - height * 0.5f, width, height);
 	}
 
 	// ===========================================================
@@ -80,11 +80,11 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public float getCenterX() {
-		return this.mMinX + (this.mMaxX - this.mMinX) / 2;
+		return this.mMinX + (this.mMaxX - this.mMinX) * 0.5f;
 	}
 
 	public float getCenterY() {
-		return this.mMinY + (this.mMaxY - this.mMinY) / 2;
+		return this.mMinY + (this.mMaxY - this.mMinY) * 0.5f;
 	}
 
 	public void setCenter(final float pCenterX, final float pCenterY) {
@@ -168,7 +168,7 @@ public class Camera implements IUpdateHandler {
 		GLU.gluOrtho2D(pGL, 0, width, height, 0);
 
 		if(this.mFlipped) {
-			this.rotateHalfAround(pGL, width / 2, height / 2);
+			this.rotateHalfAround(pGL, width * 0.5f, height * 0.5f);
 		}
 	}
 

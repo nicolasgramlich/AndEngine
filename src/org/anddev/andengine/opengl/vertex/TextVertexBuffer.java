@@ -60,10 +60,10 @@ public class TextVertexBuffer extends VertexBuffer {
 			int lineX;
 			switch(this.mHorizontalAlign) {
 				case RIGHT:
-					lineX = pMaximumLineWidth -pWidths[lineIndex];
+					lineX = pMaximumLineWidth - pWidths[lineIndex];
 					break;
 				case CENTER:
-					lineX = (pMaximumLineWidth - pWidths[lineIndex]) / 2;
+					lineX = (pMaximumLineWidth - pWidths[lineIndex]) >> 1;
 					break;
 				case LEFT:
 				default:

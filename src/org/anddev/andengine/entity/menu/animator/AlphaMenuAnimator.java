@@ -52,7 +52,8 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 
 	@Override
 	public void buildAnimations(final ArrayList<MenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
-		for(int i = 0; i < pMenuItems.size(); i++) {
+		final int menuItemCount = pMenuItems.size();
+		for(int i = 0; i < menuItemCount; i++) {
 			final AlphaModifier alphaModifier = new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO);
 			alphaModifier.setRemoveWhenFinished(false);
 			pMenuItems.get(i).addShapeModifier(alphaModifier);
@@ -64,13 +65,14 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 		final float maximumWidth = this.getMaximumWidth(pMenuItems);
 		final float overallHeight = this.getOverallHeight(pMenuItems);
 
-		final float baseX = pCameraWidth / 2 - maximumWidth / 2;
-		final float baseY = pCameraHeight / 2 - overallHeight / 2;
+		final float baseX = (pCameraWidth - maximumWidth) * 0.5f;
+		final float baseY = (pCameraHeight - overallHeight) * 0.5f;
 
 		final float menuItemSpacing = this.mMenuItemSpacing;
 		
 		float offsetY = 0;
-		for(int i = 0; i < pMenuItems.size(); i++) {
+		final int menuItemCount = pMenuItems.size();
+		for(int i = 0; i < menuItemCount; i++) {
 			final MenuItem menuItem = pMenuItems.get(i);
 
 			final float offsetX;
@@ -83,7 +85,7 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 					break;
 				case CENTER:
 				default:
-					offsetX = (maximumWidth - menuItem.getWidthScaled()) / 2;
+					offsetX = (maximumWidth - menuItem.getWidthScaled()) * 0.5f;
 					break;
 			}
 			menuItem.setPosition(baseX + offsetX , baseY + offsetY);

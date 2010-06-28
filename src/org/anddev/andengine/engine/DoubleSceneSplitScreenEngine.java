@@ -90,7 +90,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	@Override
 	protected void onDrawScene(final GL10 pGL) {
 		final int surfaceWidth = this.mSurfaceWidth;
-		final int surfaceWidthHalf = surfaceWidth / 2;
+		final int surfaceWidthHalf = surfaceWidth >> 1;
 
 		final int surfaceHeight = this.mSurfaceHeight;
 
@@ -125,7 +125,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
-		if(pMotionEvent.getX() <= this.mSurfaceWidth / 2) {
+		if(pMotionEvent.getX() <= this.mSurfaceWidth >> 1) {
 			return this.getFirstCamera();
 		} else {
 			return this.getSecondCamera();
@@ -134,7 +134,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected Scene getSceneFromSurfaceMotionEvent(MotionEvent pMotionEvent) {
-		if(pMotionEvent.getX() <= this.mSurfaceWidth / 2) {
+		if(pMotionEvent.getX() <= this.mSurfaceWidth >> 1) {
 			return this.getFirstScene();
 		} else {
 			return this.getSecondScene();
@@ -167,7 +167,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected void convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
-		final int surfaceWidthHalf = this.mSurfaceWidth / 2;
+		final int surfaceWidthHalf = this.mSurfaceWidth >> 1;
 
 		if(pCamera == this.getFirstCamera()) {
 			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);

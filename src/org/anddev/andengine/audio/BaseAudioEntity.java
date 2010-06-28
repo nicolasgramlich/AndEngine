@@ -52,7 +52,7 @@ public abstract class BaseAudioEntity implements IAudioEntity {
 
 	@Override
 	public float getVolume() {
-		return (this.mLeftVolume + this.mRightVolume) / 2;
+		return (this.mLeftVolume + this.mRightVolume) * 0.5f;
 	}
 
 	@Override

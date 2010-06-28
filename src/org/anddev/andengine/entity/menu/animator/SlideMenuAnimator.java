@@ -52,11 +52,12 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 		final float maximumWidth = this.getMaximumWidth(pMenuItems);
 		final float overallHeight = this.getOverallHeight(pMenuItems);
 
-		final float baseX = pCameraWidth / 2 - maximumWidth / 2;
-		final float baseY = pCameraHeight / 2 - overallHeight / 2;
+		final float baseX = (pCameraWidth - maximumWidth) * 0.5f;
+		final float baseY = (pCameraHeight - overallHeight) * 0.5f;
 
 		float offsetY = 0;
-		for(int i = 0; i < pMenuItems.size(); i++) {
+		final int menuItemCount = pMenuItems.size();
+		for(int i = 0; i < menuItemCount; i++) {
 			final MenuItem menuItem = pMenuItems.get(i);
 			
 			final float offsetX;
@@ -69,7 +70,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 					break;
 				case CENTER:
 				default:
-					offsetX = (maximumWidth - menuItem.getWidthScaled()) / 2;
+					offsetX = (maximumWidth - menuItem.getWidthScaled()) * 0.5f;
 					break;
 			}
 			
@@ -86,12 +87,13 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 		final float maximumWidth = this.getMaximumWidth(pMenuItems);
 		final float overallHeight = this.getOverallHeight(pMenuItems);
 
-		final float baseY = pCameraHeight / 2 - overallHeight / 2;
+		final float baseY = (pCameraHeight - overallHeight) * 0.5f;
 
 		final float menuItemSpacing = this.mMenuItemSpacing;
 
 		float offsetY = 0;
-		for(int i = 0; i < pMenuItems.size(); i++) {
+		final int menuItemCount = pMenuItems.size();
+		for(int i = 0; i < menuItemCount; i++) {
 			final MenuItem menuItem = pMenuItems.get(i);
 
 			menuItem.setPosition(-maximumWidth, baseY + offsetY);

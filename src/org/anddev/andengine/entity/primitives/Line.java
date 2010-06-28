@@ -106,12 +106,12 @@ public class Line extends Shape {
 
 	@Override
 	public float getCenterX() {
-		return (this.mX + this.mX2) / 2;
+		return (this.mX + this.mX2) * 0.5f;
 	}
 
 	@Override
 	public float getCenterY() {
-		return (this.mY + this.mY2) / 2;
+		return (this.mY + this.mY2) * 0.5f;
 	}
 
 	@Override
@@ -158,8 +158,8 @@ public class Line extends Shape {
 		// TODO Offset needs to be taken into account.
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			final float halfDeltaX = this.getBaseWidth() / 2;
-			final float halfDeltaY = this.getBaseHeight() / 2;
+			final float halfDeltaX = this.getBaseWidth() * 0.5f;
+			final float halfDeltaY = this.getBaseHeight() * 0.5f;
 
 			pGL.glTranslatef(halfDeltaX, halfDeltaY, 0);
 			pGL.glRotatef(rotation, 0, 0, 1);
@@ -171,8 +171,8 @@ public class Line extends Shape {
 	protected void applyScale(final GL10 pGL) {
 		final float scale = this.mScale;
 		if(scale != 1) {
-			final float halfDeltaX = this.getBaseWidth() / 2;
-			final float halfDeltaY = this.getBaseHeight() / 2;
+			final float halfDeltaX = this.getBaseWidth() * 0.5f;
+			final float halfDeltaY = this.getBaseHeight() * 0.5f;
 
 			pGL.glTranslatef(halfDeltaX, halfDeltaY, 0);
 			pGL.glScalef(scale, scale, 1);

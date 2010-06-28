@@ -95,6 +95,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this, this.mEngine);
+		this.mRenderSurfaceView.setEGLConfigChooser(false);
 		this.mRenderSurfaceView.applyRenderer();
 
 		this.setContentView(this.mRenderSurfaceView, createSurfaceViewLayoutParams());

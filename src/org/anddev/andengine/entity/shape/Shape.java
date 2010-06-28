@@ -9,7 +9,6 @@ import org.anddev.andengine.entity.DynamicEntity;
 import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
-import org.anddev.andengine.util.Debug;
 
 /**
  * @author Nicolas Gramlich
@@ -192,7 +191,6 @@ public abstract class Shape extends DynamicEntity {
 				final IShapeModifier shapeModifier = shapeModifiers.get(i);
 				shapeModifier.onUpdateShape(pSecondsElapsed, this);
 				if(shapeModifier.isFinished() && shapeModifier.isRemoveWhenFinished()) { // TODO <-- could be combined into one function.
-					Debug.d("Removed ShapeModifier.");
 					shapeModifiers.remove(i);
 				}
 			}

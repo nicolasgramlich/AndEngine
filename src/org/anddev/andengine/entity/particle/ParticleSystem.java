@@ -37,6 +37,8 @@ public class ParticleSystem extends Rectangle {
 
 	private float mParticlesDueToSpawn;
 	private final int mMaxParticles;
+	private int mParticleModifierCount;
+	private int mParticleInitializerCount;
 
 	// ===========================================================
 	// Constructors
@@ -100,17 +102,21 @@ public class ParticleSystem extends Rectangle {
 
 	public void addParticleModifier(final IParticleModifier pParticleModifier) {
 		this.mParticleModifiers.add(pParticleModifier);
+		this.mParticleModifierCount++;
 	}
 
 	public void removeParticleModifier(final IParticleModifier pParticleModifier) {
+		this.mParticleModifierCount--;
 		this.mParticleModifiers.remove(pParticleModifier);
 	}
 
 	public void addParticleInitializer(final IParticleInitializer pParticleInitializer) {
 		this.mParticleInitializers.add(pParticleInitializer);
+		this.mParticleInitializerCount++;
 	}
 
 	public void removeParticleInitializer(final IParticleInitializer pParticleInitializer) {
+		this.mParticleInitializerCount--;
 		this.mParticleInitializers.remove(pParticleInitializer);
 	}
 
@@ -161,24 +167,24 @@ public class ParticleSystem extends Rectangle {
 		}
 	}
 
-	private void applyParticleModifiersOnUpdate(final Particle pParticle) {
-		final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
-		for(int i = particleModifiers.size() - 1; i >= 0; i--) {
-			particleModifiers.get(i).onUpdateParticle(pParticle);
-		}
-	}
-
 	private void applyParticleInitializersOnInitialize(final Particle pParticle) {
 		final ArrayList<IParticleInitializer> particleInitializers = this.mParticleInitializers;
-		for(int i = particleInitializers.size() - 1; i >= 0; i--) {
+		for(int i = this.mParticleInitializerCount - 1; i >= 0; i--) {
 			particleInitializers.get(i).onInitializeParticle(pParticle);
 		}
 	}
 
 	private void applyParticleModifiersOnInitialize(final Particle pParticle) {
 		final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
-		for(int i = particleModifiers.size() - 1; i >= 0; i--) {
+		for(int i = this.mParticleModifierCount - 1; i >= 0; i--) {
 			particleModifiers.get(i).onInitializeParticle(pParticle);
+		}
+	}
+
+	private void applyParticleModifiersOnUpdate(final Particle pParticle) {
+		final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
+		for(int i = this.mParticleModifierCount - 1; i >= 0; i--) {
+			particleModifiers.get(i).onUpdateParticle(pParticle);
 		}
 	}
 

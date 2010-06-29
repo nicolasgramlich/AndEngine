@@ -2,9 +2,9 @@ package org.anddev.andengine.entity.particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 20:06:05 - 14.03.2010
+ * @since 10:12:09 - 29.06.2010
  */
-public interface IParticleModifier extends IParticleInitializer {
+public interface IParticleInitializer {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -13,5 +13,5 @@ public interface IParticleModifier extends IParticleInitializer {
 	// Methods
 	// ===========================================================
 
-	public void onUpdateParticle(final Particle pParticle);
+	public void onInitializeParticle(final Particle pParticle);
 }

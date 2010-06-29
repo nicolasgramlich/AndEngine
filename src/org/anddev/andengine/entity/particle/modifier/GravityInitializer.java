@@ -1,15 +1,12 @@
 package org.anddev.andengine.entity.particle.modifier;
 
-
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.particle.IParticleModifier;
-import org.anddev.andengine.entity.particle.Particle;
+import android.hardware.SensorManager;
 
 /**
  * @author Nicolas Gramlich
- * @since 21:21:10 - 14.03.2010
+ * @since 12:04:00 - 15.03.2010
  */
-public class OffCameraExpireModifier implements IParticleModifier {
+public class GravityInitializer extends AccelerationInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,39 +15,21 @@ public class OffCameraExpireModifier implements IParticleModifier {
 	// Fields
 	// ===========================================================
 
-	private final Camera mCamera;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public OffCameraExpireModifier(final Camera pCamera) {
-		this.mCamera = pCamera;
+	public GravityInitializer() {
+		super(0, SensorManager.GRAVITY_EARTH);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public Camera getCamera() {
-		return this.mCamera;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public void onInitializeParticle(final Particle pParticle) {
-
-	}
-
-	@Override
-	public void onUpdateParticle(final Particle pParticle) {
-		if(!this.mCamera.isRectangularShapeVisible(pParticle)) {
-			pParticle.setDead(true);
-		}
-	}
 
 	// ===========================================================
 	// Methods

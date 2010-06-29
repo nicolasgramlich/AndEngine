@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class VelocityModifier extends BasePairInitializeModifier {
+public class VelocityInitializer extends BasePairInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,24 +15,19 @@ public class VelocityModifier extends BasePairInitializeModifier {
 	// Fields
 	// ===========================================================
 
-	private float mMinVelocityX;
-	private float mMaxVelocityX;
-	private float mMinVelocityY;
-	private float mMaxVelocityY;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public VelocityModifier(final float pVelocity) {
+
+	public VelocityInitializer(final float pVelocity) {
 		this(pVelocity, pVelocity, pVelocity, pVelocity);
 	}
 
-	public VelocityModifier(final float pVelocityX, final float pVelocityY) {
+	public VelocityInitializer(final float pVelocityX, final float pVelocityY) {
 		this(pVelocityX, pVelocityX, pVelocityY, pVelocityY);
 	}
 
-	public VelocityModifier(final float pMinVelocityX, final float pMaxVelocityX, final float pMinVelocityY, final float pMaxVelocityY) {
+	public VelocityInitializer(final float pMinVelocityX, final float pMaxVelocityX, final float pMinVelocityY, final float pMaxVelocityY) {
 		super(pMinVelocityX, pMaxVelocityX, pMinVelocityY, pMaxVelocityY);
 	}
 
@@ -41,46 +36,46 @@ public class VelocityModifier extends BasePairInitializeModifier {
 	// ===========================================================
 
 	public float getMinVelocityX() {
-		return this.mMinVelocityX;
+		return this.mMinValue;
 	}
 
 	public float getMaxVelocityX() {
-		return this.mMaxVelocityX;
+		return this.mMaxValue;
 	}
 
 	public float getMinVelocityY() {
-		return this.mMinVelocityY;
+		return this.mMinValueB;
 	}
 
 	public float getMaxVelocityY() {
-		return this.mMaxVelocityY;
+		return this.mMaxValueB;
 	}
 
 	public void setVelocityX(final float pVelocityX) {
-		this.mMinVelocityX = pVelocityX;
-		this.mMaxVelocityX = pVelocityX;
+		this.mMinValue = pVelocityX;
+		this.mMaxValue = pVelocityX;
 	}
 
 	public void setVelocityY(final float pVelocityY) {
-		this.mMinVelocityY = pVelocityY;
-		this.mMaxVelocityY = pVelocityY;
+		this.mMinValueB = pVelocityY;
+		this.mMaxValueB = pVelocityY;
 	}
 
 	public void setVelocityX(final float pMinVelocityX, final float pMaxVelocityX) {
-		this.mMinVelocityX = pMinVelocityX;
-		this.mMaxVelocityX = pMaxVelocityX;
+		this.mMinValue = pMinVelocityX;
+		this.mMaxValue = pMaxVelocityX;
 	}
 
 	public void setVelocityY(final float pMinVelocityY, final float pMaxVelocityY) {
-		this.mMinVelocityY = pMinVelocityY;
-		this.mMaxVelocityY = pMaxVelocityY;
+		this.mMinValueB = pMinVelocityY;
+		this.mMaxValueB = pMaxVelocityY;
 	}
 
 	public void setVelocity(final float pMinVelocityX, final float pMaxVelocityX, final float pMinVelocityY, final float pMaxVelocityY) {
-		this.mMinVelocityX = pMinVelocityX;
-		this.mMaxVelocityX = pMaxVelocityX;
-		this.mMinVelocityY = pMinVelocityY;
-		this.mMaxVelocityY = pMaxVelocityY;
+		this.mMinValue = pMinVelocityX;
+		this.mMaxValue = pMaxVelocityX;
+		this.mMinValueB = pMinVelocityY;
+		this.mMaxValueB = pMaxVelocityY;
 	}
 
 	// ===========================================================
@@ -95,7 +90,7 @@ public class VelocityModifier extends BasePairInitializeModifier {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

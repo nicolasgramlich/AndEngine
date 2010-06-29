@@ -1,12 +1,12 @@
 package org.anddev.andengine.entity.particle.modifier;
 
-import android.hardware.SensorManager;
+import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:04:00 - 15.03.2010
+ * @since 10:36:18 - 29.06.2010
  */
-public class GravityModifier extends AccelerationModifier {
+public class RotateModifier extends BaseFromToModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,8 +19,8 @@ public class GravityModifier extends AccelerationModifier {
 	// Constructors
 	// ===========================================================
 
-	public GravityModifier() {
-		super(0, SensorManager.GRAVITY_EARTH);
+	public RotateModifier(final float pFromRotation, final float pToRotation, final float pFromTime, final float pToTime) {
+		super(pFromRotation, pToRotation, pFromTime, pToTime);
 	}
 
 	// ===========================================================
@@ -30,6 +30,16 @@ public class GravityModifier extends AccelerationModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	protected void onSetInitialValue(final Particle pParticle, final float pValue) {
+		pParticle.setRotation(pValue);
+	}
+
+	@Override
+	protected void onSetValue(final Particle pParticle, final float pValue) {
+		pParticle.setRotation(pValue);
+	}
 
 	// ===========================================================
 	// Methods

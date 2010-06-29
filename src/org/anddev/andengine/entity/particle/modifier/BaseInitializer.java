@@ -1,12 +1,15 @@
 package org.anddev.andengine.entity.particle.modifier;
 
+import static org.anddev.andengine.util.MathUtils.RANDOM;
+
+import org.anddev.andengine.entity.particle.IParticleInitializer;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 21:21:10 - 14.03.2010
+ * @since 10:18:06 - 29.06.2010
  */
-public class AccelerationModifier extends BasePairInitializeModifier {
+public abstract class BaseInitializer implements IParticleInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,20 +18,16 @@ public class AccelerationModifier extends BasePairInitializeModifier {
 	// Fields
 	// ===========================================================
 
+	protected float mMinValue;
+	protected float mMaxValue;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public AccelerationModifier(final float pAcceleration) {
-		this(pAcceleration, pAcceleration);
-	}
-
-	public AccelerationModifier(final float pAccelerationX, final float pAccelerationY) {
-		this(pAccelerationX, pAccelerationX, pAccelerationY, pAccelerationY);
-	}
-
-	public AccelerationModifier(final float pMinAccelerationX, final float pMaxAccelerationX, final float pMinAccelerationY, final float pMaxAccelerationY) {
-		super(pMinAccelerationX, pMaxAccelerationX, pMinAccelerationY, pMaxAccelerationY);
+	public BaseInitializer(final float pMinValue, final float pMaxValue) {
+		this.mMinValue = pMinValue;
+		this.mMaxValue = pMaxValue;
 	}
 
 	// ===========================================================
@@ -39,14 +38,24 @@ public class AccelerationModifier extends BasePairInitializeModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onInitializeParticle(final Particle pParticle, final float pValue);
+
 	@Override
-	public void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB) {
-		pParticle.accelerate(pValueA, pValueB);
+	public void onInitializeParticle(final Particle pParticle) {
+		this.onInitializeParticle(pParticle, this.getRandomValue());
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private final float getRandomValue() {
+		if(this.mMinValue == this.mMaxValue) {
+			return this.mMaxValue;
+		} else {
+			return RANDOM.nextFloat() * (this.mMaxValue - this.mMinValue) + this.mMinValue;
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

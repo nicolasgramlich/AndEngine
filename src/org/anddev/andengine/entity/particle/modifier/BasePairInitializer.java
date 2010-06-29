@@ -2,14 +2,13 @@ package org.anddev.andengine.entity.particle.modifier;
 
 import static org.anddev.andengine.util.MathUtils.RANDOM;
 
-import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
  * @since 15:58:29 - 04.05.2010
  */
-public abstract class BasePairInitializeModifier implements IParticleModifier {
+public abstract class BasePairInitializer extends BaseInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,20 +17,17 @@ public abstract class BasePairInitializeModifier implements IParticleModifier {
 	// Fields
 	// ===========================================================
 
-	private final float mMinA;
-	private final float mMaxA;
-	private final float mMinB;
-	private final float mMaxB;
+	protected float mMinValueB;
+	protected float mMaxValueB;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BasePairInitializeModifier(final float pMinA, final float pMaxA, final float pMinB, final float pMaxB) {
-		this.mMinA = pMinA;
-		this.mMaxA = pMaxA;
-		this.mMinB = pMinB;
-		this.mMaxB = pMaxB;
+	public BasePairInitializer(final float pMinValueA, final float pMaxValueA, final float pMinValueB, final float pMaxValueB) {
+		super(pMinValueA, pMaxValueA);
+		this.mMinValueB = pMinValueB;
+		this.mMaxValueB = pMaxValueB;
 	}
 
 	// ===========================================================
@@ -45,30 +41,19 @@ public abstract class BasePairInitializeModifier implements IParticleModifier {
 	protected abstract void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB);
 
 	@Override
-	public void onInitializeParticle(final Particle pParticle) {
-		this.onInitializeParticle(pParticle, this.determineA(), this.determineB());
+	protected void onInitializeParticle(final Particle pParticle, final float pValueA) {
+		this.onInitializeParticle(pParticle, pValueA, this.getRandomValueB());
 	}
-
-	@Override
-	public void onUpdateParticle(final Particle pParticle) { }
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	private float determineA() {
-		if(this.mMinA == this.mMaxA) {
-			return this.mMaxA;
+	private final float getRandomValueB() {
+		if(this.mMinValueB == this.mMaxValueB) {
+			return this.mMaxValueB;
 		} else {
-			return RANDOM.nextFloat() * (this.mMaxA - this.mMinA) + this.mMinA;
-		}
-	}
-
-	private float determineB() {
-		if(this.mMinB == this.mMaxB) {
-			return this.mMaxB;
-		} else {
-			return RANDOM.nextFloat() * (this.mMaxB - this.mMinB) + this.mMinB;
+			return RANDOM.nextFloat() * (this.mMaxValueB - this.mMinValueB) + this.mMinValueB;
 		}
 	}
 

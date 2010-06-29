@@ -26,7 +26,8 @@ public class ParticleSystem extends Rectangle {
 
 	private final ArrayList<Particle> mParticles;
 	private final ArrayList<Particle> mParticlesToRecycle;
-	
+
+	private final ArrayList<IParticleInitializer> mParticleInitializers = new ArrayList<IParticleInitializer>();
 	private final ArrayList<IParticleModifier> mParticleModifiers = new ArrayList<IParticleModifier>();
 
 	private final float mMinRate;
@@ -80,7 +81,7 @@ public class ParticleSystem extends Rectangle {
 
 		final ArrayList<Particle> particles = this.mParticles;
 		final ArrayList<Particle> particlesToRecycle = this.mParticlesToRecycle;
-		
+
 		for(int i = particles.size() - 1; i >= 0; i--) {
 			final Particle particle = particles.get(i);
 
@@ -105,6 +106,14 @@ public class ParticleSystem extends Rectangle {
 		this.mParticleModifiers.remove(pParticleModifier);
 	}
 
+	public void addParticleInitializer(final IParticleInitializer pParticleInitializer) {
+		this.mParticleInitializers.add(pParticleInitializer);
+	}
+
+	public void removeParticleInitializer(final IParticleInitializer pParticleInitializer) {
+		this.mParticleInitializers.remove(pParticleInitializer);
+	}
+
 	private void spawnParticles(final float pSecondsElapsed) {
 		final float currentRate = this.determineCurrentRate();
 		final float newParticlesThisFrame = currentRate * pSecondsElapsed;
@@ -123,7 +132,7 @@ public class ParticleSystem extends Rectangle {
 		final ArrayList<Particle> particles = this.mParticles;
 		final ArrayList<Particle> particlesToRecycle = this.mParticlesToRecycle;
 		final Particle particle;
-		
+
 		if(!particlesToRecycle.isEmpty()){
 			particle = particlesToRecycle.remove(particlesToRecycle.size() - 1);
 			particle.reset();
@@ -138,7 +147,9 @@ public class ParticleSystem extends Rectangle {
 		}
 		particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 
+		this.applyParticleInitializersOnInitialize(particle);
 		this.applyParticleModifiersOnInitialize(particle);
+
 		particles.add(particle);
 	}
 
@@ -154,6 +165,13 @@ public class ParticleSystem extends Rectangle {
 		final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
 		for(int i = particleModifiers.size() - 1; i >= 0; i--) {
 			particleModifiers.get(i).onUpdateParticle(pParticle);
+		}
+	}
+
+	private void applyParticleInitializersOnInitialize(final Particle pParticle) {
+		final ArrayList<IParticleInitializer> particleInitializers = this.mParticleInitializers;
+		for(int i = particleInitializers.size() - 1; i >= 0; i--) {
+			particleInitializers.get(i).onInitializeParticle(pParticle);
 		}
 	}
 

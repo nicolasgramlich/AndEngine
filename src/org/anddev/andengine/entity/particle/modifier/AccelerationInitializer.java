@@ -34,6 +34,49 @@ public class AccelerationInitializer extends BasePairInitializer {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public float getMinAccelerationX() {
+		return this.mMinValue;
+	}
+
+	public float getMaxAccelerationX() {
+		return this.mMaxValue;
+	}
+
+	public float getMinAccelerationY() {
+		return this.mMinValueB;
+	}
+
+	public float getMaxAccelerationY() {
+		return this.mMaxValueB;
+	}
+
+	public void setAccelerationX(final float pAccelerationX) {
+		this.mMinValue = pAccelerationX;
+		this.mMaxValue = pAccelerationX;
+	}
+
+	public void setAccelerationY(final float pAccelerationY) {
+		this.mMinValueB = pAccelerationY;
+		this.mMaxValueB = pAccelerationY;
+	}
+
+	public void setAccelerationX(final float pMinAccelerationX, final float pMaxAccelerationX) {
+		this.mMinValue = pMinAccelerationX;
+		this.mMaxValue = pMaxAccelerationX;
+	}
+
+	public void setAccelerationY(final float pMinAccelerationY, final float pMaxAccelerationY) {
+		this.mMinValueB = pMinAccelerationY;
+		this.mMaxValueB = pMaxAccelerationY;
+	}
+
+	public void setAcceleration(final float pMinAccelerationX, final float pMaxAccelerationX, final float pMinAccelerationY, final float pMaxAccelerationY) {
+		this.mMinValue = pMinAccelerationX;
+		this.mMaxValue = pMaxAccelerationX;
+		this.mMinValueB = pMinAccelerationY;
+		this.mMaxValueB = pMaxAccelerationY;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

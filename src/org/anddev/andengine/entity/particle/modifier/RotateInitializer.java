@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 10:17:42 - 29.06.2010
  */
-public class RotateInitialize extends BaseInitializer {
+public class RotateInitializer extends BaseInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,11 +19,11 @@ public class RotateInitialize extends BaseInitializer {
 	// Constructors
 	// ===========================================================
 	
-	public RotateInitialize(final float pRotation) {
+	public RotateInitializer(final float pRotation) {
 		this(pRotation, pRotation);
 	}
 
-	public RotateInitialize(final float pMinRotation, final float pMaxRotation) {
+	public RotateInitializer(final float pMinRotation, final float pMaxRotation) {
 		super(pMinRotation, pMaxRotation);
 	}
 

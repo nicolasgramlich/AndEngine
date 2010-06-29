@@ -37,6 +37,7 @@ public abstract class Shape extends DynamicEntity {
 	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	private final ArrayList<IShapeModifier> mShapeModifiers = new ArrayList<IShapeModifier>();
+	private int mShapeModifierCount = 0;
 
 	// ===========================================================
 	// Constructors
@@ -177,17 +178,19 @@ public abstract class Shape extends DynamicEntity {
 
 	public void addShapeModifier(final IShapeModifier pShapeModifier) {
 		this.mShapeModifiers.add(pShapeModifier);
+		this.mShapeModifierCount++;
 	}
 
 	public void removeShapeModifier(final IShapeModifier pShapeModifier) {
 		this.mShapeModifiers.remove(pShapeModifier);
+		this.mShapeModifierCount--;
 	}
 
 	private void updateShapeModifiers(final float pSecondsElapsed) {
 		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
-		final int ShapeModifierCount = shapeModifiers.size();
-		if(ShapeModifierCount > 0) {
-			for(int i = ShapeModifierCount - 1; i >= 0; i--) {
+		final int shapeModifierCount = this.mShapeModifierCount;
+		if(shapeModifierCount > 0) {
+			for(int i = shapeModifierCount - 1; i >= 0; i--) {
 				final IShapeModifier shapeModifier = shapeModifiers.get(i);
 				shapeModifier.onUpdateShape(pSecondsElapsed, this);
 				if(shapeModifier.isFinished() && shapeModifier.isRemoveWhenFinished()) { // TODO <-- could be combined into one function.

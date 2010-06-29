@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 10:17:42 - 29.06.2010
  */
-public class RotateInitializer extends BaseInitializer {
+public class RotateInitializer extends BaseSingleValueInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================

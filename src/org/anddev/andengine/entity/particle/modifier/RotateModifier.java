@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 10:36:18 - 29.06.2010
  */
-public class RotateModifier extends BaseFromToModifier {
+public class RotateModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

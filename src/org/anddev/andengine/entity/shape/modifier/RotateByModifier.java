@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.shape.Shape;
  * @author Nicolas Gramlich
  * @since 16:12:52 - 19.03.2010
  */
-public class RotateByModifier extends BaseChangeModifier {
+public class RotateByModifier extends BaseSingleValueChangeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

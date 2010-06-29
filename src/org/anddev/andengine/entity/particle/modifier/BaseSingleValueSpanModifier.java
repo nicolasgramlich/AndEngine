@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 16:10:16 - 04.05.2010
  */
-public abstract class BaseFromToModifier implements IParticleModifier {
+public abstract class BaseSingleValueSpanModifier implements IParticleModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,7 +28,7 @@ public abstract class BaseFromToModifier implements IParticleModifier {
 	// Constructors
 	// ===========================================================
 
-	public BaseFromToModifier(final float pFromValue, final float pToValue, final float pFromTime, final float pToTime) {
+	public BaseSingleValueSpanModifier(final float pFromValue, final float pToValue, final float pFromTime, final float pToTime) {
 		this.mFromValue = pFromValue;
 		this.mToValue = pToValue;
 		this.mFromTime = pFromTime;

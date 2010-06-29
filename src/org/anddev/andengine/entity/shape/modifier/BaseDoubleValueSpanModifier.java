@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.shape.Shape;
  * @author Nicolas Gramlich
  * @since 23:29:22 - 19.03.2010
  */
-public abstract class BasePairFromToModifier extends BaseFromToModifier {
+public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,20 +23,20 @@ public abstract class BasePairFromToModifier extends BaseFromToModifier {
 	// Constructors
 	// ===========================================================
 
-	public BasePairFromToModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
 		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null);
 	}
 
-	public BasePairFromToModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener pModiferListener) {
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener pModiferListener) {
 		super(pDuration, pFromValueA, pToValueA, pModiferListener);
 		this.mFromValueB = pFromValueB;
 		this.mValuePerSecondB = (pToValueB - pFromValueB) / pDuration;
 	}
 	
-	public BasePairFromToModifier(final BasePairFromToModifier pBasePairFromToModifier) {
-		super(pBasePairFromToModifier);
-		this.mFromValueB = pBasePairFromToModifier.mFromValueB;
-		this.mValuePerSecondB = pBasePairFromToModifier.mValuePerSecondB;
+	public BaseDoubleValueSpanModifier(final BaseDoubleValueSpanModifier pBaseDoubleValueSpanModifier) {
+		super(pBaseDoubleValueSpanModifier);
+		this.mFromValueB = pBaseDoubleValueSpanModifier.mFromValueB;
+		this.mValuePerSecondB = pBaseDoubleValueSpanModifier.mValuePerSecondB;
 	}
 
 	// ===========================================================

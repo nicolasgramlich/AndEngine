@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 20:37:27 - 04.05.2010
  */
-public class ScaleModifier extends BaseFromToModifier {
+public class ScaleModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

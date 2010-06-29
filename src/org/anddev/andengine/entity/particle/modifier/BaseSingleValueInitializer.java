@@ -9,7 +9,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 10:18:06 - 29.06.2010
  */
-public abstract class BaseInitializer implements IParticleInitializer {
+public abstract class BaseSingleValueInitializer implements IParticleInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -25,7 +25,7 @@ public abstract class BaseInitializer implements IParticleInitializer {
 	// Constructors
 	// ===========================================================
 
-	public BaseInitializer(final float pMinValue, final float pMaxValue) {
+	public BaseSingleValueInitializer(final float pMinValue, final float pMaxValue) {
 		this.mMinValue = pMinValue;
 		this.mMaxValue = pMaxValue;
 	}

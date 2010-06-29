@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.particle.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.particle.Particle;
+
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 10:17:42 - 29.06.2010
  */
-public class RotateModifier extends BaseSingleValueSpanModifier {
+public class ColorInitializer extends BaseTripleValueInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,21 +20,12 @@ public class RotateModifier extends BaseSingleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotateModifier(final float pDuration, final float pFromRotation, final float pToRotation) {
-		this(pDuration, pFromRotation, pToRotation, null);
+	public ColorInitializer(final float pRed, final float pGreen, final float pBlue) {
+		super(pRed, pRed, pGreen, pGreen, pBlue, pBlue);
 	}
 
-	public RotateModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IModifierListener pModiferListener) {
-		super(pDuration, pFromRotation, pToRotation, pModiferListener);
-	}
-
-	public RotateModifier(final RotateModifier pRotateModifier) {
-		super(pRotateModifier);
-	}
-
-	@Override
-	public RotateModifier clone(){
-		return new RotateModifier(this);
+	public ColorInitializer(final float pMinRed, final float pMaxRed, final float pMinGreen, final float pMaxGreen, final float pMinBlue, final float pMaxBlue) {
+		super(pMinRed, pMaxRed, pMinGreen, pMaxGreen, pMinBlue, pMaxBlue);
 	}
 
 	// ===========================================================
@@ -46,13 +37,8 @@ public class RotateModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Shape pShape, final float pRotation) {
-		pShape.setRotation(pRotation);
-	}
-
-	@Override
-	protected void onSetValue(final Shape pShape, final float pRotation) {
-		pShape.setRotation(pRotation);
+	protected void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC) {
+		pParticle.setColor(pValueA, pValueB, pValueC);
 	}
 
 	// ===========================================================

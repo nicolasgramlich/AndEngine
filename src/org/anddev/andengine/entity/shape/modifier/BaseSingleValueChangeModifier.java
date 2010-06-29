@@ -5,9 +5,9 @@ import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
- * @since 23:29:22 - 19.03.2010
+ * @since 15:34:35 - 17.06.2010
  */
-public abstract class BaseFromToModifier extends BaseModifier {
+public abstract class BaseSingleValueChangeModifier extends BaseModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,27 +16,24 @@ public abstract class BaseFromToModifier extends BaseModifier {
 	// Fields
 	// ===========================================================
 
-	private final float mValuePerSecond;
-	private final float mFromValue;
+	private final float mValueChangePerSecond;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseFromToModifier(final float pDuration, final float pFromValue, final float pToValue) {
-		this(pDuration, pFromValue, pToValue, null);
+	public BaseSingleValueChangeModifier(final float pDuration, final float pValueChange) {
+		this(pDuration, pValueChange, null);
 	}
 
-	public BaseFromToModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener pModiferListener) {
+	public BaseSingleValueChangeModifier(final float pDuration, final float pValueChange, final IModifierListener pModiferListener) {
 		super(pDuration, pModiferListener);
-		this.mFromValue = pFromValue;
-		this.mValuePerSecond = (pToValue - pFromValue) / pDuration;
+		this.mValueChangePerSecond = pValueChange / pDuration;
 	}
-	
-	public BaseFromToModifier(final BaseFromToModifier pBaseFromToModifier) {
-		super(pBaseFromToModifier);
-		this.mFromValue = pBaseFromToModifier.mFromValue;
-		this.mValuePerSecond = pBaseFromToModifier.mValuePerSecond;
+
+	public BaseSingleValueChangeModifier(final BaseSingleValueChangeModifier pByModifier) {
+		super(pByModifier);
+		this.mValueChangePerSecond = pByModifier.mValueChangePerSecond;
 	}
 
 	// ===========================================================
@@ -47,17 +44,16 @@ public abstract class BaseFromToModifier extends BaseModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValue(final Shape pShape, final float pValue);
-	protected abstract void onSetValue(final Shape pShape, final float pValue);
+	protected abstract void onChangeValue(final Shape pShape, final float pValue);
 
 	@Override
 	protected void onManagedInitializeShape(final Shape pShape) {
-		this.onSetInitialValue(pShape, this.mFromValue);
+
 	}
 
 	@Override
 	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
-		this.onSetValue(pShape, this.mFromValue + this.getTotalSecondsElapsed() * this.mValuePerSecond);
+		this.onChangeValue(pShape, this.mValueChangePerSecond * pSecondsElapsed);
 	}
 
 	// ===========================================================

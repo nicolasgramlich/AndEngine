@@ -1,13 +1,14 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.particle.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import static org.anddev.andengine.util.MathUtils.RANDOM;
+
+import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:34:35 - 17.06.2010
+ * @since 15:58:29 - 04.05.2010
  */
-public abstract class BaseChangeModifier extends BaseModifier {
+public abstract class BaseDoubleValueInitializer extends BaseSingleValueInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,24 +17,17 @@ public abstract class BaseChangeModifier extends BaseModifier {
 	// Fields
 	// ===========================================================
 
-	private final float mValueChangePerSecond;
+	protected float mMinValueB;
+	protected float mMaxValueB;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseChangeModifier(final float pDuration, final float pValueChange) {
-		this(pDuration, pValueChange, null);
-	}
-
-	public BaseChangeModifier(final float pDuration, final float pValueChange, final IModifierListener pModiferListener) {
-		super(pDuration, pModiferListener);
-		this.mValueChangePerSecond = pValueChange / pDuration;
-	}
-
-	public BaseChangeModifier(final BaseChangeModifier pByModifier) {
-		super(pByModifier);
-		this.mValueChangePerSecond = pByModifier.mValueChangePerSecond;
+	public BaseDoubleValueInitializer(final float pMinValueA, final float pMaxValueA, final float pMinValueB, final float pMaxValueB) {
+		super(pMinValueA, pMaxValueA);
+		this.mMinValueB = pMinValueB;
+		this.mMaxValueB = pMaxValueB;
 	}
 
 	// ===========================================================
@@ -44,21 +38,24 @@ public abstract class BaseChangeModifier extends BaseModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onChangeValue(final Shape pShape, final float pValue);
+	protected abstract void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB);
 
 	@Override
-	protected void onManagedInitializeShape(final Shape pShape) {
-
-	}
-
-	@Override
-	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
-		this.onChangeValue(pShape, this.mValueChangePerSecond * pSecondsElapsed);
+	protected void onInitializeParticle(final Particle pParticle, final float pValueA) {
+		this.onInitializeParticle(pParticle, pValueA, this.getRandomValueB());
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private final float getRandomValueB() {
+		if(this.mMinValueB == this.mMaxValueB) {
+			return this.mMaxValueB;
+		} else {
+			return RANDOM.nextFloat() * (this.mMaxValueB - this.mMinValueB) + this.mMinValueB;
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

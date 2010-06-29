@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.shape.Shape;
  * @author Nicolas Gramlich
  * @since 23:37:53 - 19.03.2010
  */
-public class ScaleModifier extends BaseFromToModifier {
+public class ScaleModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

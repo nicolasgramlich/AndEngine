@@ -8,7 +8,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 15:58:29 - 04.05.2010
  */
-public abstract class BasePairInitializer extends BaseInitializer {
+public abstract class BaseTripleValueInitializer extends BaseDoubleValueInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,17 +17,17 @@ public abstract class BasePairInitializer extends BaseInitializer {
 	// Fields
 	// ===========================================================
 
-	protected float mMinValueB;
-	protected float mMaxValueB;
+	protected float mMinValueC;
+	protected float mMaxValueC;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BasePairInitializer(final float pMinValueA, final float pMaxValueA, final float pMinValueB, final float pMaxValueB) {
-		super(pMinValueA, pMaxValueA);
-		this.mMinValueB = pMinValueB;
-		this.mMaxValueB = pMaxValueB;
+	public BaseTripleValueInitializer(final float pMinValueA, final float pMaxValueA, final float pMinValueB, final float pMaxValueB, final float pMinValueC, final float pMaxValueC) {
+		super(pMinValueA, pMaxValueA, pMinValueB, pMaxValueB);
+		this.mMinValueC = pMinValueC;
+		this.mMaxValueC = pMaxValueC;
 	}
 
 	// ===========================================================
@@ -38,22 +38,22 @@ public abstract class BasePairInitializer extends BaseInitializer {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB);
+	protected abstract void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC);
 
 	@Override
-	protected void onInitializeParticle(final Particle pParticle, final float pValueA) {
-		this.onInitializeParticle(pParticle, pValueA, this.getRandomValueB());
+	protected void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB) {
+		this.onInitializeParticle(pParticle, pValueA, pValueB, this.getRandomValueC());
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	private final float getRandomValueB() {
-		if(this.mMinValueB == this.mMaxValueB) {
-			return this.mMaxValueB;
+	private final float getRandomValueC() {
+		if(this.mMinValueC == this.mMaxValueC) {
+			return this.mMaxValueC;
 		} else {
-			return RANDOM.nextFloat() * (this.mMaxValueB - this.mMinValueB) + this.mMinValueB;
+			return RANDOM.nextFloat() * (this.mMaxValueC - this.mMinValueC) + this.mMinValueC;
 		}
 	}
 

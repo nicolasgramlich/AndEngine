@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class AlphaModifier extends BaseFromToModifier {
+public class AlphaModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -10,6 +10,7 @@ import org.anddev.andengine.util.Debug;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.Config;
 
 /**
  * @author Nicolas Gramlich
@@ -70,7 +71,10 @@ public class AssetTextureSource implements ITextureSource {
 	@Override
 	public Bitmap getBitmap() {
 		try {
-			return BitmapFactory.decodeStream(this.mContext.getAssets().open(this.mAssetPath));
+			final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+			decodeOptions.inPreferredConfig = Config.ARGB_8888;
+			
+			return BitmapFactory.decodeStream(this.mContext.getAssets().open(this.mAssetPath), null, decodeOptions);
 		} catch (final IOException e) {
 			Debug.e("Failed loading Bitmap", e);
 			return null;

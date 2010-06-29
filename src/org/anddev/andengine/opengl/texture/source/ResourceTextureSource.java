@@ -6,6 +6,7 @@ package org.anddev.andengine.opengl.texture.source;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.Config;
 
 /**
  * @author Nicolas Gramlich
@@ -63,7 +64,9 @@ public class ResourceTextureSource implements ITextureSource {
 
 	@Override
 	public Bitmap getBitmap() {
-		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID);
+		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+		decodeOptions.inPreferredConfig = Config.ARGB_8888;
+		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID, decodeOptions);
 	}
 	
 	@Override

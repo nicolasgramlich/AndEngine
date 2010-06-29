@@ -182,8 +182,8 @@ public abstract class Shape extends DynamicEntity {
 	}
 
 	public void removeShapeModifier(final IShapeModifier pShapeModifier) {
-		this.mShapeModifiers.remove(pShapeModifier);
 		this.mShapeModifierCount--;
+		this.mShapeModifiers.remove(pShapeModifier);
 	}
 
 	private void updateShapeModifiers(final float pSecondsElapsed) {
@@ -194,6 +194,7 @@ public abstract class Shape extends DynamicEntity {
 				final IShapeModifier shapeModifier = shapeModifiers.get(i);
 				shapeModifier.onUpdateShape(pSecondsElapsed, this);
 				if(shapeModifier.isFinished() && shapeModifier.isRemoveWhenFinished()) { // TODO <-- could be combined into one function.
+					this.mShapeModifierCount--;
 					shapeModifiers.remove(i);
 				}
 			}

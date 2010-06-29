@@ -83,22 +83,38 @@ public class MathUtils {
 	}
 
 	public static void arraySumInternal(final int[] pValues) {
-		for(int i = 1; i < pValues.length; i++) {
+		final int valueCount = pValues.length;
+		for(int i = 1; i < valueCount; i++) {
 			pValues[i] = pValues[i-1] + pValues[i];
 		}
 	}
 
 	public static void arraySumInternal(final long[] pValues) {
-		for(int i = 1; i < pValues.length; i++) {
+		final int valueCount = pValues.length;
+		for(int i = 1; i < valueCount; i++) {
 			pValues[i] = pValues[i-1] + pValues[i];
 		}
 	}
 
 	public static void arraySumInternal(final long[] pValues, final long pFactor) {
 		pValues[0] = pValues[0] * pFactor;
-		for(int i = 1; i < pValues.length; i++) {
+		final int valueCount = pValues.length;
+		for(int i = 1; i < valueCount; i++) {
 			pValues[i] = pValues[i-1] + pValues[i] * pFactor;
 		}
+	}
+
+	public static float arraySum(final float[] pValues) {
+		float sum = 0;
+		final int valueCount = pValues.length;
+		for(int i = 0; i < valueCount; i++) {
+			sum += pValues[i];
+		}
+		return sum;
+	}
+
+	public static float arrayAverage(final float[] pValues) {
+		return arraySum(pValues) / pValues.length;
 	}
 
 	// ===========================================================

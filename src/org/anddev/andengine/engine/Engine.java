@@ -60,7 +60,7 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	private boolean mRunning = false;
 
-	private long mLastTick = System.nanoTime();
+	private long mLastTick = -1;
 	private float mSecondsElapsedTotal = 0;
 
 	private final EngineOptions mEngineOptions;
@@ -370,9 +370,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 
 	protected void onUpdate() {
-		final float secondsElapsed = getSecondsElapsed();
-
 		if(this.mRunning) {
+			final float secondsElapsed = getSecondsElapsed();
+			
 			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
@@ -457,12 +457,22 @@ public class Engine implements SensorEventListener, OnTouchListener {
 
 	private float getSecondsElapsed() {
 		final long now = System.nanoTime();
-		final float secondsElapsed = (float)(now  - this.mLastTick) / TimeConstants.NANOSECONDSPERSECOND;
+		if(this.mLastTick == -1) {
+			this.mLastTick = now - TimeConstants.NANOSECONDSPERMILLISECOND;
+		}
+		
+		final long nanosecondsElapsed = calculateNanoSecondsElapsed(now, this.mLastTick);
+		
+		final float secondsElapsed = (float)nanosecondsElapsed / TimeConstants.NANOSECONDSPERSECOND;
 		this.mLastTick = now;
 		
 		this.mSecondsElapsedTotal += secondsElapsed;
 		
 		return secondsElapsed;
+	}
+
+	protected long calculateNanoSecondsElapsed(final long pNow, final long pLastTick) {
+		return pNow - pLastTick;
 	}
 	
 	public boolean enableVibrator(final Context pContext) {

@@ -98,6 +98,21 @@ public class Texture {
 	public void addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTexturePositionX, pTexturePositionY));
 	}
+	
+	public void removeTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
+		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
+		for(int i = textureSources.size() - 1; i >= 0; i--) {
+			final TextureSourceWithLocation textureSourceWithLocation = textureSources.get(i);
+			if(textureSourceWithLocation.mTextureSource == pTextureSource && textureSourceWithLocation.mTexturePositionX == pTexturePositionX && textureSourceWithLocation.mTexturePositionY == pTexturePositionY) {
+				textureSources.remove(i);
+				return;
+			}
+		}
+	}
+	
+	public void clearTextureSources() {
+		this.mTextureSources.clear();
+	}
 
 	public void loadToHardware(final GL10 pGL) {
 		GLHelper.enableTextures(pGL);
@@ -129,7 +144,13 @@ public class Texture {
 			if(textureSource != null) {
 				final Bitmap bmp = textureSource.getBitmap();
 				if(bmp != null) {
-					GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
+					try{
+						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
+					} catch (IllegalArgumentException iae) {
+						// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
+						Debug.e("Error loading: " + textureSource.toString(), iae);
+						throw iae;
+					}
 					bmp.recycle();
 				} else {
 					Debug.e("Bitmap was null! TextureSource: " + textureSource.toString(), new IllegalArgumentException());

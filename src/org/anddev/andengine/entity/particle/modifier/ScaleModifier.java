@@ -32,13 +32,13 @@ public class ScaleModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Particle pParticle, final float pValue) {
-		pParticle.setScale(pValue);
+	protected void onSetInitialValue(final Particle pParticle, final float pScale) {
+		pParticle.setScale(pScale);
 	}
 
 	@Override
-	protected void onSetValue(final Particle pParticle, final float pValue) {
-		pParticle.setScale(pValue);
+	protected void onSetValue(final Particle pParticle, final float pScale) {
+		pParticle.setScale(pScale);
 	}
 
 	// ===========================================================

@@ -18,6 +18,7 @@ public abstract class BaseSingleValueSpanModifier implements IParticleModifier {
 
 	private final float mFromValue;
 	private final float mToValue;
+
 	private final float mFromTime;
 	private final float mToTime;
 
@@ -59,10 +60,16 @@ public abstract class BaseSingleValueSpanModifier implements IParticleModifier {
 		final float lifeTime = pParticle.getLifeTime();
 		if(lifeTime > this.mFromTime && lifeTime < this.mToTime) {
 			final float percent = (lifeTime - this.mFromTime) / this.mDuration;
-			final float value = this.mFromValue + this.mSpanValue * percent;
-
-			this.onSetValue(pParticle, value);
+			this.onSetValueInternal(pParticle, percent);
 		}
+	}
+
+	protected void onSetValueInternal(final Particle pParticle, final float pPercent) {
+		this.onSetValue(pParticle, this.calculateValue(pPercent));
+	}
+
+	protected final float calculateValue(final float pPercent) {
+		return this.mFromValue + this.mSpanValue * pPercent;
 	}
 
 	// ===========================================================

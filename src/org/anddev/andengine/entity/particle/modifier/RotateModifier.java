@@ -32,13 +32,13 @@ public class RotateModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Particle pParticle, final float pValue) {
-		pParticle.setRotation(pValue);
+	protected void onSetInitialValue(final Particle pParticle, final float pRotation) {
+		pParticle.setRotation(pRotation);
 	}
 
 	@Override
-	protected void onSetValue(final Particle pParticle, final float pValue) {
-		pParticle.setRotation(pValue);
+	protected void onSetValue(final Particle pParticle, final float pRotation) {
+		pParticle.setRotation(pRotation);
 	}
 
 	// ===========================================================

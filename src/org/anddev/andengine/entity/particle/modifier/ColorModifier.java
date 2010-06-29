@@ -4,9 +4,9 @@ import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 21:21:10 - 14.03.2010
+ * @since 15:22:26 - 29.06.2010
  */
-public class AlphaModifier extends BaseSingleValueSpanModifier {
+public class ColorModifier extends BaseTripleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,8 +19,8 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public AlphaModifier(final float pFromAlpha, final float pToAlpha, final float pFromTime, final float pToTime) {
-		super(pFromAlpha, pToAlpha, pFromTime, pToTime);
+	public ColorModifier(final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final float pFromTime, final float pToTime) {
+		super(pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pFromTime, pToTime);
 	}
 
 	// ===========================================================
@@ -32,13 +32,13 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Particle pParticle, final float pAlpha) {
-		pParticle.setAlpha(pAlpha);
+	protected void onSetInitialValue(final Particle pParticle, final float pRed, final float pGreen, final float pBlue) {
+		pParticle.setColor(pRed, pGreen, pBlue);
 	}
 
 	@Override
-	protected void onSetValue(final Particle pParticle, final float pAlpha) {
-		pParticle.setAlpha(pAlpha);
+	protected void onSetValue(final Particle pParticle, final float pRed, final float pGreen, final float pBlue) {
+		pParticle.setColor(pRed, pGreen, pBlue);
 	}
 
 	// ===========================================================

@@ -104,6 +104,7 @@ public class TextureManager {
 		}
 		
 		/* */
+		final HashSet<Texture> managedTextures = this.mManagedTextures;
 		final ArrayList<Texture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
 		final int texturesToBeUnloadedCount = texturesToBeUnloaded.size();
 		
@@ -114,6 +115,7 @@ public class TextureManager {
 					textureToBeUnloaded.unloadFromHardware(pGL);
 				}
 				loadedTextures.remove(textureToBeUnloaded);
+				managedTextures.remove(textureToBeUnloaded);
 			}
 
 			texturesToBeUnloaded.clear();

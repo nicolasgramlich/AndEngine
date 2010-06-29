@@ -1,13 +1,13 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IShapeModifier;
+import org.anddev.andengine.entity.shape.IModifierListener;
 import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:39:32 - 23.06.2010
+ * @since 15:39:50 - 29.06.2010
  */
-public class ColorModifier extends BaseModifier {
+public class ColorModifier extends BaseTripleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,9 +20,21 @@ public class ColorModifier extends BaseModifier {
 	// Constructors
 	// ===========================================================
 
+	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue) {
+		this(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, null);
+	}
+
+	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IModifierListener pModiferListener) {
+		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pModiferListener);
+	}
+
+	public ColorModifier(final ColorModifier pColorModifier) {
+		super(pColorModifier);
+	}
+
 	@Override
-	public IShapeModifier clone() {
-		return null;
+	public ColorModifier clone(){
+		return new ColorModifier(this);
 	}
 
 	// ===========================================================
@@ -34,13 +46,13 @@ public class ColorModifier extends BaseModifier {
 	// ===========================================================
 
 	@Override
-	protected void onManagedInitializeShape(final Shape pShape) {
-
+	protected void onSetInitialValues(final Shape pShape, final float pRed, final float pGreen, final float pBlue) {
+		pShape.setColor(pRed, pGreen, pBlue);
 	}
 
 	@Override
-	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
-
+	protected void onSetValues(final Shape pShape, final float pRed, final float pGreen, final float pBlue) {
+		pShape.setColor(pRed, pGreen, pBlue);
 	}
 
 	// ===========================================================

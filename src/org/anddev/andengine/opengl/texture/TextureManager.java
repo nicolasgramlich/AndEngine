@@ -92,15 +92,13 @@ public class TextureManager {
 		final int texturesToBeLoadedCount = texturesToBeLoaded.size();
 		
 		if(texturesToBeLoadedCount > 0){
-			for(int i = 0; i < texturesToBeLoadedCount; i++){
-				final Texture textureToBeLoaded = texturesToBeLoaded.get(i);
+			for(int i = texturesToBeLoadedCount - 1; i >= 0; i--){
+				final Texture textureToBeLoaded = texturesToBeLoaded.remove(i);
 				if(!textureToBeLoaded.isLoadedToHardware()){
 					textureToBeLoaded.loadToHardware(pGL);
 				}
 				loadedTextures.add(textureToBeLoaded);
 			}
-
-			texturesToBeLoaded.clear();
 		}
 		
 		/* */
@@ -109,16 +107,14 @@ public class TextureManager {
 		final int texturesToBeUnloadedCount = texturesToBeUnloaded.size();
 		
 		if(texturesToBeUnloadedCount > 0){
-			for(int i = 0; i < texturesToBeUnloadedCount; i++){
-				final Texture textureToBeUnloaded = texturesToBeUnloaded.get(i);
+			for(int i = texturesToBeUnloadedCount - 1; i >= 0; i--){
+				final Texture textureToBeUnloaded = texturesToBeUnloaded.remove(i);
 				if(textureToBeUnloaded.isLoadedToHardware()){
 					textureToBeUnloaded.unloadFromHardware(pGL);
 				}
 				loadedTextures.remove(textureToBeUnloaded);
 				managedTextures.remove(textureToBeUnloaded);
 			}
-
-			texturesToBeUnloaded.clear();
 		}
 
 		/* Finally invoke the GC if anything has changed. */

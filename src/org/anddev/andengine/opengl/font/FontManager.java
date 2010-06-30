@@ -50,7 +50,7 @@ public class FontManager {
 		}
 	}
 
-	public void ensureFontsLoadedToHardware(final GL10 pGL) {
+	public void updateFonts(final GL10 pGL) {
 		final ArrayList<Font> fonts = this.mFonts;
 		final int fontCount = fonts.size();
 		if(fontCount > 0){

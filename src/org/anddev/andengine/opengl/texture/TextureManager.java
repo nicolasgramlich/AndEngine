@@ -85,10 +85,26 @@ public class TextureManager {
 		this.mTexturesToBeUnloaded.clear();
 	}
 
-	public void ensureTexturesLoadedToHardware(final GL10 pGL) {
+	public void updateTextures(final GL10 pGL) {
+		final HashSet<Texture> managedTextures = this.mManagedTextures;
+		final ArrayList<Texture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
 		final ArrayList<Texture> loadedTextures = this.mLoadedTextures;
-
 		final ArrayList<Texture> texturesToBeLoaded = this.mTexturesToBeLoaded;
+		
+		/* First reload Textures that need to be updated. */
+		final int loadedTexturesCount = loadedTextures.size();
+		
+		if(loadedTexturesCount > 0){
+			for(int i = loadedTexturesCount - 1; i >= 0; i--){
+				final Texture textureToBeUpdated = loadedTextures.get(i);
+				if(textureToBeUpdated.isUpdateOnHardwareNeeded()){
+					textureToBeUpdated.unloadFromHardware(pGL);
+					textureToBeUpdated.loadToHardware(pGL);
+				}
+			}
+		}
+
+		/* Then load pending Textures. */
 		final int texturesToBeLoadedCount = texturesToBeLoaded.size();
 		
 		if(texturesToBeLoadedCount > 0){
@@ -100,10 +116,8 @@ public class TextureManager {
 				loadedTextures.add(textureToBeLoaded);
 			}
 		}
-		
-		/* */
-		final HashSet<Texture> managedTextures = this.mManagedTextures;
-		final ArrayList<Texture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
+
+		/* Then unload pending Textures. */
 		final int texturesToBeUnloadedCount = texturesToBeUnloaded.size();
 		
 		if(texturesToBeUnloadedCount > 0){

@@ -17,5 +17,5 @@ public interface ITextureSource {
 
 	public int getWidth();
 	public int getHeight();
-	public Bitmap getBitmap();
+	public Bitmap loadBitmap();
 }

@@ -63,7 +63,7 @@ public class ResourceTextureSource implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap getBitmap() {
+	public Bitmap loadBitmap() {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inPreferredConfig = Config.ARGB_8888;
 		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID, decodeOptions);

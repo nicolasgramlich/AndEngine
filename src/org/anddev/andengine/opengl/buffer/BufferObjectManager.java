@@ -69,7 +69,7 @@ public class BufferObjectManager {
 		loadedBufferObjects.clear();
 	}
 
-	public static void ensureBufferObjectsLoadedToHardware(final GL11 pGL11) {
+	public static void updateBufferObjects(final GL11 pGL11) {
 		final ArrayList<BufferObject> pendingBufferObjects = BufferObjectManager.mBufferObjectsToBeLoaded;
 		final int pendingBufferObjectCount = pendingBufferObjects.size();
 		if(pendingBufferObjectCount > 0){

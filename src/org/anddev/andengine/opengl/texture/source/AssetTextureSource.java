@@ -69,7 +69,7 @@ public class AssetTextureSource implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap getBitmap() {
+	public Bitmap loadBitmap() {
 		try {
 			final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 			decodeOptions.inPreferredConfig = Config.ARGB_8888;

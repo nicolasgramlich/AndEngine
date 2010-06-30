@@ -35,8 +35,10 @@ public class Texture {
 	private final TextureOptions mTextureOptions;
 
 	private final ArrayList<TextureSourceWithLocation> mTextureSources = new ArrayList<TextureSourceWithLocation>();
-	
+
 	private final ITextureStateListener mTextureStateListener;
+
+	private boolean mUpdateOnHardwareNeeded = false;
 
 	// ===========================================================
 	// Constructors
@@ -97,6 +99,10 @@ public class Texture {
 		return this.mLoadedToHardware;
 	}
 
+	public boolean isUpdateOnHardwareNeeded() {
+		return this.mUpdateOnHardwareNeeded;
+	}
+
 	void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
 	}
@@ -119,6 +125,7 @@ public class Texture {
 
 	public void addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTexturePositionX, pTexturePositionY));
+		this.mUpdateOnHardwareNeeded = true;
 	}
 
 	public void removeTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
@@ -127,6 +134,7 @@ public class Texture {
 			final TextureSourceWithLocation textureSourceWithLocation = textureSources.get(i);
 			if(textureSourceWithLocation.mTextureSource == pTextureSource && textureSourceWithLocation.mTexturePositionX == pTexturePositionX && textureSourceWithLocation.mTexturePositionY == pTexturePositionY) {
 				textureSources.remove(i);
+				this.mUpdateOnHardwareNeeded = true;
 				return;
 			}
 		}
@@ -134,6 +142,7 @@ public class Texture {
 
 	public void clearTextureSources() {
 		this.mTextureSources.clear();
+		this.mUpdateOnHardwareNeeded = true;
 	}
 
 	public void loadToHardware(final GL10 pGL) {
@@ -147,8 +156,9 @@ public class Texture {
 
 		this.writeTextureToHardware();
 
+		this.mUpdateOnHardwareNeeded = false;
 		this.mLoadedToHardware = true;
-		
+
 		if(this.mTextureStateListener != null) {
 			this.mTextureStateListener.onLoadedToHardware(this);
 		}
@@ -159,8 +169,10 @@ public class Texture {
 
 		this.deleteTextureOnHardware(pGL);
 
+		this.mHardwareTextureID = -1;
+
 		this.mLoadedToHardware = false;
-		
+
 		if(this.mTextureStateListener != null) {
 			this.mTextureStateListener.onUnloadedFromHardware(this);
 		}
@@ -172,22 +184,22 @@ public class Texture {
 		for(int j = 0; j < textureSourceCount; j++) {
 			final TextureSourceWithLocation textureSource = textureSources.get(j);
 			if(textureSource != null) {
-				final Bitmap bmp = textureSource.getBitmap();
-				if(bmp != null) {
-					try{
-						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
-					} catch (final IllegalArgumentException iae) {
-						// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
-						Debug.e("Error loading: " + textureSource.toString(), iae);
-						if(this.mTextureStateListener != null) {
-							this.mTextureStateListener.onTextureSourceLoadExeption(this, textureSource, iae);
-						} else {
-							throw iae;
-						}
+				final Bitmap bmp = textureSource.loadBitmap();
+				try{
+					if(bmp == null) {
+						throw new IllegalArgumentException("TextureSource: " + textureSource.toString() + " returned a null Bitmap.");
 					}
+					GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
+
 					bmp.recycle();
-				} else {
-					Debug.e("Bitmap was null! TextureSource: " + textureSource.toString(), new IllegalArgumentException());
+				} catch (final IllegalArgumentException iae) {
+					// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
+					Debug.e("Error loading: " + textureSource.toString(), iae);
+					if(this.mTextureStateListener != null) {
+						this.mTextureStateListener.onTextureSourceLoadExeption(this, textureSource, iae);
+					} else {
+						throw iae;
+					}
 				}
 			}
 		}
@@ -230,6 +242,52 @@ public class Texture {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
+	public static interface ITextureStateListener {
+		// ===========================================================
+		// Final Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void onLoadedToHardware(final Texture pTexture);
+		public void onTextureSourceLoadExeption(final Texture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable);
+		public void onUnloadedFromHardware(final Texture pTexture);
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+
+		public static class TextureStateAdapter implements ITextureStateListener {
+			@Override
+			public void onLoadedToHardware(final Texture pTexture) { }
+
+			@Override
+			public void onTextureSourceLoadExeption(final Texture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable) { }
+
+			@Override
+			public void onUnloadedFromHardware(final Texture pTexture) { }
+		}
+
+		public static class DebugTextureStateListener implements ITextureStateListener {
+			@Override
+			public void onLoadedToHardware(final Texture pTexture) {
+				Debug.d("Texture loaded: " + pTexture.toString());
+			}
+
+			@Override
+			public void onTextureSourceLoadExeption(final Texture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable) {
+				Debug.e("Exception loading TextureSource. Texture: " + pTexture.toString() + " TextureSource: " + pTextureSource.toString(), pThrowable);
+			}
+
+			@Override
+			public void onUnloadedFromHardware(final Texture pTexture) {
+				Debug.d("Texture unloaded: " + pTexture.toString());
+			}
+		}
+	}
+
 	public static class TextureSourceWithLocation implements ITextureSource {
 
 		private final ITextureSource mTextureSource;
@@ -261,8 +319,8 @@ public class Texture {
 		}
 
 		@Override
-		public Bitmap getBitmap() {
-			return this.mTextureSource.getBitmap();
+		public Bitmap loadBitmap() {
+			return this.mTextureSource.loadBitmap();
 		}
 
 		@Override

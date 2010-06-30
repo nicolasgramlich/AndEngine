@@ -413,10 +413,10 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	public void onDrawFrame(final GL10 pGL) {
 		this.mThreadLocker.waitUntilCanDraw();
 
-		this.mTextureManager.ensureTexturesLoadedToHardware(pGL);
-		this.mFontManager.ensureFontsLoadedToHardware(pGL);
+		this.mTextureManager.updateTextures(pGL);
+		this.mFontManager.updateFonts(pGL);
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			BufferObjectManager.ensureBufferObjectsLoadedToHardware((GL11)pGL);
+			BufferObjectManager.updateBufferObjects((GL11)pGL);
 		}
 
 		this.onDrawScene(pGL);

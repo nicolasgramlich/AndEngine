@@ -32,13 +32,17 @@ public class Debug implements Constants {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
+	
 	public static void v(final String pMessage){
 		Log.v(DEBUGTAG, pMessage);
 	}
-
+	
 	public static void d(final String pMessage){
 		Log.d(DEBUGTAG, pMessage);
+	}
+
+	public static void i(final String pMessage){
+		Log.i(DEBUGTAG, pMessage);
 	}
 	
 	public static void w(final Throwable pThrowable){

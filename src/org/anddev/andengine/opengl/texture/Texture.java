@@ -30,11 +30,13 @@ public class Texture {
 	private final int mWidth;
 	private final int mHeight;
 
+	private boolean mLoadedToHardware;
 	private int mHardwareTextureID = -1;
+	private final TextureOptions mTextureOptions;
 
 	private final ArrayList<TextureSourceWithLocation> mTextureSources = new ArrayList<TextureSourceWithLocation>();
-	private final TextureOptions mTextureOptions;
-	private boolean mLoadedToHardware;
+	
+	private final ITextureStateListener mTextureStateListener;
 
 	// ===========================================================
 	// Constructors
@@ -45,15 +47,34 @@ public class Texture {
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 */
 	public Texture(final int pWidth, final int pHeight) {
-		this(pWidth, pHeight, TextureOptions.DEFAULT);
+		this(pWidth, pHeight, TextureOptions.DEFAULT, null);
 	}
-	
+
+	/**
+	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 */
+	public Texture(final int pWidth, final int pHeight, final ITextureStateListener pTextureStateListener) {
+		this(pWidth, pHeight, TextureOptions.DEFAULT, pTextureStateListener);
+	}
+
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 */
 	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) throws IllegalArgumentException {
+		this(pWidth, pHeight, pTextureOptions, null);
+	}
+
+	/**
+	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureOptions the (quality) settings of the Texture.
+	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 */
+	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
 		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
 			throw new IllegalArgumentException("Width and Height of a Texture must be a power of 2!");
 		}
@@ -61,6 +82,7 @@ public class Texture {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mTextureOptions = pTextureOptions;
+		this.mTextureStateListener = pTextureStateListener;
 	}
 
 	// ===========================================================
@@ -98,7 +120,7 @@ public class Texture {
 	public void addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTexturePositionX, pTexturePositionY));
 	}
-	
+
 	public void removeTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
 		for(int i = textureSources.size() - 1; i >= 0; i--) {
@@ -109,7 +131,7 @@ public class Texture {
 			}
 		}
 	}
-	
+
 	public void clearTextureSources() {
 		this.mTextureSources.clear();
 	}
@@ -126,14 +148,22 @@ public class Texture {
 		this.writeTextureToHardware();
 
 		this.mLoadedToHardware = true;
+		
+		if(this.mTextureStateListener != null) {
+			this.mTextureStateListener.onLoadedToHardware(this);
+		}
 	}
-	
+
 	public void unloadFromHardware(final GL10 pGL) {
 		GLHelper.enableTextures(pGL);
 
 		this.deleteTextureOnHardware(pGL);
 
 		this.mLoadedToHardware = false;
+		
+		if(this.mTextureStateListener != null) {
+			this.mTextureStateListener.onUnloadedFromHardware(this);
+		}
 	}
 
 	private void writeTextureToHardware() {
@@ -146,10 +176,14 @@ public class Texture {
 				if(bmp != null) {
 					try{
 						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSource.getTexturePositionX(), textureSource.getTexturePositionY(), bmp);
-					} catch (IllegalArgumentException iae) {
+					} catch (final IllegalArgumentException iae) {
 						// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
 						Debug.e("Error loading: " + textureSource.toString(), iae);
-						throw iae;
+						if(this.mTextureStateListener != null) {
+							this.mTextureStateListener.onTextureSourceLoadExeption(this, textureSource, iae);
+						} else {
+							throw iae;
+						}
 					}
 					bmp.recycle();
 				} else {
@@ -173,7 +207,7 @@ public class Texture {
 
 		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
 	}
-	
+
 	private void deleteTextureOnHardware(final GL10 pGL) {
 		GLHelper.deleteTexture(pGL, this.mHardwareTextureID);
 	}
@@ -230,7 +264,7 @@ public class Texture {
 		public Bitmap getBitmap() {
 			return this.mTextureSource.getBitmap();
 		}
-		
+
 		@Override
 		public String toString() {
 			return this.mTextureSource.toString();

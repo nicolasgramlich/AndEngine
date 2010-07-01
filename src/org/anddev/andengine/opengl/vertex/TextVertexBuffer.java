@@ -2,7 +2,6 @@ package org.anddev.andengine.opengl.vertex;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.opengl.buffer.BaseBuffer;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.util.HorizontalAlign;
@@ -30,7 +29,7 @@ public class TextVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public TextVertexBuffer(final String pText, final HorizontalAlign pHorizontalAlign, final int pDrawType) {
-		super(2 * VERTICES_PER_CHARACTER * BaseBuffer.BYTES_PER_FLOAT * (pText.length() - StringUtils.countOccurences(pText, "\n")), pDrawType);
+		super(2 * VERTICES_PER_CHARACTER * BYTES_PER_FLOAT * (pText.length() - StringUtils.countOccurences(pText, "\n")), pDrawType);
 
 		this.mHorizontalAlign = pHorizontalAlign;
 	}

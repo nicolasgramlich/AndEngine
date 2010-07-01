@@ -5,7 +5,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.primitives.RectangularShape;
 import org.anddev.andengine.opengl.GLHelper;
-import org.anddev.andengine.opengl.buffer.BaseBuffer;
+import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.texture.buffer.TextTextureBuffer;
@@ -54,7 +54,7 @@ public class Text extends RectangularShape {
 		this.mCharacterCount = pText.length() - StringUtils.countOccurences(pText, "\n");
 		this.mVertexCount = TextVertexBuffer.VERTICES_PER_CHARACTER * this.mCharacterCount;
 
-		this.mTextTextureBuffer = new TextTextureBuffer(2 * this.mVertexCount * BaseBuffer.BYTES_PER_FLOAT, GL11.GL_STATIC_DRAW);
+		this.mTextTextureBuffer = new TextTextureBuffer(2 * this.mVertexCount * BufferObject.BYTES_PER_FLOAT, GL11.GL_STATIC_DRAW);
 		BufferObjectManager.loadBufferObject(this.mTextTextureBuffer); // TODO Unload irgendwann oder so...
 		this.mFont = pFont;
 		this.mText = pText;

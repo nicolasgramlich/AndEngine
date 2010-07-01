@@ -1,5 +1,9 @@
 package org.anddev.andengine.opengl.buffer;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.GLHelper;
@@ -8,10 +12,12 @@ import org.anddev.andengine.opengl.GLHelper;
  * @author Nicolas Gramlich
  * @since 14:22:56 - 07.04.2010
  */
-public abstract class BufferObject extends BaseBuffer {
+public abstract class BufferObject {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	public static final int BYTES_PER_FLOAT = 4;
 
 	private static final int[] HARDWAREBUFFERID_FETCHER = new int[1];
 
@@ -19,26 +25,37 @@ public abstract class BufferObject extends BaseBuffer {
 	// Fields
 	// ===========================================================
 
-	private int mHardwareBufferID = -1;
-
-	private boolean mLoadedToHardware;
-
+	private final int mByteCount;
 	private final int mDrawType;
+	
+	private final FloatBuffer mFloatBuffer;
 
+	private int mHardwareBufferID = -1;
+	private boolean mLoadedToHardware;
 	private boolean mHardwareBufferNeedsUpdate = true;
-
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public BufferObject(final int pByteCount, final int pDrawType) {
-		super(pByteCount);
+		this.mByteCount = pByteCount;
 		this.mDrawType = pDrawType;
+		
+		this.mFloatBuffer = ByteBuffer.allocateDirect(pByteCount).order(ByteOrder.nativeOrder()).asFloatBuffer();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public FloatBuffer getFloatBuffer() {
+		return this.mFloatBuffer;
+	}
+
+	public int getByteCount() {
+		return this.mByteCount;
+	}
 
 	public int getHardwareBufferID() {
 		return this.mHardwareBufferID;
@@ -77,7 +94,7 @@ public abstract class BufferObject extends BaseBuffer {
 			GLHelper.bufferData(pGL11, this, this.mDrawType);
 		}
 
-		GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // TODO Muss der immer gebindet werden oder gibts da quasi je immer einen für Texture/Vertex etc...
+		GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // TODO Does this always need to be binded, or are just for buffers of the same 'type'(texture/vertex)?
 	}
 
 	public void loadToHardware(final GL11 pGL11) {

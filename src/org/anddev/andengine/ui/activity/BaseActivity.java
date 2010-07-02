@@ -11,7 +11,6 @@ import org.anddev.progressmonitor.IProgressListener;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 /**
  * @author Nicolas Gramlich
@@ -43,7 +42,9 @@ public abstract class BaseActivity extends Activity {
 	// ===========================================================
 
 	/**
-	 * Performs a task in the background, showing a {@link ProgressDialog}, while the {@link Callable} is being processed.
+	 * Performs a task in the background, showing a {@link ProgressDialog},
+	 * while the {@link Callable} is being processed.
+	 * 
 	 * @param <T>
 	 * @param pTitleResID
 	 * @param pMessageResID
@@ -51,7 +52,7 @@ public abstract class BaseActivity extends Activity {
 	 * @param pCallable
 	 * @param pCallback
 	 */
-	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final int pErrorMessageResID, final Callable<T> pCallable, final Callback<T> pCallback){
+	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Throwable> pErrorCallback) {
 		new AsyncTask<Void, Void, T>() {
 			private ProgressDialog mPD;
 
@@ -62,7 +63,7 @@ public abstract class BaseActivity extends Activity {
 			}
 
 			@Override
-			public T doInBackground(final Void ... params) {
+			public T doInBackground(final Void... params) {
 				try {
 					return pCallable.call();
 				} catch (final Throwable t) {
@@ -72,28 +73,29 @@ public abstract class BaseActivity extends Activity {
 				return null;
 			}
 
+			protected void onCancelled() {
+				pErrorCallback.onCallback(new CancelledException());
+			};
+
 			@Override
 			public void onPostExecute(final T result) {
 				try {
 					this.mPD.dismiss();
 				} catch (final Throwable t) {
 					Debug.e("Error", t);
-					/* Nothing. */
 				}
 
-				if(result == null){
-					Toast.makeText(BaseActivity.this, pErrorMessageResID, Toast.LENGTH_LONG).show();
-				}else{
-					pCallback.onCallback(result);
-				}
+				pCallback.onCallback(result);
 
 				super.onPostExecute(result);
 			}
-		}.execute((Void[])null);
+		}.execute((Void[]) null);
 	}
-	
+
 	/**
-	 * Performs a task in the background, showing a {@link ProgressDialog}, while the {@link Callable} is being processed.
+	 * Performs a task in the background, showing a {@link ProgressDialog},
+	 * while the {@link Callable} is being processed.
+	 * 
 	 * @param <T>
 	 * @param pTitleResID
 	 * @param pMessageResID
@@ -101,7 +103,7 @@ public abstract class BaseActivity extends Activity {
 	 * @param pCallable
 	 * @param pCallback
 	 */
-	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final int pErrorMessageResID, final AsyncCallable<T> pCallable, final Callback<T> pCallback){
+	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final AsyncCallable<T> pCallable, final Callback<T> pCallback) {
 		final ProgressDialog pd = ProgressDialog.show(BaseActivity.this, getString(pTitleResID), getString(pMessageResID));
 		pCallable.call(new Callback<T>() {
 			@Override
@@ -113,16 +115,12 @@ public abstract class BaseActivity extends Activity {
 					/* Nothing. */
 				}
 
-				if(result == null){
-					Toast.makeText(BaseActivity.this, pErrorMessageResID, Toast.LENGTH_LONG).show();
-				}else{
-					pCallback.onCallback(result);
-				}
+				pCallback.onCallback(result);
 			}
 		});
-	}	
+	}
 
-	protected <T> void doProgressAsync(final int pTitleResID, final int pErrorMessageResID, final ProgressCallable<T> pCallable, final Callback<T> pCallback){
+	protected <T> void doProgressAsync(final int pTitleResID, final ProgressCallable<T> pCallable, final Callback<T> pCallback, final Callback<Throwable> pErrorCallback) {
 		new AsyncTask<Void, Integer, T>() {
 			private ProgressDialog mPD;
 
@@ -138,7 +136,7 @@ public abstract class BaseActivity extends Activity {
 			}
 
 			@Override
-			public T doInBackground(final Void ... params) {
+			public T doInBackground(final Void... params) {
 				try {
 					return pCallable.call(new IProgressListener() {
 						@Override
@@ -152,11 +150,15 @@ public abstract class BaseActivity extends Activity {
 				}
 				return null;
 			}
-			
+
 			@Override
 			public void onProgressUpdate(final Integer... values) {
 				this.mPD.setProgress(values[0]);
 			}
+
+			protected void onCancelled() {
+				pErrorCallback.onCallback(new CancelledException());
+			};
 
 			@Override
 			public void onPostExecute(final T result) {
@@ -167,18 +169,18 @@ public abstract class BaseActivity extends Activity {
 					/* Nothing. */
 				}
 
-				if(result == null){
-					Toast.makeText(BaseActivity.this, pErrorMessageResID, Toast.LENGTH_LONG).show();
-				}else{
-					pCallback.onCallback(result);
-				}
+				pCallback.onCallback(result);
 
 				super.onPostExecute(result);
 			}
-		}.execute((Void[])null);
+		}.execute((Void[]) null);
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static class CancelledException extends Exception {
+		private static final long serialVersionUID = -78123211381435596L;
+	}
 }

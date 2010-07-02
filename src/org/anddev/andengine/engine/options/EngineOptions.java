@@ -16,6 +16,8 @@ public class EngineOptions {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private final RenderHints mRenderHints = new RenderHints();
 
 	private final ScreenOrientation mScreenOrientation;
 	private final boolean mFullscreen;
@@ -50,6 +52,10 @@ public class EngineOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public RenderHints getRenderHints() {
+		return this.mRenderHints;
+	}
 
 	public ScreenOrientation getScreenOrientation() {
 		return this.mScreenOrientation;

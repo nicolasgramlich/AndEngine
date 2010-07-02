@@ -117,7 +117,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 			pGL.glFrontFace(GL10.GL_CCW);
 			pGL.glCullFace(GL10.GL_BACK);
 
-			GLHelper.enableExtensions(pGL);
+			GLHelper.enableExtensions(pGL, this.mEngine.getEngineOptions().getRenderHints());
 		}
 
 		@Override

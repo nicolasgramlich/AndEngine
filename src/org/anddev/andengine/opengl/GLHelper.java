@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.engine.options.RenderHints;
 import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.util.Debug;
 
@@ -54,7 +55,6 @@ public class GLHelper {
 	private static float sAlpha = -1;
 
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
-	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS_FORCE_DISABLE = false; // TODO A better place would be the EngineOptions->Extras or so...
 	public static boolean EXTENSIONS_DRAWTEXTURE = false;
 
 	// ===========================================================
@@ -94,7 +94,7 @@ public class GLHelper {
 		GLHelper.EXTENSIONS_DRAWTEXTURE = false;
 	}
 
-	public static void enableExtensions(final GL10 pGL) {
+	public static void enableExtensions(final GL10 pGL, final RenderHints pRenderHints) {
 		final String version = pGL.glGetString(GL10.GL_VERSION);
 		final String renderer = pGL.glGetString(GL10.GL_RENDERER);
 		final String extensions = pGL.glGetString(GL10.GL_EXTENSIONS);
@@ -108,7 +108,7 @@ public class GLHelper {
 		final boolean isVBOCapable = extensions.contains("_vertex_buffer_object");
 		final boolean isDrawTextureCapable = extensions.contains("draw_texture");
 
-		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !EXTENSIONS_VERTEXBUFFEROBJECTS_FORCE_DISABLE && !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
+		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !pRenderHints.isDisableExtensionVertexBufferObjects() && !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
 		GLHelper.EXTENSIONS_DRAWTEXTURE  = isDrawTextureCapable;
 
 		GLHelper.hackBrokenDevices();

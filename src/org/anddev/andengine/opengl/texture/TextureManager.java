@@ -18,9 +18,9 @@ public class TextureManager {
 	// Fields
 	// ===========================================================
 
-	private final HashSet<Texture> mManagedTextures = new HashSet<Texture>();
+	private final HashSet<Texture> mTexturesManaged = new HashSet<Texture>();
 
-	private final ArrayList<Texture> mLoadedTextures = new ArrayList<Texture>();
+	private final ArrayList<Texture> mTexturesLoaded = new ArrayList<Texture>();
 
 	private final ArrayList<Texture> mTexturesToBeLoaded = new ArrayList<Texture>();
 	private final ArrayList<Texture> mTexturesToBeUnloaded = new ArrayList<Texture>();
@@ -43,20 +43,42 @@ public class TextureManager {
 
 	protected void clear() {
 		this.mTexturesToBeLoaded.clear();
-		this.mLoadedTextures.clear();
-		this.mManagedTextures.clear();
+		this.mTexturesLoaded.clear();
+		this.mTexturesManaged.clear();
 	}
 
-	public void loadTexture(final Texture pTexture) {
-		if(this.mManagedTextures.contains(pTexture) == false) {
-			this.mManagedTextures.add(pTexture);
+	/**
+	 * @param pTexture the {@link Texture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then). 
+	 * @return <code>true</code> when the {@link Texture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed. 
+	 */
+	public boolean loadTexture(final Texture pTexture) {
+		if(this.mTexturesManaged.contains(pTexture)) {
+			/* Just make sure it doesn't get deleted. */
+			this.mTexturesToBeUnloaded.remove(pTexture);
+			return false;
+		} else {
+			this.mTexturesManaged.add(pTexture);
 			this.mTexturesToBeLoaded.add(pTexture);
+			return true;
 		}
 	}
 
-	public void unloadTexture(final Texture pTexture) {
-		if(this.mManagedTextures.contains(pTexture) && this.mLoadedTextures.contains(pTexture) && !this.mTexturesToBeUnloaded.contains(pTexture)){
-			this.mTexturesToBeUnloaded.add(pTexture);
+	/**
+	 * @param pTexture the {@link Texture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then). 
+	 * @return <code>true</code> when the {@link Texture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed. 
+	 */
+	public boolean unloadTexture(final Texture pTexture) {
+		if(this.mTexturesManaged.contains(pTexture)) {
+			/* If the Texture is loaded, unload it.
+			 * If the Texture is about to be loaded, stop it from being loaded. */
+			if(this.mTexturesLoaded.contains(pTexture)){
+				this.mTexturesToBeUnloaded.add(pTexture);
+			} else if(this.mTexturesToBeLoaded.remove(pTexture)){
+				this.mTexturesManaged.remove(pTexture);
+			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -73,22 +95,22 @@ public class TextureManager {
 	}
 
 	public void reloadTextures() {
-		final HashSet<Texture> managedTextures = this.mManagedTextures;
+		final HashSet<Texture> managedTextures = this.mTexturesManaged;
 		for(final Texture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
 			texture.setLoadedToHardware(false);
 		}
 
-		this.mTexturesToBeLoaded.addAll(this.mLoadedTextures); // TODO Check if addAll uses iterator internally!
-		this.mLoadedTextures.clear();
+		this.mTexturesToBeLoaded.addAll(this.mTexturesLoaded); // TODO Check if addAll uses iterator internally!
+		this.mTexturesLoaded.clear();
 		
-		this.mManagedTextures.removeAll(this.mTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
+		this.mTexturesManaged.removeAll(this.mTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
 		this.mTexturesToBeUnloaded.clear();
 	}
 
 	public void updateTextures(final GL10 pGL) {
-		final HashSet<Texture> managedTextures = this.mManagedTextures;
+		final HashSet<Texture> managedTextures = this.mTexturesManaged;
 		final ArrayList<Texture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
-		final ArrayList<Texture> loadedTextures = this.mLoadedTextures;
+		final ArrayList<Texture> loadedTextures = this.mTexturesLoaded;
 		final ArrayList<Texture> texturesToBeLoaded = this.mTexturesToBeLoaded;
 		
 		/* First reload Textures that need to be updated. */

@@ -103,10 +103,10 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 				buffer.put(x1); buffer.put(y1);
 			} else {
 				buffer.put(x1); buffer.put(y2);
+				
+				buffer.put(x1); buffer.put(y1);
 
 				buffer.put(x2); buffer.put(y2);
-
-				buffer.put(x1); buffer.put(y1);
 
 				buffer.put(x2); buffer.put(y1);
 			}
@@ -114,9 +114,9 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 			if(this.mFlippedHorizontal){
 				buffer.put(x2); buffer.put(y1);
 
-				buffer.put(x1); buffer.put(y1);
-
 				buffer.put(x2); buffer.put(y2);
+				
+				buffer.put(x1); buffer.put(y1);
 
 				buffer.put(x1); buffer.put(y2);
 			} else {

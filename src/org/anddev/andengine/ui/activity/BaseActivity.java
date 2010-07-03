@@ -17,7 +17,7 @@ import android.os.AsyncTask;
  * @since 18:35:28 - 29.08.2009
  */
 public abstract class BaseActivity extends Activity {
-	// ===========================================================
+	// ===========================================================pErrorCallback
 	// Constants
 	// ===========================================================
 
@@ -52,9 +52,26 @@ public abstract class BaseActivity extends Activity {
 	 * @param pCallable
 	 * @param pCallback
 	 */
-	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Throwable> pErrorCallback) {
+	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback) {
+		this.doAsync(pTitleResID, pMessageResID, pCallable, pCallback, null);
+	}
+
+	/**
+	 * Performs a task in the background, showing a indeterminate {@link ProgressDialog},
+	 * while the {@link Callable} is being processed.
+	 * 
+	 * @param <T>
+	 * @param pTitleResID
+	 * @param pMessageResID
+	 * @param pErrorMessageResID
+	 * @param pCallable
+	 * @param pCallback
+	 * @param pExceptionCallback
+	 */
+	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
 		new AsyncTask<Void, Void, T>() {
 			private ProgressDialog mPD;
+			private Exception mException = null;
 
 			@Override
 			public void onPreExecute() {
@@ -66,26 +83,33 @@ public abstract class BaseActivity extends Activity {
 			public T doInBackground(final Void... params) {
 				try {
 					return pCallable.call();
-				} catch (final Throwable t) {
-					Debug.e("Error", t);
-					cancel(true);
+				} catch (final Exception e) {
+					this.mException = e;
 				}
 				return null;
 			}
-
-			protected void onCancelled() {
-				pErrorCallback.onCallback(new CancelledException());
-			};
 
 			@Override
 			public void onPostExecute(final T result) {
 				try {
 					this.mPD.dismiss();
-				} catch (final Throwable t) {
-					Debug.e("Error", t);
+				} catch (final Exception e) {
+					Debug.e("Error", e);
 				}
 
-				pCallback.onCallback(result);
+				if(this.isCancelled()) {
+					this.mException = new CancelledException();
+				} 
+
+				if(this.mException == null) {
+					pCallback.onCallback(result);
+				} else {
+					if(pExceptionCallback == null) {
+						Debug.e("Error", this.mException);
+					} else {
+						pExceptionCallback.onCallback(this.mException);							
+					}
+				}
 
 				super.onPostExecute(result);
 			}
@@ -93,36 +117,36 @@ public abstract class BaseActivity extends Activity {
 	}
 
 	/**
-	 * Performs a task in the background, showing a {@link ProgressDialog},
-	 * while the {@link Callable} is being processed.
+	 * Performs a task in the background, showing a {@link ProgressDialog} with an ProgressBar,
+	 * while the {@link AsyncCallable} is being processed.
 	 * 
 	 * @param <T>
 	 * @param pTitleResID
 	 * @param pMessageResID
 	 * @param pErrorMessageResID
-	 * @param pCallable
+	 * @param pAsyncCallable
 	 * @param pCallback
 	 */
-	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final AsyncCallable<T> pCallable, final Callback<T> pCallback) {
-		final ProgressDialog pd = ProgressDialog.show(BaseActivity.this, getString(pTitleResID), getString(pMessageResID));
-		pCallable.call(new Callback<T>() {
-			@Override
-			public void onCallback(T result) {
-				try {
-					pd.dismiss();
-				} catch (final Throwable t) {
-					Debug.e("Error", t);
-					/* Nothing. */
-				}
-
-				pCallback.onCallback(result);
-			}
-		});
+	protected <T> void doProgressAsync(final int pTitleResID, final ProgressCallable<T> pCallable, final Callback<T> pCallback) {
+		this.doProgressAsync(pTitleResID, pCallable, pCallback, null);
 	}
 
-	protected <T> void doProgressAsync(final int pTitleResID, final ProgressCallable<T> pCallable, final Callback<T> pCallback, final Callback<Throwable> pErrorCallback) {
+	/**
+	 * Performs a task in the background, showing a {@link ProgressDialog} with a ProgressBar,
+	 * while the {@link AsyncCallable} is being processed.
+	 * 
+	 * @param <T>
+	 * @param pTitleResID
+	 * @param pMessageResID
+	 * @param pErrorMessageResID
+	 * @param pAsyncCallable
+	 * @param pCallback
+	 * @param pExceptionCallback
+	 */
+	protected <T> void doProgressAsync(final int pTitleResID, final ProgressCallable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
 		new AsyncTask<Void, Integer, T>() {
 			private ProgressDialog mPD;
+			private Exception mException = null;
 
 			@Override
 			public void onPreExecute() {
@@ -144,9 +168,8 @@ public abstract class BaseActivity extends Activity {
 							onProgressUpdate(pProgress);
 						}
 					});
-				} catch (final Throwable t) {
-					Debug.e("Error", t);
-					cancel(true);
+				} catch (final Exception e) {
+					this.mException = e;
 				}
 				return null;
 			}
@@ -156,24 +179,61 @@ public abstract class BaseActivity extends Activity {
 				this.mPD.setProgress(values[0]);
 			}
 
-			protected void onCancelled() {
-				pErrorCallback.onCallback(new CancelledException());
-			};
-
 			@Override
 			public void onPostExecute(final T result) {
 				try {
 					this.mPD.dismiss();
-				} catch (final Throwable t) {
-					Debug.e("Error", t);
+				} catch (final Exception e) {
+					Debug.e("Error", e);
 					/* Nothing. */
 				}
 
-				pCallback.onCallback(result);
+				if(this.isCancelled()) {
+					this.mException = new CancelledException();
+				} 
+
+				if(this.mException == null) {
+					pCallback.onCallback(result);
+				} else {
+					if(pExceptionCallback == null) {
+						Debug.e("Error", this.mException);
+					} else {
+						pExceptionCallback.onCallback(this.mException);							
+					}
+				}
 
 				super.onPostExecute(result);
 			}
 		}.execute((Void[]) null);
+	}
+
+	/**
+	 * Performs a task in the background, showing an indeterminate {@link ProgressDialog},
+	 * while the {@link AsyncCallable} is being processed.
+	 * 
+	 * @param <T>
+	 * @param pTitleResID
+	 * @param pMessageResID
+	 * @param pErrorMessageResID
+	 * @param pAsyncCallable
+	 * @param pCallback
+	 * @param pExceptionCallback
+	 */
+	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final AsyncCallable<T> pAsyncCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
+		final ProgressDialog pd = ProgressDialog.show(BaseActivity.this, getString(pTitleResID), getString(pMessageResID));
+		pAsyncCallable.call(new Callback<T>() {
+			@Override
+			public void onCallback(T result) {
+				try {
+					pd.dismiss();
+				} catch (final Exception e) {
+					Debug.e("Error", e);
+					/* Nothing. */
+				}
+
+				pCallback.onCallback(result);
+			}
+		}, pExceptionCallback);
 	}
 
 	// ===========================================================

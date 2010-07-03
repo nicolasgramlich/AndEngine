@@ -20,5 +20,5 @@ public interface AsyncCallable<T> {
      * @return computed result
      * @throws Exception if unable to compute a result
      */
-    public void call(final Callback<T> pCallback);
+    public void call(final Callback<T> pCallback, final Callback<Exception> pExceptionCallback);
 }

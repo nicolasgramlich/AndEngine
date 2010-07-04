@@ -9,7 +9,6 @@ import org.anddev.andengine.entity.primitives.RectangularShape;
 import org.anddev.andengine.opengl.GLHelper;
 
 import android.opengl.GLU;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
 /**
@@ -43,12 +42,6 @@ public class Camera implements IUpdateHandler {
 		this.mMaxX = pX + pWidth;
 		this.mMinY = pY;
 		this.mMaxY = pY + pHeight;
-	}
-
-	public static Camera createFromDisplayMetrics(final float pCenterX, final float pCenterY, final DisplayMetrics pDisplayMetrics) {
-		final float width = pDisplayMetrics.widthPixels;
-		final float height = pDisplayMetrics.widthPixels;
-		return new Camera(pCenterX - width * 0.5f, pCenterY - height * 0.5f, width, height);
 	}
 
 	// ===========================================================

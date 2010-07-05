@@ -21,7 +21,14 @@ public abstract class DynamicEntity extends StaticEntity {
 
 	protected float mRotation = 0;
 
-	protected float mScale = 1;
+	protected float mScaleX = 1;
+	protected float mScaleY = 1;
+	
+	protected float mScalePointX = 0;
+	protected float mScalePointY = 0;
+	
+	protected float mRotatePointX = 0;
+	protected float mRotatePointY = 0;
 	private boolean mUpdatePhysicsSelf = true;
 
 	// ===========================================================
@@ -49,12 +56,52 @@ public abstract class DynamicEntity extends StaticEntity {
 		this.mVelocityY = pVelocityY;
 	}
 
-	public float getScale() {
-		return this.mScale;
+	public float getScaleX() {
+		return this.mScaleX;
+	}
+	
+	public float getScaleY() {
+		return this.mScaleY;
 	}
 
-	public void setScale(final float pScale) {
-		this.mScale = pScale;
+	public void setScaleX(final float pScaleX) {
+		this.mScaleX = pScaleX;
+	}
+	
+	public void setScaleY(final float pScaleY) {
+		this.mScaleY = pScaleY;
+	}
+	
+	public float getScalePointX() {
+		return this.mScalePointX;
+	}
+	
+	public float getScalePointY() {
+		return this.mScalePointY;
+	}
+
+	public void setScalePointX(final float pScalePointX) {
+		this.mScalePointX = pScalePointX;
+	}
+	
+	public void setScalePointY(final float pScalePointY) {
+		this.mScalePointY = pScalePointY;
+	}
+	
+	public float getRotatePointX() {
+		return this.mRotatePointX;
+	}
+	
+	public float getRotatePointY() {
+		return this.mRotatePointY;
+	}
+
+	public void setRotatePointX(final float pRotatePointX) {
+		this.mRotatePointX = pRotatePointX;
+	}
+	
+	public void setRotatePointY(final float pRotatePointY) {
+		this.mRotatePointY = pRotatePointY;
 	}
 
 	public void setPosition(final StaticEntity pOtherStaticEntity) {

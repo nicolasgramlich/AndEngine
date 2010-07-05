@@ -34,6 +34,12 @@ public abstract class RectangularShape extends Shape {
 
 		this.mBaseWidth = pWidth;
 		this.mBaseHeight = pHeight;
+		
+		this.mRotatePointX = pWidth / 2f;
+		this.mRotatePointY = pHeight / 2f;
+		
+		this.mScalePointX = pWidth / 2f;
+		this.mScalePointY = pHeight / 2f;
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
@@ -123,25 +129,26 @@ public abstract class RectangularShape extends Shape {
 		// TODO Offset needs to be taken into account.
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			final float halfWidth = this.getBaseWidth() * 0.5f;
-			final float halfHeight = this.getBaseHeight() * 0.5f;
+			final float rotateX = this.mRotatePointX;
+			final float rotateY = this.mRotatePointY;
 
-			pGL.glTranslatef(halfWidth, halfHeight, 0);
+			pGL.glTranslatef(rotateX, rotateY, 0);
 			pGL.glRotatef(rotation, 0, 0, 1);
-			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
+			pGL.glTranslatef(-rotateX, -rotateY, 0);
 		}
 	}
 
 	@Override
 	protected void applyScale(final GL10 pGL) {
-		final float scale = this.mScale;
-		if(scale != 1) {
-			final float halfWidth = this.getBaseWidth() * 0.5f;
-			final float halfHeight = this.getBaseHeight() * 0.5f;
+		final float scaleX = this.mScaleX;
+		final float scaleY = this.mScaleY;
+		if(scaleX != 1 || scaleY != 1) {
+			final float scalePointX = this.mScalePointX;
+			final float scalePointY = this.mScalePointY;
 
-			pGL.glTranslatef(halfWidth, halfHeight, 0);
-			pGL.glScalef(scale, scale, 1);
-			pGL.glTranslatef(-halfWidth, -halfHeight, 0);
+			pGL.glTranslatef(scalePointX, scalePointY, 0);
+			pGL.glScalef(scaleX, scaleY, 1);
+			pGL.glTranslatef(-scalePointX, -scalePointY, 0);
 		}
 	}
 

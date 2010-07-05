@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.shape.Shape;
  * @author Nicolas Gramlich
  * @since 23:37:53 - 19.03.2010
  */
-public class ScaleModifier extends BaseSingleValueSpanModifier {
+public class ScaleModifier extends BaseDoubleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,13 +19,13 @@ public class ScaleModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale) {
-		this(pDuration, pFromScale, pToScale, null);
+	
+	public ScaleModifier(float pDuration, float pFromValueA, float pToValueA, float pFromValueB, float pToValueB) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB);
 	}
 
-	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale, final IModifierListener pModiferListener) {
-		super(pDuration, pFromScale, pToScale, pModiferListener);
+	public ScaleModifier(float pDuration, float pFromValueA, float pToValueA, float pFromValueB, float pToValueB, IModifierListener pModiferListener) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pModiferListener);
 	}
 
 	public ScaleModifier(final ScaleModifier pScaleModifier) {
@@ -45,14 +45,14 @@ public class ScaleModifier extends BaseSingleValueSpanModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	protected void onSetInitialValue(final Shape pShape, final float pScale) {
-		pShape.setScale(pScale);
+	protected void onSetInitialValues(final Shape pShape, float pScaleX, float pScaleY) {
+		pShape.setScaleX(pScaleX);
+		pShape.setScaleY(pScaleY);
 	}
 
-	@Override
-	protected void onSetValue(final Shape pShape, final float pScale) {
-		pShape.setScale(pScale);
+	protected void onSetValues(final Shape pShape, float pScaleX, float pScaleY) {
+		pShape.setScaleX(pScaleX);
+		pShape.setScaleY(pScaleY);
 	}
 
 	// ===========================================================

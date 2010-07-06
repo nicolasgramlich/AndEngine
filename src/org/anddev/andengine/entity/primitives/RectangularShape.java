@@ -35,11 +35,11 @@ public abstract class RectangularShape extends Shape {
 		this.mBaseWidth = pWidth;
 		this.mBaseHeight = pHeight;
 		
-		this.mRotationCenterX = pWidth / 2f;
-		this.mRotationCenterY = pHeight / 2f;
+		this.mRotationCenterX = pWidth * 0.5f;
+		this.mRotationCenterY = pHeight * 0.5f;
 			
-		this.mScaleCenterX = pWidth / 2f;
-		this.mScaleCenterY = pHeight / 2f;
+		this.mScaleCenterX = this.mRotationCenterX;
+		this.mScaleCenterY = this.mRotationCenterY;
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
@@ -163,14 +163,22 @@ public abstract class RectangularShape extends Shape {
 	public void reset() {
 		super.reset();
 		this.setBaseSize();
+
+		final float baseWidth = this.getBaseWidth();
+		this.mRotationCenterX = baseWidth * 0.5f;
+		final float baseHeight = this.getBaseHeight();
+		this.mRotationCenterY = baseHeight * 0.5f;
+
+		this.mScaleCenterX = baseWidth * 0.5f;
+		this.mScaleCenterY = baseHeight * 0.5f;
 	}
 
 	@Override
 	public boolean contains(final float pX, final float pY) {
 		return pX >= this.mX
-		&& pY >= this.mY
-		&& pX <= this.mX + this.mWidth
-		&& pY <= this.mY + this.mHeight;
+			&& pY >= this.mY
+			&& pX <= this.mX + this.mWidth
+			&& pY <= this.mY + this.mHeight;
 	}
 
 	@Override

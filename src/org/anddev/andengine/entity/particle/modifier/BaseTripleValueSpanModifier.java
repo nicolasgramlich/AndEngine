@@ -40,21 +40,21 @@ public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanMod
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValue(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC);
-	protected abstract void onSetValue(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC);
+	protected abstract void onSetInitialValues(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC);
+	protected abstract void onSetValues(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC);
 	
 	@Override
 	@Deprecated
-	protected void onSetValue(Particle pParticle, float pValueA, float pValueB) { }
+	protected void onSetValues(final Particle pParticle, final float pValueA, final float pValueB) { }
 
 	@Override
-	public void onSetInitialValue(final Particle pParticle, final float pValueA, final float pValueB) {
-		this.onSetInitialValue(pParticle, pValueA, pValueB, this.mFromValueC);
+	public void onSetInitialValues(final Particle pParticle, final float pValueA, final float pValueB) {
+		this.onSetInitialValues(pParticle, pValueA, pValueB, this.mFromValueC);
 	}
 
 	@Override
 	protected void onSetValueInternal(final Particle pParticle, final float pPercent) {
-		this.onSetValue(pParticle, super.calculateValue(pPercent), super.calculateValueB(pPercent), this.calculateValueC(pPercent));
+		this.onSetValues(pParticle, super.calculateValue(pPercent), super.calculateValueB(pPercent), this.calculateValueC(pPercent));
 	}
 
 	// ===========================================================

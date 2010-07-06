@@ -18,21 +18,13 @@ public class ScaleModifier extends BaseDoubleValueSpanModifier {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public ScaleModifier(final float pFromScale, final float pToScale, final float pFromTime, final float pToTime) {
+		this(pFromScale, pToScale, pFromScale, pToScale, pFromTime, pToTime);
+	}
 	
-	public ScaleModifier(float pFromValueA, float pToValueA, float pFromValueB, float pToValueB, float pFromTime, float pToTime) {
-		super(pFromValueA, pToValueA, pFromValueB, pToValueB, pFromTime, pToTime);
-	}
-
-	@Override
-	protected void onSetInitialValue(Particle pParticle, float scaleX, float scaleY) {
-		pParticle.setScaleX(scaleX);
-		pParticle.setScaleY(scaleY);
-	}
-
-	@Override
-	protected void onSetValue(Particle pParticle, float scaleX, float scaleY) {
-		pParticle.setScaleX(scaleX);
-		pParticle.setScaleY(scaleY);
+	public ScaleModifier(final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final float pFromTime, final float pToTime) {
+		super(pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pFromTime, pToTime);
 	}
 
 	// ===========================================================
@@ -43,7 +35,15 @@ public class ScaleModifier extends BaseDoubleValueSpanModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	protected void onSetInitialValues(final Particle pParticle, final float pScaleX, final float pScaleY) {
+		pParticle.setScale(pScaleX, pScaleY);
+	}
 
+	@Override
+	protected void onSetValues(final Particle pParticle, final float pScaleX, final float pScaleY) {
+		pParticle.setScale(pScaleX, pScaleY);
+	}
 
 	// ===========================================================
 	// Methods

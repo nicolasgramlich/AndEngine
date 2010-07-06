@@ -42,19 +42,19 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 	
 	@Override
 	@Deprecated
-	protected void onSetValue(Particle pParticle, float pValue) { }
+	protected void onSetValue(final Particle pParticle, final float pValue) { }
 
-	protected abstract void onSetInitialValue(final Particle pParticle, final float pValueA, final float pValueB);
-	protected abstract void onSetValue(final Particle pParticle, final float pValueA, final float pValueB);
+	protected abstract void onSetInitialValues(final Particle pParticle, final float pValueA, final float pValueB);
+	protected abstract void onSetValues(final Particle pParticle, final float pValueA, final float pValueB);
 
 	@Override
 	public void onSetInitialValue(final Particle pParticle, final float pValueA) {
-		this.onSetInitialValue(pParticle, pValueA, this.mFromValueB);
+		this.onSetInitialValues(pParticle, pValueA, this.mFromValueB);
 	}
 
 	@Override
 	protected void onSetValueInternal(final Particle pParticle, final float pPercent) {
-		this.onSetValue(pParticle, super.calculateValue(pPercent), this.calculateValueB(pPercent));
+		this.onSetValues(pParticle, super.calculateValue(pPercent), this.calculateValueB(pPercent));
 	}
 
 	// ===========================================================

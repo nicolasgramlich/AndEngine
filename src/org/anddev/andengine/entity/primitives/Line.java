@@ -49,11 +49,11 @@ public class Line extends Shape {
 		final float width = this.getWidth();
 		final float height = this.getHeight();
 		
-		this.mRotationCenterX = width / 2f;
-		this.mRotationCenterY = height / 2f;
-			
-		this.mScaleCenterX = width / 2f;
-		this.mScaleCenterY = height / 2f;
+		this.mRotationCenterX = width * 0.5f;
+		this.mRotationCenterY = height * 0.5f;
+
+		this.mScaleCenterX = this.mRotationCenterX;
+		this.mScaleCenterY = this.mRotationCenterY;
 	}
 
 	// ===========================================================

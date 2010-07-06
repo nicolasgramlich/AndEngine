@@ -32,12 +32,12 @@ public class ColorModifier extends BaseTripleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Particle pParticle, final float pRed, final float pGreen, final float pBlue) {
+	protected void onSetInitialValues(final Particle pParticle, final float pRed, final float pGreen, final float pBlue) {
 		pParticle.setColor(pRed, pGreen, pBlue);
 	}
 
 	@Override
-	protected void onSetValue(final Particle pParticle, final float pRed, final float pGreen, final float pBlue) {
+	protected void onSetValues(final Particle pParticle, final float pRed, final float pGreen, final float pBlue) {
 		pParticle.setColor(pRed, pGreen, pBlue);
 	}
 

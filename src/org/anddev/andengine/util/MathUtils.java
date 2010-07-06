@@ -37,27 +37,27 @@ public class MathUtils {
 	// Methods
 	// ===========================================================
 
-	public static float radToDeg(final float pRad) {
+	public static final float radToDeg(final float pRad) {
 		return RAD_TO_DEG * pRad;
 	}
 
-	public static float degToRad(final float pDegree) {
+	public static final float degToRad(final float pDegree) {
 		return DEG_TO_RAD * pDegree;
 	}
 
-	public static float random(final float pMin, final float pMax) {
+	public static final float random(final float pMin, final float pMax) {
 		return pMin + RANDOM.nextFloat() * (pMax - pMin);
 	}
 
-	public static int random(final int pMin, final int pMax) {
+	public static final int random(final int pMin, final int pMax) {
 		return pMin + RANDOM.nextInt(pMax - pMin + 1);
 	}
 
-	public static boolean isPowerOfTwo(final int n) {
+	public static final boolean isPowerOfTwo(final int n) {
 		return ((n != 0) && (n & (n - 1)) == 0);
 	}
 
-	public static int nextPowerOfTwo(final int n) {
+	public static final int nextPowerOfTwo(final int n) {
 		int k = n;
 
 		if (k == 0) {
@@ -73,7 +73,7 @@ public class MathUtils {
 		return k + 1;
 	}
 
-	public static int sum(final int[] pValues) {
+	public static final int sum(final int[] pValues) {
 		int sum = 0;
 		for(int i = pValues.length - 1; i >= 0; i--) {
 			sum += pValues[i];
@@ -82,21 +82,21 @@ public class MathUtils {
 		return sum;
 	}
 
-	public static void arraySumInternal(final int[] pValues) {
+	public static final void arraySumInternal(final int[] pValues) {
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
 			pValues[i] = pValues[i-1] + pValues[i];
 		}
 	}
 
-	public static void arraySumInternal(final long[] pValues) {
+	public static final void arraySumInternal(final long[] pValues) {
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
 			pValues[i] = pValues[i-1] + pValues[i];
 		}
 	}
 
-	public static void arraySumInternal(final long[] pValues, final long pFactor) {
+	public static final void arraySumInternal(final long[] pValues, final long pFactor) {
 		pValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
@@ -104,7 +104,7 @@ public class MathUtils {
 		}
 	}
 
-	public static float arraySum(final float[] pValues) {
+	public static final float arraySum(final float[] pValues) {
 		float sum = 0;
 		final int valueCount = pValues.length;
 		for(int i = 0; i < valueCount; i++) {
@@ -113,7 +113,7 @@ public class MathUtils {
 		return sum;
 	}
 
-	public static float arrayAverage(final float[] pValues) {
+	public static final float arrayAverage(final float[] pValues) {
 		return arraySum(pValues) / pValues.length;
 	}
 

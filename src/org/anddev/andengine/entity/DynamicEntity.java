@@ -16,6 +16,7 @@ public abstract class DynamicEntity extends StaticEntity {
 
 	protected float mAccelerationX = 0;
 	protected float mAccelerationY = 0;
+	
 	protected float mVelocityX = 0;
 	protected float mVelocityY = 0;
 

@@ -4,9 +4,9 @@ import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 10:17:42 - 29.06.2010
+ * @since 10:36:18 - 29.06.2010
  */
-public class RotateInitializer extends BaseSingleValueInitializer {
+public class RotationModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,50 +18,33 @@ public class RotateInitializer extends BaseSingleValueInitializer {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public RotateInitializer(final float pRotation) {
-		this(pRotation, pRotation);
-	}
 
-	public RotateInitializer(final float pMinRotation, final float pMaxRotation) {
-		super(pMinRotation, pMaxRotation);
+	public RotationModifier(final float pFromRotation, final float pToRotation, final float pFromTime, final float pToTime) {
+		super(pFromRotation, pToRotation, pFromTime, pToTime);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public float getMinRotation() {
-		return this.mMinValue;
-	}
-
-	public float getMaxRotation() {
-		return this.mMaxValue;
-	}
-
-	public void setRotation(final float pRotation) {
-		this.mMinValue = pRotation;
-		this.mMaxValue = pRotation;
-	}
-
-	public void setRotation(final float pMinRotation, final float pMaxRotation) {
-		this.mMinValue = pMinRotation;
-		this.mMaxValue = pMaxRotation;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	public void onInitializeParticle(final Particle pParticle, final float pValue) {
-		pParticle.setRotation(pValue);
+	protected void onSetInitialValue(final Particle pParticle, final float pRotation) {
+		pParticle.setRotation(pRotation);
+	}
+
+	@Override
+	protected void onSetValue(final Particle pParticle, final float pRotation) {
+		pParticle.setRotation(pRotation);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

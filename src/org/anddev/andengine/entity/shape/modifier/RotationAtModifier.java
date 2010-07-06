@@ -1,13 +1,12 @@
 package org.anddev.andengine.entity.shape.modifier;
 
 import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 21:59:38 - 06.07.2010
  */
-public class RotateModifier extends BaseSingleValueSpanModifier {
+public class RotationAtModifier extends RotationModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,26 +14,30 @@ public class RotateModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private final float mRotationCenterX;
+	private final float mRotationCenterY;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotateModifier(final float pDuration, final float pFromRotation, final float pToRotation) {
-		this(pDuration, pFromRotation, pToRotation, null);
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY) {
+		super(pDuration, pFromRotation, pToRotation);
+		this.mRotationCenterX = pRotationCenterX;
+		this.mRotationCenterY = pRotationCenterY;
 	}
 
-	public RotateModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IModifierListener pModiferListener) {
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IModifierListener pModiferListener) {
 		super(pDuration, pFromRotation, pToRotation, pModiferListener);
+		this.mRotationCenterX = pRotationCenterX;
+		this.mRotationCenterY = pRotationCenterY;
 	}
 
-	public RotateModifier(final RotateModifier pRotateModifier) {
-		super(pRotateModifier);
-	}
-
-	@Override
-	public RotateModifier clone(){
-		return new RotateModifier(this);
+	public RotationAtModifier(final RotationAtModifier pRotationAtModifier) {
+		super(pRotationAtModifier);
+		this.mRotationCenterX = pRotationAtModifier.mRotationCenterX;
+		this.mRotationCenterY = pRotationAtModifier.mRotationCenterY; 
 	}
 
 	// ===========================================================
@@ -44,16 +47,6 @@ public class RotateModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected void onSetInitialValue(final Shape pShape, final float pRotation) {
-		pShape.setRotation(pRotation);
-	}
-
-	@Override
-	protected void onSetValue(final Shape pShape, final float pRotation) {
-		pShape.setRotation(pRotation);
-	}
 
 	// ===========================================================
 	// Methods

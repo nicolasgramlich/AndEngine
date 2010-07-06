@@ -1,12 +1,12 @@
-package org.anddev.andengine.entity.particle.modifier;
+package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.particle.Particle;
+import org.anddev.andengine.entity.shape.Shape;
 
 /**
  * @author Nicolas Gramlich
- * @since 10:36:18 - 29.06.2010
+ * @since 16:12:52 - 19.03.2010
  */
-public class RotateModifier extends BaseSingleValueSpanModifier {
+public class RotationByModifier extends BaseSingleValueChangeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,8 +19,17 @@ public class RotateModifier extends BaseSingleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotateModifier(final float pFromRotation, final float pToRotation, final float pFromTime, final float pToTime) {
-		super(pFromRotation, pToRotation, pFromTime, pToTime);
+	public RotationByModifier(final float pDuration, final float pRotation) {
+		super(pDuration, pRotation);
+	}
+
+	public RotationByModifier(final RotationByModifier pRotationByModifier) {
+		super(pRotationByModifier);
+	}
+
+	@Override
+	public RotationByModifier clone(){
+		return new RotationByModifier(this);
 	}
 
 	// ===========================================================
@@ -32,13 +41,8 @@ public class RotateModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Particle pParticle, final float pRotation) {
-		pParticle.setRotation(pRotation);
-	}
-
-	@Override
-	protected void onSetValue(final Particle pParticle, final float pRotation) {
-		pParticle.setRotation(pRotation);
+	protected void onChangeValue(final Shape pShape, final float pValue) {
+		pShape.setRotation(pShape.getRotation() + pValue);
 	}
 
 	// ===========================================================

@@ -101,11 +101,11 @@ public abstract class Shape extends DynamicEntity {
 	public abstract float getBaseHeight();
 
 	public float getWidthScaled() {
-		return this.getWidth() * this.mScale;
+		return this.getWidth() * this.mScaleX;
 	}
 
 	public float getHeightScaled() {
-		return this.getHeight() * this.mScale;
+		return this.getHeight() * this.mScaleY;
 	}
 
 	// ===========================================================

@@ -56,11 +56,19 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	protected abstract Class<? extends Activity> getFollowUpActivity();
 
-	protected float getSplashScaleFrom() {
+	protected float getSplashScaleFromX() {
 		return 1f;
 	}
 	
-	protected float getSplashScaleTo() {
+	protected float getSplashScaleToX() {
+		return 1f;
+	}
+	
+	protected float getSplashScaleFromY() {
+		return 1f;
+	}
+	
+	protected float getSplashScaleToY() {
 		return 1f;
 	}
 
@@ -91,7 +99,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 	public Scene onLoadScene() {
 		final float splashDuration = this.getSplashDuration();
 
-		final SplashScene splashScene = new SplashScene(this.mCamera, this.mLoadingScreenTextureRegion, splashDuration, this.getSplashScaleFrom(), this.getSplashScaleTo());
+		final SplashScene splashScene = new SplashScene(this.mCamera, this.mLoadingScreenTextureRegion, splashDuration, this.getSplashScaleFromX(), this.getSplashScaleToX(), this.getSplashScaleFromY(), this.getSplashScaleToY());
 
 		splashScene.registerPreFrameHandler(new TimerHandler(splashDuration, new ITimerCallback() {
 			@Override

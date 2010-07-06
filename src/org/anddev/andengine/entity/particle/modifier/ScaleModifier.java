@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 20:37:27 - 04.05.2010
  */
-public class ScaleModifier extends BaseSingleValueSpanModifier {
+public class ScaleModifier extends BaseDoubleValueSpanModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,9 +18,21 @@ public class ScaleModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public ScaleModifier(float pFromValueA, float pToValueA, float pFromValueB, float pToValueB, float pFromTime, float pToTime) {
+		super(pFromValueA, pToValueA, pFromValueB, pToValueB, pFromTime, pToTime);
+	}
 
-	public ScaleModifier(final float pFromScale, final float pToScale, final float pFromTime, final float pToTime) {
-		super(pFromScale, pToScale, pFromTime, pToTime);
+	@Override
+	protected void onSetInitialValue(Particle pParticle, float scaleX, float scaleY) {
+		pParticle.setScaleX(scaleX);
+		pParticle.setScaleY(scaleY);
+	}
+
+	@Override
+	protected void onSetValue(Particle pParticle, float scaleX, float scaleY) {
+		pParticle.setScaleX(scaleX);
+		pParticle.setScaleY(scaleY);
 	}
 
 	// ===========================================================
@@ -31,15 +43,7 @@ public class ScaleModifier extends BaseSingleValueSpanModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	protected void onSetInitialValue(final Particle pParticle, final float pScale) {
-		pParticle.setScale(pScale);
-	}
 
-	@Override
-	protected void onSetValue(final Particle pParticle, final float pScale) {
-		pParticle.setScale(pScale);
-	}
 
 	// ===========================================================
 	// Methods

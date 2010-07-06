@@ -25,6 +25,7 @@ public class Line extends Shape {
 
 	private float mX2;
 	private float mY2;
+	
 	private float mLineWidth;
 
 	// ===========================================================

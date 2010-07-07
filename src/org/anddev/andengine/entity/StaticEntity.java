@@ -2,6 +2,8 @@ package org.anddev.andengine.entity;
 
 import org.anddev.andengine.entity.Scene.ITouchArea;
 
+import android.view.MotionEvent;
+
 /**
  * @author Nicolas Gramlich
  * @since 12:06:43 - 11.03.2010
@@ -90,6 +92,11 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 
 	protected void onPositionChanged(){
 		
+	}
+	
+	@Override
+	public boolean onAreaTouched(final MotionEvent pSceneMotionEvent) {
+		return false;
 	}
 
 	@Override

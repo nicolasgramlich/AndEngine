@@ -239,14 +239,24 @@ public class Scene extends BaseEntity {
 						for(int i = 0; i < touchAreaCount; i++) {
 							final ITouchArea touchArea = touchAreas.get(i);
 							if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
-								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+								final boolean handledSelf = touchArea.onAreaTouched(pSceneMotionEvent);
+								if(handledSelf) {
+									return true;
+								} else {
+									return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+								}
 							}
 						}
-					} else {
+					} else { /* Front to back. */
 						for(int i = touchAreaCount - 1; i >= 0; i--) {
 							final ITouchArea touchArea = touchAreas.get(i);
 							if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
-								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+								final boolean handledSelf = touchArea.onAreaTouched(pSceneMotionEvent);
+								if(handledSelf) {
+									return true;
+								} else {
+									return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+								}
 							}
 						}
 					}
@@ -356,6 +366,13 @@ public class Scene extends BaseEntity {
 		// ===========================================================
 
 		public boolean contains(final float pX, final float pY);
+		
+		/**
+		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.
+		 * @param pSceneMotionEvent
+		 * @return <code>true</code> if the event was handled (that means {@link IOnAreaTouchListener} of the {@link Scene} will not be fired!), otherwise <code>false</code>.
+		 */
+		public boolean onAreaTouched(final MotionEvent pSceneMotionEvent);
 	}
 
 	public static interface IOnAreaTouchListener {

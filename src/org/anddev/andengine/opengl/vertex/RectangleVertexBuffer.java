@@ -11,7 +11,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// Constants
 	// ===========================================================
 
-	private static final int VERTICES_PER_RECTANGLE = 4;
+	public static final int VERTICES_PER_RECTANGLE = 4;
 
 	// ===========================================================
 	// Fields

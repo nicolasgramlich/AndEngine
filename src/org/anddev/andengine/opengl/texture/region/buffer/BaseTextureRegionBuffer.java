@@ -1,5 +1,7 @@
 package org.anddev.andengine.opengl.texture.region.buffer;
 
+import static org.anddev.andengine.opengl.vertex.RectangleVertexBuffer.VERTICES_PER_RECTANGLE;
+
 import java.nio.FloatBuffer;
 
 import org.anddev.andengine.opengl.buffer.BufferObject;
@@ -28,7 +30,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	// ===========================================================
 
 	public BaseTextureRegionBuffer(final TextureRegion pTextureRegion, final int pDrawType) {
-		super(8 * BYTES_PER_FLOAT, pDrawType);
+		super(2 * VERTICES_PER_RECTANGLE * BYTES_PER_FLOAT, pDrawType);
 		this.mTextureRegion = pTextureRegion;
 	}
 

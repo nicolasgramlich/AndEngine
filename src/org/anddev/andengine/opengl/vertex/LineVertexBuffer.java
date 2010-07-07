@@ -11,7 +11,7 @@ public class LineVertexBuffer extends VertexBuffer {
 	// Constants
 	// ===========================================================
 
-	private static final int VERTICES_PER_LINE = 2;
+	public static final int VERTICES_PER_LINE = 2;
 
 	// ===========================================================
 	// Fields

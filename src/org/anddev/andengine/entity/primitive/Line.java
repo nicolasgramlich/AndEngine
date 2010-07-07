@@ -164,7 +164,7 @@ public class Line extends Shape {
 
 	@Override
 	protected void drawVertices(final GL10 pGL) {
-		pGL.glDrawArrays(GL10.GL_LINES, 0, 2);
+		pGL.glDrawArrays(GL10.GL_LINES, 0, LineVertexBuffer.VERTICES_PER_LINE);
 	}
 
 	@Override

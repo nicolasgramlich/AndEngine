@@ -1,8 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.IShapeModifier;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.modifier.util.ShapeModifierUtils;
 
 /**
@@ -18,7 +16,7 @@ public class ParallelModifier implements IShapeModifier {
 	// Fields
 	// ===========================================================
 
-	private IModifierListener mModiferListener;
+	private IShapeModifierListener mModiferListener;
 	private final IShapeModifier[] mShapeModifiers;
 
 	private final float mDuration;
@@ -34,12 +32,12 @@ public class ParallelModifier implements IShapeModifier {
 		this(null, pShapeModifiers);
 	}
 
-	public ParallelModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
+	public ParallelModifier(final IShapeModifierListener pShapeModiferListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
 		if(pShapeModifiers.length == 0) {
 			throw new IllegalArgumentException("pShapeModifiers must not be empty!");
 		}
 
-		this.mModiferListener = pModiferListener;
+		this.mModiferListener = pShapeModiferListener;
 		this.mShapeModifiers = pShapeModifiers;
 
 		final IShapeModifier shapeModifierWithLongestDuration = ShapeModifierUtils.getShapeModifierWithLongestDuration(pShapeModifiers);
@@ -95,16 +93,16 @@ public class ParallelModifier implements IShapeModifier {
 		return this.mDuration;
 	}
 
-	public IModifierListener getModiferListener() {
+	public IShapeModifierListener getModiferListener() {
 		return this.mModiferListener;
 	}
 
-	public void setModiferListener(final IModifierListener pModiferListener) {
-		this.mModiferListener = pModiferListener;
+	public void setModiferListener(final IShapeModifierListener pShapeModiferListener) {
+		this.mModiferListener = pShapeModiferListener;
 	}
 
 	@Override
-	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+	public void onUpdateShape(final float pSecondsElapsed, final IShape pShape) {
 		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
 			shapeModifiers[i].onUpdateShape(pSecondsElapsed, pShape);
@@ -129,9 +127,9 @@ public class ParallelModifier implements IShapeModifier {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	private class InternalModifierListener implements IModifierListener  {
+	private class InternalModifierListener implements IShapeModifierListener  {
 		@Override
-		public void onModifierFinished(final IShapeModifier pShapeModifier, final Shape pShape) {
+		public void onModifierFinished(final IShapeModifier pShapeModifier, final IShape pShape) {
 			ParallelModifier.this.mFinished = true;
 			if(ParallelModifier.this.mModiferListener != null) {
 				ParallelModifier.this.mModiferListener.onModifierFinished(ParallelModifier.this, pShape);

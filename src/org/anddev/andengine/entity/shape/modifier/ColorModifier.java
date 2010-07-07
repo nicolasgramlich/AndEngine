@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -24,8 +23,8 @@ public class ColorModifier extends BaseTripleValueSpanModifier {
 		this(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, null);
 	}
 
-	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IModifierListener pModiferListener) {
-		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pModiferListener);
+	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pShapeModiferListener);
 	}
 
 	public ColorModifier(final ColorModifier pColorModifier) {
@@ -46,12 +45,12 @@ public class ColorModifier extends BaseTripleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValues(final Shape pShape, final float pRed, final float pGreen, final float pBlue) {
+	protected void onSetInitialValues(final IShape pShape, final float pRed, final float pGreen, final float pBlue) {
 		pShape.setColor(pRed, pGreen, pBlue);
 	}
 
 	@Override
-	protected void onSetValues(final Shape pShape, final float pRed, final float pGreen, final float pBlue) {
+	protected void onSetValues(final IShape pShape, final float pRed, final float pGreen, final float pBlue) {
 		pShape.setColor(pRed, pGreen, pBlue);
 	}
 

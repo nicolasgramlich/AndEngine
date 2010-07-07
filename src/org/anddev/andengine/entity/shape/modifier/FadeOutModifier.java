@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
 
 /**
  * @author Nicolas Gramlich
@@ -23,8 +22,8 @@ public class FadeOutModifier extends AlphaModifier {
 		super(pDuration, 1.0f, 0.0f);
 	}
 
-	public FadeOutModifier(final float pDuration, final IModifierListener pModiferListener) {
-		super(pDuration, 1.0f, 0.0f, pModiferListener);
+	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, 1.0f, 0.0f, pShapeModiferListener);
 	}
 
 	public FadeOutModifier(final FadeOutModifier pFadeOutModifier) {

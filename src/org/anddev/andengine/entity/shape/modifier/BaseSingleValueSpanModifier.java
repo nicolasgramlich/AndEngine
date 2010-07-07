@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -27,8 +26,8 @@ public abstract class BaseSingleValueSpanModifier extends BaseModifier {
 		this(pDuration, pFromValue, pToValue, null);
 	}
 
-	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener pModiferListener) {
-		super(pDuration, pModiferListener);
+	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pShapeModiferListener);
 		this.mFromValue = pFromValue;
 		this.mValuePerSecond = (pToValue - pFromValue) / pDuration;
 	}
@@ -47,16 +46,16 @@ public abstract class BaseSingleValueSpanModifier extends BaseModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValue(final Shape pShape, final float pValue);
-	protected abstract void onSetValue(final Shape pShape, final float pValue);
+	protected abstract void onSetInitialValue(final IShape pShape, final float pValue);
+	protected abstract void onSetValue(final IShape pShape, final float pValue);
 
 	@Override
-	protected void onManagedInitializeShape(final Shape pShape) {
+	protected void onManagedInitializeShape(final IShape pShape) {
 		this.onSetInitialValue(pShape, this.mFromValue);
 	}
 
 	@Override
-	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+	protected void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape) {
 		this.onSetValue(pShape, this.mFromValue + this.getTotalSecondsElapsed() * this.mValuePerSecond);
 	}
 

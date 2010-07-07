@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -24,8 +23,8 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 		this(pDuration, pFromRotation, pToRotation, null);
 	}
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IModifierListener pModiferListener) {
-		super(pDuration, pFromRotation, pToRotation, pModiferListener);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener);
 	}
 
 	public RotationModifier(final RotationModifier pRotationModifier) {
@@ -46,12 +45,12 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Shape pShape, final float pRotation) {
+	protected void onSetInitialValue(final IShape pShape, final float pRotation) {
 		pShape.setRotation(pRotation);
 	}
 
 	@Override
-	protected void onSetValue(final Shape pShape, final float pRotation) {
+	protected void onSetValue(final IShape pShape, final float pRotation) {
 		pShape.setRotation(pRotation);
 	}
 

@@ -1,8 +1,9 @@
-package org.anddev.andengine.entity.primitives;
+package org.anddev.andengine.entity.primitive;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.CollisionChecker;
+import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
@@ -182,7 +183,7 @@ public abstract class RectangularShape extends Shape {
 	}
 
 	@Override
-	public boolean collidesWith(final Shape pOtherShape) {
+	public boolean collidesWith(final IShape pOtherShape) {
 		if(pOtherShape instanceof RectangularShape) {
 			final RectangularShape pOtherRectangularShape = (RectangularShape) pOtherShape;
 

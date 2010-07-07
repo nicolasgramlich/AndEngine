@@ -1,14 +1,13 @@
-package org.anddev.andengine.entity.primitives;
+package org.anddev.andengine.entity.scene.menu.item;
 
-import javax.microedition.khronos.opengles.GL11;
-
-import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 /**
  * @author Nicolas Gramlich
- * @since 19:05:49 - 11.04.2010
+ * @since 20:15:20 - 01.04.2010
  */
-public abstract class BaseRectangle extends RectangularShape {
+public class SpriteMenuItem extends Sprite implements IMenuItem {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,20 +15,26 @@ public abstract class BaseRectangle extends RectangularShape {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private final int mID;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer(GL11.GL_STATIC_DRAW));
-		this.updateVertexBuffer();
+	public SpriteMenuItem(final int pID, final TextureRegion pTextureRegion) {
+		super(0, 0, pTextureRegion);
+		this.mID = pID;
 	}
 
-	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight, final RectangleVertexBuffer pRectangleVertexBuffer) {
-		super(pX, pY, pWidth, pHeight, pRectangleVertexBuffer);
-	}
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
 
+	public int getID() {
+		return this.mID;
+	}
+	
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -39,13 +44,13 @@ public abstract class BaseRectangle extends RectangularShape {
 	// ===========================================================
 
 	@Override
-	public RectangleVertexBuffer getVertexBuffer() {
-		return (RectangleVertexBuffer)super.getVertexBuffer();
+	public void onSelected() {
+		/* Nothing. */
 	}
 
 	@Override
-	protected void onUpdateVertexBuffer(){
-		this.getVertexBuffer().onUpdate(0, 0, this.mWidth, this.mHeight);
+	public void onUnselected() {
+		/* Nothing. */
 	}
 
 	// ===========================================================

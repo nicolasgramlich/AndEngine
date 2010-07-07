@@ -1,17 +1,18 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.scene;
 
-import java.util.ArrayList;
+import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.shape.modifier.ScaleModifier;
+import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 /**
  * @author Nicolas Gramlich
- * @since 09:45:22 - 31.03.2010
+ * @since 09:45:02 - 03.05.2010
  */
-public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpdateHandler {
+public class SplashScene extends Scene {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final long serialVersionUID = -8842562717687229277L;
 
 	// ===========================================================
 	// Fields
@@ -21,6 +22,21 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	// Constructors
 	// ===========================================================
 
+	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion) {
+		this(pCamera, pTextureRegion, -1, 1, 1);
+	}
+
+	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion, final float pDuration, final float pScaleFrom, final float pScaleTo) {
+		super(1);
+
+		final Sprite loadingScreenSprite = new Sprite(pCamera.getMinX(), pCamera.getMinY(), pCamera.getWidth(), pCamera.getHeight(), pTextureRegion);
+		if(pScaleFrom != 1 || pScaleTo != 1) {
+			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, pScaleFrom, pScaleTo));
+		}
+
+		this.getTopLayer().addEntity(loadingScreenSprite);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -28,22 +44,6 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		final int handlerCount = this.size();
-		for(int i = 0; i < handlerCount; i++) {
-			this.get(i).onUpdate(pSecondsElapsed);
-		}
-	}
-	
-	@Override
-	public void reset() {
-		final int handlerCount = this.size();
-		for(int i = 0; i < handlerCount; i++) {
-			this.get(i).reset();
-		}
-	}
 
 	// ===========================================================
 	// Methods

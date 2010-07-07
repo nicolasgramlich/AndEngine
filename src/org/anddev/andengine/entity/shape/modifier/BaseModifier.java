@@ -1,8 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.IShapeModifier;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -21,7 +19,7 @@ public abstract class BaseModifier implements IShapeModifier {
 	private boolean mRemoveWhenFinished = true;
 	private float mTotalSecondsElapsed;
 	protected final float mDuration;
-	private IModifierListener mModiferListener;
+	private IShapeModifierListener mModiferListener;
 
 	// ===========================================================
 	// Constructors
@@ -35,9 +33,9 @@ public abstract class BaseModifier implements IShapeModifier {
 		this(pDuration, null);
 	}
 
-	public BaseModifier(final float pDuration, final IModifierListener pModiferListener) {
+	public BaseModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
 		this.mDuration = pDuration;
-		this.mModiferListener = pModiferListener;
+		this.mModiferListener = pShapeModiferListener;
 	}
 
 	BaseModifier(final BaseModifier pBaseModifier) {
@@ -70,12 +68,12 @@ public abstract class BaseModifier implements IShapeModifier {
 		return this.mRemoveWhenFinished;
 	}
 
-	public IModifierListener getModiferListener() {
+	public IShapeModifierListener getModiferListener() {
 		return this.mModiferListener;
 	}
 
-	public void setModiferListener(final IModifierListener pModiferListener) {
-		this.mModiferListener = pModiferListener;
+	public void setModiferListener(final IShapeModifierListener pShapeModiferListener) {
+		this.mModiferListener = pShapeModiferListener;
 	}
 
 	public float getDuration() {
@@ -85,12 +83,12 @@ public abstract class BaseModifier implements IShapeModifier {
 	@Override
 	public abstract IShapeModifier clone();
 
-	protected abstract void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape);
+	protected abstract void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape);
 
-	protected abstract void onManagedInitializeShape(final Shape pShape);
+	protected abstract void onManagedInitializeShape(final IShape pShape);
 
 	@Override
-	public final void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+	public final void onUpdateShape(final float pSecondsElapsed, final IShape pShape) {
 		if(!this.mFinished){
 			if(this.mTotalSecondsElapsed == 0) {
 				this.onManagedInitializeShape(pShape);

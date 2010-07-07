@@ -1,8 +1,13 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.scene;
 
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.engine.IUpdateHandler;
+import org.anddev.andengine.engine.UpdateHandlerList;
+import org.anddev.andengine.entity.BaseEntity;
+import org.anddev.andengine.entity.layer.Layer;
 
 import android.view.MotionEvent;
 

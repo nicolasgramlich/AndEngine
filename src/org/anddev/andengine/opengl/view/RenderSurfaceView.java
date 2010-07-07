@@ -4,7 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
 
 import android.content.Context;

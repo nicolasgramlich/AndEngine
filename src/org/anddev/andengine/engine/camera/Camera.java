@@ -3,10 +3,10 @@ package org.anddev.andengine.engine.camera;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.CollisionChecker;
+import org.anddev.andengine.engine.IUpdateHandler;
 import org.anddev.andengine.engine.camera.hud.HUD;
-import org.anddev.andengine.entity.IUpdateHandler;
-import org.anddev.andengine.entity.primitives.RectangularShape;
-import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.entity.primitive.RectangularShape;
+import org.anddev.andengine.opengl.util.GLHelper;
 
 import android.opengl.GLU;
 import android.view.MotionEvent;

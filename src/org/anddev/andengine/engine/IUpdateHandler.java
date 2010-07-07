@@ -1,10 +1,10 @@
-package org.anddev.andengine.entity.particle;
+package org.anddev.andengine.engine;
 
 /**
  * @author Nicolas Gramlich
- * @since 20:06:05 - 14.03.2010
+ * @since 12:24:09 - 11.03.2010
  */
-public interface IParticleModifier extends IParticleInitializer {
+public interface IUpdateHandler {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -13,5 +13,6 @@ public interface IParticleModifier extends IParticleInitializer {
 	// Methods
 	// ===========================================================
 
-	public void onUpdateParticle(final Particle pParticle);
+	public void onUpdate(final float pSecondsElapsed);
+	public void reset();
 }

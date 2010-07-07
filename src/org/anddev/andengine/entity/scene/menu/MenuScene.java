@@ -1,11 +1,14 @@
-package org.anddev.andengine.entity.menu;
+package org.anddev.andengine.entity.scene.menu;
 
 import java.util.ArrayList;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.CameraScene;
-import org.anddev.andengine.entity.Scene;
-import org.anddev.andengine.entity.Scene.IOnAreaTouchListener;
+import org.anddev.andengine.entity.scene.CameraScene;
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnAreaTouchListener;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.anddev.andengine.entity.scene.menu.animator.IMenuAnimator;
+import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 
 import android.view.MotionEvent;
 
@@ -13,7 +16,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 20:06:51 - 01.04.2010
  */
-public class MenuScene extends CameraScene implements IOnAreaTouchListener {
+public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnSceneTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,11 +25,13 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<MenuItem> mMenuItems = new ArrayList<MenuItem>();
+	private final ArrayList<IMenuItem> mMenuItems = new ArrayList<IMenuItem>();
 
 	private IOnMenuItemClickListener mOnMenuItemClickListener;
 
 	private IMenuAnimator mMenuAnimator = IMenuAnimator.DEFAULT;
+
+	private IMenuItem mSelectedMenuItem;
 
 	// ===========================================================
 	// Constructors
@@ -47,6 +52,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	public MenuScene(final Camera pCamera, final IOnMenuItemClickListener pOnMenuItemClickListener) {
 		super(1, pCamera);
 		this.mOnMenuItemClickListener = pOnMenuItemClickListener;
+		this.setOnSceneTouchListener(this);
 		this.setOnAreaTouchListener(this);
 	}
 
@@ -66,7 +72,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 		return this.mMenuItems.size();
 	}
 
-	public void addMenuItem(final MenuItem pMenuItem) {
+	public void addMenuItem(final IMenuItem pMenuItem) {
 		this.mMenuItems.add(pMenuItem);
 		this.getBottomLayer().addEntity(pMenuItem);
 		this.registerTouchArea(pMenuItem);
@@ -104,12 +110,39 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 
 	@Override
 	public boolean onAreaTouched(final ITouchArea pTouchArea, final MotionEvent pSceneMotionEvent) {
-		if(this.mOnMenuItemClickListener != null) {
-			if(pSceneMotionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-				return this.mOnMenuItemClickListener.onMenuItemClicked(this, (MenuItem)pTouchArea);
-			}
+		final IMenuItem menuItem = ((IMenuItem)pTouchArea);
+		
+		switch(pSceneMotionEvent.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+			case MotionEvent.ACTION_MOVE:
+				if(this.mSelectedMenuItem != null && this.mSelectedMenuItem != menuItem) {
+					this.mSelectedMenuItem.onUnselected();
+				}
+				this.mSelectedMenuItem = menuItem;
+				this.mSelectedMenuItem.onSelected();
+				break;
+			case MotionEvent.ACTION_UP:
+				if(this.mOnMenuItemClickListener != null) {
+					menuItem.onUnselected();
+					this.mSelectedMenuItem = null;
+					return this.mOnMenuItemClickListener.onMenuItemClicked(this, menuItem);
+				}
+				break;
+			case MotionEvent.ACTION_CANCEL:
+				menuItem.onUnselected();
+				this.mSelectedMenuItem = null;
+				break;
 		}
-		return false;
+		return true;
+	}
+
+	@Override
+	public boolean onSceneTouchEvent(final Scene pScene, final MotionEvent pSceneMotionEvent) {
+		if(this.mSelectedMenuItem != null) {
+			this.mSelectedMenuItem.onUnselected();
+			this.mSelectedMenuItem = null;
+		}
+		return true;
 	}
 
 	@Override
@@ -123,7 +156,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	public void reset() {
 		super.reset();
 
-		final ArrayList<MenuItem> menuItems = this.mMenuItems;
+		final ArrayList<IMenuItem> menuItems = this.mMenuItems;
 		for(int i = menuItems.size() - 1; i >= 0; i--) {
 			menuItems.get(i).reset();
 		}
@@ -152,4 +185,16 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	public static interface IOnMenuItemClickListener {
+		// ===========================================================
+		// Final Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem pMenuItem);
+	}
 }

@@ -4,7 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.SplitScreenEngineOptions;
-import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.util.GLHelper;
 
 import android.view.MotionEvent;
 

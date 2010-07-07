@@ -1,10 +1,12 @@
-package org.anddev.andengine.entity.menu;
+package org.anddev.andengine.entity.particle.modifier;
+
+import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 20:29:58 - 01.04.2010
+ * @since 10:12:09 - 29.06.2010
  */
-public interface IOnMenuItemClickListener {
+public interface IParticleInitializer {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -13,5 +15,5 @@ public interface IOnMenuItemClickListener {
 	// Methods
 	// ===========================================================
 
-	public boolean onMenuItemClicked(final MenuScene pMenuScene, final MenuItem pMenuItem);
+	public void onInitializeParticle(final Particle pParticle);
 }

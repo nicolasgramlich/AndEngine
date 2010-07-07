@@ -1,15 +1,13 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.scene.menu.item;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.modifier.ScaleModifier;
-import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.entity.sprite.AnimatedSprite;
+import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 /**
  * @author Nicolas Gramlich
- * @since 09:45:02 - 03.05.2010
+ * @since 15:44:39 - 07.07.2010
  */
-public class SplashScene extends Scene {
+public class AnimatedSpriteMenuItem extends AnimatedSprite implements IMenuItem {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,26 +15,26 @@ public class SplashScene extends Scene {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private final int mID;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion) {
-		this(pCamera, pTextureRegion, -1, 1, 1);
+	public AnimatedSpriteMenuItem(final int pID, final TiledTextureRegion pTiledTextureRegion) {
+		super(0, 0, pTiledTextureRegion);
+		this.mID = pID;
 	}
 
-	public SplashScene(final Camera pCamera, final TextureRegion pTextureRegion, final float pDuration, final float pScaleFrom, final float pScaleTo) {
-		super(1);
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
 
-		final Sprite loadingScreenSprite = new Sprite(pCamera.getMinX(), pCamera.getMinY(), pCamera.getWidth(), pCamera.getHeight(), pTextureRegion);
-		if(pScaleFrom != 1 || pScaleTo != 1) {
-			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, pScaleFrom, pScaleTo));
-		}
-
-		this.getTopLayer().addEntity(loadingScreenSprite);
+	public int getID() {
+		return this.mID;
 	}
-
+	
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -44,6 +42,16 @@ public class SplashScene extends Scene {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public void onSelected() {
+		/* Nothing. */
+	}
+
+	@Override
+	public void onUnselected() {
+		/* Nothing. */
+	}
 
 	// ===========================================================
 	// Methods

@@ -2,7 +2,6 @@ package org.anddev.andengine.entity.particle.modifier;
 
 import static org.anddev.andengine.util.MathUtils.RANDOM;
 
-import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**

@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.menu;
+package org.anddev.andengine.entity.scene.menu.item;
 
-import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.entity.text.Text;
+import org.anddev.andengine.opengl.font.Font;
 
 /**
  * @author Nicolas Gramlich
  * @since 20:15:20 - 01.04.2010
  */
-public class MenuItem extends Sprite {
+public class TextMenuItem extends Text implements IMenuItem{
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,9 +21,9 @@ public class MenuItem extends Sprite {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public MenuItem(final int pID, final TextureRegion pTextureRegion) {
-		super(0, 0, pTextureRegion);
+	
+	public TextMenuItem(final int pID, Font pFont, String pText) {
+		super(0, 0, pFont, pText);
 		this.mID = pID;
 	}
 
@@ -34,10 +34,24 @@ public class MenuItem extends Sprite {
 	public int getID() {
 		return this.mID;
 	}
+	
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public void onSelected() {
+		/* Nothing. */
+	}
+
+	@Override
+	public void onUnselected() {
+		/* Nothing. */
+	}
 
 	// ===========================================================
 	// Methods

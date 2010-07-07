@@ -3,7 +3,7 @@ package org.anddev.andengine.ui.activity;
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.options.EngineOptions;
-import org.anddev.andengine.entity.Scene;
+import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.sensor.orientation.IOrientationListener;

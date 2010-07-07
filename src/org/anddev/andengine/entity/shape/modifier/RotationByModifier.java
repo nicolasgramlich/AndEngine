@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -41,7 +41,7 @@ public class RotationByModifier extends BaseSingleValueChangeModifier {
 	// ===========================================================
 
 	@Override
-	protected void onChangeValue(final Shape pShape, final float pValue) {
+	protected void onChangeValue(final IShape pShape, final float pValue) {
 		pShape.setRotation(pShape.getRotation() + pValue);
 	}
 

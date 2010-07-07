@@ -1,10 +1,12 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.scene.menu.item;
+
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:24:09 - 11.03.2010
+ * @since 13:27:16 - 07.07.2010
  */
-public interface IUpdateHandler {
+public interface IMenuItem extends IShape {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -12,7 +14,8 @@ public interface IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void onUpdate(final float pSecondsElapsed);
-	public void reset();
+	
+	public int getID();
+	public abstract void onSelected();
+	public abstract void onUnselected();
 }

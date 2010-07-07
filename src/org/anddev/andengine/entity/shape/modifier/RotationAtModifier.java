@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
 
 /**
  * @author Nicolas Gramlich
@@ -28,8 +27,8 @@ public class RotationAtModifier extends RotationModifier {
 		this.mRotationCenterY = pRotationCenterY;
 	}
 
-	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IModifierListener pModiferListener) {
-		super(pDuration, pFromRotation, pToRotation, pModiferListener);
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener);
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}

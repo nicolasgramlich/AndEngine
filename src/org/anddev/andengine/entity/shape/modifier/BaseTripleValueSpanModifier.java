@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -27,8 +26,8 @@ public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanMod
 		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, null);
 	}
 
-	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IModifierListener pModiferListener) {
-		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pModiferListener);
+	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModiferListener);
 		this.mFromValueC = pFromValueC;
 		this.mValuePerSecondC = (pToValueC - pFromValueC) / pDuration;
 	}
@@ -47,16 +46,16 @@ public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanMod
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValues(final Shape pShape, final float pValueA, final float pValueB, final float pValueC);
-	protected abstract void onSetValues(final Shape pShape, final float pValueA, final float pValueB, final float pValueC);
+	protected abstract void onSetInitialValues(final IShape pShape, final float pValueA, final float pValueB, final float pValueC);
+	protected abstract void onSetValues(final IShape pShape, final float pValueA, final float pValueB, final float pValueC);
 
 	@Override
-	protected void onSetInitialValues(final Shape pShape, final float pValueA, final float pValueB) {
+	protected void onSetInitialValues(final IShape pShape, final float pValueA, final float pValueB) {
 		this.onSetInitialValues(pShape, pValueA, pValueB, this.mFromValueC);
 	}
 
 	@Override
-	protected void onSetValues(final Shape pShape, final float pValueA, final float pValueB) {
+	protected void onSetValues(final IShape pShape, final float pValueA, final float pValueB) {
 		this.onSetValues(pShape, pValueA, pValueB, this.mFromValueC + this.getTotalSecondsElapsed() * this.mValuePerSecondC);
 	}
 

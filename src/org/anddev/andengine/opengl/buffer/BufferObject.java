@@ -6,7 +6,7 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
  * @author Nicolas Gramlich

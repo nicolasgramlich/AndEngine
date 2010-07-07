@@ -1,13 +1,15 @@
 package org.anddev.andengine.entity;
 
-import org.anddev.andengine.opengl.IRenderable;
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.engine.IUpdateHandler;
 
 
 /**
  * @author Nicolas Gramlich
  * @since 11:20:25 - 08.03.2010
  */
-public interface IEntity extends IRenderable, IUpdateHandler {
+public interface IEntity extends IUpdateHandler {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -15,4 +17,6 @@ public interface IEntity extends IRenderable, IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void onDraw(final GL10 pGL);
 }

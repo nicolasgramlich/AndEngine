@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -24,8 +23,8 @@ public class MoveModifier extends BaseDoubleValueSpanModifier {
 		this(pDuration, pFromX, pToX, pFromY, pToY, null);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IModifierListener pModiferListener) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pModiferListener);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener);
 	}
 
 	public MoveModifier(final MoveModifier pMoveModifier) {
@@ -46,12 +45,12 @@ public class MoveModifier extends BaseDoubleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValues(final Shape pShape, final float pX, final float pY) {
+	protected void onSetInitialValues(final IShape pShape, final float pX, final float pY) {
 		pShape.setPosition(pX, pY);
 	}
 
 	@Override
-	protected void onSetValues(final Shape pShape, final float pX, final float pY) {
+	protected void onSetValues(final IShape pShape, final float pX, final float pY) {
 		pShape.setPosition(pX, pY);
 	}
 

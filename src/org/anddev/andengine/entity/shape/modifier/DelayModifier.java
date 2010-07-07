@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -20,8 +19,8 @@ public class DelayModifier extends BaseModifier {
 	// Constructors
 	// ===========================================================
 
-	public DelayModifier(final float pDuration, final IModifierListener pModiferListener) {
-		super(pDuration, pModiferListener);
+	public DelayModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pShapeModiferListener);
 	}
 
 	public DelayModifier(final float pDuration) {
@@ -46,12 +45,12 @@ public class DelayModifier extends BaseModifier {
 	// ===========================================================
 
 	@Override
-	protected void onManagedInitializeShape(final Shape pShape) {
+	protected void onManagedInitializeShape(final IShape pShape) {
 
 	}
 
 	@Override
-	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+	protected void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape) {
 
 	}
 

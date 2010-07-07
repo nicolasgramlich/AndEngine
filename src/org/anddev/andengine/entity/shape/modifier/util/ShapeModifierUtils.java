@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier.util;
 
-import org.anddev.andengine.entity.shape.IShapeModifier;
+import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 
 /**
  * @author Nicolas Gramlich

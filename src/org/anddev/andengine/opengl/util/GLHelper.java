@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl;
+package org.anddev.andengine.opengl.util;
 
 import java.nio.FloatBuffer;
 

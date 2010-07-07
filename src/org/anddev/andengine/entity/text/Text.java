@@ -3,12 +3,12 @@ package org.anddev.andengine.entity.text;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.entity.primitives.RectangularShape;
-import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.entity.primitive.RectangularShape;
 import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.texture.buffer.TextTextureBuffer;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.TextVertexBuffer;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;

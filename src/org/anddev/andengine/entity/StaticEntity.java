@@ -1,14 +1,12 @@
 package org.anddev.andengine.entity;
 
-import org.anddev.andengine.entity.Scene.ITouchArea;
-
 import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
  * @since 12:06:43 - 11.03.2010
  */
-public abstract class StaticEntity extends BaseEntity implements ITouchArea {
+public abstract class StaticEntity extends BaseEntity implements IStaticEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -42,44 +40,49 @@ public abstract class StaticEntity extends BaseEntity implements ITouchArea {
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public float getX() {
 		return this.mX;
 	}
 
+	@Override
 	public float getY() {
 		return this.mY;
 	}
 
+	@Override
 	public float getBaseX() {
 		return this.mBaseX;
 	}
 
+	@Override
 	public float getBaseY() {
 		return this.mBaseY;
 	}
 
-	public abstract float getCenterX();
-
-	public abstract float getCenterY();
-
+	@Override
 	public float getOffsetX() {
 		return this.mOffsetX;
 	}
 
+	@Override
 	public float getOffsetY() {
 		return this.mOffsetY;
 	}
 
+	@Override
 	public void setOffsetX(final float pOffsetX) {
 		this.mOffsetX = pOffsetX;
 		this.onPositionChanged();
 	}
 
+	@Override
 	public void setOffsetY(final float pOffsetY) {
 		this.mOffsetY = pOffsetY;
 		this.onPositionChanged();
 	}
 
+	@Override
 	public void setOffset(final float pOffsetX, final float pOffsetY) {
 		this.mOffsetX = pOffsetX;
 		this.mOffsetY = pOffsetY;

@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
 
 /**
  * @author Nicolas Gramlich
@@ -28,8 +27,8 @@ public class ScaleAtModifier extends ScaleModifier {
 		this.mScaleCenterY = pScaleCenterY;
 	}
 
-	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, float pScaleCenterX, float pScaleCenterY, final IModifierListener pModiferListener) {
-		super(pDuration, pFromScale, pToScale, pModiferListener);
+	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, float pScaleCenterX, float pScaleCenterY, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromScale, pToScale, pShapeModiferListener);
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 	}
@@ -40,8 +39,8 @@ public class ScaleAtModifier extends ScaleModifier {
 		this.mScaleCenterY = pScaleCenterY;
 	}
 
-	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, float pScaleCenterX, float pScaleCenterY, final IModifierListener pModiferListener) {
-		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pModiferListener);
+	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, float pScaleCenterX, float pScaleCenterY, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModiferListener);
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 	}

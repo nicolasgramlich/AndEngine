@@ -6,15 +6,16 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.DynamicEntity;
-import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class Shape extends DynamicEntity {
+public abstract class Shape extends DynamicEntity implements IShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -53,36 +54,44 @@ public abstract class Shape extends DynamicEntity {
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public float getRed() {
 		return this.mRed;
 	}
 
+	@Override
 	public float getGreen() {
 		return this.mGreen;
 	}
 
+	@Override
 	public float getBlue() {
 		return this.mBlue;
 	}
 
+	@Override
 	public float getAlpha() {
 		return this.mAlpha;
 	}
 
+	@Override
 	public VertexBuffer getVertexBuffer() {
 		return this.mVertexBuffer;
 	}
 
+	@Override
 	public void setAlpha(final float pAlpha) {
 		this.mAlpha = pAlpha;
 	}
 
+	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 	}
 
+	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
@@ -90,22 +99,32 @@ public abstract class Shape extends DynamicEntity {
 		this.mAlpha = pAlpha;
 	}
 
+	@Override
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
 	}
 
-	public abstract float getWidth();
-	public abstract float getHeight();
-	public abstract float getBaseWidth();
-	public abstract float getBaseHeight();
-
+	@Override
 	public float getWidthScaled() {
 		return this.getWidth() * this.mScaleX;
 	}
 
+	@Override
 	public float getHeightScaled() {
 		return this.getHeight() * this.mScaleY;
+	}
+
+	@Override
+	public void addShapeModifier(final IShapeModifier pShapeModifier) {
+		this.mShapeModifiers.add(pShapeModifier);
+		this.mShapeModifierCount++;
+	}
+
+	@Override
+	public void removeShapeModifier(final IShapeModifier pShapeModifier) {
+		this.mShapeModifierCount--;
+		this.mShapeModifiers.remove(pShapeModifier);
 	}
 
 	// ===========================================================
@@ -164,26 +183,12 @@ public abstract class Shape extends DynamicEntity {
 		}
 	}
 
-	public abstract boolean contains(final float pX, final float pY);
-
-	public abstract boolean collidesWith(final Shape pOtherShape);
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
 	protected void updateVertexBuffer() {
 		this.onUpdateVertexBuffer();
-	}
-
-	public void addShapeModifier(final IShapeModifier pShapeModifier) {
-		this.mShapeModifiers.add(pShapeModifier);
-		this.mShapeModifierCount++;
-	}
-
-	public void removeShapeModifier(final IShapeModifier pShapeModifier) {
-		this.mShapeModifierCount--;
-		this.mShapeModifiers.remove(pShapeModifier);
 	}
 
 	private void updateShapeModifiers(final float pSecondsElapsed) {

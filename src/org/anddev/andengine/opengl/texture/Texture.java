@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.GLHelper;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 

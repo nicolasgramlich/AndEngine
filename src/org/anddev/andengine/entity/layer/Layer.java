@@ -1,11 +1,14 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.layer;
 
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.Engine;
+import org.anddev.andengine.entity.BaseEntity;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.handler.runnable.RunnableHandler;
+import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.util.IEntityMatcher;
 
 

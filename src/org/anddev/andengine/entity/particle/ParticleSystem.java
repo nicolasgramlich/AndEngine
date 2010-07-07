@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.primitives.Rectangle;
+import org.anddev.andengine.entity.particle.modifier.IParticleInitializer;
+import org.anddev.andengine.entity.particle.modifier.IParticleModifier;
+import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 import android.util.FloatMath;

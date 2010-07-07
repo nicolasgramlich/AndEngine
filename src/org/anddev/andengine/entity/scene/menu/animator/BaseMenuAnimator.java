@@ -1,9 +1,8 @@
-package org.anddev.andengine.entity.menu.animator;
+package org.anddev.andengine.entity.scene.menu.animator;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.entity.menu.IMenuAnimator;
-import org.anddev.andengine.entity.menu.MenuItem;
+import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.util.HorizontalAlign;
 
 /**
@@ -53,19 +52,19 @@ public abstract class BaseMenuAnimator implements IMenuAnimator {
 	// Getter & Setter
 	// ===========================================================
 
-	protected float getMaximumWidth(final ArrayList<MenuItem> pMenuItems) {
+	protected float getMaximumWidth(final ArrayList<IMenuItem> pMenuItems) {
 		float maximumWidth = Float.MIN_VALUE;
 		for(int i = pMenuItems.size() - 1; i >= 0; i--) {
-			final MenuItem menuItem = pMenuItems.get(i);
+			final IMenuItem menuItem = pMenuItems.get(i);
 			maximumWidth = Math.max(maximumWidth, menuItem.getWidthScaled());
 		}
 		return maximumWidth;
 	}
 
-	protected float getOverallHeight(final ArrayList<MenuItem> pMenuItems) {
+	protected float getOverallHeight(final ArrayList<IMenuItem> pMenuItems) {
 		float overallHeight = 0;
 		for(int i = pMenuItems.size() - 1; i >= 0; i--) {
-			final MenuItem menuItem = pMenuItems.get(i);
+			final IMenuItem menuItem = pMenuItems.get(i);
 			overallHeight += menuItem.getHeight();
 		}
 

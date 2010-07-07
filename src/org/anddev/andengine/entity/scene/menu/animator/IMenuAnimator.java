@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.menu;
+package org.anddev.andengine.entity.scene.menu.animator;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.entity.menu.animator.AlphaMenuAnimator;
+import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 
 /**
  * @author Nicolas Gramlich
@@ -19,6 +19,6 @@ public interface IMenuAnimator {
 	// Methods
 	// ===========================================================
 
-	public void prepareAnimations(final ArrayList<MenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight);
-	public void buildAnimations(final ArrayList<MenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight);
+	public void prepareAnimations(final ArrayList<IMenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight);
+	public void buildAnimations(final ArrayList<IMenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight);
 }

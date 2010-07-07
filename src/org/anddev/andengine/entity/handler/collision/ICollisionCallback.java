@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.handler.collision;
 
-import org.anddev.andengine.entity.StaticEntity;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -16,9 +16,9 @@ public interface ICollisionCallback {
 	// ===========================================================
 
 	/**
-	 * @param pCheckEntity
-	 * @param pTargetStaticEntity
+	 * @param pCheckShape
+	 * @param pTargetShape
 	 * @return <code>true</code> to proceed, <code>false</code> to stop further collosion-checks.
 	 */
-	public boolean onCollision(final StaticEntity pCheckEntity, final StaticEntity pTargetStaticEntity);
+	public boolean onCollision(final IShape pCheckShape, final IShape pTargetShape);
 }

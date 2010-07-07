@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -24,8 +23,8 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 		this(pDuration, pFromAlpha, pToAlpha, null);
 	}
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IModifierListener pModiferListener) {
-		super(pDuration, pFromAlpha, pToAlpha, pModiferListener);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener);
 	}
 
 	public AlphaModifier(final AlphaModifier pAlphaModifier) {
@@ -46,12 +45,12 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Shape pShape, final float pAlpha) {
+	protected void onSetInitialValue(final IShape pShape, final float pAlpha) {
 		pShape.setAlpha(pAlpha);
 	}
 
 	@Override
-	protected void onSetValue(final Shape pShape, final float pAlpha) {
+	protected void onSetValue(final IShape pShape, final float pAlpha) {
 		pShape.setAlpha(pAlpha);
 	}
 

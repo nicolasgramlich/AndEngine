@@ -1,8 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.IShapeModifier;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.modifier.SequenceModifier.ISubSequenceModifierListener;
 import org.anddev.andengine.util.Path;
 
@@ -21,7 +19,7 @@ public class PathModifier implements IShapeModifier {
 
 	private final SequenceModifier mSequenceModifier;
 
-	private IModifierListener mModifierListener;
+	private IShapeModifierListener mModifierListener;
 	private IPathModifierListener mPathModifierListener;
 
 	private final Path mPath;
@@ -34,11 +32,11 @@ public class PathModifier implements IShapeModifier {
 		this(pDuration, pPath, null);
 	}
 
-	public PathModifier(final float pDuration, final Path pPath, final IModifierListener pModiferListener) {
-		this(pDuration, pPath, pModiferListener, null);
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener) {
+		this(pDuration, pPath, pShapeModiferListener, null);
 	}
 
-	public PathModifier(final float pDuration, final Path pPath, final IModifierListener pModiferListener, final IPathModifierListener pPathModifierListener) {
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IPathModifierListener pPathModifierListener) {
 		final int pathSize = pPath.getSize();
 
 		if (pathSize < 2) {
@@ -46,7 +44,7 @@ public class PathModifier implements IShapeModifier {
 		}
 
 		this.mPath = pPath;
-		this.mModifierListener = pModiferListener;
+		this.mModifierListener = pShapeModiferListener;
 		this.mPathModifierListener = pPathModifierListener;
 
 		final MoveModifier[] moveModifiers = new MoveModifier[pathSize - 1];
@@ -65,7 +63,7 @@ public class PathModifier implements IShapeModifier {
 				 * fire onWaypointPassed of mPathModifierListener. */
 				moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null){
 					@Override
-					protected void onManagedInitializeShape(final Shape pShape) {
+					protected void onManagedInitializeShape(final IShape pShape) {
 						super.onManagedInitializeShape(pShape);
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pShape, 0);
@@ -81,9 +79,9 @@ public class PathModifier implements IShapeModifier {
 		/* Create a new SequenceModifier and register the listeners that
 		 * call through to mModifierListener and mPathModifierListener. */
 		this.mSequenceModifier = new SequenceModifier(
-				new IModifierListener() {
+				new IShapeModifierListener() {
 					@Override
-					public void onModifierFinished(final IShapeModifier pShapeModifier, final Shape pShape) {
+					public void onModifierFinished(final IShapeModifier pShapeModifier, final IShape pShape) {
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pShape, modifierCount);
 						}
@@ -94,7 +92,7 @@ public class PathModifier implements IShapeModifier {
 				},
 				new ISubSequenceModifierListener() {
 					@Override
-					public void onSubSequenceFinished(final IShapeModifier pShapeModifier, final Shape pShape, final int pIndex) {
+					public void onSubSequenceFinished(final IShapeModifier pShapeModifier, final IShape pShape, final int pIndex) {
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pShape, pIndex);
 						}
@@ -146,13 +144,13 @@ public class PathModifier implements IShapeModifier {
 	}
 
 	@Override
-	public IModifierListener getModiferListener() {
+	public IShapeModifierListener getModiferListener() {
 		return this.mModifierListener;
 	}
 
 	@Override
-	public void setModiferListener(final IModifierListener pModiferListener) {
-		this.mModifierListener = pModiferListener;
+	public void setModiferListener(final IShapeModifierListener pShapeModiferListener) {
+		this.mModifierListener = pShapeModiferListener;
 	}
 
 	public IPathModifierListener getPathModifierListener() {
@@ -169,7 +167,7 @@ public class PathModifier implements IShapeModifier {
 	}
 
 	@Override
-	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+	public void onUpdateShape(final float pSecondsElapsed, final IShape pShape) {
 		this.mSequenceModifier.onUpdateShape(pSecondsElapsed, pShape);
 	}
 
@@ -182,6 +180,6 @@ public class PathModifier implements IShapeModifier {
 	// ===========================================================
 
 	public static interface IPathModifierListener {
-		public void onWaypointPassed(final PathModifier pPathModifier, final Shape pShape, final int pWaypointIndex);
+		public void onWaypointPassed(final PathModifier pPathModifier, final IShape pShape, final int pWaypointIndex);
 	}
 }

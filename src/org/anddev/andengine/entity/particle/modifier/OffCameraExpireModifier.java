@@ -2,7 +2,6 @@ package org.anddev.andengine.entity.particle.modifier;
 
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.particle.IParticleModifier;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**

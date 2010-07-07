@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.primitives;
+package org.anddev.andengine.entity.primitive;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.GLHelper;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**

@@ -2,7 +2,7 @@ package org.anddev.andengine.entity.handler.runnable;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.entity.IUpdateHandler;
+import org.anddev.andengine.engine.IUpdateHandler;
 
 /**
  * @author Nicolas Gramlich

@@ -1,22 +1,17 @@
-package org.anddev.andengine.engine.camera.hud;
+package org.anddev.andengine.engine;
 
-import javax.microedition.khronos.opengles.GL10;
-
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.scene.CameraScene;
-import org.anddev.andengine.entity.scene.Scene;
+import java.util.ArrayList;
 
 /**
- * While you can add a {@link HUD} to {@link Scene}, you should not do so.
- * {@link HUD}s are meant to be added to {@link Camera}s via {@link Camera#setHUD(HUD)}.
- * 
  * @author Nicolas Gramlich
- * @since 14:13:13 - 01.04.2010
+ * @since 09:45:22 - 31.03.2010
  */
-public class HUD extends CameraScene {
+public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final long serialVersionUID = -8842562717687229277L;
 
 	// ===========================================================
 	// Fields
@@ -26,14 +21,6 @@ public class HUD extends CameraScene {
 	// Constructors
 	// ===========================================================
 
-	public HUD() {
-		this(1);
-	}
-
-	public HUD(final int pLayerCount) {
-		super(pLayerCount);
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -42,16 +29,20 @@ public class HUD extends CameraScene {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Deprecated
 	@Override
-	protected void drawBackground(final GL10 pGL) {
-		/* HUD has no background. */
+	public void onUpdate(final float pSecondsElapsed) {
+		final int handlerCount = this.size();
+		for(int i = 0; i < handlerCount; i++) {
+			this.get(i).onUpdate(pSecondsElapsed);
+		}
 	}
-
-	@Deprecated
+	
 	@Override
-	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
-		/* Nothing. */
+	public void reset() {
+		final int handlerCount = this.size();
+		for(int i = 0; i < handlerCount; i++) {
+			this.get(i).reset();
+		}
 	}
 
 	// ===========================================================

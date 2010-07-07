@@ -1,8 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.IShapeModifier;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.modifier.util.ShapeModifierUtils;
 
 /**
@@ -18,7 +16,7 @@ public class SequenceModifier implements IShapeModifier {
 	// Fields
 	// ===========================================================
 
-	private IModifierListener mModiferListener;
+	private IShapeModifierListener mModiferListener;
 	private ISubSequenceModifierListener mSubSequenceModiferListener;
 
 	private final IShapeModifier[] mSubSequenceShapeModifiers;
@@ -37,16 +35,16 @@ public class SequenceModifier implements IShapeModifier {
 		this(null, pShapeModifiers);
 	}
 
-	public SequenceModifier(final IModifierListener pModiferListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
-		this(pModiferListener, null, pShapeModifiers);
+	public SequenceModifier(final IShapeModifierListener pShapeModiferListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
+		this(pShapeModiferListener, null, pShapeModifiers);
 	}
 
-	public SequenceModifier(final IModifierListener pModiferListener, final ISubSequenceModifierListener pSubSequenceModifierListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
+	public SequenceModifier(final IShapeModifierListener pShapeModiferListener, final ISubSequenceModifierListener pSubSequenceModifierListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
 		if (pShapeModifiers.length == 0) {
 			throw new IllegalArgumentException("pShapeModifiers must not be empty!");
 		}
 
-		this.mModiferListener = pModiferListener;
+		this.mModiferListener = pShapeModiferListener;
 		this.mSubSequenceModiferListener = pSubSequenceModifierListener;
 		this.mSubSequenceShapeModifiers = pShapeModifiers;
 
@@ -112,17 +110,17 @@ public class SequenceModifier implements IShapeModifier {
 		return this.mRemoveWhenFinished;
 	}
 
-	public IModifierListener getModiferListener() {
+	public IShapeModifierListener getModiferListener() {
 		return this.mModiferListener;
 	}
 
 	@Override
-	public void setModiferListener(final IModifierListener pModiferListener) {
-		this.mModiferListener = pModiferListener;
+	public void setModiferListener(final IShapeModifierListener pShapeModiferListener) {
+		this.mModiferListener = pShapeModiferListener;
 	}
 
 	@Override
-	public void onUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+	public void onUpdateShape(final float pSecondsElapsed, final IShape pShape) {
 		if(!this.mFinished) {
 			this.mSubSequenceShapeModifiers[this.mCurrentSubSequenceShapeModifier].onUpdateShape(pSecondsElapsed, pShape);
 		}
@@ -148,12 +146,12 @@ public class SequenceModifier implements IShapeModifier {
 	// ===========================================================
 
 	public interface ISubSequenceModifierListener {
-		public void onSubSequenceFinished(final IShapeModifier pShapeModifier, final Shape pShape, final int pIndex);
+		public void onSubSequenceFinished(final IShapeModifier pShapeModifier, final IShape pShape, final int pIndex);
 	}
 
-	private class InternalModifierListener implements IModifierListener  {
+	private class InternalModifierListener implements IShapeModifierListener  {
 		@Override
-		public void onModifierFinished(final IShapeModifier pShapeModifier, final Shape pShape) {
+		public void onModifierFinished(final IShapeModifier pShapeModifier, final IShape pShape) {
 			final SequenceModifier wrappingSequenceModifier = SequenceModifier.this;
 
 			wrappingSequenceModifier.mCurrentSubSequenceShapeModifier++;

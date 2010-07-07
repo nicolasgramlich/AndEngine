@@ -1,19 +1,14 @@
-package org.anddev.andengine.engine.camera.hud;
+package org.anddev.andengine.entity.primitive;
 
-import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.scene.CameraScene;
-import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**
- * While you can add a {@link HUD} to {@link Scene}, you should not do so.
- * {@link HUD}s are meant to be added to {@link Camera}s via {@link Camera#setHUD(HUD)}.
- * 
  * @author Nicolas Gramlich
- * @since 14:13:13 - 01.04.2010
+ * @since 19:05:49 - 11.04.2010
  */
-public class HUD extends CameraScene {
+public abstract class BaseRectangle extends RectangularShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -26,12 +21,13 @@ public class HUD extends CameraScene {
 	// Constructors
 	// ===========================================================
 
-	public HUD() {
-		this(1);
+	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
+		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer(GL11.GL_STATIC_DRAW));
+		this.updateVertexBuffer();
 	}
 
-	public HUD(final int pLayerCount) {
-		super(pLayerCount);
+	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight, final RectangleVertexBuffer pRectangleVertexBuffer) {
+		super(pX, pY, pWidth, pHeight, pRectangleVertexBuffer);
 	}
 
 	// ===========================================================
@@ -42,16 +38,14 @@ public class HUD extends CameraScene {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Deprecated
 	@Override
-	protected void drawBackground(final GL10 pGL) {
-		/* HUD has no background. */
+	public RectangleVertexBuffer getVertexBuffer() {
+		return (RectangleVertexBuffer)super.getVertexBuffer();
 	}
 
-	@Deprecated
 	@Override
-	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
-		/* Nothing. */
+	protected void onUpdateVertexBuffer(){
+		this.getVertexBuffer().onUpdate(0, 0, this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================

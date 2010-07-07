@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IModifierListener;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -26,8 +25,8 @@ public abstract class BaseSingleValueChangeModifier extends BaseModifier {
 		this(pDuration, pValueChange, null);
 	}
 
-	public BaseSingleValueChangeModifier(final float pDuration, final float pValueChange, final IModifierListener pModiferListener) {
-		super(pDuration, pModiferListener);
+	public BaseSingleValueChangeModifier(final float pDuration, final float pValueChange, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pShapeModiferListener);
 		this.mValueChangePerSecond = pValueChange / pDuration;
 	}
 
@@ -44,15 +43,15 @@ public abstract class BaseSingleValueChangeModifier extends BaseModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onChangeValue(final Shape pShape, final float pValue);
+	protected abstract void onChangeValue(final IShape pShape, final float pValue);
 
 	@Override
-	protected void onManagedInitializeShape(final Shape pShape) {
+	protected void onManagedInitializeShape(final IShape pShape) {
 
 	}
 
 	@Override
-	protected void onManagedUpdateShape(final float pSecondsElapsed, final Shape pShape) {
+	protected void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape) {
 		this.onChangeValue(pShape, this.mValueChangePerSecond * pSecondsElapsed);
 	}
 

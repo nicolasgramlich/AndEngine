@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.handler.timer;
 
-import org.anddev.andengine.entity.IUpdateHandler;
+import org.anddev.andengine.engine.IUpdateHandler;
 
 /**
  * @author Nicolas Gramlich

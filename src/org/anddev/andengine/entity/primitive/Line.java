@@ -90,8 +90,8 @@ public class Line extends Shape {
 	}
 
 
-	/** Instead use {@link Line#setPosition(float, float, float, float)}.
-	 * @see org.anddev.andengine.entity.DynamicEntity#setPosition(float, float)
+	/** 
+	 * Instead use {@link Line#setPosition(float, float, float, float)}.
 	 */
 	@Deprecated
 	@Override

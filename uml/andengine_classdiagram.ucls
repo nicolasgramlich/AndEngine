@@ -32,16 +32,16 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class corner="BOTTOM_RIGHT" language="java" name="org.anddev.andengine.entity.StaticEntity" project="AndEngine" 
-    file="/AndEngine/src/org/anddev/andengine/entity/StaticEntity.java" binary="false">    
+  <class corner="BOTTOM_RIGHT" language="java" name="org.anddev.andengine.entity.BaseStaticEntity" project="AndEngine" 
+    file="/AndEngine/src/org/anddev/andengine/entity/BaseStaticEntity.java" binary="false">    
     <position x="116" y="338" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class corner="BOTTOM_RIGHT" language="java" name="org.anddev.andengine.entity.DynamicEntity" project="AndEngine" 
-    file="/AndEngine/src/org/anddev/andengine/entity/DynamicEntity.java" binary="false">    
+  <class corner="BOTTOM_RIGHT" language="java" name="org.anddev.andengine.entity.BaseDynamicEntity" project="AndEngine" 
+    file="/AndEngine/src/org/anddev/andengine/entity/BaseDynamicEntity.java" binary="false">    
     <position x="116" y="408" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
@@ -270,14 +270,14 @@
       file="/AndEngine/src/org/anddev/andengine/entity/primitive/Rectangle.java" binary="false"/>  
   </generalization>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.DynamicEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/DynamicEntity.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.StaticEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/StaticEntity.java" binary="false"/>  
+    <source project="AndEngine" name="org.anddev.andengine.entity.BaseDynamicEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/BaseDynamicEntity.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.BaseStaticEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/BaseStaticEntity.java" binary="false"/>  
   </generalization>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.StaticEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/StaticEntity.java" binary="false"/>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.BaseStaticEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/BaseStaticEntity.java" binary="false"/>    
     <target project="AndEngine" name="org.anddev.andengine.entity.BaseEntity" 
       file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false"/>  
   </generalization>  
@@ -332,8 +332,8 @@
   <generalization>    
     <source project="AndEngine" name="org.anddev.andengine.entity.shape.Shape" 
       file="/AndEngine/src/org/anddev/andengine/entity/shape/Shape.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.DynamicEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/DynamicEntity.java" binary="false"/>  
+    <target project="AndEngine" name="org.anddev.andengine.entity.BaseDynamicEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/BaseDynamicEntity.java" binary="false"/>  
   </generalization>  
   <generalization>    
     <source project="AndEngine" name="org.anddev.andengine.entity.scene.CameraScene" 

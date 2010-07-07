@@ -6,7 +6,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 12:06:43 - 11.03.2010
  */
-public abstract class StaticEntity extends BaseEntity implements IStaticEntity {
+public abstract class BaseStaticEntity extends BaseEntity implements IStaticEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,7 +28,7 @@ public abstract class StaticEntity extends BaseEntity implements IStaticEntity {
 	// Constructors
 	// ===========================================================
 
-	public StaticEntity(final float pX, final float pY) {
+	public BaseStaticEntity(final float pX, final float pY) {
 		this.mBaseX = pX;
 		this.mBaseY = pY;
 

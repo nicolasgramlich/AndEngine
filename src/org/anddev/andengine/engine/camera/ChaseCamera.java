@@ -1,6 +1,6 @@
 package org.anddev.andengine.engine.camera;
 
-import org.anddev.andengine.entity.DynamicEntity;
+import org.anddev.andengine.entity.IDynamicEntity;
 
 /**
  * @author Nicolas Gramlich
@@ -15,13 +15,13 @@ public class ChaseCamera extends Camera {
 	// Fields
 	// ===========================================================
 
-	private DynamicEntity mChaseEntity;
+	private IDynamicEntity mChaseEntity;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final DynamicEntity pChaseEntity) {
+	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final IDynamicEntity pChaseEntity) {
 		super(pX, pY, pWidth, pHeight);
 		this.mChaseEntity = pChaseEntity;
 	}
@@ -30,7 +30,7 @@ public class ChaseCamera extends Camera {
 	// Getter & Setter
 	// ===========================================================
 
-	public void setChaseEntity(final DynamicEntity pDynamicEntity) {
+	public void setChaseEntity(final IDynamicEntity pDynamicEntity) {
 		this.mChaseEntity = pDynamicEntity;
 	}
 

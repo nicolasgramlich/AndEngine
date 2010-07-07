@@ -180,6 +180,14 @@ public class PathModifier implements IShapeModifier {
 	// ===========================================================
 
 	public static interface IPathModifierListener {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+		
 		public void onWaypointPassed(final PathModifier pPathModifier, final IShape pShape, final int pWaypointIndex);
 	}
 }

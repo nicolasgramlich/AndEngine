@@ -185,6 +185,14 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 
 	public static interface IAnimationListener {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+		
 		public void onAnimationEnd(final AnimatedSprite pAnimatedSprite);
 	}
 }

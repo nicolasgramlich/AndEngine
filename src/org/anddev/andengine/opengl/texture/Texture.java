@@ -289,16 +289,31 @@ public class Texture {
 	}
 
 	public static class TextureSourceWithLocation implements ITextureSource {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
 
 		private final ITextureSource mTextureSource;
 		private final int mTexturePositionX;
 		private final int mTexturePositionY;
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
 
 		public TextureSourceWithLocation(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 			this.mTextureSource = pTextureSource;
 			this.mTexturePositionX = pTexturePositionX;
 			this.mTexturePositionY = pTexturePositionY;
 		}
+		
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
 
 		public int getTexturePositionX() {
 			return this.mTexturePositionX;
@@ -307,6 +322,10 @@ public class Texture {
 		public int getTexturePositionY() {
 			return this.mTexturePositionY;
 		}
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
 
 		@Override
 		public int getWidth() {
@@ -327,5 +346,13 @@ public class Texture {
 		public String toString() {
 			return this.mTextureSource.toString();
 		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
 	}
 }

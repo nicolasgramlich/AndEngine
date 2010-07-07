@@ -5,7 +5,7 @@ package org.anddev.andengine.entity;
  * @author Nicolas Gramlich
  * @since 14:22:22 - 10.03.2010
  */
-public abstract class DynamicEntity extends StaticEntity implements IDynamicEntity {
+public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDynamicEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -37,7 +37,7 @@ public abstract class DynamicEntity extends StaticEntity implements IDynamicEnti
 	// Constructors
 	// ===========================================================
 
-	public DynamicEntity(final float pX, final float pY) {
+	public BaseDynamicEntity(final float pX, final float pY) {
 		super(pX, pY);
 	}
 

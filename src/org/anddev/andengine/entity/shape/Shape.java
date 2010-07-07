@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.entity.DynamicEntity;
+import org.anddev.andengine.entity.BaseDynamicEntity;
 import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -15,7 +15,7 @@ import org.anddev.andengine.opengl.vertex.VertexBuffer;
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class Shape extends DynamicEntity implements IShape {
+public abstract class Shape extends BaseDynamicEntity implements IShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================

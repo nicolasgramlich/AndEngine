@@ -6,7 +6,7 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.entity.BaseEntity;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 
@@ -18,7 +18,7 @@ import android.graphics.Bitmap.Config;
  * @author Nicolas Gramlich
  * @since 15:11:50 - 15.03.2010
  */
-public class ScreenCapture implements IEntity {
+public class ScreenCapture extends BaseEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -47,7 +47,7 @@ public class ScreenCapture implements IEntity {
 	// ===========================================================
 
 	@Override
-	public void onDraw(final GL10 pGL) {
+	protected void onManagedDraw(GL10 pGL) {
 		if(this.mScreenCapturePending) {
 			saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
 
@@ -60,8 +60,8 @@ public class ScreenCapture implements IEntity {
 	}
 
 	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		/* Nothing. */
+	protected void onManagedUpdate(float pSecondsElapsed) {
+		/* Nothing */
 	}
 
 	@Override
@@ -122,6 +122,14 @@ public class ScreenCapture implements IEntity {
 	// ===========================================================
 
 	public static interface IScreenCaptureCallback {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+		
 		public void onScreenCaptured(final String pFilePath);
 	}
 }

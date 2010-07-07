@@ -229,34 +229,36 @@ public class Scene extends BaseEntity {
 	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
 		final Scene childScene = this.mChildScene;
 		if(childScene == null) {
-			if(this.mOnAreaTouchListener != null) {
-				final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
-				final int touchAreaCount = touchAreas.size();
-				if(touchAreaCount > 0) {
-					final float sceneMotionEventX = pSceneMotionEvent.getX();
-					final float sceneMotionEventY = pSceneMotionEvent.getY();
-					if(this.mOnAreaTouchTraversalBackToFront) {
-						for(int i = 0; i < touchAreaCount; i++) {
-							final ITouchArea touchArea = touchAreas.get(i);
-							if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
-								final boolean handledSelf = touchArea.onAreaTouched(pSceneMotionEvent);
-								if(handledSelf) {
-									return true;
-								} else {
-									return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
-								}
+			final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
+			final int touchAreaCount = touchAreas.size();
+			if(touchAreaCount > 0) {
+				final float sceneMotionEventX = pSceneMotionEvent.getX();
+				final float sceneMotionEventY = pSceneMotionEvent.getY();
+				if(this.mOnAreaTouchTraversalBackToFront) {
+					for(int i = 0; i < touchAreaCount; i++) {
+						final ITouchArea touchArea = touchAreas.get(i);
+						if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
+							final boolean handledSelf = touchArea.onAreaTouched(pSceneMotionEvent);
+							if(handledSelf) {
+								return true;
+							} else if(this.mOnAreaTouchListener != null) {
+								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+							} else {
+								break;
 							}
 						}
-					} else { /* Front to back. */
-						for(int i = touchAreaCount - 1; i >= 0; i--) {
-							final ITouchArea touchArea = touchAreas.get(i);
-							if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
-								final boolean handledSelf = touchArea.onAreaTouched(pSceneMotionEvent);
-								if(handledSelf) {
-									return true;
-								} else {
-									return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
-								}
+					}
+				} else { /* Front to back. */
+					for(int i = touchAreaCount - 1; i >= 0; i--) {
+						final ITouchArea touchArea = touchAreas.get(i);
+						if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
+							final boolean handled = touchArea.onAreaTouched(pSceneMotionEvent);
+							if(handled) {
+								return true;
+							} else if(this.mOnAreaTouchListener != null) {
+								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+							} else {
+								break;
 							}
 						}
 					}
@@ -366,7 +368,7 @@ public class Scene extends BaseEntity {
 		// ===========================================================
 
 		public boolean contains(final float pX, final float pY);
-		
+
 		/**
 		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.
 		 * @param pSceneMotionEvent

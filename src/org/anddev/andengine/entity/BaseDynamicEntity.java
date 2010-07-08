@@ -33,7 +33,7 @@ public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDyn
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;
 
-	private boolean mUpdatePhysicsSelf = true;
+	private boolean mUpdatePhysics = true;
 
 	// ===========================================================
 	// Constructors
@@ -215,13 +215,13 @@ public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDyn
 	}
 
 	@Override
-	public boolean isUpdatePhysicsSelf() {
-		return this.mUpdatePhysicsSelf;
+	public boolean isUpdatePhysics() {
+		return this.mUpdatePhysics;
 	}
 
 	@Override
-	public void setUpdatePhysicsSelf(final boolean pUpdatePhysicsSelf) {
-		this.mUpdatePhysicsSelf = pUpdatePhysicsSelf;
+	public void setUpdatePhysics(final boolean pUpdatePhysicsSelf) {
+		this.mUpdatePhysics = pUpdatePhysicsSelf;
 	}
 
 	// ===========================================================
@@ -230,7 +230,7 @@ public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDyn
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		if(this.mUpdatePhysicsSelf) {
+		if(this.mUpdatePhysics) {
 			/* Apply linear acceleration. */
 			final float accelerationX = this.mAccelerationX;
 			final float accelerationY = this.mAccelerationY;

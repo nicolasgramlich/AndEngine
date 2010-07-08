@@ -22,14 +22,16 @@ public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDyn
 
 	protected float mRotation = 0;
 
+	protected float mAngularVelocity = 0;
+
+	protected float mRotationCenterX = 0;
+	protected float mRotationCenterY = 0;
+
 	protected float mScaleX = 1;
 	protected float mScaleY = 1;
 
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;
-
-	protected float mRotationCenterX = 0;
-	protected float mRotationCenterY = 0;
 
 	private boolean mUpdatePhysicsSelf = true;
 
@@ -84,6 +86,74 @@ public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDyn
 	public void setVelocity(final float pVelocityX, final float pVelocityY) {
 		this.mVelocityX = pVelocityX;
 		this.mVelocityY = pVelocityY;
+	}
+
+	@Override
+	public float getAccelerationX() {
+		return this.mAccelerationX;
+	}
+
+	@Override
+	public float getAccelerationY() {
+		return this.mAccelerationY;
+	}
+
+	@Override
+	public void accelerate(final float pAccelerationX, final float pAccelerationY) {
+		this.mAccelerationX += pAccelerationX;
+		this.mAccelerationY += pAccelerationY;
+	}
+
+	@Override
+	public void setAcceleration(final float pAccelerationX, final float pAccelerationY) {
+		this.mAccelerationX = pAccelerationX;
+		this.mAccelerationY = pAccelerationY;
+	}
+
+	@Override
+	public float getRotation() {
+		return this.mRotation;
+	}
+
+	@Override
+	public void setRotation(final float pRotation) {
+		this.mRotation = pRotation;
+	}
+	
+	@Override
+	public float getAngularVelocity() {
+		return this.mAngularVelocity;
+	}
+	
+	@Override
+	public void setAngularVelocity(final float pAngularVelocity) {
+		this.mAngularVelocity = pAngularVelocity;
+	}
+
+	@Override
+	public float getRotationCenterX() {
+		return this.mRotationCenterX;
+	}
+
+	@Override
+	public float getRotationCenterY() {
+		return this.mRotationCenterY;
+	}
+
+	@Override
+	public void setRotationCenterX(final float pRotationCenterX) {
+		this.mRotationCenterX = pRotationCenterX;
+	}
+
+	@Override
+	public void setRotationCenterY(final float pRotationCenterY) {
+		this.mRotationCenterY = pRotationCenterY;
+	}
+
+	@Override
+	public void setRotationCenter(final float pRotationCenterX, final float pRotationCenterY) {
+		this.mRotationCenterX = pRotationCenterX;
+		this.mRotationCenterY = pRotationCenterY;
 	}
 
 	@Override
@@ -145,64 +215,6 @@ public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDyn
 	}
 
 	@Override
-	public float getAccelerationX() {
-		return this.mAccelerationX;
-	}
-
-	@Override
-	public float getAccelerationY() {
-		return this.mAccelerationY;
-	}
-
-	@Override
-	public void accelerate(final float pAccelerationX, final float pAccelerationY) {
-		this.mAccelerationX += pAccelerationX;
-		this.mAccelerationY += pAccelerationY;
-	}
-
-	@Override
-	public void setAcceleration(final float pAccelerationX, final float pAccelerationY) {
-		this.mAccelerationX = pAccelerationX;
-		this.mAccelerationY = pAccelerationY;
-	}
-	
-	@Override
-	public float getRotation() {
-		return this.mRotation;
-	}
-
-	@Override
-	public void setRotation(final float pRotation) {
-		this.mRotation = pRotation;
-	}
-
-	@Override
-	public float getRotationCenterX() {
-		return this.mRotationCenterX;
-	}
-
-	@Override
-	public float getRotationCenterY() {
-		return this.mRotationCenterY;
-	}
-
-	@Override
-	public void setRotationCenterX(final float pRotationCenterX) {
-		this.mRotationCenterX = pRotationCenterX;
-	}
-
-	@Override
-	public void setRotationCenterY(final float pRotationCenterY) {
-		this.mRotationCenterY = pRotationCenterY;
-	}
-
-	@Override
-	public void setRotationCenter(final float pRotationCenterX, final float pRotationCenterY) {
-		this.mRotationCenterX = pRotationCenterX;
-		this.mRotationCenterY = pRotationCenterY;
-	}
-
-	@Override
 	public boolean isUpdatePhysicsSelf() {
 		return this.mUpdatePhysicsSelf;
 	}
@@ -219,12 +231,21 @@ public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDyn
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		if(this.mUpdatePhysicsSelf) {
+			/* Apply linear acceleration. */
 			final float accelerationX = this.mAccelerationX;
 			final float accelerationY = this.mAccelerationY;
 			if(accelerationX != 0 || accelerationY != 0) {
 				this.mVelocityX += accelerationX * pSecondsElapsed;
 				this.mVelocityY += accelerationY * pSecondsElapsed;
 			}
+
+			/* Apply angular velocity. */		
+			final float angularVelocity = this.mVelocityX;
+			if(angularVelocity != 0) {
+				this.mRotation += angularVelocity * pSecondsElapsed;
+			}
+
+			/* Apply linear velocity. */			
 			final float velocityX = this.mVelocityX;
 			final float velocityY = this.mVelocityY;
 			if(velocityX != 0 || velocityY != 0) {

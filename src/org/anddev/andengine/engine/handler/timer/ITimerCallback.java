@@ -1,10 +1,10 @@
-package org.anddev.andengine.engine;
+package org.anddev.andengine.engine.handler.timer;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:24:09 - 11.03.2010
+ * @since 16:23:25 - 12.03.2010
  */
-public interface IUpdateHandler {
+public interface ITimerCallback {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -13,6 +13,5 @@ public interface IUpdateHandler {
 	// Methods
 	// ===========================================================
 
-	public void onUpdate(final float pSecondsElapsed);
-	public void reset();
+	public void onTimePassed(final TimerHandler pTimerHandler);
 }

@@ -2,7 +2,7 @@ package org.anddev.andengine.entity;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.engine.IUpdateHandler;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 
 
 /**

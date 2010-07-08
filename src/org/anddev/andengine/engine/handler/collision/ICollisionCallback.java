@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity.handler.collision;
+package org.anddev.andengine.engine.handler.collision;
 
 import org.anddev.andengine.entity.shape.IShape;
 

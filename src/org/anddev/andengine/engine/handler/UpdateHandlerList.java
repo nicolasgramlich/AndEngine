@@ -1,4 +1,4 @@
-package org.anddev.andengine.engine;
+package org.anddev.andengine.engine.handler;
 
 import java.util.ArrayList;
 

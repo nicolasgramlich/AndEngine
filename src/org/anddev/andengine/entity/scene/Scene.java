@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.engine.IUpdateHandler;
-import org.anddev.andengine.engine.UpdateHandlerList;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.entity.BaseEntity;
 import org.anddev.andengine.entity.layer.Layer;
 

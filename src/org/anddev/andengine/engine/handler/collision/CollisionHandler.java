@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.handler.collision;
+package org.anddev.andengine.engine.handler.collision;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.engine.IUpdateHandler;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.util.ListUtils;
 

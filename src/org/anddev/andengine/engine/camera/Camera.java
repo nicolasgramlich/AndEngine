@@ -3,8 +3,8 @@ package org.anddev.andengine.engine.camera;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.CollisionChecker;
-import org.anddev.andengine.engine.IUpdateHandler;
 import org.anddev.andengine.engine.camera.hud.HUD;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.primitive.RectangularShape;
 import org.anddev.andengine.opengl.util.GLHelper;
 

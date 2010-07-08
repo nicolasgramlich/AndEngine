@@ -26,19 +26,18 @@ public class Text extends RectangularShape {
 	// Fields
 	// ===========================================================
 
-	protected final int mVertexCount;
-
 	private final TextTextureBuffer mTextTextureBuffer;
 
-	private final String mText;
-	private final String[] mLines;
-	private final int[] mWidths;
+	private String mText;
+	private String[] mLines;
+	private int[] mWidths;
 
 	private final Font mFont;
 
-	private final int mMaximumLineWidth;
+	private int mMaximumLineWidth;
 
-	protected final int mCharacterCount;
+	protected final int mCharactersMaximum;
+	protected final int mVertexCount;
 
 	// ===========================================================
 	// Constructors
@@ -49,41 +48,51 @@ public class Text extends RectangularShape {
 	}
 
 	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
-		super(pX, pY, 0, 0, new TextVertexBuffer(pText, pHorizontalAlign, GL11.GL_STATIC_DRAW));
+		this(pX, pY, pFont, pText, pHorizontalAlign, pText.length() - StringUtils.countOccurrences(pText, '\n'));
+	}
 
-		this.mCharacterCount = pText.length() - StringUtils.countOccurences(pText, "\n");
-		this.mVertexCount = TextVertexBuffer.VERTICES_PER_CHARACTER * this.mCharacterCount;
+	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum) {
+		super(pX, pY, 0, 0, new TextVertexBuffer(pCharactersMaximum, pHorizontalAlign, GL11.GL_STATIC_DRAW));
+
+		this.mCharactersMaximum = pCharactersMaximum;
+		this.mVertexCount = TextVertexBuffer.VERTICES_PER_CHARACTER * this.mCharactersMaximum;
 
 		this.mTextTextureBuffer = new TextTextureBuffer(2 * this.mVertexCount * BufferObject.BYTES_PER_FLOAT, GL11.GL_STATIC_DRAW);
-		BufferObjectManager.loadBufferObject(this.mTextTextureBuffer); // TODO Unload irgendwann oder so...
+		BufferObjectManager.loadBufferObject(this.mTextTextureBuffer); // TODO Unload somewhen somehow...
 		this.mFont = pFont;
+
+		this.updateText(pText);
+	}
+
+	protected void updateText(final String pText) {
 		this.mText = pText;
+		final Font font = this.mFont;
 
-		/* Init Metrics. */
-		{
-			this.mLines = this.mText.split("\n");
-			final String[] lines = this.mLines;
-			final int lineCount = lines.length;
+		this.mLines = StringUtils.split(this.mText, '\n', this.mLines);
+		final String[] lines = this.mLines;
 
+		final int lineCount = lines.length;
+		final boolean widthsReusable = this.mWidths != null && this.mWidths.length == lineCount;
+		if(widthsReusable == false) {
 			this.mWidths = new int[lineCount];
-			final int[] widths = this.mWidths;
-
-			int maximumLineWidth = 0;
-
-			for (int i = lineCount - 1; i >= 0; i--) {
-				widths[i] = pFont.getStringWidth(lines[i]);
-				maximumLineWidth = Math.max(maximumLineWidth, widths[i]);
-			}
-			this.mMaximumLineWidth = maximumLineWidth;
-			
-			super.mWidth = this.mMaximumLineWidth;
-			super.mBaseWidth = super.mWidth;
-			
-			super.mHeight = lineCount * this.mFont.getLineHeight() + (lineCount - 1) * this.mFont.getLineGap();
-			super.mBaseHeight = super.mHeight;
 		}
+		final int[] widths = this.mWidths;
 
-		this.mTextTextureBuffer.update(this.mFont, this.mLines);
+		int maximumLineWidth = 0;
+
+		for (int i = lineCount - 1; i >= 0; i--) {
+			widths[i] = font.getStringWidth(lines[i]);
+			maximumLineWidth = Math.max(maximumLineWidth, widths[i]);
+		}
+		this.mMaximumLineWidth = maximumLineWidth;
+
+		super.mWidth = this.mMaximumLineWidth;
+		super.mBaseWidth = super.mWidth;
+
+		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * font.getLineGap();
+		super.mBaseHeight = super.mHeight;
+
+		this.mTextTextureBuffer.update(font, lines);
 		this.updateVertexBuffer();
 	}
 
@@ -92,7 +101,7 @@ public class Text extends RectangularShape {
 	// ===========================================================
 
 	public int getCharacterCount() {
-		return this.mCharacterCount;
+		return this.mCharactersMaximum;
 	}
 
 	@Override

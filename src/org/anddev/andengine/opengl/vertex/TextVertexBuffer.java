@@ -5,7 +5,6 @@ import java.nio.FloatBuffer;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.util.HorizontalAlign;
-import org.anddev.andengine.util.StringUtils;
 
 /**
  * @author Nicolas Gramlich
@@ -28,8 +27,8 @@ public class TextVertexBuffer extends VertexBuffer {
 	// Constructors
 	// ===========================================================
 
-	public TextVertexBuffer(final String pText, final HorizontalAlign pHorizontalAlign, final int pDrawType) {
-		super(2 * VERTICES_PER_CHARACTER * BYTES_PER_FLOAT * (pText.length() - StringUtils.countOccurences(pText, "\n")), pDrawType);
+	public TextVertexBuffer(final int pCharacterCount, final HorizontalAlign pHorizontalAlign, final int pDrawType) {
+		super(2 * VERTICES_PER_CHARACTER * BYTES_PER_FLOAT * pCharacterCount, pDrawType);
 
 		this.mHorizontalAlign = pHorizontalAlign;
 	}

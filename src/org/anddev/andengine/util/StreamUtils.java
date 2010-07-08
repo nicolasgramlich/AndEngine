@@ -62,6 +62,18 @@ public class StreamUtils {
 		copy(in, out, -1);
 	}
 
+	public static boolean copyAndClose(final InputStream in, final OutputStream out) {
+		try {
+			copy(in, out, -1);
+			return true;
+		} catch (final IOException e) {
+			return false;
+		} finally {
+			StreamUtils.closeStream(in);
+			StreamUtils.closeStream(out);
+		}
+	}
+
 	/**
 	 * Copy the content of the input stream into the output stream, using a temporary
 	 * byte array buffer whose size is defined by {@link #IO_BUFFER_SIZE}.
@@ -76,7 +88,7 @@ public class StreamUtils {
 		final byte[] b = new byte[IO_BUFFER_SIZE];
 		long pBytesLeftToRead = pByteLimit;
 		int read;
-		if(pByteLimit <= 0){
+		if(pByteLimit < 0){
 			while ((read = in.read(b)) != -1) {
 				out.write(b, 0, read);
 			}

@@ -40,7 +40,7 @@ public class Font {
 
 	private final HashMap<Character, Letter> mCharacterToLetterMap = new HashMap<Character, Letter>();
 	private final HashMap<Letter, Bitmap> mLettersPendingToBeDrawnToTexture = new HashMap<Letter, Bitmap>();
-	
+
 	private final Paint mPaint;
 	private final Paint mBackgroundPaint;
 
@@ -54,6 +54,8 @@ public class Font {
 	private final Rect mGetStringWidthTemporaryRect = new Rect();
 	private final Rect mGetLetterBoundsTemporaryRect = new Rect();
 	private final float[] mTemporaryTextWidthFetchers = new float[1];
+
+	private final Canvas mCanvas = new Canvas();
 
 	// ===========================================================
 	// Constructors
@@ -102,12 +104,16 @@ public class Font {
 
 		final int lineHeight = this.getLineHeight();
 		final Bitmap bitmap = Bitmap.createBitmap(getLetterBitmapTemporaryRect.width() == 0 ? 1 : getLetterBitmapTemporaryRect.width() + 5, lineHeight, Bitmap.Config.ARGB_8888);
-		final Canvas canvas = new Canvas(bitmap);
+		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */
-		canvas.drawRect(0, 0, getLetterBitmapTemporaryRect.width() + 5, lineHeight, this.mBackgroundPaint);
+		this.mCanvas.drawRect(0, 0, getLetterBitmapTemporaryRect.width() + 5, lineHeight, this.mBackgroundPaint);
 
-		canvas.drawText(characterAsString, 0, -this.mFontMetrics.ascent, this.mPaint);
+		this.mCanvas.drawText(characterAsString, 0, -this.mFontMetrics.ascent, this.mPaint);
+
+		// TODO Canvas cannot be cleared, but the bitmap is recycled once it is loaded, so this should be no problem.
+		// this.mCanvas.setBitmap(null);
+		
 		return bitmap;
 	}
 
@@ -174,6 +180,8 @@ public class Font {
 		final HashMap<Letter, Bitmap> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
 			final int hardwareTextureID = this.mTexture.getHardwareTextureID();
+
+			// TODO Can the use of this iterator be avoided somehow?
 			for (final Entry<Letter, Bitmap> entry : lettersPendingToBeDrawnToTexture.entrySet()) {
 				final Letter letter = entry.getKey();
 				final Bitmap bitmap = entry.getValue();
@@ -181,7 +189,7 @@ public class Font {
 				GLHelper.bindTexture(pGL, hardwareTextureID);
 				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * TEXTURE_SIZE), (int)(letter.mTextureY * TEXTURE_SIZE), bitmap);
 
-				// TODO is bitmap.recycle() possible? Probably yes, until the texture is lost and needs to be redrawn.
+				bitmap.recycle();
 			}
 			lettersPendingToBeDrawnToTexture.clear();
 			System.gc();

@@ -142,7 +142,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 			this.mSelectedMenuItem.onUnselected();
 			this.mSelectedMenuItem = null;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

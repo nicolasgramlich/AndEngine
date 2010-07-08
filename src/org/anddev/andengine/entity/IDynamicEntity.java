@@ -52,7 +52,7 @@ public interface IDynamicEntity extends IStaticEntity {
 	public abstract void setScaleCenterY(final float pScaleCenterY);
 	public abstract void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY);
 
-	public abstract boolean isUpdatePhysicsSelf();
-	public abstract void setUpdatePhysicsSelf(final boolean pUpdatePhysicsSelf);
+	public abstract boolean isUpdatePhysics();
+	public abstract void setUpdatePhysics(final boolean pUpdatePhysics);
 
 }

@@ -249,7 +249,7 @@ public class Scene extends BaseEntity {
 							} else if(this.mOnAreaTouchListener != null) {
 								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
 							} else {
-								break;
+								return false;
 							}
 						}
 					}
@@ -263,7 +263,7 @@ public class Scene extends BaseEntity {
 							} else if(this.mOnAreaTouchListener != null) {
 								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
 							} else {
-								break;
+								return false;
 							}
 						}
 					}

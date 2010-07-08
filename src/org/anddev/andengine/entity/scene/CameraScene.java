@@ -91,15 +91,15 @@ public class CameraScene extends Scene {
 			GLHelper.switchToProjectionMatrix(pGL);
 			pGL.glPushMatrix();
 			this.mCamera.onApplyPositionIndependentMatrix(pGL);
-
-
-			GLHelper.switchToModelViewMatrix(pGL);
-			pGL.glPushMatrix();
-			pGL.glLoadIdentity();
-
-			super.onManagedDraw(pGL);
-
-			pGL.glPopMatrix();
+			{	
+				GLHelper.switchToModelViewMatrix(pGL);
+				pGL.glPushMatrix();
+				pGL.glLoadIdentity();
+	
+				super.onManagedDraw(pGL);
+	
+				pGL.glPopMatrix();
+			}
 			GLHelper.switchToProjectionMatrix(pGL);
 			pGL.glPopMatrix();
 		}

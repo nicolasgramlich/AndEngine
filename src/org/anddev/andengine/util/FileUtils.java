@@ -2,8 +2,13 @@ package org.anddev.andengine.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import android.content.Context;
+import android.os.Environment;
 
 /**
  * @author Nicolas Gramlich
@@ -33,6 +38,67 @@ public class FileUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static void copyToExternalStorage(final Context pContext, final int pSourceResourceID, final String pFilename) throws FileNotFoundException {
+		copyToExternalStorage(pContext, pContext.getResources().openRawResource(pSourceResourceID), pFilename);
+	}
+
+	public static void copyToExternalStorage(final Context pContext, final String pSourceAssetPath, final String pFilename) throws IOException {
+		copyToExternalStorage(pContext, pContext.getAssets().open(pSourceAssetPath), pFilename);
+	}
+
+	public static void copyToExternalStorage(final Context pContext, final InputStream pInputStream, final String pFilename) throws FileNotFoundException {
+		if (isExternalStorageWriteable()) {
+			final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pFilename);
+			StreamUtils.copyAndClose(pInputStream, new FileOutputStream(absoluteFilePath));
+		} else {
+			throw new IllegalStateException("External Storage is not writeable.");
+		}
+	}
+
+	public static boolean isFileExistingOnExternalStorage(final Context pContext, final String pFilename) {
+		if (isExternalStorageReadable()) {
+			final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pFilename);
+			return new File(absoluteFilePath).exists();
+		} else {
+			throw new IllegalStateException("External Storage is not readable.");
+		}
+	}
+	
+	public static boolean isDirectoryExistingOnExternalStorage(final Context pContext, final String pDirectory) {
+		if (isExternalStorageReadable()) {
+			final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pDirectory);
+			return new File(absoluteFilePath).exists();
+		} else {
+			throw new IllegalStateException("External Storage is not readable.");
+		}
+	}
+	
+	public static boolean ensureDirectoriesExistOnExternalStorage(final Context pContext, final String pDirectory) {		
+		if(isDirectoryExistingOnExternalStorage(pContext, pDirectory)) {
+			return true;
+		}
+		
+		if (isExternalStorageWriteable()) {
+			final String absoluteDirectoryPath = getAbsolutePathOnExternalStorage(pContext, pDirectory);
+			return new File(absoluteDirectoryPath).mkdirs();
+		} else {
+			throw new IllegalStateException("External Storage is not writeable.");
+		}
+	}
+	
+	public static String getAbsolutePathOnExternalStorage(final Context pContext, final String pFilename) {
+		return Environment.getExternalStorageDirectory() + "/Android/data/" + pContext.getApplicationInfo().packageName + "/files/" + pFilename;
+	}
+
+	public static boolean isExternalStorageWriteable() {
+		return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+	}
+
+	public static boolean isExternalStorageReadable() {
+		final String state = Environment.getExternalStorageState();
+		return state.equals(Environment.MEDIA_MOUNTED) || state.equals(Environment.MEDIA_MOUNTED_READ_ONLY);
+	}
 
 	public static void copyFile(final File pIn, final File pOut) throws IOException {
 		final FileInputStream fis = new FileInputStream(pIn);

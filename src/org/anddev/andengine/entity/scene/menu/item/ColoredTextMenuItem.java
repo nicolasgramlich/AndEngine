@@ -37,6 +37,8 @@ public class ColoredTextMenuItem extends TextMenuItem {
 		this.mUnselectedRed = pUnselectedRed;
 		this.mUnselectedGreen = pUnselectedGreen;
 		this.mUnselectedBlue = pUnselectedBlue;
+
+		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
 	}
 
 	// ===========================================================

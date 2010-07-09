@@ -7,7 +7,9 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.entity.BaseEntity;
-import org.anddev.andengine.entity.layer.Layer;
+import org.anddev.andengine.entity.layer.DynamicCapacityLayer;
+import org.anddev.andengine.entity.layer.FixedCapacityLayer;
+import org.anddev.andengine.entity.layer.ILayer;
 
 import android.view.MotionEvent;
 
@@ -32,7 +34,7 @@ public class Scene extends BaseEntity {
 	private boolean mChildSceneModalDraw;
 	private boolean mChildSceneModalUpdate;
 
-	private final Layer[] mLayers;
+	private final ILayer[] mLayers;
 
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
@@ -57,8 +59,16 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 
 	public Scene(final int pLayerCount) {
-		this.mLayers = new Layer[pLayerCount];
+		this.mLayers = new ILayer[pLayerCount];
 		this.createLayers();
+	}
+
+	public Scene(final int pLayerCount, final boolean pFixedCapacityLayers, final int ... pLayerCapacities) {
+		if(pLayerCount != pLayerCapacities.length) {
+			throw new IllegalArgumentException("pLayerCount must be the same as the length of pLayerCapacities.");
+		}
+		this.mLayers = new ILayer[pLayerCount];
+		this.createLayers(pFixedCapacityLayers, pLayerCapacities);
 	}
 
 	// ===========================================================
@@ -69,7 +79,7 @@ public class Scene extends BaseEntity {
 		return this.mSecondsElapsedTotal;
 	}
 
-	public Layer getLayer(final int pLayerIndex) throws ArrayIndexOutOfBoundsException {
+	public ILayer getLayer(final int pLayerIndex) throws ArrayIndexOutOfBoundsException {
 		return this.mLayers[pLayerIndex];
 	}
 
@@ -77,11 +87,11 @@ public class Scene extends BaseEntity {
 		return this.mLayers.length;
 	}
 
-	public Layer getBottomLayer() {
+	public ILayer getBottomLayer() {
 		return this.mLayers[0];
 	}
 
-	public Layer getTopLayer() {
+	public ILayer getTopLayer() {
 		return this.mLayers[this.mLayers.length - 1];
 	}
 
@@ -290,7 +300,7 @@ public class Scene extends BaseEntity {
 
 		this.clearChildScene();
 
-		final Layer[] layers = this.mLayers;
+		final ILayer[] layers = this.mLayers;
 		for(int i = layers.length - 1; i >= 0; i--) {
 			layers[i].reset();
 		}
@@ -308,16 +318,29 @@ public class Scene extends BaseEntity {
 			this.mParentScene = null;
 		}
 	}
-
+	
 	private void createLayers() {
-		final Layer[] layers = this.mLayers;
+		final ILayer[] layers = this.mLayers;
 		for(int i = layers.length - 1; i >= 0; i--) {
-			layers[i] = new Layer();
+			layers[i] = new DynamicCapacityLayer();
+		}		
+	}
+
+	private void createLayers(final boolean pFixedCapacityLayers, final int[] pLayerCapacities) {
+		final ILayer[] layers = this.mLayers;
+		if(pFixedCapacityLayers) {
+			for(int i = layers.length - 1; i >= 0; i--) {
+				layers[i] = new FixedCapacityLayer(pLayerCapacities[i]);
+			}
+		} else {
+			for(int i = layers.length - 1; i >= 0; i--) {
+				layers[i] = new DynamicCapacityLayer(pLayerCapacities[i]);
+			}		
 		}
 	}
 
 	private void updateLayers(final float pSecondsElapsed) {
-		final Layer[] layers = this.mLayers;
+		final ILayer[] layers = this.mLayers;
 		final int layerCount = layers.length;
 		for(int i = 0; i < layerCount; i++) {
 			layers[i].onUpdate(pSecondsElapsed);
@@ -332,7 +355,7 @@ public class Scene extends BaseEntity {
 	}
 
 	private void drawLayers(final GL10 pGL) {
-		final Layer[] layers = this.mLayers;
+		final ILayer[] layers = this.mLayers;
 		final int layerCount = layers.length;
 		for(int i = 0; i < layerCount; i++) {
 			layers[i].onDraw(pGL);

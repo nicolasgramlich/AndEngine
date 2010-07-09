@@ -4,11 +4,8 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.BaseEntity;
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.util.IEntityMatcher;
 
 
@@ -16,10 +13,12 @@ import org.anddev.andengine.util.IEntityMatcher;
  * @author Nicolas Gramlich
  * @since 12:47:43 - 08.03.2010
  */
-public class Layer extends BaseEntity {
+public class DynamicCapacityLayer extends BaseEntity implements ILayer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final int CAPACITY_DEFAULT = 10;
 
 	// ===========================================================
 	// Fields
@@ -31,12 +30,12 @@ public class Layer extends BaseEntity {
 	// Constructors
 	// ===========================================================
 
-	public Layer() {
-		this.mEntities = new ArrayList<IEntity>();
+	public DynamicCapacityLayer() {
+		this(CAPACITY_DEFAULT);
 	}
 
-	public Layer(final int pExpectedEntityCount) {
-		this.mEntities = new ArrayList<IEntity>(pExpectedEntityCount);
+	public DynamicCapacityLayer(final int pExpectedCapacity) {
+		this.mEntities = new ArrayList<IEntity>(pExpectedCapacity);
 	}
 
 	// ===========================================================
@@ -46,6 +45,16 @@ public class Layer extends BaseEntity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public IEntity getEntity(final int pIndex) {
+		return this.mEntities.get(pIndex);
+	}
+
+	@Override
+	public int getEntityCount() {
+		return this.mEntities.size();
+	}
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
@@ -75,29 +84,27 @@ public class Layer extends BaseEntity {
 		}
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-	
+	@Override
 	public void clear() {
 		this.mEntities.clear();
 	}
 
+	@Override
 	public void addEntity(final IEntity pEntity) {
 		this.mEntities.add(pEntity);
 	}
-	
-	/**
-	 * <b><i>WARNING:</i> This function should be called from within
-	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered 
-	 * to a {@link Scene} or the {@link Engine} itself, because otherwise 
-	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the 
-	 * Update-Thread or the GL-Thread!</b>
-	 */
+
+	@Override
 	public boolean removeEntity(final IEntity pEntity) {
 		return this.mEntities.remove(pEntity);
 	}
-	
+
+	@Override
+	public IEntity removeEntity(final int pIndex) {
+		return this.mEntities.remove(pIndex);
+	}
+
+	@Override
 	public boolean removeEntity(final IEntityMatcher pEntityMatcher) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		for(int i = entities.size() - 1; i >= 0; i--) {
@@ -108,7 +115,8 @@ public class Layer extends BaseEntity {
 		}
 		return false;
 	}
-	
+
+	@Override
 	public IEntity findEntity(final IEntityMatcher pEntityMatcher) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		for(int i = entities.size() - 1; i >= 0; i--) {
@@ -119,6 +127,10 @@ public class Layer extends BaseEntity {
 		}
 		return null;
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	// ===========================================================
 	// Inner and Anonymous Classes

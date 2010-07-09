@@ -240,7 +240,7 @@ public abstract class BaseDynamicEntity extends BaseStaticEntity implements IDyn
 			}
 
 			/* Apply angular velocity. */		
-			final float angularVelocity = this.mVelocityX;
+			final float angularVelocity = this.mAngularVelocity;
 			if(angularVelocity != 0) {
 				this.mRotation += angularVelocity * pSecondsElapsed;
 			}

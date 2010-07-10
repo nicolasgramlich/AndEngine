@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.IStaticEntity;
  * @author Nicolas Gramlich
  * @since 15:57:13 - 27.03.2010
  */
-public class ChaseCamera extends Camera {
+public class SmoothChaseCamera extends SmoothCamera {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,8 +22,8 @@ public class ChaseCamera extends Camera {
 	// Constructors
 	// ===========================================================
 
-	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final IStaticEntity pChaseEntity) {
-		super(pX, pY, pWidth, pHeight);
+	public SmoothChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, float pMaxVelocityX, float pMaxVelocityY, float pMaxZoomFactorChange, final IStaticEntity pChaseEntity) {
+		super(pX, pY, pWidth, pHeight, pMaxVelocityX, pMaxVelocityY, pMaxZoomFactorChange);
 		this.mChaseEntity = pChaseEntity;
 	}
 

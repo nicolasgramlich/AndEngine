@@ -23,18 +23,8 @@ public class SplitScreenEngineOptions extends EngineOptions {
 	// Constructors
 	// ===========================================================
 
-	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsAudio) {
-		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsAudio, pNeedsAudio);
-		this.mSecondCamera = pSecondCamera;
-	}
-	
-	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsSound, final boolean pNeedsMusic) {
-		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsSound, pNeedsMusic);
-		this.mSecondCamera = pSecondCamera;
-	}
-
-	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera, final boolean pNeedsSound, final boolean pNeedsMusic, final ITextureSource pLoadingScreenTextureSource) {
-		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera, pNeedsSound, pNeedsMusic, pLoadingScreenTextureSource);
+	public SplitScreenEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pFirstCamera, final Camera pSecondCamera) {
+		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pFirstCamera);
 		this.mSecondCamera = pSecondCamera;
 	}
 
@@ -54,6 +44,26 @@ public class SplitScreenEngineOptions extends EngineOptions {
 
 	public Camera getSecondCamera() {
 		return this.mSecondCamera;
+	}
+
+	@Override
+	public SplitScreenEngineOptions setLoadingScreenTextureSource(ITextureSource pLoadingScreenTextureSource) {
+		return (SplitScreenEngineOptions)super.setLoadingScreenTextureSource(pLoadingScreenTextureSource);
+	}
+
+	@Override
+	public SplitScreenEngineOptions setNeedsMusic(boolean pNeedsMusic) {
+		return (SplitScreenEngineOptions)super.setNeedsMusic(pNeedsMusic);
+	}
+
+	@Override
+	public SplitScreenEngineOptions setNeedsSound(boolean pNeedsSound) {
+		return (SplitScreenEngineOptions)super.setNeedsSound(pNeedsSound);
+	}
+
+	@Override
+	public SplitScreenEngineOptions setWakeLockOptions(WakeLockOptions pWakeLockOptions) {
+		return (SplitScreenEngineOptions)super.setWakeLockOptions(pWakeLockOptions);
 	}
 
 	// ===========================================================

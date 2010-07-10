@@ -1,10 +1,20 @@
 package org.anddev.andengine.engine.options;
 
+import android.os.PowerManager;
+
 /**
  * @author Nicolas Gramlich
- * @since 13:01:40 - 02.07.2010
+ * @since 19:45:23 - 10.07.2010
  */
-public class RenderHints {
+public enum WakeLockOptions {
+	// ===========================================================
+	// Elements
+	// ===========================================================
+
+	FULL(PowerManager.FULL_WAKE_LOCK),
+	SCREEN_BRIGHT(PowerManager.SCREEN_BRIGHT_WAKE_LOCK),
+	SCREEN_DIM(PowerManager.SCREEN_DIM_WAKE_LOCK);
+
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -13,27 +23,26 @@ public class RenderHints {
 	// Fields
 	// ===========================================================
 
-	private boolean mDisableExtensionVertexBufferObjects = false;
+	private final int mFlag;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
+	private WakeLockOptions(final int pFlag) {
+		this.mFlag = pFlag;
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public RenderHints disableExtensionVertexBufferObjects() {
-		this.mDisableExtensionVertexBufferObjects = true;
-		return this;
-	}
-
-	public boolean isDisableExtensionVertexBufferObjects() {
-		return this.mDisableExtensionVertexBufferObjects;
+	public int getFlag() {
+		return this.mFlag;
 	}
 
 	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
+	// Methods from SuperClass/Interfaces
 	// ===========================================================
 
 	// ===========================================================

@@ -27,8 +27,8 @@ public class SmoothCamera extends ZoomCamera {
 	// Constructors
 	// ===========================================================
 
-	public SmoothCamera(final float pMinX, final float pMaxX, final float pMinY, final float pMaxY, final float pMaxVelocityX, final float pMaxVelocityY, final float pMaxZoomFactorChange) {
-		super(pMinX, pMaxX, pMinY, pMaxY);
+	public SmoothCamera(final float pX, final float pY, final float pWidth, final float pHeight, final float pMaxVelocityX, final float pMaxVelocityY, final float pMaxZoomFactorChange) {
+		super(pX, pY, pWidth, pHeight);
 		this.mMaxVelocityX = pMaxVelocityX;
 		this.mMaxVelocityY = pMaxVelocityY;
 		this.mMaxZoomFactorChange = pMaxZoomFactorChange;

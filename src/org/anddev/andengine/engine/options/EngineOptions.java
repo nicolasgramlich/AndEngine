@@ -16,45 +16,40 @@ public class EngineOptions {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private final RenderHints mRenderHints = new RenderHints();
 
-	private final ScreenOrientation mScreenOrientation;
 	private final boolean mFullscreen;
-	private final ITextureSource mLoadingScreenTextureSource;
-	private final Camera mCamera;
+	private final ScreenOrientation mScreenOrientation;
 	private final IResolutionPolicy mResolutionPolicy;
-	private final boolean mNeedsSound;
-	private final boolean mNeedsMusic;
+	private final Camera mCamera;
+
+	private final RenderOptions mRenderOptions = new RenderOptions();
+
+	private ITextureSource mLoadingScreenTextureSource;
+	private boolean mNeedsSound;
+	private boolean mNeedsMusic;
+	private WakeLockOptions mWakeLockOptions = WakeLockOptions.SCREEN_BRIGHT;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsAudio) {
-		this(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera, pNeedsAudio, pNeedsAudio, null);
-	}
-	
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsSound, final boolean pNeedsMusic) {
-		this(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera, pNeedsSound, pNeedsMusic, null);
-	}
-
-	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final boolean pNeedsSound, final boolean pNeedsMusic, final ITextureSource pLoadingScreenTextureSource) {
+	public EngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera) {
 		this.mFullscreen = pFullscreen;
 		this.mScreenOrientation = pScreenOrientation;
 		this.mResolutionPolicy = pResolutionPolicy;
 		this.mCamera = pCamera;
-		this.mNeedsSound = pNeedsSound;
-		this.mNeedsMusic = pNeedsMusic;
-		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public RenderHints getRenderHints() {
-		return this.mRenderHints;
+
+	public RenderOptions getRenderOptions() {
+		return this.mRenderOptions;
+	}
+
+	public boolean isFullscreen() {
+		return this.mFullscreen;
 	}
 
 	public ScreenOrientation getScreenOrientation() {
@@ -65,28 +60,48 @@ public class EngineOptions {
 		return this.mResolutionPolicy;
 	}
 
-	public boolean isFullscreen() {
-		return this.mFullscreen;
-	}
-
-	public ITextureSource getLoadingScreenTextureSource() {
-		return this.mLoadingScreenTextureSource;
+	public Camera getCamera() {
+		return this.mCamera;
 	}
 
 	public boolean hasLoadingScreen() {
 		return this.mLoadingScreenTextureSource != null;
 	}
 
-	public Camera getCamera() {
-		return this.mCamera;
+	public ITextureSource getLoadingScreenTextureSource() {
+		return this.mLoadingScreenTextureSource;
+	}
+
+	public EngineOptions setLoadingScreenTextureSource(final ITextureSource pLoadingScreenTextureSource) {
+		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
+		return this;
 	}
 
 	public boolean needsSound() {
 		return this.mNeedsSound;
 	}
 
+	public EngineOptions setNeedsSound(final boolean pNeedsSound) {
+		this.mNeedsSound = pNeedsSound;
+		return this;
+	}
+
 	public boolean needsMusic() {
 		return this.mNeedsMusic;
+	}
+
+	public EngineOptions setNeedsMusic(final boolean pNeedsMusic) {
+		this.mNeedsMusic = pNeedsMusic;
+		return this;
+	}
+	
+	public WakeLockOptions getWakeLockOptions() {
+		return this.mWakeLockOptions;
+	}
+	
+	public EngineOptions setWakeLockOptions(WakeLockOptions pWakeLockOptions) {
+		this.mWakeLockOptions = pWakeLockOptions;
+		return this;
 	}
 
 	// ===========================================================
@@ -102,6 +117,10 @@ public class EngineOptions {
 	// ===========================================================
 
 	public static enum ScreenOrientation {
+		// ===========================================================
+		// Elements
+		// ===========================================================
+		
 		LANDSCAPE, PORTRAIT
 	}
 }

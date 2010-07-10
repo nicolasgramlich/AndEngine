@@ -3,6 +3,7 @@ package org.anddev.andengine.ui.activity;
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.options.EngineOptions;
+import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
@@ -62,7 +63,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.mRenderSurfaceView.onResume();
 		this.mEngine.onResume();
 		this.mEngine.start();
-		this.acquireWakeLock();
+		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
 	}
 
 	@Override
@@ -98,12 +99,12 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.mRenderSurfaceView.setEGLConfigChooser(false);
 		this.mRenderSurfaceView.applyRenderer();
 
-		this.setContentView(this.mRenderSurfaceView, createSurfaceViewLayoutParams());
+		this.setContentView(this.mRenderSurfaceView, this.createSurfaceViewLayoutParams());
 	}
 
-	private void acquireWakeLock() {
+	private void acquireWakeLock(final WakeLockOptions pWakeLockOptions) {
 		final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-		this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "AndEngine");
+		this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, "AndEngine");
 		this.mWakeLock.acquire();
 	}
 
@@ -141,7 +142,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		window.requestFeature(Window.FEATURE_NO_TITLE);
 	}
-	
+
 	protected void enableVibrator() {
 		this.mEngine.enableVibrator(this);
 	}
@@ -149,7 +150,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
 	}
-	
+
 	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener) {
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener);
 	}

@@ -147,48 +147,8 @@ public class Line extends Shape {
 	}
 
 	@Override
-	protected void applyOffset(final GL10 pGL) {
-		pGL.glTranslatef(this.mOffsetX, this.mOffsetY, 0);
-	}
-
-	@Override
-	protected void applyTranslation(final GL10 pGL) {
-		pGL.glTranslatef(this.mX, this.mY, 0);
-	}
-
-	@Override
 	protected void drawVertices(final GL10 pGL) {
 		pGL.glDrawArrays(GL10.GL_LINES, 0, LineVertexBuffer.VERTICES_PER_LINE);
-	}
-
-	@Override
-	protected void applyRotation(final GL10 pGL) {
-		// TODO Offset needs to be taken into account.
-		final float rotation = this.mRotation;
-		
-		if(rotation != 0) {
-			final float rotationCenterX = this.getBaseWidth() * 0.5f;
-			final float rotationCenterY = this.getBaseHeight() * 0.5f;
-
-			pGL.glTranslatef(rotationCenterX, rotationCenterY, 0);
-			pGL.glRotatef(rotation, 0, 0, 1);
-			pGL.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
-		}
-	}
-
-	@Override
-	protected void applyScale(final GL10 pGL) {
-		final float scaleX = this.mScaleX;
-		final float scaleY = this.mScaleY;
-		
-		if(scaleX != 1 || scaleY != 1) {
-			final float scaleCenterX = this.getBaseWidth() * 0.5f;
-			final float scaleCenterY = this.getBaseHeight() * 0.5f;
-
-			pGL.glTranslatef(scaleCenterX, scaleCenterY, 0);
-			pGL.glScalef(scaleX, scaleY, 1);
-			pGL.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
-		}
 	}
 
 	@Override

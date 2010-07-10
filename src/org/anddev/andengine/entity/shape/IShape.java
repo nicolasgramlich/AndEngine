@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape;
 
 import org.anddev.andengine.entity.IDynamicEntity;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
@@ -9,7 +8,7 @@ import org.anddev.andengine.opengl.vertex.VertexBuffer;
  * @author Nicolas Gramlich
  * @since 13:32:52 - 07.07.2010
  */
-public interface IShape extends IDynamicEntity, ITouchArea {
+public interface IShape extends IDynamicEntity {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================

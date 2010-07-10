@@ -131,14 +131,15 @@ public abstract class Shape extends BaseDynamicEntity implements IShape {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onUpdateVertexBuffer();
+	protected abstract void drawVertices(final GL10 pGL);
+
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		this.updateShapeModifiers(pSecondsElapsed);
 	}
-
-	protected abstract void onUpdateVertexBuffer();
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
@@ -153,12 +154,6 @@ public abstract class Shape extends BaseDynamicEntity implements IShape {
 		this.drawVertices(pGL);
 		pGL.glPopMatrix();
 	}
-
-	protected abstract void applyOffset(final GL10 pGL);
-	protected abstract void applyTranslation(final GL10 pGL);
-	protected abstract void applyRotation(final GL10 pGL);
-	protected abstract void applyScale(final GL10 pGL);
-	protected abstract void drawVertices(final GL10 pGL);
 
 	@Override
 	public void reset() {
@@ -226,6 +221,42 @@ public abstract class Shape extends BaseDynamicEntity implements IShape {
 		this.applyRotation(pGL);
 
 		this.applyScale(pGL);
+	}
+
+	protected void applyOffset(final GL10 pGL) {
+		pGL.glTranslatef(this.mOffsetX, this.mOffsetY, 0);
+	}
+
+	protected void applyTranslation(final GL10 pGL) {
+		pGL.glTranslatef(this.mX, this.mY, 0);
+	}
+
+	protected void applyRotation(final GL10 pGL) {
+		// TODO Offset needs to be taken into account.
+		final float rotation = this.mRotation;
+		
+		if(rotation != 0) {
+			final float rotationCenterX = this.mRotationCenterX;
+			final float rotationCenterY = this.mRotationCenterY;
+
+			pGL.glTranslatef(rotationCenterX, rotationCenterY, 0);
+			pGL.glRotatef(rotation, 0, 0, 1);
+			pGL.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
+		}
+	}
+
+	protected void applyScale(final GL10 pGL) {
+		final float scaleX = this.mScaleX;
+		final float scaleY = this.mScaleY;
+		
+		if(scaleX != 1 || scaleY != 1) {
+			final float scaleCenterX = this.mScaleCenterX;
+			final float scaleCenterY = this.mScaleCenterY;
+
+			pGL.glTranslatef(scaleCenterX, scaleCenterY, 0);
+			pGL.glScalef(scaleX, scaleY, 1);
+			pGL.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
+		}
 	}
 
 	// ===========================================================

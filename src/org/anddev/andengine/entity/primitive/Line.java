@@ -146,12 +146,6 @@ public class Line extends Shape {
 		this.getVertexBuffer().update(0, 0, this.mX2 - this.mX, this.mY2 - this.mY);
 	}
 
-
-	@Override
-	protected void onPreTransformations(final GL10 pGL) {
-
-	}
-
 	@Override
 	protected void applyOffset(final GL10 pGL) {
 		pGL.glTranslatef(this.mOffsetX, this.mOffsetY, 0);
@@ -195,11 +189,6 @@ public class Line extends Shape {
 			pGL.glScalef(scaleX, scaleY, 1);
 			pGL.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
 		}
-	}
-
-	@Override
-	protected void onPostTransformations(final GL10 pGL) {
-
 	}
 
 	@Override

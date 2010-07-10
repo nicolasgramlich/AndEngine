@@ -68,10 +68,10 @@ public abstract class BaseSprite extends BaseRectangle {
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
 	}
-
+	
 	@Override
-	protected void onPostTransformations(final GL10 pGL) {
-		super.onPostTransformations(pGL);
+	protected void onApplyTransformations(GL10 pGL) {
+		super.onApplyTransformations(pGL);
 
 		this.mTextureRegion.onApply(pGL);
 	}

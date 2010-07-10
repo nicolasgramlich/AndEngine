@@ -106,11 +106,6 @@ public abstract class RectangularShape extends Shape {
 	}
 
 	@Override
-	protected void onPreTransformations(final GL10 pGL) {
-
-	}
-
-	@Override
 	protected void applyOffset(final GL10 pGL) {
 		pGL.glTranslatef(this.mOffsetX, this.mOffsetY, 0);
 	}
@@ -153,11 +148,6 @@ public abstract class RectangularShape extends Shape {
 			pGL.glScalef(scaleX, scaleY, 1);
 			pGL.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
 		}
-	}
-
-	@Override
-	protected void onPostTransformations(final GL10 pGL) {
-
 	}
 
 	@Override

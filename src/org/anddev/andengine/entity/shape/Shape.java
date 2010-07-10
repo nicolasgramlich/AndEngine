@@ -148,23 +148,17 @@ public abstract class Shape extends BaseDynamicEntity implements IShape {
 
 		this.onApplyVertices(pGL);
 
-		this.onPreTransformations(pGL);
-
 		this.onApplyTransformations(pGL);
-
-		this.onPostTransformations(pGL);
 
 		this.drawVertices(pGL);
 		pGL.glPopMatrix();
 	}
 
-	protected abstract void onPreTransformations(final GL10 pGL);
 	protected abstract void applyOffset(final GL10 pGL);
 	protected abstract void applyTranslation(final GL10 pGL);
 	protected abstract void applyRotation(final GL10 pGL);
 	protected abstract void applyScale(final GL10 pGL);
 	protected abstract void drawVertices(final GL10 pGL);
-	protected abstract void onPostTransformations(final GL10 pGL);
 
 	@Override
 	public void reset() {

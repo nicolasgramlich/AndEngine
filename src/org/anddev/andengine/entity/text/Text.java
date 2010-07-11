@@ -87,10 +87,18 @@ public class Text extends RectangularShape {
 		this.mMaximumLineWidth = maximumLineWidth;
 
 		super.mWidth = this.mMaximumLineWidth;
-		super.mBaseWidth = super.mWidth;
+		final float width = super.mWidth;
+		super.mBaseWidth = width;
 
 		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * font.getLineGap();
-		super.mBaseHeight = super.mHeight;
+		final float height = super.mHeight;
+		super.mBaseHeight = height;
+		
+		this.mRotationCenterX = width * 0.5f;
+		this.mRotationCenterY = height * 0.5f;
+
+		this.mScaleCenterX = this.mRotationCenterX;
+		this.mScaleCenterY = this.mRotationCenterY;
 
 		this.mTextTextureBuffer.update(font, lines);
 		this.updateVertexBuffer();

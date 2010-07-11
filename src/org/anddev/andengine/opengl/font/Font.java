@@ -28,13 +28,13 @@ public class Font {
 	// Constants
 	// ===========================================================
 
-	public static final float TEXTURE_SIZE = 256.0f;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private final Texture mTexture;
+	private float mTextureWidth;
+	private float mTextureHeight;
 	private int mCurrentTextureX = 0;
 	private int mCurrentTextureY = 0;
 
@@ -63,6 +63,9 @@ public class Font {
 
 	public Font(final Texture pTexture, final Typeface pTypeFace, final float pSize, final boolean pAntiAlias, final int pColor) {
 		this.mTexture = pTexture;
+		this.mTextureWidth = pTexture.getWidth();
+		this.mTextureHeight = pTexture.getHeight();
+		
 		this.mTypeface = pTypeFace;
 
 		this.mPaint = new Paint();
@@ -150,6 +153,9 @@ public class Font {
 	}
 
 	private Letter createLetter(final char pCharacter) {
+		final float textureWidth = this.mTextureWidth;
+		final float textureHeight = this.mTextureHeight;
+		
 		final Size createLetterTemporarySize = this.mCreateLetterTemporarySize;
 
 		final Bitmap bitmap = this.getLetterBitmap(pCharacter);
@@ -158,17 +164,17 @@ public class Font {
 		final float letterWidth = createLetterTemporarySize.getWidth();
 		final float letterHeight = createLetterTemporarySize.getHeight();
 
-		if (this.mCurrentTextureX + letterWidth >= TEXTURE_SIZE) {
+		if (this.mCurrentTextureX + letterWidth >= textureWidth) {
 			this.mCurrentTextureX = 0;
 			this.mCurrentTextureY += this.getLineGap() + this.getLineHeight();
 		}
 
-		final float textureX = this.mCurrentTextureX / TEXTURE_SIZE;
-		final float textureY = this.mCurrentTextureY / TEXTURE_SIZE;
-		final float textureWidth = letterWidth / TEXTURE_SIZE;
-		final float textureHeight = letterHeight / TEXTURE_SIZE;
+		final float letterTextureX = this.mCurrentTextureX / textureWidth;
+		final float letterTextureY = this.mCurrentTextureY / textureHeight;
+		final float letterTextureWidth = letterWidth / textureWidth;
+		final float letterTextureHeight = letterHeight / textureHeight;
 
-		final Letter letter = new Letter(this.getLetterAdvance(pCharacter), (int)letterWidth, (int)letterHeight, textureX, textureY, textureWidth, textureHeight);
+		final Letter letter = new Letter(this.getLetterAdvance(pCharacter), (int)letterWidth, (int)letterHeight, letterTextureX, letterTextureY, letterTextureWidth, letterTextureHeight);
 		this.mCurrentTextureX += letterWidth;
 
 		this.mLettersPendingToBeDrawnToTexture.put(letter, bitmap);
@@ -180,6 +186,9 @@ public class Font {
 		final HashMap<Letter, Bitmap> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
 			final int hardwareTextureID = this.mTexture.getHardwareTextureID();
+			
+			final float textureWidth = this.mTextureWidth;
+			final float textureHeight = this.mTextureHeight;
 
 			// TODO Can the use of this iterator be avoided somehow?
 			for (final Entry<Letter, Bitmap> entry : lettersPendingToBeDrawnToTexture.entrySet()) {
@@ -187,7 +196,7 @@ public class Font {
 				final Bitmap bitmap = entry.getValue();
 
 				GLHelper.bindTexture(pGL, hardwareTextureID);
-				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * TEXTURE_SIZE), (int)(letter.mTextureY * TEXTURE_SIZE), bitmap);
+				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * textureWidth), (int)(letter.mTextureY * textureHeight), bitmap);
 
 				bitmap.recycle();
 			}

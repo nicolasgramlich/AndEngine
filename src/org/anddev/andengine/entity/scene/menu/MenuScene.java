@@ -84,9 +84,9 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	}
 
 	@Override
-	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate) {
+	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate, final boolean pModalTouch) {
 		if(pChildScene instanceof MenuScene) {
-			super.setChildScene(pChildScene, pModalDraw, pModalUpdate);
+			super.setChildScene(pChildScene, pModalDraw, pModalUpdate, pModalTouch);
 		} else {
 			throw new IllegalArgumentException("MenuScene accepts only MenuScenes as a ChildScene.");
 		}

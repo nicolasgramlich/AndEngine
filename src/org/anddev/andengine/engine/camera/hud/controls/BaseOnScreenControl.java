@@ -111,7 +111,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	@Override
 	public boolean onSceneTouchEvent(final Scene pScene, final MotionEvent pSceneMotionEvent) {
 		this.onSetKnobToDefaultPosition();
-		return true;
+		return false;
 	}
 
 	// ===========================================================

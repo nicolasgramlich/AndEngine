@@ -33,6 +33,7 @@ public class Scene extends BaseEntity {
 	protected Scene mChildScene;
 	private boolean mChildSceneModalDraw;
 	private boolean mChildSceneModalUpdate;
+	private boolean mChildSceneModalTouch;
 
 	private final ILayer[] mLayers;
 
@@ -189,14 +190,19 @@ public class Scene extends BaseEntity {
 	}
 
 	public void setChildSceneModal(final Scene pChildScene) {
-		this.setChildScene(pChildScene, true, true);
+		this.setChildScene(pChildScene, true, true, true);
 	}
 
-	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate) {
+	public void setChildScene(final Scene pChildScene) {
+		this.setChildScene(pChildScene, false, false, false);
+	}
+
+	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate, final boolean pModalTouch) {
 		pChildScene.setParentScene(this);
 		this.mChildScene = pChildScene;
 		this.mChildSceneModalDraw = pModalDraw;
 		this.mChildSceneModalUpdate = pModalUpdate;
+		this.mChildSceneModalTouch = pModalTouch;
 	}
 
 	public void clearChildScene() {
@@ -243,50 +249,55 @@ public class Scene extends BaseEntity {
 
 	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
 		final Scene childScene = this.mChildScene;
-		if(childScene == null) {
-			final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
-			final int touchAreaCount = touchAreas.size();
-			if(touchAreaCount > 0) {
-				final float sceneMotionEventX = pSceneMotionEvent.getX();
-				final float sceneMotionEventY = pSceneMotionEvent.getY();
-				if(this.mOnAreaTouchTraversalBackToFront) {
-					for(int i = 0; i < touchAreaCount; i++) {
-						final ITouchArea touchArea = touchAreas.get(i);
-						if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
-							final boolean handledSelf = touchArea.onAreaTouched(pSceneMotionEvent);
-							if(handledSelf) {
-								return true;
-							} else if(this.mOnAreaTouchListener != null) {
-								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
-							} else {
-								return false;
-							}
+		if(childScene != null) {
+			final boolean handledByChild = this.onChildSceneTouchEvent(pSceneMotionEvent);
+			if(handledByChild) {
+				return true;
+			} else if(this.mChildSceneModalTouch) {
+				return false;
+			}
+		}
+		
+		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
+		final int touchAreaCount = touchAreas.size();
+		if(touchAreaCount > 0) {
+			final float sceneMotionEventX = pSceneMotionEvent.getX();
+			final float sceneMotionEventY = pSceneMotionEvent.getY();
+			if(this.mOnAreaTouchTraversalBackToFront) {
+				for(int i = 0; i < touchAreaCount; i++) {
+					final ITouchArea touchArea = touchAreas.get(i);
+					if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
+						final boolean handledSelf = touchArea.onAreaTouched(pSceneMotionEvent);
+						if(handledSelf) {
+							return true;
+						} else if(this.mOnAreaTouchListener != null) {
+							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+						} else {
+							return false;
 						}
 					}
-				} else { /* Front to back. */
-					for(int i = touchAreaCount - 1; i >= 0; i--) {
-						final ITouchArea touchArea = touchAreas.get(i);
-						if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
-							final boolean handled = touchArea.onAreaTouched(pSceneMotionEvent);
-							if(handled) {
-								return true;
-							} else if(this.mOnAreaTouchListener != null) {
-								return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
-							} else {
-								return false;
-							}
+				}
+			} else { /* Front to back. */
+				for(int i = touchAreaCount - 1; i >= 0; i--) {
+					final ITouchArea touchArea = touchAreas.get(i);
+					if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
+						final boolean handled = touchArea.onAreaTouched(pSceneMotionEvent);
+						if(handled) {
+							return true;
+						} else if(this.mOnAreaTouchListener != null) {
+							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+						} else {
+							return false;
 						}
 					}
 				}
 			}
-			/* If no area was touched, the Scene itself was touched as a fallback. */
-			if(this.mOnSceneTouchListener != null){
-				return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneMotionEvent);
-			} else {
-				return false;
-			}
+		}
+		/* If no area was touched, the Scene itself was touched as a fallback. */
+		if(this.mOnSceneTouchListener != null){
+			return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneMotionEvent);
 		} else {
-			return this.onChildSceneTouchEvent(pSceneMotionEvent);
+			return false;
 		}
 	}
 
@@ -318,7 +329,7 @@ public class Scene extends BaseEntity {
 			this.mParentScene = null;
 		}
 	}
-	
+
 	private void createLayers() {
 		final ILayer[] layers = this.mLayers;
 		for(int i = layers.length - 1; i >= 0; i--) {

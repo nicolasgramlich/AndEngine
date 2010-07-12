@@ -21,6 +21,8 @@ public class LoopModifier extends BaseShapeModifier {
 
 	private final IShapeModifier mShapeModifier;
 
+	private ILoopModifierListener mLoopModifierListener;
+
 	private final int mInitialLoopCount;
 	private int mLoopCount;
 
@@ -37,7 +39,12 @@ public class LoopModifier extends BaseShapeModifier {
 	}
 
 	public LoopModifier(final IShapeModifierListener pShapeModiferListener, final int pLoopCount, final IShapeModifier pShapeModifier) {
+		this(pShapeModiferListener, pLoopCount, null, pShapeModifier);
+	}
+
+	public LoopModifier(final IShapeModifierListener pShapeModiferListener, final int pLoopCount, final ILoopModifierListener pLoopModifierListener, final IShapeModifier pShapeModifier) {
 		super(pShapeModiferListener);
+		this.mLoopModifierListener = pLoopModifierListener;
 		this.mShapeModifier = pShapeModifier;
 		this.mInitialLoopCount = pLoopCount;
 		this.mLoopCount = pLoopCount;
@@ -58,6 +65,14 @@ public class LoopModifier extends BaseShapeModifier {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public ILoopModifierListener getLoopModifierListener() {
+		return this.mLoopModifierListener;
+	}
+
+	public void setLoopModifierListener(final ILoopModifierListener pLoopModifierListener) {
+		this.mLoopModifierListener = pLoopModifierListener;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -87,7 +102,13 @@ public class LoopModifier extends BaseShapeModifier {
 	// ===========================================================
 
 	public void onHandleLoopFinished(final IShape pShape) {
-		if(this.mInitialLoopCount != LOOP_CONTINUOUS) {
+		if(this.mLoopModifierListener != null) {
+			this.mLoopModifierListener.onLoopFinished(this, this.mLoopCount);
+		}
+		
+		if(this.mInitialLoopCount == LOOP_CONTINUOUS) {
+			this.mShapeModifier.reset();			
+		} else {
 			this.mLoopCount--;
 			if(this.mLoopCount < 0) {
 				this.mFinished = true;
@@ -103,6 +124,10 @@ public class LoopModifier extends BaseShapeModifier {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public interface ILoopModifierListener {
+		public void onLoopFinished(final LoopModifier pLoopModifier, final int pLoopsRemaining);
+	}
 
 	private class InternalModifierListener implements IShapeModifierListener {
 		@Override

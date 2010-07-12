@@ -15,6 +15,8 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final int LOOP_CONTINUOUS = -1;
 
 	// ===========================================================
 	// Fields
@@ -72,10 +74,12 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 
 			if(this.mAnimationProgress > this.mAnimationDuration) {
 				this.mAnimationProgress %= this.mAnimationDuration;
-				this.mLoopCount--;
+				if(this.mInitialLoopCount != LOOP_CONTINUOUS) {
+					this.mLoopCount--;
+				}
 			}
 
-			if(this.mInitialLoopCount == -1 || this.mLoopCount >= 0) {
+			if(this.mInitialLoopCount == LOOP_CONTINUOUS || this.mLoopCount >= 0) {
 				final int currentFrameIndex = this.calculateCurrentFrameIndex();
 				this.setCurrentTileIndex(this.mFirstTileIndex + currentFrameIndex);
 			} else {
@@ -118,7 +122,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	public void animate(final long pFrameDurationEach, final boolean pLoop) {
-		this.animate(pFrameDurationEach, (pLoop) ? -1 : 0, null);
+		this.animate(pFrameDurationEach, (pLoop) ? LOOP_CONTINUOUS : 0, null);
 	}
 
 	public void animate(final long pFrameDurationEach, final int pLoopCount) {
@@ -126,7 +130,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	public void animate(final long pFrameDurationEach, final boolean pLoop, final IAnimationListener pAnimationListener) {
-		this.animate(pFrameDurationEach, (pLoop) ? -1 : 0, pAnimationListener);
+		this.animate(pFrameDurationEach, (pLoop) ? LOOP_CONTINUOUS : 0, pAnimationListener);
 	}
 
 	public void animate(final long pFrameDurationEach, final int pLoopCount, final IAnimationListener pAnimationListener) {
@@ -140,7 +144,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	public void animate(final long[] pFrameDurations, final boolean pLoop) {
-		this.animate(pFrameDurations, (pLoop) ? -1 : 0, null);
+		this.animate(pFrameDurations, (pLoop) ? LOOP_CONTINUOUS : 0, null);
 	}
 
 	public void animate(final long[] pFrameDurations, final int pLoopCount) {
@@ -148,7 +152,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	public void animate(final long[] pFrameDurations, final boolean pLoop, final IAnimationListener pAnimationListener) {
-		this.animate(pFrameDurations, (pLoop) ? -1 : 0, pAnimationListener);
+		this.animate(pFrameDurations, (pLoop) ? LOOP_CONTINUOUS : 0, pAnimationListener);
 	}
 
 	public void animate(final long[] pFrameDurations, final int pLoopCount, final IAnimationListener pAnimationListener) {
@@ -156,7 +160,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	public void animate(final long[] pFrameDurations, final int pFirstTileIndex, final int pLastTileIndex, final boolean pLoop) {
-		this.animate(pFrameDurations, pFirstTileIndex, pLastTileIndex, (pLoop) ? -1 : 0, null);
+		this.animate(pFrameDurations, pFirstTileIndex, pLastTileIndex, (pLoop) ? LOOP_CONTINUOUS : 0, null);
 	}
 
 	public void animate(final long[] pFrameDurations, final int pFirstTileIndex, final int pLastTileIndex, final int pLoopCount) {

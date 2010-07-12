@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.shape.IShape;
  * @author Nicolas Gramlich
  * @since 22:55:13 - 19.03.2010
  */
-public class DelayModifier extends BaseModifier {
+public class DelayModifier extends BaseShapeDurationModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,7 +27,7 @@ public class DelayModifier extends BaseModifier {
 		super(pDuration);
 	}
 
-	public DelayModifier(final DelayModifier pDelayModifier) {
+	protected DelayModifier(final DelayModifier pDelayModifier) {
 		super(pDelayModifier);
 	}
 	

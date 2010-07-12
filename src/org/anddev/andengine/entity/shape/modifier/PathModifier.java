@@ -8,7 +8,7 @@ import org.anddev.andengine.util.Path;
  * @author Nicolas Gramlich
  * @since 16:50:02 - 16.06.2010
  */
-public class PathModifier implements IShapeModifier {
+public class PathModifier extends BaseShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -102,7 +102,7 @@ public class PathModifier implements IShapeModifier {
 		);
 	}
 
-	public PathModifier(final PathModifier pPathModifier) {
+	protected PathModifier(final PathModifier pPathModifier) {
 		this.mPath = pPathModifier.mPath.clone();
 		this.mSequenceModifier = pPathModifier.mSequenceModifier.clone();
 	}
@@ -119,10 +119,6 @@ public class PathModifier implements IShapeModifier {
 	public Path getPath() {
 		return this.mPath;
 	}
-	
-	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
-		this.mSequenceModifier.setRemoveWhenFinished(pRemoveWhenFinished);
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -132,25 +128,10 @@ public class PathModifier implements IShapeModifier {
 	public boolean isFinished() {
 		return this.mSequenceModifier.isFinished();
 	}
-	
-	@Override
-	public final boolean isRemoveWhenFinished() {
-		return this.mSequenceModifier.isRemoveWhenFinished();
-	}
 
 	@Override
 	public float getDuration() {
 		return this.mSequenceModifier.getDuration();
-	}
-
-	@Override
-	public IShapeModifierListener getModiferListener() {
-		return this.mModifierListener;
-	}
-
-	@Override
-	public void setModiferListener(final IShapeModifierListener pShapeModiferListener) {
-		this.mModifierListener = pShapeModiferListener;
 	}
 
 	public IPathModifierListener getPathModifierListener() {

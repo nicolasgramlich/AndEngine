@@ -26,7 +26,7 @@ public class FadeInModifier extends AlphaModifier {
 		super(pDuration, 0.0f, 1.0f, pShapeModiferListener);
 	}
 
-	public FadeInModifier(final FadeInModifier pFadeInModifier) {
+	protected FadeInModifier(final FadeInModifier pFadeInModifier) {
 		super(pFadeInModifier);
 	}
 

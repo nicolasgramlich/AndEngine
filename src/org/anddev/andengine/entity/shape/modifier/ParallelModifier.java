@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.shape.modifier.util.ShapeModifierUtils;
  * @author Nicolas Gramlich
  * @since 19:39:25 - 19.03.2010
  */
-public class ParallelModifier implements IShapeModifier {
+public class ParallelModifier extends BaseShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,13 +16,9 @@ public class ParallelModifier implements IShapeModifier {
 	// Fields
 	// ===========================================================
 
-	private IShapeModifierListener mModiferListener;
 	private final IShapeModifier[] mShapeModifiers;
 
 	private final float mDuration;
-
-	private boolean mFinished;
-	private boolean mRemoveWhenFinished = true;
 
 	// ===========================================================
 	// Constructors
@@ -33,22 +29,22 @@ public class ParallelModifier implements IShapeModifier {
 	}
 
 	public ParallelModifier(final IShapeModifierListener pShapeModiferListener, final IShapeModifier ... pShapeModifiers) throws IllegalArgumentException {
+		super(pShapeModiferListener);
 		if(pShapeModifiers.length == 0) {
 			throw new IllegalArgumentException("pShapeModifiers must not be empty!");
 		}
 
-		this.mModiferListener = pShapeModiferListener;
 		this.mShapeModifiers = pShapeModifiers;
 
 		final IShapeModifier shapeModifierWithLongestDuration = ShapeModifierUtils.getShapeModifierWithLongestDuration(pShapeModifiers);
 		this.mDuration = shapeModifierWithLongestDuration.getDuration();
-		shapeModifierWithLongestDuration.setModiferListener(new InternalModifierListener());
+		shapeModifierWithLongestDuration.setShapeModifierListener(new InternalModifierListener());
 	}
 
-	public ParallelModifier(final ParallelModifier pSequenceModifier) {
-		this.mModiferListener = pSequenceModifier.mModiferListener;
+	protected ParallelModifier(final ParallelModifier pParallelModifier) {
+		super(pParallelModifier.mShapeModifierListener);
 
-		final IShapeModifier[] otherShapeModifiers = pSequenceModifier.mShapeModifiers;
+		final IShapeModifier[] otherShapeModifiers = pParallelModifier.mShapeModifiers;
 		this.mShapeModifiers = new IShapeModifier[otherShapeModifiers.length];
 
 		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
@@ -58,7 +54,7 @@ public class ParallelModifier implements IShapeModifier {
 
 		final IShapeModifier shapeModifierWithLongestDuration = ShapeModifierUtils.getShapeModifierWithLongestDuration(shapeModifiers);
 		this.mDuration = shapeModifierWithLongestDuration.getDuration();
-		shapeModifierWithLongestDuration.setModiferListener(new InternalModifierListener());
+		shapeModifierWithLongestDuration.setShapeModifierListener(new InternalModifierListener());
 	}
 
 	@Override
@@ -70,35 +66,13 @@ public class ParallelModifier implements IShapeModifier {
 	// Getter & Setter
 	// ===========================================================
 
-	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
-		this.mRemoveWhenFinished = pRemoveWhenFinished;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	public boolean isFinished() {
-		return this.mFinished;
-	}
-	
-	@Override
-	public final boolean isRemoveWhenFinished() {
-		return this.mRemoveWhenFinished;
-	}
-
-	@Override
 	public float getDuration() {
 		return this.mDuration;
-	}
-
-	public IShapeModifierListener getModiferListener() {
-		return this.mModiferListener;
-	}
-
-	public void setModiferListener(final IShapeModifierListener pShapeModiferListener) {
-		this.mModiferListener = pShapeModiferListener;
 	}
 
 	@Override
@@ -131,8 +105,8 @@ public class ParallelModifier implements IShapeModifier {
 		@Override
 		public void onModifierFinished(final IShapeModifier pShapeModifier, final IShape pShape) {
 			ParallelModifier.this.mFinished = true;
-			if(ParallelModifier.this.mModiferListener != null) {
-				ParallelModifier.this.mModiferListener.onModifierFinished(ParallelModifier.this, pShape);
+			if(ParallelModifier.this.mShapeModifierListener != null) {
+				ParallelModifier.this.mShapeModifierListener.onModifierFinished(ParallelModifier.this, pShape);
 			}
 		}
 	}

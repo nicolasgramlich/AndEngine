@@ -27,7 +27,7 @@ public class MoveModifier extends BaseDoubleValueSpanModifier {
 		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener);
 	}
 
-	public MoveModifier(final MoveModifier pMoveModifier) {
+	protected MoveModifier(final MoveModifier pMoveModifier) {
 		super(pMoveModifier);
 	}
 	

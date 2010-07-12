@@ -32,7 +32,7 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 		this.mValuePerSecondB = (pToValueB - pFromValueB) / pDuration;
 	}
 	
-	public BaseDoubleValueSpanModifier(final BaseDoubleValueSpanModifier pBaseDoubleValueSpanModifier) {
+	protected BaseDoubleValueSpanModifier(final BaseDoubleValueSpanModifier pBaseDoubleValueSpanModifier) {
 		super(pBaseDoubleValueSpanModifier);
 		this.mFromValueB = pBaseDoubleValueSpanModifier.mFromValueB;
 		this.mValuePerSecondB = pBaseDoubleValueSpanModifier.mValuePerSecondB;

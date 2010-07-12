@@ -27,7 +27,7 @@ public class ColorModifier extends BaseTripleValueSpanModifier {
 		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pShapeModiferListener);
 	}
 
-	public ColorModifier(final ColorModifier pColorModifier) {
+	protected ColorModifier(final ColorModifier pColorModifier) {
 		super(pColorModifier);
 	}
 

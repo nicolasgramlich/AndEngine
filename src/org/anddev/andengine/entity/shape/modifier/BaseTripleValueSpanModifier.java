@@ -32,7 +32,7 @@ public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanMod
 		this.mValuePerSecondC = (pToValueC - pFromValueC) / pDuration;
 	}
 	
-	public BaseTripleValueSpanModifier(final BaseTripleValueSpanModifier pBaseTripleValueSpanModifier) {
+	protected BaseTripleValueSpanModifier(final BaseTripleValueSpanModifier pBaseTripleValueSpanModifier) {
 		super(pBaseTripleValueSpanModifier);
 		this.mFromValueC = pBaseTripleValueSpanModifier.mFromValueC;
 		this.mValuePerSecondC = pBaseTripleValueSpanModifier.mValuePerSecondC;

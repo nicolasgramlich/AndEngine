@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.shape.IShape;
  * @author Nicolas Gramlich
  * @since 16:10:42 - 19.03.2010
  */
-public abstract class BaseModifier implements IShapeModifier {
+public abstract class BaseShapeDurationModifier extends BaseShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,31 +15,28 @@ public abstract class BaseModifier implements IShapeModifier {
 	// Fields
 	// ===========================================================
 
-	private boolean mFinished;
-	private boolean mRemoveWhenFinished = true;
 	private float mTotalSecondsElapsed;
 	protected final float mDuration;
-	private IShapeModifierListener mModiferListener;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseModifier() {
+	public BaseShapeDurationModifier() {
 		this(-1, null);
 	}
 
-	public BaseModifier(final float pDuration) {
+	public BaseShapeDurationModifier(final float pDuration) {
 		this(pDuration, null);
 	}
 
-	public BaseModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
+	public BaseShapeDurationModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
+		super(pShapeModiferListener);
 		this.mDuration = pDuration;
-		this.mModiferListener = pShapeModiferListener;
 	}
 
-	BaseModifier(final BaseModifier pBaseModifier) {
-		this(pBaseModifier.mDuration, pBaseModifier.mModiferListener);
+	protected BaseShapeDurationModifier(final BaseShapeDurationModifier pBaseModifier) {
+		this(pBaseModifier.mDuration, pBaseModifier.mShapeModifierListener);
 	}
 
 	// ===========================================================
@@ -50,38 +47,13 @@ public abstract class BaseModifier implements IShapeModifier {
 		return this.mTotalSecondsElapsed;
 	}
 
-	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
-		this.mRemoveWhenFinished = pRemoveWhenFinished;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public boolean isFinished() {
-		return this.mFinished;
-	}
-	
-	@Override
-	public final boolean isRemoveWhenFinished() {
-		return this.mRemoveWhenFinished;
-	}
-
-	public IShapeModifierListener getModiferListener() {
-		return this.mModiferListener;
-	}
-
-	public void setModiferListener(final IShapeModifierListener pShapeModiferListener) {
-		this.mModiferListener = pShapeModiferListener;
-	}
-
 	public float getDuration() {
 		return this.mDuration;
 	}
-
-	@Override
-	public abstract IShapeModifier clone();
 
 	protected abstract void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape);
 
@@ -107,8 +79,8 @@ public abstract class BaseModifier implements IShapeModifier {
 			if(this.mDuration != -1 && this.mTotalSecondsElapsed >= this.mDuration) {
 				this.mTotalSecondsElapsed = this.mDuration;
 				this.mFinished = true;
-				if(this.mModiferListener != null) {
-					this.mModiferListener.onModifierFinished(this, pShape);
+				if(this.mShapeModifierListener != null) {
+					this.mShapeModifierListener.onModifierFinished(this, pShape);
 				}
 			}
 		}

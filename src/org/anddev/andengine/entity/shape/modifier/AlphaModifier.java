@@ -27,7 +27,7 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener);
 	}
 
-	public AlphaModifier(final AlphaModifier pAlphaModifier) {
+	protected AlphaModifier(final AlphaModifier pAlphaModifier) {
 		super(pAlphaModifier);
 	}
 	

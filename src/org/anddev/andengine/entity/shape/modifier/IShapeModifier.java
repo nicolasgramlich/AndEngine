@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.shape.IShape;
  * @author Nicolas Gramlich
  * @since 11:17:50 - 19.03.2010
  */
-public interface IShapeModifier {
+public interface IShapeModifier extends Cloneable {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -19,6 +19,7 @@ public interface IShapeModifier {
 
 	public boolean isFinished();
 	public boolean isRemoveWhenFinished();
+	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
 
 	public IShapeModifier clone();
 
@@ -26,8 +27,8 @@ public interface IShapeModifier {
 
 	public void onUpdateShape(final float pSecondsElapsed, final IShape pShape);
 
-	public IShapeModifierListener getModiferListener();
-	public void setModiferListener(final IShapeModifierListener pShapeModiferListener);
+	public IShapeModifierListener getShapeModifierListener();
+	public void setShapeModifierListener(final IShapeModifierListener pShapeModiferListener);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

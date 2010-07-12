@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.entity.shape.IShape;
+
 
 /**
  * @author Nicolas Gramlich
@@ -33,7 +35,7 @@ public class RotationAtModifier extends RotationModifier {
 		this.mRotationCenterY = pRotationCenterY;
 	}
 
-	public RotationAtModifier(final RotationAtModifier pRotationAtModifier) {
+	protected RotationAtModifier(final RotationAtModifier pRotationAtModifier) {
 		super(pRotationAtModifier);
 		this.mRotationCenterX = pRotationAtModifier.mRotationCenterX;
 		this.mRotationCenterY = pRotationAtModifier.mRotationCenterY; 
@@ -46,6 +48,12 @@ public class RotationAtModifier extends RotationModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	protected void onManagedInitializeShape(IShape pShape) {
+		super.onManagedInitializeShape(pShape);
+		pShape.setRotationCenter(this.mRotationCenterX, this.mRotationCenterY);
+	}
 
 	// ===========================================================
 	// Methods

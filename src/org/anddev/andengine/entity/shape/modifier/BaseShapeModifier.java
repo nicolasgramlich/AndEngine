@@ -1,12 +1,11 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 16:10:42 - 19.03.2010
  */
-public class RotationModifier extends BaseSingleValueSpanModifier {
+public abstract class BaseShapeModifier implements IShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,25 +14,24 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	// Fields
 	// ===========================================================
 
+	protected boolean mFinished;
+	private boolean mRemoveWhenFinished = true;
+	protected IShapeModifierListener mShapeModifierListener;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation) {
-		this(pDuration, pFromRotation, pToRotation, null);
+	public BaseShapeModifier() {
+		this((IShapeModifierListener)null);
 	}
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener);
+	public BaseShapeModifier(final IShapeModifierListener pShapeModiferListener) {
+		this.mShapeModifierListener = pShapeModiferListener;
 	}
 
-	protected RotationModifier(final RotationModifier pRotationModifier) {
-		super(pRotationModifier);
-	}
-
-	@Override
-	public RotationModifier clone(){
-		return new RotationModifier(this);
+	protected BaseShapeModifier(final BaseShapeModifier pBaseModifier) {
+		this(pBaseModifier.mShapeModifierListener);
 	}
 
 	// ===========================================================
@@ -45,14 +43,29 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final IShape pShape, final float pRotation) {
-		pShape.setRotation(pRotation);
+	public boolean isFinished() {
+		return this.mFinished;
+	}
+	
+	@Override
+	public final boolean isRemoveWhenFinished() {
+		return this.mRemoveWhenFinished;
+	}
+
+	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
+		this.mRemoveWhenFinished = pRemoveWhenFinished;
+	}
+
+	public IShapeModifierListener getShapeModifierListener() {
+		return this.mShapeModifierListener;
+	}
+
+	public void setShapeModifierListener(final IShapeModifierListener pShapeModifierListener) {
+		this.mShapeModifierListener = pShapeModifierListener;
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, final float pRotation) {
-		pShape.setRotation(pRotation);
-	}
+	public abstract IShapeModifier clone();
 
 	// ===========================================================
 	// Methods

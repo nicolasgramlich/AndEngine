@@ -35,7 +35,7 @@ public class ScaleModifier extends BaseDoubleValueSpanModifier {
 		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModiferListener);
 	}
 
-	public ScaleModifier(final ScaleModifier pScaleModifier) {
+	protected ScaleModifier(final ScaleModifier pScaleModifier) {
 		super(pScaleModifier);
 	}
 

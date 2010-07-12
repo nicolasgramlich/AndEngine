@@ -23,7 +23,7 @@ public class RotationByModifier extends BaseSingleValueChangeModifier {
 		super(pDuration, pRotation);
 	}
 
-	public RotationByModifier(final RotationByModifier pRotationByModifier) {
+	protected RotationByModifier(final RotationByModifier pRotationByModifier) {
 		super(pRotationByModifier);
 	}
 

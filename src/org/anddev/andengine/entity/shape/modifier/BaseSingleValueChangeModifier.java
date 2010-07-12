@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.shape.IShape;
  * @author Nicolas Gramlich
  * @since 15:34:35 - 17.06.2010
  */
-public abstract class BaseSingleValueChangeModifier extends BaseModifier {
+public abstract class BaseSingleValueChangeModifier extends BaseShapeDurationModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -30,7 +30,7 @@ public abstract class BaseSingleValueChangeModifier extends BaseModifier {
 		this.mValueChangePerSecond = pValueChange / pDuration;
 	}
 
-	public BaseSingleValueChangeModifier(final BaseSingleValueChangeModifier pByModifier) {
+	protected BaseSingleValueChangeModifier(final BaseSingleValueChangeModifier pByModifier) {
 		super(pByModifier);
 		this.mValueChangePerSecond = pByModifier.mValueChangePerSecond;
 	}

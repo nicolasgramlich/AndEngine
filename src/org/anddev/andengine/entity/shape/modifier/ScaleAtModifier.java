@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.entity.shape.IShape;
+
 
 /**
  * @author Nicolas Gramlich
@@ -45,7 +47,7 @@ public class ScaleAtModifier extends ScaleModifier {
 		this.mScaleCenterY = pScaleCenterY;
 	}
 
-	public ScaleAtModifier(final ScaleAtModifier pScaleAtModifier) {
+	protected ScaleAtModifier(final ScaleAtModifier pScaleAtModifier) {
 		super(pScaleAtModifier);
 		this.mScaleCenterX = pScaleAtModifier.mScaleCenterX;
 		this.mScaleCenterY = pScaleAtModifier.mScaleCenterY;
@@ -58,6 +60,12 @@ public class ScaleAtModifier extends ScaleModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	protected void onManagedInitializeShape(IShape pShape) {
+		super.onManagedInitializeShape(pShape);
+		pShape.setScaleCenter(this.mScaleCenterX, this.mScaleCenterY);
+	}
 
 	// ===========================================================
 	// Methods

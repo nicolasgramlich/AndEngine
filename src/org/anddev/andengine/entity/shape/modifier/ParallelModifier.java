@@ -20,6 +20,8 @@ public class ParallelModifier extends BaseShapeModifier {
 
 	private final float mDuration;
 
+	private boolean mFinishedCached;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -77,10 +79,18 @@ public class ParallelModifier extends BaseShapeModifier {
 
 	@Override
 	public void onUpdateShape(final float pSecondsElapsed, final IShape pShape) {
+		this.mFinishedCached = false;
+		
 		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
 			shapeModifiers[i].onUpdateShape(pSecondsElapsed, pShape);
+
+			if(this.mFinishedCached) {
+				return;
+			}
 		}
+		
+		this.mFinishedCached = false;
 	}
 
 	@Override
@@ -105,6 +115,7 @@ public class ParallelModifier extends BaseShapeModifier {
 		@Override
 		public void onModifierFinished(final IShapeModifier pShapeModifier, final IShape pShape) {
 			ParallelModifier.this.mFinished = true;
+			ParallelModifier.this.mFinishedCached = true;
 			if(ParallelModifier.this.mShapeModifierListener != null) {
 				ParallelModifier.this.mShapeModifierListener.onModifierFinished(ParallelModifier.this, pShape);
 			}

@@ -6,10 +6,10 @@ import org.anddev.andengine.collision.CollisionChecker;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.primitive.RectangularShape;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
 
 import android.opengl.GLU;
-import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -171,34 +171,34 @@ public class Camera implements IUpdateHandler {
 		pGL.glTranslatef(-pCenterX, -pCenterY, 0);
 	}
 
-	public void convertSceneToHUDMotionEvent(final MotionEvent pSceneMotionEvent) {
-		final float x = pSceneMotionEvent.getX() - this.getMinX();
-		final float y = pSceneMotionEvent.getY() - this.getMinY();
-		pSceneMotionEvent.setLocation(x, y);
+	public void convertSceneToHUDTouchEvent(final TouchEvent pSceneTouchEvent) {
+		final float x = pSceneTouchEvent.getX() - this.getMinX();
+		final float y = pSceneTouchEvent.getY() - this.getMinY();
+		pSceneTouchEvent.set(x, y);
 	}
 
-	public void convertHUDToSceneMotionEvent(final MotionEvent pHUDMotionEvent) {
-		final float x = pHUDMotionEvent.getX() + this.getMinX();
-		final float y = pHUDMotionEvent.getY() + this.getMinY();
-		pHUDMotionEvent.setLocation(x, y);
+	public void convertHUDToSceneTouchEvent(final TouchEvent pHUDTouchEvent) {
+		final float x = pHUDTouchEvent.getX() + this.getMinX();
+		final float y = pHUDTouchEvent.getY() + this.getMinY();
+		pHUDTouchEvent.set(x, y);
 	}
 
-	public void convertSurfaceToSceneMotionEvent(final MotionEvent pSurfaceMotionEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
+	public void convertSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
 		final float relativeX;
 		final float relativeY;
 
 		if(this.mFlipped) {
-			relativeX = 1 - (pSurfaceMotionEvent.getX() / pSurfaceWidth);
-			relativeY = 1 - (pSurfaceMotionEvent.getY() / pSurfaceHeight);
+			relativeX = 1 - (pSurfaceTouchEvent.getX() / pSurfaceWidth);
+			relativeY = 1 - (pSurfaceTouchEvent.getY() / pSurfaceHeight);
 		} else {
-			relativeX = pSurfaceMotionEvent.getX() / pSurfaceWidth;
-			relativeY = pSurfaceMotionEvent.getY() / pSurfaceHeight;
+			relativeX = pSurfaceTouchEvent.getX() / pSurfaceWidth;
+			relativeY = pSurfaceTouchEvent.getY() / pSurfaceHeight;
 		}
 		
-		this.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, relativeX, relativeY);
+		this.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, relativeX, relativeY);
 	}
 
-	private void convertSurfaceToSceneMotionEvent(final MotionEvent pSurfaceMotionEvent, final float pRelativeX, final float pRelativeY) {
+	private void convertSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final float pRelativeX, final float pRelativeY) {
 		final float minX = this.getMinX();
 		final float maxX = this.getMaxX();
 		final float minY = this.getMinY();
@@ -207,7 +207,7 @@ public class Camera implements IUpdateHandler {
 		final float x = minX + pRelativeX * (maxX - minX);
 		final float y = minY + pRelativeY * (maxY - minY);
 
-		pSurfaceMotionEvent.setLocation(x, y);
+		pSurfaceTouchEvent.set(x, y);
 	}
 
 	// ===========================================================

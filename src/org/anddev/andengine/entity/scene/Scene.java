@@ -10,8 +10,7 @@ import org.anddev.andengine.entity.BaseEntity;
 import org.anddev.andengine.entity.layer.DynamicCapacityLayer;
 import org.anddev.andengine.entity.layer.FixedCapacityLayer;
 import org.anddev.andengine.entity.layer.ILayer;
-
-import android.view.MotionEvent;
+import org.anddev.andengine.input.touch.TouchEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -247,10 +246,10 @@ public class Scene extends BaseEntity {
 		}
 	}
 
-	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
+	public boolean onSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
 		final Scene childScene = this.mChildScene;
 		if(childScene != null) {
-			final boolean handledByChild = this.onChildSceneTouchEvent(pSceneMotionEvent);
+			final boolean handledByChild = this.onChildSceneTouchEvent(pSceneTouchEvent);
 			if(handledByChild) {
 				return true;
 			} else if(this.mChildSceneModalTouch) {
@@ -261,17 +260,17 @@ public class Scene extends BaseEntity {
 		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
 		final int touchAreaCount = touchAreas.size();
 		if(touchAreaCount > 0) {
-			final float sceneMotionEventX = pSceneMotionEvent.getX();
-			final float sceneMotionEventY = pSceneMotionEvent.getY();
+			final float sceneTouchEventX = pSceneTouchEvent.getX();
+			final float sceneTouchEventY = pSceneTouchEvent.getY();
 			if(this.mOnAreaTouchTraversalBackToFront) {
 				for(int i = 0; i < touchAreaCount; i++) {
 					final ITouchArea touchArea = touchAreas.get(i);
-					if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
-						final boolean handledSelf = touchArea.onAreaTouched(pSceneMotionEvent);
+					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
+						final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent);
 						if(handledSelf) {
 							return true;
 						} else if(this.mOnAreaTouchListener != null) {
-							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneTouchEvent);
 						} else {
 							return false;
 						}
@@ -280,12 +279,12 @@ public class Scene extends BaseEntity {
 			} else { /* Front to back. */
 				for(int i = touchAreaCount - 1; i >= 0; i--) {
 					final ITouchArea touchArea = touchAreas.get(i);
-					if(touchArea.contains(sceneMotionEventX, sceneMotionEventY)) {
-						final boolean handled = touchArea.onAreaTouched(pSceneMotionEvent);
+					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
+						final boolean handled = touchArea.onAreaTouched(pSceneTouchEvent);
 						if(handled) {
 							return true;
 						} else if(this.mOnAreaTouchListener != null) {
-							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneMotionEvent);
+							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneTouchEvent);
 						} else {
 							return false;
 						}
@@ -295,14 +294,14 @@ public class Scene extends BaseEntity {
 		}
 		/* If no area was touched, the Scene itself was touched as a fallback. */
 		if(this.mOnSceneTouchListener != null){
-			return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneMotionEvent);
+			return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneTouchEvent);
 		} else {
 			return false;
 		}
 	}
 
-	protected boolean onChildSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
-		return this.mChildScene.onSceneTouchEvent(pSceneMotionEvent);
+	protected boolean onChildSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
+		return this.mChildScene.onSceneTouchEvent(pSceneTouchEvent);
 	}
 
 	@Override
@@ -410,10 +409,10 @@ public class Scene extends BaseEntity {
 
 		/**
 		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.
-		 * @param pSceneMotionEvent
+		 * @param pSceneTouchEvent
 		 * @return <code>true</code> if the event was handled (that means {@link IOnAreaTouchListener} of the {@link Scene} will not be fired!), otherwise <code>false</code>.
 		 */
-		public boolean onAreaTouched(final MotionEvent pSceneMotionEvent);
+		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent);
 	}
 
 	public static interface IOnAreaTouchListener {
@@ -425,7 +424,7 @@ public class Scene extends BaseEntity {
 		// Methods
 		// ===========================================================
 
-		public boolean onAreaTouched(final ITouchArea pTouchArea, final MotionEvent pSceneMotionEvent);
+		public boolean onAreaTouched(final ITouchArea pTouchArea, final TouchEvent pSceneTouchEvent);
 	}
 
 	public static interface IOnSceneTouchListener {
@@ -437,6 +436,6 @@ public class Scene extends BaseEntity {
 		// Methods
 		// ===========================================================
 
-		public boolean onSceneTouchEvent(final Scene pScene, final MotionEvent pSceneMotionEvent);
+		public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent);
 	}
 }

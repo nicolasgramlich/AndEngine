@@ -9,6 +9,7 @@ import org.anddev.andengine.entity.scene.Scene.IOnAreaTouchListener;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.scene.menu.animator.IMenuAnimator;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
+import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
 
@@ -109,10 +110,10 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	// ===========================================================
 
 	@Override
-	public boolean onAreaTouched(final ITouchArea pTouchArea, final MotionEvent pSceneMotionEvent) {
+	public boolean onAreaTouched(final ITouchArea pTouchArea, final TouchEvent pSceneTouchEvent) {
 		final IMenuItem menuItem = ((IMenuItem)pTouchArea);
 		
-		switch(pSceneMotionEvent.getAction()) {
+		switch(pSceneTouchEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE:
 				if(this.mSelectedMenuItem != null && this.mSelectedMenuItem != menuItem) {
@@ -137,7 +138,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	}
 
 	@Override
-	public boolean onSceneTouchEvent(final Scene pScene, final MotionEvent pSceneMotionEvent) {
+	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
 		if(this.mSelectedMenuItem != null) {
 			this.mSelectedMenuItem.onUnselected();
 			this.mSelectedMenuItem = null;

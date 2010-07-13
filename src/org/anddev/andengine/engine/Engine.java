@@ -15,6 +15,10 @@ import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.SplashScene;
+import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.input.touch.controller.ITouchController;
+import org.anddev.andengine.input.touch.controller.SingleTouchControler;
+import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
@@ -47,7 +51,7 @@ import android.view.View.OnTouchListener;
  * @author Nicolas Gramlich
  * @since 12:21:31 - 08.03.2010
  */
-public class Engine implements SensorEventListener, OnTouchListener {
+public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -98,6 +102,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	private boolean mIsMethodTracing;
 
 	private Vibrator mVibrator;
+	
+	private ITouchController mTouchController = new SingleTouchControler(); // TODO Maybe get from EngineOptions? 
 
 	// ===========================================================
 	// Constructors
@@ -289,34 +295,40 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	@Override
 	public boolean onTouch(final View pView, final MotionEvent pSurfaceMotionEvent) {
 		if(this.mRunning) {
-			/* Let the engine determine which scene and camera this event should be handled by. */
-			final Scene scene = this.getSceneFromSurfaceMotionEvent(pSurfaceMotionEvent);
-			final Camera camera = this.getCameraFromSurfaceMotionEvent(pSurfaceMotionEvent);
-			
-			this.convertSurfaceToSceneMotionEvent(camera, pSurfaceMotionEvent);
-
-			if(this.onTouchHUD(camera, pSurfaceMotionEvent)) {
-				return true;
-			} else {
-				/* If HUD didn't handle it, Scene may handle it. */
-				return this.onTouchScene(scene, pSurfaceMotionEvent);
-			}
+			return this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent, this);
 		} else {
 			return false;
 		}
 	}
 
-	protected boolean onTouchHUD(final Camera pCamera, final MotionEvent pSceneMotionEvent) {
+
+	@Override
+	public boolean onTouchEvent(final TouchEvent pSurfaceTouchEvent) {
+		/* Let the engine determine which scene and camera this event should be handled by. */
+		final Scene scene = this.getSceneFromSurfaceTouchEvent(pSurfaceTouchEvent);
+		final Camera camera = this.getCameraFromSurfaceTouchEvent(pSurfaceTouchEvent);
+		
+		this.convertSurfaceToSceneTouchEvent(camera, pSurfaceTouchEvent);
+
+		if(this.onTouchHUD(camera, pSurfaceTouchEvent)) {
+			return true;
+		} else {
+			/* If HUD didn't handle it, Scene may handle it. */
+			return this.onTouchScene(scene, pSurfaceTouchEvent);
+		}
+	}
+
+	protected boolean onTouchHUD(final Camera pCamera, final TouchEvent pSceneTouchEvent) {
 		if(pCamera.hasHUD()) {
-			return pCamera.getHUD().onSceneTouchEvent(pSceneMotionEvent);
+			return pCamera.getHUD().onSceneTouchEvent(pSceneTouchEvent);
 		} else {
 			return false;
 		}
 	}
 
-	protected boolean onTouchScene(final Scene pScene, final MotionEvent pSceneMotionEvent) {
+	protected boolean onTouchScene(final Scene pScene, final TouchEvent pSceneTouchEvent) {
 		if(pScene != null) {
-			return pScene.onSceneTouchEvent(pSceneMotionEvent);
+			return pScene.onSceneTouchEvent(pSceneTouchEvent);
 		} else {
 			return false;
 		}
@@ -342,16 +354,16 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		this.stop();
 	}
 
-	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
+	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
 		return this.getCamera();
 	}
 	
-	protected Scene getSceneFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
+	protected Scene getSceneFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
 		return this.mScene;
 	}
 
-	protected void convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
-		pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, this.mSurfaceWidth, this.mSurfaceHeight);
+	protected void convertSurfaceToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
+		pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 	}
 
 	public void onLoadComplete(final Scene pScene) {

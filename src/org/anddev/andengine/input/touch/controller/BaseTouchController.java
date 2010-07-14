@@ -1,12 +1,14 @@
 package org.anddev.andengine.input.touch.controller;
 
+import org.anddev.andengine.input.touch.TouchEvent;
+
 import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
- * @since 20:23:33 - 13.07.2010
+ * @since 21:06:40 - 13.07.2010
  */
-public class SingleTouchControler extends BaseTouchController {
+public abstract class BaseTouchController implements ITouchController  {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,9 +29,12 @@ public class SingleTouchControler extends BaseTouchController {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent, final ITouchEventCallback pTouchEventCallback) {
-		return fireTouchEvent(pMotionEvent.getX(), pMotionEvent.getY(), pMotionEvent.getAction(), 0, pMotionEvent, pTouchEventCallback);
+	protected static boolean fireTouchEvent(float pX, float pY, int pAction, int pPointerID, final MotionEvent pMotionEvent, final ITouchEventCallback pTouchEventCallback) {
+		final TouchEvent touchEvent = TouchEvent.obtain();
+		touchEvent.set(pX, pY, pAction, pPointerID, pMotionEvent);
+		final boolean handled = pTouchEventCallback.onTouchEvent(touchEvent);
+		TouchEvent.recycle(touchEvent);
+		return handled;
 	}
 
 	// ===========================================================

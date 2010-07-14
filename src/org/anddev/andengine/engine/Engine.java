@@ -17,7 +17,7 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.SplashScene;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.controller.ITouchController;
-import org.anddev.andengine.input.touch.controller.SingleTouchControler;
+import org.anddev.andengine.input.touch.controller.MultiTouchControler;
 import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontFactory;
@@ -103,7 +103,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private Vibrator mVibrator;
 	
-	private ITouchController mTouchController = new SingleTouchControler(); // TODO Maybe get from EngineOptions? 
+	private ITouchController mTouchController = new MultiTouchControler(); // TODO Maybe get from EngineOptions? 
 
 	// ===========================================================
 	// Constructors

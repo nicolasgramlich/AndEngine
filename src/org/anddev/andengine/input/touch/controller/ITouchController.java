@@ -17,7 +17,7 @@ public interface ITouchController {
 	// Methods
 	// ===========================================================
 	
-	public boolean onHandleMotionEvent(final MotionEvent pTouchEvent, final ITouchEventCallback pTouchEventCallback);
+	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent, final ITouchEventCallback pTouchEventCallback);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

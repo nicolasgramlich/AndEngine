@@ -12,6 +12,7 @@ import org.anddev.andengine.ui.IGameInterface;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -150,6 +151,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
 	}
 	
+	/**
+	 * @param pAccelerometerListener
+	 * @param pRate one of: {@link SensorManager#SENSOR_DELAY_FASTEST}, {@link SensorManager#SENSOR_DELAY_GAME}, {@link SensorManager#SENSOR_DELAY_UI}, {@link SensorManager#SENSOR_DELAY_NORMAL}
+	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise. 
+	 */
 	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener, final int pRate) {
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener, pRate);
 	}
@@ -158,6 +164,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener);
 	}
 	
+	/**
+	 * @param pOrientationListener
+	 * @param pRate one of: {@link SensorManager#SENSOR_DELAY_FASTEST}, {@link SensorManager#SENSOR_DELAY_GAME}, {@link SensorManager#SENSOR_DELAY_UI}, {@link SensorManager#SENSOR_DELAY_NORMAL}
+	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise. 
+	 */
 	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener, final int pRate) {
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener, pRate);
 	}

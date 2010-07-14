@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity;
 
-import android.view.MotionEvent;
+import org.anddev.andengine.input.touch.TouchEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -98,7 +98,7 @@ public abstract class BaseStaticEntity extends BaseEntity implements IStaticEnti
 	}
 	
 	@Override
-	public boolean onAreaTouched(final MotionEvent pSceneMotionEvent) {
+	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent) {
 		return false;
 	}
 

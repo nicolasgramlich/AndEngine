@@ -3,9 +3,8 @@ package org.anddev.andengine.entity.scene;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
-
-import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -55,33 +54,33 @@ public class CameraScene extends Scene {
 	// ===========================================================
 
 	@Override
-	public boolean onSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
+	public boolean onSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
 		if(this.mCamera == null) {
 			return false;
 		} else {
-			this.mCamera.convertSceneToHUDMotionEvent(pSceneMotionEvent);
+			this.mCamera.convertSceneToHUDTouchEvent(pSceneTouchEvent);
 
-			final boolean handled = super.onSceneTouchEvent(pSceneMotionEvent);
+			final boolean handled = super.onSceneTouchEvent(pSceneTouchEvent);
 
 			if(handled) {
 				return true;
 			} else {
-				this.mCamera.convertHUDToSceneMotionEvent(pSceneMotionEvent);
+				this.mCamera.convertHUDToSceneTouchEvent(pSceneTouchEvent);
 				return false;
 			}
 		}
 	}
 
 	@Override
-	protected boolean onChildSceneTouchEvent(final MotionEvent pSceneMotionEvent) {
+	protected boolean onChildSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
 		final boolean childIsCameraScene = this.mChildScene instanceof CameraScene;
 		if(childIsCameraScene) {
-			this.mCamera.convertHUDToSceneMotionEvent(pSceneMotionEvent);
-			final boolean result = super.onChildSceneTouchEvent(pSceneMotionEvent);
-			this.mCamera.convertSceneToHUDMotionEvent(pSceneMotionEvent);
+			this.mCamera.convertHUDToSceneTouchEvent(pSceneTouchEvent);
+			final boolean result = super.onChildSceneTouchEvent(pSceneTouchEvent);
+			this.mCamera.convertSceneToHUDTouchEvent(pSceneTouchEvent);
 			return result;
 		} else {
-			return super.onChildSceneTouchEvent(pSceneMotionEvent);
+			return super.onChildSceneTouchEvent(pSceneTouchEvent);
 		}
 	}
 

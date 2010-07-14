@@ -5,9 +5,8 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.SplitScreenEngineOptions;
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
-
-import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -124,8 +123,8 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected Camera getCameraFromSurfaceMotionEvent(final MotionEvent pMotionEvent) {
-		if(pMotionEvent.getX() <= this.mSurfaceWidth >> 1) {
+	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
+		if(pTouchEvent.getX() <= this.mSurfaceWidth >> 1) {
 			return this.getFirstCamera();
 		} else {
 			return this.getSecondCamera();
@@ -133,8 +132,8 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected Scene getSceneFromSurfaceMotionEvent(MotionEvent pMotionEvent) {
-		if(pMotionEvent.getX() <= this.mSurfaceWidth >> 1) {
+	protected Scene getSceneFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
+		if(pTouchEvent.getX() <= this.mSurfaceWidth >> 1) {
 			return this.getFirstScene();
 		} else {
 			return this.getSecondScene();
@@ -166,14 +165,14 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected void convertSurfaceToSceneMotionEvent(final Camera pCamera, final MotionEvent pSurfaceMotionEvent) {
+	protected void convertSurfaceToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth >> 1;
-
+		
 		if(pCamera == this.getFirstCamera()) {
-			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);
+			pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		} else {
-			pSurfaceMotionEvent.offsetLocation(-surfaceWidthHalf, 0);
-			pCamera.convertSurfaceToSceneMotionEvent(pSurfaceMotionEvent, surfaceWidthHalf, this.mSurfaceHeight);
+			pSurfaceTouchEvent.offset(-surfaceWidthHalf, 0);
+			pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		}
 	}
 

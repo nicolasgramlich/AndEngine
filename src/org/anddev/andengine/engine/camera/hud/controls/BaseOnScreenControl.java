@@ -8,6 +8,7 @@ import org.anddev.andengine.entity.layer.ILayer;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 import android.view.MotionEvent;
@@ -50,14 +51,14 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 
 		this.mControlBase = new Sprite(pX, pY, pControlBaseTextureRegion) {
 			@Override
-			public boolean onAreaTouched(final MotionEvent pSceneMotionEvent) {
-				switch(pSceneMotionEvent.getAction()) {
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent) {
+				switch(pSceneTouchEvent.getAction()) {
 					case MotionEvent.ACTION_UP:
 					case MotionEvent.ACTION_CANCEL:
 						BaseOnScreenControl.this.onSetKnobToDefaultPosition();
 						break;
 					default:
-						BaseOnScreenControl.this.updateControKnob(pSceneMotionEvent);
+						BaseOnScreenControl.this.updateControKnob(pSceneTouchEvent);
 				}
 				return true;
 			}
@@ -109,7 +110,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	// ===========================================================
 
 	@Override
-	public boolean onSceneTouchEvent(final Scene pScene, final MotionEvent pSceneMotionEvent) {
+	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
 		this.onSetKnobToDefaultPosition();
 		return false;
 	}
@@ -122,11 +123,11 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 		this.onUpdateControlKnob(0, 0);
 	}
 
-	private void updateControKnob(final MotionEvent pSceneMotionEvent) {
-		final float sceneMotionEventX = pSceneMotionEvent.getX();
-		final float sceneMotionEventY = pSceneMotionEvent.getY();
+	private void updateControKnob(final TouchEvent pSceneTouchEvent) {
+		final float sceneTouchEventX = pSceneTouchEvent.getX();
+		final float sceneTouchEventY = pSceneTouchEvent.getY();
 
-		this.onUpdateControlKnob((sceneMotionEventX - this.mControlBaseCenterX) / this.mControlBaseWidthHalf, (sceneMotionEventY - this.mControlBaseCenterY) / this.mControlBaseHeightHalf);
+		this.onUpdateControlKnob((sceneTouchEventX - this.mControlBaseCenterX) / this.mControlBaseWidthHalf, (sceneTouchEventY - this.mControlBaseCenterY) / this.mControlBaseHeightHalf);
 	}
 
 	protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {

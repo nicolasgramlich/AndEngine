@@ -17,7 +17,7 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.SplashScene;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.controller.ITouchController;
-import org.anddev.andengine.input.touch.controller.MultiTouchControler;
+import org.anddev.andengine.input.touch.controller.SingleTouchControler;
 import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontFactory;
@@ -55,7 +55,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final float LOADING_SCREEN_DURATION = 2;
 
 	// ===========================================================
@@ -66,6 +66,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private long mLastTick = -1;
 	private float mSecondsElapsedTotal = 0;
+
+	private ITouchController mTouchController = new SingleTouchControler();
 
 	private final EngineOptions mEngineOptions;
 
@@ -78,7 +80,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
-	
+
 	private IOrientationListener mOrientationListener;
 	private OrientationData mOrientationData ;
 
@@ -102,8 +104,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private boolean mIsMethodTracing;
 
 	private Vibrator mVibrator;
-	
-	private ITouchController mTouchController = new MultiTouchControler(); // TODO Maybe get from EngineOptions? 
 
 	// ===========================================================
 	// Constructors
@@ -114,23 +114,23 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		SoundFactory.setAssetBasePath("");
 		MusicFactory.setAssetBasePath("");
 		FontFactory.setAssetBasePath("");
-		
+
 		this.mEngineOptions = pEngineOptions;
 
 		BufferObjectManager.clear();
-		
+
 		if(this.mEngineOptions.needsSound()) {
 			this.mSoundManager = new SoundManager();
 		}
-		
+
 		if(this.mEngineOptions.needsMusic()) {
 			this.mMusicManager = new MusicManager();
 		}
-		
+
 		if(this.mEngineOptions.hasLoadingScreen()) {
-			initLoadingScreen();
+			this.initLoadingScreen();
 		}
-		
+
 		this.mUpdateThread.start();
 	}
 
@@ -168,7 +168,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public Camera getCamera() {
 		return this.mEngineOptions.getCamera();
 	}
-	
+
 	public float getSecondsElapsedTotal() {
 		return this.mSecondsElapsedTotal;
 	}
@@ -186,14 +186,22 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		return this.mSurfaceHeight;
 	}
 
+	public ITouchController getTouchController() {
+		return this.mTouchController;
+	}
+
+	public void setTouchController(final ITouchController pTouchController) {
+		this.mTouchController = pTouchController;
+	}
+
 	public AccelerometerData getAccelerometerData() {
 		return this.mAccelerometerData;
 	}
-	
+
 	public OrientationData getOrientationData() {
 		return this.mOrientationData;
 	}
-	
+
 	public SoundManager getSoundManager() throws IllegalStateException {
 		if(this.mSoundManager != null) {
 			return this.mSoundManager;
@@ -201,7 +209,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			throw new IllegalStateException("To enable the SoundManager, check the EngineOptions!");
 		}
 	}
-	
+
 	public MusicManager getMusicManager() throws IllegalStateException {
 		if(this.mMusicManager != null) {
 			return this.mMusicManager;
@@ -241,7 +249,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.remove(pUpdateHandler);
 	}
-	
+
 	public boolean isMethodTracing() {
 		return this.mIsMethodTracing;
 	}
@@ -307,7 +315,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		/* Let the engine determine which scene and camera this event should be handled by. */
 		final Scene scene = this.getSceneFromSurfaceTouchEvent(pSurfaceTouchEvent);
 		final Camera camera = this.getCameraFromSurfaceTouchEvent(pSurfaceTouchEvent);
-		
+
 		this.convertSurfaceToSceneTouchEvent(camera, pSurfaceTouchEvent);
 
 		if(this.onTouchHUD(camera, pSurfaceTouchEvent)) {
@@ -357,7 +365,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
 		return this.getCamera();
 	}
-	
+
 	protected Scene getSceneFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
 		return this.mScene;
 	}
@@ -383,40 +391,40 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	protected void onUpdate() {
 		if(this.mRunning) {
-			final float secondsElapsed = getSecondsElapsed();
-			
+			final float secondsElapsed = this.getSecondsElapsed();
+
 			this.updatePreFrameHandlers(secondsElapsed);
 
 			if(this.mScene != null){
-				onUpdateScenePreFrameHandlers(secondsElapsed);
+				this.onUpdateScenePreFrameHandlers(secondsElapsed);
 
-				onUpdateScene(secondsElapsed);
+				this.onUpdateScene(secondsElapsed);
 
 				this.mThreadLocker.notifyCanDraw();
 				this.mThreadLocker.waitUntilCanUpdate();
 
-				onUpdateScenePostFrameHandlers(secondsElapsed);
+				this.onUpdateScenePostFrameHandlers(secondsElapsed);
 			} else {
 				this.mThreadLocker.notifyCanDraw();
 				this.mThreadLocker.waitUntilCanUpdate();
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
-//			if(secondsElapsed < 0.033f) {
-//				try {
-//					final int sleepTimeMilliseconds = (int)((0.033f - secondsElapsed) * 1000);
-//					Thread.sleep(sleepTimeMilliseconds);
-//				} catch (InterruptedException e) {
-//					Debug.e("UpdateThread interrupted from sleep.", e);
-//				}
-//			}
+			//			if(secondsElapsed < 0.033f) {
+			//				try {
+			//					final int sleepTimeMilliseconds = (int)((0.033f - secondsElapsed) * 1000);
+			//					Thread.sleep(sleepTimeMilliseconds);
+			//				} catch (InterruptedException e) {
+			//					Debug.e("UpdateThread interrupted from sleep.", e);
+			//				}
+			//			}
 		} else {
 			this.mThreadLocker.notifyCanDraw();
 			this.mThreadLocker.waitUntilCanUpdate();
-			
+
 			try {
 				Thread.sleep(16);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				Debug.e("UpdateThread interrupted from sleep.", e);
 			}
 		}
@@ -457,12 +465,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
 	}
 
-	protected void onDrawScene(final GL10 pGL) {		
+	protected void onDrawScene(final GL10 pGL) {
 		final Camera camera = this.getCamera();
-		
+
 		camera.onApplyMatrix(pGL);
 		GLHelper.setModelViewIdentityMatrix(pGL);
-		
+
 		this.mScene.onDraw(pGL);
 		camera.onDrawHUD(pGL);
 	}
@@ -472,26 +480,26 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mLastTick == -1) {
 			this.mLastTick = now - TimeConstants.NANOSECONDSPERMILLISECOND;
 		}
-		
-		final long nanosecondsElapsed = calculateNanoSecondsElapsed(now, this.mLastTick);
-		
+
+		final long nanosecondsElapsed = this.calculateNanoSecondsElapsed(now, this.mLastTick);
+
 		final float secondsElapsed = (float)nanosecondsElapsed / TimeConstants.NANOSECONDSPERSECOND;
 		this.mLastTick = now;
-		
+
 		this.mSecondsElapsedTotal += secondsElapsed;
-		
+
 		return secondsElapsed;
 	}
 
 	protected long calculateNanoSecondsElapsed(final long pNow, final long pLastTick) {
 		return pNow - pLastTick;
 	}
-	
+
 	public boolean enableVibrator(final Context pContext) {
 		this.mVibrator = (Vibrator)pContext.getSystemService(Context.VIBRATOR_SERVICE);
 		return this.mVibrator != null;
 	}
-	
+
 	public void vibrate(final long pMilliseconds) throws IllegalStateException {
 		if(this.mVibrator != null) {
 			this.mVibrator.vibrate(pMilliseconds);
@@ -515,7 +523,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			return false;
 		}
 	}
-	
+
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
@@ -580,6 +588,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 				} catch (final InterruptedException e) { }
 			}
 			//			Debug.d("<<< waitUntilCanUpdate");
-		}		
+		}
 	}
 }

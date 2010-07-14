@@ -54,6 +54,8 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	
 	private static final float LOADING_SCREEN_DURATION = 2;
 
+	private static final int SENSOR_DELAY_DEFAULT = SensorManager.SENSOR_DELAY_GAME;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -489,9 +491,13 @@ public class Engine implements SensorEventListener, OnTouchListener {
 	}
 
 	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener) {
+		return this.enableAccelerometerSensor(pContext, pAccelerometerListener, SENSOR_DELAY_DEFAULT);
+	}
+
+	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener, final int pRate) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
-			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
+			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pRate);
 
 			this.mAccelerometerListener = pAccelerometerListener;
 			if(this.mAccelerometerData == null) {
@@ -503,11 +509,15 @@ public class Engine implements SensorEventListener, OnTouchListener {
 			return false;
 		}
 	}
-	
+
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener) {
+		return this.enableOrientationSensor(pContext, pOrientationListener, SENSOR_DELAY_DEFAULT);
+	}
+	
+	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final int pRate) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
-			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION);
+			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION, pRate);
 
 			this.mOrientationListener = pOrientationListener;
 			if(this.mOrientationData == null) {
@@ -520,9 +530,9 @@ public class Engine implements SensorEventListener, OnTouchListener {
 		}
 	}
 
-	private void registerSelfAsSensorListener(final SensorManager pSensorManager, final int pType) {
+	private void registerSelfAsSensorListener(final SensorManager pSensorManager, final int pType, final int pRate) {
 		final Sensor accelerometer = pSensorManager.getSensorList(pType).get(0);
-		pSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+		pSensorManager.registerListener(this, accelerometer, pRate);
 	}
 
 	private boolean isSensorSupported(final SensorManager pSensorManager, final int pType) {

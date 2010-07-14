@@ -146,13 +146,20 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected void enableVibrator() {
 		this.mEngine.enableVibrator(this);
 	}
-
 	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
+	}
+	
+	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener, final int pRate) {
+		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener, pRate);
 	}
 
 	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener) {
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener);
+	}
+	
+	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener, final int pRate) {
+		return this.mEngine.enableOrientationSensor(this, pOrientationListener, pRate);
 	}
 
 	// ===========================================================

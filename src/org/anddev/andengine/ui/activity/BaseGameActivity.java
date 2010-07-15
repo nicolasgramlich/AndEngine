@@ -61,8 +61,8 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	@Override
 	protected void onResume() {
 		super.onResume();
-		this.mRenderSurfaceView.onResume();
 		this.mEngine.onResume();
+		this.mRenderSurfaceView.onResume();
 		this.mEngine.start();
 		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
 	}

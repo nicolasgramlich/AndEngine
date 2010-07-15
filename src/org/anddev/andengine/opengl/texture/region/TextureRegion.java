@@ -44,7 +44,7 @@ public class TextureRegion {
 		
 		this.mTextureRegionBuffer = this.onCreateTextureRegionBuffer();
 		
-		BufferObjectManager.loadBufferObject(this.mTextureRegionBuffer);
+		BufferObjectManager.getActiveInstance().loadBufferObject(this.mTextureRegionBuffer);
 
 		this.initTextureBuffer();
 	}

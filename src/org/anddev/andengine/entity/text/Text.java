@@ -58,7 +58,7 @@ public class Text extends RectangularShape {
 		this.mVertexCount = TextVertexBuffer.VERTICES_PER_CHARACTER * this.mCharactersMaximum;
 
 		this.mTextTextureBuffer = new TextTextureBuffer(2 * this.mVertexCount * BufferObject.BYTES_PER_FLOAT, GL11.GL_STATIC_DRAW);
-		BufferObjectManager.loadBufferObject(this.mTextTextureBuffer); // TODO Unload somewhen somehow...
+		BufferObjectManager.getActiveInstance().loadBufferObject(this.mTextTextureBuffer); // TODO Unload somewhen somehow...
 		this.mFont = pFont;
 
 		this.updateText(pText);

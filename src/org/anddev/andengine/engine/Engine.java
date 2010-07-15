@@ -76,6 +76,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private SoundManager mSoundManager;
 	private MusicManager mMusicManager;
 	private final TextureManager mTextureManager = new TextureManager();
+	private final BufferObjectManager mBufferObjectManager = new BufferObjectManager();
 	private final FontManager mFontManager = new FontManager();
 
 	protected Scene mScene;
@@ -116,10 +117,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		SoundFactory.setAssetBasePath("");
 		MusicFactory.setAssetBasePath("");
 		FontFactory.setAssetBasePath("");
+		
+		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 
 		this.mEngineOptions = pEngineOptions;
-
-		BufferObjectManager.clear();
 
 		if(this.mEngineOptions.needsSound()) {
 			this.mSoundManager = new SoundManager();
@@ -356,7 +357,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public void onResume() {
 		this.mTextureManager.reloadTextures();
-		BufferObjectManager.reloadBufferObjects();
+		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
+		this.mBufferObjectManager.reloadBufferObjects();
 	}
 
 	public void onPause() {
@@ -437,7 +439,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mTextureManager.updateTextures(pGL);
 		this.mFontManager.updateFonts(pGL);
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			BufferObjectManager.updateBufferObjects((GL11)pGL);
+			this.mBufferObjectManager.updateBufferObjects((GL11)pGL);
 		}
 
 		this.onDrawScene(pGL);

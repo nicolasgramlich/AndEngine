@@ -47,7 +47,7 @@ public abstract class Shape extends BaseDynamicEntity implements IShape {
 	public Shape(final float pX, final float pY, final VertexBuffer pVertexBuffer) {
 		super(pX, pY);
 		this.mVertexBuffer = pVertexBuffer;
-		BufferObjectManager.loadBufferObject(this.mVertexBuffer);
+		BufferObjectManager.getActiveInstance().loadBufferObject(this.mVertexBuffer);
 	}
 
 	// ===========================================================

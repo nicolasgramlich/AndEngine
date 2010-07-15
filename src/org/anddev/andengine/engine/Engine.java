@@ -311,7 +311,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
-
 	@Override
 	public boolean onTouchEvent(final TouchEvent pSurfaceTouchEvent) {
 		/* Let the engine determine which scene and camera this event should be handled by. */

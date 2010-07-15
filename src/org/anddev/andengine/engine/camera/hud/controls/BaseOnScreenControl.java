@@ -111,6 +111,12 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 		final int pointerID = pSceneTouchEvent.getPointerID();
 		if(pointerID == this.mActivePointerID) {
 			this.onSetKnobToDefaultPosition();
+
+			switch(pSceneTouchEvent.getAction()) {
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_CANCEL:
+					this.mActivePointerID = INVALID_POINTER_ID;
+			}
 		}
 		return false;
 	}

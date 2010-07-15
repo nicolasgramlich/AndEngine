@@ -10,6 +10,7 @@ import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
+import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -101,6 +102,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			}
 		}
 	}, "UpdateThread");
+
+	private RunnableHandler mUpdateThreadRunnableHandler = new RunnableHandler();
 
 	private final State mThreadLocker = new State();
 
@@ -347,6 +350,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void runOnUpdateThread(final Runnable pRunnable) {
+		this.mUpdateThreadRunnableHandler.postRunnable(pRunnable);
+	}
 
 	private void initLoadingScreen() {
 		final ITextureSource loadingScreenTextureSource = this.getEngineOptions().getLoadingScreenTextureSource();
@@ -401,6 +408,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			if(this.mScene != null){
 				this.onUpdateScenePreFrameHandlers(secondsElapsed);
 
+				this.mUpdateThreadRunnableHandler.onUpdate(secondsElapsed);
 				this.onUpdateScene(secondsElapsed);
 
 				this.mThreadLocker.notifyCanDraw();
@@ -447,16 +455,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mThreadLocker.notifyCanUpdate();
 	}
 
-	protected void onUpdateScene(final float secondsElapsed) {
-		this.mScene.onUpdate(secondsElapsed);
+	protected void onUpdateScene(final float pSecondsElapsed) {
+		this.mScene.onUpdate(pSecondsElapsed);
 	}
 
-	protected void onUpdateScenePostFrameHandlers(final float secondsElapsed) {
-		this.mScene.updatePostFrameHandlers(secondsElapsed);
+	protected void onUpdateScenePostFrameHandlers(final float pSecondsElapsed) {
+		this.mScene.updatePostFrameHandlers(pSecondsElapsed);
 	}
 
-	protected void onUpdateScenePreFrameHandlers(final float secondsElapsed) {
-		this.mScene.updatePreFrameHandlers(secondsElapsed);
+	protected void onUpdateScenePreFrameHandlers(final float pSecondsElapsed) {
+		this.mScene.updatePreFrameHandlers(pSecondsElapsed);
 	}
 
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {

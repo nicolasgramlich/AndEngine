@@ -94,6 +94,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void runOnUpdateThread(final Runnable pRunnable) {
+		this.mEngine.runOnUpdateThread(pRunnable);
+	}
 
 	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this, this.mEngine);

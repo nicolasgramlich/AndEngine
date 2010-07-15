@@ -6,6 +6,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
+import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.BaseEntity;
 import org.anddev.andengine.entity.layer.DynamicCapacityLayer;
 import org.anddev.andengine.entity.layer.FixedCapacityLayer;
@@ -43,6 +44,8 @@ public class Scene extends BaseEntity {
 	private float mBlue = 0.0f;
 	private float mAlpha = 1.0f;
 
+	private final RunnableHandler mRunnableHandler = new RunnableHandler();
+	
 	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
 	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
 
@@ -234,6 +237,7 @@ public class Scene extends BaseEntity {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
+		this.mRunnableHandler.onUpdate(pSecondsElapsed);
 		this.mSecondsElapsedTotal += pSecondsElapsed;
 
 		final Scene childScene = this.mChildScene;
@@ -319,6 +323,10 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void postRunnable(final Runnable pRunnable) {
+		this.mRunnableHandler.postRunnable(pRunnable);
+	}
 
 	public void back() {
 		this.clearChildScene();

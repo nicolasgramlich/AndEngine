@@ -119,23 +119,49 @@ public class MathUtils {
 		return arraySum(pValues) / pValues.length;
 	}
 
-	public static float[] rotateAroundCenter(final float pRotation, final float pX, final float pY, final float pRotationCenterX, final float pRotationCenterY, final float[] pReuse) {
+	@Deprecated
+	public static float[] rotateAroundCenter(final float pX, final float pY, final float pRotation, final float pRotationCenterX, final float pRotationCenterY, final float[] pReuse) {
 		final float RotationRad = MathUtils.degToRad(pRotation);
 		pReuse[0] = pRotationCenterX + (FloatMath.cos(RotationRad) * (pX - pRotationCenterX) - FloatMath.sin(RotationRad) * (pY - pRotationCenterY));
 		pReuse[1] = pRotationCenterY + (FloatMath.sin(RotationRad) * (pX - pRotationCenterX) + FloatMath.cos(RotationRad) * (pY - pRotationCenterY));
 		return pReuse;
 	}
-	
-	public static float[] scaleAroundCenter(final float pScaleX, final float pScaleY, final float pX, final float pY, final float pCenterCenterX, final float pCenterCenterY, final float[] pReuse) {
+
+	@Deprecated
+	public static float[] scaleAroundCenter(final float pX, final float pY, final float pScaleX, final float pScaleY, final float pCenterCenterX, final float pCenterCenterY, final float[] pReuse) {
 		pReuse[0] = pCenterCenterX + (pX - pCenterCenterX) * pScaleX;
 		pReuse[1] = pCenterCenterY + (pY - pCenterCenterY) * pScaleY;
 		
 		return pReuse;
 	}
 	
-	public static float[] rotateAndScaleAroundCenter(final float pRotation, final float pX, final float pY, final float pRotationCenterX, final float pRotationCenterY, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY, final float[] pReuse) {
-		final float[] rotateAroundCenter = rotateAroundCenter(pRotation, pX, pY, pRotationCenterX, pRotationCenterY, pReuse);
-		return scaleAroundCenter(pScaleX, pScaleY, rotateAroundCenter[0], rotateAroundCenter[1], pScaleCenterX, pScaleCenterY, pReuse);
+	
+	public static float[] rotateAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
+		final float rotationRad = MathUtils.degToRad(pRotation);
+		final float sinRotationRad = FloatMath.sin(rotationRad);
+		final float cosRotationInRad = FloatMath.cos(rotationRad);
+		
+		for(int i = pVertices.length - 2; i >= 0; i -= 2) {
+			float pX = pVertices[i];
+			float pY = pVertices[i + 1];
+			pVertices[i] = pRotationCenterX + (cosRotationInRad * (pX - pRotationCenterX) - sinRotationRad * (pY - pRotationCenterY));
+			pVertices[i + 1] = pRotationCenterY + (sinRotationRad * (pX - pRotationCenterX) + cosRotationInRad * (pY - pRotationCenterY));	
+		}
+		return pVertices;
+	}
+	
+	public static float[] scaleAroundCenter(final float[] pVertices, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
+		for(int i = pVertices.length - 2; i >= 0; i -= 2) {
+			pVertices[i] = pScaleCenterX + (pVertices[i] - pScaleCenterX) * pScaleX;
+			pVertices[i + 1] = pScaleCenterY + (pVertices[i + 1] - pScaleCenterY) * pScaleY;
+		}
+		
+		return pVertices;
+	}
+	
+	public static float[] rotateAndScaleAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
+		rotateAroundCenter(pVertices, pRotation, pRotationCenterX, pRotationCenterY);
+		return scaleAroundCenter(pVertices, pScaleX, pScaleY, pScaleCenterX, pScaleCenterY);
 	}
 
 	// ===========================================================

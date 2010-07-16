@@ -4,7 +4,7 @@ package org.anddev.andengine.collision;
  * @author Nicolas Gramlich
  * @since 11:50:19 - 11.03.2010
  */
-public class CollisionChecker {
+public class BaseCollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -36,60 +36,9 @@ public class CollisionChecker {
 				pTopB < pBottomA);
 	}
 
-	public static boolean checkBoxCollision(final float[] pVertexA1, final float[] pVertexA2, final float[] pVertexA3, final float[] pVertexA4, final float[] pVertexB1, final float[] pVertexB2, final float[] pVertexB3, final float[] pVertexB4) {
-		return
-		checkLineCollision(pVertexA1[0], pVertexA1[1], pVertexA2[0], pVertexA2[1],    pVertexB1[0], pVertexB1[1], pVertexB2[0], pVertexB2[1])
-		|| checkLineCollision(pVertexA1[0], pVertexA1[1], pVertexA2[0], pVertexA2[1],    pVertexB2[0], pVertexB2[1], pVertexB3[0], pVertexB3[1])
-		|| checkLineCollision(pVertexA1[0], pVertexA1[1], pVertexA2[0], pVertexA2[1],    pVertexB3[0], pVertexB3[1], pVertexB4[0], pVertexB4[1])
-		|| checkLineCollision(pVertexA1[0], pVertexA1[1], pVertexA2[0], pVertexA2[1],    pVertexB4[0], pVertexB4[1], pVertexB1[0], pVertexB1[1])
-
-		|| checkLineCollision(pVertexA2[0], pVertexA2[1], pVertexA3[0], pVertexA3[1],    pVertexB1[0], pVertexB1[1], pVertexB2[0], pVertexB2[1])
-		|| checkLineCollision(pVertexA2[0], pVertexA2[1], pVertexA3[0], pVertexA3[1],    pVertexB2[0], pVertexB2[1], pVertexB3[0], pVertexB3[1])
-		|| checkLineCollision(pVertexA2[0], pVertexA2[1], pVertexA3[0], pVertexA3[1],    pVertexB3[0], pVertexB3[1], pVertexB4[0], pVertexB4[1])
-		|| checkLineCollision(pVertexA2[0], pVertexA2[1], pVertexA3[0], pVertexA3[1],    pVertexB4[0], pVertexB4[1], pVertexB1[0], pVertexB1[1])
-
-		|| checkLineCollision(pVertexA3[0], pVertexA3[1], pVertexA4[0], pVertexA4[1],    pVertexB1[0], pVertexB1[1], pVertexB2[0], pVertexB2[1])
-		|| checkLineCollision(pVertexA3[0], pVertexA3[1], pVertexA4[0], pVertexA4[1],    pVertexB2[0], pVertexB2[1], pVertexB3[0], pVertexB3[1])
-		|| checkLineCollision(pVertexA3[0], pVertexA3[1], pVertexA4[0], pVertexA4[1],    pVertexB3[0], pVertexB3[1], pVertexB4[0], pVertexB4[1])
-		|| checkLineCollision(pVertexA3[0], pVertexA3[1], pVertexA4[0], pVertexA4[1],    pVertexB4[0], pVertexB4[1], pVertexB1[0], pVertexB1[1])
-
-		|| checkLineCollision(pVertexA4[0], pVertexA4[1], pVertexA1[0], pVertexA1[1],    pVertexB1[0], pVertexB1[1], pVertexB2[0], pVertexB2[1])
-		|| checkLineCollision(pVertexA4[0], pVertexA4[1], pVertexA1[0], pVertexA1[1],    pVertexB2[0], pVertexB2[1], pVertexB3[0], pVertexB3[1])
-		|| checkLineCollision(pVertexA4[0], pVertexA4[1], pVertexA1[0], pVertexA1[1],    pVertexB3[0], pVertexB3[1], pVertexB4[0], pVertexB4[1])
-		|| checkLineCollision(pVertexA4[0], pVertexA4[1], pVertexA1[0], pVertexA1[1],    pVertexB4[0], pVertexB4[1], pVertexB1[0], pVertexB1[1]);
-
-	}
-
 	public static boolean checkLineCollision(final double pX1, final double pY1, final double pX2, final double pY2, final double pX3, final double pY3, final double pX4, final double pY4) {
 		return ((relativeCCW(pX1, pY1, pX2, pY2, pX3, pY3) * relativeCCW(pX1, pY1, pX2, pY2, pX4, pY4) <= 0)
 				&& (relativeCCW(pX3, pY3, pX4, pY4, pX1, pY1) * relativeCCW(pX3, pY3, pX4, pY4, pX2, pY2) <= 0));
-	}
-
-
-	public static boolean checkBoxContains(final float[] pVertex1, final float[] pVertex2, final float[] pVertex3, final float[] pVertex4, final float pX, final float pY) {
-		final int resultEdgeA = relativeCCW(pVertex1[0], pVertex1[1], pVertex2[0], pVertex2[1], pX, pY);
-		if(resultEdgeA == 0) {
-			return true;
-		}
-		
-		final int resultEdgeB = relativeCCW(pVertex2[0], pVertex2[1], pVertex3[0], pVertex3[1], pX, pY);
-		if(resultEdgeB == 0) {
-			return true;
-		}
-		
-		final int resultEdgeC = relativeCCW(pVertex3[0], pVertex3[1], pVertex4[0], pVertex4[1], pX, pY);
-		if(resultEdgeC == 0) {
-			return true;
-		}
-		
-		final int resultEdgeD = relativeCCW(pVertex4[0], pVertex4[1], pVertex1[0], pVertex1[1], pX, pY);
-		if(resultEdgeD == 0) {
-			return true;
-		}
-		
-		/* Point is not on the edge, so check if the edge is on the same side(left or right) of all edges. */
-		final int resultEdgeSum = resultEdgeA + resultEdgeB + resultEdgeC + resultEdgeD;
-		return resultEdgeSum == 4 || resultEdgeSum == -4;
 	}
 
 	/**

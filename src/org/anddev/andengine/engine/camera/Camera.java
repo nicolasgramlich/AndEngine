@@ -2,7 +2,7 @@ package org.anddev.andengine.engine.camera;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.collision.CollisionChecker;
+import org.anddev.andengine.collision.BaseCollisionChecker;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.primitive.RectangularShape;
@@ -139,7 +139,7 @@ public class Camera implements IUpdateHandler {
 		final float otherRight = pRectangularShape.getWidthScaled() + otherLeft;
 		final float otherBottom = pRectangularShape.getHeightScaled() + otherTop;
 
-		return CollisionChecker.checkAxisAlignedBoxCollision(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY(), otherLeft, otherTop, otherRight, otherBottom);
+		return BaseCollisionChecker.checkAxisAlignedBoxCollision(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY(), otherLeft, otherTop, otherRight, otherBottom);
 	}
 
 	public void onApplyMatrix(final GL10 pGL) {

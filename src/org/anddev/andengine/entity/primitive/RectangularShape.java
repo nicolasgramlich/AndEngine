@@ -2,7 +2,8 @@ package org.anddev.andengine.entity.primitive;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.collision.CollisionChecker;
+import org.anddev.andengine.collision.BaseCollisionChecker;
+import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
@@ -132,43 +133,22 @@ public abstract class RectangularShape extends Shape {
 		final float top = this.mY;
 		final float right = this.mWidth + left;
 		final float bottom = this.mHeight + top;
-
-		final float[] vertex1 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, left, top, left + this.mRotationCenterX, top + this.mRotationCenterY, 		this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-		final float[] vertex2 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, right, top, left + this.mRotationCenterX, top + this.mRotationCenterY, 	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-		final float[] vertex3 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, right, bottom, left + this.mRotationCenterX, top + this.mRotationCenterY,	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-		final float[] vertex4 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, left, bottom, left + this.mRotationCenterX, top + this.mRotationCenterY,	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-
-		return CollisionChecker.checkBoxContains(vertex1, vertex2, vertex3, vertex4, pX, pY); 
+		// TODO !!!
+//		final float[] vertex1 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, left, top, left + this.mRotationCenterX, top + this.mRotationCenterY, 		this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
+//		final float[] vertex2 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, right, top, left + this.mRotationCenterX, top + this.mRotationCenterY, 	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
+//		final float[] vertex3 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, right, bottom, left + this.mRotationCenterX, top + this.mRotationCenterY,	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
+//		final float[] vertex4 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, left, bottom, left + this.mRotationCenterX, top + this.mRotationCenterY,	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
+//
+//		return BaseCollisionChecker.checkBoxContains(vertex1, vertex2, vertex3, vertex4, pX, pY);
+		return true;
 	}
 
 	@Override
 	public boolean collidesWith(final IShape pOtherShape) {
 		if(pOtherShape instanceof RectangularShape) {
 			final RectangularShape pOtherRectangularShape = (RectangularShape) pOtherShape;
-			
-			final float left = this.mX;
-			final float top = this.mY;
-			final float right = this.mWidth + left;
-			final float bottom = this.mHeight + top;
 
-			final float[] vertex1 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, left, top, left + this.mRotationCenterX, top + this.mRotationCenterY, 		this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-			final float[] vertex2 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, right, top, left + this.mRotationCenterX, top + this.mRotationCenterY, 	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-			final float[] vertex3 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, right, bottom, left + this.mRotationCenterX, top + this.mRotationCenterY,	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-			final float[] vertex4 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, left, bottom, left + this.mRotationCenterX, top + this.mRotationCenterY,	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-
-
-			final float otherLeft = pOtherRectangularShape.mX;
-			final float otherTop = pOtherRectangularShape.mY;
-			final float otherRight = pOtherRectangularShape.mWidth + otherLeft;
-			final float otherBottom = pOtherRectangularShape.mHeight + otherTop;
-			
-
-			final float[] otherVertex1 = MathUtils.rotateAndScaleAroundCenter(pOtherRectangularShape.mRotation, otherLeft, otherTop, otherLeft + pOtherRectangularShape.mRotationCenterX, otherTop + pOtherRectangularShape.mRotationCenterY,		pOtherRectangularShape.mScaleX, pOtherRectangularShape.mScaleY, otherLeft + pOtherRectangularShape.mScaleCenterX, otherTop + pOtherRectangularShape.mScaleCenterY, new float[2]);
-			final float[] otherVertex2 = MathUtils.rotateAndScaleAroundCenter(pOtherRectangularShape.mRotation, otherRight, otherTop, otherLeft + pOtherRectangularShape.mRotationCenterX, otherTop + pOtherRectangularShape.mRotationCenterY,		pOtherRectangularShape.mScaleX, pOtherRectangularShape.mScaleY, otherLeft + pOtherRectangularShape.mScaleCenterX, otherTop + pOtherRectangularShape.mScaleCenterY, new float[2]);
-			final float[] otherVertex3 = MathUtils.rotateAndScaleAroundCenter(pOtherRectangularShape.mRotation, otherRight, otherBottom, otherLeft + pOtherRectangularShape.mRotationCenterX, otherTop + pOtherRectangularShape.mRotationCenterY,	pOtherRectangularShape.mScaleX, pOtherRectangularShape.mScaleY, otherLeft + pOtherRectangularShape.mScaleCenterX, otherTop + pOtherRectangularShape.mScaleCenterY, new float[2]);
-			final float[] otherVertex4 = MathUtils.rotateAndScaleAroundCenter(pOtherRectangularShape.mRotation, otherLeft, otherBottom, otherLeft + pOtherRectangularShape.mRotationCenterX, otherTop + pOtherRectangularShape.mRotationCenterY,	pOtherRectangularShape.mScaleX, pOtherRectangularShape.mScaleY, otherLeft + pOtherRectangularShape.mScaleCenterX, otherTop + pOtherRectangularShape.mScaleCenterY, new float[2]);
-
-			return CollisionChecker.checkBoxCollision(vertex1, vertex2, vertex3, vertex4, otherVertex1, otherVertex2, otherVertex3, otherVertex4);
+			return RectangularShapeCollisionChecker.checkCollision(this, pOtherRectangularShape);
 		} else {
 			return false;
 		}

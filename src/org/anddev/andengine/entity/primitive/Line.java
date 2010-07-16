@@ -3,7 +3,7 @@ package org.anddev.andengine.entity.primitive;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.collision.CollisionChecker;
+import org.anddev.andengine.collision.BaseCollisionChecker;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -160,7 +160,7 @@ public class Line extends Shape {
 	public boolean collidesWith(final IShape pOtherShape) {
 		if(pOtherShape instanceof Line) {
 			final Line otherLine = (Line)pOtherShape;
-			return CollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
+			return BaseCollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
 		} else {
 			return false;
 		}

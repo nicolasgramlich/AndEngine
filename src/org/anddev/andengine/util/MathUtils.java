@@ -2,6 +2,8 @@ package org.anddev.andengine.util;
 
 import java.util.Random;
 
+import android.util.FloatMath;
+
 /**
  * @author Nicolas Gramlich
  * @since 20:42:15 - 17.12.2009
@@ -115,6 +117,25 @@ public class MathUtils {
 
 	public static final float arrayAverage(final float[] pValues) {
 		return arraySum(pValues) / pValues.length;
+	}
+
+	public static float[] rotateAroundCenter(final float pRotation, final float pX, final float pY, final float pRotationCenterX, final float pRotationCenterY, final float[] pReuse) {
+		final float RotationRad = MathUtils.degToRad(pRotation);
+		pReuse[0] = pRotationCenterX + (FloatMath.cos(RotationRad) * (pX - pRotationCenterX) - FloatMath.sin(RotationRad) * (pY - pRotationCenterY));
+		pReuse[1] = pRotationCenterY + (FloatMath.sin(RotationRad) * (pX - pRotationCenterX) + FloatMath.cos(RotationRad) * (pY - pRotationCenterY));
+		return pReuse;
+	}
+	
+	public static float[] scaleAroundCenter(final float pScaleX, final float pScaleY, final float pX, final float pY, final float pCenterCenterX, final float pCenterCenterY, final float[] pReuse) {
+		pReuse[0] = pCenterCenterX + (pX - pCenterCenterX) * pScaleX;
+		pReuse[1] = pCenterCenterY + (pY - pCenterCenterY) * pScaleY;
+		
+		return pReuse;
+	}
+	
+	public static float[] rotateAndScaleAroundCenter(final float pRotation, final float pX, final float pY, final float pRotationCenterX, final float pRotationCenterY, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY, final float[] pReuse) {
+		final float[] rotateAroundCenter = rotateAroundCenter(pRotation, pX, pY, pRotationCenterX, pRotationCenterY, pReuse);
+		return scaleAroundCenter(pScaleX, pScaleY, rotateAroundCenter[0], rotateAroundCenter[1], pScaleCenterX, pScaleCenterY, pReuse);
 	}
 
 	// ===========================================================

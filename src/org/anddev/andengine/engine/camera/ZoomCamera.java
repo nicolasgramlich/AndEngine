@@ -1,5 +1,6 @@
 package org.anddev.andengine.engine.camera;
 
+
 /**
  * @author Nicolas Gramlich
  * @since 15:48:11 - 24.06.2010

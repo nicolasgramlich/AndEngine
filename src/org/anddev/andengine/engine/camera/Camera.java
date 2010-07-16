@@ -155,8 +155,8 @@ public class Camera implements IUpdateHandler {
 	public void onApplyPositionIndependentMatrix(final GL10 pGL) {
 		GLHelper.setProjectionIdentityMatrix(pGL);
 
-		final float width = this.getWidth();
-		final float height = this.getHeight();
+		final float width = this.mMaxX - this.mMinX;
+		final float height = this.mMaxY - this.mMinY;
 
 		GLU.gluOrtho2D(pGL, 0, width, height, 0);
 

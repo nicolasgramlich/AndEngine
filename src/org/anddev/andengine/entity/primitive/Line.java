@@ -61,6 +61,40 @@ public class Line extends Shape {
 	// Getter & Setter
 	// ===========================================================
 
+	/** 
+	 * Instead use {@link Line#getX1()} or {@link Line#getX2()}.
+	 */
+	@Override
+	@Deprecated
+	public float getX() {
+		return super.getX();
+	}
+
+	/** 
+	 * Instead use {@link Line#getY1()} or {@link Line#getY2()}.
+	 */
+	@Override
+	@Deprecated
+	public float getY() {
+		return super.getY();
+	}
+	
+	public float getX1() {
+		return super.getX();
+	}
+	
+	public float getY1() {
+		return super.getY();
+	}
+	
+	public float getX2() {
+		return this.mX2;
+	}
+	
+	public float getY2() {
+		return this.mY2;
+	}
+
 	public float getLineWidth() {
 		return this.mLineWidth;
 	}
@@ -88,7 +122,6 @@ public class Line extends Shape {
 	public float getWidth() {
 		return (this.mX2 - this.mX);
 	}
-
 
 	/** 
 	 * Instead use {@link Line#setPosition(float, float, float, float)}.

@@ -1,5 +1,8 @@
 package org.anddev.andengine.entity.scene;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -270,11 +273,15 @@ public class Scene extends BaseEntity {
 				for(int i = 0; i < touchAreaCount; i++) {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent);
+						final float[] touchAreaLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
+						final float touchAreaLocalX = touchAreaLocalCoordinates[VERTEX_INDEX_X];
+						final float touchAreaLocalY = touchAreaLocalCoordinates[VERTEX_INDEX_Y];
+						
+						final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
 						if(handledSelf) {
 							return true;
 						} else if(this.mOnAreaTouchListener != null) {
-							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneTouchEvent);
+							return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, touchArea, touchAreaLocalX, touchAreaLocalY);
 						} else {
 							return false;
 						}
@@ -284,11 +291,15 @@ public class Scene extends BaseEntity {
 				for(int i = touchAreaCount - 1; i >= 0; i--) {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						final boolean handled = touchArea.onAreaTouched(pSceneTouchEvent);
+						final float[] pLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
+						final float touchAreaLocalX = pLocalCoordinates[VERTEX_INDEX_X];
+						final float touchAreaLocalY = pLocalCoordinates[VERTEX_INDEX_Y];
+						
+						final boolean handled = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
 						if(handled) {
 							return true;
 						} else if(this.mOnAreaTouchListener != null) {
-							return this.mOnAreaTouchListener.onAreaTouched(touchArea, pSceneTouchEvent);
+							return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, touchArea, touchAreaLocalX, touchAreaLocalY);
 						} else {
 							return false;
 						}
@@ -415,12 +426,15 @@ public class Scene extends BaseEntity {
 
 		public boolean contains(final float pX, final float pY);
 
+		public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
+		public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
+
 		/**
 		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.
 		 * @param pSceneTouchEvent
 		 * @return <code>true</code> if the event was handled (that means {@link IOnAreaTouchListener} of the {@link Scene} will not be fired!), otherwise <code>false</code>.
 		 */
-		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent);
+		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY);
 	}
 
 	public static interface IOnAreaTouchListener {
@@ -432,7 +446,7 @@ public class Scene extends BaseEntity {
 		// Methods
 		// ===========================================================
 
-		public boolean onAreaTouched(final ITouchArea pTouchArea, final TouchEvent pSceneTouchEvent);
+		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final ITouchArea pTouchArea, final float pTouchAreaLocalX, final float pTouchAreaLocalY);
 	}
 
 	public static interface IOnSceneTouchListener {

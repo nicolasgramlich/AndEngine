@@ -1,5 +1,11 @@
 package org.anddev.andengine.collision;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
+import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.util.MathUtils;
+
 
 /**
  * @author Nicolas Gramlich
@@ -9,6 +15,9 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final float[] VERTICES_SCENE_TO_LOCAL_TMP = new float[2];
+	private static final float[] VERTICES_LOCAL_TO_SCENE_TMP = new float[2];
 
 	// ===========================================================
 	// Fields
@@ -29,6 +38,32 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static float[] convertSceneToLocalCoordinates(final Shape pShape, final float pX, final float pY) {
+		VERTICES_SCENE_TO_LOCAL_TMP[VERTEX_INDEX_X] = pX;
+		VERTICES_SCENE_TO_LOCAL_TMP[VERTEX_INDEX_Y] = pY;
+		
+		final float left = pShape.getX();
+		final float top = pShape.getY();
+
+		MathUtils.revertRotateAndScaleAroundCenter(VERTICES_SCENE_TO_LOCAL_TMP, 
+				pShape.getRotation(), left + pShape.getRotationCenterX(), top + pShape.getRotationCenterY(), 
+				pShape.getScaleX(), pShape.getScaleY(), left + pShape.getScaleCenterX(), top + pShape.getScaleCenterY());
+		
+		return VERTICES_SCENE_TO_LOCAL_TMP;
+	}
+
+
+	public static float[] convertLocalToSceneCoordinates(final Shape pShape, final float pX, final float pY) {
+		VERTICES_LOCAL_TO_SCENE_TMP[VERTEX_INDEX_X] = pX;
+		VERTICES_LOCAL_TO_SCENE_TMP[VERTEX_INDEX_Y] = pY;
+
+		MathUtils.rotateAndScaleAroundCenter(VERTICES_LOCAL_TO_SCENE_TMP, 
+				pShape.getRotation(), pShape.getRotationCenterX(), pShape.getRotationCenterY(), 
+				pShape.getScaleX(), pShape.getScaleY(), pShape.getScaleCenterX(), pShape.getScaleCenterY());
+		
+		return VERTICES_LOCAL_TO_SCENE_TMP;
+	}
 	
 	public static boolean checkCollision(final int pVerticesALength, final int pVerticesBLength, final float[] pVerticesA, final float[] pVerticesB) {		
 		/* Check all the lines of A ... */
@@ -52,17 +87,17 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	private static boolean checkCollisionSub(final int pVertexIndexA1, final int pVertexIndexA2, final float[] pVerticesA, final float[] pVerticesB, final int pVerticesBLength) {
 		/* Check against all the lines of B. */
 		final float vertexA1X = pVerticesA[pVertexIndexA1];
-		final float vertexA1Y = pVerticesA[pVertexIndexA1 + 1];
+		final float vertexA1Y = pVerticesA[pVertexIndexA1 + VERTEX_INDEX_Y];
 		final float vertexA2X = pVerticesA[pVertexIndexA2];
-		final float vertexA2Y = pVerticesA[pVertexIndexA2 + 1];
+		final float vertexA2Y = pVerticesA[pVertexIndexA2 + VERTEX_INDEX_Y];
 		
 		for(int b = pVerticesBLength - 4; b >= 0; b -= 2) {
-			if(checkLineCollision(vertexA1X, vertexA1Y, vertexA2X, vertexA2Y, pVerticesB[b], pVerticesB[b + 1], pVerticesB[b + 2], pVerticesB[b + 3])){
+			if(LineCollisionChecker.checkLineCollision(vertexA1X, vertexA1Y, vertexA2X, vertexA2Y, pVerticesB[b], pVerticesB[b + VERTEX_INDEX_Y], pVerticesB[b + 2], pVerticesB[b + 2 + VERTEX_INDEX_Y])){
 				return true;
 			}
 		}
 		/* Also check the 'around the corner of the array' line of B. */
-		if(checkLineCollision(vertexA1X, vertexA1Y, vertexA2X, vertexA2Y, pVerticesB[pVerticesBLength - 2], pVerticesB[pVerticesBLength - 1], pVerticesB[0], pVerticesB[1])){
+		if(LineCollisionChecker.checkLineCollision(vertexA1X, vertexA1Y, vertexA2X, vertexA2Y, pVerticesB[pVerticesBLength - 2], pVerticesB[pVerticesBLength - 1], pVerticesB[VERTEX_INDEX_X], pVerticesB[VERTEX_INDEX_Y])){
 			return true;
 		}
 		return false;
@@ -82,7 +117,7 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 			}
 		}
 		/* Also check the 'around the corner of the array' line. */
-		final int edgeResult = relativeCCW(pVertices[pVerticesLength - 2], pVertices[pVerticesLength - 1], pVertices[0], pVertices[1], pX, pY);
+		final int edgeResult = relativeCCW(pVertices[pVerticesLength - 2], pVertices[pVerticesLength - 1], pVertices[VERTEX_INDEX_X], pVertices[VERTEX_INDEX_Y], pX, pY);
 		if(edgeResult == 0){
 			return true;
 		} else {

@@ -309,7 +309,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	@Override
 	public boolean onTouch(final View pView, final MotionEvent pSurfaceMotionEvent) {
 		if(this.mRunning) {
-			return this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent, this);
+			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent, this);
+			try {
+				/* As a human cannot interact a lot faster than 20x per second, we pause the UI-Thread for a little less.*/
+				Thread.sleep(33); 
+			} catch (InterruptedException e) {
+				Debug.e(e);
+			}
+			return handled;
 		} else {
 			return false;
 		}

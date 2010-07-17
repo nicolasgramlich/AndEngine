@@ -1,16 +1,10 @@
-package org.anddev.andengine.engine.camera;
-
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
-
-import org.anddev.andengine.entity.IDynamicEntity;
-import org.anddev.andengine.entity.IStaticEntity;
+package org.anddev.andengine.collision;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:57:13 - 27.03.2010
+ * @since 19:27:22 - 17.07.2010
  */
-public class ChaseCamera extends Camera {
+public class LineCollisionChecker extends ShapeCollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,42 +13,26 @@ public class ChaseCamera extends Camera {
 	// Fields
 	// ===========================================================
 
-	private IStaticEntity mChaseEntity;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final IStaticEntity pChaseEntity) {
-		super(pX, pY, pWidth, pHeight);
-		this.mChaseEntity = pChaseEntity;
-	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public void setChaseEntity(final IDynamicEntity pDynamicEntity) {
-		this.mChaseEntity = pDynamicEntity;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		super.onUpdate(pSecondsElapsed);
-
-		if(this.mChaseEntity != null) {
-			final float[] centerCoordinates = this.mChaseEntity.getSceneCenterCoordinates();
-			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
-		}
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static boolean checkLineCollision(final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
+		return ((relativeCCW(pX1, pY1, pX2, pY2, pX3, pY3) * relativeCCW(pX1, pY1, pX2, pY2, pX4, pY4) <= 0)
+				&& (relativeCCW(pX3, pY3, pX4, pY4, pX1, pY1) * relativeCCW(pX3, pY3, pX4, pY4, pX2, pY2) <= 0));
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -110,7 +110,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	// ===========================================================
 
 	@Override
-	public boolean onAreaTouched(final ITouchArea pTouchArea, final TouchEvent pSceneTouchEvent) {
+	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final ITouchArea pTouchArea, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		final IMenuItem menuItem = ((IMenuItem)pTouchArea);
 		
 		switch(pSceneTouchEvent.getAction()) {
@@ -126,7 +126,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 				if(this.mOnMenuItemClickListener != null) {
 					menuItem.onUnselected();
 					this.mSelectedMenuItem = null;
-					return this.mOnMenuItemClickListener.onMenuItemClicked(this, menuItem);
+					return this.mOnMenuItemClickListener.onMenuItemClicked(this, menuItem, pTouchAreaLocalX, pTouchAreaLocalY);
 				}
 				break;
 			case MotionEvent.ACTION_CANCEL:
@@ -196,6 +196,6 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 		// Methods
 		// ===========================================================
 
-		public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem pMenuItem);
+		public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem pMenuItem, final float pMenuItemLocalX, final float pMenuItemLocalY);
 	}
 }

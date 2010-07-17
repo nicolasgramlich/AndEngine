@@ -3,7 +3,8 @@ package org.anddev.andengine.entity.primitive;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.collision.BaseCollisionChecker;
+import org.anddev.andengine.collision.LineCollisionChecker;
+import org.anddev.andengine.collision.ShapeCollisionChecker;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -152,16 +153,6 @@ public class Line extends Shape {
 	// ===========================================================
 
 	@Override
-	public float getCenterX() {
-		return (this.mX + this.mX2) * 0.5f;
-	}
-
-	@Override
-	public float getCenterY() {
-		return (this.mY + this.mY2) * 0.5f;
-	}
-
-	@Override
 	protected void onInitDraw(final GL10 pGL) {
 		super.onInitDraw(pGL);
 		GLHelper.disableTextures(pGL);
@@ -185,15 +176,33 @@ public class Line extends Shape {
 	}
 
 	@Override
+	public float[] getSceneCenterCoordinates() {
+		return ShapeCollisionChecker.convertLocalToSceneCoordinates(this, (this.mX + this.mX2) * 0.5f, (this.mY + this.mY2) * 0.5f);
+	}
+
+	@Override
+	@Deprecated
 	public boolean contains(final float pX, final float pY) {
 		return false;
+	}
+	
+	@Override
+	@Deprecated
+	public float[] convertSceneToLocalCoordinates(float pX, float pY) {
+		return null;
+	}
+	
+	@Override
+	@Deprecated
+	public float[] convertLocalToSceneCoordinates(float pX, float pY) {
+		return null;
 	}
 
 	@Override
 	public boolean collidesWith(final IShape pOtherShape) {
 		if(pOtherShape instanceof Line) {
 			final Line otherLine = (Line)pOtherShape;
-			return BaseCollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
+			return LineCollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
 		} else {
 			return false;
 		}

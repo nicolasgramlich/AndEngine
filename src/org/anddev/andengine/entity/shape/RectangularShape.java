@@ -84,16 +84,6 @@ public abstract class RectangularShape extends Shape {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public float getCenterX() {
-		return this.mX + this.getWidth() * 0.5f;
-	}
-
-	@Override
-	public float getCenterY() {
-		return this.mY + this.getHeight() * 0.5f;
-	}
-
 	public void setBaseSize() {
 		if(this.mWidth != this.mBaseWidth && this.mHeight != this.mBaseHeight) {
 			this.mWidth = this.mBaseWidth;
@@ -126,6 +116,27 @@ public abstract class RectangularShape extends Shape {
 	@Override
 	public boolean contains(final float pX, final float pY) {
 		return RectangularShapeCollisionChecker.checkContains(this, pX, pY);
+	}
+
+	@Override
+	public float[] getSceneCenterCoordinates() {
+		return convertLocalToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f);
+	}
+	
+	@Override
+	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
+		final float[] sceneCoordinates = RectangularShapeCollisionChecker.convertLocalToSceneCoordinates(this, pX, pY);
+		sceneCoordinates[0] += this.mX;
+		sceneCoordinates[1] += this.mY;		
+		return sceneCoordinates;
+	}
+	
+	@Override
+	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
+		final float[] localCoordinates = RectangularShapeCollisionChecker.convertSceneToLocalCoordinates(this, pX, pY);
+		localCoordinates[0] -= this.mX;
+		localCoordinates[1] -= this.mY;
+		return localCoordinates;
 	}
 
 	@Override

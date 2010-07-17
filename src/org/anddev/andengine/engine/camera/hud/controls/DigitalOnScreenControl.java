@@ -34,10 +34,26 @@ public class DigitalOnScreenControl extends BaseOnScreenControl {
 
 	@Override
 	protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {
+		if(pRelativeX == 0 && pRelativeY == 0) {
+			super.onUpdateControlKnob(0, 0);
+		}
+		
 		if(Math.abs(pRelativeX) > Math.abs(pRelativeY)) {
-			super.onUpdateControlKnob(Math.signum(pRelativeX), 0);
+			if(pRelativeX > 0) {
+				super.onUpdateControlKnob(0.5f, 0);
+			} else if(pRelativeX < 0) {
+				super.onUpdateControlKnob(-0.5f, 0);
+			} else if(pRelativeX == 0) {
+				super.onUpdateControlKnob(0, 0);
+			} 
 		} else {
-			super.onUpdateControlKnob(0, Math.signum(pRelativeY));
+			if(pRelativeY > 0) {
+				super.onUpdateControlKnob(0, 0.5f);
+			} else if(pRelativeY < 0) {
+				super.onUpdateControlKnob(0, -0.5f);
+			} else if(pRelativeY == 0) {
+				super.onUpdateControlKnob(0, 0);
+			} 
 		}
 	}
 

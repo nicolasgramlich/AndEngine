@@ -1,12 +1,11 @@
 package org.anddev.andengine.entity;
 
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 
 /**
  * @author Nicolas Gramlich
  * @since 13:42:48 - 07.07.2010
  */
-public interface IStaticEntity extends IEntity, ITouchArea {
+public interface IStaticEntity extends IEntity {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -21,8 +20,7 @@ public interface IStaticEntity extends IEntity, ITouchArea {
 	public abstract float getBaseX();
 	public abstract float getBaseY();
 
-	public abstract float getCenterX();
-	public abstract float getCenterY();
+	public abstract float[] getSceneCenterCoordinates();
 
 	public abstract float getOffsetX();
 	public abstract float getOffsetY();

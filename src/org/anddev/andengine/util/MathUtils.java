@@ -136,7 +136,7 @@ public class MathUtils {
 	}
 	
 	public static float[] scaleAroundCenter(final float[] pVertices, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
-		if(pScaleX != 0 || pScaleY != 0) {
+		if(pScaleX != 1 || pScaleY != 1) {
 			for(int i = pVertices.length - 2; i >= 0; i -= 2) {
 				pVertices[i] = pScaleCenterX + (pVertices[i] - pScaleCenterX) * pScaleX;
 				pVertices[i + 1] = pScaleCenterY + (pVertices[i + 1] - pScaleCenterY) * pScaleY;
@@ -146,17 +146,22 @@ public class MathUtils {
 		return pVertices;
 	}
 	
-	public static float[] scaleAroundCenterReverse(final float[] pVertices, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
-		return scaleAroundCenter(pVertices, 1 / pScaleX, 1 / pScaleY, pScaleCenterX, pScaleCenterY);
-	}
-	
-	public static float[] rotateAroundCenterReverse(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
-		return rotateAroundCenterReverse(pVertices, -pRotation, pRotationCenterX, pRotationCenterY);
-	}
-	
 	public static float[] rotateAndScaleAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
 		rotateAroundCenter(pVertices, pRotation, pRotationCenterX, pRotationCenterY);
 		return scaleAroundCenter(pVertices, pScaleX, pScaleY, pScaleCenterX, pScaleCenterY);
+	}
+	
+	public static float[] revertScaleAroundCenter(final float[] pVertices, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
+		return scaleAroundCenter(pVertices, 1 / pScaleX, 1 / pScaleY, pScaleCenterX, pScaleCenterY);
+	}
+	
+	public static float[] revertRotateAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
+		return rotateAroundCenter(pVertices, -pRotation, pRotationCenterX, pRotationCenterY);
+	}
+	
+	public static float[] revertRotateAndScaleAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
+		revertScaleAroundCenter(pVertices, pScaleX, pScaleY, pScaleCenterX, pScaleCenterY);
+		return revertRotateAroundCenter(pVertices, pRotation, pRotationCenterX, pRotationCenterY);
 	}
 
 	// ===========================================================

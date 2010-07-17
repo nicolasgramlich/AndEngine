@@ -7,6 +7,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.BaseDynamicEntity;
 import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
@@ -153,6 +154,11 @@ public abstract class Shape extends BaseDynamicEntity implements IShape {
 
 		this.drawVertices(pGL);
 		pGL.glPopMatrix();
+	}
+	
+	@Override
+	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+		return false;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity;
 
-import org.anddev.andengine.input.touch.TouchEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -95,11 +94,6 @@ public abstract class BaseStaticEntity extends BaseEntity implements IStaticEnti
 
 	protected void onPositionChanged(){
 		
-	}
-	
-	@Override
-	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent) {
-		return false;
 	}
 
 	@Override

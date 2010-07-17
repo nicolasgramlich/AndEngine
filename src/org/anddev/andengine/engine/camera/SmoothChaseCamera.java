@@ -1,5 +1,8 @@
 package org.anddev.andengine.engine.camera;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
 import org.anddev.andengine.entity.IDynamicEntity;
 import org.anddev.andengine.entity.IStaticEntity;
 
@@ -44,7 +47,8 @@ public class SmoothChaseCamera extends SmoothCamera {
 		super.onUpdate(pSecondsElapsed);
 
 		if(this.mChaseEntity != null) {
-			this.setCenter(this.mChaseEntity.getCenterX(), this.mChaseEntity.getCenterY());
+			final float[] centerCoordinates = this.mChaseEntity.getSceneCenterCoordinates();
+			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
 		}
 	}
 

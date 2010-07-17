@@ -2,12 +2,10 @@ package org.anddev.andengine.entity.primitive;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.collision.BaseCollisionChecker;
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
-import org.anddev.andengine.util.MathUtils;
 
 /**
  * @author Nicolas Gramlich
@@ -129,18 +127,7 @@ public abstract class RectangularShape extends Shape {
 
 	@Override
 	public boolean contains(final float pX, final float pY) {
-		final float left = this.mX;
-		final float top = this.mY;
-		final float right = this.mWidth + left;
-		final float bottom = this.mHeight + top;
-		// TODO !!!
-//		final float[] vertex1 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, left, top, left + this.mRotationCenterX, top + this.mRotationCenterY, 		this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-//		final float[] vertex2 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, right, top, left + this.mRotationCenterX, top + this.mRotationCenterY, 	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-//		final float[] vertex3 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, right, bottom, left + this.mRotationCenterX, top + this.mRotationCenterY,	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-//		final float[] vertex4 = MathUtils.rotateAndScaleAroundCenter(this.mRotation, left, bottom, left + this.mRotationCenterX, top + this.mRotationCenterY,	this.mScaleX, this.mScaleY, left + this.mScaleCenterX, top + this.mScaleCenterY, new float[2]);
-//
-//		return BaseCollisionChecker.checkBoxContains(vertex1, vertex2, vertex3, vertex4, pX, pY);
-		return true;
+		return RectangularShapeCollisionChecker.checkContains(this, pX, pY);
 	}
 
 	@Override

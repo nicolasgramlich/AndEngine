@@ -39,7 +39,7 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 			}
 		}
 		/* Also check the 'around the corner of the array' line of A against all lines in B. */
-		if(checkCollisionSub(0, pVerticesALength - 2, pVerticesA, pVerticesB, pVerticesBLength)){
+		if(checkCollisionSub(pVerticesALength - 2, 0, pVerticesA, pVerticesB, pVerticesBLength)){
 			return true;
 		} else {
 			return false;
@@ -70,39 +70,28 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	
 	
 
-	public static boolean checkBoxContains(final float[] pVertex1, final float[] pVertex2, final float[] pVertex3, final float[] pVertex4, final float pX, final float pY) {
-		final float x1 = pVertex1[0];
-		final float y1 = pVertex1[1];
-		final float x2 = pVertex2[0];
-		final float y2 = pVertex2[1];
-		final float x3 = pVertex3[0];
-		final float y3 = pVertex3[1];
-		final float x4 = pVertex4[0];
-		final float x5 = pVertex4[1];
-		
-		final int resultEdgeA = relativeCCW(x1, y1, x2, y2, pX, pY);
-		if(resultEdgeA == 0) {
+	public static boolean checkContains(final float[] pVertices, final int pVerticesLength, final float pX, final float pY) {
+		int edgeResultSum = 0;
+
+		for(int i = pVerticesLength - 4; i >= 0; i -= 2) {
+			final int edgeResult = relativeCCW(pVertices[i], pVertices[i + 1], pVertices[i + 2], pVertices[i + 3], pX, pY);
+			if(edgeResult == 0) {
+				return true;
+			} else {
+				edgeResultSum += edgeResult;
+			}
+		}
+		/* Also check the 'around the corner of the array' line. */
+		final int edgeResult = relativeCCW(pVertices[pVerticesLength - 2], pVertices[pVerticesLength - 1], pVertices[0], pVertices[1], pX, pY);
+		if(edgeResult == 0){
 			return true;
+		} else {
+			edgeResultSum += edgeResult;
 		}
 		
-		final int resultEdgeB = relativeCCW(x2, y2, x3, y3, pX, pY);
-		if(resultEdgeB == 0) {
-			return true;
-		}
-		
-		final int resultEdgeC = relativeCCW(x3, y3, x4, x5, pX, pY);
-		if(resultEdgeC == 0) {
-			return true;
-		}
-		
-		final int resultEdgeD = relativeCCW(x4, x5, x1, y1, pX, pY);
-		if(resultEdgeD == 0) {
-			return true;
-		}
-		
+		final int vertexCount = pVerticesLength / 2;
 		/* Point is not on the edge, so check if the edge is on the same side(left or right) of all edges. */
-		final int resultEdgeSum = resultEdgeA + resultEdgeB + resultEdgeC + resultEdgeD;
-		return resultEdgeSum == 4 || resultEdgeSum == -4;
+		return edgeResultSum == vertexCount || edgeResultSum == -vertexCount ;
 	}
 
 	// ===========================================================

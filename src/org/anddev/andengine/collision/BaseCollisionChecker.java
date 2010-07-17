@@ -79,6 +79,7 @@ public class BaseCollisionChecker {
 	 *         two specified coordinates.
 	 */
 	public static int relativeCCW(final double pX1, final double pY1, double pX2, double pY2, double pPX, double pPY) {
+		// TODO Float instead of double!!! (All test will still run?)
 		pX2 -= pX1;
 		pY2 -= pY1;
 		pPX -= pX1;

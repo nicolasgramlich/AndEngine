@@ -109,17 +109,85 @@ public class Scene extends BaseEntity {
 		this.mBackgroundEnabled  = pEnabled;
 	}
 
+	/**
+	 * Sets the background color for the scene using the arithmetic scheme (0.0f - 1.0f RGB triplet).
+	 * @param pRed The red color value. Should be between 0.0 and 1.0, inclusive.
+	 * @param pGreen The green color value. Should be between 0.0 and 1.0, inclusive.
+	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
+	 */
 	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
+		if (pRed < 0.0f || pRed > 1.0f)
+			throw new IllegalArgumentException("pRed must be a number between 0.0 and 1.0, inclusive.");
+		if (pGreen < 0.0f || pGreen > 1.0f)
+			throw new IllegalArgumentException("pGreen must be a number between 0.0 and 1.0, inclusive.");
+		if (pBlue < 0.0f || pBlue > 1.0f)
+			throw new IllegalArgumentException("pBlue must be a number between 0.0 and 1.0, inclusive.");
+		
 		this.mRed = pRed;
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 	}
+	
+	/**
+	 * Sets the background color for the scene using the digital 8-bit per channel scheme (0 - 255 RGB triplet).
+	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
+	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
+	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
+	 */
+	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue) {
+		if (pRed < 0 || pRed > 255)
+			throw new IllegalArgumentException("pRed must be a number between 0 and 255, inclusive.");
+		if (pGreen < 0 || pGreen > 255)
+			throw new IllegalArgumentException("pGreen must be a number between 0 and 255, inclusive.");
+		if (pBlue < 0 || pBlue > 255)
+			throw new IllegalArgumentException("pBlue must be a number between 0 and 255, inclusive.");
+		this.mRed = pRed/255f;
+		this.mGreen = pGreen/255f;
+		this.mBlue = pBlue/255f;
+	}
 
+	/**
+	 * Sets the background color for the scene using the arithmetic scheme (0.0f - 1.0f RGB quadruplet).
+	 * @param pRed The red color value. Should be between 0.0 and 1.0, inclusive.
+	 * @param pGreen The green color value. Should be between 0.0 and 1.0, inclusive.
+	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
+	 * @param pAlpha The alpha color value. Should be between 0.0 and 1.0, inclusive.
+	 */
 	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		if (pRed < 0.0f || pRed > 1.0f)
+			throw new IllegalArgumentException("pRed must be a number between 0.0 and 1.0, inclusive.");
+		if (pGreen < 0.0f || pGreen > 1.0f)
+			throw new IllegalArgumentException("pGreen must be a number between 0.0 and 1.0, inclusive.");
+		if (pBlue < 0.0f || pBlue > 1.0f)
+			throw new IllegalArgumentException("pBlue must be a number between 0.0 and 1.0, inclusive.");
+		if (pAlpha < 0.0f || pAlpha > 1.0f)
+			throw new IllegalArgumentException("pAlpha must be a number between 0.0 and 1.0, inclusive.");
+		
 		this.mRed = pRed;
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 		this.mAlpha = pAlpha;
+	}
+	
+	/**
+	 * Sets the background color for the scene using the digital 8-bit per channel scheme (0 - 255 RGB quadruplet).
+	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
+	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
+	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
+	 */
+	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue, final int pAlpha) {
+		if (pRed < 0 || pRed > 255)
+			throw new IllegalArgumentException("pRed must be a number between 0 and 255, inclusive.");
+		if (pGreen < 0 || pGreen > 255)
+			throw new IllegalArgumentException("pGreen must be a number between 0 and 255, inclusive.");
+		if (pBlue < 0 || pBlue > 255)
+			throw new IllegalArgumentException("pBlue must be a number between 0 and 255, inclusive.");
+		if (pAlpha < 0 || pAlpha > 255)
+			throw new IllegalArgumentException("pAlpha must be a number between 0 and 255, inclusive.");
+		this.mRed = pRed/255f;
+		this.mGreen = pGreen/255f;
+		this.mBlue = pBlue/255f;
+		this.mAlpha = pAlpha/255f;
 	}
 
 	public void clearTouchAreas() {

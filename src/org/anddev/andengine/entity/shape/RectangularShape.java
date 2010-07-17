@@ -1,10 +1,8 @@
-package org.anddev.andengine.entity.primitive;
+package org.anddev.andengine.entity.shape;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
-import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**

@@ -118,23 +118,6 @@ public class MathUtils {
 	public static final float arrayAverage(final float[] pValues) {
 		return arraySum(pValues) / pValues.length;
 	}
-
-	@Deprecated
-	public static float[] rotateAroundCenter(final float pX, final float pY, final float pRotation, final float pRotationCenterX, final float pRotationCenterY, final float[] pReuse) {
-		final float RotationRad = MathUtils.degToRad(pRotation);
-		pReuse[0] = pRotationCenterX + (FloatMath.cos(RotationRad) * (pX - pRotationCenterX) - FloatMath.sin(RotationRad) * (pY - pRotationCenterY));
-		pReuse[1] = pRotationCenterY + (FloatMath.sin(RotationRad) * (pX - pRotationCenterX) + FloatMath.cos(RotationRad) * (pY - pRotationCenterY));
-		return pReuse;
-	}
-
-	@Deprecated
-	public static float[] scaleAroundCenter(final float pX, final float pY, final float pScaleX, final float pScaleY, final float pCenterCenterX, final float pCenterCenterY, final float[] pReuse) {
-		pReuse[0] = pCenterCenterX + (pX - pCenterCenterX) * pScaleX;
-		pReuse[1] = pCenterCenterY + (pY - pCenterCenterY) * pScaleY;
-		
-		return pReuse;
-	}
-	
 	
 	public static float[] rotateAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
 		if(pRotation != 0) {
@@ -161,6 +144,14 @@ public class MathUtils {
 		}
 		
 		return pVertices;
+	}
+	
+	public static float[] scaleAroundCenterReverse(final float[] pVertices, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
+		return scaleAroundCenter(pVertices, 1 / pScaleX, 1 / pScaleY, pScaleCenterX, pScaleCenterY);
+	}
+	
+	public static float[] rotateAroundCenterReverse(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
+		return rotateAroundCenterReverse(pVertices, -pRotation, pRotationCenterX, pRotationCenterY);
 	}
 	
 	public static float[] rotateAndScaleAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {

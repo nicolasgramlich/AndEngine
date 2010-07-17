@@ -3,7 +3,7 @@ package org.anddev.andengine.entity.text;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.entity.primitive.RectangularShape;
+import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.Font;

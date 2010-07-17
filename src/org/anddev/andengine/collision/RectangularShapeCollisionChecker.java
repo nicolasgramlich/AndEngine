@@ -1,6 +1,6 @@
 package org.anddev.andengine.collision;
 
-import org.anddev.andengine.entity.primitive.RectangularShape;
+import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.util.MathUtils;
 
 /**

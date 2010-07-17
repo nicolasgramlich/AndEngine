@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.primitive;
 
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**

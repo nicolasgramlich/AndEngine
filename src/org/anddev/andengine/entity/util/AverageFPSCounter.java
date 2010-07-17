@@ -1,33 +1,35 @@
 package org.anddev.andengine.entity.util;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.constants.TimeConstants;
+
 
 /**
  * @author Nicolas Gramlich
  * @since 19:52:31 - 09.03.2010
  */
-public class FrameLengthLogger implements IUpdateHandler, TimeConstants {
+public abstract class AverageFPSCounter extends FPSCounter implements TimeConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final float AVERAGE_DURATION_DEFAULT = 5;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private int mFramesLeft;
-
-	private final float[] mFrameLengths;
+	protected final float mAverageDuration;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public FrameLengthLogger(final int pFrameCount) {
-		this.mFramesLeft = pFrameCount;
-		this.mFrameLengths = new float[pFrameCount];
+
+	public AverageFPSCounter() {
+		this(AVERAGE_DURATION_DEFAULT);
+	}
+
+	public AverageFPSCounter(final float pAverageDuration) {
+		this.mAverageDuration = pAverageDuration;
 	}
 
 	// ===========================================================
@@ -38,27 +40,20 @@ public class FrameLengthLogger implements IUpdateHandler, TimeConstants {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onHandleAverageDurationElapsed(final float pFPS);
+
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		this.mFramesLeft--;
+		super.onUpdate(pSecondsElapsed);
 		
-		final float[] frameLengths = this.mFrameLengths;
-		if(this.mFramesLeft >= 0) {
-			frameLengths[this.mFramesLeft] = pSecondsElapsed;
-		} else {
-			for(int i = frameLengths.length - 1; i >= 0; i--) {
-				Debug.d("Elapsed: " + frameLengths[i]);
-			}
-			
-			throw new RuntimeException();
+		if(this.mSecondsElapsed > this.mAverageDuration){
+			this.onHandleAverageDurationElapsed(this.getFPS());
+
+			this.mSecondsElapsed -= this.mAverageDuration;
+			this.mFrames = 0;
 		}
 	}
 	
-	@Override
-	public void reset() {
-		
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

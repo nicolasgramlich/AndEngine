@@ -1,5 +1,7 @@
 package org.anddev.andengine.engine.camera;
 
+import org.anddev.andengine.input.touch.TouchEvent;
+
 
 /**
  * @author Nicolas Gramlich
@@ -89,6 +91,20 @@ public class ZoomCamera extends Camera {
 	@Override
 	public float getHeight() {
 		return super.getHeight() / this.mZoomFactor;
+	}
+
+	@Override
+	public void convertSceneToHUDTouchEvent(final TouchEvent pSceneTouchEvent) {
+		final float x = (pSceneTouchEvent.getX() - this.getMinX()) * this.getZoomFactor();
+		final float y = (pSceneTouchEvent.getY() - this.getMinY()) * this.getZoomFactor();
+		pSceneTouchEvent.set(x, y);
+	}
+
+	@Override
+	public void convertHUDToSceneTouchEvent(final TouchEvent pHUDTouchEvent) {
+		final float x = pHUDTouchEvent.getX() / this.getZoomFactor() + this.getMinX();
+		final float y = pHUDTouchEvent.getY() / this.getZoomFactor() + this.getMinY();
+		pHUDTouchEvent.set(x, y);
 	}
 
 	// ===========================================================

@@ -48,6 +48,8 @@ public class FPSLogger extends AverageFPSCounter {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
+		super.onUpdate(pSecondsElapsed);
+		
 		this.mShortestFrame = Math.min(this.mShortestFrame, pSecondsElapsed);
 		this.mLongestFrame = Math.max(this.mLongestFrame, pSecondsElapsed);
 	}

@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.scene;
 
-import static org.anddev.andengine.util.constants.ColorConstants.COLOR_FACTOR_INT_TO_FLOAT;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
@@ -15,6 +14,8 @@ import org.anddev.andengine.entity.BaseEntity;
 import org.anddev.andengine.entity.layer.DynamicCapacityLayer;
 import org.anddev.andengine.entity.layer.FixedCapacityLayer;
 import org.anddev.andengine.entity.layer.ILayer;
+import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 /**
@@ -43,11 +44,6 @@ public class Scene extends BaseEntity {
 
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
-	private float mRed = 0.0f;
-	private float mGreen = 0.0f;
-	private float mBlue = 0.0f;
-	private float mAlpha = 1.0f;
-
 	private final RunnableHandler mRunnableHandler = new RunnableHandler();
 	
 	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
@@ -57,6 +53,7 @@ public class Scene extends BaseEntity {
 
 	private IOnAreaTouchListener mOnAreaTouchListener;
 
+	private IBackground mBackground = new ColorBackground();
 	private boolean mBackgroundEnabled = true;
 
 	private boolean mOnAreaTouchTraversalBackToFront = true;
@@ -85,6 +82,14 @@ public class Scene extends BaseEntity {
 	public float getSecondsElapsedTotal() {
 		return this.mSecondsElapsedTotal;
 	}
+	
+	public IBackground getBackground() {
+		return this.mBackground;
+	}
+	
+	public void setBackground(final IBackground pBackground) {
+		this.mBackground = pBackground;
+	}
 
 	public ILayer getLayer(final int pLayerIndex) throws ArrayIndexOutOfBoundsException {
 		return this.mLayers[pLayerIndex];
@@ -108,63 +113,6 @@ public class Scene extends BaseEntity {
 
 	public void setBackgroundEnabled(final boolean pEnabled) {
 		this.mBackgroundEnabled  = pEnabled;
-	}
-
-	/**
-	 * Sets the background color for the scene using the arithmetic scheme (0.0f - 1.0f RGB triple).
-	 * @param pRed The red color value. Should be between 0.0 and 1.0, inclusive.
-	 * @param pGreen The green color value. Should be between 0.0 and 1.0, inclusive.
-	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
-	 */
-	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) throws IllegalArgumentException {
-		if (pRed < 0.0f || pRed > 1.0f) {
-			throw new IllegalArgumentException("pRed must be a number between 0.0 and 1.0, inclusive.");
-		}
-		if (pGreen < 0.0f || pGreen > 1.0f) {
-			throw new IllegalArgumentException("pGreen must be a number between 0.0 and 1.0, inclusive.");
-		}
-		if (pBlue < 0.0f || pBlue > 1.0f) {
-			throw new IllegalArgumentException("pBlue must be a number between 0.0 and 1.0, inclusive.");
-		}
-		
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
-	}
-
-	/**
-	 * Sets the background color for the scene using the arithmetic scheme (0.0f - 1.0f RGB quadruple).
-	 * @param pRed The red color value. Should be between 0.0 and 1.0, inclusive.
-	 * @param pGreen The green color value. Should be between 0.0 and 1.0, inclusive.
-	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
-	 * @param pAlpha The alpha color value. Should be between 0.0 and 1.0, inclusive.
-	 */
-	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) throws IllegalArgumentException {
-		if (pAlpha < 0.0f || pAlpha > 1.0f) {
-			throw new IllegalArgumentException("pAlpha must be a number between 0.0 and 1.0, inclusive.");
-		}
-		this.setBackgroundColor(pRed, pGreen, pBlue);
-		this.mAlpha = pAlpha;
-	}
-	
-	/**
-	 * Sets the background color for the scene using the digital 8-bit per channel scheme (0 - 255 RGB triple).
-	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
-	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
-	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
-	 */
-	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue) throws IllegalArgumentException {
-		this.setBackgroundColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT);
-	}
-	
-	/**
-	 * Sets the background color for the scene using the digital 8-bit per channel scheme (0 - 255 RGB quadruple).
-	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
-	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
-	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
-	 */
-	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue, final int pAlpha) throws IllegalArgumentException {
-		this.setBackgroundColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT, pAlpha / COLOR_FACTOR_INT_TO_FLOAT);
 	}
 
 	public void clearTouchAreas() {
@@ -423,8 +371,7 @@ public class Scene extends BaseEntity {
 
 	protected void drawBackground(final GL10 pGL) {
 		if(this.mBackgroundEnabled) {
-			pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
-			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			this.mBackground.onDraw(pGL);
 		}
 	}
 

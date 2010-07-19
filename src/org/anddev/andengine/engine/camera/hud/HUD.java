@@ -1,7 +1,5 @@
 package org.anddev.andengine.engine.camera.hud;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.scene.CameraScene;
 import org.anddev.andengine.entity.scene.Scene;
@@ -41,18 +39,6 @@ public class HUD extends CameraScene {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Deprecated
-	@Override
-	protected void drawBackground(final GL10 pGL) {
-		/* HUD has no background. */
-	}
-
-	@Deprecated
-	@Override
-	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
-		/* Nothing. */
-	}
 
 	// ===========================================================
 	// Methods

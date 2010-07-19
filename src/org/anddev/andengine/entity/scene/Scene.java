@@ -70,7 +70,7 @@ public class Scene extends BaseEntity {
 		this.createLayers();
 	}
 
-	public Scene(final int pLayerCount, final boolean pFixedCapacityLayers, final int ... pLayerCapacities) {
+	public Scene(final int pLayerCount, final boolean pFixedCapacityLayers, final int ... pLayerCapacities) throws IllegalArgumentException {
 		if(pLayerCount != pLayerCapacities.length) {
 			throw new IllegalArgumentException("pLayerCount must be the same as the length of pLayerCapacities.");
 		}
@@ -116,7 +116,7 @@ public class Scene extends BaseEntity {
 	 * @param pGreen The green color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
 	 */
-	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
+	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) throws IllegalArgumentException {
 		if (pRed < 0.0f || pRed > 1.0f) {
 			throw new IllegalArgumentException("pRed must be a number between 0.0 and 1.0, inclusive.");
 		}
@@ -139,7 +139,7 @@ public class Scene extends BaseEntity {
 	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pAlpha The alpha color value. Should be between 0.0 and 1.0, inclusive.
 	 */
-	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) throws IllegalArgumentException {
 		if (pAlpha < 0.0f || pAlpha > 1.0f) {
 			throw new IllegalArgumentException("pAlpha must be a number between 0.0 and 1.0, inclusive.");
 		}
@@ -153,7 +153,7 @@ public class Scene extends BaseEntity {
 	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
 	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
 	 */
-	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue) {
+	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue) throws IllegalArgumentException {
 		this.setBackgroundColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT);
 	}
 	
@@ -163,7 +163,7 @@ public class Scene extends BaseEntity {
 	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
 	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
 	 */
-	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue, final int pAlpha) {
+	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue, final int pAlpha) throws IllegalArgumentException {
 		this.setBackgroundColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT, pAlpha / COLOR_FACTOR_INT_TO_FLOAT);
 	}
 

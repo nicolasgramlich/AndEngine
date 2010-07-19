@@ -36,7 +36,7 @@ public class PathModifier extends BaseShapeModifier {
 		this(pDuration, pPath, pShapeModiferListener, null);
 	}
 
-	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IPathModifierListener pPathModifierListener) {
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IPathModifierListener pPathModifierListener) throws IllegalArgumentException {
 		final int pathSize = pPath.getSize();
 
 		if (pathSize < 2) {

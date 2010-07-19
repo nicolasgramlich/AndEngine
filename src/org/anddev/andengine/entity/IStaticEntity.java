@@ -21,11 +21,4 @@ public interface IStaticEntity extends IEntity {
 	public abstract float getBaseY();
 
 	public abstract float[] getSceneCenterCoordinates();
-
-	public abstract float getOffsetX();
-	public abstract float getOffsetY();
-
-	public abstract void setOffsetX(final float pOffsetX);
-	public abstract void setOffsetY(final float pOffsetY);
-	public abstract void setOffset(final float pOffsetX, final float pOffsetY);
 }

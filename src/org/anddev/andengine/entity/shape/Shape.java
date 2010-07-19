@@ -220,8 +220,6 @@ public abstract class Shape extends BaseDynamicEntity implements IShape {
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {
-		this.applyOffset(pGL);
-
 		this.applyTranslation(pGL);
 
 		this.applyRotation(pGL);
@@ -229,16 +227,11 @@ public abstract class Shape extends BaseDynamicEntity implements IShape {
 		this.applyScale(pGL);
 	}
 
-	protected void applyOffset(final GL10 pGL) {
-		pGL.glTranslatef(this.mOffsetX, this.mOffsetY, 0);
-	}
-
 	protected void applyTranslation(final GL10 pGL) {
 		pGL.glTranslatef(this.mX, this.mY, 0);
 	}
 
 	protected void applyRotation(final GL10 pGL) {
-		// TODO Offset needs to be taken into account.
 		final float rotation = this.mRotation;
 		
 		if(rotation != 0) {

@@ -20,9 +20,6 @@ public abstract class BaseStaticEntity extends BaseEntity implements IStaticEnti
 	protected float mX;
 	protected float mY;
 
-	protected float mOffsetX = 0;
-	protected float mOffsetY = 0;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -59,49 +56,12 @@ public abstract class BaseStaticEntity extends BaseEntity implements IStaticEnti
 		return this.mBaseY;
 	}
 
-	@Override
-	public float getOffsetX() {
-		return this.mOffsetX;
-	}
-
-	@Override
-	public float getOffsetY() {
-		return this.mOffsetY;
-	}
-
-	@Override
-	public void setOffsetX(final float pOffsetX) {
-		this.mOffsetX = pOffsetX;
-		this.onPositionChanged();
-	}
-
-	@Override
-	public void setOffsetY(final float pOffsetY) {
-		this.mOffsetY = pOffsetY;
-		this.onPositionChanged();
-	}
-
-	@Override
-	public void setOffset(final float pOffsetX, final float pOffsetY) {
-		this.mOffsetX = pOffsetX;
-		this.mOffsetY = pOffsetY;
-		this.onPositionChanged();
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	protected void onPositionChanged(){
 		
-	}
-
-	@Override
-	public void reset() {
-		super.reset();
-
-		this.mOffsetX = 0;
-		this.mOffsetY = 0;
 	}
 
 	// ===========================================================

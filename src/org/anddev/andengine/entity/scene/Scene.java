@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.scene;
 
+import static org.anddev.andengine.util.constants.ColorConstants.COLOR_FACTOR_INT_TO_FLOAT;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
@@ -110,88 +111,72 @@ public class Scene extends BaseEntity {
 	}
 
 	/**
-	 * Sets the background color for the scene using the arithmetic scheme (0.0f - 1.0f RGB triplet).
+	 * Sets the background color for the scene using the arithmetic scheme (0.0f - 1.0f RGB triple).
 	 * @param pRed The red color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pGreen The green color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
 	 */
 	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue) {
-		if (pRed < 0.0f || pRed > 1.0f)
+		if (pRed < 0.0f || pRed > 1.0f) {
 			throw new IllegalArgumentException("pRed must be a number between 0.0 and 1.0, inclusive.");
-		if (pGreen < 0.0f || pGreen > 1.0f)
+		}
+		if (pGreen < 0.0f || pGreen > 1.0f) {
 			throw new IllegalArgumentException("pGreen must be a number between 0.0 and 1.0, inclusive.");
-		if (pBlue < 0.0f || pBlue > 1.0f)
+		}
+		if (pBlue < 0.0f || pBlue > 1.0f) {
 			throw new IllegalArgumentException("pBlue must be a number between 0.0 and 1.0, inclusive.");
+		}
 		
 		this.mRed = pRed;
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 	}
-	
-	/**
-	 * Sets the background color for the scene using the digital 8-bit per channel scheme (0 - 255 RGB triplet).
-	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
-	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
-	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
-	 */
-	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue) {
-		if (pRed < 0 || pRed > 255)
-			throw new IllegalArgumentException("pRed must be a number between 0 and 255, inclusive.");
-		if (pGreen < 0 || pGreen > 255)
-			throw new IllegalArgumentException("pGreen must be a number between 0 and 255, inclusive.");
-		if (pBlue < 0 || pBlue > 255)
-			throw new IllegalArgumentException("pBlue must be a number between 0 and 255, inclusive.");
-		this.mRed = pRed/255f;
-		this.mGreen = pGreen/255f;
-		this.mBlue = pBlue/255f;
-	}
 
 	/**
-	 * Sets the background color for the scene using the arithmetic scheme (0.0f - 1.0f RGB quadruplet).
+	 * Sets the background color for the scene using the arithmetic scheme (0.0f - 1.0f RGB quadruple).
 	 * @param pRed The red color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pGreen The green color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pAlpha The alpha color value. Should be between 0.0 and 1.0, inclusive.
 	 */
 	public void setBackgroundColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if (pRed < 0.0f || pRed > 1.0f)
-			throw new IllegalArgumentException("pRed must be a number between 0.0 and 1.0, inclusive.");
-		if (pGreen < 0.0f || pGreen > 1.0f)
-			throw new IllegalArgumentException("pGreen must be a number between 0.0 and 1.0, inclusive.");
-		if (pBlue < 0.0f || pBlue > 1.0f)
-			throw new IllegalArgumentException("pBlue must be a number between 0.0 and 1.0, inclusive.");
-		if (pAlpha < 0.0f || pAlpha > 1.0f)
+		if (pAlpha < 0.0f || pAlpha > 1.0f) {
 			throw new IllegalArgumentException("pAlpha must be a number between 0.0 and 1.0, inclusive.");
-		
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
+		}
+		this.setBackgroundColor(pRed, pGreen, pBlue);
 		this.mAlpha = pAlpha;
 	}
 	
 	/**
-	 * Sets the background color for the scene using the digital 8-bit per channel scheme (0 - 255 RGB quadruplet).
+	 * Sets the background color for the scene using the digital 8-bit per channel scheme (0 - 255 RGB triple).
+	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
+	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
+	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
+	 */
+	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue) {
+		this.setBackgroundColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT);
+	}
+	
+	/**
+	 * Sets the background color for the scene using the digital 8-bit per channel scheme (0 - 255 RGB quadruple).
 	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
 	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
 	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
 	 */
 	public void setBackgroundColor(final int pRed, final int pGreen, final int pBlue, final int pAlpha) {
-		if (pRed < 0 || pRed > 255)
-			throw new IllegalArgumentException("pRed must be a number between 0 and 255, inclusive.");
-		if (pGreen < 0 || pGreen > 255)
-			throw new IllegalArgumentException("pGreen must be a number between 0 and 255, inclusive.");
-		if (pBlue < 0 || pBlue > 255)
-			throw new IllegalArgumentException("pBlue must be a number between 0 and 255, inclusive.");
-		if (pAlpha < 0 || pAlpha > 255)
-			throw new IllegalArgumentException("pAlpha must be a number between 0 and 255, inclusive.");
-		this.mRed = pRed/255f;
-		this.mGreen = pGreen/255f;
-		this.mBlue = pBlue/255f;
-		this.mAlpha = pAlpha/255f;
+		this.setBackgroundColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT, pAlpha / COLOR_FACTOR_INT_TO_FLOAT);
 	}
 
 	public void clearTouchAreas() {
 		this.mTouchAreas.clear();
+	}
+
+	public void registerTouchArea(final ITouchArea pTouchArea) {
+		this.mTouchAreas.add(pTouchArea);
+	}
+
+	public void unregisterTouchArea(final ITouchArea pTouchArea) {
+		this.mTouchAreas.remove(pTouchArea);
 	}
 
 	public void clearPreFrameHandlers() {
@@ -202,20 +187,12 @@ public class Scene extends BaseEntity {
 		this.mPostFrameHandlers.clear();
 	}
 
-	public void registerTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas.add(pTouchArea);
-	}
-
 	public void registerPreFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPreFrameHandlers.add(pUpdateHandler);
 	}
 
 	public void registerPostFrameHandler(final IUpdateHandler pUpdateHandler) {
 		this.mPostFrameHandlers.add(pUpdateHandler);
-	}
-
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas.remove(pTouchArea);
 	}
 
 	public void unregisterPreFrameHandler(final IUpdateHandler pUpdateHandler) {

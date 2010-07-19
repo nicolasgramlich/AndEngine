@@ -19,7 +19,6 @@ public class PathModifier extends BaseShapeModifier {
 
 	private final SequenceModifier mSequenceModifier;
 
-	private IShapeModifierListener mModifierListener;
 	private IPathModifierListener mPathModifierListener;
 
 	private final Path mPath;
@@ -44,7 +43,7 @@ public class PathModifier extends BaseShapeModifier {
 		}
 
 		this.mPath = pPath;
-		this.mModifierListener = pShapeModiferListener;
+		this.mShapeModifierListener = pShapeModiferListener;
 		this.mPathModifierListener = pPathModifierListener;
 
 		final MoveModifier[] moveModifiers = new MoveModifier[pathSize - 1];
@@ -77,7 +76,7 @@ public class PathModifier extends BaseShapeModifier {
 
 
 		/* Create a new SequenceModifier and register the listeners that
-		 * call through to mModifierListener and mPathModifierListener. */
+		 * call through to mShapeModifierListener and mPathModifierListener. */
 		this.mSequenceModifier = new SequenceModifier(
 				new IShapeModifierListener() {
 					@Override
@@ -85,8 +84,8 @@ public class PathModifier extends BaseShapeModifier {
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pShape, modifierCount);
 						}
-						if(PathModifier.this.mModifierListener != null) {
-							PathModifier.this.mModifierListener.onModifierFinished(PathModifier.this, pShape);
+						if(PathModifier.this.mShapeModifierListener != null) {
+							PathModifier.this.mShapeModifierListener.onModifierFinished(PathModifier.this, pShape);
 						}
 					}
 				},

@@ -55,7 +55,7 @@ public class MusicFactory {
 		return music;
 	}
 
-	public static Music createSoundFromResource(final MusicManager pMusicManager, final Context pContext, final int pMusicResID) throws IOException {
+	public static Music createMusicFromResource(final MusicManager pMusicManager, final Context pContext, final int pMusicResID) throws IOException {
 		final MediaPlayer mediaPlayer = MediaPlayer.create(pContext, pMusicResID);
 		mediaPlayer.prepare();
 		

@@ -4,13 +4,13 @@ import static org.anddev.andengine.util.constants.ColorConstants.COLOR_FACTOR_IN
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.BaseEntity;
+import org.anddev.andengine.engine.camera.Camera;
 
 /**
  * @author Nicolas Gramlich
  * @since 13:45:24 - 19.07.2010
  */
-public class ColorBackground extends BaseEntity implements IBackground {
+public class ColorBackground extends BaseBackground {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,7 +28,7 @@ public class ColorBackground extends BaseEntity implements IBackground {
 	// Constructors
 	// ===========================================================
 
-	public ColorBackground() {
+	protected ColorBackground() {
 
 	}
 
@@ -37,7 +37,7 @@ public class ColorBackground extends BaseEntity implements IBackground {
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 	}
-	
+
 	public ColorBackground(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
@@ -55,6 +55,7 @@ public class ColorBackground extends BaseEntity implements IBackground {
 	 * @param pGreen The green color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
 	 */
+	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) throws IllegalArgumentException {
 		if (pRed < 0.0f || pRed > 1.0f) {
 			throw new IllegalArgumentException("pRed must be a number between 0.0 and 1.0, inclusive.");
@@ -111,14 +112,9 @@ public class ColorBackground extends BaseEntity implements IBackground {
 	// ===========================================================
 
 	@Override
-	public final void onManagedDraw(final GL10 pGL) {
+	public void onDraw(final GL10 pGL, final Camera pCamera) {
 		pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 		pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
-	}
-
-	@Override
-	public final void onManagedUpdate(final float pSecondsElapsed) {
-		
 	}
 
 	// ===========================================================

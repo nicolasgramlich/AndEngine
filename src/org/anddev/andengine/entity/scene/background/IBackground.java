@@ -1,12 +1,15 @@
 package org.anddev.andengine.entity.scene.background;
 
-import org.anddev.andengine.entity.IEntity;
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 
 /**
  * @author Nicolas Gramlich
  * @since 13:47:41 - 19.07.2010
  */
-public interface IBackground extends IEntity {
+public interface IBackground extends IUpdateHandler {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -14,4 +17,9 @@ public interface IBackground extends IEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void onDraw(final GL10 pGL, final Camera pCamera);
+
+	public void setColor(final float pRed, final float pGreen, final float pBlue);
+	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 }

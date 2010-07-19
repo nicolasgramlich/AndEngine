@@ -4,7 +4,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
  * @author Nicolas Gramlich
@@ -87,20 +86,18 @@ public class CameraScene extends Scene {
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
 		if(this.mCamera != null) {
-			GLHelper.switchToProjectionMatrix(pGL);
-			pGL.glPushMatrix();
+			pGL.glMatrixMode(GL10.GL_PROJECTION);
 			this.mCamera.onApplyPositionIndependentMatrix(pGL);
-			{	
-				GLHelper.switchToModelViewMatrix(pGL);
+			{
+				pGL.glMatrixMode(GL10.GL_MODELVIEW);
 				pGL.glPushMatrix();
 				pGL.glLoadIdentity();
-	
+
 				super.onManagedDraw(pGL);
-	
+
 				pGL.glPopMatrix();
 			}
-			GLHelper.switchToProjectionMatrix(pGL);
-			pGL.glPopMatrix();
+			pGL.glMatrixMode(GL10.GL_PROJECTION);
 		}
 	}
 

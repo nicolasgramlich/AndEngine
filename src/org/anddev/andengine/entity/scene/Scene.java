@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
@@ -17,6 +18,7 @@ import org.anddev.andengine.entity.layer.ILayer;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
  * @author Nicolas Gramlich
@@ -40,12 +42,13 @@ public class Scene extends BaseEntity {
 	private boolean mChildSceneModalUpdate;
 	private boolean mChildSceneModalTouch;
 
+	private final int mLayerCount;
 	private final ILayer[] mLayers;
 
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
 	private final RunnableHandler mRunnableHandler = new RunnableHandler();
-	
+
 	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
 	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
 
@@ -53,7 +56,7 @@ public class Scene extends BaseEntity {
 
 	private IOnAreaTouchListener mOnAreaTouchListener;
 
-	private IBackground mBackground = new ColorBackground();
+	private IBackground mBackground = new ColorBackground(0, 0, 0); // Black
 	private boolean mBackgroundEnabled = true;
 
 	private boolean mOnAreaTouchTraversalBackToFront = true;
@@ -63,6 +66,7 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 
 	public Scene(final int pLayerCount) {
+		this.mLayerCount = pLayerCount;
 		this.mLayers = new ILayer[pLayerCount];
 		this.createLayers();
 	}
@@ -71,6 +75,7 @@ public class Scene extends BaseEntity {
 		if(pLayerCount != pLayerCapacities.length) {
 			throw new IllegalArgumentException("pLayerCount must be the same as the length of pLayerCapacities.");
 		}
+		this.mLayerCount = pLayerCount;
 		this.mLayers = new ILayer[pLayerCount];
 		this.createLayers(pFixedCapacityLayers, pLayerCapacities);
 	}
@@ -82,11 +87,11 @@ public class Scene extends BaseEntity {
 	public float getSecondsElapsedTotal() {
 		return this.mSecondsElapsedTotal;
 	}
-	
+
 	public IBackground getBackground() {
 		return this.mBackground;
 	}
-	
+
 	public void setBackground(final IBackground pBackground) {
 		this.mBackground = pBackground;
 	}
@@ -104,7 +109,7 @@ public class Scene extends BaseEntity {
 	}
 
 	public ILayer getTopLayer() {
-		return this.mLayers[this.mLayers.length - 1];
+		return this.mLayers[this.mLayerCount - 1];
 	}
 
 	public boolean isBackgroundEnabled() {
@@ -223,7 +228,6 @@ public class Scene extends BaseEntity {
 	protected void onManagedDraw(final GL10 pGL) {
 		final Scene childScene = this.mChildScene;
 		if(childScene == null || !this.mChildSceneModalDraw) {
-			this.drawBackground(pGL);
 			this.drawLayers(pGL);
 		}
 		if(childScene != null) {
@@ -238,6 +242,7 @@ public class Scene extends BaseEntity {
 
 		final Scene childScene = this.mChildScene;
 		if(childScene == null || !this.mChildSceneModalUpdate) {
+			this.mBackground.onUpdate(pSecondsElapsed);
 			this.updateLayers(pSecondsElapsed);
 		}
 
@@ -256,7 +261,7 @@ public class Scene extends BaseEntity {
 				return false;
 			}
 		}
-		
+
 		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
 		final int touchAreaCount = touchAreas.size();
 		if(touchAreaCount > 0) {
@@ -269,7 +274,7 @@ public class Scene extends BaseEntity {
 						final float[] touchAreaLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
 						final float touchAreaLocalX = touchAreaLocalCoordinates[VERTEX_INDEX_X];
 						final float touchAreaLocalY = touchAreaLocalCoordinates[VERTEX_INDEX_Y];
-						
+
 						final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
 						if(handledSelf) {
 							return true;
@@ -287,7 +292,7 @@ public class Scene extends BaseEntity {
 						final float[] pLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
 						final float touchAreaLocalX = pLocalCoordinates[VERTEX_INDEX_X];
 						final float touchAreaLocalY = pLocalCoordinates[VERTEX_INDEX_Y];
-						
+
 						final boolean handled = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
 						if(handled) {
 							return true;
@@ -319,7 +324,7 @@ public class Scene extends BaseEntity {
 		this.clearChildScene();
 
 		final ILayer[] layers = this.mLayers;
-		for(int i = layers.length - 1; i >= 0; i--) {
+		for(int i = this.mLayerCount - 1; i >= 0; i--) {
 			layers[i].reset();
 		}
 	}
@@ -327,7 +332,7 @@ public class Scene extends BaseEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void postRunnable(final Runnable pRunnable) {
 		this.mRunnableHandler.postRunnable(pRunnable);
 	}
@@ -343,41 +348,43 @@ public class Scene extends BaseEntity {
 
 	private void createLayers() {
 		final ILayer[] layers = this.mLayers;
-		for(int i = layers.length - 1; i >= 0; i--) {
+		for(int i = this.mLayerCount - 1; i >= 0; i--) {
 			layers[i] = new DynamicCapacityLayer();
-		}		
+		}
 	}
 
 	private void createLayers(final boolean pFixedCapacityLayers, final int[] pLayerCapacities) {
 		final ILayer[] layers = this.mLayers;
 		if(pFixedCapacityLayers) {
-			for(int i = layers.length - 1; i >= 0; i--) {
+			for(int i = this.mLayerCount - 1; i >= 0; i--) {
 				layers[i] = new FixedCapacityLayer(pLayerCapacities[i]);
 			}
 		} else {
-			for(int i = layers.length - 1; i >= 0; i--) {
+			for(int i = this.mLayerCount - 1; i >= 0; i--) {
 				layers[i] = new DynamicCapacityLayer(pLayerCapacities[i]);
-			}		
+			}
 		}
 	}
 
 	private void updateLayers(final float pSecondsElapsed) {
 		final ILayer[] layers = this.mLayers;
-		final int layerCount = layers.length;
+		final int layerCount = this.mLayerCount;
 		for(int i = 0; i < layerCount; i++) {
 			layers[i].onUpdate(pSecondsElapsed);
 		}
 	}
 
-	protected void drawBackground(final GL10 pGL) {
-		if(this.mBackgroundEnabled) {
-			this.mBackground.onDraw(pGL);
+	public void drawBackground(final GL10 pGL, final Camera pCamera) {
+		if(this.mChildScene == null || !this.mChildSceneModalDraw) {
+			pCamera.onApplyPositionIndependentMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
+			this.mBackground.onDraw(pGL, pCamera);
 		}
 	}
 
 	private void drawLayers(final GL10 pGL) {
 		final ILayer[] layers = this.mLayers;
-		final int layerCount = layers.length;
+		final int layerCount = this.mLayerCount;
 		for(int i = 0; i < layerCount; i++) {
 			layers[i].onDraw(pGL);
 		}

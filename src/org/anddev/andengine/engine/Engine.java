@@ -103,7 +103,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}, "UpdateThread");
 
-	private RunnableHandler mUpdateThreadRunnableHandler = new RunnableHandler();
+	private final RunnableHandler mUpdateThreadRunnableHandler = new RunnableHandler();
 
 	private final State mThreadLocker = new State();
 
@@ -120,7 +120,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		SoundFactory.setAssetBasePath("");
 		MusicFactory.setAssetBasePath("");
 		FontFactory.setAssetBasePath("");
-		
+
 		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 
 		this.mEngineOptions = pEngineOptions;
@@ -311,9 +311,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent, this);
 			try {
-				/* As a human cannot interact a lot faster than 20x per second, we pause the UI-Thread for a little less.*/
-				Thread.sleep(33); 
-			} catch (InterruptedException e) {
+				/* As a human cannot interact 1000x per second, we pause the UI-Thread for a little.*/
+				Thread.sleep(20);
+			} catch (final InterruptedException e) {
 				Debug.e(e);
 			}
 			return handled;
@@ -357,7 +357,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void runOnUpdateThread(final Runnable pRunnable) {
 		this.mUpdateThreadRunnableHandler.postRunnable(pRunnable);
 	}
@@ -428,14 +428,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			}
 
 			this.updatePostFrameHandlers(secondsElapsed);
-//			if(secondsElapsed < 0.033f) {
-//				try {
-//					final int sleepTimeMilliseconds = (int)((0.033f - secondsElapsed) * 1000);
-//					Thread.sleep(sleepTimeMilliseconds);
-//				} catch (InterruptedException e) {
-//					Debug.e("UpdateThread interrupted from sleep.", e);
-//				}
-//			}
+			//			if(secondsElapsed < 0.033f) {
+			//				try {
+			//					final int sleepTimeMilliseconds = (int)((0.033f - secondsElapsed) * 1000);
+			//					Thread.sleep(sleepTimeMilliseconds);
+			//				} catch (InterruptedException e) {
+			//					Debug.e("UpdateThread interrupted from sleep.", e);
+			//				}
+			//			}
 		} else {
 			this.mThreadLocker.notifyCanDraw();
 			this.mThreadLocker.waitUntilCanUpdate();
@@ -485,6 +485,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	protected void onDrawScene(final GL10 pGL) {
 		final Camera camera = this.getCamera();
+
+		this.mScene.drawBackground(pGL, camera);
 
 		camera.onApplyMatrix(pGL);
 		GLHelper.setModelViewIdentityMatrix(pGL);
@@ -549,7 +551,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener) {
 		return this.enableOrientationSensor(pContext, pOrientationListener, SENSOR_DELAY_DEFAULT);
 	}
-	
+
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final int pRate) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {

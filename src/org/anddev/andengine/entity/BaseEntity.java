@@ -76,7 +76,6 @@ public abstract class BaseEntity extends Entity implements IBaseEntity {
 	public float getBaseY() {
 		return this.mBaseY;
 	}
-	
 
 	@Override
 	public void setPosition(final IBaseEntity pOtherBaseEntity) {
@@ -150,12 +149,12 @@ public abstract class BaseEntity extends Entity implements IBaseEntity {
 	public void setRotation(final float pRotation) {
 		this.mRotation = pRotation;
 	}
-	
+
 	@Override
 	public float getAngularVelocity() {
 		return this.mAngularVelocity;
 	}
-	
+
 	@Override
 	public void setAngularVelocity(final float pAngularVelocity) {
 		this.mAngularVelocity = pAngularVelocity;
@@ -260,7 +259,7 @@ public abstract class BaseEntity extends Entity implements IBaseEntity {
 	// ===========================================================
 
 	protected void onPositionChanged(){
-		
+
 	}
 
 	@Override
@@ -274,13 +273,13 @@ public abstract class BaseEntity extends Entity implements IBaseEntity {
 				this.mVelocityY += accelerationY * pSecondsElapsed;
 			}
 
-			/* Apply angular velocity. */		
+			/* Apply angular velocity. */
 			final float angularVelocity = this.mAngularVelocity;
 			if(angularVelocity != 0) {
 				this.mRotation += angularVelocity * pSecondsElapsed;
 			}
 
-			/* Apply linear velocity. */			
+			/* Apply linear velocity. */
 			final float velocityX = this.mVelocityX;
 			final float velocityY = this.mVelocityY;
 			if(velocityX != 0 || velocityY != 0) {

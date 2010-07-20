@@ -6,7 +6,7 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.BaseEntity;
+import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 
@@ -18,7 +18,7 @@ import android.graphics.Bitmap.Config;
  * @author Nicolas Gramlich
  * @since 15:11:50 - 15.03.2010
  */
-public class ScreenCapture extends BaseEntity {
+public class ScreenCapture extends Entity {
 	// ===========================================================
 	// Constants
 	// ===========================================================

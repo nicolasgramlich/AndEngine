@@ -1,7 +1,7 @@
 <class-diagram version="0.9.86" automaticImage="PNG" icons="true" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
-  <class corner="BOTTOM_RIGHT" language="java" name="org.anddev.andengine.entity.BaseEntity" project="AndEngine" 
-    file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false">    
+  <class corner="BOTTOM_RIGHT" language="java" name="org.anddev.andengine.entity.Entity" project="AndEngine" 
+    file="/AndEngine/src/org/anddev/andengine/entity/Entity.java" binary="false">    
     <position x="116" y="258" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
@@ -32,8 +32,8 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class corner="BOTTOM_RIGHT" language="java" name="org.anddev.andengine.entity.BaseStaticEntity" project="AndEngine" 
-    file="/AndEngine/src/org/anddev/andengine/entity/BaseStaticEntity.java" binary="false">    
+  <class corner="BOTTOM_RIGHT" language="java" name="org.anddev.andengine.entity.BaseEntity" project="AndEngine" 
+    file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false">    
     <position x="116" y="338" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
@@ -235,29 +235,39 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.BaseEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.Entity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/Entity.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.layer.DynamicCapacityLayer" 
+      file="/AndEngine/src/org/anddev/andengine/entity/layer/DynamicCapacityLayer.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.Entity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/Entity.java" binary="false"/>  
+  </generalization>  
+  <dependency>    
+    <source project="AndEngine" name="org.anddev.andengine.engine.Engine" 
+      file="/AndEngine/src/org/anddev/andengine/engine/Engine.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.engine.camera.Camera" 
+      file="/AndEngine/src/org/anddev/andengine/engine/camera/Camera.java" binary="false"/>  
+  </dependency>  
   <association>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.scene.Scene" 
-      file="/AndEngine/src/org/anddev/andengine/entity/scene/Scene.java" binary="false" navigable="false">      
-      <attribute name="mLayers">        
-        <position x="380" y="322" width="46" height="14"/>      
-      </attribute>      
+    <source project="AndEngine" name="org.anddev.andengine.entity.particle.ParticleSystem" 
+      file="/AndEngine/src/org/anddev/andengine/entity/particle/ParticleSystem.java" binary="false" navigable="false">      
+      <attribute name="mParticles"/>      
       <multiplicity minimum="0" maximum="2147483647"/>    
     </source>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.layer.DynamicCapacityLayer" 
-      file="/AndEngine/src/org/anddev/andengine/entity/layer/DynamicCapacityLayer.java" binary="false" navigable="true"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.particle.Particle" 
+      file="/AndEngine/src/org/anddev/andengine/entity/particle/Particle.java" binary="false" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.particle.ParticleSystem" 
-      file="/AndEngine/src/org/anddev/andengine/entity/particle/ParticleSystem.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.primitive.Rectangle" 
-      file="/AndEngine/src/org/anddev/andengine/entity/primitive/Rectangle.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.sprite.AnimatedSprite" 
-      file="/AndEngine/src/org/anddev/andengine/entity/sprite/AnimatedSprite.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.sprite.TiledSprite" 
-      file="/AndEngine/src/org/anddev/andengine/entity/sprite/TiledSprite.java" binary="false"/>  
+    <source project="AndEngine" name="org.anddev.andengine.entity.sprite.Sprite" 
+      file="/AndEngine/src/org/anddev/andengine/entity/sprite/Sprite.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.sprite.BaseSprite" 
+      file="/AndEngine/src/org/anddev/andengine/entity/sprite/BaseSprite.java" binary="false"/>  
   </generalization>  
   <association>    
     <source project="AndEngine" name="org.anddev.andengine.entity.scene.CameraScene" 
@@ -272,22 +282,10 @@
     <display labels="true" multiplicity="false"/>  
   </association>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.sprite.BaseSprite" 
-      file="/AndEngine/src/org/anddev/andengine/entity/sprite/BaseSprite.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.primitive.BaseRectangle" 
-      file="/AndEngine/src/org/anddev/andengine/entity/primitive/BaseRectangle.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.BaseStaticEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/BaseStaticEntity.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.BaseEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.scene.CameraScene" 
-      file="/AndEngine/src/org/anddev/andengine/entity/scene/CameraScene.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.scene.Scene" 
-      file="/AndEngine/src/org/anddev/andengine/entity/scene/Scene.java" binary="false"/>  
+    <source project="AndEngine" name="org.anddev.andengine.entity.menu.MenuScene" 
+      file="/AndEngine/src/org/anddev/andengine/entity/menu/MenuScene.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.scene.CameraScene" 
+      file="/AndEngine/src/org/anddev/andengine/entity/scene/CameraScene.java" binary="false"/>  
   </generalization>  
   <generalization>    
     <source project="AndEngine" name="org.anddev.andengine.entity.primitive.BaseRectangle" 
@@ -296,19 +294,29 @@
       file="/AndEngine/src/org/anddev/andengine/entity/shape/RectangularShape.java" binary="false"/>  
   </generalization>  
   <association>    
-    <source project="AndEngineLiveWallpaperExtension" 
-      name="org.anddev.andengine.extension.ui.livewallpaper.BaseLiveWallpaperService" 
-      file="/AndEngineLiveWallpaperExtension/src/org/anddev/andengine/extension/ui/livewallpaper/BaseLiveWallpaperService.java" 
-      binary="false" navigable="false">      
-      <attribute name="mEngine">        
-        <position x="440" y="80" width="44" height="14"/>      
+    <source project="AndEngine" name="org.anddev.andengine.entity.scene.Scene" 
+      file="/AndEngine/src/org/anddev/andengine/entity/scene/Scene.java" binary="false" navigable="false">      
+      <attribute name="mLayers">        
+        <position x="380" y="322" width="46" height="14"/>      
       </attribute>      
-      <multiplicity minimum="0" maximum="1"/>    
+      <multiplicity minimum="0" maximum="2147483647"/>    
     </source>    
-    <target project="AndEngineLiveWallpaper" name="org.anddev.andengine.engine.Engine" 
-      file="/AndEngineLiveWallpaperExtension/lib/andengine.jar" binary="true" navigable="true"/>    
-    <display labels="true" multiplicity="false"/>  
+    <target project="AndEngine" name="org.anddev.andengine.entity.layer.DynamicCapacityLayer" 
+      file="/AndEngine/src/org/anddev/andengine/entity/layer/DynamicCapacityLayer.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.sprite.AnimatedSprite" 
+      file="/AndEngine/src/org/anddev/andengine/entity/sprite/AnimatedSprite.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.sprite.TiledSprite" 
+      file="/AndEngine/src/org/anddev/andengine/entity/sprite/TiledSprite.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.particle.ParticleSystem" 
+      file="/AndEngine/src/org/anddev/andengine/entity/particle/ParticleSystem.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.primitive.Rectangle" 
+      file="/AndEngine/src/org/anddev/andengine/entity/primitive/Rectangle.java" binary="false"/>  
+  </generalization>  
   <association>    
     <source project="AndEngine" name="org.anddev.andengine.entity.layer.DynamicCapacityLayer" 
       file="/AndEngine/src/org/anddev/andengine/entity/layer/DynamicCapacityLayer.java" binary="false" navigable="false">      
@@ -324,10 +332,70 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.primitive.Rectangle" 
+      file="/AndEngine/src/org/anddev/andengine/entity/primitive/Rectangle.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.primitive.BaseRectangle" 
+      file="/AndEngine/src/org/anddev/andengine/entity/primitive/BaseRectangle.java" binary="false"/>  
+  </generalization>  
+  <realization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.Entity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/Entity.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.IEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/IEntity.java" binary="false"/>  
+  </realization>  
+  <association>    
+    <source project="AndEngine" name="org.anddev.andengine.opengl.view.RenderSurfaceView" 
+      file="/AndEngine/src/org/anddev/andengine/opengl/view/RenderSurfaceView.java" binary="false" navigable="false">      
+      <attribute name="mRenderer"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="AndEngine" name="org.anddev.andengine.opengl.view.RenderSurfaceView.Renderer" 
+      file="/AndEngine/src/org/anddev/andengine/opengl/view/RenderSurfaceView.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="AndEngine" name="org.anddev.andengine.ui.activity.BaseGameActivity" 
+      file="/AndEngine/src/org/anddev/andengine/ui/activity/BaseGameActivity.java" binary="false" navigable="false">      
+      <attribute name="mRenderSurfaceView">        
+        <position x="685" y="63" width="112" height="14"/>      
+      </attribute>      
+      <multiplicity minimum="0" maximum="1">        
+        <position x="696" y="86" width="18" height="15"/>      
+      </multiplicity>    
+    </source>    
+    <target project="AndEngine" name="org.anddev.andengine.opengl.view.RenderSurfaceView" 
+      file="/AndEngine/src/org/anddev/andengine/opengl/view/RenderSurfaceView.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="false"/>  
+  </association>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.scene.CameraScene" 
+      file="/AndEngine/src/org/anddev/andengine/entity/scene/CameraScene.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.scene.Scene" 
+      file="/AndEngine/src/org/anddev/andengine/entity/scene/Scene.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.particle.Particle" 
+      file="/AndEngine/src/org/anddev/andengine/entity/particle/Particle.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.sprite.Sprite" 
+      file="/AndEngine/src/org/anddev/andengine/entity/sprite/Sprite.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
     <source project="AndEngine" name="org.anddev.andengine.entity.text.Text" 
       file="/AndEngine/src/org/anddev/andengine/entity/text/Text.java" binary="false"/>    
     <target project="AndEngine" name="org.anddev.andengine.entity.shape.RectangularShape" 
       file="/AndEngine/src/org/anddev/andengine/entity/shape/RectangularShape.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.sprite.BaseSprite" 
+      file="/AndEngine/src/org/anddev/andengine/entity/sprite/BaseSprite.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.primitive.BaseRectangle" 
+      file="/AndEngine/src/org/anddev/andengine/entity/primitive/BaseRectangle.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.scene.Scene" 
+      file="/AndEngine/src/org/anddev/andengine/entity/scene/Scene.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.Entity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/Entity.java" binary="false"/>  
   </generalization>  
   <association>    
     <source project="AndEngine" name="org.anddev.andengine.engine.camera.Camera" 
@@ -342,72 +410,10 @@
     <display labels="true" multiplicity="false"/>  
   </association>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.shape.RectangularShape" 
-      file="/AndEngine/src/org/anddev/andengine/entity/shape/RectangularShape.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.shape.Shape" 
-      file="/AndEngine/src/org/anddev/andengine/entity/shape/Shape.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.menu.MenuScene" 
-      file="/AndEngine/src/org/anddev/andengine/entity/menu/MenuScene.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.scene.CameraScene" 
-      file="/AndEngine/src/org/anddev/andengine/entity/scene/CameraScene.java" binary="false"/>  
-  </generalization>  
-  <dependency>    
-    <source project="AndEngine" name="org.anddev.andengine.engine.Engine" 
-      file="/AndEngine/src/org/anddev/andengine/engine/Engine.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.engine.handler.IUpdateHandler" 
-      file="/AndEngine/src/org/anddev/andengine/engine/handler/IUpdateHandler.java" binary="false"/>  
-  </dependency>  
-  <association>    
-    <source project="AndEngine" name="org.anddev.andengine.opengl.view.RenderSurfaceView" 
-      file="/AndEngine/src/org/anddev/andengine/opengl/view/RenderSurfaceView.java" binary="false" navigable="false">      
-      <attribute name="mRenderer"/>      
-      <multiplicity minimum="0" maximum="1"/>    
-    </source>    
-    <target project="AndEngine" name="org.anddev.andengine.opengl.view.RenderSurfaceView.Renderer" 
-      file="/AndEngine/src/org/anddev/andengine/opengl/view/RenderSurfaceView.java" binary="false" navigable="true"/>    
-    <display labels="true" multiplicity="false"/>  
-  </association>  
-  <realization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.BaseEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.IEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/IEntity.java" binary="false"/>  
-  </realization>  
-  <association>    
-    <source project="AndEngine" name="org.anddev.andengine.opengl.view.RenderSurfaceView.Renderer" 
-      file="/AndEngine/src/org/anddev/andengine/opengl/view/RenderSurfaceView.java" binary="false" navigable="false">      
-      <attribute name="mEngine"/>      
-      <multiplicity minimum="0" maximum="1"/>    
-    </source>    
-    <target project="AndEngine" name="org.anddev.andengine.engine.Engine" 
-      file="/AndEngine/src/org/anddev/andengine/engine/Engine.java" binary="false" navigable="true"/>    
-    <display labels="true" multiplicity="false"/>  
-  </association>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.BaseDynamicEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/BaseDynamicEntity.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.BaseStaticEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/BaseStaticEntity.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.layer.DynamicCapacityLayer" 
-      file="/AndEngine/src/org/anddev/andengine/entity/layer/DynamicCapacityLayer.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.BaseEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.scene.Scene" 
-      file="/AndEngine/src/org/anddev/andengine/entity/scene/Scene.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.BaseEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.sprite.Sprite" 
-      file="/AndEngine/src/org/anddev/andengine/entity/sprite/Sprite.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.sprite.BaseSprite" 
-      file="/AndEngine/src/org/anddev/andengine/entity/sprite/BaseSprite.java" binary="false"/>  
+    <source project="AndEngine" name="org.anddev.andengine.entity.shape.Shape" 
+      file="/AndEngine/src/org/anddev/andengine/entity/shape/Shape.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.BaseDynamicEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/BaseDynamicEntity.java" binary="false"/>  
   </generalization>  
   <association>    
     <source project="AndEngine" name="org.anddev.andengine.ui.activity.BaseGameActivity" 
@@ -422,44 +428,28 @@
     <display labels="true" multiplicity="false"/>  
   </association>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.sprite.TiledSprite" 
-      file="/AndEngine/src/org/anddev/andengine/entity/sprite/TiledSprite.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.sprite.BaseSprite" 
-      file="/AndEngine/src/org/anddev/andengine/entity/sprite/BaseSprite.java" binary="false"/>  
+    <source project="AndEngine" name="org.anddev.andengine.entity.primitive.Line" 
+      file="/AndEngine/src/org/anddev/andengine/entity/primitive/Line.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.shape.Shape" 
+      file="/AndEngine/src/org/anddev/andengine/entity/shape/Shape.java" binary="false"/>  
   </generalization>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.particle.Particle" 
-      file="/AndEngine/src/org/anddev/andengine/entity/particle/Particle.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.sprite.Sprite" 
-      file="/AndEngine/src/org/anddev/andengine/entity/sprite/Sprite.java" binary="false"/>  
-  </generalization>  
-  <association>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.particle.ParticleSystem" 
-      file="/AndEngine/src/org/anddev/andengine/entity/particle/ParticleSystem.java" binary="false" navigable="false">      
-      <attribute name="mParticles"/>      
-      <multiplicity minimum="0" maximum="2147483647"/>    
-    </source>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.particle.Particle" 
-      file="/AndEngine/src/org/anddev/andengine/entity/particle/Particle.java" binary="false" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency>    
-    <source project="AndEngine" name="org.anddev.andengine.engine.Engine" 
-      file="/AndEngine/src/org/anddev/andengine/engine/Engine.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.engine.camera.Camera" 
-      file="/AndEngine/src/org/anddev/andengine/engine/camera/Camera.java" binary="false"/>  
-  </dependency>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.shape.Shape" 
-      file="/AndEngine/src/org/anddev/andengine/entity/shape/Shape.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.BaseDynamicEntity" 
-      file="/AndEngine/src/org/anddev/andengine/entity/BaseDynamicEntity.java" binary="false"/>  
+    <source project="AndEngine" name="org.anddev.andengine.engine.camera.hud.HUD" 
+      file="/AndEngine/src/org/anddev/andengine/engine/camera/hud/HUD.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.scene.CameraScene" 
+      file="/AndEngine/src/org/anddev/andengine/entity/scene/CameraScene.java" binary="false"/>  
   </generalization>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.primitive.Rectangle" 
-      file="/AndEngine/src/org/anddev/andengine/entity/primitive/Rectangle.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.primitive.BaseRectangle" 
-      file="/AndEngine/src/org/anddev/andengine/entity/primitive/BaseRectangle.java" binary="false"/>  
+    <source project="AndEngine" name="org.anddev.andengine.entity.shape.RectangularShape" 
+      file="/AndEngine/src/org/anddev/andengine/entity/shape/RectangularShape.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.shape.Shape" 
+      file="/AndEngine/src/org/anddev/andengine/entity/shape/Shape.java" binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.BaseDynamicEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/BaseDynamicEntity.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.BaseEntity" 
+      file="/AndEngine/src/org/anddev/andengine/entity/BaseEntity.java" binary="false"/>  
   </generalization>  
   <association>    
     <source project="AndEngine" name="org.anddev.andengine.engine.Engine" 
@@ -472,35 +462,45 @@
     <display labels="true" multiplicity="false"/>  
   </association>  
   <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.engine.camera.hud.HUD" 
-      file="/AndEngine/src/org/anddev/andengine/engine/camera/hud/HUD.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.scene.CameraScene" 
-      file="/AndEngine/src/org/anddev/andengine/entity/scene/CameraScene.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
-    <source project="AndEngine" name="org.anddev.andengine.entity.primitive.Line" 
-      file="/AndEngine/src/org/anddev/andengine/entity/primitive/Line.java" binary="false"/>    
-    <target project="AndEngine" name="org.anddev.andengine.entity.shape.Shape" 
-      file="/AndEngine/src/org/anddev/andengine/entity/shape/Shape.java" binary="false"/>  
-  </generalization>  
-  <generalization>    
     <source project="AndEngine" name="org.anddev.andengine.entity.IEntity" 
       file="/AndEngine/src/org/anddev/andengine/entity/IEntity.java" binary="false"/>    
     <target project="AndEngine" name="org.anddev.andengine.engine.handler.IUpdateHandler" 
       file="/AndEngine/src/org/anddev/andengine/engine/handler/IUpdateHandler.java" binary="false"/>  
   </generalization>  
   <association>    
-    <source project="AndEngine" name="org.anddev.andengine.ui.activity.BaseGameActivity" 
-      file="/AndEngine/src/org/anddev/andengine/ui/activity/BaseGameActivity.java" binary="false" navigable="false">      
-      <attribute name="mRenderSurfaceView">        
-        <position x="685" y="63" width="112" height="14"/>      
+    <source project="AndEngineLiveWallpaperExtension" 
+      name="org.anddev.andengine.extension.ui.livewallpaper.BaseLiveWallpaperService" 
+      file="/AndEngineLiveWallpaperExtension/src/org/anddev/andengine/extension/ui/livewallpaper/BaseLiveWallpaperService.java" 
+      binary="false" navigable="false">      
+      <attribute name="mEngine">        
+        <position x="440" y="80" width="44" height="14"/>      
       </attribute>      
-      <multiplicity minimum="0" maximum="1">        
-        <position x="696" y="86" width="18" height="15"/>      
-      </multiplicity>    
+      <multiplicity minimum="0" maximum="1"/>    
     </source>    
-    <target project="AndEngine" name="org.anddev.andengine.opengl.view.RenderSurfaceView" 
-      file="/AndEngine/src/org/anddev/andengine/opengl/view/RenderSurfaceView.java" binary="false" navigable="true"/>    
+    <target project="AndEngineLiveWallpaper" name="org.anddev.andengine.engine.Engine" 
+      file="/AndEngineLiveWallpaperExtension/lib/andengine.jar" binary="true" navigable="true"/>    
+    <display labels="true" multiplicity="false"/>  
+  </association>  
+  <generalization>    
+    <source project="AndEngine" name="org.anddev.andengine.entity.sprite.TiledSprite" 
+      file="/AndEngine/src/org/anddev/andengine/entity/sprite/TiledSprite.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.entity.sprite.BaseSprite" 
+      file="/AndEngine/src/org/anddev/andengine/entity/sprite/BaseSprite.java" binary="false"/>  
+  </generalization>  
+  <dependency>    
+    <source project="AndEngine" name="org.anddev.andengine.engine.Engine" 
+      file="/AndEngine/src/org/anddev/andengine/engine/Engine.java" binary="false"/>    
+    <target project="AndEngine" name="org.anddev.andengine.engine.handler.IUpdateHandler" 
+      file="/AndEngine/src/org/anddev/andengine/engine/handler/IUpdateHandler.java" binary="false"/>  
+  </dependency>  
+  <association>    
+    <source project="AndEngine" name="org.anddev.andengine.opengl.view.RenderSurfaceView.Renderer" 
+      file="/AndEngine/src/org/anddev/andengine/opengl/view/RenderSurfaceView.java" binary="false" navigable="false">      
+      <attribute name="mEngine"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="AndEngine" name="org.anddev.andengine.engine.Engine" 
+      file="/AndEngine/src/org/anddev/andengine/engine/Engine.java" binary="false" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
   </association>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="false">    

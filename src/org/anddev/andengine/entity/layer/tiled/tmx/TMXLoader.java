@@ -1,11 +1,24 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.entity.layer.tiled.tmx;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+import android.content.Context;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:06:43 - 11.03.2010
+ * @since 19:10:45 - 20.07.2010
  */
-public abstract class BaseStaticEntity extends BaseEntity implements IStaticEntity {
+public class TMXLoader {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -14,59 +27,34 @@ public abstract class BaseStaticEntity extends BaseEntity implements IStaticEnti
 	// Fields
 	// ===========================================================
 
-	protected final float mBaseX;
-	protected final float mBaseY;
-
-	protected float mX;
-	protected float mY;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public BaseStaticEntity(final float pX, final float pY) {
-		this.mBaseX = pX;
-		this.mBaseY = pY;
-
-		this.mX = pX;
-		this.mY = pY;
-	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	@Override
-	public float getX() {
-		return this.mX;
-	}
-
-	@Override
-	public float getY() {
-		return this.mY;
-	}
-
-	@Override
-	public float getBaseX() {
-		return this.mBaseX;
-	}
-
-	@Override
-	public float getBaseY() {
-		return this.mBaseY;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected void onPositionChanged(){
-		
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public TMXTiledMap load(final Context pContext, final InputStream pInputStream) throws IOException, SAXException, ParserConfigurationException {
+		final SAXParserFactory spf = SAXParserFactory.newInstance();
+		final SAXParser sp = spf.newSAXParser();
+
+		final XMLReader xr = sp.getXMLReader();
+		final TMXParser tmxParser = new TMXParser();
+		xr.setContentHandler(tmxParser);
+
+		xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
+
+		return tmxParser.getTMXTiledMap();
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

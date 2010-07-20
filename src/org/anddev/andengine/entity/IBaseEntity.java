@@ -4,7 +4,7 @@ package org.anddev.andengine.entity;
  * @author Nicolas Gramlich
  * @since 13:40:17 - 07.07.2010
  */
-public interface IDynamicEntity extends IStaticEntity {
+public interface IBaseEntity extends IEntity {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -12,9 +12,17 @@ public interface IDynamicEntity extends IStaticEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public abstract float getX();
+	public abstract float getY();
+
+	public abstract float getBaseX();
+	public abstract float getBaseY();
+
+	public abstract float[] getSceneCenterCoordinates();
 
 	public abstract void setBasePosition();
-	public abstract void setPosition(final IStaticEntity pOtherStaticEntity);
+	public abstract void setPosition(final IBaseEntity pOtherBaseEntity);
 	public abstract void setPosition(final float pX, final float pY);
 
 	public abstract float getVelocityX();

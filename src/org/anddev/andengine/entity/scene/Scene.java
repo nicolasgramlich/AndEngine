@@ -11,7 +11,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
-import org.anddev.andengine.entity.BaseEntity;
+import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.layer.DynamicCapacityLayer;
 import org.anddev.andengine.entity.layer.FixedCapacityLayer;
 import org.anddev.andengine.entity.layer.ILayer;
@@ -24,7 +24,7 @@ import org.anddev.andengine.opengl.util.GLHelper;
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
  */
-public class Scene extends BaseEntity {
+public class Scene extends Entity {
 	// ===========================================================
 	// Constants
 	// ===========================================================

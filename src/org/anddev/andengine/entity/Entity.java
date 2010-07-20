@@ -1,15 +1,13 @@
-package org.anddev.andengine.engine.camera;
+package org.anddev.andengine.entity;
 
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.entity.IBaseEntity;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:57:13 - 27.03.2010
+ * @since 12:00:48 - 08.03.2010
  */
-public class ChaseCamera extends Camera {
+public abstract class Entity implements IEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,42 +16,64 @@ public class ChaseCamera extends Camera {
 	// Fields
 	// ===========================================================
 
-	private IBaseEntity mChaseEntity;
+	private boolean mVisible = true;
+	private boolean mIgnoreUpdate;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final IBaseEntity pChaseEntity) {
-		super(pX, pY, pWidth, pHeight);
-		this.mChaseEntity = pChaseEntity;
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public void setChaseEntity(final IBaseEntity pChaseEntity) {
-		this.mChaseEntity = pChaseEntity;
+	public boolean isVisible() {
+		return this.mVisible;
+	}
+
+	public void setVisible(final boolean pVisible) {
+		this.mVisible = pVisible;
+	}
+	
+	public boolean isIgnoreUpdate() {
+		return this.mIgnoreUpdate;
+	}
+
+	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
+		this.mIgnoreUpdate = pIgnoreUpdate;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		super.onUpdate(pSecondsElapsed);
+	protected abstract void onManagedDraw(final GL10 pGL);
 
-		if(this.mChaseEntity != null) {
-			final float[] centerCoordinates = this.mChaseEntity.getSceneCenterCoordinates();
-			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
+	@Override
+	public final void onDraw(final GL10 pGL) {
+		if(this.mVisible) {
+			this.onManagedDraw(pGL);
+		}
+	}
+
+	protected abstract void onManagedUpdate(final float pSecondsElapsed);
+
+	@Override
+	public final void onUpdate(final float pSecondsElapsed) {
+		if(!this.mIgnoreUpdate) {
+			this.onManagedUpdate(pSecondsElapsed);
 		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	@Override
+	public void reset() {
+		this.mVisible = true;
+		this.mIgnoreUpdate = false;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

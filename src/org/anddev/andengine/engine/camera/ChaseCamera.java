@@ -3,8 +3,7 @@ package org.anddev.andengine.engine.camera;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
-import org.anddev.andengine.entity.IDynamicEntity;
-import org.anddev.andengine.entity.IStaticEntity;
+import org.anddev.andengine.entity.IBaseEntity;
 
 /**
  * @author Nicolas Gramlich
@@ -19,13 +18,13 @@ public class ChaseCamera extends Camera {
 	// Fields
 	// ===========================================================
 
-	private IStaticEntity mChaseEntity;
+	private IBaseEntity mChaseEntity;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final IStaticEntity pChaseEntity) {
+	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final IBaseEntity pChaseEntity) {
 		super(pX, pY, pWidth, pHeight);
 		this.mChaseEntity = pChaseEntity;
 	}
@@ -34,8 +33,8 @@ public class ChaseCamera extends Camera {
 	// Getter & Setter
 	// ===========================================================
 
-	public void setChaseEntity(final IDynamicEntity pDynamicEntity) {
-		this.mChaseEntity = pDynamicEntity;
+	public void setChaseEntity(final IBaseEntity pChaseEntity) {
+		this.mChaseEntity = pChaseEntity;
 	}
 
 	// ===========================================================

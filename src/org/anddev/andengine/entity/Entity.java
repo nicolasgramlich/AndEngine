@@ -1,11 +1,13 @@
 package org.anddev.andengine.entity;
 
+import javax.microedition.khronos.opengles.GL10;
+
 
 /**
  * @author Nicolas Gramlich
- * @since 12:06:43 - 11.03.2010
+ * @since 12:00:48 - 08.03.2010
  */
-public abstract class BaseStaticEntity extends BaseEntity implements IStaticEntity {
+public abstract class Entity implements IEntity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -14,59 +16,64 @@ public abstract class BaseStaticEntity extends BaseEntity implements IStaticEnti
 	// Fields
 	// ===========================================================
 
-	protected final float mBaseX;
-	protected final float mBaseY;
-
-	protected float mX;
-	protected float mY;
+	private boolean mVisible = true;
+	private boolean mIgnoreUpdate;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseStaticEntity(final float pX, final float pY) {
-		this.mBaseX = pX;
-		this.mBaseY = pY;
-
-		this.mX = pX;
-		this.mY = pY;
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	@Override
-	public float getX() {
-		return this.mX;
+	public boolean isVisible() {
+		return this.mVisible;
 	}
 
-	@Override
-	public float getY() {
-		return this.mY;
+	public void setVisible(final boolean pVisible) {
+		this.mVisible = pVisible;
+	}
+	
+	public boolean isIgnoreUpdate() {
+		return this.mIgnoreUpdate;
 	}
 
-	@Override
-	public float getBaseX() {
-		return this.mBaseX;
-	}
-
-	@Override
-	public float getBaseY() {
-		return this.mBaseY;
+	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
+		this.mIgnoreUpdate = pIgnoreUpdate;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected void onPositionChanged(){
-		
+	protected abstract void onManagedDraw(final GL10 pGL);
+
+	@Override
+	public final void onDraw(final GL10 pGL) {
+		if(this.mVisible) {
+			this.onManagedDraw(pGL);
+		}
+	}
+
+	protected abstract void onManagedUpdate(final float pSecondsElapsed);
+
+	@Override
+	public final void onUpdate(final float pSecondsElapsed) {
+		if(!this.mIgnoreUpdate) {
+			this.onManagedUpdate(pSecondsElapsed);
+		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	@Override
+	public void reset() {
+		this.mVisible = true;
+		this.mIgnoreUpdate = false;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

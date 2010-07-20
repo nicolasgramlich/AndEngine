@@ -44,7 +44,6 @@ public class TMXLoader {
 	// ===========================================================
 
 	public TMXTiledMap load(final Context pContext, final InputStream pInputStream) throws IOException, SAXException, ParserConfigurationException {
-		/* Get a SAXParser from the SAXPArserFactory. */
 		final SAXParserFactory spf = SAXParserFactory.newInstance();
 		final SAXParser sp = spf.newSAXParser();
 
@@ -52,10 +51,6 @@ public class TMXLoader {
 		final TMXParser tmxParser = new TMXParser();
 		xr.setContentHandler(tmxParser);
 
-		/* Parse the xml-data from our URL. */
-		//			final char[] c = new char[100000];
-		//			new InputStreamReader(acon.getInputStream()).read(c, 0, 100000);
-		//			String s = new String(c);
 		xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
 
 		return tmxParser.getTMXTiledMap();

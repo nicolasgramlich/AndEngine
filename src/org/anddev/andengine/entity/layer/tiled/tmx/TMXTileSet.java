@@ -8,6 +8,7 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
+import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
 import android.content.Context;
@@ -36,16 +37,21 @@ public class TMXTileSet implements TMXConstants {
 	private int mTilesHorizontal;
 	@SuppressWarnings("unused")
 	private int mTilesVertical;
+	
+	private int mSpacing;
+	private int mMargin;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	TMXTileSet(final Attributes pAttributes) {
-		this.mFirstGID = Integer.parseInt(pAttributes.getValue("", TAG_TILESET_ATTRIBUTE_FIRSTGID));
+		this.mFirstGID = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_FIRSTGID, 1);
 		this.mName = pAttributes.getValue("", TAG_TILESET_ATTRIBUTE_NAME);
-		this.mTileWidth = Integer.parseInt(pAttributes.getValue("", TAG_TILESET_ATTRIBUTE_TILEWIDTH));
-		this.mTileHeight = Integer.parseInt(pAttributes.getValue("", TAG_TILESET_ATTRIBUTE_TILEHEIGHT));
+		this.mTileWidth = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_TILEWIDTH, -1);
+		this.mTileHeight = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_TILEHEIGHT, -1);
+		this.mSpacing = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_SPACING, 0);
+		this.mMargin = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_MARGIN, 0);
 	}
 
 	// ===========================================================
@@ -99,7 +105,11 @@ public class TMXTileSet implements TMXConstants {
 		final int localTileID = pGlobalTileID - this.mFirstGID;
 		final int tileIndexX = localTileID % this.mTilesHorizontal;
 		final int tileIndexY = localTileID / this.mTilesHorizontal;
-		return new TextureRegion(this.mTexture, this.mTileWidth * tileIndexX, this.mTileHeight * tileIndexY, this.mTileWidth, this.mTileHeight);
+		
+		final int texturePositionX = this.mMargin + (this.mSpacing + this.mTileWidth) * tileIndexX;
+		final int texturePositionY = this.mMargin + (this.mSpacing + this.mTileHeight) * tileIndexY;
+		
+		return new TextureRegion(this.mTexture, texturePositionX, texturePositionY, this.mTileWidth, this.mTileHeight);
 	}
 
 	// ===========================================================

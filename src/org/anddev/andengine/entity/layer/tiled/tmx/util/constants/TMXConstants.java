@@ -25,6 +25,8 @@ public interface TMXConstants {
 	public static final String TAG_TILESET_ATTRIBUTE_NAME = "name";
 	public static final String TAG_TILESET_ATTRIBUTE_TILEWIDTH = "tilewidth";
 	public static final String TAG_TILESET_ATTRIBUTE_TILEHEIGHT = "tileheight";
+	public static final String TAG_TILESET_ATTRIBUTE_SPACING = "spacing";
+	public static final String TAG_TILESET_ATTRIBUTE_MARGIN = "margin";
 
 	public static final String TAG_IMAGE = "image";
 	public static final String TAG_IMAGE_ATTRIBUTE_SOURCE = "source";

@@ -14,6 +14,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Base64;
 import org.anddev.andengine.util.Base64InputStream;
+import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
 /**
@@ -47,8 +48,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		
 		this.mTMXTiledMap = pTMXTiledMap;
 		this.mName = pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_NAME);
-		this.mTilesHorizontal = Integer.parseInt(pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_WIDTH));
-		this.mTilesVertical = Integer.parseInt(pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_HEIGHT));
+		this.mTilesHorizontal = SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_WIDTH, -1);
+		this.mTilesVertical = SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT, -1);
 		this.mTextureRegions = new TextureRegion[this.mTilesHorizontal][this.mTilesVertical];
 		
 		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTilesHorizontal;

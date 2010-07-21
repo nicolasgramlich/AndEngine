@@ -9,6 +9,7 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
 /**
@@ -46,10 +47,10 @@ public class TMXTiledMap implements TMXConstants {
 		if(this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL) == false) {
 			throw new IllegalArgumentException(TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
 		}
-		this.mTilesHorizontal = Integer.parseInt(pAttributes.getValue("", TAG_MAP_ATTRIBUTE_WIDTH));
-		this.mTilesVertical = Integer.parseInt(pAttributes.getValue("", TAG_MAP_ATTRIBUTE_HEIGHT));
-		this.mTileWidth = Integer.parseInt(pAttributes.getValue("", TAG_MAP_ATTRIBUTE_TILEWIDTH));
-		this.mTileHeight = Integer.parseInt(pAttributes.getValue("", TAG_MAP_ATTRIBUTE_TILEHEIGHT));
+		this.mTilesHorizontal = SAXUtils.getIntAttribute(pAttributes, TAG_MAP_ATTRIBUTE_WIDTH, -1);
+		this.mTilesVertical = SAXUtils.getIntAttribute(pAttributes, TAG_MAP_ATTRIBUTE_HEIGHT, -1);
+		this.mTileWidth = SAXUtils.getIntAttribute(pAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH, -1);
+		this.mTileHeight = SAXUtils.getIntAttribute(pAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT, -1);
 
 		this.mSharedVertexBuffer = new RectangleVertexBuffer(GL11.GL_STATIC_DRAW);
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mSharedVertexBuffer);

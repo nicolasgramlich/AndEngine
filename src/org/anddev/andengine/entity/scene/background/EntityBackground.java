@@ -1,12 +1,15 @@
 package org.anddev.andengine.entity.scene.background;
 
-import org.anddev.andengine.entity.sprite.Sprite;
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.IEntity;
 
 /**
  * @author Nicolas Gramlich
- * @since 14:01:43 - 19.07.2010
+ * @since 18:25:10 - 21.07.2010
  */
-public class SpriteBackground extends EntityBackground {
+public class EntityBackground extends ColorBackground {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,16 +18,19 @@ public class SpriteBackground extends EntityBackground {
 	// Fields
 	// ===========================================================
 
+	protected IEntity mEntity;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SpriteBackground(final Sprite pSprite) {
-		super(pSprite);
+	public EntityBackground(final IEntity pEntity) {
+		this.mEntity = pEntity;
 	}
 
-	public SpriteBackground(final float pRed, final float pGreen, final float pBlue, final Sprite pSprite) {
-		super(pRed, pGreen, pBlue, pSprite);
+	public EntityBackground(final float pRed, final float pGreen, final float pBlue, final IEntity pEntity) {
+		super(pRed, pGreen, pBlue);
+		this.mEntity = pEntity;
 	}
 
 	// ===========================================================
@@ -34,6 +40,12 @@ public class SpriteBackground extends EntityBackground {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public void onDraw(final GL10 pGL, final Camera pCamera) {
+		super.onDraw(pGL, pCamera);
+		this.mEntity.onDraw(pGL);
+	}
 
 	// ===========================================================
 	// Methods

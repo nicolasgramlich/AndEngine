@@ -14,6 +14,11 @@ public abstract class BaseEntity extends Entity implements IBaseEntity {
 	// Fields
 	// ===========================================================
 
+	protected float mRed = 1f;
+	protected float mGreen = 1f;
+	protected float mBlue = 1f;
+	protected float mAlpha = 1f;
+
 	protected final float mBaseX;
 	protected final float mBaseY;
 
@@ -56,6 +61,46 @@ public abstract class BaseEntity extends Entity implements IBaseEntity {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	@Override
+	public float getRed() {
+		return this.mRed;
+	}
+
+	@Override
+	public float getGreen() {
+		return this.mGreen;
+	}
+
+	@Override
+	public float getBlue() {
+		return this.mBlue;
+	}
+
+	@Override
+	public float getAlpha() {
+		return this.mAlpha;
+	}
+
+	@Override
+	public void setAlpha(final float pAlpha) {
+		this.mAlpha = pAlpha;
+	}
+
+	@Override
+	public void setColor(final float pRed, final float pGreen, final float pBlue) {
+		this.mRed = pRed;
+		this.mGreen = pGreen;
+		this.mBlue = pBlue;
+	}
+
+	@Override
+	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.mRed = pRed;
+		this.mGreen = pGreen;
+		this.mBlue = pBlue;
+		this.mAlpha = pAlpha;
+	}
 
 	@Override
 	public float getX() {

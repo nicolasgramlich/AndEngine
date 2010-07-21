@@ -30,11 +30,6 @@ public abstract class Shape extends BaseEntity implements IShape {
 
 	protected final VertexBuffer mVertexBuffer;
 
-	protected float mRed = 1;
-	protected float mGreen = 1;
-	protected float mBlue = 1;
-	protected float mAlpha = 1f;
-
 	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
@@ -56,48 +51,8 @@ public abstract class Shape extends BaseEntity implements IShape {
 	// ===========================================================
 
 	@Override
-	public float getRed() {
-		return this.mRed;
-	}
-
-	@Override
-	public float getGreen() {
-		return this.mGreen;
-	}
-
-	@Override
-	public float getBlue() {
-		return this.mBlue;
-	}
-
-	@Override
-	public float getAlpha() {
-		return this.mAlpha;
-	}
-
-	@Override
 	public VertexBuffer getVertexBuffer() {
 		return this.mVertexBuffer;
-	}
-
-	@Override
-	public void setAlpha(final float pAlpha) {
-		this.mAlpha = pAlpha;
-	}
-
-	@Override
-	public void setColor(final float pRed, final float pGreen, final float pBlue) {
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
-	}
-
-	@Override
-	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
-		this.mAlpha = pAlpha;
 	}
 
 	@Override

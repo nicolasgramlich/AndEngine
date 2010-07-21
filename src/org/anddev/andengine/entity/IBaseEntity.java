@@ -12,6 +12,15 @@ public interface IBaseEntity extends IEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public float getRed();
+	public float getGreen();
+	public float getBlue();
+	public float getAlpha();
+	public void setAlpha(final float pAlpha);
+
+	public void setColor(final float pRed, final float pGreen, final float pBlue);
+	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 	
 	public abstract float getX();
 	public abstract float getY();

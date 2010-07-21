@@ -4,6 +4,7 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureManager;
+import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
@@ -77,7 +78,7 @@ public class TMXTileSet implements TMXConstants {
 		final AssetTextureSource assetTextureSource = new AssetTextureSource(pContext, this.mImageSource);
 		this.mTilesHorizontal = assetTextureSource.getWidth() / this.mTileWidth;
 		this.mTilesVertical = assetTextureSource.getHeight() / this.mTileHeight;
-		this.mTexture = TextureFactory.createForTextureSourceSize(assetTextureSource);
+		this.mTexture = TextureFactory.createForTextureSourceSize(assetTextureSource, TextureOptions.DEFAULT);
 		TextureRegionFactory.createFromSource(this.mTexture, assetTextureSource, 0, 0);
 		pTextureManager.loadTexture(this.mTexture);
 	}

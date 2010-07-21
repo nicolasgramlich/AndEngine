@@ -153,7 +153,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		}
 	}
 
-	public void initializeTextureRegions(final String pString) throws IOException {
+	public void initializeTextureRegions(final String pString) throws IOException, IllegalArgumentException {
 		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
 		final int tilesHorizontal = this.mTilesHorizontal;
 		final int tilesVertical = this.mTilesVertical;

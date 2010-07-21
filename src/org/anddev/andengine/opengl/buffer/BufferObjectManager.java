@@ -56,6 +56,9 @@ public class BufferObjectManager {
 	}
 
 	public void loadBufferObject(final BufferObject pBufferObject) {
+		if(pBufferObject == null) {
+			return;
+		}
 		if(BufferObjectManager.mManagedBufferObjects.contains(pBufferObject) == false){
 			BufferObjectManager.mManagedBufferObjects.add(pBufferObject);
 			BufferObjectManager.mBufferObjectsToBeLoaded.add(pBufferObject);

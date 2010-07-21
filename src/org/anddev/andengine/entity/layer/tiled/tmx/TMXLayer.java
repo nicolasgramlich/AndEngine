@@ -93,8 +93,6 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
-		pGL.glPushMatrix();
-
 		final TextureRegion[][] textureRegions = this.mTextureRegions;
 
 		final int tilesHorizontal = this.mTilesHorizontal;
@@ -104,6 +102,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final int tileHeight = this.mTMXTiledMap.getTileHeight();
 		final int totalWidth = tilesHorizontal * tileWidth;
 		final int totalHeight = tilesVertical * tileHeight;
+
+		this.applySharedVertexBuffer(pGL);
 		
 		pGL.glTranslatef(totalWidth, totalHeight, 0);
 
@@ -114,10 +114,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 				pGL.glTranslatef(-tileWidth, 0, 0);
 
 				final TextureRegion textureRegion = textureRegions[x][y];
-				if(textureRegion != null) {
-					this.initDraw(pGL);
-					this.applySharedVertexBuffer(pGL);
-					
+				if(textureRegion != null) {					
 					textureRegion.onApply(pGL);
 
 					pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
@@ -126,8 +123,6 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 			pGL.glTranslatef(totalWidth, 0, 0);
 		}
-		
-		pGL.glPopMatrix();
 	}
 
 	@Override
@@ -138,13 +133,11 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	@Override
+	protected void onInitDraw(GL10 pGL) {
+		super.onInitDraw(pGL);
 
-	private void initDraw(final GL10 pGL) {
-		GLHelper.setColor(pGL, 0.5f, 0.5f, 0.5f, 0.5f);
-
-		GLHelper.enableVertexArray(pGL);
-		GLHelper.blendFunction(pGL, GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-		
 		GLHelper.enableTextures(pGL);
 		GLHelper.enableTexCoordArray(pGL);
 	}
@@ -160,11 +153,11 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		}
 	}
 
-	public void setData(final String pString) throws IOException {
+	public void initializeTextureRegions(final String pString) throws IOException {
 		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
 		final int tilesHorizontal = this.mTilesHorizontal;
 		final int tilesVertical = this.mTilesVertical;
-		final TextureRegion[][] globalTileIDs = this.mTextureRegions;
+		final TextureRegion[][] textureRegions = this.mTextureRegions;
 		final byte[] globalTileIDFetcher = new byte[4];
 
 		final DataInputStream dataIn = new DataInputStream(new GZIPInputStream(new Base64InputStream(new ByteArrayInputStream(pString.getBytes("UTF-8")), Base64.DEFAULT)));
@@ -177,7 +170,9 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 			globalTileIDFetcher[3] << 24;
 
 			if(globalTileID != 0) {
-				globalTileIDs[globalTileIDsRead / tilesHorizontal][globalTileIDsRead % tilesHorizontal] = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
+				final int x = globalTileIDsRead / tilesHorizontal;
+				final int y = globalTileIDsRead % tilesHorizontal;
+				textureRegions[x][y] = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
 			}
 			globalTileIDsRead++;
 		}

@@ -109,7 +109,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 		} else if(pLocalName.equals(TAG_DATA)){
 			final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
 			try {
-				tmxLayers.get(tmxLayers.size() - 1).setData(this.mStringBuilder.toString());
+				tmxLayers.get(tmxLayers.size() - 1).initializeTextureRegions(this.mStringBuilder.toString());
 			} catch (final IOException e) {
 				Debug.e(e);
 			}

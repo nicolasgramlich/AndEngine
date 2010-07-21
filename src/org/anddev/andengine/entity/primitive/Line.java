@@ -5,8 +5,9 @@ import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.collision.LineCollisionChecker;
 import org.anddev.andengine.collision.ShapeCollisionChecker;
+import org.anddev.andengine.entity.shape.GLShape;
 import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
 
@@ -14,7 +15,7 @@ import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
  * @author Nicolas Gramlich
  * @since 09:50:36 - 04.04.2010
  */
-public class Line extends Shape {
+public class Line extends GLShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -30,6 +31,8 @@ public class Line extends Shape {
 	
 	private float mLineWidth;
 
+	private final LineVertexBuffer mLineVertexBuffer;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -39,13 +42,15 @@ public class Line extends Shape {
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
-		super(pX1, pY1, new LineVertexBuffer(GL11.GL_STATIC_DRAW));
+		super(pX1, pY1);
 		
 		this.mX2 = pX2;
 		this.mY2 = pY2;
 		
 		this.mLineWidth = pLineWidth;
-		
+
+		this.mLineVertexBuffer = new LineVertexBuffer(GL11.GL_STATIC_DRAW);
+		BufferObjectManager.getActiveInstance().loadBufferObject(this.mLineVertexBuffer);
 		this.updateVertexBuffer();
 
 		final float width = this.getWidth();
@@ -162,12 +167,12 @@ public class Line extends Shape {
 
 	@Override
 	public LineVertexBuffer getVertexBuffer() {
-		return (LineVertexBuffer)super.getVertexBuffer();
+		return this.mLineVertexBuffer;
 	}
 
 	@Override
 	protected void onUpdateVertexBuffer() {
-		this.getVertexBuffer().update(0, 0, this.mX2 - this.mX, this.mY2 - this.mY);
+		this.mLineVertexBuffer.update(0, 0, this.mX2 - this.mX, this.mY2 - this.mY);
 	}
 
 	@Override

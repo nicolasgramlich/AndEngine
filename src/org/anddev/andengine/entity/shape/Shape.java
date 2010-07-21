@@ -3,14 +3,11 @@ package org.anddev.andengine.entity.shape;
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -60,8 +57,6 @@ public abstract class Shape extends Entity implements IShape {
 
 	private boolean mUpdatePhysics = true;
 
-	protected final VertexBuffer mVertexBuffer;
-
 	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
@@ -72,15 +67,12 @@ public abstract class Shape extends Entity implements IShape {
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final VertexBuffer pVertexBuffer) {
+	public Shape(final float pX, final float pY) {
 		this.mBaseX = pX;
 		this.mBaseY = pY;
 
 		this.mX = pX;
 		this.mY = pY;
-
-		this.mVertexBuffer = pVertexBuffer;
-		BufferObjectManager.getActiveInstance().loadBufferObject(this.mVertexBuffer);
 	}
 
 	// ===========================================================
@@ -351,11 +343,6 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	@Override
-	public VertexBuffer getVertexBuffer() {
-		return this.mVertexBuffer;
-	}
-
-	@Override
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
@@ -387,11 +374,16 @@ public abstract class Shape extends Entity implements IShape {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+		return false;
+	}
+
 	protected void onPositionChanged(){
 
 	}
 
-	protected abstract void onUpdateVertexBuffer();
+	protected abstract void onApplyVertices(final GL10 pGL);
 	protected abstract void drawVertices(final GL10 pGL);
 
 	@Override
@@ -438,81 +430,11 @@ public abstract class Shape extends Entity implements IShape {
 		pGL.glPopMatrix();
 	}
 
-	@Override
-	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		return false;
-	}
-
-	@Override
-	public void reset() {
-		super.reset();
-
-		this.mX = this.mBaseX;
-		this.mY = this.mBaseY;
-		this.mAccelerationX = 0;
-		this.mAccelerationY = 0;
-		this.mVelocityX = 0;
-		this.mVelocityY = 0;
-		this.mRotation = 0;
-		this.mAngularVelocity = 0;
-		this.mScaleX = 1;
-		this.mScaleY = 1;
-
-		this.onPositionChanged();
-
-		this.mRed = 1.0f;
-		this.mGreen = 1.0f;
-		this.mBlue = 1.0f;
-		this.mAlpha = 1.0f;
-
-		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
-		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
-
-		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
-		for(int i = shapeModifiers.size() - 1; i >= 0; i--) {
-			shapeModifiers.get(i).reset();
-		}
-	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	protected void updateVertexBuffer() {
-		this.onUpdateVertexBuffer();
-	}
-
-	private void updateShapeModifiers(final float pSecondsElapsed) {
-		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
-		final int shapeModifierCount = this.mShapeModifierCount;
-		if(shapeModifierCount > 0) {
-			for(int i = shapeModifierCount - 1; i >= 0; i--) {
-				final IShapeModifier shapeModifier = shapeModifiers.get(i);
-				shapeModifier.onUpdateShape(pSecondsElapsed, this);
-				if(shapeModifier.isFinished() && shapeModifier.isRemoveWhenFinished()) { // TODO <-- could be combined into one function.
-					this.mShapeModifierCount--;
-					shapeModifiers.remove(i);
-				}
-			}
-		}
-	}
-
 	protected void onInitDraw(final GL10 pGL) {
 		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 
 		GLHelper.enableVertexArray(pGL);
 		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
-	}
-
-	private void onApplyVertices(final GL10 pGL) {
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			final GL11 gl11 = (GL11)pGL;
-
-			this.mVertexBuffer.selectOnHardware(gl11);
-			GLHelper.vertexZeroPointer(gl11);
-		} else {
-			GLHelper.vertexPointer(pGL, this.getVertexBuffer().getFloatBuffer());
-		}
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {
@@ -551,6 +473,56 @@ public abstract class Shape extends Entity implements IShape {
 			pGL.glTranslatef(scaleCenterX, scaleCenterY, 0);
 			pGL.glScalef(scaleX, scaleY, 1);
 			pGL.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
+		}
+	}
+
+	@Override
+	public void reset() {
+		super.reset();
+
+		this.mX = this.mBaseX;
+		this.mY = this.mBaseY;
+		this.mAccelerationX = 0;
+		this.mAccelerationY = 0;
+		this.mVelocityX = 0;
+		this.mVelocityY = 0;
+		this.mRotation = 0;
+		this.mAngularVelocity = 0;
+		this.mScaleX = 1;
+		this.mScaleY = 1;
+
+		this.onPositionChanged();
+
+		this.mRed = 1.0f;
+		this.mGreen = 1.0f;
+		this.mBlue = 1.0f;
+		this.mAlpha = 1.0f;
+
+		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
+		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+
+		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
+		for(int i = shapeModifiers.size() - 1; i >= 0; i--) {
+			shapeModifiers.get(i).reset();
+		}
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	private void updateShapeModifiers(final float pSecondsElapsed) {
+		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
+		final int shapeModifierCount = this.mShapeModifierCount;
+		if(shapeModifierCount > 0) {
+			for(int i = shapeModifierCount - 1; i >= 0; i--) {
+				final IShapeModifier shapeModifier = shapeModifiers.get(i);
+				shapeModifier.onUpdateShape(pSecondsElapsed, this);
+				if(shapeModifier.isFinished() && shapeModifier.isRemoveWhenFinished()) { // TODO <-- could be combined into one function.
+					this.mShapeModifierCount--;
+					shapeModifiers.remove(i);
+				}
+			}
 		}
 	}
 

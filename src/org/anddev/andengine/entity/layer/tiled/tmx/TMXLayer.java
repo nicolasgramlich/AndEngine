@@ -8,8 +8,8 @@ import java.util.zip.GZIPInputStream;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
+import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Base64;
@@ -20,7 +20,7 @@ import org.xml.sax.Attributes;
  * @author Nicolas Gramlich
  * @since 20:27:31 - 20.07.2010
  */
-public class TMXLayer extends Entity implements TMXConstants {
+public class TMXLayer extends RectangularShape implements TMXConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -42,12 +42,28 @@ public class TMXLayer extends Entity implements TMXConstants {
 	// Constructors
 	// ===========================================================
 
-	TMXLayer(final TMXTiledMap pTMXTiledMap, final Attributes pAttributes) {
+	public TMXLayer(final TMXTiledMap pTMXTiledMap, final Attributes pAttributes) {
+		super(0, 0, 0, 0, null);
+		
 		this.mTMXTiledMap = pTMXTiledMap;
 		this.mName = pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_NAME);
 		this.mTilesHorizontal = Integer.parseInt(pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_WIDTH));
 		this.mTilesVertical = Integer.parseInt(pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_HEIGHT));
 		this.mTextureRegions = new TextureRegion[this.mTilesHorizontal][this.mTilesVertical];
+		
+		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTilesHorizontal;
+		final float width = super.mWidth;
+		super.mBaseWidth = width;
+
+		super.mHeight = pTMXTiledMap.getTileWidth() * this.mTilesHorizontal;
+		final float height = super.mHeight;
+		super.mBaseHeight = height;
+		
+		this.mRotationCenterX = width * 0.5f;
+		this.mRotationCenterY = height * 0.5f;
+
+		this.mScaleCenterX = this.mRotationCenterX;
+		this.mScaleCenterY = this.mRotationCenterY;
 	}
 
 	// ===========================================================
@@ -69,6 +85,11 @@ public class TMXLayer extends Entity implements TMXConstants {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	protected void onUpdateVertexBuffer() {
+		/* Nothing. */
+	}
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {

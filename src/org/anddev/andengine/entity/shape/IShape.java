@@ -3,7 +3,6 @@ package org.anddev.andengine.entity.shape;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
-import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -95,8 +94,6 @@ public interface IShape extends IEntity, ITouchArea {
 	public void removeShapeModifier(final IShapeModifier pShapeModifier);
 
 	public boolean collidesWith(final IShape pOtherShape);
-
-	public VertexBuffer getVertexBuffer();
 
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction);
 }

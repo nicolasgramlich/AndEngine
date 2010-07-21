@@ -3,13 +3,14 @@ package org.anddev.andengine.entity.shape;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
+import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
  * @author Nicolas Gramlich
  * @since 11:37:50 - 04.04.2010
  */
-public abstract class RectangularShape extends Shape {
+public abstract class RectangularShape extends GLShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,30 +24,40 @@ public abstract class RectangularShape extends Shape {
 
 	protected float mWidth;
 	protected float mHeight;
+	
+	private final VertexBuffer mVertexBuffer;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final VertexBuffer pVertexBuffer) {
-		super(pX, pY, pVertexBuffer);
+		super(pX, pY);
 
 		this.mBaseWidth = pWidth;
 		this.mBaseHeight = pHeight;
+
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
+		
+		this.mVertexBuffer = pVertexBuffer;
+		BufferObjectManager.getActiveInstance().loadBufferObject(this.mVertexBuffer);
 		
 		this.mRotationCenterX = pWidth * 0.5f;
 		this.mRotationCenterY = pHeight * 0.5f;
 			
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
-
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	@Override
+	public VertexBuffer getVertexBuffer() {
+		return this.mVertexBuffer;
+	}
 
 	@Override
 	public float getWidth() {

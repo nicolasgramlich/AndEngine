@@ -92,9 +92,9 @@ public abstract class BufferObject {
 
 			GLHelper.bindBuffer(pGL11, this.mHardwareBufferID);
 			GLHelper.bufferData(pGL11, this, this.mDrawType);
+		} else {
+			GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // TODO Does this always need to be binded, or are just for buffers of the same 'type'(texture/vertex)?
 		}
-
-		GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // TODO Does this always need to be binded, or are just for buffers of the same 'type'(texture/vertex)?
 	}
 
 	public void loadToHardware(final GL11 pGL11) {

@@ -33,7 +33,7 @@ public class ChaseCamera extends Camera {
 	// Getter & Setter
 	// ===========================================================
 
-	public void setChaseEntity(final IShape pChaseShape) {
+	public void setChaseShape(final IShape pChaseShape) {
 		this.mChaseShape = pChaseShape;
 	}
 

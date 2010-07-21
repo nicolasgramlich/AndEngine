@@ -44,7 +44,7 @@ public class AssetTextureSource implements ITextureSource {
 		try {
 			BitmapFactory.decodeStream(pContext.getAssets().open(pAssetPath), null, decodeOptions);
 		} catch (final IOException e) {
-			Debug.w("Texture asset not found, " + pAssetPath, e);
+			Debug.e("Texture asset not found, " + pAssetPath, e);
 		}
 		this.mWidth = decodeOptions.outWidth;
 		this.mHeight = decodeOptions.outHeight;

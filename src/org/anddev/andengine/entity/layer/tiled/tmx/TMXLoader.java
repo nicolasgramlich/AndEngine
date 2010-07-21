@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.anddev.andengine.opengl.texture.TextureManager;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -26,10 +27,18 @@ public class TMXLoader {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private final Context mContext;
+	private final TextureManager mTextureManager;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public TMXLoader(final Context pContext, final TextureManager pTextureManager) {
+		this.mContext = pContext;
+		this.mTextureManager = pTextureManager;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -43,17 +52,25 @@ public class TMXLoader {
 	// Methods
 	// ===========================================================
 
-	public TMXTiledMap load(final Context pContext, final InputStream pInputStream) throws IOException, SAXException, ParserConfigurationException {
-		final SAXParserFactory spf = SAXParserFactory.newInstance();
-		final SAXParser sp = spf.newSAXParser();
+	public TMXTiledMap load(final InputStream pInputStream) throws IOException {
+		try{
+			final SAXParserFactory spf = SAXParserFactory.newInstance();
+			final SAXParser sp = spf.newSAXParser();
 
-		final XMLReader xr = sp.getXMLReader();
-		final TMXParser tmxParser = new TMXParser();
-		xr.setContentHandler(tmxParser);
+			final XMLReader xr = sp.getXMLReader();
+			final TMXParser tmxParser = new TMXParser(this.mContext, this.mTextureManager);
+			xr.setContentHandler(tmxParser);
 
-		xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
+			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
 
-		return tmxParser.getTMXTiledMap();
+			return tmxParser.getTMXTiledMap();
+		} catch (final SAXException se) {
+			/* Doesn't happen. */
+			return null;
+		} catch (final ParserConfigurationException pe) {
+			/* Doesn't happen. */
+			return null;
+		}
 	}
 
 	// ===========================================================

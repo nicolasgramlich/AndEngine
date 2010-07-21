@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
+import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.util.Debug;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import android.content.Context;
 
 /**
  * @author Nicolas Gramlich
@@ -21,6 +24,12 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private final Context mContext;
+	private final TextureManager mTextureManager;
+
+	private TMXTiledMap mTMXTiledMap;
+	private final StringBuilder mStringBuilder = new StringBuilder();
 
 	@SuppressWarnings("unused")
 	private boolean mInMap;
@@ -39,18 +48,20 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	@SuppressWarnings("unused")
 	private boolean mInData;
 
-	private TMXTiledMap mTMXTiledMap;
-	private StringBuilder mStringBuilder = new StringBuilder();
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public TMXParser(final Context pContext, final TextureManager pTextureManager) {
+		this.mContext = pContext;
+		this.mTextureManager = pTextureManager;
+	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public TMXTiledMap getTMXTiledMap() {
+	TMXTiledMap getTMXTiledMap() {
 		return this.mTMXTiledMap;
 	}
 
@@ -69,10 +80,10 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 		} else if(pLocalName.equals(TAG_IMAGE)){
 			this.mInImage = true;
 			final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
-			tmxTileSets.get(tmxTileSets.size() - 1).setImageSource(pAttributes);
+			tmxTileSets.get(tmxTileSets.size() - 1).setImageSource(this.mContext, this.mTextureManager, pAttributes);
 		} else if(pLocalName.equals(TAG_LAYER)){
 			this.mInLayer = true;
-			this.mTMXTiledMap.addTMXLayer(new TMXLayer(pAttributes));
+			this.mTMXTiledMap.addTMXLayer(new TMXLayer(this.mTMXTiledMap, pAttributes));
 		} else if(pLocalName.equals(TAG_DATA)){
 			this.mInData = true;
 		} else {
@@ -99,7 +110,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
 			try {
 				tmxLayers.get(tmxLayers.size() - 1).setData(this.mStringBuilder.toString());
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				Debug.e(e);
 			}
 			this.mInData = false;

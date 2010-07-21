@@ -103,11 +103,11 @@ public class TMXTileSet implements TMXConstants {
 
 	public TextureRegion getTextureRegionFromGlobalTileID(final int pGlobalTileID) {
 		final int localTileID = pGlobalTileID - this.mFirstGID;
-		final int tileIndexX = localTileID % this.mTilesHorizontal;
-		final int tileIndexY = localTileID / this.mTilesHorizontal;
+		final int tileColumn = localTileID % this.mTilesHorizontal;
+		final int tileRow = localTileID / this.mTilesHorizontal;
 		
-		final int texturePositionX = this.mMargin + (this.mSpacing + this.mTileWidth) * tileIndexX;
-		final int texturePositionY = this.mMargin + (this.mSpacing + this.mTileHeight) * tileIndexY;
+		final int texturePositionX = this.mMargin + (this.mSpacing + this.mTileWidth) * tileColumn;
+		final int texturePositionY = this.mMargin + (this.mSpacing + this.mTileHeight) * tileRow;
 		
 		return new TextureRegion(this.mTexture, texturePositionX, texturePositionY, this.mTileWidth, this.mTileHeight);
 	}

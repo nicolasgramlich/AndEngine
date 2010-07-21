@@ -34,8 +34,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	private final String mName;
 	
-	private final int mTilesHorizontal;
-	private final int mTilesVertical;
+	private final int mTileColumns;
+	private final int mTileRows;
 	
 	private final TextureRegion[][] mTextureRegions;
 
@@ -48,15 +48,15 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		
 		this.mTMXTiledMap = pTMXTiledMap;
 		this.mName = pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_NAME);
-		this.mTilesHorizontal = SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_WIDTH, -1);
-		this.mTilesVertical = SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT, -1);
-		this.mTextureRegions = new TextureRegion[this.mTilesHorizontal][this.mTilesVertical];
+		this.mTileColumns = SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_WIDTH, -1);
+		this.mTileRows = SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT, -1);
+		this.mTextureRegions = new TextureRegion[this.mTileColumns][this.mTileRows];
 		
-		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTilesHorizontal;
+		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTileColumns;
 		final float width = super.mWidth;
 		super.mBaseWidth = width;
 
-		super.mHeight = pTMXTiledMap.getTileWidth() * this.mTilesHorizontal;
+		super.mHeight = pTMXTiledMap.getTileWidth() * this.mTileColumns;
 		final float height = super.mHeight;
 		super.mBaseHeight = height;
 		
@@ -75,12 +75,12 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		return this.mName;
 	}
 	
-	public int getTilesHorizontal() {
-		return this.mTilesHorizontal;
+	public int getTileColumns() {
+		return this.mTileColumns;
 	}
 	
-	public int getTilesVertical() {
-		return this.mTilesVertical;
+	public int getTileRows() {
+		return this.mTileRows;
 	}
 	
 	// ===========================================================
@@ -91,30 +91,40 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	protected void onUpdateVertexBuffer() {
 		/* Nothing. */
 	}
+	
+	@Override
+	protected void onInitDraw(GL10 pGL) {
+		super.onInitDraw(pGL);
+
+		GLHelper.enableTextures(pGL);
+		GLHelper.enableTexCoordArray(pGL);
+	}
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL) {
 		final TextureRegion[][] textureRegions = this.mTextureRegions;
 
-		final int tilesHorizontal = this.mTilesHorizontal;
-		final int tilesVertical = this.mTilesVertical;
+		final int tileColumns = this.mTileColumns;
+		final int tileRows = this.mTileRows;
 		
 		final int tileWidth = this.mTMXTiledMap.getTileWidth();
 		final int tileHeight = this.mTMXTiledMap.getTileHeight();
-		final int totalWidth = tilesHorizontal * tileWidth;
-		final int totalHeight = tilesVertical * tileHeight;
+		final int totalWidth = tileColumns * tileWidth;
+		final int totalHeight = tileRows * tileHeight;
 
 		this.applySharedVertexBuffer(pGL);
 		
 		pGL.glTranslatef(totalWidth, totalHeight, 0);
 
-		for(int y = tilesVertical - 1; y >= 0; y--) {
+		for(int row = tileRows - 1; row >= 0; row--) {
 			pGL.glTranslatef(0, -tileHeight, 0);
 
-			for(int x = tilesHorizontal - 1; x >= 0; x--) {
+			final TextureRegion[] textureRegionRow = textureRegions[row];
+			
+			for(int column = tileColumns - 1; column >= 0; column--) {
 				pGL.glTranslatef(-tileWidth, 0, 0);
 
-				final TextureRegion textureRegion = textureRegions[x][y];
+				final TextureRegion textureRegion = textureRegionRow[column];
 				if(textureRegion != null) {					
 					textureRegion.onApply(pGL);
 
@@ -134,14 +144,6 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	@Override
-	protected void onInitDraw(GL10 pGL) {
-		super.onInitDraw(pGL);
-
-		GLHelper.enableTextures(pGL);
-		GLHelper.enableTexCoordArray(pGL);
-	}
 
 	private void applySharedVertexBuffer(final GL10 pGL) {
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
@@ -156,8 +158,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	public void initializeTextureRegions(final String pString) throws IOException, IllegalArgumentException {
 		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
-		final int tilesHorizontal = this.mTilesHorizontal;
-		final int tilesVertical = this.mTilesVertical;
+		final int tilesHorizontal = this.mTileColumns;
+		final int tilesVertical = this.mTileRows;
 		final TextureRegion[][] textureRegions = this.mTextureRegions;
 		final byte[] globalTileIDFetcher = new byte[4];
 
@@ -165,15 +167,12 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 		int globalTileIDsRead = 0;
 		while(dataIn.read(globalTileIDFetcher) == BYTES_PER_GLOBALTILEID) {
-			final int globalTileID = globalTileIDFetcher[0] |
-			globalTileIDFetcher[1] << 8 |
-			globalTileIDFetcher[2] << 16 |
-			globalTileIDFetcher[3] << 24;
+			final int globalTileID = calculateGlobalTileID(globalTileIDFetcher);
 
 			if(globalTileID != 0) {
-				final int x = globalTileIDsRead / tilesHorizontal;
-				final int y = globalTileIDsRead % tilesHorizontal;
-				textureRegions[x][y] = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
+				final int column = globalTileIDsRead % tilesHorizontal;
+				final int row = globalTileIDsRead / tilesHorizontal;
+				textureRegions[row][column] = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
 			}
 			globalTileIDsRead++;
 		}
@@ -182,6 +181,10 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		if(globalTileIDsRead != expectedGlobalTileIDs) {
 			throw new IllegalArgumentException("Read: " + globalTileIDsRead + " GlobalTileIDs. Expected: " + expectedGlobalTileIDs);
 		}
+	}
+
+	private int calculateGlobalTileID(final byte[] globalTileIDFetcher) {
+		return globalTileIDFetcher[0] | globalTileIDFetcher[1] << 8 | globalTileIDFetcher[2] << 16 | globalTileIDFetcher[3] << 24;
 	}
 
 	// ===========================================================

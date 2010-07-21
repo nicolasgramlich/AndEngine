@@ -3,7 +3,7 @@ package org.anddev.andengine.engine.camera;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
-import org.anddev.andengine.entity.IBaseEntity;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -18,23 +18,23 @@ public class ChaseCamera extends Camera {
 	// Fields
 	// ===========================================================
 
-	private IBaseEntity mChaseEntity;
+	private IShape mChaseShape;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final IBaseEntity pChaseEntity) {
+	public ChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, final IShape pChaseShape) {
 		super(pX, pY, pWidth, pHeight);
-		this.mChaseEntity = pChaseEntity;
+		this.mChaseShape = pChaseShape;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public void setChaseEntity(final IBaseEntity pChaseEntity) {
-		this.mChaseEntity = pChaseEntity;
+	public void setChaseEntity(final IShape pChaseShape) {
+		this.mChaseShape = pChaseShape;
 	}
 
 	// ===========================================================
@@ -45,8 +45,8 @@ public class ChaseCamera extends Camera {
 	public void onUpdate(final float pSecondsElapsed) {
 		super.onUpdate(pSecondsElapsed);
 
-		if(this.mChaseEntity != null) {
-			final float[] centerCoordinates = this.mChaseEntity.getSceneCenterCoordinates();
+		if(this.mChaseShape != null) {
+			final float[] centerCoordinates = this.mChaseShape.getSceneCenterCoordinates();
 			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
 		}
 	}

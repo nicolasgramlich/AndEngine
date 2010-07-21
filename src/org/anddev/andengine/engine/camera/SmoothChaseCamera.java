@@ -3,7 +3,7 @@ package org.anddev.andengine.engine.camera;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
-import org.anddev.andengine.entity.IBaseEntity;
+import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
@@ -18,23 +18,23 @@ public class SmoothChaseCamera extends SmoothCamera {
 	// Fields
 	// ===========================================================
 
-	private IBaseEntity mChaseEntity;
+	private IShape mChaseShape;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SmoothChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, float pMaxVelocityX, float pMaxVelocityY, float pMaxZoomFactorChange, final IBaseEntity pChaseEntity) {
+	public SmoothChaseCamera(final float pX, final float pY, final float pWidth, final float pHeight, float pMaxVelocityX, float pMaxVelocityY, float pMaxZoomFactorChange, final IShape pChaseShape) {
 		super(pX, pY, pWidth, pHeight, pMaxVelocityX, pMaxVelocityY, pMaxZoomFactorChange);
-		this.mChaseEntity = pChaseEntity;
+		this.mChaseShape = pChaseShape;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public void setChaseEntity(final IBaseEntity pChaseEntity) {
-		this.mChaseEntity = pChaseEntity;
+	public void setChaseShape(final IShape pChaseShape) {
+		this.mChaseShape = pChaseShape;
 	}
 
 	// ===========================================================
@@ -45,8 +45,8 @@ public class SmoothChaseCamera extends SmoothCamera {
 	public void onUpdate(final float pSecondsElapsed) {
 		super.onUpdate(pSecondsElapsed);
 
-		if(this.mChaseEntity != null) {
-			final float[] centerCoordinates = this.mChaseEntity.getSceneCenterCoordinates();
+		if(this.mChaseShape != null) {
+			final float[] centerCoordinates = this.mChaseShape.getSceneCenterCoordinates();
 			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
 		}
 	}

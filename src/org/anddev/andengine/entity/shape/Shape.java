@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.entity.BaseEntity;
+import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
@@ -16,7 +16,7 @@ import org.anddev.andengine.opengl.vertex.VertexBuffer;
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class Shape extends BaseEntity implements IShape {
+public abstract class Shape extends Entity implements IShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,6 +27,38 @@ public abstract class Shape extends BaseEntity implements IShape {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private float mRed = 1f;
+	private float mGreen = 1f;
+	private float mBlue = 1f;
+	private float mAlpha = 1f;
+
+	private final float mBaseX;
+	private final float mBaseY;
+
+	protected float mX;
+	protected float mY;
+
+	private float mAccelerationX = 0;
+	private float mAccelerationY = 0;
+
+	private float mVelocityX = 0;
+	private float mVelocityY = 0;
+
+	private float mRotation = 0;
+
+	private float mAngularVelocity = 0;
+
+	protected float mRotationCenterX = 0;
+	protected float mRotationCenterY = 0;
+
+	private float mScaleX = 1f;
+	private float mScaleY = 1f;
+
+	protected float mScaleCenterX = 0;
+	protected float mScaleCenterY = 0;
+
+	private boolean mUpdatePhysics = true;
 
 	protected final VertexBuffer mVertexBuffer;
 
@@ -41,7 +73,12 @@ public abstract class Shape extends BaseEntity implements IShape {
 	// ===========================================================
 
 	public Shape(final float pX, final float pY, final VertexBuffer pVertexBuffer) {
-		super(pX, pY);
+		this.mBaseX = pX;
+		this.mBaseY = pY;
+
+		this.mX = pX;
+		this.mY = pY;
+
 		this.mVertexBuffer = pVertexBuffer;
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mVertexBuffer);
 	}
@@ -49,6 +86,269 @@ public abstract class Shape extends BaseEntity implements IShape {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	@Override
+	public float getRed() {
+		return this.mRed;
+	}
+
+	@Override
+	public float getGreen() {
+		return this.mGreen;
+	}
+
+	@Override
+	public float getBlue() {
+		return this.mBlue;
+	}
+
+	@Override
+	public float getAlpha() {
+		return this.mAlpha;
+	}
+
+	@Override
+	public void setAlpha(final float pAlpha) {
+		this.mAlpha = pAlpha;
+	}
+
+	@Override
+	public void setColor(final float pRed, final float pGreen, final float pBlue) {
+		this.mRed = pRed;
+		this.mGreen = pGreen;
+		this.mBlue = pBlue;
+	}
+
+	@Override
+	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.mRed = pRed;
+		this.mGreen = pGreen;
+		this.mBlue = pBlue;
+		this.mAlpha = pAlpha;
+	}
+
+	@Override
+	public float getX() {
+		return this.mX;
+	}
+
+	@Override
+	public float getY() {
+		return this.mY;
+	}
+
+	@Override
+	public float getBaseX() {
+		return this.mBaseX;
+	}
+
+	@Override
+	public float getBaseY() {
+		return this.mBaseY;
+	}
+
+	@Override
+	public void setPosition(final IShape pOtherShape) {
+		this.setPosition(pOtherShape.getX(), pOtherShape.getY());
+	}
+
+	@Override
+	public void setPosition(final float pX, final float pY) {
+		this.mX = pX;
+		this.mY = pY;
+		this.onPositionChanged();
+	}
+
+	@Override
+	public void setBasePosition() {
+		this.mX = this.mBaseX;
+		this.mY = this.mBaseY;
+		this.onPositionChanged();
+	}
+
+	@Override
+	public float getVelocityX() {
+		return this.mVelocityX;
+	}
+
+	@Override
+	public float getVelocityY() {
+		return this.mVelocityY;
+	}
+
+	@Override
+	public void setVelocityX(final float pVelocityX) {
+		this.mVelocityX = pVelocityX;
+	}
+
+	@Override
+	public void setVelocityY(final float pVelocityY) {
+		this.mVelocityY = pVelocityY;
+	}
+
+	@Override
+	public void setVelocity(final float pVelocity) {
+		this.mVelocityX = pVelocity;
+		this.mVelocityY = pVelocity;
+	}
+
+	@Override
+	public void setVelocity(final float pVelocityX, final float pVelocityY) {
+		this.mVelocityX = pVelocityX;
+		this.mVelocityY = pVelocityY;
+	}
+
+	@Override
+	public float getAccelerationX() {
+		return this.mAccelerationX;
+	}
+
+	@Override
+	public float getAccelerationY() {
+		return this.mAccelerationY;
+	}
+
+	@Override
+	public void setAccelerationX(final float pAccelerationX) {
+		this.mAccelerationX = pAccelerationX;
+	}
+
+	@Override
+	public void setAccelerationY(final float pAccelerationY) {
+		this.mAccelerationY = pAccelerationY;
+	}
+
+	@Override
+	public void setAcceleration(final float pAccelerationX, final float pAccelerationY) {
+		this.mAccelerationX = pAccelerationX;
+		this.mAccelerationY = pAccelerationY;
+	}
+
+	@Override
+	public void setAcceleration(final float pAcceleration) {
+		this.mAccelerationX = pAcceleration;
+		this.mAccelerationY = pAcceleration;
+	}
+
+	@Override
+	public void accelerate(final float pAccelerationX, final float pAccelerationY) {
+		this.mAccelerationX += pAccelerationX;
+		this.mAccelerationY += pAccelerationY;
+	}
+
+	@Override
+	public float getRotation() {
+		return this.mRotation;
+	}
+
+	@Override
+	public void setRotation(final float pRotation) {
+		this.mRotation = pRotation;
+	}
+
+	@Override
+	public float getAngularVelocity() {
+		return this.mAngularVelocity;
+	}
+
+	@Override
+	public void setAngularVelocity(final float pAngularVelocity) {
+		this.mAngularVelocity = pAngularVelocity;
+	}
+
+	@Override
+	public float getRotationCenterX() {
+		return this.mRotationCenterX;
+	}
+
+	@Override
+	public float getRotationCenterY() {
+		return this.mRotationCenterY;
+	}
+
+	@Override
+	public void setRotationCenterX(final float pRotationCenterX) {
+		this.mRotationCenterX = pRotationCenterX;
+	}
+
+	@Override
+	public void setRotationCenterY(final float pRotationCenterY) {
+		this.mRotationCenterY = pRotationCenterY;
+	}
+
+	@Override
+	public void setRotationCenter(final float pRotationCenterX, final float pRotationCenterY) {
+		this.mRotationCenterX = pRotationCenterX;
+		this.mRotationCenterY = pRotationCenterY;
+	}
+
+	@Override
+	public float getScaleX() {
+		return this.mScaleX;
+	}
+
+	@Override
+	public float getScaleY() {
+		return this.mScaleY;
+	}
+
+	@Override
+	public void setScaleX(final float pScaleX) {
+		this.mScaleX = pScaleX;
+	}
+
+	@Override
+	public void setScaleY(final float pScaleY) {
+		this.mScaleY = pScaleY;
+	}
+
+	@Override
+	public void setScale(final float pScale) {
+		this.mScaleX = pScale;
+		this.mScaleY = pScale;
+	}
+
+	@Override
+	public void setScale(final float pScaleX, final float pScaleY) {
+		this.mScaleX = pScaleX;
+		this.mScaleY = pScaleY;
+	}
+
+	@Override
+	public float getScaleCenterX() {
+		return this.mScaleCenterX;
+	}
+
+	@Override
+	public float getScaleCenterY() {
+		return this.mScaleCenterY;
+	}
+
+	@Override
+	public void setScaleCenterX(final float pScaleCenterX) {
+		this.mScaleCenterX = pScaleCenterX;
+	}
+
+	@Override
+	public void setScaleCenterY(final float pScaleCenterY) {
+		this.mScaleCenterY = pScaleCenterY;
+	}
+
+	@Override
+	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY) {
+		this.mScaleCenterX = pScaleCenterX;
+		this.mScaleCenterY = pScaleCenterY;
+	}
+
+	@Override
+	public boolean isUpdatePhysics() {
+		return this.mUpdatePhysics;
+	}
+
+	@Override
+	public void setUpdatePhysics(final boolean pUpdatePhysicsSelf) {
+		this.mUpdatePhysics = pUpdatePhysicsSelf;
+	}
 
 	@Override
 	public VertexBuffer getVertexBuffer() {
@@ -87,12 +387,39 @@ public abstract class Shape extends BaseEntity implements IShape {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected void onPositionChanged(){
+
+	}
+
 	protected abstract void onUpdateVertexBuffer();
 	protected abstract void drawVertices(final GL10 pGL);
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
+		if(this.mUpdatePhysics) {
+			/* Apply linear acceleration. */
+			final float accelerationX = this.mAccelerationX;
+			final float accelerationY = this.mAccelerationY;
+			if(accelerationX != 0 || accelerationY != 0) {
+				this.mVelocityX += accelerationX * pSecondsElapsed;
+				this.mVelocityY += accelerationY * pSecondsElapsed;
+			}
+
+			/* Apply angular velocity. */
+			final float angularVelocity = this.mAngularVelocity;
+			if(angularVelocity != 0) {
+				this.mRotation += angularVelocity * pSecondsElapsed;
+			}
+
+			/* Apply linear velocity. */
+			final float velocityX = this.mVelocityX;
+			final float velocityY = this.mVelocityY;
+			if(velocityX != 0 || velocityY != 0) {
+				this.mX += velocityX * pSecondsElapsed;
+				this.mY += velocityY * pSecondsElapsed;
+				this.onPositionChanged();
+			}
+		}
 
 		this.updateShapeModifiers(pSecondsElapsed);
 	}
@@ -110,7 +437,7 @@ public abstract class Shape extends BaseEntity implements IShape {
 		this.drawVertices(pGL);
 		pGL.glPopMatrix();
 	}
-	
+
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		return false;
@@ -119,6 +446,20 @@ public abstract class Shape extends BaseEntity implements IShape {
 	@Override
 	public void reset() {
 		super.reset();
+
+		this.mX = this.mBaseX;
+		this.mY = this.mBaseY;
+		this.mAccelerationX = 0;
+		this.mAccelerationY = 0;
+		this.mVelocityX = 0;
+		this.mVelocityY = 0;
+		this.mRotation = 0;
+		this.mAngularVelocity = 0;
+		this.mScaleX = 1;
+		this.mScaleY = 1;
+
+		this.onPositionChanged();
+
 		this.mRed = 1.0f;
 		this.mGreen = 1.0f;
 		this.mBlue = 1.0f;
@@ -188,7 +529,7 @@ public abstract class Shape extends BaseEntity implements IShape {
 
 	protected void applyRotation(final GL10 pGL) {
 		final float rotation = this.mRotation;
-		
+
 		if(rotation != 0) {
 			final float rotationCenterX = this.mRotationCenterX;
 			final float rotationCenterY = this.mRotationCenterY;
@@ -202,7 +543,7 @@ public abstract class Shape extends BaseEntity implements IShape {
 	protected void applyScale(final GL10 pGL) {
 		final float scaleX = this.mScaleX;
 		final float scaleY = this.mScaleY;
-		
+
 		if(scaleX != 1 || scaleY != 1) {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;

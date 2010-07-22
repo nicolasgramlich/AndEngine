@@ -2,6 +2,8 @@ package org.anddev.andengine.entity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
+
 
 /**
  * @author Nicolas Gramlich
@@ -47,12 +49,12 @@ public abstract class Entity implements IEntity {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onManagedDraw(final GL10 pGL);
+	protected abstract void onManagedDraw(final GL10 pGL, final Camera pCamera);
 
 	@Override
-	public final void onDraw(final GL10 pGL) {
+	public final void onDraw(final GL10 pGL, final Camera pCamera) {
 		if(this.mVisible) {
-			this.onManagedDraw(pGL);
+			this.onManagedDraw(pGL, pCamera);
 		}
 	}
 

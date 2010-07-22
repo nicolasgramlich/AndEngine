@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.layer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.IEntityMatcher;
@@ -48,11 +49,11 @@ public class FixedCapacityLayer extends Entity implements ILayer {
 	}
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL) {
+	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		final IEntity[] entities = this.mEntities;
 		final int entityCount = this.mEntityCount;
 		for(int i = 0; i < entityCount; i++) {
-			entities[i].onDraw(pGL);
+			entities[i].onDraw(pGL, pCamera);
 		}
 	}
 

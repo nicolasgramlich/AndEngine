@@ -6,7 +6,6 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.SplitScreenEngineOptions;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
  * @author Nicolas Gramlich
@@ -102,13 +101,8 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		{
 			pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
 			pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
-			
-			super.mScene.drawBackground(pGL, firstCamera);
 
-			firstCamera.onApplyMatrix(pGL);
-			GLHelper.setModelViewIdentityMatrix(pGL);
-
-			super.mScene.onDraw(pGL);
+			super.mScene.onDraw(pGL, firstCamera);
 			firstCamera.onDrawHUD(pGL);
 		}
 
@@ -116,13 +110,8 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		{
 			pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 			pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
-			
-			this.mScene.drawBackground(pGL, secondCamera);
 
-			secondCamera.onApplyMatrix(pGL);
-			GLHelper.setModelViewIdentityMatrix(pGL);
-
-			this.mSecondScene.onDraw(pGL);
+			this.mSecondScene.onDraw(pGL, secondCamera);
 			secondCamera.onDrawHUD(pGL);
 		}
 		

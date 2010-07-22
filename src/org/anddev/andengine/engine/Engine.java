@@ -486,12 +486,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	protected void onDrawScene(final GL10 pGL) {
 		final Camera camera = this.getCamera();
 
-		this.mScene.drawBackground(pGL, camera);
-
-		camera.onApplyMatrix(pGL);
-		GLHelper.setModelViewIdentityMatrix(pGL);
-
-		this.mScene.onDraw(pGL);
+		this.mScene.onDraw(pGL, camera);
+		
 		camera.onDrawHUD(pGL);
 	}
 

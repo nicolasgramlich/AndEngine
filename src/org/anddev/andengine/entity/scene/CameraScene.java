@@ -84,7 +84,7 @@ public class CameraScene extends Scene {
 	}
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL) {
+	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		if(this.mCamera != null) {
 			pGL.glMatrixMode(GL10.GL_PROJECTION);
 			this.mCamera.onApplyPositionIndependentMatrix(pGL);
@@ -93,7 +93,7 @@ public class CameraScene extends Scene {
 				pGL.glPushMatrix();
 				pGL.glLoadIdentity();
 
-				super.onManagedDraw(pGL);
+				super.onManagedDraw(pGL, pCamera);
 
 				pGL.glPopMatrix();
 			}

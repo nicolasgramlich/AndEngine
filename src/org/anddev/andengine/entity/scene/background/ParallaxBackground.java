@@ -123,7 +123,7 @@ public class ParallaxBackground extends ColorBackground {
 				float currentMaxX = baseOffset;
 
 				do {
-					this.mShape.onDraw(pGL);
+					this.mShape.onDraw(pGL, pCamera);
 					pGL.glTranslatef(shapeWidthScaled, 0, 0);
 					currentMaxX += shapeWidthScaled;
 				} while(currentMaxX < cameraWidth);

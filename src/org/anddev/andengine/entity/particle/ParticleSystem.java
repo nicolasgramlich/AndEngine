@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.particle.modifier.IParticleInitializer;
 import org.anddev.andengine.entity.particle.modifier.IParticleModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
@@ -70,10 +71,10 @@ public class ParticleSystem extends Rectangle {
 	}
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL) {
+	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		final ArrayList<Particle> particles = this.mParticles;
 		for(int i = particles.size() - 1; i >= 0; i--) {
-			particles.get(i).onDraw(pGL);
+			particles.get(i).onDraw(pGL, pCamera);
 		}
 	}
 

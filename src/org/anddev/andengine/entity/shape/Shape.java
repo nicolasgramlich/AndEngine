@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 import org.anddev.andengine.input.touch.TouchEvent;
@@ -417,7 +418,8 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL) {
+	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
+		// TODO Test if visibility checks increase or decrease performance.
 		this.onInitDraw(pGL);
 
 		pGL.glPushMatrix();

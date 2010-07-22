@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.IEntityMatcher;
@@ -57,11 +58,11 @@ public class DynamicCapacityLayer extends Entity implements ILayer {
 	}
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL) {
+	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		final int entityCount = entities.size();
 		for(int i = 0; i < entityCount; i++) {
-			entities.get(i).onDraw(pGL);
+			entities.get(i).onDraw(pGL, pCamera);
 		}
 	}
 

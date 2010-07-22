@@ -2,6 +2,7 @@ package org.anddev.andengine.entity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 
 
@@ -18,5 +19,5 @@ public interface IEntity extends IUpdateHandler {
 	// Methods
 	// ===========================================================
 
-	public void onDraw(final GL10 pGL);
+	public void onDraw(final GL10 pGL, final Camera pCamera);
 }

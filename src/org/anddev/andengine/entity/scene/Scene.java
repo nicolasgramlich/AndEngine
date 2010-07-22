@@ -225,13 +225,21 @@ public class Scene extends Entity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL) {
+	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		final Scene childScene = this.mChildScene;
 		if(childScene == null || !this.mChildSceneModalDraw) {
-			this.drawLayers(pGL);
+			pCamera.onApplyPositionIndependentMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
+
+			this.mBackground.onDraw(pGL, pCamera);
+
+			pCamera.onApplyMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
+			
+			this.drawLayers(pGL, pCamera);
 		}
 		if(childScene != null) {
-			childScene.onDraw(pGL);
+			childScene.onDraw(pGL, pCamera);
 		}
 	}
 
@@ -374,19 +382,11 @@ public class Scene extends Entity {
 		}
 	}
 
-	public void drawBackground(final GL10 pGL, final Camera pCamera) {
-		if(this.mChildScene == null || !this.mChildSceneModalDraw) {
-			pCamera.onApplyPositionIndependentMatrix(pGL);
-			GLHelper.setModelViewIdentityMatrix(pGL);
-			this.mBackground.onDraw(pGL, pCamera);
-		}
-	}
-
-	private void drawLayers(final GL10 pGL) {
+	private void drawLayers(final GL10 pGL, final Camera pCamera) {
 		final ILayer[] layers = this.mLayers;
 		final int layerCount = this.mLayerCount;
 		for(int i = 0; i < layerCount; i++) {
-			layers[i].onDraw(pGL);
+			layers[i].onDraw(pGL, pCamera);
 		}
 	}
 

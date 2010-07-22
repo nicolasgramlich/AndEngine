@@ -6,6 +6,7 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
@@ -47,7 +48,7 @@ public class ScreenCapture extends Entity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(GL10 pGL) {
+	protected void onManagedDraw(GL10 pGL, Camera pCamera) {
 		if(this.mScreenCapturePending) {
 			saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
 
@@ -82,6 +83,7 @@ public class ScreenCapture extends Entity {
 	}
 
 	private static Bitmap capture(final int pX, final int pY, final int pWidth, final int pHeight, final GL10 pGL) {
+		// TODO FIXME Use this code http://blog.javia.org/android-opengl-es-screenshot/ and fix bugs.
 		final int b[] = new int[pWidth * (pY + pHeight)];
 		final int bt[] = new int[pWidth * pHeight];
 		final IntBuffer ib = IntBuffer.wrap(b);

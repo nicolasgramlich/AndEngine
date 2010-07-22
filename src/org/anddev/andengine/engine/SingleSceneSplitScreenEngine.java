@@ -72,6 +72,8 @@ public class SingleSceneSplitScreenEngine extends Engine {
 			pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
 			pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
 
+			super.mScene.drawBackground(pGL, firstCamera);
+
 			firstCamera.onApplyMatrix(pGL);
 			GLHelper.setModelViewIdentityMatrix(pGL);
 
@@ -83,6 +85,8 @@ public class SingleSceneSplitScreenEngine extends Engine {
 		{
 			pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 			pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+
+			super.mScene.drawBackground(pGL, secondCamera);
 
 			secondCamera.onApplyMatrix(pGL);
 			GLHelper.setModelViewIdentityMatrix(pGL);

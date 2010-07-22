@@ -88,6 +88,9 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected void onDrawScene(final GL10 pGL) {
+		final Camera firstCamera = this.getFirstCamera();
+		final Camera secondCamera = this.getSecondCamera();
+		
 		final int surfaceWidth = this.mSurfaceWidth;
 		final int surfaceWidthHalf = surfaceWidth >> 1;
 
@@ -99,24 +102,28 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		{
 			pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
 			pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
+			
+			super.mScene.drawBackground(pGL, firstCamera);
 
-			this.getFirstCamera().onApplyMatrix(pGL);
+			firstCamera.onApplyMatrix(pGL);
 			GLHelper.setModelViewIdentityMatrix(pGL);
 
 			super.mScene.onDraw(pGL);
-			this.getFirstCamera().onDrawHUD(pGL);
+			firstCamera.onDrawHUD(pGL);
 		}
 
 		/* Second Screen. With second camera, on the right half of the screens width. */
 		{
 			pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 			pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+			
+			this.mScene.drawBackground(pGL, secondCamera);
 
-			this.getSecondCamera().onApplyMatrix(pGL);
+			secondCamera.onApplyMatrix(pGL);
 			GLHelper.setModelViewIdentityMatrix(pGL);
 
 			this.mSecondScene.onDraw(pGL);
-			this.getSecondCamera().onDrawHUD(pGL);
+			secondCamera.onDrawHUD(pGL);
 		}
 		
 		pGL.glDisable(GL10.GL_SCISSOR_TEST);

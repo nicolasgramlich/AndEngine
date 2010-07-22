@@ -1,9 +1,12 @@
 package org.anddev.andengine.entity.layer;
 
+import java.util.ArrayList;
+
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.util.IEntityMatcher;
 
 /**
@@ -49,6 +52,12 @@ public interface ILayer extends IEntity {
 	 * Update-Thread or the GL-Thread!</b>
 	 */
 	public abstract boolean removeEntity(final IEntityMatcher pEntityMatcher);
+
+	public ArrayList<ITouchArea> getTouchAreas();
+
+	public void registerTouchArea(final ITouchArea pTouchArea);
+
+	public void unregisterTouchArea(final ITouchArea pTouchArea);
 	
 	public int getEntityCount();
 

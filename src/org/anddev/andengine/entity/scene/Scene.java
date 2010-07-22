@@ -235,7 +235,7 @@ public class Scene extends Entity {
 
 			pCamera.onApplyMatrix(pGL);
 			GLHelper.setModelViewIdentityMatrix(pGL);
-			
+
 			this.drawLayers(pGL, pCamera);
 		}
 		if(childScene != null) {
@@ -269,46 +269,60 @@ public class Scene extends Entity {
 				return false;
 			}
 		}
+		
+		final float sceneTouchEventX = pSceneTouchEvent.getX();
+		final float sceneTouchEventY = pSceneTouchEvent.getY();
+
+		/* First give the layers a chance to handle their TouchAreas. */
+		{
+			final int layerCount = this.mLayerCount;
+			final ILayer[] layers = this.mLayers;
+			if(this.mOnAreaTouchTraversalBackToFront) { /* Back to Front. */
+				for(int i = 0; i < layerCount; i++) {
+					final ILayer layer = layers[i];
+					final ArrayList<ITouchArea> layerTouchAreas = layer.getTouchAreas();
+					final int layerTouchAreaCount = layerTouchAreas.size();
+					if(layerTouchAreaCount > 0) {
+						for(int j = 0; j < layerTouchAreaCount; j++) {
+							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
+							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
+								return onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
+							}
+						}
+					}
+				}
+			} else { /* Front to back. */
+				for(int i = layerCount - 1; i >= 0; i--) {
+					final ILayer layer = layers[i];
+					final ArrayList<ITouchArea> layerTouchAreas = layer.getTouchAreas();
+					final int layerTouchAreaCount = layerTouchAreas.size();
+					if(layerTouchAreaCount > 0) {
+						for(int j = layerTouchAreaCount - 1; j >= 0; j--) {
+							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
+							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
+								return onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
+							}
+						}
+					}
+				}
+			}
+		}
 
 		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
 		final int touchAreaCount = touchAreas.size();
 		if(touchAreaCount > 0) {
-			final float sceneTouchEventX = pSceneTouchEvent.getX();
-			final float sceneTouchEventY = pSceneTouchEvent.getY();
-			if(this.mOnAreaTouchTraversalBackToFront) {
+			if(this.mOnAreaTouchTraversalBackToFront) { /* Back to Front. */
 				for(int i = 0; i < touchAreaCount; i++) {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						final float[] touchAreaLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
-						final float touchAreaLocalX = touchAreaLocalCoordinates[VERTEX_INDEX_X];
-						final float touchAreaLocalY = touchAreaLocalCoordinates[VERTEX_INDEX_Y];
-
-						final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
-						if(handledSelf) {
-							return true;
-						} else if(this.mOnAreaTouchListener != null) {
-							return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, touchArea, touchAreaLocalX, touchAreaLocalY);
-						} else {
-							return false;
-						}
+						return onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
 					}
 				}
 			} else { /* Front to back. */
 				for(int i = touchAreaCount - 1; i >= 0; i--) {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						final float[] pLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
-						final float touchAreaLocalX = pLocalCoordinates[VERTEX_INDEX_X];
-						final float touchAreaLocalY = pLocalCoordinates[VERTEX_INDEX_Y];
-
-						final boolean handled = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
-						if(handled) {
-							return true;
-						} else if(this.mOnAreaTouchListener != null) {
-							return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, touchArea, touchAreaLocalX, touchAreaLocalY);
-						} else {
-							return false;
-						}
+						return onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
 					}
 				}
 			}
@@ -316,6 +330,21 @@ public class Scene extends Entity {
 		/* If no area was touched, the Scene itself was touched as a fallback. */
 		if(this.mOnSceneTouchListener != null){
 			return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneTouchEvent);
+		} else {
+			return false;
+		}
+	}
+
+	private boolean onAreaTouchEvent(final TouchEvent pSceneTouchEvent, final float sceneTouchEventX, final float sceneTouchEventY, final ITouchArea touchArea) {
+		final float[] touchAreaLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
+		final float touchAreaLocalX = touchAreaLocalCoordinates[VERTEX_INDEX_X];
+		final float touchAreaLocalY = touchAreaLocalCoordinates[VERTEX_INDEX_Y];
+
+		final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
+		if(handledSelf) {
+			return true;
+		} else if(this.mOnAreaTouchListener != null) {
+			return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, touchArea, touchAreaLocalX, touchAreaLocalY);
 		} else {
 			return false;
 		}
@@ -429,7 +458,7 @@ public class Scene extends Entity {
 		public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
 
 		/**
-		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.
+		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)} or to a {@link ILayer} via {@link ILayer#registerTouchArea(ITouchArea)}.
 		 * @param pSceneTouchEvent
 		 * @return <code>true</code> if the event was handled (that means {@link IOnAreaTouchListener} of the {@link Scene} will not be fired!), otherwise <code>false</code>.
 		 */

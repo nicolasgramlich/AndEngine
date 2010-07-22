@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.IEntityMatcher;
 
@@ -14,7 +13,7 @@ import org.anddev.andengine.util.IEntityMatcher;
  * @author Nicolas Gramlich
  * @since 12:47:43 - 08.03.2010
  */
-public class DynamicCapacityLayer extends Entity implements ILayer {
+public class DynamicCapacityLayer extends BaseLayer {
 	// ===========================================================
 	// Constants
 	// ===========================================================

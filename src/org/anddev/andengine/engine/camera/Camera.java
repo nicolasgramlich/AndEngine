@@ -139,7 +139,8 @@ public class Camera implements IUpdateHandler {
 		final float otherRight = pRectangularShape.getWidthScaled() + otherLeft;
 		final float otherBottom = pRectangularShape.getHeightScaled() + otherTop;
 
-		return BaseCollisionChecker.checkAxisAlignedRectangleCollision(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY(), otherLeft, otherTop, otherRight, otherBottom); // TODO Should also use RectangularShapeCollisionChecker
+		 // TODO Should also use RectangularShapeCollisionChecker
+		return BaseCollisionChecker.checkAxisAlignedRectangleCollision(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY(), otherLeft, otherTop, otherRight, otherBottom);
 	}
 
 	public void onApplyMatrix(final GL10 pGL) {

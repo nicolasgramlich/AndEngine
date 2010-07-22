@@ -118,23 +118,23 @@ public class MathUtils {
 	public static final float arrayAverage(final float[] pValues) {
 		return arraySum(pValues) / pValues.length;
 	}
-	
+
 	public static float[] rotateAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
 		if(pRotation != 0) {
 			final float rotationRad = MathUtils.degToRad(pRotation);
 			final float sinRotationRad = FloatMath.sin(rotationRad);
 			final float cosRotationInRad = FloatMath.cos(rotationRad);
-			
+
 			for(int i = pVertices.length - 2; i >= 0; i -= 2) {
-				float pX = pVertices[i];
-				float pY = pVertices[i + 1];
+				final float pX = pVertices[i];
+				final float pY = pVertices[i + 1];
 				pVertices[i] = pRotationCenterX + (cosRotationInRad * (pX - pRotationCenterX) - sinRotationRad * (pY - pRotationCenterY));
-				pVertices[i + 1] = pRotationCenterY + (sinRotationRad * (pX - pRotationCenterX) + cosRotationInRad * (pY - pRotationCenterY));	
+				pVertices[i + 1] = pRotationCenterY + (sinRotationRad * (pX - pRotationCenterX) + cosRotationInRad * (pY - pRotationCenterY));
 			}
 		}
 		return pVertices;
 	}
-	
+
 	public static float[] scaleAroundCenter(final float[] pVertices, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
 		if(pScaleX != 1 || pScaleY != 1) {
 			for(int i = pVertices.length - 2; i >= 0; i -= 2) {
@@ -142,26 +142,30 @@ public class MathUtils {
 				pVertices[i + 1] = pScaleCenterY + (pVertices[i + 1] - pScaleCenterY) * pScaleY;
 			}
 		}
-		
+
 		return pVertices;
 	}
-	
+
 	public static float[] rotateAndScaleAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
 		rotateAroundCenter(pVertices, pRotation, pRotationCenterX, pRotationCenterY);
 		return scaleAroundCenter(pVertices, pScaleX, pScaleY, pScaleCenterX, pScaleCenterY);
 	}
-	
+
 	public static float[] revertScaleAroundCenter(final float[] pVertices, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
 		return scaleAroundCenter(pVertices, 1 / pScaleX, 1 / pScaleY, pScaleCenterX, pScaleCenterY);
 	}
-	
+
 	public static float[] revertRotateAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
 		return rotateAroundCenter(pVertices, -pRotation, pRotationCenterX, pRotationCenterY);
 	}
-	
+
 	public static float[] revertRotateAndScaleAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
 		revertScaleAroundCenter(pVertices, pScaleX, pScaleY, pScaleCenterX, pScaleCenterY);
 		return revertRotateAroundCenter(pVertices, pRotation, pRotationCenterX, pRotationCenterY);
+	}
+
+	public static int bringToBounds(final int pMinValue, final int pMaxValue, final float pValue) {
+		return (int)Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}
 
 	// ===========================================================

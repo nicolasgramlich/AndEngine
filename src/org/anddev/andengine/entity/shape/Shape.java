@@ -385,7 +385,7 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	protected abstract void onApplyVertices(final GL10 pGL);
-	protected abstract void drawVertices(final GL10 pGL);
+	protected abstract void drawVertices(final GL10 pGL, final Camera pCamera);
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
@@ -428,7 +428,7 @@ public abstract class Shape extends Entity implements IShape {
 
 		this.onApplyTransformations(pGL);
 
-		this.drawVertices(pGL);
+		this.drawVertices(pGL, pCamera);
 		pGL.glPopMatrix();
 	}
 

@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.text;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
@@ -129,7 +130,7 @@ public class Text extends RectangularShape {
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL) {
+	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
 		pGL.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mVertexCount);
 	}
 

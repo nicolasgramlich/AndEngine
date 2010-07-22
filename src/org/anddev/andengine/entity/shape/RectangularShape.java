@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.shape;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
@@ -105,7 +106,7 @@ public abstract class RectangularShape extends GLShape {
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL) {
+	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
 		pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 	}
 

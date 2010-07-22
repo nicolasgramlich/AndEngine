@@ -48,7 +48,7 @@ public class ScreenCapture extends Entity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(GL10 pGL, Camera pCamera) {
+	protected void onManagedDraw(GL10 pGL, final Camera pCamera) {
 		if(this.mScreenCapturePending) {
 			saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
 

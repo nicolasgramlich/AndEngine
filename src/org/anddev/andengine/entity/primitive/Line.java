@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.collision.LineCollisionChecker;
 import org.anddev.andengine.collision.ShapeCollisionChecker;
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.GLShape;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
@@ -176,7 +177,7 @@ public class Line extends GLShape {
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL) {
+	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
 		pGL.glDrawArrays(GL10.GL_LINES, 0, LineVertexBuffer.VERTICES_PER_LINE);
 	}
 

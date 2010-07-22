@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.text;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.vertex.TextVertexBuffer;
 import org.anddev.andengine.util.HorizontalAlign;
@@ -79,7 +80,7 @@ public class TickerText extends Text {
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL) {
+	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
 		pGL.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mCharactersVisible * TextVertexBuffer.VERTICES_PER_CHARACTER);
 	}
 

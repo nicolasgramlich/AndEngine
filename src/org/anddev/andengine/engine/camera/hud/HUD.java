@@ -26,10 +26,14 @@ public class HUD extends CameraScene {
 
 	public HUD() {
 		this(1);
+		
+		this.setBackgroundEnabled(false);
 	}
 
 	public HUD(final int pLayerCount) {
 		super(pLayerCount);
+		
+		this.setBackgroundEnabled(false);
 	}
 
 	// ===========================================================

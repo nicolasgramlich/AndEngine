@@ -86,15 +86,19 @@ public abstract class BufferObject {
 	// ===========================================================
 
 	public void selectOnHardware(final GL11 pGL11) {
-		if(this.mHardwareBufferNeedsUpdate && this.mHardwareBufferID != -1) {
+		final int hardwareBufferID = this.mHardwareBufferID;
+		if(hardwareBufferID == -1) {
+			return;
+		}
+
+		GLHelper.bindBuffer(pGL11, hardwareBufferID); // TODO Does this always need to be binded, or are just for buffers of the same 'type'(texture/vertex)?
+		
+		if(this.mHardwareBufferNeedsUpdate) {
 //			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
 			this.mHardwareBufferNeedsUpdate = false;
 
-			GLHelper.bindBuffer(pGL11, this.mHardwareBufferID);
 			GLHelper.bufferData(pGL11, this, this.mDrawType);
-		} else {
-			GLHelper.bindBuffer(pGL11, this.mHardwareBufferID); // TODO Does this always need to be binded, or are just for buffers of the same 'type'(texture/vertex)?
-		}
+		} 
 	}
 
 	public void loadToHardware(final GL11 pGL11) {

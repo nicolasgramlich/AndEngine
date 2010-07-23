@@ -228,10 +228,12 @@ public class Scene extends Entity {
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		final Scene childScene = this.mChildScene;
 		if(childScene == null || !this.mChildSceneModalDraw) {
-			pCamera.onApplyPositionIndependentMatrix(pGL);
-			GLHelper.setModelViewIdentityMatrix(pGL);
-
-			this.mBackground.onDraw(pGL, pCamera);
+			if(this.mBackgroundEnabled) {
+				pCamera.onApplyPositionIndependentMatrix(pGL);
+				GLHelper.setModelViewIdentityMatrix(pGL);
+	
+				this.mBackground.onDraw(pGL, pCamera);
+			}
 
 			pCamera.onApplyMatrix(pGL);
 			GLHelper.setModelViewIdentityMatrix(pGL);

@@ -1,6 +1,8 @@
 package org.anddev.andengine.opengl.font;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -38,8 +40,8 @@ public class Font {
 	private int mCurrentTextureX = 0;
 	private int mCurrentTextureY = 0;
 
-	private final HashMap<Character, Letter> mCharacterToLetterMap = new HashMap<Character, Letter>();
-	private final HashMap<Letter, Bitmap> mLettersPendingToBeDrawnToTexture = new HashMap<Letter, Bitmap>();
+	private final HashMap<Character, Letter> mManagedCharacterToLetterMap = new HashMap<Character, Letter>();
+	private final HashSet<Letter> mLettersPendingToBeDrawnToTexture = new HashSet<Letter>();
 
 	private final Paint mPaint;
 	private final Paint mBackgroundPaint;
@@ -95,6 +97,14 @@ public class Font {
 	// Methods
 	// ===========================================================
 
+	public void reload() {
+		final HashSet<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
+		/* Make all letters redraw to the texture. */
+		for(Entry<Character, Letter> entry : this.mManagedCharacterToLetterMap.entrySet()) { 
+			lettersPendingToBeDrawnToTexture.add(entry.getValue());
+		}
+	}
+
 	private int getLetterAdvance(final char pCharacter) {
 		this.mPaint.getTextWidths(String.valueOf(pCharacter), this.mTemporaryTextWidthFetchers);
 		return (int) (FloatMath.ceil(this.mTemporaryTextWidthFetchers[0]));
@@ -143,11 +153,11 @@ public class Font {
 	}
 
 	public Letter getLetter(final char pCharacter) {
-		final HashMap<Character, Letter> characterToLetterMap = this.mCharacterToLetterMap;
-		Letter letter = characterToLetterMap.get(pCharacter);
+		final HashMap<Character, Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
+		Letter letter = managedCharacterToLetterMap.get(pCharacter);
 		if (letter == null) {
 			letter = this.createLetter(pCharacter);
-			characterToLetterMap.put(pCharacter, letter);
+			managedCharacterToLetterMap.put(pCharacter, letter);
 		}
 		return letter;
 	}
@@ -157,8 +167,6 @@ public class Font {
 		final float textureHeight = this.mTextureHeight;
 		
 		final Size createLetterTemporarySize = this.mCreateLetterTemporarySize;
-
-		final Bitmap bitmap = this.getLetterBitmap(pCharacter);
 		this.getLetterBounds(pCharacter, createLetterTemporarySize);
 
 		final float letterWidth = createLetterTemporarySize.getWidth();
@@ -174,16 +182,16 @@ public class Font {
 		final float letterTextureWidth = letterWidth / textureWidth;
 		final float letterTextureHeight = letterHeight / textureHeight;
 
-		final Letter letter = new Letter(this.getLetterAdvance(pCharacter), (int)letterWidth, (int)letterHeight, letterTextureX, letterTextureY, letterTextureWidth, letterTextureHeight);
+		final Letter letter = new Letter(pCharacter, this.getLetterAdvance(pCharacter), (int)letterWidth, (int)letterHeight, letterTextureX, letterTextureY, letterTextureWidth, letterTextureHeight);
 		this.mCurrentTextureX += letterWidth;
 
-		this.mLettersPendingToBeDrawnToTexture.put(letter, bitmap);
+		this.mLettersPendingToBeDrawnToTexture.add(letter);
 
 		return letter;
 	}
 
 	public void update(final GL10 pGL) {
-		final HashMap<Letter, Bitmap> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
+		final HashSet<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
 			final int hardwareTextureID = this.mTexture.getHardwareTextureID();
 			
@@ -191,9 +199,10 @@ public class Font {
 			final float textureHeight = this.mTextureHeight;
 
 			// TODO Can the use of this iterator be avoided somehow?
-			for (final Entry<Letter, Bitmap> entry : lettersPendingToBeDrawnToTexture.entrySet()) {
-				final Letter letter = entry.getKey();
-				final Bitmap bitmap = entry.getValue();
+			final Iterator<Letter> letterIterator = lettersPendingToBeDrawnToTexture.iterator();
+			while (letterIterator.hasNext()) {
+				final Letter letter = letterIterator.next();
+				final Bitmap bitmap = this.getLetterBitmap(letter.mCharacter);
 
 				GLHelper.bindTexture(pGL, hardwareTextureID);
 				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * textureWidth), (int)(letter.mTextureY * textureHeight), bitmap);

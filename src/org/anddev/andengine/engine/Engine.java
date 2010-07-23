@@ -371,6 +371,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public void onResume() {
 		this.mTextureManager.reloadTextures();
+		this.mFontManager.reloadFonts();
 		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 		this.mBufferObjectManager.reloadBufferObjects();
 	}

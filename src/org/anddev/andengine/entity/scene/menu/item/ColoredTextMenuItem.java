@@ -62,6 +62,12 @@ public class ColoredTextMenuItem extends TextMenuItem {
 	public void onUnselected() {
 		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
 	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
+	}
 
 	// ===========================================================
 	// Methods

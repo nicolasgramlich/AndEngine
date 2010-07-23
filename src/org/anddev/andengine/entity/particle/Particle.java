@@ -19,7 +19,7 @@ public class Particle extends Sprite {
 
 	private float mLifeTime;
 	private float mDeathTime = -1;
-	private boolean mDead = false;
+	boolean mDead = false;
 
 	// ===========================================================
 	// Constructors

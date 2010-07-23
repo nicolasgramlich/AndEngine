@@ -11,6 +11,7 @@ import org.anddev.andengine.entity.particle.modifier.IParticleInitializer;
 import org.anddev.andengine.entity.particle.modifier.IParticleModifier;
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 import android.util.FloatMath;
 
@@ -27,8 +28,7 @@ public class ParticleSystem extends Rectangle {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Particle> mParticles;
-	private final ArrayList<Particle> mParticlesToRecycle;
+	private final Particle[] mParticles;
 
 	private final ArrayList<IParticleInitializer> mParticleInitializers = new ArrayList<IParticleInitializer>();
 	private final ArrayList<IParticleModifier> mParticleModifiers = new ArrayList<IParticleModifier>();
@@ -40,8 +40,12 @@ public class ParticleSystem extends Rectangle {
 
 	private float mParticlesDueToSpawn;
 	private final int mMaxParticles;
+	private int mParticlesAlive;
+	
 	private int mParticleModifierCount;
 	private int mParticleInitializerCount;
+
+	private RectangleVertexBuffer mSharedParticleVertexBuffer;
 
 	// ===========================================================
 	// Constructors
@@ -49,8 +53,7 @@ public class ParticleSystem extends Rectangle {
 
 	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
 		super(pX, pY, pWidth, pHeight);
-		this.mParticles = new ArrayList<Particle>(pMaxParticles);
-		this.mParticlesToRecycle = new ArrayList<Particle>(pMaxParticles);
+		this.mParticles = new Particle[pMaxParticles];
 		this.mMinRate = pMinRate;
 		this.mMaxRate = pMaxRate;
 		this.mMaxParticles = pMaxParticles;
@@ -72,9 +75,9 @@ public class ParticleSystem extends Rectangle {
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
-		final ArrayList<Particle> particles = this.mParticles;
-		for(int i = particles.size() - 1; i >= 0; i--) {
-			particles.get(i).onDraw(pGL, pCamera);
+		final Particle[] particles = this.mParticles;
+		for(int i = this.mParticlesAlive - 1; i >= 0; i--) {
+			particles[i].onDraw(pGL, pCamera);
 		}
 	}
 
@@ -84,17 +87,25 @@ public class ParticleSystem extends Rectangle {
 
 		this.spawnParticles(pSecondsElapsed);
 
-		final ArrayList<Particle> particles = this.mParticles;
-		final ArrayList<Particle> particlesToRecycle = this.mParticlesToRecycle;
+		final Particle[] particles = this.mParticles;
 
-		for(int i = particles.size() - 1; i >= 0; i--) {
-			final Particle particle = particles.get(i);
+		final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
+		final int particleModifierCountMinusOne = this.mParticleModifierCount - 1;
 
-			this.applyParticleModifiersOnUpdate(particle);
+		for(int i = this.mParticlesAlive - 1; i >= 0; i--) {
+			final Particle particle = particles[i];
+
+			/* Apply all particleModifiers */
+			for(int j = particleModifierCountMinusOne; j >= 0; j--) {
+				particleModifiers.get(j).onUpdateParticle(particle);
+			}
+			
 			particle.onUpdate(pSecondsElapsed);
-			if(particle.isDead()){
-				particles.remove(i);
-				particlesToRecycle.add(particle);
+			if(particle.mDead){
+				this.mParticlesAlive--;
+				final int particlesAlive = this.mParticlesAlive;
+				particles[i] = particles[particlesAlive];
+				particles[particlesAlive] = particle;
 			}
 		}
 	}
@@ -129,7 +140,7 @@ public class ParticleSystem extends Rectangle {
 
 		this.mParticlesDueToSpawn += newParticlesThisFrame;
 
-		final int particlesToSpawnThisFrame = Math.min(this.mMaxParticles - this.mParticles.size(), (int)FloatMath.floor(this.mParticlesDueToSpawn));
+		final int particlesToSpawnThisFrame = Math.min(this.mMaxParticles - this.mParticlesAlive, (int)FloatMath.floor(this.mParticlesDueToSpawn));
 		this.mParticlesDueToSpawn -= particlesToSpawnThisFrame;
 
 		for(int i = 0; i < particlesToSpawnThisFrame; i++){
@@ -138,28 +149,44 @@ public class ParticleSystem extends Rectangle {
 	}
 
 	private void spawnParticle() {
-		final ArrayList<Particle> particles = this.mParticles;
-		final ArrayList<Particle> particlesToRecycle = this.mParticlesToRecycle;
-		final Particle particle;
+		final Particle[] particles = this.mParticles;
 
-		if(!particlesToRecycle.isEmpty()){
-			particle = particlesToRecycle.remove(particlesToRecycle.size() - 1);
-			particle.reset();
-		}else{
-			final float x = this.getX() + RANDOM.nextFloat() * this.getWidthScaled();
-			final float y = this.getY() + RANDOM.nextFloat() * this.getHeightScaled();
-			if(particles.size() > 0) {
-				particle = new Particle(x, y, this.mTextureRegion, particles.get(0).getVertexBuffer());
+		final int particlesAlive = this.mParticlesAlive;
+		if(particlesAlive < this.mMaxParticles){
+			Particle particle = particles[particlesAlive];
+			if(particle != null) {
+				particle.reset();
 			} else {
-				particle = new Particle(x, y, this.mTextureRegion);
+				/* New particle needs to be created. */
+				final float x = this.getX() + RANDOM.nextFloat() * this.getWidthScaled();
+				final float y = this.getY() + RANDOM.nextFloat() * this.getHeightScaled();
+				
+				if(particlesAlive == 0) {
+					/* This is the very first particle. */
+					particle = new Particle(x, y, this.mTextureRegion);
+					this.mSharedParticleVertexBuffer = particle.getVertexBuffer();	
+				} else {
+					particle = new Particle(x, y, this.mTextureRegion, this.mSharedParticleVertexBuffer);
+				}
+				particles[particlesAlive] = particle;
 			}
+			particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+
+			/* Apply particle initializers. */
+			{
+				final ArrayList<IParticleInitializer> particleInitializers = this.mParticleInitializers;
+				for(int i = this.mParticleInitializerCount - 1; i >= 0; i--) {
+					particleInitializers.get(i).onInitializeParticle(particle);
+				}
+				
+				final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
+				for(int i = this.mParticleModifierCount - 1; i >= 0; i--) {
+					particleModifiers.get(i).onInitializeParticle(particle);
+				}
+			}
+
+			this.mParticlesAlive++;
 		}
-		particle.setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
-
-		this.applyParticleInitializersOnInitialize(particle);
-		this.applyParticleModifiersOnInitialize(particle);
-
-		particles.add(particle);
 	}
 
 	private float determineCurrentRate() {
@@ -167,27 +194,6 @@ public class ParticleSystem extends Rectangle {
 			return this.mMinRate;
 		} else {
 			return (RANDOM.nextFloat() * (this.mMaxRate - this.mMinRate)) + this.mMinRate;
-		}
-	}
-
-	private void applyParticleInitializersOnInitialize(final Particle pParticle) {
-		final ArrayList<IParticleInitializer> particleInitializers = this.mParticleInitializers;
-		for(int i = this.mParticleInitializerCount - 1; i >= 0; i--) {
-			particleInitializers.get(i).onInitializeParticle(pParticle);
-		}
-	}
-
-	private void applyParticleModifiersOnInitialize(final Particle pParticle) {
-		final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
-		for(int i = this.mParticleModifierCount - 1; i >= 0; i--) {
-			particleModifiers.get(i).onInitializeParticle(pParticle);
-		}
-	}
-
-	private void applyParticleModifiersOnUpdate(final Particle pParticle) {
-		final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
-		for(int i = this.mParticleModifierCount - 1; i >= 0; i--) {
-			particleModifiers.get(i).onUpdateParticle(pParticle);
 		}
 	}
 

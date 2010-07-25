@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
 
 
@@ -23,26 +24,26 @@ public class ScaleAtModifier extends ScaleModifier {
 	// Constructors
 	// ===========================================================
 
-	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, float pScaleCenterX, float pScaleCenterY) {
-		super(pDuration, pFromScale, pToScale);
+	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, float pScaleCenterX, float pScaleCenterY, final Easing pEasyingFunction) {
+		super(pDuration, pFromScale, pToScale, pEasyingFunction);
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 	}
 
-	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, float pScaleCenterX, float pScaleCenterY, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromScale, pToScale, pShapeModiferListener);
+	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, float pScaleCenterX, float pScaleCenterY, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, pFromScale, pToScale, pShapeModiferListener, pEasyingFunction);
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 	}
 
-	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, float pScaleCenterX, float pScaleCenterY) {
-		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY);
+	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, float pScaleCenterX, float pScaleCenterY, final Easing pEasyingFunction) {
+		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pEasyingFunction);
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 	}
 
-	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, float pScaleCenterX, float pScaleCenterY, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModiferListener);
+	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, float pScaleCenterX, float pScaleCenterY, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModiferListener, pEasyingFunction);
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 	}

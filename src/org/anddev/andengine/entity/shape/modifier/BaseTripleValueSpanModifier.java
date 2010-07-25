@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
 
 /**
@@ -22,12 +23,12 @@ public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanMod
 	// Constructors
 	// ===========================================================
 
-	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC) {
-		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, null);
+	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final Easing pEasyingFunction) {
+		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, null, pEasyingFunction);
 	}
 
-	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModiferListener);
+	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModiferListener, pEasyingFunction);
 		this.mFromValueC = pFromValueC;
 		this.mValuePerSecondC = (pToValueC - pFromValueC) / pDuration;
 	}

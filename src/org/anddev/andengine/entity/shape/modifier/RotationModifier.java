@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
 
 /**
@@ -19,12 +20,12 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation) {
-		this(pDuration, pFromRotation, pToRotation, null);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final Easing pEasyingFunction) {
+		this(pDuration, pFromRotation, pToRotation, null, pEasyingFunction);
 	}
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEasyingFunction);
 	}
 
 	protected RotationModifier(final RotationModifier pRotationModifier) {

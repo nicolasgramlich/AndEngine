@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.scene.menu.animator;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.modifier.MoveModifier;
 import org.anddev.andengine.util.HorizontalAlign;
@@ -74,7 +75,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 					break;
 			}
 			
-			final MoveModifier moveModifier = new MoveModifier(DURATION, -maximumWidth, baseX + offsetX, baseY + offsetY, baseY + offsetY);
+			final MoveModifier moveModifier = new MoveModifier(DURATION, -maximumWidth, baseX + offsetX, baseY + offsetY, baseY + offsetY, Easing.LINEAR);
 			moveModifier.setRemoveWhenFinished(false);
 			menuItem.addShapeModifier(moveModifier);
 

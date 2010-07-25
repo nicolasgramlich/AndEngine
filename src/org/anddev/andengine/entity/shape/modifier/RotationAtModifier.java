@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
 
 
@@ -23,14 +24,14 @@ public class RotationAtModifier extends RotationModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY) {
-		super(pDuration, pFromRotation, pToRotation);
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final Easing pEasyingFunction) {
+		super(pDuration, pFromRotation, pToRotation, pEasyingFunction);
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}
 
-	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener);
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEasyingFunction);
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}

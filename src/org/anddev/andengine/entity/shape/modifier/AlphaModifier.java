@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
 
 /**
@@ -19,12 +20,12 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha) {
-		this(pDuration, pFromAlpha, pToAlpha, null);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final Easing pEasyingFunction) {
+		this(pDuration, pFromAlpha, pToAlpha, null, pEasyingFunction);
 	}
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener, pEasyingFunction);
 	}
 
 	protected AlphaModifier(final AlphaModifier pAlphaModifier) {

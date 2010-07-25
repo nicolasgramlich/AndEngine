@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
 
 /**
@@ -22,12 +23,12 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 	// Constructors
 	// ===========================================================
 
-	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
-		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null);
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final Easing pEasyingFunction) {
+		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null, pEasyingFunction);
 	}
 
-	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromValueA, pToValueA, pShapeModiferListener);
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, pFromValueA, pToValueA, pShapeModiferListener, pEasyingFunction);
 		this.mFromValueB = pFromValueB;
 		this.mValuePerSecondB = (pToValueB - pFromValueB) / pDuration;
 	}

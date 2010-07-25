@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
 
 /**
@@ -19,12 +20,12 @@ public class MoveModifier extends BaseDoubleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY) {
-		this(pDuration, pFromX, pToX, pFromY, pToY, null);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final Easing pEasyingFunction) {
+		this(pDuration, pFromX, pToX, pFromY, pToY, null, pEasyingFunction);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener, pEasyingFunction);
 	}
 
 	protected MoveModifier(final MoveModifier pMoveModifier) {

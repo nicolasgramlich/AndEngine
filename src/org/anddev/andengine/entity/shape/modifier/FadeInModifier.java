@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
+import org.anddev.andengine.engine.easying.Easing;
+
 
 /**
  * @author Nicolas Gramlich
@@ -18,12 +20,12 @@ public class FadeInModifier extends AlphaModifier {
 	// Constructors
 	// ===========================================================
 
-	public FadeInModifier(final float pDuration) {
-		super(pDuration, 0.0f, 1.0f);
+	public FadeInModifier(final float pDuration, final Easing pEasyingFunction) {
+		super(pDuration, 0.0f, 1.0f, pEasyingFunction);
 	}
 
-	public FadeInModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, 0.0f, 1.0f, pShapeModiferListener);
+	public FadeInModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
+		super(pDuration, 0.0f, 1.0f, pShapeModiferListener, pEasyingFunction);
 	}
 
 	protected FadeInModifier(final FadeInModifier pFadeInModifier) {

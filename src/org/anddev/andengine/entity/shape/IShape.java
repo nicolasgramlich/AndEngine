@@ -92,6 +92,7 @@ public interface IShape extends IEntity, ITouchArea {
 
 	public void addShapeModifier(final IShapeModifier pShapeModifier);
 	public void removeShapeModifier(final IShapeModifier pShapeModifier);
+	public void clearShapeModifiers();
 
 	public boolean collidesWith(final IShape pOtherShape);
 

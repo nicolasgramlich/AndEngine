@@ -180,6 +180,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void setSurfaceSize(final int pSurfaceWidth, final int pSurfaceHeight) {
+		Debug.w("SurfaceView size changed to (width x height): " + pSurfaceWidth + " x " + pSurfaceHeight, new Exception());
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
 	}

@@ -477,8 +477,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
-		this.getCamera().onUpdate(pSecondsElapsed);
 		this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
+		this.getCamera().onUpdate(pSecondsElapsed);
 	}
 
 	protected void updatePostFrameHandlers(final float pSecondsElapsed) {

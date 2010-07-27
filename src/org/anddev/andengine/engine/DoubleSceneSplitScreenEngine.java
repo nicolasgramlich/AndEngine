@@ -174,8 +174,8 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
-		this.getSecondCamera().onUpdate(pSecondsElapsed);
 		super.updatePreFrameHandlers(pSecondsElapsed);
+		this.getSecondCamera().onUpdate(pSecondsElapsed);
 	}
 
 	// ===========================================================

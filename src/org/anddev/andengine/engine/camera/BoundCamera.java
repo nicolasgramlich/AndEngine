@@ -43,6 +43,10 @@ public class BoundCamera extends Camera {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public boolean isBoundsEnabled() {
+		return this.mBoundsEnabled;
+	}
 
 	public void setBoundsEnabled(final boolean pBoundsEnabled) {
 		this.mBoundsEnabled = pBoundsEnabled;

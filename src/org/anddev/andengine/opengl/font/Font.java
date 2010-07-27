@@ -30,24 +30,26 @@ public class Font {
 	// Constants
 	// ===========================================================
 
+	protected static final float LETTER_LEFT_OFFSET = 5;
+	private static final int LETTER_EXTRA_WIDTH = 10;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private final Texture mTexture;
-	private float mTextureWidth;
-	private float mTextureHeight;
+	private final float mTextureWidth;
+	private final float mTextureHeight;
 	private int mCurrentTextureX = 0;
 	private int mCurrentTextureY = 0;
 
 	private final HashMap<Character, Letter> mManagedCharacterToLetterMap = new HashMap<Character, Letter>();
 	private final HashSet<Letter> mLettersPendingToBeDrawnToTexture = new HashSet<Letter>();
 
-	private final Paint mPaint;
+	protected final Paint mPaint;
 	private final Paint mBackgroundPaint;
 
-	private final Typeface mTypeface;
-	private final FontMetrics mFontMetrics;
+	protected final FontMetrics mFontMetrics;
 	private final int mLineHeight;
 	private final int mLineGap;
 
@@ -57,21 +59,19 @@ public class Font {
 	private final Rect mGetLetterBoundsTemporaryRect = new Rect();
 	private final float[] mTemporaryTextWidthFetchers = new float[1];
 
-	private final Canvas mCanvas = new Canvas();
+	protected final Canvas mCanvas = new Canvas();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Font(final Texture pTexture, final Typeface pTypeFace, final float pSize, final boolean pAntiAlias, final int pColor) {
+	public Font(final Texture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
 		this.mTexture = pTexture;
 		this.mTextureWidth = pTexture.getWidth();
 		this.mTextureHeight = pTexture.getHeight();
-		
-		this.mTypeface = pTypeFace;
 
 		this.mPaint = new Paint();
-		this.mPaint.setTypeface(this.mTypeface);
+		this.mPaint.setTypeface(pTypeface);
 		this.mPaint.setColor(pColor);
 		this.mPaint.setTextSize(pSize);
 		this.mPaint.setAntiAlias(pAntiAlias);
@@ -100,7 +100,7 @@ public class Font {
 	public void reload() {
 		final HashSet<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		/* Make all letters redraw to the texture. */
-		for(Entry<Character, Letter> entry : this.mManagedCharacterToLetterMap.entrySet()) { 
+		for(final Entry<Character, Letter> entry : this.mManagedCharacterToLetterMap.entrySet()) {
 			lettersPendingToBeDrawnToTexture.add(entry.getValue());
 		}
 	}
@@ -116,18 +116,20 @@ public class Font {
 		this.mPaint.getTextBounds(characterAsString, 0, 1, getLetterBitmapTemporaryRect);
 
 		final int lineHeight = this.getLineHeight();
-		final Bitmap bitmap = Bitmap.createBitmap(getLetterBitmapTemporaryRect.width() == 0 ? 1 : getLetterBitmapTemporaryRect.width() + 5, lineHeight, Bitmap.Config.ARGB_8888);
+		final Bitmap bitmap = Bitmap.createBitmap(getLetterBitmapTemporaryRect.width() == 0 ? 1 : getLetterBitmapTemporaryRect.width() + LETTER_EXTRA_WIDTH, lineHeight, Bitmap.Config.ARGB_8888);
 		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */
-		this.mCanvas.drawRect(0, 0, getLetterBitmapTemporaryRect.width() + 5, lineHeight, this.mBackgroundPaint);
+		this.mCanvas.drawRect(0, 0, getLetterBitmapTemporaryRect.width() + LETTER_EXTRA_WIDTH, lineHeight, this.mBackgroundPaint);
 
-		this.mCanvas.drawText(characterAsString, 0, -this.mFontMetrics.ascent, this.mPaint);
+		/* Actually draw the character. */
+		this.drawCharacterString(characterAsString);
 
-		// TODO Canvas cannot be cleared, but the bitmap is recycled once it is loaded, so this should be no problem.
-		// this.mCanvas.setBitmap(null);
-		
 		return bitmap;
+	}
+
+	protected void drawCharacterString(final String pCharacterAsString) {
+		this.mCanvas.drawText(pCharacterAsString, LETTER_LEFT_OFFSET, -this.mFontMetrics.ascent, this.mPaint);
 	}
 
 	public int getLineGap() {
@@ -145,7 +147,7 @@ public class Font {
 
 	private void getLetterBounds(final char pCharacter, final Size pSize) {
 		this.mPaint.getTextBounds(String.valueOf(pCharacter), 0, 1, this.mGetLetterBoundsTemporaryRect);
-		pSize.set(this.mGetLetterBoundsTemporaryRect.width() + 5, this.getLineHeight());
+		pSize.set(this.mGetLetterBoundsTemporaryRect.width() + LETTER_EXTRA_WIDTH, this.getLineHeight());
 	}
 
 	public Texture getTexture() {
@@ -165,7 +167,7 @@ public class Font {
 	private Letter createLetter(final char pCharacter) {
 		final float textureWidth = this.mTextureWidth;
 		final float textureHeight = this.mTextureHeight;
-		
+
 		final Size createLetterTemporarySize = this.mCreateLetterTemporarySize;
 		this.getLetterBounds(pCharacter, createLetterTemporarySize);
 
@@ -194,7 +196,7 @@ public class Font {
 		final HashSet<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
 			final int hardwareTextureID = this.mTexture.getHardwareTextureID();
-			
+
 			final float textureWidth = this.mTextureWidth;
 			final float textureHeight = this.mTextureHeight;
 

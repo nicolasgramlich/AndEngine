@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 
 /**
@@ -17,33 +17,43 @@ public class ScaleAtModifier extends ScaleModifier {
 	// Fields
 	// ===========================================================
 
-	private float mScaleCenterX;
-	private float mScaleCenterY;
+	private final float mScaleCenterX;
+	private final float mScaleCenterY;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, float pScaleCenterX, float pScaleCenterY, final Easing pEasyingFunction) {
-		super(pDuration, pFromScale, pToScale, pEasyingFunction);
-		this.mScaleCenterX = pScaleCenterX;
-		this.mScaleCenterY = pScaleCenterY;
+	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, final float pScaleCenterX, final float pScaleCenterY) {
+		this(pDuration, pFromScale, pToScale, pScaleCenterX, pScaleCenterY, IEaseFunction.DEFAULT);
 	}
 
-	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, float pScaleCenterX, float pScaleCenterY, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
-		super(pDuration, pFromScale, pToScale, pShapeModiferListener, pEasyingFunction);
-		this.mScaleCenterX = pScaleCenterX;
-		this.mScaleCenterY = pScaleCenterY;
+	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, final float pScaleCenterX, final float pScaleCenterY, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromScale, pToScale, pScaleCenterX, pScaleCenterY, null, pEaseFunction);
 	}
 
-	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, float pScaleCenterX, float pScaleCenterY, final Easing pEasyingFunction) {
-		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pEasyingFunction);
-		this.mScaleCenterX = pScaleCenterX;
-		this.mScaleCenterY = pScaleCenterY;
+	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, final float pScaleCenterX, final float pScaleCenterY, final IShapeModifierListener pShapeModiferListener) {
+		this(pDuration, pFromScale, pToScale, pScaleCenterX, pScaleCenterY, pShapeModiferListener, IEaseFunction.DEFAULT);
 	}
 
-	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, float pScaleCenterX, float pScaleCenterY, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
-		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModiferListener, pEasyingFunction);
+	public ScaleAtModifier(final float pDuration, final float pFromScale, final float pToScale, final float pScaleCenterX, final float pScaleCenterY, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromScale, pToScale, pFromScale, pToScale, pScaleCenterX, pScaleCenterY, pShapeModiferListener, pEaseFunction);
+	}
+
+	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final float pScaleCenterX, final float pScaleCenterY) {
+		this(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pScaleCenterX, pScaleCenterY, IEaseFunction.DEFAULT);
+	}
+
+	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final float pScaleCenterX, final float pScaleCenterY, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pScaleCenterX, pScaleCenterY, null, pEaseFunction);
+	}
+
+	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final float pScaleCenterX, final float pScaleCenterY, final IShapeModifierListener pShapeModiferListener) {
+		this(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pScaleCenterX, pScaleCenterY, pShapeModiferListener, IEaseFunction.DEFAULT);
+	}
+
+	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final float pScaleCenterX, final float pScaleCenterY, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModiferListener, pEaseFunction);
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 	}
@@ -61,9 +71,9 @@ public class ScaleAtModifier extends ScaleModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
-	protected void onManagedInitializeShape(IShape pShape) {
+	protected void onManagedInitializeShape(final IShape pShape) {
 		super.onManagedInitializeShape(pShape);
 		pShape.setScaleCenter(this.mScaleCenterX, this.mScaleCenterY);
 	}

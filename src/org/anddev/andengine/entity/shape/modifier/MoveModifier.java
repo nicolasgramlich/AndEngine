@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich
@@ -20,12 +20,20 @@ public class MoveModifier extends BaseDoubleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final Easing pEasyingFunction) {
-		this(pDuration, pFromX, pToX, pFromY, pToY, null, pEasyingFunction);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY) {
+		this(pDuration, pFromX, pToX, pFromY, pToY, null, IEaseFunction.DEFAULT);
+	}
+	
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromX, pToX, pFromY, pToY, null, pEaseFunction);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener, pEasyingFunction);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener, IEaseFunction.DEFAULT);
+	}
+	
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener, pEaseFunction);
 	}
 
 	protected MoveModifier(final MoveModifier pMoveModifier) {
@@ -51,7 +59,7 @@ public class MoveModifier extends BaseDoubleValueSpanModifier {
 	}
 
 	@Override
-	protected void onSetValues(final IShape pShape, final float pX, final float pY) {
+	protected void onSetValues(final IShape pShape, float pPercentageDone, final float pX, final float pY) {
 		pShape.setPosition(pX, pY);
 	}
 

@@ -2,22 +2,20 @@ package org.anddev.andengine.util;
 
 import java.util.Random;
 
+import org.anddev.andengine.util.constants.MathConstants;
+
 import android.util.FloatMath;
 
 /**
  * @author Nicolas Gramlich
  * @since 20:42:15 - 17.12.2009
  */
-public class MathUtils {
+public class MathUtils implements MathConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
 	public static Random RANDOM = new Random(System.nanoTime());
-
-	public static final float PI = (float) Math.PI;
-	public static final float DEG_TO_RAD = PI / 180.0f;
-	public static final float RAD_TO_DEG = 180.0f / PI;
 
 	// ===========================================================
 	// Fields

@@ -2,9 +2,9 @@ package org.anddev.andengine.entity.scene.menu.animator;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.modifier.AlphaModifier;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 import org.anddev.andengine.util.HorizontalAlign;
 
 /**
@@ -26,23 +26,39 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public AlphaMenuAnimator(){
 		super();
+	}
+
+	public AlphaMenuAnimator(final IEaseFunction pEaseFunction) {
+		super(pEaseFunction);
 	}
 
 	public AlphaMenuAnimator(final HorizontalAlign pHorizontalAlign) {
 		super(pHorizontalAlign);
 	}
-	
+
+	public AlphaMenuAnimator(final HorizontalAlign pHorizontalAlign, final IEaseFunction pEaseFunction) {
+		super(pHorizontalAlign, pEaseFunction);
+	}
+
 	public AlphaMenuAnimator(final float pMenuItemSpacing) {
 		super(pMenuItemSpacing);
+	}
+
+	public AlphaMenuAnimator(final float pMenuItemSpacing, final IEaseFunction pEaseFunction) {
+		super(pMenuItemSpacing, pEaseFunction);
 	}
 
 	public AlphaMenuAnimator(final HorizontalAlign pHorizontalAlign, final float pMenuItemSpacing) {
 		super(pHorizontalAlign, pMenuItemSpacing);
 	}
-	
+
+	public AlphaMenuAnimator(final HorizontalAlign pHorizontalAlign, final float pMenuItemSpacing, final IEaseFunction pEaseFunction) {
+		super(pHorizontalAlign, pMenuItemSpacing, pEaseFunction);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -53,9 +69,10 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 
 	@Override
 	public void buildAnimations(final ArrayList<IMenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
+		final IEaseFunction easeFunction = this.mEaseFunction;
 		final int menuItemCount = pMenuItems.size();
-		for(int i = 0; i < menuItemCount; i++) {
-			final AlphaModifier alphaModifier = new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO, Easing.LINEAR);
+		for(int i = menuItemCount - 1; i >= 0; i--) {
+			final AlphaModifier alphaModifier = new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO, easeFunction);
 			alphaModifier.setRemoveWhenFinished(false);
 			pMenuItems.get(i).addShapeModifier(alphaModifier);
 		}
@@ -70,7 +87,7 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 		final float baseY = (pCameraHeight - overallHeight) * 0.5f;
 
 		final float menuItemSpacing = this.mMenuItemSpacing;
-		
+
 		float offsetY = 0;
 		final int menuItemCount = pMenuItems.size();
 		for(int i = 0; i < menuItemCount; i++) {
@@ -90,7 +107,7 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 					break;
 			}
 			menuItem.setPosition(baseX + offsetX , baseY + offsetY);
-			
+
 			menuItem.setAlpha(ALPHA_FROM);
 
 			offsetY += menuItem.getHeight() + menuItemSpacing;

@@ -1,13 +1,10 @@
-package org.anddev.andengine.entity.shape.modifier;
-
-import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
-
+package org.anddev.andengine.entity.shape.modifier.ease;
 
 /**
- * @author Nicolas Gramlich
- * @since 19:03:12 - 08.06.2010
+ * @author Gil, Nicolas Gramlich
+ * @since 16:52:11 - 26.07.2010
  */
-public class FadeOutModifier extends AlphaModifier {
+public class EaseBounceOut implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,34 +12,22 @@ public class FadeOutModifier extends AlphaModifier {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private static EaseBounceOut INSTANCE;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public FadeOutModifier(final float pDuration) {
-		super(pDuration, 1.0f, 0.0f, IEaseFunction.DEFAULT);
-	}
 	
-	public FadeOutModifier(final float pDuration, final IEaseFunction pEaseFunction) {
-		super(pDuration, 1.0f, 0.0f, pEaseFunction);
+	private EaseBounceOut() {
+		
 	}
 
-	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, 1.0f, 0.0f, pShapeModiferListener, IEaseFunction.DEFAULT);
-	}
-	
-	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, 1.0f, 0.0f, pShapeModiferListener, pEaseFunction);
-	}
-
-	protected FadeOutModifier(final FadeOutModifier pFadeOutModifier) {
-		super(pFadeOutModifier);
-	}
-
-	@Override
-	public FadeOutModifier clone() {
-		return new FadeOutModifier(this);
+	public static EaseBounceOut getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new EaseBounceOut();
+		}
+		return INSTANCE;
 	}
 
 	// ===========================================================
@@ -52,6 +37,19 @@ public class FadeOutModifier extends AlphaModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public float calc(float t, final float b, final float c, final float d) {
+		if((t /= d) < (1 / 2.75)) {
+			return c * (7.5625f * t * t) + b;
+		} else if(t < (2 / 2.75)) {
+			return c * (7.5625f * (t -= (1.5f / 2.75f)) * t + 0.75f) + b;
+		} else if(t < (2.5 / 2.75)) {
+			return c * (7.5625f * (t -= (2.25f / 2.75f)) * t + 0.9375f) + b;
+		} else {
+			return c * (7.5625f * (t -= (2.625f / 2.75f)) * t + 0.984375f) + b;
+		}
+	}
 
 	// ===========================================================
 	// Methods

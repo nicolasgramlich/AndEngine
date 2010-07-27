@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 
 /**
@@ -24,14 +24,26 @@ public class RotationAtModifier extends RotationModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final Easing pEasyingFunction) {
-		super(pDuration, pFromRotation, pToRotation, pEasyingFunction);
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY) {
+		super(pDuration, pFromRotation, pToRotation, IEaseFunction.DEFAULT);
+		this.mRotationCenterX = pRotationCenterX;
+		this.mRotationCenterY = pRotationCenterY;
+	}
+	
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromRotation, pToRotation, pEaseFunction);
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}
 
-	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEasyingFunction);
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, IEaseFunction.DEFAULT);
+		this.mRotationCenterX = pRotationCenterX;
+		this.mRotationCenterY = pRotationCenterY;
+	}
+	
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEaseFunction);
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}

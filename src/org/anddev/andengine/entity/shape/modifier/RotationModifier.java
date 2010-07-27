@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich
@@ -20,12 +20,20 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final Easing pEasyingFunction) {
-		this(pDuration, pFromRotation, pToRotation, null, pEasyingFunction);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation) {
+		this(pDuration, pFromRotation, pToRotation, null, IEaseFunction.DEFAULT);
+	}
+	
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromRotation, pToRotation, null, pEaseFunction);
 	}
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEasyingFunction);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, IEaseFunction.DEFAULT);
+	}
+	
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEaseFunction);
 	}
 
 	protected RotationModifier(final RotationModifier pRotationModifier) {
@@ -51,7 +59,7 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, final float pRotation) {
+	protected void onSetValue(final IShape pShape, float pPercentageDone, final float pRotation) {
 		pShape.setRotation(pRotation);
 	}
 

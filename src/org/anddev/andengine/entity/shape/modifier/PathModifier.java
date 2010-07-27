@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.shape.modifier;
 
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.modifier.SequenceModifier.ISubSequenceModifierListener;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 import org.anddev.andengine.util.Path;
 
 /**
@@ -28,14 +29,26 @@ public class PathModifier extends BaseShapeModifier {
 	// ===========================================================
 
 	public PathModifier(final float pDuration, final Path pPath) {
-		this(pDuration, pPath, null);
+		this(pDuration, pPath, null, IEaseFunction.DEFAULT);
+	}
+
+	public PathModifier(final float pDuration, final Path pPath, final IEaseFunction pEaseFunction) {
+		this(pDuration, pPath, null, pEaseFunction);
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener) {
-		this(pDuration, pPath, pShapeModiferListener, null);
+		this(pDuration, pPath, pShapeModiferListener, null, IEaseFunction.DEFAULT);
+	}
+
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		this(pDuration, pPath, pShapeModiferListener, null, pEaseFunction);
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IPathModifierListener pPathModifierListener) throws IllegalArgumentException {
+		this(pDuration, pPath, pShapeModiferListener, pPathModifierListener, IEaseFunction.DEFAULT);
+	}
+
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IPathModifierListener pPathModifierListener, final IEaseFunction pEaseFunction) throws IllegalArgumentException {
 		final int pathSize = pPath.getSize();
 
 		if (pathSize < 2) {
@@ -60,7 +73,7 @@ public class PathModifier extends BaseShapeModifier {
 			if(i == 0) {
 				/* When the first modifier is initialized, we have to
 				 * fire onWaypointPassed of mPathModifierListener. */
-				moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null){
+				moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null, pEaseFunction){
 					@Override
 					protected void onManagedInitializeShape(final IShape pShape) {
 						super.onManagedInitializeShape(pShape);
@@ -70,7 +83,7 @@ public class PathModifier extends BaseShapeModifier {
 					}
 				};
 			} else {
-				moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null);
+				moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null, pEaseFunction);
 			}
 		}
 

@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich
@@ -20,12 +20,20 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	// Constructors
 	// ===========================================================
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final Easing pEasyingFunction) {
-		this(pDuration, pFromAlpha, pToAlpha, null, pEasyingFunction);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha) {
+		this(pDuration, pFromAlpha, pToAlpha, null, IEaseFunction.DEFAULT);
+	}
+	
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromAlpha, pToAlpha, null, pEaseFunction);
 	}
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
-		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener, pEasyingFunction);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener, IEaseFunction.DEFAULT);
+	}
+
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener, pEaseFunction);
 	}
 
 	protected AlphaModifier(final AlphaModifier pAlphaModifier) {
@@ -51,7 +59,7 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, final float pAlpha) {
+	protected void onSetValue(final IShape pShape, float pPercentageDone, final float pAlpha) {
 		pShape.setAlpha(pAlpha);
 	}
 

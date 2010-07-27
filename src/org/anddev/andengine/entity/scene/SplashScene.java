@@ -1,8 +1,8 @@
 package org.anddev.andengine.entity.scene;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.modifier.ScaleModifier;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
@@ -32,7 +32,7 @@ public class SplashScene extends Scene {
 
 		final Sprite loadingScreenSprite = new Sprite(pCamera.getMinX(), pCamera.getMinY(), pCamera.getWidth(), pCamera.getHeight(), pTextureRegion);
 		if(pScaleFrom != 1 || pScaleTo != 1) {
-			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, pScaleFrom, pScaleTo, Easing.LINEAR));
+			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, pScaleFrom, pScaleTo, IEaseFunction.DEFAULT));
 		}
 
 		this.getTopLayer().addEntity(loadingScreenSprite);

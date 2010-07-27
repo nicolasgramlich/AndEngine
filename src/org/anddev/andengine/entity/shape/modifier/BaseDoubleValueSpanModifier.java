@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.shape.modifier;
 
-import org.anddev.andengine.engine.easying.Easing;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich
@@ -16,27 +16,35 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 	// Fields
 	// ===========================================================
 
-	private final float mValuePerSecondB;
 	private final float mFromValueB;
+	private final float mValueSpanB;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final Easing pEasyingFunction) {
-		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null, pEasyingFunction);
+	
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
+		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null, IEaseFunction.DEFAULT);
+	}
+	
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null, pEaseFunction);
 	}
 
-	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener, final Easing pEasyingFunction) {
-		super(pDuration, pFromValueA, pToValueA, pShapeModiferListener, pEasyingFunction);
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener) {
+		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModiferListener, IEaseFunction.DEFAULT);
+	}
+
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pShapeModiferListener, pEaseFunction);
 		this.mFromValueB = pFromValueB;
-		this.mValuePerSecondB = (pToValueB - pFromValueB) / pDuration;
+		this.mValueSpanB = pToValueB - pFromValueB;
 	}
 	
 	protected BaseDoubleValueSpanModifier(final BaseDoubleValueSpanModifier pBaseDoubleValueSpanModifier) {
 		super(pBaseDoubleValueSpanModifier);
 		this.mFromValueB = pBaseDoubleValueSpanModifier.mFromValueB;
-		this.mValuePerSecondB = pBaseDoubleValueSpanModifier.mValuePerSecondB;
+		this.mValueSpanB = pBaseDoubleValueSpanModifier.mValueSpanB;
 	}
 
 	// ===========================================================
@@ -48,7 +56,7 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 	// ===========================================================
 
 	protected abstract void onSetInitialValues(final IShape pShape, final float pValueA, final float pValueB);
-	protected abstract void onSetValues(final IShape pShape, final float pValueA, final float pValueB);
+	protected abstract void onSetValues(final IShape pShape, final float pPercentageDone, final float pValueA, final float pValueB);
 
 	@Override
 	protected void onSetInitialValue(final IShape pShape, final float pValueA) {
@@ -56,8 +64,8 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, final float pValueA) {
-		this.onSetValues(pShape, pValueA, this.mFromValueB + this.getTotalSecondsElapsed() * this.mValuePerSecondB);
+	protected void onSetValue(final IShape pShape, final float pPercentageDone, final float pValueA) {
+		this.onSetValues(pShape, pPercentageDone, pValueA, this.mFromValueB + pPercentageDone * this.mValueSpanB);
 	}
 
 	// ===========================================================

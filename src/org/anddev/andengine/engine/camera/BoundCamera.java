@@ -13,10 +13,10 @@ public class BoundCamera extends Camera {
 	// Fields
 	// ===========================================================
 
-	private final float mBoundMinX;
-	private final float mBoundMaxX;
-	private final float mBoundMinY;
-	private final float mBoundMaxY;
+	private float mBoundMinX;
+	private float mBoundMaxX;
+	private float mBoundMinY;
+	private float mBoundMaxY;
 	private boolean mBoundsEnabled;
 
 	// ===========================================================
@@ -25,10 +25,7 @@ public class BoundCamera extends Camera {
 
 	public BoundCamera(final float pX, final float pY, final float pWidth, final float pHeight, final float pBoundMinX, final float pBoundMaxX, final float pBoundMinY, final float pBoundMaxY) {
 		super(pX, pY, pWidth, pHeight);
-		this.mBoundMinX = pBoundMinX;
-		this.mBoundMaxX = pBoundMaxX;
-		this.mBoundMinY = pBoundMinY;
-		this.mBoundMaxY = pBoundMaxY;
+		this.setBounds(pBoundMinX, pBoundMaxX, pBoundMinY, pBoundMaxY);
 	}
 
 	// ===========================================================
@@ -37,6 +34,13 @@ public class BoundCamera extends Camera {
 
 	public void setBoundsEnabled(final boolean pBoundsEnabled) {
 		this.mBoundsEnabled = pBoundsEnabled;
+	}
+	
+	public void setBounds(final float pBoundMinX, final float pBoundMaxX, final float pBoundMinY, final float pBoundMaxY) {
+		this.mBoundMinX = pBoundMinX;
+		this.mBoundMaxX = pBoundMaxX;
+		this.mBoundMinY = pBoundMinY;
+		this.mBoundMaxY = pBoundMaxY;
 	}
 
 	@Override

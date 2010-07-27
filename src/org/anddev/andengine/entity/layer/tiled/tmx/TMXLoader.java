@@ -36,6 +36,10 @@ public class TMXLoader {
 	// Constructors
 	// ===========================================================
 
+	public TMXLoader(final Context pContext, final TextureManager pTextureManager) {
+		this(pContext, pTextureManager, null);
+	}
+
 	public TMXLoader(final Context pContext, final TextureManager pTextureManager, final ITMXTilePropertiesListener pTMXTilePropertyListener) {
 		this.mContext = pContext;
 		this.mTextureManager = pTextureManager;

@@ -8,7 +8,7 @@ import org.anddev.andengine.input.touch.TouchEvent;
  * @since 15:48:11 - 24.06.2010
  * TODO min/max(X/Y) values could be cached and only updated once the zoomfactor/center changed.
  */
-public class ZoomCamera extends Camera {
+public class ZoomCamera extends BoundCamera {
 	// ===========================================================
 	// Constants
 	// ===========================================================

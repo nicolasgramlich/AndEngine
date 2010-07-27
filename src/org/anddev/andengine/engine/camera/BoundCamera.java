@@ -23,9 +23,14 @@ public class BoundCamera extends Camera {
 	// Constructors
 	// ===========================================================
 
+	public BoundCamera(final float pX, final float pY, final float pWidth, final float pHeight) {
+		super(pX, pY, pWidth, pHeight);
+	}
+
 	public BoundCamera(final float pX, final float pY, final float pWidth, final float pHeight, final float pBoundMinX, final float pBoundMaxX, final float pBoundMinY, final float pBoundMaxY) {
 		super(pX, pY, pWidth, pHeight);
 		this.setBounds(pBoundMinX, pBoundMaxX, pBoundMinY, pBoundMaxY);
+		this.mBoundsEnabled = true;
 	}
 
 	// ===========================================================
@@ -35,7 +40,7 @@ public class BoundCamera extends Camera {
 	public void setBoundsEnabled(final boolean pBoundsEnabled) {
 		this.mBoundsEnabled = pBoundsEnabled;
 	}
-	
+
 	public void setBounds(final float pBoundMinX, final float pBoundMaxX, final float pBoundMinY, final float pBoundMaxY) {
 		this.mBoundMinX = pBoundMinX;
 		this.mBoundMaxX = pBoundMaxX;

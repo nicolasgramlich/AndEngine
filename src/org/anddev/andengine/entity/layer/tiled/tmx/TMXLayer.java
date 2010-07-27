@@ -10,6 +10,7 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.layer.tiled.tmx.TMXLoader.ITMXTilePropertiesListener;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;

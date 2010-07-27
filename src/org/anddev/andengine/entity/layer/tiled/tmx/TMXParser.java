@@ -3,7 +3,9 @@ package org.anddev.andengine.entity.layer.tiled.tmx;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.anddev.andengine.entity.layer.tiled.tmx.TMXLoader.ITMXTilePropertiesListener;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
+import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXParseException;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.SAXUtils;
@@ -102,7 +104,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 		} else if(pLocalName.equals(TAG_PROPERTIES)) {
 			this.mInProperties = true;
 		} else {
-			throw new IllegalArgumentException("Unexpected tag: '" + pLocalName + "'.");
+			throw new TMXParseException("Unexpected start tag: '" + pLocalName + "'.");
 		}
 	}
 
@@ -136,7 +138,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			}
 			this.mInData = false;
 		} else {
-			throw new IllegalArgumentException("Unexpected tag: '" + pLocalName + "'.");
+			throw new TMXParseException("Unexpected end tag: '" + pLocalName + "'.");
 		}
 
 		/* Reset the StringBuilder. */

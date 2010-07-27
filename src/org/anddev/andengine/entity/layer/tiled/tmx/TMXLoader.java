@@ -3,11 +3,13 @@ package org.anddev.andengine.entity.layer.tiled.tmx;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXLoadException;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -58,7 +60,15 @@ public class TMXLoader {
 	// Methods
 	// ===========================================================
 
-	public TMXTiledMap load(final InputStream pInputStream) throws IOException {
+	public TMXTiledMap loadFromAsset(final Context pContext, final String pAssetPath) throws TMXLoadException {
+		try {
+			return this.load(pContext.getAssets().open(pAssetPath));
+		} catch (final IOException e) {
+			throw new TMXLoadException("Could not load TMXTiledMap from asset: " + pAssetPath, e);
+		}
+	}
+
+	public TMXTiledMap load(final InputStream pInputStream) throws TMXLoadException {
 		try{
 			final SAXParserFactory spf = SAXParserFactory.newInstance();
 			final SAXParser sp = spf.newSAXParser();
@@ -70,16 +80,29 @@ public class TMXLoader {
 			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
 
 			return tmxParser.getTMXTiledMap();
-		} catch (final SAXException se) {
-			/* Doesn't happen. */
-			return null;
+		} catch (final SAXException e) {
+			throw new TMXLoadException(e);
 		} catch (final ParserConfigurationException pe) {
 			/* Doesn't happen. */
 			return null;
+		} catch (final IOException e) {
+			throw new TMXLoadException(e);
 		}
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public interface ITMXTilePropertiesListener {
+		// ===========================================================
+		// Final Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final ArrayList<TMXTileProperty> pTMXProperties, final int pTileRow, final int pTileColumn, final int pTileWidth, final int pTileHeight);
+	}
 }

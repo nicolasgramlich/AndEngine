@@ -1,10 +1,14 @@
 package org.anddev.andengine.engine.camera;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.BaseCollisionChecker;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -30,6 +34,8 @@ public class Camera implements IUpdateHandler {
 	private float mMaxY;
 
 	private HUD mHUD;
+
+	private IShape mChaseShape;
 
 	private boolean mFlipped;
 
@@ -65,19 +71,21 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public float getWidth() {
-		return (this.mMaxX - this.mMinX);
+		return this.mMaxX - this.mMinX;
 	}
 
 	public float getHeight() {
-		return (this.mMaxY - this.mMinY);
+		return this.mMaxY - this.mMinY;
 	}
 
 	public float getCenterX() {
-		return this.mMinX + (this.mMaxX - this.mMinX) * 0.5f;
+		final float minX = this.mMinX;
+		return minX + (this.mMaxX - minX) * 0.5f;
 	}
 
 	public float getCenterY() {
-		return this.mMinY + (this.mMaxY - this.mMinY) * 0.5f;
+		final float minY = this.mMinY;
+		return minY + (this.mMaxY - minY) * 0.5f;
 	}
 
 	public void setCenter(final float pCenterX, final float pCenterY) {
@@ -102,6 +110,10 @@ public class Camera implements IUpdateHandler {
 	public boolean hasHUD() {
 		return this.mHUD != null;
 	}
+	
+	public void setChaseShape(final IShape pChaseShape) {
+		this.mChaseShape = pChaseShape;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -111,6 +123,11 @@ public class Camera implements IUpdateHandler {
 	public void onUpdate(final float pSecondsElapsed) {
 		if(this.mHUD != null) {
 			this.mHUD.onUpdate(pSecondsElapsed);
+		}
+
+		if(this.mChaseShape != null) {
+			final float[] centerCoordinates = this.mChaseShape.getSceneCenterCoordinates();
+			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
 		}
 	}
 	

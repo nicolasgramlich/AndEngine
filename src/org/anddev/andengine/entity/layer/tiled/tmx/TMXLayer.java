@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.layer.tiled.tmx;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -168,10 +169,14 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// Methods
 	// ===========================================================
 
-	public void initializeTextureRegions(final String pString) throws IOException, IllegalArgumentException {
+	public void initializeTextureRegions(final String pString, final ITMXTilePropertiesListener pTMXTilePropertyListener) throws IOException, IllegalArgumentException {
 		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
+		final int tileWidth = this.mTMXTiledMap.getTileWidth();
+		final int tileHeight = this.mTMXTiledMap.getTileHeight();
+		
 		final int tilesHorizontal = this.mTileColumns;
 		final int tilesVertical = this.mTileRows;
+		
 		final TextureRegion[][] textureRegions = this.mTextureRegions;
 		final byte[] globalTileIDFetcher = new byte[4];
 
@@ -185,6 +190,12 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 				final int column = globalTileIDsRead % tilesHorizontal;
 				final int row = globalTileIDsRead / tilesHorizontal;
 				textureRegions[row][column] = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
+				if(pTMXTilePropertyListener != null) {
+					final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(globalTileID);
+					if(tmxTileProperties != null) {
+						pTMXTilePropertyListener.onTMXTileWithPropertiesCreated(tmxTiledMap, this, tmxTileProperties, row, column, tileWidth, tileHeight);
+					}
+				}
 			}
 			globalTileIDsRead++;
 		}

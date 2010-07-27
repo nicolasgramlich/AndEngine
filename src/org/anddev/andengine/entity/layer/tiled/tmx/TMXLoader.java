@@ -27,17 +27,19 @@ public class TMXLoader {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final Context mContext;
 	private final TextureManager mTextureManager;
+	private final ITMXTilePropertiesListener mTMXTilePropertyListener;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TMXLoader(final Context pContext, final TextureManager pTextureManager) {
+	public TMXLoader(final Context pContext, final TextureManager pTextureManager, final ITMXTilePropertiesListener pTMXTilePropertyListener) {
 		this.mContext = pContext;
 		this.mTextureManager = pTextureManager;
+		this.mTMXTilePropertyListener = pTMXTilePropertyListener;
 	}
 
 	// ===========================================================
@@ -58,7 +60,7 @@ public class TMXLoader {
 			final SAXParser sp = spf.newSAXParser();
 
 			final XMLReader xr = sp.getXMLReader();
-			final TMXParser tmxParser = new TMXParser(this.mContext, this.mTextureManager);
+			final TMXParser tmxParser = new TMXParser(this.mContext, this.mTextureManager, this.mTMXTilePropertyListener);
 			xr.setContentHandler(tmxParser);
 
 			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));

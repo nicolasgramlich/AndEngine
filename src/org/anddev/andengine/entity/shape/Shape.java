@@ -26,10 +26,10 @@ public abstract class Shape extends Entity implements IShape {
 	// Fields
 	// ===========================================================
 
-	private float mRed = 1f;
-	private float mGreen = 1f;
-	private float mBlue = 1f;
-	private float mAlpha = 1f;
+	protected float mRed = 1f;
+	protected float mGreen = 1f;
+	protected float mBlue = 1f;
+	protected float mAlpha = 1f;
 
 	private final float mBaseX;
 	private final float mBaseY;
@@ -37,21 +37,21 @@ public abstract class Shape extends Entity implements IShape {
 	protected float mX;
 	protected float mY;
 
-	private float mAccelerationX = 0;
-	private float mAccelerationY = 0;
+	protected float mAccelerationX = 0;
+	protected float mAccelerationY = 0;
 
-	private float mVelocityX = 0;
-	private float mVelocityY = 0;
+	protected float mVelocityX = 0;
+	protected float mVelocityY = 0;
 
-	private float mRotation = 0;
+	protected float mRotation = 0;
 
-	private float mAngularVelocity = 0;
+	protected float mAngularVelocity = 0;
 
 	protected float mRotationCenterX = 0;
 	protected float mRotationCenterY = 0;
 
-	private float mScaleX = 1f;
-	private float mScaleY = 1f;
+	protected float mScaleX = 1f;
+	protected float mScaleY = 1f;
 
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;

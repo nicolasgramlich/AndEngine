@@ -9,16 +9,19 @@ import java.util.zip.GZIPInputStream;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.layer.tiled.tmx.TMXLoader.ITMXTilePropertiesListener;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 import org.anddev.andengine.util.Base64;
 import org.anddev.andengine.util.Base64InputStream;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.SAXUtils;
+import org.anddev.andengine.util.constants.Constants;
 import org.xml.sax.Attributes;
 
 /**
@@ -42,6 +45,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	private final int mTileRows;
 
 	private final TextureRegion[][] mTextureRegions;
+
+	private final float[] mCullingVertices = new float[2 * RectangleVertexBuffer.VERTICES_PER_RECTANGLE];
 
 	// ===========================================================
 	// Constructors
@@ -92,6 +97,12 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// ===========================================================
 
 	@Override
+	@Deprecated
+	public void setRotation(final float pRotation) {
+
+	}
+
+	@Override
 	protected void onUpdateVertexBuffer() {
 		/* Nothing. */
 	}
@@ -125,23 +136,33 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final int tileWidth = this.mTMXTiledMap.getTileWidth();
 		final int tileHeight = this.mTMXTiledMap.getTileHeight();
 
-		final float layerX = this.mX;
-		final float layerY = this.mY;
+		final float scaledTileWidth = tileWidth * this.mScaleX;
+		final float scaledTileHeight = tileHeight * this.mScaleY;
+
+		final float[] cullingVertices = this.mCullingVertices;
+		RectangularShapeCollisionChecker.fillVertices(this, cullingVertices);
+
+		final float layerMinX = cullingVertices[0 + Constants.VERTEX_INDEX_X];
+		final float layerMinY = cullingVertices[0 + Constants.VERTEX_INDEX_Y];
+
 		final float cameraMinX = pCamera.getMinX();
-		final float cameraMaxX = pCamera.getMaxX();
 		final float cameraMinY = pCamera.getMinY();
-		final float cameraMaxY = pCamera.getMaxY();
-		
+		final float cameraWidth = pCamera.getWidth();
+		final float cameraHeight = pCamera.getHeight();
+
 		/* Determine the area that is visible in the camera. */
-		final int firstRow = MathUtils.bringToBounds(0, tileRows - 1, Math.max(0, (cameraMinY - layerY) / tileHeight));
-		final int lastRow = MathUtils.bringToBounds(0, tileRows - 1, Math.max(0, (cameraMaxY - layerY) / tileHeight));
-		final int firstColumn = MathUtils.bringToBounds(0, tileColumns - 1, Math.max(0, (cameraMinX - layerX) / tileWidth));
-		final int lastColumn = MathUtils.bringToBounds(0, tileColumns - 1, Math.max(0, (cameraMaxX - layerX) / tileWidth));
+		final float firstColumnRaw = (cameraMinX - layerMinX) / scaledTileWidth;
+		final int firstColumn = MathUtils.bringToBounds(0, tileColumns - 1, (int)Math.floor(firstColumnRaw));
+		final int lastColumn = MathUtils.bringToBounds(0, tileColumns - 1, (int)Math.ceil(firstColumnRaw + cameraWidth / scaledTileWidth));
+
+		final float firstRowRaw = (cameraMinY - layerMinY) / scaledTileHeight;
+		final int firstRow = MathUtils.bringToBounds(0, tileRows - 1, (int)Math.floor(firstRowRaw));
+		final int lastRow = MathUtils.bringToBounds(0, tileRows - 1, (int)Math.floor(firstRowRaw + cameraHeight / scaledTileHeight));
 
 		final int visibleTilesTotalWidth = (lastColumn - firstColumn + 1) * tileWidth;
 
 		pGL.glTranslatef(firstColumn * tileWidth, firstRow * tileHeight, 0);
-		
+
 		for(int row = firstRow; row <= lastRow; row++) {
 			final TextureRegion[] textureRegionRow = textureRegions[row];
 
@@ -174,10 +195,10 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
 		final int tileWidth = this.mTMXTiledMap.getTileWidth();
 		final int tileHeight = this.mTMXTiledMap.getTileHeight();
-		
+
 		final int tilesHorizontal = this.mTileColumns;
 		final int tilesVertical = this.mTileRows;
-		
+
 		final TextureRegion[][] textureRegions = this.mTextureRegions;
 		final byte[] globalTileIDFetcher = new byte[4];
 

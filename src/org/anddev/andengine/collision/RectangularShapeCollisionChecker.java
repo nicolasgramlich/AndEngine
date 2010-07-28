@@ -52,7 +52,7 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		return checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, 2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, VERTICES_COLLISION_TMP_B);
 	}
 
-	private static void fillVertices(final RectangularShape pRectangularShape, final float[] pVertices) {
+	public static void fillVertices(final RectangularShape pRectangularShape, final float[] pVertices) {
 		final float left = pRectangularShape.getX();
 		final float top = pRectangularShape.getY();
 		final float right = pRectangularShape.getWidth() + left;

@@ -25,6 +25,7 @@
 	../AndEnginePlayground/lib/andengine.jar,
 	../AndEngineServerExtension/lib/andengine.jar,
 	../EngineComparison/lib/andengine.jar,
+	../GravityCollector/lib/andengine.jar,
 	../HeliTaxiShared/lib/andengine.jar,
 	../HeliTaxi/lib/andengine.jar,
 	../HeliTaxiLiveWallpaper/lib/andengine.jar,

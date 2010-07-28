@@ -7,6 +7,7 @@ import org.anddev.andengine.entity.layer.tiled.tmx.TMXLoader.ITMXTilePropertiesL
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXParseException;
 import org.anddev.andengine.opengl.texture.TextureManager;
+import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
@@ -31,8 +32,12 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private final Context mContext;
 	private final TextureManager mTextureManager;
 	private final ITMXTilePropertiesListener mTMXTilePropertyListener;
+	private final TextureOptions mTextureOptions;
 
 	private TMXTiledMap mTMXTiledMap;
+
+	private int mLastTileSetTileID;
+	
 	private final StringBuilder mStringBuilder = new StringBuilder();
 
 	@SuppressWarnings("unused")
@@ -51,15 +56,15 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private boolean mInLayer;
 	@SuppressWarnings("unused")
 	private boolean mInData;
-	private int mLastTileSetTileID;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TMXParser(final Context pContext, final TextureManager pTextureManager, final ITMXTilePropertiesListener pTMXTilePropertyListener) {
+	public TMXParser(final Context pContext, final TextureManager pTextureManager, final TextureOptions pTextureOptions, final ITMXTilePropertiesListener pTMXTilePropertyListener) {
 		this.mContext = pContext;
 		this.mTextureManager = pTextureManager;
+		this.mTextureOptions = pTextureOptions;
 		this.mTMXTilePropertyListener = pTMXTilePropertyListener;
 	}
 
@@ -82,7 +87,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			this.mTMXTiledMap = new TMXTiledMap(pAttributes);
 		} else if(pLocalName.equals(TAG_TILESET)){
 			this.mInTileset = true;
-			this.mTMXTiledMap.addTMXTileSet(new TMXTileSet(pAttributes));
+			this.mTMXTiledMap.addTMXTileSet(new TMXTileSet(pAttributes, this.mTextureOptions));
 		} else if(pLocalName.equals(TAG_IMAGE)){
 			this.mInImage = true;
 			final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();

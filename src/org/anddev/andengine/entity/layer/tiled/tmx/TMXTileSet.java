@@ -41,22 +41,25 @@ public class TMXTileSet implements TMXConstants {
 	@SuppressWarnings("unused")
 	private int mTilesVertical;
 
-	private int mSpacing;
-	private int mMargin;
+	private final int mSpacing;
+	private final int mMargin;
 
 	private final SparseArray<ArrayList<TMXTileProperty>> mTMXTileProperties = new SparseArray<ArrayList<TMXTileProperty>>();
+	private final TextureOptions mTextureOptions;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	TMXTileSet(final Attributes pAttributes) {
+	TMXTileSet(final Attributes pAttributes, final TextureOptions pTextureOptions) {
 		this.mFirstGlobalTileID = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_FIRSTGID, 1);
 		this.mName = pAttributes.getValue("", TAG_TILESET_ATTRIBUTE_NAME);
 		this.mTileWidth = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_TILEWIDTH, -1);
 		this.mTileHeight = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_TILEHEIGHT, -1);
 		this.mSpacing = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_SPACING, 0);
 		this.mMargin = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_MARGIN, 0);
+
+		this.mTextureOptions = pTextureOptions;
 	}
 
 	// ===========================================================
@@ -89,7 +92,7 @@ public class TMXTileSet implements TMXConstants {
 		final AssetTextureSource assetTextureSource = new AssetTextureSource(pContext, this.mImageSource);
 		this.mTilesHorizontal = assetTextureSource.getWidth() / this.mTileWidth;
 		this.mTilesVertical = assetTextureSource.getHeight() / this.mTileHeight;
-		this.mTexture = TextureFactory.createForTextureSourceSize(assetTextureSource, TextureOptions.DEFAULT);
+		this.mTexture = TextureFactory.createForTextureSourceSize(assetTextureSource, this.mTextureOptions);
 		TextureRegionFactory.createFromSource(this.mTexture, assetTextureSource, 0, 0);
 		pTextureManager.loadTexture(this.mTexture);
 	}
@@ -106,7 +109,7 @@ public class TMXTileSet implements TMXConstants {
 	// Methods
 	// ===========================================================
 
-	public ArrayList<TMXTileProperty> getTMXTilePropertiesFromGlobalTileID(int pGlobalTileID) {
+	public ArrayList<TMXTileProperty> getTMXTilePropertiesFromGlobalTileID(final int pGlobalTileID) {
 		final int localTileID = pGlobalTileID - this.mFirstGlobalTileID;
 		return this.mTMXTileProperties.get(localTileID);
 	}

@@ -11,6 +11,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXLoadException;
 import org.anddev.andengine.opengl.texture.TextureManager;
+import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -32,6 +33,7 @@ public class TMXLoader {
 
 	private final Context mContext;
 	private final TextureManager mTextureManager;
+	private final TextureOptions mTextureOptions;
 	private final ITMXTilePropertiesListener mTMXTilePropertyListener;
 
 	// ===========================================================
@@ -39,12 +41,21 @@ public class TMXLoader {
 	// ===========================================================
 
 	public TMXLoader(final Context pContext, final TextureManager pTextureManager) {
-		this(pContext, pTextureManager, null);
+		this(pContext, pTextureManager, TextureOptions.DEFAULT);
+	}
+
+	public TMXLoader(final Context pContext, final TextureManager pTextureManager, final TextureOptions pTextureOptions) {
+		this(pContext, pTextureManager, pTextureOptions, null);
 	}
 
 	public TMXLoader(final Context pContext, final TextureManager pTextureManager, final ITMXTilePropertiesListener pTMXTilePropertyListener) {
+		this(pContext, pTextureManager, TextureOptions.DEFAULT, pTMXTilePropertyListener);
+	}
+
+	public TMXLoader(final Context pContext, final TextureManager pTextureManager, final TextureOptions pTextureOptions, final ITMXTilePropertiesListener pTMXTilePropertyListener) {
 		this.mContext = pContext;
 		this.mTextureManager = pTextureManager;
+		this.mTextureOptions = pTextureOptions;
 		this.mTMXTilePropertyListener = pTMXTilePropertyListener;
 	}
 
@@ -74,7 +85,7 @@ public class TMXLoader {
 			final SAXParser sp = spf.newSAXParser();
 
 			final XMLReader xr = sp.getXMLReader();
-			final TMXParser tmxParser = new TMXParser(this.mContext, this.mTextureManager, this.mTMXTilePropertyListener);
+			final TMXParser tmxParser = new TMXParser(this.mContext, this.mTextureManager, this.mTextureOptions, this.mTMXTilePropertyListener);
 			xr.setContentHandler(tmxParser);
 
 			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));

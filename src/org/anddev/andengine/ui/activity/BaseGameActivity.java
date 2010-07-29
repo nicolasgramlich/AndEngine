@@ -13,6 +13,7 @@ import org.anddev.andengine.ui.IGameInterface;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -122,6 +123,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	private void applyEngineOptions(final EngineOptions pEngineOptions) {
 		if(pEngineOptions.isFullscreen()) {
 			this.applyFullscreen();
+		}
+		
+		if(pEngineOptions.needsMusic() || pEngineOptions.needsSound()) {
+			this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		}
 
 		switch(pEngineOptions.getScreenOrientation()){

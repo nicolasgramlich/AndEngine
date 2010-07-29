@@ -29,7 +29,7 @@ public abstract class BaseTouchController implements ITouchController  {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected static boolean fireTouchEvent(float pX, float pY, int pAction, int pPointerID, final MotionEvent pMotionEvent, final ITouchEventCallback pTouchEventCallback) {
+	protected static boolean fireTouchEvent(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent, final ITouchEventCallback pTouchEventCallback) {
 		final TouchEvent touchEvent = TouchEvent.obtain();
 		touchEvent.set(pX, pY, pAction, pPointerID, pMotionEvent);
 		final boolean handled = pTouchEventCallback.onTouchEvent(touchEvent);

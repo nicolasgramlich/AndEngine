@@ -34,6 +34,7 @@ public class TMXTiledMap implements TMXConstants {
 
 	private final ArrayList<TMXTileSet> mTMXTileSets = new ArrayList<TMXTileSet>();
 	private final ArrayList<TMXLayer> mTMXLayers = new ArrayList<TMXLayer>();
+	private final ArrayList<TMXObjectGroup> mTMXObjectGroups = new ArrayList<TMXObjectGroup>();
 
 	private final RectangleVertexBuffer mSharedVertexBuffer;
 
@@ -49,10 +50,10 @@ public class TMXTiledMap implements TMXConstants {
 		if(this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL) == false) {
 			throw new IllegalArgumentException(TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
 		}
-		this.mTilesHorizontal = SAXUtils.getIntAttribute(pAttributes, TAG_MAP_ATTRIBUTE_WIDTH, -1);
-		this.mTilesVertical = SAXUtils.getIntAttribute(pAttributes, TAG_MAP_ATTRIBUTE_HEIGHT, -1);
-		this.mTileWidth = SAXUtils.getIntAttribute(pAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH, -1);
-		this.mTileHeight = SAXUtils.getIntAttribute(pAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT, -1);
+		this.mTilesHorizontal = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_WIDTH);
+		this.mTilesVertical = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_HEIGHT);
+		this.mTileWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH);
+		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT);
 
 		this.mSharedVertexBuffer = new RectangleVertexBuffer(GL11.GL_STATIC_DRAW);
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mSharedVertexBuffer);
@@ -87,20 +88,28 @@ public class TMXTiledMap implements TMXConstants {
 		return this.mSharedVertexBuffer;
 	}
 
+	void addTMXTileSet(final TMXTileSet pTMXTileSet) {
+		this.mTMXTileSets.add(pTMXTileSet);
+	}
+
 	public ArrayList<TMXTileSet> getTMXTileSets() {
 		return this.mTMXTileSets;
 	}
 
-	void addTMXTileSet(final TMXTileSet pTMXTileSet) {
-		this.mTMXTileSets.add(pTMXTileSet);
+	void addTMXLayer(final TMXLayer pTMXLayer) {
+		this.mTMXLayers.add(pTMXLayer);
 	}
 
 	public ArrayList<TMXLayer> getTMXLayers() {
 		return this.mTMXLayers;
 	}
 
-	void addTMXLayer(final TMXLayer pTMXLayer) {
-		this.mTMXLayers.add(pTMXLayer);
+	void addTMXObjectGroup(final TMXObjectGroup pTMXObjectGroup) {
+		this.mTMXObjectGroups.add(pTMXObjectGroup);
+	}
+
+	public ArrayList<TMXObjectGroup> getTMXObjectGroups() {
+		return this.mTMXObjectGroups;
 	}
 
 	// ===========================================================

@@ -12,8 +12,8 @@ public class TouchEvent {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	private static final Stack<TouchEvent> TOUCHEVENT_STACK = new Stack<TouchEvent>();   
+
+	private static final Stack<TouchEvent> TOUCHEVENT_STACK = new Stack<TouchEvent>();
 	private static final Object TOUCHEVENT_RECYCLE_LOCK = new Object();
 
 	// ===========================================================
@@ -32,7 +32,7 @@ public class TouchEvent {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public static TouchEvent obtain() {
 		synchronized (TOUCHEVENT_RECYCLE_LOCK) {
 			if(TOUCHEVENT_STACK.isEmpty()){
@@ -42,23 +42,23 @@ public class TouchEvent {
 			}
 		}
 	}
-	
+
 	public static void recycle(final TouchEvent pTouchEvent) {
 		synchronized (TOUCHEVENT_RECYCLE_LOCK) {
 			TOUCHEVENT_STACK.push(pTouchEvent);
 		}
 	}
-	
+
 	public void recycle() {
 		TouchEvent.recycle(this);
 	}
 
-	public void set(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pTouchEvent) {
+	public void set(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent) {
 		this.mX = pX;
 		this.mY = pY;
 		this.mAction = pAction;
 		this.mPointerID = pPointerID;
-		this.mMotionEvent = pTouchEvent;
+		this.mMotionEvent = pMotionEvent;
 	}
 
 	// ===========================================================

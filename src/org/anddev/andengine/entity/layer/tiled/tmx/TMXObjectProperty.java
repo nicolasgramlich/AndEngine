@@ -1,12 +1,12 @@
-package org.anddev.andengine.util;
+package org.anddev.andengine.entity.layer.tiled.tmx;
 
 import org.xml.sax.Attributes;
 
 /**
  * @author Nicolas Gramlich
- * @since 22:02:09 - 21.07.2010
+ * @since 11:19:44 - 29.07.2010
  */
-public class SAXUtils {
+public class TMXObjectProperty extends TMXProperty {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,6 +19,10 @@ public class SAXUtils {
 	// Constructors
 	// ===========================================================
 
+	public TMXObjectProperty(final Attributes pAttributes) {
+		super(pAttributes);	
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -30,20 +34,6 @@ public class SAXUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public static int getIntAttribute(final Attributes pAttributes, final String pAttributeName, final int pDefaultValue) {
-		final String value = pAttributes.getValue("", pAttributeName);
-		return (value != null) ? Integer.parseInt(value) : pDefaultValue;
-	}
-	
-	public static int getIntAttributeOrThrow(final Attributes pAttributes, final String pAttributeName) {
-		final String value = pAttributes.getValue("", pAttributeName);
-		if(value != null) {
-			return Integer.parseInt(value);
-		} else {
-			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -46,7 +46,6 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private boolean mInTileset;
 	@SuppressWarnings("unused")
 	private boolean mInImage;
-	@SuppressWarnings("unused")
 	private boolean mInTile;
 	@SuppressWarnings("unused")
 	private boolean mInProperties;
@@ -56,6 +55,9 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private boolean mInLayer;
 	@SuppressWarnings("unused")
 	private boolean mInData;
+	@SuppressWarnings("unused")
+	private boolean mInObjectGroup;
+	private boolean mInObject;
 
 	// ===========================================================
 	// Constructors
@@ -94,20 +96,33 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			tmxTileSets.get(tmxTileSets.size() - 1).setImageSource(this.mContext, this.mTextureManager, pAttributes);
 		} else if(pLocalName.equals(TAG_TILE)) {
 			this.mInTile = true;
-			this.mLastTileSetTileID = SAXUtils.getIntAttribute(pAttributes, TAG_TILE_ATTRIBUTE_ID, -1);
+			this.mLastTileSetTileID = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_TILE_ATTRIBUTE_ID);
 		} else if(pLocalName.equals(TAG_PROPERTIES)) {
 			this.mInProperties = true;
 		} else if(pLocalName.equals(TAG_PROPERTY)) {
 			this.mInProperty = true;
-			final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
-			tmxTileSets.get(tmxTileSets.size() - 1).addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));
+			if(this.mInTile) {
+				final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
+				tmxTileSets.get(tmxTileSets.size() - 1).addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));	
+			} else if (this.mInObject) {
+				final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
+				final TMXObjectGroup lastObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
+				
+				final ArrayList<TMXObject> tmxObjects = lastObjectGroup.getTMXObjects();
+				tmxObjects.get(tmxObjects.size() - 1).addTMXObjectProperty(new TMXObjectProperty(pAttributes));
+			}
 		} else if(pLocalName.equals(TAG_LAYER)){
 			this.mInLayer = true;
 			this.mTMXTiledMap.addTMXLayer(new TMXLayer(this.mTMXTiledMap, pAttributes));
 		} else if(pLocalName.equals(TAG_DATA)){
 			this.mInData = true;
-		} else if(pLocalName.equals(TAG_PROPERTIES)) {
-			this.mInProperties = true;
+		} else if(pLocalName.equals(TAG_OBJECTGROUP)){
+			this.mInObjectGroup = true;
+			this.mTMXTiledMap.addTMXObjectGroup(new TMXObjectGroup(pAttributes));
+		} else if(pLocalName.equals(TAG_OBJECT)){
+			this.mInObject = true;
+			final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
+			tmxObjectGroups.get(tmxObjectGroups.size() - 1).addTMXObject(new TMXObject(pAttributes));
 		} else {
 			throw new TMXParseException("Unexpected start tag: '" + pLocalName + "'.");
 		}
@@ -142,6 +157,10 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 				Debug.e(e);
 			}
 			this.mInData = false;
+		} else if(pLocalName.equals(TAG_OBJECTGROUP)){
+			this.mInObjectGroup = false;
+		} else if(pLocalName.equals(TAG_OBJECT)){
+			this.mInObject = false;
 		} else {
 			throw new TMXParseException("Unexpected end tag: '" + pLocalName + "'.");
 		}

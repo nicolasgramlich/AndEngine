@@ -54,8 +54,8 @@ public class TMXTileSet implements TMXConstants {
 	TMXTileSet(final Attributes pAttributes, final TextureOptions pTextureOptions) {
 		this.mFirstGlobalTileID = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_FIRSTGID, 1);
 		this.mName = pAttributes.getValue("", TAG_TILESET_ATTRIBUTE_NAME);
-		this.mTileWidth = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_TILEWIDTH, -1);
-		this.mTileHeight = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_TILEHEIGHT, -1);
+		this.mTileWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_TILESET_ATTRIBUTE_TILEWIDTH);
+		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_TILESET_ATTRIBUTE_TILEHEIGHT);
 		this.mSpacing = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_SPACING, 0);
 		this.mMargin = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_MARGIN, 0);
 
@@ -100,6 +100,10 @@ public class TMXTileSet implements TMXConstants {
 	public String getImageSource() {
 		return this.mImageSource;
 	}
+	
+	public SparseArray<ArrayList<TMXTileProperty>> getTMXTileProperties() {
+		return this.mTMXTileProperties;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -114,13 +118,13 @@ public class TMXTileSet implements TMXConstants {
 		return this.mTMXTileProperties.get(localTileID);
 	}
 
-	public void addTMXTileProperty(final int pLocalTileID, final TMXTileProperty pTMXProperty) {
+	public void addTMXTileProperty(final int pLocalTileID, final TMXTileProperty pTMXTileProperty) {
 		final ArrayList<TMXTileProperty> existingProperties = this.mTMXTileProperties.get(pLocalTileID);
 		if(existingProperties != null) {
-			existingProperties.add(pTMXProperty);
+			existingProperties.add(pTMXTileProperty);
 		} else {
 			final ArrayList<TMXTileProperty> newProperties = new ArrayList<TMXTileProperty>();
-			newProperties.add(pTMXProperty);
+			newProperties.add(pTMXTileProperty);
 			this.mTMXTileProperties.put(pLocalTileID, newProperties);
 		}
 	}

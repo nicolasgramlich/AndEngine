@@ -50,6 +50,20 @@ public interface TMXConstants {
 	public static final String TAG_DATA_ATTRIBUTE_ENCODING_VALUE_BASE64 = "base64";
 	public static final String TAG_DATA_ATTRIBUTE_COMPRESSION = "compression";
 	public static final String TAG_DATA_ATTRIBUTE_COMPRESSION_VALUE_GZIP = "gzip";
+	
+
+	public static final String TAG_OBJECTGROUP = "objectgroup";
+	public static final String TAG_OBJECTGROUP_ATTRIBUTE_NAME = "name";
+	public static final String TAG_OBJECTGROUP_ATTRIBUTE_WIDTH = "width";
+	public static final String TAG_OBJECTGROUP_ATTRIBUTE_HEIGHT = "height";
+
+	public static final String TAG_OBJECT = "object";
+	public static final String TAG_OBJECT_ATTRIBUTE_NAME = "name";
+	public static final String TAG_OBJECT_ATTRIBUTE_TYPE = "type";
+	public static final String TAG_OBJECT_ATTRIBUTE_X = "x";
+	public static final String TAG_OBJECT_ATTRIBUTE_Y = "y";
+	public static final String TAG_OBJECT_ATTRIBUTE_WIDTH = "width";
+	public static final String TAG_OBJECT_ATTRIBUTE_HEIGHT = "height";
 
 	// ===========================================================
 	// Methods

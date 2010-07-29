@@ -57,8 +57,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 		this.mTMXTiledMap = pTMXTiledMap;
 		this.mName = pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_NAME);
-		this.mTileColumns = SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_WIDTH, -1);
-		this.mTileRows = SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT, -1);
+		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_LAYER_ATTRIBUTE_WIDTH);
+		this.mTileRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT);
 		this.mTextureRegions = new TextureRegion[this.mTileRows][this.mTileColumns];
 
 		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTileColumns;

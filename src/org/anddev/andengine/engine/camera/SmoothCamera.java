@@ -60,6 +60,7 @@ public class SmoothCamera extends ZoomCamera {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
+		super.onUpdate(pSecondsElapsed);
 		/* Update center. */
 		final float currentCenterX = this.getCenterX();
 		final float currentCenterY = this.getCenterY();

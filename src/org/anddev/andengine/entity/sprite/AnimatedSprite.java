@@ -33,6 +33,8 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	private int mLoopCount;
 	private IAnimationListener mAnimationListener;
 
+	private int mFrameCount;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -107,7 +109,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	private int calculateCurrentFrameIndex() {
 		final long animationProgress = this.mAnimationProgress;
 		final long[] frameEnds = this.mFrameEndsInNanoseconds;
-		final int frameCount = frameEnds.length;
+		final int frameCount = this.mFrameCount;
 		for(int i = 0; i < frameCount; i++) {
 			if(frameEnds[i] > animationProgress) {
 				return i;
@@ -168,13 +170,22 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	/**
-	 * @param pFrameDurations must have the same length as the tile-indexes specify.
+	 * @param pFrameDurations must have the same length as pFirstTileIndex to pLastTileIndex.
 	 * @param pFirstTileIndex
 	 * @param pLastTileIndex
+	 * @param pLoopCount
+	 * @param pAnimationListener
 	 */
 	public AnimatedSprite animate(final long[] pFrameDurations, final int pFirstTileIndex, final int pLastTileIndex, final int pLoopCount, final IAnimationListener pAnimationListener) {
-		assert(pLastTileIndex - pFirstTileIndex >= 2);
-		assert(pFrameDurations.length == (pLastTileIndex - pFirstTileIndex) - 1);
+		if(pLastTileIndex - pFirstTileIndex < 1) {
+			throw new IllegalArgumentException("An animation needs at least two tiles to animate between.");
+		}
+		
+		final int frameCount = (pLastTileIndex - pFirstTileIndex) + 1;
+		if(pFrameDurations.length != frameCount) {
+			throw new IllegalArgumentException("pFrameDurations must have the same length as pFirstTileIndex to pLastTileIndex.");
+		}
+		this.mFrameCount = frameCount;
 
 		this.mAnimationListener = pAnimationListener;
 
@@ -182,10 +193,15 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		this.mLoopCount = pLoopCount;
 		this.mFirstTileIndex = pFirstTileIndex;
 
-		MathUtils.arraySumInternal(pFrameDurations, NANOSECONDSPERMILLISECOND);
-		this.mFrameEndsInNanoseconds = pFrameDurations;
 
-		final long lastFrameEnd = this.mFrameEndsInNanoseconds[this.mFrameEndsInNanoseconds.length - 1];
+		if(this.mFrameEndsInNanoseconds == null || this.mFrameCount > this.mFrameEndsInNanoseconds.length) {
+			this.mFrameEndsInNanoseconds = new long[this.mFrameCount];
+		}
+
+		final long[] frameEndsInNanoseconds = this.mFrameEndsInNanoseconds;
+		MathUtils.arraySumInto(pFrameDurations, frameEndsInNanoseconds, NANOSECONDSPERMILLISECOND);
+
+		final long lastFrameEnd = frameEndsInNanoseconds[this.mFrameCount - 1];
 		this.mAnimationDuration = lastFrameEnd;
 
 		this.mAnimationProgress = 0;

@@ -104,6 +104,14 @@ public class MathUtils implements MathConstants {
 		}
 	}
 
+	public static final void arraySumInto(final long[] pValues, final long[] pTargetValues, final long pFactor) {
+		pTargetValues[0] = pValues[0] * pFactor;
+		final int valueCount = pValues.length;
+		for(int i = 1; i < valueCount; i++) {
+			pTargetValues[i] = pTargetValues[i-1] + pValues[i] * pFactor;
+		}
+	}
+
 	public static final float arraySum(final float[] pValues) {
 		float sum = 0;
 		final int valueCount = pValues.length;

@@ -288,7 +288,10 @@ public class Scene extends Entity {
 						for(int j = 0; j < layerTouchAreaCount; j++) {
 							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
 							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-								return onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
+								final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
+								if(handled) {
+									return true;
+								}
 							}
 						}
 					}
@@ -302,7 +305,10 @@ public class Scene extends Entity {
 						for(int j = layerTouchAreaCount - 1; j >= 0; j--) {
 							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
 							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-								return onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
+								final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
+								if(handled) {
+									return true;
+								}
 							}
 						}
 					}
@@ -317,14 +323,20 @@ public class Scene extends Entity {
 				for(int i = 0; i < touchAreaCount; i++) {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						return onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
+						final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
+						if(handled) {
+							return true;
+						}
 					}
 				}
 			} else { /* Front to back. */
 				for(int i = touchAreaCount - 1; i >= 0; i--) {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						return onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
+						final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
+						if(handled) {
+							return true;
+						}
 					}
 				}
 			}
@@ -337,18 +349,18 @@ public class Scene extends Entity {
 		}
 	}
 
-	private boolean onAreaTouchEvent(final TouchEvent pSceneTouchEvent, final float sceneTouchEventX, final float sceneTouchEventY, final ITouchArea touchArea) {
+	private Boolean onAreaTouchEvent(final TouchEvent pSceneTouchEvent, final float sceneTouchEventX, final float sceneTouchEventY, final ITouchArea touchArea) {
 		final float[] touchAreaLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
 		final float touchAreaLocalX = touchAreaLocalCoordinates[VERTEX_INDEX_X];
 		final float touchAreaLocalY = touchAreaLocalCoordinates[VERTEX_INDEX_Y];
 
 		final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
 		if(handledSelf) {
-			return true;
+			return Boolean.TRUE;
 		} else if(this.mOnAreaTouchListener != null) {
 			return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, touchArea, touchAreaLocalX, touchAreaLocalY);
 		} else {
-			return false;
+			return null;
 		}
 	}
 

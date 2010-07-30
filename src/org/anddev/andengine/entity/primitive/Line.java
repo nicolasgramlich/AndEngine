@@ -27,8 +27,8 @@ public class Line extends GLShape {
 	// Fields
 	// ===========================================================
 
-	private float mX2;
-	private float mY2;
+	protected float mX2;
+	protected float mY2;
 	
 	private float mLineWidth;
 

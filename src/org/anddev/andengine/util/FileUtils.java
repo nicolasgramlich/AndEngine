@@ -87,6 +87,11 @@ public class FileUtils {
 		}
 	}
 	
+	public static InputStream openOnExternalStorage(final Context pContext, final String pFilename) throws FileNotFoundException {
+		final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pFilename);
+		return new FileInputStream(absoluteFilePath);
+	}
+	
 	public static String getAbsolutePathOnExternalStorage(final Context pContext, final String pFilename) {
 		return Environment.getExternalStorageDirectory() + "/Android/data/" + pContext.getApplicationInfo().packageName + "/files/" + pFilename;
 	}

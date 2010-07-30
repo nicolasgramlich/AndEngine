@@ -35,7 +35,7 @@ public class SAXUtils {
 		final String value = pAttributes.getValue("", pAttributeName);
 		return (value != null) ? Integer.parseInt(value) : pDefaultValue;
 	}
-	
+
 	public static int getIntAttributeOrThrow(final Attributes pAttributes, final String pAttributeName) {
 		final String value = pAttributes.getValue("", pAttributeName);
 		if(value != null) {
@@ -43,6 +43,14 @@ public class SAXUtils {
 		} else {
 			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
 		}
+	}
+
+	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final int pValue) {
+		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
+	}
+
+	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final String pValue) {
+		pStringBuilder.append(' ').append(pName).append('=').append('\"').append(pValue).append('\"');
 	}
 
 	// ===========================================================

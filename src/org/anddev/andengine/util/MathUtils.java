@@ -173,6 +173,10 @@ public class MathUtils implements MathConstants {
 	public static int bringToBounds(final int pMinValue, final int pMaxValue, final int pValue) {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}
+	
+	public static float bringToBounds(final float pMinValue, final float pMaxValue, final float pValue) {
+		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

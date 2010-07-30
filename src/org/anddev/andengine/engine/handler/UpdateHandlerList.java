@@ -32,7 +32,7 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		final int handlerCount = this.size();
-		for(int i = 0; i < handlerCount; i++) {
+		for(int i = handlerCount - 1; i >= 0; i--) {
 			this.get(i).onUpdate(pSecondsElapsed);
 		}
 	}
@@ -40,7 +40,7 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	@Override
 	public void reset() {
 		final int handlerCount = this.size();
-		for(int i = 0; i < handlerCount; i++) {
+		for(int i = handlerCount - 1; i >= 0; i--) {
 			this.get(i).reset();
 		}
 	}

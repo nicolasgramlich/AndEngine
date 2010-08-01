@@ -289,7 +289,7 @@ public class Scene extends Entity {
 							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
 							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
 								final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
-								if(handled) {
+								if(handled != null && handled) {
 									return true;
 								}
 							}
@@ -306,7 +306,7 @@ public class Scene extends Entity {
 							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
 							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
 								final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
-								if(handled) {
+								if(handled != null && handled) {
 									return true;
 								}
 							}
@@ -324,7 +324,7 @@ public class Scene extends Entity {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
 						final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
-						if(handled) {
+						if(handled != null && handled) {
 							return true;
 						}
 					}
@@ -334,7 +334,7 @@ public class Scene extends Entity {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
 						final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
-						if(handled) {
+						if(handled != null && handled) {
 							return true;
 						}
 					}

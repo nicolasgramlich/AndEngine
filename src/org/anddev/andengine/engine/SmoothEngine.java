@@ -42,8 +42,8 @@ public class SmoothEngine extends Engine {
 	// ===========================================================
 
 	@Override
-	protected long calculateNanoSecondsElapsed(final long pNow, final long pLastTick) {
-		final long actualSecondsElapsed = super.calculateNanoSecondsElapsed(pNow, pLastTick);
+	protected long calculateNanosecondsElapsed(final long pNow, final long pLastTick) {
+		final long actualSecondsElapsed = super.calculateNanosecondsElapsed(pNow, pLastTick);
 
 		final long smoothedSecondsElapsed = this.calculateLastFramesAverage();
 

@@ -109,8 +109,8 @@ public class SingleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
-		super.updatePreFrameHandlers(pSecondsElapsed);
+	protected void updateUpdateHandlers(final float pSecondsElapsed) {
+		super.updateUpdateHandlers(pSecondsElapsed);
 		this.getSecondCamera().onUpdate(pSecondsElapsed);
 	}
 

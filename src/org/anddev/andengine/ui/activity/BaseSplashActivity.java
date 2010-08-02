@@ -93,7 +93,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 		final SplashScene splashScene = new SplashScene(this.mCamera, this.mLoadingScreenTextureRegion, splashDuration, this.getSplashScaleFrom(), this.getSplashScaleTo());
 
-		splashScene.registerPreFrameHandler(new TimerHandler(splashDuration, new ITimerCallback() {
+		splashScene.registerUpdateHandler(new TimerHandler(splashDuration, new ITimerCallback() {
 			@Override
 			public void onTimePassed(final TimerHandler pTimerHandler) {
 				BaseSplashActivity.this.startActivity(new Intent(BaseSplashActivity.this, BaseSplashActivity.this.getFollowUpActivity()));

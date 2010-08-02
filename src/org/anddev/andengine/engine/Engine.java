@@ -88,20 +88,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private IOrientationListener mOrientationListener;
 	private OrientationData mOrientationData ;
 
-	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
-	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
+	private final UpdateHandlerList mUpdateHandlers = new UpdateHandlerList();
 
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
 
-	private final Thread mUpdateThread = new Thread(new Runnable() {
-		@Override
-		public void run() {
-			while(true) {
-				Engine.this.onUpdate();
-			}
-		}
-	}, "UpdateThread");
+	private final Thread mUpdateThread = new Thread(new UpdateRunnable(), "UpdateThread");
 
 	private final RunnableHandler mUpdateThreadRunnableHandler = new RunnableHandler();
 
@@ -233,28 +225,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		return this.mFontManager;
 	}
 
-	public void clearPreFrameHandlers() {
-		this.mPreFrameHandlers.clear();
+	public void clearUpdateHandlers() {
+		this.mUpdateHandlers.clear();
 	}
 
-	public void clearPostFrameHandlers() {
-		this.mPostFrameHandlers.clear();
+	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		this.mUpdateHandlers.add(pUpdateHandler);
 	}
 
-	public void registerPreFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPreFrameHandlers.add(pUpdateHandler);
-	}
-
-	public void registerPostFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPostFrameHandlers.add(pUpdateHandler);
-	}
-
-	public void unregisterPreFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPreFrameHandlers.remove(pUpdateHandler);
-	}
-
-	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPostFrameHandlers.remove(pUpdateHandler);
+	public void unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		this.mUpdateHandlers.remove(pUpdateHandler);
 	}
 
 	public boolean isMethodTracing() {
@@ -396,10 +376,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public void onLoadComplete(final Scene pScene) {
 		// final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
 		if(this.mEngineOptions.hasLoadingScreen()){
-			this.registerPreFrameHandler(new TimerHandler(LOADING_SCREEN_DURATION, new ITimerCallback() {
+			this.registerUpdateHandler(new TimerHandler(LOADING_SCREEN_DURATION, new ITimerCallback() {
 				@Override
 				public void onTimePassed(final TimerHandler pTimerHandler) {
-					Engine.this.unregisterPreFrameHandler(pTimerHandler);
+					Engine.this.unregisterUpdateHandler(pTimerHandler);
 					Engine.this.setScene(pScene);
 				}
 			}));
@@ -408,50 +388,48 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
-	protected void onUpdate() {
+	void onTickUpdate() throws InterruptedException {
 		if(this.mRunning) {
 			final float secondsElapsed = this.getSecondsElapsed();
+			this.mSecondsElapsedTotal += secondsElapsed;
 
-			this.updatePreFrameHandlers(secondsElapsed);
+			this.onUpdate(secondsElapsed);
 
-			if(this.mScene != null){
-				this.onUpdateScenePreFrameHandlers(secondsElapsed);
-
-				this.mUpdateThreadRunnableHandler.onUpdate(secondsElapsed);
-				this.onUpdateScene(secondsElapsed);
-
-				this.mThreadLocker.notifyCanDraw();
-				this.mThreadLocker.waitUntilCanUpdate();
-
-				this.onUpdateScenePostFrameHandlers(secondsElapsed);
-			} else {
-				this.mThreadLocker.notifyCanDraw();
-				this.mThreadLocker.waitUntilCanUpdate();
-			}
-
-			this.updatePostFrameHandlers(secondsElapsed);
-			//			if(secondsElapsed < 0.033f) {
-			//				try {
-			//					final int sleepTimeMilliseconds = (int)((0.033f - secondsElapsed) * 1000);
-			//					Thread.sleep(sleepTimeMilliseconds);
-			//				} catch (InterruptedException e) {
-			//					Debug.e("UpdateThread interrupted from sleep.", e);
-			//				}
-			//			}
+			this.yieldDraw();
 		} else {
-			this.mThreadLocker.notifyCanDraw();
-			this.mThreadLocker.waitUntilCanUpdate();
+			this.yieldDraw();
 
-			try {
-				Thread.sleep(16);
-			} catch (final InterruptedException e) {
-				Debug.e("UpdateThread interrupted from sleep.", e);
-			}
+			Thread.sleep(16);
 		}
 	}
 
+	private void yieldDraw() {
+		final State threadLocker = this.mThreadLocker;
+		threadLocker.notifyCanDraw();
+		threadLocker.waitUntilCanUpdate();
+	}
+
+	protected void onUpdate(final float pSecondsElapsed) {
+		this.updateUpdateHandlers(pSecondsElapsed);
+		this.onUpdateScene(pSecondsElapsed);
+	}
+
+	protected void onUpdateScene(final float pSecondsElapsed) {
+		if(this.mScene != null){
+			this.mScene.onUpdate(pSecondsElapsed);
+		}
+	}
+
+	protected void updateUpdateHandlers(final float pSecondsElapsed) {
+		this.mUpdateThreadRunnableHandler.onUpdate(pSecondsElapsed);
+		this.mUpdateHandlers.onUpdate(pSecondsElapsed);
+		this.getCamera().onUpdate(pSecondsElapsed);
+	}
+
 	public void onDrawFrame(final GL10 pGL) {
-		this.mThreadLocker.waitUntilCanDraw();
+		final State threadLocker = this.mThreadLocker;
+
+		threadLocker.waitUntilCanDraw();
 
 		this.mTextureManager.updateTextures(pGL);
 		this.mFontManager.updateFonts(pGL);
@@ -461,55 +439,27 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		this.onDrawScene(pGL);
 
-		this.mThreadLocker.notifyCanUpdate();
-	}
-
-	protected void onUpdateScene(final float pSecondsElapsed) {
-		this.mScene.onUpdate(pSecondsElapsed);
-	}
-
-	protected void onUpdateScenePostFrameHandlers(final float pSecondsElapsed) {
-		this.mScene.updatePostFrameHandlers(pSecondsElapsed);
-	}
-
-	protected void onUpdateScenePreFrameHandlers(final float pSecondsElapsed) {
-		this.mScene.updatePreFrameHandlers(pSecondsElapsed);
-	}
-
-	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
-		this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
-		this.getCamera().onUpdate(pSecondsElapsed);
-	}
-
-	protected void updatePostFrameHandlers(final float pSecondsElapsed) {
-		this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
+		threadLocker.notifyCanUpdate();
 	}
 
 	protected void onDrawScene(final GL10 pGL) {
 		final Camera camera = this.getCamera();
 
 		this.mScene.onDraw(pGL, camera);
-		
+
 		camera.onDrawHUD(pGL);
 	}
 
 	private float getSecondsElapsed() {
 		final long now = System.nanoTime();
-		if(this.mLastTick == -1) {
-			this.mLastTick = now - TimeConstants.NANOSECONDSPERMILLISECOND;
-		}
 
-		final long nanosecondsElapsed = this.calculateNanoSecondsElapsed(now, this.mLastTick);
+		final long nanosecondsElapsed = this.calculateNanosecondsElapsed(now, this.mLastTick);
+		this.mLastTick += nanosecondsElapsed;
 
-		final float secondsElapsed = (float)nanosecondsElapsed / TimeConstants.NANOSECONDSPERSECOND;
-		this.mLastTick = now;
-
-		this.mSecondsElapsedTotal += secondsElapsed;
-
-		return secondsElapsed;
+		return (float)nanosecondsElapsed / TimeConstants.NANOSECONDSPERSECOND;
 	}
 
-	protected long calculateNanoSecondsElapsed(final long pNow, final long pLastTick) {
+	protected long calculateNanosecondsElapsed(final long pNow, final long pLastTick) {
 		return pNow - pLastTick;
 	}
 
@@ -578,6 +528,18 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	private class UpdateRunnable implements Runnable {
+		public void run() {
+			try {
+				while(true) {
+					Engine.this.onTickUpdate();
+				}
+			} catch (final InterruptedException e) {
+				Debug.e("UpdateThread interrupted from sleep.", e);
+			}
+		}
+	}
 
 	private static class State {
 		private boolean mDrawing = false;

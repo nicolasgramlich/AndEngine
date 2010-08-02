@@ -145,22 +145,6 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected void onUpdateScenePreFrameHandlers(float pSecondsElapsed) {
-		super.onUpdateScenePreFrameHandlers(pSecondsElapsed);
-		if(this.mSecondScene != null) {
-			this.mSecondScene.updatePreFrameHandlers(pSecondsElapsed);
-		}
-	}
-
-	@Override
-	protected void onUpdateScenePostFrameHandlers(float pSecondsElapsed) {
-		super.onUpdateScenePostFrameHandlers(pSecondsElapsed);
-		if(this.mSecondScene != null) {
-			this.mSecondScene.updatePostFrameHandlers(pSecondsElapsed);
-		}
-	}
-
-	@Override
 	protected void convertSurfaceToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth >> 1;
 		
@@ -173,8 +157,8 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected void updatePreFrameHandlers(final float pSecondsElapsed) {
-		super.updatePreFrameHandlers(pSecondsElapsed);
+	protected void updateUpdateHandlers(final float pSecondsElapsed) {
+		super.updateUpdateHandlers(pSecondsElapsed);
 		this.getSecondCamera().onUpdate(pSecondsElapsed);
 	}
 

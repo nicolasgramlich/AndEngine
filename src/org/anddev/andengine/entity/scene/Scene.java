@@ -49,8 +49,7 @@ public class Scene extends Entity {
 
 	private final RunnableHandler mRunnableHandler = new RunnableHandler();
 
-	private final UpdateHandlerList mPreFrameHandlers = new UpdateHandlerList();
-	private final UpdateHandlerList mPostFrameHandlers = new UpdateHandlerList();
+	private final UpdateHandlerList mUpdateHandlers = new UpdateHandlerList();
 
 	private IOnSceneTouchListener mOnSceneTouchListener;
 
@@ -132,28 +131,16 @@ public class Scene extends Entity {
 		this.mTouchAreas.remove(pTouchArea);
 	}
 
-	public void clearPreFrameHandlers() {
-		this.mPreFrameHandlers.clear();
+	public void clearUpdateHandlers() {
+		this.mUpdateHandlers.clear();
 	}
 
-	public void clearPostFrameHandlers() {
-		this.mPostFrameHandlers.clear();
+	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		this.mUpdateHandlers.add(pUpdateHandler);
 	}
 
-	public void registerPreFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPreFrameHandlers.add(pUpdateHandler);
-	}
-
-	public void registerPostFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPostFrameHandlers.add(pUpdateHandler);
-	}
-
-	public void unregisterPreFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPreFrameHandlers.remove(pUpdateHandler);
-	}
-
-	public void unregisterPostFrameHandler(final IUpdateHandler pUpdateHandler) {
-		this.mPostFrameHandlers.remove(pUpdateHandler);
+	public void unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		this.mUpdateHandlers.remove(pUpdateHandler);
 	}
 
 	public void setOnSceneTouchListener(final IOnSceneTouchListener pOnSceneTouchListener) {
@@ -231,7 +218,7 @@ public class Scene extends Entity {
 			if(this.mBackgroundEnabled) {
 				pCamera.onApplyPositionIndependentMatrix(pGL);
 				GLHelper.setModelViewIdentityMatrix(pGL);
-	
+
 				this.mBackground.onDraw(pGL, pCamera);
 			}
 
@@ -247,6 +234,8 @@ public class Scene extends Entity {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
+		this.updateUpdateHandlers(pSecondsElapsed);
+
 		this.mRunnableHandler.onUpdate(pSecondsElapsed);
 		this.mSecondsElapsedTotal += pSecondsElapsed;
 
@@ -271,7 +260,7 @@ public class Scene extends Entity {
 				return false;
 			}
 		}
-		
+
 		final float sceneTouchEventX = pSceneTouchEvent.getX();
 		final float sceneTouchEventY = pSceneTouchEvent.getY();
 
@@ -433,23 +422,13 @@ public class Scene extends Entity {
 		}
 	}
 
-	public void updatePreFrameHandlers(final float pSecondsElapsed) {
+	private void updateUpdateHandlers(final float pSecondsElapsed) {
 		if(this.mChildScene == null || !this.mChildSceneModalUpdate) {
-			this.mPreFrameHandlers.onUpdate(pSecondsElapsed);
+			this.mUpdateHandlers.onUpdate(pSecondsElapsed);
 		}
 
 		if (this.mChildScene != null) {
-			this.mChildScene.updatePreFrameHandlers(pSecondsElapsed);
-		}
-	}
-
-	public void updatePostFrameHandlers(final float pSecondsElapsed) {
-		if(this.mChildScene == null || !this.mChildSceneModalUpdate) {
-			this.mPostFrameHandlers.onUpdate(pSecondsElapsed);
-		}
-
-		if (this.mChildScene != null) {
-			this.mChildScene.updatePostFrameHandlers(pSecondsElapsed);
+			this.mChildScene.updateUpdateHandlers(pSecondsElapsed);
 		}
 	}
 

@@ -122,12 +122,12 @@ public class Line extends GLShape {
 
 	@Override
 	public float getHeight() {
-		return (this.mY2 - this.mY);
+		return this.mY2 - this.mY;
 	}
 
 	@Override
 	public float getWidth() {
-		return (this.mX2 - this.mX);
+		return this.mX2 - this.mX;
 	}
 
 	/**

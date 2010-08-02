@@ -7,7 +7,7 @@ import org.anddev.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
  * @author Nicolas Gramlich
  * @since 10:18:49 - 02.08.2010
  */
-public class FixedStepEngineOptions extends EngineOptions {
+public class FixedFPSEngineOptions extends EngineOptions {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,23 +18,23 @@ public class FixedStepEngineOptions extends EngineOptions {
 	// Fields
 	// ===========================================================
 	
-	private final int mStepsPerSecond;
+	private final int mFramesPerSecond;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FixedStepEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final int pStepsPerSecond) {
+	public FixedFPSEngineOptions(final boolean pFullscreen, final ScreenOrientation pScreenOrientation, final IResolutionPolicy pResolutionPolicy, final Camera pCamera, final int pFramesPerSecond) {
 		super(pFullscreen, pScreenOrientation, pResolutionPolicy, pCamera);
-		this.mStepsPerSecond = pStepsPerSecond;
+		this.mFramesPerSecond = pFramesPerSecond;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 	
-	public int getStepsPerSecond() {
-		return this.mStepsPerSecond;
+	public int getFramesPerSecond() {
+		return this.mFramesPerSecond;
 	}
 
 	// ===========================================================

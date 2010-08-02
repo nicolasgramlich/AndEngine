@@ -47,12 +47,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-
 /**
  * @author Nicolas Gramlich
  * @since 12:21:31 - 08.03.2010
  */
-public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback {
+public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback, TimeConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -86,7 +85,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private AccelerometerData mAccelerometerData;
 
 	private IOrientationListener mOrientationListener;
-	private OrientationData mOrientationData ;
+	private OrientationData mOrientationData;
 
 	private final UpdateHandlerList mUpdateHandlers = new UpdateHandlerList();
 
@@ -141,7 +140,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void start() {
-		if(!this.mRunning){
+		if(!this.mRunning) {
 			this.mLastTick = System.nanoTime();
 		}
 		this.mRunning = true;
@@ -261,8 +260,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public void onAccuracyChanged(final Sensor pSensor, final int pAccuracy) {
-		if(this.mRunning){
-			switch(pSensor.getType()){
+		if(this.mRunning) {
+			switch(pSensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
 					this.mAccelerometerData.setAccuracy(pAccuracy);
 					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
@@ -273,8 +272,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public void onSensorChanged(final SensorEvent pEvent) {
-		if(this.mRunning){
-			switch(pEvent.sensor.getType()){
+		if(this.mRunning) {
+			switch(pEvent.sensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
 					this.mAccelerometerData.setValues(pEvent.values);
 					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
@@ -292,7 +291,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent, this);
 			try {
-				/* As a human cannot interact 1000x per second, we pause the UI-Thread for a little.*/
+				/*
+				 * As a human cannot interact 1000x per second, we pause the
+				 * UI-Thread for a little.
+				 */
 				Thread.sleep(20);
 			} catch (final InterruptedException e) {
 				Debug.e(e);
@@ -305,7 +307,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public boolean onTouchEvent(final TouchEvent pSurfaceTouchEvent) {
-		/* Let the engine determine which scene and camera this event should be handled by. */
+		/*
+		 * Let the engine determine which scene and camera this event should be
+		 * handled by.
+		 */
 		final Scene scene = this.getSceneFromSurfaceTouchEvent(pSurfaceTouchEvent);
 		final Camera camera = this.getCameraFromSurfaceTouchEvent(pSurfaceTouchEvent);
 
@@ -374,8 +379,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onLoadComplete(final Scene pScene) {
-		// final Scene loadingScene = this.mScene; // TODO Free texture from loading-screen.
-		if(this.mEngineOptions.hasLoadingScreen()){
+		// final Scene loadingScene = this.mScene; // TODO Free texture from
+		// loading-screen.
+		if(this.mEngineOptions.hasLoadingScreen()) {
 			this.registerUpdateHandler(new TimerHandler(LOADING_SCREEN_DURATION, new ITimerCallback() {
 				@Override
 				public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -390,8 +396,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	void onTickUpdate() throws InterruptedException {
 		if(this.mRunning) {
-			final float secondsElapsed = this.getSecondsElapsed();
-			this.mSecondsElapsedTotal += secondsElapsed;
+			final long secondsElapsed = this.getNanosecondsElapsed();
 
 			this.onUpdate(secondsElapsed);
 
@@ -409,13 +414,18 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		threadLocker.waitUntilCanUpdate();
 	}
 
-	protected void onUpdate(final float pSecondsElapsed) {
+	protected void onUpdate(final long pNanosecondsElapsed) throws InterruptedException {
+		final float pSecondsElapsed = (float)pNanosecondsElapsed / TimeConstants.NANOSECONDSPERSECOND;
+		
+		this.mSecondsElapsedTotal += pSecondsElapsed;
+		this.mLastTick += pNanosecondsElapsed;
+
 		this.updateUpdateHandlers(pSecondsElapsed);
 		this.onUpdateScene(pSecondsElapsed);
 	}
 
 	protected void onUpdateScene(final float pSecondsElapsed) {
-		if(this.mScene != null){
+		if(this.mScene != null) {
 			this.mScene.onUpdate(pSecondsElapsed);
 		}
 	}
@@ -434,7 +444,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mTextureManager.updateTextures(pGL);
 		this.mFontManager.updateFonts(pGL);
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			this.mBufferObjectManager.updateBufferObjects((GL11)pGL);
+			this.mBufferObjectManager.updateBufferObjects((GL11) pGL);
 		}
 
 		this.onDrawScene(pGL);
@@ -450,13 +460,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		camera.onDrawHUD(pGL);
 	}
 
-	private float getSecondsElapsed() {
+	private long getNanosecondsElapsed() {
 		final long now = System.nanoTime();
 
-		final long nanosecondsElapsed = this.calculateNanosecondsElapsed(now, this.mLastTick);
-		this.mLastTick += nanosecondsElapsed;
-
-		return (float)nanosecondsElapsed / TimeConstants.NANOSECONDSPERSECOND;
+		return this.calculateNanosecondsElapsed(now, this.mLastTick);
 	}
 
 	protected long calculateNanosecondsElapsed(final long pNow, final long pLastTick) {
@@ -464,7 +471,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public boolean enableVibrator(final Context pContext) {
-		this.mVibrator = (Vibrator)pContext.getSystemService(Context.VIBRATOR_SERVICE);
+		this.mVibrator = (Vibrator) pContext.getSystemService(Context.VIBRATOR_SERVICE);
 		return this.mVibrator != null;
 	}
 
@@ -482,7 +489,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener, final int pRate) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
+		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pRate);
 
 			this.mAccelerometerListener = pAccelerometerListener;
@@ -502,7 +509,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final int pRate) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
+		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION, pRate);
 
 			this.mOrientationListener = pOrientationListener;
@@ -545,37 +552,39 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		private boolean mDrawing = false;
 
 		public synchronized void notifyCanDraw() {
-			//			Debug.d(">>> notifyCanDraw");
+			// Debug.d(">>> notifyCanDraw");
 			this.mDrawing = true;
 			this.notifyAll();
-			//			Debug.d("<<< notifyCanDraw");
+			// Debug.d("<<< notifyCanDraw");
 		}
 
 		public synchronized void notifyCanUpdate() {
-			//			Debug.d(">>> notifyCanUpdate");
+			// Debug.d(">>> notifyCanUpdate");
 			this.mDrawing = false;
 			this.notifyAll();
-			//			Debug.d("<<< notifyCanUpdate");
+			// Debug.d("<<< notifyCanUpdate");
 		}
 
 		public synchronized void waitUntilCanDraw() {
-			//			Debug.d(">>> waitUntilCanDraw");
-			while (this.mDrawing == false) {
+			// Debug.d(">>> waitUntilCanDraw");
+			while(this.mDrawing == false) {
 				try {
 					this.wait();
-				} catch (final InterruptedException e) { }
+				} catch (final InterruptedException e) {
+				}
 			}
-			//			Debug.d("<<< waitUntilCanDraw");
+			// Debug.d("<<< waitUntilCanDraw");
 		}
 
 		public synchronized void waitUntilCanUpdate() {
-			//			Debug.d(">>> waitUntilCanUpdate");
-			while (this.mDrawing == true) {
+			// Debug.d(">>> waitUntilCanUpdate");
+			while(this.mDrawing == true) {
 				try {
 					this.wait();
-				} catch (final InterruptedException e) { }
+				} catch (final InterruptedException e) {
+				}
 			}
-			//			Debug.d("<<< waitUntilCanUpdate");
+			// Debug.d("<<< waitUntilCanUpdate");
 		}
 	}
 }

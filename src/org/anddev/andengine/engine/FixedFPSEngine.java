@@ -1,15 +1,16 @@
 package org.anddev.andengine.engine;
 
-import org.anddev.andengine.engine.options.FixedStepEngineOptions;
+import org.anddev.andengine.engine.options.FixedFPSEngineOptions;
 
 /**
- * A subclass of {@link Engine} that tries to achieve a specific amount of updates per second. 
- * When the time since the last update is bigger long the steplength, additional updates are executed.
- *  
+ * A subclass of {@link Engine} that tries to achieve a specific amount of
+ * updates per second. When the time since the last update is bigger long the
+ * steplength, additional updates are executed.
+ * 
  * @author Nicolas Gramlich
  * @since 10:17:47 - 02.08.2010
  */
-public class FixedStepEngine extends Engine {
+public class FixedFPSEngine extends Engine {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,17 +18,16 @@ public class FixedStepEngine extends Engine {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private final long mStepLength;
-	private long mSecondsElapsedAccumulator;
+
+	private final long mPreferredFrameLengthNanoseconds;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FixedStepEngine(final FixedStepEngineOptions pFixedStepEngineOptions) {
-		super(pFixedStepEngineOptions);
-		this.mStepLength = NANOSECONDSPERSECOND / pFixedStepEngineOptions.getStepsPerSecond();
+	public FixedFPSEngine(final FixedFPSEngineOptions pFixedFPSEngineOptions) {
+		super(pFixedFPSEngineOptions);
+		this.mPreferredFrameLengthNanoseconds = NANOSECONDSPERSECOND / pFixedFPSEngineOptions.getFramesPerSecond();
 	}
 
 	// ===========================================================
@@ -37,15 +37,19 @@ public class FixedStepEngine extends Engine {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public void onUpdate(final long pNanosecondsElapsed) throws InterruptedException {
-		this.mSecondsElapsedAccumulator += pNanosecondsElapsed;
+		final long preferredFrameLengthNanoseconds = this.mPreferredFrameLengthNanoseconds;
+		final long deltaFrameLengthNanoseconds = preferredFrameLengthNanoseconds - pNanosecondsElapsed;
 
-		final long stepLength = this.mStepLength;
-		while(this.mSecondsElapsedAccumulator >= stepLength) {
-			super.onUpdate(stepLength);
-			this.mSecondsElapsedAccumulator -= stepLength;
+		if(deltaFrameLengthNanoseconds <= 0) {
+			super.onUpdate(pNanosecondsElapsed);
+		} else {
+			final int sleepTimeMilliseconds = (int) (deltaFrameLengthNanoseconds / NANOSECONDSPERMILLISECOND);
+
+			Thread.sleep(sleepTimeMilliseconds);
+			super.onUpdate(pNanosecondsElapsed + deltaFrameLengthNanoseconds);
 		}
 	}
 

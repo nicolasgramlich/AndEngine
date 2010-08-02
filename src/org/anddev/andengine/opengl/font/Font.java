@@ -1,9 +1,7 @@
 package org.anddev.andengine.opengl.font;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map.Entry;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -20,6 +18,7 @@ import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.opengl.GLUtils;
 import android.util.FloatMath;
+import android.util.SparseArray;
 
 /**
  * @author Nicolas Gramlich
@@ -43,7 +42,7 @@ public class Font {
 	private int mCurrentTextureX = 0;
 	private int mCurrentTextureY = 0;
 
-	private final HashMap<Character, Letter> mManagedCharacterToLetterMap = new HashMap<Character, Letter>();
+	private final SparseArray<Letter> mManagedCharacterToLetterMap = new SparseArray<Letter>();
 	private final HashSet<Letter> mLettersPendingToBeDrawnToTexture = new HashSet<Letter>();
 
 	protected final Paint mPaint;
@@ -99,9 +98,11 @@ public class Font {
 
 	public void reload() {
 		final HashSet<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
+		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
+		
 		/* Make all letters redraw to the texture. */
-		for(final Entry<Character, Letter> entry : this.mManagedCharacterToLetterMap.entrySet()) {
-			lettersPendingToBeDrawnToTexture.add(entry.getValue());
+		for(int i = managedCharacterToLetterMap.size() - 1; i >= 0; i--) {
+			lettersPendingToBeDrawnToTexture.add(managedCharacterToLetterMap.valueAt(i));
 		}
 	}
 
@@ -155,7 +156,7 @@ public class Font {
 	}
 
 	public Letter getLetter(final char pCharacter) {
-		final HashMap<Character, Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
+		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
 		Letter letter = managedCharacterToLetterMap.get(pCharacter);
 		if (letter == null) {
 			letter = this.createLetter(pCharacter);

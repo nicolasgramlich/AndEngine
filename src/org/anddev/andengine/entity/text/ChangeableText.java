@@ -17,6 +17,9 @@ public class ChangeableText extends Text {
 	// Constants
 	// ===========================================================
 
+	private static final String ELLIPSIS = "...";
+	private static final int ELLIPSIS_CHARACTER_COUNT = ELLIPSIS.length();
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -41,13 +44,26 @@ public class ChangeableText extends Text {
 	// ===========================================================
 
 	public void setText(final String pText) {
-		final int newCharacterCount = pText.length() - StringUtils.countOccurrences(pText, '\n');
-		if(newCharacterCount > this.mCharactersMaximum) {
-			this.setText(pText.substring(0, this.mCharactersMaximum));
+		this.setText(pText, false);
+	}
+
+	/**
+	 * @param pText
+	 * @param pAllowEllipsis in the case pText is longer than <code>pCharactersMaximum</code>,
+	 *	which was passed to the constructor, the displayed text will end with an ellipsis ("...").
+	 */
+	public void setText(final String pText, final boolean pAllowEllipsis) {
+		final int textCharacterCount = pText.length() - StringUtils.countOccurrences(pText, '\n');
+		if(textCharacterCount > this.mCharactersMaximum) {
+			if(pAllowEllipsis && this.mCharactersMaximum > ELLIPSIS_CHARACTER_COUNT) {
+				this.updateText(pText.substring(0, this.mCharactersMaximum - ELLIPSIS_CHARACTER_COUNT).concat(ELLIPSIS)); // TODO This allocation could maybe be avoided...
+			} else {
+				this.updateText(pText.substring(0, this.mCharactersMaximum)); // TODO This allocation could be avoided...
+			}
 			this.mCharacterCountCurrentText = this.mCharactersMaximum;
 		} else {
 			this.updateText(pText);
-			this.mCharacterCountCurrentText = newCharacterCount;
+			this.mCharacterCountCurrentText = textCharacterCount;
 		}
 	}
 

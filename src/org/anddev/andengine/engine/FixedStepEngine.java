@@ -26,7 +26,7 @@ public class FixedStepEngine extends Engine {
 	// Constructors
 	// ===========================================================
 
-	public FixedStepEngine(final EngineOptions pEngineOptions, int pStepsPerSecond) {
+	public FixedStepEngine(final EngineOptions pEngineOptions, final int pStepsPerSecond) {
 		super(pEngineOptions);
 		this.mStepLength = NANOSECONDSPERSECOND / pStepsPerSecond;
 	}

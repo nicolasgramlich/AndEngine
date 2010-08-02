@@ -10,7 +10,7 @@ import org.anddev.andengine.engine.options.EngineOptions;
  * @author Nicolas Gramlich
  * @since 10:17:47 - 02.08.2010
  */
-public class FixedFPSEngine extends Engine {
+public class LimitedFPSEngine extends Engine {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -25,7 +25,7 @@ public class FixedFPSEngine extends Engine {
 	// Constructors
 	// ===========================================================
 
-	public FixedFPSEngine(final EngineOptions pEngineOptions, int pFramesPerSecond) {
+	public LimitedFPSEngine(final EngineOptions pEngineOptions, final int pFramesPerSecond) {
 		super(pEngineOptions);
 		this.mPreferredFrameLengthNanoseconds = NANOSECONDSPERSECOND / pFramesPerSecond;
 	}

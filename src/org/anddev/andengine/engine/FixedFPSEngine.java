@@ -1,6 +1,6 @@
 package org.anddev.andengine.engine;
 
-import org.anddev.andengine.engine.options.FixedFPSEngineOptions;
+import org.anddev.andengine.engine.options.EngineOptions;
 
 /**
  * A subclass of {@link Engine} that tries to achieve a specific amount of
@@ -25,9 +25,9 @@ public class FixedFPSEngine extends Engine {
 	// Constructors
 	// ===========================================================
 
-	public FixedFPSEngine(final FixedFPSEngineOptions pFixedFPSEngineOptions) {
-		super(pFixedFPSEngineOptions);
-		this.mPreferredFrameLengthNanoseconds = NANOSECONDSPERSECOND / pFixedFPSEngineOptions.getFramesPerSecond();
+	public FixedFPSEngine(final EngineOptions pEngineOptions, int pFramesPerSecond) {
+		super(pEngineOptions);
+		this.mPreferredFrameLengthNanoseconds = NANOSECONDSPERSECOND / pFramesPerSecond;
 	}
 
 	// ===========================================================

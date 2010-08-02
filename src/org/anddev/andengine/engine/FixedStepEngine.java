@@ -1,6 +1,7 @@
 package org.anddev.andengine.engine;
 
-import org.anddev.andengine.engine.options.FixedStepEngineOptions;
+import org.anddev.andengine.engine.options.EngineOptions;
+
 
 /**
  * A subclass of {@link Engine} that tries to achieve a specific amount of updates per second.
@@ -25,9 +26,9 @@ public class FixedStepEngine extends Engine {
 	// Constructors
 	// ===========================================================
 
-	public FixedStepEngine(final FixedStepEngineOptions pFixedStepEngineOptions) {
-		super(pFixedStepEngineOptions);
-		this.mStepLength = NANOSECONDSPERSECOND / pFixedStepEngineOptions.getStepsPerSecond();
+	public FixedStepEngine(final EngineOptions pEngineOptions, int pStepsPerSecond) {
+		super(pEngineOptions);
+		this.mStepLength = NANOSECONDSPERSECOND / pStepsPerSecond;
 	}
 
 	// ===========================================================

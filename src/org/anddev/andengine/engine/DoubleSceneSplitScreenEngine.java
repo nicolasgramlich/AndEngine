@@ -3,7 +3,7 @@ package org.anddev.andengine.engine;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.options.SplitScreenEngineOptions;
+import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.input.touch.TouchEvent;
 
@@ -21,13 +21,15 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 
 	private Scene mSecondScene;
+	private Camera mSecondCamera;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public DoubleSceneSplitScreenEngine(final SplitScreenEngineOptions pSplitScreenEngineOptions) {
-		super(pSplitScreenEngineOptions);
+	public DoubleSceneSplitScreenEngine(final EngineOptions pEngineOptions, final Camera pSecondCamera) {
+		super(pEngineOptions);
+		this.mSecondCamera = pSecondCamera;
 	}
 
 	// ===========================================================
@@ -37,15 +39,15 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	@Deprecated
 	@Override
 	public Camera getCamera() {
-		return super.getCamera();
+		return super.mCamera;
 	}
 
 	public Camera getFirstCamera() {
-		return super.getCamera();
+		return super.mCamera;
 	}
 
 	public Camera getSecondCamera() {
-		return this.getEngineOptions().getSecondCamera();
+		return this.mSecondCamera;
 	}
 
 	@Deprecated
@@ -79,11 +81,6 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public SplitScreenEngineOptions getEngineOptions() {
-		return (SplitScreenEngineOptions) super.getEngineOptions();
-	}
 
 	@Override
 	protected void onDrawScene(final GL10 pGL) {

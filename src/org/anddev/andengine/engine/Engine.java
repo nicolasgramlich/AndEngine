@@ -69,12 +69,19 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private long mLastTick = -1;
 	private float mSecondsElapsedTotal = 0;
 
-	private ITouchController mTouchController = new SingleTouchControler();
+	private final State mThreadLocker = new State();
+
+	private final Thread mUpdateThread = new Thread(new UpdateRunnable(), "UpdateThread");
+
+	private final RunnableHandler mUpdateThreadRunnableHandler = new RunnableHandler();
 
 	private final EngineOptions mEngineOptions;
+	protected final Camera mCamera;
+
+	private ITouchController mTouchController = new SingleTouchControler();
 
 	private SoundManager mSoundManager;
-	private MusicManager mMusicManager;
+	private MusicManager mMusicManager;	
 	private final TextureManager mTextureManager = new TextureManager();
 	private final BufferObjectManager mBufferObjectManager = new BufferObjectManager();
 	private final FontManager mFontManager = new FontManager();
@@ -83,6 +90,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
+	private Vibrator mVibrator;
 
 	private IOrientationListener mOrientationListener;
 	private OrientationData mOrientationData;
@@ -92,15 +100,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
 
-	private final Thread mUpdateThread = new Thread(new UpdateRunnable(), "UpdateThread");
-
-	private final RunnableHandler mUpdateThreadRunnableHandler = new RunnableHandler();
-
-	private final State mThreadLocker = new State();
-
 	private boolean mIsMethodTracing;
-
-	private Vibrator mVibrator;
 
 	// ===========================================================
 	// Constructors
@@ -115,6 +115,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 
 		this.mEngineOptions = pEngineOptions;
+		this.mCamera = pEngineOptions.getCamera();
 
 		if(this.mEngineOptions.needsSound()) {
 			this.mSoundManager = new SoundManager();
@@ -163,7 +164,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public Camera getCamera() {
-		return this.mEngineOptions.getCamera();
+		return this.mCamera;
 	}
 
 	public float getSecondsElapsedTotal() {
@@ -349,7 +350,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	private void initLoadingScreen() {
-		final ITextureSource loadingScreenTextureSource = this.getEngineOptions().getLoadingScreenTextureSource();
+		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
 		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
 		this.setScene(new SplashScene(this.getCamera(), loadingScreenTextureRegion));

@@ -48,7 +48,7 @@ public class ScreenCapture extends Entity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(GL10 pGL, final Camera pCamera) {
+	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		if(this.mScreenCapturePending) {
 			saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
 
@@ -61,7 +61,7 @@ public class ScreenCapture extends Entity {
 	}
 
 	@Override
-	protected void onManagedUpdate(float pSecondsElapsed) {
+	protected void onManagedUpdate(final float pSecondsElapsed) {
 		/* Nothing */
 	}
 
@@ -131,7 +131,7 @@ public class ScreenCapture extends Entity {
 		// ===========================================================
 		// Methods
 		// ===========================================================
-		
+
 		public void onScreenCaptured(final String pFilePath);
 	}
 }

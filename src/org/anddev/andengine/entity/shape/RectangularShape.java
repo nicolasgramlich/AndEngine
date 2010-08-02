@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.shape;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
+import org.anddev.andengine.collision.ShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
@@ -25,7 +26,7 @@ public abstract class RectangularShape extends GLShape {
 
 	protected float mWidth;
 	protected float mHeight;
-	
+
 	private final VertexBuffer mVertexBuffer;
 
 	// ===========================================================
@@ -40,13 +41,13 @@ public abstract class RectangularShape extends GLShape {
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		
+
 		this.mVertexBuffer = pVertexBuffer;
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mVertexBuffer);
-		
+
 		this.mRotationCenterX = pWidth * 0.5f;
 		this.mRotationCenterY = pHeight * 0.5f;
-			
+
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
 	}
@@ -117,7 +118,7 @@ public abstract class RectangularShape extends GLShape {
 
 		final float baseWidth = this.getBaseWidth();
 		final float baseHeight = this.getBaseHeight();
-		
+
 		this.mRotationCenterX = baseWidth * 0.5f;
 		this.mRotationCenterY = baseHeight * 0.5f;
 
@@ -132,20 +133,20 @@ public abstract class RectangularShape extends GLShape {
 
 	@Override
 	public float[] getSceneCenterCoordinates() {
-		return convertLocalToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f);
+		return this.convertLocalToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f);
 	}
-	
+
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
-		final float[] sceneCoordinates = RectangularShapeCollisionChecker.convertLocalToSceneCoordinates(this, pX, pY);
+		final float[] sceneCoordinates = ShapeCollisionChecker.convertLocalToSceneCoordinates(this, pX, pY);
 		sceneCoordinates[0] += this.mX;
-		sceneCoordinates[1] += this.mY;		
+		sceneCoordinates[1] += this.mY;
 		return sceneCoordinates;
 	}
-	
+
 	@Override
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
-		final float[] localCoordinates = RectangularShapeCollisionChecker.convertSceneToLocalCoordinates(this, pX, pY);
+		final float[] localCoordinates = ShapeCollisionChecker.convertSceneToLocalCoordinates(this, pX, pY);
 		localCoordinates[0] -= this.mX;
 		localCoordinates[1] -= this.mY;
 		return localCoordinates;

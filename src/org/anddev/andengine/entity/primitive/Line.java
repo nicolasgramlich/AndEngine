@@ -29,7 +29,7 @@ public class Line extends GLShape {
 
 	protected float mX2;
 	protected float mY2;
-	
+
 	private float mLineWidth;
 
 	private final LineVertexBuffer mLineVertexBuffer;
@@ -44,10 +44,10 @@ public class Line extends GLShape {
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
 		super(pX1, pY1);
-		
+
 		this.mX2 = pX2;
 		this.mY2 = pY2;
-		
+
 		this.mLineWidth = pLineWidth;
 
 		this.mLineVertexBuffer = new LineVertexBuffer(GL11.GL_STATIC_DRAW);
@@ -56,7 +56,7 @@ public class Line extends GLShape {
 
 		final float width = this.getWidth();
 		final float height = this.getHeight();
-		
+
 		this.mRotationCenterX = width * 0.5f;
 		this.mRotationCenterY = height * 0.5f;
 
@@ -68,7 +68,7 @@ public class Line extends GLShape {
 	// Getter & Setter
 	// ===========================================================
 
-	/** 
+	/**
 	 * Instead use {@link Line#getX1()} or {@link Line#getX2()}.
 	 */
 	@Override
@@ -77,7 +77,7 @@ public class Line extends GLShape {
 		return super.getX();
 	}
 
-	/** 
+	/**
 	 * Instead use {@link Line#getY1()} or {@link Line#getY2()}.
 	 */
 	@Override
@@ -85,19 +85,19 @@ public class Line extends GLShape {
 	public float getY() {
 		return super.getY();
 	}
-	
+
 	public float getX1() {
 		return super.getX();
 	}
-	
+
 	public float getY1() {
 		return super.getY();
 	}
-	
+
 	public float getX2() {
 		return this.mX2;
 	}
-	
+
 	public float getY2() {
 		return this.mY2;
 	}
@@ -130,7 +130,7 @@ public class Line extends GLShape {
 		return (this.mX2 - this.mX);
 	}
 
-	/** 
+	/**
 	 * Instead use {@link Line#setPosition(float, float, float, float)}.
 	 */
 	@Deprecated
@@ -191,16 +191,16 @@ public class Line extends GLShape {
 	public boolean contains(final float pX, final float pY) {
 		return false;
 	}
-	
+
 	@Override
 	@Deprecated
-	public float[] convertSceneToLocalCoordinates(float pX, float pY) {
+	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
 		return null;
 	}
-	
+
 	@Override
 	@Deprecated
-	public float[] convertLocalToSceneCoordinates(float pX, float pY) {
+	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
 		return null;
 	}
 

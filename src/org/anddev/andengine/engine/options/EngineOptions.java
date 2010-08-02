@@ -94,12 +94,12 @@ public class EngineOptions {
 		this.mNeedsMusic = pNeedsMusic;
 		return this;
 	}
-	
+
 	public WakeLockOptions getWakeLockOptions() {
 		return this.mWakeLockOptions;
 	}
-	
-	public EngineOptions setWakeLockOptions(WakeLockOptions pWakeLockOptions) {
+
+	public EngineOptions setWakeLockOptions(final WakeLockOptions pWakeLockOptions) {
 		this.mWakeLockOptions = pWakeLockOptions;
 		return this;
 	}
@@ -120,7 +120,7 @@ public class EngineOptions {
 		// ===========================================================
 		// Elements
 		// ===========================================================
-		
+
 		LANDSCAPE, PORTRAIT
 	}
 }

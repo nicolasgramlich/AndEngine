@@ -39,7 +39,7 @@ public class ChangeableText extends Text {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public void setText(final String pText) {
 		final int newCharacterCount = pText.length() - StringUtils.countOccurrences(pText, '\n');
 		if(newCharacterCount > this.mCharactersMaximum) {

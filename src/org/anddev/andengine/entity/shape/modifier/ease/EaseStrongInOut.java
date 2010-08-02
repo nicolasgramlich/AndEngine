@@ -12,13 +12,13 @@ public class EaseStrongInOut implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseStrongInOut INSTANCE;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	private EaseStrongInOut() {
 	}
 

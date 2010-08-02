@@ -310,7 +310,7 @@ public class Texture {
 			this.mTexturePositionX = pTexturePositionX;
 			this.mTexturePositionY = pTexturePositionY;
 		}
-		
+
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================

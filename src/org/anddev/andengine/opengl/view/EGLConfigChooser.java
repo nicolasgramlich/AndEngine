@@ -22,7 +22,7 @@ public interface EGLConfigChooser {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	/**
 	 * Choose a configuration from the list. Implementors typically
 	 * implement this method by calling {@link EGL10#eglChooseConfig} and

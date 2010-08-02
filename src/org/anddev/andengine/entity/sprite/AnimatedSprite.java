@@ -15,7 +15,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final int LOOP_CONTINUOUS = -1;
 
 	// ===========================================================
@@ -54,7 +54,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	public AnimatedSprite(final float pX, final float pY, final float pTileWidth, final float pTileHeight, final TiledTextureRegion pTiledTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
 		super(pX, pY, pTileWidth, pTileHeight, pTiledTextureRegion, pRectangleVertexBuffer);
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -180,7 +180,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		if(pLastTileIndex - pFirstTileIndex < 1) {
 			throw new IllegalArgumentException("An animation needs at least two tiles to animate between.");
 		}
-		
+
 		final int frameCount = (pLastTileIndex - pFirstTileIndex) + 1;
 		if(pFrameDurations.length != frameCount) {
 			throw new IllegalArgumentException("pFrameDurations must have the same length as pFirstTileIndex to pLastTileIndex.");
@@ -206,7 +206,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 
 		this.mAnimationProgress = 0;
 		this.mAnimationRunning = true;
-		
+
 		return this;
 	}
 
@@ -222,7 +222,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		// ===========================================================
 		// Fields
 		// ===========================================================
-		
+
 		public void onAnimationEnd(final AnimatedSprite pAnimatedSprite);
 	}
 }

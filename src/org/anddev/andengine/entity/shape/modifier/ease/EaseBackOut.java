@@ -12,15 +12,15 @@ public class EaseBackOut implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseBackOut INSTANCE;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	private EaseBackOut() {
-		
+
 	}
 
 	public static EaseBackOut getInstance() {

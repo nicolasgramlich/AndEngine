@@ -27,13 +27,13 @@ public abstract class BufferObject {
 
 	private final int mByteCount;
 	private final int mDrawType;
-	
+
 	private final FloatBuffer mFloatBuffer;
 
 	private int mHardwareBufferID = -1;
 	private boolean mLoadedToHardware;
 	private boolean mHardwareBufferNeedsUpdate = true;
-	
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -41,7 +41,7 @@ public abstract class BufferObject {
 	public BufferObject(final int pByteCount, final int pDrawType) {
 		this.mByteCount = pByteCount;
 		this.mDrawType = pDrawType;
-		
+
 		this.mFloatBuffer = ByteBuffer.allocateDirect(pByteCount).order(ByteOrder.nativeOrder()).asFloatBuffer();
 	}
 
@@ -92,18 +92,18 @@ public abstract class BufferObject {
 		}
 
 		GLHelper.bindBuffer(pGL11, hardwareBufferID); // TODO Does this always need to be binded, or are just for buffers of the same 'type'(texture/vertex)?
-		
+
 		if(this.mHardwareBufferNeedsUpdate) {
-//			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
+			//			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
 			this.mHardwareBufferNeedsUpdate = false;
 
 			GLHelper.bufferData(pGL11, this, this.mDrawType);
-		} 
+		}
 	}
 
 	public void loadToHardware(final GL11 pGL11) {
 		this.mHardwareBufferID = this.generateHardwareBufferID(pGL11);
-//		Debug.d("BufferObject.loadToHardware(): ID = " + this.mHardwareBufferID);
+		//		Debug.d("BufferObject.loadToHardware(): ID = " + this.mHardwareBufferID);
 
 		this.mLoadedToHardware = true;
 	}

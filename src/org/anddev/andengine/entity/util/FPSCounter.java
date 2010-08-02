@@ -26,7 +26,7 @@ public class FPSCounter implements IUpdateHandler {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public float getFPS() {
 		return this.mFrames / this.mSecondsElapsed;
 	}

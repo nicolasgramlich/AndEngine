@@ -15,7 +15,7 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final float[] VERTICES_SCENE_TO_LOCAL_TMP = new float[2];
 	private static final float[] VERTICES_LOCAL_TO_SCENE_TMP = new float[2];
 
@@ -42,14 +42,14 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	public static float[] convertSceneToLocalCoordinates(final Shape pShape, final float pX, final float pY) {
 		VERTICES_SCENE_TO_LOCAL_TMP[VERTEX_INDEX_X] = pX;
 		VERTICES_SCENE_TO_LOCAL_TMP[VERTEX_INDEX_Y] = pY;
-		
+
 		final float left = pShape.getX();
 		final float top = pShape.getY();
 
-		MathUtils.revertRotateAndScaleAroundCenter(VERTICES_SCENE_TO_LOCAL_TMP, 
-				pShape.getRotation(), left + pShape.getRotationCenterX(), top + pShape.getRotationCenterY(), 
+		MathUtils.revertRotateAndScaleAroundCenter(VERTICES_SCENE_TO_LOCAL_TMP,
+				pShape.getRotation(), left + pShape.getRotationCenterX(), top + pShape.getRotationCenterY(),
 				pShape.getScaleX(), pShape.getScaleY(), left + pShape.getScaleCenterX(), top + pShape.getScaleCenterY());
-		
+
 		return VERTICES_SCENE_TO_LOCAL_TMP;
 	}
 
@@ -58,14 +58,14 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 		VERTICES_LOCAL_TO_SCENE_TMP[VERTEX_INDEX_X] = pX;
 		VERTICES_LOCAL_TO_SCENE_TMP[VERTEX_INDEX_Y] = pY;
 
-		MathUtils.rotateAndScaleAroundCenter(VERTICES_LOCAL_TO_SCENE_TMP, 
-				pShape.getRotation(), pShape.getRotationCenterX(), pShape.getRotationCenterY(), 
+		MathUtils.rotateAndScaleAroundCenter(VERTICES_LOCAL_TO_SCENE_TMP,
+				pShape.getRotation(), pShape.getRotationCenterX(), pShape.getRotationCenterY(),
 				pShape.getScaleX(), pShape.getScaleY(), pShape.getScaleCenterX(), pShape.getScaleCenterY());
-		
+
 		return VERTICES_LOCAL_TO_SCENE_TMP;
 	}
-	
-	public static boolean checkCollision(final int pVerticesALength, final int pVerticesBLength, final float[] pVerticesA, final float[] pVerticesB) {		
+
+	public static boolean checkCollision(final int pVerticesALength, final int pVerticesBLength, final float[] pVerticesA, final float[] pVerticesB) {
 		/* Check all the lines of A ... */
 		for(int a = pVerticesALength - 4; a >= 0; a -= 2) {
 			/* ... against all lines in B. */
@@ -90,7 +90,7 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 		final float vertexA1Y = pVerticesA[pVertexIndexA1 + VERTEX_INDEX_Y];
 		final float vertexA2X = pVerticesA[pVertexIndexA2];
 		final float vertexA2Y = pVerticesA[pVertexIndexA2 + VERTEX_INDEX_Y];
-		
+
 		for(int b = pVerticesBLength - 4; b >= 0; b -= 2) {
 			if(LineCollisionChecker.checkLineCollision(vertexA1X, vertexA1Y, vertexA2X, vertexA2Y, pVerticesB[b], pVerticesB[b + VERTEX_INDEX_Y], pVerticesB[b + 2], pVerticesB[b + 2 + VERTEX_INDEX_Y])){
 				return true;
@@ -102,8 +102,8 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 		}
 		return false;
 	}
-	
-	
+
+
 
 	public static boolean checkContains(final float[] pVertices, final int pVerticesLength, final float pX, final float pY) {
 		int edgeResultSum = 0;
@@ -123,7 +123,7 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 		} else {
 			edgeResultSum += edgeResult;
 		}
-		
+
 		final int vertexCount = pVerticesLength / 2;
 		/* Point is not on the edge, so check if the edge is on the same side(left or right) of all edges. */
 		return edgeResultSum == vertexCount || edgeResultSum == -vertexCount ;

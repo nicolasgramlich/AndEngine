@@ -23,7 +23,7 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha) {
 		this(pDuration, pFromAlpha, pToAlpha, null, IEaseFunction.DEFAULT);
 	}
-	
+
 	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IEaseFunction pEaseFunction) {
 		this(pDuration, pFromAlpha, pToAlpha, null, pEaseFunction);
 	}
@@ -39,7 +39,7 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	protected AlphaModifier(final AlphaModifier pAlphaModifier) {
 		super(pAlphaModifier);
 	}
-	
+
 	@Override
 	public AlphaModifier clone(){
 		return new AlphaModifier(this);
@@ -59,7 +59,7 @@ public class AlphaModifier extends BaseSingleValueSpanModifier {
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, float pPercentageDone, final float pAlpha) {
+	protected void onSetValue(final IShape pShape, final float pPercentageDone, final float pAlpha) {
 		pShape.setAlpha(pAlpha);
 	}
 

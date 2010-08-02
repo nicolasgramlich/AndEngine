@@ -41,9 +41,9 @@ public class TextureRegion {
 		this.mTexturePositionY = pTexturePositionY;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		
+
 		this.mTextureRegionBuffer = this.onCreateTextureRegionBuffer();
-		
+
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mTextureRegionBuffer);
 
 		this.initTextureBuffer();

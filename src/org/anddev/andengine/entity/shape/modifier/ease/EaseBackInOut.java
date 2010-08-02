@@ -20,7 +20,7 @@ public class EaseBackInOut implements IEaseFunction {
 	// ===========================================================
 
 	private EaseBackInOut() {
-		
+
 	}
 
 	public static EaseBackInOut getInstance() {

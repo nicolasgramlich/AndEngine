@@ -112,7 +112,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.enableTextures(pGL);
 			GLHelper.enableTexCoordArray(pGL);
 			GLHelper.enableVertexArray(pGL);
-			
+
 			GLHelper.enableCulling(pGL);
 			pGL.glFrontFace(GL10.GL_CCW);
 			pGL.glCullFace(GL10.GL_BACK);

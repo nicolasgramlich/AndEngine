@@ -35,7 +35,7 @@ public interface GLWrapper {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	/**
 	 * Wraps a gl interface in another gl interface.
 	 * 

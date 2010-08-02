@@ -36,7 +36,7 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 			this.get(i).onUpdate(pSecondsElapsed);
 		}
 	}
-	
+
 	@Override
 	public void reset() {
 		final int handlerCount = this.size();

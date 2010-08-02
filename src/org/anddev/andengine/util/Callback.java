@@ -12,6 +12,6 @@ public interface Callback<T> {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void onCallback(final T pCallbackValue);
 }

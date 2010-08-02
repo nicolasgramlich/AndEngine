@@ -23,7 +23,7 @@ public class TiledTextureRegion extends TextureRegion {
 	private final int mTileRows;
 	private int mCurrentTileColumn;
 	private int mCurrentTileRow;
-	private int mTileCount;
+	private final int mTileCount;
 
 	// ===========================================================
 	// Constructors
@@ -39,7 +39,7 @@ public class TiledTextureRegion extends TextureRegion {
 
 		this.initTextureBuffer();
 	}
-	
+
 	@Override
 	protected void initTextureBuffer() {
 		if(this.mTileRows != 0 && this.mTileColumns != 0) {
@@ -50,7 +50,7 @@ public class TiledTextureRegion extends TextureRegion {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	@Override
 	public TiledTextureRegionBuffer getTextureBuffer() {
 		return (TiledTextureRegionBuffer)this.mTextureRegionBuffer;

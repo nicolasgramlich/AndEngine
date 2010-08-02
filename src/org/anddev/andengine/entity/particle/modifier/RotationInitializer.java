@@ -18,7 +18,7 @@ public class RotationInitializer extends BaseSingleValueInitializer {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public RotationInitializer(final float pRotation) {
 		this(pRotation, pRotation);
 	}
@@ -61,7 +61,7 @@ public class RotationInitializer extends BaseSingleValueInitializer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

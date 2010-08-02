@@ -16,8 +16,8 @@ public class RunnableHandler implements IUpdateHandler {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private ArrayList<Runnable> mRunnables = new ArrayList<Runnable>();
+
+	private final ArrayList<Runnable> mRunnables = new ArrayList<Runnable>();
 
 	// ===========================================================
 	// Constructors
@@ -32,7 +32,7 @@ public class RunnableHandler implements IUpdateHandler {
 	// ===========================================================
 
 	@Override
-	public void onUpdate(float pSecondsElapsed) {
+	public void onUpdate(final float pSecondsElapsed) {
 		final ArrayList<Runnable> runnables = this.mRunnables;
 		final int runnableCount = runnables.size();
 		for(int i = runnableCount - 1; i >= 0; i--) {
@@ -49,7 +49,7 @@ public class RunnableHandler implements IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void postRunnable(final Runnable pRunnable) {
 		this.mRunnables.add(pRunnable);
 	}

@@ -55,7 +55,7 @@ public class Sound extends BaseAudioEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	@Override
 	protected SoundManager getAudioManager() {
 		return (SoundManager)super.getAudioManager();
@@ -85,10 +85,10 @@ public class Sound extends BaseAudioEntity {
 			this.getAudioManager().getSoundPool().pause(this.mStreamID);
 		}
 	}
-	
+
 	@Override
 	public void release() {
-		
+
 	}
 
 	public void setLooping(final boolean pLooping) {
@@ -96,7 +96,7 @@ public class Sound extends BaseAudioEntity {
 	}
 
 	@Override
-	public void setVolume(float pLeftVolume, float pRightVolume) {
+	public void setVolume(final float pLeftVolume, final float pRightVolume) {
 		super.setVolume(pLeftVolume, pRightVolume);
 		if(this.mStreamID != 0){
 			final float masterVolume = this.getMasterVolume();
@@ -106,7 +106,7 @@ public class Sound extends BaseAudioEntity {
 			this.getAudioManager().getSoundPool().setVolume(this.mStreamID, leftVolume, rightVolume);
 		}
 	}
-	
+
 	@Override
 	public void onMasterVolumeChanged(final float pMasterVolume) {
 		this.setVolume(this.mLeftVolume, this.mRightVolume);

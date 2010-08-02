@@ -59,7 +59,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 	protected float getSplashScaleFrom() {
 		return 1f;
 	}
-	
+
 	protected float getSplashScaleTo() {
 		return 1f;
 	}
@@ -100,7 +100,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 				BaseSplashActivity.this.finish();
 			}
 		}));
-		
+
 		return splashScene;
 	}
 

@@ -47,22 +47,22 @@ public class SplitScreenEngineOptions extends EngineOptions {
 	}
 
 	@Override
-	public SplitScreenEngineOptions setLoadingScreenTextureSource(ITextureSource pLoadingScreenTextureSource) {
+	public SplitScreenEngineOptions setLoadingScreenTextureSource(final ITextureSource pLoadingScreenTextureSource) {
 		return (SplitScreenEngineOptions)super.setLoadingScreenTextureSource(pLoadingScreenTextureSource);
 	}
 
 	@Override
-	public SplitScreenEngineOptions setNeedsMusic(boolean pNeedsMusic) {
+	public SplitScreenEngineOptions setNeedsMusic(final boolean pNeedsMusic) {
 		return (SplitScreenEngineOptions)super.setNeedsMusic(pNeedsMusic);
 	}
 
 	@Override
-	public SplitScreenEngineOptions setNeedsSound(boolean pNeedsSound) {
+	public SplitScreenEngineOptions setNeedsSound(final boolean pNeedsSound) {
 		return (SplitScreenEngineOptions)super.setNeedsSound(pNeedsSound);
 	}
 
 	@Override
-	public SplitScreenEngineOptions setWakeLockOptions(WakeLockOptions pWakeLockOptions) {
+	public SplitScreenEngineOptions setWakeLockOptions(final WakeLockOptions pWakeLockOptions) {
 		return (SplitScreenEngineOptions)super.setWakeLockOptions(pWakeLockOptions);
 	}
 

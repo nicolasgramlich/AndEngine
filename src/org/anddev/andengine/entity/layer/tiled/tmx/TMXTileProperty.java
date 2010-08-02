@@ -20,7 +20,7 @@ public class TMXTileProperty extends TMXProperty {
 	// ===========================================================
 
 	public TMXTileProperty(final Attributes pAttributes) {
-		super(pAttributes);	
+		super(pAttributes);
 	}
 
 	// ===========================================================

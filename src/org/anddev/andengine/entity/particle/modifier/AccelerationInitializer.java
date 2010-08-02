@@ -34,7 +34,7 @@ public class AccelerationInitializer extends BaseDoubleValueInitializer {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public float getMinAccelerationX() {
 		return this.mMinValue;
 	}

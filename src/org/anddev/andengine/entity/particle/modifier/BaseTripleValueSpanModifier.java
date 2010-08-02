@@ -42,7 +42,7 @@ public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanMod
 
 	protected abstract void onSetInitialValues(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC);
 	protected abstract void onSetValues(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC);
-	
+
 	@Override
 	@Deprecated
 	protected void onSetValues(final Particle pParticle, final float pValueA, final float pValueB) { }

@@ -16,7 +16,7 @@ public class RotationAtModifier extends RotationModifier {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final float mRotationCenterX;
 	private final float mRotationCenterY;
 
@@ -29,7 +29,7 @@ public class RotationAtModifier extends RotationModifier {
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}
-	
+
 	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromRotation, pToRotation, pEaseFunction);
 		this.mRotationCenterX = pRotationCenterX;
@@ -41,7 +41,7 @@ public class RotationAtModifier extends RotationModifier {
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}
-	
+
 	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEaseFunction);
 		this.mRotationCenterX = pRotationCenterX;
@@ -51,7 +51,7 @@ public class RotationAtModifier extends RotationModifier {
 	protected RotationAtModifier(final RotationAtModifier pRotationAtModifier) {
 		super(pRotationAtModifier);
 		this.mRotationCenterX = pRotationAtModifier.mRotationCenterX;
-		this.mRotationCenterY = pRotationAtModifier.mRotationCenterY; 
+		this.mRotationCenterY = pRotationAtModifier.mRotationCenterY;
 	}
 
 	// ===========================================================
@@ -61,9 +61,9 @@ public class RotationAtModifier extends RotationModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
-	protected void onManagedInitializeShape(IShape pShape) {
+	protected void onManagedInitializeShape(final IShape pShape) {
 		super.onManagedInitializeShape(pShape);
 		pShape.setRotationCenter(this.mRotationCenterX, this.mRotationCenterY);
 	}

@@ -20,7 +20,7 @@ class SimpleEGLConfigChooser extends ComponentSizeChooser {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public SimpleEGLConfigChooser(final boolean pWithDepthBuffer) {
 		super(4, 4, 4, 0, pWithDepthBuffer ? 16 : 0, 0);
 		// Adjust target values. This way we'll accept a 4444 or

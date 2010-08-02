@@ -277,7 +277,7 @@ public class Scene extends Entity {
 						for(int j = 0; j < layerTouchAreaCount; j++) {
 							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
 							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-								final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
+								final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
 								if(handled != null && handled) {
 									return true;
 								}
@@ -294,7 +294,7 @@ public class Scene extends Entity {
 						for(int j = layerTouchAreaCount - 1; j >= 0; j--) {
 							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
 							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-								final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
+								final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
 								if(handled != null && handled) {
 									return true;
 								}
@@ -312,7 +312,7 @@ public class Scene extends Entity {
 				for(int i = 0; i < touchAreaCount; i++) {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
+						final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
 						if(handled != null && handled) {
 							return true;
 						}
@@ -322,7 +322,7 @@ public class Scene extends Entity {
 				for(int i = touchAreaCount - 1; i >= 0; i--) {
 					final ITouchArea touchArea = touchAreas.get(i);
 					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						final Boolean handled = onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
+						final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
 						if(handled != null && handled) {
 							return true;
 						}

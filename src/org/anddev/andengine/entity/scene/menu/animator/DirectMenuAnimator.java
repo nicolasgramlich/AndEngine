@@ -21,7 +21,7 @@ public class DirectMenuAnimator extends BaseMenuAnimator {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public DirectMenuAnimator(){
 		super();
 	}
@@ -29,7 +29,7 @@ public class DirectMenuAnimator extends BaseMenuAnimator {
 	public DirectMenuAnimator(final HorizontalAlign pHorizontalAlign) {
 		super(pHorizontalAlign);
 	}
-	
+
 	public DirectMenuAnimator(final float pMenuItemSpacing) {
 		super(pMenuItemSpacing);
 	}
@@ -37,7 +37,7 @@ public class DirectMenuAnimator extends BaseMenuAnimator {
 	public DirectMenuAnimator(final HorizontalAlign pHorizontalAlign, final float pMenuItemSpacing) {
 		super(pHorizontalAlign, pMenuItemSpacing);
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -48,7 +48,7 @@ public class DirectMenuAnimator extends BaseMenuAnimator {
 
 	@Override
 	public void buildAnimations(final ArrayList<IMenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
-		
+
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class DirectMenuAnimator extends BaseMenuAnimator {
 		final float baseY = (pCameraHeight - overallHeight) * 0.5f;
 
 		final float menuItemSpacing = this.mMenuItemSpacing;
-		
+
 		float offsetY = 0;
 		final int menuItemCount = pMenuItems.size();
 		for(int i = 0; i < menuItemCount; i++) {

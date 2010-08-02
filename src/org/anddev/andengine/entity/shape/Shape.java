@@ -370,7 +370,7 @@ public abstract class Shape extends Entity implements IShape {
 		this.mShapeModifierCount--;
 		this.mShapeModifiers.remove(pShapeModifier);
 	}
-	
+
 	@Override
 	public void clearShapeModifiers() {
 		this.mShapeModifierCount = 0;

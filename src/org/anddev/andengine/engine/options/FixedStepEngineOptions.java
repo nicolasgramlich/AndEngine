@@ -17,7 +17,7 @@ public class FixedStepEngineOptions extends EngineOptions {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final int mStepsPerSecond;
 
 	// ===========================================================
@@ -32,7 +32,7 @@ public class FixedStepEngineOptions extends EngineOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public int getStepsPerSecond() {
 		return this.mStepsPerSecond;
 	}

@@ -64,7 +64,7 @@ public class FileUtils {
 			throw new IllegalStateException("External Storage is not readable.");
 		}
 	}
-	
+
 	public static boolean isDirectoryExistingOnExternalStorage(final Context pContext, final String pDirectory) {
 		if (isExternalStorageReadable()) {
 			final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pDirectory);
@@ -73,12 +73,12 @@ public class FileUtils {
 			throw new IllegalStateException("External Storage is not readable.");
 		}
 	}
-	
-	public static boolean ensureDirectoriesExistOnExternalStorage(final Context pContext, final String pDirectory) {		
+
+	public static boolean ensureDirectoriesExistOnExternalStorage(final Context pContext, final String pDirectory) {
 		if(isDirectoryExistingOnExternalStorage(pContext, pDirectory)) {
 			return true;
 		}
-		
+
 		if (isExternalStorageWriteable()) {
 			final String absoluteDirectoryPath = getAbsolutePathOnExternalStorage(pContext, pDirectory);
 			return new File(absoluteDirectoryPath).mkdirs();
@@ -86,12 +86,12 @@ public class FileUtils {
 			throw new IllegalStateException("External Storage is not writeable.");
 		}
 	}
-	
+
 	public static InputStream openOnExternalStorage(final Context pContext, final String pFilename) throws FileNotFoundException {
 		final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pFilename);
 		return new FileInputStream(absoluteFilePath);
 	}
-	
+
 	public static String getAbsolutePathOnExternalStorage(final Context pContext, final String pFilename) {
 		return Environment.getExternalStorageDirectory() + "/Android/data/" + pContext.getApplicationInfo().packageName + "/files/" + pFilename;
 	}

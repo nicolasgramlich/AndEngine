@@ -22,7 +22,7 @@ public class ScaleModifier extends BaseDoubleValueSpanModifier {
 	public ScaleModifier(final float pFromScale, final float pToScale, final float pFromTime, final float pToTime) {
 		this(pFromScale, pToScale, pFromScale, pToScale, pFromTime, pToTime);
 	}
-	
+
 	public ScaleModifier(final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final float pFromTime, final float pToTime) {
 		super(pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pFromTime, pToTime);
 	}

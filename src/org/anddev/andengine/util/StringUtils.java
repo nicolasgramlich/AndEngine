@@ -65,7 +65,7 @@ public class StringUtils {
 	 */
 	public static String[] split(final String pString, final char pCharacter, final String[] pReuse) {
 		final int partCount = countOccurrences(pString, pCharacter) + 1;
-		
+
 		final boolean reuseable = pReuse != null && pReuse.length == partCount;
 		final String[] out = (reuseable) ? pReuse : new String[partCount];
 
@@ -73,17 +73,17 @@ public class StringUtils {
 			out[0] = pString;
 		} else {
 			int from = 0;
-			int to; 
+			int to;
 
 			for (int i = 0; i < partCount - 1; i++) {
 				to = pString.indexOf(pCharacter, from);
 				out[i] = pString.substring(from, to);
 				from = to + 1;
 			}
-			
+
 			out[partCount - 1] = pString.substring(from, pString.length());
 		}
-		
+
 		return out;
 	}
 

@@ -37,7 +37,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private TMXTiledMap mTMXTiledMap;
 
 	private int mLastTileSetTileID;
-	
+
 	private final StringBuilder mStringBuilder = new StringBuilder();
 
 	@SuppressWarnings("unused")
@@ -103,11 +103,11 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			this.mInProperty = true;
 			if(this.mInTile) {
 				final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
-				tmxTileSets.get(tmxTileSets.size() - 1).addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));	
+				tmxTileSets.get(tmxTileSets.size() - 1).addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));
 			} else if (this.mInObject) {
 				final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
 				final TMXObjectGroup lastObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
-				
+
 				final ArrayList<TMXObject> tmxObjects = lastObjectGroup.getTMXObjects();
 				tmxObjects.get(tmxObjects.size() - 1).addTMXObjectProperty(new TMXObjectProperty(pAttributes));
 			}

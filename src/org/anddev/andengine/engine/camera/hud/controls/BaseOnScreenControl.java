@@ -112,7 +112,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void refreshControlKnobPosition() {
 		this.onUpdateControlKnob(this.mControlValueX * 0.5f, this.mControlValueY * 0.5f);
 	}
@@ -133,10 +133,10 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 
 	private void updateControlKnob(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		final Sprite controlBase = this.mControlBase;
-		
+
 		final float relativeX = pTouchAreaLocalX / controlBase.getWidth() - 0.5f;
 		final float relativeY = pTouchAreaLocalY / controlBase.getHeight() - 0.5f;
-		
+
 		this.onUpdateControlKnob(relativeX, relativeY);
 	}
 

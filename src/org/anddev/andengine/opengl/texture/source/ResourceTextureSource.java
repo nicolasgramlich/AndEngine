@@ -68,7 +68,7 @@ public class ResourceTextureSource implements ITextureSource {
 		decodeOptions.inPreferredConfig = Config.ARGB_8888;
 		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID, decodeOptions);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + "(" + this.mDrawableResourceID + ")";

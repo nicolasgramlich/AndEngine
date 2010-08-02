@@ -69,9 +69,9 @@ public class TMXObject implements TMXConstants {
 	}
 
 	public void addTMXObjectProperty(final TMXObjectProperty pTMXObjectProperty) {
-		this.mTMXObjectProperties.add(pTMXObjectProperty); 
+		this.mTMXObjectProperties.add(pTMXObjectProperty);
 	}
-	
+
 	public ArrayList<TMXObjectProperty> getTMXObjectProperties() {
 		return this.mTMXObjectProperties;
 	}

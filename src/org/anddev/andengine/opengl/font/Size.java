@@ -33,7 +33,7 @@ class Size {
 	// Getter & Setter
 	// ===========================================================
 
-	public void setWidth(float width) {
+	public void setWidth(final float width) {
 		this.mWidth = width;
 	}
 
@@ -41,7 +41,7 @@ class Size {
 		return this.mWidth;
 	}
 
-	public void setHeight(float height) {
+	public void setHeight(final float height) {
 		this.mHeight = height;
 	}
 

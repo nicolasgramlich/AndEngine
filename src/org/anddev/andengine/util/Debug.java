@@ -32,11 +32,11 @@ public class Debug implements Constants {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static void v(final String pMessage){
 		Log.v(DEBUGTAG, pMessage);
 	}
-	
+
 	public static void d(final String pMessage){
 		Log.d(DEBUGTAG, pMessage);
 	}
@@ -44,7 +44,7 @@ public class Debug implements Constants {
 	public static void i(final String pMessage){
 		Log.i(DEBUGTAG, pMessage);
 	}
-	
+
 	public static void w(final Throwable pThrowable){
 		Debug.w("Warning", pThrowable);
 	}
@@ -60,7 +60,7 @@ public class Debug implements Constants {
 
 	public static void e(final Throwable pThrowable){
 		Debug.e("Error", pThrowable);
-	}	
+	}
 
 	public static void e(final String pMessage, final Throwable pThrowable){
 		if(pThrowable == null){

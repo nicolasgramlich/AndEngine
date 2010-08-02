@@ -49,7 +49,7 @@ public class TickerText extends Text {
 	public void setReverse(final boolean pReverse) {
 		this.mReverse = pReverse;
 	}
-	
+
 	public float getCharactersPerSecond() {
 		return this.mCharactersPerSecond;
 	}

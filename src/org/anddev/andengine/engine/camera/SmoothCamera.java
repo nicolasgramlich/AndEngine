@@ -35,7 +35,7 @@ public class SmoothCamera extends ZoomCamera {
 
 		this.mTargetCenterX = this.getCenterX();
 		this.mTargetCenterY = this.getCenterY();
-		
+
 		this.mTargetZoomFactor = 1.0f;
 	}
 
@@ -64,25 +64,25 @@ public class SmoothCamera extends ZoomCamera {
 		/* Update center. */
 		final float currentCenterX = this.getCenterX();
 		final float currentCenterY = this.getCenterY();
-		
+
 		final float targetCenterX = this.mTargetCenterX;
 		final float targetCenterY = this.mTargetCenterY;
-		
+
 		if(currentCenterX != targetCenterX || currentCenterY != targetCenterY) {
 			final float diffX = targetCenterX - currentCenterX;
 			final float dX = this.cutToMaxVelocityX(diffX, pSecondsElapsed);
-	
+
 			final float diffY = targetCenterY - currentCenterY;
 			final float dY = this.cutToMaxVelocityY(diffY, pSecondsElapsed);
-	
+
 			super.setCenter(currentCenterX + dX, currentCenterY + dY);
 		}
 
 		/* Update zoom. */
 		final float currentZoom = this.getZoomFactor();
-		
+
 		final float targetZoomFactor = this.mTargetZoomFactor;
-		
+
 		if(currentZoom != targetZoomFactor) {
 			final float diffZoom = targetZoomFactor - currentZoom;
 			final float dZoom = this.cutToMaxZoomFactorChange(diffZoom, pSecondsElapsed);
@@ -105,7 +105,7 @@ public class SmoothCamera extends ZoomCamera {
 			return Math.max(pValue, -this.mMaxVelocityY * pSecondsElapsed);
 		}
 	}
-	
+
 	private float cutToMaxZoomFactorChange(final float pValue, final float pSecondsElapsed) {
 		if(pValue > 0) {
 			return Math.min(pValue, this.mMaxZoomFactorChange * pSecondsElapsed);

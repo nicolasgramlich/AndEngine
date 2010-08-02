@@ -18,7 +18,7 @@ public class OrientationData extends BaseSensorData {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -30,15 +30,15 @@ public class OrientationData extends BaseSensorData {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public float getRoll() {
 		return super.mValues[SensorManager.DATA_Z];
 	}
-	
+
 	public float getPitch() {
 		return super.mValues[SensorManager.DATA_Y];
 	}
-	
+
 	public float getYaw() {
 		return super.mValues[SensorManager.DATA_X];
 	}

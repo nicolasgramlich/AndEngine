@@ -100,7 +100,7 @@ public class TMXTileSet implements TMXConstants {
 	public String getImageSource() {
 		return this.mImageSource;
 	}
-	
+
 	public SparseArray<ArrayList<TMXTileProperty>> getTMXTileProperties() {
 		return this.mTMXTileProperties;
 	}

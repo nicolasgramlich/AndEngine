@@ -12,15 +12,15 @@ public class EaseBounceOut implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseBounceOut INSTANCE;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	private EaseBounceOut() {
-		
+
 	}
 
 	public static EaseBounceOut getInstance() {

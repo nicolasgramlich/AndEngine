@@ -45,7 +45,7 @@ public abstract class AverageFPSCounter extends FPSCounter implements TimeConsta
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		super.onUpdate(pSecondsElapsed);
-		
+
 		if(this.mSecondsElapsed > this.mAverageDuration){
 			this.onHandleAverageDurationElapsed(this.getFPS());
 
@@ -53,7 +53,7 @@ public abstract class AverageFPSCounter extends FPSCounter implements TimeConsta
 			this.mFrames = 0;
 		}
 	}
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

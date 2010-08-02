@@ -83,7 +83,7 @@ public class SingleSceneSplitScreenEngine extends Engine {
 			super.mScene.onDraw(pGL, secondCamera);
 			secondCamera.onDrawHUD(pGL);
 		}
-		
+
 		pGL.glDisable(GL10.GL_SCISSOR_TEST);
 	}
 

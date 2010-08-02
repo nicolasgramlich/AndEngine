@@ -17,7 +17,7 @@ public class FixedFPSEngineOptions extends EngineOptions {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final int mFramesPerSecond;
 
 	// ===========================================================
@@ -32,7 +32,7 @@ public class FixedFPSEngineOptions extends EngineOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public int getFramesPerSecond() {
 		return this.mFramesPerSecond;
 	}

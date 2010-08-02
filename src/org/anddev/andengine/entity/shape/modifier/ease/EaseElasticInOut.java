@@ -16,7 +16,7 @@ public class EaseElasticInOut implements IEaseFunction, MathConstants {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseElasticInOut INSTANCE;
 
 	// ===========================================================

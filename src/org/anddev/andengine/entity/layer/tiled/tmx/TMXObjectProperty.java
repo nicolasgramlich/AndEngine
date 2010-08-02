@@ -20,7 +20,7 @@ public class TMXObjectProperty extends TMXProperty {
 	// ===========================================================
 
 	public TMXObjectProperty(final Attributes pAttributes) {
-		super(pAttributes);	
+		super(pAttributes);
 	}
 
 	// ===========================================================

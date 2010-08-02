@@ -22,7 +22,7 @@ public class TMXObjectGroup implements TMXConstants {
 	private final String mName;
 	private final int mWidth;
 	private final int mHeight;
-	private ArrayList<TMXObject> mTMXObjects = new ArrayList<TMXObject>();
+	private final ArrayList<TMXObject> mTMXObjects = new ArrayList<TMXObject>();
 
 	// ===========================================================
 	// Constructors
@@ -41,11 +41,11 @@ public class TMXObjectGroup implements TMXConstants {
 	public String getName() {
 		return this.mName;
 	}
-	
+
 	public int getWidth() {
 		return this.mWidth;
 	}
-	
+
 	public int getHeight() {
 		return this.mHeight;
 	}

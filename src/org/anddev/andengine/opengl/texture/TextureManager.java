@@ -48,8 +48,8 @@ public class TextureManager {
 	}
 
 	/**
-	 * @param pTexture the {@link Texture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then). 
-	 * @return <code>true</code> when the {@link Texture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed. 
+	 * @param pTexture the {@link Texture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then).
+	 * @return <code>true</code> when the {@link Texture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
 	public boolean loadTexture(final Texture pTexture) {
 		if(this.mTexturesManaged.contains(pTexture)) {
@@ -64,8 +64,8 @@ public class TextureManager {
 	}
 
 	/**
-	 * @param pTexture the {@link Texture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then). 
-	 * @return <code>true</code> when the {@link Texture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed. 
+	 * @param pTexture the {@link Texture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then).
+	 * @return <code>true</code> when the {@link Texture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
 	public boolean unloadTexture(final Texture pTexture) {
 		if(this.mTexturesManaged.contains(pTexture)) {
@@ -87,7 +87,7 @@ public class TextureManager {
 			this.loadTexture(pTextures[i]);
 		}
 	}
-	
+
 	public void unloadTextures(final Texture ... pTextures) {
 		for(int i = pTextures.length - 1; i >= 0; i--) {
 			this.unloadTexture(pTextures[i]);
@@ -102,7 +102,7 @@ public class TextureManager {
 
 		this.mTexturesToBeLoaded.addAll(this.mTexturesLoaded); // TODO Check if addAll uses iterator internally!
 		this.mTexturesLoaded.clear();
-		
+
 		this.mTexturesManaged.removeAll(this.mTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
 		this.mTexturesToBeUnloaded.clear();
 	}
@@ -112,10 +112,10 @@ public class TextureManager {
 		final ArrayList<Texture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
 		final ArrayList<Texture> loadedTextures = this.mTexturesLoaded;
 		final ArrayList<Texture> texturesToBeLoaded = this.mTexturesToBeLoaded;
-		
+
 		/* First reload Textures that need to be updated. */
 		final int loadedTexturesCount = loadedTextures.size();
-		
+
 		if(loadedTexturesCount > 0){
 			for(int i = loadedTexturesCount - 1; i >= 0; i--){
 				final Texture textureToBeUpdated = loadedTextures.get(i);
@@ -128,7 +128,7 @@ public class TextureManager {
 
 		/* Then load pending Textures. */
 		final int texturesToBeLoadedCount = texturesToBeLoaded.size();
-		
+
 		if(texturesToBeLoadedCount > 0){
 			for(int i = texturesToBeLoadedCount - 1; i >= 0; i--){
 				final Texture textureToBeLoaded = texturesToBeLoaded.remove(i);
@@ -141,7 +141,7 @@ public class TextureManager {
 
 		/* Then unload pending Textures. */
 		final int texturesToBeUnloadedCount = texturesToBeUnloaded.size();
-		
+
 		if(texturesToBeUnloadedCount > 0){
 			for(int i = texturesToBeUnloadedCount - 1; i >= 0; i--){
 				final Texture textureToBeUnloaded = texturesToBeUnloaded.remove(i);

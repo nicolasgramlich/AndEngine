@@ -39,7 +39,7 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	@Deprecated
 	protected void onSetValue(final Particle pParticle, final float pValue) { }

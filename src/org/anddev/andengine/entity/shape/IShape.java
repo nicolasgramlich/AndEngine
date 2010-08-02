@@ -25,7 +25,7 @@ public interface IShape extends IEntity, ITouchArea {
 
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
-	
+
 	public abstract float getX();
 	public abstract float getY();
 
@@ -58,7 +58,7 @@ public interface IShape extends IEntity, ITouchArea {
 
 	public abstract float getAngularVelocity();
 	public abstract void setAngularVelocity(final float pAngularVelocity);
-	
+
 	public abstract float getRotationCenterX();
 	public abstract float getRotationCenterY();
 	public abstract void setRotationCenterX(final float pRotationCenterX);

@@ -180,7 +180,7 @@ public class PathModifier extends BaseShapeModifier {
 		// ===========================================================
 		// Fields
 		// ===========================================================
-		
+
 		public void onWaypointPassed(final PathModifier pPathModifier, final IShape pShape, final int pWaypointIndex);
 	}
 }

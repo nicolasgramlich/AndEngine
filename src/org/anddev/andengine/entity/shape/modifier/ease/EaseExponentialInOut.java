@@ -13,7 +13,7 @@ public class EaseExponentialInOut implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseExponentialInOut INSTANCE;
 
 	// ===========================================================

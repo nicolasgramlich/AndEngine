@@ -14,7 +14,7 @@ public interface IEntityMatcher {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public boolean matches(final IEntity pEntity);
 }
 

@@ -95,7 +95,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void runOnUpdateThread(final Runnable pRunnable) {
 		this.mEngine.runOnUpdateThread(pRunnable);
 	}
@@ -124,7 +124,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		if(pEngineOptions.isFullscreen()) {
 			this.applyFullscreen();
 		}
-		
+
 		if(pEngineOptions.needsMusic() || pEngineOptions.needsSound()) {
 			this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		}
@@ -159,11 +159,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
 	}
-	
+
 	/**
 	 * @param pAccelerometerListener
 	 * @param pRate one of: {@link SensorManager#SENSOR_DELAY_FASTEST}, {@link SensorManager#SENSOR_DELAY_GAME}, {@link SensorManager#SENSOR_DELAY_UI}, {@link SensorManager#SENSOR_DELAY_NORMAL}
-	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise. 
+	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
 	 */
 	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener, final int pRate) {
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener, pRate);
@@ -172,11 +172,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener) {
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener);
 	}
-	
+
 	/**
 	 * @param pOrientationListener
 	 * @param pRate one of: {@link SensorManager#SENSOR_DELAY_FASTEST}, {@link SensorManager#SENSOR_DELAY_GAME}, {@link SensorManager#SENSOR_DELAY_UI}, {@link SensorManager#SENSOR_DELAY_NORMAL}
-	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise. 
+	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
 	 */
 	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener, final int pRate) {
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener, pRate);

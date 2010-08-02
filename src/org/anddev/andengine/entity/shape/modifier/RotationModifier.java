@@ -23,7 +23,7 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation) {
 		this(pDuration, pFromRotation, pToRotation, null, IEaseFunction.DEFAULT);
 	}
-	
+
 	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IEaseFunction pEaseFunction) {
 		this(pDuration, pFromRotation, pToRotation, null, pEaseFunction);
 	}
@@ -31,7 +31,7 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener) {
 		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, IEaseFunction.DEFAULT);
 	}
-	
+
 	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEaseFunction);
 	}
@@ -59,7 +59,7 @@ public class RotationModifier extends BaseSingleValueSpanModifier {
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, float pPercentageDone, final float pRotation) {
+	protected void onSetValue(final IShape pShape, final float pPercentageDone, final float pRotation) {
 		pShape.setRotation(pRotation);
 	}
 

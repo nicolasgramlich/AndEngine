@@ -12,7 +12,7 @@ public class EaseBounceIn implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseBounceIn INSTANCE;
 
 	// ===========================================================
@@ -20,7 +20,7 @@ public class EaseBounceIn implements IEaseFunction {
 	// ===========================================================
 
 	private EaseBounceIn() {
-		
+
 	}
 
 	public static EaseBounceIn getInstance() {

@@ -41,7 +41,7 @@ public class FixedCapacityLayer extends BaseLayer {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public int getEntityCount() {
 		return this.mEntityCount;
@@ -83,10 +83,10 @@ public class FixedCapacityLayer extends BaseLayer {
 			return this.mEntities[pIndex];
 		}
 	}
-	
+
 	@Override
 	public void clear() {
-		final IEntity[] entities = this.mEntities;		
+		final IEntity[] entities = this.mEntities;
 		for(int i = this.mEntityCount - 1; i >= 0; i--) {
 			entities[i] = null;
 		}
@@ -100,10 +100,10 @@ public class FixedCapacityLayer extends BaseLayer {
 			this.mEntityCount++;
 		}
 	}
-	
+
 	@Override
 	public boolean removeEntity(final IEntity pEntity) {
-		return removeEntity(indexOfEntity(pEntity)) != null;
+		return this.removeEntity(this.indexOfEntity(pEntity)) != null;
 	}
 
 	@Override
@@ -111,19 +111,19 @@ public class FixedCapacityLayer extends BaseLayer {
 		if(pIndex == -1) {
 			return null;
 		} else {
-			final IEntity[] entities = this.mEntities;	
-			final IEntity out = entities[pIndex];	
+			final IEntity[] entities = this.mEntities;
+			final IEntity out = entities[pIndex];
 			if(pIndex == this.mEntityCount - 1) {
 				this.mEntities[this.mEntityCount--] = null;
 			} else {
-				entities[pIndex] = entities[this.mEntityCount - 1];	
+				entities[pIndex] = entities[this.mEntityCount - 1];
 				this.mEntityCount--;
 				entities[this.mEntityCount] = null;
 			}
 			return out;
 		}
 	}
-	
+
 	@Override
 	public boolean removeEntity(final IEntityMatcher pEntityMatcher) {
 		final IEntity[] entities = this.mEntities;
@@ -147,7 +147,7 @@ public class FixedCapacityLayer extends BaseLayer {
 		}
 		return null;
 	}
-	
+
 	private int indexOfEntity(final IEntity pEntity) {
 		final IEntity[] entities = this.mEntities;
 		for(int i = entities.length - 1; i >= 0; i--) {
@@ -162,7 +162,7 @@ public class FixedCapacityLayer extends BaseLayer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

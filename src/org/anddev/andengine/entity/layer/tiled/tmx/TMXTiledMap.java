@@ -38,8 +38,8 @@ public class TMXTiledMap implements TMXConstants {
 
 	private final RectangleVertexBuffer mSharedVertexBuffer;
 
-	private SparseArray<TextureRegion> mGlobalTileIDToTextureRegionCache = new SparseArray<TextureRegion>();
-	private SparseArray<ArrayList<TMXTileProperty>> mGlobalTileIDToTMXTilePropertiesCache = new SparseArray<ArrayList<TMXTileProperty>>();
+	private final SparseArray<TextureRegion> mGlobalTileIDToTextureRegionCache = new SparseArray<TextureRegion>();
+	private final SparseArray<ArrayList<TMXTileProperty>> mGlobalTileIDToTMXTilePropertiesCache = new SparseArray<ArrayList<TMXTileProperty>>();
 
 	// ===========================================================
 	// Constructors

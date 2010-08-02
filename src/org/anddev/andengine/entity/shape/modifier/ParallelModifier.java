@@ -80,7 +80,7 @@ public class ParallelModifier extends BaseShapeModifier {
 	@Override
 	public void onUpdateShape(final float pSecondsElapsed, final IShape pShape) {
 		this.mFinishedCached = false;
-		
+
 		final IShapeModifier[] shapeModifiers = this.mShapeModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
 			shapeModifiers[i].onUpdateShape(pSecondsElapsed, pShape);
@@ -89,7 +89,7 @@ public class ParallelModifier extends BaseShapeModifier {
 				return;
 			}
 		}
-		
+
 		this.mFinishedCached = false;
 	}
 

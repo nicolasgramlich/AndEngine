@@ -33,7 +33,7 @@ public interface IShapeModifier extends Cloneable {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	public static interface IShapeModifierListener {
 		// ===========================================================
 		// Final Fields

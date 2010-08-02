@@ -54,7 +54,7 @@ public class Path {
 
 		System.arraycopy(pPath.mCoordinatesX, 0, this.mCoordinatesX, 0, size);
 		System.arraycopy(pPath.mCoordinatesY, 0, this.mCoordinatesY, 0, size);
-		
+
 		this.mIndex = pPath.mIndex;
 		this.mLengthChanged = pPath.mLengthChanged;
 		this.mLength = pPath.mLength;
@@ -74,7 +74,7 @@ public class Path {
 		this.mCoordinatesY[this.mIndex] = pY;
 
 		this.mIndex++;
-		
+
 		this.mLengthChanged = true;
 
 		return this;
@@ -98,17 +98,17 @@ public class Path {
 		}
 		return this.mLength;
 	}
-	
+
 	public float getSegmentLength(final int pSegmentIndex) {
 		final float[] coordinatesX = this.mCoordinatesX;
 		final float[] coordinatesY = this.mCoordinatesY;
-		
+
 		final int nextSegmentIndex = pSegmentIndex + 1;
-		
+
 		final float dx = coordinatesX[pSegmentIndex] - coordinatesX[nextSegmentIndex];
 		final float dy = coordinatesY[pSegmentIndex] - coordinatesY[nextSegmentIndex];
 
-		return FloatMath.sqrt(dx * dx + dy * dy);		
+		return FloatMath.sqrt(dx * dx + dy * dy);
 	}
 
 	// ===========================================================
@@ -123,7 +123,7 @@ public class Path {
 		float length = 0.0f;
 
 		for(int i = this.mIndex - 2; i >= 0; i--) {
-			length += getSegmentLength(i);
+			length += this.getSegmentLength(i);
 		}
 		this.mLength = length;
 	}

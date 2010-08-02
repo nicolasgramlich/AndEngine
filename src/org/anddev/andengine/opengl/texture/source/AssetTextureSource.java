@@ -73,14 +73,14 @@ public class AssetTextureSource implements ITextureSource {
 		try {
 			final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 			decodeOptions.inPreferredConfig = Config.ARGB_8888;
-			
+
 			return BitmapFactory.decodeStream(this.mContext.getAssets().open(this.mAssetPath), null, decodeOptions);
 		} catch (final IOException e) {
 			Debug.e("Failed loading Bitmap", e);
 			return null;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + "(" + this.mAssetPath + ")";

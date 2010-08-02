@@ -25,129 +25,139 @@ import java.io.InputStream;
  * it.
  */
 public class Base64InputStream extends FilterInputStream {
-    private final Base64.Coder coder;
+	private final Base64.Coder coder;
 
-    private static byte[] EMPTY = new byte[0];
+	private static byte[] EMPTY = new byte[0];
 
-    private static final int BUFFER_SIZE = 2048;
-    private boolean eof;
-    private byte[] inputBuffer;
-    private int outputStart;
-    private int outputEnd;
+	private static final int BUFFER_SIZE = 2048;
+	private boolean eof;
+	private byte[] inputBuffer;
+	private int outputStart;
+	private int outputEnd;
 
-    /**
-     * An InputStream that performs Base64 decoding on the data read
-     * from the wrapped stream.
-     *
-     * @param in the InputStream to read the source data from
-     * @param flags bit flags for controlling the decoder; see the
-     *        constants in {@link Base64}
-     */
-    public Base64InputStream(InputStream in, int flags) {
-        this(in, flags, false);
-    }
+	/**
+	 * An InputStream that performs Base64 decoding on the data read
+	 * from the wrapped stream.
+	 *
+	 * @param in the InputStream to read the source data from
+	 * @param flags bit flags for controlling the decoder; see the
+	 *        constants in {@link Base64}
+	 */
+	public Base64InputStream(final InputStream in, final int flags) {
+		this(in, flags, false);
+	}
 
-    /**
-     * Performs Base64 encoding or decoding on the data read from the
-     * wrapped InputStream.
-     *
-     * @param in the InputStream to read the source data from
-     * @param flags bit flags for controlling the decoder; see the
-     *        constants in {@link Base64}
-     * @param encode true to encode, false to decode
-     *
-     * @hide
-     */
-    public Base64InputStream(InputStream in, int flags, boolean encode) {
-        super(in);
-        eof = false;
-        inputBuffer = new byte[BUFFER_SIZE];
-        if (encode) {
-            coder = new Base64.Encoder(flags, null);
-        } else {
-            coder = new Base64.Decoder(flags, null);
-        }
-        coder.output = new byte[coder.maxOutputSize(BUFFER_SIZE)];
-        outputStart = 0;
-        outputEnd = 0;
-    }
+	/**
+	 * Performs Base64 encoding or decoding on the data read from the
+	 * wrapped InputStream.
+	 *
+	 * @param in the InputStream to read the source data from
+	 * @param flags bit flags for controlling the decoder; see the
+	 *        constants in {@link Base64}
+	 * @param encode true to encode, false to decode
+	 *
+	 * @hide
+	 */
+	public Base64InputStream(final InputStream in, final int flags, final boolean encode) {
+		super(in);
+		this.eof = false;
+		this.inputBuffer = new byte[BUFFER_SIZE];
+		if (encode) {
+			this.coder = new Base64.Encoder(flags, null);
+		} else {
+			this.coder = new Base64.Decoder(flags, null);
+		}
+		this.coder.output = new byte[this.coder.maxOutputSize(BUFFER_SIZE)];
+		this.outputStart = 0;
+		this.outputEnd = 0;
+	}
 
-    public boolean markSupported() {
-        return false;
-    }
+	@Override
+	public boolean markSupported() {
+		return false;
+	}
 
-    public void mark(int readlimit) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public void mark(final int readlimit) {
+		throw new UnsupportedOperationException();
+	}
 
-    public void reset() {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public void reset() {
+		throw new UnsupportedOperationException();
+	}
 
-    public void close() throws IOException {
-        in.close();
-        inputBuffer = null;
-    }
+	@Override
+	public void close() throws IOException {
+		this.in.close();
+		this.inputBuffer = null;
+	}
 
-    public int available() {
-        return outputEnd - outputStart;
-    }
+	@Override
+	public int available() {
+		return this.outputEnd - this.outputStart;
+	}
 
-    public long skip(long n) throws IOException {
-        if (outputStart >= outputEnd) {
-            refill();
-        }
-        if (outputStart >= outputEnd) {
-            return 0;
-        }
-        long bytes = Math.min(n, outputEnd-outputStart);
-        outputStart += bytes;
-        return bytes;
-    }
+	@Override
+	public long skip(final long n) throws IOException {
+		if (this.outputStart >= this.outputEnd) {
+			this.refill();
+		}
+		if (this.outputStart >= this.outputEnd) {
+			return 0;
+		}
+		final long bytes = Math.min(n, this.outputEnd-this.outputStart);
+		this.outputStart += bytes;
+		return bytes;
+	}
 
-    public int read() throws IOException {
-        if (outputStart >= outputEnd) {
-            refill();
-        }
-        if (outputStart >= outputEnd) {
-            return -1;
-        } else {
-            return coder.output[outputStart++];
-        }
-    }
+	@Override
+	public int read() throws IOException {
+		if (this.outputStart >= this.outputEnd) {
+			this.refill();
+		}
+		if (this.outputStart >= this.outputEnd) {
+			return -1;
+		} else {
+			return this.coder.output[this.outputStart++];
+		}
+	}
 
-    public int read(byte[] b, int off, int len) throws IOException {
-        if (outputStart >= outputEnd) {
-            refill();
-        }
-        if (outputStart >= outputEnd) {
-            return -1;
-        }
-        int bytes = Math.min(len, outputEnd-outputStart);
-        System.arraycopy(coder.output, outputStart, b, off, bytes);
-        outputStart += bytes;
-        return bytes;
-    }
+	@Override
+	public int read(final byte[] b, final int off, final int len) throws IOException {
+		if (this.outputStart >= this.outputEnd) {
+			this.refill();
+		}
+		if (this.outputStart >= this.outputEnd) {
+			return -1;
+		}
+		final int bytes = Math.min(len, this.outputEnd-this.outputStart);
+		System.arraycopy(this.coder.output, this.outputStart, b, off, bytes);
+		this.outputStart += bytes;
+		return bytes;
+	}
 
-    /**
-     * Read data from the input stream into inputBuffer, then
-     * decode/encode it into the empty coder.output, and reset the
-     * outputStart and outputEnd pointers.
-     */
-    private void refill() throws IOException {
-        if (eof) return;
-        int bytesRead = in.read(inputBuffer);
-        boolean success;
-        if (bytesRead == -1) {
-            eof = true;
-            success = coder.process(EMPTY, 0, 0, true);
-        } else {
-            success = coder.process(inputBuffer, 0, bytesRead, false);
-        }
-        if (!success) {
-            throw new IOException("bad base-64");
-        }
-        outputEnd = coder.op;
-        outputStart = 0;
-    }
+	/**
+	 * Read data from the input stream into inputBuffer, then
+	 * decode/encode it into the empty coder.output, and reset the
+	 * outputStart and outputEnd pointers.
+	 */
+	 private void refill() throws IOException {
+		if (this.eof) {
+			return;
+		}
+		final int bytesRead = this.in.read(this.inputBuffer);
+		boolean success;
+		if (bytesRead == -1) {
+			this.eof = true;
+			success = this.coder.process(EMPTY, 0, 0, true);
+		} else {
+			success = this.coder.process(this.inputBuffer, 0, bytesRead, false);
+		}
+		if (!success) {
+			throw new IOException("bad base-64");
+		}
+		this.outputEnd = this.coder.op;
+		this.outputStart = 0;
+	 }
 }

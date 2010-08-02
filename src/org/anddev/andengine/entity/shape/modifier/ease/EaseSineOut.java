@@ -16,7 +16,7 @@ public class EaseSineOut implements IEaseFunction, MathConstants {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseSineOut INSTANCE;
 
 	// ===========================================================
@@ -43,7 +43,7 @@ public class EaseSineOut implements IEaseFunction, MathConstants {
 
 	@Override
 	public float calc(final float t, final float b, final float c, final float d) {
-		return (float) (c * FloatMath.sin(t / d * _HALF_PI) + b);
+		return (c * FloatMath.sin(t / d * _HALF_PI) + b);
 	}
 
 	// ===========================================================

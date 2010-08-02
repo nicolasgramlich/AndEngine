@@ -20,7 +20,7 @@ public class GLHelper {
 	// Constants
 	// ===========================================================
 
-	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1]; 
+	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
 
 	// ===========================================================
 	// Fields
@@ -48,7 +48,7 @@ public class GLHelper {
 	private static boolean sEnableVertexArray = false;
 
 	private static float sLineWidth = 1;
-	
+
 	private static float sRed = -1;
 	private static float sGreen = -1;
 	private static float sBlue = -1;
@@ -82,9 +82,9 @@ public class GLHelper {
 		GLHelper.disableTextures(pGL);
 		GLHelper.disableTexCoordArray(pGL);
 		GLHelper.disableVertexArray(pGL);
-		
+
 		GLHelper.sLineWidth = 1;
-		
+
 		GLHelper.sRed = -1;
 		GLHelper.sGreen = -1;
 		GLHelper.sBlue = -1;
@@ -176,7 +176,7 @@ public class GLHelper {
 			pGL.glDisable(GL10.GL_BLEND);
 		}
 	}
-	
+
 	public static void enableCulling(final GL10 pGL) {
 		if(!GLHelper.sEnableCulling) {
 			GLHelper.sEnableCulling = true;
@@ -270,7 +270,7 @@ public class GLHelper {
 			pGL.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
 		}
 	}
-	
+
 	public static void deleteTexture(final GL10 pGL, final int pHardwareTextureID) {
 		/* Reduce unnecessary texture switching calls. */
 		GLHelper.HARDWARETEXTUREID_CONTAINER[0] = pHardwareTextureID;
@@ -306,7 +306,7 @@ public class GLHelper {
 			pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 		}
 	}
-	
+
 	public static void lineWidth(final GL10 pGL, final float pLineWidth) {
 		if(GLHelper.sLineWidth  != pLineWidth) {
 			GLHelper.sLineWidth = pLineWidth;

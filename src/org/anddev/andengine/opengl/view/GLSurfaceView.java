@@ -220,7 +220,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 		super(context, attrs);
 		this.init();
 	}
-	
+
 	private void init() {
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed

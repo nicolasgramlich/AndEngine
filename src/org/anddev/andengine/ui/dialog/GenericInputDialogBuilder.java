@@ -82,7 +82,7 @@ public abstract class GenericInputDialogBuilder<T> {
 			ab.setIcon(this.mIconResID);
 		}
 
-		setView(ab, etInput);
+		this.setView(ab, etInput);
 		ab.setOnCancelListener(this.mOnCancelListener)
 		.setPositiveButton(android.R.string.ok, new OnClickListener() {
 			@Override

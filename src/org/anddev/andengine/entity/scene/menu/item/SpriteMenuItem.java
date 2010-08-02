@@ -15,7 +15,7 @@ public class SpriteMenuItem extends Sprite implements IMenuItem {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final int mID;
 
 	// ===========================================================
@@ -34,7 +34,7 @@ public class SpriteMenuItem extends Sprite implements IMenuItem {
 	public int getID() {
 		return this.mID;
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

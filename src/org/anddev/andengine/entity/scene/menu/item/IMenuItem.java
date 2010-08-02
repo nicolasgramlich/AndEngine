@@ -14,7 +14,7 @@ public interface IMenuItem extends IShape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public int getID();
 	public abstract void onSelected();
 	public abstract void onUnselected();

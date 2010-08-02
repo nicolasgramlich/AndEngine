@@ -49,7 +49,7 @@ public class FPSLogger extends AverageFPSCounter {
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		super.onUpdate(pSecondsElapsed);
-		
+
 		this.mShortestFrame = Math.min(this.mShortestFrame, pSecondsElapsed);
 		this.mLongestFrame = Math.max(this.mLongestFrame, pSecondsElapsed);
 	}
@@ -67,9 +67,9 @@ public class FPSLogger extends AverageFPSCounter {
 	// ===========================================================
 
 	protected void onLogFPS() {
-		Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)", 
-				this.mFrames / this.mSecondsElapsed, 
-				this.mShortestFrame * MILLISECONDSPERSECOND, 
+		Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)",
+				this.mFrames / this.mSecondsElapsed,
+				this.mShortestFrame * MILLISECONDSPERSECOND,
 				this.mLongestFrame * MILLISECONDSPERSECOND));
 	}
 

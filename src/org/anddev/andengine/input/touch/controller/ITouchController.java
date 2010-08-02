@@ -16,13 +16,13 @@ public interface ITouchController {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent, final ITouchEventCallback pTouchEventCallback);
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	static interface ITouchEventCallback {
 		public boolean onTouchEvent(final TouchEvent pTouchEvent);
 	}

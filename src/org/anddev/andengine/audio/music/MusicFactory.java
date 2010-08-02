@@ -44,24 +44,24 @@ public class MusicFactory {
 
 	public static Music createMusicFromAsset(final MusicManager pMusicManager, final Context pContext, final String pAssetPath) throws IOException {
 		final MediaPlayer mediaPlayer = new MediaPlayer();
-		
+
 		final AssetFileDescriptor assetFileDescritor = pContext.getAssets().openFd(MusicFactory.sAssetBasePath + pAssetPath);
 		mediaPlayer.setDataSource(assetFileDescritor.getFileDescriptor(), assetFileDescritor.getStartOffset(), assetFileDescritor.getLength());
 		mediaPlayer.prepare();
-		
+
 		final Music music = new Music(pMusicManager, mediaPlayer);
 		pMusicManager.add(music);
-		
+
 		return music;
 	}
 
 	public static Music createMusicFromResource(final MusicManager pMusicManager, final Context pContext, final int pMusicResID) throws IOException {
 		final MediaPlayer mediaPlayer = MediaPlayer.create(pContext, pMusicResID);
 		mediaPlayer.prepare();
-		
+
 		final Music music = new Music(pMusicManager, mediaPlayer);
 		pMusicManager.add(music);
-		
+
 		return music;
 	}
 

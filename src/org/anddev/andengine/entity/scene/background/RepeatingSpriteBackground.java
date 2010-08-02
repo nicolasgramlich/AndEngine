@@ -20,7 +20,7 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private Texture mTexture;
 
 	// ===========================================================
@@ -55,7 +55,7 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public Texture getTexture() {
 		return this.mTexture;
 	}

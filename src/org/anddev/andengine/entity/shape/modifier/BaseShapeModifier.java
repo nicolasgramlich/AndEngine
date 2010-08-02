@@ -46,7 +46,7 @@ public abstract class BaseShapeModifier implements IShapeModifier {
 	public boolean isFinished() {
 		return this.mFinished;
 	}
-	
+
 	@Override
 	public final boolean isRemoveWhenFinished() {
 		return this.mRemoveWhenFinished;

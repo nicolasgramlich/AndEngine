@@ -14,7 +14,7 @@ public class EaseCircularIn implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseCircularIn INSTANCE;
 
 	// ===========================================================
@@ -41,7 +41,7 @@ public class EaseCircularIn implements IEaseFunction {
 
 	@Override
 	public float calc(float t, final float b, final float c, final float d) {
-		return (float) (-c * (FloatMath.sqrt(1 - (t /= d) * t) - 1.0f) + b);
+		return (-c * (FloatMath.sqrt(1 - (t /= d) * t) - 1.0f) + b);
 	}
 
 	// ===========================================================

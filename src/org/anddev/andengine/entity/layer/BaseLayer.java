@@ -18,7 +18,7 @@ public abstract class BaseLayer extends Entity implements ILayer{
 	// Fields
 	// ===========================================================
 
-	private ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
+	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
 	// ===========================================================
 	// Constructors
@@ -41,7 +41,7 @@ public abstract class BaseLayer extends Entity implements ILayer{
 	public void unregisterTouchArea(final ITouchArea pTouchArea) {
 		this.mTouchAreas.remove(pTouchArea);
 	}
-	
+
 	public ArrayList<ITouchArea> getTouchAreas() {
 		return this.mTouchAreas;
 	}

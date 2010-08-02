@@ -36,7 +36,7 @@ public abstract class Entity implements IEntity {
 	public void setVisible(final boolean pVisible) {
 		this.mVisible = pVisible;
 	}
-	
+
 	public boolean isIgnoreUpdate() {
 		return this.mIgnoreUpdate;
 	}

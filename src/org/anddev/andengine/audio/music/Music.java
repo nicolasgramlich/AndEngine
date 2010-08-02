@@ -31,7 +31,7 @@ public class Music extends BaseAudioEntity {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public boolean isPlaying() {
 		return this.mMediaPlayer.isPlaying();
 	}
@@ -65,7 +65,7 @@ public class Music extends BaseAudioEntity {
 	public void pause() {
 		this.mMediaPlayer.pause();
 	}
-	
+
 	@Override
 	public void release() {
 		this.mMediaPlayer.release();
@@ -75,14 +75,15 @@ public class Music extends BaseAudioEntity {
 	public void setLooping(final boolean pLooping) {
 		this.mMediaPlayer.setLooping(pLooping);
 	}
-	
+
+	@Override
 	public void setVolume(final float pLeftVolume, final float pRightVolume) {
 		super.setVolume(pLeftVolume, pRightVolume);
-		
+
 		final float masterVolume = this.getAudioManager().getMasterVolume();
 		final float actualLeftVolume = pLeftVolume * masterVolume;
 		final float actualRightVolume = pRightVolume * masterVolume;
-		
+
 		this.mMediaPlayer.setVolume(actualLeftVolume, actualRightVolume);
 	}
 

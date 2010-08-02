@@ -21,8 +21,8 @@ public class TextMenuItem extends Text implements IMenuItem{
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public TextMenuItem(final int pID, Font pFont, String pText) {
+
+	public TextMenuItem(final int pID, final Font pFont, final String pText) {
 		super(0, 0, pFont, pText);
 		this.mID = pID;
 	}
@@ -34,7 +34,7 @@ public class TextMenuItem extends Text implements IMenuItem{
 	public int getID() {
 		return this.mID;
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

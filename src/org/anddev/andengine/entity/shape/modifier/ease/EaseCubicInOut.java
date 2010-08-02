@@ -12,7 +12,7 @@ public class EaseCubicInOut implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseCubicInOut INSTANCE;
 
 	// ===========================================================

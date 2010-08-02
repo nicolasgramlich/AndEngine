@@ -89,7 +89,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	protected void onDrawScene(final GL10 pGL) {
 		final Camera firstCamera = this.getFirstCamera();
 		final Camera secondCamera = this.getSecondCamera();
-		
+
 		final int surfaceWidth = this.mSurfaceWidth;
 		final int surfaceWidthHalf = surfaceWidth >> 1;
 
@@ -114,7 +114,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 			this.mSecondScene.onDraw(pGL, secondCamera);
 			secondCamera.onDrawHUD(pGL);
 		}
-		
+
 		pGL.glDisable(GL10.GL_SCISSOR_TEST);
 	}
 
@@ -147,7 +147,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	@Override
 	protected void convertSurfaceToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth >> 1;
-		
+
 		if(pCamera == this.getFirstCamera()) {
 			pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		} else {

@@ -17,7 +17,7 @@ public class DynamicCapacityLayer extends BaseLayer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final int CAPACITY_DEFAULT = 10;
 
 	// ===========================================================

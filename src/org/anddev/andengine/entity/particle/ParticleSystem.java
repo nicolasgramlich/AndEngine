@@ -41,7 +41,7 @@ public class ParticleSystem extends Rectangle {
 	private float mParticlesDueToSpawn;
 	private final int mMaxParticles;
 	private int mParticlesAlive;
-	
+
 	private int mParticleModifierCount;
 	private int mParticleInitializerCount;
 
@@ -99,7 +99,7 @@ public class ParticleSystem extends Rectangle {
 			for(int j = particleModifierCountMinusOne; j >= 0; j--) {
 				particleModifiers.get(j).onUpdateParticle(particle);
 			}
-			
+
 			particle.onUpdate(pSecondsElapsed);
 			if(particle.mDead){
 				this.mParticlesAlive--;
@@ -160,11 +160,11 @@ public class ParticleSystem extends Rectangle {
 				/* New particle needs to be created. */
 				final float x = this.getX() + RANDOM.nextFloat() * this.getWidthScaled();
 				final float y = this.getY() + RANDOM.nextFloat() * this.getHeightScaled();
-				
+
 				if(particlesAlive == 0) {
 					/* This is the very first particle. */
 					particle = new Particle(x, y, this.mTextureRegion);
-					this.mSharedParticleVertexBuffer = particle.getVertexBuffer();	
+					this.mSharedParticleVertexBuffer = particle.getVertexBuffer();
 				} else {
 					particle = new Particle(x, y, this.mTextureRegion, this.mSharedParticleVertexBuffer);
 				}
@@ -178,7 +178,7 @@ public class ParticleSystem extends Rectangle {
 				for(int i = this.mParticleInitializerCount - 1; i >= 0; i--) {
 					particleInitializers.get(i).onInitializeParticle(particle);
 				}
-				
+
 				final ArrayList<IParticleModifier> particleModifiers = this.mParticleModifiers;
 				for(int i = this.mParticleModifierCount - 1; i >= 0; i--) {
 					particleModifiers.get(i).onInitializeParticle(particle);

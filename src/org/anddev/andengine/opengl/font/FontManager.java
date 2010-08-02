@@ -43,7 +43,7 @@ public class FontManager {
 	public void loadFont(final Font pFont) {
 		this.mFontsManaged.add(pFont);
 	}
-	
+
 	public void loadFonts(final Font ... pFonts) {
 		for(int i = pFonts.length - 1; i >= 0; i--) {
 			this.loadFont(pFonts[i]);

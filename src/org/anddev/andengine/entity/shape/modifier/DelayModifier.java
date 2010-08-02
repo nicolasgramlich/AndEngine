@@ -30,7 +30,7 @@ public class DelayModifier extends BaseShapeDurationModifier {
 	protected DelayModifier(final DelayModifier pDelayModifier) {
 		super(pDelayModifier);
 	}
-	
+
 	@Override
 	public DelayModifier clone(){
 		return new DelayModifier(this);

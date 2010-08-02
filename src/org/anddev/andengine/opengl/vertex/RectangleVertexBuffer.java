@@ -41,7 +41,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 		// TODO First parameters are always Zero...
 		final float x2 = pX + pWidth;
 		final float y2 = pY + pHeight;
-		
+
 		final FloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 

@@ -49,7 +49,8 @@ public class SoundManager extends BaseAudioManager<Sound> {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
+	@Override
 	public void releaseAll() {
 		super.releaseAll();
 

@@ -21,7 +21,7 @@ public class BaseSensorData {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public BaseSensorData(final int pValueCount) {
 		this.mValues = new float[pValueCount];
 	}
@@ -37,7 +37,7 @@ public class BaseSensorData {
 	public void setValues(final float[] pValues) {
 		final float[] values = this.mValues;
 		for(int i = pValues.length - 1; i >= 0; i--) {
-			values[i] = pValues[i];	
+			values[i] = pValues[i];
 		}
 	}
 

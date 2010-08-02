@@ -105,9 +105,9 @@ public class LoopModifier extends BaseShapeModifier {
 		if(this.mLoopModifierListener != null) {
 			this.mLoopModifierListener.onLoopFinished(this, this.mLoopCount);
 		}
-		
+
 		if(this.mInitialLoopCount == LOOP_CONTINUOUS) {
-			this.mShapeModifier.reset();			
+			this.mShapeModifier.reset();
 		} else {
 			this.mLoopCount--;
 			if(this.mLoopCount < 0) {

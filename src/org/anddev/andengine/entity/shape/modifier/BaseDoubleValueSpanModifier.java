@@ -22,11 +22,11 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
 		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null, IEaseFunction.DEFAULT);
 	}
-	
+
 	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IEaseFunction pEaseFunction) {
 		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null, pEaseFunction);
 	}
@@ -40,7 +40,7 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 		this.mFromValueB = pFromValueB;
 		this.mValueSpanB = pToValueB - pFromValueB;
 	}
-	
+
 	protected BaseDoubleValueSpanModifier(final BaseDoubleValueSpanModifier pBaseDoubleValueSpanModifier) {
 		super(pBaseDoubleValueSpanModifier);
 		this.mFromValueB = pBaseDoubleValueSpanModifier.mFromValueB;

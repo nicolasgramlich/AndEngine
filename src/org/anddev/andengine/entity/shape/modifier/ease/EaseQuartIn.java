@@ -12,7 +12,7 @@ public class EaseQuartIn implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseQuartIn INSTANCE;
 
 	// ===========================================================
@@ -20,7 +20,7 @@ public class EaseQuartIn implements IEaseFunction {
 	// ===========================================================
 
 	private EaseQuartIn() {
-		
+
 	}
 
 	public static EaseQuartIn getInstance() {

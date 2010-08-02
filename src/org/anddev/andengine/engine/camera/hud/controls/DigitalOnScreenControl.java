@@ -37,7 +37,7 @@ public class DigitalOnScreenControl extends BaseOnScreenControl {
 		if(pRelativeX == 0 && pRelativeY == 0) {
 			super.onUpdateControlKnob(0, 0);
 		}
-		
+
 		if(Math.abs(pRelativeX) > Math.abs(pRelativeY)) {
 			if(pRelativeX > 0) {
 				super.onUpdateControlKnob(0.5f, 0);
@@ -45,7 +45,7 @@ public class DigitalOnScreenControl extends BaseOnScreenControl {
 				super.onUpdateControlKnob(-0.5f, 0);
 			} else if(pRelativeX == 0) {
 				super.onUpdateControlKnob(0, 0);
-			} 
+			}
 		} else {
 			if(pRelativeY > 0) {
 				super.onUpdateControlKnob(0, 0.5f);
@@ -53,7 +53,7 @@ public class DigitalOnScreenControl extends BaseOnScreenControl {
 				super.onUpdateControlKnob(0, -0.5f);
 			} else if(pRelativeY == 0) {
 				super.onUpdateControlKnob(0, 0);
-			} 
+			}
 		}
 	}
 

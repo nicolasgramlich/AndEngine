@@ -94,7 +94,7 @@ public class Text extends RectangularShape {
 		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * font.getLineGap();
 		final float height = super.mHeight;
 		super.mBaseHeight = height;
-		
+
 		this.mRotationCenterX = width * 0.5f;
 		this.mRotationCenterY = height * 0.5f;
 
@@ -143,7 +143,7 @@ public class Text extends RectangularShape {
 	}
 
 	@Override
-	protected void onApplyTransformations(GL10 pGL) {
+	protected void onApplyTransformations(final GL10 pGL) {
 		super.onApplyTransformations(pGL);
 		this.applyTexture(pGL);
 	}

@@ -43,7 +43,7 @@ public class BoundCamera extends Camera {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public boolean isBoundsEnabled() {
 		return this.mBoundsEnabled;
 	}
@@ -70,7 +70,7 @@ public class BoundCamera extends Camera {
 		super.setCenter(pCenterX, pCenterY);
 
 		if(this.mBoundsEnabled) {
-			super.setCenter(determineBoundedX(), determineBoundedY());
+			super.setCenter(this.determineBoundedX(), this.determineBoundedY());
 		}
 	}
 

@@ -110,7 +110,7 @@ public class Camera implements IUpdateHandler {
 	public boolean hasHUD() {
 		return this.mHUD != null;
 	}
-	
+
 	public void setChaseShape(final IShape pChaseShape) {
 		this.mChaseShape = pChaseShape;
 	}
@@ -130,10 +130,10 @@ public class Camera implements IUpdateHandler {
 			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
 		}
 	}
-	
+
 	@Override
 	public void reset() {
-		
+
 	}
 
 	// ===========================================================
@@ -156,7 +156,7 @@ public class Camera implements IUpdateHandler {
 		final float otherRight = pRectangularShape.getWidthScaled() + otherLeft;
 		final float otherBottom = pRectangularShape.getHeightScaled() + otherTop;
 
-		 // TODO Should also use RectangularShapeCollisionChecker
+		// TODO Should also use RectangularShapeCollisionChecker
 		return BaseCollisionChecker.checkAxisAlignedRectangleCollision(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY(), otherLeft, otherTop, otherRight, otherBottom);
 	}
 
@@ -212,7 +212,7 @@ public class Camera implements IUpdateHandler {
 			relativeX = pSurfaceTouchEvent.getX() / pSurfaceWidth;
 			relativeY = pSurfaceTouchEvent.getY() / pSurfaceHeight;
 		}
-		
+
 		this.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, relativeX, relativeY);
 	}
 
@@ -221,7 +221,7 @@ public class Camera implements IUpdateHandler {
 		final float maxX = this.getMaxX();
 		final float minY = this.getMinY();
 		final float maxY = this.getMaxY();
-		
+
 		final float x = minX + pRelativeX * (maxX - minX);
 		final float y = minY + pRelativeY * (maxY - minY);
 

@@ -75,7 +75,7 @@ public abstract class BaseActivity extends Activity {
 
 			@Override
 			public void onPreExecute() {
-				this.mPD = ProgressDialog.show(BaseActivity.this, getString(pTitleResID), getString(pMessageResID));
+				this.mPD = ProgressDialog.show(BaseActivity.this, BaseActivity.this.getString(pTitleResID), BaseActivity.this.getString(pMessageResID));
 				super.onPreExecute();
 			}
 
@@ -99,7 +99,7 @@ public abstract class BaseActivity extends Activity {
 
 				if(this.isCancelled()) {
 					this.mException = new CancelledException();
-				} 
+				}
 
 				if(this.mException == null) {
 					pCallback.onCallback(result);
@@ -107,7 +107,7 @@ public abstract class BaseActivity extends Activity {
 					if(pExceptionCallback == null) {
 						Debug.e("Error", this.mException);
 					} else {
-						pExceptionCallback.onCallback(this.mException);							
+						pExceptionCallback.onCallback(this.mException);
 					}
 				}
 
@@ -190,7 +190,7 @@ public abstract class BaseActivity extends Activity {
 
 				if(this.isCancelled()) {
 					this.mException = new CancelledException();
-				} 
+				}
 
 				if(this.mException == null) {
 					pCallback.onCallback(result);
@@ -198,7 +198,7 @@ public abstract class BaseActivity extends Activity {
 					if(pExceptionCallback == null) {
 						Debug.e("Error", this.mException);
 					} else {
-						pExceptionCallback.onCallback(this.mException);							
+						pExceptionCallback.onCallback(this.mException);
 					}
 				}
 
@@ -220,10 +220,10 @@ public abstract class BaseActivity extends Activity {
 	 * @param pExceptionCallback
 	 */
 	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final AsyncCallable<T> pAsyncCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
-		final ProgressDialog pd = ProgressDialog.show(BaseActivity.this, getString(pTitleResID), getString(pMessageResID));
+		final ProgressDialog pd = ProgressDialog.show(BaseActivity.this, this.getString(pTitleResID), this.getString(pMessageResID));
 		pAsyncCallable.call(new Callback<T>() {
 			@Override
-			public void onCallback(T result) {
+			public void onCallback(final T result) {
 				try {
 					pd.dismiss();
 				} catch (final Exception e) {

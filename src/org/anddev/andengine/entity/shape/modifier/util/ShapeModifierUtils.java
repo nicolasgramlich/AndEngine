@@ -30,11 +30,11 @@ public class ShapeModifierUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static IShapeModifier getShapeModifierWithLongestDuration(final IShapeModifier[] pShapeModifiers){
 		IShapeModifier out = null;
 		float longestDuration = Float.MIN_VALUE;
-		
+
 		for(int i = pShapeModifiers.length - 1; i >= 0; i--) {
 			final float duration = pShapeModifiers[i].getDuration();
 			if(duration > longestDuration) {
@@ -42,17 +42,17 @@ public class ShapeModifierUtils {
 				out = pShapeModifiers[i];
 			}
 		}
-		
+
 		return out;
 	}
-	
+
 	public static float getSequenceDurationOfShapeModifier(final IShapeModifier[] pShapeModifiers){
 		float duration = Float.MIN_VALUE;
-		
+
 		for(int i = pShapeModifiers.length - 1; i >= 0; i--) {
 			duration += pShapeModifiers[i].getDuration();
 		}
-		
+
 		return duration;
 	}
 

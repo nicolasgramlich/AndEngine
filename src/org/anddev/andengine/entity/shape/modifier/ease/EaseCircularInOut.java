@@ -14,7 +14,7 @@ public class EaseCircularInOut implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseCircularInOut INSTANCE;
 
 	// ===========================================================

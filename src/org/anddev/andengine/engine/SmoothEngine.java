@@ -57,9 +57,9 @@ public class SmoothEngine extends Engine {
 		final long[] lastFrameLengths = this.mLastFrameLengths;
 		System.arraycopy(this.mLastFrameLengths, 0, this.mLastFrameLengthsSorted, 0, RUNNING_AVERAGE_SIZE);
 		Arrays.sort(this.mLastFrameLengthsSorted);
-		
-//		/* Median */
-//		return this.mLastFrameLengthsSorted[RUNNING_AVERAGE_SIZE / 2];
+
+		//		/* Median */
+		//		return this.mLastFrameLengthsSorted[RUNNING_AVERAGE_SIZE / 2];
 
 		/* Running average, excluding first x and last x frames. */
 		long sum = 0;

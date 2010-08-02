@@ -34,6 +34,7 @@ public abstract class GLShape extends Shape implements IShape {
 	protected abstract void onUpdateVertexBuffer();
 	protected abstract VertexBuffer getVertexBuffer();
 
+	@Override
 	protected void onApplyVertices(final GL10 pGL) {
 		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
 			final GL11 gl11 = (GL11)pGL;
@@ -48,7 +49,7 @@ public abstract class GLShape extends Shape implements IShape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

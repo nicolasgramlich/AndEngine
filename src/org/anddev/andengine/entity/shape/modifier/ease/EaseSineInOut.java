@@ -16,7 +16,7 @@ public class EaseSineInOut implements IEaseFunction {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static EaseSineInOut INSTANCE;
 
 	// ===========================================================
@@ -43,7 +43,7 @@ public class EaseSineInOut implements IEaseFunction {
 
 	@Override
 	public float calc(final float t, final float b, final float c, final float d) {
-		return (float) (-c * 0.5f * (FloatMath.cos(MathConstants.PI * t / d) - 1) + b);
+		return (-c * 0.5f * (FloatMath.cos(MathConstants.PI * t / d) - 1) + b);
 	}
 
 	// ===========================================================

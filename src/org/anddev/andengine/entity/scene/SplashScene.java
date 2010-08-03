@@ -32,6 +32,7 @@ public class SplashScene extends Scene {
 
 		final Sprite loadingScreenSprite = new Sprite(pCamera.getMinX(), pCamera.getMinY(), pCamera.getWidth(), pCamera.getHeight(), pTextureRegion);
 		if(pScaleFrom != 1 || pScaleTo != 1) {
+			loadingScreenSprite.setScale(pScaleFrom);
 			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, pScaleFrom, pScaleTo, IEaseFunction.DEFAULT));
 		}
 

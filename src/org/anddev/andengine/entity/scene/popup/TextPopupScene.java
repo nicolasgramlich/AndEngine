@@ -27,7 +27,7 @@ public class TextPopupScene extends PopupScene {
 	public TextPopupScene(final Camera pCamera, final Scene pParentScene, final Font pFont, final String pText, final float pDurationSeconds) {
 		this(pCamera, pParentScene, pFont, pText, pDurationSeconds, null);
 	}
-	
+
 	public TextPopupScene(final Camera pCamera, final Scene pParentScene, final Font pFont, final String pText, final float pDurationSeconds, final IShapeModifier pShapeModifier) {
 		this(pCamera, pParentScene, pFont, pText, pDurationSeconds, pShapeModifier, null);
 	}
@@ -37,11 +37,11 @@ public class TextPopupScene extends PopupScene {
 
 		final Text text = new Text(0, 0, pFont, pText, HorizontalAlign.CENTER);
 		pCamera.centerInCamera(text);
-		
+
 		if(pShapeModifier != null) {
 			text.addShapeModifier(pShapeModifier);
 		}
-		
+
 		this.getTopLayer().addEntity(text);
 	}
 

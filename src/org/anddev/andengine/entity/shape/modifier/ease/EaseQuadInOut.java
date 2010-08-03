@@ -38,11 +38,11 @@ public class EaseQuadInOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float calc(float t, final float b, final float c, final float d) {
-		if((t /= d * 0.5f) < 1) {
-			return c * 0.5f * t * t + b;
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		if((pSecondsElapsed /= pDuration * 0.5f) < 1) {
+			return pMaxValue * 0.5f * pSecondsElapsed * pSecondsElapsed + pMinValue;
 		}
-		return -c * 0.5f * ((--t) * (t - 2) - 1) + b;
+		return -pMaxValue * 0.5f * ((--pSecondsElapsed) * (pSecondsElapsed - 2) - 1) + pMinValue;
 	}
 
 	// ===========================================================

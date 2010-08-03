@@ -39,11 +39,11 @@ public class EaseBounceInOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float calc(final float t, final float b, final float c, final float d) {
-		if(t < d * 0.5) {
-			return EaseBounceIn.getInstance().calc(t * 2, 0, c, d) * 0.5f + b;
+	public float getPercentageDone(final float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		if(pSecondsElapsed < pDuration * 0.5) {
+			return EaseBounceIn.getInstance().getPercentageDone(pSecondsElapsed * 2, pDuration, 0, pMaxValue) * 0.5f + pMinValue;
 		} else {
-			return EaseBounceOut.getInstance().calc(t * 2 - d, 0, c, d) * 0.5f + c * 0.5f + b;
+			return EaseBounceOut.getInstance().getPercentageDone(pSecondsElapsed * 2 - pDuration, pDuration, 0, pMaxValue) * 0.5f + pMaxValue * 0.5f + pMinValue;
 		}
 	}
 

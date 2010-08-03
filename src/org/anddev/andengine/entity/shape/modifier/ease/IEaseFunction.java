@@ -15,5 +15,5 @@ public interface IEaseFunction {
 	// Methods
 	// ===========================================================
 
-	public abstract float calc(float t, float b, float c, float d);
+	public abstract float getPercentageDone(final float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue);
 }

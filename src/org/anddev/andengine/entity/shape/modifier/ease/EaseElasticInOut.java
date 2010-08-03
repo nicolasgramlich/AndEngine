@@ -42,29 +42,29 @@ public class EaseElasticInOut implements IEaseFunction, MathConstants {
 	// ===========================================================
 
 	@Override
-	public float calc(float t, final float b, final float c, final float d) {
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
 		float s;
 		float p = 0.0f;
 		float a = 0.0f;
-		if(t == 0) {
-			return b;
+		if(pSecondsElapsed == 0) {
+			return pMinValue;
 		}
-		if((t /= d * 0.5) == 2) {
-			return b + c;
+		if((pSecondsElapsed /= pDuration * 0.5) == 2) {
+			return pMinValue + pMaxValue;
 		}
 		if(p == 0) {
-			p = d * (0.3f * 1.5f);
+			p = pDuration * (0.3f * 1.5f);
 		}
-		if(a == 0 || (c > 0 && a < c) || (c < 0 && a < -c)) {
-			a = c;
+		if(a == 0 || (pMaxValue > 0 && a < pMaxValue) || (pMaxValue < 0 && a < -pMaxValue)) {
+			a = pMaxValue;
 			s = p / 4;
 		} else {
-			s = (float) (p / _2PI * Math.asin(c / a));
+			s = (float) (p / _2PI * Math.asin(pMaxValue / a));
 		}
-		if(t < 1) {
-			return (float) (-0.5 * (a * Math.pow(2, 10 * (t -= 1)) * FloatMath.sin((t * d - s) * _2PI / p)) + b);
+		if(pSecondsElapsed < 1) {
+			return (float) (-0.5 * (a * Math.pow(2, 10 * (pSecondsElapsed -= 1)) * FloatMath.sin((pSecondsElapsed * pDuration - s) * _2PI / p)) + pMinValue);
 		}
-		return (float) (a * Math.pow(2, -10 * (t -= 1)) * FloatMath.sin((t * d - s) * _2PI / p) * .5 + c + b);
+		return (float) (a * Math.pow(2, -10 * (pSecondsElapsed -= 1)) * FloatMath.sin((pSecondsElapsed * pDuration - s) * _2PI / p) * .5 + pMaxValue + pMinValue);
 	}
 
 	// ===========================================================

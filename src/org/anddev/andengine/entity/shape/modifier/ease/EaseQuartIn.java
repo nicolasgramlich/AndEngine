@@ -39,8 +39,8 @@ public class EaseQuartIn implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float calc(float t, final float b, final float c, final float d) {
-		return c * (t /= d) * t * t * t + b;
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		return pMaxValue * (pSecondsElapsed /= pDuration) * pSecondsElapsed * pSecondsElapsed * pSecondsElapsed + pMinValue;
 	}
 
 	// ===========================================================

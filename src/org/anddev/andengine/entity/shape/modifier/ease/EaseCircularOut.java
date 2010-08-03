@@ -40,8 +40,8 @@ public class EaseCircularOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float calc(float t, final float b, final float c, final float d) {
-		return (c * FloatMath.sqrt(1 - (t = t / d - 1) * t) + b);
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		return (pMaxValue * FloatMath.sqrt(1 - (pSecondsElapsed = pSecondsElapsed / pDuration - 1) * pSecondsElapsed) + pMinValue);
 	}
 
 	// ===========================================================

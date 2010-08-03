@@ -69,7 +69,7 @@ public abstract class BaseSingleValueSpanModifier extends BaseShapeDurationModif
 
 	@Override
 	protected void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape) {
-		final float percentageDone = this.mEaseFunction.calc(this.getTotalSecondsElapsed(), 0, 1, this.mDuration);
+		final float percentageDone = this.mEaseFunction.getPercentageDone(this.getTotalSecondsElapsed(), this.mDuration, 0, 1);
 
 		this.onSetValue(pShape, percentageDone, this.mFromValue + percentageDone * this.mValueSpan);
 	}

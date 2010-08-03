@@ -42,8 +42,8 @@ public class EaseSineIn implements IEaseFunction, MathConstants {
 	// ===========================================================
 
 	@Override
-	public float calc(final float t, final float b, final float c, final float d) {
-		return (-c * FloatMath.cos(t / d * _HALF_PI) + c + b);
+	public float getPercentageDone(final float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		return (-pMaxValue * FloatMath.cos(pSecondsElapsed / pDuration * _HALF_PI) + pMaxValue + pMinValue);
 	}
 
 	// ===========================================================

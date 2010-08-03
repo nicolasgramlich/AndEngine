@@ -39,8 +39,8 @@ public class EaseBackOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float calc(float t, final float b, final float c, final float d) {
-		return c * ((t = t / d - 1) * t * ((1.70158f + 1) * t + 1.70158f) + 1) + b;
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		return pMaxValue * ((pSecondsElapsed = pSecondsElapsed / pDuration - 1) * pSecondsElapsed * ((1.70158f + 1) * pSecondsElapsed + 1.70158f) + 1) + pMinValue;
 	}
 
 	// ===========================================================

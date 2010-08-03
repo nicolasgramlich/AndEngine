@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.shape.modifier.ease;
 
-
 /**
  * @author Gil, Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
@@ -39,17 +38,17 @@ public class EaseExponentialInOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float calc(float t, final float b, final float c, final float d) {
-		if(t == 0) {
-			return b;
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		if(pSecondsElapsed == 0) {
+			return pMinValue;
 		}
-		if(t == d) {
-			return b + c;
+		if(pSecondsElapsed == pDuration) {
+			return pMinValue + pMaxValue;
 		}
-		if((t /= d * 0.5f) < 1) {
-			return (float) (c * 0.5f * Math.pow(2, 10 * (t - 1)) + b);
+		if((pSecondsElapsed /= pDuration * 0.5f) < 1) {
+			return (float) (pMaxValue * 0.5f * Math.pow(2, 10 * (pSecondsElapsed - 1)) + pMinValue);
 		}
-		return (float) (c * 0.5f * (-Math.pow(2, -10 * --t) + 2) + b);
+		return (float) (pMaxValue * 0.5f * (-Math.pow(2, -10 * --pSecondsElapsed) + 2) + pMinValue);
 	}
 
 	// ===========================================================

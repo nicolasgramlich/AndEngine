@@ -39,15 +39,15 @@ public class EaseBounceOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float calc(float t, final float b, final float c, final float d) {
-		if((t /= d) < (1 / 2.75)) {
-			return c * (7.5625f * t * t) + b;
-		} else if(t < (2 / 2.75)) {
-			return c * (7.5625f * (t -= (1.5f / 2.75f)) * t + 0.75f) + b;
-		} else if(t < (2.5 / 2.75)) {
-			return c * (7.5625f * (t -= (2.25f / 2.75f)) * t + 0.9375f) + b;
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		if((pSecondsElapsed /= pDuration) < (1 / 2.75)) {
+			return pMaxValue * (7.5625f * pSecondsElapsed * pSecondsElapsed) + pMinValue;
+		} else if(pSecondsElapsed < (2 / 2.75)) {
+			return pMaxValue * (7.5625f * (pSecondsElapsed -= (1.5f / 2.75f)) * pSecondsElapsed + 0.75f) + pMinValue;
+		} else if(pSecondsElapsed < (2.5 / 2.75)) {
+			return pMaxValue * (7.5625f * (pSecondsElapsed -= (2.25f / 2.75f)) * pSecondsElapsed + 0.9375f) + pMinValue;
 		} else {
-			return c * (7.5625f * (t -= (2.625f / 2.75f)) * t + 0.984375f) + b;
+			return pMaxValue * (7.5625f * (pSecondsElapsed -= (2.625f / 2.75f)) * pSecondsElapsed + 0.984375f) + pMinValue;
 		}
 	}
 

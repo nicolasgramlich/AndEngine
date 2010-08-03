@@ -36,7 +36,7 @@ public class CameraFactory {
 		final DisplayMetrics displayMetrics = getDisplayMetrics(pActivity);
 
 		final float width = displayMetrics.widthPixels;
-		final float height = displayMetrics.widthPixels;
+		final float height = displayMetrics.heightPixels;
 		return new Camera(pCenterX - width * 0.5f, pCenterY - height * 0.5f, width, height);
 	}
 

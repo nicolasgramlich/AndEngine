@@ -10,6 +10,7 @@ import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
 
@@ -139,6 +140,10 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void centerInCamera(final Shape pShape) {
+		pShape.setPosition((this.getWidth() - pShape.getWidth()) * 0.5f, (this.getHeight() - pShape.getHeight()) * 0.5f);
+	}
 
 	public void flip() {
 		this.mFlipped = !this.mFlipped;

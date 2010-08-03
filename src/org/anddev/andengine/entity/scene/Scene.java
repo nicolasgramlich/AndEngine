@@ -33,10 +33,9 @@ public class Scene extends Entity {
 	// Fields
 	// ===========================================================
 
-	private Scene mParentScene;
-
 	private float mSecondsElapsedTotal;
 
+	protected Scene mParentScene;
 	protected Scene mChildScene;
 	private boolean mChildSceneModalDraw;
 	private boolean mChildSceneModalUpdate;

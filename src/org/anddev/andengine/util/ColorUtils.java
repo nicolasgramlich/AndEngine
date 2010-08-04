@@ -1,0 +1,54 @@
+package org.anddev.andengine.util;
+
+import android.graphics.Color;
+
+/**
+ * @author Nicolas Gramlich
+ * @since 11:13:45 - 04.08.2010
+ */
+public class ColorUtils {
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	private static final float[] HSV_TO_COLOR = new float[3];
+	private static final int HSV_TO_COLOR_HUE_INDEX = 0;
+	private static final int HSV_TO_COLOR_SATURATION_INDEX = 1;
+	private static final int HSV_TO_COLOR_VALUE_INDEX = 2;
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	/**
+	 * @param pHue [0 .. 360)
+	 * @param pSaturation [0...1]
+	 * @param pValue [0...1]
+	 */
+	public static int HSVToColor(final float pHue, final float pSaturation, final float pValue) {
+		HSV_TO_COLOR[HSV_TO_COLOR_HUE_INDEX] = pHue;
+		HSV_TO_COLOR[HSV_TO_COLOR_SATURATION_INDEX] = pSaturation;
+		HSV_TO_COLOR[HSV_TO_COLOR_VALUE_INDEX] = pValue;
+		return Color.HSVToColor(HSV_TO_COLOR);
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+}

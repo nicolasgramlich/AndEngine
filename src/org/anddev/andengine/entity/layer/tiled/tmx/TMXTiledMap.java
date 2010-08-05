@@ -112,6 +112,10 @@ public class TMXTiledMap implements TMXConstants {
 		return this.mTMXObjectGroups;
 	}
 
+	public ArrayList<TMXTileProperty> getTMXTilePropertiesByGlobalTileID(final int pGlobalTileID) {
+		return this.mGlobalTileIDToTMXTilePropertiesCache.get(pGlobalTileID);
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

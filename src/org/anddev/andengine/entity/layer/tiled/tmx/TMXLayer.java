@@ -44,7 +44,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	private final int mTileColumns;
 	private final int mTileRows;
 
-	private final TextureRegion[][] mTextureRegions;
+	private final TMXTile[][] mTMXTiles;
 
 	private final float[] mCullingVertices = new float[2 * RectangleVertexBuffer.VERTICES_PER_RECTANGLE];
 
@@ -59,7 +59,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		this.mName = pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_NAME);
 		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_LAYER_ATTRIBUTE_WIDTH);
 		this.mTileRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT);
-		this.mTextureRegions = new TextureRegion[this.mTileRows][this.mTileColumns];
+		this.mTMXTiles = new TMXTile[this.mTileRows][this.mTileColumns];
 
 		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTileColumns;
 		final float width = super.mWidth;
@@ -90,6 +90,14 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	public int getTileRows() {
 		return this.mTileRows;
+	}
+	
+	public TMXTile[][] getTMXTiles() {
+		return this.mTMXTiles;
+	}
+	
+	public TMXTile getTMXTile(final int pRow, final int pColumn) {
+		return this.mTMXTiles[pRow][pColumn];
 	}
 
 	// ===========================================================
@@ -129,7 +137,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	@Override
 	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
-		final TextureRegion[][] textureRegions = this.mTextureRegions;
+		final TMXTile[][] tmxTiles = this.mTMXTiles;
 
 		final int tileColumns = this.mTileColumns;
 		final int tileRows = this.mTileRows;
@@ -164,10 +172,10 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		pGL.glTranslatef(firstColumn * tileWidth, firstRow * tileHeight, 0);
 
 		for(int row = firstRow; row <= lastRow; row++) {
-			final TextureRegion[] textureRegionRow = textureRegions[row];
+			final TMXTile[] tmxTileRow = tmxTiles[row];
 
 			for(int column = firstColumn; column <= lastColumn; column++) {
-				final TextureRegion textureRegion = textureRegionRow[column];
+				final TextureRegion textureRegion = tmxTileRow[column].mTextureRegion;
 				if(textureRegion != null) {
 					textureRegion.onApply(pGL);
 
@@ -199,7 +207,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final int tilesHorizontal = this.mTileColumns;
 		final int tilesVertical = this.mTileRows;
 
-		final TextureRegion[][] textureRegions = this.mTextureRegions;
+		final TMXTile[][] tmxTiles = this.mTMXTiles;
 		final byte[] globalTileIDFetcher = new byte[4];
 
 		final DataInputStream dataIn = new DataInputStream(new GZIPInputStream(new Base64InputStream(new ByteArrayInputStream(pString.getBytes("UTF-8")), Base64.DEFAULT)));
@@ -211,7 +219,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 			if(globalTileID != 0) {
 				final int column = globalTileIDsRead % tilesHorizontal;
 				final int row = globalTileIDsRead / tilesHorizontal;
-				textureRegions[row][column] = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
+				tmxTiles[row][column] = new TMXTile(globalTileID, row, column, tileWidth, tileHeight, tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID));
 				if(pTMXTilePropertyListener != null) {
 					final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(globalTileID);
 					if(tmxTileProperties != null) {

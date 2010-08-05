@@ -21,6 +21,7 @@ import org.anddev.andengine.util.Base64;
 import org.anddev.andengine.util.Base64InputStream;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.SAXUtils;
+import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.constants.Constants;
 import org.xml.sax.Attributes;
 
@@ -98,6 +99,11 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	
 	public TMXTile getTMXTile(final int pRow, final int pColumn) {
 		return this.mTMXTiles[pRow][pColumn];
+	}
+	
+	public TMXTile getTMXTileAt(final int pX, final int pY) {
+		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
+		return this.mTMXTiles[pX / tmxTiledMap.getTileHeight()][pY / tmxTiledMap.getTileWidth()];
 	}
 
 	// ===========================================================
@@ -199,7 +205,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// Methods
 	// ===========================================================
 
-	public void initializeTextureRegions(final String pString, final ITMXTilePropertiesListener pTMXTilePropertyListener) throws IOException, IllegalArgumentException {
+	public void initializeTMXTiles(final String pDataString, final ITMXTilePropertiesListener pTMXTilePropertyListener) throws IOException, IllegalArgumentException {
 		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
 		final int tileWidth = this.mTMXTiledMap.getTileWidth();
 		final int tileHeight = this.mTMXTiledMap.getTileHeight();
@@ -208,36 +214,48 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final int tilesVertical = this.mTileRows;
 
 		final TMXTile[][] tmxTiles = this.mTMXTiles;
-		final byte[] globalTileIDFetcher = new byte[4];
 
-		final DataInputStream dataIn = new DataInputStream(new GZIPInputStream(new Base64InputStream(new ByteArrayInputStream(pString.getBytes("UTF-8")), Base64.DEFAULT)));
+		final int globalTileIDsExpected = tilesHorizontal * tilesVertical;
 
+		DataInputStream dataIn = null;
 		int globalTileIDsRead = 0;
-		while(dataIn.read(globalTileIDFetcher) == BYTES_PER_GLOBALTILEID) {
-			final int globalTileID = this.calculateGlobalTileID(globalTileIDFetcher);
-
-			if(globalTileID != 0) {
-				final int column = globalTileIDsRead % tilesHorizontal;
-				final int row = globalTileIDsRead / tilesHorizontal;
-				tmxTiles[row][column] = new TMXTile(globalTileID, row, column, tileWidth, tileHeight, tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID));
-				if(pTMXTilePropertyListener != null) {
-					final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(globalTileID);
-					if(tmxTileProperties != null) {
-						pTMXTilePropertyListener.onTMXTileWithPropertiesCreated(tmxTiledMap, this, tmxTileProperties, row, column, tileWidth, tileHeight);
+		try{
+			dataIn = new DataInputStream(new GZIPInputStream(new Base64InputStream(new ByteArrayInputStream(pDataString.getBytes("UTF-8")), Base64.DEFAULT)));
+			
+			while(globalTileIDsRead < globalTileIDsExpected) {
+				final int globalTileID = this.readGlobalTileID(dataIn);
+	
+				if(globalTileID != 0) {
+					final int column = globalTileIDsRead % tilesHorizontal;
+					final int row = globalTileIDsRead / tilesHorizontal;
+					final TextureRegion tmxTileTextureRegion = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
+					tmxTiles[row][column] = new TMXTile(globalTileID, row, column, tileWidth, tileHeight, tmxTileTextureRegion);
+					
+					if(pTMXTilePropertyListener != null) {
+						final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(globalTileID);
+						if(tmxTileProperties != null) {
+							pTMXTilePropertyListener.onTMXTileWithPropertiesCreated(tmxTiledMap, this, tmxTileProperties, row, column, tileWidth, tileHeight);
+						}
 					}
 				}
+				globalTileIDsRead++;
 			}
-			globalTileIDsRead++;
-		}
-
-		final int expectedGlobalTileIDs = tilesHorizontal * tilesVertical;
-		if(globalTileIDsRead != expectedGlobalTileIDs) {
-			throw new IllegalArgumentException("Read: " + globalTileIDsRead + " GlobalTileIDs. Expected: " + expectedGlobalTileIDs);
+		} finally {
+			StreamUtils.closeStream(dataIn);
 		}
 	}
 
-	private int calculateGlobalTileID(final byte[] globalTileIDFetcher) {
-		return globalTileIDFetcher[0] | globalTileIDFetcher[1] << 8 | globalTileIDFetcher[2] << 16 | globalTileIDFetcher[3] << 24;
+	private int readGlobalTileID(final DataInputStream pDataIn) throws IOException {
+        final int lowestByte = pDataIn.read();
+        final int secondLowestByte = pDataIn.read();
+        final int secondHighestByte = pDataIn.read();
+        final int highestByte = pDataIn.read();
+        
+        if(lowestByte < 0 || secondLowestByte < 0 || secondHighestByte < 0 || highestByte < 0) {
+        	throw new IllegalArgumentException("Couldn't read global Tile ID.");
+        }
+        
+        return lowestByte | secondLowestByte <<  8 |secondHighestByte << 16 | highestByte << 24;
 	}
 
 	// ===========================================================

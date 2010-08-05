@@ -92,18 +92,34 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	public int getTileRows() {
 		return this.mTileRows;
 	}
-	
+
 	public TMXTile[][] getTMXTiles() {
 		return this.mTMXTiles;
 	}
-	
-	public TMXTile getTMXTile(final int pRow, final int pColumn) {
+
+	public TMXTile getTMXTile(final int pRow, final int pColumn) throws ArrayIndexOutOfBoundsException {
 		return this.mTMXTiles[pRow][pColumn];
 	}
-	
-	public TMXTile getTMXTileAt(final int pX, final int pY) {
+
+	/**
+	 * @param pX in SceneCoordinates.
+	 * @param pY in SceneCoordinates.
+	 * @return the {@link TMXTile} located at <code>pX/pY</code>.
+	 */
+	public TMXTile getTMXTileAt(final float pX, final float pY) {
+		final float[] localCoords = this.convertSceneToLocalCoordinates(pX, pY);
 		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
-		return this.mTMXTiles[pX / tmxTiledMap.getTileHeight()][pY / tmxTiledMap.getTileWidth()];
+
+		final int tileColumn = (int)(localCoords[Constants.VERTEX_INDEX_X] / tmxTiledMap.getTileWidth());
+		if(tileColumn < 0 || tileColumn > this.mTileColumns - 1) {
+			return null;
+		}
+		final int tileRow = (int)(localCoords[Constants.VERTEX_INDEX_Y] / tmxTiledMap.getTileWidth());
+		if(tileRow < 0 || tileRow > this.mTileRows - 1) {
+			return null;
+		}
+
+		return this.mTMXTiles[tileRow][tileColumn];
 	}
 
 	// ===========================================================
@@ -224,14 +240,20 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 			int globalTileIDsRead = 0;
 			while(globalTileIDsRead < globalTileIDsExpected) {
 				final int globalTileID = this.readGlobalTileID(dataIn);
-	
+
+				final int column = globalTileIDsRead % tilesHorizontal;
+				final int row = globalTileIDsRead / tilesHorizontal;
+
+				final TextureRegion tmxTileTextureRegion;
+				if(globalTileID == 0) {
+					tmxTileTextureRegion = null;
+				} else {
+					tmxTileTextureRegion = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
+				}
+				final TMXTile tmxTile = new TMXTile(globalTileID, row, column, tileWidth, tileHeight, tmxTileTextureRegion);
+				tmxTiles[row][column] = tmxTile;
+
 				if(globalTileID != 0) {
-					final int column = globalTileIDsRead % tilesHorizontal;
-					final int row = globalTileIDsRead / tilesHorizontal;
-					final TextureRegion tmxTileTextureRegion = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
-					final TMXTile tmxTile = new TMXTile(globalTileID, row, column, tileWidth, tileHeight, tmxTileTextureRegion);
-					tmxTiles[row][column] = tmxTile;
-					
 					/* Notify the ITMXTilePropertiesListener if it exists. */
 					if(pTMXTilePropertyListener != null) {
 						final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(globalTileID);
@@ -240,6 +262,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 						}
 					}
 				}
+
 				globalTileIDsRead++;
 			}
 		} finally {
@@ -248,16 +271,16 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	}
 
 	private int readGlobalTileID(final DataInputStream pDataIn) throws IOException {
-        final int lowestByte = pDataIn.read();
-        final int secondLowestByte = pDataIn.read();
-        final int secondHighestByte = pDataIn.read();
-        final int highestByte = pDataIn.read();
-        
-        if(lowestByte < 0 || secondLowestByte < 0 || secondHighestByte < 0 || highestByte < 0) {
-        	throw new IllegalArgumentException("Couldn't read global Tile ID.");
-        }
-        
-        return lowestByte | secondLowestByte <<  8 |secondHighestByte << 16 | highestByte << 24;
+		final int lowestByte = pDataIn.read();
+		final int secondLowestByte = pDataIn.read();
+		final int secondHighestByte = pDataIn.read();
+		final int highestByte = pDataIn.read();
+
+		if(lowestByte < 0 || secondLowestByte < 0 || secondHighestByte < 0 || highestByte < 0) {
+			throw new IllegalArgumentException("Couldn't read global Tile ID.");
+		}
+
+		return lowestByte | secondLowestByte <<  8 |secondHighestByte << 16 | highestByte << 24;
 	}
 
 	// ===========================================================

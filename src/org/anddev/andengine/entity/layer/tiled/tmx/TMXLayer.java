@@ -218,10 +218,10 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final int globalTileIDsExpected = tilesHorizontal * tilesVertical;
 
 		DataInputStream dataIn = null;
-		int globalTileIDsRead = 0;
 		try{
 			dataIn = new DataInputStream(new GZIPInputStream(new Base64InputStream(new ByteArrayInputStream(pDataString.getBytes("UTF-8")), Base64.DEFAULT)));
-			
+
+			int globalTileIDsRead = 0;
 			while(globalTileIDsRead < globalTileIDsExpected) {
 				final int globalTileID = this.readGlobalTileID(dataIn);
 	

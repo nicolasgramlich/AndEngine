@@ -229,12 +229,14 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 					final int column = globalTileIDsRead % tilesHorizontal;
 					final int row = globalTileIDsRead / tilesHorizontal;
 					final TextureRegion tmxTileTextureRegion = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
-					tmxTiles[row][column] = new TMXTile(globalTileID, row, column, tileWidth, tileHeight, tmxTileTextureRegion);
+					final TMXTile tmxTile = new TMXTile(globalTileID, row, column, tileWidth, tileHeight, tmxTileTextureRegion);
+					tmxTiles[row][column] = tmxTile;
 					
+					/* Notify the ITMXTilePropertiesListener if it exists. */
 					if(pTMXTilePropertyListener != null) {
 						final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(globalTileID);
 						if(tmxTileProperties != null) {
-							pTMXTilePropertyListener.onTMXTileWithPropertiesCreated(tmxTiledMap, this, tmxTileProperties, row, column, tileWidth, tileHeight);
+							pTMXTilePropertyListener.onTMXTileWithPropertiesCreated(tmxTiledMap, this, tmxTile, tmxTileProperties);
 						}
 					}
 				}

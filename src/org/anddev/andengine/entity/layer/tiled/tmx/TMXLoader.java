@@ -114,6 +114,6 @@ public class TMXLoader {
 		// Methods
 		// ===========================================================
 
-		public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final ArrayList<TMXTileProperty> pTMXTileProperties, final int pTileRow, final int pTileColumn, final int pTileWidth, final int pTileHeight);
+		public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final ArrayList<TMXTileProperty> pTMXTileProperties);
 	}
 }

@@ -44,6 +44,18 @@ public class ResourceTextureSource implements ITextureSource {
 		this.mHeight = decodeOptions.outHeight;
 	}
 
+	protected ResourceTextureSource(final Context pContext, final int pDrawableResourceID, final int pWidth, final int pHeight) {
+		this.mContext = pContext;
+		this.mDrawableResourceID = pDrawableResourceID;
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
+	}
+
+	@Override
+	public ResourceTextureSource clone() {
+		return new ResourceTextureSource(this.mContext, this.mDrawableResourceID, this.mWidth, this.mHeight);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

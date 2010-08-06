@@ -50,6 +50,18 @@ public class AssetTextureSource implements ITextureSource {
 		this.mHeight = decodeOptions.outHeight;
 	}
 
+	AssetTextureSource(final Context pContext, final String pAssetPath, final int pWidth, final int pHeight) {
+		this.mContext = pContext;
+		this.mAssetPath = pAssetPath;
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
+	}
+
+	@Override
+	public AssetTextureSource clone() {
+		return new AssetTextureSource(this.mContext, this.mAssetPath, this.mWidth, this.mHeight);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -76,7 +88,7 @@ public class AssetTextureSource implements ITextureSource {
 
 			return BitmapFactory.decodeStream(this.mContext.getAssets().open(this.mAssetPath), null, decodeOptions);
 		} catch (final IOException e) {
-			Debug.e("Failed loading Bitmap", e);
+			Debug.e("Failed loading Bitmap in AssetTextureSource. AssetPath: " + this.mAssetPath, e);
 			return null;
 		}
 	}

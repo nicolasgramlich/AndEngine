@@ -311,6 +311,11 @@ public class Texture {
 			this.mTexturePositionY = pTexturePositionY;
 		}
 
+		@Override
+		public TextureSourceWithLocation clone() {
+			return new TextureSourceWithLocation(this.mTextureSource, this.mTexturePositionX, this.mTexturePositionY);
+		}
+
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================

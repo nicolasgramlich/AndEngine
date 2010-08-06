@@ -22,11 +22,14 @@ public interface ILayer extends IEntity {
 	// Methods
 	// ===========================================================
 
-	public abstract IEntity getEntity(final int pIndex);
+	public int getZIndex();
+	public void setZIndex(final int pZIndex);
 
-	public abstract void addEntity(final IEntity pEntity);
+	public IEntity getEntity(final int pIndex);
 
-	public abstract IEntity findEntity(final IEntityMatcher pEntityMatcher);
+	public void addEntity(final IEntity pEntity);
+
+	public IEntity findEntity(final IEntityMatcher pEntityMatcher);
 
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
@@ -43,7 +46,7 @@ public interface ILayer extends IEntity {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public abstract boolean removeEntity(final IEntity pEntity);
+	public boolean removeEntity(final IEntity pEntity);
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
 	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered
@@ -51,7 +54,7 @@ public interface ILayer extends IEntity {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public abstract boolean removeEntity(final IEntityMatcher pEntityMatcher);
+	public boolean removeEntity(final IEntityMatcher pEntityMatcher);
 
 	public ArrayList<ITouchArea> getTouchAreas();
 

@@ -1,15 +1,13 @@
-package org.anddev.andengine.entity.layer;
+package org.anddev.andengine.util.sort;
 
-import java.util.ArrayList;
-
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
+import java.util.Comparator;
 
 /**
  * @author Nicolas Gramlich
- * @since 00:13:59 - 23.07.2010
+ * @since 14:14:31 - 06.08.2010
+ * @param <T>
  */
-public abstract class BaseLayer extends Entity implements ILayer{
+public class InsertionSorter<T> extends Sorter<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,51 +16,32 @@ public abstract class BaseLayer extends Entity implements ILayer{
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
-	private int mZIndex = 0;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseLayer() {
-
-	}
-
-	public BaseLayer(final int pZIndex) {
-		this.mZIndex = pZIndex;
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	@Override
-	public int getZIndex() {
-		return this.mZIndex;
-	}
-
-	@Override
-	public void setZIndex(final int pZIndex) {
-		this.mZIndex = pZIndex;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	public void registerTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas .add(pTouchArea);
-	}
-
-	@Override
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas.remove(pTouchArea);
-	}
-
-	public ArrayList<ITouchArea> getTouchAreas() {
-		return this.mTouchAreas;
+	public void sort(final T[] pArray, final int pStart, final int pEnd, final Comparator<T> pComparator) {
+		for(int i = pStart + 1; i < pEnd; i++) {
+			T current = pArray[i];
+			T prev = pArray[i - 1];
+			if(pComparator.compare(current, prev) < 0) {
+				int j = i;
+				do {
+					pArray[j--] = prev;
+				} while(j > pStart && pComparator.compare(current, prev = pArray[j - 1]) < 0);
+				pArray[j] = current;
+			}
+		}
+		return;
 	}
 
 	// ===========================================================

@@ -1,15 +1,10 @@
 package org.anddev.andengine.entity.layer;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
+import org.anddev.andengine.util.sort.InsertionSorter;
 
-/**
- * @author Nicolas Gramlich
- * @since 00:13:59 - 23.07.2010
- */
-public abstract class BaseLayer extends Entity implements ILayer{
+public class LayerSorter extends InsertionSorter<ILayer> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,56 +13,32 @@ public abstract class BaseLayer extends Entity implements ILayer{
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
-	private int mZIndex = 0;
+	private Comparator<ILayer> mLayerComparator = new Comparator<ILayer>() {
+		@Override
+		public int compare(ILayer pLayerA, ILayer pLayerB) {
+			return pLayerA.getZIndex() - pLayerB.getZIndex();
+		}
+	};
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseLayer() {
-
-	}
-
-	public BaseLayer(final int pZIndex) {
-		this.mZIndex = pZIndex;
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	@Override
-	public int getZIndex() {
-		return this.mZIndex;
-	}
-
-	@Override
-	public void setZIndex(final int pZIndex) {
-		this.mZIndex = pZIndex;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public void registerTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas .add(pTouchArea);
-	}
-
-	@Override
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas.remove(pTouchArea);
-	}
-
-	public ArrayList<ITouchArea> getTouchAreas() {
-		return this.mTouchAreas;
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void sort(final ILayer[] pLayers) {
+		this.sort(pLayers, this.mLayerComparator);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

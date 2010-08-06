@@ -15,6 +15,7 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.layer.DynamicCapacityLayer;
 import org.anddev.andengine.entity.layer.FixedCapacityLayer;
 import org.anddev.andengine.entity.layer.ILayer;
+import org.anddev.andengine.entity.layer.LayerSorter;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.input.touch.TouchEvent;
@@ -43,6 +44,7 @@ public class Scene extends Entity {
 
 	private final int mLayerCount;
 	private final ILayer[] mLayers;
+	private final LayerSorter mLayerSorter = new LayerSorter();
 
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
@@ -108,6 +110,35 @@ public class Scene extends Entity {
 
 	public ILayer getTopLayer() {
 		return this.mLayers[this.mLayerCount - 1];
+	}
+
+	public void setLayer(final int pLayerIndex, final ILayer pLayer) {
+		this.mLayers[pLayerIndex] = pLayer;
+	}
+
+	public void swapLayers(final int pLayerIndexA, final int pLayerIndexB) {
+		final ILayer[] layers = this.mLayers;
+		final ILayer tmp = layers[pLayerIndexA];
+		layers[pLayerIndexA] = layers[pLayerIndexB];
+		layers[pLayerIndexB] = tmp;
+	}
+
+	/**
+	 * Similar to {@link Scene#setLayer(int, ILayer)} but returns the layer that would be overwritten.
+	 * 
+	 * @param pLayerIndex
+	 * @param pLayer
+	 * @return the layer that has been replaced.
+	 */
+	public ILayer replaceLayer(final int pLayerIndex, final ILayer pLayer) {
+		final ILayer[] layers = this.mLayers;
+		final ILayer oldLayer = layers[pLayerIndex];
+		layers[pLayerIndex] = pLayer;
+		return oldLayer;
+	}
+	
+	public void sortLayers() {
+		this.mLayerSorter.sort(this.mLayers);
 	}
 
 	public boolean isBackgroundEnabled() {
@@ -480,4 +511,5 @@ public class Scene extends Entity {
 
 		public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent);
 	}
+	
 }

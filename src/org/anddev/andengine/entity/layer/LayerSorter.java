@@ -13,9 +13,9 @@ public class LayerSorter extends InsertionSorter<ILayer> {
 	// Fields
 	// ===========================================================
 
-	private Comparator<ILayer> mLayerComparator = new Comparator<ILayer>() {
+	private final Comparator<ILayer> mLayerComparator = new Comparator<ILayer>() {
 		@Override
-		public int compare(ILayer pLayerA, ILayer pLayerB) {
+		public int compare(final ILayer pLayerA, final ILayer pLayerB) {
 			return pLayerA.getZIndex() - pLayerB.getZIndex();
 		}
 	};

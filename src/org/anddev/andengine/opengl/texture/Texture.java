@@ -184,7 +184,7 @@ public class Texture {
 		for(int j = 0; j < textureSourceCount; j++) {
 			final TextureSourceWithLocation textureSource = textureSources.get(j);
 			if(textureSource != null) {
-				final Bitmap bmp = textureSource.loadBitmap();
+				final Bitmap bmp = textureSource.onLoadBitmap();
 				try{
 					if(bmp == null) {
 						throw new IllegalArgumentException("TextureSource: " + textureSource.toString() + " returned a null Bitmap.");
@@ -343,8 +343,8 @@ public class Texture {
 		}
 
 		@Override
-		public Bitmap loadBitmap() {
-			return this.mTextureSource.loadBitmap();
+		public Bitmap onLoadBitmap() {
+			return this.mTextureSource.onLoadBitmap();
 		}
 
 		@Override

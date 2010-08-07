@@ -81,7 +81,7 @@ public class AssetTextureSource implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap loadBitmap() {
+	public Bitmap onLoadBitmap() {
 		try {
 			final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 			decodeOptions.inPreferredConfig = Config.ARGB_8888;

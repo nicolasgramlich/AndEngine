@@ -20,5 +20,5 @@ public interface ITextureSource extends Cloneable {
 
 	public ITextureSource clone();
 
-	public Bitmap loadBitmap();
+	public Bitmap onLoadBitmap();
 }

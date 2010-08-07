@@ -50,8 +50,8 @@ public abstract class TextureSourceDecorator implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap loadBitmap() {
-		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mTextureSource.loadBitmap());
+	public Bitmap onLoadBitmap() {
+		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mTextureSource.onLoadBitmap());
 
 		final Canvas canvas = new Canvas(bitmap);
 		this.onDecorateBitmap(canvas);

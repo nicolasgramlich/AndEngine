@@ -1,9 +1,9 @@
-package org.anddev.andengine.opengl.texture.source;
+package org.anddev.andengine.opengl.texture.source.decorator;
 
+import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.util.ColorUtils;
 
 import android.graphics.AvoidXfermode;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,12 +18,13 @@ public class ColorKeyTextureSourceDecorator extends TextureSourceDecorator {
 	// Constants
 	// ===========================================================
 
+	private static final int TOLERANCE_DEFAULT = 0;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final Paint mPaint = new Paint();
-	private final Paint mTransparentPaint = new Paint();
+	private final Paint mRemoveColotPaint = new Paint();
 	private final int mColor;
 
 	// ===========================================================
@@ -31,13 +32,21 @@ public class ColorKeyTextureSourceDecorator extends TextureSourceDecorator {
 	// ===========================================================
 
 	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final int pColor) {
+		this(pTextureSource, pColor, TOLERANCE_DEFAULT);
+	}
+
+	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final int pColor, final int pTolerance) {
 		super(pTextureSource);
 		this.mColor = pColor;
-		this.mTransparentPaint.setXfermode(new AvoidXfermode(pColor, 0, Mode.TARGET));
-		this.mTransparentPaint.setColor(Color.TRANSPARENT);
+		this.mRemoveColotPaint.setXfermode(new AvoidXfermode(pColor, pTolerance, Mode.TARGET));
+		this.mRemoveColotPaint.setColor(Color.TRANSPARENT);
 	}
 
 	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final float pRed, final float pGreen, final float pBlue) {
+		this(pTextureSource, pRed, pGreen, pBlue, TOLERANCE_DEFAULT);
+	}
+
+	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final float pRed, final float pGreen, final float pBlue, final int pTolerance) {
 		this(pTextureSource, ColorUtils.RGBToColor(pRed, pGreen, pBlue));
 	}
 
@@ -55,20 +64,8 @@ public class ColorKeyTextureSourceDecorator extends TextureSourceDecorator {
 	// ===========================================================
 
 	@Override
-	public Bitmap onLoadBitmap() {
-		final Bitmap bitmap = super.onLoadBitmap();
-
-		final Bitmap out = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
-		final Canvas c = new Canvas(out);
-		c.drawBitmap(bitmap, 0, 0, this.mPaint);
-		c.drawRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, this.mTransparentPaint);
-
-		return out;
-	}
-
-	@Override
 	protected void onDecorateBitmap(final Canvas pCanvas) {
-
+		pCanvas.drawRect(0, 0, pCanvas.getWidth() - 1, pCanvas.getHeight() - 1, this.mRemoveColotPaint);
 	}
 
 	// ===========================================================

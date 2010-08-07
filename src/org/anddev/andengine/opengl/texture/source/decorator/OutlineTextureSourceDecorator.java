@@ -1,13 +1,17 @@
-package org.anddev.andengine.opengl.texture.source;
+package org.anddev.andengine.opengl.texture.source.decorator;
 
-import android.graphics.Bitmap;
+import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.util.ColorUtils;
+
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:43:29 - 06.08.2010
+ * @since 17:21:12 - 06.08.2010
  */
-public abstract class TextureSourceDecorator implements ITextureSource {
+public class OutlineTextureSourceDecorator extends TextureSourceDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,18 +20,29 @@ public abstract class TextureSourceDecorator implements ITextureSource {
 	// Fields
 	// ===========================================================
 
-	protected final ITextureSource mTextureSource;
+	private final Paint mPaint = new Paint();
+	private final int mColor;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TextureSourceDecorator(final ITextureSource pTextureSource) {
-		this.mTextureSource = pTextureSource;
+	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final int pColor) {
+		super(pTextureSource);
+		this.mColor = pColor;
+
+		this.mPaint.setStyle(Style.STROKE);
+		this.mPaint.setColor(pColor);
+	}
+
+	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final float pRed, final float pGreen, final float pBlue) {
+		this(pTextureSource, ColorUtils.RGBToColor(pRed, pGreen, pBlue));
 	}
 
 	@Override
-	public abstract TextureSourceDecorator clone();
+	public OutlineTextureSourceDecorator clone() {
+		return new OutlineTextureSourceDecorator(this.mTextureSource, this.mColor);
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -37,40 +52,14 @@ public abstract class TextureSourceDecorator implements ITextureSource {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onDecorateBitmap(final Canvas pCanvas);
-
 	@Override
-	public int getWidth() {
-		return this.mTextureSource.getWidth();
-	}
-
-	@Override
-	public int getHeight() {
-		return this.mTextureSource.getHeight();
-	}
-
-	@Override
-	public Bitmap onLoadBitmap() {
-		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mTextureSource.onLoadBitmap());
-
-		final Canvas canvas = new Canvas(bitmap);
-		this.onDecorateBitmap(canvas);
-		return bitmap;
+	protected void onDecorateBitmap(final Canvas pCanvas) {
+		pCanvas.drawRect(0, 0, pCanvas.getWidth() - 1, pCanvas.getHeight() - 1, this.mPaint);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private Bitmap ensureLoadedBitmapIsMutable(final Bitmap pBitmap) {
-		if(pBitmap.isMutable()) {
-			return pBitmap;
-		} else {
-			final Bitmap mutableBitmap = pBitmap.copy(pBitmap.getConfig(), true);
-			pBitmap.recycle();
-			return mutableBitmap;
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

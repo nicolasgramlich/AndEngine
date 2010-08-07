@@ -9,6 +9,7 @@ import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.sensor.orientation.IOrientationListener;
 import org.anddev.andengine.ui.IGameInterface;
+import org.anddev.andengine.util.Debug;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -111,11 +112,15 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	private void acquireWakeLock(final WakeLockOptions pWakeLockOptions) {
 		final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 		this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, "AndEngine");
-		this.mWakeLock.acquire();
+		try {
+			this.mWakeLock.acquire();
+		} catch (SecurityException e) {
+			Debug.e("You have to add\n\t<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>\nto your AndroidManifest.xml !", e);
+		}
 	}
 
 	private void releaseWakeLock() {
-		if(this.mWakeLock != null) {
+		if(this.mWakeLock != null && this.mWakeLock.isHeld()) {
 			this.mWakeLock.release();
 		}
 	}

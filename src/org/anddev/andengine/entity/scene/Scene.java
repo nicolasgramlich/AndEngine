@@ -15,7 +15,7 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.layer.DynamicCapacityLayer;
 import org.anddev.andengine.entity.layer.FixedCapacityLayer;
 import org.anddev.andengine.entity.layer.ILayer;
-import org.anddev.andengine.entity.layer.LayerSorter;
+import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.input.touch.TouchEvent;
@@ -44,7 +44,6 @@ public class Scene extends Entity {
 
 	private final int mLayerCount;
 	private final ILayer[] mLayers;
-	private final LayerSorter mLayerSorter = new LayerSorter();
 
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
@@ -124,7 +123,7 @@ public class Scene extends Entity {
 	}
 
 	/**
-	 * Similar to {@link Scene#setLayer(int, ILayer)} but returns the layer that would be overwritten.
+	 * Similar to {@link Scene#setLayer(int, ILayer)} but returns the {@link ILayer} that would be overwritten.
 	 * 
 	 * @param pLayerIndex
 	 * @param pLayer
@@ -137,8 +136,11 @@ public class Scene extends Entity {
 		return oldLayer;
 	}
 	
+	/**
+	 * Sorts the {@link ILayer} based on their ZIndex. Sort is stable.
+	 */
 	public void sortLayers() {
-		this.mLayerSorter.sort(this.mLayers);
+		ZIndexSorter.getInstance().sort(this.mLayers);
 	}
 
 	public boolean isBackgroundEnabled() {

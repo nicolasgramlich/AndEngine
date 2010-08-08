@@ -20,10 +20,19 @@ public abstract class Entity implements IEntity {
 
 	private boolean mVisible = true;
 	private boolean mIgnoreUpdate;
+	private int mZIndex = 0;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public Entity() {
+
+	}
+
+	public Entity(final int pZIndex) {
+		this.mZIndex = pZIndex;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -43,6 +52,16 @@ public abstract class Entity implements IEntity {
 
 	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
 		this.mIgnoreUpdate = pIgnoreUpdate;
+	}
+
+	@Override
+	public int getZIndex() {
+		return this.mZIndex;
+	}
+
+	@Override
+	public void setZIndex(final int pZIndex) {
+		this.mZIndex = pZIndex;
 	}
 
 	// ===========================================================

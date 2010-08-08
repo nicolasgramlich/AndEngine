@@ -1,14 +1,15 @@
-package org.anddev.andengine.entity;
+package org.anddev.andengine.opengl;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.opengl.IDrawable;
+import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.engine.camera.Camera;
 
 
 /**
  * @author Nicolas Gramlich
- * @since 11:20:25 - 08.03.2010
+ * @since 10:50:58 - 08.08.2010
  */
-public interface IEntity extends IDrawable, IUpdateHandler {
+public interface IDrawable {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -17,6 +18,5 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	// Methods
 	// ===========================================================
 
-	public int getZIndex();
-	public void setZIndex(final int pZIndex);
+	public void onDraw(final GL10 pGL, final Camera pCamera);
 }

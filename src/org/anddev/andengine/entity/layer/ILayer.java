@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.layer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
@@ -21,9 +22,30 @@ public interface ILayer extends IEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void setEntity(final int pEntityIndex, final IEntity pEntity);
 
-	public int getZIndex();
-	public void setZIndex(final int pZIndex);
+	public void swapEntities(final int pEntityIndexA, final int pEntityIndexB);
+
+	/**
+	 * Similar to {@link ILayer#setEntity(int, ILayer)} but returns the {@link IEntity} that would be overwritten.
+	 * 
+	 * @param pEntityIndex
+	 * @param pEntity
+	 * @return the layer that has been replaced.
+	 */
+	public IEntity replaceEntity(final int pEntityIndex, final IEntity pEntity);
+	
+	/**
+	 * Sorts the {@link IEntity}s based on their ZIndex. Sort is stable. 
+	 */
+	public void sortEntities();
+	
+	/**
+	 * Sorts the {@link IEntity}s based on the {@link Comparator} supplied. Sort is stable.
+	 * @param pEntityComparator
+	 */
+	public void sortEntities(final Comparator<IEntity> pEntityComparator);
 
 	public IEntity getEntity(final int pIndex);
 

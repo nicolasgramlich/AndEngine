@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.layer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -126,6 +127,40 @@ public class DynamicCapacityLayer extends BaseLayer {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void sortEntities() {
+		ZIndexSorter.getInstance().sort(this.mEntities);
+	}
+	
+	@Override
+	public void sortEntities(final Comparator<IEntity> pEntityComparator) {
+		ZIndexSorter.getInstance().sort(this.mEntities, pEntityComparator);
+	}
+
+	@Override
+	public IEntity replaceEntity(final int pEntityIndex, final IEntity pEntity) {
+		final ArrayList<IEntity> entities = this.mEntities;
+		final IEntity oldEntity = entities.set(pEntityIndex, pEntity);
+		return oldEntity;
+	}
+
+	@Override
+	public void setEntity(final int pEntityIndex, final IEntity pEntity) {
+		if(pEntityIndex == this.mEntities.size()) {
+			this.addEntity(pEntity);
+		} else {
+			this.mEntities.set(pEntityIndex, pEntity);
+		}
+	}
+
+	@Override
+	public void swapEntities(final int pEntityIndexA, final int pEntityIndexB) {
+		final ArrayList<IEntity> entities = this.mEntities;
+		final IEntity entityA = entities.get(pEntityIndexA);
+		final IEntity entityB = entities.set(pEntityIndexB, entityA);
+		entities.set(pEntityIndexA, entityB);
 	}
 
 	// ===========================================================

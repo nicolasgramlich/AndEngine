@@ -1,5 +1,7 @@
 package org.anddev.andengine.entity.layer;
 
+import java.util.Comparator;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
@@ -157,6 +159,53 @@ public class FixedCapacityLayer extends BaseLayer {
 			}
 		}
 		return -1;
+	}
+	
+	@Override
+	public void sortEntities() {
+		ZIndexSorter.getInstance().sort(this.mEntities, 0, this.mEntityCount);
+	}
+	
+	@Override
+	public void sortEntities(final Comparator<IEntity> pEntityComparator) {
+		ZIndexSorter.getInstance().sort(this.mEntities, 0, this.mEntityCount, pEntityComparator);
+	}
+
+	@Override
+	public IEntity replaceEntity(final int pEntityIndex, final IEntity pEntity) {
+		if(pEntityIndex > this.mEntityCount) {
+			throw new IndexOutOfBoundsException("pEntityIndex was bigger than the EntityCount.");
+		}
+		
+		final IEntity[] entities = this.mEntities;
+		final IEntity oldEntity = entities[pEntityIndex];
+		entities[pEntityIndex] = pEntity;
+		return oldEntity;
+	}
+
+	@Override
+	public void setEntity(final int pEntityIndex, final IEntity pEntity) {
+		if(pEntityIndex == this.mEntityCount) {
+			this.addEntity(pEntity);
+		} else if(pEntityIndex < this.mEntityCount) {
+			this.mEntities[pEntityIndex] = pEntity;
+		} else {
+			throw new IndexOutOfBoundsException("pEntityIndex was bigger than the EntityCount.");
+		}
+	}
+
+	@Override
+	public void swapEntities(final int pEntityIndexA, final int pEntityIndexB) {
+		if(pEntityIndexA > this.mEntityCount) {
+			throw new IndexOutOfBoundsException("pEntityIndexA was bigger than the EntityCount.");
+		}
+		if(pEntityIndexA > this.mEntityCount) {
+			throw new IndexOutOfBoundsException("pEntityIndexB was bigger than the EntityCount.");
+		}
+		final IEntity[] entities = this.mEntities;
+		final IEntity tmp = entities[pEntityIndexA];
+		entities[pEntityIndexA] = entities[pEntityIndexB];
+		entities[pEntityIndexB] = tmp;
 	}
 
 	// ===========================================================

@@ -19,7 +19,6 @@ public abstract class BaseLayer extends Entity implements ILayer{
 	// ===========================================================
 
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
-	private int mZIndex = 0;
 
 	// ===========================================================
 	// Constructors
@@ -30,23 +29,13 @@ public abstract class BaseLayer extends Entity implements ILayer{
 	}
 
 	public BaseLayer(final int pZIndex) {
-		this.mZIndex = pZIndex;
+		super(pZIndex);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	@Override
-	public int getZIndex() {
-		return this.mZIndex;
-	}
-
-	@Override
-	public void setZIndex(final int pZIndex) {
-		this.mZIndex = pZIndex;
-	}
-
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

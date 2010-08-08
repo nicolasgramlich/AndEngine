@@ -1,28 +1,43 @@
 package org.anddev.andengine.entity.layer;
 
 import java.util.Comparator;
+import java.util.List;
 
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.sort.InsertionSorter;
 
-public class LayerSorter extends InsertionSorter<ILayer> {
+public class ZIndexSorter extends InsertionSorter<IEntity> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static ZIndexSorter INSTANCE;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final Comparator<ILayer> mLayerComparator = new Comparator<ILayer>() {
+	private final Comparator<IEntity> mZIndexComparator = new Comparator<IEntity>() {
 		@Override
-		public int compare(final ILayer pLayerA, final ILayer pLayerB) {
-			return pLayerA.getZIndex() - pLayerB.getZIndex();
+		public int compare(final IEntity pEntityA, final IEntity pEntityB) {
+			return pEntityA.getZIndex() - pEntityB.getZIndex();
 		}
 	};
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private ZIndexSorter() {
+
+	}
+
+	public static ZIndexSorter getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new ZIndexSorter();
+		}
+		return INSTANCE;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -36,8 +51,20 @@ public class LayerSorter extends InsertionSorter<ILayer> {
 	// Methods
 	// ===========================================================
 
-	public void sort(final ILayer[] pLayers) {
-		this.sort(pLayers, this.mLayerComparator);
+	public void sort(final IEntity[] pEntities) {
+		this.sort(pEntities, this.mZIndexComparator);
+	}
+	
+	public void sort(final IEntity[] pEntities, final int pStart, final int pEnd) {
+		this.sort(pEntities, pStart, pEnd, this.mZIndexComparator);
+	}
+	
+	public void sort(final List<IEntity> pEntities) {
+		this.sort(pEntities, this.mZIndexComparator);
+	}
+	
+	public void sort(final List<IEntity> pEntities, final int pStart, final int pEnd) {
+		this.sort(pEntities, pStart, pEnd, this.mZIndexComparator);
 	}
 
 	// ===========================================================

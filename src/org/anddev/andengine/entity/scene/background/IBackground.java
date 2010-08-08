@@ -1,12 +1,13 @@
 package org.anddev.andengine.entity.scene.background;
 
-import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.anddev.andengine.opengl.IDrawable;
 
 /**
  * @author Nicolas Gramlich
  * @since 13:47:41 - 19.07.2010
  */
-public interface IBackground extends IEntity {
+public interface IBackground extends IDrawable, IUpdateHandler {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================

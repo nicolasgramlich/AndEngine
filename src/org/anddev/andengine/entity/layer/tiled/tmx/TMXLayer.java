@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.layer.tiled.tmx;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
@@ -49,6 +50,10 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	private final float[] mCullingVertices = new float[2 * RectangleVertexBuffer.VERTICES_PER_RECTANGLE];
 
+	private int mTilesAdded;
+
+	private final int mGlobalTileIDsExpected;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -75,6 +80,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
+
+		this.mGlobalTileIDsExpected = this.mTileColumns * this.mTileRows;
 	}
 
 	// ===========================================================
@@ -221,53 +228,67 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// Methods
 	// ===========================================================
 
-	public void initializeTMXTiles(final String pDataString, final ITMXTilePropertiesListener pTMXTilePropertyListener) throws IOException, IllegalArgumentException {
-		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
-		final int tileWidth = this.mTMXTiledMap.getTileWidth();
-		final int tileHeight = this.mTMXTiledMap.getTileHeight();
+	void initializeTMXTileFromXML(final Attributes pAttributes, final ITMXTilePropertiesListener pTMXTilePropertyListener) {
+		this.addTileByGlobalTileID(SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_TILE_ATTRIBUTE_GID), pTMXTilePropertyListener);
+	}
 
-		final int tilesHorizontal = this.mTileColumns;
-		final int tilesVertical = this.mTileRows;
-
-		final TMXTile[][] tmxTiles = this.mTMXTiles;
-
-		final int globalTileIDsExpected = tilesHorizontal * tilesVertical;
-
+	void initializeTMXTilesFromDataString(final String pDataString, final String pDataEncoding, final String pDataCompression, final ITMXTilePropertiesListener pTMXTilePropertyListener) throws IOException, IllegalArgumentException {
 		DataInputStream dataIn = null;
 		try{
-			dataIn = new DataInputStream(new GZIPInputStream(new Base64InputStream(new ByteArrayInputStream(pDataString.getBytes("UTF-8")), Base64.DEFAULT)));
+			InputStream in = new ByteArrayInputStream(pDataString.getBytes("UTF-8"));
 
-			int globalTileIDsRead = 0;
-			while(globalTileIDsRead < globalTileIDsExpected) {
-				final int globalTileID = this.readGlobalTileID(dataIn);
-
-				final int column = globalTileIDsRead % tilesHorizontal;
-				final int row = globalTileIDsRead / tilesHorizontal;
-
-				final TextureRegion tmxTileTextureRegion;
-				if(globalTileID == 0) {
-					tmxTileTextureRegion = null;
+			/* Wrap decoding Streams if neccessary. */
+			if(pDataEncoding != null && pDataEncoding.equals(TAG_DATA_ATTRIBUTE_ENCODING_VALUE_BASE64)) {
+				in = new Base64InputStream(in, Base64.DEFAULT);
+			}
+			if(pDataCompression != null){
+				if(pDataCompression.equals(TAG_DATA_ATTRIBUTE_COMPRESSION_VALUE_GZIP)) {
+					in = new GZIPInputStream(in);
 				} else {
-					tmxTileTextureRegion = tmxTiledMap.getTextureRegionFromGlobalTileID(globalTileID);
+					throw new IllegalArgumentException("Supplied compression '" + pDataCompression + "' is not supported yet.");
 				}
-				final TMXTile tmxTile = new TMXTile(globalTileID, row, column, tileWidth, tileHeight, tmxTileTextureRegion);
-				tmxTiles[row][column] = tmxTile;
+			}
+			dataIn = new DataInputStream(in);
 
-				if(globalTileID != 0) {
-					/* Notify the ITMXTilePropertiesListener if it exists. */
-					if(pTMXTilePropertyListener != null) {
-						final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(globalTileID);
-						if(tmxTileProperties != null) {
-							pTMXTilePropertyListener.onTMXTileWithPropertiesCreated(tmxTiledMap, this, tmxTile, tmxTileProperties);
-						}
-					}
-				}
-
-				globalTileIDsRead++;
+			while(this.mTilesAdded < this.mGlobalTileIDsExpected) {
+				final int globalTileID = this.readGlobalTileID(dataIn);
+				this.addTileByGlobalTileID(globalTileID, pTMXTilePropertyListener);
 			}
 		} finally {
 			StreamUtils.closeStream(dataIn);
 		}
+	}
+
+	private void addTileByGlobalTileID(final int pGlobalTileID, final ITMXTilePropertiesListener pTMXTilePropertyListener) {
+		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
+
+		final int tilesHorizontal = this.mTileColumns;
+
+		final int column = this.mTilesAdded % tilesHorizontal;
+		final int row = this.mTilesAdded / tilesHorizontal;
+
+		final TMXTile[][] tmxTiles = this.mTMXTiles;
+
+		final TextureRegion tmxTileTextureRegion;
+		if(pGlobalTileID == 0) {
+			tmxTileTextureRegion = null;
+		} else {
+			tmxTileTextureRegion = tmxTiledMap.getTextureRegionFromGlobalTileID(pGlobalTileID);
+		}
+		final TMXTile tmxTile = new TMXTile(pGlobalTileID, row, column, this.mTMXTiledMap.getTileWidth(), this.mTMXTiledMap.getTileHeight(), tmxTileTextureRegion);
+		tmxTiles[row][column] = tmxTile;
+
+		if(pGlobalTileID != 0) {
+			/* Notify the ITMXTilePropertiesListener if it exists. */
+			if(pTMXTilePropertyListener != null) {
+				final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(pGlobalTileID);
+				if(tmxTileProperties != null) {
+					pTMXTilePropertyListener.onTMXTileWithPropertiesCreated(tmxTiledMap, this, tmxTile, tmxTileProperties);
+				}
+			}
+		}
+
+		this.mTilesAdded++;
 	}
 
 	private int readGlobalTileID(final DataInputStream pDataIn) throws IOException {

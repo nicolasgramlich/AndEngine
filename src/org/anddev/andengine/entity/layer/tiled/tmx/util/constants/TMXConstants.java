@@ -33,6 +33,7 @@ public interface TMXConstants {
 
 	public static final String TAG_TILE = "tile";
 	public static final String TAG_TILE_ATTRIBUTE_ID = "id";
+	public static final String TAG_TILE_ATTRIBUTE_GID = "gid";
 
 	public static final String TAG_PROPERTIES = "properties";
 
@@ -50,6 +51,7 @@ public interface TMXConstants {
 	public static final String TAG_DATA_ATTRIBUTE_ENCODING_VALUE_BASE64 = "base64";
 	public static final String TAG_DATA_ATTRIBUTE_COMPRESSION = "compression";
 	public static final String TAG_DATA_ATTRIBUTE_COMPRESSION_VALUE_GZIP = "gzip";
+	public static final String TAG_DATA_ATTRIBUTE_COMPRESSION_VALUE_ZLIB = "zlib";
 
 
 	public static final String TAG_OBJECTGROUP = "objectgroup";

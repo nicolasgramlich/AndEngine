@@ -39,10 +39,12 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private int mLastTileSetTileID;
 
 	private final StringBuilder mStringBuilder = new StringBuilder();
+	
+	private String mDataEncoding;
+	private String mDataCompression;
 
 	@SuppressWarnings("unused")
 	private boolean mInMap;
-	@SuppressWarnings("unused")
 	private boolean mInTileset;
 	@SuppressWarnings("unused")
 	private boolean mInImage;
@@ -53,7 +55,6 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private boolean mInProperty;
 	@SuppressWarnings("unused")
 	private boolean mInLayer;
-	@SuppressWarnings("unused")
 	private boolean mInData;
 	@SuppressWarnings("unused")
 	private boolean mInObjectGroup;
@@ -96,7 +97,12 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			tmxTileSets.get(tmxTileSets.size() - 1).setImageSource(this.mContext, this.mTextureManager, pAttributes);
 		} else if(pLocalName.equals(TAG_TILE)) {
 			this.mInTile = true;
-			this.mLastTileSetTileID = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_TILE_ATTRIBUTE_ID);
+			if(this.mInTileset) {
+				this.mLastTileSetTileID = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_TILE_ATTRIBUTE_ID);
+			} else if(this.mInData) {
+				final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
+				tmxLayers.get(tmxLayers.size() - 1).initializeTMXTileFromXML(pAttributes, this.mTMXTilePropertyListener);
+			}
 		} else if(pLocalName.equals(TAG_PROPERTIES)) {
 			this.mInProperties = true;
 		} else if(pLocalName.equals(TAG_PROPERTY)) {
@@ -116,6 +122,8 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			this.mTMXTiledMap.addTMXLayer(new TMXLayer(this.mTMXTiledMap, pAttributes));
 		} else if(pLocalName.equals(TAG_DATA)){
 			this.mInData = true;
+			this.mDataEncoding = pAttributes.getValue("", TAG_DATA_ATTRIBUTE_ENCODING);
+			this.mDataCompression = pAttributes.getValue("", TAG_DATA_ATTRIBUTE_COMPRESSION);
 		} else if(pLocalName.equals(TAG_OBJECTGROUP)){
 			this.mInObjectGroup = true;
 			this.mTMXTiledMap.addTMXObjectGroup(new TMXObjectGroup(pAttributes));
@@ -150,11 +158,16 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 		} else if(pLocalName.equals(TAG_LAYER)){
 			this.mInLayer = false;
 		} else if(pLocalName.equals(TAG_DATA)){
-			final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
-			try {
-				tmxLayers.get(tmxLayers.size() - 1).initializeTMXTiles(this.mStringBuilder.toString().trim(), this.mTMXTilePropertyListener);
-			} catch (final IOException e) {
-				Debug.e(e);
+			final boolean binarySaved = this.mDataCompression != null && this.mDataEncoding != null;
+			if(binarySaved) {
+				final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
+				try {
+					tmxLayers.get(tmxLayers.size() - 1).initializeTMXTilesFromDataString(this.mStringBuilder.toString().trim(), this.mDataEncoding, this.mDataCompression, this.mTMXTilePropertyListener);
+				} catch (final IOException e) {
+					Debug.e(e);
+				}
+				this.mDataCompression = null;
+				this.mDataEncoding = null;
 			}
 			this.mInData = false;
 		} else if(pLocalName.equals(TAG_OBJECTGROUP)){

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.anddev.andengine.entity.layer.tiled.tmx.TMXLoader.ITMXTilePropertiesListener;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXParseException;
+import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TSXLoadException;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.util.Debug;
@@ -39,7 +40,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private int mLastTileSetTileID;
 
 	private final StringBuilder mStringBuilder = new StringBuilder();
-	
+
 	private String mDataEncoding;
 	private String mDataCompression;
 
@@ -90,7 +91,19 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			this.mTMXTiledMap = new TMXTiledMap(pAttributes);
 		} else if(pLocalName.equals(TAG_TILESET)){
 			this.mInTileset = true;
-			this.mTMXTiledMap.addTMXTileSet(new TMXTileSet(pAttributes, this.mTextureOptions));
+			final TMXTileSet tmxTileSet;
+			final String tsxTileSetSource = pAttributes.getValue("", TAG_TILESET_ATTRIBUTE_SOURCE);
+			if(tsxTileSetSource == null) {
+				tmxTileSet = new TMXTileSet(pAttributes, this.mTextureOptions);
+			} else {
+				try {
+					final int firstGlobalTileID = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_FIRSTGID, 1);
+					tmxTileSet = new TSXLoader(this.mContext, this.mTextureManager, this.mTextureOptions).loadFromAsset(this.mContext, firstGlobalTileID, tsxTileSetSource);
+				} catch (final TSXLoadException e) {
+					throw new TMXParseException("Failed to load TMXTileSet from source: " + tsxTileSetSource, e);
+				}
+			}
+			this.mTMXTiledMap.addTMXTileSet(tmxTileSet);
 		} else if(pLocalName.equals(TAG_IMAGE)){
 			this.mInImage = true;
 			final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();

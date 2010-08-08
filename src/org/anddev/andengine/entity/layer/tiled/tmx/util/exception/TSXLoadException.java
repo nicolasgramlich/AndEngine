@@ -1,17 +1,15 @@
 package org.anddev.andengine.entity.layer.tiled.tmx.util.exception;
 
-import org.xml.sax.SAXException;
-
 /**
  * @author Nicolas Gramlich
- * @since 00:10:02 - 28.07.2010
+ * @since 18:37:53 - 08.08.2010
  */
-public class TMXParseException extends SAXException {
+public class TSXLoadException extends TMXException {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static final long serialVersionUID = 2213964295487921492L;
+	private static final long serialVersionUID = 10055223972707703L;
 
 	// ===========================================================
 	// Fields
@@ -21,20 +19,20 @@ public class TMXParseException extends SAXException {
 	// Constructors
 	// ===========================================================
 
-	public TMXParseException() {
+	public TSXLoadException() {
 		super();
 	}
 
-	public TMXParseException(final String pDetailMessage) {
+	public TSXLoadException(final String pDetailMessage, final Throwable pThrowable) {
+		super(pDetailMessage, pThrowable);
+	}
+
+	public TSXLoadException(final String pDetailMessage) {
 		super(pDetailMessage);
 	}
 
-	public TMXParseException(final Exception pException) {
-		super(pException);
-	}
-
-	public TMXParseException(final String pMessage, final Exception pException) {
-		super(pMessage, pException);
+	public TSXLoadException(final Throwable pThrowable) {
+		super(pThrowable);
 	}
 
 	// ===========================================================

@@ -4,7 +4,7 @@ package org.anddev.andengine.entity.layer.tiled.tmx.util.exception;
  * @author Nicolas Gramlich
  * @since 00:10:02 - 28.07.2010
  */
-public class TMXLoadException extends Exception {
+public class TMXLoadException extends TMXException {
 	// ===========================================================
 	// Constants
 	// ===========================================================

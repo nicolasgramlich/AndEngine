@@ -4,14 +4,14 @@ import org.xml.sax.SAXException;
 
 /**
  * @author Nicolas Gramlich
- * @since 00:10:02 - 28.07.2010
+ * @since 18:37:46 - 08.08.2010
  */
-public class TMXParseException extends SAXException {
+public class TSXParseException extends SAXException {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static final long serialVersionUID = 2213964295487921492L;
+	private static final long serialVersionUID = -7598783248970268198L;
 
 	// ===========================================================
 	// Fields
@@ -21,19 +21,19 @@ public class TMXParseException extends SAXException {
 	// Constructors
 	// ===========================================================
 
-	public TMXParseException() {
+	public TSXParseException() {
 		super();
 	}
 
-	public TMXParseException(final String pDetailMessage) {
+	public TSXParseException(final String pDetailMessage) {
 		super(pDetailMessage);
 	}
 
-	public TMXParseException(final Exception pException) {
+	public TSXParseException(final Exception pException) {
 		super(pException);
 	}
 
-	public TMXParseException(final String pMessage, final Exception pException) {
+	public TSXParseException(final String pMessage, final Exception pException) {
 		super(pMessage, pException);
 	}
 

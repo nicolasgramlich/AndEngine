@@ -53,7 +53,6 @@ public class Music extends BaseAudioEntity {
 	@Override
 	public void stop() {
 		this.mMediaPlayer.stop();
-		this.mMediaPlayer.seekTo(0);
 	}
 
 	@Override

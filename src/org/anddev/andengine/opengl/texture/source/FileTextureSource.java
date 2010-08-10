@@ -1,21 +1,23 @@
 package org.anddev.andengine.opengl.texture.source;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.Config;
 
 /**
+ * 
  * @author Nicolas Gramlich
- * @since 12:07:52 - 09.03.2010
+ * @since 16:39:22 - 10.08.2010
  */
-public class AssetTextureSource implements ITextureSource {
+public class FileTextureSource implements ITextureSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,26 +29,24 @@ public class AssetTextureSource implements ITextureSource {
 	private final int mWidth;
 	private final int mHeight;
 
-	private final String mAssetPath;
-	private final Context mContext;
+	private final File mFile;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public AssetTextureSource(final Context pContext, final String pAssetPath) {
-		this.mContext = pContext;
-		this.mAssetPath = pAssetPath;
+	public FileTextureSource(final File pFile) {
+		this.mFile = pFile;
 
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inJustDecodeBounds = true;
 		
 		InputStream in = null;
 		try {
-			in = pContext.getAssets().open(pAssetPath);
+			in = new FileInputStream(pFile);
 			BitmapFactory.decodeStream(in, null, decodeOptions);
 		} catch (final IOException e) {
-			Debug.e("Failed loading Bitmap in AssetTextureSource. AssetPath: " + pAssetPath, e);
+			Debug.e("Failed loading Bitmap in FileTextureSource. File: " + pFile, e);
 		} finally {
 			StreamUtils.closeStream(in);
 		}
@@ -55,16 +55,15 @@ public class AssetTextureSource implements ITextureSource {
 		this.mHeight = decodeOptions.outHeight;
 	}
 
-	AssetTextureSource(final Context pContext, final String pAssetPath, final int pWidth, final int pHeight) {
-		this.mContext = pContext;
-		this.mAssetPath = pAssetPath;
+	FileTextureSource(final File pFile, final int pWidth, final int pHeight) {
+		this.mFile = pFile;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 	}
 
 	@Override
-	public AssetTextureSource clone() {
-		return new AssetTextureSource(this.mContext, this.mAssetPath, this.mWidth, this.mHeight);
+	public FileTextureSource clone() {
+		return new FileTextureSource(this.mFile, this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================
@@ -87,15 +86,15 @@ public class AssetTextureSource implements ITextureSource {
 
 	@Override
 	public Bitmap onLoadBitmap() {
-		InputStream in = null; 
+		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+		decodeOptions.inPreferredConfig = Config.ARGB_8888;
+		
+		InputStream in = null;
 		try {
-			final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
-			decodeOptions.inPreferredConfig = Config.ARGB_8888;
-
-			in = this.mContext.getAssets().open(this.mAssetPath);
+			in = new FileInputStream(this.mFile);
 			return BitmapFactory.decodeStream(in, null, decodeOptions);
 		} catch (final IOException e) {
-			Debug.e("Failed loading Bitmap in AssetTextureSource. AssetPath: " + this.mAssetPath, e);
+			Debug.e("Failed loading Bitmap in FileTextureSource. File: " + this.mFile, e);
 			return null;
 		} finally {
 			StreamUtils.closeStream(in);
@@ -104,7 +103,7 @@ public class AssetTextureSource implements ITextureSource {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "(" + this.mAssetPath + ")";
+		return this.getClass().getSimpleName() + "(" + this.mFile + ")";
 	}
 
 	// ===========================================================

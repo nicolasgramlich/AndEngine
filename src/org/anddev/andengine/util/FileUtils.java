@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -40,16 +41,16 @@ public class FileUtils {
 	// ===========================================================
 
 	public static void copyToExternalStorage(final Context pContext, final int pSourceResourceID, final String pFilename) throws FileNotFoundException {
-		copyToExternalStorage(pContext, pContext.getResources().openRawResource(pSourceResourceID), pFilename);
+		FileUtils.copyToExternalStorage(pContext, pContext.getResources().openRawResource(pSourceResourceID), pFilename);
 	}
 
 	public static void copyToExternalStorage(final Context pContext, final String pSourceAssetPath, final String pFilename) throws IOException {
-		copyToExternalStorage(pContext, pContext.getAssets().open(pSourceAssetPath), pFilename);
+		FileUtils.copyToExternalStorage(pContext, pContext.getAssets().open(pSourceAssetPath), pFilename);
 	}
 
 	public static void copyToExternalStorage(final Context pContext, final InputStream pInputStream, final String pFilename) throws FileNotFoundException {
-		if (isExternalStorageWriteable()) {
-			final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pFilename);
+		if (FileUtils.isExternalStorageWriteable()) {
+			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
 			StreamUtils.copyAndClose(pInputStream, new FileOutputStream(absoluteFilePath));
 		} else {
 			throw new IllegalStateException("External Storage is not writeable.");
@@ -57,8 +58,8 @@ public class FileUtils {
 	}
 
 	public static boolean isFileExistingOnExternalStorage(final Context pContext, final String pFilename) {
-		if (isExternalStorageReadable()) {
-			final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pFilename);
+		if (FileUtils.isExternalStorageReadable()) {
+			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
 			return new File(absoluteFilePath).exists();
 		} else {
 			throw new IllegalStateException("External Storage is not readable.");
@@ -66,8 +67,8 @@ public class FileUtils {
 	}
 
 	public static boolean isDirectoryExistingOnExternalStorage(final Context pContext, final String pDirectory) {
-		if (isExternalStorageReadable()) {
-			final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pDirectory);
+		if (FileUtils.isExternalStorageReadable()) {
+			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pDirectory);
 			return new File(absoluteFilePath).exists();
 		} else {
 			throw new IllegalStateException("External Storage is not readable.");
@@ -75,12 +76,12 @@ public class FileUtils {
 	}
 
 	public static boolean ensureDirectoriesExistOnExternalStorage(final Context pContext, final String pDirectory) {
-		if(isDirectoryExistingOnExternalStorage(pContext, pDirectory)) {
+		if(FileUtils.isDirectoryExistingOnExternalStorage(pContext, pDirectory)) {
 			return true;
 		}
 
-		if (isExternalStorageWriteable()) {
-			final String absoluteDirectoryPath = getAbsolutePathOnExternalStorage(pContext, pDirectory);
+		if (FileUtils.isExternalStorageWriteable()) {
+			final String absoluteDirectoryPath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pDirectory);
 			return new File(absoluteDirectoryPath).mkdirs();
 		} else {
 			throw new IllegalStateException("External Storage is not writeable.");
@@ -88,8 +89,18 @@ public class FileUtils {
 	}
 
 	public static InputStream openOnExternalStorage(final Context pContext, final String pFilename) throws FileNotFoundException {
-		final String absoluteFilePath = getAbsolutePathOnExternalStorage(pContext, pFilename);
+		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
 		return new FileInputStream(absoluteFilePath);
+	}
+
+	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilename) throws FileNotFoundException {
+		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
+		return new File(absoluteFilePath).list();
+	}
+
+	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilename, final FilenameFilter pFilenameFilter) throws FileNotFoundException {
+		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
+		return new File(absoluteFilePath).list(pFilenameFilter);
 	}
 
 	public static String getAbsolutePathOnExternalStorage(final Context pContext, final String pFilename) {
@@ -129,7 +140,7 @@ public class FileUtils {
 			final String[] children = pFileOrDirectory.list();
 			final int childrenCount = children.length;
 			for(int i = 0; i < childrenCount; i++) {
-				final boolean success = deleteDirectory(new File(pFileOrDirectory, children[i]));
+				final boolean success = FileUtils.deleteDirectory(new File(pFileOrDirectory, children[i]));
 				if(!success) {
 					return false;
 				}

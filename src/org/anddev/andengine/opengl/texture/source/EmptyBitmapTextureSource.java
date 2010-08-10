@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.anddev.andengine.opengl.texture.source;
 
 import android.graphics.Bitmap;

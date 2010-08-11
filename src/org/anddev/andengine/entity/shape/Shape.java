@@ -64,6 +64,8 @@ public abstract class Shape extends Entity implements IShape {
 	private final ArrayList<IShapeModifier> mShapeModifiers = new ArrayList<IShapeModifier>();
 	private int mShapeModifierCount = 0;
 
+	private boolean mCullingEnabled = false;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -275,6 +277,10 @@ public abstract class Shape extends Entity implements IShape {
 		this.mRotationCenterY = pRotationCenterY;
 	}
 
+	public boolean isScaled() {
+		return this.mScaleX != 1 || this.mScaleY != 1;
+	}
+
 	@Override
 	public float getScaleX() {
 		return this.mScaleX;
@@ -342,6 +348,16 @@ public abstract class Shape extends Entity implements IShape {
 	public void setUpdatePhysics(final boolean pUpdatePhysicsSelf) {
 		this.mUpdatePhysics = pUpdatePhysicsSelf;
 	}
+	
+	@Override
+	public boolean isCullingEnabled() {
+		return this.mCullingEnabled;
+	}
+	
+	@Override
+	public void setCullingEnabled(final boolean pCullingEnabled) {
+		this.mCullingEnabled = pCullingEnabled;
+	}
 
 	@Override
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
@@ -386,6 +402,13 @@ public abstract class Shape extends Entity implements IShape {
 		return false;
 	}
 
+	/**
+	 * Will only be performed if {@link Shape#isCullingEnabled()} is true.
+	 * @param pCamera 
+	 * @return <code>true</code> when this object is visible by the {@link Camera}, <code>false</code> otherwise.
+	 */
+	protected abstract boolean isCulled(final Camera pCamera);
+
 	protected void onPositionChanged(){
 
 	}
@@ -425,17 +448,18 @@ public abstract class Shape extends Entity implements IShape {
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
-		// TODO Test if visibility checks increase or decrease performance.
-		this.onInitDraw(pGL);
-
-		pGL.glPushMatrix();
-
-		this.onApplyVertices(pGL);
-
-		this.onApplyTransformations(pGL);
-
-		this.drawVertices(pGL, pCamera);
-		pGL.glPopMatrix();
+		if(this.mCullingEnabled == false || this.isCulled(pCamera) == false) {
+			this.onInitDraw(pGL);
+	
+			pGL.glPushMatrix();
+	
+			this.onApplyVertices(pGL);
+	
+			this.onApplyTransformations(pGL);
+	
+			this.drawVertices(pGL, pCamera);
+			pGL.glPopMatrix();
+		}
 	}
 
 	protected void onInitDraw(final GL10 pGL) {

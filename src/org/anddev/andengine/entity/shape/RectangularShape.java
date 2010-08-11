@@ -105,6 +105,16 @@ public abstract class RectangularShape extends GLShape {
 			this.updateVertexBuffer();
 		}
 	}
+	
+	@Override
+	protected boolean isCulled(final Camera pCamera) {
+		final float x = this.mX;
+		final float y = this.mY;
+		return x > pCamera.getMaxX() 
+			|| y > pCamera.getMaxY()
+			|| x + this.getWidth() < pCamera.getMinX()
+			|| y + this.getHeight() < pCamera.getMinY();
+	}
 
 	@Override
 	protected void drawVertices(final GL10 pGL, final Camera pCamera) {

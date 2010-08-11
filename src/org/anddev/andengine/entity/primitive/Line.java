@@ -157,6 +157,11 @@ public class Line extends GLShape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	protected boolean isCulled(final Camera pCamera) {
+		return false; // TODO
+	}
 
 	@Override
 	protected void onInitDraw(final GL10 pGL) {

@@ -41,8 +41,8 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	// ===========================================================
 
 	public static boolean checkContains(final RectangularShape pRectangularShape, final float pX, final float pY) {
-		fillVertices(pRectangularShape, VERTICES_CONTAINS_TMP);
-		return checkContains(VERTICES_CONTAINS_TMP, 2 * RECTANGULARSHAPE_VERTEX_COUNT, pX, pY);
+		RectangularShapeCollisionChecker.fillVertices(pRectangularShape, VERTICES_CONTAINS_TMP);
+		return ShapeCollisionChecker.checkContains(VERTICES_CONTAINS_TMP, 2 * RECTANGULARSHAPE_VERTEX_COUNT, pX, pY);
 	}
 
 	public static boolean checkCollision(final RectangularShape pRectangularShapeA, final RectangularShape pRectangularShapeB) {
@@ -51,13 +51,14 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 			final float aTop = pRectangularShapeA.getY();
 			final float bLeft = pRectangularShapeB.getX();
 			final float bTop = pRectangularShapeB.getY();
-			return BaseCollisionChecker.checkAxisAlignedRectangleCollision(aLeft, aTop, aLeft + pRectangularShapeA.getWidth(), aTop + pRectangularShapeA.getHeight(), 
+			return BaseCollisionChecker.checkAxisAlignedRectangleCollision(aLeft, aTop, aLeft + pRectangularShapeA.getWidth(), aTop + pRectangularShapeA.getHeight(),
 																			bLeft, bTop, bLeft + pRectangularShapeB.getWidth(), bTop + pRectangularShapeB.getHeight());
-		}
-		fillVertices(pRectangularShapeA, VERTICES_COLLISION_TMP_A);
-		fillVertices(pRectangularShapeB, VERTICES_COLLISION_TMP_B);
+		} else {
+			RectangularShapeCollisionChecker.fillVertices(pRectangularShapeA, VERTICES_COLLISION_TMP_A);
+			RectangularShapeCollisionChecker.fillVertices(pRectangularShapeB, VERTICES_COLLISION_TMP_B);
 
-		return checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, 2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, VERTICES_COLLISION_TMP_B);
+			return ShapeCollisionChecker.checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, 2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, VERTICES_COLLISION_TMP_B);
+		}
 	}
 
 	public static void fillVertices(final RectangularShape pRectangularShape, final float[] pVertices) {

@@ -26,60 +26,64 @@ public interface IShape extends IEntity, ITouchArea {
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 
-	public abstract float getX();
-	public abstract float getY();
+	public float getX();
+	public float getY();
 
-	public abstract float getBaseX();
-	public abstract float getBaseY();
+	public float getBaseX();
+	public float getBaseY();
 
-	public abstract float[] getSceneCenterCoordinates();
+	public float[] getSceneCenterCoordinates();
 
-	public abstract void setBasePosition();
-	public abstract void setPosition(final IShape pOtherShape);
-	public abstract void setPosition(final float pX, final float pY);
+	public void setBasePosition();
+	public void setPosition(final IShape pOtherShape);
+	public void setPosition(final float pX, final float pY);
 
-	public abstract float getVelocityX();
-	public abstract float getVelocityY();
-	public abstract void setVelocityX(final float pVelocityX);
-	public abstract void setVelocityY(final float pVelocityY);
-	public abstract void setVelocity(final float pVelocity);
-	public abstract void setVelocity(final float pVelocityX, final float pVelocityY);
+	public float getVelocityX();
+	public float getVelocityY();
+	public void setVelocityX(final float pVelocityX);
+	public void setVelocityY(final float pVelocityY);
+	public void setVelocity(final float pVelocity);
+	public void setVelocity(final float pVelocityX, final float pVelocityY);
 
-	public abstract float getAccelerationX();
-	public abstract float getAccelerationY();
-	public abstract void setAccelerationX(final float pAccelerationX);
-	public abstract void setAccelerationY(final float pAccelerationY);
-	public abstract void setAcceleration(final float pAcceleration);
-	public abstract void setAcceleration(final float pAccelerationX, final float pAccelerationY);
-	public abstract void accelerate(final float pAccelerationX, final float pAccelerationY);
+	public float getAccelerationX();
+	public float getAccelerationY();
+	public void setAccelerationX(final float pAccelerationX);
+	public void setAccelerationY(final float pAccelerationY);
+	public void setAcceleration(final float pAcceleration);
+	public void setAcceleration(final float pAccelerationX, final float pAccelerationY);
+	public void accelerate(final float pAccelerationX, final float pAccelerationY);
 
-	public abstract float getRotation();
-	public abstract void setRotation(final float pRotation);
+	public float getRotation();
+	public void setRotation(final float pRotation);
 
-	public abstract float getAngularVelocity();
-	public abstract void setAngularVelocity(final float pAngularVelocity);
+	public float getAngularVelocity();
+	public void setAngularVelocity(final float pAngularVelocity);
 
-	public abstract float getRotationCenterX();
-	public abstract float getRotationCenterY();
-	public abstract void setRotationCenterX(final float pRotationCenterX);
-	public abstract void setRotationCenterY(final float pRotationCenterY);
-	public abstract void setRotationCenter(final float pRotationCenterX, final float pRotationCenterY);
+	public float getRotationCenterX();
+	public float getRotationCenterY();
+	public void setRotationCenterX(final float pRotationCenterX);
+	public void setRotationCenterY(final float pRotationCenterY);
+	public void setRotationCenter(final float pRotationCenterX, final float pRotationCenterY);
 
-	public abstract float getScaleX();
-	public abstract float getScaleY();
-	public abstract void setScaleX(final float pScaleX);
-	public abstract void setScaleY(final float pScaleY);
-	public abstract void setScale(final float pScale);
-	public abstract void setScale(final float pScaleX, final float pScaleY);
+	public boolean isScaled();
+	public float getScaleX();
+	public float getScaleY();
+	public void setScaleX(final float pScaleX);
+	public void setScaleY(final float pScaleY);
+	public void setScale(final float pScale);
+	public void setScale(final float pScaleX, final float pScaleY);
 
-	public abstract float getScaleCenterX();
-	public abstract float getScaleCenterY();
-	public abstract void setScaleCenterX(final float pScaleCenterX);
-	public abstract void setScaleCenterY(final float pScaleCenterY);
-	public abstract void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY);
+	public float getScaleCenterX();
+	public float getScaleCenterY();
+	public void setScaleCenterX(final float pScaleCenterX);
+	public void setScaleCenterY(final float pScaleCenterY);
+	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY);
 
-	public abstract boolean isUpdatePhysics();
-	public abstract void setUpdatePhysics(final boolean pUpdatePhysics);
+	public boolean isUpdatePhysics();
+	public void setUpdatePhysics(final boolean pUpdatePhysics);
+
+	public boolean isCullingEnabled();
+	public void setCullingEnabled(final boolean pCullingEnabled);
 
 	public float getWidth();
 	public float getHeight();

@@ -94,6 +94,10 @@ public class Music extends BaseAudioEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void seekTo(final int pMilliseconds) {
+		this.mMediaPlayer.seekTo(pMilliseconds);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

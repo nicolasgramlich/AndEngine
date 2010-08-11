@@ -46,6 +46,14 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	}
 
 	public static boolean checkCollision(final RectangularShape pRectangularShapeA, final RectangularShape pRectangularShapeB) {
+		if(pRectangularShapeA.getRotation() == 0 && pRectangularShapeB.getRotation() == 0 && pRectangularShapeA.isScaled() == false && pRectangularShapeB.isScaled() == false) {
+			final float aLeft = pRectangularShapeA.getX();
+			final float aTop = pRectangularShapeA.getY();
+			final float bLeft = pRectangularShapeB.getX();
+			final float bTop = pRectangularShapeB.getY();
+			return BaseCollisionChecker.checkAxisAlignedRectangleCollision(aLeft, aTop, aLeft + pRectangularShapeA.getWidth(), aTop + pRectangularShapeA.getHeight(), 
+																			bLeft, bTop, bLeft + pRectangularShapeB.getWidth(), bTop + pRectangularShapeB.getHeight());
+		}
 		fillVertices(pRectangularShapeA, VERTICES_COLLISION_TMP_A);
 		fillVertices(pRectangularShapeB, VERTICES_COLLISION_TMP_B);
 

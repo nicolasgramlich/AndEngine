@@ -1,9 +1,10 @@
 package org.anddev.andengine.opengl.texture.source.packing;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.PackableTexture;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
@@ -44,16 +45,22 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@SuppressWarnings("deprecation")
 	@Override
-	public void pack(final Texture pTexture, final ITextureSource[] pTextureSources) {
-		Arrays.sort(pTextureSources, TEXTURESOURCE_COMPARATOR);
+	public void pack(final PackableTexture pPackableTexture, final ArrayList<ITextureSource> pTextureSources) throws IllegalArgumentException {
+		Collections.sort(pTextureSources, TEXTURESOURCE_COMPARATOR);
 
-		final Node root = new Node(new Rect(0, 0, pTexture.getWidth(), pTexture.getHeight()));
+		final Node root = new Node(new Rect(0, 0, pPackableTexture.getWidth(), pPackableTexture.getHeight()));
 
-		final int textureSourceCount = pTextureSources.length;
+		final int textureSourceCount = pTextureSources.size();
 
 		for(int i = 0; i < textureSourceCount; i++) {
-			root.insert(pTextureSources[i]);
+			final ITextureSource textureSource = pTextureSources.get(i);
+			final Node inserted = root.insert(textureSource);
+			if(inserted == null) {
+				throw new IllegalArgumentException();
+			}
+			pPackableTexture.addTextureSource(textureSource, inserted.mRect.mLeft, inserted.mRect.mTop);
 		}
 	}
 
@@ -66,7 +73,6 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 	// ===========================================================
 
 	static class Rect{
-
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -76,7 +82,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 		// ===========================================================
 
 		private final int mLeft;
-		private final int mRight;
+		private final int mTop;
 		private final int mWidth;
 		private final int mHeight;
 
@@ -86,7 +92,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 
 		public Rect(final int pLeft, final int pTop, final int pWidth, final int pHeight) {
 			this.mLeft = pLeft;
-			this.mRight = pTop;
+			this.mTop = pTop;
 			this.mWidth = pWidth;
 			this.mHeight = pHeight;
 		}
@@ -108,7 +114,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 		}
 
 		public int getTop() {
-			return this.mRight;
+			return this.mTop;
 		}
 
 		public int getRight() {
@@ -116,7 +122,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 		}
 
 		public int getBottom() {
-			return this.mRight + this.mHeight;
+			return this.mTop + this.mHeight;
 		}
 
 		// ===========================================================
@@ -125,7 +131,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 
 		@Override
 		public String toString() {
-			return "@: " + this.mLeft + "/" + this.mRight + " * " + this.mWidth + "x" + this.mHeight;
+			return "@: " + this.mLeft + "/" + this.mTop + " * " + this.mWidth + "x" + this.mHeight;
 		}
 
 		// ===========================================================

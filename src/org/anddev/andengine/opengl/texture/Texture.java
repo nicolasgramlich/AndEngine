@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
-import org.anddev.andengine.opengl.texture.source.packing.ITextureSourcePackingAlgorithm;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
@@ -39,7 +38,7 @@ public class Texture {
 
 	private final ITextureStateListener mTextureStateListener;
 
-	private boolean mUpdateOnHardwareNeeded = false;
+	protected boolean mUpdateOnHardwareNeeded = false;
 
 	// ===========================================================
 	// Constructors
@@ -129,17 +128,6 @@ public class Texture {
 		this.mUpdateOnHardwareNeeded = true;
 	}
 	
-	/**
-	 * May draw over already added {@link ITextureSource}s.
-	 * 
-	 * @param pTextureSourcePackingAlgorithm the {@link ITextureSourcePackingAlgorithm} to use for packing the {@link ITextureSource} into this {@link Texture}.
-	 * @param pTextureSources
-	 */
-	public void addTextureSources(final ITextureSourcePackingAlgorithm pTextureSourcePackingAlgorithm, final ITextureSource ... pTextureSources) {
-		pTextureSourcePackingAlgorithm.pack(this, pTextureSources);
-		this.mUpdateOnHardwareNeeded = true;
-	}
-
 	public void removeTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
 		for(int i = textureSources.size() - 1; i >= 0; i--) {

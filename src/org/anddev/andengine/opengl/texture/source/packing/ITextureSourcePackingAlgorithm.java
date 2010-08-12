@@ -1,6 +1,8 @@
 package org.anddev.andengine.opengl.texture.source.packing;
 
-import org.anddev.andengine.opengl.texture.Texture;
+import java.util.ArrayList;
+
+import org.anddev.andengine.opengl.texture.PackableTexture;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
@@ -16,5 +18,42 @@ public interface ITextureSourcePackingAlgorithm {
 	// Methods
 	// ===========================================================
 
-	public void pack(final Texture pTexture, final ITextureSource[] pTextureSources);
+	public void pack(final PackableTexture pPackableTexture, final ArrayList<ITextureSource> pTextureSources) throws TextureSourcePackingException;
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+	
+	public static class TextureSourcePackingException extends Exception {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		private static final long serialVersionUID = 4700734424214372671L;
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
+
 }

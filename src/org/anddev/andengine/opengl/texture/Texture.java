@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.source.packing.ITextureSourcePackingAlgorithm;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
@@ -125,6 +126,17 @@ public class Texture {
 
 	public void addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTextureSources.add(new TextureSourceWithLocation(pTextureSource, pTexturePositionX, pTexturePositionY));
+		this.mUpdateOnHardwareNeeded = true;
+	}
+	
+	/**
+	 * May draw over already added {@link ITextureSource}s.
+	 * 
+	 * @param pTextureSourcePackingAlgorithm the {@link ITextureSourcePackingAlgorithm} to use for packing the {@link ITextureSource} into this {@link Texture}.
+	 * @param pTextureSources
+	 */
+	public void addTextureSources(final ITextureSourcePackingAlgorithm pTextureSourcePackingAlgorithm, final ITextureSource ... pTextureSources) {
+		pTextureSourcePackingAlgorithm.pack(this, pTextureSources);
 		this.mUpdateOnHardwareNeeded = true;
 	}
 
@@ -288,7 +300,7 @@ public class Texture {
 		}
 	}
 
-	public static class TextureSourceWithLocation implements ITextureSource {
+	private static class TextureSourceWithLocation implements ITextureSource {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -313,7 +325,7 @@ public class Texture {
 
 		@Override
 		public TextureSourceWithLocation clone() {
-			return new TextureSourceWithLocation(this.mTextureSource, this.mTexturePositionX, this.mTexturePositionY);
+			return null;
 		}
 
 		// ===========================================================

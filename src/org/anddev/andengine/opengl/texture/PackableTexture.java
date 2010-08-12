@@ -70,7 +70,7 @@ public class PackableTexture extends Texture {
 	// ===========================================================
 
 	/**
-	 * Most likely this is not the method you'd want to be using, as {@link ITextureSource} won't get packed through this.
+	 * Most likely this is not the method you'd want to be using, as the {@link ITextureSource} won't get packed through this.
 	 * Use {@link PackableTexture#addTextureSource(ITextureSource)} instead.
 	 */
 	@Deprecated

@@ -58,7 +58,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 			final ITextureSource textureSource = pTextureSources.get(i);
 			final Node inserted = root.insert(textureSource);
 			if(inserted == null) {
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Could not pack: " + textureSource.toString());
 			}
 			pPackableTexture.addTextureSource(textureSource, inserted.mRect.mLeft, inserted.mRect.mTop);
 		}
@@ -72,7 +72,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	static class Rect{
+	protected static class Rect{
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -143,7 +143,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 		// ===========================================================
 	}
 
-	static class Node {
+	protected static class Node {
 		// ===========================================================
 		// Constants
 		// ===========================================================

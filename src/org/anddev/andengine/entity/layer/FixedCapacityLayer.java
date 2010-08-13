@@ -79,11 +79,9 @@ public class FixedCapacityLayer extends BaseLayer {
 
 	@Override
 	public IEntity getEntity(final int pIndex) {
-		if(pIndex < 0 || pIndex > this.mEntityCount - 1) {
-			throw new IndexOutOfBoundsException();
-		} else {
-			return this.mEntities[pIndex];
-		}
+		this.checkIndex(pIndex);
+
+		return this.mEntities[pIndex];
 	}
 
 	@Override
@@ -110,20 +108,21 @@ public class FixedCapacityLayer extends BaseLayer {
 
 	@Override
 	public IEntity removeEntity(final int pIndex) {
-		if(pIndex == -1) {
-			return null;
+		this.checkIndex(pIndex);
+
+		final IEntity[] entities = this.mEntities;
+		final IEntity out = entities[pIndex];
+		
+		final int lastIndex = this.mEntityCount - 1;
+		if(pIndex == lastIndex) {
+			this.mEntities[lastIndex] = null;
 		} else {
-			final IEntity[] entities = this.mEntities;
-			final IEntity out = entities[pIndex];
-			if(pIndex == this.mEntityCount - 1) {
-				this.mEntities[this.mEntityCount--] = null;
-			} else {
-				entities[pIndex] = entities[this.mEntityCount - 1];
-				this.mEntityCount--;
-				entities[this.mEntityCount] = null;
-			}
-			return out;
+			entities[pIndex] = entities[lastIndex];
+			entities[this.mEntityCount] = null;
 		}
+		this.mEntityCount = lastIndex;
+		
+		return out;
 	}
 
 	@Override
@@ -160,37 +159,35 @@ public class FixedCapacityLayer extends BaseLayer {
 		}
 		return -1;
 	}
-	
+
 	@Override
 	public void sortEntities() {
 		ZIndexSorter.getInstance().sort(this.mEntities, 0, this.mEntityCount);
 	}
-	
+
 	@Override
 	public void sortEntities(final Comparator<IEntity> pEntityComparator) {
 		ZIndexSorter.getInstance().sort(this.mEntities, 0, this.mEntityCount, pEntityComparator);
 	}
 
 	@Override
-	public IEntity replaceEntity(final int pEntityIndex, final IEntity pEntity) {
-		if(pEntityIndex > this.mEntityCount) {
-			throw new IndexOutOfBoundsException("pEntityIndex was bigger than the EntityCount.");
-		}
-		
+	public IEntity replaceEntity(final int pIndex, final IEntity pEntity) {
+		this.checkIndex(pIndex);
+
 		final IEntity[] entities = this.mEntities;
-		final IEntity oldEntity = entities[pEntityIndex];
-		entities[pEntityIndex] = pEntity;
+		final IEntity oldEntity = entities[pIndex];
+		entities[pIndex] = pEntity;
 		return oldEntity;
 	}
 
 	@Override
-	public void setEntity(final int pEntityIndex, final IEntity pEntity) {
-		if(pEntityIndex == this.mEntityCount) {
+	public void setEntity(final int pIndex, final IEntity pEntity) {
+		this.checkIndex(pIndex);
+
+		if(pIndex == this.mEntityCount) {
 			this.addEntity(pEntity);
-		} else if(pEntityIndex < this.mEntityCount) {
-			this.mEntities[pEntityIndex] = pEntity;
-		} else {
-			throw new IndexOutOfBoundsException("pEntityIndex was bigger than the EntityCount.");
+		} else if(pIndex < this.mEntityCount) {
+			this.mEntities[pIndex] = pEntity;
 		}
 	}
 
@@ -211,6 +208,12 @@ public class FixedCapacityLayer extends BaseLayer {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private void checkIndex(final int pIndex) {
+		if(pIndex < 0 || pIndex >= this.mEntityCount) {
+			throw new IndexOutOfBoundsException("Invalid index: " + pIndex + " (Size: " + this.mEntityCount + " | Capacity: " + this.mCapacity + ")");
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

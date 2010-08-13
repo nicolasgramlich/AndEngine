@@ -1,15 +1,15 @@
-package org.anddev.andengine.opengl.texture.source.packing;
+package org.anddev.andengine.opengl.texture.builder;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.texture.PackableTexture;
+import org.anddev.andengine.opengl.texture.BuildableTexture;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
  * @author Nicolas Gramlich
  * @since 15:59:14 - 12.08.2010
  */
-public interface ITextureSourcePackingAlgorithm {
+public interface ITextureBuilder {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -18,7 +18,7 @@ public interface ITextureSourcePackingAlgorithm {
 	// Methods
 	// ===========================================================
 
-	public void pack(final PackableTexture pPackableTexture, final ArrayList<ITextureSource> pTextureSources) throws TextureSourcePackingException;
+	public void pack(final BuildableTexture pBuildableTexture, final ArrayList<ITextureSource> pTextureSources) throws TextureSourcePackingException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes

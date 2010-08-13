@@ -2,15 +2,15 @@ package org.anddev.andengine.opengl.texture;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.opengl.texture.builder.ITextureBuilder;
+import org.anddev.andengine.opengl.texture.builder.ITextureBuilder.TextureSourcePackingException;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
-import org.anddev.andengine.opengl.texture.source.packing.ITextureSourcePackingAlgorithm;
-import org.anddev.andengine.opengl.texture.source.packing.ITextureSourcePackingAlgorithm.TextureSourcePackingException;
 
 /**
  * @author Nicolas Gramlich
  * @since 21:26:38 - 12.08.2010
  */
-public class PackableTexture extends Texture {
+public class BuildableTexture extends Texture {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,7 +19,7 @@ public class PackableTexture extends Texture {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<ITextureSource> mTextureSourcesToPack = new ArrayList<ITextureSource>();
+	private final ArrayList<ITextureSource> mTextureSourcesToPlace = new ArrayList<ITextureSource>();
 
 	// ===========================================================
 	// Constructors
@@ -29,16 +29,16 @@ public class PackableTexture extends Texture {
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 */
-	public PackableTexture(final int pWidth, final int pHeight) {
+	public BuildableTexture(final int pWidth, final int pHeight) {
 		super(pWidth, pHeight, TextureOptions.DEFAULT, null);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pTextureStateListener to be informed when this {@link PackableTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 * @param pTextureStateListener to be informed when this {@link BuildableTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public PackableTexture(final int pWidth, final int pHeight, final ITextureStateListener pTextureStateListener) {
+	public BuildableTexture(final int pWidth, final int pHeight, final ITextureStateListener pTextureStateListener) {
 		super(pWidth, pHeight, TextureOptions.DEFAULT, pTextureStateListener);
 	}
 
@@ -47,7 +47,7 @@ public class PackableTexture extends Texture {
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 */
-	public PackableTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) throws IllegalArgumentException {
+	public BuildableTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) throws IllegalArgumentException {
 		super(pWidth, pHeight, pTextureOptions, null);
 	}
 
@@ -55,9 +55,9 @@ public class PackableTexture extends Texture {
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pTextureOptions the (quality) settings of the Texture.
-	 * @param pTextureStateListener to be informed when this {@link PackableTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 * @param pTextureStateListener to be informed when this {@link BuildableTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public PackableTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+	public BuildableTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
 		super(pWidth, pHeight, pTextureOptions, pTextureStateListener);
 	}
 
@@ -71,7 +71,7 @@ public class PackableTexture extends Texture {
 
 	/**
 	 * Most likely this is not the method you'd want to be using, as the {@link ITextureSource} won't get packed through this.
-	 * Use {@link PackableTexture#addTextureSource(ITextureSource)} instead.
+	 * Use {@link BuildableTexture#addTextureSource(ITextureSource)} instead.
 	 */
 	@Deprecated
 	public void addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
@@ -81,7 +81,7 @@ public class PackableTexture extends Texture {
 	@Override
 	public void clearTextureSources() {
 		super.clearTextureSources();
-		this.mTextureSourcesToPack.clear();
+		this.mTextureSourcesToPlace.clear();
 	}
 
 	// ===========================================================
@@ -89,19 +89,19 @@ public class PackableTexture extends Texture {
 	// ===========================================================
 	
 	/**
-	 * When all {@link ITextureSource}s are added you have to call {@link PackableTexture#pack(ITextureSourcePackingAlgorithm)}.
+	 * When all {@link ITextureSource}s are added you have to call {@link BuildableTexture#build(ITextureBuilder)}.
 	 * @param pTextureSource to be added.
 	 */
 	public void addTextureSource(final ITextureSource pTextureSource) {
-		this.mTextureSourcesToPack.add(pTextureSource);
+		this.mTextureSourcesToPlace.add(pTextureSource);
 	}
 	
 	/**
-	 * Removes a {@link ITextureSource} before {@link PackableTexture#pack(ITextureSourcePackingAlgorithm)} is called.
+	 * Removes a {@link ITextureSource} before {@link BuildableTexture#build(ITextureBuilder)} is called.
 	 * @param pTextureSource to be removed.
 	 */
 	public void removeTextureSource(final ITextureSource pTextureSource) {
-		final ArrayList<ITextureSource> textureSources = this.mTextureSourcesToPack;
+		final ArrayList<ITextureSource> textureSources = this.mTextureSourcesToPlace;
 		for(int i = textureSources.size() - 1; i >= 0; i--) {
 			final ITextureSource textureSource = textureSources.get(i);
 			if(textureSource == pTextureSource) {
@@ -115,12 +115,12 @@ public class PackableTexture extends Texture {
 	/**
 	 * May draw over already added {@link ITextureSource}s.
 	 * 
-	 * @param pTextureSourcePackingAlgorithm the {@link ITextureSourcePackingAlgorithm} to use for packing the {@link ITextureSource} in this {@link PackableTexture}.
-	 * @throws TextureSourcePackingException i.e. when the {@link ITextureSource}s didn't fit into this {@link PackableTexture}.
+	 * @param pTextureSourcePackingAlgorithm the {@link ITextureBuilder} to use for packing the {@link ITextureSource} in this {@link BuildableTexture}.
+	 * @throws TextureSourcePackingException i.e. when the {@link ITextureSource}s didn't fit into this {@link BuildableTexture}.
 	 */
-	public void pack(final ITextureSourcePackingAlgorithm pTextureSourcePackingAlgorithm) throws TextureSourcePackingException {
-		pTextureSourcePackingAlgorithm.pack(this, this.mTextureSourcesToPack);
-		this.mTextureSourcesToPack.clear();
+	public void build(final ITextureBuilder pTextureSourcePackingAlgorithm) throws TextureSourcePackingException {
+		pTextureSourcePackingAlgorithm.pack(this, this.mTextureSourcesToPlace);
+		this.mTextureSourcesToPlace.clear();
 		this.mUpdateOnHardwareNeeded = true;
 	}
 

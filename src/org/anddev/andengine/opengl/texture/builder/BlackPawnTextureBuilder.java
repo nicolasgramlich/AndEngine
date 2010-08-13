@@ -1,10 +1,10 @@
-package org.anddev.andengine.opengl.texture.source.packing;
+package org.anddev.andengine.opengl.texture.builder;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.anddev.andengine.opengl.texture.PackableTexture;
+import org.anddev.andengine.opengl.texture.BuildableTexture;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
@@ -12,7 +12,7 @@ import org.anddev.andengine.opengl.texture.source.ITextureSource;
  * @since 16:03:01 - 12.08.2010
  * @see http://www.blackpawn.com/texts/lightmaps/default.html
  */
-public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePackingAlgorithm {
+public class BlackPawnTextureBuilder implements ITextureBuilder {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -47,10 +47,10 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void pack(final PackableTexture pPackableTexture, final ArrayList<ITextureSource> pTextureSources) throws IllegalArgumentException {
+	public void pack(final BuildableTexture pBuildableTexture, final ArrayList<ITextureSource> pTextureSources) throws IllegalArgumentException {
 		Collections.sort(pTextureSources, TEXTURESOURCE_COMPARATOR);
 
-		final Node root = new Node(new Rect(0, 0, pPackableTexture.getWidth(), pPackableTexture.getHeight()));
+		final Node root = new Node(new Rect(0, 0, pBuildableTexture.getWidth(), pBuildableTexture.getHeight()));
 
 		final int textureSourceCount = pTextureSources.size();
 
@@ -60,7 +60,7 @@ public class BlackPawnTextureSourcePackingAlgorithm implements ITextureSourcePac
 			if(inserted == null) {
 				throw new IllegalArgumentException("Could not pack: " + textureSource.toString());
 			}
-			pPackableTexture.addTextureSource(textureSource, inserted.mRect.mLeft, inserted.mRect.mTop);
+			pBuildableTexture.addTextureSource(textureSource, inserted.mRect.mLeft, inserted.mRect.mTop);
 		}
 	}
 

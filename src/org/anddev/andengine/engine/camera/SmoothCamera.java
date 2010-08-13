@@ -14,9 +14,9 @@ public class SmoothCamera extends ZoomCamera {
 	// Fields
 	// ===========================================================
 
-	private final float mMaxVelocityX;
-	private final float mMaxVelocityY;
-	private final float mMaxZoomFactorChange;
+	private float mMaxVelocityX;
+	private float mMaxVelocityY;
+	private float mMaxZoomFactorChange;
 
 	private float mTargetCenterX;
 	private float mTargetCenterY;
@@ -52,6 +52,23 @@ public class SmoothCamera extends ZoomCamera {
 	@Override
 	public void setZoomFactor(final float pZoomFactor) {
 		this.mTargetZoomFactor = pZoomFactor;
+	}
+
+	public void setMaxVelocityX(final float pMaxVelocityX) {
+		this.mMaxVelocityX = pMaxVelocityX;
+	}
+
+	public void setMaxVelocityY(final float pMaxVelocityY) {
+		this.mMaxVelocityY = pMaxVelocityY;
+	}
+
+	public void setMaxVelocityX(final float pMaxVelocityX, final float pMaxVelocityY) {
+		this.mMaxVelocityX = pMaxVelocityX;
+		this.mMaxVelocityY = pMaxVelocityY;
+	}
+
+	public void setMaxZoomFactorChange(final float pMaxZoomFactorChange) {
+		this.mMaxZoomFactorChange = pMaxZoomFactorChange;
 	}
 
 	// ===========================================================

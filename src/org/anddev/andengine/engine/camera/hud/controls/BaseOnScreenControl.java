@@ -38,7 +38,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	private float mControlValueX;
 	private float mControlValueY;
 
-	private final OnScreenControlListener mOnScreenControlListener;
+	private final IOnScreenControlListener mOnScreenControlListener;
 
 	private int mActivePointerID = INVALID_POINTER_ID;
 
@@ -46,7 +46,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	// Constructors
 	// ===========================================================
 
-	public BaseOnScreenControl(final int pX, final int pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final OnScreenControlListener pOnScreenControlListener) {
+	public BaseOnScreenControl(final int pX, final int pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IOnScreenControlListener pOnScreenControlListener) {
 		this.setCamera(pCamera);
 
 		this.mOnScreenControlListener = pOnScreenControlListener;
@@ -89,6 +89,10 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 
 	public Sprite getControlKnob() {
 		return this.mControlKnob;
+	}
+	
+	public IOnScreenControlListener getOnScreenControlListener() {
+		return this.mOnScreenControlListener;
 	}
 
 	// ===========================================================
@@ -135,8 +139,8 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	private void updateControlKnob(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		final Sprite controlBase = this.mControlBase;
 
-		final float relativeX = MathUtils.bringToBounds(0, pTouchAreaLocalX, controlBase.getWidth()) / controlBase.getWidth() - 0.5f;
-		final float relativeY = MathUtils.bringToBounds(0, pTouchAreaLocalY, controlBase.getHeight()) / controlBase.getHeight() - 0.5f;
+		final float relativeX = MathUtils.bringToBounds(0, controlBase.getWidth(), pTouchAreaLocalX) / controlBase.getWidth() - 0.5f;
+		final float relativeY = MathUtils.bringToBounds(0, controlBase.getHeight(), pTouchAreaLocalY) / controlBase.getHeight() - 0.5f;
 
 		this.onUpdateControlKnob(relativeX, relativeY);
 	}
@@ -166,7 +170,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 			case MotionEvent.ACTION_DOWN:
 				if(this.mActivePointerID == INVALID_POINTER_ID) {
 					this.mActivePointerID = pointerID;
-					BaseOnScreenControl.this.updateControlKnob(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+					this.updateControlKnob(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 					return true;
 				}
 				break;
@@ -174,13 +178,13 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 			case MotionEvent.ACTION_CANCEL:
 				if(this.mActivePointerID == pointerID) {
 					this.mActivePointerID = INVALID_POINTER_ID;
-					BaseOnScreenControl.this.onHandleControlKnobReleased();
+					this.onHandleControlKnobReleased();
 					return true;
 				}
 				break;
 			default:
 				if(this.mActivePointerID == pointerID) {
-					BaseOnScreenControl.this.updateControlKnob(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+					this.updateControlKnob(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 					return true;
 				}
 				break;
@@ -192,7 +196,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface OnScreenControlListener {
+	public static interface IOnScreenControlListener {
 		// ===========================================================
 		// Constants
 		// ===========================================================

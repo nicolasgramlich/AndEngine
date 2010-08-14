@@ -19,13 +19,19 @@ public class TimerHandler implements IUpdateHandler {
 	private float mSecondsPassed;
 	private boolean mCallbackTriggered = false;
 	private final ITimerCallback mTimerCallback;
+	private final boolean mAutoReset;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public TimerHandler(final float pTimerSeconds, final ITimerCallback pTimerCallback) {
+		this(pTimerSeconds, false, pTimerCallback);
+	}
+
+	public TimerHandler(final float pTimerSeconds, final boolean pAutoReset, final ITimerCallback pTimerCallback) {
 		this.mTimerSeconds = pTimerSeconds;
+		this.mAutoReset = pAutoReset;
 		this.mTimerCallback = pTimerCallback;
 	}
 
@@ -39,11 +45,19 @@ public class TimerHandler implements IUpdateHandler {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		if(!this.mCallbackTriggered) {
+		if(this.mAutoReset) {
 			this.mSecondsPassed += pSecondsElapsed;
-			if(this.mSecondsPassed >= this.mTimerSeconds) {
-				this.mCallbackTriggered = true;
+			while(this.mSecondsPassed >= this.mTimerSeconds) {
+				this.mSecondsPassed -= this.mTimerSeconds;
 				this.mTimerCallback.onTimePassed(this);
+			}
+		} else {
+			if(!this.mCallbackTriggered) {
+				this.mSecondsPassed += pSecondsElapsed;
+				if(this.mSecondsPassed >= this.mTimerSeconds) {
+					this.mCallbackTriggered = true;
+					this.mTimerCallback.onTimePassed(this);
+				}
 			}
 		}
 	}

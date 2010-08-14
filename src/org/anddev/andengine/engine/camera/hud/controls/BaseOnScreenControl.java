@@ -75,7 +75,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 		final ILayer bottomLayer = this.getBottomLayer();
 		bottomLayer.addEntity(this.mControlBase);
 		bottomLayer.addEntity(this.mControlKnob);
-		
+
 		this.setTouchAreaBindingEnabled(true);
 	}
 
@@ -90,7 +90,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	public Sprite getControlKnob() {
 		return this.mControlKnob;
 	}
-	
+
 	public IOnScreenControlListener getOnScreenControlListener() {
 		return this.mOnScreenControlListener;
 	}

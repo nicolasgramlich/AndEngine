@@ -13,6 +13,7 @@ import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.util.MathUtils;
 
 import android.view.MotionEvent;
 
@@ -53,8 +54,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 		this.mControlBase = new Sprite(pX, pY, pControlBaseTextureRegion) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				BaseOnScreenControl.this.onHandleControlBaseTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-				return true;
+				return BaseOnScreenControl.this.onHandleControlBaseTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 			}
 		};
 
@@ -134,8 +134,8 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	private void updateControlKnob(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		final Sprite controlBase = this.mControlBase;
 
-		final float relativeX = pTouchAreaLocalX / controlBase.getWidth() - 0.5f;
-		final float relativeY = pTouchAreaLocalY / controlBase.getHeight() - 0.5f;
+		final float relativeX = MathUtils.bringToBounds(0, pTouchAreaLocalX, controlBase.getWidth()) / controlBase.getWidth() - 0.5f;
+		final float relativeY = MathUtils.bringToBounds(0, pTouchAreaLocalY, controlBase.getHeight()) / controlBase.getHeight() - 0.5f;
 
 		this.onUpdateControlKnob(relativeX, relativeY);
 	}
@@ -184,7 +184,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 				}
 				break;
 		}
-		return false;
+		return true;
 	}
 
 	// ===========================================================

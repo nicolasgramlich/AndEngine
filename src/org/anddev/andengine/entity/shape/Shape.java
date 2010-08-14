@@ -102,11 +102,19 @@ public abstract class Shape extends Entity implements IShape {
 		return this.mAlpha;
 	}
 
+	/**
+	 * @param pAlpha from <code>0.0f</code> (invisible) to <code>1.0f</code> (opaque)
+	 */
 	@Override
 	public void setAlpha(final float pAlpha) {
 		this.mAlpha = pAlpha;
 	}
 
+	/**
+	 * @param pRed from <code>0.0f</code> to <code>1.0f</code>
+	 * @param pGreen from <code>0.0f</code> to <code>1.0f</code>
+	 * @param pBlue from <code>0.0f</code> to <code>1.0f</code>
+	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
 		this.mRed = pRed;
@@ -114,6 +122,12 @@ public abstract class Shape extends Entity implements IShape {
 		this.mBlue = pBlue;
 	}
 
+	/**
+	 * @param pRed from <code>0.0f</code> to <code>1.0f</code>
+	 * @param pGreen from <code>0.0f</code> to <code>1.0f</code>
+	 * @param pBlue from <code>0.0f</code> to <code>1.0f</code>
+	 * @param pAlpha from <code>0.0f</code> (invisible) to <code>1.0f</code> (opaque)
+	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.mRed = pRed;

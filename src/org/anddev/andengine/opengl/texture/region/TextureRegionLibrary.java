@@ -15,11 +15,19 @@ public class TextureRegionLibrary {
 	// Fields
 	// ===========================================================
 	
-	private final SparseArray<TextureRegion> mTextureRegions = new SparseArray<TextureRegion>();
+	private final SparseArray<TextureRegion> mTextureRegions;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public TextureRegionLibrary() {
+		this.mTextureRegions = new SparseArray<TextureRegion>();
+	}
+	
+	public TextureRegionLibrary(final int pInitialCapacity) {
+		this.mTextureRegions = new SparseArray<TextureRegion>(pInitialCapacity);
+	}
 
 	// ===========================================================
 	// Getter & Setter

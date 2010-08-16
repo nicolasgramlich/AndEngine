@@ -2,30 +2,25 @@ package org.anddev.andengine.engine.camera.hud.controls;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.input.touch.detector.ClickDetector;
+import org.anddev.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.util.constants.TimeConstants;
-
-import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
  * @since 00:21:55 - 11.07.2010
  */
-public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeConstants {
+public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeConstants, IClickDetectorListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static final long ONCONTROLCLICK_MAXIMUM_MILLISECONDS_DEFAULT = 200;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private long mDownTimeMilliseconds = Long.MIN_VALUE;
-
-	private boolean mOnControlClickEnabled;
-	private long mOnControlClickMaximumMilliseconds = ONCONTROLCLICK_MAXIMUM_MILLISECONDS_DEFAULT;
+	
+	private final ClickDetector mClickDetector = new ClickDetector(this);
 
 	// ===========================================================
 	// Constructors
@@ -33,13 +28,12 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 
 	public AnalogOnScreenControl(final int pX, final int pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
 		super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pAnalogOnScreenControlListener);
-		this.mOnControlClickEnabled = false;
+		this.mClickDetector.setEnabled(false);
 	}
 
 	public AnalogOnScreenControl(final int pX, final int pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final long pOnControlClickMaximumMilliseconds, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
 		super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pAnalogOnScreenControlListener);
-		this.mOnControlClickMaximumMilliseconds = pOnControlClickMaximumMilliseconds;
-		this.mOnControlClickEnabled = true;
+		this.mClickDetector.setClickMaximumMilliseconds(pOnControlClickMaximumMilliseconds);
 	}
 
 	// ===========================================================
@@ -52,11 +46,11 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	}
 
 	public void setOnControlClickEnabled(final boolean pOnControlClickEnabled) {
-		this.mOnControlClickEnabled = pOnControlClickEnabled;
+		this.mClickDetector.setEnabled(pOnControlClickEnabled);
 	}
 
 	public void setOnControlClickMaximumMilliseconds(final long pOnControlClickMaximumMilliseconds) {
-		this.mOnControlClickMaximumMilliseconds = pOnControlClickMaximumMilliseconds;
+		this.mClickDetector.setClickMaximumMilliseconds(pOnControlClickMaximumMilliseconds);
 	}
 
 	// ===========================================================
@@ -64,23 +58,13 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	// ===========================================================
 
 	@Override
-	protected boolean onHandleControlBaseTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		if(this.mOnControlClickEnabled) {
-			switch(pSceneTouchEvent.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					this.mDownTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getDownTime();
-					break;
-				case MotionEvent.ACTION_UP:
-				case MotionEvent.ACTION_CANCEL:
-					final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
+	public void onClick(ClickDetector pClickDetector) {
+		
+	}
 
-					if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mOnControlClickMaximumMilliseconds) {
-						this.mDownTimeMilliseconds = Long.MIN_VALUE;
-						this.getOnScreenControlListener().onControlClick(this);
-					}
-					break;
-			}
-		}
+	@Override
+	protected boolean onHandleControlBaseTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+		this.mClickDetector.onTouchEvent(pSceneTouchEvent);
 		return super.onHandleControlBaseTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 	}
 

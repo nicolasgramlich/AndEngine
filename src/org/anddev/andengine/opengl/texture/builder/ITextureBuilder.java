@@ -3,7 +3,7 @@ package org.anddev.andengine.opengl.texture.builder;
 import java.util.ArrayList;
 
 import org.anddev.andengine.opengl.texture.BuildableTexture;
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.BuildableTexture.TextureSourceWithWithLocationCallback;
 
 /**
  * @author Nicolas Gramlich
@@ -18,7 +18,7 @@ public interface ITextureBuilder {
 	// Methods
 	// ===========================================================
 
-	public void pack(final BuildableTexture pBuildableTexture, final ArrayList<ITextureSource> pTextureSources) throws TextureSourcePackingException;
+	public void pack(final BuildableTexture pBuildableTexture, final ArrayList<TextureSourceWithWithLocationCallback> pTextureSourcesWithLocationCallback) throws TextureSourcePackingException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes

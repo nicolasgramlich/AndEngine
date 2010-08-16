@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import org.anddev.andengine.opengl.texture.BuildableTexture;
+import org.anddev.andengine.opengl.texture.BuildableTexture.TextureSourceWithWithLocationCallback;
+import org.anddev.andengine.opengl.texture.Texture.TextureSourceWithLocation;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
@@ -47,20 +49,22 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void pack(final BuildableTexture pBuildableTexture, final ArrayList<ITextureSource> pTextureSources) throws IllegalArgumentException {
-		Collections.sort(pTextureSources, TEXTURESOURCE_COMPARATOR);
+	public void pack(final BuildableTexture pBuildableTexture, final ArrayList<TextureSourceWithWithLocationCallback> pTextureSourcesWithLocationCallback) throws IllegalArgumentException {
+		Collections.sort(pTextureSourcesWithLocationCallback, TEXTURESOURCE_COMPARATOR);
 
 		final Node root = new Node(new Rect(0, 0, pBuildableTexture.getWidth(), pBuildableTexture.getHeight()));
 
-		final int textureSourceCount = pTextureSources.size();
+		final int textureSourceCount = pTextureSourcesWithLocationCallback.size();
 
 		for(int i = 0; i < textureSourceCount; i++) {
-			final ITextureSource textureSource = pTextureSources.get(i);
+			final TextureSourceWithWithLocationCallback textureSourceWithLocationCallback = pTextureSourcesWithLocationCallback.get(i);
+			final ITextureSource textureSource = textureSourceWithLocationCallback.getTextureSource();
 			final Node inserted = root.insert(textureSource);
 			if(inserted == null) {
 				throw new IllegalArgumentException("Could not pack: " + textureSource.toString());
 			}
-			pBuildableTexture.addTextureSource(textureSource, inserted.mRect.mLeft, inserted.mRect.mTop);
+			final TextureSourceWithLocation textureSourceWithLocation = pBuildableTexture.addTextureSource(textureSource, inserted.mRect.mLeft, inserted.mRect.mTop);
+			textureSourceWithLocationCallback.getCallback().onCallback(textureSourceWithLocation);
 		}
 	}
 

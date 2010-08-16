@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.anddev.andengine.opengl.texture.builder.ITextureBuilder;
 import org.anddev.andengine.opengl.texture.builder.ITextureBuilder.TextureSourcePackingException;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.util.Callback;
+
+import android.graphics.Bitmap;
 
 /**
  * @author Nicolas Gramlich
@@ -19,7 +22,7 @@ public class BuildableTexture extends Texture {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<ITextureSource> mTextureSourcesToPlace = new ArrayList<ITextureSource>();
+	private final ArrayList<TextureSourceWithWithLocationCallback> mTextureSourcesToPlace = new ArrayList<TextureSourceWithWithLocationCallback>();
 
 	// ===========================================================
 	// Constructors
@@ -74,8 +77,8 @@ public class BuildableTexture extends Texture {
 	 * Use {@link BuildableTexture#addTextureSource(ITextureSource)} instead.
 	 */
 	@Deprecated
-	public void addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
-		super.addTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
+	public TextureSourceWithLocation addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
+		return super.addTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
 	}
 	
 	@Override
@@ -91,9 +94,10 @@ public class BuildableTexture extends Texture {
 	/**
 	 * When all {@link ITextureSource}s are added you have to call {@link BuildableTexture#build(ITextureBuilder)}.
 	 * @param pTextureSource to be added.
+	 * @param pTextureRegion
 	 */
-	public void addTextureSource(final ITextureSource pTextureSource) {
-		this.mTextureSourcesToPlace.add(pTextureSource);
+	public void addTextureSource(final ITextureSource pTextureSource, final Callback<TextureSourceWithLocation> pCallback) {
+		this.mTextureSourcesToPlace.add(new TextureSourceWithWithLocationCallback(pTextureSource, pCallback));
 	}
 	
 	/**
@@ -101,10 +105,10 @@ public class BuildableTexture extends Texture {
 	 * @param pTextureSource to be removed.
 	 */
 	public void removeTextureSource(final ITextureSource pTextureSource) {
-		final ArrayList<ITextureSource> textureSources = this.mTextureSourcesToPlace;
+		final ArrayList<TextureSourceWithWithLocationCallback> textureSources = this.mTextureSourcesToPlace;
 		for(int i = textureSources.size() - 1; i >= 0; i--) {
-			final ITextureSource textureSource = textureSources.get(i);
-			if(textureSource == pTextureSource) {
+			final TextureSourceWithWithLocationCallback textureSource = textureSources.get(i);
+			if(textureSource.mTextureSource == pTextureSource) {
 				textureSources.remove(i);
 				this.mUpdateOnHardwareNeeded = true;
 				return;
@@ -127,4 +131,75 @@ public class BuildableTexture extends Texture {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	public static class TextureSourceWithWithLocationCallback implements ITextureSource {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		private final ITextureSource mTextureSource;
+		private final Callback<TextureSourceWithLocation> mCallback;
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public TextureSourceWithWithLocationCallback(final ITextureSource pTextureSource, final Callback<TextureSourceWithLocation> pCallback) {
+			this.mTextureSource = pTextureSource;
+			mCallback = pCallback;
+		}
+
+		@Override
+		public TextureSourceWithWithLocationCallback clone() {
+			return null;
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		public Callback<TextureSourceWithLocation> getCallback() {
+			return this.mCallback;
+		}
+		
+		public ITextureSource getTextureSource() {
+			return this.mTextureSource;
+		}
+		
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		@Override
+		public int getWidth() {
+			return this.mTextureSource.getWidth();
+		}
+
+		@Override
+		public int getHeight() {
+			return this.mTextureSource.getHeight();
+		}
+
+		@Override
+		public Bitmap onLoadBitmap() {
+			return this.mTextureSource.onLoadBitmap();
+		}
+
+		@Override
+		public String toString() {
+			return this.mTextureSource.toString();
+		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

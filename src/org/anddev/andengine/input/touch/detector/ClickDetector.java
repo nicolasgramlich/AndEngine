@@ -19,7 +19,7 @@ public class ClickDetector {
 	// Fields
 	// ===========================================================
 
-	private boolean mEnabled;
+	private boolean mEnabled = true;
 	private long mClickMaximumMilliseconds = CLICK_MAXIMUM_MILLISECONDS_DEFAULT;
 	private final IClickDetectorListener mClickDetectorListener;
 
@@ -74,7 +74,7 @@ public class ClickDetector {
 
 					if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mClickMaximumMilliseconds) {
 						this.mDownTimeMilliseconds = Long.MIN_VALUE;
-						this.mClickDetectorListener.onClick(this);
+						this.mClickDetectorListener.onClick(this, pTouchEvent);
 					}
 					return true;
 				default:
@@ -102,6 +102,6 @@ public class ClickDetector {
 		// Methods
 		// ===========================================================
 
-		public void onClick(final ClickDetector pClickDetector);
+		public void onClick(final ClickDetector pClickDetector, final TouchEvent pTouchEvent);
 	}
 }

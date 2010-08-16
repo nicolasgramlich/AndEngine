@@ -19,7 +19,7 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final ClickDetector mClickDetector = new ClickDetector(this);
 
 	// ===========================================================
@@ -58,8 +58,8 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	// ===========================================================
 
 	@Override
-	public void onClick(ClickDetector pClickDetector) {
-		
+	public void onClick(final ClickDetector pClickDetector, final TouchEvent pTouchEvent) {
+		this.getOnScreenControlListener().onControlClick(this);
 	}
 
 	@Override

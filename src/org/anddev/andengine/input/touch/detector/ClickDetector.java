@@ -13,14 +13,14 @@ public class ClickDetector {
 	// Constants
 	// ===========================================================
 
-	private static final long CLICK_MAXIMUM_MILLISECONDS_DEFAULT = 200;
+	private static final long TRIGGER_CLICK_MAXIMUM_MILLISECONDS_DEFAULT = 200;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private boolean mEnabled = true;
-	private long mClickMaximumMilliseconds = CLICK_MAXIMUM_MILLISECONDS_DEFAULT;
+	private long mTriggerClickMaximumMilliseconds = TRIGGER_CLICK_MAXIMUM_MILLISECONDS_DEFAULT;
 	private final IClickDetectorListener mClickDetectorListener;
 
 	private long mDownTimeMilliseconds = Long.MIN_VALUE;
@@ -30,11 +30,11 @@ public class ClickDetector {
 	// ===========================================================
 
 	public ClickDetector(final IClickDetectorListener pClickDetectorListener) {
-		this(CLICK_MAXIMUM_MILLISECONDS_DEFAULT, pClickDetectorListener);
+		this(TRIGGER_CLICK_MAXIMUM_MILLISECONDS_DEFAULT, pClickDetectorListener);
 	}
 
-	public ClickDetector(final long pClickMaximumMilliseconds, final IClickDetectorListener pClickDetectorListener) {
-		this.mClickMaximumMilliseconds = pClickMaximumMilliseconds;
+	public ClickDetector(final long pTriggerClickMaximumMilliseconds, final IClickDetectorListener pClickDetectorListener) {
+		this.mTriggerClickMaximumMilliseconds = pTriggerClickMaximumMilliseconds;
 		this.mClickDetectorListener = pClickDetectorListener;
 	}
 
@@ -42,12 +42,12 @@ public class ClickDetector {
 	// Getter & Setter
 	// ===========================================================
 
-	public long getClickMaximumMilliseconds() {
-		return this.mClickMaximumMilliseconds;
+	public long getTriggerClickMaximumMilliseconds() {
+		return this.mTriggerClickMaximumMilliseconds;
 	}
 
-	public void setClickMaximumMilliseconds(final long pClickMaximumMilliseconds) {
-		this.mClickMaximumMilliseconds = pClickMaximumMilliseconds;
+	public void setTriggerClickMaximumMilliseconds(final long pClickMaximumMilliseconds) {
+		this.mTriggerClickMaximumMilliseconds = pClickMaximumMilliseconds;
 	}
 
 	public boolean isEnabled() {
@@ -72,7 +72,7 @@ public class ClickDetector {
 				case MotionEvent.ACTION_CANCEL:
 					final long upTimeMilliseconds = pTouchEvent.getMotionEvent().getEventTime();
 
-					if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mClickMaximumMilliseconds) {
+					if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
 						this.mDownTimeMilliseconds = Long.MIN_VALUE;
 						this.mClickDetectorListener.onClick(this, pTouchEvent);
 					}

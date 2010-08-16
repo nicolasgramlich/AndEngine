@@ -94,8 +94,8 @@ public class TMXTileSet implements TMXConstants {
 		this.mImageSource = pAttributes.getValue("", TAG_IMAGE_ATTRIBUTE_SOURCE);
 
 		final AssetTextureSource assetTextureSource = new AssetTextureSource(pContext, this.mImageSource);
-		this.mTilesHorizontal = assetTextureSource.getWidth() / this.mTileWidth;
-		this.mTilesVertical = assetTextureSource.getHeight() / this.mTileHeight;
+		this.mTilesHorizontal = determineCount(assetTextureSource.getWidth(), this.mTileWidth, this.mMargin, this.mSpacing);
+		this.mTilesVertical = determineCount(assetTextureSource.getHeight(), this.mTileHeight, this.mMargin, this.mSpacing);
 		this.mTexture = TextureFactory.createForTextureSourceSize(assetTextureSource, this.mTextureOptions);
 		TextureRegionFactory.createFromSource(this.mTexture, assetTextureSource, 0, 0);
 		pTextureManager.loadTexture(this.mTexture);
@@ -143,6 +143,22 @@ public class TMXTileSet implements TMXConstants {
 
 		return new TextureRegion(this.mTexture, texturePositionX, texturePositionY, this.mTileWidth, this.mTileHeight);
 	}
+
+	private static int determineCount(final int pTotalExtent, final int pTileExtent, final int pMargin, final int pSpacing) {
+		int count = 0;
+		int remainingExtent = pTotalExtent;
+
+		remainingExtent -= pMargin * 2;
+
+		while(remainingExtent > 0) {
+			remainingExtent -= pTileExtent;
+			remainingExtent -= pSpacing;
+			count++;
+		}
+
+		return count;
+	}
+	
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

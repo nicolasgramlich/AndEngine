@@ -52,6 +52,10 @@ public class TiledSprite extends BaseSprite {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public int getCurrentTileIndex() {
+		return this.getTextureRegion().getCurrentTileIndex();
+	}
 
 	public void setCurrentTileIndex(final int pTileIndex) {
 		this.getTextureRegion().setCurrentTileIndex(pTileIndex);

@@ -10,7 +10,7 @@ import org.anddev.andengine.opengl.vertex.VertexBuffer;
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class GLShape extends Shape implements IShape {
+public abstract class GLShape extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -98,6 +98,10 @@ public class Camera implements IUpdateHandler {
 		this.mMinY += dY;
 		this.mMaxY += dY;
 	}
+	
+	public void offsetCenter(final float pX, final float pY) {
+		this.setCenter(this.getCenterX() + pX, this.getCenterY() + pY);
+	}
 
 	public HUD getHUD() {
 		return this.mHUD;
@@ -141,8 +145,16 @@ public class Camera implements IUpdateHandler {
 	// Methods
 	// ===========================================================
 	
-	public void centerInCamera(final Shape pShape) {
+	public void centerShapeInCamera(final Shape pShape) {
 		pShape.setPosition((this.getWidth() - pShape.getWidth()) * 0.5f, (this.getHeight() - pShape.getHeight()) * 0.5f);
+	}
+	
+	public void centerShapeInCameraHorizontally(final Shape pShape) {
+		pShape.setPosition((this.getWidth() - pShape.getWidth()) * 0.5f, pShape.getY());
+	}
+	
+	public void centerShapeInCameraVertically(final Shape pShape) {
+		pShape.setPosition(pShape.getX(), (this.getHeight() - pShape.getHeight()) * 0.5f);
 	}
 
 	public void flip() {

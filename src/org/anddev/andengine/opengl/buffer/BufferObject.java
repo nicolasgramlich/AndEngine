@@ -108,6 +108,18 @@ public abstract class BufferObject {
 		this.mLoadedToHardware = true;
 	}
 
+	public void unloadFromHardware(final GL11 pGL11) {
+		this.deleteBufferOnHardware(pGL11);
+
+		this.mHardwareBufferID = -1;
+
+		this.mLoadedToHardware = false;
+	}
+
+	private void deleteBufferOnHardware(final GL11 pGL11) {
+		GLHelper.deleteBuffer(pGL11, this.mHardwareBufferID);
+	}
+
 	private int generateHardwareBufferID(final GL11 pGL11) {
 		pGL11.glGenBuffers(1, HARDWAREBUFFERID_FETCHER, 0);
 

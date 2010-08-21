@@ -21,6 +21,7 @@ public class GLHelper {
 	// ===========================================================
 
 	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
+	private static final int[] HARDWAREBUFFERID_CONTAINER = new int[1];
 
 	// ===========================================================
 	// Fields
@@ -263,6 +264,11 @@ public class GLHelper {
 		}
 	}
 
+	public static void deleteBuffer(final GL11 pGL11, final int pHardwareBufferID) {
+		GLHelper.HARDWAREBUFFERID_CONTAINER[0] = pHardwareBufferID;
+		pGL11.glDeleteBuffers(1, GLHelper.HARDWAREBUFFERID_CONTAINER, 0);
+	}
+	
 	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {
 		/* Reduce unnecessary texture switching calls. */
 		if(GLHelper.sCurrentHardwareTextureID != pHardwareTextureID) {
@@ -272,7 +278,6 @@ public class GLHelper {
 	}
 
 	public static void deleteTexture(final GL10 pGL, final int pHardwareTextureID) {
-		/* Reduce unnecessary texture switching calls. */
 		GLHelper.HARDWARETEXTUREID_CONTAINER[0] = pHardwareTextureID;
 		pGL.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);
 	}

@@ -32,7 +32,7 @@ public class RunnableHandler implements IUpdateHandler {
 	// ===========================================================
 
 	@Override
-	public void onUpdate(final float pSecondsElapsed) {
+	public synchronized void onUpdate(final float pSecondsElapsed) {
 		final ArrayList<Runnable> runnables = this.mRunnables;
 		final int runnableCount = runnables.size();
 		for(int i = runnableCount - 1; i >= 0; i--) {
@@ -50,7 +50,7 @@ public class RunnableHandler implements IUpdateHandler {
 	// Methods
 	// ===========================================================
 
-	public void postRunnable(final Runnable pRunnable) {
+	public synchronized void postRunnable(final Runnable pRunnable) {
 		this.mRunnables.add(pRunnable);
 	}
 

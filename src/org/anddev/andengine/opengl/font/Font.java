@@ -29,7 +29,7 @@ public class Font {
 	// Constants
 	// ===========================================================
 
-	protected static final float LETTER_LEFT_OFFSET = 5;
+	protected static final float LETTER_LEFT_OFFSET = 0;
 	private static final int LETTER_EXTRA_WIDTH = 10;
 
 	// ===========================================================

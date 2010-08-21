@@ -1,12 +1,14 @@
-package org.anddev.andengine.opengl.texture.region;
+package org.anddev.andengine.opengl.font;
 
 import org.anddev.andengine.util.Library;
+
+import android.util.SparseArray;
 
 /**
  * @author Nicolas Gramlich
  * @since 11:52:26 - 20.08.2010
  */
-public class TextureRegionLibrary extends Library<TextureRegion>{
+public class FontLibrary extends Library<Font>{
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,21 +21,17 @@ public class TextureRegionLibrary extends Library<TextureRegion>{
 	// Constructors
 	// ===========================================================
 	
-	public TextureRegionLibrary() {
+	public FontLibrary() {
 		super();
 	}
 	
-	public TextureRegionLibrary(final int pInitialCapacity) {
+	public FontLibrary(final int pInitialCapacity) {
 		super(pInitialCapacity);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public TiledTextureRegion getTiled(final int pID) {
-		return (TiledTextureRegion)this.mItems.get(pID);
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -42,6 +40,13 @@ public class TextureRegionLibrary extends Library<TextureRegion>{
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	void loadFonts(FontManager pFontManager) {
+		final SparseArray<Font> items = this.mItems;
+		for(int i = items.size() - 1; i >= 0; i--) {
+			pFontManager.loadFont(items.get(i));
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -1,12 +1,13 @@
-package org.anddev.andengine.opengl.texture.region;
+package org.anddev.andengine.util;
 
-import org.anddev.andengine.util.Library;
+import android.util.SparseArray;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:52:26 - 20.08.2010
+ * @since 11:51:29 - 20.08.2010
+ * @param <T>
  */
-public class TextureRegionLibrary extends Library<TextureRegion>{
+public class Library<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -14,25 +15,31 @@ public class TextureRegionLibrary extends Library<TextureRegion>{
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	protected final SparseArray<T> mItems;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public TextureRegionLibrary() {
-		super();
+	public Library() {
+		this.mItems = new SparseArray<T>();
 	}
 	
-	public TextureRegionLibrary(final int pInitialCapacity) {
-		super(pInitialCapacity);
+	public Library(final int pInitialCapacity) {
+		this.mItems = new SparseArray<T>(pInitialCapacity);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 	
-	public TiledTextureRegion getTiled(final int pID) {
-		return (TiledTextureRegion)this.mItems.get(pID);
+	public void put(final int pID, final T pItem) {
+		this.mItems.put(pID, pItem);
+	}
+	
+	public T get(final int pID) {
+		return this.mItems.get(pID);
 	}
 
 	// ===========================================================

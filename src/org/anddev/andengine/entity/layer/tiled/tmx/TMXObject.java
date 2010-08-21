@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
-import java.util.ArrayList;
-
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
@@ -25,7 +23,7 @@ public class TMXObject implements TMXConstants {
 	private final int mY;
 	private final int mWidth;
 	private final int mHeight;
-	private final ArrayList<TMXObjectProperty> mTMXObjectProperties = new ArrayList<TMXObjectProperty>();
+	private final TMXProperties<TMXObjectProperty> mTMXObjectProperties = new TMXProperties<TMXObjectProperty>();
 
 	// ===========================================================
 	// Constructors
@@ -72,7 +70,7 @@ public class TMXObject implements TMXConstants {
 		this.mTMXObjectProperties.add(pTMXObjectProperty);
 	}
 
-	public ArrayList<TMXObjectProperty> getTMXObjectProperties() {
+	public TMXProperties<TMXObjectProperty> getTMXObjectProperties() {
 		return this.mTMXObjectProperties;
 	}
 

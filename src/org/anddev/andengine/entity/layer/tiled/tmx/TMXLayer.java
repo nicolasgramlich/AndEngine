@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -104,8 +103,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		return this.mTMXTiles;
 	}
 
-	public TMXTile getTMXTile(final int pRow, final int pColumn) throws ArrayIndexOutOfBoundsException {
-		return this.mTMXTiles[pRow][pColumn];
+	public TMXTile getTMXTile(final int pTileColumn, final int pTileRow) throws ArrayIndexOutOfBoundsException {
+		return this.mTMXTiles[pTileRow][pTileColumn];
 	}
 
 	/**
@@ -275,13 +274,13 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		} else {
 			tmxTileTextureRegion = tmxTiledMap.getTextureRegionFromGlobalTileID(pGlobalTileID);
 		}
-		final TMXTile tmxTile = new TMXTile(pGlobalTileID, row, column, this.mTMXTiledMap.getTileWidth(), this.mTMXTiledMap.getTileHeight(), tmxTileTextureRegion);
+		final TMXTile tmxTile = new TMXTile(pGlobalTileID, column, row, this.mTMXTiledMap.getTileWidth(), this.mTMXTiledMap.getTileHeight(), tmxTileTextureRegion);
 		tmxTiles[row][column] = tmxTile;
 
 		if(pGlobalTileID != 0) {
 			/* Notify the ITMXTilePropertiesListener if it exists. */
 			if(pTMXTilePropertyListener != null) {
-				final ArrayList<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(pGlobalTileID);
+				final TMXProperties<TMXTileProperty> tmxTileProperties = tmxTiledMap.getTMXTileProperties(pGlobalTileID);
 				if(tmxTileProperties != null) {
 					pTMXTilePropertyListener.onTMXTileWithPropertiesCreated(tmxTiledMap, this, tmxTile, tmxTileProperties);
 				}

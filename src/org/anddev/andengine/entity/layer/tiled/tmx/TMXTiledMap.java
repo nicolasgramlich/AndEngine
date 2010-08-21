@@ -27,8 +27,8 @@ public class TMXTiledMap implements TMXConstants {
 	// ===========================================================
 
 	private final String mOrientation;
-	private final int mTilesHorizontal;
-	private final int mTilesVertical;
+	private final int mTileColumns;
+	private final int mTilesRows;
 	private final int mTileWidth;
 	private final int mTileHeight;
 
@@ -39,7 +39,7 @@ public class TMXTiledMap implements TMXConstants {
 	private final RectangleVertexBuffer mSharedVertexBuffer;
 
 	private final SparseArray<TextureRegion> mGlobalTileIDToTextureRegionCache = new SparseArray<TextureRegion>();
-	private final SparseArray<ArrayList<TMXTileProperty>> mGlobalTileIDToTMXTilePropertiesCache = new SparseArray<ArrayList<TMXTileProperty>>();
+	private final SparseArray<TMXProperties<TMXTileProperty>> mGlobalTileIDToTMXTilePropertiesCache = new SparseArray<TMXProperties<TMXTileProperty>>();
 
 	// ===========================================================
 	// Constructors
@@ -50,8 +50,8 @@ public class TMXTiledMap implements TMXConstants {
 		if(this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL) == false) {
 			throw new IllegalArgumentException(TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
 		}
-		this.mTilesHorizontal = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_WIDTH);
-		this.mTilesVertical = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_HEIGHT);
+		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_WIDTH);
+		this.mTilesRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_HEIGHT);
 		this.mTileWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH);
 		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT);
 
@@ -67,13 +67,30 @@ public class TMXTiledMap implements TMXConstants {
 	public final String getOrientation() {
 		return this.mOrientation;
 	}
-
+	/**
+	 * Use {@link TMXTiledMap#getTileColumns()} instead.
+	 * @return
+	 */
+	@Deprecated
 	public final int getWidth() {
-		return this.mTilesHorizontal;
+		return this.mTileColumns;
+	}
+	
+	public final int getTileColumns() {
+		return this.mTileColumns;
 	}
 
+	/**
+	 * Use {@link TMXTiledMap#getTileRows()} instead.
+	 * @return
+	 */
+	@Deprecated
 	public final int getHeight() {
-		return this.mTilesVertical;
+		return this.mTilesRows;
+	}
+	
+	public final int getTileRows() {
+		return this.mTilesRows;
 	}
 
 	public final int getTileWidth() {
@@ -112,7 +129,7 @@ public class TMXTiledMap implements TMXConstants {
 		return this.mTMXObjectGroups;
 	}
 
-	public ArrayList<TMXTileProperty> getTMXTilePropertiesByGlobalTileID(final int pGlobalTileID) {
+	public TMXProperties<TMXTileProperty> getTMXTilePropertiesByGlobalTileID(final int pGlobalTileID) {
 		return this.mGlobalTileIDToTMXTilePropertiesCache.get(pGlobalTileID);
 	}
 
@@ -124,10 +141,10 @@ public class TMXTiledMap implements TMXConstants {
 	// Methods
 	// ===========================================================
 
-	public ArrayList<TMXTileProperty> getTMXTileProperties(final int pGlobalTileID) {
-		final SparseArray<ArrayList<TMXTileProperty>> globalTileIDToTMXTilePropertiesCache = this.mGlobalTileIDToTMXTilePropertiesCache;
+	public TMXProperties<TMXTileProperty> getTMXTileProperties(final int pGlobalTileID) {
+		final SparseArray<TMXProperties<TMXTileProperty>> globalTileIDToTMXTilePropertiesCache = this.mGlobalTileIDToTMXTilePropertiesCache;
 
-		final ArrayList<TMXTileProperty> cachedTMXTileProperties = globalTileIDToTMXTilePropertiesCache.get(pGlobalTileID);
+		final TMXProperties<TMXTileProperty> cachedTMXTileProperties = globalTileIDToTMXTilePropertiesCache.get(pGlobalTileID);
 		if(cachedTMXTileProperties != null) {
 			return cachedTMXTileProperties;
 		} else {

@@ -3,7 +3,6 @@ package org.anddev.andengine.entity.layer.tiled.tmx;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -114,6 +113,6 @@ public class TMXLoader {
 		// Methods
 		// ===========================================================
 
-		public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final ArrayList<TMXTileProperty> pTMXTileProperties);
+		public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties);
 	}
 }

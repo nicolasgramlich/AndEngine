@@ -1,53 +1,45 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
+import java.util.ArrayList;
+
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
-import org.xml.sax.Attributes;
 
 /**
  * @author Nicolas Gramlich
  * @since 10:14:06 - 27.07.2010
  */
-public class TMXProperty implements TMXConstants {
+public class TMXProperties<T extends TMXProperty> extends ArrayList<T> implements TMXConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final long serialVersionUID = 8912773556975105201L;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final String mName;
-	private final String mValue;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public TMXProperty(final Attributes pAttributes) {
-		this.mName = pAttributes.getValue("", TAG_PROPERTY_ATTRIBUTE_NAME);
-		this.mValue = pAttributes.getValue("", TAG_PROPERTY_ATTRIBUTE_VALUE);
-	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public String getName() {
-		return this.mName;
-	}
-
-	public String getValue() {
-		return this.mValue;
+	public boolean containsTMXProperty(final String pName, final String pValue) {
+		for(int i = this.size() - 1; i >= 0; i--) {
+			final T tmxProperty = this.get(i);
+			if(tmxProperty.getName().equals(pName) && tmxProperty.getValue().equals(pValue)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
-	@Override
-	public String toString() {
-		return this.mName + "='" + this.mValue + "'";
-	}
 
 	// ===========================================================
 	// Methods

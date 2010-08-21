@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
-import java.util.ArrayList;
-
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureFactory;
@@ -44,7 +42,7 @@ public class TMXTileSet implements TMXConstants {
 	private final int mSpacing;
 	private final int mMargin;
 
-	private final SparseArray<ArrayList<TMXTileProperty>> mTMXTileProperties = new SparseArray<ArrayList<TMXTileProperty>>();
+	private final SparseArray<TMXProperties<TMXTileProperty>> mTMXTileProperties = new SparseArray<TMXProperties<TMXTileProperty>>();
 	private final TextureOptions mTextureOptions;
 
 	// ===========================================================
@@ -105,7 +103,7 @@ public class TMXTileSet implements TMXConstants {
 		return this.mImageSource;
 	}
 
-	public SparseArray<ArrayList<TMXTileProperty>> getTMXTileProperties() {
+	public SparseArray<TMXProperties<TMXTileProperty>> getTMXTileProperties() {
 		return this.mTMXTileProperties;
 	}
 
@@ -117,17 +115,17 @@ public class TMXTileSet implements TMXConstants {
 	// Methods
 	// ===========================================================
 
-	public ArrayList<TMXTileProperty> getTMXTilePropertiesFromGlobalTileID(final int pGlobalTileID) {
+	public TMXProperties<TMXTileProperty> getTMXTilePropertiesFromGlobalTileID(final int pGlobalTileID) {
 		final int localTileID = pGlobalTileID - this.mFirstGlobalTileID;
 		return this.mTMXTileProperties.get(localTileID);
 	}
 
 	public void addTMXTileProperty(final int pLocalTileID, final TMXTileProperty pTMXTileProperty) {
-		final ArrayList<TMXTileProperty> existingProperties = this.mTMXTileProperties.get(pLocalTileID);
+		final TMXProperties<TMXTileProperty> existingProperties = this.mTMXTileProperties.get(pLocalTileID);
 		if(existingProperties != null) {
 			existingProperties.add(pTMXTileProperty);
 		} else {
-			final ArrayList<TMXTileProperty> newProperties = new ArrayList<TMXTileProperty>();
+			final TMXProperties<TMXTileProperty> newProperties = new TMXProperties<TMXTileProperty>();
 			newProperties.add(pTMXTileProperty);
 			this.mTMXTileProperties.put(pLocalTileID, newProperties);
 		}

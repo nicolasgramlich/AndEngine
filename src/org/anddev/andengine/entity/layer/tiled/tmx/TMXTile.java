@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
-import java.util.ArrayList;
-
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 /**
@@ -28,7 +26,7 @@ public class TMXTile {
 	// Constructors
 	// ===========================================================
 
-	public TMXTile(final int pGlobalTileID, final int pTileRow, final int pTileColumn, final int pTileWidth, final int pTileHeight, final TextureRegion pTextureRegion) {
+	public TMXTile(final int pGlobalTileID, final int pTileColumn, final int pTileRow, final int pTileWidth, final int pTileHeight, final TextureRegion pTextureRegion) {
 		this.mGlobalTileID = pGlobalTileID;
 		this.mTileRow = pTileRow;
 		this.mTileColumn = pTileColumn;
@@ -91,7 +89,7 @@ public class TMXTile {
 		this.mTextureRegion = pTextureRegion;
 	}
 
-	public ArrayList<TMXTileProperty> getTMXTileProperties(final TMXTiledMap pTMXTiledMap) {
+	public TMXProperties<TMXTileProperty> getTMXTileProperties(final TMXTiledMap pTMXTiledMap) {
 		return pTMXTiledMap.getTMXTileProperties(this.mGlobalTileID);
 	}
 

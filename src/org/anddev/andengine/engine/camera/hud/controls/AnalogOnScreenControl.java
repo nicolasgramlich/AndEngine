@@ -33,7 +33,7 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 
 	public AnalogOnScreenControl(final int pX, final int pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final long pOnControlClickMaximumMilliseconds, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
 		super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pAnalogOnScreenControlListener);
-		this.mClickDetector.setClickMaximumMilliseconds(pOnControlClickMaximumMilliseconds);
+		this.mClickDetector.setTriggerClickMaximumMilliseconds(pOnControlClickMaximumMilliseconds);
 	}
 
 	// ===========================================================
@@ -50,7 +50,7 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	}
 
 	public void setOnControlClickMaximumMilliseconds(final long pOnControlClickMaximumMilliseconds) {
-		this.mClickDetector.setClickMaximumMilliseconds(pOnControlClickMaximumMilliseconds);
+		this.mClickDetector.setTriggerClickMaximumMilliseconds(pOnControlClickMaximumMilliseconds);
 	}
 
 	// ===========================================================

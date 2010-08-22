@@ -99,13 +99,13 @@ public class RenderSurfaceView extends GLSurfaceView {
 			Debug.d("onSurfaceCreated");
 			GLHelper.reset(pGL);
 
-			GLHelper.setPerspectiveCorrectionHintFastest(pGL);
+//			GLHelper.setPerspectiveCorrectionHintFastest(pGL);
 
-			GLHelper.setShadeModelFlat(pGL);
+//			GLHelper.setShadeModelFlat(pGL);
 
 			GLHelper.disableLightning(pGL);
-			GLHelper.disableDither(pGL);
-			GLHelper.disableDepthTest(pGL);
+//			GLHelper.disableDither(pGL);
+//			GLHelper.disableDepthTest(pGL);
 			GLHelper.disableMultisample(pGL);
 
 			GLHelper.enableBlend(pGL);

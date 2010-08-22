@@ -13,6 +13,7 @@ import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.util.MathUtils;
 
 import android.opengl.GLU;
 
@@ -24,6 +25,8 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	protected static final float[] VERTICES_TOUCH_TMP = new float[2];
 
 	// ===========================================================
 	// Fields
@@ -38,7 +41,7 @@ public class Camera implements IUpdateHandler {
 
 	private IShape mChaseShape;
 
-	private boolean mFlipped;
+	protected float mRotation = 0;
 
 	// ===========================================================
 	// Constructors
@@ -157,8 +160,8 @@ public class Camera implements IUpdateHandler {
 		pShape.setPosition(pShape.getX(), (this.getHeight() - pShape.getHeight()) * 0.5f);
 	}
 
-	public void flip() {
-		this.mFlipped = !this.mFlipped;
+	public void setRotation(final float pRotation) {
+		this.mRotation = pRotation;
 	}
 
 	public void onDrawHUD(final GL10 pGL) {
@@ -182,8 +185,9 @@ public class Camera implements IUpdateHandler {
 
 		GLU.gluOrtho2D(pGL, this.getMinX(), this.getMaxX(), this.getMaxY(), this.getMinY());
 
-		if(this.mFlipped) {
-			this.rotate(pGL, this.getCenterX(), this.getCenterY(), 180);
+		final float rotation = this.mRotation;
+		if(rotation != 0) {
+			this.applyRotation(pGL, this.getCenterX(), this.getCenterY(), rotation);
 		}
 	}
 
@@ -195,18 +199,29 @@ public class Camera implements IUpdateHandler {
 
 		GLU.gluOrtho2D(pGL, 0, width, height, 0);
 
-		if(this.mFlipped) {
-			this.rotate(pGL, width * 0.5f, height * 0.5f, 180);
-		}
+//		if(this.mRotation != 0) {
+//			this.applyRotation(pGL, width * 0.5f, height * 0.5f, this.mRotation);
+//		}
 	}
 
-	private void rotate(final GL10 pGL, final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
+	private void applyRotation(final GL10 pGL, final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
 		pGL.glTranslatef(pRotationCenterX, pRotationCenterY, 0);
 		pGL.glRotatef(pAngle, 0, 0, 1);
 		pGL.glTranslatef(-pRotationCenterX, -pRotationCenterY, 0);
 	}
 
 	public void convertSceneToHUDTouchEvent(final TouchEvent pSceneTouchEvent) {
+		final float rotation = this.mRotation;
+		
+		if(rotation != 0) {
+			VERTICES_TOUCH_TMP[0] = pSceneTouchEvent.getX();
+			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
+			
+			MathUtils.rotateAroundCenter(VERTICES_TOUCH_TMP, rotation, this.getCenterX(), this.getCenterY());
+	
+			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
+		}
+		
 		final float x = pSceneTouchEvent.getX() - this.getMinX();
 		final float y = pSceneTouchEvent.getY() - this.getMinY();
 		pSceneTouchEvent.set(x, y);
@@ -216,24 +231,43 @@ public class Camera implements IUpdateHandler {
 		final float x = pHUDTouchEvent.getX() + this.getMinX();
 		final float y = pHUDTouchEvent.getY() + this.getMinY();
 		pHUDTouchEvent.set(x, y);
+		
+		final float rotation = this.mRotation;
+		if(rotation != 0) {
+			VERTICES_TOUCH_TMP[0] = pHUDTouchEvent.getX();
+			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pHUDTouchEvent.getY();
+			
+			MathUtils.revertRotateAroundCenter(VERTICES_TOUCH_TMP, rotation, this.getCenterX(), this.getCenterY());
+	
+			pHUDTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
+		}
 	}
 
 	public void convertSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
 		final float relativeX;
 		final float relativeY;
 
-		if(this.mFlipped) {
+		final float rotation = this.mRotation;
+		if(rotation == 0) {
+			relativeX = pSurfaceTouchEvent.getX() / pSurfaceWidth;
+			relativeY = pSurfaceTouchEvent.getY() / pSurfaceHeight;
+		} else if (rotation == 180){
 			relativeX = 1 - (pSurfaceTouchEvent.getX() / pSurfaceWidth);
 			relativeY = 1 - (pSurfaceTouchEvent.getY() / pSurfaceHeight);
 		} else {
-			relativeX = pSurfaceTouchEvent.getX() / pSurfaceWidth;
-			relativeY = pSurfaceTouchEvent.getY() / pSurfaceHeight;
+			VERTICES_TOUCH_TMP[0] = pSurfaceTouchEvent.getX();
+			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pSurfaceTouchEvent.getY();
+			
+			MathUtils.revertRotateAroundCenter(VERTICES_TOUCH_TMP, rotation, pSurfaceWidth / 2, pSurfaceHeight / 2);
+			
+			relativeX = VERTICES_TOUCH_TMP[0] / pSurfaceWidth;
+			relativeY = VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] / pSurfaceHeight;
 		}
 
-		this.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, relativeX, relativeY);
+		this.convertAxisAlignedSurfaceToSceneTouchEvent(pSurfaceTouchEvent, relativeX, relativeY);
 	}
 
-	private void convertSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final float pRelativeX, final float pRelativeY) {
+	private void convertAxisAlignedSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final float pRelativeX, final float pRelativeY) {
 		final float minX = this.getMinX();
 		final float maxX = this.getMaxX();
 		final float minY = this.getMinY();

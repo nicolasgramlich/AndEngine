@@ -181,7 +181,6 @@ public class Camera implements IUpdateHandler {
 		GLHelper.setProjectionIdentityMatrix(pGL);
 
 		GLU.gluOrtho2D(pGL, this.getMinX(), this.getMaxX(), this.getMaxY(), this.getMinY());
-		this.rotate(pGL, this.getCenterX(), this.getCenterY(), 90);
 
 		if(this.mFlipped) {
 			this.rotate(pGL, this.getCenterX(), this.getCenterY(), 180);

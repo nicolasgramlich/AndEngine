@@ -98,7 +98,7 @@ public class Camera implements IUpdateHandler {
 		this.mMinY += dY;
 		this.mMaxY += dY;
 	}
-	
+
 	public void offsetCenter(final float pX, final float pY) {
 		this.setCenter(this.getCenterX() + pX, this.getCenterY() + pY);
 	}
@@ -144,15 +144,15 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void centerShapeInCamera(final Shape pShape) {
 		pShape.setPosition((this.getWidth() - pShape.getWidth()) * 0.5f, (this.getHeight() - pShape.getHeight()) * 0.5f);
 	}
-	
+
 	public void centerShapeInCameraHorizontally(final Shape pShape) {
 		pShape.setPosition((this.getWidth() - pShape.getWidth()) * 0.5f, pShape.getY());
 	}
-	
+
 	public void centerShapeInCameraVertically(final Shape pShape) {
 		pShape.setPosition(pShape.getX(), (this.getHeight() - pShape.getHeight()) * 0.5f);
 	}
@@ -181,9 +181,10 @@ public class Camera implements IUpdateHandler {
 		GLHelper.setProjectionIdentityMatrix(pGL);
 
 		GLU.gluOrtho2D(pGL, this.getMinX(), this.getMaxX(), this.getMaxY(), this.getMinY());
+		this.rotate(pGL, this.getCenterX(), this.getCenterY(), 90);
 
 		if(this.mFlipped) {
-			this.rotateHalfAround(pGL, this.getCenterX(), this.getCenterY());
+			this.rotate(pGL, this.getCenterX(), this.getCenterY(), 180);
 		}
 	}
 
@@ -196,14 +197,14 @@ public class Camera implements IUpdateHandler {
 		GLU.gluOrtho2D(pGL, 0, width, height, 0);
 
 		if(this.mFlipped) {
-			this.rotateHalfAround(pGL, width * 0.5f, height * 0.5f);
+			this.rotate(pGL, width * 0.5f, height * 0.5f, 180);
 		}
 	}
 
-	private void rotateHalfAround(final GL10 pGL, final float pCenterX, final float pCenterY) {
-		pGL.glTranslatef(pCenterX, pCenterY, 0);
-		pGL.glRotatef(180, 0, 0, 1);
-		pGL.glTranslatef(-pCenterX, -pCenterY, 0);
+	private void rotate(final GL10 pGL, final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
+		pGL.glTranslatef(pRotationCenterX, pRotationCenterY, 0);
+		pGL.glRotatef(pAngle, 0, 0, 1);
+		pGL.glTranslatef(-pRotationCenterX, -pRotationCenterY, 0);
 	}
 
 	public void convertSceneToHUDTouchEvent(final TouchEvent pSceneTouchEvent) {

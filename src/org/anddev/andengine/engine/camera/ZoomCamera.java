@@ -1,9 +1,6 @@
 package org.anddev.andengine.engine.camera;
 
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
-
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.util.MathUtils;
 
 
 /**
@@ -98,21 +95,12 @@ public class ZoomCamera extends BoundCamera {
 
 	@Override
 	public void convertSceneToHUDTouchEvent(final TouchEvent pSceneTouchEvent) {
-		final float rotation = this.mRotation;
-		
-		if(rotation != 0) {
-			VERTICES_TOUCH_TMP[0] = pSceneTouchEvent.getX();
-			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
-			
-			MathUtils.rotateAroundCenter(VERTICES_TOUCH_TMP, rotation, this.getCenterX(), this.getCenterY());
-	
-			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
-		}
-		
+		super.convertSceneToHUDTouchEvent(pSceneTouchEvent);
+
 		final float zoomFactor = this.mZoomFactor;
 		
-		final float x = (pSceneTouchEvent.getX() - this.getMinX()) * zoomFactor;
-		final float y = (pSceneTouchEvent.getY() - this.getMinY()) * zoomFactor;
+		final float x = pSceneTouchEvent.getX() * zoomFactor;
+		final float y = pSceneTouchEvent.getY() * zoomFactor;
 		pSceneTouchEvent.set(x, y);
 	}
 
@@ -120,19 +108,11 @@ public class ZoomCamera extends BoundCamera {
 	public void convertHUDToSceneTouchEvent(final TouchEvent pHUDTouchEvent) {
 		final float zoomFactor = this.mZoomFactor;
 		
-		final float x = pHUDTouchEvent.getX() / zoomFactor + this.getMinX();
-		final float y = pHUDTouchEvent.getY() / zoomFactor + this.getMinY();
+		final float x = pHUDTouchEvent.getX() / zoomFactor;
+		final float y = pHUDTouchEvent.getY() / zoomFactor;
 		pHUDTouchEvent.set(x, y);
 		
-		final float rotation = this.mRotation;
-		if(rotation != 0) {
-			VERTICES_TOUCH_TMP[0] = pHUDTouchEvent.getX();
-			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pHUDTouchEvent.getY();
-			
-			MathUtils.revertRotateAroundCenter(VERTICES_TOUCH_TMP, rotation, this.getCenterX(), this.getCenterY());
-	
-			pHUDTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
-		}
+		super.convertHUDToSceneTouchEvent(pHUDTouchEvent);
 	}
 
 	// ===========================================================

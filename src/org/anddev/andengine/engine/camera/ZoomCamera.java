@@ -92,27 +92,27 @@ public class ZoomCamera extends BoundCamera {
 	public float getHeight() {
 		return super.getHeight() / this.mZoomFactor;
 	}
-
+	
 	@Override
-	public void convertSceneToHUDTouchEvent(final TouchEvent pSceneTouchEvent) {
-		super.convertSceneToHUDTouchEvent(pSceneTouchEvent);
+	protected void convertUnrotatedCameraSceneToTouchEvent(TouchEvent pCameraSceneTouchEvent) {
+		final float zoomFactor = this.mZoomFactor;
+		
+		final float x = pCameraSceneTouchEvent.getX() / zoomFactor;
+		final float y = pCameraSceneTouchEvent.getY() / zoomFactor;
+		pCameraSceneTouchEvent.set(x, y);
+		
+		super.convertUnrotatedCameraSceneToTouchEvent(pCameraSceneTouchEvent);
+	}
+	
+	@Override
+	protected void convertUnrotatedSceneToCameraSceneTouchEvent(TouchEvent pSceneTouchEvent) {
+		super.convertUnrotatedSceneToCameraSceneTouchEvent(pSceneTouchEvent);
 
 		final float zoomFactor = this.mZoomFactor;
 		
 		final float x = pSceneTouchEvent.getX() * zoomFactor;
 		final float y = pSceneTouchEvent.getY() * zoomFactor;
 		pSceneTouchEvent.set(x, y);
-	}
-
-	@Override
-	public void convertHUDToSceneTouchEvent(final TouchEvent pHUDTouchEvent) {
-		final float zoomFactor = this.mZoomFactor;
-		
-		final float x = pHUDTouchEvent.getX() / zoomFactor;
-		final float y = pHUDTouchEvent.getY() / zoomFactor;
-		pHUDTouchEvent.set(x, y);
-		
-		super.convertHUDToSceneTouchEvent(pHUDTouchEvent);
 	}
 
 	// ===========================================================

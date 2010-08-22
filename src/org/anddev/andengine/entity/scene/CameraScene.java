@@ -57,14 +57,14 @@ public class CameraScene extends Scene {
 		if(this.mCamera == null) {
 			return false;
 		} else {
-			this.mCamera.convertSceneToHUDTouchEvent(pSceneTouchEvent);
+			this.mCamera.convertSceneToCameraSceneTouchEvent(pSceneTouchEvent);
 
 			final boolean handled = super.onSceneTouchEvent(pSceneTouchEvent);
 
 			if(handled) {
 				return true;
 			} else {
-				this.mCamera.convertHUDToSceneTouchEvent(pSceneTouchEvent);
+				this.mCamera.convertCameraSceneToSceneTouchEvent(pSceneTouchEvent);
 				return false;
 			}
 		}
@@ -74,9 +74,9 @@ public class CameraScene extends Scene {
 	protected boolean onChildSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
 		final boolean childIsCameraScene = this.mChildScene instanceof CameraScene;
 		if(childIsCameraScene) {
-			this.mCamera.convertHUDToSceneTouchEvent(pSceneTouchEvent);
+			this.mCamera.convertCameraSceneToSceneTouchEvent(pSceneTouchEvent);
 			final boolean result = super.onChildSceneTouchEvent(pSceneTouchEvent);
-			this.mCamera.convertSceneToHUDTouchEvent(pSceneTouchEvent);
+			this.mCamera.convertSceneToCameraSceneTouchEvent(pSceneTouchEvent);
 			return result;
 		} else {
 			return super.onChildSceneTouchEvent(pSceneTouchEvent);
@@ -87,7 +87,7 @@ public class CameraScene extends Scene {
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		if(this.mCamera != null) {
 			pGL.glMatrixMode(GL10.GL_PROJECTION);
-			this.mCamera.onApplyPositionIndependentMatrix(pGL);
+			this.mCamera.onApplyCameraSceneMatrix(pGL);
 			{
 				pGL.glMatrixMode(GL10.GL_MODELVIEW);
 				pGL.glPushMatrix();

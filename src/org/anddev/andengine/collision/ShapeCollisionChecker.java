@@ -77,7 +77,15 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 		if(checkCollisionSub(pVerticesALength - 2, 0, pVerticesA, pVerticesB, pVerticesBLength)){
 			return true;
 		} else {
-			return false;
+			/* At last check if one polygon 'contains' the other one by checking 
+			 * if one vertex of the one vertices is contained by all of the other vertices. */
+			if(ShapeCollisionChecker.checkContains(pVerticesA, pVerticesALength, pVerticesB[0], pVerticesB[0 + VERTEX_INDEX_Y])) {
+				return true;
+			} else if(ShapeCollisionChecker.checkContains(pVerticesB, pVerticesBLength, pVerticesA[0], pVerticesA[0 + VERTEX_INDEX_Y])) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 

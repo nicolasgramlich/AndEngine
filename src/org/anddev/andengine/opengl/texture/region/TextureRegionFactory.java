@@ -93,31 +93,31 @@ public class TextureRegionFactory {
 	// Methods using BuildableTexture
 	// ===========================================================
 
-	public static TextureRegion createFromAsset(final BuildableTexture pBuildTexture, final Context pContext, final String pAssetPath) {
+	public static TextureRegion createFromAsset(final BuildableTexture pBuildableTexture, final Context pContext, final String pAssetPath) {
 		final ITextureSource textureSource = new AssetTextureSource(pContext, TextureRegionFactory.sAssetBasePath + pAssetPath);
-		return TextureRegionFactory.createFromSource(pBuildTexture, textureSource);
+		return TextureRegionFactory.createFromSource(pBuildableTexture, textureSource);
 	}
 
-	public static TiledTextureRegion createTiledFromAsset(final BuildableTexture pBuildTexture, final Context pContext, final String pAssetPath, final int pTileColumns, final int pTileRows) {
+	public static TiledTextureRegion createTiledFromAsset(final BuildableTexture pBuildableTexture, final Context pContext, final String pAssetPath, final int pTileColumns, final int pTileRows) {
 		final ITextureSource textureSource = new AssetTextureSource(pContext, TextureRegionFactory.sAssetBasePath + pAssetPath);
-		return TextureRegionFactory.createTiledFromSource(pBuildTexture, textureSource, pTileColumns, pTileRows);
+		return TextureRegionFactory.createTiledFromSource(pBuildableTexture, textureSource, pTileColumns, pTileRows);
 	}
 	
 
-	public static TextureRegion createFromResource(final BuildableTexture pBuildTexture, final Context pContext, final int pDrawableResourceID) {
+	public static TextureRegion createFromResource(final BuildableTexture pBuildableTexture, final Context pContext, final int pDrawableResourceID) {
 		final ITextureSource textureSource = new ResourceTextureSource(pContext, pDrawableResourceID);
-		return TextureRegionFactory.createFromSource(pBuildTexture, textureSource);
+		return TextureRegionFactory.createFromSource(pBuildableTexture, textureSource);
 	}
 
-	public static TiledTextureRegion createTiledFromResource(final BuildableTexture pBuildTexture, final Context pContext, final int pDrawableResourceID, final int pTileColumns, final int pTileRows) {
+	public static TiledTextureRegion createTiledFromResource(final BuildableTexture pBuildableTexture, final Context pContext, final int pDrawableResourceID, final int pTileColumns, final int pTileRows) {
 		final ITextureSource textureSource = new ResourceTextureSource(pContext, pDrawableResourceID);
-		return TextureRegionFactory.createTiledFromSource(pBuildTexture, textureSource, pTileColumns, pTileRows);
+		return TextureRegionFactory.createTiledFromSource(pBuildableTexture, textureSource, pTileColumns, pTileRows);
 	}
 	
 
-	public static TextureRegion createFromSource(final BuildableTexture pBuildTexture, final ITextureSource pTextureSource) {
-		final TextureRegion textureRegion = new TextureRegion(pBuildTexture, 0, 0, pTextureSource.getWidth(), pTextureSource.getHeight());
-		pBuildTexture.addTextureSource(pTextureSource, new Callback<TextureSourceWithLocation>() {
+	public static TextureRegion createFromSource(final BuildableTexture pBuildableTexture, final ITextureSource pTextureSource) {
+		final TextureRegion textureRegion = new TextureRegion(pBuildableTexture, 0, 0, pTextureSource.getWidth(), pTextureSource.getHeight());
+		pBuildableTexture.addTextureSource(pTextureSource, new Callback<TextureSourceWithLocation>() {
 			@Override
 			public void onCallback(final TextureSourceWithLocation pCallbackValue) {
 				textureRegion.setTexturePosition(pCallbackValue.getTexturePositionX(), pCallbackValue.getTexturePositionY());
@@ -126,9 +126,9 @@ public class TextureRegionFactory {
 		return textureRegion;
 	}
 
-	public static TiledTextureRegion createTiledFromSource(final BuildableTexture pBuildTexture, final ITextureSource pTextureSource, final int pTileColumns, final int pTileRows) {
-		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pBuildTexture, 0, 0, pTextureSource.getWidth(), pTextureSource.getHeight(), pTileColumns, pTileRows);
-		pBuildTexture.addTextureSource(pTextureSource, new Callback<TextureSourceWithLocation>() {
+	public static TiledTextureRegion createTiledFromSource(final BuildableTexture pBuildableTexture, final ITextureSource pTextureSource, final int pTileColumns, final int pTileRows) {
+		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pBuildableTexture, 0, 0, pTextureSource.getWidth(), pTextureSource.getHeight(), pTileColumns, pTileRows);
+		pBuildableTexture.addTextureSource(pTextureSource, new Callback<TextureSourceWithLocation>() {
 			@Override
 			public void onCallback(final TextureSourceWithLocation pCallbackValue) {
 				tiledTextureRegion.setTexturePosition(pCallbackValue.getTexturePositionX(), pCallbackValue.getTexturePositionY());

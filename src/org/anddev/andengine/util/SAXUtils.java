@@ -44,6 +44,20 @@ public class SAXUtils {
 			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
 		}
 	}
+	
+	public static String getAttribute(final Attributes pAttributes, final String pAttributeName, final String pDefaultValue) {
+		final String value = pAttributes.getValue("", pAttributeName);
+		return (value != null) ? value : pDefaultValue;
+	}
+
+	public static String getAttributeOrThrow(final Attributes pAttributes, final String pAttributeName) {
+		final String value = pAttributes.getValue("", pAttributeName);
+		if(value != null) {
+			return value;
+		} else {
+			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
+		}
+	}
 
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final int pValue) {
 		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));

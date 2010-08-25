@@ -255,7 +255,7 @@ public class Camera implements IUpdateHandler {
 	}
 
 	private void applySceneRotation(final TouchEvent pCameraSceneTouchEvent) {
-		final float rotation = this.mRotation;
+		final float rotation = -this.mRotation;
 		if(rotation != 0) {
 			VERTICES_TOUCH_TMP[0] = pCameraSceneTouchEvent.getX();
 			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();

@@ -21,7 +21,7 @@ public abstract class ScrollDetector {
 
 	private boolean mEnabled = true;
 
-	private float mTriggerScrollMinimumDistance = TRIGGER_SCROLL_MINIMUM_DISTANCE_DEFAULT;
+	private float mTriggerScrollMinimumDistance;
 
 	private final IScrollDetectorListener mScrollDetectorListener;
 

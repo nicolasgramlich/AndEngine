@@ -20,7 +20,7 @@ public class ClickDetector {
 	// ===========================================================
 
 	private boolean mEnabled = true;
-	private long mTriggerClickMaximumMilliseconds = TRIGGER_CLICK_MAXIMUM_MILLISECONDS_DEFAULT;
+	private long mTriggerClickMaximumMilliseconds;
 	private final IClickDetectorListener mClickDetectorListener;
 
 	private long mDownTimeMilliseconds = Long.MIN_VALUE;

@@ -358,9 +358,13 @@ public abstract class Shape extends Entity implements IShape {
 		return this.mUpdatePhysics;
 	}
 
+	/**
+	 * Enable or disable the AndEngine <b>internal</b> physics, you usually call this once you use the AndEnginePhysicsBox2dExtension.
+	 * @param pUpdatePhysics
+	 */
 	@Override
-	public void setUpdatePhysics(final boolean pUpdatePhysicsSelf) {
-		this.mUpdatePhysics = pUpdatePhysicsSelf;
+	public void setUpdatePhysics(final boolean pUpdatePhysics) {
+		this.mUpdatePhysics = pUpdatePhysics;
 	}
 	
 	@Override

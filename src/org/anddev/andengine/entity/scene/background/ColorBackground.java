@@ -24,6 +24,8 @@ public class ColorBackground extends BaseBackground {
 	private float mBlue = 0.0f;
 	private float mAlpha = 1.0f;
 
+	private boolean mColorEnabled = true;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -107,14 +109,24 @@ public class ColorBackground extends BaseBackground {
 		this.setColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT, pAlpha / COLOR_FACTOR_INT_TO_FLOAT);
 	}
 
+	public void setColorEnabled(final boolean pColorEnabled) {
+		this.mColorEnabled = pColorEnabled;
+	}
+
+	public boolean isColorEnabled() {
+		return this.mColorEnabled;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
 	public void onDraw(final GL10 pGL, final Camera pCamera) {
-		pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
-		pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		if(this.mColorEnabled) {
+			pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
+			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		}
 	}
 
 	// ===========================================================

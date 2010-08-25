@@ -1,6 +1,10 @@
 package org.anddev.andengine.engine.camera;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.util.MathUtils;
+
 
 
 /**
@@ -92,27 +96,40 @@ public class ZoomCamera extends BoundCamera {
 	public float getHeight() {
 		return super.getHeight() / this.mZoomFactor;
 	}
-	
-	@Override
-	protected void convertUnrotatedCameraSceneToTouchEvent(TouchEvent pCameraSceneTouchEvent) {
-		final float zoomFactor = this.mZoomFactor;
-		
-		final float x = pCameraSceneTouchEvent.getX() / zoomFactor;
-		final float y = pCameraSceneTouchEvent.getY() / zoomFactor;
-		pCameraSceneTouchEvent.set(x, y);
-		
-		super.convertUnrotatedCameraSceneToTouchEvent(pCameraSceneTouchEvent);
-	}
-	
-	@Override
-	protected void convertUnrotatedSceneToCameraSceneTouchEvent(TouchEvent pSceneTouchEvent) {
-		super.convertUnrotatedSceneToCameraSceneTouchEvent(pSceneTouchEvent);
 
+	@Override
+	protected void applySceneToCameraSceneOffset(final TouchEvent pSceneTouchEvent) {
 		final float zoomFactor = this.mZoomFactor;
+		if(zoomFactor != 1) {
+			final float scaleCenterX = this.getCenterX();
+			final float scaleCenterY = this.getCenterY();
+			
+			VERTICES_TOUCH_TMP[0] = pSceneTouchEvent.getX();
+			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
+			
+			MathUtils.scaleAroundCenter(VERTICES_TOUCH_TMP, zoomFactor, zoomFactor, scaleCenterX, scaleCenterY);
+			
+			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
+		}
+		super.applySceneToCameraSceneOffset(pSceneTouchEvent);
+	}
+
+	@Override
+	protected void unapplySceneToCameraSceneOffset(final TouchEvent pCameraSceneTouchEvent) {
+		super.unapplySceneToCameraSceneOffset(pCameraSceneTouchEvent);
 		
-		final float x = pSceneTouchEvent.getX() * zoomFactor;
-		final float y = pSceneTouchEvent.getY() * zoomFactor;
-		pSceneTouchEvent.set(x, y);
+		final float zoomFactor = this.mZoomFactor;
+		if(zoomFactor != 1) {
+			final float scaleCenterX = this.getCenterX();
+			final float scaleCenterY = this.getCenterY();
+			
+			VERTICES_TOUCH_TMP[0] = pCameraSceneTouchEvent.getX();
+			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
+			
+			MathUtils.revertScaleAroundCenter(VERTICES_TOUCH_TMP, zoomFactor, zoomFactor, scaleCenterX, scaleCenterY);
+			
+			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
+		}
 	}
 
 	// ===========================================================

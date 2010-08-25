@@ -231,7 +231,31 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void convertSceneToCameraSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
-		final float rotation = this.mRotation - this.mCameraSceneRotation;
+		this.unapplySceneRotation(pSceneTouchEvent);
+
+		this.applySceneToCameraSceneOffset(pSceneTouchEvent);
+
+		this.applyCameraSceneRotation(pSceneTouchEvent);
+	}
+
+	public void convertCameraSceneToSceneTouchEvent(final TouchEvent pCameraSceneTouchEvent) {
+		this.unapplyCameraSceneRotation(pCameraSceneTouchEvent);
+
+		this.unapplySceneToCameraSceneOffset(pCameraSceneTouchEvent);
+
+		this.applySceneRotation(pCameraSceneTouchEvent);
+	}
+
+	protected void applySceneToCameraSceneOffset(final TouchEvent pSceneTouchEvent) {
+		pSceneTouchEvent.offset(-this.mMinX, -this.mMinY);
+	}
+
+	protected void unapplySceneToCameraSceneOffset(final TouchEvent pCameraSceneTouchEvent) {
+		pCameraSceneTouchEvent.offset(this.mMinX, this.mMinY);
+	}
+
+	private void unapplySceneRotation(final TouchEvent pSceneTouchEvent) {
+		final float rotation = this.mRotation;
 
 		if(rotation != 0) {
 			VERTICES_TOUCH_TMP[0] = pSceneTouchEvent.getX();
@@ -241,30 +265,23 @@ public class Camera implements IUpdateHandler {
 
 			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
 		}
-
-		this.convertUnrotatedSceneToCameraSceneTouchEvent(pSceneTouchEvent);
-
-//		final float cameraSceneRotation = this.mCameraSceneRotation;
-//
-//		if(cameraSceneRotation != 0) {
-//			VERTICES_TOUCH_TMP[0] = pSceneTouchEvent.getX();
-//			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
-//
-//			MathUtils.rotateAroundCenter(VERTICES_TOUCH_TMP, cameraSceneRotation, this.getCenterX(), this.getCenterY());
-//
-//			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
-//		}
 	}
 
-	protected void convertUnrotatedSceneToCameraSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
-		final float x = pSceneTouchEvent.getX() - this.getMinX();
-		final float y = pSceneTouchEvent.getY() - this.getMinY();
-		pSceneTouchEvent.set(x, y);
+	private void applyCameraSceneRotation(final TouchEvent pSceneTouchEvent) {
+		final float cameraSceneRotation = this.mCameraSceneRotation;
+
+		if(cameraSceneRotation != 0) {
+			VERTICES_TOUCH_TMP[0] = pSceneTouchEvent.getX();
+			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
+
+			MathUtils.rotateAroundCenter(VERTICES_TOUCH_TMP, cameraSceneRotation, (this.mMaxX - this.mMinX) * 0.5f, (this.mMaxY - this.mMinY) * 0.5f);
+
+			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
+		}
 	}
 
-	public void convertCameraSceneToSceneTouchEvent(final TouchEvent pCameraSceneTouchEvent) {
-		final float rotation = this.mRotation - this.mCameraSceneRotation;
-
+	private void applySceneRotation(final TouchEvent pCameraSceneTouchEvent) {
+		final float rotation = this.mRotation;
 		if(rotation != 0) {
 			VERTICES_TOUCH_TMP[0] = pCameraSceneTouchEvent.getX();
 			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
@@ -273,24 +290,19 @@ public class Camera implements IUpdateHandler {
 
 			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
 		}
-
-		this.convertUnrotatedCameraSceneToTouchEvent(pCameraSceneTouchEvent);
-
-//		final float rotation = this.mRotation;
-//		if(rotation != 0) {
-//			VERTICES_TOUCH_TMP[0] = pCameraSceneTouchEvent.getX();
-//			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
-//
-//			MathUtils.revertRotateAroundCenter(VERTICES_TOUCH_TMP, rotation, this.getCenterX(), this.getCenterY());
-//
-//			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
-//		}
 	}
 
-	protected void convertUnrotatedCameraSceneToTouchEvent(final TouchEvent pCameraSceneTouchEvent) {
-		final float x = pCameraSceneTouchEvent.getX() + this.getMinX();
-		final float y = pCameraSceneTouchEvent.getY() + this.getMinY();
-		pCameraSceneTouchEvent.set(x, y);
+	private void unapplyCameraSceneRotation(final TouchEvent pCameraSceneTouchEvent) {
+		final float cameraSceneRotation = this.mCameraSceneRotation;
+
+		if(cameraSceneRotation != 0) {
+			VERTICES_TOUCH_TMP[0] = pCameraSceneTouchEvent.getX();
+			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
+
+			MathUtils.revertRotateAroundCenter(VERTICES_TOUCH_TMP, cameraSceneRotation, (this.mMaxX - this.mMinX) * 0.5f, (this.mMaxY - this.mMinY) * 0.5f);
+
+			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
+		}
 	}
 
 	public void convertSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
@@ -301,7 +313,7 @@ public class Camera implements IUpdateHandler {
 		if(rotation == 0) {
 			relativeX = pSurfaceTouchEvent.getX() / pSurfaceWidth;
 			relativeY = pSurfaceTouchEvent.getY() / pSurfaceHeight;
-		} else if (rotation == 180){
+		} else if(rotation == 180) {
 			relativeX = 1 - (pSurfaceTouchEvent.getX() / pSurfaceWidth);
 			relativeY = 1 - (pSurfaceTouchEvent.getY() / pSurfaceHeight);
 		} else {

@@ -18,12 +18,12 @@ public class BufferObjectManager {
 	// Fields
 	// ===========================================================
 
-	private final HashSet<BufferObject> mBufferObjectsManaged = new HashSet<BufferObject>();
+	private static final HashSet<BufferObject> mBufferObjectsManaged = new HashSet<BufferObject>();
 
-	private final ArrayList<BufferObject> mBufferObjectsLoaded = new ArrayList<BufferObject>();
+	private static final ArrayList<BufferObject> mBufferObjectsLoaded = new ArrayList<BufferObject>();
 
-	private final ArrayList<BufferObject> mBufferObjectsToBeLoaded = new ArrayList<BufferObject>();
-	private final ArrayList<BufferObject> mBufferObjectsToBeUnloaded = new ArrayList<BufferObject>();
+	private static final ArrayList<BufferObject> mBufferObjectsToBeLoaded = new ArrayList<BufferObject>();
+	private static final ArrayList<BufferObject> mBufferObjectsToBeUnloaded = new ArrayList<BufferObject>();
 
 	private static BufferObjectManager mActiveInstance = null;
 
@@ -52,22 +52,22 @@ public class BufferObjectManager {
 	// ===========================================================
 
 	public void clear() {
-		this.mBufferObjectsToBeLoaded.clear();
-		this.mBufferObjectsLoaded.clear();
-		this.mBufferObjectsManaged.clear();
+		BufferObjectManager.mBufferObjectsToBeLoaded.clear();
+		BufferObjectManager.mBufferObjectsLoaded.clear();
+		BufferObjectManager.mBufferObjectsManaged.clear();
 	}
 
 	public void loadBufferObject(final BufferObject pBufferObject) {
 		if(pBufferObject == null) {
 			return;
 		}
-		
-		if(this.mBufferObjectsManaged.contains(pBufferObject)) {
+
+		if(BufferObjectManager.mBufferObjectsManaged.contains(pBufferObject)) {
 			/* Just make sure it doesn't get deleted. */
-			this.mBufferObjectsToBeUnloaded.remove(pBufferObject);
+			BufferObjectManager.mBufferObjectsToBeUnloaded.remove(pBufferObject);
 		} else {
-			this.mBufferObjectsManaged.add(pBufferObject);
-			this.mBufferObjectsToBeLoaded.add(pBufferObject);
+			BufferObjectManager.mBufferObjectsManaged.add(pBufferObject);
+			BufferObjectManager.mBufferObjectsToBeLoaded.add(pBufferObject);
 		}
 	}
 
@@ -75,11 +75,11 @@ public class BufferObjectManager {
 		if(pBufferObject == null) {
 			return;
 		}
-		if(this.mBufferObjectsManaged.contains(pBufferObject)) {
-			if(this.mBufferObjectsLoaded.contains(pBufferObject)) {
-				this.mBufferObjectsToBeUnloaded.add(pBufferObject);
-			} else if(this.mBufferObjectsToBeLoaded.remove(pBufferObject)) {
-				this.mBufferObjectsManaged.remove(pBufferObject);
+		if(BufferObjectManager.mBufferObjectsManaged.contains(pBufferObject)) {
+			if(BufferObjectManager.mBufferObjectsLoaded.contains(pBufferObject)) {
+				BufferObjectManager.mBufferObjectsToBeUnloaded.add(pBufferObject);
+			} else if(BufferObjectManager.mBufferObjectsToBeLoaded.remove(pBufferObject)) {
+				BufferObjectManager.mBufferObjectsManaged.remove(pBufferObject);
 			}
 		}
 	}
@@ -97,21 +97,21 @@ public class BufferObjectManager {
 	}
 
 	public void reloadBufferObjects() {
-		final ArrayList<BufferObject> loadedBufferObjects = this.mBufferObjectsLoaded;
+		final ArrayList<BufferObject> loadedBufferObjects = BufferObjectManager.mBufferObjectsLoaded;
 		for(int i = loadedBufferObjects.size() - 1; i >= 0; i--) {
 			loadedBufferObjects.get(i).setLoadedToHardware(false);
 		}
 
-		this.mBufferObjectsToBeLoaded.addAll(loadedBufferObjects);
+		BufferObjectManager.mBufferObjectsToBeLoaded.addAll(loadedBufferObjects);
 
 		loadedBufferObjects.clear();
 	}
 
 	public void updateBufferObjects(final GL11 pGL11) {
-		final HashSet<BufferObject> bufferObjectsManaged = this.mBufferObjectsManaged;
-		final ArrayList<BufferObject> bufferObjectsLoaded = this.mBufferObjectsLoaded;
-		final ArrayList<BufferObject> bufferObjectsToBeLoaded = this.mBufferObjectsToBeLoaded;
-		final ArrayList<BufferObject> bufferObjectsToBeUnloaded = this.mBufferObjectsToBeUnloaded;
+		final HashSet<BufferObject> bufferObjectsManaged = BufferObjectManager.mBufferObjectsManaged;
+		final ArrayList<BufferObject> bufferObjectsLoaded = BufferObjectManager.mBufferObjectsLoaded;
+		final ArrayList<BufferObject> bufferObjectsToBeLoaded = BufferObjectManager.mBufferObjectsToBeLoaded;
+		final ArrayList<BufferObject> bufferObjectsToBeUnloaded = BufferObjectManager.mBufferObjectsToBeUnloaded;
 
 		/* First load pending BufferObjects. */
 		final int bufferObjectToBeLoadedCount = bufferObjectsToBeLoaded.size();

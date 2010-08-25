@@ -19,6 +19,8 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 	// Constants
 	// ===========================================================
 
+	private static final int TEXTURESOURCE_SPACING_DEFAULT = 1;
+
 	private static final Comparator<ITextureSource> TEXTURESOURCE_COMPARATOR = new Comparator<ITextureSource>() {
 		@Override
 		public int compare(final ITextureSource pTextureSourceA, final ITextureSource pTextureSourceB) {
@@ -35,9 +37,19 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 	// Fields
 	// ===========================================================
 
+	private final int mTextureSourceSpacing;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public BlackPawnTextureBuilder() {
+		this(TEXTURESOURCE_SPACING_DEFAULT);
+	}
+	
+	public BlackPawnTextureBuilder(final int pTextureSourceSpacing) {
+		this.mTextureSourceSpacing = pTextureSourceSpacing;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -59,7 +71,12 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 		for(int i = 0; i < textureSourceCount; i++) {
 			final TextureSourceWithWithLocationCallback textureSourceWithLocationCallback = pTextureSourcesWithLocationCallback.get(i);
 			final ITextureSource textureSource = textureSourceWithLocationCallback.getTextureSource();
-			final Node inserted = root.insert(textureSource);
+
+			final int width = textureSource.getWidth() + this.mTextureSourceSpacing;
+			final int height = textureSource.getHeight() + this.mTextureSourceSpacing;
+
+			final Node inserted = root.insert(textureSource, width, height);
+
 			if(inserted == null) {
 				throw new IllegalArgumentException("Could not pack: " + textureSource.toString());
 			}
@@ -76,7 +93,7 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	protected static class Rect{
+	protected class Rect {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -147,7 +164,7 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 		// ===========================================================
 	}
 
-	protected static class Node {
+	protected class Node {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -197,45 +214,45 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 		// Methods
 		// ===========================================================
 
-		public Node insert(final ITextureSource pTextureSource) throws IllegalArgumentException {
+		public Node insert(final ITextureSource pTextureSource, final int pTextureSourceWidth, final int pTextureSourceHeight) throws IllegalArgumentException {
 			if(this.mChildA != null && this.mChildB != null) {
-				final Node newNode = this.mChildA.insert(pTextureSource);
+				final Node newNode = this.mChildA.insert(pTextureSource, pTextureSourceWidth, pTextureSourceHeight);
 				if(newNode != null){
 					return newNode;
 				} else {
-					return this.mChildB.insert(pTextureSource);
+					return this.mChildB.insert(pTextureSource, pTextureSourceWidth, pTextureSourceHeight);
 				}
 			} else {
 				if(this.mTextureSource != null) {
 					return null;
 				}
 
-				if(pTextureSource.getWidth() > this.mRect.getWidth() || pTextureSource.getHeight() > this.mRect.getHeight()) {
+				if(pTextureSourceWidth > this.mRect.getWidth() || pTextureSourceHeight > this.mRect.getHeight()) {
 					return null;
 				}
 
-				if(pTextureSource.getWidth() == this.mRect.getWidth() && pTextureSource.getHeight() == this.mRect.getHeight()) {
+				if(pTextureSourceWidth == this.mRect.getWidth() && pTextureSourceHeight == this.mRect.getHeight()) {
 					this.mTextureSource = pTextureSource;
 					return this;
 				}
 
 
-				final int deltaWidth = this.mRect.getWidth() - pTextureSource.getWidth();
-				final int deltaHeight = this.mRect.getHeight() - pTextureSource.getHeight();
+				final int deltaWidth = this.mRect.getWidth() - pTextureSourceWidth;
+				final int deltaHeight = this.mRect.getHeight() - pTextureSourceHeight;
 
 				if(deltaWidth >= deltaHeight) {
 					/* Split using a vertical axis. */
 					this.mChildA = new Node(
 							this.mRect.getLeft(),
 							this.mRect.getTop(),
-							pTextureSource.getWidth(),
+							pTextureSourceWidth,
 							this.mRect.getHeight()
 					);
 
 					this.mChildB = new Node(
-							this.mRect.getLeft() + pTextureSource.getWidth(),
+							this.mRect.getLeft() + pTextureSourceWidth,
 							this.mRect.getTop(),
-							this.mRect.getWidth() - pTextureSource.getWidth(),
+							this.mRect.getWidth() - pTextureSourceWidth,
 							this.mRect.getHeight()
 					);
 				} else {
@@ -244,18 +261,18 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 							this.mRect.getLeft(),
 							this.mRect.getTop(),
 							this.mRect.getWidth(),
-							pTextureSource.getHeight()
+							pTextureSourceHeight
 					);
 
 					this.mChildB = new Node(
 							this.mRect.getLeft(),
-							this.mRect.getTop() + pTextureSource.getHeight(),
+							this.mRect.getTop() + pTextureSourceHeight,
 							this.mRect.getWidth(),
-							this.mRect.getHeight() - pTextureSource.getHeight()
+							this.mRect.getHeight() - pTextureSourceHeight
 					);
 				}
 
-				return this.mChildA.insert(pTextureSource);
+				return this.mChildA.insert(pTextureSource, pTextureSourceWidth, pTextureSourceHeight);
 			}
 		}
 

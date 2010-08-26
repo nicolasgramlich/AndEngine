@@ -124,8 +124,16 @@ public class Camera implements IUpdateHandler {
 		this.mChaseShape = pChaseShape;
 	}
 
+	public float getRotation() {
+		return this.mRotation;
+	}
+
 	public void setRotation(final float pRotation) {
 		this.mRotation = pRotation;
+	}
+
+	public float getCameraSceneRotation() {
+		return this.mCameraSceneRotation;
 	}
 
 	public void setCameraSceneRotation(final float pCameraSceneRotation) {

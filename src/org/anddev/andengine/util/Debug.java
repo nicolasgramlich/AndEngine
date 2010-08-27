@@ -46,7 +46,7 @@ public class Debug implements Constants {
 	}
 
 	public static void w(final Throwable pThrowable){
-		Debug.w("Warning", pThrowable);
+		Debug.w(DEBUGTAG, pThrowable);
 	}
 
 	public static void w(final String pMessage, final Throwable pThrowable){
@@ -59,7 +59,7 @@ public class Debug implements Constants {
 	}
 
 	public static void e(final Throwable pThrowable){
-		Debug.e("Error", pThrowable);
+		Debug.e(DEBUGTAG, pThrowable);
 	}
 
 	public static void e(final String pMessage, final Throwable pThrowable){

@@ -56,7 +56,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// Constants
 	// ===========================================================
 
-	private static final float LOADING_SCREEN_DURATION = 2;
+	private static final float LOADING_SCREEN_DURATION_DEFAULT = 2;
 
 	private static final int SENSOR_DELAY_DEFAULT = SensorManager.SENSOR_DELAY_GAME;
 
@@ -71,7 +71,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private final State mThreadLocker = new State();
 
-	private final Thread mUpdateThread = new Thread(new UpdateRunnable(), "UpdateThread");
+	private final UpdateThread mUpdateThread = new UpdateThread();
 
 	private final RunnableHandler mUpdateThreadRunnableHandler = new RunnableHandler();
 
@@ -140,15 +140,17 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		return this.mRunning;
 	}
 
-	public void start() {
+	public synchronized void start() {
 		if(!this.mRunning) {
 			this.mLastTick = System.nanoTime();
+			this.mRunning = true;
 		}
-		this.mRunning = true;
 	}
 
-	public void stop() {
-		this.mRunning = false;
+	public synchronized void stop() {
+		if(this.mRunning) {
+			this.mRunning = false;
+		}
 	}
 
 	public Scene getScene() {
@@ -383,7 +385,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		// final Scene loadingScene = this.mScene; // TODO Free texture from
 		// loading-screen.
 		if(this.mEngineOptions.hasLoadingScreen()) {
-			this.registerUpdateHandler(new TimerHandler(LOADING_SCREEN_DURATION, new ITimerCallback() {
+			this.registerUpdateHandler(new TimerHandler(LOADING_SCREEN_DURATION_DEFAULT, new ITimerCallback() {
 				@Override
 				public void onTimePassed(final TimerHandler pTimerHandler) {
 					Engine.this.unregisterUpdateHandler(pTimerHandler);
@@ -537,20 +539,26 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	private class UpdateRunnable implements Runnable {
+	private class UpdateThread extends Thread {
+		public UpdateThread() {
+			super("UpdateThread");
+		}
+		
+		@Override
 		public void run() {
 			try {
 				while(true) {
 					Engine.this.onTickUpdate();
 				}
 			} catch (final InterruptedException e) {
-				Debug.e("UpdateThread interrupted from sleep.", e);
+				Debug.e("UpdateThread interrupted.", e);
+				this.interrupt();
 			}
 		}
 	}
 
 	private static class State {
-		private boolean mDrawing = false;
+		boolean mDrawing = false;
 
 		public synchronized void notifyCanDraw() {
 			// Debug.d(">>> notifyCanDraw");

@@ -97,6 +97,11 @@ public class TouchEvent {
 		return this.mAction;
 	}
 
+	/**
+	 * Provides the raw {@link MotionEvent} that originally caused this {@link TouchEvent}. 
+	 * The coordinates of this {@link MotionEvent} are in surface-coordinates! 
+	 * @return
+	 */
 	public MotionEvent getMotionEvent() {
 		return this.mMotionEvent;
 	}

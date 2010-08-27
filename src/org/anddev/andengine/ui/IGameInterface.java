@@ -17,10 +17,10 @@ public interface IGameInterface {
 	// ===========================================================
 
 	public Engine onLoadEngine();
-
 	public void onLoadResources();
-
 	public Scene onLoadScene();
-
 	public void onLoadComplete();
+	
+	public void onGamePaused();
+	public void onGameResumed(); 
 }

@@ -40,6 +40,8 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	private WakeLock mWakeLock;
 	protected RenderSurfaceView mRenderSurfaceView;
 	protected boolean mHasWindowFocused;
+	private boolean mPaused;
+	private boolean mGameLoaded;
 
 	// ===========================================================
 	// Constructors
@@ -48,81 +50,74 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	@Override
 	protected void onCreate(final Bundle pSavedInstanceState) {
 		super.onCreate(pSavedInstanceState);
+		this.mPaused = true;
 
 		this.mEngine = this.onLoadEngine();
 
 		this.applyEngineOptions(this.mEngine.getEngineOptions());
 
 		this.onSetContentView();
-
-		this.onLoadResources();
-		final Scene scene = this.onLoadScene();
-		this.mEngine.onLoadComplete(scene);
-		this.onLoadComplete();
 	}
 
 	@Override
 	protected void onResume() {
-		Debug.i("onResume");
 		super.onResume();
 		this.mEngine.onResume();
 
-		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
-
-		// When locked screen is shown, resume is called, but the application
-		// is not yet visible, so it makes no sense to resume the game
-
-		if(this.mHasWindowFocused) {
-			Debug.i("-->");
+		if(this.mPaused && this.mHasWindowFocused) {
 			this.doResume();
-			Debug.i("<---");
 		}
 	}
 
 	@Override
 	protected void onPause() {
-		Debug.i("onPause");
 		super.onPause();
 		this.mEngine.onPause();
 
-		this.releaseWakeLock();
-
-		if(this.mHasWindowFocused) {
-			Debug.i("-->");
+		if(!this.mPaused) {
 			this.doPause();
-			Debug.i("<---");
 		}
 	}
 
 	@Override
 	public void onWindowFocusChanged(final boolean pHasWindowFocus) {
-		Debug.i("onWindowFocusChanged");
 		super.onWindowFocusChanged(pHasWindowFocus);
 
 		if(pHasWindowFocus) {
-			if(!this.mHasWindowFocused) {
-				Debug.i("-->");
+			if(this.mPaused) {
 				this.doResume();
-				Debug.i("<---");
 			}
 			this.mHasWindowFocused = true;
 		} else {
+			if(!this.mPaused) {
+				this.doPause();
+			}
 			this.mHasWindowFocused = false;
 		}
 	}
 
 	private void doResume() {
-		Debug.i("doResume");
+		if(!this.mGameLoaded) {
+			this.onLoadResources();
+			final Scene scene = this.onLoadScene();
+			this.mEngine.onLoadComplete(scene);
+			this.onLoadComplete();
+			this.mGameLoaded = true;
+		}
+		
+		this.mPaused = false;
+		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
 		this.mRenderSurfaceView.onResume();
 		this.mEngine.start();
-		this.onResumeGame();
+		this.onGameResumed();
 	}
 
 	private void doPause() {
-		Debug.i("doPause");
+		this.mPaused = true;
+		this.releaseWakeLock();
 		this.mEngine.stop();
 		this.mRenderSurfaceView.onPause();
-		this.onPauseGame();
+		this.onGamePaused();
 	}
 
 	// ===========================================================

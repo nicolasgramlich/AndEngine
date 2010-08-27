@@ -39,6 +39,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected Engine mEngine;
 	private WakeLock mWakeLock;
 	protected RenderSurfaceView mRenderSurfaceView;
+	protected boolean mHasWindowFocused;
 
 	// ===========================================================
 	// Constructors
@@ -62,19 +63,66 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	protected void onResume() {
+		Debug.i("onResume");
 		super.onResume();
 		this.mEngine.onResume();
-		this.mRenderSurfaceView.onResume();
-		this.mEngine.start();
+
 		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
+
+		// When locked screen is shown, resume is called, but the application
+		// is not yet visible, so it makes no sense to resume the game
+
+		if(this.mHasWindowFocused) {
+			Debug.i("-->");
+			this.doResume();
+			Debug.i("<---");
+		}
 	}
 
 	@Override
 	protected void onPause() {
+		Debug.i("onPause");
 		super.onPause();
-		this.releaseWakeLock();
 		this.mEngine.onPause();
+
+		this.releaseWakeLock();
+
+		if(this.mHasWindowFocused) {
+			Debug.i("-->");
+			this.doPause();
+			Debug.i("<---");
+		}
+	}
+
+	@Override
+	public void onWindowFocusChanged(final boolean pHasWindowFocus) {
+		Debug.i("onWindowFocusChanged");
+		super.onWindowFocusChanged(pHasWindowFocus);
+
+		if(pHasWindowFocus) {
+			if(!this.mHasWindowFocused) {
+				Debug.i("-->");
+				this.doResume();
+				Debug.i("<---");
+			}
+			this.mHasWindowFocused = true;
+		} else {
+			this.mHasWindowFocused = false;
+		}
+	}
+
+	private void doResume() {
+		Debug.i("doResume");
+		this.mRenderSurfaceView.onResume();
+		this.mEngine.start();
+		this.onResumeGame();
+	}
+
+	private void doPause() {
+		Debug.i("doPause");
+		this.mEngine.stop();
 		this.mRenderSurfaceView.onPause();
+		this.onPauseGame();
 	}
 
 	// ===========================================================
@@ -114,7 +162,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, "AndEngine");
 		try {
 			this.mWakeLock.acquire();
-		} catch (SecurityException e) {
+		} catch (final SecurityException e) {
 			Debug.e("You have to add\n\t<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>\nto your AndroidManifest.xml !", e);
 		}
 	}

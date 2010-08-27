@@ -174,7 +174,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void setSurfaceSize(final int pSurfaceWidth, final int pSurfaceHeight) {
-		Debug.w("SurfaceView size changed to (width x height): " + pSurfaceWidth + " x " + pSurfaceHeight, new Exception());
+//		Debug.w("SurfaceView size changed to (width x height): " + pSurfaceWidth + " x " + pSurfaceHeight, new Exception());
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
 	}
@@ -366,7 +366,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onPause() {
-		this.stop();
+
 	}
 
 	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {

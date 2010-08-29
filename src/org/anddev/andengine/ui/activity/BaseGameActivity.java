@@ -61,8 +61,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	protected void onResume() {
-		super.onResume();
-		this.mEngine.onResume();
+		super.onResume(); 
 
 		if(this.mPaused && this.mHasWindowFocused) {
 			this.doResume();
@@ -72,7 +71,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	@Override
 	protected void onPause() {
 		super.onPause();
-		this.mEngine.onPause();
 
 		if(!this.mPaused) {
 			this.doPause();
@@ -103,10 +101,12 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			this.mEngine.onLoadComplete(scene);
 			this.onLoadComplete();
 			this.mGameLoaded = true;
-		}
+		}		
 		
 		this.mPaused = false;
 		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
+		this.mEngine.onResume();
+		
 		this.mRenderSurfaceView.onResume();
 		this.mEngine.start();
 		this.onGameResumed();
@@ -115,6 +115,8 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	private void doPause() {
 		this.mPaused = true;
 		this.releaseWakeLock();
+		
+		this.mEngine.onPause();
 		this.mEngine.stop();
 		this.mRenderSurfaceView.onPause();
 		this.onGamePaused();
@@ -135,6 +137,14 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public void onGameResumed() {
+	}
+	
+	@Override
+	public void onGamePaused() {
+	}
 
 	// ===========================================================
 	// Methods

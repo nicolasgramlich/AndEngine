@@ -70,7 +70,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final float width = super.mWidth;
 		super.mBaseWidth = width;
 
-		super.mHeight = pTMXTiledMap.getTileWidth() * this.mTileColumns;
+		super.mHeight = pTMXTiledMap.getTileHeight() * this.mTileColumns;
 		final float height = super.mHeight;
 		super.mBaseHeight = height;
 

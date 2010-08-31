@@ -33,40 +33,48 @@ public class Debug implements Constants {
 	// Methods
 	// ===========================================================
 
-	public static void v(final String pMessage){
+	public static void v(final String pMessage) {
 		Log.v(DEBUGTAG, pMessage);
 	}
 
-	public static void d(final String pMessage){
+	public static void d(final String pMessage) {
 		Log.d(DEBUGTAG, pMessage);
 	}
 
-	public static void i(final String pMessage){
+	public static void i(final String pMessage) {
 		Log.i(DEBUGTAG, pMessage);
 	}
 
-	public static void w(final Throwable pThrowable){
+	public static void w(final String pMessage) {
+		Debug.w(pMessage, null);
+	}
+
+	public static void w(final Throwable pThrowable) {
 		Debug.w(DEBUGTAG, pThrowable);
 	}
 
-	public static void w(final String pMessage, final Throwable pThrowable){
-		if(pThrowable == null){
+	public static void w(final String pMessage, final Throwable pThrowable) {
+		if(pThrowable == null) {
 			Log.w(DEBUGTAG, pMessage);
 			(new Exception()).printStackTrace();
-		}else{
+		} else {
 			Log.w(DEBUGTAG, pMessage, pThrowable);
 		}
 	}
 
-	public static void e(final Throwable pThrowable){
+	public static void e(final String pMessage) {
+		Debug.e(pMessage, null);
+	}
+
+	public static void e(final Throwable pThrowable) {
 		Debug.e(DEBUGTAG, pThrowable);
 	}
 
-	public static void e(final String pMessage, final Throwable pThrowable){
-		if(pThrowable == null){
+	public static void e(final String pMessage, final Throwable pThrowable) {
+		if(pThrowable == null) {
 			Log.e(DEBUGTAG, pMessage);
 			(new Exception()).printStackTrace();
-		}else{
+		} else {
 			Log.e(DEBUGTAG, pMessage, pThrowable);
 		}
 	}

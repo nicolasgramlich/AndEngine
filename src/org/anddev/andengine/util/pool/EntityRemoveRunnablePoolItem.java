@@ -1,13 +1,13 @@
 package org.anddev.andengine.util.pool;
 
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.entity.layer.ILayer;
+
 /**
- * @author Valentin Milea
  * @author Nicolas Gramlich
- * 
- * @since 23:03:58 - 21.08.2010
- * @param <T>
+ * @since 00:53:22 - 28.08.2010
  */
-public abstract class RunnablePoolUpdateHandler<T extends RunnablePoolItem> extends PoolUpdateHandler<T> {
+public class EntityRemoveRunnablePoolItem extends RunnablePoolItem {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,32 +16,37 @@ public abstract class RunnablePoolUpdateHandler<T extends RunnablePoolItem> exte
 	// Fields
 	// ===========================================================
 
+	protected IEntity mEntity;
+	protected ILayer mLayer;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RunnablePoolUpdateHandler() {
-
-	}
-
-	public RunnablePoolUpdateHandler(final int pInitialPoolSize) {
-		super(pInitialPoolSize);
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public void setEntity(final IEntity pEntity) {
+		this.mEntity = pEntity;
+	}
+
+	public void setLayer(final ILayer pLayer) {
+		this.mLayer = pLayer;
+	}
+
+	public void set(final IEntity pEntity, final ILayer pLayer) {
+		this.mEntity = pEntity;
+		this.mLayer = pLayer;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	protected abstract T onAllocatePoolItem();
-
-	@Override
-	protected void onHandlePoolItem(final T pRunnablePoolItem) {
-		pRunnablePoolItem.run();
+	public void run() {
+		this.mLayer.removeEntity(this.mEntity);
 	}
 
 	// ===========================================================

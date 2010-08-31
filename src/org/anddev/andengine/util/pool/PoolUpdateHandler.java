@@ -26,7 +26,7 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public PoolUpdateHandler() {
 		this(0);
 	}
@@ -34,8 +34,8 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 	public PoolUpdateHandler(final int pInitialPoolSize) {
 		this.mPool = new Pool<T>(pInitialPoolSize) {
 			@Override
-			protected T allocatePoolItem() {
-				return PoolUpdateHandler.this.allocatePoolItem();
+			protected T onAllocatePoolItem() {
+				return PoolUpdateHandler.this.onAllocatePoolItem();
 			}
 		};
 	}
@@ -48,9 +48,9 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract T allocatePoolItem();
+	protected abstract T onAllocatePoolItem();
 
-	protected abstract void handlePoolItem(final T pPoolItem);
+	protected abstract void onHandlePoolItem(final T pPoolItem);
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
@@ -65,7 +65,7 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 
 				for(int i = 0; i < count; i++) {
 					item = scheduled.get(i);
-					this.handlePoolItem(item);
+					this.onHandlePoolItem(item);
 					pool.recylePoolItem(item);
 				}
 

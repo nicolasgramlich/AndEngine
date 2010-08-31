@@ -37,12 +37,16 @@ public abstract class PoolItem {
 	// Methods
 	// ===========================================================
 
+	protected void onRecycle() {
+
+	}
+
 	public void recycle() {
 		if(this.mParent == null) {
 			throw new IllegalStateException("Item already recycled!");
 		}
 
-		this.mParent.recyclePoolItem(this);
+		this.mParent.recycle(this);
 	}
 
 	// ===========================================================

@@ -1,13 +1,10 @@
 package org.anddev.andengine.util.pool;
 
 /**
- * @author Valentin Milea
  * @author Nicolas Gramlich
- * 
- * @since 23:03:58 - 21.08.2010
- * @param <T>
+ * @since 23:16:25 - 31.08.2010
  */
-public abstract class RunnablePoolUpdateHandler<T extends RunnablePoolItem> extends PoolUpdateHandler<T> {
+public class EntityRemoveRunnablePoolUpdateHandler extends RunnablePoolUpdateHandler<EntityRemoveRunnablePoolItem> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,14 +17,6 @@ public abstract class RunnablePoolUpdateHandler<T extends RunnablePoolItem> exte
 	// Constructors
 	// ===========================================================
 
-	public RunnablePoolUpdateHandler() {
-
-	}
-
-	public RunnablePoolUpdateHandler(final int pInitialPoolSize) {
-		super(pInitialPoolSize);
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -37,11 +26,8 @@ public abstract class RunnablePoolUpdateHandler<T extends RunnablePoolItem> exte
 	// ===========================================================
 
 	@Override
-	protected abstract T onAllocatePoolItem();
-
-	@Override
-	protected void onHandlePoolItem(final T pRunnablePoolItem) {
-		pRunnablePoolItem.run();
+	protected EntityRemoveRunnablePoolItem onAllocatePoolItem() {
+		return new EntityRemoveRunnablePoolItem();
 	}
 
 	// ===========================================================

@@ -11,7 +11,7 @@ public class LoopModifier extends BaseShapeModifier {
 	// Constants
 	// ===========================================================
 
-	private static final int LOOP_CONTINUOUS = -1;
+	public static final int LOOP_CONTINUOUS = -1;
 
 	// ===========================================================
 	// Fields

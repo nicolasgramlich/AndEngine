@@ -3,6 +3,7 @@ package org.anddev.andengine.audio.music;
 import org.anddev.andengine.audio.BaseAudioEntity;
 
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 
 /**
  * @author Nicolas Gramlich
@@ -34,6 +35,10 @@ public class Music extends BaseAudioEntity {
 
 	public boolean isPlaying() {
 		return this.mMediaPlayer.isPlaying();
+	}
+	
+	public MediaPlayer getMediaPlayer() {
+		return this.mMediaPlayer;
 	}
 
 	// ===========================================================
@@ -97,6 +102,10 @@ public class Music extends BaseAudioEntity {
 	
 	public void seekTo(final int pMilliseconds) {
 		this.mMediaPlayer.seekTo(pMilliseconds);
+	}
+	
+	public void setOnCompletionListener(final OnCompletionListener pOnCompletionListener) {
+		this.mMediaPlayer.setOnCompletionListener(pOnCompletionListener);
 	}
 
 	// ===========================================================

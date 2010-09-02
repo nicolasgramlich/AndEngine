@@ -13,7 +13,7 @@ public class BoundCamera extends Camera {
 	// Fields
 	// ===========================================================
 
-	private boolean mBoundsEnabled;
+	protected boolean mBoundsEnabled;
 
 	private float mBoundsMinX;
 	private float mBoundsMaxX;
@@ -70,7 +70,7 @@ public class BoundCamera extends Camera {
 		super.setCenter(pCenterX, pCenterY);
 
 		if(this.mBoundsEnabled) {
-			super.setCenter(this.determineBoundedX(), this.determineBoundedY());
+			ensureInBounds();
 		}
 	}
 
@@ -81,6 +81,10 @@ public class BoundCamera extends Camera {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected void ensureInBounds() {
+		super.setCenter(this.determineBoundedX(), this.determineBoundedY());
+	}
 
 	private float determineBoundedX() {
 		if(this.mBoundsWidth < this.getWidth()) {

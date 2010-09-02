@@ -41,6 +41,10 @@ public class ZoomCamera extends BoundCamera {
 
 	public void setZoomFactor(final float pZoomFactor) {
 		this.mZoomFactor = pZoomFactor;
+
+		if(this.mBoundsEnabled) {
+			this.ensureInBounds();
+		}
 	}
 
 	// ===========================================================

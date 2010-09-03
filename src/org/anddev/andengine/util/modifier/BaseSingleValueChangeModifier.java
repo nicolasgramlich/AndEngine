@@ -1,12 +1,12 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 10:49:51 - 03.09.2010
+ * @param <T>
  */
-public class RotationByModifier extends SingleValueChangeShapeModifier {
+public abstract class BaseSingleValueChangeModifier<T> extends BaseDurationModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,21 +15,24 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// Fields
 	// ===========================================================
 
+	private final float mValueChangePerSecond;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotationByModifier(final float pDuration, final float pRotation) {
-		super(pDuration, pRotation);
+	public BaseSingleValueChangeModifier(final float pDuration, final float pValueChange) {
+		this(pDuration, pValueChange, null);
 	}
 
-	protected RotationByModifier(final RotationByModifier pRotationByModifier) {
-		super(pRotationByModifier);
+	public BaseSingleValueChangeModifier(final float pDuration, final float pValueChange, final IModifierListener<T> pModiferListener) {
+		super(pDuration, pModiferListener);
+		this.mValueChangePerSecond = pValueChange / pDuration;
 	}
 
-	@Override
-	public RotationByModifier clone(){
-		return new RotationByModifier(this);
+	protected BaseSingleValueChangeModifier(final BaseSingleValueChangeModifier<T> pBaseSingleValueChangeModifier) {
+		super(pBaseSingleValueChangeModifier);
+		this.mValueChangePerSecond = pBaseSingleValueChangeModifier.mValueChangePerSecond;
 	}
 
 	// ===========================================================
@@ -40,9 +43,16 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onChangeValue(final T pItem, final float pValue);
+
 	@Override
-	protected void onChangeValue(final IShape pShape, final float pValue) {
-		pShape.setRotation(pShape.getRotation() + pValue);
+	protected void onManagedInitialize(final T pItem) {
+
+	}
+
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed, final T pItem) {
+		this.onChangeValue(pItem, this.mValueChangePerSecond * pSecondsElapsed);
 	}
 
 	// ===========================================================

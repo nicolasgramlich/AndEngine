@@ -1,12 +1,12 @@
-package org.anddev.andengine.entity.shape.modifier.util;
+package org.anddev.andengine.util.modifier.util;
 
-import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
+import org.anddev.andengine.util.modifier.IModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 13:04:17 - 05.05.2010
+ * @since 11:16:36 - 03.09.2010
  */
-public class ShapeModifierUtils {
+public class ModifierUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,26 +31,26 @@ public class ShapeModifierUtils {
 	// Methods
 	// ===========================================================
 
-	public static IShapeModifier getShapeModifierWithLongestDuration(final IShapeModifier[] pShapeModifiers){
-		IShapeModifier out = null;
+	public static <T> IModifier<T> getModifierWithLongestDuration(final IModifier<T>[] pModifiers){
+		IModifier<T> out = null;
 		float longestDuration = Float.MIN_VALUE;
 
-		for(int i = pShapeModifiers.length - 1; i >= 0; i--) {
-			final float duration = pShapeModifiers[i].getDuration();
+		for(int i = pModifiers.length - 1; i >= 0; i--) {
+			final float duration = pModifiers[i].getDuration();
 			if(duration > longestDuration) {
 				longestDuration = duration;
-				out = pShapeModifiers[i];
+				out = pModifiers[i];
 			}
 		}
 
 		return out;
 	}
 
-	public static float getSequenceDurationOfShapeModifier(final IShapeModifier[] pShapeModifiers){
+	public static float getSequenceDurationOfModifier(final IModifier<?>[] pModifiers){
 		float duration = Float.MIN_VALUE;
 
-		for(int i = pShapeModifiers.length - 1; i >= 0; i--) {
-			duration += pShapeModifiers[i].getDuration();
+		for(int i = pModifiers.length - 1; i >= 0; i--) {
+			duration += pModifiers[i].getDuration();
 		}
 
 		return duration;

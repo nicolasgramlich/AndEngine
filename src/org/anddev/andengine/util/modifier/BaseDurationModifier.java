@@ -1,12 +1,12 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:10:42 - 19.03.2010
+ * @since 10:48:13 - 03.09.2010
+ * @param <T>
  */
-public abstract class BaseShapeDurationModifier extends BaseShapeModifier {
+public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,21 +22,21 @@ public abstract class BaseShapeDurationModifier extends BaseShapeModifier {
 	// Constructors
 	// ===========================================================
 
-	public BaseShapeDurationModifier() {
+	public BaseDurationModifier() {
 		this(-1, null);
 	}
 
-	public BaseShapeDurationModifier(final float pDuration) {
+	public BaseDurationModifier(final float pDuration) {
 		this(pDuration, null);
 	}
 
-	public BaseShapeDurationModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pShapeModiferListener);
+	public BaseDurationModifier(final float pDuration, final IModifierListener<T> pModiferListener) {
+		super(pModiferListener);
 		this.mDuration = pDuration;
 	}
 
-	protected BaseShapeDurationModifier(final BaseShapeDurationModifier pBaseModifier) {
-		this(pBaseModifier.mDuration, pBaseModifier.mShapeModifierListener);
+	protected BaseDurationModifier(final BaseDurationModifier<T> pBaseModifier) {
+		this(pBaseModifier.mDuration, pBaseModifier.mModifierListener);
 	}
 
 	// ===========================================================
@@ -55,15 +55,15 @@ public abstract class BaseShapeDurationModifier extends BaseShapeModifier {
 		return this.mDuration;
 	}
 
-	protected abstract void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape);
+	protected abstract void onManagedUpdate(final float pSecondsElapsed, final T pItem);
 
-	protected abstract void onManagedInitializeShape(final IShape pShape);
+	protected abstract void onManagedInitialize(final T pItem);
 
 	@Override
-	public final void onUpdateShape(final float pSecondsElapsed, final IShape pShape) {
+	public final void onUpdate(final float pSecondsElapsed, final T pItem) {
 		if(!this.mFinished){
 			if(this.mTotalSecondsElapsed == 0) {
-				this.onManagedInitializeShape(pShape);
+				this.onManagedInitialize(pItem);
 			}
 
 			final float secondsToElapse;
@@ -74,13 +74,13 @@ public abstract class BaseShapeDurationModifier extends BaseShapeModifier {
 			}
 
 			this.mTotalSecondsElapsed += secondsToElapse;
-			this.onManagedUpdateShape(secondsToElapse, pShape);
+			this.onManagedUpdate(secondsToElapse, pItem);
 
 			if(this.mDuration != -1 && this.mTotalSecondsElapsed >= this.mDuration) {
 				this.mTotalSecondsElapsed = this.mDuration;
 				this.mFinished = true;
-				if(this.mShapeModifierListener != null) {
-					this.mShapeModifierListener.onModifierFinished(this, pShape);
+				if(this.mModifierListener != null) {
+					this.mModifierListener.onModifierFinished(this, pItem);
 				}
 			}
 		}

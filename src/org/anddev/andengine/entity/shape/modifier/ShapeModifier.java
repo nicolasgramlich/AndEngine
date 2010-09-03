@@ -1,12 +1,13 @@
 package org.anddev.andengine.entity.shape.modifier;
 
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.util.modifier.BaseModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 10:53:16 - 03.09.2010
  */
-public class RotationByModifier extends SingleValueChangeShapeModifier {
+public abstract class ShapeModifier extends BaseModifier<IShape> implements IShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,17 +20,16 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotationByModifier(final float pDuration, final float pRotation) {
-		super(pDuration, pRotation);
+	public ShapeModifier() {
+		super();
 	}
 
-	protected RotationByModifier(final RotationByModifier pRotationByModifier) {
-		super(pRotationByModifier);
+	public ShapeModifier(final IShapeModifierListener pShapeModiferListener) {
+		super(pShapeModiferListener);
 	}
 
-	@Override
-	public RotationByModifier clone(){
-		return new RotationByModifier(this);
+	protected ShapeModifier(final ShapeModifier pShapeModifier) {
+		super(pShapeModifier);
 	}
 
 	// ===========================================================
@@ -39,11 +39,6 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected void onChangeValue(final IShape pShape, final float pValue) {
-		pShape.setRotation(pShape.getRotation() + pValue);
-	}
 
 	// ===========================================================
 	// Methods

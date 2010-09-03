@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich
- * @since 23:29:22 - 19.03.2010
+ * @since 10:51:46 - 03.09.2010
+ * @param <T>
  */
-public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanModifier {
+public abstract class BaseDoubleValueSpanModifier<T> extends BaseSingleValueSpanModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,17 +31,17 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null, pEaseFunction);
 	}
 
-	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener) {
-		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModiferListener, IEaseFunction.DEFAULT);
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener<T> pModiferListener) {
+		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pModiferListener, IEaseFunction.DEFAULT);
 	}
 
-	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromValueA, pToValueA, pShapeModiferListener, pEaseFunction);
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener<T> pModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pModiferListener, pEaseFunction);
 		this.mFromValueB = pFromValueB;
 		this.mValueSpanB = pToValueB - pFromValueB;
 	}
 
-	protected BaseDoubleValueSpanModifier(final BaseDoubleValueSpanModifier pBaseDoubleValueSpanModifier) {
+	protected BaseDoubleValueSpanModifier(final BaseDoubleValueSpanModifier<T> pBaseDoubleValueSpanModifier) {
 		super(pBaseDoubleValueSpanModifier);
 		this.mFromValueB = pBaseDoubleValueSpanModifier.mFromValueB;
 		this.mValueSpanB = pBaseDoubleValueSpanModifier.mValueSpanB;
@@ -55,17 +55,17 @@ public abstract class BaseDoubleValueSpanModifier extends BaseSingleValueSpanMod
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValues(final IShape pShape, final float pValueA, final float pValueB);
-	protected abstract void onSetValues(final IShape pShape, final float pPercentageDone, final float pValueA, final float pValueB);
+	protected abstract void onSetInitialValues(final T pItem, final float pValueA, final float pValueB);
+	protected abstract void onSetValues(final T pItem, final float pPercentageDone, final float pValueA, final float pValueB);
 
 	@Override
-	protected void onSetInitialValue(final IShape pShape, final float pValueA) {
-		this.onSetInitialValues(pShape, pValueA, this.mFromValueB);
+	protected void onSetInitialValue(final T pItem, final float pValueA) {
+		this.onSetInitialValues(pItem, pValueA, this.mFromValueB);
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, final float pPercentageDone, final float pValueA) {
-		this.onSetValues(pShape, pPercentageDone, pValueA, this.mFromValueB + pPercentageDone * this.mValueSpanB);
+	protected void onSetValue(final T pItem, final float pPercentageDone, final float pValueA) {
+		this.onSetValues(pItem, pPercentageDone, pValueA, this.mFromValueB + pPercentageDone * this.mValueSpanB);
 	}
 
 	// ===========================================================

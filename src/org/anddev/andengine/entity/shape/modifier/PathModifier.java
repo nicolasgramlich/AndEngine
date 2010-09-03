@@ -1,15 +1,17 @@
 package org.anddev.andengine.entity.shape.modifier;
 
 import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.entity.shape.modifier.SequenceModifier.ISubSequenceModifierListener;
 import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 import org.anddev.andengine.util.Path;
+import org.anddev.andengine.util.modifier.IModifier;
+import org.anddev.andengine.util.modifier.SequenceModifier;
+import org.anddev.andengine.util.modifier.SequenceModifier.ISubSequenceModifierListener;
 
 /**
  * @author Nicolas Gramlich
  * @since 16:50:02 - 16.06.2010
  */
-public class PathModifier extends BaseShapeModifier {
+public class PathModifier extends ShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,7 +20,7 @@ public class PathModifier extends BaseShapeModifier {
 	// Fields
 	// ===========================================================
 
-	private final SequenceModifier mSequenceModifier;
+	private final SequenceModifier<IShape> mSequenceModifier;
 
 	private IPathModifierListener mPathModifierListener;
 
@@ -56,7 +58,7 @@ public class PathModifier extends BaseShapeModifier {
 		}
 
 		this.mPath = pPath;
-		this.mShapeModifierListener = pShapeModiferListener;
+		this.mModifierListener = pShapeModiferListener;
 		this.mPathModifierListener = pPathModifierListener;
 
 		final MoveModifier[] moveModifiers = new MoveModifier[pathSize - 1];
@@ -75,8 +77,8 @@ public class PathModifier extends BaseShapeModifier {
 				 * fire onWaypointPassed of mPathModifierListener. */
 				moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null, pEaseFunction){
 					@Override
-					protected void onManagedInitializeShape(final IShape pShape) {
-						super.onManagedInitializeShape(pShape);
+					protected void onManagedInitialize(final IShape pShape) {
+						super.onManagedInitialize(pShape);
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pShape, 0);
 						}
@@ -90,21 +92,21 @@ public class PathModifier extends BaseShapeModifier {
 
 		/* Create a new SequenceModifier and register the listeners that
 		 * call through to mShapeModifierListener and mPathModifierListener. */
-		this.mSequenceModifier = new SequenceModifier(
+		this.mSequenceModifier = new SequenceModifier<IShape>(
 				new IShapeModifierListener() {
 					@Override
-					public void onModifierFinished(final IShapeModifier pShapeModifier, final IShape pShape) {
+					public void onModifierFinished(final IModifier<IShape> pShapeModifier, final IShape pShape) {
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pShape, modifierCount);
 						}
-						if(PathModifier.this.mShapeModifierListener != null) {
-							PathModifier.this.mShapeModifierListener.onModifierFinished(PathModifier.this, pShape);
+						if(PathModifier.this.mModifierListener != null) {
+							PathModifier.this.mModifierListener.onModifierFinished(PathModifier.this, pShape);
 						}
 					}
 				},
-				new ISubSequenceModifierListener() {
+				new ISubSequenceModifierListener<IShape>() {
 					@Override
-					public void onSubSequenceFinished(final IShapeModifier pShapeModifier, final IShape pShape, final int pIndex) {
+					public void onSubSequenceFinished(final IModifier<IShape> pShapeModifier, final IShape pShape, final int pIndex) {
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pShape, pIndex);
 						}
@@ -160,8 +162,8 @@ public class PathModifier extends BaseShapeModifier {
 	}
 
 	@Override
-	public void onUpdateShape(final float pSecondsElapsed, final IShape pShape) {
-		this.mSequenceModifier.onUpdateShape(pSecondsElapsed, pShape);
+	public void onUpdate(final float pSecondsElapsed, final IShape pShape) {
+		this.mSequenceModifier.onUpdate(pSecondsElapsed, pShape);
 	}
 
 	// ===========================================================

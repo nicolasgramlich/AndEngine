@@ -58,17 +58,7 @@ public class ColorBackground extends BaseBackground {
 	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
 	 */
 	@Override
-	public void setColor(final float pRed, final float pGreen, final float pBlue) throws IllegalArgumentException {
-		if (pRed < 0.0f || pRed > 1.0f) {
-			throw new IllegalArgumentException("pRed must be a number between 0.0 and 1.0, inclusive.");
-		}
-		if (pGreen < 0.0f || pGreen > 1.0f) {
-			throw new IllegalArgumentException("pGreen must be a number between 0.0 and 1.0, inclusive.");
-		}
-		if (pBlue < 0.0f || pBlue > 1.0f) {
-			throw new IllegalArgumentException("pBlue must be a number between 0.0 and 1.0, inclusive.");
-		}
-
+	public void setColor(final float pRed, final float pGreen, final float pBlue) {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
@@ -81,10 +71,7 @@ public class ColorBackground extends BaseBackground {
 	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pAlpha The alpha color value. Should be between 0.0 and 1.0, inclusive.
 	 */
-	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) throws IllegalArgumentException {
-		if (pAlpha < 0.0f || pAlpha > 1.0f) {
-			throw new IllegalArgumentException("pAlpha must be a number between 0.0 and 1.0, inclusive.");
-		}
+	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.setColor(pRed, pGreen, pBlue);
 		this.mAlpha = pAlpha;
 	}

@@ -64,6 +64,11 @@ public class ScaleAtModifier extends ScaleModifier {
 		this.mScaleCenterY = pScaleAtModifier.mScaleCenterY;
 	}
 
+	@Override
+	public ScaleAtModifier clone(){
+		return new ScaleAtModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -73,8 +78,8 @@ public class ScaleAtModifier extends ScaleModifier {
 	// ===========================================================
 
 	@Override
-	protected void onManagedInitializeShape(final IShape pShape) {
-		super.onManagedInitializeShape(pShape);
+	protected void onManagedInitialize(final IShape pShape) {
+		super.onManagedInitialize(pShape);
 		pShape.setScaleCenter(this.mScaleCenterX, this.mScaleCenterY);
 	}
 

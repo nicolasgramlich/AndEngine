@@ -1,12 +1,14 @@
 package org.anddev.andengine.entity.shape.modifier;
 
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
+import org.anddev.andengine.util.modifier.BaseTripleValueSpanModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 15:35:18 - 29.06.2010
  */
-public class RotationByModifier extends SingleValueChangeShapeModifier {
+public abstract class TripleValueSpanShapeModifier extends BaseTripleValueSpanModifier<IShape> implements IShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,17 +21,16 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotationByModifier(final float pDuration, final float pRotation) {
-		super(pDuration, pRotation);
+	public TripleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pEaseFunction);
 	}
 
-	protected RotationByModifier(final RotationByModifier pRotationByModifier) {
-		super(pRotationByModifier);
+	public TripleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pShapeModiferListener, pEaseFunction);
 	}
 
-	@Override
-	public RotationByModifier clone(){
-		return new RotationByModifier(this);
+	protected TripleValueSpanShapeModifier(final TripleValueSpanShapeModifier pTripleValueSpanModifier) {
+		super(pTripleValueSpanModifier);
 	}
 
 	// ===========================================================
@@ -39,11 +40,6 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected void onChangeValue(final IShape pShape, final float pValue) {
-		pShape.setRotation(pShape.getRotation() + pValue);
-	}
 
 	// ===========================================================
 	// Methods

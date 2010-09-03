@@ -1,5 +1,8 @@
 package org.anddev.andengine.entity.scene.background;
 
+import org.anddev.andengine.util.modifier.IModifier;
+import org.anddev.andengine.util.modifier.ModifierList;
+
 
 
 /**
@@ -15,6 +18,8 @@ public abstract class BaseBackground implements IBackground {
 	// Fields
 	// ===========================================================
 
+	private final ModifierList<IBackground> mBackgroundModifiers = new ModifierList<IBackground>(this);
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -28,13 +33,28 @@ public abstract class BaseBackground implements IBackground {
 	// ===========================================================
 
 	@Override
+	public void addBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
+		this.mBackgroundModifiers.add(pBackgroundModifier);
+	}
+
+	@Override
+	public boolean removeBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
+		return this.mBackgroundModifiers.remove(pBackgroundModifier);
+	}
+
+	@Override
+	public void clearBackgroundModifiers() {
+		this.mBackgroundModifiers.clear();
+	}
+
+	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		/* Nothing. */
+		this.mBackgroundModifiers.onUpdate(pSecondsElapsed);
 	}
 
 	@Override
 	public void reset() {
-		/* Nothing. */
+		this.mBackgroundModifiers.reset();
 	}
 
 	// ===========================================================

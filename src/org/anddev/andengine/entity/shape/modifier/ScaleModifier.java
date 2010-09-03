@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
  * @author Nicolas Gramlich
  * @since 23:37:53 - 19.03.2010
  */
-public class ScaleModifier extends BaseDoubleValueSpanModifier {
+public class ScaleModifier extends DoubleValueSpanShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

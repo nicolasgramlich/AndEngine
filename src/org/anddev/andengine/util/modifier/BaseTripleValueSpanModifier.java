@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:35:18 - 29.06.2010
+ * @since 10:52:31 - 03.09.2010
+ * @param <T>
  */
-public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanModifier {
+public abstract class BaseTripleValueSpanModifier<T> extends BaseDoubleValueSpanModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,13 +27,13 @@ public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanMod
 		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, null, pEaseFunction);
 	}
 
-	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModiferListener, pEaseFunction);
+	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IModifierListener<T> pModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pModiferListener, pEaseFunction);
 		this.mFromValueC = pFromValueC;
 		this.mValueSpanC = pToValueC - pFromValueC;
 	}
 
-	protected BaseTripleValueSpanModifier(final BaseTripleValueSpanModifier pBaseTripleValueSpanModifier) {
+	protected BaseTripleValueSpanModifier(final BaseTripleValueSpanModifier<T> pBaseTripleValueSpanModifier) {
 		super(pBaseTripleValueSpanModifier);
 		this.mFromValueC = pBaseTripleValueSpanModifier.mFromValueC;
 		this.mValueSpanC = pBaseTripleValueSpanModifier.mValueSpanC;
@@ -47,17 +47,17 @@ public abstract class BaseTripleValueSpanModifier extends BaseDoubleValueSpanMod
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValues(final IShape pShape, final float pValueA, final float pValueB, final float pValueC);
-	protected abstract void onSetValues(final IShape pShape, final float pPerctentageDone, final float pValueA, final float pValueB, final float pValueC);
+	protected abstract void onSetInitialValues(final T pItem, final float pValueA, final float pValueB, final float pValueC);
+	protected abstract void onSetValues(final T pItem, final float pPerctentageDone, final float pValueA, final float pValueB, final float pValueC);
 
 	@Override
-	protected void onSetInitialValues(final IShape pShape, final float pValueA, final float pValueB) {
-		this.onSetInitialValues(pShape, pValueA, pValueB, this.mFromValueC);
+	protected void onSetInitialValues(final T pItem, final float pValueA, final float pValueB) {
+		this.onSetInitialValues(pItem, pValueA, pValueB, this.mFromValueC);
 	}
 
 	@Override
-	protected void onSetValues(final IShape pShape, final float pPercentageDone, final float pValueA, final float pValueB) {
-		this.onSetValues(pShape, pPercentageDone, pValueA, pValueB, this.mFromValueC + pPercentageDone * this.mValueSpanC);
+	protected void onSetValues(final T pItem, final float pPercentageDone, final float pValueA, final float pValueB) {
+		this.onSetValues(pItem, pPercentageDone, pValueA, pValueB, this.mFromValueC + pPercentageDone * this.mValueSpanC);
 	}
 
 	// ===========================================================

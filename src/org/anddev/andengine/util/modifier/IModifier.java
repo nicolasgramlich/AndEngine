@@ -1,13 +1,11 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.util.modifier.IModifier;
 
 /**
  * @author Nicolas Gramlich
  * @since 11:17:50 - 19.03.2010
  */
-public interface IShapeModifier extends IModifier<IShape> {
+public interface IModifier<T> extends Cloneable {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -16,11 +14,26 @@ public interface IShapeModifier extends IModifier<IShape> {
 	// Methods
 	// ===========================================================
 
+	public void reset();
+
+	public boolean isFinished();
+	public boolean isRemoveWhenFinished();
+	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
+
+	public IModifier<T> clone();
+
+	public float getDuration();
+
+	public void onUpdate(final float pSecondsElapsed, final T pItem);
+
+	public IModifierListener<T> getModifierListener();
+	public void setModifierListener(final IModifierListener<T> pModiferListener);
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface IShapeModifierListener extends IModifierListener<IShape>{
+	public static interface IModifierListener<T> {
 		// ===========================================================
 		// Final Fields
 		// ===========================================================
@@ -28,5 +41,7 @@ public interface IShapeModifier extends IModifier<IShape> {
 		// ===========================================================
 		// Methods
 		// ===========================================================
+
+		public void onModifierFinished(final IModifier<T> pModifier, final T pItem);
 	}
 }

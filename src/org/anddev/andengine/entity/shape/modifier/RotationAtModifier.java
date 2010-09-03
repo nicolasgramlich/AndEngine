@@ -54,6 +54,11 @@ public class RotationAtModifier extends RotationModifier {
 		this.mRotationCenterY = pRotationAtModifier.mRotationCenterY;
 	}
 
+	@Override
+	public RotationAtModifier clone(){
+		return new RotationAtModifier(this);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -63,8 +68,8 @@ public class RotationAtModifier extends RotationModifier {
 	// ===========================================================
 
 	@Override
-	protected void onManagedInitializeShape(final IShape pShape) {
-		super.onManagedInitializeShape(pShape);
+	protected void onManagedInitialize(final IShape pShape) {
+		super.onManagedInitialize(pShape);
 		pShape.setRotationCenter(this.mRotationCenterX, this.mRotationCenterY);
 	}
 

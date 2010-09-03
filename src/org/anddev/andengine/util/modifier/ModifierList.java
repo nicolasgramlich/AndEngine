@@ -1,48 +1,67 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import java.util.ArrayList;
+
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 14:34:57 - 03.09.2010
  */
-public class RotationByModifier extends SingleValueChangeShapeModifier {
+public class ModifierList<T> extends ArrayList<IModifier<T>> implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final long serialVersionUID = 1610345592534873475L;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
+	private final T mTarget;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotationByModifier(final float pDuration, final float pRotation) {
-		super(pDuration, pRotation);
-	}
-
-	protected RotationByModifier(final RotationByModifier pRotationByModifier) {
-		super(pRotationByModifier);
-	}
-
-	@Override
-	public RotationByModifier clone(){
-		return new RotationByModifier(this);
+	public ModifierList(final T pTarget){
+		this.mTarget = pTarget;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	public T getTarget() {
+		return this.mTarget;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	protected void onChangeValue(final IShape pShape, final float pValue) {
-		pShape.setRotation(pShape.getRotation() + pValue);
+	public void onUpdate(final float pSecondsElapsed) {
+		final ArrayList<IModifier<T>> modifiers = this;
+		final int modifierCount = this.size();
+		if(modifierCount > 0) {
+			for(int i = modifierCount - 1; i >= 0; i--) {
+				final IModifier<T> modifier = modifiers.get(i);
+				modifier.onUpdate(pSecondsElapsed, this.mTarget);
+				if(modifier.isFinished() && modifier.isRemoveWhenFinished()) {
+					modifiers.remove(i);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void reset() {
+		final ArrayList<IModifier<T>> modifiers = this;
+		for(int i = modifiers.size() - 1; i >= 0; i--) {
+			modifiers.get(i).reset();
+		}
 	}
 
 	// ===========================================================

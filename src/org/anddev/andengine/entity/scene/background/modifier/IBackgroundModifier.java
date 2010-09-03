@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.scene.background.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.util.modifier.IModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:17:50 - 19.03.2010
+ * @since 14:55:54 - 03.09.2010
  */
-public interface IShapeModifier extends IModifier<IShape> {
+public interface IBackgroundModifier extends IModifier<IBackground> {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -20,7 +20,7 @@ public interface IShapeModifier extends IModifier<IShape> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface IShapeModifierListener extends IModifierListener<IShape>{
+	public static interface IBackgroundModifierListener extends IModifierListener<IBackground>{
 		// ===========================================================
 		// Final Fields
 		// ===========================================================

@@ -1,14 +1,13 @@
 package org.anddev.andengine.entity.shape;
 
-import java.util.ArrayList;
-
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.util.modifier.IModifier;
+import org.anddev.andengine.util.modifier.ModifierList;
 
 /**
  * @author Nicolas Gramlich
@@ -61,8 +60,7 @@ public abstract class Shape extends Entity implements IShape {
 	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
-	private final ArrayList<IShapeModifier> mShapeModifiers = new ArrayList<IShapeModifier>();
-	private int mShapeModifierCount = 0;
+	private final ModifierList<IShape> mShapeModifiers = new ModifierList<IShape>(this);
 
 	private boolean mCullingEnabled = false;
 
@@ -394,23 +392,17 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	@Override
-	public void addShapeModifier(final IShapeModifier pShapeModifier) {
+	public void addShapeModifier(final IModifier<IShape> pShapeModifier) {
 		this.mShapeModifiers.add(pShapeModifier);
-		this.mShapeModifierCount++;
 	}
 
 	@Override
-	public void removeShapeModifier(final IShapeModifier pShapeModifier) {
-		this.mShapeModifierCount--;
-		final boolean success = this.mShapeModifiers.remove(pShapeModifier);
-		if(success == false) {
-			this.mShapeModifierCount++;
-		}
+	public boolean removeShapeModifier(final IModifier<IShape> pShapeModifier) {
+		return this.mShapeModifiers.remove(pShapeModifier);
 	}
 
 	@Override
 	public void clearShapeModifiers() {
-		this.mShapeModifierCount = 0;
 		this.mShapeModifiers.clear();
 	}
 
@@ -464,7 +456,7 @@ public abstract class Shape extends Entity implements IShape {
 			}
 		}
 
-		this.updateShapeModifiers(pSecondsElapsed);
+		this.mShapeModifiers.onUpdate(pSecondsElapsed);
 	}
 
 	@Override
@@ -554,30 +546,12 @@ public abstract class Shape extends Entity implements IShape {
 		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
-		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
-		for(int i = shapeModifiers.size() - 1; i >= 0; i--) {
-			shapeModifiers.get(i).reset();
-		}
+		this.mShapeModifiers.reset();
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private void updateShapeModifiers(final float pSecondsElapsed) {
-		final ArrayList<IShapeModifier> shapeModifiers = this.mShapeModifiers;
-		final int shapeModifierCount = this.mShapeModifierCount;
-		if(shapeModifierCount > 0) {
-			for(int i = shapeModifierCount - 1; i >= 0; i--) {
-				final IShapeModifier shapeModifier = shapeModifiers.get(i);
-				shapeModifier.onUpdateShape(pSecondsElapsed, this);
-				if(shapeModifier.isFinished() && shapeModifier.isRemoveWhenFinished()) { // TODO <-- could be combined into one function.
-					this.mShapeModifierCount--;
-					shapeModifiers.remove(i);
-				}
-			}
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

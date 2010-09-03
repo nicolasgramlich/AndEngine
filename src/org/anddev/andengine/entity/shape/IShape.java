@@ -2,7 +2,7 @@ package org.anddev.andengine.entity.shape;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
-import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
+import org.anddev.andengine.util.modifier.IModifier;
 
 /**
  * @author Nicolas Gramlich
@@ -94,8 +94,8 @@ public interface IShape extends IEntity, ITouchArea {
 	public float getWidthScaled();
 	public float getHeightScaled();
 
-	public void addShapeModifier(final IShapeModifier pShapeModifier);
-	public void removeShapeModifier(final IShapeModifier pShapeModifier);
+	public void addShapeModifier(final IModifier<IShape> pShapeModifier);
+	public boolean removeShapeModifier(final IModifier<IShape> pShapeModifier);
 	public void clearShapeModifiers();
 
 	public boolean collidesWith(final IShape pOtherShape);

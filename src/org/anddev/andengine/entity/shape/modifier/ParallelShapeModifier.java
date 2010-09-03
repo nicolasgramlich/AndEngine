@@ -1,12 +1,13 @@
 package org.anddev.andengine.entity.shape.modifier;
 
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.util.modifier.ParallelModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 12:40:31 - 03.09.2010
  */
-public class RotationByModifier extends SingleValueChangeShapeModifier {
+public class ParallelShapeModifier extends ParallelModifier<IShape> implements IShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,17 +20,21 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotationByModifier(final float pDuration, final float pRotation) {
-		super(pDuration, pRotation);
+	public ParallelShapeModifier(final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
+		super(pShapeModifiers);
 	}
 
-	protected RotationByModifier(final RotationByModifier pRotationByModifier) {
-		super(pRotationByModifier);
+	public ParallelShapeModifier(final IShapeModifierListener pShapeModiferListener, final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
+		super(pShapeModiferListener, pShapeModifiers);
+	}
+
+	protected ParallelShapeModifier(final ParallelShapeModifier pParallelShapeModifier) {
+		super(pParallelShapeModifier);
 	}
 
 	@Override
-	public RotationByModifier clone(){
-		return new RotationByModifier(this);
+	public ParallelShapeModifier clone() {
+		return new ParallelShapeModifier(this);
 	}
 
 	// ===========================================================
@@ -39,11 +44,6 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected void onChangeValue(final IShape pShape, final float pValue) {
-		pShape.setRotation(pShape.getRotation() + pValue);
-	}
 
 	// ===========================================================
 	// Methods

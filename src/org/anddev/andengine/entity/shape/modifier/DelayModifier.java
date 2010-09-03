@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.shape.IShape;
  * @author Nicolas Gramlich
  * @since 22:55:13 - 19.03.2010
  */
-public class DelayModifier extends BaseShapeDurationModifier {
+public class DelayModifier extends DurationShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -45,12 +45,12 @@ public class DelayModifier extends BaseShapeDurationModifier {
 	// ===========================================================
 
 	@Override
-	protected void onManagedInitializeShape(final IShape pShape) {
+	protected void onManagedInitialize(final IShape pShape) {
 
 	}
 
 	@Override
-	protected void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape) {
+	protected void onManagedUpdate(final float pSecondsElapsed, final IShape pShape) {
 
 	}
 

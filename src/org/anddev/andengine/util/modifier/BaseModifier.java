@@ -1,11 +1,12 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier;
 
 
 /**
  * @author Nicolas Gramlich
- * @since 16:10:42 - 19.03.2010
+ * @since 10:47:23 - 03.09.2010
+ * @param <T>
  */
-public abstract class BaseShapeModifier implements IShapeModifier {
+public abstract class BaseModifier<T> implements IModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,22 +17,22 @@ public abstract class BaseShapeModifier implements IShapeModifier {
 
 	protected boolean mFinished;
 	private boolean mRemoveWhenFinished = true;
-	protected IShapeModifierListener mShapeModifierListener;
+	protected IModifierListener<T> mModifierListener;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseShapeModifier() {
-		this((IShapeModifierListener)null);
+	public BaseModifier() {
+		this((IModifierListener<T>)null);
 	}
 
-	public BaseShapeModifier(final IShapeModifierListener pShapeModiferListener) {
-		this.mShapeModifierListener = pShapeModiferListener;
+	public BaseModifier(final IModifierListener<T> pModiferListener) {
+		this.mModifierListener = pModiferListener;
 	}
 
-	protected BaseShapeModifier(final BaseShapeModifier pBaseModifier) {
-		this(pBaseModifier.mShapeModifierListener);
+	protected BaseModifier(final BaseModifier<T> pBaseModifier) {
+		this(pBaseModifier.mModifierListener);
 	}
 
 	// ===========================================================
@@ -56,16 +57,16 @@ public abstract class BaseShapeModifier implements IShapeModifier {
 		this.mRemoveWhenFinished = pRemoveWhenFinished;
 	}
 
-	public IShapeModifierListener getShapeModifierListener() {
-		return this.mShapeModifierListener;
+	public IModifierListener<T> getModifierListener() {
+		return this.mModifierListener;
 	}
 
-	public void setShapeModifierListener(final IShapeModifierListener pShapeModifierListener) {
-		this.mShapeModifierListener = pShapeModifierListener;
+	public void setModifierListener(final IModifierListener<T> pModifierListener) {
+		this.mModifierListener = pModifierListener;
 	}
 
 	@Override
-	public abstract IShapeModifier clone();
+	public abstract IModifier<T> clone();
 
 	// ===========================================================
 	// Methods

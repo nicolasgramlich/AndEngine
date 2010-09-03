@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.scene.background;
 
-import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.entity.sprite.BaseSprite;
 
 /**
  * @author Nicolas Gramlich
@@ -19,12 +19,12 @@ public class SpriteBackground extends EntityBackground {
 	// Constructors
 	// ===========================================================
 
-	public SpriteBackground(final Sprite pSprite) {
-		super(pSprite);
+	public SpriteBackground(final BaseSprite pBaseSprite) {
+		super(pBaseSprite);
 	}
 
-	public SpriteBackground(final float pRed, final float pGreen, final float pBlue, final Sprite pSprite) {
-		super(pRed, pGreen, pBlue, pSprite);
+	public SpriteBackground(final float pRed, final float pGreen, final float pBlue, final BaseSprite pBaseSprite) {
+		super(pRed, pGreen, pBlue, pBaseSprite);
 	}
 
 	// ===========================================================

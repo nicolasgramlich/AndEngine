@@ -1,13 +1,12 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich
  * @since 23:29:22 - 19.03.2010
  */
-public abstract class BaseSingleValueSpanModifier extends BaseShapeDurationModifier {
+public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -33,18 +32,18 @@ public abstract class BaseSingleValueSpanModifier extends BaseShapeDurationModif
 		this(pDuration, pFromValue, pToValue, null, pEaseFunction);
 	}
 
-	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IShapeModifierListener pShapeModiferListener) {
+	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModiferListener) {
 		this(pDuration, pFromValue, pToValue, IEaseFunction.DEFAULT);
 	}
 
-	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pShapeModiferListener);
+	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModiferListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pModiferListener);
 		this.mFromValue = pFromValue;
 		this.mValueSpan = pToValue - pFromValue;
 		this.mEaseFunction = pEaseFunction;
 	}
 
-	protected BaseSingleValueSpanModifier(final BaseSingleValueSpanModifier pBaseSingleValueSpanModifier) {
+	protected BaseSingleValueSpanModifier(final BaseSingleValueSpanModifier<T> pBaseSingleValueSpanModifier) {
 		super(pBaseSingleValueSpanModifier);
 		this.mFromValue = pBaseSingleValueSpanModifier.mFromValue;
 		this.mValueSpan = pBaseSingleValueSpanModifier.mValueSpan;
@@ -59,19 +58,19 @@ public abstract class BaseSingleValueSpanModifier extends BaseShapeDurationModif
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onSetInitialValue(final IShape pShape, final float pValue);
-	protected abstract void onSetValue(final IShape pShape, final float pPercentageDone, final float pValue);
+	protected abstract void onSetInitialValue(final T pItem, final float pValue);
+	protected abstract void onSetValue(final T pItem, final float pPercentageDone, final float pValue);
 
 	@Override
-	protected void onManagedInitializeShape(final IShape pShape) {
-		this.onSetInitialValue(pShape, this.mFromValue);
+	protected void onManagedInitialize(final T pItem) {
+		this.onSetInitialValue(pItem, this.mFromValue);
 	}
 
 	@Override
-	protected void onManagedUpdateShape(final float pSecondsElapsed, final IShape pShape) {
+	protected void onManagedUpdate(final float pSecondsElapsed, final T pItem) {
 		final float percentageDone = this.mEaseFunction.getPercentageDone(this.getTotalSecondsElapsed(), this.mDuration, 0, 1);
 
-		this.onSetValue(pShape, percentageDone, this.mFromValue + percentageDone * this.mValueSpan);
+		this.onSetValue(pItem, percentageDone, this.mFromValue + percentageDone * this.mValueSpan);
 	}
 
 	// ===========================================================

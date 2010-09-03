@@ -1,12 +1,13 @@
 package org.anddev.andengine.entity.shape.modifier;
 
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.util.modifier.BaseDurationModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:12:52 - 19.03.2010
+ * @since 16:10:42 - 19.03.2010
  */
-public class RotationByModifier extends SingleValueChangeShapeModifier {
+public abstract class DurationShapeModifier extends BaseDurationModifier<IShape> implements IShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,17 +20,20 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// Constructors
 	// ===========================================================
 
-	public RotationByModifier(final float pDuration, final float pRotation) {
-		super(pDuration, pRotation);
+	public DurationShapeModifier() {
+		super();
 	}
 
-	protected RotationByModifier(final RotationByModifier pRotationByModifier) {
-		super(pRotationByModifier);
+	public DurationShapeModifier(final float pDuration) {
+		super(pDuration);
 	}
 
-	@Override
-	public RotationByModifier clone(){
-		return new RotationByModifier(this);
+	public DurationShapeModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
+		super(pDuration, pShapeModiferListener);
+	}
+
+	protected DurationShapeModifier(final DurationShapeModifier pDurationShapeModifier) {
+		super(pDurationShapeModifier);
 	}
 
 	// ===========================================================
@@ -39,11 +43,6 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected void onChangeValue(final IShape pShape, final float pValue) {
-		pShape.setRotation(pShape.getRotation() + pValue);
-	}
 
 	// ===========================================================
 	// Methods

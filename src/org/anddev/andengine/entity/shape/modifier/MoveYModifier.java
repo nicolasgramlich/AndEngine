@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
  * @author Nicolas Gramlich
  * @since 12:04:21 - 30.08.2010
  */
-public class MoveYModifier extends BaseSingleValueSpanModifier {
+public class MoveYModifier extends SingleValueSpanShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

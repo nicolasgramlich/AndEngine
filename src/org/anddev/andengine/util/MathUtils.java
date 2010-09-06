@@ -45,6 +45,14 @@ public class MathUtils implements MathConstants {
 		return DEG_TO_RAD * pDegree;
 	}
 
+	public static final int randomSign() {
+		if(RANDOM.nextFloat() > 0.5f) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
 	public static final float random(final float pMin, final float pMax) {
 		return pMin + RANDOM.nextFloat() * (pMax - pMin);
 	}

@@ -22,11 +22,11 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 	private static final Comparator<ITextureSource> TEXTURESOURCE_COMPARATOR = new Comparator<ITextureSource>() {
 		@Override
 		public int compare(final ITextureSource pTextureSourceA, final ITextureSource pTextureSourceB) {
-			final int deltaWidth = pTextureSourceA.getWidth() - pTextureSourceB.getWidth();
+			final int deltaWidth = pTextureSourceB.getWidth() - pTextureSourceA.getWidth();
 			if(deltaWidth != 0) {
 				return deltaWidth;
 			} else {
-				return pTextureSourceA.getHeight() - pTextureSourceB.getHeight();
+				return pTextureSourceB.getHeight() - pTextureSourceA.getHeight();
 			}
 		}
 	};
@@ -220,77 +220,101 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 
 				final int textureSourceWidth = pTextureSource.getWidth();
 				final int textureSourceHeight = pTextureSource.getHeight();
+
+				final int rectWidth = this.mRect.getWidth();
+				final int rectHeight = this.mRect.getHeight();
+				
+				if(textureSourceWidth > rectWidth || textureSourceHeight > rectHeight) {
+					return null;
+				}
 				
 				final int textureSourceWidthWithSpacing = textureSourceWidth + pTextureSpacing;
 				final int textureSourceHeightWithSpacing = textureSourceHeight + pTextureSpacing;
 
-				final int rectWidth = this.mRect.getWidth();
-				final int rectHeight = this.mRect.getHeight();
-
 				final int rectLeft = this.mRect.getLeft();
 				final int rectTop = this.mRect.getTop();
+				
+				final boolean fitToBottomWithoutSpacing = textureSourceHeight == rectHeight && rectTop + textureSourceHeight == pTextureHeight;
+				final boolean fitToRightWithoutSpacing = textureSourceWidth == rectWidth && rectLeft + textureSourceWidth == pTextureWidth;
 				
 				if(textureSourceWidthWithSpacing == rectWidth){
 					if(textureSourceHeightWithSpacing == rectHeight) { /* Normal case with padding. */
 						this.mTextureSource = pTextureSource;
 						return this;
-					} else if(textureSourceHeight == rectHeight && rectTop + textureSourceHeight == pTextureHeight) { /* Bottom edge of the Texture. */
+					} else if(fitToBottomWithoutSpacing) { /* Bottom edge of the Texture. */
 						this.mTextureSource = pTextureSource;
 						return this;
 					}
 				} 
-				
-				if(textureSourceWidth == rectWidth && rectLeft + textureSourceWidth == pTextureWidth) { /* Right edge of the Texture. */
+
+				if(fitToRightWithoutSpacing) { /* Right edge of the Texture. */
 					if(textureSourceHeightWithSpacing == rectHeight) {
 						this.mTextureSource = pTextureSource;
 						return this;
-					} else if(textureSourceHeight == rectHeight && rectTop + textureSourceHeight == pTextureHeight) { /* Bottom edge of the Texture. */
+					} else if(fitToBottomWithoutSpacing) { /* Bottom edge of the Texture. */
 						this.mTextureSource = pTextureSource;
 						return this;
+					} else if(textureSourceHeightWithSpacing > rectHeight) {
+						return null;
+					} else {
+
+						return createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidth, rectHeight - textureSourceHeightWithSpacing);
 					}
 				} 
 				
-				if(textureSourceWidth + pTextureSpacing > rectWidth || textureSourceHeight + pTextureSpacing > rectHeight) {
+				if(fitToBottomWithoutSpacing) {
+					if(textureSourceWidthWithSpacing == rectWidth) {
+						this.mTextureSource = pTextureSource;
+						return this;
+					} else if(textureSourceWidthWithSpacing > rectWidth) {
+						return null;
+					} else {
+						return createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidthWithSpacing, rectHeight - textureSourceHeight);
+					}
+				} else if(textureSourceWidthWithSpacing > rectWidth || textureSourceHeightWithSpacing > rectHeight) {
 					return null;
-				}
-
-				final int deltaWidth = rectWidth - textureSourceWidthWithSpacing;
-				final int deltaHeight = rectHeight - textureSourceHeightWithSpacing;
-
-				if(deltaWidth >= deltaHeight) {
-					/* Split using a vertical axis. */
-					this.mChildA = new Node(
-							rectLeft,
-							rectTop,
-							textureSourceWidthWithSpacing,
-							rectHeight
-					);
-
-					this.mChildB = new Node(
-							rectLeft + textureSourceWidthWithSpacing,
-							rectTop,
-							rectWidth - textureSourceWidthWithSpacing,
-							rectHeight
-					);
 				} else {
-					/* Split using a horizontal axis. */
-					this.mChildA = new Node(
-							rectLeft,
-							rectTop,
-							rectWidth,
-							textureSourceHeightWithSpacing
-					);
-
-					this.mChildB = new Node(
-							rectLeft,
-							rectTop + textureSourceHeightWithSpacing,
-							rectWidth,
-							rectHeight - textureSourceHeightWithSpacing
-					);
+					return createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidthWithSpacing, rectHeight - textureSourceHeightWithSpacing);
 				}
-
-				return this.mChildA.insert(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing);
 			}
+		}
+
+		private Node createChildren(final ITextureSource pTextureSource, final int pTextureWidth, final int pTextureHeight, final int pTextureSpacing, final int pDeltaWidth, final int pDeltaHeight) {
+			final Rect rect = this.mRect;
+			
+			if(pDeltaWidth >= pDeltaHeight) {
+				/* Split using a vertical axis. */
+				this.mChildA = new Node(
+						rect.getLeft(),
+						rect.getTop(),
+						pTextureSource.getWidth() + pTextureSpacing,
+						rect.getHeight()
+				);
+
+				this.mChildB = new Node(
+						rect.getLeft() + (pTextureSource.getWidth() + pTextureSpacing),
+						rect.getTop(),
+						rect.getWidth() - (pTextureSource.getWidth() + pTextureSpacing),
+						rect.getHeight()
+				);
+			} else {
+				/* Split using a horizontal axis. */
+				this.mChildA = new Node(
+						rect.getLeft(),
+						rect.getTop(),
+						rect.getWidth(),
+						pTextureSource.getHeight() + pTextureSpacing
+				);
+
+				this.mChildB = new Node(
+						rect.getLeft(),
+						rect.getTop() + (pTextureSource.getHeight() + pTextureSpacing),
+						rect.getWidth(),
+						rect.getHeight() - (pTextureSource.getHeight() + pTextureSpacing)
+				);
+			}
+
+			return this.mChildA.insert(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing);
 		}
 
 		// ===========================================================

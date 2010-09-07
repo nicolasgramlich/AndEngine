@@ -443,7 +443,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.getCamera().onUpdate(pSecondsElapsed);
 	}
 
-	public void onDrawFrame(final GL10 pGL) {
+	public void onDrawFrame(final GL10 pGL) throws InterruptedException {
 		final State threadLocker = this.mThreadLocker;
 
 		threadLocker.waitUntilCanDraw();
@@ -578,24 +578,18 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			// Debug.d("<<< notifyCanUpdate");
 		}
 
-		public synchronized void waitUntilCanDraw() {
+		public synchronized void waitUntilCanDraw() throws InterruptedException {
 			// Debug.d(">>> waitUntilCanDraw");
 			while(this.mDrawing == false) {
-				try {
 					this.wait();
-				} catch (final InterruptedException e) {
-				}
 			}
 			// Debug.d("<<< waitUntilCanDraw");
 		}
 
-		public synchronized void waitUntilCanUpdate() {
+		public synchronized void waitUntilCanUpdate() throws InterruptedException {
 			// Debug.d(">>> waitUntilCanUpdate");
 			while(this.mDrawing == true) {
-				try {
 					this.wait();
-				} catch (final InterruptedException e) {
-				}
 			}
 			// Debug.d("<<< waitUntilCanUpdate");
 		}

@@ -18,6 +18,7 @@ public interface IGameInterface {
 
 	public Engine onLoadEngine();
 	public void onLoadResources();
+	public void onUnloadResources();
 	public Scene onLoadScene();
 	public void onLoadComplete();
 	

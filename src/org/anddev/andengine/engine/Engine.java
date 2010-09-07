@@ -174,7 +174,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void setSurfaceSize(final int pSurfaceWidth, final int pSurfaceHeight) {
-//		Debug.w("SurfaceView size changed to (width x height): " + pSurfaceWidth + " x " + pSurfaceHeight, new Exception());
+		//		Debug.w("SurfaceView size changed to (width x height): " + pSurfaceWidth + " x " + pSurfaceHeight, new Exception());
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
 	}
@@ -351,6 +351,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mUpdateThreadRunnableHandler.postRunnable(pRunnable);
 	}
 
+	public void interruptUpdateThread(){
+		this.mUpdateThread.interrupt();
+	}
+
 	private void initLoadingScreen() {
 		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
 		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
@@ -411,7 +415,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
-	private void yieldDraw() {
+	private void yieldDraw() throws InterruptedException {
 		final State threadLocker = this.mThreadLocker;
 		threadLocker.notifyCanDraw();
 		threadLocker.waitUntilCanUpdate();
@@ -543,7 +547,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		public UpdateThread() {
 			super("UpdateThread");
 		}
-		
+
 		@Override
 		public void run() {
 			try {

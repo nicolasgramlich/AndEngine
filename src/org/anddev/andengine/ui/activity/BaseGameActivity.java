@@ -1,5 +1,6 @@
 package org.anddev.andengine.ui.activity;
 
+import org.anddev.andengine.audio.music.MusicManager;
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -69,15 +70,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-
-		if(!this.mPaused) {
-			this.doPause();
-		}
-	}
-
-	@Override
 	public void onWindowFocusChanged(final boolean pHasWindowFocus) {
 		super.onWindowFocusChanged(pHasWindowFocus);
 
@@ -93,6 +85,66 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			this.mHasWindowFocused = false;
 		}
 	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		if(!this.mPaused) {
+			this.doPause();
+		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+        this.mEngine.interruptUpdateThread();       
+		
+		this.onUnloadResources();
+	}
+	
+	@Override
+	public void onUnloadResources() {
+		if(this.mEngine.getEngineOptions().needsMusic()) {
+			this.getMusicManager().releaseAll();
+		}
+		if(this.mEngine.getEngineOptions().needsSound()) {
+			this.getSoundManager().releaseAll();
+		}
+	}
+
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
+
+	public Engine getEngine() {
+		return this.mEngine;
+	}
+
+	public SoundManager getSoundManager() {
+		return this.mEngine.getSoundManager();
+	}
+
+	public MusicManager getMusicManager() {
+		return this.mEngine.getMusicManager();
+	}
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+	
+	@Override
+	public void onGameResumed() {
+	}
+	
+	@Override
+	public void onGamePaused() {
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	private void doResume() {
 		if(!this.mGameLoaded) {
@@ -121,34 +173,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.mRenderSurfaceView.onPause();
 		this.onGamePaused();
 	}
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
-
-	public Engine getEngine() {
-		return this.mEngine;
-	}
-
-	public SoundManager getSoundManager() {
-		return this.mEngine.getSoundManager();
-	}
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-	
-	@Override
-	public void onGameResumed() {
-	}
-	
-	@Override
-	public void onGamePaused() {
-	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
 
 	public void runOnUpdateThread(final Runnable pRunnable) {
 		this.mEngine.runOnUpdateThread(pRunnable);

@@ -19,7 +19,7 @@ public class TimerHandler implements IUpdateHandler {
 	private float mSecondsPassed;
 	private boolean mCallbackTriggered = false;
 	private final ITimerCallback mTimerCallback;
-	private final boolean mAutoReset;
+	private boolean mAutoReset;
 
 	// ===========================================================
 	// Constructors
@@ -38,6 +38,14 @@ public class TimerHandler implements IUpdateHandler {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public boolean isAutoReset() {
+		return this.mAutoReset;
+	}
+
+	public void setAutoReset(final boolean pAutoReset) {
+		this.mAutoReset = pAutoReset;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

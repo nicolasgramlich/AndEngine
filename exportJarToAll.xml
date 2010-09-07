@@ -38,7 +38,10 @@
 	../SuperDroid/lib/andengine.jar,
 	../BoxFaceStacker/lib/andengine.jar,
 	../BoxFacePhysicsLiveWallpaper/lib/andengine.jar,
-	../ABCShooter/lib/andengine.jar" />
+	../ABCShooter/lib/andengine.jar,
+	../BirdHunt/lib/andengine.jar,
+	../MasterBowMan/lib/andengine.jar,
+	../FarmTower/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<echo>${targetfile}</echo>

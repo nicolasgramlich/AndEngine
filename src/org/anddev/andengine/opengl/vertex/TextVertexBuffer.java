@@ -45,7 +45,7 @@ public class TextVertexBuffer extends VertexBuffer {
 	// Methods
 	// ===========================================================
 
-	public void update(final Font font, final int pMaximumLineWidth, final int[] pWidths, final String[] pLines) {
+	public synchronized void update(final Font font, final int pMaximumLineWidth, final int[] pWidths, final String[] pLines) {
 		final FloatBuffer vertexFloatBuffer = this.getFloatBuffer();
 		vertexFloatBuffer.position(0);
 

@@ -37,7 +37,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// Methods
 	// ===========================================================
 
-	public void onUpdate(final float pX, final float pY, final float pWidth, final float pHeight) {
+	public synchronized void onUpdate(final float pX, final float pY, final float pWidth, final float pHeight) {
 		// TODO First parameters are always Zero...
 		final float x2 = pX + pWidth;
 		final float y2 = pY + pHeight;

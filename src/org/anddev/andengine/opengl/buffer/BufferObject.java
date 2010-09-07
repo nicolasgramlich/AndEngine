@@ -96,8 +96,9 @@ public abstract class BufferObject {
 		if(this.mHardwareBufferNeedsUpdate) {
 			//			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
 			this.mHardwareBufferNeedsUpdate = false;
-
-			GLHelper.bufferData(pGL11, this, this.mDrawType);
+			synchronized(this) {
+				GLHelper.bufferData(pGL11, this, this.mDrawType);
+			}
 		}
 	}
 

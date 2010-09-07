@@ -37,7 +37,7 @@ public class LineVertexBuffer extends VertexBuffer {
 	// Methods
 	// ===========================================================
 
-	public void update(final float pX1, final float pY1, final float pX2, final float pY2) {
+	public synchronized void update(final float pX1, final float pY1, final float pX2, final float pY2) {
 		final FloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 		// TODO Maybe use put(float []) instead of put(float) ...

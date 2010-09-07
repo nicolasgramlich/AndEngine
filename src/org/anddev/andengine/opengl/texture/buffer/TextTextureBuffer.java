@@ -39,7 +39,7 @@ public class TextTextureBuffer extends BufferObject {
 	// Methods
 	// ===========================================================
 
-	public void update(final Font pFont, final String[] pLines) {
+	public synchronized void update(final Font pFont, final String[] pLines) {
 		final FloatBuffer textureFloatBuffer = this.getFloatBuffer();
 		textureFloatBuffer.position(0);
 

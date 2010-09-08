@@ -19,8 +19,8 @@ public class SingleTouchControler extends BaseTouchController {
 	// Constructors
 	// ===========================================================
 
-	public SingleTouchControler(final ITouchEventCallback pTouchEventCallback) {
-		super(pTouchEventCallback);
+	public SingleTouchControler(final boolean pRunOnUpdateThread, final ITouchEventCallback pTouchEventCallback) {
+		super(pRunOnUpdateThread, pTouchEventCallback);
 	}
 
 	// ===========================================================

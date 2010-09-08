@@ -21,7 +21,8 @@ public abstract class BaseTouchController implements ITouchController  {
 
 	private final ITouchEventCallback mTouchEventCallback;
 
-	private boolean mRunOnUpdateThread;
+	private final boolean mRunOnUpdateThread;
+
 	private final RunnablePoolUpdateHandler<TouchEventRunnable> mTouchEventRunnablePoolUpdateHandler = new RunnablePoolUpdateHandler<TouchEventRunnable>() {
 		@Override
 		protected TouchEventRunnable onAllocatePoolItem() {
@@ -33,7 +34,8 @@ public abstract class BaseTouchController implements ITouchController  {
 	// Constructors
 	// ===========================================================
 
-	public BaseTouchController(final ITouchEventCallback pTouchEventCallback) {
+	public BaseTouchController(final boolean pRunOnUpdateThread, final ITouchEventCallback pTouchEventCallback) {
+		this.mRunOnUpdateThread = pRunOnUpdateThread;
 		this.mTouchEventCallback = pTouchEventCallback;
 	}
 

@@ -78,7 +78,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private final EngineOptions mEngineOptions;
 	protected final Camera mCamera;
 
-	private ITouchController mTouchController = new SingleTouchControler();
+	private ITouchController mTouchController = new SingleTouchControler(this);
 
 	private SoundManager mSoundManager;
 	private MusicManager mMusicManager;	
@@ -292,7 +292,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	@Override
 	public boolean onTouch(final View pView, final MotionEvent pSurfaceMotionEvent) {
 		if(this.mRunning) {
-			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent, this);
+			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent);
 			try {
 				/*
 				 * As a human cannot interact 1000x per second, we pause the

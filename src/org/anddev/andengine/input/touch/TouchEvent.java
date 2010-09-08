@@ -1,6 +1,6 @@
 package org.anddev.andengine.input.touch;
 
-import java.util.Stack;
+import org.anddev.andengine.util.pool.GenericPool;
 
 import android.view.MotionEvent;
 
@@ -13,8 +13,12 @@ public class TouchEvent {
 	// Constants
 	// ===========================================================
 
-	private static final Stack<TouchEvent> TOUCHEVENT_STACK = new Stack<TouchEvent>();
-	private static final Object TOUCHEVENT_RECYCLE_LOCK = new Object();
+	private static final GenericPool<TouchEvent> TOUCHEVENT_POOL = new GenericPool<TouchEvent>() {
+		@Override
+		protected TouchEvent onAllocatePoolItem() {
+			return new TouchEvent();
+		}
+	};
 	
 	public static final int ACTION_CANCEL = MotionEvent.ACTION_CANCEL;
 	public static final int ACTION_DOWN = MotionEvent.ACTION_DOWN;
@@ -40,19 +44,11 @@ public class TouchEvent {
 	// ===========================================================
 
 	public static TouchEvent obtain() {
-		synchronized (TOUCHEVENT_RECYCLE_LOCK) {
-			if(TOUCHEVENT_STACK.isEmpty()){
-				return new TouchEvent();
-			} else {
-				return TOUCHEVENT_STACK.pop();
-			}
-		}
+		return TOUCHEVENT_POOL.obtainPoolItem();
 	}
 
 	public static void recycle(final TouchEvent pTouchEvent) {
-		synchronized (TOUCHEVENT_RECYCLE_LOCK) {
-			TOUCHEVENT_STACK.push(pTouchEvent);
-		}
+		TOUCHEVENT_POOL.recylePoolItem(pTouchEvent);
 	}
 
 	public void recycle() {

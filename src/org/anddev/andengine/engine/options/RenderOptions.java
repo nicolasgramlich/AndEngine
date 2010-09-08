@@ -23,11 +23,22 @@ public class RenderOptions {
 	// Getter & Setter
 	// ===========================================================
 
+	public RenderOptions enableExtensionVertexBufferObjects() {
+		return this.setDisableExtensionVertexBufferObjects(false);
+	}
+
 	public RenderOptions disableExtensionVertexBufferObjects() {
-		this.mDisableExtensionVertexBufferObjects = true;
+		return this.setDisableExtensionVertexBufferObjects(true);
+	}
+
+	public RenderOptions setDisableExtensionVertexBufferObjects(final boolean pDisableExtensionVertexBufferObjects) {
+		this.mDisableExtensionVertexBufferObjects = pDisableExtensionVertexBufferObjects;
 		return this;
 	}
 
+	/**
+	 * <u><b>Default:</b></u> <code>false</code>
+	 */
 	public boolean isDisableExtensionVertexBufferObjects() {
 		return this.mDisableExtensionVertexBufferObjects;
 	}

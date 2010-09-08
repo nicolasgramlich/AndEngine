@@ -62,8 +62,8 @@ public abstract class GenericPool<T> {
 		if(this.mAvailableItems.size() > 0) {
 			item = this.mAvailableItems.pop();
 		} else {
-			Debug.i("Pool exhausted, with " + this.mUnrecycledCount + " unrecycled items. Allocating one more...");
 			item = this.onAllocatePoolItem();
+			Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledCount + " item not yet recycled. Allocated one more.");
 		}
 		this.onHandleObtainItem(item);
 

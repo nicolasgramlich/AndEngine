@@ -299,7 +299,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 				 * As a human cannot interact 1000x per second, we pause the
 				 * UI-Thread for a little.
 				 */
-				Thread.sleep(20);
+				Thread.sleep(20); // TODO Maybe this can be removed, when TouchEvents are handled on the UpdateThread!
 			} catch (final InterruptedException e) {
 				Debug.e(e);
 			}

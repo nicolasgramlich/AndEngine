@@ -23,10 +23,10 @@ public abstract class BaseTouchController implements ITouchController  {
 
 	private final boolean mRunOnUpdateThread;
 
-	private final RunnablePoolUpdateHandler<TouchEventRunnable> mTouchEventRunnablePoolUpdateHandler = new RunnablePoolUpdateHandler<TouchEventRunnable>() {
+	private final RunnablePoolUpdateHandler<TouchEventRunnablePoolItem> mTouchEventRunnablePoolUpdateHandler = new RunnablePoolUpdateHandler<TouchEventRunnablePoolItem>() {
 		@Override
-		protected TouchEventRunnable onAllocatePoolItem() {
-			return new TouchEventRunnable();
+		protected TouchEventRunnablePoolItem onAllocatePoolItem() {
+			return new TouchEventRunnablePoolItem();
 		}
 	};
 
@@ -66,9 +66,9 @@ public abstract class BaseTouchController implements ITouchController  {
 		touchEvent.set(pX, pY, pAction, pPointerID, pMotionEvent);
 
 		if(this.mRunOnUpdateThread) {
-			final TouchEventRunnable touchEventRunnable = this.mTouchEventRunnablePoolUpdateHandler.obtainPoolItem();
-			touchEventRunnable.set(touchEvent);
-			this.mTouchEventRunnablePoolUpdateHandler.postPoolItem(touchEventRunnable);
+			final TouchEventRunnablePoolItem touchEventRunnablePoolItem = this.mTouchEventRunnablePoolUpdateHandler.obtainPoolItem();
+			touchEventRunnablePoolItem.set(touchEvent);
+			this.mTouchEventRunnablePoolUpdateHandler.postPoolItem(touchEventRunnablePoolItem);
 			return true;
 		} else {
 			final boolean handled = this.mTouchEventCallback.onTouchEvent(touchEvent);
@@ -85,7 +85,7 @@ public abstract class BaseTouchController implements ITouchController  {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	class TouchEventRunnable extends RunnablePoolItem {
+	class TouchEventRunnablePoolItem extends RunnablePoolItem {
 		// ===========================================================
 		// Fields
 		// ===========================================================

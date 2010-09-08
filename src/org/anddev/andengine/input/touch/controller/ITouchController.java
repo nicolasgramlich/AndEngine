@@ -1,6 +1,7 @@
 package org.anddev.andengine.input.touch.controller;
 
 import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.anddev.andengine.engine.options.TouchOptions;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
@@ -17,6 +18,8 @@ public interface ITouchController extends IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void applyTouchOptions(final TouchOptions pTouchOptions);
 
 	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent);
 

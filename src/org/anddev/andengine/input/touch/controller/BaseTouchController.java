@@ -1,5 +1,6 @@
 package org.anddev.andengine.input.touch.controller;
 
+import org.anddev.andengine.engine.options.TouchOptions;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.util.pool.RunnablePoolItem;
 import org.anddev.andengine.util.pool.RunnablePoolUpdateHandler;
@@ -21,7 +22,7 @@ public abstract class BaseTouchController implements ITouchController  {
 
 	private final ITouchEventCallback mTouchEventCallback;
 
-	private final boolean mRunOnUpdateThread;
+	private boolean mRunOnUpdateThread;
 
 	private final RunnablePoolUpdateHandler<TouchEventRunnablePoolItem> mTouchEventRunnablePoolUpdateHandler = new RunnablePoolUpdateHandler<TouchEventRunnablePoolItem>() {
 		@Override
@@ -34,8 +35,7 @@ public abstract class BaseTouchController implements ITouchController  {
 	// Constructors
 	// ===========================================================
 
-	public BaseTouchController(final boolean pRunOnUpdateThread, final ITouchEventCallback pTouchEventCallback) {
-		this.mRunOnUpdateThread = pRunOnUpdateThread;
+	public BaseTouchController(final ITouchEventCallback pTouchEventCallback) {
 		this.mTouchEventCallback = pTouchEventCallback;
 	}
 
@@ -80,6 +80,10 @@ public abstract class BaseTouchController implements ITouchController  {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void applyTouchOptions(final TouchOptions pTouchOptions) {
+		this.mRunOnUpdateThread = pTouchOptions.isRunOnUpdateThread();
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -492,6 +492,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			throw new IllegalStateException("You need to enable the Vibrator before you can use it!");
 		}
 	}
+	
+	public void vibrate(final long[] pPattern, final int pRepeat) throws IllegalStateException {
+		if(this.mVibrator != null) {
+			this.mVibrator.vibrate(pPattern, pRepeat);
+		} else {
+			throw new IllegalStateException("You need to enable the Vibrator before you can use it!");
+		}
+	}
 
 	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener) {
 		return this.enableAccelerometerSensor(pContext, pAccelerometerListener, SENSOR_DELAY_DEFAULT);

@@ -78,7 +78,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private final EngineOptions mEngineOptions;
 	protected final Camera mCamera;
 
-	private ITouchController mTouchController = new SingleTouchControler();
+	private ITouchController mTouchController;
 
 	private SoundManager mSoundManager;
 	private MusicManager mMusicManager;	
@@ -115,6 +115,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 
 		this.mEngineOptions = pEngineOptions;
+		this.setTouchController(new SingleTouchControler(this));
 		this.mCamera = pEngineOptions.getCamera();
 
 		if(this.mEngineOptions.needsSound()) {
@@ -193,6 +194,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public void setTouchController(final ITouchController pTouchController) {
 		this.mTouchController = pTouchController;
+		this.mTouchController.applyTouchOptions(this.mEngineOptions.getTouchOptions());
 	}
 
 	public AccelerometerData getAccelerometerData() {
@@ -292,13 +294,13 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	@Override
 	public boolean onTouch(final View pView, final MotionEvent pSurfaceMotionEvent) {
 		if(this.mRunning) {
-			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent, this);
+			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent);
 			try {
 				/*
 				 * As a human cannot interact 1000x per second, we pause the
 				 * UI-Thread for a little.
 				 */
-				Thread.sleep(20);
+				Thread.sleep(20); // TODO Maybe this can be removed, when TouchEvents are handled on the UpdateThread!
 			} catch (final InterruptedException e) {
 				Debug.e(e);
 			}
@@ -427,6 +429,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mSecondsElapsedTotal += pSecondsElapsed;
 		this.mLastTick += pNanosecondsElapsed;
 
+		this.mTouchController.onUpdate(pSecondsElapsed);
 		this.updateUpdateHandlers(pSecondsElapsed);
 		this.onUpdateScene(pSecondsElapsed);
 	}
@@ -485,6 +488,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public void vibrate(final long pMilliseconds) throws IllegalStateException {
 		if(this.mVibrator != null) {
 			this.mVibrator.vibrate(pMilliseconds);
+		} else {
+			throw new IllegalStateException("You need to enable the Vibrator before you can use it!");
+		}
+	}
+	
+	public void vibrate(final long[] pPattern, final int pRepeat) throws IllegalStateException {
+		if(this.mVibrator != null) {
+			this.mVibrator.vibrate(pPattern, pRepeat);
 		} else {
 			throw new IllegalStateException("You need to enable the Vibrator before you can use it!");
 		}

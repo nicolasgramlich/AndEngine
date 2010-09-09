@@ -2,9 +2,9 @@ package org.anddev.andengine.engine.options;
 
 /**
  * @author Nicolas Gramlich
- * @since 13:01:40 - 02.07.2010
+ * @since 16:03:09 - 08.09.2010
  */
-public class RenderOptions {
+public class TouchOptions {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -13,7 +13,7 @@ public class RenderOptions {
 	// Fields
 	// ===========================================================
 
-	private boolean mDisableExtensionVertexBufferObjects = false;
+	private boolean mRunOnUpdateThread;
 
 	// ===========================================================
 	// Constructors
@@ -23,24 +23,24 @@ public class RenderOptions {
 	// Getter & Setter
 	// ===========================================================
 
-	public RenderOptions enableExtensionVertexBufferObjects() {
-		return this.setDisableExtensionVertexBufferObjects(false);
+	public TouchOptions enableRunOnUpdateThread() {
+		return this.setRunOnUpdateThread(true);
 	}
 
-	public RenderOptions disableExtensionVertexBufferObjects() {
-		return this.setDisableExtensionVertexBufferObjects(true);
+	public TouchOptions disableRunOnUpdateThread() {
+		return this.setRunOnUpdateThread(false);
 	}
 
-	public RenderOptions setDisableExtensionVertexBufferObjects(final boolean pDisableExtensionVertexBufferObjects) {
-		this.mDisableExtensionVertexBufferObjects = pDisableExtensionVertexBufferObjects;
+	public TouchOptions setRunOnUpdateThread(final boolean pRunOnUpdateThread) {
+		this.mRunOnUpdateThread = pRunOnUpdateThread;
 		return this;
 	}
 
 	/**
-	 * <u><b>Default:</b></u> <code>false</code>
+	 * <u><b>Default:</b></u> <code>true</code>
 	 */
-	public boolean isDisableExtensionVertexBufferObjects() {
-		return this.mDisableExtensionVertexBufferObjects;
+	public boolean isRunOnUpdateThread() {
+		return this.mRunOnUpdateThread;
 	}
 
 	// ===========================================================

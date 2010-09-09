@@ -19,6 +19,10 @@ public class SingleTouchControler extends BaseTouchController {
 	// Constructors
 	// ===========================================================
 
+	public SingleTouchControler(final ITouchEventCallback pTouchEventCallback) {
+		super(pTouchEventCallback);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -28,8 +32,8 @@ public class SingleTouchControler extends BaseTouchController {
 	// ===========================================================
 
 	@Override
-	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent, final ITouchEventCallback pTouchEventCallback) {
-		return fireTouchEvent(pMotionEvent.getX(), pMotionEvent.getY(), pMotionEvent.getAction(), 0, pMotionEvent, pTouchEventCallback);
+	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent) {
+		return this.fireTouchEvent(pMotionEvent.getX(), pMotionEvent.getY(), pMotionEvent.getAction(), 0, pMotionEvent);
 	}
 
 	// ===========================================================

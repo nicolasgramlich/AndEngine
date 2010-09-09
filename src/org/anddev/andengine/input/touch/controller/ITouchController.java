@@ -1,5 +1,7 @@
 package org.anddev.andengine.input.touch.controller;
 
+import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.anddev.andengine.engine.options.TouchOptions;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
@@ -8,7 +10,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 20:23:45 - 13.07.2010
  */
-public interface ITouchController {
+public interface ITouchController extends IUpdateHandler {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -16,8 +18,10 @@ public interface ITouchController {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void applyTouchOptions(final TouchOptions pTouchOptions);
 
-	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent, final ITouchEventCallback pTouchEventCallback);
+	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

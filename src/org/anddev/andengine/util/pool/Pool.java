@@ -22,11 +22,15 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 	// ===========================================================
 
 	public Pool() {
-
+		super();
 	}
 
 	public Pool(final int pInitialSize) {
 		super(pInitialSize);
+	}
+
+	public Pool(final int pInitialSize, final int pGrowth) {
+		super(pInitialSize, pGrowth);
 	}
 
 	// ===========================================================
@@ -52,9 +56,9 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 	@Override
 	public synchronized void recylePoolItem(final T pPoolItem) {
 		if(pPoolItem.mParent == null) {
-			throw new IllegalArgumentException("PoolItem from another pool!");
-		} else if(pPoolItem.mParent != this) {
 			throw new IllegalArgumentException("PoolItem already recycled. Maybe it's from another pool?");
+		} else if(!pPoolItem.isFromPool(this)) {
+			throw new IllegalArgumentException("PoolItem from another pool!");
 		}
 		super.recylePoolItem(pPoolItem);
 	}

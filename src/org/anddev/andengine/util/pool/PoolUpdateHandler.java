@@ -21,18 +21,32 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 	// ===========================================================
 
 	private final Pool<T> mPool;
-	private final ArrayList<T> mScheduled = new ArrayList<T>();
+	private final ArrayList<T> mScheduledPoolItems = new ArrayList<T>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public PoolUpdateHandler() {
-		this(0);
+		this.mPool = new Pool<T>() {
+			@Override
+			protected T onAllocatePoolItem() {
+				return PoolUpdateHandler.this.onAllocatePoolItem();
+			}
+		};
 	}
 
 	public PoolUpdateHandler(final int pInitialPoolSize) {
 		this.mPool = new Pool<T>(pInitialPoolSize) {
+			@Override
+			protected T onAllocatePoolItem() {
+				return PoolUpdateHandler.this.onAllocatePoolItem();
+			}
+		};
+	}
+
+	public PoolUpdateHandler(final int pInitialPoolSize, final int pGrowth) {
+		this.mPool = new Pool<T>(pInitialPoolSize, pGrowth) {
 			@Override
 			protected T onAllocatePoolItem() {
 				return PoolUpdateHandler.this.onAllocatePoolItem();
@@ -54,38 +68,38 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		final ArrayList<T> scheduled = this.mScheduled;
+		final ArrayList<T> scheduledPoolItems = this.mScheduledPoolItems;
 
-		synchronized (scheduled) {
-			final int count = scheduled.size();
+		synchronized (scheduledPoolItems) {
+			final int count = scheduledPoolItems.size();
 
 			if(count > 0) {
 				final Pool<T> pool = this.mPool;
 				T item;
 
 				for(int i = 0; i < count; i++) {
-					item = scheduled.get(i);
+					item = scheduledPoolItems.get(i);
 					this.onHandlePoolItem(item);
 					pool.recylePoolItem(item);
 				}
 
-				scheduled.clear();
+				scheduledPoolItems.clear();
 			}
 		}
 	}
 
 	@Override
 	public void reset() {
-		final ArrayList<T> scheduled = this.mScheduled;
-		synchronized (scheduled) {
-			final int count = scheduled.size();
+		final ArrayList<T> scheduledPoolItems = this.mScheduledPoolItems;
+		synchronized (scheduledPoolItems) {
+			final int count = scheduledPoolItems.size();
 
 			final Pool<T> pool = this.mPool;
 			for(int i = count - 1; i >= 0; i--) {
-				pool.recylePoolItem(scheduled.get(i));
+				pool.recylePoolItem(scheduledPoolItems.get(i));
 			}
 
-			scheduled.clear();
+			scheduledPoolItems.clear();
 		}
 	}
 
@@ -98,12 +112,14 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 	}
 
 	public void postPoolItem(final T pPoolItem) {
-		synchronized (this.mScheduled) {
-			if(!this.mPool.ownsPoolItem(pPoolItem)) {
-				throw new IllegalArgumentException("Runnable from another pool or already recycled!");
+		synchronized (this.mScheduledPoolItems) {
+			if(pPoolItem == null) {
+				throw new IllegalArgumentException("PoolItem already recycled!");
+			} else if(!this.mPool.ownsPoolItem(pPoolItem)) {
+				throw new IllegalArgumentException("PoolItem from another pool!");
 			}
 
-			this.mScheduled.add(pPoolItem);
+			this.mScheduledPoolItems.add(pPoolItem);
 		}
 	}
 

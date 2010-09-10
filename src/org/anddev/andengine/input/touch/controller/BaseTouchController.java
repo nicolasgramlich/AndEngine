@@ -62,25 +62,29 @@ public abstract class BaseTouchController implements ITouchController  {
 	}
 
 	protected boolean fireTouchEvent(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent) {
-		final TouchEvent touchEvent = TouchEvent.obtain();
-		touchEvent.set(pX, pY, pAction, pPointerID, pMotionEvent);
-
+		final boolean handled;
+		
 		if(this.mRunOnUpdateThread) {
+			final TouchEvent touchEvent = TouchEvent.obtain(pX, pY, pAction, pPointerID, MotionEvent.obtain(pMotionEvent));
+			
 			final TouchEventRunnablePoolItem touchEventRunnablePoolItem = this.mTouchEventRunnablePoolUpdateHandler.obtainPoolItem();
 			touchEventRunnablePoolItem.set(touchEvent);
 			this.mTouchEventRunnablePoolUpdateHandler.postPoolItem(touchEventRunnablePoolItem);
-			return true;
+			
+			handled = true;
 		} else {
-			final boolean handled = this.mTouchEventCallback.onTouchEvent(touchEvent);
-			TouchEvent.recycle(touchEvent);
-			return handled;
+			final TouchEvent touchEvent = TouchEvent.obtain(pX, pY, pAction, pPointerID, pMotionEvent);
+			handled = this.mTouchEventCallback.onTouchEvent(touchEvent);
+			touchEvent.recycle();
 		}
+		
+		return handled;
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void applyTouchOptions(final TouchOptions pTouchOptions) {
 		this.mRunOnUpdateThread = pTouchOptions.isRunOnUpdateThread();
 	}
@@ -110,7 +114,14 @@ public abstract class BaseTouchController implements ITouchController  {
 
 		public void run() {
 			BaseTouchController.this.mTouchEventCallback.onTouchEvent(this.mTouchEvent);
-			TouchEvent.recycle(this.mTouchEvent);
+		}
+
+		@Override
+		protected void onRecycle() {
+			super.onRecycle();
+			final TouchEvent touchEvent = this.mTouchEvent;
+			touchEvent.getMotionEvent().recycle();
+			touchEvent.recycle();
 		}
 	}
 }

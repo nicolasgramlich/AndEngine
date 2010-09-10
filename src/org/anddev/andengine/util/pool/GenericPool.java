@@ -22,19 +22,29 @@ public abstract class GenericPool<T> {
 
 	private final Stack<T> mAvailableItems = new Stack<T>();
 	private int mUnrecycledCount;
+	private final int mGrowth;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public GenericPool() {
-
+		this(0);
 	}
 
 	public GenericPool(final int pInitialSize) {
-		final Stack<T> availableItems = this.mAvailableItems;
-		for(int i = pInitialSize - 1; i >= 0; i--) {
-			availableItems.push(this.onAllocatePoolItem());
+		this(pInitialSize, 1);
+	}
+
+	public GenericPool(final int pInitialSize, final int pGrowth) {
+		if(pGrowth < 0) {
+			throw new IllegalArgumentException("pGrowth must be at least 0!");
+		}
+
+		this.mGrowth = pGrowth;
+
+		if(pInitialSize > 0) {
+			this.batchAllocate(pInitialSize);
 		}
 	}
 
@@ -52,6 +62,13 @@ public abstract class GenericPool<T> {
 	// Methods
 	// ===========================================================
 
+	public synchronized void batchAllocate(final int pCount) {
+		final Stack<T> availableItems = this.mAvailableItems;
+		for(int i = pCount - 1; i >= 0; i--) {
+			availableItems.push(this.onAllocatePoolItem());
+		}
+	}
+
 	public synchronized int getUnrecycledCount() {
 		return this.mUnrecycledCount;
 	}
@@ -62,8 +79,13 @@ public abstract class GenericPool<T> {
 		if(this.mAvailableItems.size() > 0) {
 			item = this.mAvailableItems.pop();
 		} else {
-			item = this.onAllocatePoolItem();
-			Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledCount + " item not yet recycled. Allocated one more.");
+			if(this.mGrowth == 1) {
+				item = this.onAllocatePoolItem();
+			} else {
+				this.batchAllocate(this.mGrowth);
+				item = this.mAvailableItems.pop();
+			}
+			Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
 		}
 		this.onHandleObtainItem(item);
 

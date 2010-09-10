@@ -37,6 +37,10 @@ public abstract class PoolItem {
 	// Methods
 	// ===========================================================
 
+	public boolean isFromPool(final Pool<? extends PoolItem> pPool) {
+		return pPool == this.mParent;
+	}
+
 	protected void onRecycle() {
 
 	}

@@ -13,18 +13,13 @@ public class TouchEvent {
 	// Constants
 	// ===========================================================
 
-	private static final GenericPool<TouchEvent> TOUCHEVENT_POOL = new GenericPool<TouchEvent>() {
-		@Override
-		protected TouchEvent onAllocatePoolItem() {
-			return new TouchEvent();
-		}
-	};
-	
 	public static final int ACTION_CANCEL = MotionEvent.ACTION_CANCEL;
 	public static final int ACTION_DOWN = MotionEvent.ACTION_DOWN;
 	public static final int ACTION_MOVE = MotionEvent.ACTION_MOVE;
 	public static final int ACTION_OUTSIDE = MotionEvent.ACTION_OUTSIDE;
 	public static final int ACTION_UP = MotionEvent.ACTION_UP;
+
+	private static final TouchEventPool TOUCHEVENT_POOL = new TouchEventPool();
 
 	// ===========================================================
 	// Fields
@@ -43,24 +38,26 @@ public class TouchEvent {
 	// Constructors
 	// ===========================================================
 
-	public static TouchEvent obtain() {
-		return TOUCHEVENT_POOL.obtainPoolItem();
+	public static TouchEvent obtain(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent) {
+		final TouchEvent touchEvent = TOUCHEVENT_POOL.obtainPoolItem();
+		touchEvent.set(pX, pY, pAction, pPointerID, pMotionEvent);
+		return touchEvent;
 	}
 
-	public static void recycle(final TouchEvent pTouchEvent) {
-		TOUCHEVENT_POOL.recylePoolItem(pTouchEvent);
-	}
-
-	public void recycle() {
-		TouchEvent.recycle(this);
-	}
-
-	public void set(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent) {
+	private void set(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent) {
 		this.mX = pX;
 		this.mY = pY;
 		this.mAction = pAction;
 		this.mPointerID = pPointerID;
 		this.mMotionEvent = pMotionEvent;
+	}
+
+	public void recycle() {
+		TOUCHEVENT_POOL.recylePoolItem(this);
+	}
+
+	public static void recycle(final TouchEvent pTouchEvent) {
+		TOUCHEVENT_POOL.recylePoolItem(pTouchEvent);
 	}
 
 	// ===========================================================
@@ -94,8 +91,8 @@ public class TouchEvent {
 	}
 
 	/**
-	 * Provides the raw {@link MotionEvent} that originally caused this {@link TouchEvent}. 
-	 * The coordinates of this {@link MotionEvent} are in surface-coordinates! 
+	 * Provides the raw {@link MotionEvent} that originally caused this {@link TouchEvent}.
+	 * The coordinates of this {@link MotionEvent} are in surface-coordinates!
 	 * @return
 	 */
 	public MotionEvent getMotionEvent() {
@@ -113,4 +110,15 @@ public class TouchEvent {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	private static final class TouchEventPool extends GenericPool<TouchEvent> {
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+		
+		@Override
+		protected TouchEvent onAllocatePoolItem() {
+			return new TouchEvent();
+		}
+	}
 }

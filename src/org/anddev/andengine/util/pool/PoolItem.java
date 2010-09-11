@@ -16,6 +16,7 @@ public abstract class PoolItem {
 	// ===========================================================
 
 	Pool<? extends PoolItem> mParent;
+	boolean mRecycled = true;
 
 	// ===========================================================
 	// Constructors
@@ -29,6 +30,14 @@ public abstract class PoolItem {
 	// Getter & Setter
 	// ===========================================================
 
+	public boolean isRecycled() {
+		return this.mRecycled;
+	}
+
+	public boolean isFromPool(final Pool<? extends PoolItem> pPool) {
+		return pPool == this.mParent;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -37,11 +46,11 @@ public abstract class PoolItem {
 	// Methods
 	// ===========================================================
 
-	public boolean isFromPool(final Pool<? extends PoolItem> pPool) {
-		return pPool == this.mParent;
+	protected void onRecycle() {
+
 	}
 
-	protected void onRecycle() {
+	protected void onObtain() {
 
 	}
 

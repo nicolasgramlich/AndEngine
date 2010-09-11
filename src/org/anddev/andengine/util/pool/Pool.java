@@ -40,26 +40,36 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	protected T onHandleAllocatePoolItem() {
+		final T poolItem = super.onHandleAllocatePoolItem();
+		poolItem.mParent = this;
+		return poolItem;
+	}
 
 	@Override
-	protected void onHandleObtainItem(final T pPoolItem) {
-		pPoolItem.mParent = this;
+	protected void onHandleObtainItem(final T pPoolItem) {	
+		pPoolItem.mRecycled = false;	
+		pPoolItem.onObtain();
 	}
 
 	@Override
 	protected void onHandleRecycleItem(final T pPoolItem) {
 		pPoolItem.onRecycle();
-
-		pPoolItem.mParent = null;
+		pPoolItem.mRecycled = true;
 	}
 
 	@Override
 	public synchronized void recylePoolItem(final T pPoolItem) {
 		if(pPoolItem.mParent == null) {
-			throw new IllegalArgumentException("PoolItem already recycled. Maybe it's from another pool?");
+			throw new IllegalArgumentException("PoolItem not assigned to a pool!");
 		} else if(!pPoolItem.isFromPool(this)) {
 			throw new IllegalArgumentException("PoolItem from another pool!");
-		}
+		} else if(pPoolItem.isRecycled()) {
+			throw new IllegalArgumentException("PoolItem already recycled!");
+		} 
+		
 		super.recylePoolItem(pPoolItem);
 	}
 

@@ -44,13 +44,17 @@ public abstract class GenericPool<T> {
 		this.mGrowth = pGrowth;
 
 		if(pInitialSize > 0) {
-			this.batchAllocate(pInitialSize);
+			this.batchAllocatePoolItems(pInitialSize);
 		}
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public synchronized int getUnrecycledCount() {
+		return this.mUnrecycledCount;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -62,15 +66,23 @@ public abstract class GenericPool<T> {
 	// Methods
 	// ===========================================================
 
-	public synchronized void batchAllocate(final int pCount) {
-		final Stack<T> availableItems = this.mAvailableItems;
-		for(int i = pCount - 1; i >= 0; i--) {
-			availableItems.push(this.onAllocatePoolItem());
-		}
+	protected void onHandleRecycleItem(final T pItem) {
+
 	}
 
-	public synchronized int getUnrecycledCount() {
-		return this.mUnrecycledCount;
+	protected T onHandleAllocatePoolItem() {
+		return this.onAllocatePoolItem();
+	}
+
+	protected void onHandleObtainItem(final T pItem) {
+
+	}
+
+	public synchronized void batchAllocatePoolItems(final int pCount) {
+		final Stack<T> availableItems = this.mAvailableItems;
+		for(int i = pCount - 1; i >= 0; i--) {
+			availableItems.push(onHandleAllocatePoolItem());
+		}
 	}
 
 	public synchronized T obtainPoolItem() {
@@ -80,9 +92,9 @@ public abstract class GenericPool<T> {
 			item = this.mAvailableItems.pop();
 		} else {
 			if(this.mGrowth == 1) {
-				item = this.onAllocatePoolItem();
+				item = onHandleAllocatePoolItem();
 			} else {
-				this.batchAllocate(this.mGrowth);
+				this.batchAllocatePoolItems(this.mGrowth);
 				item = this.mAvailableItems.pop();
 			}
 			Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
@@ -91,10 +103,6 @@ public abstract class GenericPool<T> {
 
 		this.mUnrecycledCount++;
 		return item;
-	}
-
-	protected void onHandleObtainItem(final T pItem) {
-
 	}
 
 	public synchronized void recylePoolItem(final T pItem) {
@@ -111,10 +119,6 @@ public abstract class GenericPool<T> {
 		if(this.mUnrecycledCount < 0) {
 			Debug.e("More items recycled than obtained!");
 		}
-	}
-
-	protected void onHandleRecycleItem(final T pItem) {
-
 	}
 
 	// ===========================================================

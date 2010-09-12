@@ -6,6 +6,7 @@ import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
+import org.anddev.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.SplashScene;
@@ -75,8 +76,8 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 		final int width = this.mSplashTextureSource.getWidth();
 		final int height = this.mSplashTextureSource.getHeight();
 
-		this.mCamera = new Camera(0, 0, width, height);
-		return new Engine(new EngineOptions(true, this.getScreenOrientation(), new RatioResolutionPolicy(width, height), this.mCamera));
+		this.mCamera = getSplashCamera(width, height);
+		return new Engine(new EngineOptions(true, this.getScreenOrientation(), getSplashResolutionPolicy(width, height), this.mCamera));
 	}
 
 	@Override
@@ -107,6 +108,14 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected Camera getSplashCamera(final int pSplashwidth, final int pSplashHeight) {
+		return new Camera(0, 0, pSplashwidth, pSplashHeight);
+	}
+
+	protected IResolutionPolicy getSplashResolutionPolicy(final int pSplashwidth, final int pSplashHeight) {
+		return new RatioResolutionPolicy(pSplashwidth, pSplashHeight);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

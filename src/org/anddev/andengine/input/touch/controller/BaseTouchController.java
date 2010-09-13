@@ -20,7 +20,7 @@ public abstract class BaseTouchController implements ITouchController  {
 	// Fields
 	// ===========================================================
 
-	private final ITouchEventCallback mTouchEventCallback;
+	private ITouchEventCallback mTouchEventCallback;
 
 	private boolean mRunOnUpdateThread;
 
@@ -35,13 +35,18 @@ public abstract class BaseTouchController implements ITouchController  {
 	// Constructors
 	// ===========================================================
 
-	public BaseTouchController(final ITouchEventCallback pTouchEventCallback) {
-		this.mTouchEventCallback = pTouchEventCallback;
+	public BaseTouchController() {
+
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	@Override
+	public void setTouchEventCallback(final ITouchEventCallback pTouchEventCallback) {
+		this.mTouchEventCallback = pTouchEventCallback;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -63,21 +68,21 @@ public abstract class BaseTouchController implements ITouchController  {
 
 	protected boolean fireTouchEvent(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent) {
 		final boolean handled;
-		
+
 		if(this.mRunOnUpdateThread) {
 			final TouchEvent touchEvent = TouchEvent.obtain(pX, pY, pAction, pPointerID, MotionEvent.obtain(pMotionEvent));
-			
+
 			final TouchEventRunnablePoolItem touchEventRunnablePoolItem = this.mTouchEventRunnablePoolUpdateHandler.obtainPoolItem();
 			touchEventRunnablePoolItem.set(touchEvent);
 			this.mTouchEventRunnablePoolUpdateHandler.postPoolItem(touchEventRunnablePoolItem);
-			
+
 			handled = true;
 		} else {
 			final TouchEvent touchEvent = TouchEvent.obtain(pX, pY, pAction, pPointerID, pMotionEvent);
 			handled = this.mTouchEventCallback.onTouchEvent(touchEvent);
 			touchEvent.recycle();
 		}
-		
+
 		return handled;
 	}
 

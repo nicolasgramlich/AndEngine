@@ -115,7 +115,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 
 		this.mEngineOptions = pEngineOptions;
-		this.setTouchController(new SingleTouchControler(this));
+		this.setTouchController(new SingleTouchControler());
 		this.mCamera = pEngineOptions.getCamera();
 
 		if(this.mEngineOptions.needsSound()) {
@@ -195,6 +195,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public void setTouchController(final ITouchController pTouchController) {
 		this.mTouchController = pTouchController;
 		this.mTouchController.applyTouchOptions(this.mEngineOptions.getTouchOptions());
+		this.mTouchController.setTouchEventCallback(this);
 	}
 
 	public AccelerometerData getAccelerometerData() {

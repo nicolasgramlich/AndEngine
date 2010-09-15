@@ -17,8 +17,8 @@ public class SystemUtils {
 	// ===========================================================
 
 	private static final String BOGOMIPS_PATTERN = "BogoMIPS[\\s]*:[\\s]*(\\d+\\.\\d+)[\\s]*\n";
-	private static final String MEMTOTAL_PATTERN = "MemTotal[\\s]*:[\\s]*(\\d+ )[\\s]*kB\n";
-	private static final String MEMFREE_PATTERN = "MemFree[\\s]*:[\\s]*(\\d+ )[\\s]*kB\n";
+	private static final String MEMTOTAL_PATTERN = "MemTotal[\\s]*:[\\s]*(\\d+)[\\s]*kB\n";
+	private static final String MEMFREE_PATTERN = "MemFree[\\s]*:[\\s]*(\\d+)[\\s]*kB\n";
 
 	// ===========================================================
 	// Fields

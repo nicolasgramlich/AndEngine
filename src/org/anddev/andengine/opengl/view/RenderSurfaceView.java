@@ -100,6 +100,9 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.reset(pGL);
 
 			GLHelper.setPerspectiveCorrectionHintFastest(pGL);
+//			pGL.glEnable(GL10.GL_POLYGON_SMOOTH); 
+//			GLHelper.glHint(GL10.GL_POLYGON_SMOOTH_HINT, GL10.GL_NICEST);
+//			GLHelper.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST); 
 
 			GLHelper.setShadeModelFlat(pGL);
 

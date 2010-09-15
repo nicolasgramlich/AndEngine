@@ -41,7 +41,8 @@
 	../ABCShooter/lib/andengine.jar,
 	../BirdHunt/lib/andengine.jar,
 	../MasterBowMan/lib/andengine.jar,
-	../FarmTower/lib/andengine.jar" />
+	../FarmTower/lib/andengine.jar,
+	../TetrisTower/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<echo>${targetfile}</echo>

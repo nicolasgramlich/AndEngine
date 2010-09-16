@@ -17,6 +17,8 @@ public class Debug implements Constants {
 	// Fields
 	// ===========================================================
 
+	private static DebugLevel DEBUGLEVEL = DebugLevel.VERBOSE;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -24,6 +26,17 @@ public class Debug implements Constants {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public static void setDebugLevel(final DebugLevel pDebugLevel) {
+		if(pDebugLevel == null) {
+			throw new IllegalArgumentException("pDebugLevel must not be null!");
+		}
+		Debug.DEBUGLEVEL = pDebugLevel;
+	}
+
+	public static DebugLevel getDebugLevel() {
+		return Debug.DEBUGLEVEL;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -34,15 +47,33 @@ public class Debug implements Constants {
 	// ===========================================================
 
 	public static void v(final String pMessage) {
-		Log.v(DEBUGTAG, pMessage);
+		Debug.v(pMessage, null);
+	}
+
+	public static void v(final String pMessage, final Throwable pThrowable) {
+		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.VERBOSE)) {
+			Log.v(DEBUGTAG, pMessage, pThrowable);
+		}
 	}
 
 	public static void d(final String pMessage) {
-		Log.d(DEBUGTAG, pMessage);
+		Debug.d(pMessage, null);
+	}
+
+	public static void d(final String pMessage, final Throwable pThrowable) {
+		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.DEBUG)) {
+			Log.d(DEBUGTAG, pMessage, pThrowable);
+		}
 	}
 
 	public static void i(final String pMessage) {
-		Log.i(DEBUGTAG, pMessage);
+		Debug.i(pMessage, null);
+	}
+
+	public static void i(final String pMessage, final Throwable pThrowable) {
+		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.INFO)) {
+			Log.i(DEBUGTAG, pMessage, pThrowable);
+		}
 	}
 
 	public static void w(final String pMessage) {
@@ -54,11 +85,12 @@ public class Debug implements Constants {
 	}
 
 	public static void w(final String pMessage, final Throwable pThrowable) {
-		if(pThrowable == null) {
-			Log.w(DEBUGTAG, pMessage);
-			(new Exception()).printStackTrace();
-		} else {
-			Log.w(DEBUGTAG, pMessage, pThrowable);
+		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.WARNING)) {
+			if(pThrowable == null) {
+				Log.w(DEBUGTAG, pMessage, new Exception());
+			} else {
+				Log.w(DEBUGTAG, pMessage, pThrowable);
+			}
 		}
 	}
 
@@ -71,15 +103,26 @@ public class Debug implements Constants {
 	}
 
 	public static void e(final String pMessage, final Throwable pThrowable) {
-		if(pThrowable == null) {
-			Log.e(DEBUGTAG, pMessage);
-			(new Exception()).printStackTrace();
-		} else {
-			Log.e(DEBUGTAG, pMessage, pThrowable);
+		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.ERROR)) {
+			if(pThrowable == null) {
+				Log.e(DEBUGTAG, pMessage, new Exception());
+			} else {
+				Log.e(DEBUGTAG, pMessage, pThrowable);
+			}
 		}
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static enum DebugLevel implements Comparable<DebugLevel> {
+		NONE, ERROR, WARNING, INFO, DEBUG, VERBOSE;
+		
+		public static DebugLevel ALL = DebugLevel.VERBOSE; 
+
+		private boolean isSameOrLessThan(final DebugLevel pDebugLevel) {
+			return this.compareTo(pDebugLevel) >= 0;
+		}
+	}
 }

@@ -37,10 +37,12 @@ public class ParticleSystem extends Rectangle {
 	private final float mMaxRate;
 
 	private final TextureRegion mTextureRegion;
+	
+	private boolean mSpawningParticles = true;
 
-	private float mParticlesDueToSpawn;
 	private final int mMaxParticles;
 	private int mParticlesAlive;
+	private float mParticlesDueToSpawn;
 
 	private int mParticleModifierCount;
 	private int mParticleInitializerCount;
@@ -63,6 +65,14 @@ public class ParticleSystem extends Rectangle {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public void setSpawningParticles(boolean pSpawningParticles) {
+		this.mSpawningParticles = pSpawningParticles;
+	}
+	
+	public boolean isSpawningParticles() {
+		return this.mSpawningParticles;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -85,7 +95,9 @@ public class ParticleSystem extends Rectangle {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		this.spawnParticles(pSecondsElapsed);
+		if(this.mSpawningParticles) {
+			this.spawnParticles(pSecondsElapsed);
+		}
 
 		final Particle[] particles = this.mParticles;
 
@@ -154,13 +166,15 @@ public class ParticleSystem extends Rectangle {
 		final int particlesAlive = this.mParticlesAlive;
 		if(particlesAlive < this.mMaxParticles){
 			Particle particle = particles[particlesAlive];
+
+			/* New particle needs to be created. */
+			final float x = this.getX() + RANDOM.nextFloat() * this.getWidthScaled();
+			final float y = this.getY() + RANDOM.nextFloat() * this.getHeightScaled();
+
 			if(particle != null) {
 				particle.reset();
+				particle.setPosition(x, y);
 			} else {
-				/* New particle needs to be created. */
-				final float x = this.getX() + RANDOM.nextFloat() * this.getWidthScaled();
-				final float y = this.getY() + RANDOM.nextFloat() * this.getHeightScaled();
-
 				if(particlesAlive == 0) {
 					/* This is the very first particle. */
 					particle = new Particle(x, y, this.mTextureRegion);

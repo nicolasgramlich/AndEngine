@@ -81,7 +81,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private ITouchController mTouchController;
 
 	private SoundManager mSoundManager;
-	private MusicManager mMusicManager;	
+	private MusicManager mMusicManager;
 	private final TextureManager mTextureManager = new TextureManager();
 	private final BufferObjectManager mBufferObjectManager = new BufferObjectManager();
 	private final FontManager mFontManager = new FontManager();
@@ -493,7 +493,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			throw new IllegalStateException("You need to enable the Vibrator before you can use it!");
 		}
 	}
-	
+
 	public void vibrate(final long[] pPattern, final int pRepeat) throws IllegalStateException {
 		if(this.mVibrator != null) {
 			this.mVibrator.vibrate(pPattern, pRepeat);
@@ -567,7 +567,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 					Engine.this.onTickUpdate();
 				}
 			} catch (final InterruptedException e) {
-				Debug.e("UpdateThread interrupted.", e);
+				Debug.d("UpdateThread interrupted. Don't worry this Exception is most likely expected!", e);
 				this.interrupt();
 			}
 		}
@@ -593,7 +593,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		public synchronized void waitUntilCanDraw() throws InterruptedException {
 			// Debug.d(">>> waitUntilCanDraw");
 			while(this.mDrawing == false) {
-					this.wait();
+				this.wait();
 			}
 			// Debug.d("<<< waitUntilCanDraw");
 		}
@@ -601,7 +601,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		public synchronized void waitUntilCanUpdate() throws InterruptedException {
 			// Debug.d(">>> waitUntilCanUpdate");
 			while(this.mDrawing == true) {
-					this.wait();
+				this.wait();
 			}
 			// Debug.d("<<< waitUntilCanUpdate");
 		}

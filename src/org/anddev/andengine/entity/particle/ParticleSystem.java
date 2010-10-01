@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.Entity;
+import org.anddev.andengine.entity.particle.emitter.IParticleEmitter;
+import org.anddev.andengine.entity.particle.emitter.RectangleParticleEmitter;
 import org.anddev.andengine.entity.particle.modifier.IParticleInitializer;
 import org.anddev.andengine.entity.particle.modifier.IParticleModifier;
-import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+import org.anddev.andengine.util.constants.Constants;
 
 import android.util.FloatMath;
 
@@ -19,16 +22,26 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
  */
-public class ParticleSystem extends Rectangle {
+public class ParticleSystem extends Entity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_ONE;
+	private static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
+
+	private final float[] POSITION_OFFSET = new float[2];
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
+	private final IParticleEmitter mParticleEmitter;
+
 	private final Particle[] mParticles;
+
+	private int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
+	private int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	private final ArrayList<IParticleInitializer> mParticleInitializers = new ArrayList<IParticleInitializer>();
 	private final ArrayList<IParticleModifier> mParticleModifiers = new ArrayList<IParticleModifier>();
@@ -37,8 +50,8 @@ public class ParticleSystem extends Rectangle {
 	private final float mMaxRate;
 
 	private final TextureRegion mTextureRegion;
-	
-	private boolean mSpawningParticles = true;
+
+	private boolean mParticlesSpawnEnabled = true;
 
 	private final int mMaxParticles;
 	private int mParticlesAlive;
@@ -53,8 +66,16 @@ public class ParticleSystem extends Rectangle {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Creates a ParticleSystem with a {@link RectangleParticleEmitter}.
+	 */
+	@Deprecated
 	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
-		super(pX, pY, pWidth, pHeight);
+		this(new RectangleParticleEmitter(pX + pWidth * 0.5f, pY + pHeight * 0.5f, pWidth, pHeight), pMinRate, pMaxRate, pMaxParticles, pTextureRegion);
+	}
+
+	public ParticleSystem(final IParticleEmitter pParticleEmitter, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
+		this.mParticleEmitter = pParticleEmitter;
 		this.mParticles = new Particle[pMaxParticles];
 		this.mMinRate = pMinRate;
 		this.mMaxRate = pMaxRate;
@@ -65,23 +86,27 @@ public class ParticleSystem extends Rectangle {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public void setSpawningParticles(boolean pSpawningParticles) {
-		this.mSpawningParticles = pSpawningParticles;
+
+	public boolean isParticlesSpawnEnabled() {
+		return this.mParticlesSpawnEnabled;
+	}
+
+	public void setParticlesSpawnEnabled(final boolean pParticlesSpawnEnabled) {
+		this.mParticlesSpawnEnabled = pParticlesSpawnEnabled;
+	}
+
+	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
+		this.mSourceBlendFunction = pSourceBlendFunction;
+		this.mDestinationBlendFunction = pDestinationBlendFunction;
 	}
 	
-	public boolean isSpawningParticles() {
-		return this.mSpawningParticles;
+	public IParticleEmitter getParticleEmitter() {
+		return this.mParticleEmitter;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected void onPositionChanged() {
-		/* Nothing */
-	}
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
@@ -93,9 +118,7 @@ public class ParticleSystem extends Rectangle {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-
-		if(this.mSpawningParticles) {
+		if(this.mParticlesSpawnEnabled) {
 			this.spawnParticles(pSecondsElapsed);
 		}
 
@@ -168,8 +191,10 @@ public class ParticleSystem extends Rectangle {
 			Particle particle = particles[particlesAlive];
 
 			/* New particle needs to be created. */
-			final float x = this.getX() + RANDOM.nextFloat() * this.getWidthScaled();
-			final float y = this.getY() + RANDOM.nextFloat() * this.getHeightScaled();
+			this.mParticleEmitter.getPositionOffset(this.POSITION_OFFSET);
+
+			final float x = this.POSITION_OFFSET[Constants.VERTEX_INDEX_X];
+			final float y = this.POSITION_OFFSET[Constants.VERTEX_INDEX_Y];
 
 			if(particle != null) {
 				particle.reset();

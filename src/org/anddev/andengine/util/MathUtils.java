@@ -46,7 +46,7 @@ public class MathUtils implements MathConstants {
 	}
 
 	public static final int randomSign() {
-		if(RANDOM.nextFloat() > 0.5f) {
+		if(RANDOM.nextBoolean()) {
 			return 1;
 		} else {
 			return -1;

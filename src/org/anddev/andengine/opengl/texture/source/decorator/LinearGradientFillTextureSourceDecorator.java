@@ -102,19 +102,19 @@ public class LinearGradientFillTextureSourceDecorator extends TextureSourceDecor
 			this.mToY = pToY;
 		}
 
-		public final int getFromX() {
+		final int getFromX() {
 			return this.mFromX;
 		}
 
-		public final int getFromY() {
+		final int getFromY() {
 			return this.mFromY;
 		}
 
-		public final int getToX() {
+		final int getToX() {
 			return this.mToX;
 		}
 
-		public final int getToY() {
+		final int getToY() {
 			return this.mToY;
 		}
 	}

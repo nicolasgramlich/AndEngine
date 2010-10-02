@@ -83,8 +83,8 @@ public class VelocityInitializer extends BaseDoubleValueInitializer {
 	// ===========================================================
 
 	@Override
-	public void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB) {
-		pParticle.setVelocity(pValueA, pValueB);
+	public void onInitializeParticle(final Particle pParticle, final float pVelocityX, final float pVelocityY) {
+		pParticle.setVelocity(pVelocityX, pVelocityY);
 	}
 
 	// ===========================================================

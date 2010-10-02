@@ -83,8 +83,8 @@ public class AccelerationInitializer extends BaseDoubleValueInitializer {
 	// ===========================================================
 
 	@Override
-	public void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB) {
-		pParticle.accelerate(pValueA, pValueB);
+	public void onInitializeParticle(final Particle pParticle, final float pAccelerationX, final float pAccelerationY) {
+		pParticle.accelerate(pAccelerationX, pAccelerationY);
 	}
 
 	// ===========================================================

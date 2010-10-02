@@ -5,9 +5,9 @@ import org.anddev.andengine.entity.particle.Particle;
 
 /**
  * @author Nicolas Gramlich
- * @since 10:17:42 - 29.06.2010
+ * @since 18:53:41 - 02.10.2010
  */
-public class ColorInitializer extends BaseTripleValueInitializer {
+public class AlphaInitializer extends BaseSingleValueInitializer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,12 +20,12 @@ public class ColorInitializer extends BaseTripleValueInitializer {
 	// Constructors
 	// ===========================================================
 
-	public ColorInitializer(final float pRed, final float pGreen, final float pBlue) {
-		super(pRed, pRed, pGreen, pGreen, pBlue, pBlue);
+	public AlphaInitializer(final float pAlpha, final float pGreen, final float pBlue) {
+		super(pAlpha, pAlpha);
 	}
 
-	public ColorInitializer(final float pMinRed, final float pMaxRed, final float pMinGreen, final float pMaxGreen, final float pMinBlue, final float pMaxBlue) {
-		super(pMinRed, pMaxRed, pMinGreen, pMaxGreen, pMinBlue, pMaxBlue);
+	public AlphaInitializer(final float pMinAlpha, final float pMaxAlpha) {
+		super(pMinAlpha, pMaxAlpha);
 	}
 
 	// ===========================================================
@@ -37,8 +37,8 @@ public class ColorInitializer extends BaseTripleValueInitializer {
 	// ===========================================================
 
 	@Override
-	protected void onInitializeParticle(final Particle pParticle, final float pRed, final float pGreen, final float pBlue) {
-		pParticle.setColor(pRed, pGreen, pBlue);
+	protected void onInitializeParticle(final Particle pParticle, final float pAlpha) {
+		pParticle.setAlpha(pAlpha);
 	}
 
 	// ===========================================================

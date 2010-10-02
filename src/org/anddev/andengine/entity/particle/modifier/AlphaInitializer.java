@@ -20,7 +20,7 @@ public class AlphaInitializer extends BaseSingleValueInitializer {
 	// Constructors
 	// ===========================================================
 
-	public AlphaInitializer(final float pAlpha, final float pGreen, final float pBlue) {
+	public AlphaInitializer(final float pAlpha) {
 		super(pAlpha, pAlpha);
 	}
 

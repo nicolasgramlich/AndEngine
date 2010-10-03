@@ -42,7 +42,7 @@ public class TextPopupScene extends PopupScene {
 		super(pCamera, pParentScene, pDurationSeconds, pRunnable);
 
 		this.mText = new Text(0, 0, pFont, pText, HorizontalAlign.CENTER);
-		pCamera.centerShapeInCamera(this.mText);
+		this.centerShapeInCamera(this.mText);
 
 		if(pShapeModifier != null) {
 			this.mText.addShapeModifier(pShapeModifier);

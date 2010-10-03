@@ -3,6 +3,7 @@ package org.anddev.andengine.entity.scene;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 /**
@@ -104,6 +105,19 @@ public class CameraScene extends Scene {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void centerShapeInCamera(final Shape pShape) {
+		final Camera camera = this.mCamera;
+		pShape.setPosition((camera.getWidth() - pShape.getWidth()) * 0.5f, (camera.getHeight() - pShape.getHeight()) * 0.5f);
+	}
+
+	public void centerShapeInCameraHorizontally(final Shape pShape) {
+		pShape.setPosition((this.mCamera.getWidth() - pShape.getWidth()) * 0.5f, pShape.getY());
+	}
+
+	public void centerShapeInCameraVertically(final Shape pShape) {
+		pShape.setPosition(pShape.getX(), (this.mCamera.getHeight() - pShape.getHeight()) * 0.5f);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

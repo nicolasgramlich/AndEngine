@@ -10,7 +10,6 @@ import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.MathUtils;
@@ -164,18 +163,6 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void centerShapeInCamera(final Shape pShape) {
-		pShape.setPosition((this.getWidth() - pShape.getWidth()) * 0.5f, (this.getHeight() - pShape.getHeight()) * 0.5f);
-	}
-
-	public void centerShapeInCameraHorizontally(final Shape pShape) {
-		pShape.setPosition((this.getWidth() - pShape.getWidth()) * 0.5f, pShape.getY());
-	}
-
-	public void centerShapeInCameraVertically(final Shape pShape) {
-		pShape.setPosition(pShape.getX(), (this.getHeight() - pShape.getHeight()) * 0.5f);
-	}
 
 	public void onDrawHUD(final GL10 pGL) {
 		if(this.mHUD != null) {

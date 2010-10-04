@@ -1,6 +1,6 @@
 package org.anddev.andengine.opengl.vertex;
 
-import java.nio.FloatBuffer;
+import org.anddev.andengine.opengl.util.FastFloatBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -22,7 +22,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public RectangleVertexBuffer(final int pDrawType) {
-		super(2 * VERTICES_PER_RECTANGLE * BYTES_PER_FLOAT, pDrawType);
+		super(2 * VERTICES_PER_RECTANGLE, pDrawType);
 	}
 
 	// ===========================================================
@@ -42,7 +42,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 		final float x2 = pX + pWidth;
 		final float y2 = pY + pHeight;
 
-		final FloatBuffer buffer = this.getFloatBuffer();
+		final FastFloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 
 		// TODO Maybe use put(float []) instead of put(float) ...

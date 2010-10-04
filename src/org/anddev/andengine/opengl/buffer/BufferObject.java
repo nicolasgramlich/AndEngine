@@ -1,11 +1,8 @@
 package org.anddev.andengine.opengl.buffer;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
@@ -25,10 +22,10 @@ public abstract class BufferObject {
 	// Fields
 	// ===========================================================
 
-	private final int mByteCount;
+	private final int mCapacity;
 	private final int mDrawType;
 
-	private final FloatBuffer mFloatBuffer;
+	private final FastFloatBuffer mFloatBuffer;
 
 	private int mHardwareBufferID = -1;
 	private boolean mLoadedToHardware;
@@ -38,23 +35,23 @@ public abstract class BufferObject {
 	// Constructors
 	// ===========================================================
 
-	public BufferObject(final int pByteCount, final int pDrawType) {
-		this.mByteCount = pByteCount;
+	public BufferObject(final int pCapacity, final int pDrawType) {
+		this.mCapacity = pCapacity;
 		this.mDrawType = pDrawType;
 
-		this.mFloatBuffer = ByteBuffer.allocateDirect(pByteCount).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		this.mFloatBuffer = new FastFloatBuffer(pCapacity);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public FloatBuffer getFloatBuffer() {
+	public FastFloatBuffer getFloatBuffer() {
 		return this.mFloatBuffer;
 	}
 
-	public int getByteCount() {
-		return this.mByteCount;
+	public int getCapacity() {
+		return this.mCapacity;
 	}
 
 	public int getHardwareBufferID() {

@@ -2,11 +2,10 @@ package org.anddev.andengine.opengl.texture.region.buffer;
 
 import static org.anddev.andengine.opengl.vertex.RectangleVertexBuffer.VERTICES_PER_RECTANGLE;
 
-import java.nio.FloatBuffer;
-
 import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
+import org.anddev.andengine.opengl.util.FastFloatBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -30,7 +29,7 @@ public abstract class BaseTextureRegionBuffer extends BufferObject {
 	// ===========================================================
 
 	public BaseTextureRegionBuffer(final BaseTextureRegion pBaseTextureRegion, final int pDrawType) {
-		super(2 * VERTICES_PER_RECTANGLE * BYTES_PER_FLOAT, pDrawType);
+		super(2 * VERTICES_PER_RECTANGLE, pDrawType);
 		this.mTextureRegion = pBaseTextureRegion;
 	}
 
@@ -91,7 +90,7 @@ public abstract class BaseTextureRegionBuffer extends BufferObject {
 		final float x2 = this.getX2();
 		final float y2 = this.getY2();
 
-		final FloatBuffer buffer = this.getFloatBuffer();
+		final FastFloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
 
 		if(this.mFlippedVertical) {

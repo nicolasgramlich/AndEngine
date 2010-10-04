@@ -1,7 +1,5 @@
 package org.anddev.andengine.opengl.util;
 
-import java.nio.FloatBuffer;
-
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
@@ -34,8 +32,8 @@ public class GLHelper {
 	private static int sCurrentSourceBlendMode = -1;
 	private static int sCurrentDestionationBlendMode = -1;
 
-	private static FloatBuffer sCurrentTextureFloatBuffer = null;
-	private static FloatBuffer sCurrentVertexFloatBuffer = null;
+	private static FastFloatBuffer sCurrentTextureFloatBuffer = null;
+	private static FastFloatBuffer sCurrentVertexFloatBuffer = null;
 
 	private static boolean sEnableDither = true;
 	private static boolean sEnableLightning = true;
@@ -282,10 +280,10 @@ public class GLHelper {
 		pGL.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);
 	}
 
-	public static void texCoordPointer(final GL10 pGL, final FloatBuffer pTextureFloatBuffer) {
+	public static void texCoordPointer(final GL10 pGL, final FastFloatBuffer pTextureFloatBuffer) {
 		if(GLHelper.sCurrentTextureFloatBuffer  != pTextureFloatBuffer) {
 			GLHelper.sCurrentTextureFloatBuffer = pTextureFloatBuffer;
-			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureFloatBuffer);
+			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureFloatBuffer.mByteBuffer);
 		}
 	}
 
@@ -293,10 +291,10 @@ public class GLHelper {
 		pGL11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, 0);
 	}
 
-	public static void vertexPointer(final GL10 pGL, final FloatBuffer pVertexFloatBuffer) {
+	public static void vertexPointer(final GL10 pGL, final FastFloatBuffer pVertexFloatBuffer) {
 		if(GLHelper.sCurrentVertexFloatBuffer != pVertexFloatBuffer) {
 			GLHelper.sCurrentVertexFloatBuffer = pVertexFloatBuffer;
-			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexFloatBuffer);
+			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexFloatBuffer.mByteBuffer);
 		}
 	}
 
@@ -354,7 +352,7 @@ public class GLHelper {
 	}
 
 	public static void bufferData(final GL11 pGL11, final BufferObject pBufferObject, final int pUsage) {
-		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pBufferObject.getByteCount(), pBufferObject.getFloatBuffer(), pUsage);
+		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pBufferObject.getCapacity() * BufferObject.BYTES_PER_FLOAT, pBufferObject.getFloatBuffer().mByteBuffer, pUsage);
 	}
 
 	// ===========================================================

@@ -1,9 +1,8 @@
 package org.anddev.andengine.opengl.vertex;
 
-import java.nio.FloatBuffer;
-
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
+import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.util.HorizontalAlign;
 
 /**
@@ -28,7 +27,7 @@ public class TextVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public TextVertexBuffer(final int pCharacterCount, final HorizontalAlign pHorizontalAlign, final int pDrawType) {
-		super(2 * VERTICES_PER_CHARACTER * BYTES_PER_FLOAT * pCharacterCount, pDrawType);
+		super(2 * VERTICES_PER_CHARACTER * pCharacterCount, pDrawType);
 
 		this.mHorizontalAlign = pHorizontalAlign;
 	}
@@ -46,7 +45,7 @@ public class TextVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public synchronized void update(final Font font, final int pMaximumLineWidth, final int[] pWidths, final String[] pLines) {
-		final FloatBuffer vertexFloatBuffer = this.getFloatBuffer();
+		final FastFloatBuffer vertexFloatBuffer = this.getFloatBuffer();
 		vertexFloatBuffer.position(0);
 
 		final int lineHeight = font.getLineHeight();

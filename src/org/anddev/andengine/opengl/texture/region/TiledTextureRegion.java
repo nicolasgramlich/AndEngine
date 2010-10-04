@@ -3,14 +3,13 @@ package org.anddev.andengine.opengl.texture.region;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.texture.region.buffer.TiledTextureRegionBuffer;
 
 /**
  * @author Nicolas Gramlich
  * @since 18:14:42 - 09.03.2010
  */
-public class TiledTextureRegion extends TextureRegion {
+public class TiledTextureRegion extends BaseTextureRegion {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -53,7 +52,7 @@ public class TiledTextureRegion extends TextureRegion {
 
 	@Override
 	public TiledTextureRegionBuffer getTextureBuffer() {
-		return (TiledTextureRegionBuffer)this.mTextureRegionBuffer;
+		return (TiledTextureRegionBuffer) this.mTextureRegionBuffer;
 	}
 
 	public int getTileCount() {
@@ -84,7 +83,7 @@ public class TiledTextureRegion extends TextureRegion {
 		if(pTileColumn != this.mCurrentTileColumn || pTileRow != this.mCurrentTileRow) {
 			this.mCurrentTileColumn = pTileColumn;
 			this.mCurrentTileRow = pTileRow;
-			super.updateTextureRegionBuffer();
+			super.setHardwareBufferNeedsUpdate();
 		}
 	}
 
@@ -115,7 +114,7 @@ public class TiledTextureRegion extends TextureRegion {
 	}
 
 	@Override
-	protected TextureRegionBuffer onCreateTextureRegionBuffer() {
+	protected TiledTextureRegionBuffer onCreateTextureRegionBuffer() {
 		return new TiledTextureRegionBuffer(this, GL11.GL_STATIC_DRAW);
 	}
 

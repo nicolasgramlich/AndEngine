@@ -43,6 +43,11 @@ public class Sprite extends BaseSprite {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public TextureRegion getTextureRegion() {
+		return (TextureRegion)this.mTextureRegion;
+	}
 
 	// ===========================================================
 	// Methods

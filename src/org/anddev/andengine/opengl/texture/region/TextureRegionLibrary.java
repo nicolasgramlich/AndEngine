@@ -6,7 +6,7 @@ import org.anddev.andengine.util.Library;
  * @author Nicolas Gramlich
  * @since 11:52:26 - 20.08.2010
  */
-public class TextureRegionLibrary extends Library<TextureRegion>{
+public class TextureRegionLibrary extends Library<BaseTextureRegion> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,11 +18,11 @@ public class TextureRegionLibrary extends Library<TextureRegion>{
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public TextureRegionLibrary() {
 		super();
 	}
-	
+
 	public TextureRegionLibrary(final int pInitialCapacity) {
 		super(pInitialCapacity);
 	}
@@ -30,9 +30,14 @@ public class TextureRegionLibrary extends Library<TextureRegion>{
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
+	@Override
+	public TextureRegion get(final int pID) {
+		return (TextureRegion) super.get(pID);
+	}
+
 	public TiledTextureRegion getTiled(final int pID) {
-		return (TiledTextureRegion)this.mItems.get(pID);
+		return (TiledTextureRegion) this.mItems.get(pID);
 	}
 
 	// ===========================================================

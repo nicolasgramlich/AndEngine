@@ -23,6 +23,11 @@ public class TextureRegionBuffer extends BaseTextureRegionBuffer {
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
+	public TextureRegion getTextureRegion() {
+		return (TextureRegion) super.getTextureRegion();
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -30,25 +35,25 @@ public class TextureRegionBuffer extends BaseTextureRegionBuffer {
 	@Override
 	protected float getX1() {
 		final TextureRegion textureRegion = this.getTextureRegion();
-		return (float)textureRegion.getTexturePositionX() / textureRegion.getTexture().getWidth();
+		return (float) textureRegion.getTexturePositionX() / textureRegion.getTexture().getWidth();
 	}
 
 	@Override
 	protected float getX2() {
 		final TextureRegion textureRegion = this.getTextureRegion();
-		return (float)(textureRegion.getTexturePositionX() + textureRegion.getWidth()) / textureRegion.getTexture().getWidth();
+		return (float) (textureRegion.getTexturePositionX() + textureRegion.getWidth()) / textureRegion.getTexture().getWidth();
 	}
 
 	@Override
 	protected float getY1() {
 		final TextureRegion textureRegion = this.getTextureRegion();
-		return (float)textureRegion.getTexturePositionY() / textureRegion.getTexture().getHeight();
+		return (float) textureRegion.getTexturePositionY() / textureRegion.getTexture().getHeight();
 	}
 
 	@Override
 	protected float getY2() {
 		final TextureRegion textureRegion = this.getTextureRegion();
-		return (float)(textureRegion.getTexturePositionY() + textureRegion.getHeight()) / textureRegion.getTexture().getHeight();
+		return (float) (textureRegion.getTexturePositionY() + textureRegion.getHeight()) / textureRegion.getTexture().getHeight();
 	}
 
 	// ===========================================================

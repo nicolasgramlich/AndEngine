@@ -6,13 +6,13 @@ import java.nio.FloatBuffer;
 
 import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
 
 /**
  * @author Nicolas Gramlich
  * @since 19:05:50 - 09.03.2010
  */
-abstract class BaseTextureRegionBuffer extends BufferObject {
+public abstract class BaseTextureRegionBuffer extends BufferObject {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,7 +21,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	// Fields
 	// ===========================================================
 
-	protected final TextureRegion mTextureRegion;
+	protected final BaseTextureRegion mTextureRegion;
 	private boolean mFlippedVertical;
 	private boolean mFlippedHorizontal;
 
@@ -29,16 +29,16 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	// Constructors
 	// ===========================================================
 
-	public BaseTextureRegionBuffer(final TextureRegion pTextureRegion, final int pDrawType) {
+	public BaseTextureRegionBuffer(final BaseTextureRegion pBaseTextureRegion, final int pDrawType) {
 		super(2 * VERTICES_PER_RECTANGLE * BYTES_PER_FLOAT, pDrawType);
-		this.mTextureRegion = pTextureRegion;
+		this.mTextureRegion = pBaseTextureRegion;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public TextureRegion getTextureRegion() {
+	public BaseTextureRegion getTextureRegion() {
 		return this.mTextureRegion;
 	}
 
@@ -47,7 +47,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	}
 
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
-		if(this.mFlippedHorizontal != pFlippedHorizontal){
+		if(this.mFlippedHorizontal != pFlippedHorizontal) {
 			this.mFlippedHorizontal = pFlippedHorizontal;
 			this.setHardwareBufferNeedsUpdate();
 		}
@@ -58,7 +58,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	}
 
 	public void setFlippedVertical(final boolean pFlippedVertical) {
-		if(this.mFlippedVertical != pFlippedVertical){
+		if(this.mFlippedVertical != pFlippedVertical) {
 			this.mFlippedVertical = pFlippedVertical;
 			this.setHardwareBufferNeedsUpdate();
 		}
@@ -79,7 +79,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 
 	@Override
 	public synchronized void setHardwareBufferNeedsUpdate() {
-		final TextureRegion textureRegion = this.mTextureRegion;
+		final BaseTextureRegion textureRegion = this.mTextureRegion;
 		final Texture texture = textureRegion.getTexture();
 
 		if(texture == null) {

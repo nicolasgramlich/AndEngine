@@ -6,7 +6,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
  * @author Nicolas Gramlich
  * @since 19:01:11 - 09.03.2010
  */
-public class TiledTextureRegionBuffer extends TextureRegionBuffer {
+public class TiledTextureRegionBuffer extends BaseTextureRegionBuffer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -29,7 +29,7 @@ public class TiledTextureRegionBuffer extends TextureRegionBuffer {
 
 	@Override
 	public TiledTextureRegion getTextureRegion() {
-		return (TiledTextureRegion)super.getTextureRegion();
+		return (TiledTextureRegion) super.getTextureRegion();
 	}
 
 	// ===========================================================

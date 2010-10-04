@@ -14,15 +14,14 @@ public abstract class BufferObject {
 	// Constants
 	// ===========================================================
 
-	public static final int BYTES_PER_FLOAT = 4;
-
 	private static final int[] HARDWAREBUFFERID_FETCHER = new int[1];
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final int mCapacity;
+	protected final int[] mBufferData; 
+
 	private final int mDrawType;
 
 	private final FastFloatBuffer mFloatBuffer;
@@ -36,9 +35,8 @@ public abstract class BufferObject {
 	// ===========================================================
 
 	public BufferObject(final int pCapacity, final int pDrawType) {
-		this.mCapacity = pCapacity;
 		this.mDrawType = pDrawType;
-
+		this.mBufferData = new int[pCapacity];
 		this.mFloatBuffer = new FastFloatBuffer(pCapacity);
 	}
 
@@ -48,10 +46,6 @@ public abstract class BufferObject {
 
 	public FastFloatBuffer getFloatBuffer() {
 		return this.mFloatBuffer;
-	}
-
-	public int getCapacity() {
-		return this.mCapacity;
 	}
 
 	public int getHardwareBufferID() {
@@ -64,10 +58,6 @@ public abstract class BufferObject {
 
 	void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
-	}
-
-	public void setHardwareBufferNeedsUpdate(final boolean pHardwareBufferNeedsUpdate) {
-		this.mHardwareBufferNeedsUpdate = pHardwareBufferNeedsUpdate;
 	}
 
 	// ===========================================================
@@ -94,7 +84,7 @@ public abstract class BufferObject {
 			//			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
 			this.mHardwareBufferNeedsUpdate = false;
 			synchronized(this) {
-				GLHelper.bufferData(pGL11, this, this.mDrawType);
+				GLHelper.bufferData(pGL11, this.mFloatBuffer.mByteBuffer, this.mDrawType);
 			}
 		}
 	}

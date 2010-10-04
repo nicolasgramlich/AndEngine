@@ -38,16 +38,17 @@ public class LineVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public synchronized void update(final float pX1, final float pY1, final float pX2, final float pY2) {
+		final int[] bufferData = this.mBufferData;
+
+		bufferData[0]  = Float.floatToRawIntBits(pX1);
+		bufferData[1]  = Float.floatToRawIntBits(pY1);
+
+		bufferData[2]  = Float.floatToRawIntBits(pX2);
+		bufferData[3]  = Float.floatToRawIntBits(pY2);
+
 		final FastFloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
-		// TODO Maybe use put(float []) instead of put(float) ...
-		//
-		buffer.put(pX1);
-		buffer.put(pY1);
-
-		buffer.put(pX2);
-		buffer.put(pY2);
-
+		buffer.put(buffer);
 		buffer.position(0);
 
 		super.setHardwareBufferNeedsUpdate();

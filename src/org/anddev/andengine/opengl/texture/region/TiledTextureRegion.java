@@ -83,7 +83,7 @@ public class TiledTextureRegion extends BaseTextureRegion {
 		if(pTileColumn != this.mCurrentTileColumn || pTileRow != this.mCurrentTileRow) {
 			this.mCurrentTileColumn = pTileColumn;
 			this.mCurrentTileRow = pTileRow;
-			super.setHardwareBufferNeedsUpdate();
+			super.updateTextureRegionBuffer();
 		}
 	}
 

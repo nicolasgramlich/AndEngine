@@ -1,10 +1,11 @@
 package org.anddev.andengine.opengl.util;
 
+import java.nio.ByteBuffer;
+
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.engine.options.RenderOptions;
-import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.util.Debug;
 
 import android.os.Build;
@@ -17,6 +18,8 @@ public class GLHelper {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	public static final int BYTES_PER_FLOAT = 4;
 
 	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
 	private static final int[] HARDWAREBUFFERID_CONTAINER = new int[1];
@@ -266,7 +269,7 @@ public class GLHelper {
 		GLHelper.HARDWAREBUFFERID_CONTAINER[0] = pHardwareBufferID;
 		pGL11.glDeleteBuffers(1, GLHelper.HARDWAREBUFFERID_CONTAINER, 0);
 	}
-	
+
 	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {
 		/* Reduce unnecessary texture switching calls. */
 		if(GLHelper.sCurrentHardwareTextureID != pHardwareTextureID) {
@@ -351,8 +354,8 @@ public class GLHelper {
 		pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 	}
 
-	public static void bufferData(final GL11 pGL11, final BufferObject pBufferObject, final int pUsage) {
-		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pBufferObject.getCapacity() * BufferObject.BYTES_PER_FLOAT, pBufferObject.getFloatBuffer().mByteBuffer, pUsage);
+	public static void bufferData(final GL11 pGL11, final ByteBuffer pByteBuffer, final int pUsage) {
+		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pByteBuffer.capacity(), pByteBuffer, pUsage);
 	}
 
 	// ===========================================================

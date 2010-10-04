@@ -80,7 +80,7 @@ public class TextTextureBuffer extends BufferObject {
 		}
 		textureFloatBuffer.position(0);
 
-		this.update();
+		this.setHardwareBufferNeedsUpdate();
 	}
 
 	// ===========================================================

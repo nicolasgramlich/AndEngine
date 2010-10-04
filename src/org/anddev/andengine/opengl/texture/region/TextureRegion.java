@@ -127,7 +127,7 @@ public class TextureRegion {
 	// ===========================================================
 
 	protected void updateTextureRegionBuffer() {
-		this.mTextureRegionBuffer.update();
+		this.mTextureRegionBuffer.setHardwareBufferNeedsUpdate();
 	}
 
 	protected TextureRegionBuffer onCreateTextureRegionBuffer() {

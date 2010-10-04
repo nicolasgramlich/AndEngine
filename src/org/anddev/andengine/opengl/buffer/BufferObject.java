@@ -77,7 +77,7 @@ public abstract class BufferObject {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public void update(){
+	public void setHardwareBufferNeedsUpdate(){
 		this.mHardwareBufferNeedsUpdate = true;
 	}
 

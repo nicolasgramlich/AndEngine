@@ -50,7 +50,7 @@ public class LineVertexBuffer extends VertexBuffer {
 
 		buffer.position(0);
 
-		super.update();
+		super.setHardwareBufferNeedsUpdate();
 	}
 
 	// ===========================================================

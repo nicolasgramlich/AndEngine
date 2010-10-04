@@ -49,7 +49,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
 		if(this.mFlippedHorizontal != pFlippedHorizontal){
 			this.mFlippedHorizontal = pFlippedHorizontal;
-			this.update();
+			this.setHardwareBufferNeedsUpdate();
 		}
 	}
 
@@ -60,7 +60,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	public void setFlippedVertical(final boolean pFlippedVertical) {
 		if(this.mFlippedVertical != pFlippedVertical){
 			this.mFlippedVertical = pFlippedVertical;
-			this.update();
+			this.setHardwareBufferNeedsUpdate();
 		}
 	}
 
@@ -78,7 +78,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 	// ===========================================================
 
 	@Override
-	public synchronized void update() {
+	public synchronized void setHardwareBufferNeedsUpdate() {
 		final TextureRegion textureRegion = this.mTextureRegion;
 		final Texture texture = textureRegion.getTexture();
 
@@ -133,7 +133,7 @@ abstract class BaseTextureRegionBuffer extends BufferObject {
 		}
 		buffer.position(0);
 
-		super.update();
+		super.setHardwareBufferNeedsUpdate();
 	}
 
 	// ===========================================================

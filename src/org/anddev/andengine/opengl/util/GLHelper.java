@@ -368,7 +368,9 @@ public class GLHelper {
 
 	/**
 	 * <b>Note:</b> does not pre-multiply the alpha channel!</br>
-	 * Except that difference, same as: {@link GLUtils#texSubImage2D(int, int, int, int, Bitmap, int, int)}
+	 * Except that difference, same as: {@link GLUtils#texSubImage2D(int, int, int, int, Bitmap, int, int)}</br>
+	 * </br>
+	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 */
 	public static void glTexSubImage2D(final GL10 pGL, final int target, final int level, final int xoffset, final int yoffset, final Bitmap bitmap, final int format, final int type) {
 		final int[] pixels = GLHelper.getPixels(bitmap);
@@ -387,7 +389,7 @@ public class GLHelper {
 			final int blue = ((pixel) & 0xFF);
 			final int alpha = (pixel >> 24);
 
-			// TODO This check could be outside of the loop, so it doesn't get checked every iteration.
+			// TODO This check could be outside of the loop, so it doesn't get evaluated every iteration.
 			if(IS_LITTLE_ENDIAN) {
 				pPixels[i] = alpha << 24 | blue << 16 | green << 8 | red;
 			} else {
@@ -400,8 +402,10 @@ public class GLHelper {
 	public static int[] getPixels(final Bitmap pBitmap) {
 		final int w = pBitmap.getWidth();
 		final int h = pBitmap.getHeight();
+		
 		final int[] pixels = new int[w * h];
 		pBitmap.getPixels(pixels, 0, w, 0, 0, w, h);
+		
 		return pixels;
 	}
 

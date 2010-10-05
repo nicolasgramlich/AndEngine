@@ -67,6 +67,14 @@ public class SAXUtils {
 		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
 	}
 
+	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final float pValue) {
+		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
+	}
+
+	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final double pValue) {
+		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
+	}
+
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final String pValue) {
 		pStringBuilder.append(' ').append(pName).append('=').append('\"').append(pValue).append('\"');
 	}

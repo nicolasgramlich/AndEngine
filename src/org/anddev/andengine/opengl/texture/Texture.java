@@ -181,8 +181,11 @@ public class Texture {
 	}
 
 	private void writeTextureToHardware(final GL10 pGL) {
+		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
+		
 		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
 		final int textureSourceCount = textureSources.size();
+		
 		for(int j = 0; j < textureSourceCount; j++) {
 			final TextureSourceWithLocation textureSourceWithLocation = textureSources.get(j);
 			if(textureSourceWithLocation != null) {
@@ -191,8 +194,7 @@ public class Texture {
 					if(bmp == null) {
 						throw new IllegalArgumentException("TextureSource: " + textureSourceWithLocation.toString() + " returned a null Bitmap.");
 					}
-					
-					if(this.mTextureOptions.mPreMultipyAlpha) {
+					if(preMultipyAlpha) {
 						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
 					} else {
 						GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);

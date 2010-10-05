@@ -385,12 +385,12 @@ public class GLHelper {
 			final int red = ((pixel >> 16) & 0xFF);
 			final int green = ((pixel >> 8) & 0xFF);
 			final int blue = ((pixel) & 0xFF);
-			final int aalpha = (pixel >> 24);
+			final int alpha = (pixel >> 24);
 
 			if(IS_LITTLE_ENDIAN) {
-				pPixels[i] = aalpha << 24 | blue << 16 | green << 8 | red;
+				pPixels[i] = alpha << 24 | blue << 16 | green << 8 | red;
 			} else {
-				pPixels[i] = red << 24 | green << 16 | blue << 8 | aalpha;
+				pPixels[i] = red << 24 | green << 16 | blue << 8 | alpha;
 			}
 		}
 		return IntBuffer.wrap(pPixels);

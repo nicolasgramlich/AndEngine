@@ -48,7 +48,7 @@ public class LineVertexBuffer extends VertexBuffer {
 
 		final FastFloatBuffer buffer = this.getFloatBuffer();
 		buffer.position(0);
-		buffer.put(buffer);
+		buffer.put(bufferData);
 		buffer.position(0);
 
 		super.setHardwareBufferNeedsUpdate();

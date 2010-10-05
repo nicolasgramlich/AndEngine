@@ -1,5 +1,6 @@
 package org.anddev.andengine.opengl.util;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -368,25 +369,24 @@ public class GLHelper {
 	public static void glTexSubImage2D(final GL10 pGL, final int target, final int level, final int xoffset, final int yoffset, final Bitmap bitmap, final int format, final int type) {
 		final int[] pixels = GLHelper.getPixels(bitmap);
 
-		final byte[] pixelComponents = convertARGBtoRGBA(pixels);
-		final ByteBuffer pixelBuffer = ByteBuffer.wrap(pixelComponents);
+		final Buffer pixelBuffer = convertARGBtoRGBABuffer(pixels);
 
 		pGL.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, xoffset, yoffset, bitmap.getWidth(), bitmap.getHeight(), GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, pixelBuffer);
 	}
 
-	private static byte[] convertARGBtoRGBA(final int[] pixels) {
-		final int pixelCount = pixels.length;
+	private static Buffer convertARGBtoRGBABuffer(final int[] pPixels) {
+		final int pixelCount = pPixels.length;
 		final byte[] pixelComponents = new byte[pixelCount * BYTES_PER_PIXEL_RGBA];
 		int byteIndex = 0;
 		for(int i = 0; i < pixelCount; i++) {
-			final int p = pixels[i];
+			final int p = pPixels[i];
 			// Convert to byte representation RGBA required by pGL.glTexSubImage2D(...)
 			pixelComponents[byteIndex++] = (byte) ((p >> 16) & 0xFF); // red
 			pixelComponents[byteIndex++] = (byte) ((p >> 8) & 0xFF); // green
 			pixelComponents[byteIndex++] = (byte) ((p) & 0xFF); // blue
 			pixelComponents[byteIndex++] = (byte) (p >> 24); // alpha
 		}
-		return pixelComponents;
+		return ByteBuffer.wrap(pixelComponents);
 	}
 
 	public static int[] getPixels(final Bitmap pBitmap) {

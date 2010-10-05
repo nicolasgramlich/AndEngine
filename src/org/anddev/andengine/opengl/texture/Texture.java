@@ -150,7 +150,7 @@ public class Texture {
 	public void loadToHardware(final GL10 pGL) {
 		GLHelper.enableTextures(pGL);
 
-		this.mHardwareTextureID = this.generateHardwareTextureID(pGL);
+		this.mHardwareTextureID = Texture.generateHardwareTextureID(pGL);
 
 		this.allocateAndBindTextureOnHardware(pGL);
 
@@ -182,10 +182,10 @@ public class Texture {
 
 	private void writeTextureToHardware(final GL10 pGL) {
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
-		
+
 		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
 		final int textureSourceCount = textureSources.size();
-		
+
 		for(int j = 0; j < textureSourceCount; j++) {
 			final TextureSourceWithLocation textureSourceWithLocation = textureSources.get(j);
 			if(textureSourceWithLocation != null) {
@@ -226,20 +226,20 @@ public class Texture {
 	private void allocateAndBindTextureOnHardware(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
 
-		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
+		Texture.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
 	}
 
 	private void deleteTextureOnHardware(final GL10 pGL) {
 		GLHelper.deleteTexture(pGL, this.mHardwareTextureID);
 	}
 
-	private int generateHardwareTextureID(final GL10 pGL) {
+	private static int generateHardwareTextureID(final GL10 pGL) {
 		pGL.glGenTextures(1, Texture.HARDWARETEXTUREID_FETCHER, 0);
 
 		return Texture.HARDWARETEXTUREID_FETCHER[0];
 	}
 
-	private void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
+	private static void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
 		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.ARGB_8888);
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);

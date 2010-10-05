@@ -114,6 +114,10 @@ public class Texture {
 	public int getHeight() {
 		return this.mHeight;
 	}
+	
+	public TextureOptions getTextureOptions() {
+		return this.mTextureOptions;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

@@ -11,12 +11,15 @@ public class TextureOptions {
 	// Constants
 	// ===========================================================
 
-	private static final boolean PREMULTIPLYALPHA_DEFAULT = true;
+	public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE, false);
+	public static final TextureOptions BILINEAR = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE, false);
+	public static final TextureOptions REPEATING = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE, false);
+	public static final TextureOptions REPEATING_BILINEAR = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE, false);
 
-	public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE, PREMULTIPLYALPHA_DEFAULT);
-	public static final TextureOptions BILINEAR = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE, PREMULTIPLYALPHA_DEFAULT);
-	public static final TextureOptions REPEATING = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE, PREMULTIPLYALPHA_DEFAULT);
-	public static final TextureOptions REPEATING_BILINEAR = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE, PREMULTIPLYALPHA_DEFAULT);
+	public static final TextureOptions DEFAULT_PREMULTIPLY = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE, true);
+	public static final TextureOptions BILINEAR_PREMULTIPLY = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE, true);
+	public static final TextureOptions REPEATING_PREMULTIPLY = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE, true);
+	public static final TextureOptions REPEATING_BILINEAR_PREMULTIPLY = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE, true);
 
 	// ===========================================================
 	// Fields

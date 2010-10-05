@@ -16,8 +16,8 @@ public abstract class BaseSprite extends BaseRectangle {
 	// Constants
 	// ===========================================================
 
-	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_SRC_ALPHA;
-	private static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
+	private static final int BLENDFUNCTION_SOURCE_PREMULTIPLY_DEFAULT = GL10.GL_ONE;
+	private static final int BLENDFUNCTION_DESTINATION_PREMULTIPLY_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
 
 	// ===========================================================
 	// Fields
@@ -33,14 +33,14 @@ public abstract class BaseSprite extends BaseRectangle {
 		super(pX, pY, pWidth, pHeight);
 
 		this.mTextureRegion = pTextureRegion;
-		this.setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
+		this.initBlendFunction();
 	}
 
 	public BaseSprite(final float pX, final float pY, final float pWidth, final float pHeight, final BaseTextureRegion pTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
 		super(pX, pY, pWidth, pHeight, pRectangleVertexBuffer);
 
 		this.mTextureRegion = pTextureRegion;
-		this.setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
+		this.initBlendFunction();
 	}
 
 	// ===========================================================
@@ -59,7 +59,7 @@ public abstract class BaseSprite extends BaseRectangle {
 	public void reset() {
 		super.reset();
 
-		this.setBlendFunction(BLENDFUNCTION_SOURCE_DEFAULT, BLENDFUNCTION_DESTINATION_DEFAULT);
+		this.initBlendFunction();
 	}
 
 	@Override
@@ -79,6 +79,12 @@ public abstract class BaseSprite extends BaseRectangle {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private void initBlendFunction() {
+		if(this.mTextureRegion.getTexture().getTextureOptions().mPreMultipyAlpha) {
+			this.setBlendFunction(BLENDFUNCTION_SOURCE_PREMULTIPLY_DEFAULT, BLENDFUNCTION_DESTINATION_PREMULTIPLY_DEFAULT);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

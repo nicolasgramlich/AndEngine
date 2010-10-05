@@ -18,7 +18,7 @@ public abstract class Shape extends Entity implements IShape {
 	// Constants
 	// ===========================================================
 
-	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_ONE;
+	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_SRC_ALPHA;
 	private static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
 
 	// ===========================================================

@@ -8,6 +8,8 @@ import javax.microedition.khronos.opengles.GL11;
 import org.anddev.andengine.engine.options.RenderOptions;
 import org.anddev.andengine.util.Debug;
 
+import android.graphics.Bitmap;
+import android.opengl.GLUtils;
 import android.os.Build;
 
 /**
@@ -20,6 +22,7 @@ public class GLHelper {
 	// ===========================================================
 
 	public static final int BYTES_PER_FLOAT = 4;
+	public static final int BYTES_PER_PIXEL_RGBA = 4;
 
 	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
 	private static final int[] HARDWAREBUFFERID_CONTAINER = new int[1];
@@ -356,6 +359,42 @@ public class GLHelper {
 
 	public static void bufferData(final GL11 pGL11, final ByteBuffer pByteBuffer, final int pUsage) {
 		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pByteBuffer.capacity(), pByteBuffer, pUsage);
+	}
+
+	/**
+	 * <b>Note:</b> does not pre-multiply the alpha channel!</br>
+	 * Except that difference, same as: {@link GLUtils#texSubImage2D(int, int, int, int, Bitmap, int, int)}
+	 */
+	public static void glTexSubImage2D(final GL10 pGL, final int target, final int level, final int xoffset, final int yoffset, final Bitmap bitmap, final int format, final int type) {
+		final int[] pixels = GLHelper.getPixels(bitmap);
+
+		final byte[] pixelComponents = convertARGBtoRGBA(pixels);
+		final ByteBuffer pixelBuffer = ByteBuffer.wrap(pixelComponents);
+
+		pGL.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, xoffset, yoffset, bitmap.getWidth(), bitmap.getHeight(), GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, pixelBuffer);
+	}
+
+	private static byte[] convertARGBtoRGBA(final int[] pixels) {
+		final int pixelCount = pixels.length;
+		final byte[] pixelComponents = new byte[pixelCount * BYTES_PER_PIXEL_RGBA];
+		int byteIndex = 0;
+		for(int i = 0; i < pixelCount; i++) {
+			final int p = pixels[i];
+			// Convert to byte representation RGBA required by pGL.glTexSubImage2D(...)
+			pixelComponents[byteIndex++] = (byte) ((p >> 16) & 0xFF); // red
+			pixelComponents[byteIndex++] = (byte) ((p >> 8) & 0xFF); // green
+			pixelComponents[byteIndex++] = (byte) ((p) & 0xFF); // blue
+			pixelComponents[byteIndex++] = (byte) (p >> 24); // alpha
+		}
+		return pixelComponents;
+	}
+
+	public static int[] getPixels(final Bitmap pBitmap) {
+		final int w = pBitmap.getWidth();
+		final int h = pBitmap.getHeight();
+		final int[] pixels = new int[w * h];
+		pBitmap.getPixels(pixels, 0, w, 0, 0, w, h);
+		return pixels;
 	}
 
 	// ===========================================================

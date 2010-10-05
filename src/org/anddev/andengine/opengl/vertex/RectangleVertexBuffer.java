@@ -38,6 +38,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public synchronized void update(final float pX, final float pY, final float pWidth, final float pHeight) {
+		/* pX and pY are always 0. */
 		final int x = Float.floatToRawIntBits(pX);
 		final int y = Float.floatToRawIntBits(pY);
 		final int x2 = Float.floatToRawIntBits(pX + pWidth);

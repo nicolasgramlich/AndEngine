@@ -28,7 +28,7 @@ public class FastFloatBuffer {
 	 * Use a {@link SoftReference} so that the array can be collected if
 	 * necessary
 	 */
-	private static SoftReference<int[]> sIntArray = new SoftReference<int[]>(new int[0]);
+	private static SoftReference<int[]> sWeakIntArray = new SoftReference<int[]>(new int[0]);
 
 	/**
 	 * Underlying data - give this to OpenGL
@@ -87,19 +87,23 @@ public class FastFloatBuffer {
 	 * It's like {@link FloatBuffer#put(float[])}, but about 10 times faster
 	 */
 	public void put(final float[] data) {
-		int[] ia = sIntArray.get();
-		if(ia == null || ia.length < data.length) {
-			ia = new int[data.length];
-			sIntArray = new SoftReference<int[]>(ia);
+		final int length = data.length;
+
+		int[] ia = sWeakIntArray.get();
+		if(ia == null || ia.length < length) {
+			ia = new int[length];
+			sWeakIntArray = new SoftReference<int[]>(ia);
 		}
 
-		for(int i = 0; i < data.length; i++) {
+		for(int i = 0; i < length; i++) {
 			ia[i] = Float.floatToRawIntBits(data[i]);
 		}
 
-		this.mByteBuffer.position(this.mByteBuffer.position() + BYTES_PER_FLOAT * data.length);
-		this.mFloatBuffer.position(this.mFloatBuffer.position() + data.length);
-		this.mIntBuffer.put(ia, 0, data.length);
+		final ByteBuffer byteBuffer = this.mByteBuffer;
+		byteBuffer.position(byteBuffer.position() + BYTES_PER_FLOAT * length);
+		final FloatBuffer floatBuffer = this.mFloatBuffer;
+		floatBuffer.position(floatBuffer.position() + length);
+		this.mIntBuffer.put(ia, 0, length);
 	}
 
 	/**
@@ -112,8 +116,10 @@ public class FastFloatBuffer {
 	 * @param data floats that have been converted with {@link Float#floatToIntBits(float)}
 	 */
 	public void put(final int[] data) {
-		this.mByteBuffer.position(this.mByteBuffer.position() + BYTES_PER_FLOAT * data.length);
-		this.mFloatBuffer.position(this.mFloatBuffer.position() + data.length);
+		final ByteBuffer byteBuffer = this.mByteBuffer;
+		byteBuffer.position(byteBuffer.position() + BYTES_PER_FLOAT * data.length);
+		final FloatBuffer floatBuffer = this.mFloatBuffer;
+		floatBuffer.position(floatBuffer.position() + data.length);
 		this.mIntBuffer.put(data, 0, data.length);
 	}
 
@@ -125,8 +131,9 @@ public class FastFloatBuffer {
 	 * @return the int-formatted data
 	 */
 	public static int[] convert(final float ... data) {
-		final int[] id = new int[data.length];
-		for(int i = 0; i < data.length; i++) {
+		final int length = data.length;
+		final int[] id = new int[length];
+		for(int i = 0; i < length; i++) {
 			id[i] = Float.floatToRawIntBits(data[i]);
 		}
 

@@ -137,7 +137,7 @@ public class Text extends RectangularShape {
 	protected void onUpdateVertexBuffer() {
 		final Font font = this.mFont;
 		if(font != null) {
-			this.getVertexBuffer().update(this.mFont, this.mMaximumLineWidth, this.mWidths, this.mLines);
+			this.getVertexBuffer().update(font, this.mMaximumLineWidth, this.mWidths, this.mLines);
 		}
 	}
 

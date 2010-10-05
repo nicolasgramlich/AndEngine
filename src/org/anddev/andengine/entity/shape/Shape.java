@@ -465,12 +465,11 @@ public abstract class Shape extends Entity implements IShape {
 			this.onInitDraw(pGL);
 	
 			pGL.glPushMatrix();
-	
-			this.onApplyVertices(pGL);
-	
-			this.onApplyTransformations(pGL);
-	
-			this.drawVertices(pGL, pCamera);
+			{
+				this.onApplyVertices(pGL);
+				this.onApplyTransformations(pGL);
+				this.drawVertices(pGL, pCamera);
+			}
 			pGL.glPopMatrix();
 		}
 	}

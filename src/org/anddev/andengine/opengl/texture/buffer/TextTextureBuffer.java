@@ -1,10 +1,9 @@
 package org.anddev.andengine.opengl.texture.buffer;
 
-import java.nio.FloatBuffer;
-
 import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
+import org.anddev.andengine.opengl.util.FastFloatBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -23,8 +22,8 @@ public class TextTextureBuffer extends BufferObject {
 	// Constructors
 	// ===========================================================
 
-	public TextTextureBuffer(final int pByteCount, final int pDrawType) {
-		super(pByteCount, pDrawType);
+	public TextTextureBuffer(final int pCapacity, final int pDrawType) {
+		super(pCapacity, pDrawType);
 	}
 
 	// ===========================================================
@@ -40,7 +39,7 @@ public class TextTextureBuffer extends BufferObject {
 	// ===========================================================
 
 	public synchronized void update(final Font pFont, final String[] pLines) {
-		final FloatBuffer textureFloatBuffer = this.getFloatBuffer();
+		final FastFloatBuffer textureFloatBuffer = this.getFloatBuffer();
 		textureFloatBuffer.position(0);
 
 		final Font font = pFont;

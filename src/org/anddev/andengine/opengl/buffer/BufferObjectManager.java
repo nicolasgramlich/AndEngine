@@ -121,7 +121,7 @@ public class BufferObjectManager {
 				final BufferObject pendingBufferObject = bufferObjectsToBeLoaded.get(i);
 				if(!pendingBufferObject.isLoadedToHardware()) {
 					pendingBufferObject.loadToHardware(pGL11);
-					pendingBufferObject.setHardwareBufferNeedsUpdate(true);
+					pendingBufferObject.setHardwareBufferNeedsUpdate();
 				}
 				bufferObjectsLoaded.add(pendingBufferObject);
 			}

@@ -1,11 +1,8 @@
 package org.anddev.andengine.opengl.buffer;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
@@ -17,18 +14,17 @@ public abstract class BufferObject {
 	// Constants
 	// ===========================================================
 
-	public static final int BYTES_PER_FLOAT = 4;
-
 	private static final int[] HARDWAREBUFFERID_FETCHER = new int[1];
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final int mByteCount;
+	protected final int[] mBufferData; 
+
 	private final int mDrawType;
 
-	private final FloatBuffer mFloatBuffer;
+	private final FastFloatBuffer mFloatBuffer;
 
 	private int mHardwareBufferID = -1;
 	private boolean mLoadedToHardware;
@@ -38,23 +34,18 @@ public abstract class BufferObject {
 	// Constructors
 	// ===========================================================
 
-	public BufferObject(final int pByteCount, final int pDrawType) {
-		this.mByteCount = pByteCount;
+	public BufferObject(final int pCapacity, final int pDrawType) {
 		this.mDrawType = pDrawType;
-
-		this.mFloatBuffer = ByteBuffer.allocateDirect(pByteCount).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		this.mBufferData = new int[pCapacity];
+		this.mFloatBuffer = new FastFloatBuffer(pCapacity);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public FloatBuffer getFloatBuffer() {
+	public FastFloatBuffer getFloatBuffer() {
 		return this.mFloatBuffer;
-	}
-
-	public int getByteCount() {
-		return this.mByteCount;
 	}
 
 	public int getHardwareBufferID() {
@@ -67,10 +58,6 @@ public abstract class BufferObject {
 
 	void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
-	}
-
-	public void setHardwareBufferNeedsUpdate(final boolean pHardwareBufferNeedsUpdate) {
-		this.mHardwareBufferNeedsUpdate = pHardwareBufferNeedsUpdate;
 	}
 
 	// ===========================================================
@@ -97,7 +84,7 @@ public abstract class BufferObject {
 			//			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
 			this.mHardwareBufferNeedsUpdate = false;
 			synchronized(this) {
-				GLHelper.bufferData(pGL11, this, this.mDrawType);
+				GLHelper.bufferData(pGL11, this.mFloatBuffer.mByteBuffer, this.mDrawType);
 			}
 		}
 	}

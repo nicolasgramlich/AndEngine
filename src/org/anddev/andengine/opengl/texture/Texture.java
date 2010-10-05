@@ -129,7 +129,7 @@ public class Texture {
 		this.mUpdateOnHardwareNeeded = true;
 		return textureSourceWithLocation;
 	}
-	
+
 	public void removeTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
 		for(int i = textureSources.size() - 1; i >= 0; i--) {
@@ -156,7 +156,7 @@ public class Texture {
 
 		this.applyTextureOptions(pGL);
 
-		this.writeTextureToHardware();
+		this.writeTextureToHardware(pGL);
 
 		this.mUpdateOnHardwareNeeded = false;
 		this.mLoadedToHardware = true;
@@ -180,7 +180,7 @@ public class Texture {
 		}
 	}
 
-	private void writeTextureToHardware() {
+	private void writeTextureToHardware(final GL10 pGL) {
 		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
 		final int textureSourceCount = textureSources.size();
 		for(int j = 0; j < textureSourceCount; j++) {
@@ -191,7 +191,12 @@ public class Texture {
 					if(bmp == null) {
 						throw new IllegalArgumentException("TextureSource: " + textureSourceWithLocation.toString() + " returned a null Bitmap.");
 					}
-					GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp);
+					
+					if(this.mTextureOptions.mPreMultipyAlpha) {
+						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
+					} else {
+						GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
+					}
 
 					bmp.recycle();
 				} catch (final IllegalArgumentException iae) {
@@ -341,6 +346,7 @@ public class Texture {
 			return this.mTextureSource.onLoadBitmap();
 		}
 
+		@Override
 		public String toString() {
 			return this.mTextureSource.toString();
 		}

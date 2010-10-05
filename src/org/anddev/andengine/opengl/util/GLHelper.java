@@ -1,14 +1,18 @@
 package org.anddev.andengine.opengl.util;
 
-import java.nio.FloatBuffer;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.engine.options.RenderOptions;
-import org.anddev.andengine.opengl.buffer.BufferObject;
 import org.anddev.andengine.util.Debug;
 
+import android.graphics.Bitmap;
+import android.opengl.GLUtils;
 import android.os.Build;
 
 /**
@@ -19,6 +23,11 @@ public class GLHelper {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	public static final int BYTES_PER_FLOAT = 4;
+	public static final int BYTES_PER_PIXEL_RGBA = 4;
+
+	private static final boolean IS_LITTLE_ENDIAN = (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN);
 
 	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
 	private static final int[] HARDWAREBUFFERID_CONTAINER = new int[1];
@@ -34,8 +43,8 @@ public class GLHelper {
 	private static int sCurrentSourceBlendMode = -1;
 	private static int sCurrentDestionationBlendMode = -1;
 
-	private static FloatBuffer sCurrentTextureFloatBuffer = null;
-	private static FloatBuffer sCurrentVertexFloatBuffer = null;
+	private static FastFloatBuffer sCurrentTextureFloatBuffer = null;
+	private static FastFloatBuffer sCurrentVertexFloatBuffer = null;
 
 	private static boolean sEnableDither = true;
 	private static boolean sEnableLightning = true;
@@ -268,7 +277,7 @@ public class GLHelper {
 		GLHelper.HARDWAREBUFFERID_CONTAINER[0] = pHardwareBufferID;
 		pGL11.glDeleteBuffers(1, GLHelper.HARDWAREBUFFERID_CONTAINER, 0);
 	}
-	
+
 	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {
 		/* Reduce unnecessary texture switching calls. */
 		if(GLHelper.sCurrentHardwareTextureID != pHardwareTextureID) {
@@ -282,10 +291,10 @@ public class GLHelper {
 		pGL.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);
 	}
 
-	public static void texCoordPointer(final GL10 pGL, final FloatBuffer pTextureFloatBuffer) {
+	public static void texCoordPointer(final GL10 pGL, final FastFloatBuffer pTextureFloatBuffer) {
 		if(GLHelper.sCurrentTextureFloatBuffer  != pTextureFloatBuffer) {
 			GLHelper.sCurrentTextureFloatBuffer = pTextureFloatBuffer;
-			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureFloatBuffer);
+			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureFloatBuffer.mByteBuffer);
 		}
 	}
 
@@ -293,10 +302,10 @@ public class GLHelper {
 		pGL11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, 0);
 	}
 
-	public static void vertexPointer(final GL10 pGL, final FloatBuffer pVertexFloatBuffer) {
+	public static void vertexPointer(final GL10 pGL, final FastFloatBuffer pVertexFloatBuffer) {
 		if(GLHelper.sCurrentVertexFloatBuffer != pVertexFloatBuffer) {
 			GLHelper.sCurrentVertexFloatBuffer = pVertexFloatBuffer;
-			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexFloatBuffer);
+			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexFloatBuffer.mByteBuffer);
 		}
 	}
 
@@ -353,8 +362,47 @@ public class GLHelper {
 		pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 	}
 
-	public static void bufferData(final GL11 pGL11, final BufferObject pBufferObject, final int pUsage) {
-		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pBufferObject.getByteCount(), pBufferObject.getFloatBuffer(), pUsage);
+	public static void bufferData(final GL11 pGL11, final ByteBuffer pByteBuffer, final int pUsage) {
+		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pByteBuffer.capacity(), pByteBuffer, pUsage);
+	}
+
+	/**
+	 * <b>Note:</b> does not pre-multiply the alpha channel!</br>
+	 * Except that difference, same as: {@link GLUtils#texSubImage2D(int, int, int, int, Bitmap, int, int)}
+	 */
+	public static void glTexSubImage2D(final GL10 pGL, final int target, final int level, final int xoffset, final int yoffset, final Bitmap bitmap, final int format, final int type) {
+		final int[] pixels = GLHelper.getPixels(bitmap);
+
+		final Buffer pixelBuffer = GLHelper.convertARGBtoRGBABuffer(pixels);
+
+		pGL.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, xoffset, yoffset, bitmap.getWidth(), bitmap.getHeight(), GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, pixelBuffer);
+	}
+
+	private static Buffer convertARGBtoRGBABuffer(final int[] pPixels) {
+		for(int i = pPixels.length - 1; i >= 0; i--) {
+			final int pixel = pPixels[i];
+
+			final int red = ((pixel >> 16) & 0xFF);
+			final int green = ((pixel >> 8) & 0xFF);
+			final int blue = ((pixel) & 0xFF);
+			final int alpha = (pixel >> 24);
+
+			// TODO This check could be outside of the loop, so it doesn't get checked every iteration.
+			if(IS_LITTLE_ENDIAN) {
+				pPixels[i] = alpha << 24 | blue << 16 | green << 8 | red;
+			} else {
+				pPixels[i] = red << 24 | green << 16 | blue << 8 | alpha;
+			}
+		}
+		return IntBuffer.wrap(pPixels);
+	}
+
+	public static int[] getPixels(final Bitmap pBitmap) {
+		final int w = pBitmap.getWidth();
+		final int h = pBitmap.getHeight();
+		final int[] pixels = new int[w * h];
+		pBitmap.getPixels(pixels, 0, w, 0, 0, w, h);
+		return pixels;
 	}
 
 	// ===========================================================

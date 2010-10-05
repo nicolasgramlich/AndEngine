@@ -50,7 +50,7 @@ public abstract class BaseTextureRegion {
 	}
 
 	protected void initTextureBuffer() {
-		this.setHardwareBufferNeedsUpdate();
+		this.updateTextureRegionBuffer();
 	}
 
 	// ===========================================================
@@ -67,18 +67,18 @@ public abstract class BaseTextureRegion {
 
 	public void setWidth(final int pWidth) {
 		this.mWidth = pWidth;
-		this.setHardwareBufferNeedsUpdate();
+		this.updateTextureRegionBuffer();
 	}
 
 	public void setHeight(final int pHeight) {
 		this.mHeight = pHeight;
-		this.setHardwareBufferNeedsUpdate();
+		this.updateTextureRegionBuffer();
 	}
 
 	public void setTexturePosition(final int pX, final int pY) {
 		this.mTexturePositionX = pX;
 		this.mTexturePositionY = pY;
-		this.setHardwareBufferNeedsUpdate();
+		this.updateTextureRegionBuffer();
 	}
 
 	public int getTexturePositionX() {
@@ -123,8 +123,8 @@ public abstract class BaseTextureRegion {
 	// Methods
 	// ===========================================================
 
-	protected void setHardwareBufferNeedsUpdate() {
-		this.mTextureRegionBuffer.setHardwareBufferNeedsUpdate();
+	protected void updateTextureRegionBuffer() {
+		this.mTextureRegionBuffer.update();
 	}
 
 	public void onApply(final GL10 pGL) {

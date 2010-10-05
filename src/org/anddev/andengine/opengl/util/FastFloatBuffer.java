@@ -10,8 +10,8 @@ import java.nio.IntBuffer;
 
 /**
  * Convenient work-around for poor {@link FloatBuffer#put(float[])} performance.
- * This should become unnecessary in gingerbread, @see <a href
- * ="http://code.google.com/p/android/issues/detail?id=11078">Issue 11078</a>
+ * This should become unnecessary in gingerbread, 
+ * @see <a href="http://code.google.com/p/android/issues/detail?id=11078">Issue 11078</a>
  * 
  * @author ryanm
  */

@@ -11,10 +11,12 @@ public class TextureOptions {
 	// Constants
 	// ===========================================================
 
-	public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE);
-	public static final TextureOptions BILINEAR = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE);
-	public static final TextureOptions REPEATING = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE);
-	public static final TextureOptions REPEATING_BILINEAR = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE);
+	private static final boolean PREMULTIPLYALPHA_DEFAULT = true;
+
+	public static final TextureOptions DEFAULT = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE, PREMULTIPLYALPHA_DEFAULT);
+	public static final TextureOptions BILINEAR = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_CLAMP_TO_EDGE, GL10.GL_CLAMP_TO_EDGE, GL10.GL_MODULATE, PREMULTIPLYALPHA_DEFAULT);
+	public static final TextureOptions REPEATING = new TextureOptions(GL10.GL_NEAREST, GL10.GL_NEAREST, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE, PREMULTIPLYALPHA_DEFAULT);
+	public static final TextureOptions REPEATING_BILINEAR = new TextureOptions(GL10.GL_LINEAR, GL10.GL_LINEAR, GL10.GL_REPEAT, GL10.GL_REPEAT, GL10.GL_MODULATE, PREMULTIPLYALPHA_DEFAULT);
 
 	// ===========================================================
 	// Fields
@@ -25,17 +27,19 @@ public class TextureOptions {
 	public final float mWrapT;
 	public final float mWrapS;
 	public final int mTextureEnvironment;
+	public final boolean mPreMultipyAlpha;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TextureOptions(final int pMinFilter, final int pMagFilter, final int pWrapT, final int pWrapS, final int pTextureEnvironment) {
+	public TextureOptions(final int pMinFilter, final int pMagFilter, final int pWrapT, final int pWrapS, final int pTextureEnvironment, final boolean pPreMultiplyAlpha) {
 		this.mMinFilter = pMinFilter;
 		this.mMagFilter = pMagFilter;
 		this.mWrapT = pWrapT;
 		this.mWrapS = pWrapS;
 		this.mTextureEnvironment = pTextureEnvironment;
+		this.mPreMultipyAlpha = pPreMultiplyAlpha;
 	}
 
 	// ===========================================================

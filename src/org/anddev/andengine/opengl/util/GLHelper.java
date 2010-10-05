@@ -2,6 +2,8 @@ package org.anddev.andengine.opengl.util;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
@@ -24,6 +26,8 @@ public class GLHelper {
 
 	public static final int BYTES_PER_FLOAT = 4;
 	public static final int BYTES_PER_PIXEL_RGBA = 4;
+
+	private static final boolean IS_LITTLE_ENDIAN = (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN);
 
 	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
 	private static final int[] HARDWAREBUFFERID_CONTAINER = new int[1];
@@ -369,24 +373,27 @@ public class GLHelper {
 	public static void glTexSubImage2D(final GL10 pGL, final int target, final int level, final int xoffset, final int yoffset, final Bitmap bitmap, final int format, final int type) {
 		final int[] pixels = GLHelper.getPixels(bitmap);
 
-		final Buffer pixelBuffer = convertARGBtoRGBABuffer(pixels);
+		final Buffer pixelBuffer = GLHelper.convertARGBtoRGBABuffer(pixels);
 
 		pGL.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, xoffset, yoffset, bitmap.getWidth(), bitmap.getHeight(), GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, pixelBuffer);
 	}
 
 	private static Buffer convertARGBtoRGBABuffer(final int[] pPixels) {
-		final int pixelCount = pPixels.length;
-		final byte[] pixelComponents = new byte[pixelCount * BYTES_PER_PIXEL_RGBA];
-		int byteIndex = 0;
-		for(int i = 0; i < pixelCount; i++) {
-			final int p = pPixels[i];
-			// Convert to byte representation RGBA required by pGL.glTexSubImage2D(...)
-			pixelComponents[byteIndex++] = (byte) ((p >> 16) & 0xFF); // red
-			pixelComponents[byteIndex++] = (byte) ((p >> 8) & 0xFF); // green
-			pixelComponents[byteIndex++] = (byte) ((p) & 0xFF); // blue
-			pixelComponents[byteIndex++] = (byte) (p >> 24); // alpha
+		for(int i = pPixels.length - 1; i >= 0; i--) {
+			final int pixel = pPixels[i];
+
+			final int r = ((pixel >> 16) & 0xFF); // red
+			final int g = ((pixel >> 8) & 0xFF); // green
+			final int b = ((pixel) & 0xFF); // blue
+			final int a = (pixel >> 24); // alpha
+
+			if(IS_LITTLE_ENDIAN) {
+				pPixels[i] = a << 24 | b << 16 | g << 8 | r;
+			} else {
+				pPixels[i] = r << 24 | g << 16 | b << 8 | a;
+			}
 		}
-		return ByteBuffer.wrap(pixelComponents);
+		return IntBuffer.wrap(pPixels);
 	}
 
 	public static int[] getPixels(final Bitmap pBitmap) {

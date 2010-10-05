@@ -191,9 +191,12 @@ public class Texture {
 					if(bmp == null) {
 						throw new IllegalArgumentException("TextureSource: " + textureSourceWithLocation.toString() + " returned a null Bitmap.");
 					}
-
-//					GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
-					GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
+					
+					if(this.mTextureOptions.mPreMultipyAlpha) {
+						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
+					} else {
+						GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
+					}
 
 					bmp.recycle();
 				} catch (final IllegalArgumentException iae) {

@@ -387,6 +387,7 @@ public class GLHelper {
 			final int blue = ((pixel) & 0xFF);
 			final int alpha = (pixel >> 24);
 
+			// TODO This check could be outside of the loop, so it doesn't get checked every iteration.
 			if(IS_LITTLE_ENDIAN) {
 				pPixels[i] = alpha << 24 | blue << 16 | green << 8 | red;
 			} else {

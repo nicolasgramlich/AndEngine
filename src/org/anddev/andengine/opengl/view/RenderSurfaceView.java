@@ -8,6 +8,7 @@ import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
 
 import android.content.Context;
+import android.util.AttributeSet;
 
 /**
  * @author Nicolas Gramlich
@@ -22,21 +23,45 @@ public class RenderSurfaceView extends GLSurfaceView {
 	// Fields
 	// ===========================================================
 
-	private final Renderer mRenderer;
+	private Renderer mRenderer;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RenderSurfaceView(final Context pContext, final Engine pEngine) {
+	public RenderSurfaceView(final Context pContext) {
 		super(pContext);
-		this.setOnTouchListener(pEngine);
-		this.mRenderer = new Renderer(pEngine);
-		//		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
 	}
 
-	public void applyRenderer() {
+	public RenderSurfaceView(final Context pContext, final AttributeSet pAttrs) {
+		super(pContext, pAttrs);
+	}
+
+	public void setRenderer(final Engine pEngine) {
+		this.setOnTouchListener(pEngine);
+		this.mRenderer = new Renderer(pEngine);
 		this.setRenderer(this.mRenderer);
+	}
+
+
+
+	/**
+	 * @see android.view.View#measure(int, int)
+	 */
+	@Override
+	protected void onMeasure(final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
+		final int specWidthMode = MeasureSpec.getMode(pWidthMeasureSpec);
+		final int specHeightMode = MeasureSpec.getMode(pHeightMeasureSpec);
+
+		if (specWidthMode == MeasureSpec.EXACTLY && specHeightMode == MeasureSpec.EXACTLY) {
+			this.mRenderer.mEngine.getEngineOptions().getResolutionPolicy().onMeasure(this, pWidthMeasureSpec, pHeightMeasureSpec);
+		} else {
+			throw new IllegalStateException();
+		}
+	}
+
+	public void setMeasuredDimensionProxy(final int pMeasuredWidth, final int pMeasuredHeight) {
+		this.setMeasuredDimension(pMeasuredWidth, pMeasuredHeight);
 	}
 
 	// ===========================================================
@@ -88,7 +113,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
-			Debug.d("onSurfaceChanged");
+			Debug.d("onSurfaceChanged: pWidth=" + pWidth + "  pHeight=" + pHeight);
 			this.mEngine.setSurfaceSize(pWidth, pHeight);
 			pGL.glViewport(0, 0, pWidth, pHeight);
 			pGL.glLoadIdentity();
@@ -100,9 +125,10 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLHelper.reset(pGL);
 
 			GLHelper.setPerspectiveCorrectionHintFastest(pGL);
-//			pGL.glEnable(GL10.GL_POLYGON_SMOOTH); 
-//			GLHelper.glHint(GL10.GL_POLYGON_SMOOTH_HINT, GL10.GL_NICEST);
-//			GLHelper.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST); 
+			//			pGL.glEnable(GL10.GL_POLYGON_SMOOTH);
+			//			pGL.glHint(GL10.GL_POLYGON_SMOOTH_HINT, GL10.GL_NICEST);
+			//			pGL.glEnable(GL10.GL_LINE_SMOOTH);
+			//			pGL.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST);
 
 			GLHelper.setShadeModelFlat(pGL);
 

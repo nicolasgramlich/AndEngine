@@ -1,12 +1,12 @@
-package org.anddev.andengine.engine.options.resolutionpolicy;
+package org.anddev.andengine.ui.activity;
 
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:23:00 - 29.03.2010
+ * @since 10:18:50 - 06.10.2010
  */
-public class FixedResolutionPolicy implements IResolutionPolicy {
+public abstract class LayoutGameActivity extends BaseGameActivity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,17 +15,9 @@ public class FixedResolutionPolicy implements IResolutionPolicy {
 	// Fields
 	// ===========================================================
 
-	private final int mWidth;
-	private final int mHeight;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public FixedResolutionPolicy(final int pWidth, final int pHeight) {
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -35,9 +27,17 @@ public class FixedResolutionPolicy implements IResolutionPolicy {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract int getLayoutID();
+	protected abstract int getRenderSurfaceViewID();
+
 	@Override
-	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
-		pRenderSurfaceView.setMeasuredDimensionProxy(this.mWidth, this.mHeight);
+	protected void onSetContentView() {
+		super.setContentView(this.getLayoutID());
+
+		this.mRenderSurfaceView = (RenderSurfaceView) this.findViewById(this.getRenderSurfaceViewID());
+		
+		this.mRenderSurfaceView.setEGLConfigChooser(false);
+		this.mRenderSurfaceView.setRenderer(this.mEngine);
 	}
 
 	// ===========================================================

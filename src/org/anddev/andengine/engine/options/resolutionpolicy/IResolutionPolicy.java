@@ -1,7 +1,6 @@
 package org.anddev.andengine.engine.options.resolutionpolicy;
 
-import android.util.DisplayMetrics;
-import android.widget.FrameLayout.LayoutParams;
+import org.anddev.andengine.opengl.view.RenderSurfaceView;
 
 /**
  * @author Nicolas Gramlich
@@ -16,5 +15,5 @@ public interface IResolutionPolicy {
 	// Methods
 	// ===========================================================
 
-	public LayoutParams createLayoutParams(final DisplayMetrics pDisplayMetrics);
+	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec);
 }

@@ -1,8 +1,8 @@
 package org.anddev.andengine.engine.options.resolutionpolicy;
 
-import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
-import android.util.DisplayMetrics;
-import android.widget.FrameLayout.LayoutParams;
+import org.anddev.andengine.opengl.view.RenderSurfaceView;
+
+import android.view.View.MeasureSpec;
 
 /**
  * @author Nicolas Gramlich
@@ -30,8 +30,11 @@ public class FillResolutionPolicy implements IResolutionPolicy {
 	// ===========================================================
 
 	@Override
-	public LayoutParams createLayoutParams(final DisplayMetrics pDisplayMetrics) {
-		return new LayoutParams(FILL_PARENT, FILL_PARENT);
+	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
+		final int measuredWidth = MeasureSpec.getSize(pWidthMeasureSpec);
+		final int measuredHeight = MeasureSpec.getSize(pHeightMeasureSpec);
+
+		pRenderSurfaceView.setMeasuredDimensionProxy(measuredWidth, measuredHeight);
 	}
 
 	// ===========================================================

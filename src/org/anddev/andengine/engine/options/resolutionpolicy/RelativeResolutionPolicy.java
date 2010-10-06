@@ -1,8 +1,8 @@
 package org.anddev.andengine.engine.options.resolutionpolicy;
 
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.widget.FrameLayout.LayoutParams;
+import org.anddev.andengine.opengl.view.RenderSurfaceView;
+
+import android.view.View.MeasureSpec;
 
 /**
  * @author Nicolas Gramlich
@@ -25,11 +25,10 @@ public class RelativeResolutionPolicy implements IResolutionPolicy {
 	// ===========================================================
 
 	public RelativeResolutionPolicy(final float pScale) {
-		this.mWidthScale = pScale;
-		this.mHeightScale = pScale;
+		this(pScale, pScale);
 	}
 
-	public RelativeResolutionPolicy(final int pWidthScale, final int pHeightScale) {
+	public RelativeResolutionPolicy(final float pWidthScale, final float pHeightScale) {
 		this.mWidthScale = pWidthScale;
 		this.mHeightScale = pHeightScale;
 	}
@@ -41,16 +40,12 @@ public class RelativeResolutionPolicy implements IResolutionPolicy {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
 	@Override
-	public LayoutParams createLayoutParams(final DisplayMetrics pDisplayMetrics) {
-		final int width = Math.round(pDisplayMetrics.widthPixels * this.mWidthScale);
-		final int height = Math.round(pDisplayMetrics.heightPixels * this.mHeightScale);
+	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
+		final int measuredWidth = (int)(MeasureSpec.getSize(pWidthMeasureSpec) * this.mWidthScale);
+		final int measuredHeight = (int)(MeasureSpec.getSize(pHeightMeasureSpec) * this.mHeightScale);
 
-		final LayoutParams layoutParams = new LayoutParams(width, height);
-
-		layoutParams.gravity = Gravity.CENTER;
-		return layoutParams;
+		pRenderSurfaceView.setMeasuredDimensionProxy(measuredWidth, measuredHeight);
 	}
 
 	// ===========================================================

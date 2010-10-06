@@ -1,5 +1,7 @@
 package org.anddev.andengine.ui.activity;
 
+import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
+
 import org.anddev.andengine.audio.music.MusicManager;
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
@@ -19,10 +21,10 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout.LayoutParams;;
 
 /**
  * @author Nicolas Gramlich
@@ -62,7 +64,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	protected void onResume() {
-		super.onResume(); 
+		super.onResume();
 
 		if(this.mPaused && this.mHasWindowFocused) {
 			this.doResume();
@@ -94,16 +96,16 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			this.doPause();
 		}
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
-        this.mEngine.interruptUpdateThread();       
-		
+
+		this.mEngine.interruptUpdateThread();
+
 		this.onUnloadResources();
 	}
-	
+
 	@Override
 	public void onUnloadResources() {
 		if(this.mEngine.getEngineOptions().needsMusic()) {
@@ -133,11 +135,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public void onGameResumed() {
 	}
-	
+
 	@Override
 	public void onGamePaused() {
 	}
@@ -153,12 +155,12 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			this.mEngine.onLoadComplete(scene);
 			this.onLoadComplete();
 			this.mGameLoaded = true;
-		}		
-		
+		}
+
 		this.mPaused = false;
 		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
 		this.mEngine.onResume();
-		
+
 		this.mRenderSurfaceView.onResume();
 		this.mEngine.start();
 		this.onGameResumed();
@@ -167,7 +169,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	private void doPause() {
 		this.mPaused = true;
 		this.releaseWakeLock();
-		
+
 		this.mEngine.onPause();
 		this.mEngine.stop();
 		this.mRenderSurfaceView.onPause();
@@ -179,9 +181,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	protected void onSetContentView() {
-		this.mRenderSurfaceView = new RenderSurfaceView(this, this.mEngine);
+		this.mRenderSurfaceView = new RenderSurfaceView(this);
 		this.mRenderSurfaceView.setEGLConfigChooser(false);
-		this.mRenderSurfaceView.applyRenderer();
+		this.mRenderSurfaceView.setRenderer(this.mEngine);
 
 		this.setContentView(this.mRenderSurfaceView, this.createSurfaceViewLayoutParams());
 	}
@@ -222,10 +224,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	protected LayoutParams createSurfaceViewLayoutParams() {
-		final DisplayMetrics displayMetrics = new DisplayMetrics();
-		this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-		return this.mEngine.getEngineOptions().getResolutionPolicy().createLayoutParams(displayMetrics);
+		final LayoutParams layoutParams = new LayoutParams(FILL_PARENT, FILL_PARENT);
+		layoutParams.gravity = Gravity.CENTER;
+		return layoutParams;
 	}
 
 	private void applyFullscreen() {
@@ -238,6 +239,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected void enableVibrator() {
 		this.mEngine.enableVibrator(this);
 	}
+
 	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
 	}

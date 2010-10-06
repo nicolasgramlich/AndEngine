@@ -1,8 +1,8 @@
 package org.anddev.andengine.engine.options.resolutionpolicy;
 
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.widget.FrameLayout.LayoutParams;
+import org.anddev.andengine.opengl.view.RenderSurfaceView;
+
+import android.view.View.MeasureSpec;
 
 /**
  * @author Nicolas Gramlich
@@ -40,23 +40,27 @@ public class RatioResolutionPolicy implements IResolutionPolicy {
 	// ===========================================================
 
 	@Override
-	public LayoutParams createLayoutParams(final DisplayMetrics pDisplayMetrics) {
-		final float realRatio = (float)pDisplayMetrics.widthPixels / pDisplayMetrics.heightPixels;
+	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
+//		final int specWidthMode = MeasureSpec.getMode(pWidthMeasureSpec);
+//		final int specHeightMode = MeasureSpec.getMode(pHeightMeasureSpec);
 
-		final int width;
-		final int height;
-		if(realRatio < this.mRatio) {
-			width = pDisplayMetrics.widthPixels;
-			height = Math.round(width / this.mRatio);
+		final int specWidth = MeasureSpec.getSize(pWidthMeasureSpec);
+		final int specHeight = MeasureSpec.getSize(pHeightMeasureSpec);
+
+		final float desiredRatio = this.mRatio;
+		final float realRatio = (float)specWidth / specHeight;
+
+		int measuredWidth;
+		int measuredHeight;
+		if(realRatio < desiredRatio) {
+			measuredWidth = specWidth;
+			measuredHeight = Math.round(measuredWidth / desiredRatio);
 		} else {
-			height = pDisplayMetrics.heightPixels;
-			width = Math.round(height * this.mRatio);
+			measuredHeight = specHeight;
+			measuredWidth = Math.round(measuredHeight * desiredRatio);
 		}
 
-		final LayoutParams layoutParams = new LayoutParams(width, height);
-
-		layoutParams.gravity = Gravity.CENTER;
-		return layoutParams;
+		pRenderSurfaceView.setMeasuredDimensionProxy(measuredWidth, measuredHeight);
 	}
 
 	// ===========================================================

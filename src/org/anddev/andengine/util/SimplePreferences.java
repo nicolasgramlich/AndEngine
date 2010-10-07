@@ -21,7 +21,7 @@ public class SimplePreferences implements Constants {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static SharedPreferences INSTANCE;
 	private static Editor EDITORINSTANCE;
 
@@ -38,7 +38,7 @@ public class SimplePreferences implements Constants {
 
 	public static Editor getEditorInstance(final Context ctx){
 		if(EDITORINSTANCE == null) {
-			EDITORINSTANCE = getInstance(ctx).edit();
+			EDITORINSTANCE = SimplePreferences.getInstance(ctx).edit();
 		}
 		return EDITORINSTANCE;
 	}
@@ -54,17 +54,17 @@ public class SimplePreferences implements Constants {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static boolean isFirstTime(final Context pCtx, final String pKey){
-		return isXthTime(pCtx, pKey, 0);
+		return SimplePreferences.isXthTime(pCtx, pKey, 0);
 	}
-	
+
 	public static boolean isXthTime(final Context pCtx, final String pKey, final int pXthTime){
 		final SharedPreferences prefs = SimplePreferences.getInstance(pCtx);
 		final int xthTime = prefs.getInt(pKey, 0);
-		
+
 		prefs.edit().putInt(pKey, xthTime + 1).commit();
-		
+
 		return xthTime == pXthTime;
 	}
 

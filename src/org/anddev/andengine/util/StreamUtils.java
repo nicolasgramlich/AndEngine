@@ -49,22 +49,22 @@ public class StreamUtils {
 	}
 
 	public static byte[] streamToBytes(final InputStream in) throws IOException {
-		return streamToBytes(in, -1);
+		return StreamUtils.streamToBytes(in, -1);
 	}
 
 	public static byte[] streamToBytes(final InputStream in, final int pReadLimit) throws IOException {
 		final ByteArrayOutputStream os = new ByteArrayOutputStream(Math.min(pReadLimit, IO_BUFFER_SIZE));
-		copy(in, os, pReadLimit);
+		StreamUtils.copy(in, os, pReadLimit);
 		return os.toByteArray();
 	}
 
 	public static void copy(final InputStream in, final OutputStream out) throws IOException {
-		copy(in, out, -1);
+		StreamUtils.copy(in, out, -1);
 	}
 
 	public static boolean copyAndClose(final InputStream in, final OutputStream out) {
 		try {
-			copy(in, out, -1);
+			StreamUtils.copy(in, out, -1);
 			return true;
 		} catch (final IOException e) {
 			return false;
@@ -130,7 +130,7 @@ public class StreamUtils {
 		if (pStream != null) {
 			try {
 				pStream.flush();
-				closeStream(pStream);
+				StreamUtils.closeStream(pStream);
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}
@@ -146,7 +146,7 @@ public class StreamUtils {
 		if (pWriter != null) {
 			try {
 				pWriter.flush();
-				closeStream(pWriter);
+				StreamUtils.closeStream(pWriter);
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}

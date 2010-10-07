@@ -49,7 +49,7 @@ public class SystemUtils {
 	}
 
 	public static float getCPUBogoMips() throws SystemUtilsException {
-		final MatchResult matchResult = matchSystemFile("/proc/cpuinfo", BOGOMIPS_PATTERN, 1000);
+		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/cpuinfo", BOGOMIPS_PATTERN, 1000);
 
 		try {
 			if(matchResult.groupCount() > 0) {
@@ -57,7 +57,7 @@ public class SystemUtils {
 			} else {
 				throw new SystemUtilsException();
 			}
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			throw new SystemUtilsException(e);
 		}
 	}
@@ -67,7 +67,7 @@ public class SystemUtils {
 	 * @throws SystemUtilsException
 	 */
 	public static int getMemoryTotal() throws SystemUtilsException {
-		final MatchResult matchResult = matchSystemFile("/proc/meminfo", MEMTOTAL_PATTERN, 1000);
+		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", MEMTOTAL_PATTERN, 1000);
 
 		try {
 			if(matchResult.groupCount() > 0) {
@@ -75,7 +75,7 @@ public class SystemUtils {
 			} else {
 				throw new SystemUtilsException();
 			}
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			throw new SystemUtilsException(e);
 		}
 	}
@@ -85,7 +85,7 @@ public class SystemUtils {
 	 * @throws SystemUtilsException
 	 */
 	public static int getMemoryFree() throws SystemUtilsException {
-		final MatchResult matchResult = matchSystemFile("/proc/meminfo", MEMFREE_PATTERN, 1000);
+		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", MEMFREE_PATTERN, 1000);
 
 		try {
 			if(matchResult.groupCount() > 0) {
@@ -93,7 +93,7 @@ public class SystemUtils {
 			} else {
 				throw new SystemUtilsException();
 			}
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			throw new SystemUtilsException(e);
 		}
 	}

@@ -44,7 +44,7 @@ public class SAXUtils {
 			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
 		}
 	}
-	
+
 	public static String getAttribute(final Attributes pAttributes, final String pAttributeName, final String pDefaultValue) {
 		final String value = pAttributes.getValue("", pAttributeName);
 		return (value != null) ? value : pDefaultValue;
@@ -60,19 +60,19 @@ public class SAXUtils {
 	}
 
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final int pValue) {
-		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
+		SAXUtils.appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
 	}
 
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final long pValue) {
-		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
+		SAXUtils.appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
 	}
 
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final float pValue) {
-		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
+		SAXUtils.appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
 	}
 
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final double pValue) {
-		appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
+		SAXUtils.appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
 	}
 
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final String pValue) {

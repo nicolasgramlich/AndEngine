@@ -15,7 +15,7 @@ public class ColorUtils {
 	private static final int HSV_TO_COLOR_HUE_INDEX = 0;
 	private static final int HSV_TO_COLOR_SATURATION_INDEX = 1;
 	private static final int HSV_TO_COLOR_VALUE_INDEX = 2;
-	
+
 	private static final int COLOR_FLOAT_TO_INT_FACTOR = 255;
 
 	// ===========================================================
@@ -46,7 +46,7 @@ public class ColorUtils {
 		return Color.HSVToColor(HSV_TO_COLOR);
 	}
 
-	public static int RGBToColor(float pRed, float pGreen, float pBlue) {
+	public static int RGBToColor(final float pRed, final float pGreen, final float pBlue) {
 		return Color.rgb((int)(pRed * COLOR_FLOAT_TO_INT_FACTOR), (int)(pGreen * COLOR_FLOAT_TO_INT_FACTOR), (int)(pBlue * COLOR_FLOAT_TO_INT_FACTOR));
 	}
 

@@ -51,7 +51,7 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String[] split(final String pString, final char pCharacter) {
-		return split(pString, pCharacter, null);
+		return StringUtils.split(pString, pCharacter, null);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String[] split(final String pString, final char pCharacter, final String[] pReuse) {
-		final int partCount = countOccurrences(pString, pCharacter) + 1;
+		final int partCount = StringUtils.countOccurrences(pString, pCharacter) + 1;
 
 		final boolean reuseable = pReuse != null && pReuse.length == partCount;
 		final String[] out = (reuseable) ? pReuse : new String[partCount];

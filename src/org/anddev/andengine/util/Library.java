@@ -15,17 +15,17 @@ public class Library<T> {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	protected final SparseArray<T> mItems;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public Library() {
 		this.mItems = new SparseArray<T>();
 	}
-	
+
 	public Library(final int pInitialCapacity) {
 		this.mItems = new SparseArray<T>(pInitialCapacity);
 	}
@@ -33,11 +33,11 @@ public class Library<T> {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public void put(final int pID, final T pItem) {
 		this.mItems.put(pID, pItem);
 	}
-	
+
 	public T get(final int pID) {
 		return this.mItems.get(pID);
 	}

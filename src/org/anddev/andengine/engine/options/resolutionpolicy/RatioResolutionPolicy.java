@@ -8,7 +8,7 @@ import android.view.View.MeasureSpec;
  * @author Nicolas Gramlich
  * @since 11:23:00 - 29.03.2010
  */
-public class RatioResolutionPolicy implements IResolutionPolicy {
+public class RatioResolutionPolicy extends BaseResolutionPolicy {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -41,8 +41,7 @@ public class RatioResolutionPolicy implements IResolutionPolicy {
 
 	@Override
 	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
-//		final int specWidthMode = MeasureSpec.getMode(pWidthMeasureSpec);
-//		final int specHeightMode = MeasureSpec.getMode(pHeightMeasureSpec);
+		BaseResolutionPolicy.throwOnNotMeasureSpecEXACTLY(pWidthMeasureSpec, pHeightMeasureSpec);
 
 		final int specWidth = MeasureSpec.getSize(pWidthMeasureSpec);
 		final int specHeight = MeasureSpec.getSize(pHeightMeasureSpec);

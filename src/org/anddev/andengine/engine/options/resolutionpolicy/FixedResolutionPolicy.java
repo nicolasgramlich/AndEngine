@@ -6,7 +6,7 @@ import org.anddev.andengine.opengl.view.RenderSurfaceView;
  * @author Nicolas Gramlich
  * @since 11:23:00 - 29.03.2010
  */
-public class FixedResolutionPolicy implements IResolutionPolicy {
+public class FixedResolutionPolicy extends BaseResolutionPolicy {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -50,14 +50,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 	 */
 	@Override
 	protected void onMeasure(final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
-		final int specWidthMode = MeasureSpec.getMode(pWidthMeasureSpec);
-		final int specHeightMode = MeasureSpec.getMode(pHeightMeasureSpec);
-
-		if (specWidthMode == MeasureSpec.EXACTLY && specHeightMode == MeasureSpec.EXACTLY) {
-			this.mRenderer.mEngine.getEngineOptions().getResolutionPolicy().onMeasure(this, pWidthMeasureSpec, pHeightMeasureSpec);
-		} else {
-			throw new IllegalStateException();
-		}
+		this.mRenderer.mEngine.getEngineOptions().getResolutionPolicy().onMeasure(this, pWidthMeasureSpec, pHeightMeasureSpec);
 	}
 
 	public void setMeasuredDimensionProxy(final int pMeasuredWidth, final int pMeasuredHeight) {

@@ -1,14 +1,12 @@
 package org.anddev.andengine.engine.options.resolutionpolicy;
 
-import org.anddev.andengine.opengl.view.RenderSurfaceView;
-
 import android.view.View.MeasureSpec;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:22:48 - 29.03.2010
+ * @since 22:46:43 - 06.10.2010
  */
-public class FillResolutionPolicy extends BaseResolutionPolicy {
+public abstract class BaseResolutionPolicy implements IResolutionPolicy {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -29,14 +27,13 @@ public class FillResolutionPolicy extends BaseResolutionPolicy {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
-		BaseResolutionPolicy.throwOnNotMeasureSpecEXACTLY(pWidthMeasureSpec, pHeightMeasureSpec);
+	protected static void throwOnNotMeasureSpecEXACTLY(final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
+		final int specWidthMode = MeasureSpec.getMode(pWidthMeasureSpec);
+		final int specHeightMode = MeasureSpec.getMode(pHeightMeasureSpec);
 
-		final int measuredWidth = MeasureSpec.getSize(pWidthMeasureSpec);
-		final int measuredHeight = MeasureSpec.getSize(pHeightMeasureSpec);
-
-		pRenderSurfaceView.setMeasuredDimensionProxy(measuredWidth, measuredHeight);
+		if (specWidthMode != MeasureSpec.EXACTLY || specHeightMode != MeasureSpec.EXACTLY) {
+			throw new IllegalStateException("This IResolutionPolicy requires MeasureSpec.EXACTLY ! That means ");
+		}
 	}
 
 	// ===========================================================

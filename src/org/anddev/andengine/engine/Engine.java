@@ -522,6 +522,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
+	public boolean disableAccelerometerSensor(final Context pContext) {
+		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
+		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
+			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener) {
 		return this.enableOrientationSensor(pContext, pOrientationListener, SENSOR_DELAY_DEFAULT);
 	}
@@ -542,13 +552,28 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
-	private void registerSelfAsSensorListener(final SensorManager pSensorManager, final int pType, final int pRate) {
-		final Sensor accelerometer = pSensorManager.getSensorList(pType).get(0);
-		pSensorManager.registerListener(this, accelerometer, pRate);
+	public boolean disableOrientationSensor(final Context pContext) {
+		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
+		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
+			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private boolean isSensorSupported(final SensorManager pSensorManager, final int pType) {
 		return pSensorManager.getSensorList(pType).size() > 0;
+	}
+
+	private void registerSelfAsSensorListener(final SensorManager pSensorManager, final int pType, final int pRate) {
+		final Sensor sensor = pSensorManager.getSensorList(pType).get(0);
+		pSensorManager.registerListener(this, sensor, pRate);
+	}
+
+	private void unregisterSelfAsSensorListener(final SensorManager pSensorManager, final int pType) {
+		final Sensor sensor = pSensorManager.getSensorList(pType).get(0);
+		pSensorManager.unregisterListener(this, sensor);
 	}
 
 	// ===========================================================

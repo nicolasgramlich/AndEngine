@@ -24,7 +24,7 @@ import android.os.PowerManager.WakeLock;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout.LayoutParams;;
+import android.widget.FrameLayout.LayoutParams;
 
 /**
  * @author Nicolas Gramlich
@@ -253,6 +253,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener, pRate);
 	}
 
+	protected boolean disableAccelerometerSensor() {
+		return this.mEngine.disableAccelerometerSensor(this);
+	}
+
+
 	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener) {
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener);
 	}
@@ -264,6 +269,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	 */
 	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener, final int pRate) {
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener, pRate);
+	}
+
+	protected boolean disableOrientationSensor() {
+		return this.mEngine.disableOrientationSensor(this);
 	}
 
 	// ===========================================================

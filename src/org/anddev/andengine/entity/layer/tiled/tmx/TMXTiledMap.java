@@ -9,6 +9,7 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+import org.anddev.andengine.util.HashtableUtils;
 import org.xml.sax.Attributes;
 
 import android.util.SparseArray;
@@ -56,10 +57,10 @@ public class TMXTiledMap implements TMXConstants {
 		if(this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL) == false) {
 			throw new IllegalArgumentException(TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
 		}
-		this.mTileColumns = this.getIntAttributeOrThrow(TAG_MAP_ATTRIBUTE_WIDTH);
-		this.mTilesRows = this.getIntAttributeOrThrow(TAG_MAP_ATTRIBUTE_HEIGHT);
-		this.mTileWidth = this.getIntAttributeOrThrow(TAG_MAP_ATTRIBUTE_TILEWIDTH);
-		this.mTileHeight = this.getIntAttributeOrThrow(TAG_MAP_ATTRIBUTE_TILEHEIGHT);
+		this.mTileColumns = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_MAP_ATTRIBUTE_WIDTH);
+		this.mTilesRows = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_MAP_ATTRIBUTE_HEIGHT);
+		this.mTileWidth = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH);
+		this.mTileHeight = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT);
 
 		this.mSharedVertexBuffer = new RectangleVertexBuffer(GL11.GL_STATIC_DRAW);
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mSharedVertexBuffer);
@@ -69,15 +70,6 @@ public class TMXTiledMap implements TMXConstants {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public int getIntAttributeOrThrow(final String pAttributeName) {
-		final String value = this.getAttribute(pAttributeName, null);
-		if(value != null) {
-			return Integer.parseInt(value);
-		} else {
-			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
-		}
-	}
 	
 	public final String getAttribute(final String pAttributeName, final String pDefaultValue) {
 		return this.mAttributes.containsKey(pAttributeName) ? this.mAttributes.get(pAttributeName) : pDefaultValue;

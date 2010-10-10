@@ -20,6 +20,7 @@ import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 import org.anddev.andengine.util.Base64;
 import org.anddev.andengine.util.Base64InputStream;
+import org.anddev.andengine.util.HashtableUtils;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.SAXUtils;
 import org.anddev.andengine.util.StreamUtils;
@@ -70,8 +71,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 		this.mTMXTiledMap = pTMXTiledMap;
 		this.mName = this.getAttribute(TAG_LAYER_ATTRIBUTE_NAME, null);
-		this.mTileColumns = this.getIntAttributeOrThrow(TAG_LAYER_ATTRIBUTE_WIDTH);
-		this.mTileRows = this.getIntAttributeOrThrow(TAG_LAYER_ATTRIBUTE_HEIGHT);
+		this.mTileColumns = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_LAYER_ATTRIBUTE_WIDTH);
+		this.mTileRows = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT);
 		this.mTMXTiles = new TMXTile[this.mTileRows][this.mTileColumns];
 
 		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTileColumns;
@@ -94,15 +95,6 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public int getIntAttributeOrThrow(final String pAttributeName) {
-		final String value = this.getAttribute(pAttributeName, null);
-		if(value != null) {
-			return Integer.parseInt(value);
-		} else {
-			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
-		}
-	}
 	
 	public final String getAttribute(final String pAttributeName, final String pDefaultValue) {
 		return this.mAttributes.containsKey(pAttributeName) ? this.mAttributes.get(pAttributeName) : pDefaultValue;

@@ -127,7 +127,9 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 				final ArrayList<TMXObject> tmxObjects = lastObjectGroup.getTMXObjects();
 				tmxObjects.get(tmxObjects.size() - 1).addTMXObjectProperty(new TMXObjectProperty(pAttributes));
 			} else if (this.mInLayer) {
-				// TODO
+				final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
+				final TMXLayer lastLayer = tmxLayers.get(tmxLayers.size() - 1);
+				lastLayer.addTMXLayerProperty(new TMXLayerProperty(pAttributes));
 			} else if (this.mInMap) {
 				this.mTMXTiledMap.addTMXTiledMapProperty(new TMXTiledMapProperty(pAttributes));
 			}

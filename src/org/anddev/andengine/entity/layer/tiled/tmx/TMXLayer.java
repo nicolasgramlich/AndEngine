@@ -52,6 +52,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	private int mTilesAdded;
 
 	private final int mGlobalTileIDsExpected;
+	
+	private final TMXProperties<TMXLayerProperty> mTMXLayerProperties = new TMXProperties<TMXLayerProperty>();
 
 	// ===========================================================
 	// Constructors
@@ -128,6 +130,14 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		return this.mTMXTiles[tileRow][tileColumn];
 	}
 
+	public void addTMXLayerProperty(final TMXLayerProperty pTMXLayerProperty) {
+		this.mTMXLayerProperties.add(pTMXLayerProperty);
+	}
+	
+	public TMXProperties<TMXLayerProperty> getTMXLayerProperties() {
+		return this.mTMXLayerProperties;
+	}
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

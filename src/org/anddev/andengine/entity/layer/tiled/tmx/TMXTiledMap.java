@@ -141,7 +141,7 @@ public class TMXTiledMap implements TMXConstants {
 	
 	public TMXProperties<TMXTiledMapProperty> getTMXTiledMapProperties() {
 		return this.mTMXTiledMapProperties;
-	}	
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

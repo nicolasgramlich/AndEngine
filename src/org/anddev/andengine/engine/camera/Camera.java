@@ -14,8 +14,6 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.MathUtils;
 
-import android.opengl.GLU;
-
 /**
  * @author Nicolas Gramlich
  * @since 10:24:18 - 25.03.2010
@@ -35,6 +33,9 @@ public class Camera implements IUpdateHandler {
 	private float mMaxX;
 	private float mMinY;
 	private float mMaxY;
+
+	private float mNearZ = -1.0f;
+	private float mFarZ = 1.0f;
 
 	private HUD mHUD;
 
@@ -72,6 +73,27 @@ public class Camera implements IUpdateHandler {
 
 	public float getMaxY() {
 		return this.mMaxY;
+	}
+
+	public float getNearZClippingPlane() {
+		return this.mNearZ;
+	}
+
+	public float getFarZClippingPlane() {
+		return this.mFarZ;
+	}
+
+	public void setNearZClippingPlane(final float pNearZClippingPlane) {
+		this.mNearZ = pNearZClippingPlane;
+	}
+
+	public void setFarZClippingPlane(final float pFarZClippingPlane) {
+		this.mFarZ = pFarZClippingPlane;
+	}
+
+	public void setZClippingPlanes(final float pNearZClippingPlane, final float pFarZClippingPlane) {
+		this.mNearZ = pNearZClippingPlane;
+		this.mFarZ = pFarZClippingPlane;
 	}
 
 	public float getWidth() {
@@ -183,7 +205,7 @@ public class Camera implements IUpdateHandler {
 	public void onApplyMatrix(final GL10 pGL) {
 		GLHelper.setProjectionIdentityMatrix(pGL);
 
-		GLU.gluOrtho2D(pGL, this.getMinX(), this.getMaxX(), this.getMaxY(), this.getMinY());
+		pGL.glOrthof(this.getMinX(), this.getMaxX(), this.getMaxY(), this.getMinY(), this.mNearZ, this.mFarZ);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
@@ -197,7 +219,7 @@ public class Camera implements IUpdateHandler {
 		final float width = this.mMaxX - this.mMinX;
 		final float height = this.mMaxY - this.mMinY;
 
-		GLU.gluOrtho2D(pGL, 0, width, height, 0);
+		pGL.glOrthof(0, width, height, 0, this.mNearZ, this.mFarZ);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
@@ -211,7 +233,7 @@ public class Camera implements IUpdateHandler {
 		final float width = this.mMaxX - this.mMinX;
 		final float height = this.mMaxY - this.mMinY;
 
-		GLU.gluOrtho2D(pGL, 0, width, height, 0);
+		pGL.glOrthof(0, width, height, 0, this.mNearZ, this.mFarZ);
 
 		final float cameraSceneRotation = this.mCameraSceneRotation;
 		if(cameraSceneRotation != 0) {

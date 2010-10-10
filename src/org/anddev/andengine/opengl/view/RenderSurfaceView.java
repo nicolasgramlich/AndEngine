@@ -43,8 +43,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 		this.setRenderer(this.mRenderer);
 	}
 
-
-
 	/**
 	 * @see android.view.View#measure(int, int)
 	 */

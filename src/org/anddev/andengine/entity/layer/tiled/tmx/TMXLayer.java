@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Hashtable;
 import java.util.zip.GZIPInputStream;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -40,6 +41,9 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	private final TMXTiledMap mTMXTiledMap;
 
+	// Custom properties
+	private final Hashtable<String, String> mAttributes = new Hashtable<String, String>();
+	
 	private final String mName;
 
 	private final int mTileColumns;
@@ -59,11 +63,15 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	public TMXLayer(final TMXTiledMap pTMXTiledMap, final Attributes pAttributes) {
 		super(0, 0, 0, 0, null);
+		
+		for(int i = 0; i < pAttributes.getLength(); i++) {
+			this.mAttributes.put(pAttributes.getLocalName(i), pAttributes.getValue(i));
+		}
 
 		this.mTMXTiledMap = pTMXTiledMap;
-		this.mName = pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_NAME);
-		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_LAYER_ATTRIBUTE_WIDTH);
-		this.mTileRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT);
+		this.mName = this.getAttribute(TAG_LAYER_ATTRIBUTE_NAME, null);
+		this.mTileColumns = this.getIntAttributeOrThrow(TAG_LAYER_ATTRIBUTE_WIDTH);
+		this.mTileRows = this.getIntAttributeOrThrow(TAG_LAYER_ATTRIBUTE_HEIGHT);
 		this.mTMXTiles = new TMXTile[this.mTileRows][this.mTileColumns];
 
 		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTileColumns;
@@ -87,6 +95,19 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// Getter & Setter
 	// ===========================================================
 
+	public int getIntAttributeOrThrow(final String pAttributeName) {
+		final String value = this.getAttribute(pAttributeName, null);
+		if(value != null) {
+			return Integer.parseInt(value);
+		} else {
+			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
+		}
+	}
+	
+	public final String getAttribute(final String pAttributeName, final String pDefaultValue) {
+		return this.mAttributes.containsKey(pAttributeName) ? this.mAttributes.get(pAttributeName) : pDefaultValue;
+	}	
+	
 	public String getName() {
 		return this.mName;
 	}

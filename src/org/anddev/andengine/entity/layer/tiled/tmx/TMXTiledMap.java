@@ -9,7 +9,6 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
-import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
 import android.util.SparseArray;
@@ -51,16 +50,16 @@ public class TMXTiledMap implements TMXConstants {
 	TMXTiledMap(final Attributes pAttributes) {
 		for(int i = 0; i < pAttributes.getLength(); i++) {
 			this.mAttributes.put(pAttributes.getLocalName(i), pAttributes.getValue(i));
-		}
+		}	
 		
-		this.mOrientation = pAttributes.getValue("", TAG_MAP_ATTRIBUTE_ORIENTATION);
+		this.mOrientation = this.getAttribute(TAG_MAP_ATTRIBUTE_ORIENTATION, null);
 		if(this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL) == false) {
 			throw new IllegalArgumentException(TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
 		}
-		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_WIDTH);
-		this.mTilesRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_HEIGHT);
-		this.mTileWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH);
-		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT);
+		this.mTileColumns = this.getIntAttributeOrThrow(TAG_MAP_ATTRIBUTE_WIDTH);
+		this.mTilesRows = this.getIntAttributeOrThrow(TAG_MAP_ATTRIBUTE_HEIGHT);
+		this.mTileWidth = this.getIntAttributeOrThrow(TAG_MAP_ATTRIBUTE_TILEWIDTH);
+		this.mTileHeight = this.getIntAttributeOrThrow(TAG_MAP_ATTRIBUTE_TILEHEIGHT);
 
 		this.mSharedVertexBuffer = new RectangleVertexBuffer(GL11.GL_STATIC_DRAW);
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mSharedVertexBuffer);
@@ -71,6 +70,15 @@ public class TMXTiledMap implements TMXConstants {
 	// Getter & Setter
 	// ===========================================================
 
+	public int getIntAttributeOrThrow(final String pAttributeName) {
+		final String value = this.getAttribute(pAttributeName, null);
+		if(value != null) {
+			return Integer.parseInt(value);
+		} else {
+			throw new IllegalArgumentException("No value found for attribute: " + pAttributeName);
+		}
+	}
+	
 	public final String getAttribute(final String pAttributeName, final String pDefaultValue) {
 		return this.mAttributes.containsKey(pAttributeName) ? this.mAttributes.get(pAttributeName) : pDefaultValue;
 	}

@@ -49,7 +49,8 @@ public class TMXTiledMap implements TMXConstants {
 	// ===========================================================
 
 	TMXTiledMap(final Attributes pAttributes) {
-		for(int i = 0; i < pAttributes.getLength(); i++) {
+		final int mapAttributeCount = pAttributes.getLength();
+		for(int i = 0; i < mapAttributeCount; i++) {
 			this.mAttributes.put(pAttributes.getLocalName(i), pAttributes.getValue(i));
 		}	
 		

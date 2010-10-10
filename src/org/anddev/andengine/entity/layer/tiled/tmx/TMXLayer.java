@@ -64,8 +64,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	public TMXLayer(final TMXTiledMap pTMXTiledMap, final Attributes pAttributes) {
 		super(0, 0, 0, 0, null);
-		
-		for(int i = 0; i < pAttributes.getLength(); i++) {
+		final int layerAttributeCount = pAttributes.getLength();
+		for(int i = 0; i < layerAttributeCount; i++) {
 			this.mAttributes.put(pAttributes.getLocalName(i), pAttributes.getValue(i));
 		}
 

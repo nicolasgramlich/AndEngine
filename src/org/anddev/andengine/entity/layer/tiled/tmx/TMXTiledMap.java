@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -31,6 +32,8 @@ public class TMXTiledMap implements TMXConstants {
 	private final int mTilesRows;
 	private final int mTileWidth;
 	private final int mTileHeight;
+	// Custom properties
+	private final Hashtable<String, String> mAttributes = new Hashtable<String, String>();
 
 	private final ArrayList<TMXTileSet> mTMXTileSets = new ArrayList<TMXTileSet>();
 	private final ArrayList<TMXLayer> mTMXLayers = new ArrayList<TMXLayer>();
@@ -46,6 +49,10 @@ public class TMXTiledMap implements TMXConstants {
 	// ===========================================================
 
 	TMXTiledMap(final Attributes pAttributes) {
+		for(int i = 0; i < pAttributes.getLength(); i++) {
+			this.mAttributes.put(pAttributes.getLocalName(i), pAttributes.getValue(i));
+		}
+		
 		this.mOrientation = pAttributes.getValue("", TAG_MAP_ATTRIBUTE_ORIENTATION);
 		if(this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL) == false) {
 			throw new IllegalArgumentException(TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
@@ -64,6 +71,10 @@ public class TMXTiledMap implements TMXConstants {
 	// Getter & Setter
 	// ===========================================================
 
+	public final String getAttribute(final String pAttributeName, final String pDefaultValue) {
+		return this.mAttributes.containsKey(pAttributeName) ? this.mAttributes.get(pAttributeName) : pDefaultValue;
+	}
+	
 	public final String getOrientation() {
 		return this.mOrientation;
 	}

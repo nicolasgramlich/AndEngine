@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -9,7 +8,7 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
-import org.anddev.andengine.util.HashtableUtils;
+import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
 import android.util.SparseArray;
@@ -32,8 +31,6 @@ public class TMXTiledMap implements TMXConstants {
 	private final int mTilesRows;
 	private final int mTileWidth;
 	private final int mTileHeight;
-	// Custom properties
-	private final Hashtable<String, String> mAttributes = new Hashtable<String, String>();
 
 	private final ArrayList<TMXTileSet> mTMXTileSets = new ArrayList<TMXTileSet>();
 	private final ArrayList<TMXLayer> mTMXLayers = new ArrayList<TMXLayer>();
@@ -49,19 +46,14 @@ public class TMXTiledMap implements TMXConstants {
 	// ===========================================================
 
 	TMXTiledMap(final Attributes pAttributes) {
-		final int mapAttributeCount = pAttributes.getLength();
-		for(int i = 0; i < mapAttributeCount; i++) {
-			this.mAttributes.put(pAttributes.getLocalName(i), pAttributes.getValue(i));
-		}	
-		
-		this.mOrientation = this.getAttribute(TAG_MAP_ATTRIBUTE_ORIENTATION, null);
+		this.mOrientation = pAttributes.getValue("", TAG_MAP_ATTRIBUTE_ORIENTATION);
 		if(this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL) == false) {
 			throw new IllegalArgumentException(TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
 		}
-		this.mTileColumns = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_MAP_ATTRIBUTE_WIDTH);
-		this.mTilesRows = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_MAP_ATTRIBUTE_HEIGHT);
-		this.mTileWidth = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH);
-		this.mTileHeight = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT);
+		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_WIDTH);
+		this.mTilesRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_HEIGHT);
+		this.mTileWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH);
+		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT);
 
 		this.mSharedVertexBuffer = new RectangleVertexBuffer(GL11.GL_STATIC_DRAW);
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mSharedVertexBuffer);
@@ -71,11 +63,7 @@ public class TMXTiledMap implements TMXConstants {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public final String getAttribute(final String pAttributeName, final String pDefaultValue) {
-		return this.mAttributes.containsKey(pAttributeName) ? this.mAttributes.get(pAttributeName) : pDefaultValue;
-	}
-	
+
 	public final String getOrientation() {
 		return this.mOrientation;
 	}

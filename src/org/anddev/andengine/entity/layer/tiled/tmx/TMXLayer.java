@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Hashtable;
 import java.util.zip.GZIPInputStream;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -20,7 +19,6 @@ import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 import org.anddev.andengine.util.Base64;
 import org.anddev.andengine.util.Base64InputStream;
-import org.anddev.andengine.util.HashtableUtils;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.SAXUtils;
 import org.anddev.andengine.util.StreamUtils;
@@ -42,9 +40,6 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	private final TMXTiledMap mTMXTiledMap;
 
-	// Custom properties
-	private final Hashtable<String, String> mAttributes = new Hashtable<String, String>();
-	
 	private final String mName;
 
 	private final int mTileColumns;
@@ -64,15 +59,11 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 	public TMXLayer(final TMXTiledMap pTMXTiledMap, final Attributes pAttributes) {
 		super(0, 0, 0, 0, null);
-		final int layerAttributeCount = pAttributes.getLength();
-		for(int i = 0; i < layerAttributeCount; i++) {
-			this.mAttributes.put(pAttributes.getLocalName(i), pAttributes.getValue(i));
-		}
 
 		this.mTMXTiledMap = pTMXTiledMap;
-		this.mName = this.getAttribute(TAG_LAYER_ATTRIBUTE_NAME, null);
-		this.mTileColumns = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_LAYER_ATTRIBUTE_WIDTH);
-		this.mTileRows = HashtableUtils.getIntValueOrThrow(this.mAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT);
+		this.mName = pAttributes.getValue("", TAG_LAYER_ATTRIBUTE_NAME);
+		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_LAYER_ATTRIBUTE_WIDTH);
+		this.mTileRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_LAYER_ATTRIBUTE_HEIGHT);
 		this.mTMXTiles = new TMXTile[this.mTileRows][this.mTileColumns];
 
 		super.mWidth = pTMXTiledMap.getTileWidth() * this.mTileColumns;
@@ -95,11 +86,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public final String getAttribute(final String pAttributeName, final String pDefaultValue) {
-		return this.mAttributes.containsKey(pAttributeName) ? this.mAttributes.get(pAttributeName) : pDefaultValue;
-	}	
-	
+
 	public String getName() {
 		return this.mName;
 	}

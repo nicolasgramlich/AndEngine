@@ -66,6 +66,10 @@ public class ClickDetector implements IOnSceneTouchListener {
 
 	@Override
 	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
+		return this.onTouchEvent(pSceneTouchEvent);
+	}
+
+	public boolean onTouchEvent(final TouchEvent pSceneTouchEvent) {
 		if(this.mEnabled) {
 			switch(pSceneTouchEvent.getAction()) {
 				case MotionEvent.ACTION_DOWN:

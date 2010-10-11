@@ -55,6 +55,10 @@ public abstract class SurfaceGestureDetector implements IOnSceneTouchListener {
 
 	@Override
 	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
+		return this.onTouchEvent(pSceneTouchEvent);
+	}
+
+	public boolean onTouchEvent(final TouchEvent pSceneTouchEvent) {
 		return this.mGestureDetector.onTouchEvent(pSceneTouchEvent.getMotionEvent());
 	}
 
@@ -99,26 +103,26 @@ public abstract class SurfaceGestureDetector implements IOnSceneTouchListener {
 		}
 
 		@Override
-		public boolean onDoubleTap(final MotionEvent e) {
+		public boolean onDoubleTap(final MotionEvent pMotionEvent) {
 			return SurfaceGestureDetector.this.onDoubleTap();
 		}
 
 		@Override
-		public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float pVelocityX, final float pVelocityY) {
+		public boolean onFling(final MotionEvent pMotionEventStart, final MotionEvent pMotionEventEnd, final float pVelocityX, final float pVelocityY) {
 			final float swipeMinDistance = this.mSwipeMinDistance;
 
 			final boolean isHorizontalFling = Math.abs(pVelocityX) > Math.abs(pVelocityY);
 
 			if(isHorizontalFling) {
-				if(e1.getX() - e2.getX() > swipeMinDistance) {
+				if(pMotionEventStart.getX() - pMotionEventEnd.getX() > swipeMinDistance) {
 					return SurfaceGestureDetector.this.onSwipeLeft();
-				} else if(e2.getX() - e1.getX() > swipeMinDistance) {
+				} else if(pMotionEventEnd.getX() - pMotionEventStart.getX() > swipeMinDistance) {
 					return SurfaceGestureDetector.this.onSwipeRight();
 				}
 			} else {
-				if(e1.getY() - e2.getY() > swipeMinDistance) {
+				if(pMotionEventStart.getY() - pMotionEventEnd.getY() > swipeMinDistance) {
 					return SurfaceGestureDetector.this.onSwipeUp();
-				} else if(e2.getY() - e1.getY() > swipeMinDistance) {
+				} else if(pMotionEventEnd.getY() - pMotionEventStart.getY() > swipeMinDistance) {
 					return SurfaceGestureDetector.this.onSwipeDown();
 				}
 			}

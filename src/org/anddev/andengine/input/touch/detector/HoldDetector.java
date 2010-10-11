@@ -120,6 +120,10 @@ public class HoldDetector implements IOnSceneTouchListener, IUpdateHandler {
 
 	@Override
 	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
+		return this.onTouchEvent(pSceneTouchEvent);
+	}
+
+	public boolean onTouchEvent(final TouchEvent pSceneTouchEvent) {
 		if(this.mEnabled) {
 			final MotionEvent motionEvent = pSceneTouchEvent.getMotionEvent();
 

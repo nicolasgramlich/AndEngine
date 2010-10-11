@@ -71,6 +71,10 @@ public abstract class ScrollDetector implements IOnSceneTouchListener {
 
 	@Override
 	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
+		return this.onTouchEvent(pSceneTouchEvent);
+	}
+
+	public boolean onTouchEvent(final TouchEvent pSceneTouchEvent) {
 		if(this.mEnabled) {
 			final float touchX = this.getX(pSceneTouchEvent);
 			final float touchY = this.getY(pSceneTouchEvent);

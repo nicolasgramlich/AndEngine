@@ -1,2 +1,4 @@
 syntax: glob
 bin/**
+.DS_Store
+Thumbs.db

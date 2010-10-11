@@ -34,9 +34,16 @@ public class TextureRegionFactory {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
+	
+	/**
+	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>. 
+	 */
 	public static void setAssetBasePath(final String pAssetBasePath) {
-		TextureRegionFactory.sAssetBasePath = pAssetBasePath;
+		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
+			TextureRegionFactory.sAssetBasePath = pAssetBasePath;
+		} else {
+			throw new IllegalStateException("pAssetBasePath must end with '/' or be lenght zero.");
+		}
 	}
 
 	// ===========================================================

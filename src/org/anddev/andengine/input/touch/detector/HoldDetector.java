@@ -3,16 +3,21 @@ package org.anddev.andengine.input.touch.detector;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.os.SystemClock;
+import android.speech.tts.TextToSpeech.Engine;
 import android.view.MotionEvent;
 
 /**
+ * Note: Needs to be registered as an {@link IUpdateHandler} to the {@link Engine} or {@link Scene} to work properly.
+ * 
  * @author Nicolas Gramlich
  * @since 20:49:25 - 23.08.2010
  */
-public class HoldDetector implements IUpdateHandler {
+public class HoldDetector implements IOnSceneTouchListener, IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -35,7 +40,7 @@ public class HoldDetector implements IUpdateHandler {
 
 	private float mDownX;
 	private float mDownY;
-	
+
 	private float mHoldX;
 	private float mHoldY;
 
@@ -107,32 +112,21 @@ public class HoldDetector implements IUpdateHandler {
 	public void onUpdate(final float pSecondsElapsed) {
 		this.mTimerHandler.onUpdate(pSecondsElapsed);
 	}
-	
+
 	@Override
 	public void reset() {
 		this.mTimerHandler.reset();
 	}
-	
-	protected void fireListener() {
-		if(this.mTriggerOnHoldFinished) {
-			this.mHoldDetectorListener.onHoldFinished(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
-			this.mTriggerOnHoldFinished = false;
-			this.mTriggerOnHold = false;
-		} else if(this.mTriggerOnHold) {
-			this.mHoldDetectorListener.onHold(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
-		}
-		//		this.mHoldDetectorListener.onHold(this, pHoldTimeMilliseconds)
-		//		CheckPassed().onControlChange(BaseOnScreenControl.this, BaseOnScreenControl.this.mControlValueX, BaseOnScreenControl.this.mControlValueY);
-	}
 
-	public boolean onTouchEvent(final TouchEvent pTouchEvent) {
+	@Override
+	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
 		if(this.mEnabled) {
-			final MotionEvent motionEvent = pTouchEvent.getMotionEvent();
+			final MotionEvent motionEvent = pSceneTouchEvent.getMotionEvent();
 
-			this.mHoldX = pTouchEvent.getX();
-			this.mHoldY = pTouchEvent.getY();
+			this.mHoldX = pSceneTouchEvent.getX();
+			this.mHoldY = pSceneTouchEvent.getY();
 
-			switch(pTouchEvent.getAction()) {
+			switch(pSceneTouchEvent.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					this.mDownTimeMilliseconds = motionEvent.getDownTime();
 					this.mDownX = motionEvent.getX();
@@ -179,6 +173,16 @@ public class HoldDetector implements IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected void fireListener() {
+		if(this.mTriggerOnHoldFinished) {
+			this.mHoldDetectorListener.onHoldFinished(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
+			this.mTriggerOnHoldFinished = false;
+			this.mTriggerOnHold = false;
+		} else if(this.mTriggerOnHold) {
+			this.mHoldDetectorListener.onHold(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

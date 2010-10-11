@@ -1,5 +1,7 @@
 package org.anddev.andengine.input.touch.detector;
 
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
@@ -8,7 +10,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 14:29:59 - 16.08.2010
  */
-public abstract class ScrollDetector {
+public abstract class ScrollDetector implements IOnSceneTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -67,12 +69,13 @@ public abstract class ScrollDetector {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public boolean onTouchEvent(final TouchEvent pTouchEvent) {
+	@Override
+	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
 		if(this.mEnabled) {
-			final float touchX = this.getX(pTouchEvent);
-			final float touchY = this.getY(pTouchEvent);
+			final float touchX = this.getX(pSceneTouchEvent);
+			final float touchY = this.getY(pSceneTouchEvent);
 
-			switch(pTouchEvent.getAction()) {
+			switch(pSceneTouchEvent.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					this.mLastX = touchX;
 					this.mLastY = touchY;
@@ -86,7 +89,7 @@ public abstract class ScrollDetector {
 
 					final float triggerScrollMinimumDistance = this.mTriggerScrollMinimumDistance;
 					if(this.mTriggered || Math.abs(distanceX) > triggerScrollMinimumDistance || Math.abs(distanceY) > triggerScrollMinimumDistance) {
-						this.mScrollDetectorListener.onScroll(this, pTouchEvent, distanceX, distanceY);
+						this.mScrollDetectorListener.onScroll(this, pSceneTouchEvent, distanceX, distanceY);
 						this.mLastX = touchX;
 						this.mLastY = touchY;
 						this.mTriggered = true;

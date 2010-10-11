@@ -64,7 +64,7 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 
 	@Override
 	protected boolean onHandleControlBaseTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		this.mClickDetector.onTouchEvent(pSceneTouchEvent);
+		this.mClickDetector.onSceneTouchEvent(null, pSceneTouchEvent);
 		return super.onHandleControlBaseTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 	}
 

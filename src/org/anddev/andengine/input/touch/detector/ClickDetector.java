@@ -1,5 +1,7 @@
 package org.anddev.andengine.input.touch.detector;
 
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
@@ -8,7 +10,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 14:29:59 - 16.08.2010
  */
-public class ClickDetector {
+public class ClickDetector implements IOnSceneTouchListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -62,19 +64,20 @@ public class ClickDetector {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public boolean onTouchEvent(final TouchEvent pTouchEvent) {
+	@Override
+	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
 		if(this.mEnabled) {
-			switch(pTouchEvent.getAction()) {
+			switch(pSceneTouchEvent.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					this.mDownTimeMilliseconds = pTouchEvent.getMotionEvent().getDownTime();
+					this.mDownTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getDownTime();
 					return true;
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_CANCEL:
-					final long upTimeMilliseconds = pTouchEvent.getMotionEvent().getEventTime();
+					final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
 
 					if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
 						this.mDownTimeMilliseconds = Long.MIN_VALUE;
-						this.mClickDetectorListener.onClick(this, pTouchEvent);
+						this.mClickDetectorListener.onClick(this, pSceneTouchEvent);
 					}
 					return true;
 				default:

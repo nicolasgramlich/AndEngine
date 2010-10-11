@@ -1,0 +1,22 @@
+package org.anddev.andengine.level.util.constants;
+
+
+/**
+ * @author Nicolas Gramlich
+ * @since 14:23:27 - 11.10.2010
+ */
+public interface LevelConstants {
+	// ===========================================================
+	// Final Fields
+	// ===========================================================
+
+	public static final String TAG_LEVEL = "level";
+	public static final String TAG_LEVEL_ATTRIBUTE_NAME = "name";
+	public static final String TAG_LEVEL_ATTRIBUTE_UID = "uid";
+	public static final String TAG_LEVEL_ATTRIBUTE_WIDTH = "width";
+	public static final String TAG_LEVEL_ATTRIBUTE_HEIGHT = "height";
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+}

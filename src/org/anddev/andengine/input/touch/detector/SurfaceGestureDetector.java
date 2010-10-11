@@ -94,7 +94,7 @@ public abstract class SurfaceGestureDetector implements IOnSceneTouchListener {
 		// ===========================================================
 
 		@Override
-		public boolean onSingleTapConfirmed(final MotionEvent e) {
+		public boolean onSingleTapConfirmed(final MotionEvent pMotionEvent) {
 			return SurfaceGestureDetector.this.onSingleTap();
 		}
 

@@ -186,6 +186,12 @@ public class MathUtils implements MathConstants {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}
 
+	public float distance(final float pX1, final float pY1, final float pX2, final float pY2){
+		final float dX = pX2 - pX1;
+		final float dY = pY2 - pY1;
+		return FloatMath.sqrt((dX * dX) + (dY * dY));
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

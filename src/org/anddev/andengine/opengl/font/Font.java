@@ -87,6 +87,18 @@ public class Font {
 	// Getter & Setter
 	// ===========================================================
 
+	public int getLineGap() {
+		return this.mLineGap;
+	}
+
+	public int getLineHeight() {
+		return this.mLineHeight;
+	}
+
+	public Texture getTexture() {
+		return this.mTexture;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -95,10 +107,10 @@ public class Font {
 	// Methods
 	// ===========================================================
 
-	public void reload() {
+	public synchronized void reload() {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
-		
+
 		/* Make all letters redraw to the texture. */
 		for(int i = managedCharacterToLetterMap.size() - 1; i >= 0; i--) {
 			lettersPendingToBeDrawnToTexture.add(managedCharacterToLetterMap.valueAt(i));
@@ -132,14 +144,6 @@ public class Font {
 		this.mCanvas.drawText(pCharacterAsString, LETTER_LEFT_OFFSET, -this.mFontMetrics.ascent, this.mPaint);
 	}
 
-	public int getLineGap() {
-		return this.mLineGap;
-	}
-
-	public int getLineHeight() {
-		return this.mLineHeight;
-	}
-
 	public int getStringWidth(final String pText) {
 		this.mPaint.getTextBounds(pText, 0, pText.length(), this.mGetStringWidthTemporaryRect);
 		return this.mGetStringWidthTemporaryRect.width();
@@ -150,11 +154,7 @@ public class Font {
 		pSize.set(this.mGetLetterBoundsTemporaryRect.width() + LETTER_EXTRA_WIDTH, this.getLineHeight());
 	}
 
-	public Texture getTexture() {
-		return this.mTexture;
-	}
-
-	public Letter getLetter(final char pCharacter) {
+	public synchronized Letter getLetter(final char pCharacter) {
 		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
 		Letter letter = managedCharacterToLetterMap.get(pCharacter);
 		if (letter == null) {
@@ -192,7 +192,7 @@ public class Font {
 		return letter;
 	}
 
-	public void update(final GL10 pGL) {
+	public synchronized void update(final GL10 pGL) {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
 			final int hardwareTextureID = this.mTexture.getHardwareTextureID();

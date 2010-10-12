@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
+import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXParseException;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureManager;
@@ -89,7 +90,7 @@ public class TMXTileSet implements TMXConstants {
 		return this.mTexture;
 	}
 
-	public void setImageSource(final Context pContext, final TextureManager pTextureManager, final Attributes pAttributes) {
+	public void setImageSource(final Context pContext, final TextureManager pTextureManager, final Attributes pAttributes) throws TMXParseException {
 		this.mImageSource = pAttributes.getValue("", TAG_IMAGE_ATTRIBUTE_SOURCE);
 
 		final AssetTextureSource assetTextureSource = new AssetTextureSource(pContext, this.mImageSource);
@@ -101,7 +102,12 @@ public class TMXTileSet implements TMXConstants {
 		if(transparentColor == null) {
 			TextureRegionFactory.createFromSource(this.mTexture, assetTextureSource, 0, 0);
 		} else {
-			TextureRegionFactory.createFromSource(this.mTexture, new ColorKeyTextureSourceDecorator(assetTextureSource, Color.parseColor(transparentColor)), 0, 0);
+			try{
+				int color = Color.parseColor("#" + transparentColor);
+				TextureRegionFactory.createFromSource(this.mTexture, new ColorKeyTextureSourceDecorator(assetTextureSource, color), 0, 0);
+			} catch (IllegalArgumentException e) {
+				throw new TMXParseException("Illegal value: '" + transparentColor + "' for attribute 'trans' supplied!", e);
+			}
 		}
 		pTextureManager.loadTexture(this.mTexture);
 	}

@@ -1,19 +1,15 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
-import java.util.ArrayList;
-
-import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
+import org.xml.sax.Attributes;
 
 /**
  * @author Nicolas Gramlich
- * @since 10:14:06 - 27.07.2010
+ * @since 11:19:44 - 29.07.2010
  */
-public class TMXProperties<T extends TMXProperty> extends ArrayList<T> implements TMXConstants {
+public class TMXLayerProperty extends TMXProperty {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final long serialVersionUID = 8912773556975105201L;
 
 	// ===========================================================
 	// Fields
@@ -23,29 +19,13 @@ public class TMXProperties<T extends TMXProperty> extends ArrayList<T> implement
 	// Constructors
 	// ===========================================================
 
+	public TMXLayerProperty(final Attributes pAttributes) {
+		super(pAttributes);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public String getLastTMXProperty(final String pName) {
-		for(int i = this.size() - 1; i >= 0; i--) {
-			final T tmxProperty = this.get(i);
-			if(tmxProperty.getName().equals(pName)) {
-				return tmxProperty.getValue();
-			}
-		}
-		return null;
-	}
-
-	public boolean containsTMXProperty(final String pName, final String pValue) {
-		for(int i = this.size() - 1; i >= 0; i--) {
-			final T tmxProperty = this.get(i);
-			if(tmxProperty.getName().equals(pName) && tmxProperty.getValue().equals(pValue)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

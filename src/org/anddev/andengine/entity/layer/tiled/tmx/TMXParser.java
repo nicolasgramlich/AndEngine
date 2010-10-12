@@ -44,17 +44,14 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private String mDataEncoding;
 	private String mDataCompression;
 
-	@SuppressWarnings("unused")
 	private boolean mInMap;
 	private boolean mInTileset;
 	@SuppressWarnings("unused")
 	private boolean mInImage;
 	private boolean mInTile;
-	@SuppressWarnings("unused")
 	private boolean mInProperties;
 	@SuppressWarnings("unused")
 	private boolean mInProperty;
-	@SuppressWarnings("unused")
 	private boolean mInLayer;
 	private boolean mInData;
 	@SuppressWarnings("unused")
@@ -118,7 +115,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			}
 		} else if(pLocalName.equals(TAG_PROPERTIES)) {
 			this.mInProperties = true;
-		} else if(pLocalName.equals(TAG_PROPERTY)) {
+		} else if(this.mInProperties && pLocalName.equals(TAG_PROPERTY)) {
 			this.mInProperty = true;
 			if(this.mInTile) {
 				final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
@@ -129,6 +126,12 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 
 				final ArrayList<TMXObject> tmxObjects = lastObjectGroup.getTMXObjects();
 				tmxObjects.get(tmxObjects.size() - 1).addTMXObjectProperty(new TMXObjectProperty(pAttributes));
+			} else if (this.mInLayer) {
+				final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
+				final TMXLayer lastLayer = tmxLayers.get(tmxLayers.size() - 1);
+				lastLayer.addTMXLayerProperty(new TMXLayerProperty(pAttributes));
+			} else if (this.mInMap) {
+				this.mTMXTiledMap.addTMXTiledMapProperty(new TMXTiledMapProperty(pAttributes));
 			}
 		} else if(pLocalName.equals(TAG_LAYER)){
 			this.mInLayer = true;

@@ -116,23 +116,16 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			this.mInProperties = true;
 		} else if(this.mInProperties && pLocalName.equals(TAG_PROPERTY)) {
 			this.mInProperty = true;
-			if(this.mInMap) {
-				this.mTMXTiledMap.addTMXTiledMapProperty(new TMXTiledMapProperty(pAttributes));
+			if(this.mInTile) {
+				final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
+				final TMXTileSet lastTMXTileSet = tmxTileSets.get(tmxTileSets.size() - 1);
+
+				lastTMXTileSet.addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));
 			} else if(this.mInLayer) {
 				final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
 				final TMXLayer lastTMXLayer = tmxLayers.get(tmxLayers.size() - 1);
 
 				lastTMXLayer.addTMXLayerProperty(new TMXLayerProperty(pAttributes));
-			} else if(this.mInTile) {
-				final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
-				final TMXTileSet lastTMXTileSet = tmxTileSets.get(tmxTileSets.size() - 1);
-
-				lastTMXTileSet.addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));
-			} else if(this.mInObjectGroup) {
-				final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
-				final TMXObjectGroup lastTMXObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
-
-				lastTMXObjectGroup.addTMXObjectGroupProperty(new TMXObjectGroupProperty(pAttributes));
 			} else if(this.mInObject) {
 				final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
 				final TMXObjectGroup lastTMXObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
@@ -141,7 +134,14 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 				final TMXObject lastTMXObject = tmxObjects.get(tmxObjects.size() - 1);
 
 				lastTMXObject.addTMXObjectProperty(new TMXObjectProperty(pAttributes));
-			}
+			} else if(this.mInObjectGroup) {
+				final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
+				final TMXObjectGroup lastTMXObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
+
+				lastTMXObjectGroup.addTMXObjectGroupProperty(new TMXObjectGroupProperty(pAttributes));
+			} else if(this.mInMap) {
+				this.mTMXTiledMap.addTMXTiledMapProperty(new TMXTiledMapProperty(pAttributes));
+			}  
 		} else if(pLocalName.equals(TAG_LAYER)){
 			this.mInLayer = true;
 			this.mTMXTiledMap.addTMXLayer(new TMXLayer(this.mTMXTiledMap, pAttributes));

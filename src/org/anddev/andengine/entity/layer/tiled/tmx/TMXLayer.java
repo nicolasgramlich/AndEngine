@@ -80,6 +80,9 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		this.mScaleCenterY = this.mRotationCenterY;
 
 		this.mGlobalTileIDsExpected = this.mTileColumns * this.mTileRows;
+
+		this.setVisible(SAXUtils.getIntAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_VISIBLE, TAG_LAYER_ATTRIBUTE_VISIBLE_VALUE_DEFAULT) == 1);
+		this.setAlpha(SAXUtils.getFloatAttribute(pAttributes, TAG_LAYER_ATTRIBUTE_OPACITY, TAG_LAYER_ATTRIBUTE_OPACITY_VALUE_DEFAULT));
 	}
 
 	// ===========================================================

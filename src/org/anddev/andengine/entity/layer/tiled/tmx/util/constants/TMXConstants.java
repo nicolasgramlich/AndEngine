@@ -1,6 +1,8 @@
 package org.anddev.andengine.entity.layer.tiled.tmx.util.constants;
 
 /**
+ * See: <a href="http://sourceforge.net/apps/mediawiki/tiled/index.php?title=TMX_Map_Format">TMX Map Format</a>.
+ * 
  * @author Nicolas Gramlich
  * @since 19:20:22 - 20.07.2010
  */
@@ -31,6 +33,7 @@ public interface TMXConstants {
 
 	public static final String TAG_IMAGE = "image";
 	public static final String TAG_IMAGE_ATTRIBUTE_SOURCE = "source";
+	public static final String TAG_IMAGE_ATTRIBUTE_TRANS = "trans";
 
 	public static final String TAG_TILE = "tile";
 	public static final String TAG_TILE_ATTRIBUTE_ID = "id";
@@ -46,6 +49,10 @@ public interface TMXConstants {
 	public static final String TAG_LAYER_ATTRIBUTE_NAME = "name";
 	public static final String TAG_LAYER_ATTRIBUTE_WIDTH = "width";
 	public static final String TAG_LAYER_ATTRIBUTE_HEIGHT = "height";
+	public static final String TAG_LAYER_ATTRIBUTE_VISIBLE = "visible";
+	public static final int TAG_LAYER_ATTRIBUTE_VISIBLE_VALUE_DEFAULT = 1;
+	public static final String TAG_LAYER_ATTRIBUTE_OPACITY = "opacity";
+	public static final float TAG_LAYER_ATTRIBUTE_OPACITY_VALUE_DEFAULT = 1.0f;
 
 	public static final String TAG_DATA = "data";
 	public static final String TAG_DATA_ATTRIBUTE_ENCODING = "encoding";

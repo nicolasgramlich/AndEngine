@@ -8,10 +8,12 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
+import org.anddev.andengine.opengl.texture.source.decorator.ColorKeyTextureSourceDecorator;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.SparseArray;
 
 /**
@@ -34,6 +36,7 @@ public class TMXTileSet implements TMXConstants {
 
 	private String mImageSource;
 	private Texture mTexture;
+	private final TextureOptions mTextureOptions;
 
 	private int mTilesHorizontal;
 	@SuppressWarnings("unused")
@@ -43,8 +46,6 @@ public class TMXTileSet implements TMXConstants {
 	private final int mMargin;
 
 	private final SparseArray<TMXProperties<TMXTileProperty>> mTMXTileProperties = new SparseArray<TMXProperties<TMXTileProperty>>();
-	private final TextureOptions mTextureOptions;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -95,7 +96,13 @@ public class TMXTileSet implements TMXConstants {
 		this.mTilesHorizontal = TMXTileSet.determineCount(assetTextureSource.getWidth(), this.mTileWidth, this.mMargin, this.mSpacing);
 		this.mTilesVertical = TMXTileSet.determineCount(assetTextureSource.getHeight(), this.mTileHeight, this.mMargin, this.mSpacing);
 		this.mTexture = TextureFactory.createForTextureSourceSize(assetTextureSource, this.mTextureOptions);
-		TextureRegionFactory.createFromSource(this.mTexture, assetTextureSource, 0, 0);
+
+		final String transparentColor = SAXUtils.getAttribute(pAttributes, TAG_IMAGE_ATTRIBUTE_TRANS, null);
+		if(transparentColor == null) {
+			TextureRegionFactory.createFromSource(this.mTexture, assetTextureSource, 0, 0);
+		} else {
+			TextureRegionFactory.createFromSource(this.mTexture, new ColorKeyTextureSourceDecorator(assetTextureSource, Color.parseColor(transparentColor)), 0, 0);
+		}
 		pTextureManager.loadTexture(this.mTexture);
 	}
 

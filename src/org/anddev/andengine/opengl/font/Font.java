@@ -1,7 +1,6 @@
 package org.anddev.andengine.opengl.font;
 
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -43,7 +42,7 @@ public class Font {
 	private int mCurrentTextureY = 0;
 
 	private final SparseArray<Letter> mManagedCharacterToLetterMap = new SparseArray<Letter>();
-	private final HashSet<Letter> mLettersPendingToBeDrawnToTexture = new HashSet<Letter>();
+	private final ArrayList<Letter> mLettersPendingToBeDrawnToTexture = new ArrayList<Letter>();
 
 	protected final Paint mPaint;
 	private final Paint mBackgroundPaint;
@@ -97,7 +96,7 @@ public class Font {
 	// ===========================================================
 
 	public void reload() {
-		final HashSet<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
+		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
 		
 		/* Make all letters redraw to the texture. */
@@ -160,6 +159,8 @@ public class Font {
 		Letter letter = managedCharacterToLetterMap.get(pCharacter);
 		if (letter == null) {
 			letter = this.createLetter(pCharacter);
+
+			this.mLettersPendingToBeDrawnToTexture.add(letter);
 			managedCharacterToLetterMap.put(pCharacter, letter);
 		}
 		return letter;
@@ -188,23 +189,19 @@ public class Font {
 		final Letter letter = new Letter(pCharacter, this.getLetterAdvance(pCharacter), (int)letterWidth, (int)letterHeight, letterTextureX, letterTextureY, letterTextureWidth, letterTextureHeight);
 		this.mCurrentTextureX += letterWidth;
 
-		this.mLettersPendingToBeDrawnToTexture.add(letter);
-
 		return letter;
 	}
 
 	public void update(final GL10 pGL) {
-		final HashSet<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
+		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
 			final int hardwareTextureID = this.mTexture.getHardwareTextureID();
 
 			final float textureWidth = this.mTextureWidth;
 			final float textureHeight = this.mTextureHeight;
 
-			// TODO Can the use of this iterator be avoided somehow?
-			final Iterator<Letter> letterIterator = lettersPendingToBeDrawnToTexture.iterator();
-			while (letterIterator.hasNext()) {
-				final Letter letter = letterIterator.next();
+			for(int i = lettersPendingToBeDrawnToTexture.size() - 1; i >= 0; i--) {
+				final Letter letter = lettersPendingToBeDrawnToTexture.get(i);
 				final Bitmap bitmap = this.getLetterBitmap(letter.mCharacter);
 
 				GLHelper.bindTexture(pGL, hardwareTextureID);

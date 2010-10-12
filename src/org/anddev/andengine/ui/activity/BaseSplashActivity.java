@@ -82,7 +82,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	@Override
 	public void onLoadResources() {
-		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(this.mSplashTextureSource, TextureOptions.BILINEAR);
+		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(this.mSplashTextureSource, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		this.mLoadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
 
 		this.getEngine().getTextureManager().loadTexture(loadingScreenTexture);

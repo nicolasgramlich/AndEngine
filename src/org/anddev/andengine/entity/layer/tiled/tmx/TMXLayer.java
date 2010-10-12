@@ -41,18 +41,15 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	private final TMXTiledMap mTMXTiledMap;
 
 	private final String mName;
-
 	private final int mTileColumns;
 	private final int mTileRows;
-
 	private final TMXTile[][] mTMXTiles;
+
+	private int mTilesAdded;
+	private final int mGlobalTileIDsExpected;
 
 	private final float[] mCullingVertices = new float[2 * RectangleVertexBuffer.VERTICES_PER_RECTANGLE];
 
-	private int mTilesAdded;
-
-	private final int mGlobalTileIDsExpected;
-	
 	private final TMXProperties<TMXLayerProperty> mTMXLayerProperties = new TMXProperties<TMXLayerProperty>();
 
 	// ===========================================================
@@ -133,11 +130,11 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	public void addTMXLayerProperty(final TMXLayerProperty pTMXLayerProperty) {
 		this.mTMXLayerProperties.add(pTMXLayerProperty);
 	}
-	
+
 	public TMXProperties<TMXLayerProperty> getTMXLayerProperties() {
 		return this.mTMXLayerProperties;
 	}
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

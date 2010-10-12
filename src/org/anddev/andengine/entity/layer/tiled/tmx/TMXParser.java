@@ -54,7 +54,6 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private boolean mInProperty;
 	private boolean mInLayer;
 	private boolean mInData;
-	@SuppressWarnings("unused")
 	private boolean mInObjectGroup;
 	private boolean mInObject;
 
@@ -117,21 +116,31 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			this.mInProperties = true;
 		} else if(this.mInProperties && pLocalName.equals(TAG_PROPERTY)) {
 			this.mInProperty = true;
-			if(this.mInTile) {
-				final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
-				tmxTileSets.get(tmxTileSets.size() - 1).addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));
-			} else if (this.mInObject) {
-				final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
-				final TMXObjectGroup lastObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
-
-				final ArrayList<TMXObject> tmxObjects = lastObjectGroup.getTMXObjects();
-				tmxObjects.get(tmxObjects.size() - 1).addTMXObjectProperty(new TMXObjectProperty(pAttributes));
-			} else if (this.mInLayer) {
-				final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
-				final TMXLayer lastLayer = tmxLayers.get(tmxLayers.size() - 1);
-				lastLayer.addTMXLayerProperty(new TMXLayerProperty(pAttributes));
-			} else if (this.mInMap) {
+			if(this.mInMap) {
 				this.mTMXTiledMap.addTMXTiledMapProperty(new TMXTiledMapProperty(pAttributes));
+			} else if(this.mInLayer) {
+				final ArrayList<TMXLayer> tmxLayers = this.mTMXTiledMap.getTMXLayers();
+				final TMXLayer lastTMXLayer = tmxLayers.get(tmxLayers.size() - 1);
+
+				lastTMXLayer.addTMXLayerProperty(new TMXLayerProperty(pAttributes));
+			} else if(this.mInTile) {
+				final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
+				final TMXTileSet lastTMXTileSet = tmxTileSets.get(tmxTileSets.size() - 1);
+
+				lastTMXTileSet.addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));
+			} else if(this.mInObjectGroup) {
+				final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
+				final TMXObjectGroup lastTMXObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
+
+				lastTMXObjectGroup.addTMXObjectGroupProperty(new TMXObjectGroupProperty(pAttributes));
+			} else if(this.mInObject) {
+				final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
+				final TMXObjectGroup lastTMXObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
+
+				final ArrayList<TMXObject> tmxObjects = lastTMXObjectGroup.getTMXObjects();
+				final TMXObject lastTMXObject = tmxObjects.get(tmxObjects.size() - 1);
+
+				lastTMXObject.addTMXObjectProperty(new TMXObjectProperty(pAttributes));
 			}
 		} else if(pLocalName.equals(TAG_LAYER)){
 			this.mInLayer = true;

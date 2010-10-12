@@ -4,7 +4,7 @@ import org.xml.sax.Attributes;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:19:44 - 29.07.2010
+ * @since 18:48:41 - 12.10.2010
  */
 public class TMXTiledMapProperty extends TMXProperty {
 	// ===========================================================

@@ -26,16 +26,6 @@ public class TMXProperties<T extends TMXProperty> extends ArrayList<T> implement
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public String getLastTMXProperty(final String pName) {
-		for(int i = this.size() - 1; i >= 0; i--) {
-			final T tmxProperty = this.get(i);
-			if(tmxProperty.getName().equals(pName)) {
-				return tmxProperty.getValue();
-			}
-		}
-		return null;
-	}
 
 	public boolean containsTMXProperty(final String pName, final String pValue) {
 		for(int i = this.size() - 1; i >= 0; i--) {

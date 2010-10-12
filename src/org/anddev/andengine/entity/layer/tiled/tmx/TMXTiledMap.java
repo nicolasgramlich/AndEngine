@@ -42,7 +42,7 @@ public class TMXTiledMap implements TMXConstants {
 	private final SparseArray<TMXProperties<TMXTileProperty>> mGlobalTileIDToTMXTilePropertiesCache = new SparseArray<TMXProperties<TMXTileProperty>>();
 
 	private final TMXProperties<TMXTiledMapProperty> mTMXTiledMapProperties = new TMXProperties<TMXTiledMapProperty>();
-	
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -77,7 +77,7 @@ public class TMXTiledMap implements TMXConstants {
 	public final int getWidth() {
 		return this.mTileColumns;
 	}
-	
+
 	public final int getTileColumns() {
 		return this.mTileColumns;
 	}
@@ -90,7 +90,7 @@ public class TMXTiledMap implements TMXConstants {
 	public final int getHeight() {
 		return this.mTilesRows;
 	}
-	
+
 	public final int getTileRows() {
 		return this.mTilesRows;
 	}
@@ -134,11 +134,11 @@ public class TMXTiledMap implements TMXConstants {
 	public TMXProperties<TMXTileProperty> getTMXTilePropertiesByGlobalTileID(final int pGlobalTileID) {
 		return this.mGlobalTileIDToTMXTilePropertiesCache.get(pGlobalTileID);
 	}
-	
+
 	public void addTMXTiledMapProperty(final TMXTiledMapProperty pTMXTiledMapProperty) {
 		this.mTMXTiledMapProperties.add(pTMXTiledMapProperty);
 	}
-	
+
 	public TMXProperties<TMXTiledMapProperty> getTMXTiledMapProperties() {
 		return this.mTMXTiledMapProperties;
 	}

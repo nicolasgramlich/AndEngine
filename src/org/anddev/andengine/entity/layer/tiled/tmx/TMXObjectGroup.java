@@ -23,6 +23,7 @@ public class TMXObjectGroup implements TMXConstants {
 	private final int mWidth;
 	private final int mHeight;
 	private final ArrayList<TMXObject> mTMXObjects = new ArrayList<TMXObject>();
+	private final TMXProperties<TMXObjectGroupProperty> mTMXObjectGroupProperties = new TMXProperties<TMXObjectGroupProperty>();
 
 	// ===========================================================
 	// Constructors
@@ -56,6 +57,14 @@ public class TMXObjectGroup implements TMXConstants {
 
 	public ArrayList<TMXObject> getTMXObjects() {
 		return this.mTMXObjects ;
+	}
+
+	public void addTMXObjectGroupProperty(final TMXObjectGroupProperty pTMXObjectGroupProperty) {
+		this.mTMXObjectGroupProperties.add(pTMXObjectGroupProperty);
+	}
+
+	public TMXProperties<TMXObjectGroupProperty> getTMXObjectGroupProperties() {
+		return this.mTMXObjectGroupProperties;
 	}
 
 	// ===========================================================

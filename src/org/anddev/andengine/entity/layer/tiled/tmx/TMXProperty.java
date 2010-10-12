@@ -43,7 +43,7 @@ public class TMXProperty implements TMXConstants {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public String toString() {
 		return this.mName + "='" + this.mValue + "'";

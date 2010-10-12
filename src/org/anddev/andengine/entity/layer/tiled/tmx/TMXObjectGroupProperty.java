@@ -4,9 +4,9 @@ import org.xml.sax.Attributes;
 
 /**
  * @author Nicolas Gramlich
- * @since 18:48:46 - 12.10.2010
+ * @since 19:48:01 - 12.10.2010
  */
-public class TMXLayerProperty extends TMXProperty {
+public class TMXObjectGroupProperty extends TMXProperty {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,7 +19,7 @@ public class TMXLayerProperty extends TMXProperty {
 	// Constructors
 	// ===========================================================
 
-	public TMXLayerProperty(final Attributes pAttributes) {
+	public TMXObjectGroupProperty(final Attributes pAttributes) {
 		super(pAttributes);
 	}
 

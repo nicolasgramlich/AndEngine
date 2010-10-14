@@ -16,9 +16,6 @@ public abstract class BaseSprite extends BaseRectangle {
 	// Constants
 	// ===========================================================
 
-	private static final int BLENDFUNCTION_SOURCE_PREMULTIPLY_DEFAULT = GL10.GL_ONE;
-	private static final int BLENDFUNCTION_DESTINATION_PREMULTIPLY_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================

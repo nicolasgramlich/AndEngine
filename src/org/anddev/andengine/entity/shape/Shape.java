@@ -21,6 +21,9 @@ public abstract class Shape extends Entity implements IShape {
 	private static final int BLENDFUNCTION_SOURCE_DEFAULT = GL10.GL_SRC_ALPHA;
 	private static final int BLENDFUNCTION_DESTINATION_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
 
+	protected static final int BLENDFUNCTION_SOURCE_PREMULTIPLY_DEFAULT = GL10.GL_ONE;
+	protected static final int BLENDFUNCTION_DESTINATION_PREMULTIPLY_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -364,12 +367,12 @@ public abstract class Shape extends Entity implements IShape {
 	public void setUpdatePhysics(final boolean pUpdatePhysics) {
 		this.mUpdatePhysics = pUpdatePhysics;
 	}
-	
+
 	@Override
 	public boolean isCullingEnabled() {
 		return this.mCullingEnabled;
 	}
-	
+
 	@Override
 	public void setCullingEnabled(final boolean pCullingEnabled) {
 		this.mCullingEnabled = pCullingEnabled;
@@ -417,7 +420,7 @@ public abstract class Shape extends Entity implements IShape {
 
 	/**
 	 * Will only be performed if {@link Shape#isCullingEnabled()} is true.
-	 * @param pCamera 
+	 * @param pCamera
 	 * @return <code>true</code> when this object is visible by the {@link Camera}, <code>false</code> otherwise.
 	 */
 	protected abstract boolean isCulled(final Camera pCamera);
@@ -463,7 +466,7 @@ public abstract class Shape extends Entity implements IShape {
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		if(this.mCullingEnabled == false || this.isCulled(pCamera) == false) {
 			this.onInitDraw(pGL);
-	
+
 			pGL.glPushMatrix();
 			{
 				this.onApplyVertices(pGL);

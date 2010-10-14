@@ -22,9 +22,6 @@ public class Text extends RectangularShape {
 	// Constants
 	// ===========================================================
 
-	private static final int BLENDFUNCTION_SOURCE_PREMULTIPLY_DEFAULT = GL10.GL_ONE;
-	private static final int BLENDFUNCTION_DESTINATION_PREMULTIPLY_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -65,7 +62,7 @@ public class Text extends RectangularShape {
 		this.mFont = pFont;
 
 		this.updateText(pText);
-		
+
 		this.initBlendFunction();
 	}
 

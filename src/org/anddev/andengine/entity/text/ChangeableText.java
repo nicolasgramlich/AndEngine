@@ -35,7 +35,11 @@ public class ChangeableText extends Text {
 	}
 
 	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final int pCharactersMaximum) {
-		super(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum);
+		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum);
+	}
+
+	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum) {
+		super(pX, pY, pFont, pText, pHorizontalAlign, pCharactersMaximum);
 		this.mCharacterCountCurrentText = pText.length() - StringUtils.countOccurrences(pText, '\n');
 	}
 

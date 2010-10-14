@@ -79,7 +79,7 @@ public abstract class BaseSprite extends BaseRectangle {
 
 	private void initBlendFunction() {
 		if(this.mTextureRegion.getTexture().getTextureOptions().mPreMultipyAlpha) {
-			this.setBlendFunction(BLENDFUNCTION_SOURCE_PREMULTIPLY_DEFAULT, BLENDFUNCTION_DESTINATION_PREMULTIPLY_DEFAULT);
+			this.setBlendFunction(BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
 		}
 	}
 

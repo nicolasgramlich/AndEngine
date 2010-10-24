@@ -61,7 +61,7 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 	}
 
 	@Override
-	public synchronized void recylePoolItem(final T pPoolItem) {
+	public synchronized void recyclePoolItem(final T pPoolItem) {
 		if(pPoolItem.mParent == null) {
 			throw new IllegalArgumentException("PoolItem not assigned to a pool!");
 		} else if(!pPoolItem.isFromPool(this)) {
@@ -70,7 +70,7 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 			throw new IllegalArgumentException("PoolItem already recycled!");
 		} 
 		
-		super.recylePoolItem(pPoolItem);
+		super.recyclePoolItem(pPoolItem);
 	}
 
 	// ===========================================================
@@ -83,7 +83,7 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 
 	@SuppressWarnings("unchecked")
 	void recycle(final PoolItem pPoolItem) {
-		this.recylePoolItem((T) pPoolItem);
+		this.recyclePoolItem((T) pPoolItem);
 	}
 
 	// ===========================================================

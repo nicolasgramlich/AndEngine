@@ -80,7 +80,7 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 				for(int i = 0; i < count; i++) {
 					item = scheduledPoolItems.get(i);
 					this.onHandlePoolItem(item);
-					pool.recylePoolItem(item);
+					pool.recyclePoolItem(item);
 				}
 
 				scheduledPoolItems.clear();
@@ -96,7 +96,7 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 
 			final Pool<T> pool = this.mPool;
 			for(int i = count - 1; i >= 0; i--) {
-				pool.recylePoolItem(scheduledPoolItems.get(i));
+				pool.recyclePoolItem(scheduledPoolItems.get(i));
 			}
 
 			scheduledPoolItems.clear();

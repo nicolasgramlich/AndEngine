@@ -105,7 +105,7 @@ public abstract class GenericPool<T> {
 		return item;
 	}
 
-	public synchronized void recylePoolItem(final T pItem) {
+	public synchronized void recyclePoolItem(final T pItem) {
 		if(pItem == null) {
 			throw new IllegalArgumentException("Cannot recycle null item!");
 		}

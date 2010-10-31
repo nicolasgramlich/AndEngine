@@ -27,8 +27,8 @@ public class RatioResolutionPolicy extends BaseResolutionPolicy {
 		this.mRatio = pRatio;
 	}
 
-	public RatioResolutionPolicy(final int pWidthRatio, final int pHeightRatio) {
-		this.mRatio = (float)pWidthRatio / pHeightRatio;
+	public RatioResolutionPolicy(final float pWidthRatio, final float pHeightRatio) {
+		this.mRatio = pWidthRatio / pHeightRatio;
 	}
 
 	// ===========================================================

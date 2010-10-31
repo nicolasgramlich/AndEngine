@@ -28,6 +28,22 @@ public class StringUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static String padFront(final String pString, final char pPadChar, final int pLength) {
+		final int padCount = pLength - pString.length();
+		if(padCount <= 0) {
+			return pString;
+		} else {
+			final StringBuilder sb = new StringBuilder();
+			
+			for(int i = padCount - 1; i >= 0; i--) {
+				sb.append(pPadChar);
+			}			
+			sb.append(pString);
+			
+			return sb.toString();
+		}
+	}
 
 	public static int countOccurrences(final String pString, final char pCharacter) {
 		int count = 0;

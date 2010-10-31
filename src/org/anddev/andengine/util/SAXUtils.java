@@ -45,6 +45,15 @@ public class SAXUtils {
 		}
 	}
 
+	public static boolean getBooleanAttribute(final Attributes pAttributes, final String pAttributeName, final boolean pDefaultValue) {
+		final String value = pAttributes.getValue("", pAttributeName);
+		return (value != null) ? Boolean.parseBoolean(value) : pDefaultValue;
+	}
+
+	public static boolean getBooleanAttributeOrThrow(final Attributes pAttributes, final String pAttributeName) {
+		return Boolean.parseBoolean(SAXUtils.getAttributeOrThrow(pAttributes, pAttributeName));
+	}
+
 	public static byte getByteAttribute(final Attributes pAttributes, final String pAttributeName, final byte pDefaultValue) {
 		final String value = pAttributes.getValue("", pAttributeName);
 		return (value != null) ? Byte.parseByte(value) : pDefaultValue;
@@ -104,6 +113,10 @@ public class SAXUtils {
 		return Double.parseDouble(SAXUtils.getAttributeOrThrow(pAttributes, pAttributeName));
 	}
 
+	
+	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final boolean pValue) {
+		SAXUtils.appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
+	}
 
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final byte pValue) {
 		SAXUtils.appendAttribute(pStringBuilder, pName, String.valueOf(pValue));

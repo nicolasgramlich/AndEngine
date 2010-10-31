@@ -55,17 +55,27 @@ public class SimplePreferences implements Constants {
 	// Methods
 	// ===========================================================
 
-	public static boolean isFirstTime(final Context pCtx, final String pKey){
-		return SimplePreferences.isXthTime(pCtx, pKey, 0);
+	public static boolean isFirstAccess(final Context pCtx, final String pKey){
+		return SimplePreferences.isFirstAccess(pCtx, pKey, true);
 	}
 
-	public static boolean isXthTime(final Context pCtx, final String pKey, final int pXthTime){
+	public static boolean isFirstAccess(final Context pCtx, final String pKey, final boolean pIncrement){
+		return SimplePreferences.isXthAccess(pCtx, pKey, 0);
+	}
+
+	public static boolean isXthAccess(final Context pCtx, final String pKey, final int pXthAccess){
+		return isXthAccess(pCtx, pKey, pXthAccess, true);
+	}
+
+	public static boolean isXthAccess(final Context pCtx, final String pKey, final int pXthAccess, final boolean pIncrement){
 		final SharedPreferences prefs = SimplePreferences.getInstance(pCtx);
 		final int xthTime = prefs.getInt(pKey, 0);
 
-		prefs.edit().putInt(pKey, xthTime + 1).commit();
+		if(pIncrement) {
+			prefs.edit().putInt(pKey, xthTime + 1).commit();
+		}
 
-		return xthTime == pXthTime;
+		return xthTime == pXthAccess;
 	}
 
 	// ===========================================================

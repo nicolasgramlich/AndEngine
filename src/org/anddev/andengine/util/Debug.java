@@ -117,7 +117,12 @@ public class Debug implements Constants {
 	// ===========================================================
 
 	public static enum DebugLevel implements Comparable<DebugLevel> {
-		NONE, ERROR, WARNING, INFO, DEBUG, VERBOSE;
+		NONE,
+		ERROR,
+		WARNING,
+		INFO,
+		DEBUG,
+		VERBOSE;
 
 		public static DebugLevel ALL = DebugLevel.VERBOSE;
 

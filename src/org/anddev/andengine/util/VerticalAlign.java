@@ -9,7 +9,9 @@ public enum VerticalAlign {
 	// Elements
 	// ===========================================================
 
-	TOP, CENTER, BOTTOM;
+	TOP,
+	CENTER,
+	BOTTOM;
 
 	// ===========================================================
 	// Constants

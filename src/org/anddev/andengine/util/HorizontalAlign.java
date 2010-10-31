@@ -9,7 +9,9 @@ public enum HorizontalAlign {
 	// Elements
 	// ===========================================================
 
-	LEFT, CENTER, RIGHT;
+	LEFT,
+	CENTER,
+	RIGHT;
 
 	// ===========================================================
 	// Constants

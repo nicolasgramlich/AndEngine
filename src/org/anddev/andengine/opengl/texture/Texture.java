@@ -114,7 +114,7 @@ public class Texture {
 	public int getHeight() {
 		return this.mHeight;
 	}
-	
+
 	public TextureOptions getTextureOptions() {
 		return this.mTextureOptions;
 	}
@@ -127,11 +127,23 @@ public class Texture {
 	// Methods
 	// ===========================================================
 
-	public TextureSourceWithLocation addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
+	public TextureSourceWithLocation addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException {
+		this.checkTextureSourcePosition(pTextureSource, pTexturePositionX, pTexturePositionY);
+
 		final TextureSourceWithLocation textureSourceWithLocation = new TextureSourceWithLocation(pTextureSource, pTexturePositionX, pTexturePositionY);
 		this.mTextureSources.add(textureSourceWithLocation);
 		this.mUpdateOnHardwareNeeded = true;
 		return textureSourceWithLocation;
+	}
+
+	private void checkTextureSourcePosition(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException {
+		if(pTexturePositionX < 0) {
+			throw new IllegalArgumentException("Illegal negative pTexturePositionX supplied: '" + pTexturePositionX + "'");
+		} else if(pTexturePositionY < 0) {
+			throw new IllegalArgumentException("Illegal negative pTexturePositionY supplied: '" + pTexturePositionY + "'");
+		} else if(pTexturePositionX + pTextureSource.getWidth() > this.mWidth || pTexturePositionY + pTextureSource.getHeight() > this.mHeight) {
+			throw new IllegalArgumentException("Supplied TextureSource must not exceed bounds of Texture.");
+		}
 	}
 
 	public void removeTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {

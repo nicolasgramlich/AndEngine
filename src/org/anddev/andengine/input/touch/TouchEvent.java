@@ -53,11 +53,11 @@ public class TouchEvent {
 	}
 
 	public void recycle() {
-		TOUCHEVENT_POOL.recylePoolItem(this);
+		TOUCHEVENT_POOL.recyclePoolItem(this);
 	}
 
 	public static void recycle(final TouchEvent pTouchEvent) {
-		TOUCHEVENT_POOL.recylePoolItem(pTouchEvent);
+		TOUCHEVENT_POOL.recyclePoolItem(pTouchEvent);
 	}
 
 	// ===========================================================

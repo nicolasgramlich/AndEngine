@@ -9,14 +9,17 @@ import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
+import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
+import org.anddev.andengine.sensor.location.ILocationListener;
+import org.anddev.andengine.sensor.location.LocationSensorOptions;
 import org.anddev.andengine.sensor.orientation.IOrientationListener;
+import org.anddev.andengine.sensor.orientation.OrientationSensorOptions;
 import org.anddev.andengine.ui.IGameInterface;
 import org.anddev.andengine.util.Debug;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -138,10 +141,12 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public void onGameResumed() {
+
 	}
 
 	@Override
 	public void onGamePaused() {
+
 	}
 
 	// ===========================================================
@@ -206,14 +211,14 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	private void applyEngineOptions(final EngineOptions pEngineOptions) {
 		if(pEngineOptions.isFullscreen()) {
-			this.applyFullscreen();
+			this.requestFullscreen();
 		}
 
 		if(pEngineOptions.needsMusic() || pEngineOptions.needsSound()) {
 			this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		}
 
-		switch(pEngineOptions.getScreenOrientation()){
+		switch(pEngineOptions.getScreenOrientation()) {
 			case LANDSCAPE:
 				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 				break;
@@ -229,7 +234,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		return layoutParams;
 	}
 
-	private void applyFullscreen() {
+	private void requestFullscreen() {
 		final Window window = this.getWindow();
 		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
@@ -240,37 +245,58 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.mEngine.enableVibrator(this);
 	}
 
+	/**
+	 * @see {@link Engine#enableLocationSensor(Context, ILocationListener, LocationSensorOptions)}
+	 */
+	protected void enableLocationSensor(final ILocationListener pLocationListener, final LocationSensorOptions pLocationSensorOptions) {
+		this.mEngine.enableLocationSensor(this, pLocationListener, pLocationSensorOptions);
+	}
+
+	/**
+	 * @see {@link Engine#disableLocationSensor(Context)}
+	 */
+	protected void disableLocationSensor() {
+		this.mEngine.disableLocationSensor(this);
+	}
+
+	/**
+	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerometerListener)}
+	 */
 	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
 		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
 	}
 
 	/**
-	 * @param pAccelerometerListener
-	 * @param pRate one of: {@link SensorManager#SENSOR_DELAY_FASTEST}, {@link SensorManager#SENSOR_DELAY_GAME}, {@link SensorManager#SENSOR_DELAY_UI}, {@link SensorManager#SENSOR_DELAY_NORMAL}
-	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
+	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerometerListener, AccelerometerSensorOptions)}
 	 */
-	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener, final int pRate) {
-		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener, pRate);
+	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener, final AccelerometerSensorOptions pAccelerometerSensorOptions) {
+		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener, pAccelerometerSensorOptions);
 	}
 
+	/**
+	 * @see {@link Engine#disableAccelerometerSensor(Context)}
+	 */
 	protected boolean disableAccelerometerSensor() {
 		return this.mEngine.disableAccelerometerSensor(this);
 	}
 
-
+	/**
+	 * @see {@link Engine#enableOrientationSensor(Context, IOrientationListener)}
+	 */
 	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener) {
 		return this.mEngine.enableOrientationSensor(this, pOrientationListener);
 	}
 
 	/**
-	 * @param pOrientationListener
-	 * @param pRate one of: {@link SensorManager#SENSOR_DELAY_FASTEST}, {@link SensorManager#SENSOR_DELAY_GAME}, {@link SensorManager#SENSOR_DELAY_UI}, {@link SensorManager#SENSOR_DELAY_NORMAL}
-	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
+	 * @see {@link Engine#enableOrientationSensor(Context, IOrientationListener, OrientationSensorOptions)}
 	 */
-	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener, final int pRate) {
-		return this.mEngine.enableOrientationSensor(this, pOrientationListener, pRate);
+	protected boolean enableOrientationSensor(final IOrientationListener pOrientationListener, final OrientationSensorOptions pLocationSensorOptions) {
+		return this.mEngine.enableOrientationSensor(this, pOrientationListener, pLocationSensorOptions);
 	}
 
+	/**
+	 * @see {@link Engine#disableOrientationSensor(Context)}
+	 */
 	protected boolean disableOrientationSensor() {
 		return this.mEngine.disableOrientationSensor(this);
 	}

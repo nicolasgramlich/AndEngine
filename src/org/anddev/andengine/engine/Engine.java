@@ -30,10 +30,16 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.sensor.SensorDelay;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
+import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
+import org.anddev.andengine.sensor.location.ILocationListener;
+import org.anddev.andengine.sensor.location.LocationProviderStatus;
+import org.anddev.andengine.sensor.location.LocationSensorOptions;
 import org.anddev.andengine.sensor.orientation.IOrientationListener;
 import org.anddev.andengine.sensor.orientation.OrientationData;
+import org.anddev.andengine.sensor.orientation.OrientationSensorOptions;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -42,6 +48,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,14 +62,14 @@ import android.view.View.OnTouchListener;
  * @author Nicolas Gramlich
  * @since 12:21:31 - 08.03.2010
  */
-public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback, TimeConstants {
+public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback, TimeConstants, LocationListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
 	private static final float LOADING_SCREEN_DURATION_DEFAULT = 2;
 
-	private static final int SENSOR_DELAY_DEFAULT = SensorManager.SENSOR_DELAY_GAME;
+	private static final SensorDelay SENSORDELAY_DEFAULT = SensorDelay.GAME;
 
 	// ===========================================================
 	// Fields
@@ -88,9 +99,13 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	protected Scene mScene;
 
+	private Vibrator mVibrator;
+
+	private ILocationListener mLocationListener;
+	private Location mLocation;
+
 	private IAccelerometerListener mAccelerometerListener;
 	private AccelerometerData mAccelerometerData;
-	private Vibrator mVibrator;
 
 	private IOrientationListener mOrientationListener;
 	private OrientationData mOrientationData;
@@ -293,6 +308,45 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	@Override
+	public void onLocationChanged(final Location pLocation) {
+		if(this.mLocation == null) {
+			this.mLocation = pLocation;
+		} else {
+			if(pLocation == null) {
+				this.mLocationListener.onLocationLost();
+			} else {
+				this.mLocation = pLocation;
+				this.mLocationListener.onLocationChanged(pLocation);
+			}
+		}
+	}
+
+	@Override
+	public void onProviderDisabled(final String pProvider) {
+		this.mLocationListener.onLocationProviderDisabled();
+	}
+
+	@Override
+	public void onProviderEnabled(final String pProvider) {
+		this.mLocationListener.onLocationProviderEnabled();
+	}
+
+	@Override
+	public void onStatusChanged(final String pProvider, final int pStatus, final Bundle pExtras) {
+		switch(pStatus) {
+			case LocationProvider.AVAILABLE:
+				this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.AVAILABLE, pExtras);
+				break;
+			case LocationProvider.OUT_OF_SERVICE:
+				this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.OUT_OF_SERVICE, pExtras);
+				break;
+			case LocationProvider.TEMPORARILY_UNAVAILABLE:
+				this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.TEMPORARILY_UNAVAILABLE, pExtras);
+				break;
+		}
+	}
+
+	@Override
 	public boolean onTouch(final View pView, final MotionEvent pSurfaceMotionEvent) {
 		if(this.mRunning) {
 			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent);
@@ -389,8 +443,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onLoadComplete(final Scene pScene) {
-		// final Scene loadingScene = this.mScene; // TODO Free texture from
-		// loading-screen.
+		/* TODO Unload texture from loading-screen. */
 		if(this.mEngineOptions.hasLoadingScreen()) {
 			this.registerUpdateHandler(new TimerHandler(LOADING_SCREEN_DURATION_DEFAULT, new ITimerCallback() {
 				@Override
@@ -502,19 +555,39 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
-	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener) {
-		return this.enableAccelerometerSensor(pContext, pAccelerometerListener, SENSOR_DELAY_DEFAULT);
+	public void enableLocationSensor(final Context pContext, final ILocationListener pLocationListener, final LocationSensorOptions pLocationSensorOptions) {
+		this.mLocationListener = pLocationListener;
+
+		final LocationManager locationManager = (LocationManager) pContext.getSystemService(Context.LOCATION_SERVICE);
+		final String locationProvider = locationManager.getBestProvider(pLocationSensorOptions, pLocationSensorOptions.isEnabledOnly());
+		locationManager.requestLocationUpdates(locationProvider, pLocationSensorOptions.getMinimumTriggerTime(), pLocationSensorOptions.getMinimumTriggerDistance(), this);
 	}
 
-	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener, final int pRate) {
+	public void disableLocationSensor(final Context pContext) {
+		final LocationManager locationManager = (LocationManager) pContext.getSystemService(Context.LOCATION_SERVICE);
+		locationManager.removeUpdates(this);
+	}
+
+	/**
+	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerometerListener, AccelerometerSensorOptions)}
+	 */
+	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener) {
+		return this.enableAccelerometerSensor(pContext, pAccelerometerListener, new AccelerometerSensorOptions(SENSORDELAY_DEFAULT));
+	}
+
+	/**
+	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
+	 */
+	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener, final AccelerometerSensorOptions pAccelerometerSensorOptions) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
-			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pRate);
-
 			this.mAccelerometerListener = pAccelerometerListener;
+
 			if(this.mAccelerometerData == null) {
 				this.mAccelerometerData = new AccelerometerData();
 			}
+
+			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pAccelerometerSensorOptions.getSensorDelay());
 
 			return true;
 		} else {
@@ -522,6 +595,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
+
+	/**
+	 * @return <code>true</code> when the sensor was successfully disabled, <code>false</code> otherwise.
+	 */
 	public boolean disableAccelerometerSensor(final Context pContext) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
@@ -532,19 +609,26 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
+	/**
+	 * @see {@link Engine#enableOrientationSensor(Context, IOrientationListener, OrientationSensorOptions)}
+	 */
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener) {
-		return this.enableOrientationSensor(pContext, pOrientationListener, SENSOR_DELAY_DEFAULT);
+		return this.enableOrientationSensor(pContext, pOrientationListener, new OrientationSensorOptions(SENSORDELAY_DEFAULT));
 	}
 
-	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final int pRate) {
+	/**
+	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
+	 */
+	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final OrientationSensorOptions pOrientationSensorOptions) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
-			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION, pRate);
-
 			this.mOrientationListener = pOrientationListener;
+
 			if(this.mOrientationData == null) {
 				this.mOrientationData = new OrientationData();
 			}
+
+			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION, pOrientationSensorOptions.getSensorDelay());
 
 			return true;
 		} else {
@@ -552,6 +636,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
+
+	/**
+	 * @return <code>true</code> when the sensor was successfully disabled, <code>false</code> otherwise.
+	 */
 	public boolean disableOrientationSensor(final Context pContext) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
@@ -566,9 +654,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		return pSensorManager.getSensorList(pType).size() > 0;
 	}
 
-	private void registerSelfAsSensorListener(final SensorManager pSensorManager, final int pType, final int pRate) {
+	private void registerSelfAsSensorListener(final SensorManager pSensorManager, final int pType, final SensorDelay pSensorDelay) {
 		final Sensor sensor = pSensorManager.getSensorList(pType).get(0);
-		pSensorManager.registerListener(this, sensor, pRate);
+		pSensorManager.registerListener(this, sensor, pSensorDelay.getDelay());
 	}
 
 	private void unregisterSelfAsSensorListener(final SensorManager pSensorManager, final int pType) {

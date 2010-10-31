@@ -1,6 +1,5 @@
 package org.anddev.andengine.sensor.orientation;
 
-
 /**
  * @author Nicolas Gramlich
  * @since 11:30:42 - 25.05.2010

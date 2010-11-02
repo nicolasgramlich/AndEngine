@@ -41,7 +41,7 @@ public class GLHelper {
 	private static int sCurrentMatrix = -1;
 
 	private static int sCurrentSourceBlendMode = -1;
-	private static int sCurrentDestionationBlendMode = -1;
+	private static int sCurrentDestinationBlendMode = -1;
 
 	private static FastFloatBuffer sCurrentTextureFloatBuffer = null;
 	private static FastFloatBuffer sCurrentVertexFloatBuffer = null;
@@ -77,7 +77,7 @@ public class GLHelper {
 		GLHelper.sCurrentMatrix = -1;
 
 		GLHelper.sCurrentSourceBlendMode = -1;
-		GLHelper.sCurrentDestionationBlendMode = -1;
+		GLHelper.sCurrentDestinationBlendMode = -1;
 
 		GLHelper.sCurrentTextureFloatBuffer = null;
 		GLHelper.sCurrentVertexFloatBuffer = null;
@@ -314,9 +314,9 @@ public class GLHelper {
 	}
 
 	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
-		if(GLHelper.sCurrentSourceBlendMode != pSourceBlendMode || GLHelper.sCurrentDestionationBlendMode != pDestinationBlendMode) {
+		if(GLHelper.sCurrentSourceBlendMode != pSourceBlendMode || GLHelper.sCurrentDestinationBlendMode != pDestinationBlendMode) {
 			GLHelper.sCurrentSourceBlendMode = pSourceBlendMode;
-			GLHelper.sCurrentDestionationBlendMode = pDestinationBlendMode;
+			GLHelper.sCurrentDestinationBlendMode = pDestinationBlendMode;
 			pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 		}
 	}

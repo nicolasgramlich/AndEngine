@@ -118,12 +118,12 @@ public class BufferObjectManager {
 
 		if(bufferObjectToBeLoadedCount > 0) {
 			for(int i = bufferObjectToBeLoadedCount - 1; i >= 0; i--) {
-				final BufferObject pendingBufferObject = bufferObjectsToBeLoaded.get(i);
-				if(!pendingBufferObject.isLoadedToHardware()) {
-					pendingBufferObject.loadToHardware(pGL11);
-					pendingBufferObject.setHardwareBufferNeedsUpdate();
+				final BufferObject bufferObjectToBeLoaded = bufferObjectsToBeLoaded.get(i);
+				if(!bufferObjectToBeLoaded.isLoadedToHardware()) {
+					bufferObjectToBeLoaded.loadToHardware(pGL11);
+					bufferObjectToBeLoaded.setHardwareBufferNeedsUpdate();
 				}
-				bufferObjectsLoaded.add(pendingBufferObject);
+				bufferObjectsLoaded.add(bufferObjectToBeLoaded);
 			}
 
 			bufferObjectsToBeLoaded.clear();

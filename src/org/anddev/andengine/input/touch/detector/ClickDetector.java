@@ -1,7 +1,5 @@
 package org.anddev.andengine.input.touch.detector;
 
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
@@ -10,7 +8,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 14:29:59 - 16.08.2010
  */
-public class ClickDetector implements IOnSceneTouchListener {
+public class ClickDetector extends BaseDetector {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,7 +19,6 @@ public class ClickDetector implements IOnSceneTouchListener {
 	// Fields
 	// ===========================================================
 
-	private boolean mEnabled = true;
 	private long mTriggerClickMaximumMilliseconds;
 	private final IClickDetectorListener mClickDetectorListener;
 
@@ -52,43 +49,27 @@ public class ClickDetector implements IOnSceneTouchListener {
 		this.mTriggerClickMaximumMilliseconds = pClickMaximumMilliseconds;
 	}
 
-	public boolean isEnabled() {
-		return this.mEnabled;
-	}
-
-	public void setEnabled(final boolean pEnabled) {
-		this.mEnabled = pEnabled;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
-		return this.onTouchEvent(pSceneTouchEvent);
-	}
+	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {
+		switch(pSceneTouchEvent.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				this.mDownTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getDownTime();
+				return true;
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_CANCEL:
+				final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
 
-	public boolean onTouchEvent(final TouchEvent pSceneTouchEvent) {
-		if(this.mEnabled) {
-			switch(pSceneTouchEvent.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					this.mDownTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getDownTime();
-					return true;
-				case MotionEvent.ACTION_UP:
-				case MotionEvent.ACTION_CANCEL:
-					final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
-
-					if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
-						this.mDownTimeMilliseconds = Long.MIN_VALUE;
-						this.mClickDetectorListener.onClick(this, pSceneTouchEvent);
-					}
-					return true;
-				default:
-					return false;
-			}
-		} else {
-			return false;
+				if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
+					this.mDownTimeMilliseconds = Long.MIN_VALUE;
+					this.mClickDetectorListener.onClick(this, pSceneTouchEvent);
+				}
+				return true;
+			default:
+				return false;
 		}
 	}
 

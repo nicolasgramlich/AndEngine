@@ -1,7 +1,5 @@
 package org.anddev.andengine.input.touch.detector;
 
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.view.GestureDetector;
@@ -13,7 +11,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
  * @author Nicolas Gramlich
  * @since 11:36:26 - 11.10.2010
  */
-public abstract class SurfaceGestureDetector implements IOnSceneTouchListener {
+public abstract class SurfaceGestureDetector extends BaseDetector {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -54,11 +52,7 @@ public abstract class SurfaceGestureDetector implements IOnSceneTouchListener {
 	protected abstract boolean onSwipeRight();
 
 	@Override
-	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
-		return this.onTouchEvent(pSceneTouchEvent);
-	}
-
-	public boolean onTouchEvent(final TouchEvent pSceneTouchEvent) {
+	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {
 		return this.mGestureDetector.onTouchEvent(pSceneTouchEvent.getMotionEvent());
 	}
 

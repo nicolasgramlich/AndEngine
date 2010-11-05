@@ -561,6 +561,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		final LocationManager locationManager = (LocationManager) pContext.getSystemService(Context.LOCATION_SERVICE);
 		final String locationProvider = locationManager.getBestProvider(pLocationSensorOptions, pLocationSensorOptions.isEnabledOnly());
 		locationManager.requestLocationUpdates(locationProvider, pLocationSensorOptions.getMinimumTriggerTime(), pLocationSensorOptions.getMinimumTriggerDistance(), this);
+
+		this.onLocationChanged(locationManager.getLastKnownLocation(locationProvider));
 	}
 
 	public void disableLocationSensor(final Context pContext) {

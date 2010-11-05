@@ -1,17 +1,14 @@
 package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
-import org.anddev.andengine.util.ColorUtils;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:30:42 - 25.08.2010
+ * @since 11:34:01 - 24.08.2010
  */
-public class CircleFillTextureSourceDecorator extends TextureSourceDecorator {
+public class RectangleLinearGradientFillTextureSourceDecorator extends LinearGradientFillTextureSourceDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,28 +17,21 @@ public class CircleFillTextureSourceDecorator extends TextureSourceDecorator {
 	// Fields
 	// ===========================================================
 
-	private final Paint mFillPaint = new Paint();
-	private final int mFillColor;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public CircleFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pColor) {
-		super(pTextureSource);
-		this.mFillColor = pColor;
-
-		this.mFillPaint.setStyle(Style.FILL);
-		this.mFillPaint.setColor(pColor);
+	public RectangleLinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection) {
+		super(pTextureSource, pFromColor, pToColor, pLinearGradientDirection);
 	}
 
-	public CircleFillTextureSourceDecorator(final ITextureSource pTextureSource, final float pRed, final float pGreen, final float pBlue) {
-		this(pTextureSource, ColorUtils.RGBToColor(pRed, pGreen, pBlue));
+	public RectangleLinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final float pFromRed, final float pFromGreen, final float pFromBlue, final float pToRed, final float pToGreen, final float pToBlue, final LinearGradientDirection pLinearGradientDirection) {
+		super(pTextureSource, pFromRed, pFromGreen, pFromBlue, pToRed, pToGreen, pToBlue, pLinearGradientDirection);
 	}
 
 	@Override
-	public CircleFillTextureSourceDecorator clone() {
-		return new CircleFillTextureSourceDecorator(this.mTextureSource, this.mFillColor);
+	public RectangleLinearGradientFillTextureSourceDecorator clone() {
+		return new RectangleLinearGradientFillTextureSourceDecorator(this.mTextureSource, this.mFromColor, this.mToColor, this.mLinearGradientDirection);
 	}
 
 	// ===========================================================
@@ -54,10 +44,7 @@ public class CircleFillTextureSourceDecorator extends TextureSourceDecorator {
 
 	@Override
 	protected void onDecorateBitmap(final Canvas pCanvas) {
-		final float centerX = this.getWidth() / 2;
-		final float centerY = this.getHeight() / 2;
-		final float radius = Math.min(centerX, centerY);
-		pCanvas.drawCircle(centerX, centerY, radius, this.mFillPaint);
+		pCanvas.drawRect(0, 0, pCanvas.getWidth() - 1, pCanvas.getHeight() - 1, this.mPaint);
 	}
 
 	// ===========================================================

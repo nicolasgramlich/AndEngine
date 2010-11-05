@@ -2,14 +2,13 @@ package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:43:29 - 06.08.2010
+ * @since 11:34:01 - 24.08.2010
  */
-public abstract class TextureSourceDecorator implements ITextureSource {
+public class RectangleFillTextureSourceDecorator extends FillTextureSourceDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,18 +17,22 @@ public abstract class TextureSourceDecorator implements ITextureSource {
 	// Fields
 	// ===========================================================
 
-	protected final ITextureSource mTextureSource;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TextureSourceDecorator(final ITextureSource pTextureSource) {
-		this.mTextureSource = pTextureSource;
+	public RectangleFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFillColor) {
+		super(pTextureSource, pFillColor);
+	}
+
+	public RectangleFillTextureSourceDecorator(final ITextureSource pTextureSource, final float pFillColorRed, final float pFillColorGreen, final float pFillColorBlue) {
+		super(pTextureSource, pFillColorRed, pFillColorGreen, pFillColorBlue);
 	}
 
 	@Override
-	public abstract TextureSourceDecorator clone();
+	public RectangleFillTextureSourceDecorator clone() {
+		return new RectangleFillTextureSourceDecorator(this.mTextureSource, this.mFillColor);
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -39,40 +42,14 @@ public abstract class TextureSourceDecorator implements ITextureSource {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onDecorateBitmap(final Canvas pCanvas);
-
 	@Override
-	public int getWidth() {
-		return this.mTextureSource.getWidth();
-	}
-
-	@Override
-	public int getHeight() {
-		return this.mTextureSource.getHeight();
-	}
-
-	@Override
-	public Bitmap onLoadBitmap() {
-		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mTextureSource.onLoadBitmap());
-
-		final Canvas canvas = new Canvas(bitmap);
-		this.onDecorateBitmap(canvas);
-		return bitmap;
+	protected void onDecorateBitmap(final Canvas pCanvas) {
+		pCanvas.drawRect(0, 0, pCanvas.getWidth() - 1, pCanvas.getHeight() - 1, this.mPaint);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private Bitmap ensureLoadedBitmapIsMutable(final Bitmap pBitmap) {
-		if(pBitmap.isMutable()) {
-			return pBitmap;
-		} else {
-			final Bitmap mutableBitmap = pBitmap.copy(pBitmap.getConfig(), true);
-			pBitmap.recycle();
-			return mutableBitmap;
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

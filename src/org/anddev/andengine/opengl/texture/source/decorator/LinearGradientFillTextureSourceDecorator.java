@@ -1,19 +1,16 @@
 package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
-import org.anddev.andengine.util.ColorUtils;
 
-import android.graphics.Canvas;
 import android.graphics.LinearGradient;
-import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Shader.TileMode;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:34:01 - 24.08.2010
+ * @since 19:21:24 - 05.11.2010
  */
-public class LinearGradientFillTextureSourceDecorator extends TextureSourceDecorator {
+public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSourceDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,41 +19,48 @@ public class LinearGradientFillTextureSourceDecorator extends TextureSourceDecor
 	// Fields
 	// ===========================================================
 
-	private final Paint mLinearGradientPaint = new Paint();
-	private final LinearGradientDirection mLinearGradientDirection;
-	private final int mFromColor;
-	private final int mToColor;
+	protected final LinearGradientDirection mLinearGradientDirection;
+	protected final int mFromColor;
+	protected final int mToColor;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection) {
-		super(pTextureSource);
+		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pFromColor, pToColor, pLinearGradientDirection);
+	}
+
+	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection) {
+		this(pTextureSource, pTextureSourceDecoratorShape, pFromColor, pToColor, pLinearGradientDirection, false);
+	}
+
+	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection, final boolean pAntiAliasing) {
+		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pFromColor, pToColor, pLinearGradientDirection, pAntiAliasing);
+	}
+
+	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection, final boolean pAntiAliasing) {
+		super(pTextureSource, pTextureSourceDecoratorShape, pAntiAliasing);
 		this.mFromColor = pFromColor;
 		this.mToColor = pToColor;
 		this.mLinearGradientDirection = pLinearGradientDirection;
 
-		this.mLinearGradientPaint.setStyle(Style.FILL);
-		
+		this.mPaint.setStyle(Style.FILL);
+
 		final int width = pTextureSource.getWidth();
 		final int height = pTextureSource.getHeight();
-		
+
 		final float fromX = pLinearGradientDirection.getFromX() * width;
 		final float fromY = pLinearGradientDirection.getFromY() * height;
 		final float toX = pLinearGradientDirection.getToX() * width;
 		final float toY = pLinearGradientDirection.getToY() * height;
-		
-		this.mLinearGradientPaint.setShader(new LinearGradient(fromX, fromY, toX, toY, pFromColor, pToColor, TileMode.CLAMP));
-	}
 
-	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final float pFromRed, final float pFromGreen, final float pFromBlue, final float pToRed, final float pToGreen, final float pToBlue, final LinearGradientDirection pLinearGradientDirection) {
-		this(pTextureSource, ColorUtils.RGBToColor(pFromRed, pFromGreen, pFromBlue), ColorUtils.RGBToColor(pToRed, pToGreen, pToBlue), pLinearGradientDirection);
+		this.mPaint.setShader(new LinearGradient(fromX, fromY, toX, toY, pFromColor, pToColor, TileMode.CLAMP));
 	}
 
 	@Override
 	public LinearGradientFillTextureSourceDecorator clone() {
-		return new LinearGradientFillTextureSourceDecorator(this.mTextureSource, this.mFromColor, this.mToColor, this.mLinearGradientDirection);
+		return new LinearGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFromColor, this.mToColor, this.mLinearGradientDirection, this.mAntiAliasing);
 	}
 
 	// ===========================================================
@@ -67,11 +71,6 @@ public class LinearGradientFillTextureSourceDecorator extends TextureSourceDecor
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	protected void onDecorateBitmap(final Canvas pCanvas) {
-		pCanvas.drawRect(0, 0, pCanvas.getWidth() - 1, pCanvas.getHeight() - 1, this.mLinearGradientPaint);
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -81,6 +80,9 @@ public class LinearGradientFillTextureSourceDecorator extends TextureSourceDecor
 	// ===========================================================
 
 	public static enum LinearGradientDirection {
+		// ===========================================================
+		// Elements
+		// ===========================================================
 		LEFT_TO_RIGHT(0, 0, 1, 0),
 		RIGHT_TO_LEFT(1, 0, 0, 0),
 		BOTTOM_TO_TOP(0, 0, 0, 1),
@@ -90,10 +92,22 @@ public class LinearGradientFillTextureSourceDecorator extends TextureSourceDecor
 		TOPRIGHT_TO_BOTTOMLEFT(1, 0, 0, 1),
 		BOTTOMLEFT_TO_TOPRIGHT(0, 1, 1, 0);
 
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
 		private final int mFromX;
 		private final int mFromY;
 		private final int mToX;
 		private final int mToY;
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
 
 		private LinearGradientDirection(final int pFromX, final int pFromY, final int pToX, final int pToY) {
 			this.mFromX = pFromX;
@@ -101,6 +115,10 @@ public class LinearGradientFillTextureSourceDecorator extends TextureSourceDecor
 			this.mToX = pToX;
 			this.mToY = pToY;
 		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
 
 		final int getFromX() {
 			return this.mFromX;
@@ -117,5 +135,17 @@ public class LinearGradientFillTextureSourceDecorator extends TextureSourceDecor
 		final int getToY() {
 			return this.mToY;
 		}
+
+		// ===========================================================
+		// Methods from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
 	}
 }

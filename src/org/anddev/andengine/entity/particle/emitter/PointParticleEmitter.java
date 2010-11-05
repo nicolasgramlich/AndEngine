@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.particle.emitter;
 
-import org.anddev.andengine.util.constants.Constants;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
 /**
  * @author Nicolas Gramlich
@@ -33,8 +34,8 @@ public class PointParticleEmitter extends BaseParticleEmitter {
 
 	@Override
 	public void getPositionOffset(final float[] pOffset) {
-		pOffset[Constants.VERTEX_INDEX_X] = this.mCenterX;
-		pOffset[Constants.VERTEX_INDEX_Y] = this.mCenterY;
+		pOffset[VERTEX_INDEX_X] = this.mCenterX;
+		pOffset[VERTEX_INDEX_Y] = this.mCenterY;
 	}
 
 	// ===========================================================

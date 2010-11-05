@@ -79,9 +79,9 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 		} else {
 			/* At last check if one polygon 'contains' the other one by checking 
 			 * if one vertex of the one vertices is contained by all of the other vertices. */
-			if(ShapeCollisionChecker.checkContains(pVerticesA, pVerticesALength, pVerticesB[0], pVerticesB[0 + VERTEX_INDEX_Y])) {
+			if(ShapeCollisionChecker.checkContains(pVerticesA, pVerticesALength, pVerticesB[VERTEX_INDEX_X], pVerticesB[VERTEX_INDEX_Y])) {
 				return true;
-			} else if(ShapeCollisionChecker.checkContains(pVerticesB, pVerticesBLength, pVerticesA[0], pVerticesA[0 + VERTEX_INDEX_Y])) {
+			} else if(ShapeCollisionChecker.checkContains(pVerticesB, pVerticesBLength, pVerticesA[VERTEX_INDEX_X], pVerticesA[VERTEX_INDEX_Y])) {
 				return true;
 			} else {
 				return false;
@@ -94,13 +94,13 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	 * */
 	private static boolean checkCollisionSub(final int pVertexIndexA1, final int pVertexIndexA2, final float[] pVerticesA, final float[] pVerticesB, final int pVerticesBLength) {
 		/* Check against all the lines of B. */
-		final float vertexA1X = pVerticesA[pVertexIndexA1];
+		final float vertexA1X = pVerticesA[pVertexIndexA1 + VERTEX_INDEX_X];
 		final float vertexA1Y = pVerticesA[pVertexIndexA1 + VERTEX_INDEX_Y];
-		final float vertexA2X = pVerticesA[pVertexIndexA2];
+		final float vertexA2X = pVerticesA[pVertexIndexA2 + VERTEX_INDEX_X];
 		final float vertexA2Y = pVerticesA[pVertexIndexA2 + VERTEX_INDEX_Y];
 
 		for(int b = pVerticesBLength - 4; b >= 0; b -= 2) {
-			if(LineCollisionChecker.checkLineCollision(vertexA1X, vertexA1Y, vertexA2X, vertexA2Y, pVerticesB[b], pVerticesB[b + VERTEX_INDEX_Y], pVerticesB[b + 2], pVerticesB[b + 2 + VERTEX_INDEX_Y])){
+			if(LineCollisionChecker.checkLineCollision(vertexA1X, vertexA1Y, vertexA2X, vertexA2Y, pVerticesB[b + VERTEX_INDEX_X], pVerticesB[b + VERTEX_INDEX_Y], pVerticesB[b + 2 + VERTEX_INDEX_X], pVerticesB[b + 2 + VERTEX_INDEX_Y])){
 				return true;
 			}
 		}

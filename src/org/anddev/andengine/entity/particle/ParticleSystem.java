@@ -1,6 +1,8 @@
 package org.anddev.andengine.entity.particle;
 
 import static org.anddev.andengine.util.MathUtils.RANDOM;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,6 @@ import org.anddev.andengine.entity.particle.modifier.IParticleInitializer;
 import org.anddev.andengine.entity.particle.modifier.IParticleModifier;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
-import org.anddev.andengine.util.constants.Constants;
 
 import android.util.FloatMath;
 
@@ -193,8 +194,8 @@ public class ParticleSystem extends Entity {
 			/* New particle needs to be created. */
 			this.mParticleEmitter.getPositionOffset(this.POSITION_OFFSET);
 
-			final float x = this.POSITION_OFFSET[Constants.VERTEX_INDEX_X];
-			final float y = this.POSITION_OFFSET[Constants.VERTEX_INDEX_Y];
+			final float x = this.POSITION_OFFSET[VERTEX_INDEX_X];
+			final float y = this.POSITION_OFFSET[VERTEX_INDEX_Y];
 
 			if(particle != null) {
 				particle.reset();

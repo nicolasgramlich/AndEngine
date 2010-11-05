@@ -42,7 +42,10 @@
 	../BirdHunt/lib/andengine.jar,
 	../MasterBowMan/lib/andengine.jar,
 	../FarmTower/lib/andengine.jar,
-	../TetrisTower/lib/andengine.jar" />
+	../TetrisTower/lib/andengine.jar,
+	../GoogleDeveloperDayLiveWallpaper/lib/andengine.jar,
+	../SuperPool/lib/andengine.jar,
+	../BuddyRadar/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<echo>${targetfile}</echo>

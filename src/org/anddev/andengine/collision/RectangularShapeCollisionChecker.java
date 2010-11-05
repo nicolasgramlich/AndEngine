@@ -1,5 +1,6 @@
 package org.anddev.andengine.collision;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
 import org.anddev.andengine.entity.shape.RectangularShape;
@@ -67,16 +68,16 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		final float right = pRectangularShape.getWidth() + left;
 		final float bottom = pRectangularShape.getHeight() + top;
 
-		pVertices[0] = left;
+		pVertices[0 + VERTEX_INDEX_X] = left;
 		pVertices[0 + VERTEX_INDEX_Y] = top;
 
-		pVertices[2] = right;
+		pVertices[2 + VERTEX_INDEX_X] = right;
 		pVertices[2 + VERTEX_INDEX_Y] = top;
 
-		pVertices[4] = right;
+		pVertices[4 + VERTEX_INDEX_X] = right;
 		pVertices[4 + VERTEX_INDEX_Y] = bottom;
 
-		pVertices[6] = left;
+		pVertices[6 + VERTEX_INDEX_X] = left;
 		pVertices[6 + VERTEX_INDEX_Y] = bottom;
 
 		MathUtils.rotateAndScaleAroundCenter(pVertices,

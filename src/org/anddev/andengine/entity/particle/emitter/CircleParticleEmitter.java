@@ -1,7 +1,9 @@
 package org.anddev.andengine.entity.particle.emitter;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
 import org.anddev.andengine.util.MathUtils;
-import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.constants.MathConstants;
 
 import android.util.FloatMath;
@@ -42,8 +44,8 @@ public class CircleParticleEmitter extends BaseCircleParticleEmitter {
 	@Override
 	public void getPositionOffset(final float[] pOffset) {
 		final float random = MathUtils.RANDOM.nextFloat() * MathConstants.PI * 2;
-		pOffset[Constants.VERTEX_INDEX_X] = this.mCenterX + FloatMath.cos(random) * this.mRadiusX * MathUtils.RANDOM.nextFloat();
-		pOffset[Constants.VERTEX_INDEX_Y] = this.mCenterY + FloatMath.sin(random) * this.mRadiusY * MathUtils.RANDOM.nextFloat();
+		pOffset[VERTEX_INDEX_X] = this.mCenterX + FloatMath.cos(random) * this.mRadiusX * MathUtils.RANDOM.nextFloat();
+		pOffset[VERTEX_INDEX_Y] = this.mCenterY + FloatMath.sin(random) * this.mRadiusY * MathUtils.RANDOM.nextFloat();
 	}
 
 	// ===========================================================

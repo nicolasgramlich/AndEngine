@@ -1,7 +1,9 @@
 package org.anddev.andengine.entity.particle.emitter;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
 import org.anddev.andengine.util.MathUtils;
-import org.anddev.andengine.util.constants.Constants;
 
 /**
  * @author Nicolas Gramlich
@@ -34,8 +36,8 @@ public class RectangleOutlineParticleEmitter extends BaseRectangleParticleEmitte
 
 	@Override
 	public void getPositionOffset(final float[] pOffset) {
-		pOffset[Constants.VERTEX_INDEX_X] = this.mCenterX + MathUtils.randomSign() * this.mWidthHalf;
-		pOffset[Constants.VERTEX_INDEX_Y] = this.mCenterY + MathUtils.randomSign() * this.mHeightHalf;
+		pOffset[VERTEX_INDEX_X] = this.mCenterX + MathUtils.randomSign() * this.mWidthHalf;
+		pOffset[VERTEX_INDEX_Y] = this.mCenterY + MathUtils.randomSign() * this.mHeightHalf;
 	}
 
 	// ===========================================================

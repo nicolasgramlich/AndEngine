@@ -1,5 +1,8 @@
 package org.anddev.andengine.entity.layer.tiled.tmx;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -22,7 +25,6 @@ import org.anddev.andengine.util.Base64InputStream;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.SAXUtils;
 import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.constants.Constants;
 import org.xml.sax.Attributes;
 
 /**
@@ -118,11 +120,11 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final float[] localCoords = this.convertSceneToLocalCoordinates(pX, pY);
 		final TMXTiledMap tmxTiledMap = this.mTMXTiledMap;
 
-		final int tileColumn = (int)(localCoords[Constants.VERTEX_INDEX_X] / tmxTiledMap.getTileWidth());
+		final int tileColumn = (int)(localCoords[VERTEX_INDEX_X] / tmxTiledMap.getTileWidth());
 		if(tileColumn < 0 || tileColumn > this.mTileColumns - 1) {
 			return null;
 		}
-		final int tileRow = (int)(localCoords[Constants.VERTEX_INDEX_Y] / tmxTiledMap.getTileWidth());
+		final int tileRow = (int)(localCoords[VERTEX_INDEX_Y] / tmxTiledMap.getTileWidth());
 		if(tileRow < 0 || tileRow > this.mTileRows - 1) {
 			return null;
 		}
@@ -188,8 +190,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final float[] cullingVertices = this.mCullingVertices;
 		RectangularShapeCollisionChecker.fillVertices(this, cullingVertices);
 
-		final float layerMinX = cullingVertices[0 + Constants.VERTEX_INDEX_X];
-		final float layerMinY = cullingVertices[0 + Constants.VERTEX_INDEX_Y];
+		final float layerMinX = cullingVertices[VERTEX_INDEX_X];
+		final float layerMinY = cullingVertices[VERTEX_INDEX_Y];
 
 		final float cameraMinX = pCamera.getMinX();
 		final float cameraMinY = pCamera.getMinY();

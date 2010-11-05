@@ -1,5 +1,6 @@
 package org.anddev.andengine.engine.camera;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
 import org.anddev.andengine.input.touch.TouchEvent;
@@ -108,12 +109,12 @@ public class ZoomCamera extends BoundCamera {
 			final float scaleCenterX = this.getCenterX();
 			final float scaleCenterY = this.getCenterY();
 			
-			VERTICES_TOUCH_TMP[0] = pSceneTouchEvent.getX();
-			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
+			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pSceneTouchEvent.getX();
+			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
 			
 			MathUtils.scaleAroundCenter(VERTICES_TOUCH_TMP, zoomFactor, zoomFactor, scaleCenterX, scaleCenterY);
 			
-			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
+			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
 		}
 		super.applySceneToCameraSceneOffset(pSceneTouchEvent);
 	}
@@ -127,12 +128,12 @@ public class ZoomCamera extends BoundCamera {
 			final float scaleCenterX = this.getCenterX();
 			final float scaleCenterY = this.getCenterY();
 			
-			VERTICES_TOUCH_TMP[0] = pCameraSceneTouchEvent.getX();
-			VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
+			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pCameraSceneTouchEvent.getX();
+			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
 			
 			MathUtils.revertScaleAroundCenter(VERTICES_TOUCH_TMP, zoomFactor, zoomFactor, scaleCenterX, scaleCenterY);
 			
-			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[0], VERTICES_TOUCH_TMP[0 + VERTEX_INDEX_Y]);
+			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
 		}
 	}
 

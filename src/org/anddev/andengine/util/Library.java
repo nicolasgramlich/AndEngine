@@ -35,7 +35,16 @@ public class Library<T> {
 	// ===========================================================
 
 	public void put(final int pID, final T pItem) {
-		this.mItems.put(pID, pItem);
+		final T existingItem = this.mItems.get(pID);
+		if(existingItem == null) {
+			this.mItems.put(pID, pItem);
+		} else {
+			throw new IllegalArgumentException("ID: '" + pID + "' is already associated with item: '" + existingItem.toString() + "'.");
+		}
+	}
+	
+	public void remove(final int pID) {
+		this.mItems.remove(pID);
 	}
 
 	public T get(final int pID) {

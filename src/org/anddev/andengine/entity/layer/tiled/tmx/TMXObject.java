@@ -34,8 +34,8 @@ public class TMXObject implements TMXConstants {
 		this.mType = pAttributes.getValue("", TAG_OBJECT_ATTRIBUTE_TYPE);
 		this.mX = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_OBJECT_ATTRIBUTE_X);
 		this.mY = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_OBJECT_ATTRIBUTE_Y);
-		this.mWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_OBJECT_ATTRIBUTE_WIDTH);
-		this.mHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_OBJECT_ATTRIBUTE_HEIGHT);
+		this.mWidth = SAXUtils.getIntAttribute(pAttributes, TAG_OBJECT_ATTRIBUTE_WIDTH, 0);
+		this.mHeight = SAXUtils.getIntAttribute(pAttributes, TAG_OBJECT_ATTRIBUTE_HEIGHT, 0);
 	}
 
 	// ===========================================================

@@ -113,7 +113,7 @@ public class GLHelper {
 		Debug.d("VERSION: " + version);
 		Debug.d("EXTENSIONS: " + extensions);
 
-		final boolean isOpenGL10 = version.endsWith("1.0");
+		final boolean isOpenGL10 = version.contains("1.0");
 		final boolean isSoftwareRenderer = renderer.contains("PixelFlinger");
 		final boolean isVBOCapable = extensions.contains("_vertex_buffer_object");
 		final boolean isDrawTextureCapable = extensions.contains("draw_texture");

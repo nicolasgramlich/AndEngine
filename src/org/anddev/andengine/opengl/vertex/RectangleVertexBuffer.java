@@ -12,6 +12,8 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public static final int VERTICES_PER_RECTANGLE = 4;
+	
+	private static final int FLOAT_TO_RAW_INT_BITS_ZERO = Float.floatToRawIntBits(0);
 
 	// ===========================================================
 	// Fields
@@ -37,12 +39,11 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// Methods
 	// ===========================================================
 
-	public synchronized void update(final float pX, final float pY, final float pWidth, final float pHeight) {
-		/* pX and pY are always 0. */
-		final int x = Float.floatToRawIntBits(pX);
-		final int y = Float.floatToRawIntBits(pY);
-		final int x2 = Float.floatToRawIntBits(pX + pWidth);
-		final int y2 = Float.floatToRawIntBits(pY + pHeight);
+	public synchronized void update(final float pWidth, final float pHeight) {
+		final int x = FLOAT_TO_RAW_INT_BITS_ZERO;
+		final int y = FLOAT_TO_RAW_INT_BITS_ZERO;
+		final int x2 = Float.floatToRawIntBits(pWidth);
+		final int y2 = Float.floatToRawIntBits(pHeight);
 
 		final int[] bufferData = this.mBufferData;
 		bufferData[0] = x;

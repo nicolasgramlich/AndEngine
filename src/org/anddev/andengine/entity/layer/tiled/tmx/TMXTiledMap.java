@@ -59,7 +59,7 @@ public class TMXTiledMap implements TMXConstants {
 
 		this.mSharedVertexBuffer = new RectangleVertexBuffer(GL11.GL_STATIC_DRAW);
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mSharedVertexBuffer);
-		this.mSharedVertexBuffer.update(0, 0, this.mTileWidth, this.mTileHeight);
+		this.mSharedVertexBuffer.update(this.mTileWidth, this.mTileHeight);
 	}
 
 	// ===========================================================

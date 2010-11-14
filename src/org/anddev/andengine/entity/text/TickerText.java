@@ -59,6 +59,10 @@ public class TickerText extends Text {
 		this.mDuration = this.mCharactersMaximum * this.mCharactersPerSecond;
 	}
 
+	public int getCharactersVisible() {
+		return this.mCharactersVisible;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

@@ -15,8 +15,8 @@ public class TimerHandler implements IUpdateHandler {
 	// Fields
 	// ===========================================================
 
-	private final float mTimerSeconds;
-	private float mSecondsPassed;
+	private float mTimerSeconds;
+	private float mTimerSecondsElapsed;
 	private boolean mCallbackTriggered = false;
 	private final ITimerCallback mTimerCallback;
 	private boolean mAutoReset;
@@ -47,6 +47,22 @@ public class TimerHandler implements IUpdateHandler {
 		this.mAutoReset = pAutoReset;
 	}
 
+	/**
+	 * You probably want to use this in conjunction with {@link TimerHandler#reset()}.
+	 * @param pTimerSeconds
+	 */
+	public void setTimerSeconds(final float pTimerSeconds) {
+		this.mTimerSeconds = pTimerSeconds;
+	}
+	
+	public float getTimerSeconds() {
+		return this.mTimerSeconds;
+	}
+	
+	public float getTimerSecondsElapsed() {
+		return this.mTimerSecondsElapsed;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -54,15 +70,15 @@ public class TimerHandler implements IUpdateHandler {
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		if(this.mAutoReset) {
-			this.mSecondsPassed += pSecondsElapsed;
-			while(this.mSecondsPassed >= this.mTimerSeconds) {
-				this.mSecondsPassed -= this.mTimerSeconds;
+			this.mTimerSecondsElapsed += pSecondsElapsed;
+			while(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
+				this.mTimerSecondsElapsed -= this.mTimerSeconds;
 				this.mTimerCallback.onTimePassed(this);
 			}
 		} else {
 			if(!this.mCallbackTriggered) {
-				this.mSecondsPassed += pSecondsElapsed;
-				if(this.mSecondsPassed >= this.mTimerSeconds) {
+				this.mTimerSecondsElapsed += pSecondsElapsed;
+				if(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
 					this.mCallbackTriggered = true;
 					this.mTimerCallback.onTimePassed(this);
 				}
@@ -73,7 +89,7 @@ public class TimerHandler implements IUpdateHandler {
 	@Override
 	public void reset() {
 		this.mCallbackTriggered = false;
-		this.mSecondsPassed = 0;
+		this.mTimerSecondsElapsed = 0;
 	}
 
 	// ===========================================================

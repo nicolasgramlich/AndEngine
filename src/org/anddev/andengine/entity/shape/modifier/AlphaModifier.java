@@ -28,12 +28,12 @@ public class AlphaModifier extends SingleValueSpanShapeModifier {
 		this(pDuration, pFromAlpha, pToAlpha, null, pEaseFunction);
 	}
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener, IEaseFunction.DEFAULT);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pFromAlpha, pToAlpha, pShapeModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromAlpha, pToAlpha, pShapeModiferListener, pEaseFunction);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromAlpha, pToAlpha, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected AlphaModifier(final AlphaModifier pAlphaModifier) {

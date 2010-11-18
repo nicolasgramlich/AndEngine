@@ -28,8 +28,8 @@ public abstract class DurationShapeModifier extends BaseDurationModifier<IShape>
 		super(pDuration);
 	}
 
-	public DurationShapeModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pShapeModiferListener);
+	public DurationShapeModifier(final float pDuration, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pShapeModifierListener);
 	}
 
 	protected DurationShapeModifier(final DurationShapeModifier pDurationShapeModifier) {

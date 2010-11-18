@@ -29,12 +29,12 @@ public abstract class SingleValueSpanShapeModifier extends BaseSingleValueSpanMo
 		super(pDuration, pFromValue, pToValue, pEaseFunction);
 	}
 
-	public SingleValueSpanShapeModifier(final float pDuration, final float pFromValue, final float pToValue, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromValue, pToValue, pShapeModiferListener);
+	public SingleValueSpanShapeModifier(final float pDuration, final float pFromValue, final float pToValue, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pFromValue, pToValue, pShapeModifierListener);
 	}
 
-	public SingleValueSpanShapeModifier(final float pDuration, final float pFromValue, final float pToValue, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromValue, pToValue, pShapeModiferListener, pEaseFunction);
+	public SingleValueSpanShapeModifier(final float pDuration, final float pFromValue, final float pToValue, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValue, pToValue, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected SingleValueSpanShapeModifier(final SingleValueSpanShapeModifier pSingleValueSpanShapeModifier) {

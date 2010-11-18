@@ -29,12 +29,12 @@ public abstract class DoubleValueSpanShapeModifier extends BaseDoubleValueSpanMo
 		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pEaseFunction);
 	}
 
-	public DoubleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModiferListener);
+	public DoubleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModifierListener);
 	}
 
-	public DoubleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModiferListener, pEaseFunction);
+	public DoubleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected DoubleValueSpanShapeModifier(final DoubleValueSpanShapeModifier pDoubleValueSpanModifier) {

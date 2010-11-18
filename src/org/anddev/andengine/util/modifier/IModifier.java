@@ -27,7 +27,7 @@ public interface IModifier<T> extends Cloneable {
 	public void onUpdate(final float pSecondsElapsed, final T pItem);
 
 	public IModifierListener<T> getModifierListener();
-	public void setModifierListener(final IModifierListener<T> pModiferListener);
+	public void setModifierListener(final IModifierListener<T> pModifierListener);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

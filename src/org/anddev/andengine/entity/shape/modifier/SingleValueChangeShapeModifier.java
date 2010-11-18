@@ -24,8 +24,8 @@ public abstract class SingleValueChangeShapeModifier extends BaseSingleValueChan
 		super(pDuration, pValueChange);
 	}
 
-	public SingleValueChangeShapeModifier(final float pDuration, final float pValueChange, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pValueChange, pShapeModiferListener);
+	public SingleValueChangeShapeModifier(final float pDuration, final float pValueChange, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pValueChange, pShapeModifierListener);
 	}
 
 	protected SingleValueChangeShapeModifier(final SingleValueChangeShapeModifier pSingleValueChangeShapeModifier) {

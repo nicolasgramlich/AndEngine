@@ -38,19 +38,19 @@ public class PathModifier extends ShapeModifier {
 		this(pDuration, pPath, null, pEaseFunction);
 	}
 
-	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener) {
-		this(pDuration, pPath, pShapeModiferListener, null, IEaseFunction.DEFAULT);
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModifierListener) {
+		this(pDuration, pPath, pShapeModifierListener, null, IEaseFunction.DEFAULT);
 	}
 
-	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		this(pDuration, pPath, pShapeModiferListener, null, pEaseFunction);
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		this(pDuration, pPath, pShapeModifierListener, null, pEaseFunction);
 	}
 
-	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IPathModifierListener pPathModifierListener) throws IllegalArgumentException {
-		this(pDuration, pPath, pShapeModiferListener, pPathModifierListener, IEaseFunction.DEFAULT);
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModifierListener, final IPathModifierListener pPathModifierListener) throws IllegalArgumentException {
+		this(pDuration, pPath, pShapeModifierListener, pPathModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModiferListener, final IPathModifierListener pPathModifierListener, final IEaseFunction pEaseFunction) throws IllegalArgumentException {
+	public PathModifier(final float pDuration, final Path pPath, final IShapeModifierListener pShapeModifierListener, final IPathModifierListener pPathModifierListener, final IEaseFunction pEaseFunction) throws IllegalArgumentException {
 		final int pathSize = pPath.getSize();
 
 		if (pathSize < 2) {
@@ -58,7 +58,7 @@ public class PathModifier extends ShapeModifier {
 		}
 
 		this.mPath = pPath;
-		this.mModifierListener = pShapeModiferListener;
+		this.mModifierListener = pShapeModifierListener;
 		this.mPathModifierListener = pPathModifierListener;
 
 		final MoveModifier[] moveModifiers = new MoveModifier[pathSize - 1];

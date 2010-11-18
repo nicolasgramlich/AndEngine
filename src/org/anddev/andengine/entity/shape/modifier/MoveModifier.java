@@ -28,12 +28,12 @@ public class MoveModifier extends DoubleValueSpanShapeModifier {
 		this(pDuration, pFromX, pToX, pFromY, pToY, null, pEaseFunction);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener, IEaseFunction.DEFAULT);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModiferListener, pEaseFunction);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected MoveModifier(final MoveModifier pMoveModifier) {

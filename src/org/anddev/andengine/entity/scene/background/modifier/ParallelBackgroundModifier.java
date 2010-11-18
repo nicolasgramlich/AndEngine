@@ -24,8 +24,8 @@ public class ParallelBackgroundModifier extends ParallelModifier<IBackground> im
 		super(pBackgroundModifiers);
 	}
 
-	public ParallelBackgroundModifier(final IBackgroundModifierListener pBackgroundModiferListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
-		super(pBackgroundModiferListener, pBackgroundModifiers);
+	public ParallelBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
+		super(pBackgroundModifierListener, pBackgroundModifiers);
 	}
 
 	protected ParallelBackgroundModifier(final ParallelBackgroundModifier pParallelBackgroundModifier) {

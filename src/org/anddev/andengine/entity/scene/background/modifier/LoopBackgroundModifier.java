@@ -24,12 +24,12 @@ public class LoopBackgroundModifier extends LoopModifier<IBackground> implements
 		super(pBackgroundModifier);
 	}
 
-	public LoopBackgroundModifier(final IBackgroundModifierListener pBackgroundModiferListener, final int pLoopCount, final ILoopBackgroundModifierListener pLoopModifierListener, final IBackgroundModifier pBackgroundModifier) {
-		super(pBackgroundModiferListener, pLoopCount, pLoopModifierListener, pBackgroundModifier);
+	public LoopBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final int pLoopCount, final ILoopBackgroundModifierListener pLoopModifierListener, final IBackgroundModifier pBackgroundModifier) {
+		super(pBackgroundModifierListener, pLoopCount, pLoopModifierListener, pBackgroundModifier);
 	}
 
-	public LoopBackgroundModifier(final IBackgroundModifierListener pBackgroundModiferListener, final int pLoopCount, final IBackgroundModifier pBackgroundModifier) {
-		super(pBackgroundModiferListener, pLoopCount, pBackgroundModifier);
+	public LoopBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final int pLoopCount, final IBackgroundModifier pBackgroundModifier) {
+		super(pBackgroundModifierListener, pLoopCount, pBackgroundModifier);
 	}
 
 	public LoopBackgroundModifier(final int pLoopCount, final IBackgroundModifier pBackgroundModifier) {

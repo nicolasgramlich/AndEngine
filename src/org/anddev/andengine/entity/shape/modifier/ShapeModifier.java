@@ -24,8 +24,8 @@ public abstract class ShapeModifier extends BaseModifier<IShape> implements ISha
 		super();
 	}
 
-	public ShapeModifier(final IShapeModifierListener pShapeModiferListener) {
-		super(pShapeModiferListener);
+	public ShapeModifier(final IShapeModifierListener pShapeModifierListener) {
+		super(pShapeModifierListener);
 	}
 
 	protected ShapeModifier(final ShapeModifier pShapeModifier) {

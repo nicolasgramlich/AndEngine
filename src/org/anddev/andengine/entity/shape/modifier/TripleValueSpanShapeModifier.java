@@ -25,8 +25,8 @@ public abstract class TripleValueSpanShapeModifier extends BaseTripleValueSpanMo
 		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pEaseFunction);
 	}
 
-	public TripleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pShapeModiferListener, pEaseFunction);
+	public TripleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected TripleValueSpanShapeModifier(final TripleValueSpanShapeModifier pTripleValueSpanModifier) {

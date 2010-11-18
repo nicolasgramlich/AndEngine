@@ -28,12 +28,12 @@ public class RotationModifier extends SingleValueSpanShapeModifier {
 		this(pDuration, pFromRotation, pToRotation, null, pEaseFunction);
 	}
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, IEaseFunction.DEFAULT);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModiferListener, pEaseFunction);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromRotation, pToRotation, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected RotationModifier(final RotationModifier pRotationModifier) {

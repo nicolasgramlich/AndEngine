@@ -25,8 +25,8 @@ public abstract class BaseSingleValueChangeModifier<T> extends BaseDurationModif
 		this(pDuration, pValueChange, null);
 	}
 
-	public BaseSingleValueChangeModifier(final float pDuration, final float pValueChange, final IModifierListener<T> pModiferListener) {
-		super(pDuration, pModiferListener);
+	public BaseSingleValueChangeModifier(final float pDuration, final float pValueChange, final IModifierListener<T> pModifierListener) {
+		super(pDuration, pModifierListener);
 		this.mValueChangePerSecond = pValueChange / pDuration;
 	}
 

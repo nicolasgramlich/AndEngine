@@ -30,8 +30,8 @@ public class ParallelModifier<T> extends BaseModifier<T> {
 		this(null, pModifiers);
 	}
 
-	public ParallelModifier(final IModifierListener<T> pModiferListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
-		super(pModiferListener);
+	public ParallelModifier(final IModifierListener<T> pModifierListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
+		super(pModifierListener);
 		if(pModifiers.length == 0) {
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}

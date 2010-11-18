@@ -28,12 +28,12 @@ public class ScaleModifier extends DoubleValueSpanShapeModifier {
 		this(pDuration, pFromScale, pToScale, null, pEaseFunction);
 	}
 
-	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale, final IShapeModifierListener pShapeModiferListener) {
-		this(pDuration, pFromScale, pToScale, pFromScale, pToScale, pShapeModiferListener, IEaseFunction.DEFAULT);
+	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale, final IShapeModifierListener pShapeModifierListener) {
+		this(pDuration, pFromScale, pToScale, pFromScale, pToScale, pShapeModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		this(pDuration, pFromScale, pToScale, pFromScale, pToScale, pShapeModiferListener, pEaseFunction);
+	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromScale, pToScale, pFromScale, pToScale, pShapeModifierListener, pEaseFunction);
 	}
 
 	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY) {
@@ -44,12 +44,12 @@ public class ScaleModifier extends DoubleValueSpanShapeModifier {
 		this(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, null, pEaseFunction);
 	}
 
-	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModiferListener, IEaseFunction.DEFAULT);
+	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModiferListener, pEaseFunction);
+	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected ScaleModifier(final ScaleModifier pScaleModifier) {

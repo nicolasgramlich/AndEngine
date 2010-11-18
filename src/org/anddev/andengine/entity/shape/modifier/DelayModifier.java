@@ -19,8 +19,8 @@ public class DelayModifier extends DurationShapeModifier {
 	// Constructors
 	// ===========================================================
 
-	public DelayModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pShapeModiferListener);
+	public DelayModifier(final float pDuration, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pShapeModifierListener);
 	}
 
 	public DelayModifier(final float pDuration) {

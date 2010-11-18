@@ -32,12 +32,12 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 		this(pDuration, pFromValue, pToValue, null, pEaseFunction);
 	}
 
-	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModiferListener) {
+	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModifierListener) {
 		this(pDuration, pFromValue, pToValue, IEaseFunction.DEFAULT);
 	}
 
-	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pModiferListener);
+	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pModifierListener);
 		this.mFromValue = pFromValue;
 		this.mValueSpan = pToValue - pFromValue;
 		this.mEaseFunction = pEaseFunction;

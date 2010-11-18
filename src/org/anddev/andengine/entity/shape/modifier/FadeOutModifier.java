@@ -28,12 +28,12 @@ public class FadeOutModifier extends AlphaModifier {
 		super(pDuration, 1.0f, 0.0f, pEaseFunction);
 	}
 
-	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, 1.0f, 0.0f, pShapeModiferListener, IEaseFunction.DEFAULT);
+	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, 1.0f, 0.0f, pShapeModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, 1.0f, 0.0f, pShapeModiferListener, pEaseFunction);
+	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, 1.0f, 0.0f, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected FadeOutModifier(final FadeOutModifier pFadeOutModifier) {

@@ -28,12 +28,12 @@ public class MoveXModifier extends SingleValueSpanShapeModifier {
 		this(pDuration, pFromX, pToX, null, pEaseFunction);
 	}
 
-	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, pFromX, pToX, pShapeModiferListener, IEaseFunction.DEFAULT);
+	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IShapeModifierListener pShapeModifierListener) {
+		super(pDuration, pFromX, pToX, pShapeModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromX, pToX, pShapeModiferListener, pEaseFunction);
+	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromX, pToX, pShapeModifierListener, pEaseFunction);
 	}
 
 	protected MoveXModifier(final MoveXModifier pMoveXModifier) {

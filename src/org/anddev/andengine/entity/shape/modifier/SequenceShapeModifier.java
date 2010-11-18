@@ -24,12 +24,12 @@ public class SequenceShapeModifier extends SequenceModifier<IShape> implements I
 		super(pShapeModifiers);
 	}
 
-	public SequenceShapeModifier(final IShapeModifierListener pShapeModiferListener, final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
-		super(pShapeModiferListener, pShapeModifiers);
+	public SequenceShapeModifier(final IShapeModifierListener pShapeModifierListener, final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
+		super(pShapeModifierListener, pShapeModifiers);
 	}
 
-	public SequenceShapeModifier(final IShapeModifierListener pShapeModiferListener, final ISubSequenceShapeModifierListener pSubSequenceShapeModifierListener, final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
-		super(pShapeModiferListener, pSubSequenceShapeModifierListener, pShapeModifiers);
+	public SequenceShapeModifier(final IShapeModifierListener pShapeModifierListener, final ISubSequenceShapeModifierListener pSubSequenceShapeModifierListener, final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
+		super(pShapeModifierListener, pSubSequenceShapeModifierListener, pShapeModifiers);
 	}
 
 	protected SequenceShapeModifier(final SequenceShapeModifier pSequenceShapeModifier) {

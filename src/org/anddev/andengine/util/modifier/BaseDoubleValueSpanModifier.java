@@ -31,12 +31,12 @@ public abstract class BaseDoubleValueSpanModifier<T> extends BaseSingleValueSpan
 		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, null, pEaseFunction);
 	}
 
-	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener<T> pModiferListener) {
-		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pModiferListener, IEaseFunction.DEFAULT);
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener<T> pModifierListener) {
+		this(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener<T> pModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromValueA, pToValueA, pModiferListener, pEaseFunction);
+	public BaseDoubleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IModifierListener<T> pModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pModifierListener, pEaseFunction);
 		this.mFromValueB = pFromValueB;
 		this.mValueSpanB = pToValueB - pFromValueB;
 	}

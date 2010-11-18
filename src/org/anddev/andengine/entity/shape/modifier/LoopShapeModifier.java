@@ -24,12 +24,12 @@ public class LoopShapeModifier extends LoopModifier<IShape> implements IShapeMod
 		super(pShapeModifier);
 	}
 
-	public LoopShapeModifier(final IShapeModifierListener pShapeModiferListener, final int pLoopCount, final ILoopShapeModifierListener pLoopModifierListener, final IShapeModifier pShapeModifier) {
-		super(pShapeModiferListener, pLoopCount, pLoopModifierListener, pShapeModifier);
+	public LoopShapeModifier(final IShapeModifierListener pShapeModifierListener, final int pLoopCount, final ILoopShapeModifierListener pLoopModifierListener, final IShapeModifier pShapeModifier) {
+		super(pShapeModifierListener, pLoopCount, pLoopModifierListener, pShapeModifier);
 	}
 
-	public LoopShapeModifier(final IShapeModifierListener pShapeModiferListener, final int pLoopCount, final IShapeModifier pShapeModifier) {
-		super(pShapeModiferListener, pLoopCount, pShapeModifier);
+	public LoopShapeModifier(final IShapeModifierListener pShapeModifierListener, final int pLoopCount, final IShapeModifier pShapeModifier) {
+		super(pShapeModifierListener, pLoopCount, pShapeModifier);
 	}
 
 	public LoopShapeModifier(final int pLoopCount, final IShapeModifier pShapeModifier) {

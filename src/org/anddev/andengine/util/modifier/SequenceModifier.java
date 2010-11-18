@@ -16,7 +16,7 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 	// Fields
 	// ===========================================================
 
-	private ISubSequenceModifierListener<T> mSubSequenceModiferListener;
+	private ISubSequenceModifierListener<T> mSubSequenceModifierListener;
 
 	private final IModifier<T>[] mSubSequenceModifiers;
 	private int mCurrentSubSequenceModifier;
@@ -31,17 +31,17 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 		this(null, pModifiers);
 	}
 
-	public SequenceModifier(final IModifierListener<T> pModiferListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
-		this(pModiferListener, null, pModifiers);
+	public SequenceModifier(final IModifierListener<T> pModifierListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
+		this(pModifierListener, null, pModifiers);
 	}
 
-	public SequenceModifier(final IModifierListener<T> pModiferListener, final ISubSequenceModifierListener<T> pSubSequenceModifierListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
-		super(pModiferListener);
+	public SequenceModifier(final IModifierListener<T> pModifierListener, final ISubSequenceModifierListener<T> pSubSequenceModifierListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
+		super(pModifierListener);
 		if (pModifiers.length == 0) {
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}
 
-		this.mSubSequenceModiferListener = pSubSequenceModifierListener;
+		this.mSubSequenceModifierListener = pSubSequenceModifierListener;
 		this.mSubSequenceModifiers = pModifiers;
 
 		this.mDuration = ModifierUtils.getSequenceDurationOfModifier(pModifiers);
@@ -52,7 +52,7 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 	@SuppressWarnings("unchecked")
 	protected SequenceModifier(final SequenceModifier<T> pSequenceModifier) {
 		super(pSequenceModifier.mModifierListener);
-		this.mSubSequenceModiferListener = pSequenceModifier.mSubSequenceModiferListener;
+		this.mSubSequenceModifierListener = pSequenceModifier.mSubSequenceModifierListener;
 
 		this.mDuration = pSequenceModifier.mDuration;
 
@@ -76,12 +76,12 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 	// Getter & Setter
 	// ===========================================================
 
-	public ISubSequenceModifierListener<T> getSubSequenceModiferListener() {
-		return this.mSubSequenceModiferListener;
+	public ISubSequenceModifierListener<T> getSubSequenceModifierListener() {
+		return this.mSubSequenceModifierListener;
 	}
 
-	public void setSubSequenceModiferListener(final ISubSequenceModifierListener<T> pSubSequenceModiferListener) {
-		this.mSubSequenceModiferListener = pSubSequenceModiferListener;
+	public void setSubSequenceModifierListener(final ISubSequenceModifierListener<T> pSubSequenceModifierListener) {
+		this.mSubSequenceModifierListener = pSubSequenceModifierListener;
 	}
 
 	// ===========================================================
@@ -122,8 +122,8 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 			final IModifier<T> nextSubSequenceModifier = this.mSubSequenceModifiers[this.mCurrentSubSequenceModifier];
 			nextSubSequenceModifier.setModifierListener(pInternalModifierListener);
 
-			if(this.mSubSequenceModiferListener != null) {
-				this.mSubSequenceModiferListener.onSubSequenceFinished(pModifier, pItem, this.mCurrentSubSequenceModifier);
+			if(this.mSubSequenceModifierListener != null) {
+				this.mSubSequenceModifierListener.onSubSequenceFinished(pModifier, pItem, this.mCurrentSubSequenceModifier);
 			}
 		} else {
 			this.mFinished = true;

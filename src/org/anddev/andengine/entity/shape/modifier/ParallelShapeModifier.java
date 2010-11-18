@@ -24,8 +24,8 @@ public class ParallelShapeModifier extends ParallelModifier<IShape> implements I
 		super(pShapeModifiers);
 	}
 
-	public ParallelShapeModifier(final IShapeModifierListener pShapeModiferListener, final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
-		super(pShapeModiferListener, pShapeModifiers);
+	public ParallelShapeModifier(final IShapeModifierListener pShapeModifierListener, final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
+		super(pShapeModifierListener, pShapeModifiers);
 	}
 
 	protected ParallelShapeModifier(final ParallelShapeModifier pParallelShapeModifier) {

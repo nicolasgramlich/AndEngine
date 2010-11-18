@@ -38,12 +38,12 @@ public class LoopModifier<T> extends BaseModifier<T> {
 		this(null, pLoopCount, pModifier);
 	}
 
-	public LoopModifier(final IModifierListener<T> pModiferListener, final int pLoopCount, final IModifier<T> pModifier) {
-		this(pModiferListener, pLoopCount, null, pModifier);
+	public LoopModifier(final IModifierListener<T> pModifierListener, final int pLoopCount, final IModifier<T> pModifier) {
+		this(pModifierListener, pLoopCount, null, pModifier);
 	}
 
-	public LoopModifier(final IModifierListener<T> pModiferListener, final int pLoopCount, final ILoopModifierListener<T> pLoopModifierListener, final IModifier<T> pModifier) {
-		super(pModiferListener);
+	public LoopModifier(final IModifierListener<T> pModifierListener, final int pLoopCount, final ILoopModifierListener<T> pLoopModifierListener, final IModifier<T> pModifier) {
+		super(pModifierListener);
 		this.mLoopModifierListener = pLoopModifierListener;
 		this.mModifier = pModifier;
 		this.mInitialLoopCount = pLoopCount;

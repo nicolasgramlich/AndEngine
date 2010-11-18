@@ -24,12 +24,12 @@ public class SequenceBackgroundModifier extends SequenceModifier<IBackground> im
 		super(pBackgroundModifiers);
 	}
 
-	public SequenceBackgroundModifier(final IBackgroundModifierListener pBackgroundModiferListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
-		super(pBackgroundModiferListener, pBackgroundModifiers);
+	public SequenceBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
+		super(pBackgroundModifierListener, pBackgroundModifiers);
 	}
 
-	public SequenceBackgroundModifier(final IBackgroundModifierListener pBackgroundModiferListener, final ISubSequenceBackgroundModifierListener pSubSequenceBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
-		super(pBackgroundModiferListener, pSubSequenceBackgroundModifierListener, pBackgroundModifiers);
+	public SequenceBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final ISubSequenceBackgroundModifierListener pSubSequenceBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
+		super(pBackgroundModifierListener, pSubSequenceBackgroundModifierListener, pBackgroundModifiers);
 	}
 
 	protected SequenceBackgroundModifier(final SequenceBackgroundModifier pSequenceBackgroundModifier) {

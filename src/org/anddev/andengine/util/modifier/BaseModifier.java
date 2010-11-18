@@ -27,8 +27,8 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 		this((IModifierListener<T>)null);
 	}
 
-	public BaseModifier(final IModifierListener<T> pModiferListener) {
-		this.mModifierListener = pModiferListener;
+	public BaseModifier(final IModifierListener<T> pModifierListener) {
+		this.mModifierListener = pModifierListener;
 	}
 
 	protected BaseModifier(final BaseModifier<T> pBaseModifier) {

@@ -6,7 +6,7 @@ import org.anddev.andengine.opengl.font.Font;
  * @author Nicolas Gramlich
  * @since 14:25:35 - 07.07.2010
  */
-public class ColoredTextMenuItem extends TextMenuItem {
+public class ScaleTextMenuItem extends TextMenuItem {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,30 +15,20 @@ public class ColoredTextMenuItem extends TextMenuItem {
 	// Fields
 	// ===========================================================
 
-	private final float mSelectedRed;
-	private final float mSelectedGreen;
-	private final float mSelectedBlue;
-	private final float mUnselectedRed;
-	private final float mUnselectedGreen;
-	private final float mUnselectedBlue;
-
+	private final float mSelectedScale;
+	private final float mUnSelectedScale;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ColoredTextMenuItem(final int pID, final Font pFont, final String pText, final float pSelectedRed, final float pSelectedGreen, final float pSelectedBlue, final float pUnselectedRed, final float pUnselectedGreen, final float pUnselectedBlue) {
+	public ScaleTextMenuItem(final int pID, final Font pFont, final String pText, final float pSelectedScale, final float pUnSelectedScale) {
 		super(pID, pFont, pText);
 
-		this.mSelectedRed = pSelectedRed;
-		this.mSelectedGreen = pSelectedGreen;
-		this.mSelectedBlue = pSelectedBlue;
+		this.mSelectedScale = pSelectedScale;
+		this.mUnSelectedScale = pUnSelectedScale;
 
-		this.mUnselectedRed = pUnselectedRed;
-		this.mUnselectedGreen = pUnselectedGreen;
-		this.mUnselectedBlue = pUnselectedBlue;
-
-		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
+		this.setScale(pUnSelectedScale);
 	}
 
 	// ===========================================================
@@ -55,18 +45,18 @@ public class ColoredTextMenuItem extends TextMenuItem {
 
 	@Override
 	public void onSelected() {
-		this.setColor(this.mSelectedRed, this.mSelectedGreen, this.mSelectedBlue);
+		this.setScale(this.mSelectedScale);
 	}
 
 	@Override
 	public void onUnselected() {
-		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
+		this.setScale(this.mUnSelectedScale);
 	}
 
 	@Override
 	public void reset() {
 		super.reset();
-		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
+		this.setScale(this.mUnSelectedScale);
 	}
 
 	// ===========================================================

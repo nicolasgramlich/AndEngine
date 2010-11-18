@@ -1,12 +1,12 @@
-package org.anddev.andengine.entity.scene.menu.item;
+package org.anddev.andengine.entity.scene.menu.item.decorator;
 
-import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 
 /**
  * @author Nicolas Gramlich
- * @since 14:25:35 - 07.07.2010
+ * @since 15:04:29 - 18.11.2010
  */
-public class ScaleTextMenuItem extends TextMenuItem {
+public class ScaleMenuItemDecorator extends BaseMenuItemDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,19 +16,19 @@ public class ScaleTextMenuItem extends TextMenuItem {
 	// ===========================================================
 
 	private final float mSelectedScale;
-	private final float mUnSelectedScale;
+	private final float mUnselectedScale;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ScaleTextMenuItem(final int pID, final Font pFont, final String pText, final float pSelectedScale, final float pUnSelectedScale) {
-		super(pID, pFont, pText);
+	public ScaleMenuItemDecorator(final IMenuItem pMenuItem, final float pSelectedScale, final float pUnselectedScale) {
+		super(pMenuItem);
 
 		this.mSelectedScale = pSelectedScale;
-		this.mUnSelectedScale = pUnSelectedScale;
+		this.mUnselectedScale = pUnselectedScale;
 
-		this.setScale(pUnSelectedScale);
+		pMenuItem.setScale(pUnselectedScale);
 	}
 
 	// ===========================================================
@@ -44,19 +44,18 @@ public class ScaleTextMenuItem extends TextMenuItem {
 	// ===========================================================
 
 	@Override
-	public void onSelected() {
+	public void onMenuItemSelected(final IMenuItem pMenuItem) {
 		this.setScale(this.mSelectedScale);
 	}
 
 	@Override
-	public void onUnselected() {
-		this.setScale(this.mUnSelectedScale);
+	public void onMenuItemUnselected(final IMenuItem pMenuItem) {
+		this.setScale(this.mUnselectedScale);
 	}
 
 	@Override
-	public void reset() {
-		super.reset();
-		this.setScale(this.mUnSelectedScale);
+	public void onMenuItemReset(final IMenuItem pMenuItem) {
+		this.setScale(this.mUnselectedScale);
 	}
 
 	// ===========================================================

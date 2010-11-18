@@ -1,12 +1,12 @@
-package org.anddev.andengine.entity.scene.menu.item;
+package org.anddev.andengine.entity.scene.menu.item.decorator;
 
-import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 
 /**
  * @author Nicolas Gramlich
  * @since 14:25:35 - 07.07.2010
  */
-public class ColorTextMenuItem extends TextMenuItem {
+public class ColorMenuItemDecorator extends BaseMenuItemDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -26,8 +26,8 @@ public class ColorTextMenuItem extends TextMenuItem {
 	// Constructors
 	// ===========================================================
 
-	public ColorTextMenuItem(final int pID, final Font pFont, final String pText, final float pSelectedRed, final float pSelectedGreen, final float pSelectedBlue, final float pUnselectedRed, final float pUnselectedGreen, final float pUnselectedBlue) {
-		super(pID, pFont, pText);
+	public ColorMenuItemDecorator(final IMenuItem pMenuItem, final float pSelectedRed, final float pSelectedGreen, final float pSelectedBlue, final float pUnselectedRed, final float pUnselectedGreen, final float pUnselectedBlue) {
+		super(pMenuItem);
 
 		this.mSelectedRed = pSelectedRed;
 		this.mSelectedGreen = pSelectedGreen;
@@ -37,7 +37,7 @@ public class ColorTextMenuItem extends TextMenuItem {
 		this.mUnselectedGreen = pUnselectedGreen;
 		this.mUnselectedBlue = pUnselectedBlue;
 
-		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
+		pMenuItem.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
 	}
 
 	// ===========================================================
@@ -53,19 +53,18 @@ public class ColorTextMenuItem extends TextMenuItem {
 	// ===========================================================
 
 	@Override
-	public void onSelected() {
-		this.setColor(this.mSelectedRed, this.mSelectedGreen, this.mSelectedBlue);
+	public void onMenuItemSelected(final IMenuItem pMenuItem) {
+		pMenuItem.setColor(this.mSelectedRed, this.mSelectedGreen, this.mSelectedBlue);
 	}
 
 	@Override
-	public void onUnselected() {
-		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
+	public void onMenuItemUnselected(final IMenuItem pMenuItem) {
+		pMenuItem.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
 	}
 
 	@Override
-	public void reset() {
-		super.reset();
-		this.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
+	public void onMenuItemReset(final IMenuItem pMenuItem) {
+		pMenuItem.setColor(this.mUnselectedRed, this.mUnselectedGreen, this.mUnselectedBlue);
 	}
 
 	// ===========================================================

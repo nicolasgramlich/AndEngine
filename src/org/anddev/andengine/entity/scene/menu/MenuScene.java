@@ -124,9 +124,10 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 				break;
 			case MotionEvent.ACTION_UP:
 				if(this.mOnMenuItemClickListener != null) {
+					final boolean handled = this.mOnMenuItemClickListener.onMenuItemClicked(this, menuItem, pTouchAreaLocalX, pTouchAreaLocalY);
 					menuItem.onUnselected();
 					this.mSelectedMenuItem = null;
-					return this.mOnMenuItemClickListener.onMenuItemClicked(this, menuItem, pTouchAreaLocalX, pTouchAreaLocalY);
+					return handled;
 				}
 				break;
 			case MotionEvent.ACTION_CANCEL:

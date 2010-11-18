@@ -1,8 +1,8 @@
 package org.anddev.andengine.entity.scene.background.modifier;
 
 import org.anddev.andengine.entity.scene.background.IBackground;
-import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 import org.anddev.andengine.util.modifier.BaseTripleValueSpanModifier;
+import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich

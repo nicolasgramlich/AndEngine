@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.modifier.AlphaModifier;
-import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 import org.anddev.andengine.util.HorizontalAlign;
+import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich

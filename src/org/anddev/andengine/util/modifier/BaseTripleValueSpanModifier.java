@@ -1,6 +1,6 @@
 package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
+import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich

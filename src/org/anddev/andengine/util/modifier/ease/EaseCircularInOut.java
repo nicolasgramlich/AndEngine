@@ -1,13 +1,12 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.util.modifier.ease;
 
-import org.anddev.andengine.util.modifier.ease.IEaseFunction;
-
+import android.util.FloatMath;
 
 /**
- * @author Nicolas Gramlich
- * @since 19:03:12 - 08.06.2010
+ * @author Gil, Nicolas Gramlich
+ * @since 16:52:11 - 26.07.2010
  */
-public class FadeInModifier extends AlphaModifier {
+public class EaseCircularInOut implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,33 +15,20 @@ public class FadeInModifier extends AlphaModifier {
 	// Fields
 	// ===========================================================
 
+	private static EaseCircularInOut INSTANCE;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FadeInModifier(final float pDuration) {
-		super(pDuration, 0.0f, 1.0f, IEaseFunction.DEFAULT);
+	private EaseCircularInOut() {
 	}
 
-	public FadeInModifier(final float pDuration, final IEaseFunction pEaseFunction) {
-		super(pDuration, 0.0f, 1.0f, pEaseFunction);
-	}
-
-	public FadeInModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, 0.0f, 1.0f, pShapeModiferListener, IEaseFunction.DEFAULT);
-	}
-
-	public FadeInModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, 0.0f, 1.0f, pShapeModiferListener, pEaseFunction);
-	}
-
-	protected FadeInModifier(final FadeInModifier pFadeInModifier) {
-		super(pFadeInModifier);
-	}
-
-	@Override
-	public FadeInModifier clone() {
-		return new FadeInModifier(this);
+	public static EaseCircularInOut getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new EaseCircularInOut();
+		}
+		return INSTANCE;
 	}
 
 	// ===========================================================
@@ -52,6 +38,15 @@ public class FadeInModifier extends AlphaModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		if((pSecondsElapsed /= pDuration * 0.5) < 1) {
+			return (float) (-pMaxValue * 0.5 * (FloatMath.sqrt(1 - pSecondsElapsed * pSecondsElapsed) - 1) + pMinValue);
+		}
+
+		return (float) (pMaxValue * 0.5 * (FloatMath.sqrt(1 - (pSecondsElapsed -= 2) * pSecondsElapsed) + 1) + pMinValue);
+	}
 
 	// ===========================================================
 	// Methods

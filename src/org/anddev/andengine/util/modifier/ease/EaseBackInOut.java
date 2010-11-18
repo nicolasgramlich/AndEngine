@@ -1,13 +1,10 @@
-package org.anddev.andengine.entity.shape.modifier;
-
-import org.anddev.andengine.util.modifier.ease.IEaseFunction;
-
+package org.anddev.andengine.util.modifier.ease;
 
 /**
- * @author Nicolas Gramlich
- * @since 19:03:12 - 08.06.2010
+ * @author Gil, Nicolas Gramlich
+ * @since 16:52:11 - 26.07.2010
  */
-public class FadeInModifier extends AlphaModifier {
+public class EaseBackInOut implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,33 +13,21 @@ public class FadeInModifier extends AlphaModifier {
 	// Fields
 	// ===========================================================
 
+	private static EaseBackInOut INSTANCE;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FadeInModifier(final float pDuration) {
-		super(pDuration, 0.0f, 1.0f, IEaseFunction.DEFAULT);
+	private EaseBackInOut() {
+
 	}
 
-	public FadeInModifier(final float pDuration, final IEaseFunction pEaseFunction) {
-		super(pDuration, 0.0f, 1.0f, pEaseFunction);
-	}
-
-	public FadeInModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, 0.0f, 1.0f, pShapeModiferListener, IEaseFunction.DEFAULT);
-	}
-
-	public FadeInModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, 0.0f, 1.0f, pShapeModiferListener, pEaseFunction);
-	}
-
-	protected FadeInModifier(final FadeInModifier pFadeInModifier) {
-		super(pFadeInModifier);
-	}
-
-	@Override
-	public FadeInModifier clone() {
-		return new FadeInModifier(this);
+	public static EaseBackInOut getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new EaseBackInOut();
+		}
+		return INSTANCE;
 	}
 
 	// ===========================================================
@@ -52,6 +37,16 @@ public class FadeInModifier extends AlphaModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		float s = 1.70158f;
+		if((pSecondsElapsed /= pDuration * 0.5f) < 1) {
+			return pMaxValue * 0.5f * (pSecondsElapsed * pSecondsElapsed * (((s *= (1.525f)) + 1) * pSecondsElapsed - s)) + pMinValue;
+		}
+
+		return pMaxValue / 2 * ((pSecondsElapsed -= 2) * pSecondsElapsed * (((s *= (1.525f)) + 1) * pSecondsElapsed + s) + 2) + pMinValue;
+	}
 
 	// ===========================================================
 	// Methods

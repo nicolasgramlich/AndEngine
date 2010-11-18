@@ -1,11 +1,11 @@
 package org.anddev.andengine.entity.shape.modifier;
 
 import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.entity.shape.modifier.ease.IEaseFunction;
 import org.anddev.andengine.util.Path;
 import org.anddev.andengine.util.modifier.IModifier;
 import org.anddev.andengine.util.modifier.SequenceModifier;
 import org.anddev.andengine.util.modifier.SequenceModifier.ISubSequenceModifierListener;
+import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich

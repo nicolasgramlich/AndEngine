@@ -1,13 +1,10 @@
-package org.anddev.andengine.entity.shape.modifier;
-
-import org.anddev.andengine.util.modifier.ease.IEaseFunction;
-
+package org.anddev.andengine.util.modifier.ease;
 
 /**
- * @author Nicolas Gramlich
- * @since 19:03:12 - 08.06.2010
+ * @author Gil, Nicolas Gramlich
+ * @since 16:52:11 - 26.07.2010
  */
-public class FadeInModifier extends AlphaModifier {
+public class EaseExponentialOut implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,33 +13,20 @@ public class FadeInModifier extends AlphaModifier {
 	// Fields
 	// ===========================================================
 
+	private static EaseExponentialOut INSTANCE;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FadeInModifier(final float pDuration) {
-		super(pDuration, 0.0f, 1.0f, IEaseFunction.DEFAULT);
+	private EaseExponentialOut() {
 	}
 
-	public FadeInModifier(final float pDuration, final IEaseFunction pEaseFunction) {
-		super(pDuration, 0.0f, 1.0f, pEaseFunction);
-	}
-
-	public FadeInModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener) {
-		super(pDuration, 0.0f, 1.0f, pShapeModiferListener, IEaseFunction.DEFAULT);
-	}
-
-	public FadeInModifier(final float pDuration, final IShapeModifierListener pShapeModiferListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, 0.0f, 1.0f, pShapeModiferListener, pEaseFunction);
-	}
-
-	protected FadeInModifier(final FadeInModifier pFadeInModifier) {
-		super(pFadeInModifier);
-	}
-
-	@Override
-	public FadeInModifier clone() {
-		return new FadeInModifier(this);
+	public static EaseExponentialOut getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new EaseExponentialOut();
+		}
+		return INSTANCE;
 	}
 
 	// ===========================================================
@@ -52,6 +36,11 @@ public class FadeInModifier extends AlphaModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public float getPercentageDone(final float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
+		return (float) ((pSecondsElapsed == pDuration) ? pMinValue + pMaxValue : pMaxValue * (-Math.pow(2, -10 * pSecondsElapsed / pDuration) + 1) + pMinValue);
+	}
 
 	// ===========================================================
 	// Methods

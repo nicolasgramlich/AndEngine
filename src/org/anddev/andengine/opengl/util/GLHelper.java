@@ -122,8 +122,8 @@ public class GLHelper {
 		GLHelper.EXTENSIONS_DRAWTEXTURE  = isDrawTextureCapable;
 
 		GLHelper.hackBrokenDevices();
-		Debug.d("EXTENSIONS_VERXTEXBUFFEROBJECTS = " + EXTENSIONS_VERTEXBUFFEROBJECTS);
-		Debug.d("EXTENSIONS_DRAWTEXTURE = " + EXTENSIONS_DRAWTEXTURE);
+		Debug.d("EXTENSIONS_VERXTEXBUFFEROBJECTS = " + GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS);
+		Debug.d("EXTENSIONS_DRAWTEXTURE = " + GLHelper.EXTENSIONS_DRAWTEXTURE);
 	}
 
 	private static void hackBrokenDevices() {
@@ -381,18 +381,26 @@ public class GLHelper {
 	}
 
 	private static Buffer convertARGBtoRGBABuffer(final int[] pPixels) {
-		for(int i = pPixels.length - 1; i >= 0; i--) {
-			final int pixel = pPixels[i];
+		if(GLHelper.IS_LITTLE_ENDIAN) {
+			for(int i = pPixels.length - 1; i >= 0; i--) {
+				final int pixel = pPixels[i];
 
-			final int red = ((pixel >> 16) & 0xFF);
-			final int green = ((pixel >> 8) & 0xFF);
-			final int blue = ((pixel) & 0xFF);
-			final int alpha = (pixel >> 24);
+				final int red = ((pixel >> 16) & 0xFF);
+				final int green = ((pixel >> 8) & 0xFF);
+				final int blue = ((pixel) & 0xFF);
+				final int alpha = (pixel >> 24);
 
-			// TODO This check could be outside of the loop, so it doesn't get evaluated every iteration.
-			if(IS_LITTLE_ENDIAN) {
 				pPixels[i] = alpha << 24 | blue << 16 | green << 8 | red;
-			} else {
+			}
+		} else {
+			for(int i = pPixels.length - 1; i >= 0; i--) {
+				final int pixel = pPixels[i];
+
+				final int red = ((pixel >> 16) & 0xFF);
+				final int green = ((pixel >> 8) & 0xFF);
+				final int blue = ((pixel) & 0xFF);
+				final int alpha = (pixel >> 24);
+
 				pPixels[i] = red << 24 | green << 16 | blue << 8 | alpha;
 			}
 		}
@@ -402,10 +410,10 @@ public class GLHelper {
 	public static int[] getPixels(final Bitmap pBitmap) {
 		final int w = pBitmap.getWidth();
 		final int h = pBitmap.getHeight();
-		
+
 		final int[] pixels = new int[w * h];
 		pBitmap.getPixels(pixels, 0, w, 0, 0, w, h);
-		
+
 		return pixels;
 	}
 

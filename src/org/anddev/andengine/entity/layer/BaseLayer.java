@@ -42,7 +42,7 @@ public abstract class BaseLayer extends Entity implements ILayer{
 
 	@Override
 	public void registerTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas .add(pTouchArea);
+		this.mTouchAreas.add(pTouchArea);
 	}
 
 	@Override

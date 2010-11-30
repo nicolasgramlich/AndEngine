@@ -105,7 +105,7 @@ public abstract class RectangularShape extends GLShape {
 	// ===========================================================
 
 	public void setBaseSize() {
-		if(this.mWidth != this.mBaseWidth && this.mHeight != this.mBaseHeight) {
+		if(this.mWidth != this.mBaseWidth || this.mHeight != this.mBaseHeight) {
 			this.mWidth = this.mBaseWidth;
 			this.mHeight = this.mBaseHeight;
 			this.onPositionChanged();

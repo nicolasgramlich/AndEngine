@@ -1,15 +1,12 @@
-package org.anddev.andengine.entity.layer;
+package org.anddev.andengine.util.path.astar;
 
-import java.util.ArrayList;
-
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
+import org.anddev.andengine.util.path.ITiledMap;
 
 /**
  * @author Nicolas Gramlich
- * @since 00:13:59 - 23.07.2010
+ * @since 22:58:01 - 16.08.2010
  */
-public abstract class BaseLayer extends Entity implements ILayer{
+public class ManhattanHeuristic<T> implements IAStarHeuristic<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,40 +15,21 @@ public abstract class BaseLayer extends Entity implements ILayer{
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseLayer() {
-
-	}
-
-	public BaseLayer(final int pZIndex) {
-		super(pZIndex);
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	public void registerTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas.add(pTouchArea);
-	}
-
-	@Override
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas.remove(pTouchArea);
-	}
-
-	public ArrayList<ITouchArea> getTouchAreas() {
-		return this.mTouchAreas;
+	public float getExpectedRestCost(final ITiledMap<T> pTiledMap, final T pEntity, final int pTileFromX, final int pTileFromY, final int pTileToX, final int pTileToY) {
+		return Math.abs(pTileFromX - pTileToX) + Math.abs(pTileToX - pTileToY);
 	}
 
 	// ===========================================================

@@ -34,6 +34,7 @@ public class ResourceTextureSource implements ITextureSource {
 
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inJustDecodeBounds = true;
+//		decodeOptions.inScaled = false; // TODO Check how this behaves with drawable-""/nodpi/ldpi/mdpi/hdpi folders
 
 		BitmapFactory.decodeResource(pContext.getResources(), pDrawableResourceID, decodeOptions);
 
@@ -75,6 +76,7 @@ public class ResourceTextureSource implements ITextureSource {
 	public Bitmap onLoadBitmap() {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inPreferredConfig = Config.ARGB_8888;
+//		decodeOptions.inScaled = false; // TODO Check how this behaves with drawable-""/nodpi/ldpi/mdpi/hdpi folders
 		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID, decodeOptions);
 	}
 

@@ -91,7 +91,7 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 
 	/**
 	 * Checks line specified by pVerticesA[pVertexIndexA1] and pVerticesA[pVertexIndexA2] against all lines in pVerticesB.
-	 * */
+	 */
 	private static boolean checkCollisionSub(final int pVertexIndexA1, final int pVertexIndexA2, final float[] pVerticesA, final float[] pVerticesB, final int pVerticesBLength) {
 		/* Check against all the lines of B. */
 		final float vertexA1X = pVerticesA[pVertexIndexA1 + VERTEX_INDEX_X];
@@ -110,8 +110,6 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 		}
 		return false;
 	}
-
-
 
 	public static boolean checkContains(final float[] pVertices, final int pVerticesLength, final float pX, final float pY) {
 		int edgeResultSum = 0;

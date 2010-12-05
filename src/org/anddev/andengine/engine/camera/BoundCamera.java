@@ -64,6 +64,14 @@ public class BoundCamera extends Camera {
 		this.mBoundsCenterX = this.mBoundsMinX + this.mBoundsWidth * 0.5f;
 		this.mBoundsCenterY = this.mBoundsMinY + this.mBoundsHeight * 0.5f;
 	}
+	
+	public float getBoundsWidth() {
+		return this.mBoundsWidth;
+	}
+	
+	public float getBoundsHeight() {
+		return this.mBoundsHeight;
+	}
 
 	@Override
 	public void setCenter(final float pCenterX, final float pCenterY) {

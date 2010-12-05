@@ -43,6 +43,7 @@
 	../MasterBowMan/lib/andengine.jar,
 	../FarmTower/lib/andengine.jar,
 	../FarmTowerLite/lib/andengine.jar,
+	../FarmTowerEco/lib/andengine.jar,
 	../FarmTowerFull/lib/andengine.jar,
 	../TetrisTower/lib/andengine.jar,
 	../GoogleDeveloperDayLiveWallpaper/lib/andengine.jar,

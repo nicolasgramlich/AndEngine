@@ -27,20 +27,12 @@ public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	// Constructors
 	// ===========================================================
 
-	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection) {
-		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pFromColor, pToColor, pLinearGradientDirection);
-	}
-
 	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection) {
-		this(pTextureSource, pTextureSourceDecoratorShape, pFromColor, pToColor, pLinearGradientDirection, false);
+		this(pTextureSource, pTextureSourceDecoratorShape, pFromColor, pToColor, pLinearGradientDirection, null);
 	}
 
-	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection, final boolean pAntiAliasing) {
-		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pFromColor, pToColor, pLinearGradientDirection, pAntiAliasing);
-	}
-
-	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection, final boolean pAntiAliasing) {
-		super(pTextureSource, pTextureSourceDecoratorShape, pAntiAliasing);
+	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
 		this.mFromColor = pFromColor;
 		this.mToColor = pToColor;
 		this.mLinearGradientDirection = pLinearGradientDirection;
@@ -60,7 +52,7 @@ public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 
 	@Override
 	public LinearGradientFillTextureSourceDecorator clone() {
-		return new LinearGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFromColor, this.mToColor, this.mLinearGradientDirection, this.mAntiAliasing);
+		return new LinearGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFromColor, this.mToColor, this.mLinearGradientDirection, this.mTextureSourceDecoratorOptions);
 	}
 
 	// ===========================================================

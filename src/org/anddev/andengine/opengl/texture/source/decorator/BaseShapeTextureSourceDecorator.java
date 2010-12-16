@@ -25,14 +25,8 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 	// Constructors
 	// ===========================================================
 
-	public BaseShapeTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape) {
-		super(pTextureSource);
-
-		this.mTextureSourceDecoratorShape = pTextureSourceDecoratorShape;
-	}
-
-	public BaseShapeTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final boolean pAntiAliasing) {
-		super(pTextureSource, pAntiAliasing);
+	public BaseShapeTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+		super(pTextureSource, pTextureSourceDecoratorOptions);
 
 		this.mTextureSourceDecoratorShape = pTextureSourceDecoratorShape;
 	}
@@ -50,7 +44,7 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 
 	@Override
 	protected void onDecorateBitmap(final Canvas pCanvas){
-		this.mTextureSourceDecoratorShape.onDecorateBitmap(pCanvas, this.mPaint, null);
+		this.mTextureSourceDecoratorShape.onDecorateBitmap(pCanvas, this.mPaint, (this.mTextureSourceDecoratorOptions == null) ? TextureSourceDecoratorOptions.DEFAULT : this.mTextureSourceDecoratorOptions);
 	}
 
 	// ===========================================================
@@ -68,7 +62,7 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 
 		CIRCLE() {
 			@Override
-			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final DecoratorOptions pDecoratorOptions) {
+			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
 				final float widthHalf = pCanvas.getWidth() / 2;
 				final float heightHalf = pCanvas.getHeight() / 2;
 				final float radius = Math.min(widthHalf, heightHalf);
@@ -80,7 +74,7 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 			private final RectF mRectF = new RectF();
 
 			@Override
-			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final DecoratorOptions pDecoratorOptions) {
+			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
 				this.mRectF.set(0, 0, pCanvas.getWidth() - 1, pCanvas.getWidth() - 1);
 				// TODO Use DecoratorOptions
 				pCanvas.drawOval(this.mRectF, pPaint);
@@ -88,7 +82,7 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 		},
 		RECTANGLE() {
 			@Override
-			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final DecoratorOptions pDecoratorOptions) {
+			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
 				final float left = pDecoratorOptions.getInsetLeft();
 				final float top = pDecoratorOptions.getInsetTop();
 				final float right = pCanvas.getWidth() - 1 - pDecoratorOptions.getInsetRight();
@@ -117,7 +111,7 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 		// Methods from SuperClass/Interfaces
 		// ===========================================================
 
-		public abstract void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final DecoratorOptions pDecoratorOptions);
+		public abstract void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions);
 
 		// ===========================================================
 		// Methods

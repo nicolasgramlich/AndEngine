@@ -23,20 +23,12 @@ public class FillTextureSourceDecorator extends BaseShapeTextureSourceDecorator 
 	// Constructors
 	// ===========================================================
 
-	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFillColor) {
-		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pFillColor);
-	}
-
 	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFillColor) {
-		this(pTextureSource, pTextureSourceDecoratorShape, pFillColor, false);
+		this(pTextureSource, pTextureSourceDecoratorShape, pFillColor, null);
 	}
 
-	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFillColor, final boolean pAntiAliasing) {
-		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pFillColor, pAntiAliasing);
-	}
-
-	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFillColor, final boolean pAntiAliasing) {
-		super(pTextureSource, pTextureSourceDecoratorShape, pAntiAliasing);
+	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFillColor, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
 		this.mFillColor = pFillColor;
 
 		this.mPaint.setStyle(Style.FILL);
@@ -45,7 +37,7 @@ public class FillTextureSourceDecorator extends BaseShapeTextureSourceDecorator 
 
 	@Override
 	public FillTextureSourceDecorator clone() {
-		return new FillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFillColor, this.mAntiAliasing);
+		return new FillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFillColor, this.mTextureSourceDecoratorOptions);
 	}
 
 	// ===========================================================

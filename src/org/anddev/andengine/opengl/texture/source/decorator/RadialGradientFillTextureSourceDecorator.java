@@ -27,20 +27,12 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	// Constructors
 	// ===========================================================
 
-	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection) {
-		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pFromColor, pToColor, pRadialGradientDirection);
-	}
-
 	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection) {
-		this(pTextureSource, pTextureSourceDecoratorShape, pFromColor, pToColor, pRadialGradientDirection, false);
+		this(pTextureSource, pTextureSourceDecoratorShape, pFromColor, pToColor, pRadialGradientDirection, null);
 	}
 
-	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection, final boolean pAntiAliasing) {
-		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pFromColor, pToColor, pRadialGradientDirection, pAntiAliasing);
-	}
-
-	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection, final boolean pAntiAliasing) {
-		super(pTextureSource, pTextureSourceDecoratorShape, pAntiAliasing);
+	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
 		this.mFromColor = pFromColor;
 		this.mToColor = pToColor;
 		this.mRadialGradientDirection = pRadialGradientDirection;
@@ -67,7 +59,7 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 
 	@Override
 	public RadialGradientFillTextureSourceDecorator clone() {
-		return new RadialGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFromColor, this.mToColor, this.mRadialGradientDirection, this.mAntiAliasing);
+		return new RadialGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFromColor, this.mToColor, this.mRadialGradientDirection, this.mTextureSourceDecoratorOptions);
 	}
 
 	// ===========================================================

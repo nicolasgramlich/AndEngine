@@ -10,6 +10,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
 import org.anddev.andengine.opengl.texture.source.decorator.ColorKeyTextureSourceDecorator;
+import org.anddev.andengine.opengl.texture.source.decorator.BaseShapeTextureSourceDecorator.TextureSourceDecoratorShape;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
@@ -104,7 +105,7 @@ public class TMXTileSet implements TMXConstants {
 		} else {
 			try{
 				final int color = Color.parseColor((transparentColor.startsWith("#")) ? transparentColor : "#" + transparentColor);
-				TextureRegionFactory.createFromSource(this.mTexture, new ColorKeyTextureSourceDecorator(assetTextureSource, color), 0, 0);
+				TextureRegionFactory.createFromSource(this.mTexture, new ColorKeyTextureSourceDecorator(assetTextureSource, TextureSourceDecoratorShape.RECTANGLE, color), 0, 0);
 			} catch (final IllegalArgumentException e) {
 				throw new TMXParseException("Illegal value: '" + transparentColor + "' for attribute 'trans' supplied!", e);
 			}

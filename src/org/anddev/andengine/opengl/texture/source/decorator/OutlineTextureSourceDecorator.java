@@ -23,20 +23,12 @@ public class OutlineTextureSourceDecorator extends BaseShapeTextureSourceDecorat
 	// Constructors
 	// ===========================================================
 
-	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final int pOutlineColor) {
-		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pOutlineColor);
-	}
-
 	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pOutlineColor) {
-		this(pTextureSource, pTextureSourceDecoratorShape, pOutlineColor, false);
+		this(pTextureSource, pTextureSourceDecoratorShape, pOutlineColor, null);
 	}
 
-	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final int pOutlineColor, final boolean pAntiAliasing) {
-		this(pTextureSource, TextureSourceDecoratorShape.RECTANGLE, pOutlineColor, pAntiAliasing);
-	}
-
-	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pOutlineColor, final boolean pAntiAliasing) {
-		super(pTextureSource, pTextureSourceDecoratorShape, pAntiAliasing);
+	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pOutlineColor, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
 		this.mOutlineColor = pOutlineColor;
 
 		this.mPaint.setStyle(Style.STROKE);
@@ -45,7 +37,7 @@ public class OutlineTextureSourceDecorator extends BaseShapeTextureSourceDecorat
 
 	@Override
 	public OutlineTextureSourceDecorator clone() {
-		return new OutlineTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mOutlineColor, this.mAntiAliasing);
+		return new OutlineTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mOutlineColor, this.mTextureSourceDecoratorOptions);
 	}
 
 	// ===========================================================

@@ -20,22 +20,21 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 	// ===========================================================
 
 	protected final ITextureSource mTextureSource;
-	protected final Paint mPaint = new Paint();
-	protected final DecoratorOptions mDecoratorOptions = new DecoratorOptions();
-	protected final boolean mAntiAliasing;
+	protected TextureSourceDecoratorOptions mTextureSourceDecoratorOptions;
+	protected Paint mPaint = new Paint();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public BaseTextureSourceDecorator(final ITextureSource pTextureSource) {
-		this(pTextureSource, false);
+		this(pTextureSource, new TextureSourceDecoratorOptions());
 	}
 
-	public BaseTextureSourceDecorator(final ITextureSource pTextureSource, final boolean pAntiAliasing) {
+	public BaseTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		this.mTextureSource = pTextureSource;
-		this.mAntiAliasing = pAntiAliasing;
-		this.mPaint.setAntiAlias(pAntiAliasing);
+		this.mTextureSourceDecoratorOptions = (pTextureSourceDecoratorOptions == null) ? new TextureSourceDecoratorOptions() : pTextureSourceDecoratorOptions;
+		this.mPaint.setAntiAlias(this.mTextureSourceDecoratorOptions.getAntiAliasing());
 	}
 
 	@Override
@@ -47,6 +46,18 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 
 	public Paint getPaint() {
 		return this.mPaint;
+	}
+
+	public void setPaint(final Paint pPaint) {
+		this.mPaint = pPaint;
+	}
+
+	public TextureSourceDecoratorOptions getTextureSourceDecoratorOptions() {
+		return this.mTextureSourceDecoratorOptions;
+	}
+
+	public void setTextureSourceDecoratorOptions(final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+		this.mTextureSourceDecoratorOptions = pTextureSourceDecoratorOptions;
 	}
 
 	// ===========================================================
@@ -92,10 +103,12 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class DecoratorOptions {
+	public static class TextureSourceDecoratorOptions {
 		// ===========================================================
 		// Constants
 		// ===========================================================
+
+		public static final TextureSourceDecoratorOptions DEFAULT = new TextureSourceDecoratorOptions();
 
 		// ===========================================================
 		// Fields
@@ -106,44 +119,75 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 		private float mInsetTop = 0.0f;
 		private float mInsetBottom = 0.0f;
 
+		private boolean mAntiAliasing;
+
 		// ===========================================================
 		// Constructors
 		// ===========================================================
+
+		@Override
+		protected TextureSourceDecoratorOptions clone() {
+			final TextureSourceDecoratorOptions textureSourceDecoratorOptions = new TextureSourceDecoratorOptions();
+			textureSourceDecoratorOptions.setInsets(this.mInsetLeft, this.mInsetTop, this.mInsetRight, this.mInsetBottom);
+			textureSourceDecoratorOptions.setAntiAliasing(this.mAntiAliasing);
+			return textureSourceDecoratorOptions;
+		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
 
+		public boolean getAntiAliasing() {
+			return this.mAntiAliasing;
+		}
+
 		public float getInsetLeft() {
 			return this.mInsetLeft;
 		}
-		
-		public void setInsetLeft(final float pInsetLeft) {
-			this.mInsetLeft = pInsetLeft;
-		}
-		
+
 		public float getInsetRight() {
 			return this.mInsetRight;
 		}
-		
-		public void setInsetRight(final float pInsetRight) {
-			this.mInsetRight = pInsetRight;
-		}
-		
+
 		public float getInsetTop() {
 			return this.mInsetTop;
 		}
-		
-		public void setInsetTop(final float pInsetTop) {
-			this.mInsetTop = pInsetTop;
-		}
-		
+
 		public float getInsetBottom() {
 			return this.mInsetBottom;
 		}
-		
-		public void setInsetBottom(final float pInsetBottom) {
+
+		public TextureSourceDecoratorOptions setAntiAliasing(final boolean pAntiAliasing) {
+			this.mAntiAliasing = pAntiAliasing;
+			return this;
+		}
+
+		public TextureSourceDecoratorOptions setInsetLeft(final float pInsetLeft) {
+			this.mInsetLeft = pInsetLeft;
+			return this;
+		}
+
+		public TextureSourceDecoratorOptions setInsetRight(final float pInsetRight) {
+			this.mInsetRight = pInsetRight;
+			return this;
+		}
+
+		public TextureSourceDecoratorOptions setInsetTop(final float pInsetTop) {
+			this.mInsetTop = pInsetTop;
+			return this;
+		}
+
+		public TextureSourceDecoratorOptions setInsetBottom(final float pInsetBottom) {
 			this.mInsetBottom = pInsetBottom;
+			return this;
+		}
+
+		public TextureSourceDecoratorOptions setInsets(final float pInsetLeft, final float pInsetTop, final float pInsetRight, final float pInsetBottom) {
+			this.mInsetLeft = pInsetLeft;
+			this.mInsetTop = pInsetTop;
+			this.mInsetRight = pInsetRight;
+			this.mInsetBottom = pInsetBottom;
+			return this;
 		}
 
 		// ===========================================================

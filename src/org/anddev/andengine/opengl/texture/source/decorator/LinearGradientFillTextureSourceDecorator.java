@@ -83,6 +83,7 @@ public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 		// ===========================================================
 		// Elements
 		// ===========================================================
+
 		LEFT_TO_RIGHT(0, 0, 1, 0),
 		RIGHT_TO_LEFT(1, 0, 0, 0),
 		BOTTOM_TO_TOP(0, 0, 0, 1),

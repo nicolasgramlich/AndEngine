@@ -21,6 +21,7 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 
 	protected final ITextureSource mTextureSource;
 	protected final Paint mPaint = new Paint();
+	protected final DecoratorOptions mDecoratorOptions = new DecoratorOptions();
 	protected final boolean mAntiAliasing;
 
 	// ===========================================================
@@ -43,6 +44,10 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public Paint getPaint() {
+		return this.mPaint;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -86,4 +91,71 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static class DecoratorOptions {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		private float mInsetLeft = 0.0f;
+		private float mInsetRight = 0.0f;
+		private float mInsetTop = 0.0f;
+		private float mInsetBottom = 0.0f;
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		public float getInsetLeft() {
+			return this.mInsetLeft;
+		}
+		
+		public void setInsetLeft(final float pInsetLeft) {
+			this.mInsetLeft = pInsetLeft;
+		}
+		
+		public float getInsetRight() {
+			return this.mInsetRight;
+		}
+		
+		public void setInsetRight(final float pInsetRight) {
+			this.mInsetRight = pInsetRight;
+		}
+		
+		public float getInsetTop() {
+			return this.mInsetTop;
+		}
+		
+		public void setInsetTop(final float pInsetTop) {
+			this.mInsetTop = pInsetTop;
+		}
+		
+		public float getInsetBottom() {
+			return this.mInsetBottom;
+		}
+		
+		public void setInsetBottom(final float pInsetBottom) {
+			this.mInsetBottom = pInsetBottom;
+		}
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

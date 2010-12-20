@@ -23,35 +23,35 @@ public interface ILayer extends IEntity {
 	// Methods
 	// ===========================================================
 	
-	public void setEntity(final int pEntityIndex, final IEntity pEntity);
+	public void setChild(final int pEntityIndex, final IEntity pEntity);
 
-	public void swapEntities(final int pEntityIndexA, final int pEntityIndexB);
+	public void swapChildren(final int pEntityIndexA, final int pEntityIndexB);
 
 	/**
-	 * Similar to {@link ILayer#setEntity(int, ILayer)} but returns the {@link IEntity} that would be overwritten.
+	 * Similar to {@link ILayer#setChild(int, ILayer)} but returns the {@link IEntity} that would be overwritten.
 	 * 
 	 * @param pEntityIndex
 	 * @param pEntity
 	 * @return the layer that has been replaced.
 	 */
-	public IEntity replaceEntity(final int pEntityIndex, final IEntity pEntity);
+	public IEntity replaceChild(final int pEntityIndex, final IEntity pEntity);
 	
 	/**
 	 * Sorts the {@link IEntity}s based on their ZIndex. Sort is stable. 
 	 */
-	public void sortEntities();
+	public void sortChildren();
 	
 	/**
 	 * Sorts the {@link IEntity}s based on the {@link Comparator} supplied. Sort is stable.
 	 * @param pEntityComparator
 	 */
-	public void sortEntities(final Comparator<IEntity> pEntityComparator);
+	public void sortChildren(final Comparator<IEntity> pEntityComparator);
 
-	public IEntity getEntity(final int pIndex);
+	public IEntity getChild(final int pIndex);
 
-	public void addEntity(final IEntity pEntity);
+	public void addChild(final IEntity pEntity);
 
-	public IEntity findEntity(final IEntityMatcher pEntityMatcher);
+	public IEntity findChild(final IEntityMatcher pEntityMatcher);
 
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
@@ -60,7 +60,7 @@ public interface ILayer extends IEntity {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public IEntity removeEntity(final int pIndex);
+	public IEntity removeChild(final int pIndex);
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
 	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered
@@ -68,7 +68,7 @@ public interface ILayer extends IEntity {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public boolean removeEntity(final IEntity pEntity);
+	public boolean removeChild(final IEntity pEntity);
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
 	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered
@@ -76,7 +76,7 @@ public interface ILayer extends IEntity {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public boolean removeEntity(final IEntityMatcher pEntityMatcher);
+	public boolean removeChild(final IEntityMatcher pEntityMatcher);
 
 	public ArrayList<ITouchArea> getTouchAreas();
 
@@ -84,7 +84,7 @@ public interface ILayer extends IEntity {
 
 	public void unregisterTouchArea(final ITouchArea pTouchArea);
 
-	public int getEntityCount();
+	public int getChildCount();
 
-	public abstract void clear();
+	public void clearChildren();
 }

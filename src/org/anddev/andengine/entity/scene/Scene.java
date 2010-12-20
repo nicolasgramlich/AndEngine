@@ -29,7 +29,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
  */
-public class Scene extends Entity {
+public class Scene{
 	// ===========================================================
 	// Constants
 	// ===========================================================

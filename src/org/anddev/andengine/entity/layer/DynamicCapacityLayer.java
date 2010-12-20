@@ -19,13 +19,9 @@ public class DynamicCapacityLayer extends BaseLayer {
 	// Constants
 	// ===========================================================
 
-	private static final int CAPACITY_DEFAULT = 10;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
-	private final ArrayList<IEntity> mEntities;
 
 	// ===========================================================
 	// Constructors
@@ -48,12 +44,12 @@ public class DynamicCapacityLayer extends BaseLayer {
 	// ===========================================================
 
 	@Override
-	public IEntity getEntity(final int pIndex) {
+	public IEntity getChild(final int pIndex) {
 		return this.mEntities.get(pIndex);
 	}
 
 	@Override
-	public int getEntityCount() {
+	public int getChildCount() {
 		return this.mEntities.size();
 	}
 
@@ -86,27 +82,27 @@ public class DynamicCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public void clear() {
+	public void clearChildren() {
 		this.mEntities.clear();
 	}
 
 	@Override
-	public void addEntity(final IEntity pEntity) {
+	public void addChild(final IEntity pEntity) {
 		this.mEntities.add(pEntity);
 	}
 
 	@Override
-	public boolean removeEntity(final IEntity pEntity) {
+	public boolean removeChild(final IEntity pEntity) {
 		return this.mEntities.remove(pEntity);
 	}
 
 	@Override
-	public IEntity removeEntity(final int pIndex) {
+	public IEntity removeChild(final int pIndex) {
 		return this.mEntities.remove(pIndex);
 	}
 
 	@Override
-	public boolean removeEntity(final IEntityMatcher pEntityMatcher) {
+	public boolean removeChild(final IEntityMatcher pEntityMatcher) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		for(int i = entities.size() - 1; i >= 0; i--) {
 			if(pEntityMatcher.matches(entities.get(i))) {
@@ -118,7 +114,7 @@ public class DynamicCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public IEntity findEntity(final IEntityMatcher pEntityMatcher) {
+	public IEntity findChild(final IEntityMatcher pEntityMatcher) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		for(int i = entities.size() - 1; i >= 0; i--) {
 			final IEntity entity = entities.get(i);
@@ -130,33 +126,33 @@ public class DynamicCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public void sortEntities() {
+	public void sortChildren() {
 		ZIndexSorter.getInstance().sort(this.mEntities);
 	}
 	
 	@Override
-	public void sortEntities(final Comparator<IEntity> pEntityComparator) {
+	public void sortChildren(final Comparator<IEntity> pEntityComparator) {
 		ZIndexSorter.getInstance().sort(this.mEntities, pEntityComparator);
 	}
 
 	@Override
-	public IEntity replaceEntity(final int pEntityIndex, final IEntity pEntity) {
+	public IEntity replaceChild(final int pEntityIndex, final IEntity pEntity) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		final IEntity oldEntity = entities.set(pEntityIndex, pEntity);
 		return oldEntity;
 	}
 
 	@Override
-	public void setEntity(final int pEntityIndex, final IEntity pEntity) {
+	public void setChild(final int pEntityIndex, final IEntity pEntity) {
 		if(pEntityIndex == this.mEntities.size()) {
-			this.addEntity(pEntity);
+			this.addChild(pEntity);
 		} else {
 			this.mEntities.set(pEntityIndex, pEntity);
 		}
 	}
 
 	@Override
-	public void swapEntities(final int pEntityIndexA, final int pEntityIndexB) {
+	public void swapChildren(final int pEntityIndexA, final int pEntityIndexB) {
 		final ArrayList<IEntity> entities = this.mEntities;
 		final IEntity entityA = entities.get(pEntityIndexA);
 		final IEntity entityB = entities.set(pEntityIndexB, entityA);

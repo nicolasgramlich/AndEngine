@@ -45,7 +45,7 @@ public class FixedCapacityLayer extends BaseLayer {
 	// ===========================================================
 
 	@Override
-	public int getEntityCount() {
+	public int getChildCount() {
 		return this.mEntityCount;
 	}
 
@@ -78,14 +78,14 @@ public class FixedCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public IEntity getEntity(final int pIndex) {
+	public IEntity getChild(final int pIndex) {
 		this.checkIndex(pIndex);
 
 		return this.mEntities[pIndex];
 	}
 
 	@Override
-	public void clear() {
+	public void clearChildren() {
 		final IEntity[] entities = this.mEntities;
 		for(int i = this.mEntityCount - 1; i >= 0; i--) {
 			entities[i] = null;
@@ -94,7 +94,7 @@ public class FixedCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public void addEntity(final IEntity pEntity) {
+	public void addChild(final IEntity pEntity) {
 		if(this.mEntityCount < this.mCapacity) {
 			this.mEntities[this.mEntityCount] = pEntity;
 			this.mEntityCount++;
@@ -102,12 +102,12 @@ public class FixedCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public boolean removeEntity(final IEntity pEntity) {
-		return this.removeEntity(this.indexOfEntity(pEntity)) != null;
+	public boolean removeChild(final IEntity pEntity) {
+		return this.removeChild(this.indexOfEntity(pEntity)) != null;
 	}
 
 	@Override
-	public IEntity removeEntity(final int pIndex) {
+	public IEntity removeChild(final int pIndex) {
 		this.checkIndex(pIndex);
 
 		final IEntity[] entities = this.mEntities;
@@ -126,11 +126,11 @@ public class FixedCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public boolean removeEntity(final IEntityMatcher pEntityMatcher) {
+	public boolean removeChild(final IEntityMatcher pEntityMatcher) {
 		final IEntity[] entities = this.mEntities;
 		for(int i = entities.length - 1; i >= 0; i--) {
 			if(pEntityMatcher.matches(entities[i])) {
-				this.removeEntity(i);
+				this.removeChild(i);
 				return true;
 			}
 		}
@@ -138,7 +138,7 @@ public class FixedCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public IEntity findEntity(final IEntityMatcher pEntityMatcher) {
+	public IEntity findChild(final IEntityMatcher pEntityMatcher) {
 		final IEntity[] entities = this.mEntities;
 		for(int i = entities.length - 1; i >= 0; i--) {
 			final IEntity entity = entities[i];
@@ -161,17 +161,17 @@ public class FixedCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public void sortEntities() {
+	public void sortChildren() {
 		ZIndexSorter.getInstance().sort(this.mEntities, 0, this.mEntityCount);
 	}
 
 	@Override
-	public void sortEntities(final Comparator<IEntity> pEntityComparator) {
+	public void sortChildren(final Comparator<IEntity> pEntityComparator) {
 		ZIndexSorter.getInstance().sort(this.mEntities, 0, this.mEntityCount, pEntityComparator);
 	}
 
 	@Override
-	public IEntity replaceEntity(final int pIndex, final IEntity pEntity) {
+	public IEntity replaceChild(final int pIndex, final IEntity pEntity) {
 		this.checkIndex(pIndex);
 
 		final IEntity[] entities = this.mEntities;
@@ -181,18 +181,18 @@ public class FixedCapacityLayer extends BaseLayer {
 	}
 
 	@Override
-	public void setEntity(final int pIndex, final IEntity pEntity) {
+	public void setChild(final int pIndex, final IEntity pEntity) {
 		this.checkIndex(pIndex);
 
 		if(pIndex == this.mEntityCount) {
-			this.addEntity(pEntity);
+			this.addChild(pEntity);
 		} else if(pIndex < this.mEntityCount) {
 			this.mEntities[pIndex] = pEntity;
 		}
 	}
 
 	@Override
-	public void swapEntities(final int pEntityIndexA, final int pEntityIndexB) {
+	public void swapChildren(final int pEntityIndexA, final int pEntityIndexB) {
 		if(pEntityIndexA > this.mEntityCount) {
 			throw new IndexOutOfBoundsException("pEntityIndexA was bigger than the EntityCount.");
 		}

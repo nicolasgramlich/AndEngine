@@ -36,7 +36,7 @@ public class SplashScene extends Scene {
 			loadingScreenSprite.addShapeModifier(new ScaleModifier(pDuration, pScaleFrom, pScaleTo, IEaseFunction.DEFAULT));
 		}
 
-		this.getTopLayer().addEntity(loadingScreenSprite);
+		this.getTopLayer().addChild(loadingScreenSprite);
 	}
 
 	// ===========================================================

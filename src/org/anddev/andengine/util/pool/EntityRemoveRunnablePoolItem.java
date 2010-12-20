@@ -46,7 +46,7 @@ public class EntityRemoveRunnablePoolItem extends RunnablePoolItem {
 
 	@Override
 	public void run() {
-		this.mLayer.removeEntity(this.mEntity);
+		this.mLayer.removeChild(this.mEntity);
 	}
 
 	// ===========================================================

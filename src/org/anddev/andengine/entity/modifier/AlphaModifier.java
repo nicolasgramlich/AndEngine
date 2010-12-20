@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -28,12 +28,12 @@ public class AlphaModifier extends SingleValueSpanShapeModifier {
 		this(pDuration, pFromAlpha, pToAlpha, null, pEaseFunction);
 	}
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pFromAlpha, pToAlpha, pShapeModifierListener, IEaseFunction.DEFAULT);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pFromAlpha, pToAlpha, pEntityModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromAlpha, pToAlpha, pShapeModifierListener, pEaseFunction);
+	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromAlpha, pToAlpha, pEntityModifierListener, pEaseFunction);
 	}
 
 	protected AlphaModifier(final AlphaModifier pAlphaModifier) {
@@ -54,13 +54,13 @@ public class AlphaModifier extends SingleValueSpanShapeModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final IShape pShape, final float pAlpha) {
-		pShape.setAlpha(pAlpha);
+	protected void onSetInitialValue(final IEntity pEntity, final float pAlpha) {
+		pEntity.setAlpha(pAlpha);
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, final float pPercentageDone, final float pAlpha) {
-		pShape.setAlpha(pAlpha);
+	protected void onSetValue(final IEntity pEntity, final float pPercentageDone, final float pAlpha) {
+		pEntity.setAlpha(pAlpha);
 	}
 
 	// ===========================================================

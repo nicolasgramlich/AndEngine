@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -28,12 +28,12 @@ public class MoveXModifier extends SingleValueSpanShapeModifier {
 		this(pDuration, pFromX, pToX, null, pEaseFunction);
 	}
 
-	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pFromX, pToX, pShapeModifierListener, IEaseFunction.DEFAULT);
+	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pFromX, pToX, pEntityModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromX, pToX, pShapeModifierListener, pEaseFunction);
+	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromX, pToX, pEntityModifierListener, pEaseFunction);
 	}
 
 	protected MoveXModifier(final MoveXModifier pMoveXModifier) {
@@ -54,13 +54,13 @@ public class MoveXModifier extends SingleValueSpanShapeModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final IShape pShape, final float pX) {
-		pShape.setPosition(pX, pShape.getY());
+	protected void onSetInitialValue(final IEntity pEntity, final float pX) {
+		pEntity.setPosition(pX, pEntity.getY());
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, final float pPercentageDone, final float pX) {
-		pShape.setPosition(pX, pShape.getY());
+	protected void onSetValue(final IEntity pEntity, final float pPercentageDone, final float pX) {
+		pEntity.setPosition(pX, pEntity.getY());
 	}
 
 	// ===========================================================

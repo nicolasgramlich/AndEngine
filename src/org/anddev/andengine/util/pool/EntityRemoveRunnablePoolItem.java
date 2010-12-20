@@ -1,7 +1,7 @@
 package org.anddev.andengine.util.pool;
 
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.layer.ILayer;
+import org.anddev.andengine.entity.layer.Layer;
 
 /**
  * @author Nicolas Gramlich
@@ -17,7 +17,7 @@ public class EntityRemoveRunnablePoolItem extends RunnablePoolItem {
 	// ===========================================================
 
 	protected IEntity mEntity;
-	protected ILayer mLayer;
+	protected Layer mLayer;
 
 	// ===========================================================
 	// Constructors
@@ -31,11 +31,11 @@ public class EntityRemoveRunnablePoolItem extends RunnablePoolItem {
 		this.mEntity = pEntity;
 	}
 
-	public void setLayer(final ILayer pLayer) {
+	public void setLayer(final Layer pLayer) {
 		this.mLayer = pLayer;
 	}
 
-	public void set(final IEntity pEntity, final ILayer pLayer) {
+	public void set(final IEntity pEntity, final Layer pLayer) {
 		this.mEntity = pEntity;
 		this.mLayer = pLayer;
 	}

@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -28,12 +28,12 @@ public class ColorModifier extends TripleValueSpanShapeModifier {
 		this(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, null, pEaseFunction);
 	}
 
-	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pShapeModifierListener, IEaseFunction.DEFAULT);
+	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pEntityModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pShapeModifierListener, pEaseFunction);
+	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pEntityModifierListener, pEaseFunction);
 	}
 
 	protected ColorModifier(final ColorModifier pColorModifier) {
@@ -54,13 +54,13 @@ public class ColorModifier extends TripleValueSpanShapeModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValues(final IShape pShape, final float pRed, final float pGreen, final float pBlue) {
-		pShape.setColor(pRed, pGreen, pBlue);
+	protected void onSetInitialValues(final IEntity pEntity, final float pRed, final float pGreen, final float pBlue) {
+		pEntity.setColor(pRed, pGreen, pBlue);
 	}
 
 	@Override
-	protected void onSetValues(final IShape pShape, final float pPerctentageDone, final float pRed, final float pGreen, final float pBlue) {
-		pShape.setColor(pRed, pGreen, pBlue);
+	protected void onSetValues(final IEntity pEntity, final float pPerctentageDone, final float pRed, final float pGreen, final float pBlue) {
+		pEntity.setColor(pRed, pGreen, pBlue);
 	}
 
 	// ===========================================================

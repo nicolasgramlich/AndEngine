@@ -1,13 +1,12 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.util.modifier.ParallelModifier;
+import org.anddev.andengine.entity.IEntity;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:40:31 - 03.09.2010
+ * @since 22:55:13 - 19.03.2010
  */
-public class ParallelShapeModifier extends ParallelModifier<IShape> implements IShapeModifier {
+public class DelayModifier extends DurationShapeModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,21 +19,21 @@ public class ParallelShapeModifier extends ParallelModifier<IShape> implements I
 	// Constructors
 	// ===========================================================
 
-	public ParallelShapeModifier(final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
-		super(pShapeModifiers);
+	public DelayModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pEntityModifierListener);
 	}
 
-	public ParallelShapeModifier(final IShapeModifierListener pShapeModifierListener, final IShapeModifier... pShapeModifiers) throws IllegalArgumentException {
-		super(pShapeModifierListener, pShapeModifiers);
+	public DelayModifier(final float pDuration) {
+		super(pDuration);
 	}
 
-	protected ParallelShapeModifier(final ParallelShapeModifier pParallelShapeModifier) {
-		super(pParallelShapeModifier);
+	protected DelayModifier(final DelayModifier pDelayModifier) {
+		super(pDelayModifier);
 	}
 
 	@Override
-	public ParallelShapeModifier clone() {
-		return new ParallelShapeModifier(this);
+	public DelayModifier clone(){
+		return new DelayModifier(this);
 	}
 
 	// ===========================================================
@@ -44,6 +43,16 @@ public class ParallelShapeModifier extends ParallelModifier<IShape> implements I
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	protected void onManagedInitialize(final IEntity pEntity) {
+
+	}
+
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed, final IEntity pEntity) {
+
+	}
 
 	// ===========================================================
 	// Methods

@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.BaseDurationModifier;
 
 /**
  * @author Nicolas Gramlich
  * @since 16:10:42 - 19.03.2010
  */
-public abstract class DurationShapeModifier extends BaseDurationModifier<IShape> implements IShapeModifier {
+public abstract class DurationShapeModifier extends BaseDurationModifier<IEntity> implements IEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,8 +28,8 @@ public abstract class DurationShapeModifier extends BaseDurationModifier<IShape>
 		super(pDuration);
 	}
 
-	public DurationShapeModifier(final float pDuration, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pShapeModifierListener);
+	public DurationShapeModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pEntityModifierListener);
 	}
 
 	protected DurationShapeModifier(final DurationShapeModifier pDurationShapeModifier) {

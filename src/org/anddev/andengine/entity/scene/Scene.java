@@ -12,9 +12,7 @@ import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.layer.DynamicCapacityLayer;
-import org.anddev.andengine.entity.layer.FixedCapacityLayer;
-import org.anddev.andengine.entity.layer.ILayer;
+import org.anddev.andengine.entity.layer.Layer;
 import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
@@ -29,7 +27,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
  */
-public class Scene{
+public class Scene extends Entity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -47,7 +45,7 @@ public class Scene{
 	private boolean mChildSceneModalTouch;
 
 	private final int mLayerCount;
-	private final ILayer[] mLayers;
+	private final Layer[] mLayers;
 
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
@@ -72,18 +70,10 @@ public class Scene{
 	// ===========================================================
 
 	public Scene(final int pLayerCount) {
+		super(0, 0); // TODO Make Scene no more extend Entity.
 		this.mLayerCount = pLayerCount;
-		this.mLayers = new ILayer[pLayerCount];
+		this.mLayers = new Layer[pLayerCount];
 		this.createLayers();
-	}
-
-	public Scene(final int pLayerCount, final boolean pFixedCapacityLayers, final int ... pLayerCapacities) throws IllegalArgumentException {
-		if(pLayerCount != pLayerCapacities.length) {
-			throw new IllegalArgumentException("pLayerCount must be the same as the length of pLayerCapacities.");
-		}
-		this.mLayerCount = pLayerCount;
-		this.mLayers = new ILayer[pLayerCount];
-		this.createLayers(pFixedCapacityLayers, pLayerCapacities);
 	}
 
 	// ===========================================================
@@ -102,7 +92,7 @@ public class Scene{
 		this.mBackground = pBackground;
 	}
 
-	public ILayer getLayer(final int pLayerIndex) throws ArrayIndexOutOfBoundsException {
+	public Layer getLayer(final int pLayerIndex) throws ArrayIndexOutOfBoundsException {
 		return this.mLayers[pLayerIndex];
 	}
 
@@ -110,41 +100,41 @@ public class Scene{
 		return this.mLayers.length;
 	}
 
-	public ILayer getBottomLayer() {
+	public Layer getBottomLayer() {
 		return this.mLayers[0];
 	}
 
-	public ILayer getTopLayer() {
+	public Layer getTopLayer() {
 		return this.mLayers[this.mLayerCount - 1];
 	}
 
-	public void setLayer(final int pLayerIndex, final ILayer pLayer) {
+	public void setLayer(final int pLayerIndex, final Layer pLayer) {
 		this.mLayers[pLayerIndex] = pLayer;
 	}
 
 	public void swapLayers(final int pLayerIndexA, final int pLayerIndexB) {
-		final ILayer[] layers = this.mLayers;
-		final ILayer tmp = layers[pLayerIndexA];
+		final Layer[] layers = this.mLayers;
+		final Layer tmp = layers[pLayerIndexA];
 		layers[pLayerIndexA] = layers[pLayerIndexB];
 		layers[pLayerIndexB] = tmp;
 	}
 
 	/**
-	 * Similar to {@link Scene#setLayer(int, ILayer)} but returns the {@link ILayer} that would be overwritten.
+	 * Similar to {@link Scene#setLayer(int, Layer)} but returns the {@link Layer} that would be overwritten.
 	 * 
 	 * @param pLayerIndex
 	 * @param pLayer
 	 * @return the layer that has been replaced.
 	 */
-	public ILayer replaceLayer(final int pLayerIndex, final ILayer pLayer) {
-		final ILayer[] layers = this.mLayers;
-		final ILayer oldLayer = layers[pLayerIndex];
+	public Layer replaceLayer(final int pLayerIndex, final Layer pLayer) {
+		final Layer[] layers = this.mLayers;
+		final Layer oldLayer = layers[pLayerIndex];
 		layers[pLayerIndex] = pLayer;
 		return oldLayer;
 	}
 
 	/**
-	 * Sorts the {@link ILayer} based on their ZIndex. Sort is stable.
+	 * Sorts the {@link Layer} based on their ZIndex. Sort is stable.
 	 */
 	public void sortLayers() {
 		ZIndexSorter.getInstance().sort(this.mLayers);
@@ -353,10 +343,10 @@ public class Scene{
 		/* First give the layers a chance to handle their TouchAreas. */
 		{
 			final int layerCount = this.mLayerCount;
-			final ILayer[] layers = this.mLayers;
+			final Layer[] layers = this.mLayers;
 			if(this.mOnAreaTouchTraversalBackToFront) { /* Back to Front. */
 				for(int i = 0; i < layerCount; i++) {
-					final ILayer layer = layers[i];
+					final Layer layer = layers[i];
 					final ArrayList<ITouchArea> layerTouchAreas = layer.getTouchAreas();
 					final int layerTouchAreaCount = layerTouchAreas.size();
 					if(layerTouchAreaCount > 0) {
@@ -378,7 +368,7 @@ public class Scene{
 				}
 			} else { /* Front to back. */
 				for(int i = layerCount - 1; i >= 0; i--) {
-					final ILayer layer = layers[i];
+					final Layer layer = layers[i];
 					final ArrayList<ITouchArea> layerTouchAreas = layer.getTouchAreas();
 					final int layerTouchAreaCount = layerTouchAreas.size();
 					if(layerTouchAreaCount > 0) {
@@ -469,7 +459,7 @@ public class Scene{
 
 		this.clearChildScene();
 
-		final ILayer[] layers = this.mLayers;
+		final Layer[] layers = this.mLayers;
 		for(int i = this.mLayerCount - 1; i >= 0; i--) {
 			layers[i].reset();
 		}
@@ -493,27 +483,14 @@ public class Scene{
 	}
 
 	private void createLayers() {
-		final ILayer[] layers = this.mLayers;
+		final Layer[] layers = this.mLayers;
 		for(int i = this.mLayerCount - 1; i >= 0; i--) {
-			layers[i] = new DynamicCapacityLayer();
-		}
-	}
-
-	private void createLayers(final boolean pFixedCapacityLayers, final int[] pLayerCapacities) {
-		final ILayer[] layers = this.mLayers;
-		if(pFixedCapacityLayers) {
-			for(int i = this.mLayerCount - 1; i >= 0; i--) {
-				layers[i] = new FixedCapacityLayer(pLayerCapacities[i]);
-			}
-		} else {
-			for(int i = this.mLayerCount - 1; i >= 0; i--) {
-				layers[i] = new DynamicCapacityLayer(pLayerCapacities[i]);
-			}
+			layers[i] = new Layer();
 		}
 	}
 
 	private void updateLayers(final float pSecondsElapsed) {
-		final ILayer[] layers = this.mLayers;
+		final Layer[] layers = this.mLayers;
 		final int layerCount = this.mLayerCount;
 		for(int i = 0; i < layerCount; i++) {
 			layers[i].onUpdate(pSecondsElapsed);
@@ -521,7 +498,7 @@ public class Scene{
 	}
 
 	private void drawLayers(final GL10 pGL, final Camera pCamera) {
-		final ILayer[] layers = this.mLayers;
+		final Layer[] layers = this.mLayers;
 		final int layerCount = this.mLayerCount;
 		for(int i = 0; i < layerCount; i++) {
 			layers[i].onDraw(pGL, pCamera);
@@ -557,7 +534,7 @@ public class Scene{
 		public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
 
 		/**
-		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)} or to a {@link ILayer} via {@link ILayer#registerTouchArea(ITouchArea)}.
+		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)} or to a {@link Layer} via {@link Layer#registerTouchArea(ITouchArea)}.
 		 * @param pSceneTouchEvent
 		 * @return <code>true</code> if the event was handled (that means {@link IOnAreaTouchListener} of the {@link Scene} will not be fired!), otherwise <code>false</code>.
 		 */

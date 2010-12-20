@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.util.modifier.BaseModifier;
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.ParallelModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 10:53:16 - 03.09.2010
+ * @since 12:40:31 - 03.09.2010
  */
-public abstract class ShapeModifier extends BaseModifier<IShape> implements IShapeModifier {
+public class ParallelEntityModifier extends ParallelModifier<IEntity> implements IEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,16 +20,21 @@ public abstract class ShapeModifier extends BaseModifier<IShape> implements ISha
 	// Constructors
 	// ===========================================================
 
-	public ShapeModifier() {
-		super();
+	public ParallelEntityModifier(final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
+		super(pEntityModifiers);
 	}
 
-	public ShapeModifier(final IShapeModifierListener pShapeModifierListener) {
-		super(pShapeModifierListener);
+	public ParallelEntityModifier(final IEntityModifierListener pEntityModifierListener, final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
+		super(pEntityModifierListener, pEntityModifiers);
 	}
 
-	protected ShapeModifier(final ShapeModifier pShapeModifier) {
-		super(pShapeModifier);
+	protected ParallelEntityModifier(final ParallelEntityModifier pParallelShapeModifier) {
+		super(pParallelShapeModifier);
+	}
+
+	@Override
+	public ParallelEntityModifier clone() {
+		return new ParallelEntityModifier(this);
 	}
 
 	// ===========================================================

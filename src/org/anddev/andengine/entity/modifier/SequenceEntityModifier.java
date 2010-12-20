@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.util.modifier.LoopModifier;
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.SequenceModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 12:42:13 - 03.09.2010
+ * @since 12:41:15 - 03.09.2010
  */
-public class LoopShapeModifier extends LoopModifier<IShape> implements IShapeModifier {
+public class SequenceEntityModifier extends SequenceModifier<IEntity> implements IEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,29 +20,25 @@ public class LoopShapeModifier extends LoopModifier<IShape> implements IShapeMod
 	// Constructors
 	// ===========================================================
 
-	public LoopShapeModifier(final IShapeModifier pShapeModifier) {
-		super(pShapeModifier);
+	public SequenceEntityModifier(final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
+		super(pEntityModifiers);
 	}
 
-	public LoopShapeModifier(final IShapeModifierListener pShapeModifierListener, final int pLoopCount, final ILoopShapeModifierListener pLoopModifierListener, final IShapeModifier pShapeModifier) {
-		super(pShapeModifierListener, pLoopCount, pLoopModifierListener, pShapeModifier);
+	public SequenceEntityModifier(final IEntityModifierListener pEntityModifierListener, final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
+		super(pEntityModifierListener, pEntityModifiers);
 	}
 
-	public LoopShapeModifier(final IShapeModifierListener pShapeModifierListener, final int pLoopCount, final IShapeModifier pShapeModifier) {
-		super(pShapeModifierListener, pLoopCount, pShapeModifier);
+	public SequenceEntityModifier(final IEntityModifierListener pEntityModifierListener, final ISubSequenceShapeModifierListener pSubSequenceShapeModifierListener, final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
+		super(pEntityModifierListener, pSubSequenceShapeModifierListener, pEntityModifiers);
 	}
 
-	public LoopShapeModifier(final int pLoopCount, final IShapeModifier pShapeModifier) {
-		super(pLoopCount, pShapeModifier);
-	}
-
-	protected LoopShapeModifier(final LoopShapeModifier pLoopShapeModifier) {
-		super(pLoopShapeModifier);
+	protected SequenceEntityModifier(final SequenceEntityModifier pSequenceShapeModifier) {
+		super(pSequenceShapeModifier);
 	}
 
 	@Override
-	public LoopShapeModifier clone() {
-		return new LoopShapeModifier(this);
+	public SequenceEntityModifier clone() {
+		return new SequenceEntityModifier(this);
 	}
 
 	// ===========================================================
@@ -61,7 +57,7 @@ public class LoopShapeModifier extends LoopModifier<IShape> implements IShapeMod
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public interface ILoopShapeModifierListener extends ILoopModifierListener<IShape> {
+	public interface ISubSequenceShapeModifierListener extends ISubSequenceModifierListener<IEntity> {
 		// ===========================================================
 		// Final Fields
 		// ===========================================================

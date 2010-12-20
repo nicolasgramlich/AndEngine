@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.BaseDoubleValueSpanModifier;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
@@ -8,7 +8,7 @@ import org.anddev.andengine.util.modifier.ease.IEaseFunction;
  * @author Nicolas Gramlich
  * @since 23:29:22 - 19.03.2010
  */
-public abstract class DoubleValueSpanShapeModifier extends BaseDoubleValueSpanModifier<IShape> implements IShapeModifier {
+public abstract class DoubleValueSpanShapeModifier extends BaseDoubleValueSpanModifier<IEntity> implements IEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -29,12 +29,12 @@ public abstract class DoubleValueSpanShapeModifier extends BaseDoubleValueSpanMo
 		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pEaseFunction);
 	}
 
-	public DoubleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModifierListener);
+	public DoubleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pEntityModifierListener);
 	}
 
-	public DoubleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pShapeModifierListener, pEaseFunction);
+	public DoubleValueSpanShapeModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pEntityModifierListener, pEaseFunction);
 	}
 
 	protected DoubleValueSpanShapeModifier(final DoubleValueSpanShapeModifier pDoubleValueSpanModifier) {

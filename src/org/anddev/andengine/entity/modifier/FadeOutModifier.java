@@ -1,15 +1,13 @@
-package org.anddev.andengine.entity.layer;
+package org.anddev.andengine.entity.modifier;
 
-import java.util.ArrayList;
+import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 
 /**
  * @author Nicolas Gramlich
- * @since 00:13:59 - 23.07.2010
+ * @since 19:03:12 - 08.06.2010
  */
-public abstract class BaseLayer extends Entity implements ILayer {
+public class FadeOutModifier extends AlphaModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,18 +20,35 @@ public abstract class BaseLayer extends Entity implements ILayer {
 	// Constructors
 	// ===========================================================
 
-	public BaseLayer() {
-
+	public FadeOutModifier(final float pDuration) {
+		super(pDuration, 1.0f, 0.0f, IEaseFunction.DEFAULT);
 	}
 
-	public BaseLayer(final int pZIndex) {
-		super(pZIndex);
+	public FadeOutModifier(final float pDuration, final IEaseFunction pEaseFunction) {
+		super(pDuration, 1.0f, 0.0f, pEaseFunction);
+	}
+
+	public FadeOutModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, 1.0f, 0.0f, pEntityModifierListener, IEaseFunction.DEFAULT);
+	}
+
+	public FadeOutModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, 1.0f, 0.0f, pEntityModifierListener, pEaseFunction);
+	}
+
+	protected FadeOutModifier(final FadeOutModifier pFadeOutModifier) {
+		super(pFadeOutModifier);
+	}
+
+	@Override
+	public FadeOutModifier clone() {
+		return new FadeOutModifier(this);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

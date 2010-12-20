@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 
@@ -36,14 +36,14 @@ public class RotationAtModifier extends RotationModifier {
 		this.mRotationCenterY = pRotationCenterY;
 	}
 
-	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModifierListener, IEaseFunction.DEFAULT);
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pFromRotation, pToRotation, pEntityModifierListener, IEaseFunction.DEFAULT);
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}
 
-	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModifierListener, pEaseFunction);
+	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromRotation, pToRotation, pEntityModifierListener, pEaseFunction);
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}
@@ -68,9 +68,9 @@ public class RotationAtModifier extends RotationModifier {
 	// ===========================================================
 
 	@Override
-	protected void onManagedInitialize(final IShape pShape) {
-		super.onManagedInitialize(pShape);
-		pShape.setRotationCenter(this.mRotationCenterX, this.mRotationCenterY);
+	protected void onManagedInitialize(final IEntity pEntity) {
+		super.onManagedInitialize(pEntity);
+		pEntity.setRotationCenter(this.mRotationCenterX, this.mRotationCenterY);
 	}
 
 	// ===========================================================

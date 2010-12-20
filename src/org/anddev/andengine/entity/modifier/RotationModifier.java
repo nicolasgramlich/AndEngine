@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -28,12 +28,12 @@ public class RotationModifier extends SingleValueSpanShapeModifier {
 		this(pDuration, pFromRotation, pToRotation, null, pEaseFunction);
 	}
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModifierListener, IEaseFunction.DEFAULT);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pFromRotation, pToRotation, pEntityModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromRotation, pToRotation, pShapeModifierListener, pEaseFunction);
+	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromRotation, pToRotation, pEntityModifierListener, pEaseFunction);
 	}
 
 	protected RotationModifier(final RotationModifier pRotationModifier) {
@@ -54,13 +54,13 @@ public class RotationModifier extends SingleValueSpanShapeModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final IShape pShape, final float pRotation) {
-		pShape.setRotation(pRotation);
+	protected void onSetInitialValue(final IEntity pEntity, final float pRotation) {
+		pEntity.setRotation(pRotation);
 	}
 
 	@Override
-	protected void onSetValue(final IShape pShape, final float pPercentageDone, final float pRotation) {
-		pShape.setRotation(pRotation);
+	protected void onSetValue(final IEntity pEntity, final float pPercentageDone, final float pRotation) {
+		pEntity.setRotation(pRotation);
 	}
 
 	// ===========================================================

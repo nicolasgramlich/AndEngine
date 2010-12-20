@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
@@ -7,7 +7,7 @@ import org.anddev.andengine.util.modifier.ease.IEaseFunction;
  * @author Nicolas Gramlich
  * @since 19:03:12 - 08.06.2010
  */
-public class FadeOutModifier extends AlphaModifier {
+public class FadeInModifier extends AlphaModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,29 +20,29 @@ public class FadeOutModifier extends AlphaModifier {
 	// Constructors
 	// ===========================================================
 
-	public FadeOutModifier(final float pDuration) {
-		super(pDuration, 1.0f, 0.0f, IEaseFunction.DEFAULT);
+	public FadeInModifier(final float pDuration) {
+		super(pDuration, 0.0f, 1.0f, IEaseFunction.DEFAULT);
 	}
 
-	public FadeOutModifier(final float pDuration, final IEaseFunction pEaseFunction) {
-		super(pDuration, 1.0f, 0.0f, pEaseFunction);
+	public FadeInModifier(final float pDuration, final IEaseFunction pEaseFunction) {
+		super(pDuration, 0.0f, 1.0f, pEaseFunction);
 	}
 
-	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, 1.0f, 0.0f, pShapeModifierListener, IEaseFunction.DEFAULT);
+	public FadeInModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, 0.0f, 1.0f, pEntityModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public FadeOutModifier(final float pDuration, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, 1.0f, 0.0f, pShapeModifierListener, pEaseFunction);
+	public FadeInModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, 0.0f, 1.0f, pEntityModifierListener, pEaseFunction);
 	}
 
-	protected FadeOutModifier(final FadeOutModifier pFadeOutModifier) {
-		super(pFadeOutModifier);
+	protected FadeInModifier(final FadeInModifier pFadeInModifier) {
+		super(pFadeInModifier);
 	}
 
 	@Override
-	public FadeOutModifier clone() {
-		return new FadeOutModifier(this);
+	public FadeInModifier clone() {
+		return new FadeInModifier(this);
 	}
 
 	// ===========================================================

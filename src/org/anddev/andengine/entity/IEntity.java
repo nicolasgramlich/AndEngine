@@ -6,11 +6,11 @@ import java.util.Comparator;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
-import org.anddev.andengine.entity.layer.ILayer;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.IEntityMatcher;
+import org.anddev.andengine.util.modifier.IModifier;
 
 
 /**
@@ -25,6 +25,54 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public float getRed();
+	public float getGreen();
+	public float getBlue();
+	public float getAlpha();
+	public void setAlpha(final float pAlpha);
+
+	public void setColor(final float pRed, final float pGreen, final float pBlue);
+	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
+
+	public float getX();
+	public float getY();
+
+	public float getBaseX();
+	public float getBaseY();
+
+	public void setBasePosition();
+	public void setPosition(final IEntity pOtherEntity);
+	public void setPosition(final float pX, final float pY);
+	
+	public float[] getSceneCenterCoordinates();
+
+	public float getRotation();
+	public void setRotation(final float pRotation);
+
+	public float getRotationCenterX();
+	public float getRotationCenterY();
+	public void setRotationCenterX(final float pRotationCenterX);
+	public void setRotationCenterY(final float pRotationCenterY);
+	public void setRotationCenter(final float pRotationCenterX, final float pRotationCenterY);
+
+	public boolean isScaled();
+	public float getScaleX();
+	public float getScaleY();
+	public void setScaleX(final float pScaleX);
+	public void setScaleY(final float pScaleY);
+	public void setScale(final float pScale);
+	public void setScale(final float pScaleX, final float pScaleY);
+
+	public float getScaleCenterX();
+	public float getScaleCenterY();
+	public void setScaleCenterX(final float pScaleCenterX);
+	public void setScaleCenterY(final float pScaleCenterY);
+	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY);
+
+	public void addEntityModifier(final IModifier<IEntity> pEntityModifier);
+	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier);
+	public void clearEntityModifiers();
 
 	public int getZIndex();
 	public void setZIndex(final int pZIndex);
@@ -87,4 +135,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public boolean removeChild(final IEntityMatcher pEntityMatcher);
 
 	public void clearChildren();
+
+	public ArrayList<ITouchArea> getTouchAreas();
+	public void registerTouchArea(final ITouchArea pTouchArea);
+	public void unregisterTouchArea(final ITouchArea pTouchArea);
 }

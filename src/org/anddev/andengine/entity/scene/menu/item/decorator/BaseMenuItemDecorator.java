@@ -1,11 +1,17 @@
 package org.anddev.andengine.entity.scene.menu.item.decorator;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.util.IEntityMatcher;
 import org.anddev.andengine.util.modifier.IModifier;
 
 /**
@@ -66,13 +72,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void addShapeModifier(final IModifier<IShape> pShapeModifier) {
-		this.mMenuItem.addShapeModifier(pShapeModifier);
+	public void addEntityModifier(final IModifier<IEntity> pEntityModifier) {
+		this.mMenuItem.addEntityModifier(pEntityModifier);
 	}
 
 	@Override
-	public void clearShapeModifiers() {
-		this.mMenuItem.clearShapeModifiers();
+	public void clearEntityModifiers() {
+		this.mMenuItem.clearEntityModifiers();
 	}
 
 	@Override
@@ -231,8 +237,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public boolean removeShapeModifier(final IModifier<IShape> pShapeModifier) {
-		return this.mMenuItem.removeShapeModifier(pShapeModifier);
+	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier) {
+		return this.mMenuItem.removeEntityModifier(pEntityModifier);
 	}
 
 	@Override
@@ -291,8 +297,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void setPosition(final IShape pOtherShape) {
-		this.mMenuItem.setPosition(pOtherShape);
+	public void setPosition(final IEntity pOtherEntity) {
+		this.mMenuItem.setPosition(pOtherEntity);
 	}
 
 	@Override
@@ -424,6 +430,86 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		return this.mMenuItem.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+	}
+	
+	@Override
+	public int getChildCount() {
+		return this.mMenuItem.getChildCount();
+	}
+
+	@Override
+	public void addChild(IEntity pEntity) {
+		this.mMenuItem.addChild(pEntity);
+	}
+
+	@Override
+	public void setChild(int pEntityIndex, IEntity pEntity) {
+		this.mMenuItem.setChild(pEntityIndex, pEntity);
+	}
+
+	@Override
+	public IEntity replaceChild(int pEntityIndex, IEntity pEntity) {
+		return this.mMenuItem.replaceChild(pEntityIndex, pEntity);
+	}
+
+	@Override
+	public void swapChildren(int pEntityIndexA, int pEntityIndexB) {
+		this.mMenuItem.swapChildren(pEntityIndexA, pEntityIndexB);
+	}
+
+	@Override
+	public IEntity getChild(int pIndex) {
+		return this.mMenuItem.getChild(pIndex);
+	}
+
+	@Override
+	public IEntity findChild(IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.findChild(pEntityMatcher);
+	}
+
+	@Override
+	public void sortChildren() {
+		this.mMenuItem.sortChildren();
+	}
+
+	@Override
+	public void sortChildren(Comparator<IEntity> pEntityComparator) {
+		this.mMenuItem.sortChildren(pEntityComparator);
+	}
+
+	@Override
+	public IEntity removeChild(int pIndex) {
+		return this.mMenuItem.removeChild(pIndex);
+	}
+
+	@Override
+	public boolean removeChild(IEntity pEntity) {
+		return this.mMenuItem.removeChild(pEntity);
+	}
+
+	@Override
+	public boolean removeChild(IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.removeChild(pEntityMatcher);
+	}
+
+	@Override
+	public void clearChildren() {
+		this.mMenuItem.clearChildren();
+	}
+
+	@Override
+	public ArrayList<ITouchArea> getTouchAreas() {
+		return this.mMenuItem.getTouchAreas();
+	}
+
+	@Override
+	public void registerTouchArea(ITouchArea pTouchArea) {
+		this.mMenuItem.registerTouchArea(pTouchArea);
+	}
+
+	@Override
+	public void unregisterTouchArea(ITouchArea pTouchArea) {
+		this.mMenuItem.unregisterTouchArea(pTouchArea);
 	}
 
 	// ===========================================================

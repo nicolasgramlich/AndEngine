@@ -8,7 +8,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.collision.BaseCollisionChecker;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -39,7 +39,7 @@ public class Camera implements IUpdateHandler {
 
 	private HUD mHUD;
 
-	private IShape mChaseShape;
+	private IEntity mChaseEntity;
 
 	protected float mRotation = 0;
 	protected float mCameraSceneRotation = 0;
@@ -141,8 +141,8 @@ public class Camera implements IUpdateHandler {
 		return this.mHUD != null;
 	}
 
-	public void setChaseShape(final IShape pChaseShape) {
-		this.mChaseShape = pChaseShape;
+	public void setChaseEntity(final IEntity pChaseEntity) {
+		this.mChaseEntity = pChaseEntity;
 	}
 
 	public float getRotation() {
@@ -171,8 +171,8 @@ public class Camera implements IUpdateHandler {
 			this.mHUD.onUpdate(pSecondsElapsed);
 		}
 
-		if(this.mChaseShape != null) {
-			final float[] centerCoordinates = this.mChaseShape.getSceneCenterCoordinates();
+		if(this.mChaseEntity != null) {
+			final float[] centerCoordinates = this.mChaseEntity.getSceneCenterCoordinates();
 			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
 		}
 	}

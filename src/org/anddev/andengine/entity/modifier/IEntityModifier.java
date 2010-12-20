@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.IModifier;
 
 /**
  * @author Nicolas Gramlich
  * @since 11:17:50 - 19.03.2010
  */
-public interface IShapeModifier extends IModifier<IShape> {
+public interface IEntityModifier extends IModifier<IEntity> {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -20,7 +20,7 @@ public interface IShapeModifier extends IModifier<IShape> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface IShapeModifierListener extends IModifierListener<IShape>{
+	public static interface IEntityModifierListener extends IModifierListener<IEntity>{
 		// ===========================================================
 		// Final Fields
 		// ===========================================================

@@ -6,8 +6,8 @@ import javax.microedition.khronos.opengles.GL11;
 import org.anddev.andengine.collision.LineCollisionChecker;
 import org.anddev.andengine.collision.ShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.GLShape;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
@@ -16,7 +16,7 @@ import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
  * @author Nicolas Gramlich
  * @since 09:50:36 - 04.04.2010
  */
-public class Line extends GLShape {
+public class Line extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================

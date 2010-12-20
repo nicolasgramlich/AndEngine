@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -28,12 +28,12 @@ public class MoveModifier extends DoubleValueSpanShapeModifier {
 		this(pDuration, pFromX, pToX, pFromY, pToY, null, pEaseFunction);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModifierListener, IEaseFunction.DEFAULT);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pFromX, pToX, pFromY, pToY, pEntityModifierListener, IEaseFunction.DEFAULT);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IShapeModifierListener pShapeModifierListener, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pShapeModifierListener, pEaseFunction);
+	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromX, pToX, pFromY, pToY, pEntityModifierListener, pEaseFunction);
 	}
 
 	protected MoveModifier(final MoveModifier pMoveModifier) {
@@ -54,13 +54,13 @@ public class MoveModifier extends DoubleValueSpanShapeModifier {
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValues(final IShape pShape, final float pX, final float pY) {
-		pShape.setPosition(pX, pY);
+	protected void onSetInitialValues(final IEntity pEntity, final float pX, final float pY) {
+		pEntity.setPosition(pX, pY);
 	}
 
 	@Override
-	protected void onSetValues(final IShape pShape, final float pPercentageDone, final float pX, final float pY) {
-		pShape.setPosition(pX, pY);
+	protected void onSetValues(final IEntity pEntity, final float pPercentageDone, final float pX, final float pY) {
+		pEntity.setPosition(pX, pY);
 	}
 
 	// ===========================================================

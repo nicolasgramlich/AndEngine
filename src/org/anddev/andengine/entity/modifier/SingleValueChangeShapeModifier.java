@@ -1,16 +1,13 @@
-package org.anddev.andengine.entity.shape;
+package org.anddev.andengine.entity.modifier;
 
-import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
-
-import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.opengl.vertex.VertexBuffer;
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.BaseSingleValueChangeModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:51:27 - 13.03.2010
+ * @since 15:34:35 - 17.06.2010
  */
-public abstract class GLShape extends Shape {
+public abstract class SingleValueChangeShapeModifier extends BaseSingleValueChangeModifier<IEntity> implements IEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,28 +20,21 @@ public abstract class GLShape extends Shape {
 	// Constructors
 	// ===========================================================
 
-	public GLShape(final float pX, final float pY) {
-		super(pX, pY);
+	public SingleValueChangeShapeModifier(final float pDuration, final float pValueChange) {
+		super(pDuration, pValueChange);
+	}
+
+	public SingleValueChangeShapeModifier(final float pDuration, final float pValueChange, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pValueChange, pEntityModifierListener);
+	}
+
+	protected SingleValueChangeShapeModifier(final SingleValueChangeShapeModifier pSingleValueChangeShapeModifier) {
+		super(pSingleValueChangeShapeModifier);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	protected abstract void onUpdateVertexBuffer();
-	protected abstract VertexBuffer getVertexBuffer();
-
-	@Override
-	protected void onApplyVertices(final GL10 pGL) {
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			final GL11 gl11 = (GL11)pGL;
-
-			this.getVertexBuffer().selectOnHardware(gl11);
-			GLHelper.vertexZeroPointer(gl11);
-		} else {
-			GLHelper.vertexPointer(pGL, this.getVertexBuffer().getFloatBuffer());
-		}
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -53,10 +43,6 @@ public abstract class GLShape extends Shape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	protected void updateVertexBuffer() {
-		this.onUpdateVertexBuffer();
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.IEntity;
 
 /**
  * @author Nicolas Gramlich
@@ -41,8 +41,8 @@ public class RotationByModifier extends SingleValueChangeShapeModifier {
 	// ===========================================================
 
 	@Override
-	protected void onChangeValue(final IShape pShape, final float pValue) {
-		pShape.setRotation(pShape.getRotation() + pValue);
+	protected void onChangeValue(final IEntity pEntity, final float pValue) {
+		pEntity.setRotation(pEntity.getRotation() + pValue);
 	}
 
 	// ===========================================================

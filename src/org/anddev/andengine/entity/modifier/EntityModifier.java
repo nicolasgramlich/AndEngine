@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.util.modifier.BaseSingleValueChangeModifier;
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.BaseModifier;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:34:35 - 17.06.2010
+ * @since 10:53:16 - 03.09.2010
  */
-public abstract class SingleValueChangeShapeModifier extends BaseSingleValueChangeModifier<IShape> implements IShapeModifier {
+public abstract class EntityModifier extends BaseModifier<IEntity> implements IEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,16 +20,16 @@ public abstract class SingleValueChangeShapeModifier extends BaseSingleValueChan
 	// Constructors
 	// ===========================================================
 
-	public SingleValueChangeShapeModifier(final float pDuration, final float pValueChange) {
-		super(pDuration, pValueChange);
+	public EntityModifier() {
+		super();
 	}
 
-	public SingleValueChangeShapeModifier(final float pDuration, final float pValueChange, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pValueChange, pShapeModifierListener);
+	public EntityModifier(final IEntityModifierListener pEntityModifierListener) {
+		super(pEntityModifierListener);
 	}
 
-	protected SingleValueChangeShapeModifier(final SingleValueChangeShapeModifier pSingleValueChangeShapeModifier) {
-		super(pSingleValueChangeShapeModifier);
+	protected EntityModifier(final EntityModifier pEntityModifier) {
+		super(pEntityModifier);
 	}
 
 	// ===========================================================

@@ -1,12 +1,12 @@
-package org.anddev.andengine.entity.shape.modifier;
+package org.anddev.andengine.entity.layer;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.Entity;
 
 /**
  * @author Nicolas Gramlich
- * @since 22:55:13 - 19.03.2010
+ * @since 11:48:23 - 20.12.2010
  */
-public class DelayModifier extends DurationShapeModifier {
+public class Layer extends Entity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,22 +18,13 @@ public class DelayModifier extends DurationShapeModifier {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public DelayModifier(final float pDuration, final IShapeModifierListener pShapeModifierListener) {
-		super(pDuration, pShapeModifierListener);
+	
+	public Layer() {
+		super(0, 0);
 	}
 
-	public DelayModifier(final float pDuration) {
-		super(pDuration);
-	}
-
-	protected DelayModifier(final DelayModifier pDelayModifier) {
-		super(pDelayModifier);
-	}
-
-	@Override
-	public DelayModifier clone(){
-		return new DelayModifier(this);
+	public Layer(float pX, float pY) {
+		super(pX, pY);
 	}
 
 	// ===========================================================
@@ -43,16 +34,6 @@ public class DelayModifier extends DurationShapeModifier {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected void onManagedInitialize(final IShape pShape) {
-
-	}
-
-	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed, final IShape pShape) {
-
-	}
 
 	// ===========================================================
 	// Methods

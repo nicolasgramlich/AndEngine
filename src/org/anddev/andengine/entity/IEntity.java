@@ -87,8 +87,4 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public boolean removeChild(final IEntityMatcher pEntityMatcher);
 
 	public void clearChildren();
-
-	public ArrayList<ITouchArea> getTouchAreas();
-	public void registerTouchArea(final ITouchArea pTouchArea);
-	public void unregisterTouchArea(final ITouchArea pTouchArea);
 }

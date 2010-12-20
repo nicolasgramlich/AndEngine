@@ -1,14 +1,12 @@
 package org.anddev.andengine.entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.layer.ZIndexSorter;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.util.IEntityMatcher;
 
 
@@ -22,7 +20,6 @@ public abstract class Entity implements IEntity {
 	// ===========================================================
 
 	private static final int CHILDREN_CAPACITY_DEFAULT = 4;
-	private static final int TOUCHAREAS_CAPACITY_DEFAULT = 4;
 
 	// ===========================================================
 	// Fields
@@ -33,8 +30,6 @@ public abstract class Entity implements IEntity {
 	private int mZIndex = 0;
 
 	private IEntity mParent;
-
-	private ArrayList<ITouchArea> mTouchAreas;
 
 	private ArrayList<IEntity> mChildren;
 
@@ -104,26 +99,6 @@ public abstract class Entity implements IEntity {
 		if(!this.mIgnoreUpdate) {
 			this.onManagedUpdate(pSecondsElapsed);
 		}
-	}
-
-	@Override
-	public void registerTouchArea(final ITouchArea pTouchArea) {
-		if(this.mTouchAreas == null) {
-			allocateTouchAreas();
-		}
-		this.mTouchAreas.add(pTouchArea);
-	}
-
-	@Override
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
-		if(this.mTouchAreas == null) {
-			return;
-		}
-		this.mTouchAreas.remove(pTouchArea);
-	}
-
-	public ArrayList<ITouchArea> getTouchAreas() {
-		return this.mTouchAreas;
 	}
 
 	@Override
@@ -268,10 +243,6 @@ public abstract class Entity implements IEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private void allocateTouchAreas() {
-		this.mTouchAreas = new ArrayList<ITouchArea>(TOUCHAREAS_CAPACITY_DEFAULT);
-	}
 
 	private void allocateChildren() {
 		this.mChildren = new ArrayList<IEntity>(CHILDREN_CAPACITY_DEFAULT);

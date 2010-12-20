@@ -95,6 +95,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void swapChildren(final int pEntityIndexA, final int pEntityIndexB);
 
 	public IEntity getChild(final int pIndex);
+	public IEntity getFirstChild();
+	public IEntity getLastChild();
 
 	public IEntity findChild(final IEntityMatcher pEntityMatcher);
 	

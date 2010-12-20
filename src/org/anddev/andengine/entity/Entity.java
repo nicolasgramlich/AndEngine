@@ -33,14 +33,14 @@ public class Entity implements IEntity {
 	// Fields
 	// ===========================================================
 
-	private boolean mVisible = true;
-	private boolean mIgnoreUpdate = false;
-	private int mZIndex = 0;
+	protected boolean mVisible = true;
+	protected boolean mIgnoreUpdate = false;
+	protected int mZIndex = 0;
 
-	private IEntity mParent;
+	protected IEntity mParent;
 
-	private ArrayList<IEntity> mChildren;
-	private ArrayList<ITouchArea> mTouchAreas;
+	protected ArrayList<IEntity> mChildren;
+	protected ArrayList<ITouchArea> mTouchAreas;
 
 	protected float mRed = 1f;
 	protected float mGreen = 1f;
@@ -64,7 +64,7 @@ public class Entity implements IEntity {
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;
 
-	private final ModifierList<IEntity> mEntityModifiers = new ModifierList<IEntity>(this);
+	protected final ModifierList<IEntity> mEntityModifiers = new ModifierList<IEntity>(this);
 
 	// ===========================================================
 	// Constructors
@@ -381,6 +381,22 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public IEntity getFirstChild() {
+		if(this.mChildren == null) {
+			return null;
+		}
+		return this.mChildren.get(0);
+	}
+	
+	@Override
+	public IEntity getLastChild() {
+		if(this.mChildren == null) {
+			return null;
+		}
+		return this.mChildren.get(this.mChildren.size() - 1);
+	}
+
+	@Override
 	public int getChildCount() {
 		if(this.mChildren == null) {
 			return 0;
@@ -582,6 +598,10 @@ public class Entity implements IEntity {
 			pGL.glTranslatef(rotationCenterX, rotationCenterY, 0);
 			pGL.glRotatef(rotation, 0, 0, 1);
 			pGL.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
+			
+			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same. 
+			 * In that case the last glTranslatef of the rotation and the first glTranslatef of the scale is superfluous.
+			 * The problem is that applyRotation and applyScale would need to be "merged" in order to efficiently check for that condition.  */
 		}
 	}
 

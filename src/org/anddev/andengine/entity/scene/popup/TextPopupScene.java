@@ -48,7 +48,7 @@ public class TextPopupScene extends PopupScene {
 			this.mText.addEntityModifier(pShapeModifier);
 		}
 
-		this.getTopLayer().addChild(this.mText);
+		this.getLastChild().addChild(this.mText);
 	}
 
 	// ===========================================================

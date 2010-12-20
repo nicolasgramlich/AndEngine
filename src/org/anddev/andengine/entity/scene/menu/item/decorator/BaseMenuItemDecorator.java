@@ -463,6 +463,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public IEntity getFirstChild() {
+		return this.mMenuItem.getFirstChild();
+	}
+
+	@Override
+	public IEntity getLastChild() {
+		return this.mMenuItem.getLastChild();
+	}
+
+	@Override
 	public IEntity findChild(IEntityMatcher pEntityMatcher) {
 		return this.mMenuItem.findChild(pEntityMatcher);
 	}

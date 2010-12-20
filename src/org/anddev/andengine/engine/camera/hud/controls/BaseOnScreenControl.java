@@ -7,7 +7,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.layer.Layer;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.sprite.Sprite;
@@ -72,9 +72,9 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 			}
 		}));
 
-		final Layer bottomLayer = this.getBottomLayer();
-		bottomLayer.addChild(this.mControlBase);
-		bottomLayer.addChild(this.mControlKnob);
+		final IEntity firstChild = this.getFirstChild();
+		firstChild.addChild(this.mControlBase);
+		firstChild.addChild(this.mControlKnob);
 
 		this.setTouchAreaBindingEnabled(true);
 	}

@@ -12,6 +12,8 @@ import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.IEntityMatcher;
 import org.anddev.andengine.util.modifier.IModifier;
 
+import android.graphics.Matrix;
+
 
 /**
  * @author Nicolas Gramlich
@@ -25,6 +27,9 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public IEntity getParent();
+	public void setParent(final IEntity pEntity);
 	
 	public float getRed();
 	public float getGreen();
@@ -46,6 +51,9 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setPosition(final float pX, final float pY);
 	
 	public float[] getSceneCenterCoordinates();
+	
+	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
+	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
 
 	public float getRotation();
 	public void setRotation(final float pRotation);
@@ -141,4 +149,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public ArrayList<ITouchArea> getTouchAreas();
 	public void registerTouchArea(final ITouchArea pTouchArea);
 	public void unregisterTouchArea(final ITouchArea pTouchArea);
+
+	public Matrix getLocalToSceneMatrix();
+	public Matrix getSceneToLocalMatrix();
 }

@@ -13,7 +13,8 @@
 	
 	<property name="binfile" value="bin/andengine.jar" />
 	
-	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar" />
+	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar,
+	../AndEngineTest/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<echo>${targetfile}</echo>

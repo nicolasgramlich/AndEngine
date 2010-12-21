@@ -4,7 +4,6 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.collision.LineCollisionChecker;
-import org.anddev.andengine.collision.ShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
@@ -188,7 +187,8 @@ public class Line extends Shape {
 
 	@Override
 	public float[] getSceneCenterCoordinates() {
-		return ShapeCollisionChecker.convertLocalToSceneCoordinates(this, (this.mX + this.mX2) * 0.5f, (this.mY + this.mY2) * 0.5f);
+		return null; // TODO 
+//		return convertLocalToSceneCoordinates(this, (this.mX + this.mX2) * 0.5f, (this.mY + this.mY2) * 0.5f);
 	}
 
 	@Override

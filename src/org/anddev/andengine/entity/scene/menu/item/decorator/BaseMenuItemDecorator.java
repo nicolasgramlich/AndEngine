@@ -14,6 +14,8 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.util.IEntityMatcher;
 import org.anddev.andengine.util.modifier.IModifier;
 
+import android.graphics.Matrix;
+
 /**
  * @author Nicolas Gramlich
  * @since 15:05:44 - 18.11.2010
@@ -431,34 +433,34 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		return this.mMenuItem.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 	}
-	
+
 	@Override
 	public int getChildCount() {
 		return this.mMenuItem.getChildCount();
 	}
 
 	@Override
-	public void addChild(IEntity pEntity) {
+	public void addChild(final IEntity pEntity) {
 		this.mMenuItem.addChild(pEntity);
 	}
 
 	@Override
-	public void setChild(int pEntityIndex, IEntity pEntity) {
+	public void setChild(final int pEntityIndex, final IEntity pEntity) {
 		this.mMenuItem.setChild(pEntityIndex, pEntity);
 	}
 
 	@Override
-	public IEntity replaceChild(int pEntityIndex, IEntity pEntity) {
+	public IEntity replaceChild(final int pEntityIndex, final IEntity pEntity) {
 		return this.mMenuItem.replaceChild(pEntityIndex, pEntity);
 	}
 
 	@Override
-	public void swapChildren(int pEntityIndexA, int pEntityIndexB) {
+	public void swapChildren(final int pEntityIndexA, final int pEntityIndexB) {
 		this.mMenuItem.swapChildren(pEntityIndexA, pEntityIndexB);
 	}
 
 	@Override
-	public IEntity getChild(int pIndex) {
+	public IEntity getChild(final int pIndex) {
 		return this.mMenuItem.getChild(pIndex);
 	}
 
@@ -473,7 +475,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public IEntity findChild(IEntityMatcher pEntityMatcher) {
+	public IEntity findChild(final IEntityMatcher pEntityMatcher) {
 		return this.mMenuItem.findChild(pEntityMatcher);
 	}
 
@@ -483,22 +485,22 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void sortChildren(Comparator<IEntity> pEntityComparator) {
+	public void sortChildren(final Comparator<IEntity> pEntityComparator) {
 		this.mMenuItem.sortChildren(pEntityComparator);
 	}
 
 	@Override
-	public IEntity removeChild(int pIndex) {
+	public IEntity removeChild(final int pIndex) {
 		return this.mMenuItem.removeChild(pIndex);
 	}
 
 	@Override
-	public boolean removeChild(IEntity pEntity) {
+	public boolean removeChild(final IEntity pEntity) {
 		return this.mMenuItem.removeChild(pEntity);
 	}
 
 	@Override
-	public boolean removeChild(IEntityMatcher pEntityMatcher) {
+	public boolean removeChild(final IEntityMatcher pEntityMatcher) {
 		return this.mMenuItem.removeChild(pEntityMatcher);
 	}
 
@@ -513,14 +515,35 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void registerTouchArea(ITouchArea pTouchArea) {
+	public void registerTouchArea(final ITouchArea pTouchArea) {
 		this.mMenuItem.registerTouchArea(pTouchArea);
 	}
 
 	@Override
-	public void unregisterTouchArea(ITouchArea pTouchArea) {
+	public void unregisterTouchArea(final ITouchArea pTouchArea) {
 		this.mMenuItem.unregisterTouchArea(pTouchArea);
 	}
+
+	@Override
+	public Matrix getLocalToSceneMatrix() {
+		return this.mMenuItem.getLocalToSceneMatrix();
+	}
+
+	@Override
+	public Matrix getSceneToLocalMatrix() {
+		return this.mMenuItem.getSceneToLocalMatrix();
+	}
+	
+	@Override
+	public IEntity getParent() {
+		return this.mMenuItem.getParent();
+	}
+
+	@Override
+	public void setParent(final IEntity pEntity) {
+		this.mMenuItem.setParent(pEntity);
+	}
+
 
 	// ===========================================================
 	// Methods

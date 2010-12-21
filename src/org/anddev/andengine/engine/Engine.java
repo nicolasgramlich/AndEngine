@@ -560,6 +560,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		final LocationManager locationManager = (LocationManager) pContext.getSystemService(Context.LOCATION_SERVICE);
 		final String locationProvider = locationManager.getBestProvider(pLocationSensorOptions, pLocationSensorOptions.isEnabledOnly());
+		// TODO locationProvider can be null, in that case return false. Successful case should return true. 
 		locationManager.requestLocationUpdates(locationProvider, pLocationSensorOptions.getMinimumTriggerTime(), pLocationSensorOptions.getMinimumTriggerDistance(), this);
 
 		this.onLocationChanged(locationManager.getLastKnownLocation(locationProvider));

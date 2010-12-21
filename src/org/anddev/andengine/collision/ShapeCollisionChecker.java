@@ -1,7 +1,5 @@
 package org.anddev.andengine.collision;
 
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.Constants;
 
 
@@ -13,9 +11,6 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final float[] VERTICES_SCENE_TO_LOCAL_TMP = new float[2];
-	private static final float[] VERTICES_LOCAL_TO_SCENE_TMP = new float[2];
 
 	// ===========================================================
 	// Fields
@@ -36,31 +31,6 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public static float[] convertSceneToLocalCoordinates(final IEntity pEntity, final float pX, final float pY) {
-		ShapeCollisionChecker.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_X] = pX;
-		ShapeCollisionChecker.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_Y] = pY;
-
-		final float left = pEntity.getX();
-		final float top = pEntity.getY();
-
-		MathUtils.revertRotateAndScaleAroundCenter(ShapeCollisionChecker.VERTICES_SCENE_TO_LOCAL_TMP,
-				pEntity.getRotation(), left + pEntity.getRotationCenterX(), top + pEntity.getRotationCenterY(),
-				pEntity.getScaleX(), pEntity.getScaleY(), left + pEntity.getScaleCenterX(), top + pEntity.getScaleCenterY());
-
-		return ShapeCollisionChecker.VERTICES_SCENE_TO_LOCAL_TMP;
-	}
-
-	public static float[] convertLocalToSceneCoordinates(final IEntity pEntity, final float pX, final float pY) {
-		ShapeCollisionChecker.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_X] = pX;
-		ShapeCollisionChecker.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_Y] = pY;
-
-		MathUtils.rotateAndScaleAroundCenter(ShapeCollisionChecker.VERTICES_LOCAL_TO_SCENE_TMP,
-				pEntity.getRotation(), pEntity.getRotationCenterX(), pEntity.getRotationCenterY(),
-				pEntity.getScaleX(), pEntity.getScaleY(), pEntity.getScaleCenterX(), pEntity.getScaleCenterY());
-
-		return ShapeCollisionChecker.VERTICES_LOCAL_TO_SCENE_TMP;
-	}
 
 	public static boolean checkCollision(final int pVerticesALength, final int pVerticesBLength, final float[] pVerticesA, final float[] pVerticesB) {
 		/* Check all the lines of A ... */

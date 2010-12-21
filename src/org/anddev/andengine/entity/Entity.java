@@ -1,20 +1,19 @@
 package org.anddev.andengine.entity;
 
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.collision.ShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.util.IEntityMatcher;
+import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.modifier.IModifier;
 import org.anddev.andengine.util.modifier.ModifierList;
+
+import android.graphics.Matrix;
 
 
 /**
@@ -28,6 +27,9 @@ public class Entity implements IEntity {
 
 	private static final int CHILDREN_CAPACITY_DEFAULT = 4;
 	private static final int TOUCHAREAS_CAPACITY_DEFAULT = 4;
+
+	private static final float[] VERTICES_SCENE_TO_LOCAL_TMP = new float[2];
+	private static final float[] VERTICES_LOCAL_TO_SCENE_TMP = new float[2];
 
 	// ===========================================================
 	// Fields
@@ -66,10 +68,13 @@ public class Entity implements IEntity {
 
 	protected final ModifierList<IEntity> mEntityModifiers = new ModifierList<IEntity>(this);
 
+	private final Matrix mLocalToSceneMatrix = new Matrix();
+	private final Matrix mSceneToLocalMatrix = new Matrix();
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public Entity() {
 		this(0, 0);
 	}
@@ -102,12 +107,14 @@ public class Entity implements IEntity {
 		this.mIgnoreUpdate = pIgnoreUpdate;
 	}
 
+	@Override
 	public IEntity getParent() {
 		return this.mParent;
 	}
 
-	public void setParent(final IEntity pParent) {
-		this.mParent = pParent;
+	@Override
+	public void setParent(final IEntity pEntity) {
+		this.mParent = pEntity;
 	}
 
 	@Override
@@ -317,24 +324,29 @@ public class Entity implements IEntity {
 		return this.mY;
 	}
 
-
 	@Override
 	public float[] getSceneCenterCoordinates() {
 		return this.convertLocalToSceneCoordinates(0, 0);
 	}
-	
+
+	@Override
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
-		final float[] sceneCoordinates = ShapeCollisionChecker.convertLocalToSceneCoordinates(this, pX, pY);
-		sceneCoordinates[VERTEX_INDEX_X] += this.mX;
-		sceneCoordinates[VERTEX_INDEX_Y] += this.mY;
-		return sceneCoordinates;
+		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_X] = pX;
+		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_Y] = pY;
+
+		this.getLocalToSceneMatrix().mapPoints(Entity.VERTICES_LOCAL_TO_SCENE_TMP);
+
+		return Entity.VERTICES_LOCAL_TO_SCENE_TMP;
 	}
 
+	@Override
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
-		final float[] localCoordinates = ShapeCollisionChecker.convertSceneToLocalCoordinates(this, pX, pY);
-		localCoordinates[VERTEX_INDEX_X] -= this.mX;
-		localCoordinates[VERTEX_INDEX_Y] -= this.mY;
-		return localCoordinates;
+		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_X] = pX;
+		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_Y] = pY;
+
+		this.getSceneToLocalMatrix().mapPoints(Entity.VERTICES_SCENE_TO_LOCAL_TMP);
+
+		return Entity.VERTICES_SCENE_TO_LOCAL_TMP;
 	}
 
 	@Override
@@ -387,7 +399,7 @@ public class Entity implements IEntity {
 		}
 		return this.mChildren.get(0);
 	}
-	
+
 	@Override
 	public IEntity getLastChild() {
 		if(this.mChildren == null) {
@@ -435,6 +447,12 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return;
 		}
+
+		final ArrayList<IEntity> entities = this.mChildren;
+		for(int i = entities.size() - 1; i >= 0; i--) {
+			entities.get(i).setParent(null);
+		}
+
 		this.mChildren.clear();
 	}
 
@@ -445,6 +463,7 @@ public class Entity implements IEntity {
 		}
 
 		this.mChildren.add(pEntity);
+		pEntity.setParent(this);
 	}
 
 	@Override
@@ -452,7 +471,11 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return false;
 		}
-		return this.mChildren.remove(pEntity);
+		final boolean removed = this.mChildren.remove(pEntity);
+		if(removed) {
+			pEntity.setParent(null);
+		}
+		return removed;
 	}
 
 	@Override
@@ -460,7 +483,11 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return null;
 		}
-		return this.mChildren.remove(pIndex);
+		final IEntity removed = this.mChildren.remove(pIndex);
+		if(removed != null) {
+			removed.setParent(null);
+		}
+		return removed;
 	}
 
 	@Override
@@ -471,7 +498,8 @@ public class Entity implements IEntity {
 		final ArrayList<IEntity> entities = this.mChildren;
 		for(int i = entities.size() - 1; i >= 0; i--) {
 			if(pEntityMatcher.matches(entities.get(i))) {
-				entities.remove(i);
+				final IEntity removed = entities.remove(i);
+				removed.setParent(null);
 				return true;
 			}
 		}
@@ -516,6 +544,8 @@ public class Entity implements IEntity {
 		}
 		final ArrayList<IEntity> entities = this.mChildren;
 		final IEntity oldEntity = entities.set(pEntityIndex, pEntity);
+		pEntity.setParent(this);
+		oldEntity.setParent(null);
 		return oldEntity;
 	}
 
@@ -527,7 +557,11 @@ public class Entity implements IEntity {
 		if(pEntityIndex == this.mChildren.size()) {
 			this.addChild(pEntity);
 		} else {
-			this.mChildren.set(pEntityIndex, pEntity);
+			final IEntity replaced = this.mChildren.set(pEntityIndex, pEntity);
+			if(replaced != null) {
+				replaced.setParent(null);
+			}
+			pEntity.setParent(this);
 		}
 	}
 
@@ -573,6 +607,52 @@ public class Entity implements IEntity {
 		this.mChildren = new ArrayList<IEntity>(Entity.CHILDREN_CAPACITY_DEFAULT);
 	}
 
+	@Override
+	public Matrix getSceneToLocalMatrix() {
+		final Matrix sceneToLocalMatrix = this.mSceneToLocalMatrix;
+		sceneToLocalMatrix.reset();
+		this.getLocalToSceneMatrix().invert(sceneToLocalMatrix);
+		return sceneToLocalMatrix;
+	}
+
+	@Override
+	public Matrix getLocalToSceneMatrix() {
+		final Matrix localToSceneMatrix = this.mLocalToSceneMatrix;
+		localToSceneMatrix.reset();
+
+		final float scaleX = this.mScaleX;
+		final float scaleY = this.mScaleY;
+		if(scaleX != 1 || scaleY != 1) {
+			final float scaleCenterX = this.mScaleCenterX;
+			final float scaleCenterY = this.mScaleCenterY;
+			localToSceneMatrix.postTranslate(-scaleCenterX, -scaleCenterY);
+			localToSceneMatrix.postScale(scaleX, scaleY);
+			localToSceneMatrix.postTranslate(scaleCenterX, scaleCenterY);
+		}
+
+		/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
+		 * In that case the last postTranslate of the rotation and the first postTranslate of the scale is superfluous. */
+
+		final float rotation = this.mRotation;
+		if(rotation != 0) {
+			final float rotationCenterX = this.mRotationCenterX;
+			final float rotationCenterY = this.mRotationCenterY;
+
+			localToSceneMatrix.postTranslate(-rotationCenterX, -rotationCenterY);
+			localToSceneMatrix.postRotate(rotation);
+			localToSceneMatrix.postTranslate(rotationCenterX, rotationCenterY);
+		}
+
+		localToSceneMatrix.postTranslate(this.mX, this.mY);
+
+		final IEntity parent = this.mParent;
+		if(parent != null) {
+			localToSceneMatrix.postConcat(parent.getLocalToSceneMatrix());
+		}
+
+		return localToSceneMatrix;
+	}
+
 	protected void onApplyTransformations(final GL10 pGL) {
 		/* Translation. */
 		this.applyTranslation(pGL);
@@ -598,8 +678,8 @@ public class Entity implements IEntity {
 			pGL.glTranslatef(rotationCenterX, rotationCenterY, 0);
 			pGL.glRotatef(rotation, 0, 0, 1);
 			pGL.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
-			
-			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same. 
+
+			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
 			 * In that case the last glTranslatef of the rotation and the first glTranslatef of the scale is superfluous.
 			 * The problem is that applyRotation and applyScale would need to be "merged" in order to efficiently check for that condition.  */
 		}

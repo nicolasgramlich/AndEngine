@@ -62,10 +62,10 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	}
 
 	public static void fillVertices(final RectangularShape pRectangularShape, final float[] pVertices) {
-		final float left = pRectangularShape.getX();
-		final float top = pRectangularShape.getY();
-		final float right = pRectangularShape.getWidth() + left;
-		final float bottom = pRectangularShape.getHeight() + top;
+		final float left = 0;
+		final float top = 0;
+		final float right = pRectangularShape.getWidth();
+		final float bottom = pRectangularShape.getHeight();
 
 		pVertices[0 + VERTEX_INDEX_X] = left;
 		pVertices[0 + VERTEX_INDEX_Y] = top;

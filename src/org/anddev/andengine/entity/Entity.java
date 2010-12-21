@@ -436,9 +436,11 @@ public class Entity implements IEntity {
 
 		this.mEntityModifiers.reset();
 
-		final ArrayList<IEntity> entities = this.mChildren;
-		for(int i = entities.size() - 1; i >= 0; i--) {
-			entities.get(i).reset();
+		if(this.mChildren != null) {
+			final ArrayList<IEntity> entities = this.mChildren;
+			for(int i = entities.size() - 1; i >= 0; i--) {
+				entities.get(i).reset();
+			}
 		}
 	}
 
@@ -608,18 +610,11 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public Matrix getSceneToLocalMatrix() {
-		final Matrix sceneToLocalMatrix = this.mSceneToLocalMatrix;
-		sceneToLocalMatrix.reset();
-		this.getLocalToSceneMatrix().invert(sceneToLocalMatrix);
-		return sceneToLocalMatrix;
-	}
-
-	@Override
 	public Matrix getLocalToSceneMatrix() {
 		final Matrix localToSceneMatrix = this.mLocalToSceneMatrix;
 		localToSceneMatrix.reset();
 
+		/* Scale. */
 		final float scaleX = this.mScaleX;
 		final float scaleY = this.mScaleY;
 		if(scaleX != 1 || scaleY != 1) {
@@ -631,8 +626,9 @@ public class Entity implements IEntity {
 		}
 
 		/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
-		 * In that case the last postTranslate of the rotation and the first postTranslate of the scale is superfluous. */
+		 * In that case the last postTranslate of the scale and the first postTranslate of the rotation is superfluous. */
 
+		/* Rotation. */
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
 			final float rotationCenterX = this.mRotationCenterX;
@@ -643,6 +639,7 @@ public class Entity implements IEntity {
 			localToSceneMatrix.postTranslate(rotationCenterX, rotationCenterY);
 		}
 
+		/* Translation. */
 		localToSceneMatrix.postTranslate(this.mX, this.mY);
 
 		final IEntity parent = this.mParent;
@@ -651,6 +648,48 @@ public class Entity implements IEntity {
 		}
 
 		return localToSceneMatrix;
+	}
+
+	@Override
+	public Matrix getSceneToLocalMatrix() {
+		final Matrix sceneToLocalMatrix = this.mSceneToLocalMatrix;
+		sceneToLocalMatrix.reset();
+
+		final IEntity parent = this.mParent;
+		if(parent != null) {
+			sceneToLocalMatrix.postConcat(parent.getSceneToLocalMatrix());
+		}
+
+		/* Translation. */
+		sceneToLocalMatrix.postTranslate(-this.mX, -this.mY);
+
+		/* Rotation. */
+		final float rotation = this.mRotation;
+		if(rotation != 0) {
+			final float rotationCenterX = this.mRotationCenterX;
+			final float rotationCenterY = this.mRotationCenterY;
+
+			sceneToLocalMatrix.postTranslate(-rotationCenterX, -rotationCenterY);
+			sceneToLocalMatrix.postRotate(-rotation);
+			sceneToLocalMatrix.postTranslate(rotationCenterX, rotationCenterY);
+		}
+
+		/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
+		 * In that case the last postTranslate of the rotation and the first postTranslate of the scale is superfluous. */
+		
+		/* Scale. */
+		final float scaleX = this.mScaleX;
+		final float scaleY = this.mScaleY;
+		if(scaleX != 1 || scaleY != 1) {
+			final float scaleCenterX = this.mScaleCenterX;
+			final float scaleCenterY = this.mScaleCenterY;
+
+			sceneToLocalMatrix.postTranslate(-scaleCenterX, -scaleCenterY);
+			sceneToLocalMatrix.postScale(1 / scaleX, 1 / scaleY);
+			sceneToLocalMatrix.postTranslate(scaleCenterX, scaleCenterY);
+		}
+
+		return sceneToLocalMatrix;
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {

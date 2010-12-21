@@ -12,6 +12,7 @@ import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.Entity;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.layer.Layer;
 import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
@@ -478,6 +479,11 @@ public class Scene extends Entity {
 		super.reset();
 
 		this.clearChildScene();
+	}
+	
+	@Override
+	public void setParent(IEntity pEntity) {
+//		super.setParent(pEntity);
 	}
 
 	// ===========================================================

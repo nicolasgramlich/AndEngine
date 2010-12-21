@@ -104,7 +104,7 @@ public class Scene extends Entity {
 	public int getLayerCount() {
 		return this.getChildCount();
 	}
-	
+
 	/**
 	 * Instead use {@link Scene#getFirstChild()}
 	 */
@@ -282,21 +282,22 @@ public class Scene extends Entity {
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		final Scene childScene = this.mChildScene;
-		if(childScene == null) {
-			if(!this.mChildSceneModalDraw) {
-				if(this.mBackgroundEnabled) {
-					pCamera.onApplyPositionIndependentMatrix(pGL);
-					GLHelper.setModelViewIdentityMatrix(pGL);
 
-					this.mBackground.onDraw(pGL, pCamera);
-				}
-
-				pCamera.onApplyMatrix(pGL);
+		if(childScene == null || !this.mChildSceneModalDraw) {
+			if(this.mBackgroundEnabled) {
+				pCamera.onApplyPositionIndependentMatrix(pGL);
 				GLHelper.setModelViewIdentityMatrix(pGL);
 
-				super.onManagedDraw(pGL, pCamera);
+				this.mBackground.onDraw(pGL, pCamera);
 			}
-		} else {
+
+			pCamera.onApplyMatrix(pGL);
+			GLHelper.setModelViewIdentityMatrix(pGL);
+
+			super.onManagedDraw(pGL, pCamera);
+		}
+
+		if(childScene != null) {
 			childScene.onDraw(pGL, pCamera);
 		}
 	}
@@ -310,12 +311,12 @@ public class Scene extends Entity {
 		this.mRunnableHandler.onUpdate(pSecondsElapsed);
 
 		final Scene childScene = this.mChildScene;
-		if(childScene == null) {
-			if(!this.mChildSceneModalUpdate) {
-				this.mBackground.onUpdate(pSecondsElapsed);
-				super.onManagedUpdate(pSecondsElapsed);
-			}
-		} else {
+		if(childScene == null || !this.mChildSceneModalUpdate) {
+			this.mBackground.onUpdate(pSecondsElapsed);
+			super.onManagedUpdate(pSecondsElapsed);
+		}
+		
+		if(childScene != null) {
 			childScene.onUpdate(pSecondsElapsed);
 		}
 	}

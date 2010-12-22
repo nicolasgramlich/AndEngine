@@ -61,12 +61,12 @@ public class ParallaxBackground extends ColorBackground {
 	// Methods
 	// ===========================================================
 
-	public void addParallaxEntity(final ParallaxEntity pParallaxEntity) {
+	public void attachParallaxEntity(final ParallaxEntity pParallaxEntity) {
 		this.mParallaxEntities.add(pParallaxEntity);
 		this.mParallaxEntityCount++;
 	}
 
-	public boolean removeParallaxEntity(final ParallaxEntity pParallaxEntity) {
+	public boolean detachParallaxEntity(final ParallaxEntity pParallaxEntity) {
 		this.mParallaxEntityCount--;
 		final boolean success = this.mParallaxEntities.remove(pParallaxEntity);
 		if(success == false) {

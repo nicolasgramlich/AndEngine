@@ -1,10 +1,13 @@
 package org.anddev.andengine.util.pool;
 
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.entity.layer.Layer;
+
 /**
  * @author Nicolas Gramlich
- * @since 23:16:25 - 31.08.2010
+ * @since 00:53:22 - 28.08.2010
  */
-public class EntityRemoveRunnablePoolUpdateHandler extends RunnablePoolUpdateHandler<EntityRemoveRunnablePoolItem> {
+public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -12,6 +15,9 @@ public class EntityRemoveRunnablePoolUpdateHandler extends RunnablePoolUpdateHan
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	protected IEntity mEntity;
+	protected Layer mLayer;
 
 	// ===========================================================
 	// Constructors
@@ -21,13 +27,26 @@ public class EntityRemoveRunnablePoolUpdateHandler extends RunnablePoolUpdateHan
 	// Getter & Setter
 	// ===========================================================
 
+	public void setEntity(final IEntity pEntity) {
+		this.mEntity = pEntity;
+	}
+
+	public void setLayer(final Layer pLayer) {
+		this.mLayer = pLayer;
+	}
+
+	public void set(final IEntity pEntity, final Layer pLayer) {
+		this.mEntity = pEntity;
+		this.mLayer = pLayer;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	protected EntityRemoveRunnablePoolItem onAllocatePoolItem() {
-		return new EntityRemoveRunnablePoolItem();
+	public void run() {
+		this.mLayer.detachChild(this.mEntity);
 	}
 
 	// ===========================================================

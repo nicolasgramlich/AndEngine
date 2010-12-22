@@ -1,8 +1,5 @@
 package org.anddev.andengine.entity.scene;
 
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
-
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -20,6 +17,7 @@ import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.util.constants.Constants;
 
 import android.util.SparseArray;
 import android.view.MotionEvent;
@@ -70,7 +68,7 @@ public class Scene extends Entity {
 	public Scene(final int pLayerCount) {
 		super(0, 0);
 		for(int i = pLayerCount - 1; i >= 0; i--) {
-			this.addChild(new Layer());
+			this.attachChild(new Layer());
 		}
 	}
 
@@ -111,7 +109,7 @@ public class Scene extends Entity {
 	 */
 	@Deprecated
 	public Layer getBottomLayer() {
-		return (Layer) this.getChild(0);
+		return (Layer) this.getFirstChild();
 	}
 
 	/**
@@ -119,36 +117,7 @@ public class Scene extends Entity {
 	 */
 	@Deprecated
 	public Layer getTopLayer() {
-		return (Layer) this.getChild(this.getChildCount() - 1);
-	}
-
-	/**
-	 * Instead use {@link Scene#setChild(int, org.anddev.andengine.entity.IEntity)}.
-	 */
-	@Deprecated
-	public void setLayer(final int pLayerIndex, final Layer pLayer) {
-		this.setChild(pLayerIndex, pLayer);
-	}
-	/**
-	 * Instead use {@link Scene#swapChildren(int, int)}.
-	 */
-	@Deprecated
-	public void swapLayers(final int pLayerIndexA, final int pLayerIndexB) {
-		this.swapChildren(pLayerIndexA, pLayerIndexB);
-	}
-
-	/**
-	 * Instead use {@link Scene#replaceChild(int, org.anddev.andengine.entity.IEntity)}.
-	 *
-	 * Similar to {@link Scene#setLayer(int, Layer)} but returns the {@link Layer} that would be overwritten.
-	 * 
-	 * @param pLayerIndex
-	 * @param pLayer
-	 * @return the layer that has been replaced.
-	 */
-	@Deprecated
-	public Layer replaceLayer(final int pLayerIndex, final Layer pLayer) {
-		return (Layer) this.replaceChild(pLayerIndex, pLayer);
+		return (Layer) this.getLastChild();
 	}
 
 	/**
@@ -170,10 +139,12 @@ public class Scene extends Entity {
 		this.mTouchAreas.clear();
 	}
 
+	@Override
 	public void registerTouchArea(final ITouchArea pTouchArea) {
 		this.mTouchAreas.add(pTouchArea);
 	}
 
+	@Override
 	public void unregisterTouchArea(final ITouchArea pTouchArea) {
 		this.mTouchAreas.remove(pTouchArea);
 	}
@@ -316,7 +287,7 @@ public class Scene extends Entity {
 			this.mBackground.onUpdate(pSecondsElapsed);
 			super.onManagedUpdate(pSecondsElapsed);
 		}
-		
+
 		if(childScene != null) {
 			childScene.onUpdate(pSecondsElapsed);
 		}
@@ -457,8 +428,8 @@ public class Scene extends Entity {
 
 	private Boolean onAreaTouchEvent(final TouchEvent pSceneTouchEvent, final float sceneTouchEventX, final float sceneTouchEventY, final ITouchArea touchArea) {
 		final float[] touchAreaLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
-		final float touchAreaLocalX = touchAreaLocalCoordinates[VERTEX_INDEX_X];
-		final float touchAreaLocalY = touchAreaLocalCoordinates[VERTEX_INDEX_Y];
+		final float touchAreaLocalX = touchAreaLocalCoordinates[Constants.VERTEX_INDEX_X];
+		final float touchAreaLocalY = touchAreaLocalCoordinates[Constants.VERTEX_INDEX_Y];
 
 		final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
 		if(handledSelf) {
@@ -480,10 +451,10 @@ public class Scene extends Entity {
 
 		this.clearChildScene();
 	}
-	
+
 	@Override
-	public void setParent(IEntity pEntity) {
-//		super.setParent(pEntity);
+	public void setParent(final IEntity pEntity) {
+		//		super.setParent(pEntity);
 	}
 
 	// ===========================================================

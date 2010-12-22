@@ -27,6 +27,12 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public boolean isVisible();
+	public void setVisible(boolean pVisible);
+
+	public boolean isIgnoreUpdate();
+	public void setIgnoreUpdate(boolean pIgnoreUpdate);
 	
 	public IEntity getParent();
 	public void setParent(final IEntity pEntity);
@@ -43,10 +49,10 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public float getX();
 	public float getY();
 
-	public float getBaseX();
-	public float getBaseY();
+	public float getInitialX();
+	public float getInitialY();
 
-	public void setBasePosition();
+	public void setInitialPosition();
 	public void setPosition(final IEntity pOtherEntity);
 	public void setPosition(final float pX, final float pY);
 	
@@ -87,20 +93,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public int getChildCount();
 
-	public void addChild(final IEntity pEntity);
-	
-	public void setChild(final int pEntityIndex, final IEntity pEntity); // TODO Is working on indexes desireable? Or maybe work on zIndexes or a tag like Cocos2D does. 
-
-	/**
-	 * Similar to {@link ILayer#setChild(int, ILayer)} but returns the {@link IEntity} that would be overwritten.
-	 * 
-	 * @param pEntityIndex
-	 * @param pEntity
-	 * @return the layer that has been replaced.
-	 */
-	public IEntity replaceChild(final int pEntityIndex, final IEntity pEntity);
-
-	public void swapChildren(final int pEntityIndexA, final int pEntityIndexB);
+	public void attachChild(final IEntity pEntity);
 
 	public IEntity getChild(final int pIndex);
 	public IEntity getFirstChild();
@@ -126,7 +119,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public IEntity removeChild(final int pIndex); // TODO Is working on indexes desireable? Or maybe work on zIndexes or a tag like Cocos2D does.
+	public boolean detachChild(final IEntity pEntity);
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
 	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered
@@ -134,7 +127,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public boolean removeChild(final IEntity pEntity);
+	public boolean detachChild(final IEntityMatcher pEntityMatcher);
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
 	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered
@@ -142,9 +135,9 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public boolean removeChild(final IEntityMatcher pEntityMatcher);
+	public boolean detachChildren(final IEntityMatcher pEntityMatcher);
 
-	public void clearChildren();
+	public void detachChildren();
 
 	public ArrayList<ITouchArea> getTouchAreas();
 	public void registerTouchArea(final ITouchArea pTouchArea);
@@ -152,4 +145,10 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public Matrix getLocalToSceneMatrix();
 	public Matrix getSceneToLocalMatrix();
+	
+	public void setUserData(Object pUserData);
+	public Object getUserData();
+
+	void onAttached();
+	void onDetached();
 }

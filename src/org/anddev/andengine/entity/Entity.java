@@ -37,11 +37,13 @@ public class Entity implements IEntity {
 
 	protected boolean mVisible = true;
 	protected boolean mIgnoreUpdate = false;
+
 	protected int mZIndex = 0;
 
-	protected IEntity mParent;
+	private IEntity mParent;
 
 	protected ArrayList<IEntity> mChildren;
+
 	protected ArrayList<ITouchArea> mTouchAreas;
 
 	protected float mRed = 1f;
@@ -49,11 +51,11 @@ public class Entity implements IEntity {
 	protected float mBlue = 1f;
 	protected float mAlpha = 1f;
 
-	private final float mBaseX;
-	private final float mBaseY;
-
 	protected float mX;
 	protected float mY;
+
+	private final float mInitialX;
+	private final float mInitialY;
 
 	protected float mRotation = 0;
 
@@ -71,6 +73,8 @@ public class Entity implements IEntity {
 	private final Matrix mLocalToSceneMatrix = new Matrix();
 	private final Matrix mSceneToLocalMatrix = new Matrix();
 
+	private Object mUserData;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -80,8 +84,8 @@ public class Entity implements IEntity {
 	}
 
 	public Entity(final float pX, final float pY) {
-		this.mBaseX = pX;
-		this.mBaseY = pY;
+		this.mInitialX = pX;
+		this.mInitialY = pY;
 
 		this.mX = pX;
 		this.mY = pY;
@@ -91,18 +95,26 @@ public class Entity implements IEntity {
 	// Getter & Setter
 	// ===========================================================
 
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	@Override
 	public boolean isVisible() {
 		return this.mVisible;
 	}
 
+	@Override
 	public void setVisible(final boolean pVisible) {
 		this.mVisible = pVisible;
 	}
 
+	@Override
 	public boolean isIgnoreUpdate() {
 		return this.mIgnoreUpdate;
 	}
 
+	@Override
 	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
 		this.mIgnoreUpdate = pIgnoreUpdate;
 	}
@@ -128,13 +140,23 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public float getBaseX() {
-		return this.mBaseX;
+	public float getX() {
+		return this.mX;
 	}
 
 	@Override
-	public float getBaseY() {
-		return this.mBaseY;
+	public float getY() {
+		return this.mY;
+	}
+
+	@Override
+	public float getInitialX() {
+		return this.mInitialX;
+	}
+
+	@Override
+	public float getInitialY() {
+		return this.mInitialY;
 	}
 
 	@Override
@@ -150,9 +172,9 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void setBasePosition() {
-		this.mX = this.mBaseX;
-		this.mY = this.mBaseY;
+	public void setInitialPosition() {
+		this.mX = this.mInitialX;
+		this.mY = this.mInitialY;
 		this.onPositionChanged();
 	}
 
@@ -255,11 +277,6 @@ public class Entity implements IEntity {
 		this.mScaleCenterY = pScaleCenterY;
 	}
 
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-
-
 	@Override
 	public float getRed() {
 		return this.mRed;
@@ -281,7 +298,7 @@ public class Entity implements IEntity {
 	}
 
 	/**
-	 * @param pAlpha from <code>0.0f</code> (invisible) to <code>1.0f</code> (opaque)
+	 * @param pAlpha from <code>0.0f</code> (transparent) to <code>1.0f</code> (opaque)
 	 */
 	@Override
 	public void setAlpha(final float pAlpha) {
@@ -304,7 +321,7 @@ public class Entity implements IEntity {
 	 * @param pRed from <code>0.0f</code> to <code>1.0f</code>
 	 * @param pGreen from <code>0.0f</code> to <code>1.0f</code>
 	 * @param pBlue from <code>0.0f</code> to <code>1.0f</code>
-	 * @param pAlpha from <code>0.0f</code> (invisible) to <code>1.0f</code> (opaque)
+	 * @param pAlpha from <code>0.0f</code> (transparent) to <code>1.0f</code> (opaque)
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
@@ -315,73 +332,11 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public float getX() {
-		return this.mX;
-	}
-
-	@Override
-	public float getY() {
-		return this.mY;
-	}
-
-	@Override
-	public float[] getSceneCenterCoordinates() {
-		return this.convertLocalToSceneCoordinates(0, 0);
-	}
-
-	@Override
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
-		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_X] = pX;
-		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_Y] = pY;
-
-		this.getLocalToSceneMatrix().mapPoints(Entity.VERTICES_LOCAL_TO_SCENE_TMP);
-
-		return Entity.VERTICES_LOCAL_TO_SCENE_TMP;
-	}
-
-	@Override
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
-		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_X] = pX;
-		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_Y] = pY;
-
-		this.getSceneToLocalMatrix().mapPoints(Entity.VERTICES_SCENE_TO_LOCAL_TMP);
-
-		return Entity.VERTICES_SCENE_TO_LOCAL_TMP;
-	}
-
-	@Override
-	public final void onDraw(final GL10 pGL, final Camera pCamera) {
-		if(this.mVisible) {
-			this.onManagedDraw(pGL, pCamera);
+	public int getChildCount() {
+		if(this.mChildren == null) {
+			return 0;
 		}
-	}
-
-	@Override
-	public final void onUpdate(final float pSecondsElapsed) {
-		if(!this.mIgnoreUpdate) {
-			this.onManagedUpdate(pSecondsElapsed);
-		}
-	}
-
-	@Override
-	public void registerTouchArea(final ITouchArea pTouchArea) {
-		if(this.mTouchAreas == null) {
-			this.allocateTouchAreas();
-		}
-		this.mTouchAreas.add(pTouchArea);
-	}
-
-	@Override
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
-		if(this.mTouchAreas == null) {
-			return;
-		}
-		this.mTouchAreas.remove(pTouchArea);
-	}
-
-	@Override
-	public ArrayList<ITouchArea> getTouchAreas() {
-		return this.mTouchAreas;
+		return this.mChildren.size();
 	}
 
 	@Override
@@ -409,103 +364,30 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public int getChildCount() {
-		if(this.mChildren == null) {
-			return 0;
-		}
-		return this.mChildren.size();
-	}
-
-	@Override
-	public void reset() {
-		this.mVisible = true;
-		this.mIgnoreUpdate = false;
-
-		this.mX = this.mBaseX;
-		this.mY = this.mBaseY;
-		this.mRotation = 0;
-		this.mScaleX = 1;
-		this.mScaleY = 1;
-
-		this.onPositionChanged();
-
-		this.mRed = 1.0f;
-		this.mGreen = 1.0f;
-		this.mBlue = 1.0f;
-		this.mAlpha = 1.0f;
-
-		this.mEntityModifiers.reset();
-
-		if(this.mChildren != null) {
-			final ArrayList<IEntity> entities = this.mChildren;
-			for(int i = entities.size() - 1; i >= 0; i--) {
-				entities.get(i).reset();
-			}
-		}
-	}
-
-	@Override
-	public void clearChildren() {
+	public void detachChildren() {
 		if(this.mChildren == null) {
 			return;
 		}
 
 		final ArrayList<IEntity> entities = this.mChildren;
 		for(int i = entities.size() - 1; i >= 0; i--) {
-			entities.get(i).setParent(null);
+			final IEntity entity = entities.get(i);
+			entity.setParent(null);
+			entity.onDetached();
 		}
 
 		this.mChildren.clear();
 	}
 
 	@Override
-	public void addChild(final IEntity pEntity) {
+	public void attachChild(final IEntity pEntity) {
 		if(this.mChildren == null) {
 			this.allocateChildren();
 		}
 
 		this.mChildren.add(pEntity);
 		pEntity.setParent(this);
-	}
-
-	@Override
-	public boolean removeChild(final IEntity pEntity) {
-		if(this.mChildren == null) {
-			return false;
-		}
-		final boolean removed = this.mChildren.remove(pEntity);
-		if(removed) {
-			pEntity.setParent(null);
-		}
-		return removed;
-	}
-
-	@Override
-	public IEntity removeChild(final int pIndex) {
-		if(this.mChildren == null) {
-			return null;
-		}
-		final IEntity removed = this.mChildren.remove(pIndex);
-		if(removed != null) {
-			removed.setParent(null);
-		}
-		return removed;
-	}
-
-	@Override
-	public boolean removeChild(final IEntityMatcher pEntityMatcher) {
-		if(this.mChildren == null) {
-			return false;
-		}
-		final ArrayList<IEntity> entities = this.mChildren;
-		for(int i = entities.size() - 1; i >= 0; i--) {
-			if(pEntityMatcher.matches(entities.get(i))) {
-				final IEntity removed = entities.remove(i);
-				removed.setParent(null);
-				return true;
-			}
-		}
-		return false;
+		pEntity.onAttached();
 	}
 
 	@Override
@@ -540,42 +422,51 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public IEntity replaceChild(final int pEntityIndex, final IEntity pEntity) {
+	public boolean detachChild(final IEntity pEntity) {
 		if(this.mChildren == null) {
-			return null;
+			return false;
 		}
-		final ArrayList<IEntity> entities = this.mChildren;
-		final IEntity oldEntity = entities.set(pEntityIndex, pEntity);
-		pEntity.setParent(this);
-		oldEntity.setParent(null);
-		return oldEntity;
+		final boolean removed = this.mChildren.remove(pEntity);
+		if(removed) {
+			pEntity.setParent(null);
+			pEntity.onDetached();
+		}
+		return removed;
 	}
 
 	@Override
-	public void setChild(final int pEntityIndex, final IEntity pEntity) {
+	public boolean detachChild(final IEntityMatcher pEntityMatcher) {
 		if(this.mChildren == null) {
-			return;
+			return false;
 		}
-		if(pEntityIndex == this.mChildren.size()) {
-			this.addChild(pEntity);
-		} else {
-			final IEntity replaced = this.mChildren.set(pEntityIndex, pEntity);
-			if(replaced != null) {
-				replaced.setParent(null);
+		final ArrayList<IEntity> entities = this.mChildren;
+		for(int i = entities.size() - 1; i >= 0; i--) {
+			if(pEntityMatcher.matches(entities.get(i))) {
+				final IEntity removed = entities.remove(i);
+				removed.setParent(null);
+				removed.onDetached();
+				return true;
 			}
-			pEntity.setParent(this);
 		}
+		return false;
 	}
-
+	
 	@Override
-	public void swapChildren(final int pEntityIndexA, final int pEntityIndexB) {
+	public boolean detachChildren(final IEntityMatcher pEntityMatcher) {
 		if(this.mChildren == null) {
-			return;
+			return false;
 		}
+		boolean result = false;
 		final ArrayList<IEntity> entities = this.mChildren;
-		final IEntity entityA = entities.get(pEntityIndexA);
-		final IEntity entityB = entities.set(pEntityIndexB, entityA);
-		entities.set(pEntityIndexA, entityB);
+		for(int i = entities.size() - 1; i >= 0; i--) {
+			if(pEntityMatcher.matches(entities.get(i))) {
+				final IEntity removed = entities.remove(i);
+				removed.setParent(null);
+				removed.onDetached();
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -593,20 +484,50 @@ public class Entity implements IEntity {
 		this.mEntityModifiers.clear();
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	protected void onPositionChanged(){
-
+	@Override
+	public void registerTouchArea(final ITouchArea pTouchArea) {
+		if(this.mTouchAreas == null) {
+			this.allocateTouchAreas();
+		}
+		this.mTouchAreas.add(pTouchArea);
 	}
 
-	private void allocateTouchAreas() {
-		this.mTouchAreas = new ArrayList<ITouchArea>(Entity.TOUCHAREAS_CAPACITY_DEFAULT);
+	@Override
+	public void unregisterTouchArea(final ITouchArea pTouchArea) {
+		if(this.mTouchAreas == null) {
+			return;
+		}
+		this.mTouchAreas.remove(pTouchArea);
 	}
 
-	private void allocateChildren() {
-		this.mChildren = new ArrayList<IEntity>(Entity.CHILDREN_CAPACITY_DEFAULT);
+	@Override
+	public ArrayList<ITouchArea> getTouchAreas() {
+		return this.mTouchAreas;
+	}
+
+	@Override
+	public float[] getSceneCenterCoordinates() {
+		return this.convertLocalToSceneCoordinates(0, 0);
+	}
+
+	@Override
+	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
+		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_X] = pX;
+		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_Y] = pY;
+
+		this.getLocalToSceneMatrix().mapPoints(Entity.VERTICES_LOCAL_TO_SCENE_TMP);
+
+		return Entity.VERTICES_LOCAL_TO_SCENE_TMP;
+	}
+
+	@Override
+	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
+		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_X] = pX;
+		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_Y] = pY;
+
+		this.getSceneToLocalMatrix().mapPoints(Entity.VERTICES_SCENE_TO_LOCAL_TMP);
+
+		return Entity.VERTICES_SCENE_TO_LOCAL_TMP;
 	}
 
 	@Override
@@ -676,7 +597,7 @@ public class Entity implements IEntity {
 
 		/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
 		 * In that case the last postTranslate of the rotation and the first postTranslate of the scale is superfluous. */
-		
+
 		/* Scale. */
 		final float scaleX = this.mScaleX;
 		final float scaleY = this.mScaleY;
@@ -690,6 +611,88 @@ public class Entity implements IEntity {
 		}
 
 		return sceneToLocalMatrix;
+	}
+
+	@Override
+	public void onAttached() {
+
+	}
+
+	@Override
+	public void onDetached() {
+
+	}
+
+	@Override
+	public Object getUserData() {
+		return this.mUserData;
+	}
+
+	@Override
+	public void setUserData(final Object pUserData) {
+		this.mUserData = pUserData;
+	}
+
+	@Override
+	public final void onDraw(final GL10 pGL, final Camera pCamera) {
+		if(this.mVisible) {
+			this.onManagedDraw(pGL, pCamera);
+		}
+	}
+
+	@Override
+	public final void onUpdate(final float pSecondsElapsed) {
+		if(!this.mIgnoreUpdate) {
+			this.onManagedUpdate(pSecondsElapsed);
+		}
+	}
+
+	@Override
+	public void reset() {
+		this.mVisible = true;
+		this.mIgnoreUpdate = false;
+
+		this.mX = this.mInitialX;
+		this.mY = this.mInitialY;
+		this.mRotation = 0;
+		this.mScaleX = 1;
+		this.mScaleY = 1;
+
+		this.onPositionChanged();
+
+		this.mRed = 1.0f;
+		this.mGreen = 1.0f;
+		this.mBlue = 1.0f;
+		this.mAlpha = 1.0f;
+
+		this.mEntityModifiers.reset();
+
+		if(this.mChildren != null) {
+			final ArrayList<IEntity> entities = this.mChildren;
+			for(int i = entities.size() - 1; i >= 0; i--) {
+				entities.get(i).reset();
+			}
+		}
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	protected void doDraw(final GL10 pGL, final Camera pCamera) {
+
+	}
+
+	protected void onPositionChanged(){
+
+	}
+
+	private void allocateTouchAreas() {
+		this.mTouchAreas = new ArrayList<ITouchArea>(Entity.TOUCHAREAS_CAPACITY_DEFAULT);
+	}
+
+	private void allocateChildren() {
+		this.mChildren = new ArrayList<IEntity>(Entity.CHILDREN_CAPACITY_DEFAULT);
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {
@@ -754,10 +757,6 @@ public class Entity implements IEntity {
 			}
 		}
 		pGL.glPopMatrix();
-	}
-
-	protected void doDraw(final GL10 pGL, final Camera pCamera) {
-
 	}
 
 	protected void onManagedUpdate(final float pSecondsElapsed) {

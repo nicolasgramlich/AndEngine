@@ -119,13 +119,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public float getBaseX() {
-		return this.mMenuItem.getBaseX();
+	public float getInitialX() {
+		return this.mMenuItem.getInitialX();
 	}
 
 	@Override
-	public float getBaseY() {
-		return this.mMenuItem.getBaseY();
+	public float getInitialY() {
+		return this.mMenuItem.getInitialY();
 	}
 
 	@Override
@@ -274,8 +274,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void setBasePosition() {
-		this.mMenuItem.setBasePosition();
+	public void setInitialPosition() {
+		this.mMenuItem.setInitialPosition();
 	}
 
 	@Override
@@ -440,28 +440,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void addChild(final IEntity pEntity) {
-		this.mMenuItem.addChild(pEntity);
-	}
-
-	@Override
-	public void setChild(final int pEntityIndex, final IEntity pEntity) {
-		this.mMenuItem.setChild(pEntityIndex, pEntity);
-	}
-
-	@Override
-	public IEntity replaceChild(final int pEntityIndex, final IEntity pEntity) {
-		return this.mMenuItem.replaceChild(pEntityIndex, pEntity);
-	}
-
-	@Override
-	public void swapChildren(final int pEntityIndexA, final int pEntityIndexB) {
-		this.mMenuItem.swapChildren(pEntityIndexA, pEntityIndexB);
-	}
-
-	@Override
-	public IEntity getChild(final int pIndex) {
-		return this.mMenuItem.getChild(pIndex);
+	public void attachChild(final IEntity pEntity) {
+		this.mMenuItem.attachChild(pEntity);
 	}
 
 	@Override
@@ -490,23 +470,23 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public IEntity removeChild(final int pIndex) {
-		return this.mMenuItem.removeChild(pIndex);
+	public boolean detachChild(final IEntity pEntity) {
+		return this.mMenuItem.detachChild(pEntity);
 	}
 
 	@Override
-	public boolean removeChild(final IEntity pEntity) {
-		return this.mMenuItem.removeChild(pEntity);
+	public boolean detachChild(final IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.detachChild(pEntityMatcher);
 	}
 
 	@Override
-	public boolean removeChild(final IEntityMatcher pEntityMatcher) {
-		return this.mMenuItem.removeChild(pEntityMatcher);
+	public boolean detachChildren(final IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.detachChildren(pEntityMatcher);
 	}
 
 	@Override
-	public void clearChildren() {
-		this.mMenuItem.clearChildren();
+	public void detachChildren() {
+		this.mMenuItem.detachChildren();
 	}
 
 	@Override
@@ -533,7 +513,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	public Matrix getSceneToLocalMatrix() {
 		return this.mMenuItem.getSceneToLocalMatrix();
 	}
-	
+
 	@Override
 	public IEntity getParent() {
 		return this.mMenuItem.getParent();
@@ -544,6 +524,50 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 		this.mMenuItem.setParent(pEntity);
 	}
 
+	@Override
+	public boolean isVisible() {
+		return this.mMenuItem.isVisible();
+	}
+
+	@Override
+	public void setVisible(final boolean pVisible) {
+		this.mMenuItem.setVisible(pVisible);
+	}
+
+	@Override
+	public boolean isIgnoreUpdate() {
+		return this.mMenuItem.isIgnoreUpdate();
+	}
+
+	@Override
+	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
+		this.mMenuItem.setIgnoreUpdate(pIgnoreUpdate);
+	}
+
+	@Override
+	public void setUserData(final Object pUserData) {
+		this.mMenuItem.setUserData(pUserData);
+	}
+
+	@Override
+	public Object getUserData() {
+		return this.mMenuItem.getUserData();
+	}
+
+	@Override
+	public void onAttached() {
+		this.mMenuItem.onAttached();
+	}
+
+	@Override
+	public void onDetached() {
+		this.mMenuItem.onDetached();
+	}
+
+	@Override
+	public IEntity getChild(final int pIndex) {
+		return this.mMenuItem.getChild(pIndex);
+	}
 
 	// ===========================================================
 	// Methods

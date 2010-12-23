@@ -9,11 +9,10 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.util.IEntityMatcher;
+import org.anddev.andengine.util.Transformation;
 import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.modifier.IModifier;
 import org.anddev.andengine.util.modifier.ModifierList;
-
-import android.graphics.Matrix;
 
 
 /**
@@ -70,8 +69,8 @@ public class Entity implements IEntity {
 
 	protected final ModifierList<IEntity> mEntityModifiers = new ModifierList<IEntity>(this);
 
-	private final Matrix mLocalToSceneMatrix = new Matrix();
-	private final Matrix mSceneToLocalMatrix = new Matrix();
+	private final Transformation mLocalToSceneTransformation = new Transformation();
+	private final Transformation mSceneToLocalTransformation = new Transformation();
 
 	private Object mUserData;
 
@@ -515,7 +514,7 @@ public class Entity implements IEntity {
 		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_X] = pX;
 		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_Y] = pY;
 
-		this.getLocalToSceneMatrix().mapPoints(Entity.VERTICES_LOCAL_TO_SCENE_TMP);
+		this.getLocalToSceneTransformation().transform(Entity.VERTICES_LOCAL_TO_SCENE_TMP);
 
 		return Entity.VERTICES_LOCAL_TO_SCENE_TMP;
 	}
@@ -525,16 +524,16 @@ public class Entity implements IEntity {
 		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_X] = pX;
 		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_Y] = pY;
 
-		this.getSceneToLocalMatrix().mapPoints(Entity.VERTICES_SCENE_TO_LOCAL_TMP);
+		this.getSceneToLocalTransformation().transform(Entity.VERTICES_SCENE_TO_LOCAL_TMP);
 
 		return Entity.VERTICES_SCENE_TO_LOCAL_TMP;
 	}
 
 	@Override
-	public Matrix getLocalToSceneMatrix() {
-		// TODO skip this calculation when the matrix is not "dirty"
-		final Matrix localToSceneMatrix = this.mLocalToSceneMatrix;
-		localToSceneMatrix.reset();
+	public Transformation getLocalToSceneTransformation() {
+		// TODO skip this calculation when the transformation is not "dirty"
+		final Transformation localToSceneTransformation = this.mLocalToSceneTransformation;
+		localToSceneTransformation.identity();
 
 		/* Scale. */
 		final float scaleX = this.mScaleX;
@@ -542,9 +541,9 @@ public class Entity implements IEntity {
 		if(scaleX != 1 || scaleY != 1) {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;
-			localToSceneMatrix.postTranslate(-scaleCenterX, -scaleCenterY);
-			localToSceneMatrix.postScale(scaleX, scaleY);
-			localToSceneMatrix.postTranslate(scaleCenterX, scaleCenterY);
+			localToSceneTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
+			localToSceneTransformation.postScale(scaleX, scaleY);
+			localToSceneTransformation.postTranslate(scaleCenterX, scaleCenterY);
 		}
 
 		/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
@@ -556,35 +555,35 @@ public class Entity implements IEntity {
 			final float rotationCenterX = this.mRotationCenterX;
 			final float rotationCenterY = this.mRotationCenterY;
 
-			localToSceneMatrix.postTranslate(-rotationCenterX, -rotationCenterY);
-			localToSceneMatrix.postRotate(rotation);
-			localToSceneMatrix.postTranslate(rotationCenterX, rotationCenterY);
+			localToSceneTransformation.postTranslate(-rotationCenterX, -rotationCenterY);
+			localToSceneTransformation.postRotate(rotation);
+			localToSceneTransformation.postTranslate(rotationCenterX, rotationCenterY);
 		}
 
 		/* Translation. */
-		localToSceneMatrix.postTranslate(this.mX, this.mY);
+		localToSceneTransformation.postTranslate(this.mX, this.mY);
 
 		final IEntity parent = this.mParent;
 		if(parent != null) {
-			localToSceneMatrix.postConcat(parent.getLocalToSceneMatrix());
+			localToSceneTransformation.postConcat(parent.getLocalToSceneTransformation());
 		}
 
-		return localToSceneMatrix;
+		return localToSceneTransformation;
 	}
 
 	@Override
-	public Matrix getSceneToLocalMatrix() {
-		// TODO skip this calculation when the matrix is not "dirty"
-		final Matrix sceneToLocalMatrix = this.mSceneToLocalMatrix;
-		sceneToLocalMatrix.reset();
+	public Transformation getSceneToLocalTransformation() {
+		// TODO skip this calculation when the transformation is not "dirty"
+		final Transformation sceneToLocalTransformation = this.mSceneToLocalTransformation;
+		sceneToLocalTransformation.identity();
 
 		final IEntity parent = this.mParent;
 		if(parent != null) {
-			sceneToLocalMatrix.postConcat(parent.getSceneToLocalMatrix());
+			sceneToLocalTransformation.postConcat(parent.getSceneToLocalTransformation());
 		}
 
 		/* Translation. */
-		sceneToLocalMatrix.postTranslate(-this.mX, -this.mY);
+		sceneToLocalTransformation.postTranslate(-this.mX, -this.mY);
 
 		/* Rotation. */
 		final float rotation = this.mRotation;
@@ -592,9 +591,9 @@ public class Entity implements IEntity {
 			final float rotationCenterX = this.mRotationCenterX;
 			final float rotationCenterY = this.mRotationCenterY;
 
-			sceneToLocalMatrix.postTranslate(-rotationCenterX, -rotationCenterY);
-			sceneToLocalMatrix.postRotate(-rotation);
-			sceneToLocalMatrix.postTranslate(rotationCenterX, rotationCenterY);
+			sceneToLocalTransformation.postTranslate(-rotationCenterX, -rotationCenterY);
+			sceneToLocalTransformation.postRotate(-rotation);
+			sceneToLocalTransformation.postTranslate(rotationCenterX, rotationCenterY);
 		}
 
 		/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
@@ -607,12 +606,12 @@ public class Entity implements IEntity {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;
 
-			sceneToLocalMatrix.postTranslate(-scaleCenterX, -scaleCenterY);
-			sceneToLocalMatrix.postScale(1 / scaleX, 1 / scaleY);
-			sceneToLocalMatrix.postTranslate(scaleCenterX, scaleCenterY);
+			sceneToLocalTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
+			sceneToLocalTransformation.postScale(1 / scaleX, 1 / scaleY);
+			sceneToLocalTransformation.postTranslate(scaleCenterX, scaleCenterY);
 		}
 
-		return sceneToLocalMatrix;
+		return sceneToLocalTransformation;
 	}
 
 	@Override

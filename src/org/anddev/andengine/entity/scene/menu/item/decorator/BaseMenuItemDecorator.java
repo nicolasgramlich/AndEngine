@@ -12,9 +12,8 @@ import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.util.IEntityMatcher;
+import org.anddev.andengine.util.Transformation;
 import org.anddev.andengine.util.modifier.IModifier;
-
-import android.graphics.Matrix;
 
 /**
  * @author Nicolas Gramlich
@@ -505,13 +504,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public Matrix getLocalToSceneMatrix() {
-		return this.mMenuItem.getLocalToSceneMatrix();
+	public Transformation getLocalToSceneTransformation() {
+		return this.mMenuItem.getLocalToSceneTransformation();
 	}
 
 	@Override
-	public Matrix getSceneToLocalMatrix() {
-		return this.mMenuItem.getSceneToLocalMatrix();
+	public Transformation getSceneToLocalTransformation() {
+		return this.mMenuItem.getSceneToLocalTransformation();
 	}
 
 	@Override

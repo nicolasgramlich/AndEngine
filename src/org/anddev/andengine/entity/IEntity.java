@@ -10,9 +10,9 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.IEntityMatcher;
+import org.anddev.andengine.util.Transformation;
 import org.anddev.andengine.util.modifier.IModifier;
 
-import android.graphics.Matrix;
 
 
 /**
@@ -91,8 +91,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void registerTouchArea(final ITouchArea pTouchArea);
 	public void unregisterTouchArea(final ITouchArea pTouchArea);
 
-	public Matrix getLocalToSceneMatrix();
-	public Matrix getSceneToLocalMatrix();
+	public Transformation getLocalToSceneTransformation();
+	public Transformation getSceneToLocalTransformation();
 
 	public int getChildCount();
 

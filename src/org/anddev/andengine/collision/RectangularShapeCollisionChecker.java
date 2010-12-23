@@ -79,7 +79,7 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		pVertices[6 + VERTEX_INDEX_X] = left;
 		pVertices[6 + VERTEX_INDEX_Y] = bottom;
 		
-		pRectangularShape.getLocalToSceneMatrix().mapPoints(pVertices);
+		pRectangularShape.getLocalToSceneTransformation().transform(pVertices);
 	}
 
 	// ===========================================================

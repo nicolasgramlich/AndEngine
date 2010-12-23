@@ -68,7 +68,6 @@
 				<exclude name="**/R.class" />
 				<exclude name="**/R$*.class" />
 			</zipfileset>
-			<zipfileset src="lib/libProgressMonitor.jar" />
 		</jar>
 		
 		<foreach list="${targetlist}" target="createjar" param="targetfile" delimiter="," trim="true" />

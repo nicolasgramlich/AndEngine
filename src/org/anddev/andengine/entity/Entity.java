@@ -532,6 +532,7 @@ public class Entity implements IEntity {
 
 	@Override
 	public Matrix getLocalToSceneMatrix() {
+		// TODO skip this calculation when the matrix is not "dirty"
 		final Matrix localToSceneMatrix = this.mLocalToSceneMatrix;
 		localToSceneMatrix.reset();
 
@@ -573,6 +574,7 @@ public class Entity implements IEntity {
 
 	@Override
 	public Matrix getSceneToLocalMatrix() {
+		// TODO skip this calculation when the matrix is not "dirty"
 		final Matrix sceneToLocalMatrix = this.mSceneToLocalMatrix;
 		sceneToLocalMatrix.reset();
 

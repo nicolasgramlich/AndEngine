@@ -5,8 +5,8 @@ import java.util.concurrent.Callable;
 import org.anddev.andengine.util.AsyncCallable;
 import org.anddev.andengine.util.Callback;
 import org.anddev.andengine.util.Debug;
-import org.anddev.andengine.util.ProgressCallable;
-import org.anddev.progressmonitor.IProgressListener;
+import org.anddev.andengine.util.progress.IProgressListener;
+import org.anddev.andengine.util.progress.ProgressCallable;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

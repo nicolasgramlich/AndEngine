@@ -1,6 +1,5 @@
-package org.anddev.andengine.util;
+package org.anddev.andengine.util.progress;
 
-import org.anddev.progressmonitor.IProgressListener;
 
 /**
  * @author Nicolas Gramlich

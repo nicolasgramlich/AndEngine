@@ -33,18 +33,12 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public boolean isIgnoreUpdate();
 	public void setIgnoreUpdate(boolean pIgnoreUpdate);
+
+	public int getZIndex();
+	public void setZIndex(final int pZIndex);
 	
 	public IEntity getParent();
 	public void setParent(final IEntity pEntity);
-	
-	public float getRed();
-	public float getGreen();
-	public float getBlue();
-	public float getAlpha();
-	public void setAlpha(final float pAlpha);
-
-	public void setColor(final float pRed, final float pGreen, final float pBlue);
-	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 
 	public float getX();
 	public float getY();
@@ -55,11 +49,6 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setInitialPosition();
 	public void setPosition(final IEntity pOtherEntity);
 	public void setPosition(final float pX, final float pY);
-	
-	public float[] getSceneCenterCoordinates();
-	
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
 
 	public float getRotation();
 	public void setRotation(final float pRotation);
@@ -83,15 +72,32 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setScaleCenterX(final float pScaleCenterX);
 	public void setScaleCenterY(final float pScaleCenterY);
 	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY);
+	
+	public float getRed();
+	public float getGreen();
+	public float getBlue();
+	public float getAlpha();
+	public void setAlpha(final float pAlpha);
 
-	public void addEntityModifier(final IModifier<IEntity> pEntityModifier);
-	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier);
-	public void clearEntityModifiers();
+	public void setColor(final float pRed, final float pGreen, final float pBlue);
+	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
+	
+	public float[] getSceneCenterCoordinates();
+	
+	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
+	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
 
-	public int getZIndex();
-	public void setZIndex(final int pZIndex);
+	public ArrayList<ITouchArea> getTouchAreas();
+	public void registerTouchArea(final ITouchArea pTouchArea);
+	public void unregisterTouchArea(final ITouchArea pTouchArea);
+
+	public Matrix getLocalToSceneMatrix();
+	public Matrix getSceneToLocalMatrix();
 
 	public int getChildCount();
+
+	public void onAttached();
+	public void onDetached();
 
 	public void attachChild(final IEntity pEntity);
 
@@ -139,16 +145,10 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public void detachChildren();
 
-	public ArrayList<ITouchArea> getTouchAreas();
-	public void registerTouchArea(final ITouchArea pTouchArea);
-	public void unregisterTouchArea(final ITouchArea pTouchArea);
-
-	public Matrix getLocalToSceneMatrix();
-	public Matrix getSceneToLocalMatrix();
+	public void addEntityModifier(final IModifier<IEntity> pEntityModifier);
+	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier);
+	public void clearEntityModifiers();
 	
 	public void setUserData(Object pUserData);
 	public Object getUserData();
-
-	void onAttached();
-	void onDetached();
 }

@@ -41,7 +41,7 @@ public class LocationSensorOptions extends Criteria {
 	 *      {@link LocationSensorOptions#setSpeedRequired(boolean)}.
 	 */
 	public LocationSensorOptions() {
-		
+
 	}
 
 	/**

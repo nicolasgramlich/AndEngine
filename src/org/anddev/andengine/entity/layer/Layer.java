@@ -18,12 +18,12 @@ public class Layer extends Entity {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public Layer() {
 		super(0, 0);
 	}
 
-	public Layer(float pX, float pY) {
+	public Layer(final float pX, final float pY) {
 		super(pX, pY);
 	}
 

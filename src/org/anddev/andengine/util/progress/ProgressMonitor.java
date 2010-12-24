@@ -12,7 +12,7 @@ public class ProgressMonitor implements IProgressListener {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final ProgressMonitor mParentProgressMonitor;
 	private final IProgressListener mListener;
 
@@ -24,12 +24,12 @@ public class ProgressMonitor implements IProgressListener {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public ProgressMonitor(final IProgressListener pListener) {
 		this.mListener = pListener;
 		this.mParentProgressMonitor = null;
 	}
-	
+
 	public ProgressMonitor(final ProgressMonitor pParent){
 		this.mListener = null;
 		this.mParentProgressMonitor = pParent;
@@ -38,15 +38,15 @@ public class ProgressMonitor implements IProgressListener {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public ProgressMonitor getParentProgressMonitor() {
 		return this.mParentProgressMonitor;
 	}
-	
+
 	public int getProgress() {
 		return this.mProgress;
 	}
-	
+
 	public void setSubMonitorRange(final int pSubMonitorRangeFrom, final int pSubMonitorRangeTo) {
 		this.mSubMonitorRangeFrom = pSubMonitorRangeFrom;
 		this.mSubMonitorRangeTo = pSubMonitorRangeTo;
@@ -55,26 +55,28 @@ public class ProgressMonitor implements IProgressListener {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	/**
 	 * @param pProgress between 0 and 100.
 	 */
+	@Override
 	public void onProgressChanged(final int pProgress){
 		this.mProgress = pProgress;
-		if(this.mParentProgressMonitor != null)
+		if(this.mParentProgressMonitor != null) {
 			this.mParentProgressMonitor.onSubProgressChanged(pProgress);
-		else
+		} else {
 			this.mListener.onProgressChanged(pProgress);
+		}
 	}
-	
+
 	private void onSubProgressChanged(final int pSubProgress){
 		final int subRange = this.mSubMonitorRangeTo- this.mSubMonitorRangeFrom;
 		final int subProgressInRange = this.mSubMonitorRangeFrom + (int)(subRange * pSubProgress / 100f);
-		
+
 		if(this.mParentProgressMonitor != null) {
 			this.mParentProgressMonitor.onSubProgressChanged(subProgressInRange);
 		}else{
-			this.mListener.onProgressChanged(subProgressInRange);			
+			this.mListener.onProgressChanged(subProgressInRange);
 		}
 	}
 }

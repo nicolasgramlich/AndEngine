@@ -108,12 +108,12 @@ public class ZoomCamera extends BoundCamera {
 		if(zoomFactor != 1) {
 			final float scaleCenterX = this.getCenterX();
 			final float scaleCenterY = this.getCenterY();
-			
+
 			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pSceneTouchEvent.getX();
 			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
-			
+
 			MathUtils.scaleAroundCenter(VERTICES_TOUCH_TMP, zoomFactor, zoomFactor, scaleCenterX, scaleCenterY);
-			
+
 			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
 		}
 		super.applySceneToCameraSceneOffset(pSceneTouchEvent);
@@ -122,17 +122,17 @@ public class ZoomCamera extends BoundCamera {
 	@Override
 	protected void unapplySceneToCameraSceneOffset(final TouchEvent pCameraSceneTouchEvent) {
 		super.unapplySceneToCameraSceneOffset(pCameraSceneTouchEvent);
-		
+
 		final float zoomFactor = this.mZoomFactor;
 		if(zoomFactor != 1) {
 			final float scaleCenterX = this.getCenterX();
 			final float scaleCenterY = this.getCenterY();
-			
+
 			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pCameraSceneTouchEvent.getX();
 			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
-			
+
 			MathUtils.revertScaleAroundCenter(VERTICES_TOUCH_TMP, zoomFactor, zoomFactor, scaleCenterX, scaleCenterY);
-			
+
 			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
 		}
 	}

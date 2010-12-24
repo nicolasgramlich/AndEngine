@@ -54,11 +54,11 @@ public class TimerHandler implements IUpdateHandler {
 	public void setTimerSeconds(final float pTimerSeconds) {
 		this.mTimerSeconds = pTimerSeconds;
 	}
-	
+
 	public float getTimerSeconds() {
 		return this.mTimerSeconds;
 	}
-	
+
 	public float getTimerSecondsElapsed() {
 		return this.mTimerSecondsElapsed;
 	}

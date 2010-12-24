@@ -3,8 +3,8 @@ package org.anddev.andengine.opengl.texture.source.decorator;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 import android.graphics.AvoidXfermode;
-import android.graphics.Color;
 import android.graphics.AvoidXfermode.Mode;
+import android.graphics.Color;
 
 /**
  * @author Nicolas Gramlich

@@ -21,7 +21,7 @@ public class Particle extends Sprite {
 	private float mLifeTime;
 	private float mDeathTime = -1;
 	boolean mDead = false;
-	private final PhysicsHandler mPhysicsHandler = new PhysicsHandler(this); 
+	private final PhysicsHandler mPhysicsHandler = new PhysicsHandler(this);
 
 	// ===========================================================
 	// Constructors
@@ -60,7 +60,7 @@ public class Particle extends Sprite {
 	public void setDead(final boolean pDead) {
 		this.mDead = pDead;
 	}
-	
+
 	public PhysicsHandler getPhysicsHandler() {
 		return this.mPhysicsHandler;
 	}

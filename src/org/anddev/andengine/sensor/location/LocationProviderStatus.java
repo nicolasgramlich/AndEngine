@@ -8,7 +8,7 @@ public enum LocationProviderStatus {
 	// ===========================================================
 	// Elements
 	// ===========================================================
-	
+
 	AVAILABLE,
 	OUT_OF_SERVICE,
 	TEMPORARILY_UNAVAILABLE;

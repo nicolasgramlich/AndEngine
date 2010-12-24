@@ -90,6 +90,7 @@ public abstract class BaseTouchController implements ITouchController  {
 	// Methods
 	// ===========================================================
 
+	@Override
 	public void applyTouchOptions(final TouchOptions pTouchOptions) {
 		this.mRunOnUpdateThread = pTouchOptions.isRunOnUpdateThread();
 	}
@@ -117,6 +118,7 @@ public abstract class BaseTouchController implements ITouchController  {
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
 
+		@Override
 		public void run() {
 			BaseTouchController.this.mTouchEventCallback.onTouchEvent(this.mTouchEvent);
 		}

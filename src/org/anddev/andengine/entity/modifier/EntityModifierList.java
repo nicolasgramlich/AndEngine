@@ -11,7 +11,7 @@ public class EntityModifierList extends ModifierList<IEntity> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final long serialVersionUID = 161652765736600082L;
 
 	// ===========================================================
@@ -22,11 +22,11 @@ public class EntityModifierList extends ModifierList<IEntity> {
 	// Constructors
 	// ===========================================================
 
-	public EntityModifierList(IEntity pTarget) {
+	public EntityModifierList(final IEntity pTarget) {
 		super(pTarget);
 	}
 
-	public EntityModifierList(IEntity pTarget, int pCapacity) {
+	public EntityModifierList(final IEntity pTarget, final int pCapacity) {
 		super(pTarget, pCapacity);
 	}
 

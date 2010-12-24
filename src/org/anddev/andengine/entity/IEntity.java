@@ -36,7 +36,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public int getZIndex();
 	public void setZIndex(final int pZIndex);
-	
+
 	public IEntity getParent();
 	public void setParent(final IEntity pEntity);
 
@@ -72,7 +72,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setScaleCenterX(final float pScaleCenterX);
 	public void setScaleCenterY(final float pScaleCenterY);
 	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY);
-	
+
 	public float getRed();
 	public float getGreen();
 	public float getBlue();
@@ -81,9 +81,9 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
-	
+
 	public float[] getSceneCenterCoordinates();
-	
+
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
 
@@ -106,12 +106,12 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public IEntity getLastChild();
 
 	public IEntity findChild(final IEntityMatcher pEntityMatcher);
-	
+
 	/**
-	 * Sorts the {@link IEntity}s based on their ZIndex. Sort is stable. 
+	 * Sorts the {@link IEntity}s based on their ZIndex. Sort is stable.
 	 */
 	public void sortChildren();
-	
+
 	/**
 	 * Sorts the {@link IEntity}s based on the {@link Comparator} supplied. Sort is stable.
 	 * @param pEntityComparator
@@ -144,7 +144,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public boolean detachChildren(final IEntityMatcher pEntityMatcher);
 
 	public void detachChildren();
-	
+
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public void clearUpdateHandlers();
@@ -152,7 +152,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void addEntityModifier(final IModifier<IEntity> pEntityModifier);
 	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier);
 	public void clearEntityModifiers();
-	
+
 	public void setUserData(Object pUserData);
 	public Object getUserData();
 }

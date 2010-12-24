@@ -2,8 +2,8 @@ package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
-import android.graphics.RadialGradient;
 import android.graphics.Paint.Style;
+import android.graphics.RadialGradient;
 import android.graphics.Shader.TileMode;
 
 /**

@@ -48,7 +48,7 @@ public class ParallelModifier<T> extends BaseModifier<T> {
 		super(pParallelModifier.mModifierListener);
 
 		final IModifier<T>[] otherModifiers = pParallelModifier.mModifiers;
-		this.mModifiers = (IModifier<T>[])new IModifier[otherModifiers.length];
+		this.mModifiers = new IModifier[otherModifiers.length];
 
 		final IModifier<T>[] shapeModifiers = this.mModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {

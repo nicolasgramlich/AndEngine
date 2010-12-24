@@ -21,7 +21,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 
 	private Scene mSecondScene;
-	private Camera mSecondCamera;
+	private final Camera mSecondCamera;
 
 	// ===========================================================
 	// Constructors

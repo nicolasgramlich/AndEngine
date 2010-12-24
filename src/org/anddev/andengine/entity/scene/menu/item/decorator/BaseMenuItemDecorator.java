@@ -485,12 +485,12 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void registerUpdateHandler(IUpdateHandler pUpdateHandler) {
+	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		this.mMenuItem.registerUpdateHandler(pUpdateHandler);
 	}
 
 	@Override
-	public boolean unregisterUpdateHandler(IUpdateHandler pUpdateHandler) {
+	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		return this.mMenuItem.unregisterUpdateHandler(pUpdateHandler);
 	}
 

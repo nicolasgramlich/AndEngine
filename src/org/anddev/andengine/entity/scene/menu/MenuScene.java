@@ -169,7 +169,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void closeMenuScene() {
 		this.back();
 	}

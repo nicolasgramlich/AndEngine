@@ -105,7 +105,7 @@ public class CameraScene extends Scene {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void centerShapeInCamera(final Shape pShape) {
 		final Camera camera = this.mCamera;
 		pShape.setPosition((camera.getWidth() - pShape.getWidth()) * 0.5f, (camera.getHeight() - pShape.getHeight()) * 0.5f);

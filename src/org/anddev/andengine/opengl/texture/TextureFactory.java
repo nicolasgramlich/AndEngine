@@ -22,7 +22,7 @@ public class TextureFactory {
 	// ===========================================================
 
 	public static Texture createForTextureSourceSize(final TextureRegion pTextureRegion) {
-		return createForTextureRegionSize(pTextureRegion, TextureOptions.DEFAULT);
+		return TextureFactory.createForTextureRegionSize(pTextureRegion, TextureOptions.DEFAULT);
 	}
 
 	public static Texture createForTextureRegionSize(final TextureRegion pTextureRegion, final TextureOptions pTextureOptions) {
@@ -32,7 +32,7 @@ public class TextureFactory {
 	}
 
 	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource) {
-		return createForTextureSourceSize(pTextureSource, TextureOptions.DEFAULT);
+		return TextureFactory.createForTextureSourceSize(pTextureSource, TextureOptions.DEFAULT);
 	}
 
 	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource, final TextureOptions pTextureOptions) {

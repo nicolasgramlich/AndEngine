@@ -8,8 +8,8 @@ import org.anddev.andengine.util.StreamUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 
 /**
  * @author Nicolas Gramlich
@@ -40,7 +40,7 @@ public class AssetTextureSource implements ITextureSource {
 
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inJustDecodeBounds = true;
-		
+
 		InputStream in = null;
 		try {
 			in = pContext.getAssets().open(pAssetPath);
@@ -50,7 +50,7 @@ public class AssetTextureSource implements ITextureSource {
 		} finally {
 			StreamUtils.closeStream(in);
 		}
-		
+
 		this.mWidth = decodeOptions.outWidth;
 		this.mHeight = decodeOptions.outHeight;
 	}
@@ -87,7 +87,7 @@ public class AssetTextureSource implements ITextureSource {
 
 	@Override
 	public Bitmap onLoadBitmap() {
-		InputStream in = null; 
+		InputStream in = null;
 		try {
 			final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 			decodeOptions.inPreferredConfig = Config.ARGB_8888;

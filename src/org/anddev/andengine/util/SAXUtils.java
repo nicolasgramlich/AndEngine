@@ -113,7 +113,7 @@ public class SAXUtils {
 		return Double.parseDouble(SAXUtils.getAttributeOrThrow(pAttributes, pAttributeName));
 	}
 
-	
+
 	public static void appendAttribute(final StringBuilder pStringBuilder, final String pName, final boolean pValue) {
 		SAXUtils.appendAttribute(pStringBuilder, pName, String.valueOf(pValue));
 	}

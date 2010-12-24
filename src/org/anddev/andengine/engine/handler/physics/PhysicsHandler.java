@@ -30,7 +30,7 @@ public class PhysicsHandler extends BaseEntityUpdateHandler {
 	// Constructors
 	// ===========================================================
 
-	public PhysicsHandler(IEntity pEntity) {
+	public PhysicsHandler(final IEntity pEntity) {
 		super(pEntity);
 	}
 
@@ -116,7 +116,7 @@ public class PhysicsHandler extends BaseEntityUpdateHandler {
 	// ===========================================================
 
 	@Override
-	protected void onUpdate(float pSecondsElapsed, IEntity pEntity) {
+	protected void onUpdate(final float pSecondsElapsed, final IEntity pEntity) {
 		if(this.mEnabled) {
 			/* Apply linear acceleration. */
 			final float accelerationX = this.mAccelerationX;

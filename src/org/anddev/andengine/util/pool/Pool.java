@@ -40,7 +40,7 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected T onHandleAllocatePoolItem() {
 		final T poolItem = super.onHandleAllocatePoolItem();
@@ -49,8 +49,8 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 	}
 
 	@Override
-	protected void onHandleObtainItem(final T pPoolItem) {	
-		pPoolItem.mRecycled = false;	
+	protected void onHandleObtainItem(final T pPoolItem) {
+		pPoolItem.mRecycled = false;
 		pPoolItem.onObtain();
 	}
 
@@ -68,8 +68,8 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 			throw new IllegalArgumentException("PoolItem from another pool!");
 		} else if(pPoolItem.isRecycled()) {
 			throw new IllegalArgumentException("PoolItem already recycled!");
-		} 
-		
+		}
+
 		super.recyclePoolItem(pPoolItem);
 	}
 

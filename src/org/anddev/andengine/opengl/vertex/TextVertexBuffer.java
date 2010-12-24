@@ -71,7 +71,7 @@ public class TextVertexBuffer extends VertexBuffer {
 			final int lineYBits = Float.floatToRawIntBits(lineY);
 
 			final int lineLength = line.length();
-			for (int letterIndex = 0; letterIndex < lineLength; letterIndex++) {				
+			for (int letterIndex = 0; letterIndex < lineLength; letterIndex++) {
 				final Letter letter = font.getLetter(line.charAt(letterIndex));
 
 				final int lineY2 = lineY + lineHeight;

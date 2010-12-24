@@ -31,6 +31,7 @@ public class AnimatedSpriteMenuItem extends AnimatedSprite implements IMenuItem 
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public int getID() {
 		return this.mID;
 	}

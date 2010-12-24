@@ -421,6 +421,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 	 * This method is part of the SurfaceHolder.Callback interface, and is not
 	 * normally called or subclassed by clients of GLSurfaceView.
 	 */
+	@Override
 	public void surfaceCreated(final SurfaceHolder holder) {
 		if(this.mGLThread != null) {
 			this.mGLThread.surfaceCreated();
@@ -432,6 +433,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 	 * This method is part of the SurfaceHolder.Callback interface, and is not
 	 * normally called or subclassed by clients of GLSurfaceView.
 	 */
+	@Override
 	public void surfaceDestroyed(final SurfaceHolder holder) {
 		// Surface will be destroyed when we return
 		if(this.mGLThread != null) {
@@ -444,6 +446,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 	 * This method is part of the SurfaceHolder.Callback interface, and is not
 	 * normally called or subclassed by clients of GLSurfaceView.
 	 */
+	@Override
 	public void surfaceChanged(final SurfaceHolder holder, final int format, final int w, final int h) {
 		if(this.mGLThread != null) {
 			this.mGLThread.onWindowResize(w, h);

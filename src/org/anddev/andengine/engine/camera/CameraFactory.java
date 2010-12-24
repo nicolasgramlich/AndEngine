@@ -33,7 +33,7 @@ public class CameraFactory {
 	// ===========================================================
 
 	public static Camera createPixelPerfectCamera(final Activity pActivity, final float pCenterX, final float pCenterY) {
-		final DisplayMetrics displayMetrics = getDisplayMetrics(pActivity);
+		final DisplayMetrics displayMetrics = CameraFactory.getDisplayMetrics(pActivity);
 
 		final float width = displayMetrics.widthPixels;
 		final float height = displayMetrics.heightPixels;

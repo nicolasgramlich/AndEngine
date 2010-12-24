@@ -9,8 +9,8 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
-import org.anddev.andengine.opengl.texture.source.decorator.ColorKeyTextureSourceDecorator;
 import org.anddev.andengine.opengl.texture.source.decorator.BaseShapeTextureSourceDecorator.TextureSourceDecoratorShape;
+import org.anddev.andengine.opengl.texture.source.decorator.ColorKeyTextureSourceDecorator;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 

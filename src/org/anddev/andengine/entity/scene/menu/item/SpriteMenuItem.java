@@ -31,6 +31,7 @@ public class SpriteMenuItem extends Sprite implements IMenuItem {
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public int getID() {
 		return this.mID;
 	}

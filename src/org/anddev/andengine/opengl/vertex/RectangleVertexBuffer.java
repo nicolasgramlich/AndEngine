@@ -12,7 +12,7 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// ===========================================================
 
 	public static final int VERTICES_PER_RECTANGLE = 4;
-	
+
 	private static final int FLOAT_TO_RAW_INT_BITS_ZERO = Float.floatToRawIntBits(0);
 
 	// ===========================================================

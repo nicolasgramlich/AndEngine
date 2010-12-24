@@ -71,6 +71,7 @@ public class ColorBackground extends BaseBackground {
 	 * @param pBlue The blue color value. Should be between 0.0 and 1.0, inclusive.
 	 * @param pAlpha The alpha color value. Should be between 0.0 and 1.0, inclusive.
 	 */
+	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.setColor(pRed, pGreen, pBlue);
 		this.mAlpha = pAlpha;

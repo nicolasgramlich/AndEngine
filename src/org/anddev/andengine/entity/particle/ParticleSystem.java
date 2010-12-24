@@ -77,7 +77,7 @@ public class ParticleSystem extends Entity {
 
 	public ParticleSystem(final IParticleEmitter pParticleEmitter, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
 		super(0, 0);
-		
+
 		this.mParticleEmitter = pParticleEmitter;
 		this.mParticles = new Particle[pMaxParticles];
 		this.mMinRate = pMinRate;
@@ -102,7 +102,7 @@ public class ParticleSystem extends Entity {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
 	}
-	
+
 	public IParticleEmitter getParticleEmitter() {
 		return this.mParticleEmitter;
 	}

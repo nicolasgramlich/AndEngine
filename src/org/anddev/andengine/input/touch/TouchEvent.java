@@ -115,7 +115,7 @@ public class TouchEvent {
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
-		
+
 		@Override
 		protected TouchEvent onAllocatePoolItem() {
 			return new TouchEvent();

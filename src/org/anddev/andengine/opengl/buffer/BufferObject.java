@@ -20,7 +20,7 @@ public abstract class BufferObject {
 	// Fields
 	// ===========================================================
 
-	protected final int[] mBufferData; 
+	protected final int[] mBufferData;
 
 	private final int mDrawType;
 

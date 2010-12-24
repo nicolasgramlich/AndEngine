@@ -36,7 +36,7 @@ public class Music extends BaseAudioEntity {
 	public boolean isPlaying() {
 		return this.mMediaPlayer.isPlaying();
 	}
-	
+
 	public MediaPlayer getMediaPlayer() {
 		return this.mMediaPlayer;
 	}
@@ -99,11 +99,11 @@ public class Music extends BaseAudioEntity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void seekTo(final int pMilliseconds) {
 		this.mMediaPlayer.seekTo(pMilliseconds);
 	}
-	
+
 	public void setOnCompletionListener(final OnCompletionListener pOnCompletionListener) {
 		this.mMediaPlayer.setOnCompletionListener(pOnCompletionListener);
 	}

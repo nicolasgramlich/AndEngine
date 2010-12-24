@@ -42,7 +42,7 @@ public class Library<T> {
 			throw new IllegalArgumentException("ID: '" + pID + "' is already associated with item: '" + existingItem.toString() + "'.");
 		}
 	}
-	
+
 	public void remove(final int pID) {
 		this.mItems.remove(pID);
 	}

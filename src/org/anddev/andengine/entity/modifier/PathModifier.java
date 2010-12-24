@@ -186,7 +186,7 @@ public class PathModifier extends EntityModifier {
 
 		public void onWaypointPassed(final PathModifier pPathModifier, final IEntity pEntity, final int pWaypointIndex);
 	}
-	
+
 	public static class Path {
 		// ===========================================================
 		// Constants

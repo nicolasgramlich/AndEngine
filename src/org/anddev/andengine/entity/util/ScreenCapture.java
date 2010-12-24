@@ -38,7 +38,7 @@ public class ScreenCapture extends Entity {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public ScreenCapture() {
 		super(0, 0);
 	}
@@ -54,7 +54,7 @@ public class ScreenCapture extends Entity {
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		if(this.mScreenCapturePending) {
-			saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
+			ScreenCapture.saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
 
 			this.mScreenCaptureCallback.onScreenCaptured(this.mFilePath);
 
@@ -108,11 +108,11 @@ public class ScreenCapture extends Entity {
 	}
 
 	private static void saveCapture(final int pWidth, final int pHeight, final String pFilePath, final GL10 pGL) {
-		saveCapture(0, 0, pWidth, pHeight, pFilePath, pGL);
+		ScreenCapture.saveCapture(0, 0, pWidth, pHeight, pFilePath, pGL);
 	}
 
 	private static void saveCapture(final int pX, final int pY, final int pWidth, final int pHeight, final String pFilePath, final GL10 pGL) {
-		final Bitmap bmp = capture(pX, pY, pWidth, pHeight, pGL);
+		final Bitmap bmp = ScreenCapture.capture(pX, pY, pWidth, pHeight, pGL);
 		try {
 			final FileOutputStream fos = new FileOutputStream(pFilePath);
 			bmp.compress(CompressFormat.PNG, 100, fos);

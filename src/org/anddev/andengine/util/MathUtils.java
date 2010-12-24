@@ -57,7 +57,7 @@ public class MathUtils implements MathConstants {
 		return pMin + RANDOM.nextFloat() * (pMax - pMin);
 	}
 
-	/** 
+	/**
 	 * @param pMin inclusive!
 	 * @param pMax inclusive!
 	 * @return

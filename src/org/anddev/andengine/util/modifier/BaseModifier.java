@@ -53,14 +53,17 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 		return this.mRemoveWhenFinished;
 	}
 
+	@Override
 	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
 		this.mRemoveWhenFinished = pRemoveWhenFinished;
 	}
 
+	@Override
 	public IModifierListener<T> getModifierListener() {
 		return this.mModifierListener;
 	}
 
+	@Override
 	public void setModifierListener(final IModifierListener<T> pModifierListener) {
 		this.mModifierListener = pModifierListener;
 	}

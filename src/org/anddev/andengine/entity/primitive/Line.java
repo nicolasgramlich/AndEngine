@@ -156,7 +156,7 @@ public class Line extends Shape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected boolean isCulled(final Camera pCamera) {
 		return false; // TODO
@@ -187,8 +187,8 @@ public class Line extends Shape {
 
 	@Override
 	public float[] getSceneCenterCoordinates() {
-		return null; // TODO 
-//		return convertLocalToSceneCoordinates(this, (this.mX + this.mX2) * 0.5f, (this.mY + this.mY2) * 0.5f);
+		return null; // TODO
+		//		return convertLocalToSceneCoordinates(this, (this.mX + this.mX2) * 0.5f, (this.mY + this.mY2) * 0.5f);
 	}
 
 	@Override

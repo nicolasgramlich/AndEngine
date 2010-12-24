@@ -52,7 +52,7 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 			final float bLeft = pRectangularShapeB.getX();
 			final float bTop = pRectangularShapeB.getY();
 			return BaseCollisionChecker.checkAxisAlignedRectangleCollision(aLeft, aTop, aLeft + pRectangularShapeA.getWidth(), aTop + pRectangularShapeA.getHeight(),
-																			bLeft, bTop, bLeft + pRectangularShapeB.getWidth(), bTop + pRectangularShapeB.getHeight());
+					bLeft, bTop, bLeft + pRectangularShapeB.getWidth(), bTop + pRectangularShapeB.getHeight());
 		} else {
 			RectangularShapeCollisionChecker.fillVertices(pRectangularShapeA, VERTICES_COLLISION_TMP_A);
 			RectangularShapeCollisionChecker.fillVertices(pRectangularShapeB, VERTICES_COLLISION_TMP_B);
@@ -78,7 +78,7 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 
 		pVertices[6 + VERTEX_INDEX_X] = left;
 		pVertices[6 + VERTEX_INDEX_Y] = bottom;
-		
+
 		pRectangularShape.getLocalToSceneTransformation().transform(pVertices);
 	}
 

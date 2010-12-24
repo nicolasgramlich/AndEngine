@@ -1,14 +1,12 @@
-package org.anddev.andengine.entity.particle.modifier;
+package org.anddev.andengine.engine.handler;
 
-import static org.anddev.andengine.util.MathUtils.RANDOM;
-
-import org.anddev.andengine.entity.particle.Particle;
+import org.anddev.andengine.entity.IEntity;
 
 /**
  * @author Nicolas Gramlich
- * @since 10:18:06 - 29.06.2010
+ * @since 14:00:25 - 24.12.2010
  */
-public abstract class BaseSingleValueInitializer implements IParticleInitializer {
+public abstract class BaseEntityUpdateHandler implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,16 +15,14 @@ public abstract class BaseSingleValueInitializer implements IParticleInitializer
 	// Fields
 	// ===========================================================
 
-	protected float mMinValue;
-	protected float mMaxValue;
+	private final IEntity mEntity;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseSingleValueInitializer(final float pMinValue, final float pMaxValue) {
-		this.mMinValue = pMinValue;
-		this.mMaxValue = pMaxValue;
+	public BaseEntityUpdateHandler(final IEntity pEntity) {
+		this.mEntity = pEntity;
 	}
 
 	// ===========================================================
@@ -37,24 +33,21 @@ public abstract class BaseSingleValueInitializer implements IParticleInitializer
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onInitializeParticle(final Particle pParticle, final float pValue);
+	protected abstract void onUpdate(final float pSecondsElapsed, final IEntity pEntity);
 
 	@Override
-	public void onInitializeParticle(final Particle pParticle) {
-		this.onInitializeParticle(pParticle, this.getRandomValue());
+	public final void onUpdate(final float pSecondsElapsed) {
+		this.onUpdate(pSecondsElapsed, this.mEntity);
+	}
+
+	@Override
+	public void reset() {
+
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private final float getRandomValue() {
-		if(this.mMinValue == this.mMaxValue) {
-			return this.mMaxValue;
-		} else {
-			return RANDOM.nextFloat() * (this.mMaxValue - this.mMinValue) + this.mMinValue;
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

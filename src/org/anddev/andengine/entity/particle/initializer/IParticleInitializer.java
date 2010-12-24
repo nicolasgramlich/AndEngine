@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity.particle.modifier;
+package org.anddev.andengine.entity.particle.initializer;
 
 import org.anddev.andengine.entity.particle.Particle;
 

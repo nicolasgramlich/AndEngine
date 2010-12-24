@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.IEntity;
@@ -46,8 +44,6 @@ public class Scene extends Entity {
 	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
 
 	private final RunnableHandler mRunnableHandler = new RunnableHandler();
-
-	private final UpdateHandlerList mUpdateHandlers = new UpdateHandlerList();
 
 	private IOnSceneTouchListener mOnSceneTouchListener;
 
@@ -147,18 +143,6 @@ public class Scene extends Entity {
 	@Override
 	public void unregisterTouchArea(final ITouchArea pTouchArea) {
 		this.mTouchAreas.remove(pTouchArea);
-	}
-
-	public void clearUpdateHandlers() {
-		this.mUpdateHandlers.clear();
-	}
-
-	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
-		this.mUpdateHandlers.add(pUpdateHandler);
-	}
-
-	public void unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
-		this.mUpdateHandlers.remove(pUpdateHandler);
 	}
 
 	public void setOnSceneTouchListener(final IOnSceneTouchListener pOnSceneTouchListener) {
@@ -277,8 +261,6 @@ public class Scene extends Entity {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		this.mSecondsElapsedTotal += pSecondsElapsed;
-
-		this.updateUpdateHandlers(pSecondsElapsed);
 
 		this.mRunnableHandler.onUpdate(pSecondsElapsed);
 
@@ -471,16 +453,6 @@ public class Scene extends Entity {
 		if(this.mParentScene != null) {
 			this.mParentScene.clearChildScene();
 			this.mParentScene = null;
-		}
-	}
-
-	private void updateUpdateHandlers(final float pSecondsElapsed) {
-		if(this.mChildScene == null || !this.mChildSceneModalUpdate) {
-			this.mUpdateHandlers.onUpdate(pSecondsElapsed);
-		}
-
-		if (this.mChildScene != null) {
-			this.mChildScene.updateUpdateHandlers(pSecondsElapsed);
 		}
 	}
 

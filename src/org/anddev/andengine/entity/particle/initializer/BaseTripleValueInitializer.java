@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity.particle.modifier;
+package org.anddev.andengine.entity.particle.initializer;
 
 import static org.anddev.andengine.util.MathUtils.RANDOM;
 
@@ -41,7 +41,7 @@ public abstract class BaseTripleValueInitializer extends BaseDoubleValueInitiali
 	protected abstract void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB, final float pValueC);
 
 	@Override
-	protected void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB) {
+	protected final void onInitializeParticle(final Particle pParticle, final float pValueA, final float pValueB) {
 		this.onInitializeParticle(pParticle, pValueA, pValueB, this.getRandomValueC());
 	}
 

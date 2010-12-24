@@ -144,6 +144,10 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public boolean detachChildren(final IEntityMatcher pEntityMatcher);
 
 	public void detachChildren();
+	
+	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler);
+	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler);
+	public void clearUpdateHandlers();
 
 	public void addEntityModifier(final IModifier<IEntity> pEntityModifier);
 	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier);

@@ -6,13 +6,15 @@ import java.util.Comparator;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.entity.layer.ZIndexSorter;
+import org.anddev.andengine.entity.modifier.EntityModifierList;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.util.IEntityMatcher;
 import org.anddev.andengine.util.Transformation;
 import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.modifier.IModifier;
-import org.anddev.andengine.util.modifier.ModifierList;
 
 
 /**
@@ -26,6 +28,8 @@ public class Entity implements IEntity {
 
 	private static final int CHILDREN_CAPACITY_DEFAULT = 4;
 	private static final int TOUCHAREAS_CAPACITY_DEFAULT = 4;
+	private static final int ENTITYMODIFIERS_CAPACITY_DEFAULT = 4;
+	private static final int UPDATEHANDLERS_CAPACITY_DEFAULT = 4;
 
 	private static final float[] VERTICES_SCENE_TO_LOCAL_TMP = new float[2];
 	private static final float[] VERTICES_LOCAL_TO_SCENE_TMP = new float[2];
@@ -67,7 +71,9 @@ public class Entity implements IEntity {
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;
 
-	protected final ModifierList<IEntity> mEntityModifiers = new ModifierList<IEntity>(this);
+	private EntityModifierList mEntityModifiers = null;
+
+	private UpdateHandlerList mUpdateHandlers;
 
 	private final Transformation mLocalToSceneTransformation = new Transformation();
 	private final Transformation mSceneToLocalTransformation = new Transformation();
@@ -167,14 +173,12 @@ public class Entity implements IEntity {
 	public void setPosition(final float pX, final float pY) {
 		this.mX = pX;
 		this.mY = pY;
-		this.onPositionChanged();
 	}
 
 	@Override
 	public void setInitialPosition() {
 		this.mX = this.mInitialX;
 		this.mY = this.mInitialY;
-		this.onPositionChanged();
 	}
 
 	@Override
@@ -449,7 +453,7 @@ public class Entity implements IEntity {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean detachChildren(final IEntityMatcher pEntityMatcher) {
 		if(this.mChildren == null) {
@@ -469,17 +473,49 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void addEntityModifier(final IModifier<IEntity> pEntityModifier) {
-		this.mEntityModifiers.add(pEntityModifier);
+	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		if(this.mUpdateHandlers == null) {
+			this.allocateUpdateHandlers();
+		}
+		this.mUpdateHandlers.add(pUpdateHandler);
 	}
 
 	@Override
+	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		if(this.mUpdateHandlers == null) {
+			return false;
+		}
+		return this.mUpdateHandlers.remove(pUpdateHandler);
+	}
+
+	@Override
+	public void clearUpdateHandlers() {
+		if(this.mUpdateHandlers == null) {
+			return;
+		}
+		this.mUpdateHandlers.clear();
+	}
+
+	@Override
+	public void addEntityModifier(final IModifier<IEntity> pEntityModifier) {
+		if(this.mEntityModifiers == null) {
+			this.allocateEntityModifiers();
+		}
+		this.mEntityModifiers.add(pEntityModifier);
+	}
+	@Override
 	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier) {
+		if(this.mEntityModifiers == null) {
+			return false;
+		}
 		return this.mEntityModifiers.remove(pEntityModifier);
 	}
 
 	@Override
 	public void clearEntityModifiers() {
+		if(this.mEntityModifiers == null) {
+			return;
+		}
 		this.mEntityModifiers.clear();
 	}
 
@@ -541,10 +577,10 @@ public class Entity implements IEntity {
 		if(scaleX != 1 || scaleY != 1) {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;
-			
-			/* TODO Check if it is worth to check for scaleCenterX == 0 && scaleCenterY == 0 as the two postTranslate can be saved. 
-			 * The same obviously applies for all similar occurrences of this pattern in this class. */  
-			
+
+			/* TODO Check if it is worth to check for scaleCenterX == 0 && scaleCenterY == 0 as the two postTranslate can be saved.
+			 * The same obviously applies for all similar occurrences of this pattern in this class. */
+
 			localToSceneTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
 			localToSceneTransformation.postScale(scaleX, scaleY);
 			localToSceneTransformation.postTranslate(scaleCenterX, scaleCenterY);
@@ -663,14 +699,14 @@ public class Entity implements IEntity {
 		this.mScaleX = 1;
 		this.mScaleY = 1;
 
-		this.onPositionChanged();
-
 		this.mRed = 1.0f;
 		this.mGreen = 1.0f;
 		this.mBlue = 1.0f;
 		this.mAlpha = 1.0f;
 
-		this.mEntityModifiers.reset();
+		if(this.mEntityModifiers != null) {
+			this.mEntityModifiers.reset();
+		}
 
 		if(this.mChildren != null) {
 			final ArrayList<IEntity> entities = this.mChildren;
@@ -688,8 +724,8 @@ public class Entity implements IEntity {
 
 	}
 
-	protected void onPositionChanged(){
-
+	private void allocateEntityModifiers() {
+		this.mEntityModifiers = new EntityModifierList(this, Entity.ENTITYMODIFIERS_CAPACITY_DEFAULT);
 	}
 
 	private void allocateTouchAreas() {
@@ -698,6 +734,10 @@ public class Entity implements IEntity {
 
 	private void allocateChildren() {
 		this.mChildren = new ArrayList<IEntity>(Entity.CHILDREN_CAPACITY_DEFAULT);
+	}
+
+	private void allocateUpdateHandlers() {
+		this.mUpdateHandlers = new UpdateHandlerList(Entity.UPDATEHANDLERS_CAPACITY_DEFAULT);
 	}
 
 	protected void onApplyTransformations(final GL10 pGL) {
@@ -765,16 +805,19 @@ public class Entity implements IEntity {
 	}
 
 	protected void onManagedUpdate(final float pSecondsElapsed) {
-		this.mEntityModifiers.onUpdate(pSecondsElapsed);
-
-		if(this.mChildren == null) {
-			return;
+		if(this.mEntityModifiers != null) {
+			this.mEntityModifiers.onUpdate(pSecondsElapsed);
+		}
+		if(this.mUpdateHandlers != null) {
+			this.mUpdateHandlers.onUpdate(pSecondsElapsed);
 		}
 
-		final ArrayList<IEntity> entities = this.mChildren;
-		final int entityCount = entities.size();
-		for(int i = 0; i < entityCount; i++) {
-			entities.get(i).onUpdate(pSecondsElapsed);
+		if(this.mChildren != null) {
+			final ArrayList<IEntity> entities = this.mChildren;
+			final int entityCount = entities.size();
+			for(int i = 0; i < entityCount; i++) {
+				entities.get(i).onUpdate(pSecondsElapsed);
+			}
 		}
 	}
 

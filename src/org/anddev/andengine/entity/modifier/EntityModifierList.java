@@ -1,17 +1,18 @@
-package org.anddev.andengine.engine.handler;
+package org.anddev.andengine.entity.modifier;
 
-import java.util.ArrayList;
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.ModifierList;
 
 /**
  * @author Nicolas Gramlich
- * @since 09:45:22 - 31.03.2010
+ * @since 14:19:18 - 24.12.2010
  */
-public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpdateHandler {
+public class EntityModifierList extends ModifierList<IEntity> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final long serialVersionUID = -8842562717687229277L;
+	
+	private static final long serialVersionUID = 161652765736600082L;
 
 	// ===========================================================
 	// Fields
@@ -21,12 +22,12 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	// Constructors
 	// ===========================================================
 
-	public UpdateHandlerList() {
-
+	public EntityModifierList(IEntity pTarget) {
+		super(pTarget);
 	}
 
-	public UpdateHandlerList(final int pCapacity) {
-		super(pCapacity);
+	public EntityModifierList(IEntity pTarget, int pCapacity) {
+		super(pTarget, pCapacity);
 	}
 
 	// ===========================================================
@@ -36,22 +37,6 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public void onUpdate(final float pSecondsElapsed) {
-		final int handlerCount = this.size();
-		for(int i = handlerCount - 1; i >= 0; i--) {
-			this.get(i).onUpdate(pSecondsElapsed);
-		}
-	}
-
-	@Override
-	public void reset() {
-		final int handlerCount = this.size();
-		for(int i = handlerCount - 1; i >= 0; i--) {
-			this.get(i).reset();
-		}
-	}
 
 	// ===========================================================
 	// Methods

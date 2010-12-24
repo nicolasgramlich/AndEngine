@@ -12,7 +12,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.particle.emitter.IParticleEmitter;
 import org.anddev.andengine.entity.particle.emitter.RectangleParticleEmitter;
-import org.anddev.andengine.entity.particle.modifier.IParticleInitializer;
+import org.anddev.andengine.entity.particle.initializer.IParticleInitializer;
 import org.anddev.andengine.entity.particle.modifier.IParticleModifier;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;

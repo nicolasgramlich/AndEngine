@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity.particle.modifier;
+package org.anddev.andengine.entity.particle.initializer;
 
 import org.anddev.andengine.entity.particle.Particle;
 
@@ -84,7 +84,7 @@ public class VelocityInitializer extends BaseDoubleValueInitializer {
 
 	@Override
 	public void onInitializeParticle(final Particle pParticle, final float pVelocityX, final float pVelocityY) {
-		pParticle.setVelocity(pVelocityX, pVelocityY);
+		pParticle.getPhysicsHandler().setVelocity(pVelocityX, pVelocityY);
 	}
 
 	// ===========================================================

@@ -25,7 +25,12 @@ public class ModifierList<T> extends ArrayList<IModifier<T>> implements IUpdateH
 	// Constructors
 	// ===========================================================
 
-	public ModifierList(final T pTarget){
+	public ModifierList(final T pTarget) {
+		this.mTarget = pTarget;
+	}
+
+	public ModifierList(final T pTarget, final int pCapacity){
+		super(pCapacity);
 		this.mTarget = pTarget;
 	}
 

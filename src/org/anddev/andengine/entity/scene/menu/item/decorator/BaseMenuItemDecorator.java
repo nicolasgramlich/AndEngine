@@ -6,6 +6,7 @@ import java.util.Comparator;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
@@ -68,11 +69,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void accelerate(final float pAccelerationX, final float pAccelerationY) {
-		this.mMenuItem.accelerate(pAccelerationX, pAccelerationY);
-	}
-
-	@Override
 	public void addEntityModifier(final IModifier<IEntity> pEntityModifier) {
 		this.mMenuItem.addEntityModifier(pEntityModifier);
 	}
@@ -88,23 +84,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public float getAccelerationX() {
-		return this.mMenuItem.getAccelerationX();
-	}
-
-	@Override
-	public float getAccelerationY() {
-		return this.mMenuItem.getAccelerationY();
-	}
-
-	@Override
 	public float getAlpha() {
 		return this.mMenuItem.getAlpha();
-	}
-
-	@Override
-	public float getAngularVelocity() {
-		return this.mMenuItem.getAngularVelocity();
 	}
 
 	@Override
@@ -193,16 +174,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public float getVelocityX() {
-		return this.mMenuItem.getVelocityX();
-	}
-
-	@Override
-	public float getVelocityY() {
-		return this.mMenuItem.getVelocityY();
-	}
-
-	@Override
 	public float getWidth() {
 		return this.mMenuItem.getWidth();
 	}
@@ -233,43 +204,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public boolean isUpdatePhysics() {
-		return this.mMenuItem.isUpdatePhysics();
-	}
-
-	@Override
 	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier) {
 		return this.mMenuItem.removeEntityModifier(pEntityModifier);
 	}
 
 	@Override
-	public void setAcceleration(final float pAcceleration) {
-		this.mMenuItem.setAcceleration(pAcceleration);
-	}
-
-	@Override
-	public void setAcceleration(final float pAccelerationX, final float pAccelerationY) {
-		this.mMenuItem.setAcceleration(pAccelerationX, pAccelerationY);
-	}
-
-	@Override
-	public void setAccelerationX(final float pAccelerationX) {
-		this.mMenuItem.setAccelerationX(pAccelerationX);
-	}
-
-	@Override
-	public void setAccelerationY(final float pAccelerationY) {
-		this.mMenuItem.setAccelerationY(pAccelerationY);
-	}
-
-	@Override
 	public void setAlpha(final float pAlpha) {
 		this.mMenuItem.setAlpha(pAlpha);
-	}
-
-	@Override
-	public void setAngularVelocity(final float pAngularVelocity) {
-		this.mMenuItem.setAngularVelocity(pAngularVelocity);
 	}
 
 	@Override
@@ -360,31 +301,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void setScaleY(final float pScaleY) {
 		this.mMenuItem.setScaleY(pScaleY);
-	}
-
-	@Override
-	public void setUpdatePhysics(final boolean pUpdatePhysics) {
-		this.mMenuItem.setUpdatePhysics(pUpdatePhysics);
-	}
-
-	@Override
-	public void setVelocity(final float pVelocity) {
-		this.mMenuItem.setVelocity(pVelocity);
-	}
-
-	@Override
-	public void setVelocity(final float pVelocityX, final float pVelocityY) {
-		this.mMenuItem.setVelocity(pVelocityX, pVelocityY);
-	}
-
-	@Override
-	public void setVelocityX(final float pVelocityX) {
-		this.mMenuItem.setVelocityX(pVelocityX);
-	}
-
-	@Override
-	public void setVelocityY(final float pVelocityY) {
-		this.mMenuItem.setVelocityY(pVelocityY);
 	}
 
 	@Override
@@ -566,6 +482,21 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public IEntity getChild(final int pIndex) {
 		return this.mMenuItem.getChild(pIndex);
+	}
+
+	@Override
+	public void registerUpdateHandler(IUpdateHandler pUpdateHandler) {
+		this.mMenuItem.registerUpdateHandler(pUpdateHandler);
+	}
+
+	@Override
+	public boolean unregisterUpdateHandler(IUpdateHandler pUpdateHandler) {
+		return this.mMenuItem.unregisterUpdateHandler(pUpdateHandler);
+	}
+
+	@Override
+	public void clearUpdateHandlers() {
+		this.mMenuItem.clearUpdateHandlers();
 	}
 
 	// ===========================================================

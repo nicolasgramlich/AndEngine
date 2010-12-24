@@ -104,7 +104,6 @@ public abstract class RectangularShape extends Shape {
 		if(this.mWidth != this.mBaseWidth || this.mHeight != this.mBaseHeight) {
 			this.mWidth = this.mBaseWidth;
 			this.mHeight = this.mBaseHeight;
-			this.onPositionChanged();
 			this.updateVertexBuffer();
 		}
 	}

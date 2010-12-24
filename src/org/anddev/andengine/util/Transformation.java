@@ -4,6 +4,26 @@ import android.util.FloatMath;
 
 
 /**
+ * <p>This class is basically a java-space replacement for the native {@link android.graphics.Matrix} class.</p>
+ * 
+ * <p>Math taken from <a href="http://www.senocular.com/flash/tutorials/transformmatrix/">senocular.com</a>.</p>
+ * 
+ * This class represents an affine transformation with the following matrix:
+ * <pre> [ a , b , 0 ]
+ * [ c , d , 0 ]
+ * [ tx, ty, 1 ]</pre>
+ * where:
+ * <ul>
+ *  <li><b>a</b> is the <b>x scale</b></li> 
+ *  <li><b>b</b> is the <b>y skew</b></li>
+ *  <li><b>c</b> is the <b>x skew</b></li>
+ *  <li><b>d</b> is the <b>y scale</b></li>
+ *  <li><b>tx</b> is the <b>x translation</b></li>
+ *  <li><b>ty</b> is the <b>y translation</b></li>
+ * </ul>
+ *
+ * <p>TODO Anywhere there is a "new Transformation()" call inside of this class, there should be (!) some kind of caching/pooling! Think if that caching can be done static and if it needs to be Thread-Safe.</p>
+ * 
  * @author Nicolas Gramlich
  * @since 15:47:18 - 23.12.2010
  */
@@ -16,12 +36,12 @@ public class Transformation  {
 	// Fields
 	// ===========================================================
 
-	public float a;
-	public float b;
-	public float c;
-	public float d;
-	public float tx;
-	public float ty;
+	private float a; /* x scale */
+	private float b; /* y skew */
+	private float c; /* x skew */
+	private float d; /* y scale */
+	private float tx; /* x translation */
+	private float ty; /* y translation */
 
 	// ===========================================================
 	// Constructors
@@ -35,7 +55,7 @@ public class Transformation  {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -48,8 +68,12 @@ public class Transformation  {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void reset() {
+		this.setToIdentity();
+	}
 
-	public void identity() {
+	public void setToIdentity() {
 		this.a = 1.0f;
 		this.d = 1.0f;
 

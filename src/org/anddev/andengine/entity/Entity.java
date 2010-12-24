@@ -533,7 +533,7 @@ public class Entity implements IEntity {
 	public Transformation getLocalToSceneTransformation() {
 		// TODO skip this calculation when the transformation is not "dirty"
 		final Transformation localToSceneTransformation = this.mLocalToSceneTransformation;
-		localToSceneTransformation.identity();
+		localToSceneTransformation.setToIdentity();
 
 		/* Scale. */
 		final float scaleX = this.mScaleX;
@@ -575,7 +575,7 @@ public class Entity implements IEntity {
 	public Transformation getSceneToLocalTransformation() {
 		// TODO skip this calculation when the transformation is not "dirty"
 		final Transformation sceneToLocalTransformation = this.mSceneToLocalTransformation;
-		sceneToLocalTransformation.identity();
+		sceneToLocalTransformation.setToIdentity();
 
 		final IEntity parent = this.mParent;
 		if(parent != null) {

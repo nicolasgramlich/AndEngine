@@ -62,7 +62,7 @@ public class Transformation  {
 	
 	@Override
 	public String toString() {
-		return "Matrix{[" + a + ", " + c + ", " + tx + "][" + b + ", " + d + ", " + ty + "][0.0, 0.0, 1.0]}";
+		return "Transformation{[" + a + ", " + c + ", " + tx + "][" + b + ", " + d + ", " + ty + "][0.0, 0.0, 1.0]}";
 	}
 
 	// ===========================================================

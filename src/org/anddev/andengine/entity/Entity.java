@@ -541,6 +541,10 @@ public class Entity implements IEntity {
 		if(scaleX != 1 || scaleY != 1) {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;
+			
+			/* TODO Check if it is worth to check for scaleCenterX == 0 && scaleCenterY == 0 as the two postTranslate can be saved. 
+			 * The same obviously applies for all similar occurrences of this pattern in this class. */  
+			
 			localToSceneTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
 			localToSceneTransformation.postScale(scaleX, scaleY);
 			localToSceneTransformation.postTranslate(scaleCenterX, scaleCenterY);

@@ -69,8 +69,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void addEntityModifier(final IModifier<IEntity> pEntityModifier) {
-		this.mMenuItem.addEntityModifier(pEntityModifier);
+	public void registerEntityModifier(final IModifier<IEntity> pEntityModifier) {
+		this.mMenuItem.registerEntityModifier(pEntityModifier);
 	}
 
 	@Override
@@ -204,8 +204,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier) {
-		return this.mMenuItem.removeEntityModifier(pEntityModifier);
+	public boolean unregisterEntityModifier(final IModifier<IEntity> pEntityModifier) {
+		return this.mMenuItem.unregisterEntityModifier(pEntityModifier);
 	}
 
 	@Override
@@ -415,8 +415,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
-		this.mMenuItem.unregisterTouchArea(pTouchArea);
+	public boolean unregisterTouchArea(final ITouchArea pTouchArea) {
+		return this.mMenuItem.unregisterTouchArea(pTouchArea);
+	}
+
+	@Override
+	public void clearTouchAreas() {
+		this.mMenuItem.clearTouchAreas();
 	}
 
 	@Override

@@ -497,14 +497,14 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void addEntityModifier(final IModifier<IEntity> pEntityModifier) {
+	public void registerEntityModifier(final IModifier<IEntity> pEntityModifier) {
 		if(this.mEntityModifiers == null) {
 			this.allocateEntityModifiers();
 		}
 		this.mEntityModifiers.add(pEntityModifier);
 	}
 	@Override
-	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier) {
+	public boolean unregisterEntityModifier(final IModifier<IEntity> pEntityModifier) {
 		if(this.mEntityModifiers == null) {
 			return false;
 		}
@@ -528,11 +528,19 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
+	public boolean unregisterTouchArea(final ITouchArea pTouchArea) {
+		if(this.mTouchAreas == null) {
+			return false;
+		}
+		return this.mTouchAreas.remove(pTouchArea);
+	}
+
+	@Override
+	public void clearTouchAreas() {
 		if(this.mTouchAreas == null) {
 			return;
 		}
-		this.mTouchAreas.remove(pTouchArea);
+		this.mTouchAreas.clear();
 	}
 
 	@Override

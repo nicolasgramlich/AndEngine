@@ -89,7 +89,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public ArrayList<ITouchArea> getTouchAreas();
 	public void registerTouchArea(final ITouchArea pTouchArea);
-	public void unregisterTouchArea(final ITouchArea pTouchArea);
+	public boolean unregisterTouchArea(final ITouchArea pTouchArea);
+	public void clearTouchAreas();
 
 	public Transformation getLocalToSceneTransformation();
 	public Transformation getSceneToLocalTransformation();
@@ -149,8 +150,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public void clearUpdateHandlers();
 
-	public void addEntityModifier(final IModifier<IEntity> pEntityModifier);
-	public boolean removeEntityModifier(final IModifier<IEntity> pEntityModifier);
+	public void registerEntityModifier(final IModifier<IEntity> pEntityModifier);
+	public boolean unregisterEntityModifier(final IModifier<IEntity> pEntityModifier);
 	public void clearEntityModifiers();
 
 	public void setUserData(Object pUserData);

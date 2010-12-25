@@ -45,7 +45,7 @@ public class TextPopupScene extends PopupScene {
 		this.centerShapeInCamera(this.mText);
 
 		if(pShapeModifier != null) {
-			this.mText.addEntityModifier(pShapeModifier);
+			this.mText.registerEntityModifier(pShapeModifier);
 		}
 
 		this.getLastChild().attachChild(this.mText);

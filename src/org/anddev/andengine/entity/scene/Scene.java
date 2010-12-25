@@ -41,8 +41,6 @@ public class Scene extends Entity {
 	private boolean mChildSceneModalUpdate;
 	private boolean mChildSceneModalTouch;
 
-	private final ArrayList<ITouchArea> mTouchAreas = new ArrayList<ITouchArea>();
-
 	private final RunnableHandler mRunnableHandler = new RunnableHandler();
 
 	private IOnSceneTouchListener mOnSceneTouchListener;
@@ -129,20 +127,6 @@ public class Scene extends Entity {
 
 	public void setBackgroundEnabled(final boolean pEnabled) {
 		this.mBackgroundEnabled  = pEnabled;
-	}
-
-	public void clearTouchAreas() {
-		this.mTouchAreas.clear();
-	}
-
-	@Override
-	public void registerTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas.add(pTouchArea);
-	}
-
-	@Override
-	public void unregisterTouchArea(final ITouchArea pTouchArea) {
-		this.mTouchAreas.remove(pTouchArea);
 	}
 
 	public void setOnSceneTouchListener(final IOnSceneTouchListener pOnSceneTouchListener) {

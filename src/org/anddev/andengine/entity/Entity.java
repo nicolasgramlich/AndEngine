@@ -13,6 +13,7 @@ import org.anddev.andengine.entity.modifier.EntityModifierList;
 import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
+import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
 import org.anddev.andengine.util.Transformation;
 import org.anddev.andengine.util.constants.Constants;
 
@@ -566,6 +567,22 @@ public class Entity implements IEntity {
 			return false;
 		}
 		return this.mTouchAreas.remove(pTouchArea);
+	}
+
+	@Override
+	public boolean unregisterTouchAreas(final ITouchAreaMatcher pTouchAreaMatcher) {
+		if(this.mTouchAreas == null) {
+			return false;
+		}
+		boolean result = false;
+		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
+		for(int i = touchAreas.size() - 1; i >= 0; i--) {
+			if(pTouchAreaMatcher.matches(touchAreas.get(i))) {
+				touchAreas.remove(i);
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	@Override

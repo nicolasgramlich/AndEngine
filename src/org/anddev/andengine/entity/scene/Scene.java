@@ -15,6 +15,7 @@ import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.constants.Constants;
 
 import android.util.SparseArray;
@@ -468,6 +469,20 @@ public class Scene extends Entity {
 		 * @return <code>true</code> if the event was handled (that means {@link IOnAreaTouchListener} of the {@link Scene} will not be fired!), otherwise <code>false</code>.
 		 */
 		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY);
+		
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+		
+		public interface ITouchAreaMatcher extends IMatcher<ITouchArea> {
+			// ===========================================================
+			// Constants
+			// ===========================================================
+
+			// ===========================================================
+			// Methods
+			// ===========================================================
+		}
 	}
 
 	public static interface IOnAreaTouchListener {

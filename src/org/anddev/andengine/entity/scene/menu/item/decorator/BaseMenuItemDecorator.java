@@ -514,6 +514,10 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 		return this.mMenuItem.unregisterUpdateHandlers(pUpdateHandlerMatcher);
 	}
 
+	@Override
+	public boolean unregisterTouchAreas(final ITouchAreaMatcher pTouchAreaMatcher) {
+		return this.mMenuItem.unregisterTouchAreas(pTouchAreaMatcher);
+	}
 
 	// ===========================================================
 	// Methods

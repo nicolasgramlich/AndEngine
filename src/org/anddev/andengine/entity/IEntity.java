@@ -10,6 +10,7 @@ import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
+import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
 import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.Transformation;
@@ -91,6 +92,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public ArrayList<ITouchArea> getTouchAreas();
 	public void registerTouchArea(final ITouchArea pTouchArea);
 	public boolean unregisterTouchArea(final ITouchArea pTouchArea);
+	public boolean unregisterTouchAreas(final ITouchAreaMatcher pTouchAreaMatcher);
 	public void clearTouchAreas();
 
 	public Transformation getLocalToSceneTransformation();

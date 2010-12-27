@@ -390,7 +390,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public boolean detachChild(final IEntityMatcher pEntityMatcher) {
+	public IEntity detachChild(final IEntityMatcher pEntityMatcher) {
 		return this.mMenuItem.detachChild(pEntityMatcher);
 	}
 

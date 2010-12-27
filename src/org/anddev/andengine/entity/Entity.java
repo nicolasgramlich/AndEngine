@@ -14,6 +14,7 @@ import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
+import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.Transformation;
 import org.anddev.andengine.util.constants.Constants;
@@ -35,6 +36,14 @@ public class Entity implements IEntity {
 
 	private static final float[] VERTICES_SCENE_TO_LOCAL_TMP = new float[2];
 	private static final float[] VERTICES_LOCAL_TO_SCENE_TMP = new float[2];
+
+	private static final ParameterCallable<IEntity> PARAMETERCALLABLE_DETACHCHILD = new ParameterCallable<IEntity>() {
+		@Override
+		public void call(final IEntity pEntity) {
+			pEntity.setParent(null);
+			pEntity.onDetached();
+		}
+	};
 
 	// ===========================================================
 	// Fields
@@ -370,15 +379,7 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return;
 		}
-
-		final ArrayList<IEntity> entities = this.mChildren;
-		for(int i = entities.size() - 1; i >= 0; i--) {
-			final IEntity entity = entities.get(i);
-			entity.setParent(null);
-			entity.onDetached();
-		}
-
-		this.mChildren.clear();
+		this.mChildren.clear(PARAMETERCALLABLE_DETACHCHILD);
 	}
 
 	@Override
@@ -421,18 +422,13 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return false;
 		}
-		final boolean removed = this.mChildren.remove(pEntity);
-		if(removed) {
-			pEntity.setParent(null);
-			pEntity.onDetached();
-		}
-		return removed;
+		return this.mChildren.remove(pEntity, PARAMETERCALLABLE_DETACHCHILD);
 	}
 
 	@Override
-	public boolean detachChild(final IEntityMatcher pEntityMatcher) {
+	public IEntity detachChild(final IEntityMatcher pEntityMatcher) {
 		if(this.mChildren == null) {
-			return false;
+			return null;
 		}
 		return this.mChildren.remove(pEntityMatcher);
 	}
@@ -442,17 +438,7 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return false;
 		}
-		boolean result = false;
-		final ArrayList<IEntity> children = this.mChildren;
-		for(int i = children.size() - 1; i >= 0; i--) {
-			if(pEntityMatcher.matches(children.get(i))) {
-				final IEntity removed = children.remove(i);
-				removed.setParent(null);
-				removed.onDetached();
-				result = true;
-			}
-		}
-		return result;
+		return this.mChildren.removeAll(pEntityMatcher, Entity.PARAMETERCALLABLE_DETACHCHILD);
 	}
 
 	@Override
@@ -476,7 +462,7 @@ public class Entity implements IEntity {
 		if(this.mUpdateHandlers == null) {
 			return false;
 		}
-		return this.mUpdateHandlers.remove(pUpdateHandlerMatcher);
+		return this.mUpdateHandlers.removeAll(pUpdateHandlerMatcher);
 	}
 
 	@Override
@@ -508,7 +494,7 @@ public class Entity implements IEntity {
 		if(this.mEntityModifiers == null) {
 			return false;
 		}
-		return this.mEntityModifiers.remove(pEntityModifierMatcher);
+		return this.mEntityModifiers.removeAll(pEntityModifierMatcher);
 	}
 
 	@Override
@@ -540,7 +526,7 @@ public class Entity implements IEntity {
 		if(this.mTouchAreas == null) {
 			return false;
 		}
-		return this.mTouchAreas.remove(pTouchAreaMatcher);
+		return this.mTouchAreas.removeAll(pTouchAreaMatcher);
 	}
 
 	@Override

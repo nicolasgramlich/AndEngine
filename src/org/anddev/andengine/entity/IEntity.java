@@ -137,7 +137,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	 * it may throw an {@link ArrayIndexOutOfBoundsException} in the
 	 * Update-Thread or the GL-Thread!</b>
 	 */
-	public boolean detachChild(final IEntityMatcher pEntityMatcher);
+	public IEntity detachChild(final IEntityMatcher pEntityMatcher);
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
 	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered

@@ -297,6 +297,8 @@ public class Scene extends Entity {
 
 		final float sceneTouchEventX = pSceneTouchEvent.getX();
 		final float sceneTouchEventY = pSceneTouchEvent.getY();
+		
+		// TODO Think if TouchEvents should be propagated to children 
 
 		//		/* First give the layers a chance to handle their TouchAreas. */
 		//		{
@@ -349,36 +351,38 @@ public class Scene extends Entity {
 		//			}
 		//		}
 
-		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
-		final int touchAreaCount = touchAreas.size();
-		if(touchAreaCount > 0) {
-			if(this.mOnAreaTouchTraversalBackToFront) { /* Back to Front. */
-				for(int i = 0; i < touchAreaCount; i++) {
-					final ITouchArea touchArea = touchAreas.get(i);
-					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
-						if(handled != null && handled) {
-							/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
-							 *  bind this ITouchArea to the PointerID. */
-							if(this.mTouchAreaBindingEnabled && isDownAction) {
-								this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), touchArea);
+		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas; // TODO touchAreas can be null!
+		if(touchAreas != null) {
+			final int touchAreaCount = touchAreas.size();
+			if(touchAreaCount > 0) {
+				if(this.mOnAreaTouchTraversalBackToFront) { /* Back to Front. */
+					for(int i = 0; i < touchAreaCount; i++) {
+						final ITouchArea touchArea = touchAreas.get(i);
+						if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
+							final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
+							if(handled != null && handled) {
+								/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
+								 *  bind this ITouchArea to the PointerID. */
+								if(this.mTouchAreaBindingEnabled && isDownAction) {
+									this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), touchArea);
+								}
+								return true;
 							}
-							return true;
 						}
 					}
-				}
-			} else { /* Front to back. */
-				for(int i = touchAreaCount - 1; i >= 0; i--) {
-					final ITouchArea touchArea = touchAreas.get(i);
-					if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-						final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
-						if(handled != null && handled) {
-							/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
-							 *  bind this ITouchArea to the PointerID. */
-							if(this.mTouchAreaBindingEnabled && isDownAction) {
-								this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), touchArea);
+				} else { /* Front to back. */
+					for(int i = touchAreaCount - 1; i >= 0; i--) {
+						final ITouchArea touchArea = touchAreas.get(i);
+						if(touchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
+							final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
+							if(handled != null && handled) {
+								/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
+								 *  bind this ITouchArea to the PointerID. */
+								if(this.mTouchAreaBindingEnabled && isDownAction) {
+									this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), touchArea);
+								}
+								return true;
 							}
-							return true;
 						}
 					}
 				}

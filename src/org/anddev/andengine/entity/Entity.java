@@ -10,11 +10,11 @@ import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.modifier.EntityModifierList;
+import org.anddev.andengine.entity.modifier.IEntityModifier;
+import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
-import org.anddev.andengine.util.IEntityMatcher;
 import org.anddev.andengine.util.Transformation;
 import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.modifier.IModifier;
 
 
 /**
@@ -460,10 +460,10 @@ public class Entity implements IEntity {
 			return false;
 		}
 		boolean result = false;
-		final ArrayList<IEntity> entities = this.mChildren;
-		for(int i = entities.size() - 1; i >= 0; i--) {
-			if(pEntityMatcher.matches(entities.get(i))) {
-				final IEntity removed = entities.remove(i);
+		final ArrayList<IEntity> children = this.mChildren;
+		for(int i = children.size() - 1; i >= 0; i--) {
+			if(pEntityMatcher.matches(children.get(i))) {
+				final IEntity removed = children.remove(i);
 				removed.setParent(null);
 				removed.onDetached();
 				result = true;
@@ -489,6 +489,22 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public boolean unregisterUpdateHandlers(final IUpdateHandlerMatcher pUpdateHandlerMatcher) {
+		if(this.mUpdateHandlers == null) {
+			return false;
+		}
+		boolean result = false;
+		final UpdateHandlerList updateHandlers = this.mUpdateHandlers;
+		for(int i = updateHandlers.size() - 1; i >= 0; i--) {
+			if(pUpdateHandlerMatcher.matches(updateHandlers.get(i))) {
+				updateHandlers.remove(i);
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	@Override
 	public void clearUpdateHandlers() {
 		if(this.mUpdateHandlers == null) {
 			return;
@@ -497,18 +513,35 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void registerEntityModifier(final IModifier<IEntity> pEntityModifier) {
+	public void registerEntityModifier(final IEntityModifier pEntityModifier) {
 		if(this.mEntityModifiers == null) {
 			this.allocateEntityModifiers();
 		}
 		this.mEntityModifiers.add(pEntityModifier);
 	}
+
 	@Override
-	public boolean unregisterEntityModifier(final IModifier<IEntity> pEntityModifier) {
+	public boolean unregisterEntityModifier(final IEntityModifier pEntityModifier) {
 		if(this.mEntityModifiers == null) {
 			return false;
 		}
 		return this.mEntityModifiers.remove(pEntityModifier);
+	}
+
+	@Override
+	public boolean unregisterEntityModifiers(final IEntityModifierMatcher pEntityModifierMatcher) {
+		if(this.mEntityModifiers == null) {
+			return false;
+		}
+		boolean result = false;
+		final EntityModifierList entityModifiers = this.mEntityModifiers;
+		for(int i = entityModifiers.size() - 1; i >= 0; i--) {
+			if(pEntityModifierMatcher.matches(entityModifiers.get(i))) {
+				entityModifiers.remove(i);
+				result = true;
+			}
+		}
+		return result;
 	}
 
 	@Override

@@ -1,12 +1,10 @@
 package org.anddev.andengine.util;
 
-import org.anddev.andengine.entity.IEntity;
-
 /**
  * @author Nicolas Gramlich
- * @since 15:45:58 - 21.06.2010
+ * @since 12:32:22 - 26.12.2010
  */
-public interface IEntityMatcher {
+public interface IMatcher<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,6 +13,6 @@ public interface IEntityMatcher {
 	// Methods
 	// ===========================================================
 
-	public boolean matches(final IEntity pEntity);
+	public boolean matches(final T pObject);
 }
 

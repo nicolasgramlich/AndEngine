@@ -8,13 +8,13 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.entity.modifier.IEntityModifier;
+import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.util.IEntityMatcher;
 import org.anddev.andengine.util.Transformation;
-import org.anddev.andengine.util.modifier.IModifier;
 
 /**
  * @author Nicolas Gramlich
@@ -69,7 +69,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void registerEntityModifier(final IModifier<IEntity> pEntityModifier) {
+	public void registerEntityModifier(final IEntityModifier pEntityModifier) {
 		this.mMenuItem.registerEntityModifier(pEntityModifier);
 	}
 
@@ -204,7 +204,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public boolean unregisterEntityModifier(final IModifier<IEntity> pEntityModifier) {
+	public boolean unregisterEntityModifier(final IEntityModifier pEntityModifier) {
 		return this.mMenuItem.unregisterEntityModifier(pEntityModifier);
 	}
 
@@ -503,6 +503,17 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	public void clearUpdateHandlers() {
 		this.mMenuItem.clearUpdateHandlers();
 	}
+
+	@Override
+	public boolean unregisterEntityModifiers(final IEntityModifierMatcher pEntityModifierMatcher) {
+		return this.mMenuItem.unregisterEntityModifiers(pEntityModifierMatcher);
+	}
+
+	@Override
+	public boolean unregisterUpdateHandlers(final IUpdateHandlerMatcher pUpdateHandlerMatcher) {
+		return this.mMenuItem.unregisterUpdateHandlers(pUpdateHandlerMatcher);
+	}
+
 
 	// ===========================================================
 	// Methods

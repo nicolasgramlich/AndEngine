@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.modifier.IModifier;
 
 /**
@@ -23,6 +24,16 @@ public interface IEntityModifier extends IModifier<IEntity> {
 	public static interface IEntityModifierListener extends IModifierListener<IEntity>{
 		// ===========================================================
 		// Final Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+	}
+	
+	public interface IEntityModifierMatcher extends IMatcher<IModifier<IEntity>> {
+		// ===========================================================
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

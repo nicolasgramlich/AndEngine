@@ -6,12 +6,13 @@ import java.util.Comparator;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
+import org.anddev.andengine.entity.modifier.IEntityModifier;
+import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.opengl.IDrawable;
-import org.anddev.andengine.util.IEntityMatcher;
+import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.Transformation;
-import org.anddev.andengine.util.modifier.IModifier;
 
 
 
@@ -148,12 +149,28 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler);
+	public boolean unregisterUpdateHandlers(final IUpdateHandlerMatcher pUpdateHandlerMatcher);
 	public void clearUpdateHandlers();
 
-	public void registerEntityModifier(final IModifier<IEntity> pEntityModifier);
-	public boolean unregisterEntityModifier(final IModifier<IEntity> pEntityModifier);
+	public void registerEntityModifier(final IEntityModifier pEntityModifier);
+	public boolean unregisterEntityModifier(final IEntityModifier pEntityModifier);
+	public boolean unregisterEntityModifiers(final IEntityModifierMatcher pEntityModifierMatcher);
 	public void clearEntityModifiers();
 
 	public void setUserData(Object pUserData);
 	public Object getUserData();
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+	
+	public interface IEntityMatcher extends IMatcher<IEntity> {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+	}
 }

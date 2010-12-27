@@ -14,6 +14,7 @@ import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
+import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.Transformation;
 import org.anddev.andengine.util.constants.Constants;
 
@@ -46,9 +47,10 @@ public class Entity implements IEntity {
 
 	private IEntity mParent;
 
-	protected ArrayList<IEntity> mChildren;
-
-	protected ArrayList<ITouchArea> mTouchAreas;
+	protected SmartList<IEntity> mChildren;
+	protected SmartList<ITouchArea> mTouchAreas;
+	private EntityModifierList mEntityModifiers;
+	private UpdateHandlerList mUpdateHandlers;
 
 	protected float mRed = 1f;
 	protected float mGreen = 1f;
@@ -71,10 +73,6 @@ public class Entity implements IEntity {
 
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;
-
-	private EntityModifierList mEntityModifiers = null;
-
-	private UpdateHandlerList mUpdateHandlers;
 
 	private final Transformation mLocalToSceneTransformation = new Transformation();
 	private final Transformation mSceneToLocalTransformation = new Transformation();
@@ -399,14 +397,7 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return null;
 		}
-		final ArrayList<IEntity> entities = this.mChildren;
-		for(int i = entities.size() - 1; i >= 0; i--) {
-			final IEntity entity = entities.get(i);
-			if(pEntityMatcher.matches(entity)) {
-				return entity;
-			}
-		}
-		return null;
+		return this.mChildren.find(pEntityMatcher);
 	}
 
 	@Override
@@ -443,16 +434,7 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return false;
 		}
-		final ArrayList<IEntity> entities = this.mChildren;
-		for(int i = entities.size() - 1; i >= 0; i--) {
-			if(pEntityMatcher.matches(entities.get(i))) {
-				final IEntity removed = entities.remove(i);
-				removed.setParent(null);
-				removed.onDetached();
-				return true;
-			}
-		}
-		return false;
+		return this.mChildren.remove(pEntityMatcher);
 	}
 
 	@Override
@@ -494,15 +476,7 @@ public class Entity implements IEntity {
 		if(this.mUpdateHandlers == null) {
 			return false;
 		}
-		boolean result = false;
-		final UpdateHandlerList updateHandlers = this.mUpdateHandlers;
-		for(int i = updateHandlers.size() - 1; i >= 0; i--) {
-			if(pUpdateHandlerMatcher.matches(updateHandlers.get(i))) {
-				updateHandlers.remove(i);
-				result = true;
-			}
-		}
-		return result;
+		return this.mUpdateHandlers.remove(pUpdateHandlerMatcher);
 	}
 
 	@Override
@@ -534,15 +508,7 @@ public class Entity implements IEntity {
 		if(this.mEntityModifiers == null) {
 			return false;
 		}
-		boolean result = false;
-		final EntityModifierList entityModifiers = this.mEntityModifiers;
-		for(int i = entityModifiers.size() - 1; i >= 0; i--) {
-			if(pEntityModifierMatcher.matches(entityModifiers.get(i))) {
-				entityModifiers.remove(i);
-				result = true;
-			}
-		}
-		return result;
+		return this.mEntityModifiers.remove(pEntityModifierMatcher);
 	}
 
 	@Override
@@ -574,15 +540,7 @@ public class Entity implements IEntity {
 		if(this.mTouchAreas == null) {
 			return false;
 		}
-		boolean result = false;
-		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
-		for(int i = touchAreas.size() - 1; i >= 0; i--) {
-			if(pTouchAreaMatcher.matches(touchAreas.get(i))) {
-				touchAreas.remove(i);
-				result = true;
-			}
-		}
-		return result;
+		return this.mTouchAreas.remove(pTouchAreaMatcher);
 	}
 
 	@Override
@@ -787,11 +745,11 @@ public class Entity implements IEntity {
 	}
 
 	private void allocateTouchAreas() {
-		this.mTouchAreas = new ArrayList<ITouchArea>(Entity.TOUCHAREAS_CAPACITY_DEFAULT);
+		this.mTouchAreas = new SmartList<ITouchArea>(Entity.TOUCHAREAS_CAPACITY_DEFAULT);
 	}
 
 	private void allocateChildren() {
-		this.mChildren = new ArrayList<IEntity>(Entity.CHILDREN_CAPACITY_DEFAULT);
+		this.mChildren = new SmartList<IEntity>(Entity.CHILDREN_CAPACITY_DEFAULT);
 	}
 
 	private void allocateUpdateHandlers() {

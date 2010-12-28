@@ -37,6 +37,10 @@ public class SmartList<T> extends ArrayList<T> {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	/**
+	 * @param pItem the item to remove.
+	 * @param pParameterCallable to be called with the removed item, if it was removed.
+	 */
 	public boolean remove(final T pItem, final ParameterCallable<T> pParameterCallable) {
 		final boolean removed = this.remove(pItem);
 		if(removed) {
@@ -86,7 +90,6 @@ public class SmartList<T> extends ArrayList<T> {
 			final T removed = this.remove(i);
 			pParameterCallable.call(removed);
 		}
-		super.clear();
 	}
 
 	public T find(final IMatcher<T> pMatcher) {

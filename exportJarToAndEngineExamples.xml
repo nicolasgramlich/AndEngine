@@ -13,7 +13,9 @@
 	
 	<property name="binfile" value="bin/andengine.jar" />
 	
-	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar" />
+	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar,
+		../AndEngineTemplate/lib/andengine.jar,
+		../PlatformSmasher/lib/andengine.jar" />
    
 	<target name="createjar" >
 		<echo>${targetfile}</echo>

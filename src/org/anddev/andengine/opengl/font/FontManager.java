@@ -41,6 +41,9 @@ public class FontManager {
 	}
 
 	public void loadFont(final Font pFont) {
+		if(pFont == null) {
+			throw new IllegalArgumentException("pFont must not be null!");
+		}
 		this.mFontsManaged.add(pFont);
 	}
 

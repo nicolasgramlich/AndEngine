@@ -90,6 +90,26 @@ public class TouchEvent {
 		return this.mAction;
 	}
 
+	public boolean isActionDown() {
+		return this.mAction == TouchEvent.ACTION_DOWN;
+	}
+
+	public boolean isActionUp() {
+		return this.mAction == TouchEvent.ACTION_UP;
+	}
+
+	public boolean isActionMove() {
+		return this.mAction == TouchEvent.ACTION_MOVE;
+	}
+
+	public boolean isActionCancel() {
+		return this.mAction == TouchEvent.ACTION_CANCEL;
+	}
+
+	public boolean isActionOutside() {
+		return this.mAction == TouchEvent.ACTION_OUTSIDE;
+	}
+
 	/**
 	 * Provides the raw {@link MotionEvent} that originally caused this {@link TouchEvent}.
 	 * The coordinates of this {@link MotionEvent} are in surface-coordinates!

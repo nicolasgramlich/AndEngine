@@ -78,7 +78,7 @@ public class Texture {
 	 */
 	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
 		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
-			throw new IllegalArgumentException("Width and Height of a Texture must be a power of 2!");
+			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
 		}
 
 		this.mWidth = pWidth;
@@ -142,7 +142,7 @@ public class Texture {
 		} else if(pTexturePositionY < 0) {
 			throw new IllegalArgumentException("Illegal negative pTexturePositionY supplied: '" + pTexturePositionY + "'");
 		} else if(pTexturePositionX + pTextureSource.getWidth() > this.mWidth || pTexturePositionY + pTextureSource.getHeight() > this.mHeight) {
-			throw new IllegalArgumentException("Supplied TextureSource must not exceed bounds of Texture.");
+			throw new IllegalArgumentException("Supplied pTextureSource must not exceed bounds of Texture.");
 		}
 	}
 

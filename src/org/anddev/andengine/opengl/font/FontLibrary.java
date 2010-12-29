@@ -8,7 +8,7 @@ import android.util.SparseArray;
  * @author Nicolas Gramlich
  * @since 11:52:26 - 20.08.2010
  */
-public class FontLibrary extends Library<Font>{
+public class FontLibrary extends Library<Font> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -44,7 +44,10 @@ public class FontLibrary extends Library<Font>{
 	void loadFonts(final FontManager pFontManager) {
 		final SparseArray<Font> items = this.mItems;
 		for(int i = items.size() - 1; i >= 0; i--) {
-			pFontManager.loadFont(items.get(i));
+			final Font font = items.valueAt(i);
+			if(font != null) {
+				pFontManager.loadFont(font);
+			}
 		}
 	}
 

@@ -84,33 +84,29 @@ public class Scene extends Entity {
 	}
 
 	/**
-	 * Instead use {@link Scene#getChild(int)}.
+	 * @deprecated Instead use {@link Scene#getChild(int)}.
 	 */
-	@Deprecated
 	public Layer getLayer(final int pLayerIndex) throws ArrayIndexOutOfBoundsException {
 		return (Layer) this.getChild(pLayerIndex);
 	}
 
 	/**
-	 * Instead use {@link Scene#getChildCount()}.
+	 * @deprecated Instead use {@link Scene#getChildCount()}.
 	 */
-	@Deprecated
 	public int getLayerCount() {
 		return this.getChildCount();
 	}
 
 	/**
-	 * Instead use {@link Scene#getFirstChild()}
+	 * @deprecated Instead use {@link Scene#getFirstChild()}
 	 */
-	@Deprecated
 	public Layer getBottomLayer() {
 		return (Layer) this.getFirstChild();
 	}
 
 	/**
-	 * Instead use {@link Scene#getLastChild()}.
+	 * @deprecated Instead use {@link Scene#getLastChild()}.
 	 */
-	@Deprecated
 	public Layer getTopLayer() {
 		return (Layer) this.getLastChild();
 	}

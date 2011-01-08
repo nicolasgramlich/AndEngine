@@ -70,6 +70,7 @@ public class Line extends Shape {
 	/**
 	 * @deprecated Instead use {@link Line#getX1()} or {@link Line#getX2()}.
 	 */
+	@Deprecated
 	@Override
 	public float getX() {
 		return super.getX();
@@ -78,6 +79,7 @@ public class Line extends Shape {
 	/**
 	 * @deprecatedInstead use {@link Line#getY1()} or {@link Line#getY2()}.
 	 */
+	@Deprecated
 	@Override
 	public float getY() {
 		return super.getY();
@@ -130,6 +132,7 @@ public class Line extends Shape {
 	/**
 	 * @deprecated Instead use {@link Line#setPosition(float, float, float, float)}.
 	 */
+	@Deprecated
 	@Override
 	public void setPosition(final float pX, final float pY) {
 		final float dX = this.mX - pX;

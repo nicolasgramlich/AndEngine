@@ -182,6 +182,10 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 			return this;
 		}
 
+		public TextureSourceDecoratorOptions setInsets(final float pInsets) {
+			return this.setInsets(pInsets, pInsets, pInsets, pInsets);
+		}
+
 		public TextureSourceDecoratorOptions setInsets(final float pInsetLeft, final float pInsetTop, final float pInsetRight, final float pInsetBottom) {
 			this.mInsetLeft = pInsetLeft;
 			this.mInsetTop = pInsetTop;

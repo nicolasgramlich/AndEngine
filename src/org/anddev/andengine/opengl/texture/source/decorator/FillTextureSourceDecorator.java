@@ -1,6 +1,7 @@
 package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.source.decorator.shape.ITextureSourceDecoratorShape;
 
 import android.graphics.Paint.Style;
 
@@ -23,11 +24,11 @@ public class FillTextureSourceDecorator extends BaseShapeTextureSourceDecorator 
 	// Constructors
 	// ===========================================================
 
-	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFillColor) {
+	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFillColor) {
 		this(pTextureSource, pTextureSourceDecoratorShape, pFillColor, null);
 	}
 
-	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFillColor, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+	public FillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFillColor, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
 		this.mFillColor = pFillColor;
 

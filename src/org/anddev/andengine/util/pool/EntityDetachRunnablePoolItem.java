@@ -1,7 +1,6 @@
 package org.anddev.andengine.util.pool;
 
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.layer.Layer;
 
 /**
  * @author Nicolas Gramlich
@@ -17,7 +16,7 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 	// ===========================================================
 
 	protected IEntity mEntity;
-	protected Layer mLayer;
+	protected IEntity mParent;
 
 	// ===========================================================
 	// Constructors
@@ -31,13 +30,13 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 		this.mEntity = pEntity;
 	}
 
-	public void setLayer(final Layer pLayer) {
-		this.mLayer = pLayer;
+	public void setParent(final IEntity pParent) {
+		this.mParent = pParent;
 	}
 
-	public void set(final IEntity pEntity, final Layer pLayer) {
+	public void set(final IEntity pEntity, final IEntity pParent) {
 		this.mEntity = pEntity;
-		this.mLayer = pLayer;
+		this.mParent = pParent;
 	}
 
 	// ===========================================================
@@ -46,7 +45,7 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 
 	@Override
 	public void run() {
-		this.mLayer.detachChild(this.mEntity);
+		this.mParent.detachChild(this.mEntity);
 	}
 
 	// ===========================================================

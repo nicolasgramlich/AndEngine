@@ -1,15 +1,11 @@
-package org.anddev.andengine.opengl.texture.source.decorator;
+package org.anddev.andengine.opengl.texture.source.decorator.shape;
 
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
-import org.anddev.andengine.opengl.texture.source.decorator.shape.ITextureSourceDecoratorShape;
+import org.anddev.andengine.opengl.texture.source.decorator.BaseTextureSourceDecorator.TextureSourceDecoratorOptions;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
-/**
- * @author Nicolas Gramlich
- * @since 20:09:41 - 05.11.2010
- */
-public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceDecorator {
+public class RectangleTextureSourceDecoratorShape implements ITextureSourceDecoratorShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,20 +14,22 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 	// Fields
 	// ===========================================================
 
-	protected final ITextureSourceDecoratorShape mTextureSourceDecoratorShape;
+	private static RectangleTextureSourceDecoratorShape sDefaultInstance;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseShapeTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
-		super(pTextureSource, pTextureSourceDecoratorOptions);
+	public RectangleTextureSourceDecoratorShape() {
 
-		this.mTextureSourceDecoratorShape = pTextureSourceDecoratorShape;
 	}
 
-	@Override
-	public abstract BaseShapeTextureSourceDecorator clone();
+	public static RectangleTextureSourceDecoratorShape getDefaultInstance() {
+		if(sDefaultInstance == null) {
+			sDefaultInstance = new RectangleTextureSourceDecoratorShape();
+		}
+		return sDefaultInstance;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -42,8 +40,12 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 	// ===========================================================
 
 	@Override
-	protected void onDecorateBitmap(final Canvas pCanvas){
-		this.mTextureSourceDecoratorShape.onDecorateBitmap(pCanvas, this.mPaint, (this.mTextureSourceDecoratorOptions == null) ? TextureSourceDecoratorOptions.DEFAULT : this.mTextureSourceDecoratorOptions);
+	public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
+		final float left = pDecoratorOptions.getInsetLeft();
+		final float top = pDecoratorOptions.getInsetTop();
+		final float right = pCanvas.getWidth() - 1 - pDecoratorOptions.getInsetRight();
+		final float bottom = pCanvas.getHeight() - 1 - pDecoratorOptions.getInsetBottom();
+		pCanvas.drawRect(left, top, right, bottom, pPaint);
 	}
 
 	// ===========================================================
@@ -53,4 +55,4 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-}
+};

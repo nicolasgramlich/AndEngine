@@ -76,6 +76,7 @@ public class BuildableTexture extends Texture {
 	 * Most likely this is not the method you'd want to be using, as the {@link ITextureSource} won't get packed through this.
 	 * @deprecated Use {@link BuildableTexture#addTextureSource(ITextureSource)} instead.
 	 */
+	@Deprecated
 	@Override
 	public TextureSourceWithLocation addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		return super.addTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);

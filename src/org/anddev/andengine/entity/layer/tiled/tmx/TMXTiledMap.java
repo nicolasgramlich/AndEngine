@@ -73,6 +73,7 @@ public class TMXTiledMap implements TMXConstants {
 	 * @deprecated Instead use {@link TMXTiledMap#getTileColumns()} * {@link TMXTiledMap#getTileWidth()}.
 	 * @return
 	 */
+	@Deprecated
 	public final int getWidth() {
 		return this.mTileColumns;
 	}
@@ -85,6 +86,7 @@ public class TMXTiledMap implements TMXConstants {
 	 * @deprecated Instead use {@link TMXTiledMap#getTileRows()} * {@link TMXTiledMap#getTileHeight()}.
 	 * @return
 	 */
+	@Deprecated
 	public final int getHeight() {
 		return this.mTilesRows;
 	}

@@ -18,7 +18,7 @@ public class TimerHandler implements IUpdateHandler {
 	private float mTimerSeconds;
 	private float mTimerSecondsElapsed;
 	private boolean mCallbackTriggered = false;
-	private final ITimerCallback mTimerCallback;
+	protected final ITimerCallback mTimerCallback;
 	private boolean mAutoReset;
 
 	// ===========================================================

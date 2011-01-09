@@ -121,7 +121,7 @@ public class LevelLoader implements LevelConstants {
 			Debug.e(pe);
 			/* Doesn't happen. */
 		} finally {
-			StreamUtils.closeStream(pInputStream);
+			StreamUtils.close(pInputStream);
 		}
 	}
 

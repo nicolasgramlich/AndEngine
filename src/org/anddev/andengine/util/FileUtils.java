@@ -122,8 +122,8 @@ public class FileUtils {
 		try {
 			StreamUtils.copy(fis, fos);
 		} finally {
-			StreamUtils.closeStream(fis);
-			StreamUtils.closeStream(fos);
+			StreamUtils.close(fis);
+			StreamUtils.close(fos);
 		}
 	}
 

@@ -28,8 +28,10 @@ public class ScreenCapture extends Entity {
 	// Fields
 	// ===========================================================
 
-	private int mWidth;
-	private int mHeight;
+	private int mCaptureX;
+	private int mCaptureY;
+	private int mCaptureWidth;
+	private int mCaptureHeight;
 
 	private boolean mScreenCapturePending = false;
 	private IScreenCaptureCallback mScreenCaptureCallback;
@@ -54,13 +56,15 @@ public class ScreenCapture extends Entity {
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
 		if(this.mScreenCapturePending) {
-			ScreenCapture.saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
+			try {
+				ScreenCapture.saveCapture(this.mCaptureX, this.mCaptureY, this.mCaptureWidth, this.mCaptureHeight, this.mFilePath, pGL);
 
-			this.mScreenCaptureCallback.onScreenCaptured(this.mFilePath);
+				this.mScreenCaptureCallback.onScreenCaptured(this.mFilePath);
+			} catch (final Exception e) {
+				this.mScreenCaptureCallback.onScreenCaptureFailed(this.mFilePath, e);
+			}
 
 			this.mScreenCapturePending = false;
-			this.mFilePath = null;
-			this.mScreenCaptureCallback = null;
 		}
 	}
 
@@ -78,48 +82,59 @@ public class ScreenCapture extends Entity {
 	// Methods
 	// ===========================================================
 
-	public void capture(final int pWidth, final int pHeight, final String pFilePath, final IScreenCaptureCallback pScreenCaptureCallback) {
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+	public void capture(final int pCaptureWidth, final int pCaptureHeight, final String pFilePath, final IScreenCaptureCallback pScreenCaptureCallback) {
+		this.capture(0, 0, pCaptureWidth, pCaptureHeight, pFilePath, pScreenCaptureCallback);
+	}
+
+	public void capture(final int pCaptureX, final int pCaptureY, final int pCaptureWidth, final int pCaptureHeight, final String pFilePath, final IScreenCaptureCallback pScreenCaptureCallback) {
+		this.mCaptureX = pCaptureX;
+		this.mCaptureY = pCaptureY;
+		this.mCaptureWidth = pCaptureWidth;
+		this.mCaptureHeight = pCaptureHeight;
 		this.mFilePath = pFilePath;
 		this.mScreenCaptureCallback = pScreenCaptureCallback;
+
 		this.mScreenCapturePending = true;
 	}
 
-	private static Bitmap capture(final int pX, final int pY, final int pWidth, final int pHeight, final GL10 pGL) {
-		// TODO FIXME Use this code http://blog.javia.org/android-opengl-es-screenshot/ and fix bugs.
-		final int b[] = new int[pWidth * (pY + pHeight)];
-		final int bt[] = new int[pWidth * pHeight];
-		final IntBuffer ib = IntBuffer.wrap(b);
-		ib.position(0);
-		pGL.glReadPixels(pX, 0, pWidth, pY + pHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, ib);
+	private static Bitmap capture(final int pCaptureX, final int pCaptureY, final int pCaptureWidth, final int pCaptureHeight, final GL10 pGL) {
+		final int[] source = new int[pCaptureWidth * (pCaptureY + pCaptureHeight)];
+		final IntBuffer sourceBuffer = IntBuffer.wrap(source);
+		sourceBuffer.position(0);
 
-		for (int i = 0, k = 0; i < pHeight; i++, k++) {
-			for (int j = 0; j < pWidth; j++) {
-				final int pix = b[i * pWidth + j];
-				final int pb = (pix >> 16) & 0xff;
-				final int pr = (pix << 16) & 0x00ff0000;
-				final int pix1 = (pix & 0xff00ff00) | pr | pb;
-				bt[(pHeight - k - 1) * pWidth + j] = pix1;
+		// TODO Check availability of OpenGL and GL10.GL_RGBA combinations that require less conversion operations.
+		// Note: There is (said to be) a bug with glReadPixels when 'y != 0', so we simply read starting from 'y == 0'.
+		pGL.glReadPixels(pCaptureX, 0, pCaptureWidth, pCaptureY + pCaptureHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, sourceBuffer);
+
+		final int[] pixels = new int[pCaptureWidth * pCaptureHeight];
+
+		// Convert from RGBA_8888 (Which is actually ABGR as the whole buffer seems to be inverted) --> ARGB_8888
+		for (int y = 0; y < pCaptureHeight; y++) {
+			for (int x = 0; x < pCaptureWidth; x++) {
+				final int pixel = source[x + ((pCaptureY + y) * pCaptureWidth)];
+
+				final int blue = (pixel & 0x00FF0000) >> 16;
+			final int red = (pixel  & 0x000000FF) << 16;
+			final int greenAlpha = pixel & 0xFF00FF00;
+
+			pixels[x + ((pCaptureHeight - y - 1) * pCaptureWidth)] = greenAlpha | red | blue;
 			}
 		}
 
-		return Bitmap.createBitmap(bt, pWidth, pHeight, Config.ARGB_8888);
+		return Bitmap.createBitmap(pixels, pCaptureWidth, pCaptureHeight, Config.ARGB_8888);
 	}
 
-	private static void saveCapture(final int pWidth, final int pHeight, final String pFilePath, final GL10 pGL) {
-		ScreenCapture.saveCapture(0, 0, pWidth, pHeight, pFilePath, pGL);
-	}
-
-	private static void saveCapture(final int pX, final int pY, final int pWidth, final int pHeight, final String pFilePath, final GL10 pGL) {
-		final Bitmap bmp = ScreenCapture.capture(pX, pY, pWidth, pHeight, pGL);
+	private static void saveCapture(final int pCaptureX, final int pCaptureY, final int pCaptureWidth, final int pCaptureHeight, final String pFilePath, final GL10 pGL) throws FileNotFoundException {
+		final Bitmap bmp = ScreenCapture.capture(pCaptureX, pCaptureY, pCaptureWidth, pCaptureHeight, pGL);
+		FileOutputStream fos = null;
 		try {
-			final FileOutputStream fos = new FileOutputStream(pFilePath);
+			fos = new FileOutputStream(pFilePath);
 			bmp.compress(CompressFormat.PNG, 100, fos);
 
-			StreamUtils.flushCloseStream(fos);
 		} catch (final FileNotFoundException e) {
+			StreamUtils.flushCloseStream(fos);
 			Debug.e("Error saving file to: " + pFilePath, e);
+			throw e;
 		}
 	}
 
@@ -137,5 +152,6 @@ public class ScreenCapture extends Entity {
 		// ===========================================================
 
 		public void onScreenCaptured(final String pFilePath);
+		public void onScreenCaptureFailed(final String pFilePath, final Exception pException);
 	}
 }

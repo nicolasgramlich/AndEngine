@@ -48,7 +48,7 @@ public class AssetTextureSource implements ITextureSource {
 		} catch (final IOException e) {
 			Debug.e("Failed loading Bitmap in AssetTextureSource. AssetPath: " + pAssetPath, e);
 		} finally {
-			StreamUtils.closeStream(in);
+			StreamUtils.close(in);
 		}
 
 		this.mWidth = decodeOptions.outWidth;
@@ -98,7 +98,7 @@ public class AssetTextureSource implements ITextureSource {
 			Debug.e("Failed loading Bitmap in AssetTextureSource. AssetPath: " + this.mAssetPath, e);
 			return null;
 		} finally {
-			StreamUtils.closeStream(in);
+			StreamUtils.close(in);
 		}
 	}
 

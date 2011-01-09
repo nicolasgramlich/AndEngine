@@ -155,7 +155,7 @@ public class SystemUtils {
 		} catch (final IOException e) {
 			throw new SystemUtilsException(e);
 		} finally {
-			StreamUtils.closeStream(in);
+			StreamUtils.close(in);
 		}
 	}
 
@@ -172,7 +172,7 @@ public class SystemUtils {
 		} catch (final NumberFormatException e) {
 			throw new SystemUtilsException(e);
 		} finally {
-			StreamUtils.closeStream(in);
+			StreamUtils.close(in);
 		}
 	}
 

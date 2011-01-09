@@ -48,7 +48,7 @@ public class FileTextureSource implements ITextureSource {
 		} catch (final IOException e) {
 			Debug.e("Failed loading Bitmap in FileTextureSource. File: " + pFile, e);
 		} finally {
-			StreamUtils.closeStream(in);
+			StreamUtils.close(in);
 		}
 
 		this.mWidth = decodeOptions.outWidth;
@@ -97,7 +97,7 @@ public class FileTextureSource implements ITextureSource {
 			Debug.e("Failed loading Bitmap in FileTextureSource. File: " + this.mFile, e);
 			return null;
 		} finally {
-			StreamUtils.closeStream(in);
+			StreamUtils.close(in);
 		}
 	}
 

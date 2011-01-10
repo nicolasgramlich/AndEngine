@@ -2,24 +2,23 @@ package org.anddev.andengine.entity.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
+import org.anddev.andengine.entity.util.ScreenGrabber.IScreenGrabberCallback;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Bitmap.Config;
 
 /**
  * @author Nicolas Gramlich
  * @since 15:11:50 - 15.03.2010
  */
-public class ScreenCapture extends Entity {
+public class ScreenCapture extends Entity implements IScreenGrabberCallback {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,12 +27,11 @@ public class ScreenCapture extends Entity {
 	// Fields
 	// ===========================================================
 
-	private int mWidth;
-	private int mHeight;
-
-	private boolean mScreenCapturePending = false;
-	private IScreenCaptureCallback mScreenCaptureCallback;
 	private String mFilePath;
+
+	private final ScreenGrabber mScreenGrabber = new ScreenGrabber();
+
+	private IScreenshotCallback mScreenCaptureCallback;
 
 	// ===========================================================
 	// Constructors
@@ -49,15 +47,7 @@ public class ScreenCapture extends Entity {
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
-		if(this.mScreenCapturePending) {
-			saveCapture(this.mWidth, this.mHeight, this.mFilePath, pGL);
-
-			this.mScreenCaptureCallback.onScreenCaptured(this.mFilePath);
-
-			this.mScreenCapturePending = false;
-			this.mFilePath = null;
-			this.mScreenCaptureCallback = null;
-		}
+		this.mScreenGrabber.onManagedDraw(pGL, pCamera);
 	}
 
 	@Override
@@ -70,52 +60,44 @@ public class ScreenCapture extends Entity {
 		/* Nothing */
 	}
 
+	@Override
+	public void onScreenGrabbed(final Bitmap pBitmap) {
+		try {
+			ScreenCapture.saveCapture(pBitmap, this.mFilePath);
+		} catch (final FileNotFoundException e) {
+			this.mScreenCaptureCallback.onScreenCaptureFailed(this.mFilePath, e);
+		}
+	}
+
+	@Override
+	public void onScreenGrabFailed(final Exception pException) {
+		this.mScreenCaptureCallback.onScreenCaptureFailed(this.mFilePath, pException);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	public void capture(final int pWidth, final int pHeight, final String pFilePath, final IScreenCaptureCallback pScreenCaptureCallback) {
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+	public void capture(final int pCaptureWidth, final int pCaptureHeight, final String pFilePath, final IScreenshotCallback pScreenCaptureCallback) {
+		this.capture(0, 0, pCaptureWidth, pCaptureHeight, pFilePath, pScreenCaptureCallback);
+	}
+
+	public void capture(final int pCaptureX, final int pCaptureY, final int pCaptureWidth, final int pCaptureHeight, final String pFilePath, final IScreenshotCallback pScreenshotCallback) {
 		this.mFilePath = pFilePath;
-		this.mScreenCaptureCallback = pScreenCaptureCallback;
-		this.mScreenCapturePending = true;
+		this.mScreenCaptureCallback = pScreenshotCallback;
+		this.mScreenGrabber.grab(pCaptureX, pCaptureY, pCaptureWidth, pCaptureHeight, this);
 	}
 
-	private static Bitmap capture(final int pX, final int pY, final int pWidth, final int pHeight, final GL10 pGL) {
-		// TODO FIXME Use this code http://blog.javia.org/android-opengl-es-screenshot/ and fix bugs.
-		final int b[] = new int[pWidth * (pY + pHeight)];
-		final int bt[] = new int[pWidth * pHeight];
-		final IntBuffer ib = IntBuffer.wrap(b);
-		ib.position(0);
-		pGL.glReadPixels(pX, 0, pWidth, pY + pHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, ib);
-
-		for (int i = 0, k = 0; i < pHeight; i++, k++) {
-			for (int j = 0; j < pWidth; j++) {
-				final int pix = b[i * pWidth + j];
-				final int pb = (pix >> 16) & 0xff;
-				final int pr = (pix << 16) & 0x00ff0000;
-				final int pix1 = (pix & 0xff00ff00) | pr | pb;
-				bt[(pHeight - k - 1) * pWidth + j] = pix1;
-			}
-		}
-
-		return Bitmap.createBitmap(bt, pWidth, pHeight, Config.ARGB_8888);
-	}
-
-	private static void saveCapture(final int pWidth, final int pHeight, final String pFilePath, final GL10 pGL) {
-		saveCapture(0, 0, pWidth, pHeight, pFilePath, pGL);
-	}
-
-	private static void saveCapture(final int pX, final int pY, final int pWidth, final int pHeight, final String pFilePath, final GL10 pGL) {
-		final Bitmap bmp = capture(pX, pY, pWidth, pHeight, pGL);
+	private static void saveCapture(final Bitmap pBitmap, final String pFilePath) throws FileNotFoundException {
+		FileOutputStream fos = null;
 		try {
-			final FileOutputStream fos = new FileOutputStream(pFilePath);
-			bmp.compress(CompressFormat.PNG, 100, fos);
+			fos = new FileOutputStream(pFilePath);
+			pBitmap.compress(CompressFormat.PNG, 100, fos);
 
-			StreamUtils.flushCloseStream(fos);
 		} catch (final FileNotFoundException e) {
+			StreamUtils.flushCloseStream(fos);
 			Debug.e("Error saving file to: " + pFilePath, e);
+			throw e;
 		}
 	}
 
@@ -123,7 +105,7 @@ public class ScreenCapture extends Entity {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface IScreenCaptureCallback {
+	public static interface IScreenshotCallback {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -133,5 +115,6 @@ public class ScreenCapture extends Entity {
 		// ===========================================================
 
 		public void onScreenCaptured(final String pFilePath);
+		public void onScreenCaptureFailed(final String pFilePath, final Exception pException);
 	}
 }

@@ -103,10 +103,10 @@ public class ScreenGrabber extends Entity {
 				final int pixel = source[x + ((pGrabY + y) * pGrabWidth)];
 
 				final int blue = (pixel & 0x00FF0000) >> 16;
-			final int red = (pixel  & 0x000000FF) << 16;
-			final int greenAlpha = pixel & 0xFF00FF00;
-
-			pixels[x + ((pGrabHeight - y - 1) * pGrabWidth)] = greenAlpha | red | blue;
+				final int red = (pixel  & 0x000000FF) << 16;
+				final int greenAlpha = pixel & 0xFF00FF00;
+	
+				pixels[x + ((pGrabHeight - y - 1) * pGrabWidth)] = greenAlpha | red | blue;
 			}
 		}
 

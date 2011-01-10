@@ -12,7 +12,7 @@ import android.graphics.Bitmap.Config;
 
 /**
  * @author Nicolas Gramlich
- * @since 15:11:50 - 15.03.2010
+ * @since 15:27:22 - 10.01.2011
  */
 public class ScreenGrabber extends Entity {
 	// ===========================================================

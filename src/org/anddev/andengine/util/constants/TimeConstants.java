@@ -1,9 +1,8 @@
-// Created by plusminus on 16:42:32 - 11.08.2008
 package org.anddev.andengine.util.constants;
 
 /**
  * @author Nicolas Gramlich
- * @since 11:49:39 PM - May 21, 2009
+ * @since 16:49:25 - 26.07.2010
  */
 public interface TimeConstants {
 	// ===========================================================

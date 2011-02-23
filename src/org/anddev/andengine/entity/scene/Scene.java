@@ -352,7 +352,7 @@ public class Scene extends Entity {
 		//			}
 		//		}
 
-		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas; // TODO touchAreas can be null!
+		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
 		if(touchAreas != null) {
 			final int touchAreaCount = touchAreas.size();
 			if(touchAreaCount > 0) {

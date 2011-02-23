@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
  * @author Nicolas Gramlich
@@ -62,7 +63,7 @@ public class SingleSceneSplitScreenEngine extends Engine {
 
 		final int surfaceHeight = this.mSurfaceHeight;
 
-		pGL.glEnable(GL10.GL_SCISSOR_TEST); // TODO --> GLHelper
+		GLHelper.enableScissorTest(pGL);
 
 		/* First Screen. With first camera, on the left half of the screens width. */
 		{
@@ -82,7 +83,7 @@ public class SingleSceneSplitScreenEngine extends Engine {
 			secondCamera.onDrawHUD(pGL);
 		}
 
-		pGL.glDisable(GL10.GL_SCISSOR_TEST);
+		GLHelper.disableScissorTest(pGL);
 	}
 
 	@Override

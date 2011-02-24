@@ -413,6 +413,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	private void initLoadingScreen() {
+		// TODO The LoadingScreen mechanism doesn't really make sense, as it loads a Scene itself. Somehow resource loading should be done asynchronously. 
 		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
 		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);

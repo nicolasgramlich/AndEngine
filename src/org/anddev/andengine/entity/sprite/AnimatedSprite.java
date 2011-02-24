@@ -8,6 +8,8 @@ import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
 /**
+ * TODO Eventually add functionality to pause/resume an animation, which is not 100% indentical to stopping an animation.
+ * 
  * @author Nicolas Gramlich
  * @since 15:25:46 - 10.03.2010
  */

@@ -48,16 +48,8 @@
 	../GoogleDeveloperDayLiveWallpaper/lib/andengine.jar,
 	../SuperPool/lib/andengine.jar,
 	../BuddyRadar/lib/andengine.jar" />
-   
-	<target name="createjar" >
-		<echo>${targetfile}</echo>
-        
-		<copy file="${binfile}" tofile="${targetfile}"/>
-		
-		<eclipse.refreshLocal resource="${targetfile}" depth="infinite"/>
-    </target>
-    
-   	<target name="createjars">
+   	
+   	<target name="package">
 		<jar destfile="${binfile}">
 			<zipfileset dir="${src}">
 				<include name="**/*.*" />
@@ -69,7 +61,17 @@
 				<exclude name="**/R$*.class" />
 			</zipfileset>
 		</jar>
+	</target>
+   
+	<target name="createjar" >
+		<echo>${targetfile}</echo>
+        
+		<copy file="${binfile}" tofile="${targetfile}"/>
 		
+		<eclipse.refreshLocal resource="${targetfile}" depth="infinite"/>
+    </target>
+	
+	<target name="createjars" depends="package">
 		<foreach list="${targetlist}" target="createjar" param="targetfile" delimiter="," trim="true" />
-   	</target>
+	</target>
 </project>

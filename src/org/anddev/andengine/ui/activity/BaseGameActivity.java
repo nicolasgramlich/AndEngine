@@ -194,12 +194,16 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	private void acquireWakeLock(final WakeLockOptions pWakeLockOptions) {
-		final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-		this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, "AndEngine");
-		try {
-			this.mWakeLock.acquire();
-		} catch (final SecurityException e) {
-			Debug.e("You have to add\n\t<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>\nto your AndroidManifest.xml !", e);
+		if(pWakeLockOptions == WakeLockOptions.SCREEN_ON) {
+			this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		} else {
+			final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+			this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, "AndEngine");
+			try {
+				this.mWakeLock.acquire();
+			} catch (final SecurityException e) {
+				Debug.e("You have to add\n\t<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>\nto your AndroidManifest.xml !", e);
+			}
 		}
 	}
 

@@ -23,6 +23,7 @@
 		../AndEngineGameTemplate/lib/andengine.jar,
 		../BlockSmasher/lib/andengine.jar,
 		../BlockSmasherEco/lib/andengine.jar,
+		../BlockSmasherBeta/lib/andengine.jar,
 		../BlockSmasherPro/lib/andengine.jar" />
    
 	<target name="createjar" >

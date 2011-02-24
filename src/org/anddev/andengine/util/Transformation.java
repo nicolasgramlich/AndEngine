@@ -22,7 +22,7 @@ import android.util.FloatMath;
  *  <li><b>ty</b> is the <b>y translation</b></li>
  * </ul>
  *
- * <p>TODO Anywhere there is a "new Transformation()" call inside of this class, there should be (!) some kind of caching/pooling! Think if that caching can be done static and if it needs to be Thread-Safe.</p>
+ * <p>TODO Think if that caching of Transformation through the TransformationPool really needs to be thread-safe or if one simple reused static Transform object is enough.</p>
  * 
  * @author Nicolas Gramlich
  * @since 15:47:18 - 23.12.2010
@@ -84,11 +84,15 @@ public class Transformation  {
 	}
 
 	public void preTranslate(final float pX, final float pY) {
-		this.preConcat(new Transformation().setToTranslate(pX, pY));
+		final Transformation transformation = TransformationPool.obtain();
+		this.preConcat(transformation.setToTranslate(pX, pY));
+		TransformationPool.recycle(transformation);
 	}
 
 	public void postTranslate(final float pX, final float pY) {
-		this.postConcat(new Transformation().setToTranslate(pX, pY));
+		final Transformation transformation = TransformationPool.obtain();
+		this.postConcat(transformation.setToTranslate(pX, pY));
+		TransformationPool.recycle(transformation);
 	}
 
 	public Transformation setToTranslate(final float pX, final float pY) {
@@ -103,11 +107,15 @@ public class Transformation  {
 	}
 
 	public void preScale(final float pScaleX, final float pScaleY) {
-		this.preConcat(new Transformation().setToScale(pScaleX, pScaleY));
+		final Transformation transformation = TransformationPool.obtain();
+		this.preConcat(transformation.setToScale(pScaleX, pScaleY));
+		TransformationPool.recycle(transformation);
 	}
 
 	public void postScale(final float pScaleX, final float pScaleY) {
-		this.postConcat(new Transformation().setToScale(pScaleX, pScaleY));
+		final Transformation transformation = TransformationPool.obtain();
+		this.postConcat(transformation.setToScale(pScaleX, pScaleY));
+		TransformationPool.recycle(transformation);
 	}
 
 	public Transformation setToScale(final float pScaleX, final float pScaleY) {
@@ -122,11 +130,15 @@ public class Transformation  {
 	}
 
 	public void preRotate(final float pAngle) {
-		this.preConcat(new Transformation().setToRotate(pAngle));
+		final Transformation transformation = TransformationPool.obtain();
+		this.preConcat(transformation.setToRotate(pAngle));
+		TransformationPool.recycle(transformation);
 	}
 
 	public void postRotate(final float pAngle) {
-		this.postConcat(new Transformation().setToRotate(pAngle));
+		final Transformation transformation = TransformationPool.obtain();
+		this.postConcat(transformation.setToRotate(pAngle));
+		TransformationPool.recycle(transformation);
 	}
 
 	public Transformation setToRotate(final float pAngle) {

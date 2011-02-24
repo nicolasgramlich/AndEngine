@@ -10,12 +10,14 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.layer.Layer;
 import org.anddev.andengine.entity.layer.ZIndexSorter;
+import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.IMatcher;
+import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.constants.Constants;
 
 import android.util.SparseArray;
@@ -30,6 +32,8 @@ public class Scene extends Entity {
 	// Constants
 	// ===========================================================
 
+	private static final int TOUCHAREAS_CAPACITY_DEFAULT = 4;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -41,6 +45,8 @@ public class Scene extends Entity {
 	private boolean mChildSceneModalDraw;
 	private boolean mChildSceneModalUpdate;
 	private boolean mChildSceneModalTouch;
+
+	protected SmartList<ITouchArea> mTouchAreas = new SmartList<ITouchArea>(TOUCHAREAS_CAPACITY_DEFAULT);
 
 	private final RunnableHandler mRunnableHandler = new RunnableHandler();
 
@@ -206,10 +212,10 @@ public class Scene extends Entity {
 	 * @param pTouchAreaBindingEnabled
 	 */
 	public void setTouchAreaBindingEnabled(final boolean pTouchAreaBindingEnabled) {
-		this.mTouchAreaBindingEnabled = pTouchAreaBindingEnabled;
-		if(this.mTouchAreaBindingEnabled == false) {
+		if(this.mTouchAreaBindingEnabled && !pTouchAreaBindingEnabled) {
 			this.mTouchAreaBindings.clear();
 		}
+		this.mTouchAreaBindingEnabled = pTouchAreaBindingEnabled;
 	}
 
 	public boolean isTouchAreaBindingEnabled() {
@@ -262,9 +268,9 @@ public class Scene extends Entity {
 
 	public boolean onSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
 		final int action = pSceneTouchEvent.getAction();
-		final boolean isDownAction = action == MotionEvent.ACTION_DOWN;
+		final boolean isActionDown = pSceneTouchEvent.isActionDown();
 
-		if(this.mTouchAreaBindingEnabled && !isDownAction) {
+		if(this.mTouchAreaBindingEnabled && !isActionDown) {
 			final SparseArray<ITouchArea> touchAreaBindings = this.mTouchAreaBindings;
 			final ITouchArea boundTouchArea = touchAreaBindings.get(pSceneTouchEvent.getPointerID());
 			/* In the case a ITouchArea has been bound to this PointerID,
@@ -298,59 +304,6 @@ public class Scene extends Entity {
 
 		final float sceneTouchEventX = pSceneTouchEvent.getX();
 		final float sceneTouchEventY = pSceneTouchEvent.getY();
-		
-		// TODO Think if TouchEvents should be propagated to children 
-
-		//		/* First give the layers a chance to handle their TouchAreas. */
-		//		{
-		//			final int layerCount = this.mLayerCount;
-		//			final Layer[] layers = this.mLayers;
-		//			if(this.mOnAreaTouchTraversalBackToFront) { /* Back to Front. */
-		//				for(int i = 0; i < layerCount; i++) {
-		//					final Layer layer = layers[i];
-		//					final ArrayList<ITouchArea> layerTouchAreas = layer.getTouchAreas();
-		//					final int layerTouchAreaCount = layerTouchAreas.size();
-		//					if(layerTouchAreaCount > 0) {
-		//						for(int j = 0; j < layerTouchAreaCount; j++) {
-		//							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
-		//							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-		//								final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
-		//								if(handled != null && handled) {
-		//									/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
-		//									 *  bind this ITouchArea to the PointerID. */
-		//									if(this.mTouchAreaBindingEnabled && isDownAction) {
-		//										this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), layerTouchArea);
-		//									}
-		//									return true;
-		//								}
-		//							}
-		//						}
-		//					}
-		//				}
-		//			} else { /* Front to back. */
-		//				for(int i = layerCount - 1; i >= 0; i--) {
-		//					final Layer layer = layers[i];
-		//					final ArrayList<ITouchArea> layerTouchAreas = layer.getTouchAreas();
-		//					final int layerTouchAreaCount = layerTouchAreas.size();
-		//					if(layerTouchAreaCount > 0) {
-		//						for(int j = layerTouchAreaCount - 1; j >= 0; j--) {
-		//							final ITouchArea layerTouchArea = layerTouchAreas.get(j);
-		//							if(layerTouchArea.contains(sceneTouchEventX, sceneTouchEventY)) {
-		//								final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, layerTouchArea);
-		//								if(handled != null && handled) {
-		//									/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
-		//									 *  bind this ITouchArea to the PointerID. */
-		//									if(this.mTouchAreaBindingEnabled && isDownAction) {
-		//										this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), layerTouchArea);
-		//									}
-		//									return true;
-		//								}
-		//							}
-		//						}
-		//					}
-		//				}
-		//			}
-		//		}
 
 		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
 		if(touchAreas != null) {
@@ -364,7 +317,7 @@ public class Scene extends Entity {
 							if(handled != null && handled) {
 								/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
 								 *  bind this ITouchArea to the PointerID. */
-								if(this.mTouchAreaBindingEnabled && isDownAction) {
+								if(this.mTouchAreaBindingEnabled && isActionDown) {
 									this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), touchArea);
 								}
 								return true;
@@ -379,7 +332,7 @@ public class Scene extends Entity {
 							if(handled != null && handled) {
 								/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
 								 *  bind this ITouchArea to the PointerID. */
-								if(this.mTouchAreaBindingEnabled && isDownAction) {
+								if(this.mTouchAreaBindingEnabled && isActionDown) {
 									this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), touchArea);
 								}
 								return true;
@@ -436,6 +389,26 @@ public class Scene extends Entity {
 		this.mRunnableHandler.postRunnable(pRunnable);
 	}
 
+	public void registerTouchArea(final ITouchArea pTouchArea) {
+		this.mTouchAreas.add(pTouchArea);
+	}
+
+	public boolean unregisterTouchArea(final ITouchArea pTouchArea) {
+		return this.mTouchAreas.remove(pTouchArea);
+	}
+
+	public boolean unregisterTouchAreas(final ITouchAreaMatcher pTouchAreaMatcher) {
+		return this.mTouchAreas.removeAll(pTouchAreaMatcher);
+	}
+
+	public void clearTouchAreas() {
+		this.mTouchAreas.clear();
+	}
+
+	public ArrayList<ITouchArea> getTouchAreas() {
+		return this.mTouchAreas;
+	}
+
 	public void back() {
 		this.clearChildScene();
 
@@ -464,16 +437,16 @@ public class Scene extends Entity {
 		public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
 
 		/**
-		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)} or to a {@link Layer} via {@link Layer#registerTouchArea(ITouchArea)}.
+		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.
 		 * @param pSceneTouchEvent
 		 * @return <code>true</code> if the event was handled (that means {@link IOnAreaTouchListener} of the {@link Scene} will not be fired!), otherwise <code>false</code>.
 		 */
 		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY);
-		
+
 		// ===========================================================
 		// Inner and Anonymous Classes
 		// ===========================================================
-		
+
 		public interface ITouchAreaMatcher extends IMatcher<ITouchArea> {
 			// ===========================================================
 			// Constants

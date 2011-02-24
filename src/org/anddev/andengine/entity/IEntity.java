@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.anddev.andengine.engine.Engine;
@@ -9,8 +8,6 @@ import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
 import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.Transformation;
@@ -89,12 +86,6 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
 
-	public ArrayList<ITouchArea> getTouchAreas();
-	public void registerTouchArea(final ITouchArea pTouchArea);
-	public boolean unregisterTouchArea(final ITouchArea pTouchArea);
-	public boolean unregisterTouchAreas(final ITouchAreaMatcher pTouchAreaMatcher);
-	public void clearTouchAreas();
-
 	public Transformation getLocalToSceneTransformation();
 	public Transformation getSceneToLocalTransformation();
 
@@ -165,7 +156,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	public interface IEntityMatcher extends IMatcher<IEntity> {
 		// ===========================================================
 		// Constants

@@ -12,8 +12,6 @@ import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.modifier.EntityModifierList;
 import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
 import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.Transformation;
@@ -30,7 +28,6 @@ public class Entity implements IEntity {
 	// ===========================================================
 
 	private static final int CHILDREN_CAPACITY_DEFAULT = 4;
-	private static final int TOUCHAREAS_CAPACITY_DEFAULT = 4;
 	private static final int ENTITYMODIFIERS_CAPACITY_DEFAULT = 4;
 	private static final int UPDATEHANDLERS_CAPACITY_DEFAULT = 4;
 
@@ -57,7 +54,6 @@ public class Entity implements IEntity {
 	private IEntity mParent;
 
 	protected SmartList<IEntity> mChildren;
-	protected SmartList<ITouchArea> mTouchAreas;
 	private EntityModifierList mEntityModifiers;
 	private UpdateHandlerList mUpdateHandlers;
 
@@ -506,43 +502,6 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void registerTouchArea(final ITouchArea pTouchArea) {
-		if(this.mTouchAreas == null) {
-			this.allocateTouchAreas();
-		}
-		this.mTouchAreas.add(pTouchArea);
-	}
-
-	@Override
-	public boolean unregisterTouchArea(final ITouchArea pTouchArea) {
-		if(this.mTouchAreas == null) {
-			return false;
-		}
-		return this.mTouchAreas.remove(pTouchArea);
-	}
-
-	@Override
-	public boolean unregisterTouchAreas(final ITouchAreaMatcher pTouchAreaMatcher) {
-		if(this.mTouchAreas == null) {
-			return false;
-		}
-		return this.mTouchAreas.removeAll(pTouchAreaMatcher);
-	}
-
-	@Override
-	public void clearTouchAreas() {
-		if(this.mTouchAreas == null) {
-			return;
-		}
-		this.mTouchAreas.clear();
-	}
-
-	@Override
-	public ArrayList<ITouchArea> getTouchAreas() {
-		return this.mTouchAreas;
-	}
-
-	@Override
 	public float[] getSceneCenterCoordinates() {
 		return this.convertLocalToSceneCoordinates(0, 0);
 	}
@@ -728,10 +687,6 @@ public class Entity implements IEntity {
 
 	private void allocateEntityModifiers() {
 		this.mEntityModifiers = new EntityModifierList(this, Entity.ENTITYMODIFIERS_CAPACITY_DEFAULT);
-	}
-
-	private void allocateTouchAreas() {
-		this.mTouchAreas = new SmartList<ITouchArea>(Entity.TOUCHAREAS_CAPACITY_DEFAULT);
 	}
 
 	private void allocateChildren() {

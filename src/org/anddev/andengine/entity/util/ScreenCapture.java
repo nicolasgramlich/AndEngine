@@ -82,9 +82,9 @@ public class ScreenCapture extends Entity implements IScreenGrabberCallback {
 		this.capture(0, 0, pCaptureWidth, pCaptureHeight, pFilePath, pScreenCaptureCallback);
 	}
 
-	public void capture(final int pCaptureX, final int pCaptureY, final int pCaptureWidth, final int pCaptureHeight, final String pFilePath, final IScreenCaptureCallback pScreenshotCallback) {
+	public void capture(final int pCaptureX, final int pCaptureY, final int pCaptureWidth, final int pCaptureHeight, final String pFilePath, final IScreenCaptureCallback pScreenCaptureCallback) {
 		this.mFilePath = pFilePath;
-		this.mScreenCaptureCallback = pScreenshotCallback;
+		this.mScreenCaptureCallback = pScreenCaptureCallback;
 		this.mScreenGrabber.grab(pCaptureX, pCaptureY, pCaptureWidth, pCaptureHeight, this);
 	}
 

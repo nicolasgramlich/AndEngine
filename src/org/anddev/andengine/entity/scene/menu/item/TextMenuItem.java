@@ -31,6 +31,7 @@ public class TextMenuItem extends Text implements IMenuItem{
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public int getID() {
 		return this.mID;
 	}

@@ -18,9 +18,9 @@ public interface ITouchController extends IUpdateHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void setTouchEventCallback(final ITouchEventCallback pTouchEventCallback);
-	
+
 	public void applyTouchOptions(final TouchOptions pTouchOptions);
 
 	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent);

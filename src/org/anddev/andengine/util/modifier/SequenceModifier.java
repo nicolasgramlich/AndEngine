@@ -57,7 +57,7 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 		this.mDuration = pSequenceModifier.mDuration;
 
 		final IModifier<T>[] otherModifiers = pSequenceModifier.mSubSequenceModifiers;
-		this.mSubSequenceModifiers = (IModifier<T>[])new IModifier[otherModifiers.length];
+		this.mSubSequenceModifiers = new IModifier[otherModifiers.length];
 
 		final IModifier<T>[] shapeModifiers = this.mSubSequenceModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {

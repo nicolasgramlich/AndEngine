@@ -142,7 +142,7 @@ public class Base64InputStream extends FilterInputStream {
 	 * decode/encode it into the empty coder.output, and reset the
 	 * outputStart and outputEnd pointers.
 	 */
-	 private void refill() throws IOException {
+	private void refill() throws IOException {
 		if (this.eof) {
 			return;
 		}
@@ -159,5 +159,5 @@ public class Base64InputStream extends FilterInputStream {
 		}
 		this.outputEnd = this.coder.op;
 		this.outputStart = 0;
-	 }
+	}
 }

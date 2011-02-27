@@ -1,10 +1,11 @@
 package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.source.decorator.shape.ITextureSourceDecoratorShape;
 
 import android.graphics.AvoidXfermode;
-import android.graphics.Color;
 import android.graphics.AvoidXfermode.Mode;
+import android.graphics.Color;
 
 /**
  * @author Nicolas Gramlich
@@ -28,19 +29,19 @@ public class ColorKeyTextureSourceDecorator extends BaseShapeTextureSourceDecora
 	// Constructors
 	// ===========================================================
 
-	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pColorKeyColor) {
+	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pColorKeyColor) {
 		this(pTextureSource, pTextureSourceDecoratorShape, pColorKeyColor, ColorKeyTextureSourceDecorator.TOLERANCE_DEFAULT, null);
 	}
 
-	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pColorKeyColor, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pColorKeyColor, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		this(pTextureSource, pTextureSourceDecoratorShape, pColorKeyColor, ColorKeyTextureSourceDecorator.TOLERANCE_DEFAULT, pTextureSourceDecoratorOptions);
 	}
 
-	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pColorKeyColor, final int pTolerance) {
+	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pColorKeyColor, final int pTolerance) {
 		this(pTextureSource, pTextureSourceDecoratorShape, pColorKeyColor, pTolerance, null);
 	}
 
-	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pColorKeyColor, final int pTolerance, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+	public ColorKeyTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pColorKeyColor, final int pTolerance, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
 		this.mColorKeyColor = pColorKeyColor;
 		this.mTolerance = pTolerance;

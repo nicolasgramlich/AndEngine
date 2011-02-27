@@ -1,9 +1,10 @@
 package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.source.decorator.shape.ITextureSourceDecoratorShape;
 
-import android.graphics.RadialGradient;
 import android.graphics.Paint.Style;
+import android.graphics.RadialGradient;
 import android.graphics.Shader.TileMode;
 
 /**
@@ -27,11 +28,11 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	// Constructors
 	// ===========================================================
 
-	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection) {
+	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection) {
 		this(pTextureSource, pTextureSourceDecoratorShape, pFromColor, pToColor, pRadialGradientDirection, null);
 	}
 
-	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
 		this.mFromColor = pFromColor;
 		this.mToColor = pToColor;

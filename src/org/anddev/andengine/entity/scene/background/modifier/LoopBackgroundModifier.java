@@ -39,7 +39,7 @@ public class LoopBackgroundModifier extends LoopModifier<IBackground> implements
 	protected LoopBackgroundModifier(final LoopBackgroundModifier pLoopBackgroundModifier) {
 		super(pLoopBackgroundModifier);
 	}
-	
+
 	@Override
 	public LoopBackgroundModifier clone() {
 		return new LoopBackgroundModifier(this);

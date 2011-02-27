@@ -266,7 +266,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 				this.addTileByGlobalTileID(globalTileID, pTMXTilePropertyListener);
 			}
 		} finally {
-			StreamUtils.closeStream(dataIn);
+			StreamUtils.close(dataIn);
 		}
 	}
 

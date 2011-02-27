@@ -1,8 +1,8 @@
 package org.anddev.andengine.entity.scene.popup;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.shape.modifier.IShapeModifier;
 import org.anddev.andengine.entity.text.Text;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.util.HorizontalAlign;
@@ -30,7 +30,7 @@ public class TextPopupScene extends PopupScene {
 		this(pCamera, pParentScene, pFont, pText, pDurationSeconds, null, null);
 	}
 
-	public TextPopupScene(final Camera pCamera, final Scene pParentScene, final Font pFont, final String pText, final float pDurationSeconds, final IShapeModifier pShapeModifier) {
+	public TextPopupScene(final Camera pCamera, final Scene pParentScene, final Font pFont, final String pText, final float pDurationSeconds, final IEntityModifier pShapeModifier) {
 		this(pCamera, pParentScene, pFont, pText, pDurationSeconds, pShapeModifier, null);
 	}
 
@@ -38,17 +38,17 @@ public class TextPopupScene extends PopupScene {
 		this(pCamera, pParentScene, pFont, pText, pDurationSeconds, null, pRunnable);
 	}
 
-	public TextPopupScene(final Camera pCamera, final Scene pParentScene, final Font pFont, final String pText, final float pDurationSeconds, final IShapeModifier pShapeModifier, final Runnable pRunnable) {
+	public TextPopupScene(final Camera pCamera, final Scene pParentScene, final Font pFont, final String pText, final float pDurationSeconds, final IEntityModifier pShapeModifier, final Runnable pRunnable) {
 		super(pCamera, pParentScene, pDurationSeconds, pRunnable);
 
 		this.mText = new Text(0, 0, pFont, pText, HorizontalAlign.CENTER);
 		this.centerShapeInCamera(this.mText);
 
 		if(pShapeModifier != null) {
-			this.mText.addShapeModifier(pShapeModifier);
+			this.mText.registerEntityModifier(pShapeModifier);
 		}
 
-		this.getTopLayer().addEntity(this.mText);
+		this.getLastChild().attachChild(this.mText);
 	}
 
 	// ===========================================================

@@ -35,7 +35,7 @@ public class SequenceBackgroundModifier extends SequenceModifier<IBackground> im
 	protected SequenceBackgroundModifier(final SequenceBackgroundModifier pSequenceBackgroundModifier) {
 		super(pSequenceBackgroundModifier);
 	}
-	
+
 	@Override
 	public SequenceBackgroundModifier clone() {
 		return new SequenceBackgroundModifier(this);

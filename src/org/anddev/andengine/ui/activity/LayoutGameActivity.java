@@ -35,7 +35,7 @@ public abstract class LayoutGameActivity extends BaseGameActivity {
 		super.setContentView(this.getLayoutID());
 
 		this.mRenderSurfaceView = (RenderSurfaceView) this.findViewById(this.getRenderSurfaceViewID());
-		
+
 		this.mRenderSurfaceView.setEGLConfigChooser(false);
 		this.mRenderSurfaceView.setRenderer(this.mEngine);
 	}

@@ -51,6 +51,7 @@ public class GLHelper {
 	private static boolean sEnableDepthTest = true;
 	private static boolean sEnableMultisample = true;
 
+	private static boolean sEnableScissorTest = false;
 	private static boolean sEnableBlend = false;
 	private static boolean sEnableCulling = false;
 	private static boolean sEnableTextures = false;
@@ -174,6 +175,19 @@ public class GLHelper {
 		}
 	}
 
+	public static void enableScissorTest(final GL10 pGL) {
+		if(!GLHelper.sEnableScissorTest) {
+			GLHelper.sEnableScissorTest = true;
+			pGL.glEnable(GL10.GL_SCISSOR_TEST);
+		}
+	}
+	public static void disableScissorTest(final GL10 pGL) {
+		if(GLHelper.sEnableScissorTest) {
+			GLHelper.sEnableScissorTest = false;
+			pGL.glDisable(GL10.GL_SCISSOR_TEST);
+		}
+	}
+	
 	public static void enableBlend(final GL10 pGL) {
 		if(!GLHelper.sEnableBlend) {
 			GLHelper.sEnableBlend = true;

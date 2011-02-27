@@ -7,7 +7,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.layer.ILayer;
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.sprite.Sprite;
@@ -72,9 +72,9 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 			}
 		}));
 
-		final ILayer bottomLayer = this.getBottomLayer();
-		bottomLayer.addEntity(this.mControlBase);
-		bottomLayer.addEntity(this.mControlKnob);
+		final IEntity firstChild = this.getFirstChild();
+		firstChild.attachChild(this.mControlBase);
+		firstChild.attachChild(this.mControlKnob);
 
 		this.setTouchAreaBindingEnabled(true);
 	}
@@ -136,33 +136,6 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 		this.onUpdateControlKnob(0, 0);
 	}
 
-	private void updateControlKnob(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		final Sprite controlBase = this.mControlBase;
-
-		final float relativeX = MathUtils.bringToBounds(0, controlBase.getWidth(), pTouchAreaLocalX) / controlBase.getWidth() - 0.5f;
-		final float relativeY = MathUtils.bringToBounds(0, controlBase.getHeight(), pTouchAreaLocalY) / controlBase.getHeight() - 0.5f;
-
-		this.onUpdateControlKnob(relativeX, relativeY);
-	}
-
-	/**
-	 * @param pRelativeX from <code>-0.5</code> (left) to <code>0.5</code> (right).
-	 * @param pRelativeY from <code>-0.5</code> (top) to <code>0.5</code> (bottom).
-	 */
-	protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {
-		final Sprite controlBase = this.mControlBase;
-		final Sprite controlKnob = this.mControlKnob;
-
-		this.mControlValueX = 2 * pRelativeX;
-		this.mControlValueY = 2 * pRelativeY;
-
-		final float[] controlBaseSceneCenterCoordinates = controlBase.getSceneCenterCoordinates();
-		final float x = controlBaseSceneCenterCoordinates[VERTEX_INDEX_X] - controlKnob.getWidth() * 0.5f + pRelativeX * controlBase.getWidthScaled();
-		final float y = controlBaseSceneCenterCoordinates[VERTEX_INDEX_Y] - controlKnob.getHeight() * 0.5f + pRelativeY * controlBase.getHeightScaled();
-
-		controlKnob.setPosition(x, y);
-	}
-
 	protected boolean onHandleControlBaseTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		final int pointerID = pSceneTouchEvent.getPointerID();
 
@@ -190,6 +163,33 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 				break;
 		}
 		return true;
+	}
+
+	private void updateControlKnob(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+		final Sprite controlBase = this.mControlBase;
+
+		final float relativeX = MathUtils.bringToBounds(0, controlBase.getWidth(), pTouchAreaLocalX) / controlBase.getWidth() - 0.5f;
+		final float relativeY = MathUtils.bringToBounds(0, controlBase.getHeight(), pTouchAreaLocalY) / controlBase.getHeight() - 0.5f;
+
+		this.onUpdateControlKnob(relativeX, relativeY);
+	}
+
+	/**
+	 * @param pRelativeX from <code>-0.5</code> (left) to <code>0.5</code> (right).
+	 * @param pRelativeY from <code>-0.5</code> (top) to <code>0.5</code> (bottom).
+	 */
+	protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {
+		final Sprite controlBase = this.mControlBase;
+		final Sprite controlKnob = this.mControlKnob;
+
+		this.mControlValueX = 2 * pRelativeX;
+		this.mControlValueY = 2 * pRelativeY;
+
+		final float[] controlBaseSceneCenterCoordinates = controlBase.getSceneCenterCoordinates();
+		final float x = controlBaseSceneCenterCoordinates[VERTEX_INDEX_X] - controlKnob.getWidth() * 0.5f + pRelativeX * controlBase.getWidthScaled();
+		final float y = controlBaseSceneCenterCoordinates[VERTEX_INDEX_Y] - controlKnob.getHeight() * 0.5f + pRelativeY * controlBase.getHeightScaled();
+
+		controlKnob.setPosition(x, y);
 	}
 
 	// ===========================================================

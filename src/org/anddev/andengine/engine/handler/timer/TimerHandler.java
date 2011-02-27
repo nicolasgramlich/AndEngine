@@ -18,7 +18,7 @@ public class TimerHandler implements IUpdateHandler {
 	private float mTimerSeconds;
 	private float mTimerSecondsElapsed;
 	private boolean mCallbackTriggered = false;
-	private final ITimerCallback mTimerCallback;
+	protected final ITimerCallback mTimerCallback;
 	private boolean mAutoReset;
 
 	// ===========================================================
@@ -54,11 +54,11 @@ public class TimerHandler implements IUpdateHandler {
 	public void setTimerSeconds(final float pTimerSeconds) {
 		this.mTimerSeconds = pTimerSeconds;
 	}
-	
+
 	public float getTimerSeconds() {
 		return this.mTimerSeconds;
 	}
-	
+
 	public float getTimerSecondsElapsed() {
 		return this.mTimerSecondsElapsed;
 	}

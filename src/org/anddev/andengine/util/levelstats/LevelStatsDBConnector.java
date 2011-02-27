@@ -35,7 +35,7 @@ public class LevelStatsDBConnector {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private final String mSecret;
 	private final String mSubmitURL;
 	private final int mPlayerID;
@@ -47,11 +47,11 @@ public class LevelStatsDBConnector {
 	public LevelStatsDBConnector(final Context pContext, final String pSecret, final String pSubmitURL) {
 		this.mSecret = pSecret;
 		this.mSubmitURL = pSubmitURL;
-		
+
 		final SharedPreferences simplePreferences = SimplePreferences.getInstance(pContext);
 		final int playerID = simplePreferences.getInt(PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_ID, -1);
 		if(playerID != -1) {
-			this.mPlayerID = playerID;	
+			this.mPlayerID = playerID;
 		} else {
 			this.mPlayerID = MathUtils.random(1000000000, Integer.MAX_VALUE);
 			SimplePreferences.getEditorInstance(pContext).putInt(PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_ID, this.mPlayerID).commit();
@@ -67,7 +67,7 @@ public class LevelStatsDBConnector {
 	// ===========================================================
 
 	public void submitAsync(final int pLevelID, final boolean pSolved, final int pSecondsElapsed) {
-		submitAsync(pLevelID, pSolved, pSecondsElapsed, null);
+		this.submitAsync(pLevelID, pSolved, pSecondsElapsed, null);
 	}
 
 	public void submitAsync(final int pLevelID, final boolean pSolved, final int pSecondsElapsed, final Callback<Boolean> pCallback) {

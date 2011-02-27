@@ -76,8 +76,8 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 		final int width = this.mSplashTextureSource.getWidth();
 		final int height = this.mSplashTextureSource.getHeight();
 
-		this.mCamera = getSplashCamera(width, height);
-		return new Engine(new EngineOptions(true, this.getScreenOrientation(), getSplashResolutionPolicy(width, height), this.mCamera));
+		this.mCamera = this.getSplashCamera(width, height);
+		return new Engine(new EngineOptions(true, this.getScreenOrientation(), this.getSplashResolutionPolicy(width, height), this.mCamera));
 	}
 
 	@Override

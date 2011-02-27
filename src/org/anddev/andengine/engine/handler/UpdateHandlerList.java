@@ -1,12 +1,12 @@
 package org.anddev.andengine.engine.handler;
 
-import java.util.ArrayList;
+import org.anddev.andengine.util.SmartList;
 
 /**
  * @author Nicolas Gramlich
  * @since 09:45:22 - 31.03.2010
  */
-public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpdateHandler {
+public class UpdateHandlerList extends SmartList<IUpdateHandler> implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,6 +20,14 @@ public class UpdateHandlerList extends ArrayList<IUpdateHandler> implements IUpd
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public UpdateHandlerList() {
+
+	}
+
+	public UpdateHandlerList(final int pCapacity) {
+		super(pCapacity);
+	}
 
 	// ===========================================================
 	// Getter & Setter

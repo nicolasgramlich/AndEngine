@@ -31,10 +31,12 @@ public abstract class BaseAudioManager<T extends IAudioEntity> implements IAudio
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
 	public float getMasterVolume() {
 		return this.mMasterVolume;
 	}
 
+	@Override
 	public void setMasterVolume(final float pMasterVolume) {
 		this.mMasterVolume = pMasterVolume;
 
@@ -46,6 +48,7 @@ public abstract class BaseAudioManager<T extends IAudioEntity> implements IAudio
 		}
 	}
 
+	@Override
 	public void add(final T pAudioEntity) {
 		this.mAudioEntities.add(pAudioEntity);
 	}

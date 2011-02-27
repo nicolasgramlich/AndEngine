@@ -1,5 +1,7 @@
 package org.anddev.andengine.engine.handler;
 
+import org.anddev.andengine.util.IMatcher;
+
 /**
  * @author Nicolas Gramlich
  * @since 12:24:09 - 11.03.2010
@@ -15,4 +17,20 @@ public interface IUpdateHandler {
 
 	public void onUpdate(final float pSecondsElapsed);
 	public void reset();
+	
+	// TODO Maybe add onRegister and onUnregister. (Maybe add SimpleUpdateHandler that implements all methods, but onUpdate)
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+	
+	public interface IUpdateHandlerMatcher extends IMatcher<IUpdateHandler> {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+	}
 }

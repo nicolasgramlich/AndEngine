@@ -40,6 +40,7 @@ abstract class BaseConfigChooser implements EGLConfigChooser {
 
 	abstract EGLConfig chooseConfig(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final EGLConfig[] pEGLConfigs);
 
+	@Override
 	public EGLConfig chooseConfig(final EGL10 pEGL, final EGLDisplay pEGLDisplay) {
 		final int[] num_config = new int[1];
 		pEGL.eglChooseConfig(pEGLDisplay, this.mConfigSpec, null, 0, num_config);

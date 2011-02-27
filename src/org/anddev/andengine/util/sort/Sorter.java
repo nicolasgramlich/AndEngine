@@ -38,11 +38,11 @@ public abstract class Sorter<T> {
 	// ===========================================================
 
 	public final void sort(final T[] pArray, final Comparator<T> pComparator){
-		sort(pArray, 0, pArray.length, pComparator);
+		this.sort(pArray, 0, pArray.length, pComparator);
 	}
-	
+
 	public final void sort(final List<T> pList, final Comparator<T> pComparator){
-		sort(pList, 0, pList.size(), pComparator);
+		this.sort(pList, 0, pList.size(), pComparator);
 	}
 
 	// ===========================================================

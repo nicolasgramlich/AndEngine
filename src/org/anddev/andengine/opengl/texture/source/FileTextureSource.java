@@ -9,8 +9,8 @@ import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 
 /**
  * 
@@ -40,7 +40,7 @@ public class FileTextureSource implements ITextureSource {
 
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inJustDecodeBounds = true;
-		
+
 		InputStream in = null;
 		try {
 			in = new FileInputStream(pFile);
@@ -48,9 +48,9 @@ public class FileTextureSource implements ITextureSource {
 		} catch (final IOException e) {
 			Debug.e("Failed loading Bitmap in FileTextureSource. File: " + pFile, e);
 		} finally {
-			StreamUtils.closeStream(in);
+			StreamUtils.close(in);
 		}
-		
+
 		this.mWidth = decodeOptions.outWidth;
 		this.mHeight = decodeOptions.outHeight;
 	}
@@ -88,7 +88,7 @@ public class FileTextureSource implements ITextureSource {
 	public Bitmap onLoadBitmap() {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inPreferredConfig = Config.ARGB_8888;
-		
+
 		InputStream in = null;
 		try {
 			in = new FileInputStream(this.mFile);
@@ -97,7 +97,7 @@ public class FileTextureSource implements ITextureSource {
 			Debug.e("Failed loading Bitmap in FileTextureSource. File: " + this.mFile, e);
 			return null;
 		} finally {
-			StreamUtils.closeStream(in);
+			StreamUtils.close(in);
 		}
 	}
 

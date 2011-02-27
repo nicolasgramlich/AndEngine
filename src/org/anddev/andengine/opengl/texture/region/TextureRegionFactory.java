@@ -34,9 +34,9 @@ public class TextureRegionFactory {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	/**
-	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>. 
+	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>.
 	 */
 	public static void setAssetBasePath(final String pAssetBasePath) {
 		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
@@ -109,7 +109,7 @@ public class TextureRegionFactory {
 		final ITextureSource textureSource = new AssetTextureSource(pContext, TextureRegionFactory.sAssetBasePath + pAssetPath);
 		return TextureRegionFactory.createTiledFromSource(pBuildableTexture, textureSource, pTileColumns, pTileRows);
 	}
-	
+
 
 	public static TextureRegion createFromResource(final BuildableTexture pBuildableTexture, final Context pContext, final int pDrawableResourceID) {
 		final ITextureSource textureSource = new ResourceTextureSource(pContext, pDrawableResourceID);
@@ -120,7 +120,7 @@ public class TextureRegionFactory {
 		final ITextureSource textureSource = new ResourceTextureSource(pContext, pDrawableResourceID);
 		return TextureRegionFactory.createTiledFromSource(pBuildableTexture, textureSource, pTileColumns, pTileRows);
 	}
-	
+
 
 	public static TextureRegion createFromSource(final BuildableTexture pBuildableTexture, final ITextureSource pTextureSource) {
 		final TextureRegion textureRegion = new TextureRegion(pBuildableTexture, 0, 0, pTextureSource.getWidth(), pTextureSource.getHeight());

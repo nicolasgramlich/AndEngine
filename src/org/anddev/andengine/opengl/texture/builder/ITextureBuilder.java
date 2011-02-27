@@ -23,7 +23,7 @@ public interface ITextureBuilder {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	public static class TextureSourcePackingException extends Exception {
 		// ===========================================================
 		// Constants

@@ -6,7 +6,7 @@ public class MultiKey<K> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final long serialVersionUID = 4465448607415788805L;
 
 	// ===========================================================
@@ -19,13 +19,13 @@ public class MultiKey<K> {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public MultiKey(final K... pKeys) {
 		this.mKeys = pKeys;
 
-		this.mCachedHashCode = hash(pKeys);
+		this.mCachedHashCode = MultiKey.hash(pKeys);
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -52,7 +52,7 @@ public class MultiKey<K> {
 
 	public static int hash(final Object ... pKeys) {
 		int hashCode = 0;
-		for(Object key : pKeys) {
+		for(final Object key : pKeys) {
 			if(key != null) {
 				hashCode ^= key.hashCode();
 			}

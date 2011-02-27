@@ -126,7 +126,7 @@ public class EngineOptions {
 		// Elements
 		// ===========================================================
 
-		LANDSCAPE, 
+		LANDSCAPE,
 		PORTRAIT;
 	}
 }

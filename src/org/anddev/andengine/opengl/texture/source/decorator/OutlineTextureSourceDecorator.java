@@ -1,6 +1,7 @@
 package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.source.decorator.shape.ITextureSourceDecoratorShape;
 
 import android.graphics.Paint.Style;
 
@@ -23,11 +24,11 @@ public class OutlineTextureSourceDecorator extends BaseShapeTextureSourceDecorat
 	// Constructors
 	// ===========================================================
 
-	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pOutlineColor) {
+	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pOutlineColor) {
 		this(pTextureSource, pTextureSourceDecoratorShape, pOutlineColor, null);
 	}
 
-	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pOutlineColor, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+	public OutlineTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pOutlineColor, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
 		this.mOutlineColor = pOutlineColor;
 

@@ -141,7 +141,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 				lastTMXObjectGroup.addTMXObjectGroupProperty(new TMXObjectGroupProperty(pAttributes));
 			} else if(this.mInMap) {
 				this.mTMXTiledMap.addTMXTiledMapProperty(new TMXTiledMapProperty(pAttributes));
-			}  
+			}
 		} else if(pLocalName.equals(TAG_LAYER)){
 			this.mInLayer = true;
 			this.mTMXTiledMap.addTMXLayer(new TMXLayer(this.mTMXTiledMap, pAttributes));

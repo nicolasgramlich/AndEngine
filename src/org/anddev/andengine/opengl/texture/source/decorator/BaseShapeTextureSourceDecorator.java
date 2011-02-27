@@ -1,10 +1,9 @@
 package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.source.decorator.shape.ITextureSourceDecoratorShape;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
 
 /**
  * @author Nicolas Gramlich
@@ -19,13 +18,13 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 	// Fields
 	// ===========================================================
 
-	protected final TextureSourceDecoratorShape mTextureSourceDecoratorShape;
+	protected final ITextureSourceDecoratorShape mTextureSourceDecoratorShape;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseShapeTextureSourceDecorator(final ITextureSource pTextureSource, final TextureSourceDecoratorShape pTextureSourceDecoratorShape, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+	public BaseShapeTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		super(pTextureSource, pTextureSourceDecoratorOptions);
 
 		this.mTextureSourceDecoratorShape = pTextureSourceDecoratorShape;
@@ -54,71 +53,4 @@ public abstract class BaseShapeTextureSourceDecorator extends BaseTextureSourceD
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static enum TextureSourceDecoratorShape {
-		// ===========================================================
-		// Elements
-		// ===========================================================
-
-		CIRCLE() {
-			@Override
-			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
-				final float widthHalf = pCanvas.getWidth() / 2;
-				final float heightHalf = pCanvas.getHeight() / 2;
-				final float radius = Math.min(widthHalf, heightHalf);
-				// TODO Use DecoratorOptions
-				pCanvas.drawCircle(widthHalf - 0.5f, heightHalf - 0.5f, radius, pPaint);
-			}
-		},
-		ELLIPSE() {
-			private final RectF mRectF = new RectF();
-
-			@Override
-			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
-				this.mRectF.set(0, 0, pCanvas.getWidth() - 1, pCanvas.getWidth() - 1);
-				// TODO Use DecoratorOptions
-				pCanvas.drawOval(this.mRectF, pPaint);
-			}
-		},
-		RECTANGLE() {
-			@Override
-			public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
-				final float left = pDecoratorOptions.getInsetLeft();
-				final float top = pDecoratorOptions.getInsetTop();
-				final float right = pCanvas.getWidth() - 1 - pDecoratorOptions.getInsetRight();
-				final float bottom = pCanvas.getHeight() - 1 - pDecoratorOptions.getInsetBottom();
-				pCanvas.drawRect(left, top, right, bottom, pPaint);
-			}
-		};
-
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods from SuperClass/Interfaces
-		// ===========================================================
-
-		public abstract void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions);
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

@@ -67,6 +67,14 @@ public class LevelLoader implements LevelConstants {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected void onAfterLoadLevel() {
+
+	}
+
+	protected void onBeforeLoadLevel() {
+
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -97,10 +105,15 @@ public class LevelLoader implements LevelConstants {
 			final SAXParser sp = spf.newSAXParser();
 
 			final XMLReader xr = sp.getXMLReader();
+
+			this.onBeforeLoadLevel();
+
 			final LevelParser levelParser = new LevelParser(this.mEntityLoaders);
 			xr.setContentHandler(levelParser);
 
 			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
+
+			this.onAfterLoadLevel();
 		} catch (final SAXException se) {
 			Debug.e(se);
 			/* Doesn't happen. */
@@ -108,7 +121,7 @@ public class LevelLoader implements LevelConstants {
 			Debug.e(pe);
 			/* Doesn't happen. */
 		} finally {
-			StreamUtils.closeStream(pInputStream);
+			StreamUtils.close(pInputStream);
 		}
 	}
 

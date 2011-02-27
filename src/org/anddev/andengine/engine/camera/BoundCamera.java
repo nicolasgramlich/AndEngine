@@ -64,11 +64,11 @@ public class BoundCamera extends Camera {
 		this.mBoundsCenterX = this.mBoundsMinX + this.mBoundsWidth * 0.5f;
 		this.mBoundsCenterY = this.mBoundsMinY + this.mBoundsHeight * 0.5f;
 	}
-	
+
 	public float getBoundsWidth() {
 		return this.mBoundsWidth;
 	}
-	
+
 	public float getBoundsHeight() {
 		return this.mBoundsHeight;
 	}
@@ -78,7 +78,7 @@ public class BoundCamera extends Camera {
 		super.setCenter(pCenterX, pCenterY);
 
 		if(this.mBoundsEnabled) {
-			ensureInBounds();
+			this.ensureInBounds();
 		}
 	}
 

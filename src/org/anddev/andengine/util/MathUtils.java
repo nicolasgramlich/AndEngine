@@ -37,6 +37,10 @@ public class MathUtils implements MathConstants {
 	// Methods
 	// ===========================================================
 
+	public static float atan2(final float dY, final float dX) {
+		return MathUtils.radToDeg((float)Math.atan2(dY, dX));
+	}
+
 	public static final float radToDeg(final float pRad) {
 		return RAD_TO_DEG * pRad;
 	}
@@ -57,7 +61,7 @@ public class MathUtils implements MathConstants {
 		return pMin + RANDOM.nextFloat() * (pMax - pMin);
 	}
 
-	/** 
+	/**
 	 * @param pMin inclusive!
 	 * @param pMax inclusive!
 	 * @return

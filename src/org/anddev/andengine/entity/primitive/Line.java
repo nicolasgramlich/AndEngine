@@ -4,10 +4,9 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.collision.LineCollisionChecker;
-import org.anddev.andengine.collision.ShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.GLShape;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
@@ -16,7 +15,7 @@ import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
  * @author Nicolas Gramlich
  * @since 09:50:36 - 04.04.2010
  */
-public class Line extends GLShape {
+public class Line extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -69,19 +68,19 @@ public class Line extends GLShape {
 	// ===========================================================
 
 	/**
-	 * Instead use {@link Line#getX1()} or {@link Line#getX2()}.
+	 * @deprecated Instead use {@link Line#getX1()} or {@link Line#getX2()}.
 	 */
-	@Override
 	@Deprecated
+	@Override
 	public float getX() {
 		return super.getX();
 	}
 
 	/**
-	 * Instead use {@link Line#getY1()} or {@link Line#getY2()}.
+	 * @deprecatedInstead use {@link Line#getY1()} or {@link Line#getY2()}.
 	 */
-	@Override
 	@Deprecated
+	@Override
 	public float getY() {
 		return super.getY();
 	}
@@ -131,7 +130,7 @@ public class Line extends GLShape {
 	}
 
 	/**
-	 * Instead use {@link Line#setPosition(float, float, float, float)}.
+	 * @deprecated Instead use {@link Line#setPosition(float, float, float, float)}.
 	 */
 	@Deprecated
 	@Override
@@ -157,7 +156,7 @@ public class Line extends GLShape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected boolean isCulled(final Camera pCamera) {
 		return false; // TODO
@@ -188,7 +187,8 @@ public class Line extends GLShape {
 
 	@Override
 	public float[] getSceneCenterCoordinates() {
-		return ShapeCollisionChecker.convertLocalToSceneCoordinates(this, (this.mX + this.mX2) * 0.5f, (this.mY + this.mY2) * 0.5f);
+		return null; // TODO
+		//		return convertLocalToSceneCoordinates(this, (this.mX + this.mX2) * 0.5f, (this.mY + this.mY2) * 0.5f);
 	}
 
 	@Override

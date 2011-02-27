@@ -32,7 +32,7 @@ public class InsertionSorter<T> extends Sorter<T> {
 	@Override
 	public void sort(final T[] pArray, final int pStart, final int pEnd, final Comparator<T> pComparator) {
 		for(int i = pStart + 1; i < pEnd; i++) {
-			T current = pArray[i];
+			final T current = pArray[i];
 			T prev = pArray[i - 1];
 			if(pComparator.compare(current, prev) < 0) {
 				int j = i;
@@ -44,11 +44,11 @@ public class InsertionSorter<T> extends Sorter<T> {
 		}
 		return;
 	}
-	
+
 	@Override
 	public void sort(final List<T> pList, final int pStart, final int pEnd, final Comparator<T> pComparator) {
 		for(int i = pStart + 1; i < pEnd; i++) {
-			T current = pList.get(i);
+			final T current = pList.get(i);
 			T prev = pList.get(i - 1);
 			if(pComparator.compare(current, prev) < 0) {
 				int j = i;

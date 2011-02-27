@@ -51,6 +51,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
 	public float getDuration() {
 		return this.mDuration;
 	}
@@ -86,6 +87,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 		}
 	}
 
+	@Override
 	public void reset() {
 		this.mFinished = false;
 		this.mTotalSecondsElapsed = 0;

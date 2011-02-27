@@ -223,20 +223,20 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 
 				final int rectWidth = this.mRect.getWidth();
 				final int rectHeight = this.mRect.getHeight();
-				
+
 				if(textureSourceWidth > rectWidth || textureSourceHeight > rectHeight) {
 					return null;
 				}
-				
+
 				final int textureSourceWidthWithSpacing = textureSourceWidth + pTextureSpacing;
 				final int textureSourceHeightWithSpacing = textureSourceHeight + pTextureSpacing;
 
 				final int rectLeft = this.mRect.getLeft();
 				final int rectTop = this.mRect.getTop();
-				
+
 				final boolean fitToBottomWithoutSpacing = textureSourceHeight == rectHeight && rectTop + textureSourceHeight == pTextureHeight;
 				final boolean fitToRightWithoutSpacing = textureSourceWidth == rectWidth && rectLeft + textureSourceWidth == pTextureWidth;
-				
+
 				if(textureSourceWidthWithSpacing == rectWidth){
 					if(textureSourceHeightWithSpacing == rectHeight) { /* Normal case with padding. */
 						this.mTextureSource = pTextureSource;
@@ -245,7 +245,7 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 						this.mTextureSource = pTextureSource;
 						return this;
 					}
-				} 
+				}
 
 				if(fitToRightWithoutSpacing) { /* Right edge of the Texture. */
 					if(textureSourceHeightWithSpacing == rectHeight) {
@@ -258,10 +258,10 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 						return null;
 					} else {
 
-						return createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidth, rectHeight - textureSourceHeightWithSpacing);
+						return this.createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidth, rectHeight - textureSourceHeightWithSpacing);
 					}
-				} 
-				
+				}
+
 				if(fitToBottomWithoutSpacing) {
 					if(textureSourceWidthWithSpacing == rectWidth) {
 						this.mTextureSource = pTextureSource;
@@ -269,19 +269,19 @@ public class BlackPawnTextureBuilder implements ITextureBuilder {
 					} else if(textureSourceWidthWithSpacing > rectWidth) {
 						return null;
 					} else {
-						return createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidthWithSpacing, rectHeight - textureSourceHeight);
+						return this.createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidthWithSpacing, rectHeight - textureSourceHeight);
 					}
 				} else if(textureSourceWidthWithSpacing > rectWidth || textureSourceHeightWithSpacing > rectHeight) {
 					return null;
 				} else {
-					return createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidthWithSpacing, rectHeight - textureSourceHeightWithSpacing);
+					return this.createChildren(pTextureSource, pTextureWidth, pTextureHeight, pTextureSpacing, rectWidth - textureSourceWidthWithSpacing, rectHeight - textureSourceHeightWithSpacing);
 				}
 			}
 		}
 
 		private Node createChildren(final ITextureSource pTextureSource, final int pTextureWidth, final int pTextureHeight, final int pTextureSpacing, final int pDeltaWidth, final int pDeltaHeight) {
 			final Rect rect = this.mRect;
-			
+
 			if(pDeltaWidth >= pDeltaHeight) {
 				/* Split using a vertical axis. */
 				this.mChildA = new Node(

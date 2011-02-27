@@ -3,8 +3,8 @@ package org.anddev.andengine.opengl.font;
 import org.anddev.andengine.opengl.texture.Texture;
 
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.Style;
+import android.graphics.Typeface;
 
 /**
  * @author Nicolas Gramlich

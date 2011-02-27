@@ -2,8 +2,8 @@ package org.anddev.andengine.entity.scene.menu.animator;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.entity.modifier.AlphaModifier;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
-import org.anddev.andengine.entity.shape.modifier.AlphaModifier;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
@@ -74,7 +74,7 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 		for(int i = menuItemCount - 1; i >= 0; i--) {
 			final AlphaModifier alphaModifier = new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO, easeFunction);
 			alphaModifier.setRemoveWhenFinished(false);
-			pMenuItems.get(i).addShapeModifier(alphaModifier);
+			pMenuItems.get(i).registerEntityModifier(alphaModifier);
 		}
 	}
 

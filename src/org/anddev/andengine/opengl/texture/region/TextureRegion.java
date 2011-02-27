@@ -31,6 +31,7 @@ public class TextureRegion extends BaseTextureRegion {
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public TextureRegionBuffer getTextureBuffer() {
 		return (TextureRegionBuffer) this.mTextureRegionBuffer;
 	}
@@ -48,6 +49,7 @@ public class TextureRegion extends BaseTextureRegion {
 	// Methods
 	// ===========================================================
 
+	@Override
 	protected BaseTextureRegionBuffer onCreateTextureRegionBuffer() {
 		return new TextureRegionBuffer(this, GL11.GL_STATIC_DRAW);
 	}

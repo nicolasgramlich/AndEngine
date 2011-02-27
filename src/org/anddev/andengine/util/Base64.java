@@ -115,7 +115,7 @@ public class Base64 {
 	 * incorrect padding
 	 */
 	public static byte[] decode(final String str, final int flags) {
-		return decode(str.getBytes(), flags);
+		return Base64.decode(str.getBytes(), flags);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class Base64 {
 	 * incorrect padding
 	 */
 	public static byte[] decode(final byte[] input, final int flags) {
-		return decode(input, 0, input.length, flags);
+		return Base64.decode(input, 0, input.length, flags);
 	}
 
 	/**
@@ -459,7 +459,7 @@ public class Base64 {
 	 */
 	public static String encodeToString(final byte[] input, final int flags) {
 		try {
-			return new String(encode(input, flags), "US-ASCII");
+			return new String(Base64.encode(input, flags), "US-ASCII");
 		} catch (final UnsupportedEncodingException e) {
 			// US-ASCII is guaranteed to be available.
 			throw new AssertionError(e);
@@ -480,7 +480,7 @@ public class Base64 {
 	 */
 	public static String encodeToString(final byte[] input, final int offset, final int len, final int flags) {
 		try {
-			return new String(encode(input, offset, len, flags), "US-ASCII");
+			return new String(Base64.encode(input, offset, len, flags), "US-ASCII");
 		} catch (final UnsupportedEncodingException e) {
 			// US-ASCII is guaranteed to be available.
 			throw new AssertionError(e);
@@ -497,7 +497,7 @@ public class Base64 {
 	 *               adheres to RFC 2045.
 	 */
 	public static byte[] encode(final byte[] input, final int flags) {
-		return encode(input, 0, input.length, flags);
+		return Base64.encode(input, 0, input.length, flags);
 	}
 
 	/**

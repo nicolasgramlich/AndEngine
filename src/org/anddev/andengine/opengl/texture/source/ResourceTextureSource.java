@@ -2,8 +2,8 @@ package org.anddev.andengine.opengl.texture.source;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 
 /**
  * @author Nicolas Gramlich

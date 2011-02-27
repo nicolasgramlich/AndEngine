@@ -48,7 +48,7 @@ public class SmoothCamera extends ZoomCamera {
 		this.mTargetCenterX = pCenterX;
 		this.mTargetCenterY = pCenterY;
 	}
-	
+
 	public void setCenterDirect(final float pCenterX, final float pCenterY) {
 		super.setCenter(pCenterX, pCenterY);
 		this.mTargetCenterX = pCenterX;

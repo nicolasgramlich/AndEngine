@@ -81,7 +81,7 @@ public abstract class GenericPool<T> {
 	public synchronized void batchAllocatePoolItems(final int pCount) {
 		final Stack<T> availableItems = this.mAvailableItems;
 		for(int i = pCount - 1; i >= 0; i--) {
-			availableItems.push(onHandleAllocatePoolItem());
+			availableItems.push(this.onHandleAllocatePoolItem());
 		}
 	}
 
@@ -92,7 +92,7 @@ public abstract class GenericPool<T> {
 			item = this.mAvailableItems.pop();
 		} else {
 			if(this.mGrowth == 1) {
-				item = onHandleAllocatePoolItem();
+				item = this.onHandleAllocatePoolItem();
 			} else {
 				this.batchAllocatePoolItems(this.mGrowth);
 				item = this.mAvailableItems.pop();

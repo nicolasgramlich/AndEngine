@@ -1,12 +1,8 @@
 package org.anddev.andengine.entity.shape;
 
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
-
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
-import org.anddev.andengine.collision.ShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
@@ -15,7 +11,7 @@ import org.anddev.andengine.opengl.vertex.VertexBuffer;
  * @author Nicolas Gramlich
  * @since 11:37:50 - 04.04.2010
  */
-public abstract class RectangularShape extends GLShape {
+public abstract class RectangularShape extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -108,7 +104,6 @@ public abstract class RectangularShape extends GLShape {
 		if(this.mWidth != this.mBaseWidth || this.mHeight != this.mBaseHeight) {
 			this.mWidth = this.mBaseWidth;
 			this.mHeight = this.mBaseHeight;
-			this.onPositionChanged();
 			this.updateVertexBuffer();
 		}
 	}
@@ -151,22 +146,6 @@ public abstract class RectangularShape extends GLShape {
 	@Override
 	public float[] getSceneCenterCoordinates() {
 		return this.convertLocalToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f);
-	}
-
-	@Override
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
-		final float[] sceneCoordinates = ShapeCollisionChecker.convertLocalToSceneCoordinates(this, pX, pY);
-		sceneCoordinates[VERTEX_INDEX_X] += this.mX;
-		sceneCoordinates[VERTEX_INDEX_Y] += this.mY;
-		return sceneCoordinates;
-	}
-
-	@Override
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
-		final float[] localCoordinates = ShapeCollisionChecker.convertSceneToLocalCoordinates(this, pX, pY);
-		localCoordinates[VERTEX_INDEX_X] -= this.mX;
-		localCoordinates[VERTEX_INDEX_Y] -= this.mY;
-		return localCoordinates;
 	}
 
 	@Override

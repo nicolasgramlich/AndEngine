@@ -31,7 +31,7 @@ public class ParallelBackgroundModifier extends ParallelModifier<IBackground> im
 	protected ParallelBackgroundModifier(final ParallelBackgroundModifier pParallelBackgroundModifier) {
 		super(pParallelBackgroundModifier);
 	}
-	
+
 	@Override
 	public ParallelBackgroundModifier clone() {
 		return new ParallelBackgroundModifier(this);

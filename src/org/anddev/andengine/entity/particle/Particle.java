@@ -1,5 +1,6 @@
 package org.anddev.andengine.entity.particle;
 
+import org.anddev.andengine.engine.handler.physics.PhysicsHandler;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
@@ -20,6 +21,7 @@ public class Particle extends Sprite {
 	private float mLifeTime;
 	private float mDeathTime = -1;
 	boolean mDead = false;
+	private final PhysicsHandler mPhysicsHandler = new PhysicsHandler(this);
 
 	// ===========================================================
 	// Constructors
@@ -59,6 +61,10 @@ public class Particle extends Sprite {
 		this.mDead = pDead;
 	}
 
+	public PhysicsHandler getPhysicsHandler() {
+		return this.mPhysicsHandler;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -67,6 +73,7 @@ public class Particle extends Sprite {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		if(!this.mDead){
 			this.mLifeTime += pSecondsElapsed;
+			this.mPhysicsHandler.onUpdate(pSecondsElapsed);
 			super.onManagedUpdate(pSecondsElapsed);
 			final float deathTime = this.mDeathTime;
 			if(deathTime != -1 && this.mLifeTime > deathTime) {
@@ -82,6 +89,7 @@ public class Particle extends Sprite {
 	@Override
 	public void reset() {
 		super.reset();
+		this.mPhysicsHandler.reset();
 		this.mDead = false;
 		this.mDeathTime = -1;
 		this.mLifeTime = 0;

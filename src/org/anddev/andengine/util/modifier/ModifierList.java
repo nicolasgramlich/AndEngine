@@ -3,12 +3,13 @@ package org.anddev.andengine.util.modifier;
 import java.util.ArrayList;
 
 import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.anddev.andengine.util.SmartList;
 
 /**
  * @author Nicolas Gramlich
  * @since 14:34:57 - 03.09.2010
  */
-public class ModifierList<T> extends ArrayList<IModifier<T>> implements IUpdateHandler {
+public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -25,7 +26,12 @@ public class ModifierList<T> extends ArrayList<IModifier<T>> implements IUpdateH
 	// Constructors
 	// ===========================================================
 
-	public ModifierList(final T pTarget){
+	public ModifierList(final T pTarget) {
+		this.mTarget = pTarget;
+	}
+
+	public ModifierList(final T pTarget, final int pCapacity){
+		super(pCapacity);
 		this.mTarget = pTarget;
 	}
 

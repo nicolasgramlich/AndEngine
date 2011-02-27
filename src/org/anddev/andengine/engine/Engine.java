@@ -18,8 +18,8 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.SplashScene;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.controller.ITouchController;
-import org.anddev.andengine.input.touch.controller.SingleTouchControler;
 import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
+import org.anddev.andengine.input.touch.controller.SingleTouchControler;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
@@ -413,6 +413,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	private void initLoadingScreen() {
+		// TODO The LoadingScreen mechanism doesn't really make sense, as it loads a Scene itself. Somehow resource loading should be done asynchronously. 
 		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
 		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
 		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
@@ -560,6 +561,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		final LocationManager locationManager = (LocationManager) pContext.getSystemService(Context.LOCATION_SERVICE);
 		final String locationProvider = locationManager.getBestProvider(pLocationSensorOptions, pLocationSensorOptions.isEnabledOnly());
+		// TODO locationProvider can be null, in that case return false. Successful case should return true.
 		locationManager.requestLocationUpdates(locationProvider, pLocationSensorOptions.getMinimumTriggerTime(), pLocationSensorOptions.getMinimumTriggerDistance(), this);
 
 		this.onLocationChanged(locationManager.getLastKnownLocation(locationProvider));

@@ -74,13 +74,14 @@ public class BuildableTexture extends Texture {
 
 	/**
 	 * Most likely this is not the method you'd want to be using, as the {@link ITextureSource} won't get packed through this.
-	 * Use {@link BuildableTexture#addTextureSource(ITextureSource)} instead.
+	 * @deprecated Use {@link BuildableTexture#addTextureSource(ITextureSource)} instead.
 	 */
 	@Deprecated
+	@Override
 	public TextureSourceWithLocation addTextureSource(final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		return super.addTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
 	}
-	
+
 	@Override
 	public void clearTextureSources() {
 		super.clearTextureSources();
@@ -90,7 +91,7 @@ public class BuildableTexture extends Texture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	/**
 	 * When all {@link ITextureSource}s are added you have to call {@link BuildableTexture#build(ITextureBuilder)}.
 	 * @param pTextureSource to be added.
@@ -99,7 +100,7 @@ public class BuildableTexture extends Texture {
 	public void addTextureSource(final ITextureSource pTextureSource, final Callback<TextureSourceWithLocation> pCallback) {
 		this.mTextureSourcesToPlace.add(new TextureSourceWithWithLocationCallback(pTextureSource, pCallback));
 	}
-	
+
 	/**
 	 * Removes a {@link ITextureSource} before {@link BuildableTexture#build(ITextureBuilder)} is called.
 	 * @param pTextureSource to be removed.
@@ -115,7 +116,7 @@ public class BuildableTexture extends Texture {
 			}
 		}
 	}
-	
+
 	/**
 	 * May draw over already added {@link ITextureSource}s.
 	 * 
@@ -131,7 +132,7 @@ public class BuildableTexture extends Texture {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	public static class TextureSourceWithWithLocationCallback implements ITextureSource {
 		// ===========================================================
 		// Constants
@@ -150,7 +151,7 @@ public class BuildableTexture extends Texture {
 
 		public TextureSourceWithWithLocationCallback(final ITextureSource pTextureSource, final Callback<TextureSourceWithLocation> pCallback) {
 			this.mTextureSource = pTextureSource;
-			mCallback = pCallback;
+			this.mCallback = pCallback;
 		}
 
 		@Override
@@ -165,11 +166,11 @@ public class BuildableTexture extends Texture {
 		public Callback<TextureSourceWithLocation> getCallback() {
 			return this.mCallback;
 		}
-		
+
 		public ITextureSource getTextureSource() {
 			return this.mTextureSource;
 		}
-		
+
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================

@@ -39,38 +39,38 @@ public class StreamUtils {
 	// Methods
 	// ===========================================================
 
-	public static final String readFully(final InputStream in) throws IOException {
+	public static final String readFully(final InputStream pInputStream) throws IOException {
 		final StringBuilder sb = new StringBuilder();
-		final Scanner sc = new Scanner(in);
+		final Scanner sc = new Scanner(pInputStream);
 		while(sc.hasNextLine()){
 			sb.append(sc.nextLine());
 		}
 		return sb.toString();
 	}
 
-	public static byte[] streamToBytes(final InputStream in) throws IOException {
-		return StreamUtils.streamToBytes(in, -1);
+	public static byte[] streamToBytes(final InputStream pInputStream) throws IOException {
+		return StreamUtils.streamToBytes(pInputStream, -1);
 	}
 
-	public static byte[] streamToBytes(final InputStream in, final int pReadLimit) throws IOException {
+	public static byte[] streamToBytes(final InputStream pInputStream, final int pReadLimit) throws IOException {
 		final ByteArrayOutputStream os = new ByteArrayOutputStream(Math.min(pReadLimit, IO_BUFFER_SIZE));
-		StreamUtils.copy(in, os, pReadLimit);
+		StreamUtils.copy(pInputStream, os, pReadLimit);
 		return os.toByteArray();
 	}
 
-	public static void copy(final InputStream in, final OutputStream out) throws IOException {
-		StreamUtils.copy(in, out, -1);
+	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream) throws IOException {
+		StreamUtils.copy(pInputStream, pOutputStream, -1);
 	}
 
-	public static boolean copyAndClose(final InputStream in, final OutputStream out) {
+	public static boolean copyAndClose(final InputStream pInputStream, final OutputStream pOutputStream) {
 		try {
-			StreamUtils.copy(in, out, -1);
+			StreamUtils.copy(pInputStream, pOutputStream, -1);
 			return true;
 		} catch (final IOException e) {
 			return false;
 		} finally {
-			StreamUtils.closeStream(in);
-			StreamUtils.closeStream(out);
+			StreamUtils.close(pInputStream);
+			StreamUtils.close(pOutputStream);
 		}
 	}
 
@@ -78,43 +78,43 @@ public class StreamUtils {
 	 * Copy the content of the input stream into the output stream, using a temporary
 	 * byte array buffer whose size is defined by {@link #IO_BUFFER_SIZE}.
 	 *
-	 * @param in The input stream to copy from.
-	 * @param out The output stream to copy to.
+	 * @param pInputStream The input stream to copy from.
+	 * @param pOutputStream The output stream to copy to.
 	 * @param pByteLimit not more than so much bytes to read, or unlimited if smaller than 0.
 	 *
 	 * @throws IOException If any error occurs during the copy.
 	 */
-	public static void copy(final InputStream in, final OutputStream out, final long pByteLimit) throws IOException {
+	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream, final long pByteLimit) throws IOException {
 		final byte[] b = new byte[IO_BUFFER_SIZE];
 		long pBytesLeftToRead = pByteLimit;
 		int read;
 		if(pByteLimit < 0){
-			while ((read = in.read(b)) != -1) {
-				out.write(b, 0, read);
+			while ((read = pInputStream.read(b)) != -1) {
+				pOutputStream.write(b, 0, read);
 			}
 		}else{
-			while ((read = in.read(b)) != -1) {
+			while ((read = pInputStream.read(b)) != -1) {
 				if(pBytesLeftToRead > read){
-					out.write(b, 0, read);
+					pOutputStream.write(b, 0, read);
 					pBytesLeftToRead -= read;
 				} else {
-					out.write(b, 0, (int)pBytesLeftToRead);
+					pOutputStream.write(b, 0, (int)pBytesLeftToRead);
 					break;
 				}
 			}
 		}
-		out.flush();
+		pOutputStream.flush();
 	}
 
 	/**
 	 * Closes the specified stream.
 	 *
-	 * @param pStream The stream to close.
+	 * @param pCloseable The stream to close.
 	 */
-	public static void closeStream(final Closeable pStream) {
-		if (pStream != null) {
+	public static void close(final Closeable pCloseable) {
+		if (pCloseable != null) {
 			try {
-				pStream.close();
+				pCloseable.close();
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}
@@ -124,15 +124,16 @@ public class StreamUtils {
 	/**
 	 * Flushes and closes the specified stream.
 	 *
-	 * @param pStream The stream to close.
+	 * @param pOutputStream The stream to close.
 	 */
-	public static void flushCloseStream(final OutputStream pStream) {
-		if (pStream != null) {
+	public static void flushCloseStream(final OutputStream pOutputStream) {
+		if (pOutputStream != null) {
 			try {
-				pStream.flush();
-				StreamUtils.closeStream(pStream);
+				pOutputStream.flush();
 			} catch (final IOException e) {
 				e.printStackTrace();
+			} finally {
+				StreamUtils.close(pOutputStream);
 			}
 		}
 	}
@@ -146,9 +147,10 @@ public class StreamUtils {
 		if (pWriter != null) {
 			try {
 				pWriter.flush();
-				StreamUtils.closeStream(pWriter);
 			} catch (final IOException e) {
 				e.printStackTrace();
+			} finally {
+				StreamUtils.close(pWriter);
 			}
 		}
 	}

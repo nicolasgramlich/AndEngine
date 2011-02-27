@@ -12,7 +12,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.particle.emitter.IParticleEmitter;
 import org.anddev.andengine.entity.particle.emitter.RectangleParticleEmitter;
-import org.anddev.andengine.entity.particle.modifier.IParticleInitializer;
+import org.anddev.andengine.entity.particle.initializer.IParticleInitializer;
 import org.anddev.andengine.entity.particle.modifier.IParticleModifier;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
@@ -69,6 +69,7 @@ public class ParticleSystem extends Entity {
 
 	/**
 	 * Creates a ParticleSystem with a {@link RectangleParticleEmitter}.
+	 * @deprecated Instead use {@link ParticleSystem#ParticleSystem(IParticleEmitter, float, float, int, TextureRegion)}.
 	 */
 	@Deprecated
 	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
@@ -76,6 +77,8 @@ public class ParticleSystem extends Entity {
 	}
 
 	public ParticleSystem(final IParticleEmitter pParticleEmitter, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
+		super(0, 0);
+
 		this.mParticleEmitter = pParticleEmitter;
 		this.mParticles = new Particle[pMaxParticles];
 		this.mMinRate = pMinRate;
@@ -100,7 +103,7 @@ public class ParticleSystem extends Entity {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
 	}
-	
+
 	public IParticleEmitter getParticleEmitter() {
 		return this.mParticleEmitter;
 	}

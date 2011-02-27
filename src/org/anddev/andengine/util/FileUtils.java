@@ -60,7 +60,8 @@ public class FileUtils {
 	public static boolean isFileExistingOnExternalStorage(final Context pContext, final String pFilename) {
 		if (FileUtils.isExternalStorageReadable()) {
 			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
-			return new File(absoluteFilePath).exists();
+			final File file = new File(absoluteFilePath);
+			return file.exists()&& file.isFile();
 		} else {
 			throw new IllegalStateException("External Storage is not readable.");
 		}
@@ -69,7 +70,8 @@ public class FileUtils {
 	public static boolean isDirectoryExistingOnExternalStorage(final Context pContext, final String pDirectory) {
 		if (FileUtils.isExternalStorageReadable()) {
 			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pDirectory);
-			return new File(absoluteFilePath).exists();
+			final File file = new File(absoluteFilePath);
+			return file.exists() && file.isDirectory();
 		} else {
 			throw new IllegalStateException("External Storage is not readable.");
 		}
@@ -122,8 +124,8 @@ public class FileUtils {
 		try {
 			StreamUtils.copy(fis, fos);
 		} finally {
-			StreamUtils.closeStream(fis);
-			StreamUtils.closeStream(fos);
+			StreamUtils.close(fis);
+			StreamUtils.close(fos);
 		}
 	}
 

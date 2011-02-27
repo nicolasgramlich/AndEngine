@@ -36,6 +36,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	private IAnimationListener mAnimationListener;
 
 	private int mFrameCount;
+	private int[] mFrames;
 
 	// ===========================================================
 	// Constructors
@@ -73,7 +74,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 		if(this.mAnimationRunning) {
-			final long nanoSecondsElapsed = (long)(pSecondsElapsed * NANOSECONDSPERSECOND);
+			final long nanoSecondsElapsed = (long) (pSecondsElapsed * NANOSECONDSPERSECOND);
 			this.mAnimationProgress += nanoSecondsElapsed;
 
 			if(this.mAnimationProgress > this.mAnimationDuration) {
@@ -85,7 +86,12 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 
 			if(this.mInitialLoopCount == LOOP_CONTINUOUS || this.mLoopCount >= 0) {
 				final int currentFrameIndex = this.calculateCurrentFrameIndex();
-				this.setCurrentTileIndex(this.mFirstTileIndex + currentFrameIndex);
+
+				if(this.mFrames == null) {
+					this.setCurrentTileIndex(this.mFirstTileIndex + currentFrameIndex);
+				} else {
+					this.setCurrentTileIndex(this.mFrames[currentFrameIndex]);
+				}
 			} else {
 				this.mAnimationRunning = false;
 				if(this.mAnimationListener != null) {
@@ -171,8 +177,32 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		return this.animate(pFrameDurations, pFirstTileIndex, pLastTileIndex, pLoopCount, null);
 	}
 
+	public AnimatedSprite animate(final long[] pFrameDurations, final int[] pFrames, final int pLoopCount) {
+		return this.animate(pFrameDurations, pFrames, pLoopCount, null);
+	}
+
 	/**
-	 * @param pFrameDurations must have the same length as pFirstTileIndex to pLastTileIndex.
+	 * Animate specifics frames
+	 * 
+	 * @param pFrameDurations must have the same length as pFrames.
+	 * @param pFrames indices of the frames to animate.
+	 * @param pLoopCount
+	 * @param pAnimationListener
+	 */
+	public AnimatedSprite animate(final long[] pFrameDurations, final int[] pFrames, final int pLoopCount, final IAnimationListener pAnimationListener) {
+
+		final int frameCount = pFrames.length;
+		if(pFrameDurations.length != frameCount) {
+			throw new IllegalArgumentException("pFrameDurations must have the same length as pFrames.");
+		}
+
+		return this.init(pFrameDurations, frameCount, pFrames, 0, pLoopCount, pAnimationListener);
+	}
+
+	/**
+	 * @param pFrameDurations
+	 *            must have the same length as pFirstTileIndex to
+	 *            pLastTileIndex.
 	 * @param pFirstTileIndex
 	 * @param pLastTileIndex
 	 * @param pLoopCount
@@ -187,14 +217,17 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		if(pFrameDurations.length != frameCount) {
 			throw new IllegalArgumentException("pFrameDurations must have the same length as pFirstTileIndex to pLastTileIndex.");
 		}
+
+		return this.init(pFrameDurations, frameCount, null, pFirstTileIndex, pLoopCount, pAnimationListener);
+	}
+
+	private AnimatedSprite init(final long[] pFrameDurations, final int frameCount, final int[] pFrames, final int pFirstTileIndex, final int pLoopCount, final IAnimationListener pAnimationListener) {
 		this.mFrameCount = frameCount;
-
 		this.mAnimationListener = pAnimationListener;
-
 		this.mInitialLoopCount = pLoopCount;
 		this.mLoopCount = pLoopCount;
+		this.mFrames = pFrames;
 		this.mFirstTileIndex = pFirstTileIndex;
-
 
 		if(this.mFrameEndsInNanoseconds == null || this.mFrameCount > this.mFrameEndsInNanoseconds.length) {
 			this.mFrameEndsInNanoseconds = new long[this.mFrameCount];

@@ -184,7 +184,6 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	 * @param pAnimationListener
 	 */
 	public AnimatedSprite animate(final long[] pFrameDurations, final int[] pFrames, final int pLoopCount, final IAnimationListener pAnimationListener) {
-
 		final int frameCount = pFrames.length;
 		if(pFrameDurations.length != frameCount) {
 			throw new IllegalArgumentException("pFrameDurations must have the same length as pFrames.");

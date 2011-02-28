@@ -64,6 +64,7 @@ public class ScreenCapture extends Entity implements IScreenGrabberCallback {
 	public void onScreenGrabbed(final Bitmap pBitmap) {
 		try {
 			ScreenCapture.saveCapture(pBitmap, this.mFilePath);
+			this.mScreenCaptureCallback.onScreenCaptured(this.mFilePath);
 		} catch (final FileNotFoundException e) {
 			this.mScreenCaptureCallback.onScreenCaptureFailed(this.mFilePath, e);
 		}

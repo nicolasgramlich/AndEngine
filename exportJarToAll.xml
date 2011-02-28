@@ -22,7 +22,8 @@
 	../AndEngineMultiTouchExtension/lib/andengine.jar,
 	../AndEnginePhysicsBox2DExtension/lib/andengine.jar,
 	../AndEngineLiveWallpaperExtension/lib/andengine.jar,
-	../AndEnginePlayground/lib/andengine.jar,
+	../AndEnginePlayground/lib/andengine.jar,,
+	../AndEngineGameTemplate/lib/andengine.jar,
 	../AndEngineServerExtension/lib/andengine.jar,
 	../EngineComparison/lib/andengine.jar,
 	../GravityCollector/lib/andengine.jar,
@@ -47,7 +48,11 @@
 	../TetrisTower/lib/andengine.jar,
 	../GoogleDeveloperDayLiveWallpaper/lib/andengine.jar,
 	../SuperPool/lib/andengine.jar,
-	../BuddyRadar/lib/andengine.jar" />
+	../BuddyRadar/lib/andengine.jar,
+	../BlockSmasher/lib/andengine.jar,
+	../BlockSmasherEco/lib/andengine.jar,
+	../BlockSmasherBeta/lib/andengine.jar,
+	../BlockSmasherPro/lib/andengine.jar" />
    	
    	<target name="package">
 		<jar destfile="${binfile}">

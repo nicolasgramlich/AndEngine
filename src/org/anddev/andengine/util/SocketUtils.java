@@ -41,7 +41,7 @@ public class SocketUtils {
 			try {
 				pSocket.close();
 			} catch (final IOException e) {
-				System.err.println(e.getStackTrace());
+				Debug.e(e);
 			}
 		}
 	}
@@ -51,7 +51,7 @@ public class SocketUtils {
 			try {
 				pSocket.close();
 			} catch (final IOException e) {
-				e.printStackTrace();
+				Debug.e(e);
 			}
 		}
 	}

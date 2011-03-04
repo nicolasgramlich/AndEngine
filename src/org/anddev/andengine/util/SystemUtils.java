@@ -2,9 +2,12 @@ package org.anddev.andengine.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 /**
@@ -40,9 +43,17 @@ public class SystemUtils {
 	// Methods
 	// ===========================================================
 
+	public static boolean hasSystemFeature(final Context pContext, final String pFeature) {
+		try {
+			final Method PackageManager_hasSystemFeatures = PackageManager.class.getMethod("hasSystemFeature", new Class[] { String.class });
+			return (PackageManager_hasSystemFeatures == null) ? false : (Boolean) PackageManager_hasSystemFeatures.invoke(pContext.getPackageManager(), pFeature);
+		} catch (final Throwable t) {
+			return false;
+		}
+	}
+
 	/**
-	 * @param pBuildVersionCode
-	 *            taken from {@link Build.VERSION_CODES}.
+	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersionOrHigher(final int pBuildVersionCode) {
 		return Integer.parseInt(Build.VERSION.SDK) >= pBuildVersionCode;

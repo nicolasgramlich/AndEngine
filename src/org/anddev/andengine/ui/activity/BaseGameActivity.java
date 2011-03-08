@@ -16,6 +16,7 @@ import org.anddev.andengine.sensor.location.LocationSensorOptions;
 import org.anddev.andengine.sensor.orientation.IOrientationListener;
 import org.anddev.andengine.sensor.orientation.OrientationSensorOptions;
 import org.anddev.andengine.ui.IGameInterface;
+import org.anddev.andengine.util.ActivityUtils;
 import org.anddev.andengine.util.Debug;
 
 import android.content.Context;
@@ -25,7 +26,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.Gravity;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout.LayoutParams;
 
@@ -215,7 +215,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	private void applyEngineOptions(final EngineOptions pEngineOptions) {
 		if(pEngineOptions.isFullscreen()) {
-			this.requestFullscreen();
+			ActivityUtils.requestFullscreen(this);
 		}
 
 		if(pEngineOptions.needsMusic() || pEngineOptions.needsSound()) {
@@ -236,13 +236,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		final LayoutParams layoutParams = new LayoutParams(FILL_PARENT, FILL_PARENT);
 		layoutParams.gravity = Gravity.CENTER;
 		return layoutParams;
-	}
-
-	private void requestFullscreen() {
-		final Window window = this.getWindow();
-		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-		window.requestFeature(Window.FEATURE_NO_TITLE);
 	}
 
 	protected void enableVibrator() {

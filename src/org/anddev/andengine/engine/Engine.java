@@ -287,6 +287,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 					this.mAccelerometerData.setAccuracy(pAccuracy);
 					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
 					break;
+				case Sensor.TYPE_ORIENTATION:
+					this.mOrientationData.setAccuracy(pAccuracy);
+					this.mOrientationListener.onOrientationChanged(this.mOrientationData);
+					break;
 			}
 		}
 	}

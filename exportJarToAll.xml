@@ -52,7 +52,10 @@
 	../BlockSmasher/lib/andengine.jar,
 	../BlockSmasherEco/lib/andengine.jar,
 	../BlockSmasherBeta/lib/andengine.jar,
-	../BlockSmasherPro/lib/andengine.jar" />
+	../BlockSmasherPro/lib/andengine.jar,
+	../APlay/lib/andengine.jar,
+	../APlayShared/lib/andengine.jar,
+	../APlayController/lib/andengine.jar"/>
    	
    	<target name="package">
 		<jar destfile="${binfile}">

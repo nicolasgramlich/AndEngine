@@ -628,6 +628,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
 	 */
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final OrientationSensorOptions pOrientationSensorOptions) {
+		/*
+		 *  TODO Sensor.TYPE_ORIENTATION is @Deprecated so instead do it like this:
+		 *  http://www.mail-archive.com/android-beginners@googlegroups.com/msg23415.html 
+		 *  http://www.damonkohler.com/2010/06/better-orientation-readings-in-android.html
+		 */
+		
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
 			this.mOrientationListener = pOrientationListener;

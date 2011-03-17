@@ -2,7 +2,6 @@ package org.anddev.andengine.util;
 
 import java.util.concurrent.Callable;
 
-import org.anddev.andengine.ui.activity.BaseActivity;
 import org.anddev.andengine.ui.activity.BaseActivity.CancelledException;
 import org.anddev.andengine.util.progress.IProgressListener;
 import org.anddev.andengine.util.progress.ProgressCallable;

@@ -43,7 +43,7 @@ public class EaseSineOut implements IEaseFunction, MathConstants {
 
 	@Override
 	public float getPercentageDone(final float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
-		return (pMaxValue * FloatMath.sin(pSecondsElapsed / pDuration * _HALF_PI) + pMinValue);
+		return (pMaxValue * FloatMath.sin(pSecondsElapsed / pDuration * PI_HALF) + pMinValue);
 	}
 
 	// ===========================================================

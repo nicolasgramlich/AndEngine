@@ -59,9 +59,9 @@ public class EaseElasticOut implements IEaseFunction, MathConstants {
 			a = pMaxValue;
 			s = p / 4;
 		} else {
-			s = (float) (p / _2PI * Math.asin(pMaxValue / a));
+			s = (float) (p / PI_TWICE * Math.asin(pMaxValue / a));
 		}
-		return (float) (a * Math.pow(2, -10 * pSecondsElapsed) * FloatMath.sin((pSecondsElapsed * pDuration - s) * _2PI / p) + pMaxValue + pMinValue);
+		return (float) (a * Math.pow(2, -10 * pSecondsElapsed) * FloatMath.sin((pSecondsElapsed * pDuration - s) * PI_TWICE / p) + pMaxValue + pMinValue);
 	}
 
 	// ===========================================================

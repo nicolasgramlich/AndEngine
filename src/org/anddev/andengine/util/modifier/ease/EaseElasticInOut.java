@@ -59,12 +59,12 @@ public class EaseElasticInOut implements IEaseFunction, MathConstants {
 			a = pMaxValue;
 			s = p / 4;
 		} else {
-			s = (float) (p / _2PI * Math.asin(pMaxValue / a));
+			s = (float) (p / PI_TWICE * Math.asin(pMaxValue / a));
 		}
 		if(pSecondsElapsed < 1) {
-			return (float) (-0.5 * (a * Math.pow(2, 10 * (pSecondsElapsed -= 1)) * FloatMath.sin((pSecondsElapsed * pDuration - s) * _2PI / p)) + pMinValue);
+			return (float) (-0.5 * (a * Math.pow(2, 10 * (pSecondsElapsed -= 1)) * FloatMath.sin((pSecondsElapsed * pDuration - s) * PI_TWICE / p)) + pMinValue);
 		}
-		return (float) (a * Math.pow(2, -10 * (pSecondsElapsed -= 1)) * FloatMath.sin((pSecondsElapsed * pDuration - s) * _2PI / p) * .5 + pMaxValue + pMinValue);
+		return (float) (a * Math.pow(2, -10 * (pSecondsElapsed -= 1)) * FloatMath.sin((pSecondsElapsed * pDuration - s) * PI_TWICE / p) * .5 + pMaxValue + pMinValue);
 	}
 
 	// ===========================================================

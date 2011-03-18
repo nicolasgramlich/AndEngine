@@ -41,12 +41,23 @@ public class ActivityUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static void requestFullscreen(final Activity pActivity) {
 		final Window window = pActivity.getWindow();
 		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		window.requestFeature(Window.FEATURE_NO_TITLE);
+	}
+
+	/**
+	 * @param pActivity
+	 * @param pScreenBrightness [0..1]
+	 */
+	public static void setScreenBrightness(final Activity pActivity, final float pScreenBrightness) {
+		final Window window = pActivity.getWindow();
+		final WindowManager.LayoutParams windowLayoutParams = window.getAttributes();
+		windowLayoutParams.screenBrightness = pScreenBrightness;
+		window.setAttributes(windowLayoutParams);
 	}
 
 	public static <T> void doAsync(final Context pContext, final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback) {

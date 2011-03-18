@@ -111,6 +111,13 @@ public class ParticleSystem extends Entity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public void reset() {
+		super.reset();
+		
+		this.mParticlesAlive = 0;
+	}
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {

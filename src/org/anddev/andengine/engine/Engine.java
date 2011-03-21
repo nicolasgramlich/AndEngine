@@ -11,11 +11,8 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
-import org.anddev.andengine.engine.handler.timer.ITimerCallback;
-import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.SplashScene;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.controller.ITouchController;
 import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
@@ -23,12 +20,8 @@ import org.anddev.andengine.input.touch.controller.SingleTouchControler;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureManager;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.sensor.SensorDelay;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
@@ -66,8 +59,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final float LOADING_SCREEN_DURATION_DEFAULT = 2;
 
 	private static final SensorDelay SENSORDELAY_DEFAULT = SensorDelay.GAME;
 
@@ -139,10 +130,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		if(this.mEngineOptions.needsMusic()) {
 			this.mMusicManager = new MusicManager();
-		}
-
-		if(this.mEngineOptions.hasLoadingScreen()) {
-			this.initLoadingScreen();
 		}
 
 		this.mUpdateThread.start();
@@ -416,14 +403,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mUpdateThread.interrupt();
 	}
 
-	private void initLoadingScreen() {
-		// TODO The LoadingScreen mechanism doesn't really make sense, as it loads a Scene itself. Somehow resource loading should be done asynchronously. 
-		final ITextureSource loadingScreenTextureSource = this.mEngineOptions.getLoadingScreenTextureSource();
-		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(loadingScreenTextureSource);
-		final TextureRegion loadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, loadingScreenTextureSource, 0, 0);
-		this.setScene(new SplashScene(this.getCamera(), loadingScreenTextureRegion));
-	}
-
 	public void onResume() {
 		this.mTextureManager.reloadTextures();
 		this.mFontManager.reloadFonts();
@@ -448,18 +427,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onLoadComplete(final Scene pScene) {
-		/* TODO Unload texture from loading-screen. */
-		if(this.mEngineOptions.hasLoadingScreen()) {
-			this.registerUpdateHandler(new TimerHandler(LOADING_SCREEN_DURATION_DEFAULT, new ITimerCallback() {
-				@Override
-				public void onTimePassed(final TimerHandler pTimerHandler) {
-					Engine.this.unregisterUpdateHandler(pTimerHandler);
-					Engine.this.setScene(pScene);
-				}
-			}));
-		} else {
-			this.setScene(pScene);
-		}
+		this.setScene(pScene);
 	}
 
 	void onTickUpdate() throws InterruptedException {
@@ -630,10 +598,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final OrientationSensorOptions pOrientationSensorOptions) {
 		/*
 		 *  TODO Sensor.TYPE_ORIENTATION is @Deprecated so instead do it like this:
-		 *  http://www.mail-archive.com/android-beginners@googlegroups.com/msg23415.html 
+		 *  http://www.mail-archive.com/android-beginners@googlegroups.com/msg23415.html
 		 *  http://www.damonkohler.com/2010/06/better-orientation-readings-in-android.html
 		 */
-		
+
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
 			this.mOrientationListener = pOrientationListener;
@@ -689,6 +657,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		@Override
 		public void run() {
+			android.os.Process.setThreadPriority(Engine.this.mEngineOptions.getUpdateThreadPriority());
 			try {
 				while(true) {
 					Engine.this.onTickUpdate();

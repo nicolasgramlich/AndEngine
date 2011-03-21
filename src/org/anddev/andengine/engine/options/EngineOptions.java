@@ -2,7 +2,6 @@ package org.anddev.andengine.engine.options;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
  * @author  Nicolas Gramlich
@@ -25,10 +24,10 @@ public class EngineOptions {
 	private final TouchOptions mTouchOptions = new TouchOptions();
 	private final RenderOptions mRenderOptions = new RenderOptions();
 
-	private ITextureSource mLoadingScreenTextureSource;
 	private boolean mNeedsSound;
 	private boolean mNeedsMusic;
 	private WakeLockOptions mWakeLockOptions = WakeLockOptions.SCREEN_BRIGHT;
+	private int mUpdateThreadPriority = android.os.Process.THREAD_PRIORITY_DEFAULT;;
 
 	// ===========================================================
 	// Constructors
@@ -69,17 +68,15 @@ public class EngineOptions {
 		return this.mCamera;
 	}
 
-	public boolean hasLoadingScreen() {
-		return this.mLoadingScreenTextureSource != null;
+	public int getUpdateThreadPriority() {
+		return this.mUpdateThreadPriority;
 	}
 
-	public ITextureSource getLoadingScreenTextureSource() {
-		return this.mLoadingScreenTextureSource;
-	}
-
-	public EngineOptions setLoadingScreenTextureSource(final ITextureSource pLoadingScreenTextureSource) {
-		this.mLoadingScreenTextureSource = pLoadingScreenTextureSource;
-		return this;
+	/**
+	 * @param pUpdateThreadPriority Use constants from: {@link android.os.Process}.
+	 */
+	public void setUpdateThreadPriority(final int pUpdateThreadPriority) {
+		this.mUpdateThreadPriority = pUpdateThreadPriority;
 	}
 
 	public boolean needsSound() {

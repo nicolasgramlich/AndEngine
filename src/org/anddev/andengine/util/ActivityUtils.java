@@ -9,6 +9,8 @@ import org.anddev.andengine.util.progress.ProgressCallable;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.view.Window;
 import android.view.WindowManager;
@@ -61,17 +63,34 @@ public class ActivityUtils {
 	}
 
 	public static <T> void doAsync(final Context pContext, final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback) {
-		ActivityUtils.doAsync(pContext, pTitleResID, pMessageResID, pCallable, pCallback, null);
+		ActivityUtils.doAsync(pContext, pTitleResID, pMessageResID, pCallable, pCallback, null, false);
+	}
+
+	public static <T> void doAsync(final Context pContext, final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback, final boolean pCancelable) {
+		ActivityUtils.doAsync(pContext, pTitleResID, pMessageResID, pCallable, pCallback, null, pCancelable);
 	}
 
 	public static <T> void doAsync(final Context pContext, final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
+		ActivityUtils.doAsync(pContext, pTitleResID, pMessageResID, pCallable, pCallback, pExceptionCallback, false);
+	}
+
+	public static <T> void doAsync(final Context pContext, final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback, final boolean pCancelable) {
 		new AsyncTask<Void, Void, T>() {
 			private ProgressDialog mPD;
 			private Exception mException = null;
 
 			@Override
 			public void onPreExecute() {
-				this.mPD = ProgressDialog.show(pContext, pContext.getString(pTitleResID), pContext.getString(pMessageResID));
+				this.mPD = ProgressDialog.show(pContext, pContext.getString(pTitleResID), pContext.getString(pMessageResID), true, pCancelable);
+				if(pCancelable) {
+					this.mPD.setOnCancelListener(new OnCancelListener() {
+						@Override
+						public void onCancel(final DialogInterface pDialogInterface) {
+							pExceptionCallback.onCallback(new CancelledException());
+							pDialogInterface.dismiss();
+						}
+					});
+				}
 				super.onPreExecute();
 			}
 

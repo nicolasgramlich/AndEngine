@@ -1,5 +1,6 @@
 package org.anddev.andengine.util.pool;
 
+import java.util.Collections;
 import java.util.Stack;
 
 import org.anddev.andengine.util.Debug;
@@ -119,6 +120,10 @@ public abstract class GenericPool<T> {
 		if(this.mUnrecycledCount < 0) {
 			Debug.e("More items recycled than obtained!");
 		}
+	}
+
+	public synchronized void shufflePoolItems() {
+		Collections.shuffle(this.mAvailableItems);
 	}
 
 	// ===========================================================

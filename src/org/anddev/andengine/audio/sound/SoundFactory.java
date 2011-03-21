@@ -1,5 +1,6 @@
 package org.anddev.andengine.audio.sound;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 
 import android.content.Context;
@@ -62,6 +63,13 @@ public class SoundFactory {
 
 	public static Sound createSoundFromResource(final SoundManager pSoundManager, final Context pContext, final int pSoundResID) {
 		final int soundID = pSoundManager.getSoundPool().load(pContext, pSoundResID, 1);
+		final Sound sound = new Sound(pSoundManager, soundID);
+		pSoundManager.add(sound);
+		return sound;
+	}
+
+	public static Sound createSoundFromFileDescriptor(final SoundManager pSoundManager, final FileDescriptor pFileDescriptor, final long pOffset, final long pLength) throws IOException {
+		final int soundID = pSoundManager.getSoundPool().load(pFileDescriptor, pOffset, pLength, 1);
 		final Sound sound = new Sound(pSoundManager, soundID);
 		pSoundManager.add(sound);
 		return sound;

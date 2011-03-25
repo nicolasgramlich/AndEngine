@@ -46,7 +46,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	// Constructors
 	// ===========================================================
 
-	public BaseOnScreenControl(final int pX, final int pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IOnScreenControlListener pOnScreenControlListener) {
+	public BaseOnScreenControl(final float pX, final float pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IOnScreenControlListener pOnScreenControlListener) {
 		this.setCamera(pCamera);
 
 		this.mOnScreenControlListener = pOnScreenControlListener;

@@ -5,7 +5,10 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.detector.ClickDetector;
 import org.anddev.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
+
+import android.util.FloatMath;
 
 /**
  * @author Nicolas Gramlich
@@ -26,12 +29,12 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	// Constructors
 	// ===========================================================
 
-	public AnalogOnScreenControl(final int pX, final int pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
+	public AnalogOnScreenControl(final float pX, final float pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
 		super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pAnalogOnScreenControlListener);
 		this.mClickDetector.setEnabled(false);
 	}
 
-	public AnalogOnScreenControl(final int pX, final int pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final long pOnControlClickMaximumMilliseconds, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
+	public AnalogOnScreenControl(final float pX, final float pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final long pOnControlClickMaximumMilliseconds, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
 		super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pAnalogOnScreenControlListener);
 		this.mClickDetector.setTriggerClickMaximumMilliseconds(pOnControlClickMaximumMilliseconds);
 	}
@@ -66,6 +69,16 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	protected boolean onHandleControlBaseTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		this.mClickDetector.onSceneTouchEvent(null, pSceneTouchEvent);
 		return super.onHandleControlBaseTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+	}
+
+	@Override
+	protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {
+		if(pRelativeX * pRelativeX + pRelativeY * pRelativeY <= 0.25f) {
+			super.onUpdateControlKnob(pRelativeX, pRelativeY);
+		} else {
+			final float angleRad = MathUtils.atan2(pRelativeY, pRelativeX);
+			super.onUpdateControlKnob(FloatMath.cos(angleRad) * 0.5f, FloatMath.sin(angleRad) * 0.5f);
+		}
 	}
 
 	// ===========================================================

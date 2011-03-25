@@ -22,6 +22,7 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// ===========================================================
 
 	private Texture mTexture;
+	private final float mScale;
 
 	// ===========================================================
 	// Constructors
@@ -34,21 +35,12 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	 * @param pTextureSource needs to be a power of two as otherwise the <code>repeating</code> feature doesn't work.
 	 */
 	public RepeatingSpriteBackground(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final ITextureSource pTextureSource) throws IllegalArgumentException {
-		super(null);
-		this.mEntity = this.loadSprite(pCameraWidth, pCameraHeight, pTextureManager, pTextureSource);
+		this(pCameraWidth, pCameraHeight, pTextureManager, pTextureSource, 1);
 	}
 
-	/**
-	 * @param pRed
-	 * @param pGreen
-	 * @param pBlue
-	 * @param pCameraWidth
-	 * @param pCameraHeight
-	 * @param pTextureManager
-	 * @param pTextureSource needs to be a power of two as otherwise the <code>repeating</code> feature doesn't work.
-	 */
-	public RepeatingSpriteBackground(final float pRed, final float pGreen, final float pBlue, final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final ITextureSource pTextureSource) throws IllegalArgumentException {
-		super(pRed, pGreen, pBlue, null);
+	public RepeatingSpriteBackground(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final ITextureSource pTextureSource, final float pScale) throws IllegalArgumentException {
+		super(null);
+		this.mScale = pScale;
 		this.mEntity = this.loadSprite(pCameraWidth, pCameraHeight, pTextureManager, pTextureSource);
 	}
 
@@ -72,15 +64,18 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 		this.mTexture = new Texture(pTextureSource.getWidth(), pTextureSource.getHeight(), TextureOptions.REPEATING_PREMULTIPLYALPHA);
 		final TextureRegion textureRegion = TextureRegionFactory.createFromSource(this.mTexture, pTextureSource, 0, 0);
 
-		final int width = Math.round(pCameraWidth);
-		final int height = Math.round(pCameraHeight);
+		final int width = Math.round(pCameraWidth / this.mScale);
+		final int height = Math.round(pCameraHeight / this.mScale);
 
 		textureRegion.setWidth(width);
 		textureRegion.setHeight(height);
 
 		pTextureManager.loadTexture(this.mTexture);
 
-		return new Sprite(0, 0, width, height, textureRegion);
+		final Sprite sprite = new Sprite(0, 0, width, height, textureRegion);
+		sprite.setScaleCenter(0, 0);
+		sprite.setScale(this.mScale);
+		return sprite;
 	}
 
 	// ===========================================================

@@ -38,7 +38,7 @@ public class MathUtils implements MathConstants {
 	// ===========================================================
 
 	public static float atan2(final float dY, final float dX) {
-		return MathUtils.radToDeg((float)Math.atan2(dY, dX));
+		return (float)Math.atan2(dY, dX);
 	}
 
 	public static final float radToDeg(final float pRad) {

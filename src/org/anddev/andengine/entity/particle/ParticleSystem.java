@@ -116,6 +116,7 @@ public class ParticleSystem extends Entity {
 	public void reset() {
 		super.reset();
 		
+		this.mParticlesDueToSpawn = 0;
 		this.mParticlesAlive = 0;
 	}
 

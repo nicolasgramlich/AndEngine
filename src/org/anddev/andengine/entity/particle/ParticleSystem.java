@@ -47,14 +47,14 @@ public class ParticleSystem extends Entity {
 	private final ArrayList<IParticleInitializer> mParticleInitializers = new ArrayList<IParticleInitializer>();
 	private final ArrayList<IParticleModifier> mParticleModifiers = new ArrayList<IParticleModifier>();
 
-	private final float mMinRate;
-	private final float mMaxRate;
+	private final float mRateMinimum;
+	private final float mRateMaximum;
 
 	private final TextureRegion mTextureRegion;
 
 	private boolean mParticlesSpawnEnabled = true;
 
-	private final int mMaxParticles;
+	private final int mParticlesMaximum;
 	private int mParticlesAlive;
 	private float mParticlesDueToSpawn;
 
@@ -72,18 +72,18 @@ public class ParticleSystem extends Entity {
 	 * @deprecated Instead use {@link ParticleSystem#ParticleSystem(IParticleEmitter, float, float, int, TextureRegion)}.
 	 */
 	@Deprecated
-	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
-		this(new RectangleParticleEmitter(pX + pWidth * 0.5f, pY + pHeight * 0.5f, pWidth, pHeight), pMinRate, pMaxRate, pMaxParticles, pTextureRegion);
+	public ParticleSystem(final float pX, final float pY, final float pWidth, final float pHeight, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final TextureRegion pTextureRegion) {
+		this(new RectangleParticleEmitter(pX + pWidth * 0.5f, pY + pHeight * 0.5f, pWidth, pHeight), pRateMinimum, pRateMaximum, pParticlesMaximum, pTextureRegion);
 	}
 
-	public ParticleSystem(final IParticleEmitter pParticleEmitter, final float pMinRate, final float pMaxRate, final int pMaxParticles, final TextureRegion pTextureRegion) {
+	public ParticleSystem(final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final TextureRegion pTextureRegion) {
 		super(0, 0);
 
 		this.mParticleEmitter = pParticleEmitter;
-		this.mParticles = new Particle[pMaxParticles];
-		this.mMinRate = pMinRate;
-		this.mMaxRate = pMaxRate;
-		this.mMaxParticles = pMaxParticles;
+		this.mParticles = new Particle[pParticlesMaximum];
+		this.mRateMinimum = pRateMinimum;
+		this.mRateMaximum = pRateMaximum;
+		this.mParticlesMaximum = pParticlesMaximum;
 		this.mTextureRegion = pTextureRegion;
 	}
 
@@ -187,7 +187,7 @@ public class ParticleSystem extends Entity {
 
 		this.mParticlesDueToSpawn += newParticlesThisFrame;
 
-		final int particlesToSpawnThisFrame = Math.min(this.mMaxParticles - this.mParticlesAlive, (int)FloatMath.floor(this.mParticlesDueToSpawn));
+		final int particlesToSpawnThisFrame = Math.min(this.mParticlesMaximum - this.mParticlesAlive, (int)FloatMath.floor(this.mParticlesDueToSpawn));
 		this.mParticlesDueToSpawn -= particlesToSpawnThisFrame;
 
 		for(int i = 0; i < particlesToSpawnThisFrame; i++){
@@ -199,7 +199,7 @@ public class ParticleSystem extends Entity {
 		final Particle[] particles = this.mParticles;
 
 		final int particlesAlive = this.mParticlesAlive;
-		if(particlesAlive < this.mMaxParticles){
+		if(particlesAlive < this.mParticlesMaximum){
 			Particle particle = particles[particlesAlive];
 
 			/* New particle needs to be created. */
@@ -241,10 +241,10 @@ public class ParticleSystem extends Entity {
 	}
 
 	private float determineCurrentRate() {
-		if(this.mMinRate == this.mMaxRate){
-			return this.mMinRate;
+		if(this.mRateMinimum == this.mRateMaximum){
+			return this.mRateMinimum;
 		} else {
-			return (RANDOM.nextFloat() * (this.mMaxRate - this.mMinRate)) + this.mMinRate;
+			return (RANDOM.nextFloat() * (this.mRateMaximum - this.mRateMinimum)) + this.mRateMinimum;
 		}
 	}
 

@@ -85,6 +85,8 @@ public class ParticleSystem extends Entity {
 		this.mRateMaximum = pRateMaximum;
 		this.mParticlesMaximum = pParticlesMaximum;
 		this.mTextureRegion = pTextureRegion;
+
+		this.registerUpdateHandler(this.mParticleEmitter);
 	}
 
 	// ===========================================================
@@ -111,11 +113,11 @@ public class ParticleSystem extends Entity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public void reset() {
 		super.reset();
-		
+
 		this.mParticlesDueToSpawn = 0;
 		this.mParticlesAlive = 0;
 	}
@@ -130,6 +132,8 @@ public class ParticleSystem extends Entity {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+		
 		if(this.mParticlesSpawnEnabled) {
 			this.spawnParticles(pSecondsElapsed);
 		}

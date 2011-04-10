@@ -154,6 +154,12 @@ public class Font {
 		pSize.set(this.mGetLetterBoundsTemporaryRect.width() + LETTER_EXTRA_WIDTH, this.getLineHeight());
 	}
 
+	public void prepareLettes(final char ... pCharacters) {
+		for(final char character : pCharacters) {
+			this.getLetter(character);
+		}
+	}
+
 	public synchronized Letter getLetter(final char pCharacter) {
 		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
 		Letter letter = managedCharacterToLetterMap.get(pCharacter);

@@ -39,10 +39,8 @@ public class TimeUtils implements TimeConstants {
 		final int minutes = pSecondsTotal / SECONDSPERMINUTE;
 		final int seconds = pSecondsTotal % SECONDSPERMINUTE;
 		
-		if(minutes < 10) {
-			pStringBuilder.append('0');
-		}
 		pStringBuilder.append(minutes);
+		pStringBuilder.append(':');
 		
 		if(seconds < 10) {
 			pStringBuilder.append('0');

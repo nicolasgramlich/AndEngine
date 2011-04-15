@@ -16,7 +16,6 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 	// ===========================================================
 
 	protected IEntity mEntity;
-	protected IEntity mParent;
 
 	// ===========================================================
 	// Constructors
@@ -30,22 +29,13 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 		this.mEntity = pEntity;
 	}
 
-	public void setParent(final IEntity pParent) {
-		this.mParent = pParent;
-	}
-
-	public void set(final IEntity pEntity, final IEntity pParent) {
-		this.mEntity = pEntity;
-		this.mParent = pParent;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
 	public void run() {
-		this.mParent.detachChild(this.mEntity);
+		this.mEntity.detachSelf();
 	}
 
 	// ===========================================================

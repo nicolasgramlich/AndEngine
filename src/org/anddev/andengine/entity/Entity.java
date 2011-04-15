@@ -369,6 +369,16 @@ public class Entity implements IEntity {
 		}
 		return this.mChildren.get(this.mChildren.size() - 1);
 	}
+	
+	@Override
+	public boolean detachSelf() {
+		final IEntity parent = this.mParent;
+		if(parent != null) {
+			return parent.detachChild(this);
+		} else {
+			return false;
+		}
+	}
 
 	@Override
 	public void detachChildren() {

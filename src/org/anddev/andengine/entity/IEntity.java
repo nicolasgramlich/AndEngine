@@ -113,6 +113,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	 */
 	public void sortChildren(final Comparator<IEntity> pEntityComparator);
 
+	public boolean detachSelf();
+
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
 	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered

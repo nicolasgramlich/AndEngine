@@ -271,11 +271,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			switch(pSensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
-					this.mAccelerometerData.setAccuracy(pAccuracy);
-					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+					if(this.mAccelerometerData != null) {
+						this.mAccelerometerData.setAccuracy(pAccuracy);
+						this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+					} else if(this.mOrientationData != null) {
+						this.mOrientationData.setAccelerometerAccuracy(pAccuracy);
+						this.mOrientationListener.onOrientationChanged(this.mOrientationData);
+					}
 					break;
-				case Sensor.TYPE_ORIENTATION:
-					this.mOrientationData.setAccuracy(pAccuracy);
+				case Sensor.TYPE_MAGNETIC_FIELD:
+					this.mOrientationData.setMagneticFieldAccuracy(pAccuracy);
 					this.mOrientationListener.onOrientationChanged(this.mOrientationData);
 					break;
 			}
@@ -287,11 +292,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			switch(pEvent.sensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
-					this.mAccelerometerData.setValues(pEvent.values);
-					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+					if(this.mAccelerometerData != null) {
+						this.mAccelerometerData.setValues(pEvent.values);
+						this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+					} else if(this.mOrientationData != null) {
+						this.mOrientationData.setAccelerometerValues(pEvent.values);
+						this.mOrientationListener.onOrientationChanged(this.mOrientationData);
+					}
 					break;
-				case Sensor.TYPE_ORIENTATION:
-					this.mOrientationData.setValues(pEvent.values);
+				case Sensor.TYPE_MAGNETIC_FIELD:
+					this.mOrientationData.setMagneticFieldValues(pEvent.values);
 					this.mOrientationListener.onOrientationChanged(this.mOrientationData);
 					break;
 			}
@@ -596,21 +606,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
 	 */
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final OrientationSensorOptions pOrientationSensorOptions) {
-		/*
-		 *  TODO Sensor.TYPE_ORIENTATION is @Deprecated so instead do it like this:
-		 *  http://www.mail-archive.com/android-beginners@googlegroups.com/msg23415.html
-		 *  http://www.damonkohler.com/2010/06/better-orientation-readings-in-android.html
-		 */
-
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
+		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER) && this.isSensorSupported(sensorManager, Sensor.TYPE_MAGNETIC_FIELD)) {
 			this.mOrientationListener = pOrientationListener;
 
 			if(this.mOrientationData == null) {
 				this.mOrientationData = new OrientationData();
 			}
 
-			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION, pOrientationSensorOptions.getSensorDelay());
+			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pOrientationSensorOptions.getSensorDelay());
+			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_MAGNETIC_FIELD, pOrientationSensorOptions.getSensorDelay());
 
 			return true;
 		} else {
@@ -624,8 +629,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 */
 	public boolean disableOrientationSensor(final Context pContext) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ORIENTATION)) {
-			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_ORIENTATION);
+		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER) && this.isSensorSupported(sensorManager, Sensor.TYPE_MAGNETIC_FIELD)) {
+			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
+			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_MAGNETIC_FIELD);
 			return true;
 		} else {
 			return false;

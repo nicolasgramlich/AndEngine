@@ -35,10 +35,7 @@ public class BaseSensorData {
 	}
 
 	public void setValues(final float[] pValues) {
-		final float[] values = this.mValues;
-		for(int i = pValues.length - 1; i >= 0; i--) {
-			values[i] = pValues[i];
-		}
+		System.arraycopy(pValues, 0, mValues, 0, pValues.length);
 	}
 
 	public void setAccuracy(final int pAccuracy) {

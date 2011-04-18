@@ -26,12 +26,16 @@ public class OrientationData extends BaseSensorData {
 
 	private int mMagneticFieldAccuracy;
 
+	private final int mDisplayRotation;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public OrientationData() {
+	public OrientationData(final int mDisplayRotation) {
 		super(3);
+
+		this.mDisplayRotation = mDisplayRotation;
 	}
 
 	// ===========================================================
@@ -74,6 +78,21 @@ public class OrientationData extends BaseSensorData {
 
 	private void updateOrientation() {
 		SensorManager.getRotationMatrix(this.mRotationMatrix, null, this.mAccelerometerValues, this.mMagneticFieldValues);
+
+//		switch(this.mDisplayRotation) {
+//			case Surface.ROTATION_90:
+//				SensorManager.remapCoordinateSystem(this.mRotationMatrix, SensorManager.AXIS_?, SensorManager.AXIS_?, this.mRotationMatrix);
+//				break;
+//			case Surface.ROTATION_180:
+//				SensorManager.remapCoordinateSystem(this.mRotationMatrix, SensorManager.AXIS_?, SensorManager.AXIS_?, this.mRotationMatrix);
+//				break;
+//			case Surface.ROTATION_270:
+//				SensorManager.remapCoordinateSystem(this.mRotationMatrix, SensorManager.AXIS_?, SensorManager.AXIS_?, this.mRotationMatrix);
+//				break;
+//			case Surface.ROTATION_0:
+//				/* Nothing? */
+//				break;
+//		}
 
 		final float[] values = this.mValues;
 		SensorManager.getOrientation(this.mRotationMatrix, values);

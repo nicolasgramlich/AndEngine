@@ -47,9 +47,11 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 
 /**
  * @author Nicolas Gramlich
@@ -611,7 +613,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			this.mOrientationListener = pOrientationListener;
 
 			if(this.mOrientationData == null) {
-				this.mOrientationData = new OrientationData();
+				final Display display = ((WindowManager) pContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+				final int displayRotation = display.getOrientation();
+				this.mOrientationData = new OrientationData(displayRotation);
 			}
 
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pOrientationSensorOptions.getSensorDelay());

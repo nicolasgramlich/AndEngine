@@ -62,6 +62,10 @@ public class ActivityUtils {
 		window.setAttributes(windowLayoutParams);
 	}
 
+	public static void keepScreenOn(final Activity pActivity) {
+		pActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
+
 	public static <T> void doAsync(final Context pContext, final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback) {
 		ActivityUtils.doAsync(pContext, pTitleResID, pMessageResID, pCallable, pCallback, null, false);
 	}

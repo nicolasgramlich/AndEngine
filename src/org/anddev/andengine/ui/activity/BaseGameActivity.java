@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.Gravity;
-import android.view.WindowManager;
 import android.widget.FrameLayout.LayoutParams;
 
 /**
@@ -195,7 +194,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	private void acquireWakeLock(final WakeLockOptions pWakeLockOptions) {
 		if(pWakeLockOptions == WakeLockOptions.SCREEN_ON) {
-			this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			ActivityUtils.keepScreenOn(this);
 		} else {
 			final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
 			this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, "AndEngine");

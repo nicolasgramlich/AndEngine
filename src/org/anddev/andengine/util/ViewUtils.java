@@ -3,6 +3,7 @@ package org.anddev.andengine.util;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * @author Nicolas Gramlich
@@ -34,8 +35,11 @@ public class ViewUtils {
 	// ===========================================================
 
 	public static View inflate(final Context pContext, final int pLayoutID){
-		final LayoutInflater inflater = LayoutInflater.from(pContext);
-		return inflater.inflate(pLayoutID, null);
+		return LayoutInflater.from(pContext).inflate(pLayoutID, null);
+	}
+
+	public static View inflate(final Context pContext, final int pLayoutID, final ViewGroup pViewGroup){
+		return LayoutInflater.from(pContext).inflate(pLayoutID, pViewGroup, true);
 	}
 
 	// ===========================================================

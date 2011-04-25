@@ -17,7 +17,8 @@ public class Debug implements Constants {
 	// Fields
 	// ===========================================================
 
-	private static DebugLevel DEBUGLEVEL = DebugLevel.VERBOSE;
+	private static String sDebugTag = DEBUGTAG;
+	private static DebugLevel sDebugLevel = DebugLevel.VERBOSE;
 
 	// ===========================================================
 	// Constructors
@@ -27,15 +28,23 @@ public class Debug implements Constants {
 	// Getter & Setter
 	// ===========================================================
 
+	public static String getDebugTag() {
+		return Debug.sDebugTag;
+	}
+
+	public static void setDebugTag(final String pDebugTag) {
+		Debug.sDebugTag = pDebugTag;
+	}
+
+	public static DebugLevel getDebugLevel() {
+		return Debug.sDebugLevel;
+	}
+
 	public static void setDebugLevel(final DebugLevel pDebugLevel) {
 		if(pDebugLevel == null) {
 			throw new IllegalArgumentException("pDebugLevel must not be null!");
 		}
-		Debug.DEBUGLEVEL = pDebugLevel;
-	}
-
-	public static DebugLevel getDebugLevel() {
-		return Debug.DEBUGLEVEL;
+		Debug.sDebugLevel = pDebugLevel;
 	}
 
 	// ===========================================================
@@ -51,8 +60,8 @@ public class Debug implements Constants {
 	}
 
 	public static void v(final String pMessage, final Throwable pThrowable) {
-		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.VERBOSE)) {
-			Log.v(DEBUGTAG, pMessage, pThrowable);
+		if(sDebugLevel.isSameOrLessThan(DebugLevel.VERBOSE)) {
+			Log.v(sDebugTag, pMessage, pThrowable);
 		}
 	}
 
@@ -61,8 +70,8 @@ public class Debug implements Constants {
 	}
 
 	public static void d(final String pMessage, final Throwable pThrowable) {
-		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.DEBUG)) {
-			Log.d(DEBUGTAG, pMessage, pThrowable);
+		if(sDebugLevel.isSameOrLessThan(DebugLevel.DEBUG)) {
+			Log.d(sDebugTag, pMessage, pThrowable);
 		}
 	}
 
@@ -71,8 +80,8 @@ public class Debug implements Constants {
 	}
 
 	public static void i(final String pMessage, final Throwable pThrowable) {
-		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.INFO)) {
-			Log.i(DEBUGTAG, pMessage, pThrowable);
+		if(sDebugLevel.isSameOrLessThan(DebugLevel.INFO)) {
+			Log.i(sDebugTag, pMessage, pThrowable);
 		}
 	}
 
@@ -81,15 +90,15 @@ public class Debug implements Constants {
 	}
 
 	public static void w(final Throwable pThrowable) {
-		Debug.w(DEBUGTAG, pThrowable);
+		Debug.w(sDebugTag, pThrowable);
 	}
 
 	public static void w(final String pMessage, final Throwable pThrowable) {
-		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.WARNING)) {
+		if(sDebugLevel.isSameOrLessThan(DebugLevel.WARNING)) {
 			if(pThrowable == null) {
-				Log.w(DEBUGTAG, pMessage, new Exception());
+				Log.w(sDebugTag, pMessage, new Exception());
 			} else {
-				Log.w(DEBUGTAG, pMessage, pThrowable);
+				Log.w(sDebugTag, pMessage, pThrowable);
 			}
 		}
 	}
@@ -99,15 +108,15 @@ public class Debug implements Constants {
 	}
 
 	public static void e(final Throwable pThrowable) {
-		Debug.e(DEBUGTAG, pThrowable);
+		Debug.e(sDebugTag, pThrowable);
 	}
 
 	public static void e(final String pMessage, final Throwable pThrowable) {
-		if(DEBUGLEVEL.isSameOrLessThan(DebugLevel.ERROR)) {
+		if(sDebugLevel.isSameOrLessThan(DebugLevel.ERROR)) {
 			if(pThrowable == null) {
-				Log.e(DEBUGTAG, pMessage, new Exception());
+				Log.e(sDebugTag, pMessage, new Exception());
 			} else {
-				Log.e(DEBUGTAG, pMessage, pThrowable);
+				Log.e(sDebugTag, pMessage, pThrowable);
 			}
 		}
 	}

@@ -29,7 +29,7 @@ public class ArrayUtils {
 	// Methods
 	// ===========================================================
 	
-	public static <T> T getRandom(final T[] pArray) {
+	public static <T> T random(final T[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
 

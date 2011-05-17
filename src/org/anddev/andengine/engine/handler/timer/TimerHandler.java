@@ -17,7 +17,7 @@ public class TimerHandler implements IUpdateHandler {
 
 	private float mTimerSeconds;
 	private float mTimerSecondsElapsed;
-	private boolean mCallbackTriggered = false;
+	private boolean mTimerCallbackTriggered;
 	protected final ITimerCallback mTimerCallback;
 	private boolean mAutoReset;
 
@@ -47,10 +47,6 @@ public class TimerHandler implements IUpdateHandler {
 		this.mAutoReset = pAutoReset;
 	}
 
-	/**
-	 * You probably want to use this in conjunction with {@link TimerHandler#reset()}.
-	 * @param pTimerSeconds
-	 */
 	public void setTimerSeconds(final float pTimerSeconds) {
 		this.mTimerSeconds = pTimerSeconds;
 	}
@@ -61,6 +57,14 @@ public class TimerHandler implements IUpdateHandler {
 
 	public float getTimerSecondsElapsed() {
 		return this.mTimerSecondsElapsed;
+	}
+	
+	public boolean isTimerCallbackTriggered() {
+		return this.mTimerCallbackTriggered;
+	}
+
+	public void setTimerCallbackTriggered(boolean pTimerCallbackTriggered) {
+		this.mTimerCallbackTriggered = pTimerCallbackTriggered;
 	}
 
 	// ===========================================================
@@ -76,10 +80,10 @@ public class TimerHandler implements IUpdateHandler {
 				this.mTimerCallback.onTimePassed(this);
 			}
 		} else {
-			if(!this.mCallbackTriggered) {
+			if(!this.mTimerCallbackTriggered) {
 				this.mTimerSecondsElapsed += pSecondsElapsed;
 				if(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
-					this.mCallbackTriggered = true;
+					this.mTimerCallbackTriggered = true;
 					this.mTimerCallback.onTimePassed(this);
 				}
 			}
@@ -88,7 +92,7 @@ public class TimerHandler implements IUpdateHandler {
 
 	@Override
 	public void reset() {
-		this.mCallbackTriggered = false;
+		this.mTimerCallbackTriggered = false;
 		this.mTimerSecondsElapsed = 0;
 	}
 

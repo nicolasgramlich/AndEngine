@@ -22,6 +22,6 @@ public interface IGameInterface {
 	public Scene onLoadScene();
 	public void onLoadComplete();
 
-	public void onGamePaused();
-	public void onGameResumed();
+	public void onPauseGame();
+	public void onResumeGame();
 }

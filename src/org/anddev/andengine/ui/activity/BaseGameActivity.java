@@ -139,12 +139,12 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// ===========================================================
 
 	@Override
-	public void onGameResumed() {
+	public void onResumeGame() {
 
 	}
 
 	@Override
-	public void onGamePaused() {
+	public void onPauseGame() {
 
 	}
 
@@ -167,7 +167,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 		this.mRenderSurfaceView.onResume();
 		this.mEngine.start();
-		this.onGameResumed();
+		this.onResumeGame();
 	}
 
 	private void doPause() {
@@ -177,7 +177,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.mEngine.onPause();
 		this.mEngine.stop();
 		this.mRenderSurfaceView.onPause();
-		this.onGamePaused();
+		this.onPauseGame();
 	}
 
 	public void runOnUpdateThread(final Runnable pRunnable) {

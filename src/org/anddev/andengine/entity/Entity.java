@@ -369,7 +369,7 @@ public class Entity implements IEntity {
 		}
 		return this.mChildren.get(this.mChildren.size() - 1);
 	}
-	
+
 	@Override
 	public boolean detachSelf() {
 		final IEntity parent = this.mParent;
@@ -445,6 +445,22 @@ public class Entity implements IEntity {
 			return false;
 		}
 		return this.mChildren.removeAll(pEntityMatcher, Entity.PARAMETERCALLABLE_DETACHCHILD);
+	}
+
+	@Override
+	public void applyToChildren(final IEntityCallable pEntityCallable) {
+		if(this.mChildren == null) {
+			return;
+		}
+		this.mChildren.apply(pEntityCallable);
+	}
+
+	@Override
+	public void applyToChildren(final IEntityMatcher pEntityMatcher, final IEntityCallable pEntityCallable) {
+		if(this.mChildren == null) {
+			return;
+		}
+		this.mChildren.apply(pEntityMatcher, pEntityCallable);
 	}
 
 	@Override

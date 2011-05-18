@@ -10,6 +10,7 @@ import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatch
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.IMatcher;
+import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.Transformation;
 
 
@@ -142,6 +143,9 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public void detachChildren();
 
+	public void applyToChildren(final IEntityCallable pEntityCallable);
+	public void applyToChildren(final IEntityMatcher pEntityMatcher, final IEntityCallable pEntityCallable);
+
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public boolean unregisterUpdateHandlers(final IUpdateHandlerMatcher pUpdateHandlerMatcher);
@@ -160,6 +164,16 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	// ===========================================================
 
 	public interface IEntityMatcher extends IMatcher<IEntity> {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+	}
+	
+	public interface IEntityCallable extends ParameterCallable<IEntity> {
 		// ===========================================================
 		// Constants
 		// ===========================================================

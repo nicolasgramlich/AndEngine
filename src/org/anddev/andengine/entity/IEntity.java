@@ -171,8 +171,11 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 		// ===========================================================
 		// Methods
 		// ===========================================================
+
+		@Override
+		public boolean matches(final IEntity pEntity);
 	}
-	
+
 	public interface IEntityCallable extends ParameterCallable<IEntity> {
 		// ===========================================================
 		// Constants
@@ -181,5 +184,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 		// ===========================================================
 		// Methods
 		// ===========================================================
+
+		@Override
+		public void call(final IEntity pEntity);
 	}
 }

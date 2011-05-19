@@ -6,6 +6,7 @@ import org.anddev.andengine.sensor.BaseSensorData;
 import org.anddev.andengine.util.constants.MathConstants;
 
 import android.hardware.SensorManager;
+import android.view.Surface;
 
 /**
  * @author Nicolas Gramlich
@@ -79,20 +80,21 @@ public class OrientationData extends BaseSensorData {
 	private void updateOrientation() {
 		SensorManager.getRotationMatrix(this.mRotationMatrix, null, this.mAccelerometerValues, this.mMagneticFieldValues);
 
-//		switch(this.mDisplayRotation) {
-//			case Surface.ROTATION_90:
-//				SensorManager.remapCoordinateSystem(this.mRotationMatrix, SensorManager.AXIS_?, SensorManager.AXIS_?, this.mRotationMatrix);
-//				break;
+		// TODO Use dont't use identical matrixes in remapCoordinateSystem, due to performance reasons.
+		switch(this.mDisplayRotation) {
+			case Surface.ROTATION_90:
+				SensorManager.remapCoordinateSystem(this.mRotationMatrix, SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_X, this.mRotationMatrix);
+				break;
 //			case Surface.ROTATION_180:
 //				SensorManager.remapCoordinateSystem(this.mRotationMatrix, SensorManager.AXIS_?, SensorManager.AXIS_?, this.mRotationMatrix);
 //				break;
 //			case Surface.ROTATION_270:
 //				SensorManager.remapCoordinateSystem(this.mRotationMatrix, SensorManager.AXIS_?, SensorManager.AXIS_?, this.mRotationMatrix);
 //				break;
-//			case Surface.ROTATION_0:
-//				/* Nothing? */
-//				break;
-//		}
+			case Surface.ROTATION_0:
+				/* Nothing. */
+				break;
+		}
 
 		final float[] values = this.mValues;
 		SensorManager.getOrientation(this.mRotationMatrix, values);

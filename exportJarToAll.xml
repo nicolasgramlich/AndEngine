@@ -22,6 +22,7 @@
 	../AndEngineMultiTouchExtension/lib/andengine.jar,
 	../AndEnginePhysicsBox2DExtension/lib/andengine.jar,
 	../AndEngineLiveWallpaperExtension/lib/andengine.jar,
+	../AndEngineSVGTextureRegionExtension/lib/andengine.jar,
 	../AndEnginePlayground/lib/andengine.jar,,
 	../AndEngineGameTemplate/lib/andengine.jar,
 	../AndEngineServerExtension/lib/andengine.jar,

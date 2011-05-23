@@ -76,13 +76,13 @@ public class AssetTextureSource implements ITextureSource {
 	// ===========================================================
 
 	@Override
-	public int getHeight() {
-		return this.mHeight;
+	public int getWidth() {
+		return this.mWidth;
 	}
 
 	@Override
-	public int getWidth() {
-		return this.mWidth;
+	public int getHeight() {
+		return this.mHeight;
 	}
 
 	@Override

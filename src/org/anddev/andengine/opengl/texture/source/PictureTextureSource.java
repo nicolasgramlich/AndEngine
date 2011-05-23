@@ -3,9 +3,9 @@ package org.anddev.andengine.opengl.texture.source;
 import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Picture;
-import android.graphics.Bitmap.Config;
 
 /**
  * @author Nicolas Gramlich
@@ -20,14 +20,22 @@ public abstract class PictureTextureSource implements ITextureSource {
 	// Fields
 	// ===========================================================
 
-	private final Picture mPicture;
+	protected final Picture mPicture;
+	protected final int mWidth;
+	protected final int mHeight;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public PictureTextureSource(final Picture pPicture) {
+		this(pPicture, pPicture.getWidth(), pPicture.getHeight());
+	}
+
+	public PictureTextureSource(final Picture pPicture, final int pWidth, final int pHeight) {
 		this.mPicture = pPicture;
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
 	}
 
 	@Override
@@ -42,13 +50,13 @@ public abstract class PictureTextureSource implements ITextureSource {
 	// ===========================================================
 
 	@Override
-	public int getHeight() {
-		return this.mPicture.getHeight();
+	public int getWidth() {
+		return this.mWidth;
 	}
 
 	@Override
-	public int getWidth() {
-		return this.mPicture.getWidth();
+	public int getHeight() {
+		return this.mHeight;
 	}
 
 	@Override
@@ -59,7 +67,7 @@ public abstract class PictureTextureSource implements ITextureSource {
 			return null;
 		}
 
-		final Bitmap bitmap = Bitmap.createBitmap(picture.getWidth(), picture.getHeight(), Config.ARGB_8888);
+		final Bitmap bitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, Config.ARGB_8888);
 		final Canvas canvas = new Canvas(bitmap);
 		picture.draw(canvas);
 		return bitmap;

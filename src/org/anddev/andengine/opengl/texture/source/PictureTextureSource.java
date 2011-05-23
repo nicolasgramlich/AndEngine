@@ -69,7 +69,13 @@ public abstract class PictureTextureSource implements ITextureSource {
 
 		final Bitmap bitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, Config.ARGB_8888);
 		final Canvas canvas = new Canvas(bitmap);
+
+		final float scaleX = (float)this.mWidth / this.mPicture.getWidth();
+		final float scaleY = (float)this.mHeight / this.mPicture.getHeight();
+		canvas.scale(scaleX, scaleY, 0, 0);
+
 		picture.draw(canvas);
+
 		return bitmap;
 	}
 

@@ -3,6 +3,7 @@ package org.anddev.andengine.collision;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
+import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.shape.RectangularShape;
 
 /**
@@ -15,6 +16,7 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	// ===========================================================
 
 	private static final int RECTANGULARSHAPE_VERTEX_COUNT = 4;
+	private static final int LINE_VERTEX_COUNT = 2;
 
 	private static final float[] VERTICES_CONTAINS_TMP = new float[2 * RECTANGULARSHAPE_VERTEX_COUNT];
 	private static final float[] VERTICES_COLLISION_TMP_A = new float[2 * RECTANGULARSHAPE_VERTEX_COUNT];
@@ -49,7 +51,14 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShapeA, VERTICES_COLLISION_TMP_A);
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShapeB, VERTICES_COLLISION_TMP_B);
 
-		return ShapeCollisionChecker.checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, 2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, VERTICES_COLLISION_TMP_B);
+		return ShapeCollisionChecker.checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, 2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B);
+	}
+
+	public static boolean checkCollision(final RectangularShape pRectangularShape, final Line pLine) {
+		RectangularShapeCollisionChecker.fillVertices(pRectangularShape, VERTICES_COLLISION_TMP_A);
+		RectangularShapeCollisionChecker.fillVertices(pLine, VERTICES_COLLISION_TMP_B);
+
+		return ShapeCollisionChecker.checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, 2 * LINE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B);
 	}
 
 	public static void fillVertices(final RectangularShape pRectangularShape, final float[] pVertices) {
@@ -71,6 +80,16 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		pVertices[6 + VERTEX_INDEX_Y] = bottom;
 
 		pRectangularShape.getLocalToSceneTransformation().transform(pVertices);
+	}
+	
+	public static void fillVertices(final Line pLine, final float[] pVertices) {
+		pVertices[0 + VERTEX_INDEX_X] = pLine.getX1();
+		pVertices[0 + VERTEX_INDEX_Y] = pLine.getX2();
+
+		pVertices[2 + VERTEX_INDEX_X] = pLine.getY1();
+		pVertices[2 + VERTEX_INDEX_Y] = pLine.getY2();
+
+		pLine.getLocalToSceneTransformation().transform(pVertices);
 	}
 
 	// ===========================================================

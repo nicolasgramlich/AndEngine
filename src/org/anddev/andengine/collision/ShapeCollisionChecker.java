@@ -32,7 +32,7 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 	// Methods
 	// ===========================================================
 
-	public static boolean checkCollision(final int pVerticesALength, final int pVerticesBLength, final float[] pVerticesA, final float[] pVerticesB) {
+	public static boolean checkCollision(final int pVerticesALength, final float[] pVerticesA, final int pVerticesBLength, final float[] pVerticesB) {
 		/* Check all the lines of A ... */
 		for(int a = pVerticesALength - 4; a >= 0; a -= 2) {
 			/* ... against all lines in B. */

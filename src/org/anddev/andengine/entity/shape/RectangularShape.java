@@ -4,6 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
@@ -152,8 +153,10 @@ public abstract class RectangularShape extends Shape {
 	public boolean collidesWith(final IShape pOtherShape) {
 		if(pOtherShape instanceof RectangularShape) {
 			final RectangularShape pOtherRectangularShape = (RectangularShape) pOtherShape;
-
 			return RectangularShapeCollisionChecker.checkCollision(this, pOtherRectangularShape);
+		} else if(pOtherShape instanceof RectangularShape) {
+			final Line line = (Line) pOtherShape;
+			return RectangularShapeCollisionChecker.checkCollision(this, line);
 		} else {
 			return false;
 		}

@@ -4,8 +4,10 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.collision.LineCollisionChecker;
+import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -212,8 +214,11 @@ public class Line extends Shape {
 	@Override
 	public boolean collidesWith(final IShape pOtherShape) {
 		if(pOtherShape instanceof Line) {
-			final Line otherLine = (Line)pOtherShape;
+			final Line otherLine = (Line) pOtherShape;
 			return LineCollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
+		} else if(pOtherShape instanceof RectangularShape) {
+			final RectangularShape rectangularShape = (RectangularShape) pOtherShape;
+			return RectangularShapeCollisionChecker.checkCollision(rectangularShape, this);
 		} else {
 			return false;
 		}

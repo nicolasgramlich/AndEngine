@@ -42,7 +42,7 @@ public class TextureRegionFactory {
 		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
 			TextureRegionFactory.sAssetBasePath = pAssetBasePath;
 		} else {
-			throw new IllegalStateException("pAssetBasePath must end with '/' or be lenght zero.");
+			throw new IllegalArgumentException("pAssetBasePath must end with '/' or be lenght zero.");
 		}
 	}
 

@@ -74,6 +74,10 @@ public class MathUtils implements MathConstants {
 		return ((n != 0) && (n & (n - 1)) == 0);
 	}
 
+	public static final int nextPowerOfTwo(final float f) {
+		return MathUtils.nextPowerOfTwo((int)(Math.ceil(f)));
+	}
+
 	public static final int nextPowerOfTwo(final int n) {
 		int k = n;
 

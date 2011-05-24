@@ -31,9 +31,18 @@ public class ListUtils {
 	// Methods
 	// ===========================================================
 
-	public static <T> ArrayList<? extends T> toList(final T pElement) {
+	public static <T> ArrayList<? extends T> toList(final T pItem) {
 		final ArrayList<T> out = new ArrayList<T>();
-		out.add(pElement);
+		out.add(pItem);
+		return out;
+	}
+
+	public static <T> ArrayList<? extends T> toList(final T ... pItems) {
+		final ArrayList<T> out = new ArrayList<T>();
+		final int itemCount = pItems.length;
+		for(int i = 0; i < itemCount; i++) {
+			out.add(pItems[i]);
+		}
 		return out;
 	}
 

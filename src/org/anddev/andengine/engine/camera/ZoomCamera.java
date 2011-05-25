@@ -22,7 +22,7 @@ public class ZoomCamera extends BoundCamera {
 	// Fields
 	// ===========================================================
 
-	private float mZoomFactor = 1.0f;
+	protected float mZoomFactor = 1.0f;
 
 	// ===========================================================
 	// Constructors

@@ -7,7 +7,9 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 
 /**
@@ -42,6 +44,23 @@ public class SystemUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static int getPackageVersionCode(final Context pContext) {
+		return SystemUtils.getPackageInfo(pContext).versionCode;
+	}
+
+	public static String getPackageVersionName(final Context pContext) {
+		return SystemUtils.getPackageInfo(pContext).versionName;
+	}
+
+	private static PackageInfo getPackageInfo(final Context pContext) {
+		try {
+			return pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), 0);
+		} catch (final NameNotFoundException e) {
+			Debug.e(e);
+			return null;
+		}
+	}
 
 	public static boolean hasSystemFeature(final Context pContext, final String pFeature) {
 		try {

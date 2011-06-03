@@ -44,22 +44,34 @@ public class FileUtils {
 		FileUtils.copyToExternalStorage(pContext, pContext.getResources().openRawResource(pSourceResourceID), pFilename);
 	}
 
+	public static void copyToInternalStorage(final Context pContext, final int pSourceResourceID, final String pFilename) throws FileNotFoundException {
+		FileUtils.copyToInternalStorage(pContext, pContext.getResources().openRawResource(pSourceResourceID), pFilename);
+	}
+
 	public static void copyToExternalStorage(final Context pContext, final String pSourceAssetPath, final String pFilename) throws IOException {
 		FileUtils.copyToExternalStorage(pContext, pContext.getAssets().open(pSourceAssetPath), pFilename);
 	}
 
-	public static void copyToExternalStorage(final Context pContext, final InputStream pInputStream, final String pFilename) throws FileNotFoundException {
+	public static void copyToInternalStorage(final Context pContext, final String pSourceAssetPath, final String pFilename) throws IOException {
+		FileUtils.copyToInternalStorage(pContext, pContext.getAssets().open(pSourceAssetPath), pFilename);
+	}
+
+	private static void copyToInternalStorage(final Context pContext, final InputStream pInputStream, final String pFilename) throws FileNotFoundException {
+		StreamUtils.copyAndClose(pInputStream, new FileOutputStream(new File(pContext.getFilesDir(), pFilename)));
+	}
+
+	public static void copyToExternalStorage(final Context pContext, final InputStream pInputStream, final String pFilePath) throws FileNotFoundException {
 		if (FileUtils.isExternalStorageWriteable()) {
-			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
+			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath);
 			StreamUtils.copyAndClose(pInputStream, new FileOutputStream(absoluteFilePath));
 		} else {
 			throw new IllegalStateException("External Storage is not writeable.");
 		}
 	}
 
-	public static boolean isFileExistingOnExternalStorage(final Context pContext, final String pFilename) {
+	public static boolean isFileExistingOnExternalStorage(final Context pContext, final String pFilePath) {
 		if (FileUtils.isExternalStorageReadable()) {
-			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
+			final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath);
 			final File file = new File(absoluteFilePath);
 			return file.exists()&& file.isFile();
 		} else {
@@ -90,23 +102,27 @@ public class FileUtils {
 		}
 	}
 
-	public static InputStream openOnExternalStorage(final Context pContext, final String pFilename) throws FileNotFoundException {
-		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
+	public static InputStream openOnExternalStorage(final Context pContext, final String pFilePath) throws FileNotFoundException {
+		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath);
 		return new FileInputStream(absoluteFilePath);
 	}
 
-	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilename) throws FileNotFoundException {
-		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
+	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilePath) throws FileNotFoundException {
+		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath);
 		return new File(absoluteFilePath).list();
 	}
 
-	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilename, final FilenameFilter pFilenameFilter) throws FileNotFoundException {
-		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilename);
+	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilePath, final FilenameFilter pFilenameFilter) throws FileNotFoundException {
+		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath);
 		return new File(absoluteFilePath).list(pFilenameFilter);
 	}
 
-	public static String getAbsolutePathOnExternalStorage(final Context pContext, final String pFilename) {
-		return Environment.getExternalStorageDirectory() + "/Android/data/" + pContext.getApplicationInfo().packageName + "/files/" + pFilename;
+	public static String getAbsolutePathOnInternalStorage(final Context pContext, final String pFilePath) {
+		return pContext.getFilesDir().getAbsolutePath() + pFilePath;
+	}
+
+	public static String getAbsolutePathOnExternalStorage(final Context pContext, final String pFilePath) {
+		return Environment.getExternalStorageDirectory() + "/Android/data/" + pContext.getApplicationInfo().packageName + "/files/" + pFilePath;
 	}
 
 	public static boolean isExternalStorageWriteable() {

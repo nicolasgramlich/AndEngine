@@ -5,6 +5,7 @@ import org.anddev.andengine.util.constants.Constants;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
 /**
  * @author Nicolas Gramlich
@@ -14,8 +15,6 @@ public class SimplePreferences implements Constants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final String PREFERENCES_NAME = null;
 
 	// ===========================================================
 	// Fields
@@ -28,16 +27,16 @@ public class SimplePreferences implements Constants {
 	// Constructors
 	// ===========================================================
 
-	public static SharedPreferences getInstance(final Context ctx) {
+	public static SharedPreferences getInstance(final Context pContext) {
 		if(SimplePreferences.INSTANCE == null) {
-			SimplePreferences.INSTANCE = ctx.getSharedPreferences(SimplePreferences.PREFERENCES_NAME, Context.MODE_PRIVATE);
+			SimplePreferences.INSTANCE = PreferenceManager.getDefaultSharedPreferences(pContext);
 		}
 		return SimplePreferences.INSTANCE;
 	}
 
-	public static Editor getEditorInstance(final Context ctx) {
+	public static Editor getEditorInstance(final Context pContext) {
 		if(SimplePreferences.EDITORINSTANCE == null) {
-			SimplePreferences.EDITORINSTANCE = SimplePreferences.getInstance(ctx).edit();
+			SimplePreferences.EDITORINSTANCE = SimplePreferences.getInstance(pContext).edit();
 		}
 		return SimplePreferences.EDITORINSTANCE;
 	}
@@ -54,12 +53,12 @@ public class SimplePreferences implements Constants {
 	// Methods
 	// ===========================================================
 
-	public static int incrementAccessCount(final Context pCtx, final String pKey) {
-		return SimplePreferences.incrementAccessCount(pCtx, pKey, 1);
+	public static int incrementAccessCount(final Context pContext, final String pKey) {
+		return SimplePreferences.incrementAccessCount(pContext, pKey, 1);
 	}
 
-	public static int incrementAccessCount(final Context pCtx, final String pKey, final int pIncrement) {
-		final SharedPreferences prefs = SimplePreferences.getInstance(pCtx);
+	public static int incrementAccessCount(final Context pContext, final String pKey, final int pIncrement) {
+		final SharedPreferences prefs = SimplePreferences.getInstance(pContext);
 		final int accessCount = prefs.getInt(pKey, 0);
 
 		final int newAccessCount = accessCount + pIncrement;

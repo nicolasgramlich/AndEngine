@@ -21,13 +21,15 @@ public class LevelParser extends DefaultHandler implements LevelConstants {
 	// Fields
 	// ===========================================================
 
+	private final IEntityLoader mDefaultEntityLoader;
 	private final HashMap<String, IEntityLoader> mEntityLoaders;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public LevelParser(final HashMap<String, IEntityLoader> pEntityLoaders) {
+	public LevelParser(final IEntityLoader pDefaultEntityLoader, final HashMap<String, IEntityLoader> pEntityLoaders) {
+		this.mDefaultEntityLoader = pDefaultEntityLoader;
 		this.mEntityLoaders = pEntityLoaders;
 	}
 
@@ -45,7 +47,11 @@ public class LevelParser extends DefaultHandler implements LevelConstants {
 		if(entityLoader != null) {
 			entityLoader.onLoadEntity(pLocalName, pAttributes);
 		} else {
-			throw new IllegalArgumentException("Unexpected tag: '" + pLocalName + "'.");
+			if(this.mDefaultEntityLoader != null) {
+				this.mDefaultEntityLoader.onLoadEntity(pLocalName, pAttributes);
+			} else {
+				throw new IllegalArgumentException("Unexpected tag: '" + pLocalName + "'.");
+			}
 		}
 	}
 

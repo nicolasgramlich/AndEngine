@@ -34,6 +34,7 @@ public class LevelLoader implements LevelConstants {
 
 	private String mAssetBasePath;
 
+	private IEntityLoader mDefaultEntityLoader;
 	private final HashMap<String, IEntityLoader> mEntityLoaders = new HashMap<String, IEntityLoader>();
 
 	// ===========================================================
@@ -51,6 +52,14 @@ public class LevelLoader implements LevelConstants {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public IEntityLoader getDefaultEntityLoader() {
+		return this.mDefaultEntityLoader;
+	}
+	
+	public void setDefaultEntityLoader(IEntityLoader pDefaultEntityLoader) {
+		this.mDefaultEntityLoader = pDefaultEntityLoader;
+	}
 
 	/**
 	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>.
@@ -108,7 +117,7 @@ public class LevelLoader implements LevelConstants {
 
 			this.onBeforeLoadLevel();
 
-			final LevelParser levelParser = new LevelParser(this.mEntityLoaders);
+			final LevelParser levelParser = new LevelParser(this.mDefaultEntityLoader, this.mEntityLoaders);
 			xr.setContentHandler(levelParser);
 
 			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));

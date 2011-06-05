@@ -61,7 +61,7 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// ===========================================================
 
 	private Sprite loadSprite(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final ITextureSource pTextureSource) throws IllegalArgumentException {
-		this.mTexture = new Texture(pTextureSource.getWidth(), pTextureSource.getHeight(), TextureOptions.REPEATING_PREMULTIPLYALPHA);
+		this.mTexture = new Texture(pTextureSource.getWidth(), pTextureSource.getHeight(), TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA);
 		final TextureRegion textureRegion = TextureRegionFactory.createFromSource(this.mTexture, pTextureSource, 0, 0);
 
 		final int width = Math.round(pCameraWidth / this.mScale);

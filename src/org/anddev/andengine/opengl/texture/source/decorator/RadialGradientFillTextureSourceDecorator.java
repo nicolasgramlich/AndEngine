@@ -21,8 +21,8 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	// ===========================================================
 
 	protected final RadialGradientDirection mRadialGradientDirection;
-	protected final int mFromColor;
-	protected final int mToColor;
+	protected final int[] mColors;
+	protected final float[] mPositions;
 
 	// ===========================================================
 	// Constructors
@@ -33,9 +33,17 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	}
 
 	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+		this(pTextureSource, pTextureSourceDecoratorShape, new int[] { pFromColor, pToColor }, null, pRadialGradientDirection, pTextureSourceDecoratorOptions);
+	}
+
+	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape,  final int[] pColors, final float[] pPositions, final RadialGradientDirection pRadialGradientDirection) {
+		this(pTextureSource, pTextureSourceDecoratorShape, pColors, pPositions, pRadialGradientDirection, null);
+	}
+
+	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int[] pColors, final float[] pPositions, final RadialGradientDirection pRadialGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
-		this.mFromColor = pFromColor;
-		this.mToColor = pToColor;
+		this.mColors = pColors;
+		this.mPositions = pPositions;
 		this.mRadialGradientDirection = pRadialGradientDirection;
 
 		this.mPaint.setStyle(Style.FILL);
@@ -50,17 +58,17 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 
 		switch(pRadialGradientDirection) {
 			case INSIDE_OUT:
-				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pFromColor, pToColor, TileMode.CLAMP));
+				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pColors, pPositions, TileMode.CLAMP));
 				break;
 			case OUTSIDE_IN:
-				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pToColor, pFromColor, TileMode.CLAMP));
+				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pColors, pPositions, TileMode.CLAMP));
 				break;
 		}
 	}
 
 	@Override
 	public RadialGradientFillTextureSourceDecorator clone() {
-		return new RadialGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFromColor, this.mToColor, this.mRadialGradientDirection, this.mTextureSourceDecoratorOptions);
+		return new RadialGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mColors, this.mPositions, this.mRadialGradientDirection, this.mTextureSourceDecoratorOptions);
 	}
 
 	// ===========================================================

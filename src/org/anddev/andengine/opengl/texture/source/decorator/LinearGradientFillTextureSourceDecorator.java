@@ -21,8 +21,8 @@ public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	// ===========================================================
 
 	protected final LinearGradientDirection mLinearGradientDirection;
-	protected final int mFromColor;
-	protected final int mToColor;
+	protected final int[] mColors;
+	protected final float[] mPositions;
 
 	// ===========================================================
 	// Constructors
@@ -33,9 +33,17 @@ public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	}
 
 	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final LinearGradientDirection pLinearGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
+		this(pTextureSource, pTextureSourceDecoratorShape, new int[] { pFromColor, pToColor }, null, pLinearGradientDirection, pTextureSourceDecoratorOptions);
+	}
+
+	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int[] pColors, final float[] pPositions, final LinearGradientDirection pLinearGradientDirection) {
+		this(pTextureSource, pTextureSourceDecoratorShape, pColors, pPositions, pLinearGradientDirection, null);
+	}
+
+	public LinearGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int[] pColors, final float[] pPositions, final LinearGradientDirection pLinearGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
 		super(pTextureSource, pTextureSourceDecoratorShape, pTextureSourceDecoratorOptions);
-		this.mFromColor = pFromColor;
-		this.mToColor = pToColor;
+		this.mColors = pColors;
+		this.mPositions = pPositions;
 		this.mLinearGradientDirection = pLinearGradientDirection;
 
 		this.mPaint.setStyle(Style.FILL);
@@ -48,12 +56,12 @@ public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 		final float toX = pLinearGradientDirection.getToX() * width;
 		final float toY = pLinearGradientDirection.getToY() * height;
 
-		this.mPaint.setShader(new LinearGradient(fromX, fromY, toX, toY, pFromColor, pToColor, TileMode.CLAMP));
+		this.mPaint.setShader(new LinearGradient(fromX, fromY, toX, toY, pColors, pPositions, TileMode.CLAMP));
 	}
 
 	@Override
 	public LinearGradientFillTextureSourceDecorator clone() {
-		return new LinearGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mFromColor, this.mToColor, this.mLinearGradientDirection, this.mTextureSourceDecoratorOptions);
+		return new LinearGradientFillTextureSourceDecorator(this.mTextureSource, this.mTextureSourceDecoratorShape, this.mColors, this.mPositions, this.mLinearGradientDirection, this.mTextureSourceDecoratorOptions);
 	}
 
 	// ===========================================================

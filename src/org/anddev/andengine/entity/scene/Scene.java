@@ -21,7 +21,6 @@ import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.constants.Constants;
 
 import android.util.SparseArray;
-import android.view.MotionEvent;
 
 /**
  * @author Nicolas Gramlich
@@ -61,6 +60,8 @@ public class Scene extends Entity {
 
 	private boolean mTouchAreaBindingEnabled = false;
 	private final SparseArray<ITouchArea> mTouchAreaBindings = new SparseArray<ITouchArea>();
+	private boolean mOnSceneTouchListenerBindingEnabled = false;
+	private final SparseArray<IOnSceneTouchListener> mOnSceneTouchListenerBindings = new SparseArray<IOnSceneTouchListener>();
 
 	// ===========================================================
 	// Constructors
@@ -200,12 +201,16 @@ public class Scene extends Entity {
 		this.mOnAreaTouchTraversalBackToFront = false;
 	}
 
+	public boolean isTouchAreaBindingEnabled() {
+		return this.mTouchAreaBindingEnabled;
+	}
+
 	/**
 	 * Enable or disable the binding of TouchAreas to PointerIDs (fingers).
 	 * When enabled: TouchAreas get bound to a PointerID (finger) when returning true in
 	 * {@link Shape#onAreaTouched(TouchEvent, float, float)} or
 	 * {@link IOnAreaTouchListener#onAreaTouched(TouchEvent, ITouchArea, float, float)}
-	 * with {@link MotionEvent#ACTION_DOWN}, they will receive all subsequent {@link TouchEvent}s
+	 * with {@link TouchEvent#ACTION_DOWN}, they will receive all subsequent {@link TouchEvent}s
 	 * that are made with the same PointerID (finger)
 	 * <b>even if the {@link TouchEvent} is outside of the actual {@link ITouchArea}</b>!
 	 * 
@@ -218,8 +223,26 @@ public class Scene extends Entity {
 		this.mTouchAreaBindingEnabled = pTouchAreaBindingEnabled;
 	}
 
-	public boolean isTouchAreaBindingEnabled() {
-		return this.mTouchAreaBindingEnabled;
+	public boolean isOnSceneTouchListenerBindingEnabled() {
+		return this.mOnSceneTouchListenerBindingEnabled;
+	}
+
+	/**
+	 * Enable or disable the binding of TouchAreas to PointerIDs (fingers).
+	 * When enabled: The OnSceneTouchListener gets bound to a PointerID (finger) when returning true in
+	 * {@link Shape#onAreaTouched(TouchEvent, float, float)} or
+	 * {@link IOnAreaTouchListener#onAreaTouched(TouchEvent, ITouchArea, float, float)}
+	 * with {@link TouchEvent#ACTION_DOWN}, it will receive all subsequent {@link TouchEvent}s
+	 * that are made with the same PointerID (finger)
+	 * <b>even if the {@link TouchEvent} is would belong to an overlaying {@link ITouchArea}</b>!
+	 * 
+	 * @param pOnSceneTouchListenerBindingEnabled
+	 */
+	public void setOnSceneTouchListenerBindingEnabled(final boolean pOnSceneTouchListenerBindingEnabled) {
+		if(this.mOnSceneTouchListenerBindingEnabled && !pOnSceneTouchListenerBindingEnabled) {
+			this.mOnSceneTouchListenerBindings.clear();
+		}
+		this.mOnSceneTouchListenerBindingEnabled = pOnSceneTouchListenerBindingEnabled;
 	}
 
 	// ===========================================================
@@ -270,24 +293,41 @@ public class Scene extends Entity {
 		final int action = pSceneTouchEvent.getAction();
 		final boolean isActionDown = pSceneTouchEvent.isActionDown();
 
-		if(this.mTouchAreaBindingEnabled && !isActionDown) {
-			final SparseArray<ITouchArea> touchAreaBindings = this.mTouchAreaBindings;
-			final ITouchArea boundTouchArea = touchAreaBindings.get(pSceneTouchEvent.getPointerID());
-			/* In the case a ITouchArea has been bound to this PointerID,
-			 * we'll pass this this TouchEvent to the same ITouchArea. */
-			if(boundTouchArea != null) {
-				final float sceneTouchEventX = pSceneTouchEvent.getX();
-				final float sceneTouchEventY = pSceneTouchEvent.getY();
-
-				/* Check if boundTouchArea needs to be removed. */
-				switch(action) {
-					case MotionEvent.ACTION_UP:
-					case MotionEvent.ACTION_CANCEL:
-						touchAreaBindings.remove(pSceneTouchEvent.getPointerID());
+		if(!isActionDown) {
+			if(this.mOnSceneTouchListenerBindingEnabled) {
+				final IOnSceneTouchListener boundOnSceneTouchListener = this.mOnSceneTouchListenerBindings.get(pSceneTouchEvent.getPointerID());
+				if (boundOnSceneTouchListener != null) {
+					/* Check if boundTouchArea needs to be removed. */
+					switch(action) {
+						case TouchEvent.ACTION_UP:
+						case TouchEvent.ACTION_CANCEL:
+							this.mOnSceneTouchListenerBindings.remove(pSceneTouchEvent.getPointerID());
+					}
+					final Boolean handled = this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneTouchEvent);
+					if(handled != null && handled) {
+						return true;
+					}
 				}
-				final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, boundTouchArea);
-				if(handled != null && handled) {
-					return true;
+			}
+			if(this.mTouchAreaBindingEnabled) {
+				final SparseArray<ITouchArea> touchAreaBindings = this.mTouchAreaBindings;
+				final ITouchArea boundTouchArea = touchAreaBindings.get(pSceneTouchEvent.getPointerID());
+				/* In the case a ITouchArea has been bound to this PointerID,
+				 * we'll pass this this TouchEvent to the same ITouchArea. */
+				if(boundTouchArea != null) {
+					final float sceneTouchEventX = pSceneTouchEvent.getX();
+					final float sceneTouchEventY = pSceneTouchEvent.getY();
+
+					/* Check if boundTouchArea needs to be removed. */
+					switch(action) {
+						case TouchEvent.ACTION_UP:
+						case TouchEvent.ACTION_CANCEL:
+							touchAreaBindings.remove(pSceneTouchEvent.getPointerID());
+					}
+					final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, boundTouchArea);
+					if(handled != null && handled) {
+						return true;
+					}
 				}
 			}
 		}
@@ -344,7 +384,17 @@ public class Scene extends Entity {
 		}
 		/* If no area was touched, the Scene itself was touched as a fallback. */
 		if(this.mOnSceneTouchListener != null){
-			return this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneTouchEvent);
+			final Boolean handled = this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneTouchEvent);
+			if(handled != null && handled) {
+				/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
+				 *  bind the active OnSceneTouchListener to the PointerID. */
+				if(this.mOnSceneTouchListenerBindingEnabled && isActionDown) {
+					this.mOnSceneTouchListenerBindings.put(pSceneTouchEvent.getPointerID(), this.mOnSceneTouchListener);
+				}
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}

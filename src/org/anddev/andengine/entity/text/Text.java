@@ -118,6 +118,10 @@ public class Text extends RectangularShape {
 	public TextVertexBuffer getVertexBuffer() {
 		return (TextVertexBuffer)super.getVertexBuffer();
 	}
+	
+	public String getText() {
+		return this.mText;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

@@ -48,11 +48,11 @@ public abstract class BaseSprite extends BaseRectangle {
 		return this.mTextureRegion;
 	}
 
-	public void setTextureRegionFlippedHorizontal(final boolean pFlippedHorizontal) {
+	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
 		this.mTextureRegion.setFlippedHorizontal(pFlippedHorizontal);
 	}
 
-	public void setTextureRegionFlippedVertical(final boolean pFlippedVertical) {
+	public void setFlippedVertical(final boolean pFlippedVertical) {
 		this.mTextureRegion.setFlippedVertical(pFlippedVertical);
 	}
 

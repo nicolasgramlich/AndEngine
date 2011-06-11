@@ -32,10 +32,14 @@ public class ModifierUtils {
 	// ===========================================================
 
 	public static <T> IModifier<T> getModifierWithLongestDuration(final IModifier<T>[] pModifiers){
-		IModifier<T> out = null;
-		float longestDuration = Float.MIN_VALUE;
+	    if(pModifiers.length == 0) {
+	        return null;
+        }
 
-		for(int i = pModifiers.length - 1; i >= 0; i--) {
+		IModifier<T> out = pModifiers[pModifiers.length - 1];
+		float longestDuration = out.getDuration();
+
+		for(int i = pModifiers.length - 2; i >= 0; i--) {
 			final float duration = pModifiers[i].getDuration();
 			if(duration > longestDuration) {
 				longestDuration = duration;

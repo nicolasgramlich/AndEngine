@@ -109,18 +109,18 @@ public class Text extends RectangularShape {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public String getText() {
+		return this.mText;
+	}
 
-	public int getCharacterCount() {
+	public int getCharactersMaximum() {
 		return this.mCharactersMaximum;
 	}
 
 	@Override
 	public TextVertexBuffer getVertexBuffer() {
 		return (TextVertexBuffer)super.getVertexBuffer();
-	}
-	
-	public String getText() {
-		return this.mText;
 	}
 
 	// ===========================================================

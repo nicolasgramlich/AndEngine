@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.sprite;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.primitive.BaseRectangle;
 import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -75,10 +76,10 @@ public abstract class BaseSprite extends BaseRectangle {
 	}
 
 	@Override
-	protected void onApplyTransformations(final GL10 pGL) {
-		super.onApplyTransformations(pGL);
-
+	protected void doDraw(final GL10 pGL, final Camera pCamera) {
 		this.mTextureRegion.onApply(pGL);
+
+		super.doDraw(pGL, pCamera);
 	}
 
 	// ===========================================================

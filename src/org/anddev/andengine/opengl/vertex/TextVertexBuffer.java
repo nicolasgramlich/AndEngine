@@ -103,7 +103,7 @@ public class TextVertexBuffer extends VertexBuffer {
 			}
 		}
 
-		final FastFloatBuffer vertexFloatBuffer = this.getFloatBuffer();
+		final FastFloatBuffer vertexFloatBuffer = this.mFloatBuffer;
 		vertexFloatBuffer.position(0);
 		vertexFloatBuffer.put(bufferData);
 		vertexFloatBuffer.position(0);

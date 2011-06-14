@@ -67,6 +67,10 @@ public class Scene extends Entity {
 	// Constructors
 	// ===========================================================
 
+	public Scene() {
+		this(0);
+	}
+
 	public Scene(final int pLayerCount) {
 		super(0, 0);
 		for(int i = pLayerCount - 1; i >= 0; i--) {
@@ -510,7 +514,7 @@ public class Scene extends Entity {
 
 	/**
 	 * An interface for a callback to be invoked when a {@link TouchEvent} is
-	 * dispatched to an {@link ITouchArea} area. The callback will be invoked 
+	 * dispatched to an {@link ITouchArea} area. The callback will be invoked
 	 * before the {@link TouchEvent} is passed to the {@link ITouchArea}.
 	 */
 	public static interface IOnAreaTouchListener {
@@ -529,7 +533,7 @@ public class Scene extends Entity {
 		 * @param pTouchArea The {@link ITouchArea} that the {@link TouchEvent} has been dispatched to.
 		 * @param pSceneTouchEvent The {@link TouchEvent} object containing full information about the event.
 		 * @param pTouchAreaLocalX the x coordinate within the area touched.
-		 * @param pTouchAreaLocalY the y coordinate within the area touched.                         
+		 * @param pTouchAreaLocalY the y coordinate within the area touched.
 		 * 
 		 * @return <code>true</code> if this {@link IOnAreaTouchListener} has consumed the {@link TouchEvent}, <code>false</code> otherwise.
 		 */
@@ -538,7 +542,7 @@ public class Scene extends Entity {
 
 	/**
 	 * An interface for a callback to be invoked when a {@link TouchEvent} is
-	 * dispatched to a {@link Scene}. The callback will be invoked 
+	 * dispatched to a {@link Scene}. The callback will be invoked
 	 * after all {@link ITouchArea}s have been checked and none consumed the {@link TouchEvent}.
 	 */
 	public static interface IOnSceneTouchListener {
@@ -549,7 +553,7 @@ public class Scene extends Entity {
 		// ===========================================================
 		// Methods
 		// ===========================================================
-		
+
 		/**
 		 * Called when a {@link TouchEvent} is dispatched to a {@link Scene}.
 		 * 

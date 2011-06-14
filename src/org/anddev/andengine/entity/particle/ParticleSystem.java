@@ -20,6 +20,8 @@ import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 import android.util.FloatMath;
 
 /**
+ * TODO Check if SpriteBatch can be used here to improve performance. 
+ * 
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
  */

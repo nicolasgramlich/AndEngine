@@ -19,7 +19,6 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 import org.anddev.andengine.util.Base64;
 import org.anddev.andengine.util.Base64InputStream;
 import org.anddev.andengine.util.MathUtils;
@@ -50,7 +49,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	private int mTilesAdded;
 	private final int mGlobalTileIDsExpected;
 
-	private final float[] mCullingVertices = new float[2 * RectangleVertexBuffer.VERTICES_PER_RECTANGLE];
+	private final float[] mCullingVertices = new float[2 * 4];
 
 	private final TMXProperties<TMXLayerProperty> mTMXLayerProperties = new TMXProperties<TMXLayerProperty>();
 

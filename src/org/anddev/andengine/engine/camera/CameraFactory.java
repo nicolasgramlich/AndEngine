@@ -41,7 +41,7 @@ public class CameraFactory {
 	}
 
 	private static DisplayMetrics getDisplayMetrics(final Activity pActivity) {
-		return  pActivity.getResources().getDisplayMetrics();
+		return pActivity.getResources().getDisplayMetrics();
 	}
 
 	// ===========================================================

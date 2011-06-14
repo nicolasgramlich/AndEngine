@@ -24,7 +24,7 @@ public abstract class BufferObject {
 
 	private final int mDrawType;
 
-	private final FastFloatBuffer mFloatBuffer;
+	protected final FastFloatBuffer mFloatBuffer;
 
 	private int mHardwareBufferID = -1;
 	private boolean mLoadedToHardware;

@@ -1,9 +1,6 @@
 package org.anddev.andengine.opengl.texture.region;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.region.buffer.TiledTextureRegionBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -49,11 +46,6 @@ public class TiledTextureRegion extends BaseTextureRegion {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	@Override
-	public TiledTextureRegionBuffer getTextureBuffer() {
-		return (TiledTextureRegionBuffer) this.mTextureRegionBuffer;
-	}
 
 	public int getTileCount() {
 		return this.mTileCount;
@@ -114,8 +106,23 @@ public class TiledTextureRegion extends BaseTextureRegion {
 	}
 
 	@Override
-	protected TiledTextureRegionBuffer onCreateTextureRegionBuffer() {
-		return new TiledTextureRegionBuffer(this, GL11.GL_STATIC_DRAW);
+	public float getTextureCoordinateX1() {
+		return this.getTexturePositionOfCurrentTileX() / this.mTexture.getWidth();
+	}
+
+	@Override
+	public float getTextureCoordinateY1() {
+		return this.getTexturePositionOfCurrentTileY() / this.mTexture.getHeight();
+	}
+
+	@Override
+	public float getTextureCoordinateX2() {
+		return (this.getTexturePositionOfCurrentTileX() + this.getTileWidth()) / this.mTexture.getWidth();
+	}
+
+	@Override
+	public float getTextureCoordinateY2() {
+		return (this.getTexturePositionOfCurrentTileY() + this.getTileHeight()) / this.mTexture.getHeight();
 	}
 
 	// ===========================================================

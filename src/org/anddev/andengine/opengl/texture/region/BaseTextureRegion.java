@@ -5,7 +5,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.region.buffer.BaseTextureRegionBuffer;
+import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
@@ -23,7 +23,7 @@ public abstract class BaseTextureRegion {
 
 	protected final Texture mTexture;
 
-	protected final BaseTextureRegionBuffer mTextureRegionBuffer;
+	protected final TextureRegionBuffer mTextureRegionBuffer;
 
 	protected int mWidth;
 	protected int mHeight;
@@ -42,7 +42,7 @@ public abstract class BaseTextureRegion {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 
-		this.mTextureRegionBuffer = this.onCreateTextureRegionBuffer();
+		this.mTextureRegionBuffer = new TextureRegionBuffer(this, GL11.GL_STATIC_DRAW);
 
 		BufferObjectManager.getActiveInstance().loadBufferObject(this.mTextureRegionBuffer);
 
@@ -93,7 +93,7 @@ public abstract class BaseTextureRegion {
 		return this.mTexture;
 	}
 
-	public BaseTextureRegionBuffer getTextureBuffer() {
+	public TextureRegionBuffer getTextureBuffer() {
 		return this.mTextureRegionBuffer;
 	}
 
@@ -117,7 +117,10 @@ public abstract class BaseTextureRegion {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract BaseTextureRegionBuffer onCreateTextureRegionBuffer();
+	public abstract float getTextureCoordinateX1();
+	public abstract float getTextureCoordinateY1();
+	public abstract float getTextureCoordinateX2();
+	public abstract float getTextureCoordinateY2();
 
 	// ===========================================================
 	// Methods

@@ -1,10 +1,6 @@
 package org.anddev.andengine.opengl.texture.region;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.region.buffer.BaseTextureRegionBuffer;
-import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 
 /**
  * @author Nicolas Gramlich
@@ -31,11 +27,6 @@ public class TextureRegion extends BaseTextureRegion {
 	// Getter & Setter
 	// ===========================================================
 
-	@Override
-	public TextureRegionBuffer getTextureBuffer() {
-		return (TextureRegionBuffer) this.mTextureRegionBuffer;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -45,14 +36,29 @@ public class TextureRegion extends BaseTextureRegion {
 		return new TextureRegion(this.mTexture, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 
+	@Override
+	public float getTextureCoordinateX1() {
+		return (float) this.mTexturePositionX / this.mTexture.getWidth();
+	}
+
+	@Override
+	public float getTextureCoordinateY1() {
+		return (float) this.mTexturePositionY / this.mTexture.getHeight();
+	}
+
+	@Override
+	public float getTextureCoordinateX2() {
+		return (float) (this.mTexturePositionX + this.mWidth) / this.mTexture.getWidth();
+	}
+
+	@Override
+	public float getTextureCoordinateY2() {
+		return (float) (this.mTexturePositionY + this.mHeight) / this.mTexture.getHeight();
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	@Override
-	protected BaseTextureRegionBuffer onCreateTextureRegionBuffer() {
-		return new TextureRegionBuffer(this, GL11.GL_STATIC_DRAW);
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -83,6 +83,16 @@ public class Transformation  {
 		this.ty = 0.0f;
 	}
 
+	public void setTo(final Transformation pTransformation) {
+		this.a = pTransformation.a;
+		this.d = pTransformation.d;
+
+		this.b = pTransformation.b;
+		this.c = pTransformation.c;
+		this.tx = pTransformation.tx;
+		this.ty = pTransformation.ty;
+	}
+
 	public void preTranslate(final float pX, final float pY) {
 		final Transformation transformation = TransformationPool.obtain();
 		this.preConcat(transformation.setToTranslate(pX, pY));

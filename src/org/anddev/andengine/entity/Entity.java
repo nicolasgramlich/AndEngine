@@ -79,6 +79,12 @@ public class Entity implements IEntity {
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;
 
+	private boolean mLocalToParentTransformationDirty = true;
+	private boolean mParentToLocalTransformationDirty = true;
+
+	private final Transformation mLocalToParentTransformation = new Transformation();
+	private final Transformation mParentToLocalTransformation = new Transformation();
+
 	private final Transformation mLocalToSceneTransformation = new Transformation();
 	private final Transformation mSceneToLocalTransformation = new Transformation();
 
@@ -177,12 +183,16 @@ public class Entity implements IEntity {
 	public void setPosition(final float pX, final float pY) {
 		this.mX = pX;
 		this.mY = pY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
 	public void setInitialPosition() {
 		this.mX = this.mInitialX;
 		this.mY = this.mInitialY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
@@ -193,6 +203,8 @@ public class Entity implements IEntity {
 	@Override
 	public void setRotation(final float pRotation) {
 		this.mRotation = pRotation;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
@@ -208,17 +220,23 @@ public class Entity implements IEntity {
 	@Override
 	public void setRotationCenterX(final float pRotationCenterX) {
 		this.mRotationCenterX = pRotationCenterX;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
 	public void setRotationCenterY(final float pRotationCenterY) {
 		this.mRotationCenterY = pRotationCenterY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
 	public void setRotationCenter(final float pRotationCenterX, final float pRotationCenterY) {
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
@@ -239,23 +257,31 @@ public class Entity implements IEntity {
 	@Override
 	public void setScaleX(final float pScaleX) {
 		this.mScaleX = pScaleX;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
 	public void setScaleY(final float pScaleY) {
 		this.mScaleY = pScaleY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
 	public void setScale(final float pScale) {
 		this.mScaleX = pScale;
 		this.mScaleY = pScale;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
 	public void setScale(final float pScaleX, final float pScaleY) {
 		this.mScaleX = pScaleX;
 		this.mScaleY = pScaleY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
@@ -271,17 +297,23 @@ public class Entity implements IEntity {
 	@Override
 	public void setScaleCenterX(final float pScaleCenterX) {
 		this.mScaleCenterX = pScaleCenterX;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
 	public void setScaleCenterY(final float pScaleCenterY) {
 		this.mScaleCenterY = pScaleCenterY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
 	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY) {
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
 	}
 
 	@Override
@@ -532,6 +564,115 @@ public class Entity implements IEntity {
 		return this.convertLocalToSceneCoordinates(0, 0);
 	}
 
+	public Transformation getLocalToParentTransformation() {
+		final Transformation localToParentTransformation = this.mLocalToParentTransformation;
+		if(this.mLocalToParentTransformationDirty) {
+			localToParentTransformation.setToIdentity();
+			
+			/* Scale. */
+			final float scaleX = this.mScaleX;
+			final float scaleY = this.mScaleY;
+			if(scaleX != 1 || scaleY != 1) {
+				final float scaleCenterX = this.mScaleCenterX;
+				final float scaleCenterY = this.mScaleCenterY;
+
+				/* TODO Check if it is worth to check for scaleCenterX == 0 && scaleCenterY == 0 as the two postTranslate can be saved.
+				 * The same obviously applies for all similar occurrences of this pattern in this class. */
+
+				localToParentTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
+				localToParentTransformation.postScale(scaleX, scaleY);
+				localToParentTransformation.postTranslate(scaleCenterX, scaleCenterY);
+			}
+
+			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
+			 * In that case the last postTranslate of the scale and the first postTranslate of the rotation is superfluous. */
+
+			/* Rotation. */
+			final float rotation = this.mRotation;
+			if(rotation != 0) {
+				final float rotationCenterX = this.mRotationCenterX;
+				final float rotationCenterY = this.mRotationCenterY;
+
+				localToParentTransformation.postTranslate(-rotationCenterX, -rotationCenterY);
+				localToParentTransformation.postRotate(rotation);
+				localToParentTransformation.postTranslate(rotationCenterX, rotationCenterY);
+			}
+
+			/* Translation. */
+			localToParentTransformation.postTranslate(this.mX, this.mY);
+
+			this.mLocalToParentTransformationDirty = false;
+		}
+		return localToParentTransformation;
+	}
+
+	public Transformation getParentToLocalTransformation() {
+		final Transformation parentToLocalTransformation = this.mParentToLocalTransformation;
+		if(this.mParentToLocalTransformationDirty) {
+			parentToLocalTransformation.setToIdentity();
+
+			/* Translation. */
+			parentToLocalTransformation.postTranslate(-this.mX, -this.mY);
+
+			/* Rotation. */
+			final float rotation = this.mRotation;
+			if(rotation != 0) {
+				final float rotationCenterX = this.mRotationCenterX;
+				final float rotationCenterY = this.mRotationCenterY;
+
+				parentToLocalTransformation.postTranslate(-rotationCenterX, -rotationCenterY);
+				parentToLocalTransformation.postRotate(-rotation);
+				parentToLocalTransformation.postTranslate(rotationCenterX, rotationCenterY);
+			}
+
+			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
+			 * In that case the last postTranslate of the rotation and the first postTranslate of the scale is superfluous. */
+
+			/* Scale. */
+			final float scaleX = this.mScaleX;
+			final float scaleY = this.mScaleY;
+			if(scaleX != 1 || scaleY != 1) {
+				final float scaleCenterX = this.mScaleCenterX;
+				final float scaleCenterY = this.mScaleCenterY;
+
+				parentToLocalTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
+				parentToLocalTransformation.postScale(1 / scaleX, 1 / scaleY);
+				parentToLocalTransformation.postTranslate(scaleCenterX, scaleCenterY);
+			}
+
+			this.mParentToLocalTransformationDirty = false;
+		}
+		return parentToLocalTransformation;
+	}
+
+	@Override
+	public Transformation getLocalToSceneTransformation() {
+		// TODO Cache if parent(recursive) not dirty.
+		final Transformation localToSceneTransformation = this.mLocalToSceneTransformation;
+		localToSceneTransformation.setTo(this.getLocalToParentTransformation());
+
+		final IEntity parent = this.mParent;
+		if(parent != null) {
+			localToSceneTransformation.postConcat(parent.getLocalToSceneTransformation());
+		}
+
+		return localToSceneTransformation;
+	}
+
+	@Override
+	public Transformation getSceneToLocalTransformation() {
+		// TODO Cache if parent(recursive) not dirty.
+		final Transformation sceneToLocalTransformation = this.mSceneToLocalTransformation;
+		sceneToLocalTransformation.setTo(this.getParentToLocalTransformation());
+
+		final IEntity parent = this.mParent;
+		if(parent != null) {
+			sceneToLocalTransformation.postConcat(parent.getSceneToLocalTransformation());
+		}
+
+		return sceneToLocalTransformation;
+	}
+
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
 		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_X] = pX;
@@ -550,95 +691,6 @@ public class Entity implements IEntity {
 		this.getSceneToLocalTransformation().transform(Entity.VERTICES_SCENE_TO_LOCAL_TMP);
 
 		return Entity.VERTICES_SCENE_TO_LOCAL_TMP;
-	}
-
-	@Override
-	public Transformation getLocalToSceneTransformation() {
-		// TODO skip this calculation when the transformation is not "dirty"
-		final Transformation localToSceneTransformation = this.mLocalToSceneTransformation;
-		localToSceneTransformation.setToIdentity();
-
-		/* Scale. */
-		final float scaleX = this.mScaleX;
-		final float scaleY = this.mScaleY;
-		if(scaleX != 1 || scaleY != 1) {
-			final float scaleCenterX = this.mScaleCenterX;
-			final float scaleCenterY = this.mScaleCenterY;
-
-			/* TODO Check if it is worth to check for scaleCenterX == 0 && scaleCenterY == 0 as the two postTranslate can be saved.
-			 * The same obviously applies for all similar occurrences of this pattern in this class. */
-
-			localToSceneTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
-			localToSceneTransformation.postScale(scaleX, scaleY);
-			localToSceneTransformation.postTranslate(scaleCenterX, scaleCenterY);
-		}
-
-		/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
-		 * In that case the last postTranslate of the scale and the first postTranslate of the rotation is superfluous. */
-
-		/* Rotation. */
-		final float rotation = this.mRotation;
-		if(rotation != 0) {
-			final float rotationCenterX = this.mRotationCenterX;
-			final float rotationCenterY = this.mRotationCenterY;
-
-			localToSceneTransformation.postTranslate(-rotationCenterX, -rotationCenterY);
-			localToSceneTransformation.postRotate(rotation);
-			localToSceneTransformation.postTranslate(rotationCenterX, rotationCenterY);
-		}
-
-		/* Translation. */
-		localToSceneTransformation.postTranslate(this.mX, this.mY);
-
-		final IEntity parent = this.mParent;
-		if(parent != null) {
-			localToSceneTransformation.postConcat(parent.getLocalToSceneTransformation());
-		}
-
-		return localToSceneTransformation;
-	}
-
-	@Override
-	public Transformation getSceneToLocalTransformation() {
-		// TODO skip this calculation when the transformation is not "dirty"
-		final Transformation sceneToLocalTransformation = this.mSceneToLocalTransformation;
-		sceneToLocalTransformation.setToIdentity();
-
-		final IEntity parent = this.mParent;
-		if(parent != null) {
-			sceneToLocalTransformation.postConcat(parent.getSceneToLocalTransformation());
-		}
-
-		/* Translation. */
-		sceneToLocalTransformation.postTranslate(-this.mX, -this.mY);
-
-		/* Rotation. */
-		final float rotation = this.mRotation;
-		if(rotation != 0) {
-			final float rotationCenterX = this.mRotationCenterX;
-			final float rotationCenterY = this.mRotationCenterY;
-
-			sceneToLocalTransformation.postTranslate(-rotationCenterX, -rotationCenterY);
-			sceneToLocalTransformation.postRotate(-rotation);
-			sceneToLocalTransformation.postTranslate(rotationCenterX, rotationCenterY);
-		}
-
-		/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
-		 * In that case the last postTranslate of the rotation and the first postTranslate of the scale is superfluous. */
-
-		/* Scale. */
-		final float scaleX = this.mScaleX;
-		final float scaleY = this.mScaleY;
-		if(scaleX != 1 || scaleY != 1) {
-			final float scaleCenterX = this.mScaleCenterX;
-			final float scaleCenterY = this.mScaleCenterY;
-
-			sceneToLocalTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
-			sceneToLocalTransformation.postScale(1 / scaleX, 1 / scaleY);
-			sceneToLocalTransformation.postTranslate(scaleCenterX, scaleCenterY);
-		}
-
-		return sceneToLocalTransformation;
 	}
 
 	@Override

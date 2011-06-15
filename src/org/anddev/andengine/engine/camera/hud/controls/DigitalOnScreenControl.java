@@ -23,7 +23,7 @@ public class DigitalOnScreenControl extends BaseOnScreenControl {
 	// Fields
 	// ===========================================================
 
-	private final boolean mAllowDiagonal;
+	private boolean mAllowDiagonal;
 
 	// ===========================================================
 	// Constructors
@@ -41,6 +41,14 @@ public class DigitalOnScreenControl extends BaseOnScreenControl {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public boolean isAllowDiagonal() {
+		return this.mAllowDiagonal;
+	}
+
+	public void setAllowDiagonal(final boolean pAllowDiagonal) {
+		this.mAllowDiagonal = pAllowDiagonal;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

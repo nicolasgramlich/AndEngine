@@ -36,8 +36,8 @@ public class SpriteBatch extends Entity {
 	private final Texture mTexture;
 	private final int mCapacity;
 
-	private int mCount;
-	private int mSubmitCount;
+	private int mIndex;
+	private int mVertices;
 	private boolean mDirty = false;
 
 	private int mSourceBlendFunction;
@@ -70,6 +70,21 @@ public class SpriteBatch extends Entity {
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
+	}
+
+	public int getIndex() {
+		return this.mIndex;
+	}
+
+	public void setIndex(final int pIndex) {
+		this.assertCapacity(pIndex);
+
+		this.mIndex = pIndex;
+
+		final int vertexIndex = pIndex * VERTICES_PER_RECTANGLE;
+
+		this.mSpriteBatchVertexBuffer.setIndex(vertexIndex);
+		this.mSpriteBatchTextureRegionBuffer.setIndex(vertexIndex);
 	}
 
 	// ===========================================================
@@ -121,18 +136,14 @@ public class SpriteBatch extends Entity {
 	 * @see {@link SpriteBatchVertexBuffer#add(float, float, float, float)}.
 	 */
 	public void draw(final TextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight) {
-		if(this.mCount == this.mCapacity) {
-			throw new IllegalStateException("This SpriteBatch has already reached its capacity (" + this.mCapacity + ") !");
-		}
+		this.assertCapacity();
 
-		if(pTextureRegion.getTexture() != this.mTexture) {
-			throw new IllegalArgumentException();
-		}
+		this.assertTexture(pTextureRegion);
 
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
-		this.mCount++;
+		this.mIndex++;
 		this.mDirty = true;
 	}
 
@@ -140,18 +151,13 @@ public class SpriteBatch extends Entity {
 	 * @see {@link SpriteBatchVertexBuffer#add(float, float, float, float, float)}.
 	 */
 	public void draw(final TextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation) {
-		if(this.mCount == this.mCapacity) {
-			throw new IllegalStateException("This SpriteBatch has already reached its capacity (" + this.mCapacity + ") !");
-		}
-
-		if(pTextureRegion.getTexture() != this.mTexture) {
-			throw new IllegalArgumentException();
-		}
+		this.assertCapacity();
+		this.assertTexture(pTextureRegion);
 
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pRotation);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
-		this.mCount++;
+		this.mIndex++;
 		this.mDirty = true;
 	}
 
@@ -159,18 +165,13 @@ public class SpriteBatch extends Entity {
 	 * @see {@link SpriteBatchVertexBuffer#add(float, float, float, float, float, float)}.
 	 */
 	public void draw(final TextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY) {
-		if(this.mCount == this.mCapacity) {
-			throw new IllegalStateException("This SpriteBatch has already reached its capacity (" + this.mCapacity + ") !");
-		}
-
-		if(pTextureRegion.getTexture() != this.mTexture) {
-			throw new IllegalArgumentException();
-		}
+		this.assertCapacity();
+		this.assertTexture(pTextureRegion);
 
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pScaleX, pScaleY);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
-		this.mCount++;
+		this.mIndex++;
 		this.mDirty = true;
 	}
 
@@ -178,18 +179,13 @@ public class SpriteBatch extends Entity {
 	 * @see {@link SpriteBatchVertexBuffer#add(float, float, float, float, float, float, float)}.
 	 */
 	public void draw(final TextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY) {
-		if(this.mCount == this.mCapacity) {
-			throw new IllegalStateException("This SpriteBatch has already reached its capacity (" + this.mCapacity + ") !");
-		}
-
-		if(pTextureRegion.getTexture() != this.mTexture) {
-			throw new IllegalArgumentException();
-		}
+		this.assertCapacity();
+		this.assertTexture(pTextureRegion);
 
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
-		this.mCount++;
+		this.mIndex++;
 		this.mDirty = true;
 	}
 
@@ -197,18 +193,13 @@ public class SpriteBatch extends Entity {
 	 * {@link SpriteBatchVertexBuffer#add(float, float, float, float, float, float, float, float)}.
 	 */
 	public void draw(final TextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
-		if(this.mCount == this.mCapacity) {
-			throw new IllegalStateException("This SpriteBatch has already reached its capacity (" + this.mCapacity + ") !");
-		}
-
-		if(pTextureRegion.getTexture() != this.mTexture) {
-			throw new IllegalArgumentException();
-		}
+		this.assertCapacity();
+		this.assertTexture(pTextureRegion);
 
 		this.mSpriteBatchVertexBuffer.addInner(pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
-		this.mCount++;
+		this.mIndex++;
 		this.mDirty = true;
 	}
 
@@ -216,14 +207,10 @@ public class SpriteBatch extends Entity {
 	 * {@link SpriteBatchVertexBuffer#add(BaseSprite)}.
 	 */
 	public void draw(final BaseSprite pBaseSprite) {
-		if(this.mCount == this.mCapacity) {
-			throw new IllegalStateException("This SpriteBatch has already reached its capacity (" + this.mCapacity + ") !");
-		}
+		this.assertCapacity();
 
 		final BaseTextureRegion textureRegion = pBaseSprite.getTextureRegion();
-		if(textureRegion.getTexture() != this.mTexture) {
-			throw new IllegalArgumentException();
-		}
+		this.assertTexture(textureRegion);
 
 		if(pBaseSprite.getRotation() == 0 && !pBaseSprite.isScaled()) {
 			this.mSpriteBatchVertexBuffer.add(pBaseSprite.getX(), pBaseSprite.getY(), pBaseSprite.getWidth(), pBaseSprite.getHeight());
@@ -233,17 +220,17 @@ public class SpriteBatch extends Entity {
 
 		this.mSpriteBatchTextureRegionBuffer.add(textureRegion);
 
-		this.mCount++;
+		this.mIndex++;
 		this.mDirty = true;
 	}
 
 	public void submit() {
-		this.mSubmitCount = this.mCount;
+		this.mVertices = this.mIndex * VERTICES_PER_RECTANGLE;
 
 		this.mSpriteBatchVertexBuffer.submit();
 		this.mSpriteBatchTextureRegionBuffer.submit();
 
-		this.mCount = 0;
+		this.mIndex = 0;
 		this.mSpriteBatchVertexBuffer.setIndex(0);
 		this.mSpriteBatchTextureRegionBuffer.setIndex(0);
 		this.mDirty = false;
@@ -291,7 +278,25 @@ public class SpriteBatch extends Entity {
 	}
 
 	private void drawVertices(final GL10 pGL, final Camera pCamera) {
-		pGL.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mSubmitCount * VERTICES_PER_RECTANGLE);
+		pGL.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mVertices);
+	}
+
+	private void assertCapacity(final int pIndex) {
+		if(pIndex >= this.mCapacity) {
+			throw new IllegalStateException("This supplied pIndex: '" + pIndex + "' is exceeding the capacity: '" + this.mCapacity + "' of this SpriteBatch!");
+		}
+	}
+
+	private void assertCapacity() {
+		if(this.mIndex == this.mCapacity) {
+			throw new IllegalStateException("This SpriteBatch has already reached its capacity (" + this.mCapacity + ") !");
+		}
+	}
+
+	private void assertTexture(final BaseTextureRegion pTextureRegion) {
+		if(pTextureRegion.getTexture() != this.mTexture) {
+			throw new IllegalArgumentException("The supplied Texture does match the Texture of this SpriteBatch!");
+		}
 	}
 
 	// ===========================================================

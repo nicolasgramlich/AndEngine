@@ -16,6 +16,9 @@ public interface IEntityModifier extends IModifier<IEntity> {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	@Override
+	public IEntityModifier clone();
 
 	// ===========================================================
 	// Inner and Anonymous Classes

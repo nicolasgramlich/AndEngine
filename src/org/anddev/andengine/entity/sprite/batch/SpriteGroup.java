@@ -39,8 +39,7 @@ public class SpriteGroup extends SpriteBatch {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public void draw(final BaseSprite pBaseSprite) {
+	public void add(final BaseSprite pBaseSprite) {
 		this.mSprites.add(pBaseSprite);
 	}
 

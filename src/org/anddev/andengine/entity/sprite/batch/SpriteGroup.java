@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.sprite.BaseSprite;
 import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.util.SmartList;
 
 /**
  * @author Nicolas Gramlich
  * @since 12:10:35 - 15.06.2011
  */
-public class DynamicSpriteGroup extends SpriteBatch {
+public class SpriteGroup extends SpriteBatch {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,16 +19,16 @@ public class DynamicSpriteGroup extends SpriteBatch {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<BaseSprite> mSprites;
+	private final SmartList<BaseSprite> mSprites;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public DynamicSpriteGroup(final Texture pTexture, final int pCapacity) {
+	public SpriteGroup(final Texture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity);
 
-		this.mSprites = new ArrayList<BaseSprite>(pCapacity);
+		this.mSprites = new SmartList<BaseSprite>(pCapacity);
 	}
 
 	// ===========================================================

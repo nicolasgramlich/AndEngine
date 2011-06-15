@@ -25,7 +25,7 @@ public class HUD extends CameraScene {
 	// ===========================================================
 
 	public HUD() {
-		this(1);
+		super();
 
 		this.setBackgroundEnabled(false);
 	}

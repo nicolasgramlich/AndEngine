@@ -25,6 +25,14 @@ public class CameraScene extends Scene {
 	// Constructors
 	// ===========================================================
 
+	public CameraScene() {
+		this(0);
+	}
+
+	public CameraScene(final Camera pCamera) {
+		this(0, pCamera);
+	}
+
 	/**
 	 * {@link CameraScene#setCamera(Camera)} needs to be called manually. Otherwise nothing will be drawn.
 	 */

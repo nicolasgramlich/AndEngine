@@ -32,6 +32,10 @@ public abstract class PictureTextureSource implements ITextureSource {
 		this(pPicture, pPicture.getWidth(), pPicture.getHeight());
 	}
 
+	public PictureTextureSource(final Picture pPicture, final float pScale) {
+		this(pPicture, Math.round(pPicture.getWidth() * pScale), Math.round(pPicture.getHeight() * pScale));
+	}
+
 	public PictureTextureSource(final Picture pPicture, final int pWidth, final int pHeight) {
 		this.mPicture = pPicture;
 		this.mWidth = pWidth;

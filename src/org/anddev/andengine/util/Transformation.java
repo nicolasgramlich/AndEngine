@@ -27,7 +27,7 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 15:47:18 - 23.12.2010
  */
-public class Transformation  {
+public class Transformation {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -94,15 +94,11 @@ public class Transformation  {
 	}
 
 	public void preTranslate(final float pX, final float pY) {
-		final Transformation transformation = TransformationPool.obtain();
-		this.preConcat(transformation.setToTranslate(pX, pY));
-		TransformationPool.recycle(transformation);
+		this.preConcat(1, 0, 0, 1, pX, pY);
 	}
 
 	public void postTranslate(final float pX, final float pY) {
-		final Transformation transformation = TransformationPool.obtain();
-		this.postConcat(transformation.setToTranslate(pX, pY));
-		TransformationPool.recycle(transformation);
+		this.postConcat(1, 0, 0, 1, pX, pY);
 	}
 
 	public Transformation setToTranslate(final float pX, final float pY) {
@@ -117,15 +113,11 @@ public class Transformation  {
 	}
 
 	public void preScale(final float pScaleX, final float pScaleY) {
-		final Transformation transformation = TransformationPool.obtain();
-		this.preConcat(transformation.setToScale(pScaleX, pScaleY));
-		TransformationPool.recycle(transformation);
+		this.preConcat(pScaleX, 0, 0, pScaleY, 0, 0);
 	}
 
 	public void postScale(final float pScaleX, final float pScaleY) {
-		final Transformation transformation = TransformationPool.obtain();
-		this.postConcat(transformation.setToScale(pScaleX, pScaleY));
-		TransformationPool.recycle(transformation);
+		this.postConcat(pScaleX, 0, 0, pScaleY, 0, 0);
 	}
 
 	public Transformation setToScale(final float pScaleX, final float pScaleY) {
@@ -140,15 +132,21 @@ public class Transformation  {
 	}
 
 	public void preRotate(final float pAngle) {
-		final Transformation transformation = TransformationPool.obtain();
-		this.preConcat(transformation.setToRotate(pAngle));
-		TransformationPool.recycle(transformation);
+		final float angleRad = MathUtils.degToRad(pAngle);
+
+		final float sin = FloatMath.sin(angleRad);
+		final float cos = FloatMath.cos(angleRad);
+
+		this.preConcat(cos, sin, -sin, cos, 0, 0);
 	}
 
 	public void postRotate(final float pAngle) {
-		final Transformation transformation = TransformationPool.obtain();
-		this.postConcat(transformation.setToRotate(pAngle));
-		TransformationPool.recycle(transformation);
+		final float angleRad = MathUtils.degToRad(pAngle);
+
+		final float sin = FloatMath.sin(angleRad);
+		final float cos = FloatMath.cos(angleRad);
+
+		this.postConcat(cos, sin, -sin, cos, 0, 0);
 	}
 
 	public Transformation setToRotate(final float pAngle) {
@@ -168,23 +166,24 @@ public class Transformation  {
 	}
 
 	public void postConcat(final Transformation pTransformation) {
-		final float a1 = this.a;
+
 		final float a2 = pTransformation.a;
-
-		final float b1 = this.b;
 		final float b2 = pTransformation.b;
-
-		final float c1 = this.c;
 		final float c2 = pTransformation.c;
-
-		final float d1 = this.d;
 		final float d2 = pTransformation.d;
-
-		final float tx1 = this.tx;
 		final float tx2 = pTransformation.tx;
-
-		final float ty1 = this.ty;
 		final float ty2 = pTransformation.ty;
+
+		this.postConcat(a2, b2, c2, d2, tx2, ty2);
+	}
+
+	private void postConcat(final float a2, final float b2, final float c2, final float d2, final float tx2, final float ty2) {
+		final float a1 = this.a;
+		final float b1 = this.b;
+		final float c1 = this.c;
+		final float d1 = this.d;
+		final float tx1 = this.tx;
+		final float ty1 = this.ty;
 
 		this.a = a1 * a2 + b1 * c2;
 		this.b = a1 * b2 + b1 * d2;
@@ -196,21 +195,21 @@ public class Transformation  {
 
 	public void preConcat(final Transformation pTransformation) {
 		final float a1 = pTransformation.a;
-		final float a2 = this.a;
-
 		final float b1 = pTransformation.b;
-		final float b2 = this.b;
-
 		final float c1 = pTransformation.c;
-		final float c2 = this.c;
-
 		final float d1 = pTransformation.d;
-		final float d2 = this.d;
-
 		final float tx1 = pTransformation.tx;
-		final float tx2 = this.tx;
-
 		final float ty1 = pTransformation.ty;
+
+		this.preConcat(a1, b1, c1, d1, tx1, ty1);
+	}
+
+	private void preConcat(final float a1, final float b1, final float c1, final float d1, final float tx1, final float ty1) {
+		final float a2 = this.a;
+		final float b2 = this.b;
+		final float c2 = this.c;
+		final float d2 = this.d;
+		final float tx2 = this.tx;
 		final float ty2 = this.ty;
 
 		this.a = a1 * a2 + b1 * c2;

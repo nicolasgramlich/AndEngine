@@ -36,20 +36,19 @@ public class Transformation {
 	// Fields
 	// ===========================================================
 
-	private float a; /* x scale */
-	private float b; /* y skew */
-	private float c; /* x skew */
-	private float d; /* y scale */
-	private float tx; /* x translation */
-	private float ty; /* y translation */
+	private float a = 1.0f; /* x scale */
+	private float b = 0.0f; /* y skew */
+	private float c = 0.0f; /* x skew */
+	private float d = 1.0f; /* y scale */
+	private float tx = 0.0f; /* x translation */
+	private float ty = 0.0f; /* y translation */
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public Transformation() {
-		this.a = 1.0f;
-		this.d = 1.0f;
+
 	}
 
 	// ===========================================================
@@ -94,18 +93,18 @@ public class Transformation {
 	}
 
 	public void preTranslate(final float pX, final float pY) {
-		this.preConcat(1, 0, 0, 1, pX, pY);
+		this.preConcat(1.0f, 0.0f, 0.0f, 1.0f, pX, pY);
 	}
 
 	public void postTranslate(final float pX, final float pY) {
-		this.postConcat(1, 0, 0, 1, pX, pY);
+		this.postConcat(1.0f, 0.0f, 0.0f, 1.0f, pX, pY);
 	}
 
 	public Transformation setToTranslate(final float pX, final float pY) {
-		this.a = 1;
-		this.b = 0;
-		this.c = 0;
-		this.d = 1;
+		this.a = 1.0f;
+		this.b = 0.0f;
+		this.c = 0.0f;
+		this.d = 1.0f;
 		this.tx = pX;
 		this.ty = pY;
 
@@ -113,20 +112,20 @@ public class Transformation {
 	}
 
 	public void preScale(final float pScaleX, final float pScaleY) {
-		this.preConcat(pScaleX, 0, 0, pScaleY, 0, 0);
+		this.preConcat(pScaleX, 0.0f, 0.0f, pScaleY, 0.0f, 0.0f);
 	}
 
 	public void postScale(final float pScaleX, final float pScaleY) {
-		this.postConcat(pScaleX, 0, 0, pScaleY, 0, 0);
+		this.postConcat(pScaleX, 0.0f, 0.0f, pScaleY, 0.0f, 0.0f);
 	}
 
 	public Transformation setToScale(final float pScaleX, final float pScaleY) {
 		this.a = pScaleX;
-		this.b = 0;
-		this.c = 0;
+		this.b = 0.0f;
+		this.c = 0.0f;
 		this.d = pScaleY;
-		this.tx = 0;
-		this.ty = 0;
+		this.tx = 0.0f;
+		this.ty = 0.0f;
 
 		return this;
 	}
@@ -137,7 +136,7 @@ public class Transformation {
 		final float sin = FloatMath.sin(angleRad);
 		final float cos = FloatMath.cos(angleRad);
 
-		this.preConcat(cos, sin, -sin, cos, 0, 0);
+		this.preConcat(cos, sin, -sin, cos, 0.0f, 0.0f);
 	}
 
 	public void postRotate(final float pAngle) {
@@ -146,7 +145,7 @@ public class Transformation {
 		final float sin = FloatMath.sin(angleRad);
 		final float cos = FloatMath.cos(angleRad);
 
-		this.postConcat(cos, sin, -sin, cos, 0, 0);
+		this.postConcat(cos, sin, -sin, cos, 0.0f, 0.0f);
 	}
 
 	public Transformation setToRotate(final float pAngle) {
@@ -159,21 +158,14 @@ public class Transformation {
 		this.b = sin;
 		this.c = -sin;
 		this.d = cos;
-		this.tx = 0;
-		this.ty = 0;
+		this.tx = 0.0f;
+		this.ty = 0.0f;
 
 		return this;
 	}
 
 	public void postConcat(final Transformation pTransformation) {
-		final float a2 = pTransformation.a;
-		final float b2 = pTransformation.b;
-		final float c2 = pTransformation.c;
-		final float d2 = pTransformation.d;
-		final float tx2 = pTransformation.tx;
-		final float ty2 = pTransformation.ty;
-
-		this.postConcat(a2, b2, c2, d2, tx2, ty2);
+		this.postConcat(pTransformation.a, pTransformation.b, pTransformation.c, pTransformation.d, pTransformation.tx, pTransformation.ty);
 	}
 
 	private void postConcat(final float pA, final float pB, final float pC, final float pD, final float pTX, final float pTY) {
@@ -193,14 +185,7 @@ public class Transformation {
 	}
 
 	public void preConcat(final Transformation pTransformation) {
-		final float a1 = pTransformation.a;
-		final float b1 = pTransformation.b;
-		final float c1 = pTransformation.c;
-		final float d1 = pTransformation.d;
-		final float tx1 = pTransformation.tx;
-		final float ty1 = pTransformation.ty;
-
-		this.preConcat(a1, b1, c1, d1, tx1, ty1);
+		this.preConcat(pTransformation.a, pTransformation.b, pTransformation.c, pTransformation.d, pTransformation.tx, pTransformation.ty);
 	}
 
 	private void preConcat(final float pA, final float pB, final float pC, final float pD, final float pTX, final float pTY) {

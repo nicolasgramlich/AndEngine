@@ -166,7 +166,6 @@ public class Transformation {
 	}
 
 	public void postConcat(final Transformation pTransformation) {
-
 		final float a2 = pTransformation.a;
 		final float b2 = pTransformation.b;
 		final float c2 = pTransformation.c;

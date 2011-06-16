@@ -19,18 +19,24 @@ public interface TimeConstants {
 
 	public static final int MINUTESPERHOUR = 60;
 
+	public static final int MILLISECONDSPERSECOND = 1000;
+	public static final int MICROSECONDSPERSECOND = 1000000;
+	public static final long NANOSECONDSPERSECOND = 1000000000;
+
+	public static final long MICROSECONDSPERMILLISECOND = MICROSECONDSPERSECOND / MILLISECONDSPERSECOND;
+
+	public static final long NANOSECONDSPERMICROSECOND = NANOSECONDSPERSECOND / MICROSECONDSPERSECOND;
+	public static final long NANOSECONDSPERMILLISECOND = NANOSECONDSPERSECOND / MILLISECONDSPERSECOND;
+
+	public static final float SECONDSPERNANOSECOND = 1f / NANOSECONDSPERSECOND;
+	public static final float SECONDSPERMICROSECOND = 1f / MICROSECONDSPERSECOND;
+	public static final float SECONDSPERMILLISECOND = 1f / MILLISECONDSPERSECOND;
 	public static final int SECONDSPERMINUTE = 60;
 	public static final int SECONDSPERHOUR = SECONDSPERMINUTE * MINUTESPERHOUR;
 	public static final int SECONDSPERDAY = SECONDSPERHOUR * HOURSPERDAY;
 	public static final int SECONDSPERWEEK = SECONDSPERDAY * DAYSPERWEEK;
 	public static final int SECONDSPERMONTH = SECONDSPERDAY * DAYSPERMONTH;
 	public static final int SECONDSPERYEAR = SECONDSPERMONTH * MONTHSPERYEAR;
-
-	public static final int MILLISECONDSPERSECOND = 1000;
-
-	public static final long NANOSECONDSPERSECOND = 1000000000;
-	public static final long NANOSECONDSPERMILLISECOND = NANOSECONDSPERSECOND / MILLISECONDSPERSECOND;
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

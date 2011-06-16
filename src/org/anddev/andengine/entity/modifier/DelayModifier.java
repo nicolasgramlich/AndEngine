@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.IEntity;
  * @author Nicolas Gramlich
  * @since 22:55:13 - 19.03.2010
  */
-public class DelayModifier extends DurationShapeModifier {
+public class DelayModifier extends DurationEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

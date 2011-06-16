@@ -28,12 +28,12 @@ public class ParallelBackgroundModifier extends ParallelModifier<IBackground> im
 		super(pBackgroundModifierListener, pBackgroundModifiers);
 	}
 
-	protected ParallelBackgroundModifier(final ParallelBackgroundModifier pParallelBackgroundModifier) {
+	protected ParallelBackgroundModifier(final ParallelBackgroundModifier pParallelBackgroundModifier) throws CloneNotSupportedException {
 		super(pParallelBackgroundModifier);
 	}
 
 	@Override
-	public ParallelBackgroundModifier clone() {
+	public ParallelBackgroundModifier clone() throws CloneNotSupportedException {
 		return new ParallelBackgroundModifier(this);
 	}
 

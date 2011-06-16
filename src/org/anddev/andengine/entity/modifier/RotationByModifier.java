@@ -6,7 +6,7 @@ import org.anddev.andengine.entity.IEntity;
  * @author Nicolas Gramlich
  * @since 16:12:52 - 19.03.2010
  */
-public class RotationByModifier extends SingleValueChangeShapeModifier {
+public class RotationByModifier extends SingleValueChangeEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

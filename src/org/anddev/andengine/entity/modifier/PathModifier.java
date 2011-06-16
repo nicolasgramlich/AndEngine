@@ -32,15 +32,23 @@ public class PathModifier extends EntityModifier {
 	// ===========================================================
 
 	public PathModifier(final float pDuration, final Path pPath) {
-		this(pDuration, pPath, null, IEaseFunction.DEFAULT);
+		this(pDuration, pPath, null, null, IEaseFunction.DEFAULT);
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IEaseFunction pEaseFunction) {
-		this(pDuration, pPath, null, pEaseFunction);
+		this(pDuration, pPath, null, null, pEaseFunction);
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IEntityModifierListener pEntityModiferListener) {
 		this(pDuration, pPath, pEntityModiferListener, null, IEaseFunction.DEFAULT);
+	}
+
+	public PathModifier(final float pDuration, final Path pPath, final IPathModifierListener pPathModifierListener) {
+		this(pDuration, pPath, null, pPathModifierListener, IEaseFunction.DEFAULT);
+	}
+
+	public PathModifier(final float pDuration, final Path pPath, final IPathModifierListener pPathModifierListener, final IEaseFunction pEaseFunction) {
+		this(pDuration, pPath, null, pPathModifierListener, pEaseFunction);
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IEntityModifierListener pEntityModiferListener, final IEaseFunction pEaseFunction) {
@@ -72,44 +80,45 @@ public class PathModifier extends EntityModifier {
 		final int modifierCount = moveModifiers.length;
 		for(int i = 0; i < modifierCount; i++) {
 			final float duration = pPath.getSegmentLength(i) / velocity;
-
-			if(i == 0) {
-				/* When the first modifier is initialized, we have to
-				 * fire onWaypointPassed of mPathModifierListener. */
-				moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null, pEaseFunction){
-					@Override
-					protected void onManagedInitialize(final IEntity pEntity) {
-						super.onManagedInitialize(pEntity);
-						if(PathModifier.this.mPathModifierListener != null) {
-							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pEntity, 0);
-						}
-					}
-				};
-			} else {
-				moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null, pEaseFunction);
-			}
+			moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null, pEaseFunction);
 		}
-
 
 		/* Create a new SequenceModifier and register the listeners that
 		 * call through to mEntityModifierListener and mPathModifierListener. */
 		this.mSequenceModifier = new SequenceModifier<IEntity>(
-				new IEntityModifierListener() {
+				new ISubSequenceModifierListener<IEntity>() {
 					@Override
-					public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+					public void onSubSequenceStarted(final IModifier<IEntity> pModifier, final IEntity pEntity, final int pIndex) {
 						if(PathModifier.this.mPathModifierListener != null) {
-							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pEntity, modifierCount);
-						}
-						if(PathModifier.this.mModifierListener != null) {
-							PathModifier.this.mModifierListener.onModifierFinished(PathModifier.this, pEntity);
+							PathModifier.this.mPathModifierListener.onPathWaypointStarted(PathModifier.this, pEntity, pIndex);
 						}
 					}
-				},
-				new ISubSequenceModifierListener<IEntity>() {
+
 					@Override
 					public void onSubSequenceFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity, final int pIndex) {
 						if(PathModifier.this.mPathModifierListener != null) {
-							PathModifier.this.mPathModifierListener.onWaypointPassed(PathModifier.this, pEntity, pIndex);
+							PathModifier.this.mPathModifierListener.onPathWaypointFinished(PathModifier.this, pEntity, pIndex);
+						}
+					}
+				},
+				new IEntityModifierListener() {
+					@Override
+					public void onModifierStarted(final IModifier<IEntity> pModifier, final IEntity pEntity) {
+						if(PathModifier.this.mModifierListener != null) {
+							PathModifier.this.mModifierListener.onModifierStarted(PathModifier.this, pEntity);
+						}
+						if(PathModifier.this.mPathModifierListener != null) {
+							PathModifier.this.mPathModifierListener.onPathStarted(PathModifier.this, pEntity);
+						}
+					}
+
+					@Override
+					public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
+						if(PathModifier.this.mModifierListener != null) {
+							PathModifier.this.mModifierListener.onModifierFinished(PathModifier.this, pEntity);
+						}
+						if(PathModifier.this.mPathModifierListener != null) {
+							PathModifier.this.mPathModifierListener.onPathFinished(PathModifier.this, pEntity);
 						}
 					}
 				},
@@ -117,13 +126,13 @@ public class PathModifier extends EntityModifier {
 		);
 	}
 
-	protected PathModifier(final PathModifier pPathModifier) {
+	protected PathModifier(final PathModifier pPathModifier) throws CloneNotSupportedException {
 		this.mPath = pPathModifier.mPath.clone();
 		this.mSequenceModifier = pPathModifier.mSequenceModifier.clone();
 	}
 
 	@Override
-	public PathModifier clone() {
+	public PathModifier clone() throws CloneNotSupportedException {
 		return new PathModifier(this);
 	}
 
@@ -145,6 +154,11 @@ public class PathModifier extends EntityModifier {
 	}
 
 	@Override
+	public float getSecondsElapsed() {
+		return this.mSequenceModifier.getSecondsElapsed();
+	}
+
+	@Override
 	public float getDuration() {
 		return this.mSequenceModifier.getDuration();
 	}
@@ -163,8 +177,8 @@ public class PathModifier extends EntityModifier {
 	}
 
 	@Override
-	public void onUpdate(final float pSecondsElapsed, final IEntity pEntity) {
-		this.mSequenceModifier.onUpdate(pSecondsElapsed, pEntity);
+	public float onUpdate(final float pSecondsElapsed, final IEntity pEntity) {
+		return this.mSequenceModifier.onUpdate(pSecondsElapsed, pEntity);
 	}
 
 	// ===========================================================
@@ -184,7 +198,10 @@ public class PathModifier extends EntityModifier {
 		// Fields
 		// ===========================================================
 
-		public void onWaypointPassed(final PathModifier pPathModifier, final IEntity pEntity, final int pWaypointIndex);
+		public void onPathStarted(final PathModifier pPathModifier, final IEntity pEntity);
+		public void onPathWaypointStarted(final PathModifier pPathModifier, final IEntity pEntity, final int pWaypointIndex);
+		public void onPathWaypointFinished(final PathModifier pPathModifier, final IEntity pEntity, final int pWaypointIndex);
+		public void onPathFinished(final PathModifier pPathModifier, final IEntity pEntity);
 	}
 
 	public static class Path {
@@ -312,5 +329,4 @@ public class PathModifier extends EntityModifier {
 		// Inner and Anonymous Classes
 		// ===========================================================
 	}
-
 }

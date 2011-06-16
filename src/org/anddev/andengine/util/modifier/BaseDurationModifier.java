@@ -15,7 +15,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 	// Fields
 	// ===========================================================
 
-	private float mTotalSecondsElapsed;
+	private float mSecondsElapsed;
 	protected final float mDuration;
 
 	// ===========================================================
@@ -43,8 +43,9 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 	// Getter & Setter
 	// ===========================================================
 
-	protected float getTotalSecondsElapsed() {
-		return this.mTotalSecondsElapsed;
+	@Override
+	public float getSecondsElapsed() {
+		return this.mSecondsElapsed;
 	}
 
 	// ===========================================================
@@ -61,36 +62,42 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 	protected abstract void onManagedInitialize(final T pItem);
 
 	@Override
-	public final void onUpdate(final float pSecondsElapsed, final T pItem) {
-		if(!this.mFinished){
-			if(this.mTotalSecondsElapsed == 0) {
+	public final float onUpdate(final float pSecondsElapsed, final T pItem) {
+		if(this.mFinished){
+			return 0;
+		} else {
+			if(this.mSecondsElapsed == 0) {
 				this.onManagedInitialize(pItem);
+				if(this.mModifierListener != null) {
+					this.mModifierListener.onModifierStarted(this, pItem);
+				}
 			}
 
-			final float secondsToElapse;
-			if(this.mTotalSecondsElapsed + pSecondsElapsed < this.mDuration) {
-				secondsToElapse = pSecondsElapsed;
+			final float secondsElapsedUsed;
+			if(this.mSecondsElapsed + pSecondsElapsed < this.mDuration) {
+				secondsElapsedUsed = pSecondsElapsed;
 			} else {
-				secondsToElapse = this.mDuration - this.mTotalSecondsElapsed;
+				secondsElapsedUsed = this.mDuration - this.mSecondsElapsed;
 			}
 
-			this.mTotalSecondsElapsed += secondsToElapse;
-			this.onManagedUpdate(secondsToElapse, pItem);
+			this.mSecondsElapsed += secondsElapsedUsed;
+			this.onManagedUpdate(secondsElapsedUsed, pItem);
 
-			if(this.mDuration != -1 && this.mTotalSecondsElapsed >= this.mDuration) {
-				this.mTotalSecondsElapsed = this.mDuration;
+			if(this.mDuration != -1 && this.mSecondsElapsed >= this.mDuration) {
+				this.mSecondsElapsed = this.mDuration;
 				this.mFinished = true;
 				if(this.mModifierListener != null) {
 					this.mModifierListener.onModifierFinished(this, pItem);
 				}
 			}
+			return secondsElapsedUsed;
 		}
 	}
 
 	@Override
 	public void reset() {
 		this.mFinished = false;
-		this.mTotalSecondsElapsed = 0;
+		this.mSecondsElapsed = 0;
 	}
 
 	// ===========================================================

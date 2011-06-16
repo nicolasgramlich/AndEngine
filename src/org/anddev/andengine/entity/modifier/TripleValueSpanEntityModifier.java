@@ -1,13 +1,14 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.util.modifier.BaseDurationModifier;
+import org.anddev.andengine.util.modifier.BaseTripleValueSpanModifier;
+import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * @author Nicolas Gramlich
- * @since 16:10:42 - 19.03.2010
+ * @since 15:35:18 - 29.06.2010
  */
-public abstract class DurationShapeModifier extends BaseDurationModifier<IEntity> implements IEntityModifier {
+public abstract class TripleValueSpanEntityModifier extends BaseTripleValueSpanModifier<IEntity> implements IEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,20 +21,16 @@ public abstract class DurationShapeModifier extends BaseDurationModifier<IEntity
 	// Constructors
 	// ===========================================================
 
-	public DurationShapeModifier() {
-		super();
+	public TripleValueSpanEntityModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pEaseFunction);
 	}
 
-	public DurationShapeModifier(final float pDuration) {
-		super(pDuration);
+	public TripleValueSpanEntityModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pEntityModifierListener, pEaseFunction);
 	}
 
-	public DurationShapeModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener) {
-		super(pDuration, pEntityModifierListener);
-	}
-
-	protected DurationShapeModifier(final DurationShapeModifier pDurationShapeModifier) {
-		super(pDurationShapeModifier);
+	protected TripleValueSpanEntityModifier(final TripleValueSpanEntityModifier pTripleValueSpanEntityModifier) {
+		super(pTripleValueSpanEntityModifier);
 	}
 
 	// ===========================================================

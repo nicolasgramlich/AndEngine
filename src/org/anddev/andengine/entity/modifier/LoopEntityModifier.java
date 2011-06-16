@@ -24,24 +24,28 @@ public class LoopEntityModifier extends LoopModifier<IEntity> implements IEntity
 		super(pEntityModifier);
 	}
 
-	public LoopEntityModifier(final IEntityModifierListener pEntityModifierListener, final int pLoopCount, final ILoopEntityModifierListener pLoopModifierListener, final IEntityModifier pEntityModifier) {
-		super(pEntityModifierListener, pLoopCount, pLoopModifierListener, pEntityModifier);
-	}
-
-	public LoopEntityModifier(final IEntityModifierListener pEntityModifierListener, final int pLoopCount, final IEntityModifier pEntityModifier) {
-		super(pEntityModifierListener, pLoopCount, pEntityModifier);
-	}
-
 	public LoopEntityModifier(final int pLoopCount, final IEntityModifier pEntityModifier) {
-		super(pLoopCount, pEntityModifier);
+		super(pEntityModifier, pLoopCount);
 	}
 
-	protected LoopEntityModifier(final LoopEntityModifier pLoopEntityModifier) {
+	public LoopEntityModifier(final IEntityModifier pEntityModifier, final int pLoopCount, final ILoopEntityModifierListener pLoopModifierListener) {
+		super(pEntityModifier, pLoopCount, pLoopModifierListener);
+	}
+
+	public LoopEntityModifier(final IEntityModifier pEntityModifier, final int pLoopCount, final IEntityModifierListener pEntityModifierListener) {
+		super(pEntityModifier, pLoopCount, pEntityModifierListener);
+	}
+
+	public LoopEntityModifier(final IEntityModifierListener pEntityModifierListener, final int pLoopCount, final ILoopEntityModifierListener pLoopModifierListener, final IEntityModifier pEntityModifier) {
+		super(pEntityModifier, pLoopCount, pLoopModifierListener, pEntityModifierListener);
+	}
+
+	protected LoopEntityModifier(final LoopEntityModifier pLoopEntityModifier) throws CloneNotSupportedException {
 		super(pLoopEntityModifier);
 	}
 
 	@Override
-	public LoopEntityModifier clone() {
+	public LoopEntityModifier clone() throws CloneNotSupportedException {
 		return new LoopEntityModifier(this);
 	}
 

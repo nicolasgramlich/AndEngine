@@ -69,7 +69,7 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	}
 
 	@Override
-	public abstract IModifier<T> clone();
+	public abstract IModifier<T> clone() throws CloneNotSupportedException;
 
 	// ===========================================================
 	// Methods

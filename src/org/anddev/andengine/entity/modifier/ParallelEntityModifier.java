@@ -28,12 +28,12 @@ public class ParallelEntityModifier extends ParallelModifier<IEntity> implements
 		super(pEntityModifierListener, pEntityModifiers);
 	}
 
-	protected ParallelEntityModifier(final ParallelEntityModifier pParallelShapeModifier) {
+	protected ParallelEntityModifier(final ParallelEntityModifier pParallelShapeModifier) throws CloneNotSupportedException {
 		super(pParallelShapeModifier);
 	}
 
 	@Override
-	public ParallelEntityModifier clone() {
+	public ParallelEntityModifier clone() throws CloneNotSupportedException {
 		return new ParallelEntityModifier(this);
 	}
 

@@ -24,24 +24,28 @@ public class LoopBackgroundModifier extends LoopModifier<IBackground> implements
 		super(pBackgroundModifier);
 	}
 
-	public LoopBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final int pLoopCount, final ILoopBackgroundModifierListener pLoopModifierListener, final IBackgroundModifier pBackgroundModifier) {
-		super(pBackgroundModifierListener, pLoopCount, pLoopModifierListener, pBackgroundModifier);
+	public LoopBackgroundModifier(final IBackgroundModifier pBackgroundModifier, final int pLoopCount) {
+		super(pBackgroundModifier, pLoopCount);
 	}
 
-	public LoopBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final int pLoopCount, final IBackgroundModifier pBackgroundModifier) {
-		super(pBackgroundModifierListener, pLoopCount, pBackgroundModifier);
+	public LoopBackgroundModifier(final IBackgroundModifier pBackgroundModifier, final int pLoopCount, final ILoopBackgroundModifierListener pLoopModifierListener) {
+		super(pBackgroundModifier, pLoopCount, pLoopModifierListener, null);
 	}
 
-	public LoopBackgroundModifier(final int pLoopCount, final IBackgroundModifier pBackgroundModifier) {
-		super(pLoopCount, pBackgroundModifier);
+	public LoopBackgroundModifier(final IBackgroundModifier pBackgroundModifier, final int pLoopCount, final IBackgroundModifierListener pBackgroundModifierListener) {
+		super(pBackgroundModifier, pLoopCount, pBackgroundModifierListener);
 	}
 
-	protected LoopBackgroundModifier(final LoopBackgroundModifier pLoopBackgroundModifier) {
+	public LoopBackgroundModifier(final IBackgroundModifier pBackgroundModifier, final int pLoopCount, final ILoopBackgroundModifierListener pLoopModifierListener, final IBackgroundModifierListener pBackgroundModifierListener) {
+		super(pBackgroundModifier, pLoopCount, pLoopModifierListener, pBackgroundModifierListener);
+	}
+
+	protected LoopBackgroundModifier(final LoopBackgroundModifier pLoopBackgroundModifier) throws CloneNotSupportedException {
 		super(pLoopBackgroundModifier);
 	}
 
 	@Override
-	public LoopBackgroundModifier clone() {
+	public LoopBackgroundModifier clone() throws CloneNotSupportedException {
 		return new LoopBackgroundModifier(this);
 	}
 

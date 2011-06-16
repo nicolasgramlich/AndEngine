@@ -23,21 +23,25 @@ public class SequenceBackgroundModifier extends SequenceModifier<IBackground> im
 	public SequenceBackgroundModifier(final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
 		super(pBackgroundModifiers);
 	}
+	
+	public SequenceBackgroundModifier(final ISubSequenceBackgroundModifierListener pSubSequenceBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
+		super(pSubSequenceBackgroundModifierListener, pBackgroundModifiers);
+	}
 
 	public SequenceBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
 		super(pBackgroundModifierListener, pBackgroundModifiers);
 	}
 
-	public SequenceBackgroundModifier(final IBackgroundModifierListener pBackgroundModifierListener, final ISubSequenceBackgroundModifierListener pSubSequenceBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
-		super(pBackgroundModifierListener, pSubSequenceBackgroundModifierListener, pBackgroundModifiers);
+	public SequenceBackgroundModifier(final ISubSequenceBackgroundModifierListener pSubSequenceBackgroundModifierListener, final IBackgroundModifierListener pBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
+		super(pSubSequenceBackgroundModifierListener, pBackgroundModifierListener, pBackgroundModifiers);
 	}
 
-	protected SequenceBackgroundModifier(final SequenceBackgroundModifier pSequenceBackgroundModifier) {
+	protected SequenceBackgroundModifier(final SequenceBackgroundModifier pSequenceBackgroundModifier) throws CloneNotSupportedException {
 		super(pSequenceBackgroundModifier);
 	}
 
 	@Override
-	public SequenceBackgroundModifier clone() {
+	public SequenceBackgroundModifier clone() throws CloneNotSupportedException {
 		return new SequenceBackgroundModifier(this);
 	}
 

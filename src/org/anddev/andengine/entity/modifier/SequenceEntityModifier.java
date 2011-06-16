@@ -24,20 +24,24 @@ public class SequenceEntityModifier extends SequenceModifier<IEntity> implements
 		super(pEntityModifiers);
 	}
 
+	public SequenceEntityModifier(final ISubSequenceShapeModifierListener pSubSequenceShapeModifierListener, final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
+		super(pSubSequenceShapeModifierListener, pEntityModifiers);
+	}
+
 	public SequenceEntityModifier(final IEntityModifierListener pEntityModifierListener, final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
 		super(pEntityModifierListener, pEntityModifiers);
 	}
 
-	public SequenceEntityModifier(final IEntityModifierListener pEntityModifierListener, final ISubSequenceShapeModifierListener pSubSequenceShapeModifierListener, final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
-		super(pEntityModifierListener, pSubSequenceShapeModifierListener, pEntityModifiers);
+	public SequenceEntityModifier(final ISubSequenceShapeModifierListener pSubSequenceShapeModifierListener, final IEntityModifierListener pEntityModifierListener, final IEntityModifier... pEntityModifiers) throws IllegalArgumentException {
+		super(pSubSequenceShapeModifierListener, pEntityModifierListener, pEntityModifiers);
 	}
 
-	protected SequenceEntityModifier(final SequenceEntityModifier pSequenceShapeModifier) {
+	protected SequenceEntityModifier(final SequenceEntityModifier pSequenceShapeModifier) throws CloneNotSupportedException {
 		super(pSequenceShapeModifier);
 	}
 
 	@Override
-	public SequenceEntityModifier clone() {
+	public SequenceEntityModifier clone() throws CloneNotSupportedException {
 		return new SequenceEntityModifier(this);
 	}
 

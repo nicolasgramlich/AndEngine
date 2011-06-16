@@ -20,11 +20,12 @@ public interface IModifier<T> extends Cloneable {
 	public boolean isRemoveWhenFinished();
 	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
 
-	public IModifier<T> clone();
+	public IModifier<T> clone() throws CloneNotSupportedException;
 
+	public float getSecondsElapsed();
 	public float getDuration();
 
-	public void onUpdate(final float pSecondsElapsed, final T pItem);
+	public float onUpdate(final float pSecondsElapsed, final T pItem);
 
 	public IModifierListener<T> getModifierListener();
 	public void setModifierListener(final IModifierListener<T> pModifierListener);
@@ -42,6 +43,7 @@ public interface IModifier<T> extends Cloneable {
 		// Methods
 		// ===========================================================
 
+		public void onModifierStarted(final IModifier<T> pModifier, final T pItem);
 		public void onModifierFinished(final IModifier<T> pModifier, final T pItem);
 	}
 }

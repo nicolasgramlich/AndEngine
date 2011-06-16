@@ -16,6 +16,9 @@ public interface IBackgroundModifier extends IModifier<IBackground> {
 	// Methods
 	// ===========================================================
 
+	@Override
+	public IBackgroundModifier clone() throws CloneNotSupportedException;
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

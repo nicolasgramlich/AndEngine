@@ -7,7 +7,7 @@ import org.anddev.andengine.util.modifier.ease.IEaseFunction;
  * @author Nicolas Gramlich
  * @since 16:12:52 - 19.03.2010
  */
-public class MoveModifier extends DoubleValueSpanShapeModifier {
+public class MoveModifier extends DoubleValueSpanEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -7,7 +7,7 @@ import org.anddev.andengine.util.modifier.ease.IEaseFunction;
  * @author Nicolas Gramlich
  * @since 15:39:50 - 29.06.2010
  */
-public class ColorModifier extends TripleValueSpanShapeModifier {
+public class ColorModifier extends TripleValueSpanEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -177,20 +177,20 @@ public class Transformation {
 		this.postConcat(a2, b2, c2, d2, tx2, ty2);
 	}
 
-	private void postConcat(final float a2, final float b2, final float c2, final float d2, final float tx2, final float ty2) {
-		final float a1 = this.a;
-		final float b1 = this.b;
-		final float c1 = this.c;
-		final float d1 = this.d;
-		final float tx1 = this.tx;
-		final float ty1 = this.ty;
+	private void postConcat(final float pA, final float pB, final float pC, final float pD, final float pTX, final float pTY) {
+		final float a = this.a;
+		final float b = this.b;
+		final float c = this.c;
+		final float d = this.d;
+		final float tx = this.tx;
+		final float ty = this.ty;
 
-		this.a = a1 * a2 + b1 * c2;
-		this.b = a1 * b2 + b1 * d2;
-		this.c = c1 * a2 + d1 * c2;
-		this.d = c1 * b2 + d1 * d2;
-		this.tx = tx1 * a2 + ty1 * c2 + tx2;
-		this.ty = tx1 * b2 + ty1 * d2 + ty2;
+		this.a = a * pA + b * pC;
+		this.b = a * pB + b * pD;
+		this.c = c * pA + d * pC;
+		this.d = c * pB + d * pD;
+		this.tx = tx * pA + ty * pC + pTX;
+		this.ty = tx * pB + ty * pD + pTY;
 	}
 
 	public void preConcat(final Transformation pTransformation) {
@@ -204,20 +204,20 @@ public class Transformation {
 		this.preConcat(a1, b1, c1, d1, tx1, ty1);
 	}
 
-	private void preConcat(final float a1, final float b1, final float c1, final float d1, final float tx1, final float ty1) {
-		final float a2 = this.a;
-		final float b2 = this.b;
-		final float c2 = this.c;
-		final float d2 = this.d;
-		final float tx2 = this.tx;
-		final float ty2 = this.ty;
+	private void preConcat(final float pA, final float pB, final float pC, final float pD, final float pTX, final float pTY) {
+		final float a = this.a;
+		final float b = this.b;
+		final float c = this.c;
+		final float d = this.d;
+		final float tx = this.tx;
+		final float ty = this.ty;
 
-		this.a = a1 * a2 + b1 * c2;
-		this.b = a1 * b2 + b1 * d2;
-		this.c = c1 * a2 + d1 * c2;
-		this.d = c1 * b2 + d1 * d2;
-		this.tx = tx1 * a2 + ty1 * c2 + tx2;
-		this.ty = tx1 * b2 + ty1 * d2 + ty2;
+		this.a = pA * a + pB * c;
+		this.b = pA * b + pB * d;
+		this.c = pC * a + pD * c;
+		this.d = pC * b + pD * d;
+		this.tx = pTX * a + pTY * c + tx;
+		this.ty = pTX * b + pTY * d + ty;
 	}
 
 	public void transform(final float[] pVertices) {

@@ -343,8 +343,38 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public float[] convertLocalToSceneCoordinates(final float pX, final float pY, final float[] pReuse) {
+		return this.mMenuItem.convertLocalToSceneCoordinates(pX, pY, pReuse);
+	}
+
+	@Override
+	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates) {
+		return this.mMenuItem.convertLocalToSceneCoordinates(pCoordinates);
+	}
+
+	@Override
+	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates, final float[] pReuse) {
+		return this.mMenuItem.convertLocalToSceneCoordinates(pCoordinates, pReuse);
+	}
+
+	@Override
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
 		return this.mMenuItem.convertSceneToLocalCoordinates(pX, pY);
+	}
+
+	@Override
+	public float[] convertSceneToLocalCoordinates(final float pX, final float pY, final float[] pReuse) {
+		return this.mMenuItem.convertSceneToLocalCoordinates(pX, pY, pReuse);
+	}
+
+	@Override
+	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates) {
+		return this.mMenuItem.convertSceneToLocalCoordinates(pCoordinates);
+	}
+
+	@Override
+	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates, final float[] pReuse) {
+		return this.mMenuItem.convertSceneToLocalCoordinates(pCoordinates, pReuse);
 	}
 
 	@Override

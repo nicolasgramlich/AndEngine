@@ -568,7 +568,7 @@ public class Entity implements IEntity {
 		final Transformation localToParentTransformation = this.mLocalToParentTransformation;
 		if(this.mLocalToParentTransformationDirty) {
 			localToParentTransformation.setToIdentity();
-			
+
 			/* Scale. */
 			final float scaleX = this.mScaleX;
 			final float scaleY = this.mScaleY;
@@ -673,24 +673,88 @@ public class Entity implements IEntity {
 		return sceneToLocalTransformation;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.IEntity#convertLocalToSceneCoordinates(float, float)
+	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
-		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_X] = pX;
-		Entity.VERTICES_LOCAL_TO_SCENE_TMP[Constants.VERTEX_INDEX_Y] = pY;
-
-		this.getLocalToSceneTransformation().transform(Entity.VERTICES_LOCAL_TO_SCENE_TMP);
-
-		return Entity.VERTICES_LOCAL_TO_SCENE_TMP;
+		return this.convertLocalToSceneCoordinates(pX, pY, VERTICES_LOCAL_TO_SCENE_TMP);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.IEntity#convertLocalToSceneCoordinates(float, float, float[])
+	 */
+	@Override
+	public float[] convertLocalToSceneCoordinates(final float pX, final float pY, final float[] pReuse) {
+		pReuse[Constants.VERTEX_INDEX_X] = pX;
+		pReuse[Constants.VERTEX_INDEX_Y] = pY;
+
+		this.getLocalToSceneTransformation().transform(pReuse);
+
+		return pReuse;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.IEntity#convertLocalToSceneCoordinates(float[])
+	 */
+	@Override
+	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates) {
+		return this.convertSceneToLocalCoordinates(pCoordinates, VERTICES_LOCAL_TO_SCENE_TMP);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.IEntity#convertLocalToSceneCoordinates(float[], float[])
+	 */
+	@Override
+	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates, final float[] pReuse) {
+		pReuse[Constants.VERTEX_INDEX_X] = pCoordinates[Constants.VERTEX_INDEX_X];
+		pReuse[Constants.VERTEX_INDEX_Y] = pCoordinates[Constants.VERTEX_INDEX_Y];
+
+		this.getLocalToSceneTransformation().transform(pReuse);
+
+		return pReuse;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.IEntity#convertSceneToLocalCoordinates(float, float)
+	 */
 	@Override
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
-		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_X] = pX;
-		Entity.VERTICES_SCENE_TO_LOCAL_TMP[Constants.VERTEX_INDEX_Y] = pY;
+		return this.convertSceneToLocalCoordinates(pX, pY, VERTICES_SCENE_TO_LOCAL_TMP);
+	}
 
-		this.getSceneToLocalTransformation().transform(Entity.VERTICES_SCENE_TO_LOCAL_TMP);
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.IEntity#convertSceneToLocalCoordinates(float, float, float[])
+	 */
+	@Override
+	public float[] convertSceneToLocalCoordinates(final float pX, final float pY, final float[] pReuse) {
+		pReuse[Constants.VERTEX_INDEX_X] = pX;
+		pReuse[Constants.VERTEX_INDEX_Y] = pY;
 
-		return Entity.VERTICES_SCENE_TO_LOCAL_TMP;
+		this.getSceneToLocalTransformation().transform(pReuse);
+
+		return pReuse;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.IEntity#convertSceneToLocalCoordinates(float[])
+	 */
+	@Override
+	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates) {
+		return this.convertSceneToLocalCoordinates(pCoordinates, VERTICES_SCENE_TO_LOCAL_TMP);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.anddev.andengine.entity.IEntity#convertSceneToLocalCoordinates(float[], float[])
+	 */
+	@Override
+	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates, final float[] pReuse) {
+		pReuse[Constants.VERTEX_INDEX_X] = pCoordinates[Constants.VERTEX_INDEX_X];
+		pReuse[Constants.VERTEX_INDEX_Y] = pCoordinates[Constants.VERTEX_INDEX_Y];
+
+		this.getSceneToLocalTransformation().transform(pReuse);
+
+		return pReuse;
 	}
 
 	@Override

@@ -82,13 +82,66 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 
+	/**
+	 * @return a shared(!) float[] of length 2.
+	 */
 	public float[] getSceneCenterCoordinates();
 
+	/**
+	 * @param pX
+	 * @param pY
+	 * @return a shared(!) float[] of length 2.
+	 */
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
+	/**
+	 * @param pX
+	 * @param pY
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] convertLocalToSceneCoordinates(final float pX, final float pY, final float[] pReuse);
+	/**
+	 * @param pCoordinates must be of length 2.
+	 * @return a shared(!) float[] of length 2.
+	 */
+	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates);
+	/**
+	 * @param pCoordinates must be of length 2.
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates, final float[] pReuse);
+	
+	/**
+	 * @param pX
+	 * @param pY
+	 * @return a shared(!) float[] of length 2.
+	 */
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
+	/**
+	 * @param pX
+	 * @param pY
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] convertSceneToLocalCoordinates(final float pX, final float pY, final float[] pReuse);
+	/**
+	 * @param pCoordinates must be of length 2.
+	 * @return a shared(!) float[] of length 2.
+	 */
+	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates);
+	/**
+	 * @param pCoordinates must be of length 2.
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates, final float[] pReuse);
 
 	public Transformation getLocalToSceneTransformation();
 	public Transformation getSceneToLocalTransformation();
+
+//	public Transformation getLocalToParentTransformation(); // TODO Add this method.
+//	public Transformation getParentToLocalTransformation(); // TODO Add this method.
 
 	public int getChildCount();
 

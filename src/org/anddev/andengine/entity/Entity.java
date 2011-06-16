@@ -8,7 +8,6 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
-import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.modifier.EntityModifierList;
 import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;

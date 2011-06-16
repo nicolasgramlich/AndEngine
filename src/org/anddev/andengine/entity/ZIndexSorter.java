@@ -1,9 +1,8 @@
-package org.anddev.andengine.entity.layer;
+package org.anddev.andengine.entity;
 
 import java.util.Comparator;
 import java.util.List;
 
-import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.sort.InsertionSorter;
 
 public class ZIndexSorter extends InsertionSorter<IEntity> {

@@ -51,7 +51,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	}
 
 	public MenuScene(final Camera pCamera, final IOnMenuItemClickListener pOnMenuItemClickListener) {
-		super(1, pCamera);
+		super(pCamera);
 		this.mOnMenuItemClickListener = pOnMenuItemClickListener;
 		this.setOnSceneTouchListener(this);
 		this.setOnAreaTouchListener(this);
@@ -75,7 +75,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 
 	public void addMenuItem(final IMenuItem pMenuItem) {
 		this.mMenuItems.add(pMenuItem);
-		this.getFirstChild().attachChild(pMenuItem);
+		this.attachChild(pMenuItem);
 		this.registerTouchArea(pMenuItem);
 	}
 

@@ -28,7 +28,7 @@ public class PopupScene extends CameraScene {
 	}
 
 	public PopupScene(final Camera pCamera, final Scene pParentScene, final float pDurationSeconds, final Runnable pRunnable) {
-		super(1, pCamera);
+		super(pCamera);
 		this.setBackgroundEnabled(false);
 
 		pParentScene.setChildScene(this, false, true, true);

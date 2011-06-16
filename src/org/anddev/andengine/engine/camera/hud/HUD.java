@@ -30,12 +30,6 @@ public class HUD extends CameraScene {
 		this.setBackgroundEnabled(false);
 	}
 
-	public HUD(final int pLayerCount) {
-		super(pLayerCount);
-
-		this.setBackgroundEnabled(false);
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

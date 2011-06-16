@@ -8,8 +8,6 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.layer.Layer;
-import org.anddev.andengine.entity.layer.ZIndexSorter;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
@@ -68,14 +66,7 @@ public class Scene extends Entity {
 	// ===========================================================
 
 	public Scene() {
-		this(0);
-	}
-
-	public Scene(final int pLayerCount) {
 		super(0, 0);
-		for(int i = pLayerCount - 1; i >= 0; i--) {
-			this.attachChild(new Layer());
-		}
 	}
 
 	// ===========================================================
@@ -92,45 +83,6 @@ public class Scene extends Entity {
 
 	public void setBackground(final IBackground pBackground) {
 		this.mBackground = pBackground;
-	}
-
-	/**
-	 * @deprecated Instead use {@link Scene#getChild(int)}.
-	 */
-	@Deprecated
-	public Layer getLayer(final int pLayerIndex) throws ArrayIndexOutOfBoundsException {
-		return (Layer) this.getChild(pLayerIndex);
-	}
-
-	/**
-	 * @deprecated Instead use {@link Scene#getChildCount()}.
-	 */
-	@Deprecated
-	public int getLayerCount() {
-		return this.getChildCount();
-	}
-
-	/**
-	 * @deprecated Instead use {@link Scene#getFirstChild()}
-	 */
-	@Deprecated
-	public Layer getBottomLayer() {
-		return (Layer) this.getFirstChild();
-	}
-
-	/**
-	 * @deprecated Instead use {@link Scene#getLastChild()}.
-	 */
-	@Deprecated
-	public Layer getTopLayer() {
-		return (Layer) this.getLastChild();
-	}
-
-	/**
-	 * Sorts the {@link Layer} based on their ZIndex. Sort is stable.
-	 */
-	public void sortLayers() {
-		ZIndexSorter.getInstance().sort(this.mChildren);
 	}
 
 	public boolean isBackgroundEnabled() {

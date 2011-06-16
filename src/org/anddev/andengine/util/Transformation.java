@@ -22,8 +22,6 @@ import android.util.FloatMath;
  *  <li><b>ty</b> is the <b>y translation</b></li>
  * </ul>
  *
- * <p>TODO Think if that caching of Transformation through the TransformationPool really needs to be thread-safe or if one simple reused static Transform object is enough.</p>
- * 
  * @author Nicolas Gramlich
  * @since 15:47:18 - 23.12.2010
  */

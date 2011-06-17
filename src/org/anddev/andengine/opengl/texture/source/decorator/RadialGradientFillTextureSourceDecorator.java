@@ -16,6 +16,8 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	private static final float[] POSITIONS_DEFAULT = new float[] { 0.0f, 1.0f }; 
 
 	// ===========================================================
 	// Fields
@@ -34,7 +36,7 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 	}
 
 	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape, final int pFromColor, final int pToColor, final RadialGradientDirection pRadialGradientDirection, final TextureSourceDecoratorOptions pTextureSourceDecoratorOptions) {
-		this(pTextureSource, pTextureSourceDecoratorShape, new int[] { pFromColor, pToColor }, null, pRadialGradientDirection, pTextureSourceDecoratorOptions);
+		this(pTextureSource, pTextureSourceDecoratorShape, new int[] { pFromColor, pToColor }, POSITIONS_DEFAULT, pRadialGradientDirection, pTextureSourceDecoratorOptions);
 	}
 
 	public RadialGradientFillTextureSourceDecorator(final ITextureSource pTextureSource, final ITextureSourceDecoratorShape pTextureSourceDecoratorShape,  final int[] pColors, final float[] pPositions, final RadialGradientDirection pRadialGradientDirection) {
@@ -62,9 +64,8 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pColors, pPositions, TileMode.CLAMP));
 				break;
 			case OUTSIDE_IN:
-				ArrayUtils.reverse(pPositions);
+				ArrayUtils.reverse(pColors);
 				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pColors, pPositions, TileMode.CLAMP));
-				ArrayUtils.reverse(pPositions);
 				break;
 		}
 	}

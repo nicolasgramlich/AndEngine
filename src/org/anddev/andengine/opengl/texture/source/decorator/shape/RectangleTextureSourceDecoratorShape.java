@@ -43,8 +43,9 @@ public class RectangleTextureSourceDecoratorShape implements ITextureSourceDecor
 	public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
 		final float left = pDecoratorOptions.getInsetLeft();
 		final float top = pDecoratorOptions.getInsetTop();
-		final float right = pCanvas.getWidth() - 1 - pDecoratorOptions.getInsetRight();
-		final float bottom = pCanvas.getHeight() - 1 - pDecoratorOptions.getInsetBottom();
+		final float right = pCanvas.getWidth() - pDecoratorOptions.getInsetRight();
+		final float bottom = pCanvas.getHeight() - pDecoratorOptions.getInsetBottom();
+		
 		pCanvas.drawRect(left, top, right, bottom, pPaint);
 	}
 

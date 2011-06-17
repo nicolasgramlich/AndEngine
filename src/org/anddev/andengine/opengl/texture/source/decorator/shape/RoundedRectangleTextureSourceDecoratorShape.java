@@ -60,8 +60,8 @@ public class RoundedRectangleTextureSourceDecoratorShape implements ITextureSour
 	public void onDecorateBitmap(final Canvas pCanvas, final Paint pPaint, final TextureSourceDecoratorOptions pDecoratorOptions) {
 		final float left = pDecoratorOptions.getInsetLeft();
 		final float top = pDecoratorOptions.getInsetTop();
-		final float right = pCanvas.getWidth() - 1 - pDecoratorOptions.getInsetRight();
-		final float bottom = pCanvas.getHeight() - 1 - pDecoratorOptions.getInsetBottom();
+		final float right = pCanvas.getWidth() - pDecoratorOptions.getInsetRight();
+		final float bottom = pCanvas.getHeight() - pDecoratorOptions.getInsetBottom();
 
 		this.mRectF.set(left, top, right, bottom);
 

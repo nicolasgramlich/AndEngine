@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.texture.source.decorator;
 
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.texture.source.decorator.shape.ITextureSourceDecoratorShape;
+import org.anddev.andengine.util.ArrayUtils;
 
 import android.graphics.Paint.Style;
 import android.graphics.RadialGradient;
@@ -61,7 +62,9 @@ public class RadialGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pColors, pPositions, TileMode.CLAMP));
 				break;
 			case OUTSIDE_IN:
+				ArrayUtils.reverse(pPositions);
 				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pColors, pPositions, TileMode.CLAMP));
+				ArrayUtils.reverse(pPositions);
 				break;
 		}
 	}

@@ -48,10 +48,10 @@ public class CircleTextureSourceDecoratorShape implements ITextureSourceDecorato
 		final float width = pCanvas.getWidth() - pDecoratorOptions.getInsetLeft() - pDecoratorOptions.getInsetRight();
 		final float height = pCanvas.getHeight() - pDecoratorOptions.getInsetTop() - pDecoratorOptions.getInsetBottom();
 
-		final float centerX = (pCanvas.getWidth() + pDecoratorOptions.getInsetLeft() - pDecoratorOptions.getInsetRight()) / 2;
-		final float centerY = (pCanvas.getHeight() + pDecoratorOptions.getInsetTop() - pDecoratorOptions.getInsetBottom()) / 2;
+		final float centerX = (pCanvas.getWidth() + pDecoratorOptions.getInsetLeft() - pDecoratorOptions.getInsetRight()) * 0.5f;
+		final float centerY = (pCanvas.getHeight() + pDecoratorOptions.getInsetTop() - pDecoratorOptions.getInsetBottom()) * 0.5f;
 
-		final float radius = Math.min(width / 2, height / 2);
+		final float radius = Math.min(width * 0.5f, height * 0.5f);
 
 		pCanvas.drawCircle(centerX, centerY, radius, pPaint);
 	}

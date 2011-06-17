@@ -48,13 +48,13 @@ public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 
 		this.mPaint.setStyle(Style.FILL);
 
-		final int width = pTextureSource.getWidth();
-		final int height = pTextureSource.getHeight();
+		final int right = pTextureSource.getWidth() - 1;
+		final int bottom = pTextureSource.getHeight() - 1;
 
-		final float fromX = pLinearGradientDirection.getFromX() * width;
-		final float fromY = pLinearGradientDirection.getFromY() * height;
-		final float toX = pLinearGradientDirection.getToX() * width;
-		final float toY = pLinearGradientDirection.getToY() * height;
+		final float fromX = pLinearGradientDirection.getFromX(right);
+		final float fromY = pLinearGradientDirection.getFromY(bottom);
+		final float toX = pLinearGradientDirection.getToX(right);
+		final float toY = pLinearGradientDirection.getToY(bottom);
 
 		this.mPaint.setShader(new LinearGradient(fromX, fromY, toX, toY, pColors, pPositions, TileMode.CLAMP));
 	}
@@ -122,20 +122,20 @@ public class LinearGradientFillTextureSourceDecorator extends BaseShapeTextureSo
 		// Getter & Setter
 		// ===========================================================
 
-		final int getFromX() {
-			return this.mFromX;
+		final int getFromX(int pRight) {
+			return this.mFromX * pRight;
 		}
 
-		final int getFromY() {
-			return this.mFromY;
+		final int getFromY(int pBottom) {
+			return this.mFromY * pBottom;
 		}
 
-		final int getToX() {
-			return this.mToX;
+		final int getToX(int pRight) {
+			return this.mToX * pRight;
 		}
 
-		final int getToY() {
-			return this.mToY;
+		final int getToY(int pBottom) {
+			return this.mToY * pBottom;
 		}
 
 		// ===========================================================

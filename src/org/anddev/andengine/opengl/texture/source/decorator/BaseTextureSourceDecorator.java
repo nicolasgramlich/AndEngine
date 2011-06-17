@@ -114,10 +114,10 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 		// Fields
 		// ===========================================================
 
-		private float mInsetLeft = 0.0f;
-		private float mInsetRight = 0.0f;
-		private float mInsetTop = 0.0f;
-		private float mInsetBottom = 0.0f;
+		private float mInsetLeft = 0.25f;
+		private float mInsetRight = 0.25f;
+		private float mInsetTop = 0.25f;
+		private float mInsetBottom = 0.25f;
 
 		private boolean mAntiAliasing;
 

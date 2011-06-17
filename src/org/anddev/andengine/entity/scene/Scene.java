@@ -69,6 +69,7 @@ public class Scene extends Entity {
 
 	}
 
+	@Deprecated
 	public Scene(final int pChildCount) {
 		for(int i = 0; i < pChildCount; i++) {
 			this.attachChild(new Entity());

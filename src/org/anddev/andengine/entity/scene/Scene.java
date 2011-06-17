@@ -66,7 +66,13 @@ public class Scene extends Entity {
 	// ===========================================================
 
 	public Scene() {
-		super(0, 0);
+
+	}
+
+	public Scene(final int pChildCount) {
+		for(int i = 0; i < pChildCount; i++) {
+			this.attachChild(new Entity());
+		}
 	}
 
 	// ===========================================================

@@ -154,7 +154,7 @@ public abstract class RectangularShape extends Shape {
 		if(pOtherShape instanceof RectangularShape) {
 			final RectangularShape pOtherRectangularShape = (RectangularShape) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(this, pOtherRectangularShape);
-		} else if(pOtherShape instanceof RectangularShape) {
+		} else if(pOtherShape instanceof Line) {
 			final Line line = (Line) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(this, line);
 		} else {

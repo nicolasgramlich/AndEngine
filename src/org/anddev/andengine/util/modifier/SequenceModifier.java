@@ -109,7 +109,7 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 			return 0;
 		} else {
 			float secondsElapsedRemaining = pSecondsElapsed;
-			while(secondsElapsedRemaining > 0) {
+			while(secondsElapsedRemaining > 0 && !this.mFinished) {
 				secondsElapsedRemaining -= this.mSubSequenceModifiers[this.mCurrentSubSequenceModifierIndex].onUpdate(secondsElapsedRemaining, pItem);
 			}
 

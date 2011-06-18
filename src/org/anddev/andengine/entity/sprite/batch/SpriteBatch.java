@@ -20,6 +20,7 @@ import org.anddev.andengine.opengl.vertex.SpriteBatchVertexBuffer;
 /**
  * TODO Texture could be semi-changeable, being resetting to null in end(...)
  * TODO Add sth like "SpriteGroup extends SpriteBatch"-subclass that has: "private final SmartList<BaseSprite> mSprites = new SmartList<BaseSprite>();" and draws all of them in onDrawSpriteBatch().
+ * TODO Make use of pGL.glColorPointer(size, type, stride, pointer) which should allow individual color tinting.
  * 
  * @author Nicolas Gramlich
  * @since 11:45:48 - 14.06.2011

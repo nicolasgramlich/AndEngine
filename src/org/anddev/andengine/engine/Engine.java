@@ -572,7 +572,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			this.mAccelerometerListener = pAccelerometerListener;
 
 			if(this.mAccelerometerData == null) {
-				this.mAccelerometerData = new AccelerometerData();
+				final Display display = ((WindowManager) pContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+				final int displayRotation = display.getOrientation();
+				this.mAccelerometerData = new AccelerometerData(displayRotation);
 			}
 
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pAccelerometerSensorOptions.getSensorDelay());

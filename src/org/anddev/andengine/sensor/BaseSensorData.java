@@ -17,13 +17,16 @@ public class BaseSensorData {
 
 	protected final float[] mValues;
 	protected int mAccuracy;
+	protected int mDisplayRotation;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseSensorData(final int pValueCount) {
+	public BaseSensorData(final int pValueCount, int pDisplayRotation) {
 		this.mValues = new float[pValueCount];
+
+		this.mDisplayRotation = pDisplayRotation;
 	}
 
 	// ===========================================================
@@ -35,7 +38,7 @@ public class BaseSensorData {
 	}
 
 	public void setValues(final float[] pValues) {
-		System.arraycopy(pValues, 0, mValues, 0, pValues.length);
+		System.arraycopy(pValues, 0, this.mValues, 0, pValues.length);
 	}
 
 	public void setAccuracy(final int pAccuracy) {

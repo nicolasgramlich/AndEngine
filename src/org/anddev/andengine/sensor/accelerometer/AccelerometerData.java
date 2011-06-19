@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.anddev.andengine.sensor.BaseSensorData;
 
 import android.hardware.SensorManager;
+import android.view.Surface;
 
 /**
  * @author Nicolas Gramlich
@@ -15,6 +16,50 @@ public class AccelerometerData extends BaseSensorData {
 	// Constants
 	// ===========================================================
 
+	private static final IAxisSwap AXISSWAPS[] = new IAxisSwap[4];
+
+	static {
+		AXISSWAPS[Surface.ROTATION_0] = new IAxisSwap() {
+			@Override
+			public void swapAxis(final float[] pValues) {
+				final float x = -pValues[SensorManager.DATA_X];
+				final float y = pValues[SensorManager.DATA_Y];
+				pValues[SensorManager.DATA_X] = x;
+				pValues[SensorManager.DATA_Y] = y;
+			}
+		};
+
+		AXISSWAPS[Surface.ROTATION_90] = new IAxisSwap() {
+			@Override
+			public void swapAxis(final float[] pValues) {
+				final float x = pValues[SensorManager.DATA_Y];
+				final float y = pValues[SensorManager.DATA_X];
+				pValues[SensorManager.DATA_X] = x;
+				pValues[SensorManager.DATA_Y] = y;
+			}
+		};
+
+		AXISSWAPS[Surface.ROTATION_180] = new IAxisSwap() {
+			@Override
+			public void swapAxis(final float[] pValues) {
+				final float x = pValues[SensorManager.DATA_X];
+				final float y = -pValues[SensorManager.DATA_Y];
+				pValues[SensorManager.DATA_X] = x;
+				pValues[SensorManager.DATA_Y] = y;
+			}
+		};
+
+		AXISSWAPS[Surface.ROTATION_270] = new IAxisSwap() {
+			@Override
+			public void swapAxis(final float[] pValues) {
+				final float x = -pValues[SensorManager.DATA_Y];
+				final float y = -pValues[SensorManager.DATA_X];
+				pValues[SensorManager.DATA_X] = x;
+				pValues[SensorManager.DATA_Y] = y;
+			}
+		};
+	}
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -23,8 +68,8 @@ public class AccelerometerData extends BaseSensorData {
 	// Constructors
 	// ===========================================================
 
-	public AccelerometerData() {
-		super(3);
+	public AccelerometerData(final int pDisplayOrientation) {
+		super(3, pDisplayOrientation);
 	}
 
 	// ===========================================================
@@ -55,6 +100,13 @@ public class AccelerometerData extends BaseSensorData {
 		this.mValues[SensorManager.DATA_Z]  = pZ;
 	}
 
+	@Override
+	public void setValues(final float[] pValues) {
+		super.setValues(pValues);
+
+		AccelerometerData.AXISSWAPS[this.mDisplayRotation].swapAxis(this.mValues);
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -71,4 +123,16 @@ public class AccelerometerData extends BaseSensorData {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	private static interface IAxisSwap {
+		// ===========================================================
+		// Final Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void swapAxis(final float[] pValues);
+	}
 }

@@ -39,6 +39,10 @@ public class SoundFactory {
 		}
 	}
 
+	public static void reset() {
+		SoundFactory.setAssetBasePath("");
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

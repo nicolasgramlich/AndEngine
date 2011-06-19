@@ -39,6 +39,10 @@ public class FontFactory {
 		}
 	}
 
+	public static void reset() {
+		FontFactory.setAssetBasePath("");
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

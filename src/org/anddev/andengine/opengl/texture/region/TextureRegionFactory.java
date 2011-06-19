@@ -26,6 +26,7 @@ public class TextureRegionFactory {
 	// ===========================================================
 
 	private static String sAssetBasePath = "";
+	private static boolean sCreateTextureRegionBuffersManaged;
 
 	// ===========================================================
 	// Constructors
@@ -44,6 +45,15 @@ public class TextureRegionFactory {
 		} else {
 			throw new IllegalArgumentException("pAssetBasePath must end with '/' or be lenght zero.");
 		}
+	}
+
+	public static void setCreateTextureRegionBuffersManaged(final boolean pCreateTextureRegionBuffersManaged) {
+		TextureRegionFactory.sCreateTextureRegionBuffersManaged = pCreateTextureRegionBuffersManaged;
+	}
+
+	public static void reset() {
+		TextureRegionFactory.setAssetBasePath("");
+		TextureRegionFactory.setCreateTextureRegionBuffersManaged(false);
 	}
 
 	// ===========================================================
@@ -87,12 +97,14 @@ public class TextureRegionFactory {
 	public static TextureRegion createFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
 		final TextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight());
 		pTexture.addTextureSource(pTextureSource, textureRegion.getTexturePositionX(), textureRegion.getTexturePositionY());
+		textureRegion.setTextureRegionBufferManaged(sCreateTextureRegionBuffersManaged);
 		return textureRegion;
 	}
 
 	public static TiledTextureRegion createTiledFromSource(final Texture pTexture, final ITextureSource pTextureSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
 		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight(), pTileColumns, pTileRows);
 		pTexture.addTextureSource(pTextureSource, tiledTextureRegion.getTexturePositionX(), tiledTextureRegion.getTexturePositionY());
+		tiledTextureRegion.setTextureRegionBufferManaged(sCreateTextureRegionBuffersManaged);
 		return tiledTextureRegion;
 	}
 
@@ -130,6 +142,7 @@ public class TextureRegionFactory {
 				textureRegion.setTexturePosition(pCallbackValue.getTexturePositionX(), pCallbackValue.getTexturePositionY());
 			}
 		});
+		textureRegion.setTextureRegionBufferManaged(sCreateTextureRegionBuffersManaged);
 		return textureRegion;
 	}
 
@@ -141,6 +154,7 @@ public class TextureRegionFactory {
 				tiledTextureRegion.setTexturePosition(pCallbackValue.getTexturePositionX(), pCallbackValue.getTexturePositionY());
 			}
 		});
+		tiledTextureRegion.setTextureRegionBufferManaged(sCreateTextureRegionBuffersManaged);
 		return tiledTextureRegion;
 	}
 

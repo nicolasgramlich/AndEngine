@@ -115,10 +115,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	public Engine(final EngineOptions pEngineOptions) {
-		TextureRegionFactory.setAssetBasePath("");
-		SoundFactory.setAssetBasePath("");
-		MusicFactory.setAssetBasePath("");
-		FontFactory.setAssetBasePath("");
+		TextureRegionFactory.reset();
+		SoundFactory.reset();
+		MusicFactory.reset();
+		FontFactory.reset();
 
 		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 

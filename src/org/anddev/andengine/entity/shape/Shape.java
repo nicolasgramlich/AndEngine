@@ -6,6 +6,7 @@ import javax.microedition.khronos.opengles.GL11;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
@@ -75,6 +76,9 @@ public abstract class Shape extends Entity implements IShape {
 		return this.getVertexBuffer().isManaged();
 	}
 
+	/**
+	 * @param pVertexBufferManaged when passing <code>true</code> this {@link Shape} will make its {@link VertexBuffer} unload itself from the active {@link BufferObjectManager}, when this {@link Shape} is finalized/garbage-collected. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
+	 */
 	public void setVertexBufferManaged(final boolean pVertexBufferManaged) {
 		this.getVertexBuffer().setManaged(pVertexBufferManaged);
 	}

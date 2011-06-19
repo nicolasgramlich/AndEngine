@@ -3,6 +3,7 @@ package org.anddev.andengine.opengl.texture.region;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
+import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -114,6 +115,9 @@ public abstract class BaseTextureRegion {
 		return this.mTextureRegionBuffer.isManaged();
 	}
 
+	/**
+	 * @param pVertexBufferManaged when passing <code>true</code> this {@link BaseTextureRegion} will make its {@link TextureRegionBuffer} unload itself from the active {@link BufferObjectManager}, when this {@link BaseTextureRegion} is finalized/garbage-collected.<b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
+	 */
 	public void setTextureRegionBufferManaged(final boolean pTextureRegionBufferManaged) {
 		this.mTextureRegionBuffer.setManaged(pTextureRegionBufferManaged);
 	}

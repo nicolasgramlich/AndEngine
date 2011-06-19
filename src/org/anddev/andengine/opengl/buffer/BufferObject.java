@@ -36,6 +36,11 @@ public abstract class BufferObject {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * @param pCapacity
+	 * @param pDrawType
+	 * @param pManaged when passing <code>true</code> this {@link BufferObject} loads itself to the active {@link BufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
+	 */
 	public BufferObject(final int pCapacity, final int pDrawType, final boolean pManaged) {
 		this.mDrawType = pDrawType;
 		this.mManaged = pManaged;

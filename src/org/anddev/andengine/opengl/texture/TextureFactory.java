@@ -26,9 +26,9 @@ public class TextureFactory {
 	}
 
 	public static Texture createForTextureRegionSize(final TextureRegion pTextureRegion, final TextureOptions pTextureOptions) {
-		final int loadingScreenWidth = pTextureRegion.getWidth();
-		final int loadingScreenHeight = pTextureRegion.getHeight();
-		return new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight), pTextureOptions);
+		final int textureRegionWidth = pTextureRegion.getWidth();
+		final int textureRegionHeight = pTextureRegion.getHeight();
+		return new Texture(MathUtils.nextPowerOfTwo(textureRegionWidth), MathUtils.nextPowerOfTwo(textureRegionHeight), pTextureOptions);
 	}
 
 	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource) {
@@ -36,9 +36,9 @@ public class TextureFactory {
 	}
 
 	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource, final TextureOptions pTextureOptions) {
-		final int loadingScreenWidth = pTextureSource.getWidth();
-		final int loadingScreenHeight = pTextureSource.getHeight();
-		return new Texture(MathUtils.nextPowerOfTwo(loadingScreenWidth), MathUtils.nextPowerOfTwo(loadingScreenHeight), pTextureOptions);
+		final int textureSourceWidth = pTextureSource.getWidth();
+		final int textureSourceHeight = pTextureSource.getHeight();
+		return new Texture(MathUtils.nextPowerOfTwo(textureSourceWidth), MathUtils.nextPowerOfTwo(textureSourceHeight), pTextureOptions);
 	}
 
 	// ===========================================================

@@ -71,6 +71,14 @@ public abstract class Shape extends Entity implements IShape {
 		return this.getHeight() * this.mScaleY;
 	}
 
+	public boolean isVertexBufferManaged() {
+		return this.getVertexBuffer().isManaged();
+	}
+
+	public void setVertexBufferManaged(final boolean pVertexBufferManaged) {
+		this.getVertexBuffer().setManaged(pVertexBufferManaged);
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -111,6 +119,15 @@ public abstract class Shape extends Entity implements IShape {
 		super.reset();
 		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
 		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		final VertexBuffer vertexBuffer = this.getVertexBuffer();
+		if(vertexBuffer.isManaged()) {
+			vertexBuffer.unloadFromActiveBufferObjectManager();
+		}
 	}
 
 	// ===========================================================

@@ -53,7 +53,7 @@ public class RectangleVertexBufferCache {
 		if(cachedRectangleVertexBuffer != null) {
 			return cachedRectangleVertexBuffer;
 		} else {
-			return this.put(pWidth, pHeight, new RectangleVertexBuffer(this.mDrawType));
+			return this.put(pWidth, pHeight, new RectangleVertexBuffer(this.mDrawType, false));
 		}
 	}
 

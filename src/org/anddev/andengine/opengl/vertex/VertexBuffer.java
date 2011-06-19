@@ -19,8 +19,8 @@ public abstract class VertexBuffer extends BufferObject {
 	// Constructors
 	// ===========================================================
 
-	public VertexBuffer(final int pCapacity, final int pDrawType) {
-		super(pCapacity, pDrawType);
+	public VertexBuffer(final int pCapacity, final int pDrawType, final boolean pManaged) {
+		super(pCapacity, pDrawType, pManaged);
 	}
 
 	// ===========================================================

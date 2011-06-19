@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 import org.anddev.andengine.util.SAXUtils;
@@ -57,8 +56,7 @@ public class TMXTiledMap implements TMXConstants {
 		this.mTileWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEWIDTH);
 		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_TILEHEIGHT);
 
-		this.mSharedVertexBuffer = new RectangleVertexBuffer(GL11.GL_STATIC_DRAW);
-		BufferObjectManager.getActiveInstance().loadBufferObject(this.mSharedVertexBuffer);
+		this.mSharedVertexBuffer = new RectangleVertexBuffer(GL11.GL_STATIC_DRAW, true);
 		this.mSharedVertexBuffer.update(this.mTileWidth, this.mTileHeight);
 	}
 
@@ -146,6 +144,13 @@ public class TMXTiledMap implements TMXConstants {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	protected void finalize() throws Throwable {
+		if(this.mSharedVertexBuffer.isManaged()) {
+			this.mSharedVertexBuffer.unloadFromActiveBufferObjectManager();
+		}
+	}
 
 	// ===========================================================
 	// Methods

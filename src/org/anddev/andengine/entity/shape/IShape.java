@@ -28,6 +28,7 @@ public interface IShape extends IEntity, ITouchArea {
 	public float getWidthScaled();
 	public float getHeightScaled();
 
+//	public boolean isVisible(final Camera pCamera);
 	public boolean collidesWith(final IShape pOtherShape);
 
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction);

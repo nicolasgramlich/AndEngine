@@ -29,8 +29,8 @@ public class SpriteBatchVertexBuffer extends VertexBuffer {
 	// Constructors
 	// ===========================================================
 
-	public SpriteBatchVertexBuffer(final int pCapacity, final int pDrawType) {
-		super(pCapacity * 2 * VERTICES_PER_RECTANGLE, pDrawType);
+	public SpriteBatchVertexBuffer(final int pCapacity, final int pDrawType, final boolean pManaged) {
+		super(pCapacity * 2 * VERTICES_PER_RECTANGLE, pDrawType, pManaged);
 	}
 
 	// ===========================================================

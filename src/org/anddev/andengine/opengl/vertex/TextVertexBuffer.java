@@ -26,8 +26,8 @@ public class TextVertexBuffer extends VertexBuffer {
 	// Constructors
 	// ===========================================================
 
-	public TextVertexBuffer(final int pCharacterCount, final HorizontalAlign pHorizontalAlign, final int pDrawType) {
-		super(2 * VERTICES_PER_CHARACTER * pCharacterCount, pDrawType);
+	public TextVertexBuffer(final int pCharacterCount, final HorizontalAlign pHorizontalAlign, final int pDrawType, final boolean pManaged) {
+		super(2 * VERTICES_PER_CHARACTER * pCharacterCount, pDrawType, pManaged);
 
 		this.mHorizontalAlign = pHorizontalAlign;
 	}

@@ -9,7 +9,6 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
 
@@ -51,8 +50,7 @@ public class Line extends Shape {
 
 		this.mLineWidth = pLineWidth;
 
-		this.mLineVertexBuffer = new LineVertexBuffer(GL11.GL_STATIC_DRAW);
-		BufferObjectManager.getActiveInstance().loadBufferObject(this.mLineVertexBuffer);
+		this.mLineVertexBuffer = new LineVertexBuffer(GL11.GL_STATIC_DRAW, true);
 		this.updateVertexBuffer();
 
 		final float width = this.getWidth();

@@ -142,7 +142,6 @@ public class BufferObjectManager {
 				bufferObjectsManaged.remove(bufferObjectToBeUnloaded);
 			}
 		}
-
 	}
 
 	// ===========================================================

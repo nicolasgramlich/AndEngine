@@ -3,7 +3,6 @@ package org.anddev.andengine.opengl.texture.region;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -42,9 +41,7 @@ public abstract class BaseTextureRegion {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 
-		this.mTextureRegionBuffer = new TextureRegionBuffer(this, GL11.GL_STATIC_DRAW);
-
-		BufferObjectManager.getActiveInstance().loadBufferObject(this.mTextureRegionBuffer);
+		this.mTextureRegionBuffer = new TextureRegionBuffer(this, GL11.GL_STATIC_DRAW, true);
 
 		this.initTextureBuffer();
 	}
@@ -111,6 +108,14 @@ public abstract class BaseTextureRegion {
 
 	public void setFlippedVertical(final boolean pFlippedVertical) {
 		this.mTextureRegionBuffer.setFlippedVertical(pFlippedVertical);
+	}
+
+	public boolean isTextureRegionBufferManaged() {
+		return this.mTextureRegionBuffer.isManaged();
+	}
+
+	public void setTextureRegionBufferManaged(final boolean pTextureRegionBufferManaged) {
+		this.mTextureRegionBuffer.setManaged(pTextureRegionBufferManaged);
 	}
 
 	// ===========================================================

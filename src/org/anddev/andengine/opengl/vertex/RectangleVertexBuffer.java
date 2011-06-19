@@ -23,8 +23,8 @@ public class RectangleVertexBuffer extends VertexBuffer {
 	// Constructors
 	// ===========================================================
 
-	public RectangleVertexBuffer(final int pDrawType) {
-		super(2 * VERTICES_PER_RECTANGLE, pDrawType);
+	public RectangleVertexBuffer(final int pDrawType, final boolean pManaged) {
+		super(2 * VERTICES_PER_RECTANGLE, pDrawType, pManaged);
 	}
 
 	// ===========================================================

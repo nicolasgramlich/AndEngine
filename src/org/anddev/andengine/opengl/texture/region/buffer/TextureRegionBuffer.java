@@ -28,8 +28,8 @@ public class TextureRegionBuffer extends BufferObject {
 	// Constructors
 	// ===========================================================
 
-	public TextureRegionBuffer(final BaseTextureRegion pBaseTextureRegion, final int pDrawType) {
-		super(2 * VERTICES_PER_RECTANGLE, pDrawType);
+	public TextureRegionBuffer(final BaseTextureRegion pBaseTextureRegion, final int pDrawType, final boolean pManaged) {
+		super(2 * VERTICES_PER_RECTANGLE, pDrawType, pManaged);
 		this.mTextureRegion = pBaseTextureRegion;
 	}
 

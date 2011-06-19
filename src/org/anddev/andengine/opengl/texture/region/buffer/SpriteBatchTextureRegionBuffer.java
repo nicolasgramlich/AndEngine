@@ -26,8 +26,8 @@ public class SpriteBatchTextureRegionBuffer extends BufferObject {
 	// Constructors
 	// ===========================================================
 
-	public SpriteBatchTextureRegionBuffer(final int pCapacity, final int pDrawType) {
-		super(pCapacity * 2 * VERTICES_PER_RECTANGLE, pDrawType);
+	public SpriteBatchTextureRegionBuffer(final int pCapacity, final int pDrawType, final boolean pManaged) {
+		super(pCapacity * 2 * VERTICES_PER_RECTANGLE, pDrawType, pManaged);
 	}
 
 	// ===========================================================

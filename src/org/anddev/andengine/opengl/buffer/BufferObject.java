@@ -30,19 +30,34 @@ public abstract class BufferObject {
 	private boolean mLoadedToHardware;
 	private boolean mHardwareBufferNeedsUpdate = true;
 
+	private boolean mManaged;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BufferObject(final int pCapacity, final int pDrawType) {
+	public BufferObject(final int pCapacity, final int pDrawType, final boolean pManaged) {
 		this.mDrawType = pDrawType;
+		this.mManaged = pManaged;
 		this.mBufferData = new int[pCapacity];
 		this.mFloatBuffer = new FastFloatBuffer(pCapacity);
+
+		if(pManaged) {
+			this.loadToActiveBufferObjectManager();
+		}
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public boolean isManaged() {
+		return this.mManaged;
+	}
+
+	public void setManaged(final boolean pManaged) {
+		this.mManaged = pManaged;
+	}
 
 	public FastFloatBuffer getFloatBuffer() {
 		return this.mFloatBuffer;
@@ -78,10 +93,9 @@ public abstract class BufferObject {
 			return;
 		}
 
-		GLHelper.bindBuffer(pGL11, hardwareBufferID); // TODO Does this always need to be binded, or are just for buffers of the same 'type'(texture/vertex)?
+		GLHelper.bindBuffer(pGL11, hardwareBufferID); // TODO Does this always need to be bound, or are just for buffers of the same 'type'(texture/vertex)?
 
 		if(this.mHardwareBufferNeedsUpdate) {
-			//			Debug.d("BufferObject.updating: ID = "  + this.mHardwareBufferID);
 			this.mHardwareBufferNeedsUpdate = false;
 			synchronized(this) {
 				GLHelper.bufferData(pGL11, this.mFloatBuffer.mByteBuffer, this.mDrawType);
@@ -89,9 +103,16 @@ public abstract class BufferObject {
 		}
 	}
 
+	public void loadToActiveBufferObjectManager() {
+		BufferObjectManager.getActiveInstance().loadBufferObject(this);
+	}
+
+	public void unloadFromActiveBufferObjectManager() {
+		BufferObjectManager.getActiveInstance().unloadBufferObject(this);
+	}
+
 	public void loadToHardware(final GL11 pGL11) {
 		this.mHardwareBufferID = this.generateHardwareBufferID(pGL11);
-		//		Debug.d("BufferObject.loadToHardware(): ID = " + this.mHardwareBufferID);
 
 		this.mLoadedToHardware = true;
 	}
@@ -100,7 +121,6 @@ public abstract class BufferObject {
 		this.deleteBufferOnHardware(pGL11);
 
 		this.mHardwareBufferID = -1;
-
 		this.mLoadedToHardware = false;
 	}
 

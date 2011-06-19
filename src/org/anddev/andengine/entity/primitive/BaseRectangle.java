@@ -23,7 +23,7 @@ public abstract class BaseRectangle extends RectangularShape {
 	// ===========================================================
 
 	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer(GL11.GL_STATIC_DRAW));
+		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer(GL11.GL_STATIC_DRAW, true));
 		this.updateVertexBuffer();
 	}
 
@@ -41,7 +41,7 @@ public abstract class BaseRectangle extends RectangularShape {
 
 	@Override
 	public RectangleVertexBuffer getVertexBuffer() {
-		return (RectangleVertexBuffer)super.getVertexBuffer();
+		return (RectangleVertexBuffer)this.mVertexBuffer;
 	}
 
 	@Override

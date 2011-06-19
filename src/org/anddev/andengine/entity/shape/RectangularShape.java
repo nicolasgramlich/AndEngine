@@ -5,7 +5,6 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.primitive.Line;
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
@@ -27,7 +26,7 @@ public abstract class RectangularShape extends Shape {
 	protected float mWidth;
 	protected float mHeight;
 
-	private final VertexBuffer mVertexBuffer;
+	protected final VertexBuffer mVertexBuffer;
 
 	// ===========================================================
 	// Constructors
@@ -43,7 +42,6 @@ public abstract class RectangularShape extends Shape {
 		this.mHeight = pHeight;
 
 		this.mVertexBuffer = pVertexBuffer;
-		BufferObjectManager.getActiveInstance().loadBufferObject(this.mVertexBuffer);
 
 		this.mRotationCenterX = pWidth * 0.5f;
 		this.mRotationCenterY = pHeight * 0.5f;

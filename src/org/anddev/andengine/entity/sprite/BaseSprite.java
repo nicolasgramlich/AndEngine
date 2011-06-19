@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.primitive.BaseRectangle;
 import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
+import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
@@ -80,6 +81,14 @@ public abstract class BaseSprite extends BaseRectangle {
 		this.mTextureRegion.onApply(pGL);
 
 		super.doDraw(pGL, pCamera);
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		final TextureRegionBuffer textureRegionBuffer = this.mTextureRegion.getTextureBuffer();
+		if(textureRegionBuffer.isManaged()) {
+			textureRegionBuffer.unloadFromActiveBufferObjectManager();
+		}	
 	}
 
 	// ===========================================================

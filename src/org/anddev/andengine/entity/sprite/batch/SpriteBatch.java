@@ -9,7 +9,6 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -54,12 +53,8 @@ public class SpriteBatch extends Entity {
 	public SpriteBatch(final Texture pTexture, final int pCapacity) {
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
-		this.mSpriteBatchVertexBuffer = new SpriteBatchVertexBuffer(pCapacity, GL11.GL_STATIC_DRAW);
-		this.mSpriteBatchTextureRegionBuffer = new SpriteBatchTextureRegionBuffer(pCapacity, GL11.GL_STATIC_DRAW);
-
-		final BufferObjectManager bufferObjectManager = BufferObjectManager.getActiveInstance();
-		bufferObjectManager.loadBufferObject(this.mSpriteBatchVertexBuffer);
-		bufferObjectManager.loadBufferObject(this.mSpriteBatchTextureRegionBuffer);
+		this.mSpriteBatchVertexBuffer = new SpriteBatchVertexBuffer(pCapacity, GL11.GL_STATIC_DRAW, true);
+		this.mSpriteBatchTextureRegionBuffer = new SpriteBatchTextureRegionBuffer(pCapacity, GL11.GL_STATIC_DRAW, true);
 
 		this.initBlendFunction();
 	}
@@ -115,6 +110,18 @@ public class SpriteBatch extends Entity {
 		super.reset();
 
 		this.initBlendFunction();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		
+		if(this.mSpriteBatchVertexBuffer.isManaged()) {
+			this.mSpriteBatchVertexBuffer.unloadFromActiveBufferObjectManager();
+		}
+		if(this.mSpriteBatchTextureRegionBuffer.isManaged()) {
+			this.mSpriteBatchTextureRegionBuffer.unloadFromActiveBufferObjectManager();
+		}
 	}
 
 	// ===========================================================

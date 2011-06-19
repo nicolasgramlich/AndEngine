@@ -22,8 +22,8 @@ public class TextTextureBuffer extends BufferObject {
 	// Constructors
 	// ===========================================================
 
-	public TextTextureBuffer(final int pCapacity, final int pDrawType) {
-		super(pCapacity, pDrawType);
+	public TextTextureBuffer(final int pCapacity, final int pDrawType, final boolean pManaged) {
+		super(pCapacity, pDrawType, pManaged);
 	}
 
 	// ===========================================================

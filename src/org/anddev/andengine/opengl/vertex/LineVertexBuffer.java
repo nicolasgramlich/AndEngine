@@ -21,8 +21,8 @@ public class LineVertexBuffer extends VertexBuffer {
 	// Constructors
 	// ===========================================================
 
-	public LineVertexBuffer(final int pDrawType) {
-		super(2 * VERTICES_PER_LINE, pDrawType);
+	public LineVertexBuffer(final int pDrawType, final boolean pManaged) {
+		super(2 * VERTICES_PER_LINE, pDrawType, pManaged);
 	}
 
 	// ===========================================================

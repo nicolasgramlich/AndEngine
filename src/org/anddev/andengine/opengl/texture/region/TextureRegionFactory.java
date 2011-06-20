@@ -65,7 +65,9 @@ public class TextureRegionFactory {
 	// ===========================================================
 
 	public static TextureRegion extractFromTexture(final Texture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
-		return new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
+		final TextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
+		textureRegion.setTextureRegionBufferManaged(sCreateTextureRegionBuffersManaged);
+		return textureRegion;
 	}
 
 	// ===========================================================

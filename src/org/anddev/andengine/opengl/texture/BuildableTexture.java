@@ -2,12 +2,14 @@ package org.anddev.andengine.opengl.texture;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
 import org.anddev.andengine.opengl.texture.builder.ITextureBuilder;
 import org.anddev.andengine.opengl.texture.builder.ITextureBuilder.TextureSourcePackingException;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.util.Callback;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 
 /**
  * @author Nicolas Gramlich
@@ -31,37 +33,41 @@ public class BuildableTexture extends Texture {
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
 	 */
-	public BuildableTexture(final int pWidth, final int pHeight) {
-		super(pWidth, pHeight, TextureOptions.DEFAULT, null);
+	public BuildableTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat) {
+		super(pWidth, pHeight, pTextureFormat, TextureOptions.DEFAULT, null);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
 	 * @param pTextureStateListener to be informed when this {@link BuildableTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public BuildableTexture(final int pWidth, final int pHeight, final ITextureStateListener pTextureStateListener) {
-		super(pWidth, pHeight, TextureOptions.DEFAULT, pTextureStateListener);
+	public BuildableTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final ITextureStateListener pTextureStateListener) {
+		super(pWidth, pHeight, pTextureFormat, TextureOptions.DEFAULT, pTextureStateListener);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 */
-	public BuildableTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) throws IllegalArgumentException {
-		super(pWidth, pHeight, pTextureOptions, null);
+	public BuildableTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException {
+		super(pWidth, pHeight, pTextureFormat, pTextureOptions, null);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 * @param pTextureStateListener to be informed when this {@link BuildableTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public BuildableTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
-		super(pWidth, pHeight, pTextureOptions, pTextureStateListener);
+	public BuildableTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+		super(pWidth, pHeight, pTextureFormat, pTextureOptions, pTextureStateListener);
 	}
 
 	// ===========================================================
@@ -186,8 +192,8 @@ public class BuildableTexture extends Texture {
 		}
 
 		@Override
-		public Bitmap onLoadBitmap() {
-			return this.mTextureSource.onLoadBitmap();
+		public Bitmap onLoadBitmap(final Config pBitmapConfig) {
+			return this.mTextureSource.onLoadBitmap(pBitmapConfig);
 		}
 
 		@Override

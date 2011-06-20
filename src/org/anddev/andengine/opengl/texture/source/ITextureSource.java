@@ -1,6 +1,7 @@
 package org.anddev.andengine.opengl.texture.source;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 
 /**
  * @author Nicolas Gramlich
@@ -20,5 +21,5 @@ public interface ITextureSource extends Cloneable {
 
 	public ITextureSource clone();
 
-	public Bitmap onLoadBitmap();
+	public Bitmap onLoadBitmap(final Config pBitmapConfig);
 }

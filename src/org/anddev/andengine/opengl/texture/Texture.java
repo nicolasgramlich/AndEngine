@@ -10,6 +10,7 @@ import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.opengl.GLUtils;
 
 /**
@@ -26,6 +27,8 @@ public class Texture {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private final TextureFormat mTextureFormat;
 
 	private final int mWidth;
 	private final int mHeight;
@@ -47,40 +50,44 @@ public class Texture {
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
 	 */
-	public Texture(final int pWidth, final int pHeight) {
-		this(pWidth, pHeight, TextureOptions.DEFAULT, null);
+	public Texture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat) {
+		this(pWidth, pHeight, pTextureFormat, TextureOptions.DEFAULT, null);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
 	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public Texture(final int pWidth, final int pHeight, final ITextureStateListener pTextureStateListener) {
-		this(pWidth, pHeight, TextureOptions.DEFAULT, pTextureStateListener);
+	public Texture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final ITextureStateListener pTextureStateListener) {
+		this(pWidth, pHeight, pTextureFormat, TextureOptions.DEFAULT, pTextureStateListener);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.  
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 */
-	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) throws IllegalArgumentException {
-		this(pWidth, pHeight, pTextureOptions, null);
+	public Texture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException {
+		this(pWidth, pHeight, pTextureFormat, pTextureOptions, null);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public Texture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+	public Texture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
 		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
 			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
 		}
-
+		this.mTextureFormat = pTextureFormat;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mTextureOptions = pTextureOptions;
@@ -105,6 +112,10 @@ public class Texture {
 
 	void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
+	}
+	
+	public TextureFormat getTextureFormat() {
+		return this.mTextureFormat;
 	}
 
 	public int getWidth() {
@@ -197,6 +208,9 @@ public class Texture {
 	}
 
 	private void writeTextureToHardware(final GL10 pGL) {
+		final Config bitmapConfig = this.mTextureFormat.getBitmapConfig();
+		final int glFormat = this.mTextureFormat.getGLFormat();
+		final int glDataType = this.mTextureFormat.getGLDataType();
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
 
 		final ArrayList<TextureSourceWithLocation> textureSources = this.mTextureSources;
@@ -205,15 +219,15 @@ public class Texture {
 		for(int j = 0; j < textureSourceCount; j++) {
 			final TextureSourceWithLocation textureSourceWithLocation = textureSources.get(j);
 			if(textureSourceWithLocation != null) {
-				final Bitmap bmp = textureSourceWithLocation.onLoadBitmap();
+				final Bitmap bmp = textureSourceWithLocation.onLoadBitmap(bitmapConfig);
 				try{
 					if(bmp == null) {
 						throw new IllegalArgumentException("TextureSource: " + textureSourceWithLocation.toString() + " returned a null Bitmap.");
 					}
 					if(preMultipyAlpha) {
-						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
+						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, glFormat, glDataType);
 					} else {
-						GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE);
+						GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, glFormat, glDataType);
 					}
 
 					bmp.recycle();
@@ -242,7 +256,7 @@ public class Texture {
 	private void allocateAndBindTextureOnHardware(final GL10 pGL) {
 		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
 
-		Texture.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
+		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
 	}
 
 	private void deleteTextureOnHardware(final GL10 pGL) {
@@ -255,8 +269,8 @@ public class Texture {
 		return Texture.HARDWARETEXTUREID_FETCHER[0];
 	}
 
-	private static void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
-		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.ARGB_8888);
+	private void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
+		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, this.mTextureFormat.getBitmapConfig());
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);
 
@@ -360,14 +374,73 @@ public class Texture {
 			return this.mTextureSource.getHeight();
 		}
 
-		public Bitmap onLoadBitmap() {
-			return this.mTextureSource.onLoadBitmap();
+		public Bitmap onLoadBitmap(final Config pBitmapConfig) {
+			return this.mTextureSource.onLoadBitmap(pBitmapConfig);
 		}
 
 		@Override
 		public String toString() {
 			return this.mTextureSource.toString();
 		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
+
+	public enum TextureFormat {
+		// ===========================================================
+		// Elements
+		// ===========================================================
+
+		RGBA_8888(GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, Config.ARGB_8888),
+		RGB_565(GL10.GL_RGB, GL10.GL_UNSIGNED_SHORT_5_6_5, Config.RGB_565);
+
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		private final int mGLFormat;
+		private final int mGLDataType;
+		private final Config mBitmapConfig;
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		private TextureFormat(final int pGLFormat, final int pGLDataType, final Config pBitmapConfig) {
+			this.mGLFormat = pGLFormat;
+			this.mGLDataType = pGLDataType;
+			this.mBitmapConfig = pBitmapConfig;
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		public int getGLFormat() {
+			return this.mGLFormat;
+		}
+
+		public int getGLDataType() {
+			return this.mGLDataType;
+		}
+
+		public Config getBitmapConfig() {
+			return this.mBitmapConfig;
+		}
+
+		// ===========================================================
+		// Methods from SuperClass/Interfaces
+		// ===========================================================
 
 		// ===========================================================
 		// Methods

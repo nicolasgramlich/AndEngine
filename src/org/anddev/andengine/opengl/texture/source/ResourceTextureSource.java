@@ -73,9 +73,9 @@ public class ResourceTextureSource implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap onLoadBitmap() {
+	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
-		decodeOptions.inPreferredConfig = Config.ARGB_8888;
+		decodeOptions.inPreferredConfig = pBitmapConfig;
 //		decodeOptions.inScaled = false; // TODO Check how this behaves with drawable-""/nodpi/ldpi/mdpi/hdpi folders
 		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID, decodeOptions);
 	}

@@ -1,5 +1,6 @@
 package org.anddev.andengine.opengl.texture;
 
+import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.util.MathUtils;
@@ -21,24 +22,24 @@ public class TextureFactory {
 	// Constructors
 	// ===========================================================
 
-	public static Texture createForTextureSourceSize(final TextureRegion pTextureRegion) {
-		return TextureFactory.createForTextureRegionSize(pTextureRegion, TextureOptions.DEFAULT);
+	public static Texture createForTextureSourceSize(final TextureFormat pTextureFormat, final TextureRegion pTextureRegion) {
+		return TextureFactory.createForTextureRegionSize(pTextureFormat, pTextureRegion, TextureOptions.DEFAULT);
 	}
 
-	public static Texture createForTextureRegionSize(final TextureRegion pTextureRegion, final TextureOptions pTextureOptions) {
+	public static Texture createForTextureRegionSize(final TextureFormat pTextureFormat, final TextureRegion pTextureRegion, final TextureOptions pTextureOptions) {
 		final int textureRegionWidth = pTextureRegion.getWidth();
 		final int textureRegionHeight = pTextureRegion.getHeight();
-		return new Texture(MathUtils.nextPowerOfTwo(textureRegionWidth), MathUtils.nextPowerOfTwo(textureRegionHeight), pTextureOptions);
+		return new Texture(MathUtils.nextPowerOfTwo(textureRegionWidth), MathUtils.nextPowerOfTwo(textureRegionHeight), pTextureFormat, pTextureOptions);
 	}
 
-	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource) {
-		return TextureFactory.createForTextureSourceSize(pTextureSource, TextureOptions.DEFAULT);
+	public static Texture createForTextureSourceSize(final TextureFormat pTextureFormat, final ITextureSource pTextureSource) {
+		return TextureFactory.createForTextureSourceSize(pTextureFormat, pTextureSource, TextureOptions.DEFAULT);
 	}
 
-	public static Texture createForTextureSourceSize(final ITextureSource pTextureSource, final TextureOptions pTextureOptions) {
+	public static Texture createForTextureSourceSize(final TextureFormat pTextureFormat, final ITextureSource pTextureSource, final TextureOptions pTextureOptions) {
 		final int textureSourceWidth = pTextureSource.getWidth();
 		final int textureSourceHeight = pTextureSource.getHeight();
-		return new Texture(MathUtils.nextPowerOfTwo(textureSourceWidth), MathUtils.nextPowerOfTwo(textureSourceHeight), pTextureOptions);
+		return new Texture(MathUtils.nextPowerOfTwo(textureSourceWidth), MathUtils.nextPowerOfTwo(textureSourceHeight), pTextureFormat, pTextureOptions);
 	}
 
 	// ===========================================================

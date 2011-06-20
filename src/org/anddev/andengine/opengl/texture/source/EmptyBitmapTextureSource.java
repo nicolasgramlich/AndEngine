@@ -52,8 +52,8 @@ public class EmptyBitmapTextureSource implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap onLoadBitmap() {
-		return Bitmap.createBitmap(this.mWidth, this.mHeight, Config.ARGB_8888);
+	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
+		return Bitmap.createBitmap(this.mWidth, this.mHeight, pBitmapConfig);
 	}
 
 	@Override

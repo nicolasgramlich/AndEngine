@@ -85,9 +85,9 @@ public class FileTextureSource implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap onLoadBitmap() {
+	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
-		decodeOptions.inPreferredConfig = Config.ARGB_8888;
+		decodeOptions.inPreferredConfig = pBitmapConfig;
 
 		InputStream in = null;
 		try {

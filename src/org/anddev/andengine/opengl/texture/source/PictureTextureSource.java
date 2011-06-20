@@ -64,14 +64,14 @@ public abstract class PictureTextureSource implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap onLoadBitmap() {
+	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
 		final Picture picture = this.mPicture;
 		if(picture == null) {
 			Debug.e("Failed loading Bitmap in PictureTextureSource.");
 			return null;
 		}
 
-		final Bitmap bitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, Config.ARGB_8888);
+		final Bitmap bitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, pBitmapConfig);
 		final Canvas canvas = new Canvas(bitmap);
 
 		final float scaleX = (float)this.mWidth / this.mPicture.getWidth();

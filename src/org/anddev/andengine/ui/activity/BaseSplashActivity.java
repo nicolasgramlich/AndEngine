@@ -13,6 +13,7 @@ import org.anddev.andengine.entity.scene.SplashScene;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
@@ -82,7 +83,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	@Override
 	public void onLoadResources() {
-		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(this.mSplashTextureSource, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(TextureFormat.RGBA_8888, this.mSplashTextureSource, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		this.mLoadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
 
 		this.getEngine().getTextureManager().loadTexture(loadingScreenTexture);

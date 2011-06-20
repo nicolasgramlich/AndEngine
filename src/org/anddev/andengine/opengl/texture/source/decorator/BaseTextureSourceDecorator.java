@@ -5,6 +5,7 @@ import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Bitmap.Config;
 
 /**
  * @author Nicolas Gramlich
@@ -77,8 +78,8 @@ public abstract class BaseTextureSourceDecorator implements ITextureSource {
 	}
 
 	@Override
-	public Bitmap onLoadBitmap() {
-		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mTextureSource.onLoadBitmap());
+	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
+		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mTextureSource.onLoadBitmap(pBitmapConfig));
 
 		final Canvas canvas = new Canvas(bitmap);
 		this.onDecorateBitmap(canvas);

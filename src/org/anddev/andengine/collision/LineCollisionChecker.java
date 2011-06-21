@@ -1,5 +1,10 @@
 package org.anddev.andengine.collision;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
+import org.anddev.andengine.entity.primitive.Line;
+
 /**
  * @author Nicolas Gramlich
  * @since 19:27:22 - 17.07.2010
@@ -32,6 +37,16 @@ public class LineCollisionChecker extends ShapeCollisionChecker {
 	public static boolean checkLineCollision(final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
 		return ((BaseCollisionChecker.relativeCCW(pX1, pY1, pX2, pY2, pX3, pY3) * BaseCollisionChecker.relativeCCW(pX1, pY1, pX2, pY2, pX4, pY4) <= 0)
 				&& (BaseCollisionChecker.relativeCCW(pX3, pY3, pX4, pY4, pX1, pY1) * BaseCollisionChecker.relativeCCW(pX3, pY3, pX4, pY4, pX2, pY2) <= 0));
+	}
+	
+	public static void fillVertices(final Line pLine, final float[] pVertices) {
+		pVertices[0 + VERTEX_INDEX_X] = pLine.getX1();
+		pVertices[0 + VERTEX_INDEX_Y] = pLine.getY1();
+
+		pVertices[2 + VERTEX_INDEX_X] = pLine.getX2();
+		pVertices[2 + VERTEX_INDEX_Y] = pLine.getY2();
+
+		pLine.getLocalToSceneTransformation().transform(pVertices);
 	}
 
 	// ===========================================================

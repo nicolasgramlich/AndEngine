@@ -56,7 +56,7 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 
 	public static boolean checkCollision(final RectangularShape pRectangularShape, final Line pLine) {
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShape, VERTICES_COLLISION_TMP_A);
-		RectangularShapeCollisionChecker.fillVertices(pLine, VERTICES_COLLISION_TMP_B);
+		LineCollisionChecker.fillVertices(pLine, VERTICES_COLLISION_TMP_B);
 
 		return ShapeCollisionChecker.checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, 2 * LINE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B);
 	}
@@ -80,16 +80,6 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		pVertices[6 + VERTEX_INDEX_Y] = bottom;
 
 		pRectangularShape.getLocalToSceneTransformation().transform(pVertices);
-	}
-	
-	public static void fillVertices(final Line pLine, final float[] pVertices) {
-		pVertices[0 + VERTEX_INDEX_X] = pLine.getX1();
-		pVertices[0 + VERTEX_INDEX_Y] = pLine.getX2();
-
-		pVertices[2 + VERTEX_INDEX_X] = pLine.getY1();
-		pVertices[2 + VERTEX_INDEX_Y] = pLine.getY2();
-
-		pLine.getLocalToSceneTransformation().transform(pVertices);
 	}
 
 	// ===========================================================

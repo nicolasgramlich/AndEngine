@@ -467,7 +467,7 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return null;
 		}
-		return this.mChildren.remove(pEntityMatcher);
+		return this.mChildren.remove(pEntityMatcher, Entity.PARAMETERCALLABLE_DETACHCHILD);
 	}
 
 	@Override

@@ -58,6 +58,17 @@ public class SmartList<T> extends ArrayList<T> {
 		return null;
 	}
 
+	public T remove(final IMatcher<T> pMatcher, final ParameterCallable<T> pParameterCallable) {
+		for(int i = this.size() - 1; i >= 0; i--) {
+			if(pMatcher.matches(this.get(i))) {
+				final T removed = this.remove(i);
+				pParameterCallable.call(removed);
+				return removed;
+			}
+		}
+		return null;
+	}
+
 	public boolean removeAll(final IMatcher<T> pMatcher) {
 		boolean result = false;
 		for(int i = this.size() - 1; i >= 0; i--) {

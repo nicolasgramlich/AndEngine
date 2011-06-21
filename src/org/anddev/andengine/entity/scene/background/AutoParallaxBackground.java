@@ -15,7 +15,7 @@ public class AutoParallaxBackground extends ParallaxBackground {
 	// Fields
 	// ===========================================================
 
-	private final float mParallaxChangePerSecond;
+	private float mParallaxChangePerSecond;
 
 	// ===========================================================
 	// Constructors
@@ -29,6 +29,10 @@ public class AutoParallaxBackground extends ParallaxBackground {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public void setParallaxChangePerSecond(final float pParallaxChangePerSecond) {
+		this.mParallaxChangePerSecond = pParallaxChangePerSecond;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

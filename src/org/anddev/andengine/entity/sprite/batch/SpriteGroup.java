@@ -89,7 +89,10 @@ public class SpriteGroup extends SpriteBatch {
 		final ArrayList<BaseSprite> sprites = this.mSprites;
 		final int spriteCount = sprites.size();
 		for(int i = 0; i < spriteCount; i++) {
-			super.draw(sprites.get(i));
+			final BaseSprite baseSprite = sprites.get(i);
+			if(baseSprite.isVisible()) {
+				super.draw(baseSprite);
+			}
 		}
 	}
 

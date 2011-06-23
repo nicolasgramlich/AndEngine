@@ -266,14 +266,14 @@ public class Texture {
 			final TextureSourceWithLocation textureSourceWithLocation = textureSources.get(j);
 			if(textureSourceWithLocation != null) {
 				final Bitmap bmp = textureSourceWithLocation.onLoadBitmap(bitmapConfig);
-				try{
+				try {
 					if(bmp == null) {
 						throw new IllegalArgumentException("TextureSource: " + textureSourceWithLocation.toString() + " returned a null Bitmap.");
 					}
 					if(preMultipyAlpha) {
 						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, glFormat, glDataType);
 					} else {
-						GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, glFormat, glDataType);
+						GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, textureSourceWithLocation.getTexturePositionX(), textureSourceWithLocation.getTexturePositionY(), bmp, glFormat, glDataType, this.mTextureFormat);
 					}
 
 					bmp.recycle();

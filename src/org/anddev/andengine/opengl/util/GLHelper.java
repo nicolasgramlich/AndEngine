@@ -9,6 +9,7 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.engine.options.RenderOptions;
+import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
 import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
@@ -187,7 +188,7 @@ public class GLHelper {
 			pGL.glDisable(GL10.GL_SCISSOR_TEST);
 		}
 	}
-	
+
 	public static void enableBlend(final GL10 pGL) {
 		if(!GLHelper.sEnableBlend) {
 			GLHelper.sEnableBlend = true;
@@ -386,49 +387,93 @@ public class GLHelper {
 	 * </br>
 	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 */
-	public static void glTexSubImage2D(final GL10 pGL, final int target, final int level, final int xoffset, final int yoffset, final Bitmap bitmap, final int format, final int type) {
-		final int[] pixels = GLHelper.getPixels(bitmap);
+	public static void glTexSubImage2D(final GL10 pGL, final int pTarget, final int pLevel, final int pXOffset, final int pYOffset, final Bitmap pBitmap, final int pFormat, final int pType, final TextureFormat pTextureFormat) {
+		final int[] pixelsARGB_8888 = GLHelper.getPixelsARGB_8888(pBitmap);
 
-		final Buffer pixelBuffer = GLHelper.convertARGBtoRGBABuffer(pixels);
+		final Buffer pixelBuffer;
+		switch(pTextureFormat) {
+			case RGB_565:
+				pixelBuffer = ByteBuffer.wrap(GLHelper.convertARGB_8888toRGB_565(pixelsARGB_8888));
+				break;
+			case RGBA_8888:
+				pixelBuffer = IntBuffer.wrap(GLHelper.convertARGB_8888toRGBA_8888(pixelsARGB_8888));
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected pTextureFormat: '" + pTextureFormat + "'.");
+		}
 
-		pGL.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, xoffset, yoffset, bitmap.getWidth(), bitmap.getHeight(), GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, pixelBuffer);
+		pGL.glTexSubImage2D(pTarget, pLevel, pXOffset, pYOffset, pBitmap.getWidth(), pBitmap.getHeight(), pFormat, pType, pixelBuffer);
 	}
 
-	private static Buffer convertARGBtoRGBABuffer(final int[] pPixels) {
+	private static int[] convertARGB_8888toRGBA_8888(final int[] pPixelsARGB_8888) {
 		if(GLHelper.IS_LITTLE_ENDIAN) {
-			for(int i = pPixels.length - 1; i >= 0; i--) {
-				final int pixel = pPixels[i];
+			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+				final int pixel = pPixelsARGB_8888[i];
 
 				final int red = ((pixel >> 16) & 0xFF);
 				final int green = ((pixel >> 8) & 0xFF);
 				final int blue = ((pixel) & 0xFF);
 				final int alpha = (pixel >> 24);
 
-				pPixels[i] = alpha << 24 | blue << 16 | green << 8 | red;
+				pPixelsARGB_8888[i] = alpha << 24 | blue << 16 | green << 8 | red;
 			}
 		} else {
-			for(int i = pPixels.length - 1; i >= 0; i--) {
-				final int pixel = pPixels[i];
+			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+				final int pixel = pPixelsARGB_8888[i];
 
 				final int red = ((pixel >> 16) & 0xFF);
 				final int green = ((pixel >> 8) & 0xFF);
 				final int blue = ((pixel) & 0xFF);
 				final int alpha = (pixel >> 24);
 
-				pPixels[i] = red << 24 | green << 16 | blue << 8 | alpha;
+				pPixelsARGB_8888[i] = red << 24 | green << 16 | blue << 8 | alpha;
 			}
 		}
-		return IntBuffer.wrap(pPixels);
+		return pPixelsARGB_8888;
 	}
 
-	public static int[] getPixels(final Bitmap pBitmap) {
+	private static byte[] convertARGB_8888toRGB_565(final int[] pPixelsARGB_8888) {
+		final byte[] pixelsRGB_565 = new byte[pPixelsARGB_8888.length * 2];
+		if(GLHelper.IS_LITTLE_ENDIAN) {
+			for(int i = pPixelsARGB_8888.length - 1, j = pixelsRGB_565.length - 1; i >= 0; i--) {
+				final int pixel = pPixelsARGB_8888[i];
+
+				final int red = ((pixel >> 16) & 0xFF);
+				final int green = ((pixel >> 8) & 0xFF);
+				final int blue = ((pixel) & 0xFF);
+
+				/* Byte1: [R1 R2 R3 R4 R5 G1 G2 G3]
+				 * Byte2: [G4 G5 G6 B1 B2 B3 B4 B5] */
+
+				pixelsRGB_565[j--] = (byte)((red & 0xF8) | (green >> 5));
+				pixelsRGB_565[j--] = (byte)(((green << 3) & 0xE0) | (blue >> 3));
+			}
+		} else {
+			for(int i = pPixelsARGB_8888.length - 1, j = pixelsRGB_565.length - 1; i >= 0; i--) {
+				final int pixel = pPixelsARGB_8888[i];
+
+				final int red = ((pixel >> 16) & 0xFF);
+				final int green = ((pixel >> 8) & 0xFF);
+				final int blue = ((pixel) & 0xFF);
+
+				/* Byte2: [G4 G5 G6 B1 B2 B3 B4 B5]
+				 * Byte1: [R1 R2 R3 R4 R5 G1 G2 G3]*/
+
+				pixelsRGB_565[j--] = (byte)(((green << 3) & 0xE0) | (blue >> 3));
+				pixelsRGB_565[j--] = (byte)((red & 0xF8) | (green >> 5));
+			}
+		}
+		return pixelsRGB_565;
+	}
+
+	public static int[] getPixelsARGB_8888(final Bitmap pBitmap) {
 		final int w = pBitmap.getWidth();
 		final int h = pBitmap.getHeight();
 
-		final int[] pixels = new int[w * h];
-		pBitmap.getPixels(pixels, 0, w, 0, 0, w, h);
+		final int[] pixelsARGB8888 = new int[w * h];
+		pBitmap.getPixels(pixelsARGB8888, 0, w, 0, 0, w, h);
 
-		return pixels;
+		return pixelsARGB8888;
 	}
 
 	// ===========================================================

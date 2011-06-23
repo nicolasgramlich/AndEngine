@@ -470,10 +470,10 @@ public class GLHelper {
 		final int w = pBitmap.getWidth();
 		final int h = pBitmap.getHeight();
 
-		final int[] pixelsARGB8888 = new int[w * h];
-		pBitmap.getPixels(pixelsARGB8888, 0, w, 0, 0, w, h);
+		final int[] pixelsARGB_8888 = new int[w * h];
+		pBitmap.getPixels(pixelsARGB_8888, 0, w, 0, 0, w, h);
 
-		return pixelsARGB8888;
+		return pixelsARGB_8888;
 	}
 
 	// ===========================================================

@@ -1,6 +1,7 @@
 package org.anddev.andengine.util;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -12,9 +13,6 @@ public class SocketUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	public static final String SOCKETEXCEPTION_MESSAGE_SOCKET_CLOSED = "socket closed";
-	public static final String SOCKETEXCEPTION_MESSAGE_SOCKET_IS_CLOSED = "Socket is closed";
 
 	// ===========================================================
 	// Fields
@@ -36,6 +34,12 @@ public class SocketUtils {
 	// Methods
 	// ===========================================================
 
+	public static void closeSocket(final DatagramSocket pDatagramSocket) {
+		if(pDatagramSocket != null && !pDatagramSocket.isClosed()) {
+			pDatagramSocket.close();
+		}
+	}
+
 	public static void closeSocket(final Socket pSocket) {
 		if(pSocket != null && !pSocket.isClosed()) {
 			try {
@@ -46,10 +50,10 @@ public class SocketUtils {
 		}
 	}
 
-	public static void closeSocket(final ServerSocket pSocket) {
-		if(pSocket != null && !pSocket.isClosed()) {
+	public static void closeSocket(final ServerSocket pServerSocket) {
+		if(pServerSocket != null && !pServerSocket.isClosed()) {
 			try {
-				pSocket.close();
+				pServerSocket.close();
 			} catch (final IOException e) {
 				Debug.e(e);
 			}

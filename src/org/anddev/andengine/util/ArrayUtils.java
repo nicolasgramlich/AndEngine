@@ -144,6 +144,26 @@ public class ArrayUtils {
 			i++;
 		}
 	}
+	
+	public static boolean equals(final byte[] pArrayA, final int pOffsetA, final byte[] pArrayB, final int pOffsetB, final int pLength) {
+		final int lastIndexA = pOffsetA + pLength;
+		if(lastIndexA > pArrayA.length) {
+			throw new ArrayIndexOutOfBoundsException(pArrayA.length);
+		}
+		
+		final int lastIndexB = pOffsetB + pLength;
+		if(lastIndexB > pArrayB.length) {
+			throw new ArrayIndexOutOfBoundsException(pArrayB.length);
+		}
+		
+		for(int a = pOffsetA, b = pOffsetB; a < lastIndexA; a++, b++) {
+			if(pArrayA[a] != pArrayB[b]) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 
 	// ===========================================================
 		// Inner and Anonymous Classes

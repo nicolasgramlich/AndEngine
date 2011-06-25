@@ -479,19 +479,19 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void applyToChildren(final IEntityCallable pEntityCallable) {
+	public void callOnChildren(final IEntityCallable pEntityCallable) {
 		if(this.mChildren == null) {
 			return;
 		}
-		this.mChildren.apply(pEntityCallable);
+		this.mChildren.call(pEntityCallable);
 	}
 
 	@Override
-	public void applyToChildren(final IEntityMatcher pEntityMatcher, final IEntityCallable pEntityCallable) {
+	public void callOnChildren(final IEntityMatcher pEntityMatcher, final IEntityCallable pEntityCallable) {
 		if(this.mChildren == null) {
 			return;
 		}
-		this.mChildren.apply(pEntityMatcher, pEntityCallable);
+		this.mChildren.call(pEntityMatcher, pEntityCallable);
 	}
 
 	@Override

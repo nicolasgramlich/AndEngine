@@ -113,14 +113,14 @@ public class SmartList<T> extends ArrayList<T> {
 		return null;
 	}
 
-	public void apply(final ParameterCallable<T> pParameterCallable) {
+	public void call(final ParameterCallable<T> pParameterCallable) {
 		for(int i = this.size() - 1; i >= 0; i--) {
 			final T item = this.get(i);
 			pParameterCallable.call(item);
 		}
 	}
 
-	public void apply(final IMatcher<T> pMatcher, final ParameterCallable<T> pParameterCallable) {
+	public void call(final IMatcher<T> pMatcher, final ParameterCallable<T> pParameterCallable) {
 		for(int i = this.size() - 1; i >= 0; i--) {
 			final T item = this.get(i);
 			if(pMatcher.matches(item)) {

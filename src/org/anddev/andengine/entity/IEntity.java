@@ -196,8 +196,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public void detachChildren();
 
-	public void applyToChildren(final IEntityCallable pEntityCallable);
-	public void applyToChildren(final IEntityMatcher pEntityMatcher, final IEntityCallable pEntityCallable);
+	public void callOnChildren(final IEntityCallable pEntityCallable);
+	public void callOnChildren(final IEntityMatcher pEntityMatcher, final IEntityCallable pEntityCallable);
 
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler);

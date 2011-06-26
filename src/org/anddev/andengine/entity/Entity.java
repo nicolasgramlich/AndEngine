@@ -47,6 +47,8 @@ public class Entity implements IEntity {
 
 	protected boolean mVisible = true;
 	protected boolean mIgnoreUpdate = false;
+	protected boolean mChildrenVisible = true;
+	protected boolean mChildrenIgnoreUpdate = false;
 
 	protected int mZIndex = 0;
 
@@ -124,6 +126,16 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public boolean isChildrenVisible() {
+		return this.mChildrenVisible;
+	}
+
+	@Override
+	public void setChildrenVisible(final boolean pChildrenVisible) {
+		this.mChildrenVisible = pChildrenVisible;
+	}
+
+	@Override
 	public boolean isIgnoreUpdate() {
 		return this.mIgnoreUpdate;
 	}
@@ -131,6 +143,16 @@ public class Entity implements IEntity {
 	@Override
 	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
 		this.mIgnoreUpdate = pIgnoreUpdate;
+	}
+
+	@Override
+	public boolean isChildrenIgnoreUpdate() {
+		return this.mChildrenIgnoreUpdate;
+	}
+
+	@Override
+	public void setChildrenIgnoreUpdate(final boolean pChildrenIgnoreUpdate) {
+		this.mChildrenIgnoreUpdate = pChildrenIgnoreUpdate;
 	}
 
 	@Override
@@ -794,6 +816,8 @@ public class Entity implements IEntity {
 	public void reset() {
 		this.mVisible = true;
 		this.mIgnoreUpdate = false;
+		this.mChildrenVisible = true;
+		this.mChildrenIgnoreUpdate = false;
 
 		this.mX = this.mInitialX;
 		this.mY = this.mInitialY;
@@ -891,7 +915,7 @@ public class Entity implements IEntity {
 
 			this.doDraw(pGL, pCamera);
 
-			if(this.mChildren != null) {
+			if(this.mChildren != null && this.mChildrenVisible) {
 				final ArrayList<IEntity> entities = this.mChildren;
 				final int entityCount = entities.size();
 				for(int i = 0; i < entityCount; i++) {
@@ -910,7 +934,7 @@ public class Entity implements IEntity {
 			this.mUpdateHandlers.onUpdate(pSecondsElapsed);
 		}
 
-		if(this.mChildren != null) {
+		if(this.mChildren != null && !this.mChildrenIgnoreUpdate) {
 			final ArrayList<IEntity> entities = this.mChildren;
 			final int entityCount = entities.size();
 			for(int i = 0; i < entityCount; i++) {

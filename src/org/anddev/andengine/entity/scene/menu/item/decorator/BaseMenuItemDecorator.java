@@ -488,6 +488,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public boolean isChildrenVisible() {
+		return this.mMenuItem.isChildrenVisible();
+	}
+
+	@Override
+	public void setChildrenVisible(final boolean pChildrenVisible) {
+		this.mMenuItem.setChildrenVisible(pChildrenVisible);
+	}
+
+	@Override
 	public boolean isIgnoreUpdate() {
 		return this.mMenuItem.isIgnoreUpdate();
 	}
@@ -495,6 +505,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void setIgnoreUpdate(final boolean pIgnoreUpdate) {
 		this.mMenuItem.setIgnoreUpdate(pIgnoreUpdate);
+	}
+
+	@Override
+	public boolean isChildrenIgnoreUpdate() {
+		return this.mMenuItem.isChildrenIgnoreUpdate();
+	}
+
+	@Override
+	public void setChildrenIgnoreUpdate(final boolean pChildrenIgnoreUpdate) {
+		this.mMenuItem.setChildrenIgnoreUpdate(pChildrenIgnoreUpdate);
 	}
 
 	@Override

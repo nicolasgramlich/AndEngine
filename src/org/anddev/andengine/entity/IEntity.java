@@ -14,7 +14,6 @@ import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.Transformation;
 
 
-
 /**
  * @author Nicolas Gramlich
  * @since 11:20:25 - 08.03.2010
@@ -29,10 +28,16 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	// ===========================================================
 
 	public boolean isVisible();
-	public void setVisible(boolean pVisible);
+	public void setVisible(final boolean pVisible);
 
 	public boolean isIgnoreUpdate();
 	public void setIgnoreUpdate(boolean pIgnoreUpdate);
+
+	public boolean isChildrenVisible();
+	public void setChildrenVisible(final boolean pChildrenVisible);
+
+	public boolean isChildrenIgnoreUpdate();
+	public void setChildrenIgnoreUpdate(boolean pChildrenIgnoreUpdate);
 
 	public int getZIndex();
 	public void setZIndex(final int pZIndex);
@@ -111,7 +116,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	 * @return <code>pReuse</code> as a convenience.
 	 */
 	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates, final float[] pReuse);
-	
+
 	/**
 	 * @param pX
 	 * @param pY
@@ -140,8 +145,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public Transformation getLocalToSceneTransformation();
 	public Transformation getSceneToLocalTransformation();
 
-//	public Transformation getLocalToParentTransformation(); // TODO Add this method.
-//	public Transformation getParentToLocalTransformation(); // TODO Add this method.
+	//	public Transformation getLocalToParentTransformation(); // TODO Add this method.
+	//	public Transformation getParentToLocalTransformation(); // TODO Add this method.
 
 	public int getChildCount();
 

@@ -1,12 +1,10 @@
 package org.anddev.andengine.entity.sprite.batch;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
+import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.BaseSprite;
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.util.IMatcher;
-import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.SmartList;
 
 /**
@@ -22,16 +20,14 @@ public class SpriteGroup extends SpriteBatch {
 	// Fields
 	// ===========================================================
 
-	private final SmartList<BaseSprite> mSprites;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public SpriteGroup(final Texture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity);
-
-		this.mSprites = new SmartList<BaseSprite>(pCapacity);
+		/* Make children not be drawn automatically, as we handle the drawing ourself. */
+		this.setChildrenVisible(false);
 	}
 
 	// ===========================================================
@@ -42,63 +38,52 @@ public class SpriteGroup extends SpriteBatch {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public void add(final BaseSprite pBaseSprite) {
-		this.mSprites.add(pBaseSprite);
-	}
-
-	public void addAll(final Collection<? extends BaseSprite> pBaseSprites) {
-		this.mSprites.addAll(pBaseSprites);
-	}
-
-	public void remove(final BaseSprite pBaseSprite) {
-		this.mSprites.remove(pBaseSprite);
-	}
-
-	public void removeAll(final Collection<? extends BaseSprite> pBaseSprites) {
-		this.mSprites.removeAll(pBaseSprites);
-	}
-
-	public void remove(final BaseSprite pBaseSprite, final ParameterCallable<BaseSprite> pBaseSpriteParameterCallable) {
-		this.mSprites.remove(pBaseSprite, pBaseSpriteParameterCallable);
-	}
-
-	public void remove(final IMatcher<BaseSprite> pBaseSpriteMatcher) {
-		this.mSprites.remove(pBaseSpriteMatcher);
-	}
-
-	public void removeAll(final IMatcher<BaseSprite> pBaseSpriteMatcher) {
-		this.mSprites.removeAll(pBaseSpriteMatcher);
-	}
-
-	public void removeAll(final IMatcher<BaseSprite> pBaseSpriteMatcher, final ParameterCallable<BaseSprite> pBaseSpriteParameterCallable) {
-		this.mSprites.removeAll(pBaseSpriteMatcher, pBaseSpriteParameterCallable);
-	}
-
+	/**
+	 * Instead use {@link SpriteGroup#attachChild(BaseSprite)}.
+	 */
 	@Override
-	protected void onManagedUpdate(final float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-		final ArrayList<BaseSprite> sprites = this.mSprites;
-		final int spriteCount = sprites.size();
-		for(int i = 0; i < spriteCount; i++) {
-			sprites.get(i).onUpdate(pSecondsElapsed);
+	@Deprecated
+	public void attachChild(final IEntity pEntity) {
+		if(pEntity instanceof BaseSprite) {
+			this.assertCapacity();
+			this.assertTexture(((BaseSprite)pEntity).getTextureRegion());
+			super.attachChild(pEntity);
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public void attachChild(final BaseSprite pBaseSprite) {
+		this.assertCapacity();
+		this.assertTexture(pBaseSprite.getTextureRegion());
+		super.attachChild(pBaseSprite);
+	}
+
+	public void attachChildren(final ArrayList<? extends BaseSprite> pBaseSprites) {
+		final int baseSpriteCount = pBaseSprites.size();
+		for(int i = 0; i < baseSpriteCount; i++) {
+			this.attachChild(pBaseSprites.get(i));
 		}
 	}
 
 	@Override
 	protected void onDrawSpriteBatch() {
-		final ArrayList<BaseSprite> sprites = this.mSprites;
-		final int spriteCount = sprites.size();
-		for(int i = 0; i < spriteCount; i++) {
-			final BaseSprite baseSprite = sprites.get(i);
-			if(baseSprite.isVisible()) {
-				super.draw(baseSprite);
-			}
+		final SmartList<IEntity> children = this.mChildren;
+		final int childCount = children.size();
+		for(int i = 0; i < childCount; i++) {
+			super.drawWithoutChecks((BaseSprite)children.get(i));
 		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private void assertCapacity() {
+		if(this.getChildCount() >= this.mCapacity) {
+			throw new IllegalStateException("This SpriteGroup has already reached its capacity (" + this.mCapacity + ") !");
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

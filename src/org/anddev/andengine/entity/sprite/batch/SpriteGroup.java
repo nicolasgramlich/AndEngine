@@ -43,13 +43,13 @@ public class SpriteGroup extends SpriteBatch {
 	 */
 	@Override
 	@Deprecated
-	public void attachChild(final IEntity pEntity) {
+	public void attachChild(final IEntity pEntity) throws IllegalArgumentException {
 		if(pEntity instanceof BaseSprite) {
 			this.assertCapacity();
 			this.assertTexture(((BaseSprite)pEntity).getTextureRegion());
 			super.attachChild(pEntity);
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("A SpriteGroup can only handle children of type BaseSprite or subclasses of BaseSprite, like Sprite, TiledSprite or AnimatedSprite.");
 		}
 	}
 

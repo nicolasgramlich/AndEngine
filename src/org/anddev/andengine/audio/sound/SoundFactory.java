@@ -51,7 +51,7 @@ public class SoundFactory {
 	// Methods
 	// ===========================================================
 
-	public static Sound createSoundFromPath(final SoundManager pSoundManager, final Context pContext, final String pPath) throws IOException {
+	public static Sound createSoundFromPath(final SoundManager pSoundManager, final String pPath) throws IOException {
 		final int soundID = pSoundManager.getSoundPool().load(pPath, 1);
 		final Sound sound = new Sound(pSoundManager, soundID);
 		pSoundManager.add(sound);

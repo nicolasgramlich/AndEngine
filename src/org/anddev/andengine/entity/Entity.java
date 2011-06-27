@@ -846,6 +846,10 @@ public class Entity implements IEntity {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * @param pGL the OpenGL GL1.0 Context (potentially higher than 1.0) to use for drawing.
+	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
+	 */
 	protected void doDraw(final GL10 pGL, final Camera pCamera) {
 
 	}

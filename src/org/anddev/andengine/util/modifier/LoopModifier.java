@@ -122,7 +122,7 @@ public class LoopModifier<T> extends BaseModifier<T> {
 	// Methods
 	// ===========================================================
 
-	public void onHandleLoopStarted(final T pItem) {
+	public void onHandleLoopStarted(@SuppressWarnings("unused") final T pItem) {
 		if(this.mLoopModifierListener != null) {
 			this.mLoopModifierListener.onLoopStarted(this, this.mLoop, this.mLoopCount);
 		}

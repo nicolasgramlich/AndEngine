@@ -58,7 +58,7 @@ public class TMXTileSet implements TMXConstants {
 	}
 
 	TMXTileSet(final int pFirstGlobalTileID, final Attributes pAttributes, final TextureOptions pTextureOptions) {
-		this.mFirstGlobalTileID = SAXUtils.getIntAttribute(pAttributes, TAG_TILESET_ATTRIBUTE_FIRSTGID, 1);
+		this.mFirstGlobalTileID = pFirstGlobalTileID;
 		this.mName = pAttributes.getValue("", TAG_TILESET_ATTRIBUTE_NAME);
 		this.mTileWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_TILESET_ATTRIBUTE_TILEWIDTH);
 		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_TILESET_ATTRIBUTE_TILEHEIGHT);

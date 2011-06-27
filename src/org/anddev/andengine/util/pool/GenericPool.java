@@ -67,6 +67,9 @@ public abstract class GenericPool<T> {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * @param pItem every item passes this method just before it gets recycled.
+	 */
 	protected void onHandleRecycleItem(final T pItem) {
 
 	}
@@ -75,6 +78,9 @@ public abstract class GenericPool<T> {
 		return this.onAllocatePoolItem();
 	}
 
+	/**
+	 * @param pItem every item that was just obtained from the pool, passes this method. 
+	 */
 	protected void onHandleObtainItem(final T pItem) {
 
 	}

@@ -426,11 +426,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	}
 
-	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
+	protected Camera getCameraFromSurfaceTouchEvent(@SuppressWarnings("unused") final TouchEvent pTouchEvent) {
 		return this.getCamera();
 	}
 
-	protected Scene getSceneFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
+	protected Scene getSceneFromSurfaceTouchEvent(@SuppressWarnings("unused") final TouchEvent pTouchEvent) {
 		return this.mScene;
 	}
 

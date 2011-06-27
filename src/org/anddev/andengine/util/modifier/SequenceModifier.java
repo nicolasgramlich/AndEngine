@@ -135,7 +135,7 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 	// Methods
 	// ===========================================================
 
-	public void onHandleModifierStarted(final InternalModifierListener pInternalModifierListener, final IModifier<T> pModifier, final T pItem) {
+	public void onHandleModifierStarted(@SuppressWarnings("unused") final InternalModifierListener pInternalModifierListener, final IModifier<T> pModifier, final T pItem) {
 		if(this.mCurrentSubSequenceModifierIndex == 0) {
 			if(this.mModifierListener != null) {
 				this.mModifierListener.onModifierStarted(this, pItem);

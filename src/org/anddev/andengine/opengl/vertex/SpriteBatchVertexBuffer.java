@@ -148,7 +148,7 @@ public class SpriteBatchVertexBuffer extends VertexBuffer {
 	}
 
 	public void add(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this.addInner(pX, pY, pX + pWidth, pY + pWidth);
+		this.addInner(pX, pY, pX + pWidth, pY + pHeight);
 	}
 
 	/**

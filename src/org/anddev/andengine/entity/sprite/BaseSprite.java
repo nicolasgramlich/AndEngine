@@ -85,6 +85,8 @@ public abstract class BaseSprite extends BaseRectangle {
 	
 	@Override
 	protected void finalize() throws Throwable {
+		super.finalize();
+
 		final TextureRegionBuffer textureRegionBuffer = this.mTextureRegion.getTextureBuffer();
 		if(textureRegionBuffer.isManaged()) {
 			textureRegionBuffer.unloadFromActiveBufferObjectManager();

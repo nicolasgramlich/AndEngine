@@ -128,6 +128,7 @@ public abstract class Shape extends Entity implements IShape {
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
+
 		final VertexBuffer vertexBuffer = this.getVertexBuffer();
 		if(vertexBuffer.isManaged()) {
 			vertexBuffer.unloadFromActiveBufferObjectManager();

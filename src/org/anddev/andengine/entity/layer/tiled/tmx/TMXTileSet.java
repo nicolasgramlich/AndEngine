@@ -105,7 +105,7 @@ public class TMXTileSet implements TMXConstants {
 			TextureRegionFactory.createFromSource(this.mTexture, assetTextureSource, 0, 0);
 		} else {
 			try{
-				final int color = Color.parseColor((transparentColor.startsWith("#")) ? transparentColor : "#" + transparentColor);
+				final int color = Color.parseColor((transparentColor.charAt(0) == '#') ? transparentColor : "#" + transparentColor);
 				TextureRegionFactory.createFromSource(this.mTexture, new ColorKeyTextureSourceDecorator(assetTextureSource, RectangleTextureSourceDecoratorShape.getDefaultInstance(), color), 0, 0);
 			} catch (final IllegalArgumentException e) {
 				throw new TMXParseException("Illegal value: '" + transparentColor + "' for attribute 'trans' supplied!", e);

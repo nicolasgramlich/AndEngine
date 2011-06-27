@@ -700,7 +700,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		public synchronized void waitUntilCanDraw() throws InterruptedException {
 			// Debug.d(">>> waitUntilCanDraw");
-			while(this.mDrawing == false) {
+			while(!this.mDrawing) {
 				this.wait();
 			}
 			// Debug.d("<<< waitUntilCanDraw");
@@ -708,7 +708,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		public synchronized void waitUntilCanUpdate() throws InterruptedException {
 			// Debug.d(">>> waitUntilCanUpdate");
-			while(this.mDrawing == true) {
+			while(this.mDrawing) {
 				this.wait();
 			}
 			// Debug.d("<<< waitUntilCanUpdate");

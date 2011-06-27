@@ -113,7 +113,7 @@ public abstract class Shape extends Entity implements IShape {
 
 	@Override
 	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
-		if(this.mCullingEnabled == false || this.isCulled(pCamera) == false) {
+		if(!this.mCullingEnabled || !this.isCulled(pCamera)) {
 			super.onManagedDraw(pGL, pCamera);
 		}
 	}

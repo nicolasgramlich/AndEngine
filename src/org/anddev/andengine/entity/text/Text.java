@@ -73,7 +73,7 @@ public class Text extends RectangularShape {
 
 		final int lineCount = lines.length;
 		final boolean widthsReusable = this.mWidths != null && this.mWidths.length == lineCount;
-		if(widthsReusable == false) {
+		if(!widthsReusable) {
 			this.mWidths = new int[lineCount];
 		}
 		final int[] widths = this.mWidths;

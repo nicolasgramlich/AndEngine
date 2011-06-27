@@ -53,7 +53,7 @@ public class StrokeFont extends Font {
 
 	@Override
 	protected void drawCharacterString(final String pCharacterAsString) {
-		if(this.mStrokeOnly == false) {
+		if(!this.mStrokeOnly) {
 			super.drawCharacterString(pCharacterAsString);
 		}
 		this.mCanvas.drawText(pCharacterAsString, LETTER_LEFT_OFFSET, -this.mFontMetrics.ascent, this.mStrokePaint);

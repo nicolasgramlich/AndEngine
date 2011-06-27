@@ -48,7 +48,7 @@ public class TMXTiledMap implements TMXConstants {
 
 	TMXTiledMap(final Attributes pAttributes) {
 		this.mOrientation = pAttributes.getValue("", TAG_MAP_ATTRIBUTE_ORIENTATION);
-		if(this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL) == false) {
+		if(!this.mOrientation.equals(TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL)) {
 			throw new IllegalArgumentException(TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
 		}
 		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_MAP_ATTRIBUTE_WIDTH);

@@ -69,7 +69,7 @@ public class ParallaxBackground extends ColorBackground {
 	public boolean detachParallaxEntity(final ParallaxEntity pParallaxEntity) {
 		this.mParallaxEntityCount--;
 		final boolean success = this.mParallaxEntities.remove(pParallaxEntity);
-		if(success == false) {
+		if(!success) {
 			this.mParallaxEntityCount++;
 		}
 		return success;

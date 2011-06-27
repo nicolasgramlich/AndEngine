@@ -68,7 +68,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	@Deprecated
 	@Override
 	public void setScene(final Scene pScene) {
-		super.setScene(pScene);
+		this.setFirstScene(pScene);
 	}
 
 	public void setFirstScene(final Scene pScene) {

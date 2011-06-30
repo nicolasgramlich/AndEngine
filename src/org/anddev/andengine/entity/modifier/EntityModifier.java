@@ -28,10 +28,6 @@ public abstract class EntityModifier extends BaseModifier<IEntity> implements IE
 		super(pEntityModifierListener);
 	}
 
-	protected EntityModifier(final EntityModifier pEntityModifier) {
-		super(pEntityModifier);
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

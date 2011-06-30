@@ -1,13 +1,15 @@
 package org.anddev.andengine.util.modifier;
 
-import org.anddev.andengine.util.modifier.util.ModifierUtils;
+import java.util.Arrays;
+
+import org.anddev.andengine.util.modifier.IModifier.IModifierListener;
 
 /**
  * @author Nicolas Gramlich
  * @since 11:21:22 - 03.09.2010
  * @param <T>
  */
-public class ParallelModifier<T> extends BaseModifier<T> {
+public class ParallelModifier<T> extends BaseModifier<T> implements IModifierListener<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,6 +22,7 @@ public class ParallelModifier<T> extends BaseModifier<T> {
 	private final float mDuration;
 
 	private final IModifier<T>[] mModifiers;
+	private boolean mFinishedCached;
 
 	// ===========================================================
 	// Constructors
@@ -34,29 +37,27 @@ public class ParallelModifier<T> extends BaseModifier<T> {
 		if(pModifiers.length == 0) {
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}
-
+		Arrays.sort(pModifiers, MODIFIER_COMPARATOR_DURATION_DESCENDING);
 		this.mModifiers = pModifiers;
 
-		final IModifier<T> shapeModifierWithLongestDuration = ModifierUtils.getModifierWithLongestDuration(pModifiers);
-		this.mDuration = shapeModifierWithLongestDuration.getDuration();
-		shapeModifierWithLongestDuration.setModifierListener(new InternalModifierListener());
+		final IModifier<T> modifierWithLongestDuration = pModifiers[0];
+		this.mDuration = modifierWithLongestDuration.getDuration();
+		modifierWithLongestDuration.addModifierListener(this);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected ParallelModifier(final ParallelModifier<T> pParallelModifier) throws CloneNotSupportedException {
-		super(pParallelModifier.mModifierListener);
-
 		final IModifier<T>[] otherModifiers = pParallelModifier.mModifiers;
 		this.mModifiers = new IModifier[otherModifiers.length];
 
-		final IModifier<T>[] shapeModifiers = this.mModifiers;
-		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
-			shapeModifiers[i] = otherModifiers[i].clone();
+		final IModifier<T>[] modifiers = this.mModifiers;
+		for(int i = modifiers.length - 1; i >= 0; i--) {
+			modifiers[i] = otherModifiers[i].clone();
 		}
 
-		final IModifier<T> shapeModifierWithLongestDuration = ModifierUtils.getModifierWithLongestDuration(shapeModifiers);
-		this.mDuration = shapeModifierWithLongestDuration.getDuration();
-		shapeModifierWithLongestDuration.setModifierListener(new InternalModifierListener());
+		final IModifier<T> modifierWithLongestDuration = modifiers[0];
+		this.mDuration = modifierWithLongestDuration.getDuration();
+		modifierWithLongestDuration.addModifierListener(this);
 	}
 
 	@Override
@@ -87,13 +88,21 @@ public class ParallelModifier<T> extends BaseModifier<T> {
 		if(this.mFinished){
 			return 0;
 		} else {
+			float secondsElapsedRemaining = pSecondsElapsed;
+
 			final IModifier<T>[] shapeModifiers = this.mModifiers;
 
-			float secondsElapsedUsed = 0;
-			for(int i = shapeModifiers.length - 1; i >= 0; i--) {
-				secondsElapsedUsed = Math.max(secondsElapsedUsed, shapeModifiers[i].onUpdate(pSecondsElapsed, pItem));
+			this.mFinishedCached = false;
+			while(secondsElapsedRemaining > 0 && !this.mFinishedCached) {
+				float secondsElapsedUsed = 0;
+				for(int i = shapeModifiers.length - 1; i >= 0; i--) {
+					secondsElapsedUsed = Math.max(secondsElapsedUsed, shapeModifiers[i].onUpdate(pSecondsElapsed, pItem));
+				}
+				secondsElapsedRemaining -= secondsElapsedUsed;
 			}
+			this.mFinishedCached = false;
 
+			final float secondsElapsedUsed = pSecondsElapsed - secondsElapsedRemaining;
 			this.mSecondsElapsed += secondsElapsedUsed;
 			return secondsElapsedUsed;
 		}
@@ -110,6 +119,18 @@ public class ParallelModifier<T> extends BaseModifier<T> {
 		}
 	}
 
+	@Override
+	public void onModifierStarted(final IModifier<T> pModifier, final T pItem) {
+		this.onModifierStarted(pItem);
+	}
+
+	@Override
+	public void onModifierFinished(final IModifier<T> pModifier, final T pItem) {
+		this.mFinished = true;
+		this.mFinishedCached = true;
+		this.onModifierFinished(pItem);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -117,21 +138,4 @@ public class ParallelModifier<T> extends BaseModifier<T> {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	private class InternalModifierListener implements IModifierListener<T>  {
-		@Override
-		public void onModifierStarted(final IModifier<T> pModifier, final T pItem) {
-			if(ParallelModifier.this.mModifierListener != null) {
-				ParallelModifier.this.mModifierListener.onModifierStarted(ParallelModifier.this, pItem);
-			}
-		}
-
-		@Override
-		public void onModifierFinished(final IModifier<T> pModifier, final T pItem) {
-			ParallelModifier.this.mFinished = true;
-			if(ParallelModifier.this.mModifierListener != null) {
-				ParallelModifier.this.mModifierListener.onModifierFinished(ParallelModifier.this, pItem);
-			}
-		}
-	}
 }

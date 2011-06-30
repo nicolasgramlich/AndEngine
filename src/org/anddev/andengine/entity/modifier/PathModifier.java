@@ -60,6 +60,7 @@ public class PathModifier extends EntityModifier {
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IEntityModifierListener pEntityModiferListener, final IPathModifierListener pPathModifierListener, final IEaseFunction pEaseFunction) throws IllegalArgumentException {
+		super(pEntityModiferListener);
 		final int pathSize = pPath.getSize();
 
 		if (pathSize < 2) {
@@ -67,7 +68,6 @@ public class PathModifier extends EntityModifier {
 		}
 
 		this.mPath = pPath;
-		this.mModifierListener = pEntityModiferListener;
 		this.mPathModifierListener = pPathModifierListener;
 
 		final MoveModifier[] moveModifiers = new MoveModifier[pathSize - 1];
@@ -104,9 +104,7 @@ public class PathModifier extends EntityModifier {
 				new IEntityModifierListener() {
 					@Override
 					public void onModifierStarted(final IModifier<IEntity> pModifier, final IEntity pEntity) {
-						if(PathModifier.this.mModifierListener != null) {
-							PathModifier.this.mModifierListener.onModifierStarted(PathModifier.this, pEntity);
-						}
+						PathModifier.this.onModifierStarted(pEntity);
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onPathStarted(PathModifier.this, pEntity);
 						}
@@ -114,9 +112,7 @@ public class PathModifier extends EntityModifier {
 
 					@Override
 					public void onModifierFinished(final IModifier<IEntity> pEntityModifier, final IEntity pEntity) {
-						if(PathModifier.this.mModifierListener != null) {
-							PathModifier.this.mModifierListener.onModifierFinished(PathModifier.this, pEntity);
-						}
+						PathModifier.this.onModifierFinished(pEntity);
 						if(PathModifier.this.mPathModifierListener != null) {
 							PathModifier.this.mPathModifierListener.onPathFinished(PathModifier.this, pEntity);
 						}

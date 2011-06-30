@@ -1,12 +1,14 @@
 package org.anddev.andengine.util.modifier;
 
+import org.anddev.andengine.util.modifier.IModifier.IModifierListener;
+
 
 /**
  * @author Nicolas Gramlich
  * @since 11:18:37 - 03.09.2010
  * @param <T>
  */
-public class LoopModifier<T> extends BaseModifier<T> {
+public class LoopModifier<T> extends BaseModifier<T> implements IModifierListener<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,16 +29,19 @@ public class LoopModifier<T> extends BaseModifier<T> {
 	private final int mLoopCount;
 	private int mLoop;
 
+	private boolean mModifierStartedCalled;
+	private boolean mFinishedCached;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public LoopModifier(final IModifier<T> pModifier) {
-		this(pModifier, LOOP_CONTINUOUS, null, null);
+		this(pModifier, LOOP_CONTINUOUS);
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount) {
-		this(pModifier, pLoopCount, null, null);
+		this(pModifier, pLoopCount, null, (IModifierListener<T>)null);
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount, final IModifierListener<T> pModifierListener) {
@@ -44,7 +49,7 @@ public class LoopModifier<T> extends BaseModifier<T> {
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount, final ILoopModifierListener<T> pLoopModifierListener) {
-		this(pModifier, pLoopCount, pLoopModifierListener, null);
+		this(pModifier, pLoopCount, pLoopModifierListener, (IModifierListener<T>)null);
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount, final ILoopModifierListener<T> pLoopModifierListener, final IModifierListener<T> pModifierListener) {
@@ -56,15 +61,15 @@ public class LoopModifier<T> extends BaseModifier<T> {
 		this.mLoop = 0;
 		this.mDuration = pLoopCount == LOOP_CONTINUOUS ? Float.POSITIVE_INFINITY : pModifier.getDuration() * pLoopCount; // TODO Check if POSITIVE_INFINITY works correct with i.e. SequenceModifier
 
-		pModifier.setModifierListener(new InternalModifierListener());
+		this.mModifier.addModifierListener(this);
 	}
 
 	protected LoopModifier(final LoopModifier<T> pLoopModifier) throws CloneNotSupportedException {
-		this(pLoopModifier.mModifier.clone(), pLoopModifier.mLoopCount, pLoopModifier.mModifierListener);
+		this(pLoopModifier.mModifier.clone(), pLoopModifier.mLoopCount);
 	}
 
 	@Override
-	public LoopModifier<T> clone() throws CloneNotSupportedException{
+	public LoopModifier<T> clone() throws CloneNotSupportedException {
 		return new LoopModifier<T>(this);
 	}
 
@@ -83,7 +88,7 @@ public class LoopModifier<T> extends BaseModifier<T> {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public float getSecondsElapsed() {
 		return this.mSecondsElapsed;
@@ -100,10 +105,13 @@ public class LoopModifier<T> extends BaseModifier<T> {
 			return 0;
 		} else {
 			float secondsElapsedRemaining = pSecondsElapsed;
-			while(secondsElapsedRemaining > 0 && !this.mFinished) {
+
+			this.mFinishedCached = false;
+			while(secondsElapsedRemaining > 0 && !this.mFinishedCached) {
 				secondsElapsedRemaining -= this.mModifier.onUpdate(secondsElapsedRemaining, pItem);
 			}
-			
+			this.mFinishedCached = false;
+
 			final float secondsElapsedUsed = pSecondsElapsed - secondsElapsedRemaining;
 			this.mSecondsElapsed += secondsElapsedUsed;
 			return secondsElapsedUsed;
@@ -114,6 +122,7 @@ public class LoopModifier<T> extends BaseModifier<T> {
 	public void reset() {
 		this.mLoop = 0;
 		this.mSecondsElapsed = 0;
+		this.mModifierStartedCalled = false;
 
 		this.mModifier.reset();
 	}
@@ -122,13 +131,19 @@ public class LoopModifier<T> extends BaseModifier<T> {
 	// Methods
 	// ===========================================================
 
-	public void onHandleLoopStarted(@SuppressWarnings("unused") final T pItem) {
+	@Override
+	public void onModifierStarted(final IModifier<T> pModifier, final T pItem) {
+		if(!this.mModifierStartedCalled) {
+			this.mModifierStartedCalled = true;
+			this.onModifierStarted(pItem);
+		}
 		if(this.mLoopModifierListener != null) {
 			this.mLoopModifierListener.onLoopStarted(this, this.mLoop, this.mLoopCount);
 		}
 	}
 
-	public void onHandleLoopFinished(final T pItem) {
+	@Override
+	public void onModifierFinished(final IModifier<T> pModifier, final T pItem) {
 		if(this.mLoopModifierListener != null) {
 			this.mLoopModifierListener.onLoopFinished(this, this.mLoop, this.mLoopCount);
 		}
@@ -140,9 +155,8 @@ public class LoopModifier<T> extends BaseModifier<T> {
 			this.mLoop++;
 			if(this.mLoop >= this.mLoopCount) {
 				this.mFinished = true;
-				if(this.mModifierListener != null) {
-					this.mModifierListener.onModifierFinished(this, pItem);
-				}
+				this.mFinishedCached = true;
+				this.onModifierFinished(pItem);
 			} else {
 				this.mSecondsElapsed = 0;
 				this.mModifier.reset();
@@ -157,17 +171,5 @@ public class LoopModifier<T> extends BaseModifier<T> {
 	public interface ILoopModifierListener<T> {
 		public void onLoopStarted(final LoopModifier<T> pLoopModifier, final int pLoop, final int pLoopCount);
 		public void onLoopFinished(final LoopModifier<T> pLoopModifier, final int pLoop, final int pLoopCount);
-	}
-
-	private class InternalModifierListener implements IModifierListener<T> {
-		@Override
-		public void onModifierStarted(final IModifier<T> pModifier, final T pItem) {
-			LoopModifier.this.onHandleLoopStarted(pItem);
-		}
-
-		@Override
-		public void onModifierFinished(final IModifier<T> pModifier, final T pItem) {
-			LoopModifier.this.onHandleLoopFinished(pItem);
-		}
 	}
 }

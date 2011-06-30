@@ -1,6 +1,7 @@
 package org.anddev.andengine.util.modifier;
 
 
+
 /**
  * @author Nicolas Gramlich
  * @since 10:48:13 - 03.09.2010
@@ -22,12 +23,8 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 	// Constructors
 	// ===========================================================
 
-	public BaseDurationModifier() {
-		this(-1, null);
-	}
-
 	public BaseDurationModifier(final float pDuration) {
-		this(pDuration, null);
+		this.mDuration = pDuration;
 	}
 
 	public BaseDurationModifier(final float pDuration, final IModifierListener<T> pModifierListener) {
@@ -36,7 +33,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 	}
 
 	protected BaseDurationModifier(final BaseDurationModifier<T> pBaseModifier) {
-		this(pBaseModifier.mDuration, pBaseModifier.mModifierListener);
+		this(pBaseModifier.mDuration);
 	}
 
 	// ===========================================================
@@ -68,9 +65,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 		} else {
 			if(this.mSecondsElapsed == 0) {
 				this.onManagedInitialize(pItem);
-				if(this.mModifierListener != null) {
-					this.mModifierListener.onModifierStarted(this, pItem);
-				}
+				this.onModifierStarted(pItem);
 			}
 
 			final float secondsElapsedUsed;
@@ -86,9 +81,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 			if(this.mDuration != -1 && this.mSecondsElapsed >= this.mDuration) {
 				this.mSecondsElapsed = this.mDuration;
 				this.mFinished = true;
-				if(this.mModifierListener != null) {
-					this.mModifierListener.onModifierFinished(this, pItem);
-				}
+				this.onModifierFinished(pItem);
 			}
 			return secondsElapsedUsed;
 		}

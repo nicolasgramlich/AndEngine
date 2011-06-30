@@ -29,7 +29,7 @@ public class LoopBackgroundModifier extends LoopModifier<IBackground> implements
 	}
 
 	public LoopBackgroundModifier(final IBackgroundModifier pBackgroundModifier, final int pLoopCount, final ILoopBackgroundModifierListener pLoopModifierListener) {
-		super(pBackgroundModifier, pLoopCount, pLoopModifierListener, null);
+		super(pBackgroundModifier, pLoopCount, pLoopModifierListener, (IBackgroundModifierListener)null);
 	}
 
 	public LoopBackgroundModifier(final IBackgroundModifier pBackgroundModifier, final int pLoopCount, final IBackgroundModifierListener pBackgroundModifierListener) {

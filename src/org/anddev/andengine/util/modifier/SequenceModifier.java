@@ -1,5 +1,6 @@
 package org.anddev.andengine.util.modifier;
 
+import org.anddev.andengine.util.modifier.IModifier.IModifierListener;
 import org.anddev.andengine.util.modifier.util.ModifierUtils;
 
 
@@ -7,7 +8,7 @@ import org.anddev.andengine.util.modifier.util.ModifierUtils;
  * @author Nicolas Gramlich
  * @since 19:39:25 - 19.03.2010
  */
-public class SequenceModifier<T> extends BaseModifier<T> {
+public class SequenceModifier<T> extends BaseModifier<T> implements IModifierListener<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,6 +24,8 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 
 	private float mSecondsElapsed;
 	private final float mDuration;
+
+	private boolean mFinishedCached;
 
 	// ===========================================================
 	// Constructors
@@ -51,14 +54,11 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 
 		this.mDuration = ModifierUtils.getSequenceDurationOfModifier(pModifiers);
 
-		pModifiers[0].setModifierListener(new InternalModifierListener());
+		pModifiers[0].addModifierListener(this);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected SequenceModifier(final SequenceModifier<T> pSequenceModifier) throws CloneNotSupportedException {
-		super(pSequenceModifier.mModifierListener);
-		this.mSubSequenceModifierListener = pSequenceModifier.mSubSequenceModifierListener;
-
 		this.mDuration = pSequenceModifier.mDuration;
 
 		final IModifier<T>[] otherModifiers = pSequenceModifier.mSubSequenceModifiers;
@@ -69,7 +69,7 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 			shapeModifiers[i] = otherModifiers[i].clone();
 		}
 
-		shapeModifiers[0].setModifierListener(new InternalModifierListener());
+		shapeModifiers[0].addModifierListener(this);
 	}
 
 	@Override
@@ -109,9 +109,11 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 			return 0;
 		} else {
 			float secondsElapsedRemaining = pSecondsElapsed;
-			while(secondsElapsedRemaining > 0 && !this.mFinished) {
+			this.mFinishedCached = false;
+			while(secondsElapsedRemaining > 0 && !this.mFinishedCached) {
 				secondsElapsedRemaining -= this.mSubSequenceModifiers[this.mCurrentSubSequenceModifierIndex].onUpdate(secondsElapsedRemaining, pItem);
 			}
+			this.mFinishedCached = false;
 
 			final float secondsElapsedUsed = pSecondsElapsed - secondsElapsedRemaining;
 			this.mSecondsElapsed += secondsElapsedUsed;
@@ -121,9 +123,17 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 
 	@Override
 	public void reset() {
+		if(this.isFinished()) {
+			this.mSubSequenceModifiers[this.mSubSequenceModifiers.length - 1].removeModifierListener(this);
+		} else {
+			this.mSubSequenceModifiers[this.mCurrentSubSequenceModifierIndex].removeModifierListener(this);
+		}
+
 		this.mCurrentSubSequenceModifierIndex = 0;
 		this.mFinished = false;
 		this.mSecondsElapsed = 0;
+
+		this.mSubSequenceModifiers[0].addModifierListener(this);
 
 		final IModifier<T>[] shapeModifiers = this.mSubSequenceModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
@@ -131,15 +141,10 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 		}
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	public void onHandleModifierStarted(@SuppressWarnings("unused") final InternalModifierListener pInternalModifierListener, final IModifier<T> pModifier, final T pItem) {
+	@Override
+	public void onModifierStarted(final IModifier<T> pModifier, final T pItem) {
 		if(this.mCurrentSubSequenceModifierIndex == 0) {
-			if(this.mModifierListener != null) {
-				this.mModifierListener.onModifierStarted(this, pItem);
-			}
+			this.onModifierStarted(pItem);
 		}
 
 		if(this.mSubSequenceModifierListener != null) {
@@ -147,24 +152,29 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 		}
 	}
 
-	private void onHandleModifierFinished(final InternalModifierListener pInternalModifierListener, final IModifier<T> pModifier, final T pItem) {
+	@Override
+	public void onModifierFinished(final IModifier<T> pModifier, final T pItem) {
 		if(this.mSubSequenceModifierListener != null) {
 			this.mSubSequenceModifierListener.onSubSequenceFinished(pModifier, pItem, this.mCurrentSubSequenceModifierIndex);
 		}
+		pModifier.removeModifierListener(this);
 
 		this.mCurrentSubSequenceModifierIndex++;
 
 		if(this.mCurrentSubSequenceModifierIndex < this.mSubSequenceModifiers.length) {
 			final IModifier<T> nextSubSequenceModifier = this.mSubSequenceModifiers[this.mCurrentSubSequenceModifierIndex];
-			nextSubSequenceModifier.setModifierListener(pInternalModifierListener);
+			nextSubSequenceModifier.addModifierListener(this);
 		} else {
 			this.mFinished = true;
+			this.mFinishedCached = true;
 
-			if(this.mModifierListener != null) {
-				this.mModifierListener.onModifierFinished(this, pItem);
-			}
+			this.onModifierFinished(pItem);
 		}
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	// ===========================================================
 	// Inner and Anonymous Classes
@@ -173,17 +183,5 @@ public class SequenceModifier<T> extends BaseModifier<T> {
 	public interface ISubSequenceModifierListener<T> {
 		public void onSubSequenceStarted(final IModifier<T> pModifier, final T pItem, final int pIndex);
 		public void onSubSequenceFinished(final IModifier<T> pModifier, final T pItem, final int pIndex);
-	}
-
-	private class InternalModifierListener implements IModifierListener<T>  {
-		@Override
-		public void onModifierStarted(final IModifier<T> pModifier, final T pItem) {
-			SequenceModifier.this.onHandleModifierStarted(this, pModifier, pItem);
-		}
-
-		@Override
-		public void onModifierFinished(final IModifier<T> pModifier, final T pItem) {
-			SequenceModifier.this.onHandleModifierFinished(this, pModifier, pItem);
-		}
 	}
 }

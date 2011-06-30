@@ -14,11 +14,13 @@ public abstract class BaseBackground implements IBackground {
 	// Constants
 	// ===========================================================
 
+	private static final int BACKGROUNDMODIFIERS_CAPACITY_DEFAULT = 4;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final ModifierList<IBackground> mBackgroundModifiers = new ModifierList<IBackground>(this);
+	private final ModifierList<IBackground> mBackgroundModifiers = new ModifierList<IBackground>(this, BACKGROUNDMODIFIERS_CAPACITY_DEFAULT);
 
 	// ===========================================================
 	// Constructors

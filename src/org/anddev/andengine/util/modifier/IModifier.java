@@ -1,5 +1,7 @@
 package org.anddev.andengine.util.modifier;
 
+import java.util.Comparator;
+
 
 /**
  * @author Nicolas Gramlich
@@ -9,6 +11,13 @@ public interface IModifier<T> extends Cloneable {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
+
+	public static final Comparator<IModifier<?>> MODIFIER_COMPARATOR_DURATION_DESCENDING = new Comparator<IModifier<?>>() {
+		@Override
+		public int compare(final IModifier<?> pModifierA, final IModifier<?> pModifierB) {
+			return (int)Math.signum(pModifierA.getDuration() - pModifierB.getDuration());
+		}
+	};
 
 	// ===========================================================
 	// Methods
@@ -21,14 +30,15 @@ public interface IModifier<T> extends Cloneable {
 	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
 
 	public IModifier<T> clone() throws CloneNotSupportedException;
+	//	public IModifier<T> clone(final IModifierListener<T> pModifierListener) throws CloneNotSupportedException; TODO
 
 	public float getSecondsElapsed();
 	public float getDuration();
 
 	public float onUpdate(final float pSecondsElapsed, final T pItem);
 
-	public IModifierListener<T> getModifierListener();
-	public void setModifierListener(final IModifierListener<T> pModifierListener);
+	public void addModifierListener(final IModifierListener<T> pModifierListener);
+	public boolean removeModifierListener(final IModifierListener<T> pModifierListener);
 
 	// ===========================================================
 	// Inner and Anonymous Classes
@@ -46,7 +56,7 @@ public interface IModifier<T> extends Cloneable {
 		public void onModifierStarted(final IModifier<T> pModifier, final T pItem);
 		public void onModifierFinished(final IModifier<T> pModifier, final T pItem);
 	}
-	
+
 	public static class CloneNotSupportedException extends RuntimeException {
 		// ===========================================================
 		// Constants

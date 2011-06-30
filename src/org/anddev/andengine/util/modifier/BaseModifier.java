@@ -1,5 +1,7 @@
 package org.anddev.andengine.util.modifier;
 
+import org.anddev.andengine.util.SmartList;
+
 
 /**
  * @author Nicolas Gramlich
@@ -17,22 +19,18 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 
 	protected boolean mFinished;
 	private boolean mRemoveWhenFinished = true;
-	protected IModifierListener<T> mModifierListener;
+	private final SmartList<IModifierListener<T>> mModifierListeners = new SmartList<IModifierListener<T>>(2);
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public BaseModifier() {
-		this((IModifierListener<T>)null);
+
 	}
 
 	public BaseModifier(final IModifierListener<T> pModifierListener) {
-		this.mModifierListener = pModifierListener;
-	}
-
-	protected BaseModifier(final BaseModifier<T> pBaseModifier) {
-		this(pBaseModifier.mModifierListener);
+		this.addModifierListener(pModifierListener);
 	}
 
 	// ===========================================================
@@ -59,13 +57,19 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	}
 
 	@Override
-	public IModifierListener<T> getModifierListener() {
-		return this.mModifierListener;
+	public void addModifierListener(final IModifierListener<T> pModifierListener) {
+		if(pModifierListener != null) {
+			this.mModifierListeners.add(pModifierListener);
+		}
 	}
 
 	@Override
-	public void setModifierListener(final IModifierListener<T> pModifierListener) {
-		this.mModifierListener = pModifierListener;
+	public boolean removeModifierListener(final IModifierListener<T> pModifierListener) {
+		if(pModifierListener == null) {
+			return false;
+		} else {
+			return this.mModifierListeners.remove(pModifierListener);
+		}
 	}
 
 	@Override
@@ -74,6 +78,22 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected void onModifierStarted(final T pItem) {
+		final SmartList<IModifierListener<T>> modifierListeners = this.mModifierListeners;
+		final int modifierListenerCount = modifierListeners.size();
+		for(int i = modifierListenerCount - 1; i >= 0; i--) {
+			modifierListeners.get(i).onModifierStarted(this, pItem);
+		}
+	}
+
+	protected void onModifierFinished(final T pItem) {
+		final SmartList<IModifierListener<T>> modifierListeners = this.mModifierListeners;
+		final int modifierListenerCount = modifierListeners.size();
+		for(int i = modifierListenerCount - 1; i >= 0; i--) {
+			modifierListeners.get(i).onModifierFinished(this, pItem);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

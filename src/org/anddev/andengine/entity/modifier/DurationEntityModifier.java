@@ -20,10 +20,6 @@ public abstract class DurationEntityModifier extends BaseDurationModifier<IEntit
 	// Constructors
 	// ===========================================================
 
-	public DurationEntityModifier() {
-		super();
-	}
-
 	public DurationEntityModifier(final float pDuration) {
 		super(pDuration);
 	}

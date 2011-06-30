@@ -24,7 +24,7 @@ public class LoopEntityModifier extends LoopModifier<IEntity> implements IEntity
 		super(pEntityModifier);
 	}
 
-	public LoopEntityModifier(final int pLoopCount, final IEntityModifier pEntityModifier) {
+	public LoopEntityModifier(final IEntityModifier pEntityModifier, final int pLoopCount) {
 		super(pEntityModifier, pLoopCount);
 	}
 

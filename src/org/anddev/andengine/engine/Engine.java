@@ -63,6 +63,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	private static final SensorDelay SENSORDELAY_DEFAULT = SensorDelay.GAME;
+	private static final int UPDATEHANDLERS_CAPACITY_DEFAULT = 32;
 
 	// ===========================================================
 	// Fields
@@ -103,7 +104,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private IOrientationListener mOrientationListener;
 	private OrientationData mOrientationData;
 
-	private final UpdateHandlerList mUpdateHandlers = new UpdateHandlerList();
+	private final UpdateHandlerList mUpdateHandlers = new UpdateHandlerList(UPDATEHANDLERS_CAPACITY_DEFAULT);
 
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0

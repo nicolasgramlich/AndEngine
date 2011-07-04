@@ -51,13 +51,13 @@ public class BufferObjectManager {
 	// Methods
 	// ===========================================================
 
-	public void clear() {
+	public synchronized void clear() {
 		BufferObjectManager.mBufferObjectsToBeLoaded.clear();
 		BufferObjectManager.mBufferObjectsLoaded.clear();
 		BufferObjectManager.mBufferObjectsManaged.clear();
 	}
 
-	public void loadBufferObject(final BufferObject pBufferObject) {
+	public synchronized void loadBufferObject(final BufferObject pBufferObject) {
 		if(pBufferObject == null) {
 			return;
 		}
@@ -71,7 +71,7 @@ public class BufferObjectManager {
 		}
 	}
 
-	public void unloadBufferObject(final BufferObject pBufferObject) {
+	public synchronized void unloadBufferObject(final BufferObject pBufferObject) {
 		if(pBufferObject == null) {
 			return;
 		}
@@ -96,7 +96,7 @@ public class BufferObjectManager {
 		}
 	}
 
-	public void reloadBufferObjects() {
+	public synchronized void reloadBufferObjects() {
 		final ArrayList<BufferObject> loadedBufferObjects = BufferObjectManager.mBufferObjectsLoaded;
 		for(int i = loadedBufferObjects.size() - 1; i >= 0; i--) {
 			loadedBufferObjects.get(i).setLoadedToHardware(false);
@@ -107,7 +107,7 @@ public class BufferObjectManager {
 		loadedBufferObjects.clear();
 	}
 
-	public void updateBufferObjects(final GL11 pGL11) {
+	public synchronized void updateBufferObjects(final GL11 pGL11) {
 		final HashSet<BufferObject> bufferObjectsManaged = BufferObjectManager.mBufferObjectsManaged;
 		final ArrayList<BufferObject> bufferObjectsLoaded = BufferObjectManager.mBufferObjectsLoaded;
 		final ArrayList<BufferObject> bufferObjectsToBeLoaded = BufferObjectManager.mBufferObjectsToBeLoaded;

@@ -393,6 +393,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public boolean attachChild(final IEntity pEntity, final int pIndex) {
+		return this.mMenuItem.attachChild(pEntity, pIndex);
+	}
+
+	@Override
 	public IEntity getFirstChild() {
 		return this.mMenuItem.getFirstChild();
 	}
@@ -408,8 +413,28 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public int getChildIndex(final IEntity pEntity) {
+		return this.mMenuItem.getChildIndex(pEntity);
+	}
+
+	@Override
+	public boolean setChildIndex(final IEntity pEntity, final int pIndex) {
+		return this.mMenuItem.setChildIndex(pEntity, pIndex);
+	}
+
+	@Override
 	public IEntity findChild(final IEntityMatcher pEntityMatcher) {
 		return this.mMenuItem.findChild(pEntityMatcher);
+	}
+
+	@Override
+	public boolean swapChildren(final IEntity pEntityA, final IEntity pEntityB) {
+		return this.mMenuItem.swapChildren(pEntityA, pEntityB);
+	}
+
+	@Override
+	public boolean swapChildren(final int pIndexA, final int pIndexB) {
+		return this.mMenuItem.swapChildren(pIndexA, pIndexB);
 	}
 
 	@Override

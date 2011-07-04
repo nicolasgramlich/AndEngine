@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -408,6 +409,28 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public int getChildIndex(final IEntity pEntity) {
+		if (this.mChildren == null || pEntity.getParent() != this) {
+			return -1;
+		}
+		return this.mChildren.indexOf(pEntity);
+	}
+
+	@Override
+	public boolean setChildIndex(final IEntity pEntity, final int pIndex) {
+		if (this.mChildren == null || pEntity.getParent() != this) {
+			return false;
+		}
+		try {
+			this.mChildren.remove(pEntity);		
+			this.mChildren.add(pIndex, pEntity);
+			return true;
+		} catch (final IndexOutOfBoundsException e) {
+			return false;
+		}
+	}
+
+	@Override
 	public IEntity getFirstChild() {
 		if(this.mChildren == null) {
 			return null;
@@ -453,11 +476,41 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public boolean attachChild(final IEntity pEntity, final int pIndex) {
+		if (this.mChildren == null) {
+			this.allocateChildren();
+		}
+		try {
+			this.mChildren.add(pIndex, pEntity);
+			pEntity.setParent(this);
+			pEntity.onAttached();
+			return true;
+		} catch (final IndexOutOfBoundsException e) {
+			return false;
+		}
+	}
+
+	@Override
 	public IEntity findChild(final IEntityMatcher pEntityMatcher) {
 		if(this.mChildren == null) {
 			return null;
 		}
 		return this.mChildren.find(pEntityMatcher);
+	}
+
+	@Override
+	public boolean swapChildren(final IEntity pEntityA, final IEntity pEntityB) {
+		return this.swapChildren(this.getChildIndex(pEntityA), this.getChildIndex(pEntityB));
+	}
+
+	@Override
+	public boolean swapChildren(final int pIndexA, final int pIndexB) {
+		try {
+			Collections.swap(this.mChildren, pIndexA, pIndexB);
+			return true;
+		} catch (final IndexOutOfBoundsException e) {
+			return false;
+		}
 	}
 
 	@Override

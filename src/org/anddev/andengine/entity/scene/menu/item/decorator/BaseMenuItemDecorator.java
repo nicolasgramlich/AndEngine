@@ -493,6 +493,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public boolean hasParent() {
+		return this.mMenuItem.hasParent();
+	}
+
+	@Override
 	public IEntity getParent() {
 		return this.mMenuItem.getParent();
 	}

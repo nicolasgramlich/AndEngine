@@ -42,6 +42,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public int getZIndex();
 	public void setZIndex(final int pZIndex);
 
+	public boolean hasParent();
 	public IEntity getParent();
 	public void setParent(final IEntity pEntity);
 

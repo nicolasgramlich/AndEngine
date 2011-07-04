@@ -157,6 +157,11 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public boolean hasParent() {
+		return this.mParent != null;
+	}
+
+	@Override
 	public IEntity getParent() {
 		return this.mParent;
 	}
@@ -465,18 +470,23 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void attachChild(final IEntity pEntity) {
+	public void attachChild(final IEntity pEntity) throws IllegalStateException {
+		if(pEntity.hasParent()) {
+			throw new IllegalStateException("pEntity already has a parent!");
+		}
 		if(this.mChildren == null) {
 			this.allocateChildren();
 		}
-
 		this.mChildren.add(pEntity);
 		pEntity.setParent(this);
 		pEntity.onAttached();
 	}
 
 	@Override
-	public boolean attachChild(final IEntity pEntity, final int pIndex) {
+	public boolean attachChild(final IEntity pEntity, final int pIndex) throws IllegalStateException {
+		if(pEntity.hasParent()) {
+			throw new IllegalStateException("pEntity already has a parent!");
+		}
 		if (this.mChildren == null) {
 			this.allocateChildren();
 		}

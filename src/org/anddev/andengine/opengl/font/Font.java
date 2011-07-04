@@ -154,7 +154,7 @@ public class Font {
 		pSize.set(this.mGetLetterBoundsTemporaryRect.width() + LETTER_EXTRA_WIDTH, this.getLineHeight());
 	}
 
-	public void prepareLettes(final char ... pCharacters) {
+	public void prepareLetters(final char ... pCharacters) {
 		for(final char character : pCharacters) {
 			this.getLetter(character);
 		}

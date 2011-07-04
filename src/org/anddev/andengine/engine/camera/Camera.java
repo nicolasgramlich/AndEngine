@@ -171,10 +171,7 @@ public class Camera implements IUpdateHandler {
 			this.mHUD.onUpdate(pSecondsElapsed);
 		}
 
-		if(this.mChaseEntity != null) {
-			final float[] centerCoordinates = this.mChaseEntity.getSceneCenterCoordinates();
-			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
-		}
+		updateChaseEntity();
 	}
 
 	@Override
@@ -189,6 +186,13 @@ public class Camera implements IUpdateHandler {
 	public void onDrawHUD(final GL10 pGL) {
 		if(this.mHUD != null) {
 			this.mHUD.onDraw(pGL, this);
+		}
+	}
+
+	public void updateChaseEntity() {
+		if(this.mChaseEntity != null) {
+			final float[] centerCoordinates = this.mChaseEntity.getSceneCenterCoordinates();
+			this.setCenter(centerCoordinates[VERTEX_INDEX_X], centerCoordinates[VERTEX_INDEX_Y]);
 		}
 	}
 

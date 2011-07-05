@@ -56,6 +56,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setPosition(final IEntity pOtherEntity);
 	public void setPosition(final float pX, final float pY);
 
+	public boolean isRotated();
 	public float getRotation();
 	public void setRotation(final float pRotation);
 

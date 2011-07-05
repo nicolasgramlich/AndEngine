@@ -14,6 +14,7 @@ public class RenderOptions {
 	// ===========================================================
 
 	private boolean mDisableExtensionVertexBufferObjects = false;
+	private boolean mDisableExtensionDrawTexture = false;
 
 	// ===========================================================
 	// Constructors
@@ -22,6 +23,13 @@ public class RenderOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	/**
+	 * <u><b>Default:</b></u> <code>false</code>
+	 */
+	public boolean isDisableExtensionVertexBufferObjects() {
+		return this.mDisableExtensionVertexBufferObjects;
+	}
 
 	public RenderOptions enableExtensionVertexBufferObjects() {
 		return this.setDisableExtensionVertexBufferObjects(false);
@@ -39,8 +47,21 @@ public class RenderOptions {
 	/**
 	 * <u><b>Default:</b></u> <code>false</code>
 	 */
-	public boolean isDisableExtensionVertexBufferObjects() {
-		return this.mDisableExtensionVertexBufferObjects;
+	public boolean isDisableExtensionDrawTexture() {
+		return this.mDisableExtensionDrawTexture;
+	}
+
+	public RenderOptions enableExtensionDrawTexture() {
+		return this.setDisableExtensionDrawTexture(false);
+	}
+
+	public RenderOptions disableExtensionDrawTexture() {
+		return this.setDisableExtensionDrawTexture(true);
+	}
+
+	public RenderOptions setDisableExtensionDrawTexture(final boolean pDisableExtensionDrawTexture) {
+		this.mDisableExtensionDrawTexture = pDisableExtensionDrawTexture;
+		return this;
 	}
 
 	// ===========================================================

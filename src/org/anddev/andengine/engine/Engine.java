@@ -183,6 +183,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		//		Debug.w("SurfaceView size changed to (width x height): " + pSurfaceWidth + " x " + pSurfaceHeight, new Exception());
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
+		this.onUpdateCameraSurface();
+	}
+
+	protected void onUpdateCameraSurface() {
+		this.mCamera.setSurfaceSize(0, 0, this.mSurfaceWidth, this.mSurfaceHeight);
 	}
 
 	public int getSurfaceWidth() {
@@ -273,19 +278,19 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public void onAccuracyChanged(final Sensor pSensor, final int pAccuracy) {
 		if(this.mRunning) {
 			switch(pSensor.getType()) {
-				case Sensor.TYPE_ACCELEROMETER:
-					if(this.mAccelerometerData != null) {
-						this.mAccelerometerData.setAccuracy(pAccuracy);
-						this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
-					} else if(this.mOrientationData != null) {
-						this.mOrientationData.setAccelerometerAccuracy(pAccuracy);
-						this.mOrientationListener.onOrientationChanged(this.mOrientationData);
-					}
-					break;
-				case Sensor.TYPE_MAGNETIC_FIELD:
-					this.mOrientationData.setMagneticFieldAccuracy(pAccuracy);
+			case Sensor.TYPE_ACCELEROMETER:
+				if(this.mAccelerometerData != null) {
+					this.mAccelerometerData.setAccuracy(pAccuracy);
+					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+				} else if(this.mOrientationData != null) {
+					this.mOrientationData.setAccelerometerAccuracy(pAccuracy);
 					this.mOrientationListener.onOrientationChanged(this.mOrientationData);
-					break;
+				}
+				break;
+			case Sensor.TYPE_MAGNETIC_FIELD:
+				this.mOrientationData.setMagneticFieldAccuracy(pAccuracy);
+				this.mOrientationListener.onOrientationChanged(this.mOrientationData);
+				break;
 			}
 		}
 	}
@@ -294,19 +299,19 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public void onSensorChanged(final SensorEvent pEvent) {
 		if(this.mRunning) {
 			switch(pEvent.sensor.getType()) {
-				case Sensor.TYPE_ACCELEROMETER:
-					if(this.mAccelerometerData != null) {
-						this.mAccelerometerData.setValues(pEvent.values);
-						this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
-					} else if(this.mOrientationData != null) {
-						this.mOrientationData.setAccelerometerValues(pEvent.values);
-						this.mOrientationListener.onOrientationChanged(this.mOrientationData);
-					}
-					break;
-				case Sensor.TYPE_MAGNETIC_FIELD:
-					this.mOrientationData.setMagneticFieldValues(pEvent.values);
+			case Sensor.TYPE_ACCELEROMETER:
+				if(this.mAccelerometerData != null) {
+					this.mAccelerometerData.setValues(pEvent.values);
+					this.mAccelerometerListener.onAccelerometerChanged(this.mAccelerometerData);
+				} else if(this.mOrientationData != null) {
+					this.mOrientationData.setAccelerometerValues(pEvent.values);
 					this.mOrientationListener.onOrientationChanged(this.mOrientationData);
-					break;
+				}
+				break;
+			case Sensor.TYPE_MAGNETIC_FIELD:
+				this.mOrientationData.setMagneticFieldValues(pEvent.values);
+				this.mOrientationListener.onOrientationChanged(this.mOrientationData);
+				break;
 			}
 		}
 	}
@@ -338,15 +343,15 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	@Override
 	public void onStatusChanged(final String pProvider, final int pStatus, final Bundle pExtras) {
 		switch(pStatus) {
-			case LocationProvider.AVAILABLE:
-				this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.AVAILABLE, pExtras);
-				break;
-			case LocationProvider.OUT_OF_SERVICE:
-				this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.OUT_OF_SERVICE, pExtras);
-				break;
-			case LocationProvider.TEMPORARILY_UNAVAILABLE:
-				this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.TEMPORARILY_UNAVAILABLE, pExtras);
-				break;
+		case LocationProvider.AVAILABLE:
+			this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.AVAILABLE, pExtras);
+			break;
+		case LocationProvider.OUT_OF_SERVICE:
+			this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.OUT_OF_SERVICE, pExtras);
+			break;
+		case LocationProvider.TEMPORARILY_UNAVAILABLE:
+			this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.TEMPORARILY_UNAVAILABLE, pExtras);
+			break;
 		}
 	}
 

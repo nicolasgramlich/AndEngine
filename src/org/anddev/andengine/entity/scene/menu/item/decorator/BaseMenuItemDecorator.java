@@ -162,6 +162,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public boolean isRotated() {
+		return this.mMenuItem.isRotated();
+	}
+
+	@Override
 	public float getRotation() {
 		return this.mMenuItem.getRotation();
 	}

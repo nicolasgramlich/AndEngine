@@ -228,6 +228,11 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public boolean isRotated() {
+		return this.mRotation != 0;
+	}
+
+	@Override
 	public void setRotation(final float pRotation) {
 		this.mRotation = pRotation;
 		this.mLocalToParentTransformationDirty = true;
@@ -427,7 +432,7 @@ public class Entity implements IEntity {
 			return false;
 		}
 		try {
-			this.mChildren.remove(pEntity);		
+			this.mChildren.remove(pEntity);
 			this.mChildren.add(pIndex, pEntity);
 			return true;
 		} catch (final IndexOutOfBoundsException e) {
@@ -982,15 +987,23 @@ public class Entity implements IEntity {
 
 			this.doDraw(pGL, pCamera);
 
-			if(this.mChildren != null && this.mChildrenVisible) {
-				final ArrayList<IEntity> entities = this.mChildren;
-				final int entityCount = entities.size();
-				for(int i = 0; i < entityCount; i++) {
-					entities.get(i).onDraw(pGL, pCamera);
-				}
-			}
+			this.onDrawChildren(pGL, pCamera);
 		}
 		pGL.glPopMatrix();
+	}
+
+	protected void onDrawChildren(final GL10 pGL, final Camera pCamera) {
+		if(this.mChildren != null && this.mChildrenVisible) {
+			this.onManagedDrawChildren(pGL, pCamera);
+		}
+	}
+
+	public void onManagedDrawChildren(final GL10 pGL, final Camera pCamera) {
+		final ArrayList<IEntity> children = this.mChildren;
+		final int childCount = children.size();
+		for(int i = 0; i < childCount; i++) {
+			children.get(i).onDraw(pGL, pCamera);
+		}
 	}
 
 	protected void onManagedUpdate(final float pSecondsElapsed) {

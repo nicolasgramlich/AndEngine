@@ -7,9 +7,11 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
+import javax.microedition.khronos.opengles.GL11Ext;
 
 import org.anddev.andengine.engine.options.RenderOptions;
 import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
+import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
 import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
@@ -44,8 +46,9 @@ public class GLHelper {
 	private static int sCurrentSourceBlendMode = -1;
 	private static int sCurrentDestinationBlendMode = -1;
 
-	private static FastFloatBuffer sCurrentTextureFloatBuffer = null;
 	private static FastFloatBuffer sCurrentVertexFloatBuffer = null;
+	private static FastFloatBuffer sCurrentTextureFloatBuffer = null;
+	private static TextureRegionCrop sCurrentTextureRegionCrop = null;
 
 	private static boolean sEnableDither = true;
 	private static boolean sEnableLightning = true;
@@ -81,8 +84,9 @@ public class GLHelper {
 		GLHelper.sCurrentSourceBlendMode = -1;
 		GLHelper.sCurrentDestinationBlendMode = -1;
 
-		GLHelper.sCurrentTextureFloatBuffer = null;
 		GLHelper.sCurrentVertexFloatBuffer = null;
+		GLHelper.sCurrentTextureFloatBuffer = null;
+		GLHelper.sCurrentTextureRegionCrop = null;
 
 		GLHelper.enableDither(pGL);
 		GLHelper.enableLightning(pGL);
@@ -121,7 +125,7 @@ public class GLHelper {
 		final boolean isDrawTextureCapable = extensions.contains("draw_texture");
 
 		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !pRenderOptions.isDisableExtensionVertexBufferObjects() && !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
-		GLHelper.EXTENSIONS_DRAWTEXTURE  = isDrawTextureCapable;
+		GLHelper.EXTENSIONS_DRAWTEXTURE  = !pRenderOptions.isDisableExtensionVertexBufferObjects() && (isDrawTextureCapable || !isOpenGL10);
 
 		GLHelper.hackBrokenDevices();
 		Debug.d("EXTENSIONS_VERXTEXBUFFEROBJECTS = " + GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS);
@@ -394,6 +398,13 @@ public class GLHelper {
 
 	public static void bufferData(final GL11 pGL11, final ByteBuffer pByteBuffer, final int pUsage) {
 		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pByteBuffer.capacity(), pByteBuffer, pUsage);
+	}
+
+	public static void textureCrop(final GL11 pGL11, final TextureRegionCrop pTextureRegionCrop) {
+		if (pTextureRegionCrop != GLHelper.sCurrentTextureRegionCrop || pTextureRegionCrop.isDirty()) {
+			GLHelper.sCurrentTextureRegionCrop = pTextureRegionCrop;
+			pGL11.glTexParameteriv(GL10.GL_TEXTURE_2D, GL11Ext.GL_TEXTURE_CROP_RECT_OES, pTextureRegionCrop.getData(), 0);
+		}
 	}
 
 	/**

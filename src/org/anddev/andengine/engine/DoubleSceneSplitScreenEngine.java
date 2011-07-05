@@ -160,6 +160,15 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		this.getSecondCamera().onUpdate(pSecondsElapsed);
 	}
 
+	@Override
+	protected void onUpdateCameraSurface() {
+		final int surfaceWidth = this.mSurfaceWidth;
+		final int surfaceWidthHalf = surfaceWidth >> 1;
+
+		this.getFirstCamera().setSurfaceSize(0, 0, surfaceWidthHalf, this.mSurfaceHeight);
+		this.getSecondCamera().setSurfaceSize(surfaceWidthHalf, 0, surfaceWidthHalf, this.mSurfaceHeight);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

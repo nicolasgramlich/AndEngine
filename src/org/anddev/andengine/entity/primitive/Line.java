@@ -159,7 +159,7 @@ public class Line extends Shape {
 
 	@Override
 	protected boolean isCulled(final Camera pCamera) {
-		return false; // TODO
+		return pCamera.isLineVisible(this);
 	}
 
 	@Override

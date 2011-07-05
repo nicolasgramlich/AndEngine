@@ -82,7 +82,7 @@ public abstract class BaseSprite extends BaseRectangle {
 
 		super.doDraw(pGL, pCamera);
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
@@ -90,7 +90,7 @@ public abstract class BaseSprite extends BaseRectangle {
 		final TextureRegionBuffer textureRegionBuffer = this.mTextureRegion.getTextureBuffer();
 		if(textureRegionBuffer.isManaged()) {
 			textureRegionBuffer.unloadFromActiveBufferObjectManager();
-		}	
+		}
 	}
 
 	// ===========================================================

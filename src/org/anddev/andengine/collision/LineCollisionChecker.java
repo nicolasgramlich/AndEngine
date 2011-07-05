@@ -38,7 +38,7 @@ public class LineCollisionChecker extends ShapeCollisionChecker {
 		return ((BaseCollisionChecker.relativeCCW(pX1, pY1, pX2, pY2, pX3, pY3) * BaseCollisionChecker.relativeCCW(pX1, pY1, pX2, pY2, pX4, pY4) <= 0)
 				&& (BaseCollisionChecker.relativeCCW(pX3, pY3, pX4, pY4, pX1, pY1) * BaseCollisionChecker.relativeCCW(pX3, pY3, pX4, pY4, pX2, pY2) <= 0));
 	}
-	
+
 	public static void fillVertices(final Line pLine, final float[] pVertices) {
 		pVertices[0 + VERTEX_INDEX_X] = 0;
 		pVertices[0 + VERTEX_INDEX_Y] = 0;

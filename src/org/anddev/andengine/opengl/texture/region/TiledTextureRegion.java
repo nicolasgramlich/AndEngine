@@ -86,11 +86,11 @@ public class TiledTextureRegion extends BaseTextureRegion {
 		}
 	}
 
-	public float getTexturePositionOfCurrentTileX() {
+	public int getTexturePositionOfCurrentTileX() {
 		return super.getTexturePositionX() + this.mCurrentTileColumn * this.getTileWidth();
 	}
 
-	public float getTexturePositionOfCurrentTileY() {
+	public int getTexturePositionOfCurrentTileY() {
 		return super.getTexturePositionY() + this.mCurrentTileRow * this.getTileHeight();
 	}
 
@@ -107,22 +107,42 @@ public class TiledTextureRegion extends BaseTextureRegion {
 
 	@Override
 	public float getTextureCoordinateX1() {
-		return this.getTexturePositionOfCurrentTileX() / this.mTexture.getWidth();
+		return (float)this.getTexturePositionOfCurrentTileX() / this.mTexture.getWidth();
 	}
 
 	@Override
 	public float getTextureCoordinateY1() {
-		return this.getTexturePositionOfCurrentTileY() / this.mTexture.getHeight();
+		return (float)this.getTexturePositionOfCurrentTileY() / this.mTexture.getHeight();
 	}
 
 	@Override
 	public float getTextureCoordinateX2() {
-		return (this.getTexturePositionOfCurrentTileX() + this.getTileWidth()) / this.mTexture.getWidth();
+		return (float)(this.getTexturePositionOfCurrentTileX() + this.getTileWidth()) / this.mTexture.getWidth();
 	}
 
 	@Override
 	public float getTextureCoordinateY2() {
-		return (this.getTexturePositionOfCurrentTileY() + this.getTileHeight()) / this.mTexture.getHeight();
+		return (float)(this.getTexturePositionOfCurrentTileY() + this.getTileHeight()) / this.mTexture.getHeight();
+	}
+	
+	@Override
+	public int getTextureCropLeft() {
+		return this.getTexturePositionOfCurrentTileX();
+	}
+
+	@Override
+	public int getTextureCropTop() {
+		return this.getTexturePositionOfCurrentTileY();
+	}
+
+	@Override
+	public int getTextureCropWidth() {
+		return this.getTileWidth();
+	}
+
+	@Override
+	public int getTextureCropHeight() {
+		return this.getTileHeight();
 	}
 
 	// ===========================================================

@@ -108,7 +108,7 @@ public abstract class RectangularShape extends Shape {
 	}
 
 	@Override
-	protected boolean isCulled(final Camera pCamera) {
+	protected boolean isCulled(final Camera pCamera) { // TODO Advanced culling!
 		final float x = this.mX;
 		final float y = this.mY;
 		return x > pCamera.getMaxX()

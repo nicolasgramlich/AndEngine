@@ -3,8 +3,10 @@ package org.anddev.andengine.collision;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
+import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.shape.RectangularShape;
+import org.anddev.andengine.util.MathUtils;
 
 /**
  * @author Nicolas Gramlich
@@ -47,6 +49,20 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		return ShapeCollisionChecker.checkContains(VERTICES_CONTAINS_TMP, 2 * RECTANGULARSHAPE_VERTEX_COUNT, pX, pY);
 	}
 
+	public static boolean isVisible(final Camera pCamera, final RectangularShape pRectangularShape) {
+		RectangularShapeCollisionChecker.fillVertices(pCamera, VERTICES_COLLISION_TMP_A);
+		RectangularShapeCollisionChecker.fillVertices(pRectangularShape, VERTICES_COLLISION_TMP_B);
+
+		return ShapeCollisionChecker.checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, 2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B);
+	}
+
+	public static boolean isVisible(final Camera pCamera, final Line pLine) {
+		RectangularShapeCollisionChecker.fillVertices(pCamera, VERTICES_COLLISION_TMP_A);
+		LineCollisionChecker.fillVertices(pLine, VERTICES_COLLISION_TMP_B);
+
+		return ShapeCollisionChecker.checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, 2 * LINE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B);
+	}
+
 	public static boolean checkCollision(final RectangularShape pRectangularShapeA, final RectangularShape pRectangularShapeB) {
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShapeA, VERTICES_COLLISION_TMP_A);
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShapeB, VERTICES_COLLISION_TMP_B);
@@ -80,6 +96,22 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		pVertices[6 + VERTEX_INDEX_Y] = bottom;
 
 		pRectangularShape.getLocalToSceneTransformation().transform(pVertices);
+	}
+
+	private static void fillVertices(final Camera pCamera, final float[] pVertices) {
+		pVertices[0 + VERTEX_INDEX_X] = pCamera.getMinX();
+		pVertices[0 + VERTEX_INDEX_Y] = pCamera.getMinY();
+
+		pVertices[2 + VERTEX_INDEX_X] = pCamera.getMaxX();
+		pVertices[2 + VERTEX_INDEX_Y] = pCamera.getMinY();
+
+		pVertices[4 + VERTEX_INDEX_X] = pCamera.getMaxX();
+		pVertices[4 + VERTEX_INDEX_Y] = pCamera.getMaxY();
+
+		pVertices[6 + VERTEX_INDEX_X] = pCamera.getMinX();
+		pVertices[6 + VERTEX_INDEX_Y] = pCamera.getMaxY();
+
+		MathUtils.rotateAroundCenter(pVertices, pCamera.getRotation(), pCamera.getCenterX(), pCamera.getCenterY());
 	}
 
 	// ===========================================================

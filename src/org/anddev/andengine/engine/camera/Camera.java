@@ -5,10 +5,11 @@ import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.collision.BaseCollisionChecker;
+import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -43,6 +44,11 @@ public class Camera implements IUpdateHandler {
 
 	protected float mRotation = 0;
 	protected float mCameraSceneRotation = 0;
+
+	protected int mSurfaceX;
+	protected int mSurfaceY;
+	protected int mSurfaceWidth;
+	protected int mSurfaceHeight;
 
 	// ===========================================================
 	// Constructors
@@ -169,6 +175,33 @@ public class Camera implements IUpdateHandler {
 		this.mCameraSceneRotation = pCameraSceneRotation;
 	}
 
+	public int getSurfaceX() {
+		return this.mSurfaceX;
+	}
+
+	public int getSurfaceY() {
+		return this.mSurfaceY;
+	}
+
+	public int getSurfaceWidth() {
+		return this.mSurfaceWidth;
+	}
+
+	public int getSurfaceHeight() {
+		return this.mSurfaceHeight;
+	}
+
+	public void setSurfaceSize(final int pSurfaceX, final int pSurfaceY, final int pSurfaceWidth, final int pSurfaceHeight) {
+		this.mSurfaceX = pSurfaceX;
+		this.mSurfaceY = pSurfaceY;
+		this.mSurfaceWidth = pSurfaceWidth;
+		this.mSurfaceHeight = pSurfaceHeight;
+	}
+
+	public boolean isRotated() {
+		return this.mRotation != 0;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -204,14 +237,12 @@ public class Camera implements IUpdateHandler {
 		}
 	}
 
-	public boolean isRectangularShapeVisible(final RectangularShape pRectangularShape) {
-		final float otherLeft = pRectangularShape.getX();
-		final float otherTop = pRectangularShape.getY();
-		final float otherRight = pRectangularShape.getWidthScaled() + otherLeft;
-		final float otherBottom = pRectangularShape.getHeightScaled() + otherTop;
+	public boolean isLineVisible(final Line pLine) {
+		return RectangularShapeCollisionChecker.isVisible(this, pLine);
+	}
 
-		// TODO Should also use RectangularShapeCollisionChecker
-		return BaseCollisionChecker.checkAxisAlignedRectangleCollision(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY(), otherLeft, otherTop, otherRight, otherBottom);
+	public boolean isRectangularShapeVisible(final RectangularShape pRectangularShape) {
+		return RectangularShapeCollisionChecker.isVisible(this, pRectangularShape);
 	}
 
 	public void onApplySceneMatrix(final GL10 pGL) {

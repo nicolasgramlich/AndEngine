@@ -437,22 +437,14 @@ public class GLHelper {
 		if(GLHelper.IS_LITTLE_ENDIAN) {
 			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
-				
-				/* argb to abgr */
-				final int alphaGreen = pixel & 0xFF00FF00;
-				final int red = (pixel & 0x00FF0000) >> 16;
-				final int blue = (pixel & 0x000000FF) << 16;
-
-				pPixelsARGB_8888[i] = alphaGreen | blue | red;
+				/* ARGB to ABGR */
+				pPixelsARGB_8888[i] = pixel & 0xFF00FF00 | (pixel & 0x000000FF) << 16 | (pixel & 0x00FF0000) >> 16;
 			}
 		} else {
 			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
-				/* argb to rgba */
-				final int alpha = (pixel & 0xFF000000) >> 24;
-				final int redGreenBlue = (pixel & 0x00FFFFFF) << 8;
-
-				pPixelsARGB_8888[i] = redGreenBlue | alpha;
+				/* ARGB to RGBA */
+				pPixelsARGB_8888[i] = (pixel & 0x00FFFFFF) << 8 | (pixel & 0xFF000000) >> 24;
 			}
 		}
 

@@ -247,7 +247,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		try{
 			InputStream in = new ByteArrayInputStream(pDataString.getBytes("UTF-8"));
 
-			/* Wrap decoding Streams if neccessary. */
+			/* Wrap decoding Streams if necessary. */
 			if(pDataEncoding != null && pDataEncoding.equals(TAG_DATA_ATTRIBUTE_ENCODING_VALUE_BASE64)) {
 				in = new Base64InputStream(in, Base64.DEFAULT);
 			}

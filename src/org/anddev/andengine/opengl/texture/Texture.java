@@ -253,6 +253,11 @@ public class Texture {
 		}
 	}
 
+	public void reloadToHardware(final GL10 pGL) {
+		this.unloadFromHardware(pGL);
+		this.loadToHardware(pGL);
+	}
+
 	private void writeTextureToHardware(final GL10 pGL) {
 		final Config bitmapConfig = this.mTextureFormat.getBitmapConfig();
 		final int glFormat = this.mTextureFormat.getGLFormat();
@@ -300,7 +305,7 @@ public class Texture {
 	}
 
 	private void allocateAndBindTextureOnHardware(final GL10 pGL) {
-		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
+		GLHelper.forceBindTexture(pGL, this.mHardwareTextureID);
 
 		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
 	}

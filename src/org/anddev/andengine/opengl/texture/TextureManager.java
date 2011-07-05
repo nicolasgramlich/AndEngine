@@ -120,8 +120,7 @@ public class TextureManager {
 			for(int i = textursLoadedCount - 1; i >= 0; i--){
 				final Texture textureToBeUpdated = texturesLoaded.get(i);
 				if(textureToBeUpdated.isUpdateOnHardwareNeeded()){
-					textureToBeUpdated.unloadFromHardware(pGL);
-					textureToBeUpdated.loadToHardware(pGL);
+					textureToBeUpdated.reloadToHardware(pGL);
 				}
 			}
 		}

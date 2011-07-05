@@ -128,7 +128,7 @@ public class SpriteBatch extends Entity {
 	// ===========================================================
 
 	protected void begin(@SuppressWarnings("unused") final GL10 pGL) {
-		//		pGL.glDepthMask(false); // TODO --> GLHelper
+//		GLHelper.disableDepthMask(pGL);
 	}
 
 	protected void onDrawSpriteBatch() {
@@ -136,7 +136,7 @@ public class SpriteBatch extends Entity {
 	}
 
 	protected void end(@SuppressWarnings("unused") final GL10 pGL) {
-		//		pGL.glDepthMask(true); // TODO --> GLHelper
+//		GLHelper.enableDepthMask(pGL);
 	}
 
 	/**

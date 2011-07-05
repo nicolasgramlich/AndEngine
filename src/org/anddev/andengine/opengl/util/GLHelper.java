@@ -293,12 +293,27 @@ public class GLHelper {
 		pGL11.glDeleteBuffers(1, GLHelper.HARDWAREBUFFERID_CONTAINER, 0);
 	}
 
+	/**
+	 * @see {@link GLHelper#forceBindTexture(GL10, int)}
+	 * @param pGL
+	 * @param pHardwareTextureID
+	 */
 	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {
 		/* Reduce unnecessary texture switching calls. */
 		if(GLHelper.sCurrentHardwareTextureID != pHardwareTextureID) {
 			GLHelper.sCurrentHardwareTextureID = pHardwareTextureID;
 			pGL.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
 		}
+	}
+
+	/**
+	 * @see {@link GLHelper#bindTexture(GL10, int)}
+	 * @param pGL
+	 * @param pHardwareTextureID
+	 */
+	public static void forceBindTexture(final GL10 pGL, final int pHardwareTextureID) {
+		GLHelper.sCurrentHardwareTextureID = pHardwareTextureID;
+		pGL.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
 	}
 
 	public static void deleteTexture(final GL10 pGL, final int pHardwareTextureID) {

@@ -175,10 +175,10 @@ public class Text extends RectangularShape {
 
 			this.mTextTextureBuffer.selectOnHardware(gl11);
 
-			GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
+			this.mFont.getTexture().bind(pGL);
 			GLHelper.texCoordZeroPointer(gl11);
 		} else {
-			GLHelper.bindTexture(pGL, this.mFont.getTexture().getHardwareTextureID());
+			this.mFont.getTexture().bind(pGL);
 			GLHelper.texCoordPointer(pGL, this.mTextTextureBuffer.getFloatBuffer());
 		}
 	}

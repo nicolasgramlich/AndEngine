@@ -294,6 +294,10 @@ public class Texture {
 			}
 		}
 	}
+	
+	public void bind(final GL10 pGL) {
+		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
+	}
 
 	private void applyTextureOptions(final GL10 pGL) {
 		final TextureOptions textureOptions = this.mTextureOptions;

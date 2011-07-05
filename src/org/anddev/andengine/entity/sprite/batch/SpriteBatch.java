@@ -334,10 +334,10 @@ public class SpriteBatch extends Entity {
 
 			this.mSpriteBatchTextureRegionBuffer.selectOnHardware(gl11);
 
-			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
+			this.mTexture.bind(pGL);
 			GLHelper.texCoordZeroPointer(gl11);
 		} else {
-			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
+			this.mTexture.bind(pGL);
 			GLHelper.texCoordPointer(pGL, this.mSpriteBatchTextureRegionBuffer.getFloatBuffer());
 		}
 	}

@@ -145,10 +145,10 @@ public abstract class BaseTextureRegion {
 
 			this.mTextureRegionBuffer.selectOnHardware(gl11);
 
-			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
+			this.mTexture.bind(pGL);
 			GLHelper.texCoordZeroPointer(gl11);
 		} else {
-			GLHelper.bindTexture(pGL, this.mTexture.getHardwareTextureID());
+			this.mTexture.bind(pGL);
 			GLHelper.texCoordPointer(pGL, this.mTextureRegionBuffer.getFloatBuffer());
 		}
 	}

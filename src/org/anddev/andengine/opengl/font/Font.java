@@ -201,7 +201,7 @@ public class Font {
 	public synchronized void update(final GL10 pGL) {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
-			final int hardwareTextureID = this.mTexture.getHardwareTextureID();
+			this.mTexture.bind(pGL);
 
 			final float textureWidth = this.mTextureWidth;
 			final float textureHeight = this.mTextureHeight;
@@ -210,7 +210,6 @@ public class Font {
 				final Letter letter = lettersPendingToBeDrawnToTexture.get(i);
 				final Bitmap bitmap = this.getLetterBitmap(letter.mCharacter);
 
-				GLHelper.bindTexture(pGL, hardwareTextureID);
 				GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, (int)(letter.mTextureX * textureWidth), (int)(letter.mTextureY * textureHeight), bitmap);
 
 				bitmap.recycle();

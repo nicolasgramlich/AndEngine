@@ -432,29 +432,33 @@ public class GLHelper {
 	}
 
 	private static int[] convertARGB_8888toRGBA_8888(final int[] pPixelsARGB_8888) {
+		final long start = System.nanoTime();
+		
 		if(GLHelper.IS_LITTLE_ENDIAN) {
 			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
+				
+				/* argb to abgr */
+				final int alphaGreen = pixel & 0xFF00FF00;
+				final int red = (pixel & 0x00FF0000) >> 16;
+				final int blue = (pixel & 0x000000FF) << 16;
 
-				final int red = ((pixel >> 16) & 0xFF);
-				final int green = ((pixel >> 8) & 0xFF);
-				final int blue = ((pixel) & 0xFF);
-				final int alpha = (pixel >> 24);
-
-				pPixelsARGB_8888[i] = alpha << 24 | blue << 16 | green << 8 | red;
+				pPixelsARGB_8888[i] = alphaGreen | blue | red;
 			}
 		} else {
 			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
+				/* argb to rgba */
+				final int alpha = (pixel & 0xFF000000) >> 24;
+				final int redGreenBlue = (pixel & 0x00FFFFFF) << 8;
 
-				final int red = ((pixel >> 16) & 0xFF);
-				final int green = ((pixel >> 8) & 0xFF);
-				final int blue = ((pixel) & 0xFF);
-				final int alpha = (pixel >> 24);
-
-				pPixelsARGB_8888[i] = red << 24 | green << 16 | blue << 8 | alpha;
+				pPixelsARGB_8888[i] = redGreenBlue | alpha;
 			}
 		}
+
+		final long end = System.nanoTime();
+		Debug.d("Conversion time: " + (end - start) + " ms");
+
 		return pPixelsARGB_8888;
 	}
 

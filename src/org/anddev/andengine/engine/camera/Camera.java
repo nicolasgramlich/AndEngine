@@ -171,7 +171,7 @@ public class Camera implements IUpdateHandler {
 			this.mHUD.onUpdate(pSecondsElapsed);
 		}
 
-		updateChaseEntity();
+		this.updateChaseEntity();
 	}
 
 	@Override

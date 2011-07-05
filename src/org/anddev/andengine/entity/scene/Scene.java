@@ -218,13 +218,13 @@ public class Scene extends Entity {
 
 		if(childScene == null || !this.mChildSceneModalDraw) {
 			if(this.mBackgroundEnabled) {
-				pCamera.onApplyPositionIndependentMatrix(pGL);
+				pCamera.onApplySceneBackgroundMatrix(pGL);
 				GLHelper.setModelViewIdentityMatrix(pGL);
 
 				this.mBackground.onDraw(pGL, pCamera);
 			}
 
-			pCamera.onApplyMatrix(pGL);
+			pCamera.onApplySceneMatrix(pGL);
 			GLHelper.setModelViewIdentityMatrix(pGL);
 
 			super.onManagedDraw(pGL, pCamera);

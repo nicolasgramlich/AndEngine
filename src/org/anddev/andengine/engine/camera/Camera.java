@@ -104,6 +104,14 @@ public class Camera implements IUpdateHandler {
 		return this.mMaxY - this.mMinY;
 	}
 
+	public float getWidthRaw() {
+		return this.mMaxX - this.mMinX;
+	}
+
+	public float getHeightRaw() {
+		return this.mMaxY - this.mMinY;
+	}
+
 	public float getCenterX() {
 		final float minX = this.mMinX;
 		return minX + (this.mMaxX - minX) * 0.5f;
@@ -206,7 +214,7 @@ public class Camera implements IUpdateHandler {
 		return BaseCollisionChecker.checkAxisAlignedRectangleCollision(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY(), otherLeft, otherTop, otherRight, otherBottom);
 	}
 
-	public void onApplyMatrix(final GL10 pGL) {
+	public void onApplySceneMatrix(final GL10 pGL) {
 		GLHelper.setProjectionIdentityMatrix(pGL);
 
 		pGL.glOrthof(this.getMinX(), this.getMaxX(), this.getMaxY(), this.getMinY(), this.mNearZ, this.mFarZ);
@@ -217,31 +225,31 @@ public class Camera implements IUpdateHandler {
 		}
 	}
 
-	public void onApplyPositionIndependentMatrix(final GL10 pGL) {
+	public void onApplySceneBackgroundMatrix(final GL10 pGL) {
 		GLHelper.setProjectionIdentityMatrix(pGL);
 
-		final float width = this.mMaxX - this.mMinX;
-		final float height = this.mMaxY - this.mMinY;
+		final float widthRaw = this.getWidthRaw();
+		final float heightRaw = this.getHeightRaw();
 
-		pGL.glOrthof(0, width, height, 0, this.mNearZ, this.mFarZ);
+		pGL.glOrthof(0, widthRaw, heightRaw, 0, this.mNearZ, this.mFarZ);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			this.applyRotation(pGL, width * 0.5f, height * 0.5f, rotation);
+			this.applyRotation(pGL, widthRaw * 0.5f, heightRaw * 0.5f, rotation);
 		}
 	}
 
 	public void onApplyCameraSceneMatrix(final GL10 pGL) {
 		GLHelper.setProjectionIdentityMatrix(pGL);
 
-		final float width = this.mMaxX - this.mMinX;
-		final float height = this.mMaxY - this.mMinY;
+		final float widthRaw = this.getWidthRaw();
+		final float heightRaw = this.getHeightRaw();
 
-		pGL.glOrthof(0, width, height, 0, this.mNearZ, this.mFarZ);
+		pGL.glOrthof(0, widthRaw, heightRaw, 0, this.mNearZ, this.mFarZ);
 
 		final float cameraSceneRotation = this.mCameraSceneRotation;
 		if(cameraSceneRotation != 0) {
-			this.applyRotation(pGL, width * 0.5f, height * 0.5f, cameraSceneRotation);
+			this.applyRotation(pGL, widthRaw * 0.5f, heightRaw * 0.5f, cameraSceneRotation);
 		}
 	}
 

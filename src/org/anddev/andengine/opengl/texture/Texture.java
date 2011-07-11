@@ -270,6 +270,9 @@ public class Texture {
 		for(int j = 0; j < textureSourceCount; j++) {
 			final TextureSourceWithLocation textureSourceWithLocation = textureSources.get(j);
 			if(textureSourceWithLocation != null) {
+				// TODO Add support for compressed Textures (ETC1).
+				// GLHelper.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
+				
 				final Bitmap bmp = textureSourceWithLocation.onLoadBitmap(bitmapConfig);
 				try {
 					if(bmp == null) {

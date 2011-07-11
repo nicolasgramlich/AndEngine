@@ -17,31 +17,20 @@ import android.opengl.GLUtils;
  * @author Nicolas Gramlich
  * @since 14:55:02 - 08.03.2010
  */
-public class Texture {
+public class Texture extends BaseTexture {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final int[] HARDWARETEXTUREID_FETCHER = new int[1];
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final TextureFormat mTextureFormat;
-
 	private final int mWidth;
 	private final int mHeight;
-
-	private boolean mLoadedToHardware;
-	private int mHardwareTextureID = -1;
-	private final TextureOptions mTextureOptions;
+	private final TextureFormat mTextureFormat;
 
 	private final ArrayList<TextureSourceWithLocation> mTextureSources = new ArrayList<TextureSourceWithLocation>();
-
-	private final ITextureStateListener mTextureStateListener;
-
-	protected boolean mUpdateOnHardwareNeeded = false;
 
 	// ===========================================================
 	// Constructors
@@ -49,7 +38,7 @@ public class Texture {
 
 	/**
 	 * Uses {@link TextureFormat#RGBA_8888}.
-	 * 
+	 *
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 */
@@ -68,7 +57,7 @@ public class Texture {
 
 	/**
 	 * Uses {@link TextureFormat#RGBA_8888}.
-	 * 
+	 *
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureSource} failed to load.
@@ -78,8 +67,6 @@ public class Texture {
 	}
 
 	/**
-	 * Uses {@link TextureFormat#RGBA_8888}.
-	 * 
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
@@ -91,7 +78,7 @@ public class Texture {
 
 	/**
 	 * Uses {@link TextureFormat#RGBA_8888}.
-	 * 
+	 *
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pTextureOptions the (quality) settings of the Texture.
@@ -103,7 +90,7 @@ public class Texture {
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.  
+	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link Texture}s with transparency and {@link TextureFormat#RGB_565} for {@link Texture}s without transparency.
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 */
 	public Texture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException {
@@ -112,7 +99,7 @@ public class Texture {
 
 	/**
 	 * Uses {@link TextureFormat#RGBA_8888}.
-	 * 
+	 *
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pTextureOptions the (quality) settings of the Texture.
@@ -130,36 +117,19 @@ public class Texture {
 	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
 	public Texture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+		super(pTextureOptions, pTextureStateListener);
 		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
 			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
 		}
 		this.mTextureFormat = pTextureFormat;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		this.mTextureOptions = pTextureOptions;
-		this.mTextureStateListener = pTextureStateListener;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public int getHardwareTextureID() {
-		return this.mHardwareTextureID;
-	}
-
-	public boolean isLoadedToHardware() {
-		return this.mLoadedToHardware;
-	}
-
-	public boolean isUpdateOnHardwareNeeded() {
-		return this.mUpdateOnHardwareNeeded;
-	}
-
-	void setLoadedToHardware(final boolean pLoadedToHardware) {
-		this.mLoadedToHardware = pLoadedToHardware;
-	}
-	
 	public TextureFormat getTextureFormat() {
 		return this.mTextureFormat;
 	}
@@ -170,10 +140,6 @@ public class Texture {
 
 	public int getHeight() {
 		return this.mHeight;
-	}
-
-	public TextureOptions getTextureOptions() {
-		return this.mTextureOptions;
 	}
 
 	// ===========================================================
@@ -220,45 +186,8 @@ public class Texture {
 		this.mUpdateOnHardwareNeeded = true;
 	}
 
-	public void loadToHardware(final GL10 pGL) {
-		GLHelper.enableTextures(pGL);
-
-		this.mHardwareTextureID = Texture.generateHardwareTextureID(pGL);
-
-		this.allocateAndBindTextureOnHardware(pGL);
-
-		this.applyTextureOptions(pGL);
-
-		this.writeTextureToHardware(pGL);
-
-		this.mUpdateOnHardwareNeeded = false;
-		this.mLoadedToHardware = true;
-
-		if(this.mTextureStateListener != null) {
-			this.mTextureStateListener.onLoadedToHardware(this);
-		}
-	}
-
-	public void unloadFromHardware(final GL10 pGL) {
-		GLHelper.enableTextures(pGL);
-
-		this.deleteTextureOnHardware(pGL);
-
-		this.mHardwareTextureID = -1;
-
-		this.mLoadedToHardware = false;
-
-		if(this.mTextureStateListener != null) {
-			this.mTextureStateListener.onUnloadedFromHardware(this);
-		}
-	}
-
-	public void reloadToHardware(final GL10 pGL) {
-		this.unloadFromHardware(pGL);
-		this.loadToHardware(pGL);
-	}
-
-	private void writeTextureToHardware(final GL10 pGL) {
+	@Override
+	protected void writeTextureToHardware(final GL10 pGL) {
 		final Config bitmapConfig = this.mTextureFormat.getBitmapConfig();
 		final int glFormat = this.mTextureFormat.getGLFormat();
 		final int glDataType = this.mTextureFormat.getGLDataType();
@@ -272,7 +201,7 @@ public class Texture {
 			if(textureSourceWithLocation != null) {
 				// TODO Add support for compressed Textures (ETC1).
 				// GLHelper.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
-				
+
 				final Bitmap bmp = textureSourceWithLocation.onLoadBitmap(bitmapConfig);
 				try {
 					if(bmp == null) {
@@ -287,6 +216,28 @@ public class Texture {
 					bmp.recycle();
 				} catch (final IllegalArgumentException iae) {
 					// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
+					//private Buffer createImage(final int width, final int height) {
+					//	final int stride = 3 * width;
+					//	final ByteBuffer image = ByteBuffer.allocateDirect(height * stride)
+					//			.order(ByteOrder.nativeOrder());
+					//
+					//	// Fill with a pretty "munching squares" pattern:
+					//	for (int t = 0; t < height; t++) {
+					//		final byte red = (byte) (255 - 2 * t);
+					//		final byte green = (byte) (2 * t);
+					//		final byte blue = 0;
+					//		for (int x = 0; x < width; x++) {
+					//			final int y = x ^ t;
+					//			image.position(stride * y + x * 3);
+					//			image.put(red);
+					//			image.put(green);
+					//			image.put(blue);
+					//		}
+					//	}
+					//	image.position(0);
+					//	return image;
+					//}
+
 					Debug.e("Error loading: " + textureSourceWithLocation.toString(), iae);
 					if(this.mTextureStateListener != null) {
 						this.mTextureStateListener.onTextureSourceLoadExeption(this, textureSourceWithLocation.mTextureSource, iae);
@@ -297,38 +248,17 @@ public class Texture {
 			}
 		}
 	}
-	
-	public void bind(final GL10 pGL) {
-		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
+
+	@Override
+	protected void bindTextureOnHardware(final GL10 pGL) {
+		super.bindTextureOnHardware(pGL);
+
+		this.sendPlaceholderBitmapToHardware(pGL, this.mWidth, this.mHeight);
 	}
 
-	private void applyTextureOptions(final GL10 pGL) {
-		final TextureOptions textureOptions = this.mTextureOptions;
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, textureOptions.mMinFilter);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, textureOptions.mMagFilter);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, textureOptions.mWrapS);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, textureOptions.mWrapT);
-		pGL.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, textureOptions.mTextureEnvironment);
-	}
-
-	private void allocateAndBindTextureOnHardware(final GL10 pGL) {
-		GLHelper.forceBindTexture(pGL, this.mHardwareTextureID);
-
-		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
-	}
-
-	private void deleteTextureOnHardware(final GL10 pGL) {
-		GLHelper.deleteTexture(pGL, this.mHardwareTextureID);
-	}
-
-	private static int generateHardwareTextureID(final GL10 pGL) {
-		pGL.glGenTextures(1, Texture.HARDWARETEXTUREID_FETCHER, 0);
-
-		return Texture.HARDWARETEXTUREID_FETCHER[0];
-	}
-
-	private void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
+	private void sendPlaceholderBitmapToHardware(final GL10 pGL, final int pWidth, final int pHeight) {
 		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, this.mTextureFormat.getBitmapConfig());
+		// TODO Check if there is an easier/faster method to create a white placeholder bitmap.
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);
 
@@ -338,52 +268,6 @@ public class Texture {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface ITextureStateListener {
-		// ===========================================================
-		// Final Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public void onLoadedToHardware(final Texture pTexture);
-		public void onTextureSourceLoadExeption(final Texture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable);
-		public void onUnloadedFromHardware(final Texture pTexture);
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-
-		public static class TextureStateAdapter implements ITextureStateListener {
-			@Override
-			public void onLoadedToHardware(final Texture pTexture) { }
-
-			@Override
-			public void onTextureSourceLoadExeption(final Texture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable) { }
-
-			@Override
-			public void onUnloadedFromHardware(final Texture pTexture) { }
-		}
-
-		public static class DebugTextureStateListener implements ITextureStateListener {
-			@Override
-			public void onLoadedToHardware(final Texture pTexture) {
-				Debug.d("Texture loaded: " + pTexture.toString());
-			}
-
-			@Override
-			public void onTextureSourceLoadExeption(final Texture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable) {
-				Debug.e("Exception loading TextureSource. Texture: " + pTexture.toString() + " TextureSource: " + pTextureSource.toString(), pThrowable);
-			}
-
-			@Override
-			public void onUnloadedFromHardware(final Texture pTexture) {
-				Debug.d("Texture unloaded: " + pTexture.toString());
-			}
-		}
-	}
 
 	public static class TextureSourceWithLocation {
 		// ===========================================================

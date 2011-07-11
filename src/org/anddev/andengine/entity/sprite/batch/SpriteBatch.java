@@ -9,6 +9,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.sprite.BaseSprite;
+import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
 import org.anddev.andengine.opengl.texture.region.buffer.SpriteBatchTextureRegionBuffer;
@@ -32,7 +33,7 @@ public class SpriteBatch extends Entity {
 	// Fields
 	// ===========================================================
 
-	private final Texture mTexture;
+	private final ITexture mTexture;
 	protected final int mCapacity;
 
 	private int mIndex;
@@ -49,7 +50,7 @@ public class SpriteBatch extends Entity {
 	// Constructors
 	// ===========================================================
 
-	public SpriteBatch(final Texture pTexture, final int pCapacity) {
+	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
 		this.mSpriteBatchVertexBuffer = new SpriteBatchVertexBuffer(pCapacity, GL11.GL_STATIC_DRAW, true);

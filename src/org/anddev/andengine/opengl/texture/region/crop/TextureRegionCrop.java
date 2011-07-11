@@ -2,7 +2,7 @@ package org.anddev.andengine.opengl.texture.region.crop;
 
 import javax.microedition.khronos.opengles.GL11;
 
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 
@@ -85,7 +85,7 @@ public class TextureRegionCrop {
 
 	public void update() {
 		final BaseTextureRegion textureRegion = this.mTextureRegion;
-		final Texture texture = textureRegion.getTexture();
+		final ITexture texture = textureRegion.getTexture();
 
 		if(texture == null) { // TODO Check really needed?
 			return;

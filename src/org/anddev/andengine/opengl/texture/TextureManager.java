@@ -1,9 +1,12 @@
 package org.anddev.andengine.opengl.texture;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import org.anddev.andengine.util.Debug;
 
 /**
  * @author Nicolas Gramlich
@@ -18,12 +21,12 @@ public class TextureManager {
 	// Fields
 	// ===========================================================
 
-	private final HashSet<Texture> mTexturesManaged = new HashSet<Texture>();
+	private final HashSet<ITexture> mTexturesManaged = new HashSet<ITexture>();
 
-	private final ArrayList<Texture> mTexturesLoaded = new ArrayList<Texture>();
+	private final ArrayList<ITexture> mTexturesLoaded = new ArrayList<ITexture>();
 
-	private final ArrayList<Texture> mTexturesToBeLoaded = new ArrayList<Texture>();
-	private final ArrayList<Texture> mTexturesToBeUnloaded = new ArrayList<Texture>();
+	private final ArrayList<ITexture> mTexturesToBeLoaded = new ArrayList<ITexture>();
+	private final ArrayList<ITexture> mTexturesToBeUnloaded = new ArrayList<ITexture>();
 
 	// ===========================================================
 	// Constructors
@@ -48,10 +51,10 @@ public class TextureManager {
 	}
 
 	/**
-	 * @param pTexture the {@link Texture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then).
-	 * @return <code>true</code> when the {@link Texture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
+	 * @param pTexture the {@link ITexture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then).
+	 * @return <code>true</code> when the {@link ITexture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
-	public boolean loadTexture(final Texture pTexture) {
+	public boolean loadTexture(final ITexture pTexture) {
 		if(this.mTexturesManaged.contains(pTexture)) {
 			/* Just make sure it doesn't get deleted. */
 			this.mTexturesToBeUnloaded.remove(pTexture);
@@ -64,10 +67,10 @@ public class TextureManager {
 	}
 
 	/**
-	 * @param pTexture the {@link Texture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then).
-	 * @return <code>true</code> when the {@link Texture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
+	 * @param pTexture the {@link ITexture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then).
+	 * @return <code>true</code> when the {@link ITexture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
-	public boolean unloadTexture(final Texture pTexture) {
+	public boolean unloadTexture(final ITexture pTexture) {
 		if(this.mTexturesManaged.contains(pTexture)) {
 			/* If the Texture is loaded, unload it.
 			 * If the Texture is about to be loaded, stop it from being loaded. */
@@ -82,21 +85,21 @@ public class TextureManager {
 		}
 	}
 
-	public void loadTextures(final Texture ... pTextures) {
+	public void loadTextures(final ITexture ... pTextures) {
 		for(int i = pTextures.length - 1; i >= 0; i--) {
 			this.loadTexture(pTextures[i]);
 		}
 	}
 
-	public void unloadTextures(final Texture ... pTextures) {
+	public void unloadTextures(final ITexture ... pTextures) {
 		for(int i = pTextures.length - 1; i >= 0; i--) {
 			this.unloadTexture(pTextures[i]);
 		}
 	}
 
 	public void reloadTextures() {
-		final HashSet<Texture> managedTextures = this.mTexturesManaged;
-		for(final Texture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
+		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
+		for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
 			texture.setLoadedToHardware(false);
 		}
 
@@ -108,19 +111,23 @@ public class TextureManager {
 	}
 
 	public void updateTextures(final GL10 pGL) {
-		final HashSet<Texture> texturesManaged = this.mTexturesManaged;
-		final ArrayList<Texture> texturesLoaded = this.mTexturesLoaded;
-		final ArrayList<Texture> texturesToBeLoaded = this.mTexturesToBeLoaded;
-		final ArrayList<Texture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
+		final HashSet<ITexture> texturesManaged = this.mTexturesManaged;
+		final ArrayList<ITexture> texturesLoaded = this.mTexturesLoaded;
+		final ArrayList<ITexture> texturesToBeLoaded = this.mTexturesToBeLoaded;
+		final ArrayList<ITexture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
 
 		/* First reload Textures that need to be updated. */
 		final int textursLoadedCount = texturesLoaded.size();
 
 		if(textursLoadedCount > 0){
 			for(int i = textursLoadedCount - 1; i >= 0; i--){
-				final Texture textureToBeUpdated = texturesLoaded.get(i);
+				final ITexture textureToBeUpdated = texturesLoaded.get(i);
 				if(textureToBeUpdated.isUpdateOnHardwareNeeded()){
-					textureToBeUpdated.reloadToHardware(pGL);
+					try {
+						textureToBeUpdated.reloadToHardware(pGL);
+					} catch(IOException e) {
+						Debug.e(e);
+					}
 				}
 			}
 		}
@@ -130,9 +137,13 @@ public class TextureManager {
 
 		if(texturesToBeLoadedCount > 0){
 			for(int i = texturesToBeLoadedCount - 1; i >= 0; i--){
-				final Texture textureToBeLoaded = texturesToBeLoaded.remove(i);
+				final ITexture textureToBeLoaded = texturesToBeLoaded.remove(i);
 				if(!textureToBeLoaded.isLoadedToHardware()){
-					textureToBeLoaded.loadToHardware(pGL);
+					try {
+						textureToBeLoaded.loadToHardware(pGL);
+					} catch(IOException e) {
+						Debug.e(e);
+					}
 				}
 				texturesLoaded.add(textureToBeLoaded);
 			}
@@ -143,7 +154,7 @@ public class TextureManager {
 
 		if(texturesToBeUnloadedCount > 0){
 			for(int i = texturesToBeUnloadedCount - 1; i >= 0; i--){
-				final Texture textureToBeUnloaded = texturesToBeUnloaded.remove(i);
+				final ITexture textureToBeUnloaded = texturesToBeUnloaded.remove(i);
 				if(textureToBeUnloaded.isLoadedToHardware()){
 					textureToBeUnloaded.unloadFromHardware(pGL);
 				}

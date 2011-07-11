@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.BaseSprite;
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.util.SmartList;
 
 /**
@@ -24,7 +24,7 @@ public class SpriteGroup extends SpriteBatch {
 	// Constructors
 	// ===========================================================
 
-	public SpriteGroup(final Texture pTexture, final int pCapacity) {
+	public SpriteGroup(final ITexture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity);
 		/* Make children not be drawn automatically, as we handle the drawing ourself. */
 		this.setChildrenVisible(false);

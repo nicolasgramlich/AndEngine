@@ -1,6 +1,6 @@
 package org.anddev.andengine.opengl.texture.region;
 
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.ITexture;
 
 /**
  * @author Nicolas Gramlich
@@ -25,7 +25,7 @@ public class TiledTextureRegion extends BaseTextureRegion {
 	// Constructors
 	// ===========================================================
 
-	public TiledTextureRegion(final Texture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
+	public TiledTextureRegion(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
 		super(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 		this.mTileColumns = pTileColumns;
 		this.mTileRows = pTileRows;

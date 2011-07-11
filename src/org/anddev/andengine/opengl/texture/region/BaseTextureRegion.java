@@ -4,7 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -22,9 +22,9 @@ public abstract class BaseTextureRegion {
 	// Fields
 	// ===========================================================
 
-	protected final Texture mTexture;
+	protected final ITexture mTexture;
 
-	// TODO Should TextureRegionCrop a part of TextureRegionCrop ?
+	// TODO Should TextureRegionCrop be a part of TextureRegionCrop ?
 	protected final TextureRegionBuffer mTextureRegionBuffer;
 	protected final TextureRegionCrop mTextureRegionCrop;
 
@@ -38,7 +38,7 @@ public abstract class BaseTextureRegion {
 	// Constructors
 	// ===========================================================
 
-	public BaseTextureRegion(final Texture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
+	public BaseTextureRegion(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		this.mTexture = pTexture;
 		this.mTexturePositionX = pTexturePositionX;
 		this.mTexturePositionY = pTexturePositionY;
@@ -91,7 +91,7 @@ public abstract class BaseTextureRegion {
 		return this.mTexturePositionY;
 	}
 
-	public Texture getTexture() {
+	public ITexture getTexture() {
 		return this.mTexture;
 	}
 

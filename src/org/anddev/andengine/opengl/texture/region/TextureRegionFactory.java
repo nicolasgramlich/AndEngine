@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.texture.region;
 
 
 import org.anddev.andengine.opengl.texture.BuildableTexture;
+import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.Texture.TextureSourceWithLocation;
 import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
@@ -64,7 +65,7 @@ public class TextureRegionFactory {
 	// Methods
 	// ===========================================================
 
-	public static TextureRegion extractFromTexture(final Texture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
+	public static TextureRegion extractFromTexture(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		final TextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 		textureRegion.setTextureRegionBufferManaged(sCreateTextureRegionBuffersManaged);
 		return textureRegion;

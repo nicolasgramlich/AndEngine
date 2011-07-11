@@ -15,6 +15,7 @@ import android.opengl.GLUtils;
 
 /**
  * TODO Add support for PVR Textures. (Not PVRTC compressed!). (See: https://github.com/cocos2d/cocos2d-iphone/blob/develop/cocos2d/CCTexturePVR.m and http://www.imgtec.com/powervr/insider/sdk/KhronosOpenGLES2xSGX.asp) Benefits: Faster loading times, as it is a kind of a memory dump of a texture.
+ * TODO As PVR Textures are quite big, add support for ziped/gzipped PVR Textures. 
  * 
  * @author Nicolas Gramlich
  * @since 14:55:02 - 08.03.2010

@@ -1,6 +1,7 @@
 package org.anddev.andengine.opengl.texture;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -12,7 +13,7 @@ import org.anddev.andengine.util.Debug;
  * @author Nicolas Gramlich
  * @since 14:55:02 - 08.03.2010
  */
-public abstract class BaseTexture implements ITexture {
+public abstract class BaseTexture<T extends ITextureSource> implements ITexture<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,9 +28,11 @@ public abstract class BaseTexture implements ITexture {
 	protected int mHardwareTextureID = -1;
 	protected final TextureOptions mTextureOptions;
 
-	protected final ITextureStateListener mTextureStateListener;
+	protected final ITextureStateListener<T> mTextureStateListener;
 
 	protected boolean mUpdateOnHardwareNeeded = false;
+
+	protected final ArrayList<T> mTextureSources = new ArrayList<T>();
 
 	// ===========================================================
 	// Constructors
@@ -39,7 +42,7 @@ public abstract class BaseTexture implements ITexture {
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 * @param pTextureStateListener to be informed when this {@link BaseTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public BaseTexture(final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+	public BaseTexture(final TextureOptions pTextureOptions, final ITextureStateListener<T> pTextureStateListener) throws IllegalArgumentException {
 		this.mTextureOptions = pTextureOptions;
 		this.mTextureStateListener = pTextureStateListener;
 	}
@@ -59,18 +62,27 @@ public abstract class BaseTexture implements ITexture {
 	}
 
 	@Override
-	public boolean isUpdateOnHardwareNeeded() {
-		return this.mUpdateOnHardwareNeeded;
-	}
-
-	@Override
 	public void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
 	}
 
 	@Override
+	public boolean isUpdateOnHardwareNeeded() {
+		return this.mUpdateOnHardwareNeeded;
+	}
+
+	@Override
+	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded) {
+		this.mUpdateOnHardwareNeeded = pUpdateOnHardwareNeeded;
+	}
+
+	@Override
 	public TextureOptions getTextureOptions() {
 		return this.mTextureOptions;
+	}
+	
+	public ITextureStateListener<T> getTextureStateListener() {
+		return this.mTextureStateListener;
 	}
 
 	// ===========================================================
@@ -79,9 +91,6 @@ public abstract class BaseTexture implements ITexture {
 
 	protected abstract void writeTextureToHardware(final GL10 pGL) throws IOException;
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
 
 	@Override
 	public void loadToHardware(final GL10 pGL) throws IOException {
@@ -129,6 +138,47 @@ public abstract class BaseTexture implements ITexture {
 		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
 	}
 
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	@Override
+	public void addTextureSource(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException {
+		this.checkTextureSourcePosition(pTextureSource, pTexturePositionX, pTexturePositionY);
+		pTextureSource.setTexturePositionX(pTexturePositionX);
+		pTextureSource.setTexturePositionY(pTexturePositionY);
+		this.mTextureSources.add(pTextureSource);
+		this.mUpdateOnHardwareNeeded = true;
+	}
+
+	private void checkTextureSourcePosition(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException {
+		if(pTexturePositionX < 0) {
+			throw new IllegalArgumentException("Illegal negative pTexturePositionX supplied: '" + pTexturePositionX + "'");
+		} else if(pTexturePositionY < 0) {
+			throw new IllegalArgumentException("Illegal negative pTexturePositionY supplied: '" + pTexturePositionY + "'");
+		} else if(pTexturePositionX + pTextureSource.getWidth() > this.getWidth() || pTexturePositionY + pTextureSource.getHeight() > this.getHeight()) {
+			throw new IllegalArgumentException("Supplied pTextureSource must not exceed bounds of Texture.");
+		}
+	}
+
+	@Override
+	public void removeTextureSource(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
+		final ArrayList<T> textureSources = this.mTextureSources;
+		for(int i = textureSources.size() - 1; i >= 0; i--) {
+			final T textureSource = textureSources.get(i);
+			if(textureSource == pTextureSource && textureSource.getTexturePositionX() == pTexturePositionX && textureSource.getTexturePositionY() == pTexturePositionY) {
+				textureSources.remove(i);
+				this.mUpdateOnHardwareNeeded = true;
+				return;
+			}
+		}
+	}
+
+	public void clearTextureSources() {
+		this.mTextureSources.clear();
+		this.mUpdateOnHardwareNeeded = true;
+	}
+
 	private void applyTextureOptions(final GL10 pGL) {
 		final TextureOptions textureOptions = this.mTextureOptions;
 		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, textureOptions.mMinFilter);
@@ -156,7 +206,7 @@ public abstract class BaseTexture implements ITexture {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface ITextureStateListener {
+	public static interface ITextureStateListener<T extends ITextureSource> {
 		// ===========================================================
 		// Final Fields
 		// ===========================================================
@@ -165,38 +215,38 @@ public abstract class BaseTexture implements ITexture {
 		// Methods
 		// ===========================================================
 
-		public void onLoadedToHardware(final ITexture pTexture);
-		public void onTextureSourceLoadExeption(final ITexture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable);
-		public void onUnloadedFromHardware(final ITexture pTexture);
+		public void onLoadedToHardware(final ITexture<T> pTexture);
+		public void onTextureSourceLoadExeption(final ITexture<T> pTexture, final T pTextureSource, final Throwable pThrowable);
+		public void onUnloadedFromHardware(final ITexture<T> pTexture);
 
 		// ===========================================================
 		// Inner and Anonymous Classes
 		// ===========================================================
 
-		public static class TextureStateAdapter implements ITextureStateListener {
+		public static class TextureStateAdapter<T extends ITextureSource> implements ITextureStateListener<T> {
 			@Override
-			public void onLoadedToHardware(final ITexture pTexture) { }
+			public void onLoadedToHardware(final ITexture<T> pTexture) { }
 
 			@Override
-			public void onTextureSourceLoadExeption(final ITexture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable) { }
+			public void onTextureSourceLoadExeption(final ITexture<T> pTexture, final T pTextureSource, final Throwable pThrowable) { }
 
 			@Override
-			public void onUnloadedFromHardware(final ITexture pTexture) { }
+			public void onUnloadedFromHardware(final ITexture<T> pTexture) { }
 		}
 
-		public static class DebugTextureStateListener implements ITextureStateListener {
+		public static class DebugTextureStateListener<T extends ITextureSource> implements ITextureStateListener<T> {
 			@Override
-			public void onLoadedToHardware(final ITexture pTexture) {
+			public void onLoadedToHardware(final ITexture<T> pTexture) {
 				Debug.d("Texture loaded: " + pTexture.toString());
 			}
 
 			@Override
-			public void onTextureSourceLoadExeption(final ITexture pTexture, final ITextureSource pTextureSource, final Throwable pThrowable) {
+			public void onTextureSourceLoadExeption(final ITexture<T> pTexture, final T pTextureSource, final Throwable pThrowable) {
 				Debug.e("Exception loading TextureSource. Texture: " + pTexture.toString() + " TextureSource: " + pTextureSource.toString(), pThrowable);
 			}
 
 			@Override
-			public void onUnloadedFromHardware(final ITexture pTexture) {
+			public void onUnloadedFromHardware(final ITexture<T> pTexture) {
 				Debug.d("Texture unloaded: " + pTexture.toString());
 			}
 		}

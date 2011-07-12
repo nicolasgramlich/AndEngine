@@ -85,7 +85,7 @@ public class TextureRegionCrop {
 
 	public void update() {
 		final BaseTextureRegion textureRegion = this.mTextureRegion;
-		final ITexture texture = textureRegion.getTexture();
+		final ITexture<?> texture = textureRegion.getTexture();
 
 		if(texture == null) { // TODO Check really needed?
 			return;

@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -35,7 +34,7 @@ public class Font {
 	// Fields
 	// ===========================================================
 
-	private final Texture mTexture;
+	private final BitmapTexture mBitmapTexture;
 	private final float mTextureWidth;
 	private final float mTextureHeight;
 	private int mCurrentTextureX = 0;
@@ -63,10 +62,10 @@ public class Font {
 	// Constructors
 	// ===========================================================
 
-	public Font(final Texture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
-		this.mTexture = pTexture;
-		this.mTextureWidth = pTexture.getWidth();
-		this.mTextureHeight = pTexture.getHeight();
+	public Font(final BitmapTexture pBitmapTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+		this.mBitmapTexture = pBitmapTexture;
+		this.mTextureWidth = pBitmapTexture.getWidth();
+		this.mTextureHeight = pBitmapTexture.getHeight();
 
 		this.mPaint = new Paint();
 		this.mPaint.setTypeface(pTypeface);
@@ -95,8 +94,8 @@ public class Font {
 		return this.mLineHeight;
 	}
 
-	public Texture getTexture() {
-		return this.mTexture;
+	public BitmapTexture getTexture() {
+		return this.mBitmapTexture;
 	}
 
 	// ===========================================================
@@ -201,7 +200,7 @@ public class Font {
 	public synchronized void update(final GL10 pGL) {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
-			this.mTexture.bind(pGL);
+			this.mBitmapTexture.bind(pGL);
 
 			final float textureWidth = this.mTextureWidth;
 			final float textureHeight = this.mTextureHeight;

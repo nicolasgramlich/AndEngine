@@ -21,7 +21,7 @@ import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.TextureManager;
-import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureRegionFactory;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.sensor.SensorDelay;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
@@ -116,7 +116,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	public Engine(final EngineOptions pEngineOptions) {
-		TextureRegionFactory.reset();
+		BitmapTextureRegionFactory.reset();
 		SoundFactory.reset();
 		MusicFactory.reset();
 		FontFactory.reset();

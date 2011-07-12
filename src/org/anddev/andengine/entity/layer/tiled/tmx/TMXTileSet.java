@@ -2,16 +2,16 @@ package org.anddev.andengine.entity.layer.tiled.tmx;
 
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXParseException;
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureFactory;
+import org.anddev.andengine.opengl.texture.bitmap.source.AssetBitmapTextureSource;
+import org.anddev.andengine.opengl.texture.bitmap.source.decorator.ColorKeyBitmapTextureSourceDecorator;
+import org.anddev.andengine.opengl.texture.bitmap.source.decorator.shape.RectangleBitmapTextureSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
-import org.anddev.andengine.opengl.texture.source.AssetTextureSource;
-import org.anddev.andengine.opengl.texture.source.decorator.ColorKeyTextureSourceDecorator;
-import org.anddev.andengine.opengl.texture.source.decorator.shape.RectangleTextureSourceDecoratorShape;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
@@ -38,7 +38,7 @@ public class TMXTileSet implements TMXConstants {
 	private final int mTileHeight;
 
 	private String mImageSource;
-	private Texture mTexture;
+	private BitmapTexture mBitmapTexture;
 	private final TextureOptions mTextureOptions;
 
 	private int mTilesHorizontal;
@@ -88,30 +88,30 @@ public class TMXTileSet implements TMXConstants {
 		return this.mTileHeight;
 	}
 
-	public Texture getTexture() {
-		return this.mTexture;
+	public BitmapTexture getTexture() {
+		return this.mBitmapTexture;
 	}
 
 	public void setImageSource(final Context pContext, final TextureManager pTextureManager, final Attributes pAttributes) throws TMXParseException {
 		this.mImageSource = pAttributes.getValue("", TAG_IMAGE_ATTRIBUTE_SOURCE);
 
-		final AssetTextureSource assetTextureSource = new AssetTextureSource(pContext, this.mImageSource);
-		this.mTilesHorizontal = TMXTileSet.determineCount(assetTextureSource.getWidth(), this.mTileWidth, this.mMargin, this.mSpacing);
-		this.mTilesVertical = TMXTileSet.determineCount(assetTextureSource.getHeight(), this.mTileHeight, this.mMargin, this.mSpacing);
-		this.mTexture = TextureFactory.createForTextureSourceSize(TextureFormat.RGBA_8888, assetTextureSource, this.mTextureOptions); // TODO Make TextureFormat variable
+		final AssetBitmapTextureSource assetBitmapTextureSource = new AssetBitmapTextureSource(pContext, this.mImageSource);
+		this.mTilesHorizontal = TMXTileSet.determineCount(assetBitmapTextureSource.getWidth(), this.mTileWidth, this.mMargin, this.mSpacing);
+		this.mTilesVertical = TMXTileSet.determineCount(assetBitmapTextureSource.getHeight(), this.mTileHeight, this.mMargin, this.mSpacing);
+		this.mBitmapTexture = BitmapTextureFactory.createForTextureSourceSize(TextureFormat.RGBA_8888, assetBitmapTextureSource, this.mTextureOptions); // TODO Make TextureFormat variable
 
 		final String transparentColor = SAXUtils.getAttribute(pAttributes, TAG_IMAGE_ATTRIBUTE_TRANS, null);
 		if(transparentColor == null) {
-			TextureRegionFactory.createFromSource(this.mTexture, assetTextureSource, 0, 0);
+			TextureRegionFactory.createFromSource(this.mBitmapTexture, assetBitmapTextureSource, 0, 0, true);
 		} else {
 			try{
 				final int color = Color.parseColor((transparentColor.charAt(0) == '#') ? transparentColor : "#" + transparentColor);
-				TextureRegionFactory.createFromSource(this.mTexture, new ColorKeyTextureSourceDecorator(assetTextureSource, RectangleTextureSourceDecoratorShape.getDefaultInstance(), color), 0, 0);
+				TextureRegionFactory.createFromSource(this.mBitmapTexture, new ColorKeyBitmapTextureSourceDecorator(assetBitmapTextureSource, RectangleBitmapTextureSourceDecoratorShape.getDefaultInstance(), color), 0, 0, true);
 			} catch (final IllegalArgumentException e) {
 				throw new TMXParseException("Illegal value: '" + transparentColor + "' for attribute 'trans' supplied!", e);
 			}
 		}
-		pTextureManager.loadTexture(this.mTexture);
+		pTextureManager.loadTexture(this.mBitmapTexture);
 	}
 
 	public String getImageSource() {
@@ -154,7 +154,7 @@ public class TMXTileSet implements TMXConstants {
 		final int texturePositionX = this.mMargin + (this.mSpacing + this.mTileWidth) * tileColumn;
 		final int texturePositionY = this.mMargin + (this.mSpacing + this.mTileHeight) * tileRow;
 
-		return new TextureRegion(this.mTexture, texturePositionX, texturePositionY, this.mTileWidth, this.mTileHeight);
+		return new TextureRegion(this.mBitmapTexture, texturePositionX, texturePositionY, this.mTileWidth, this.mTileHeight);
 	}
 
 	private static int determineCount(final int pTotalExtent, final int pTileExtent, final int pMargin, final int pSpacing) {

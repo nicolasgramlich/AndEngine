@@ -1,0 +1,72 @@
+package org.anddev.andengine.opengl.texture.bitmap.source;
+
+
+/**
+ * @author Nicolas Gramlich
+ * @since 13:55:12 - 12.07.2011
+ */
+public abstract class BaseBitmapTextureSource implements IBitmapTextureSource {
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
+	protected int mTexturePositionX;
+	protected int mTexturePositionY;
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+
+	public BaseBitmapTextureSource(final int pTexturePositionX, final int pTexturePositionY) {
+		this.mTexturePositionX = pTexturePositionX;
+		this.mTexturePositionY = pTexturePositionY;
+	}
+
+	@Override
+	public abstract BaseBitmapTextureSource clone();
+
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
+
+	@Override
+	public int getTexturePositionX() {
+		return this.mTexturePositionX;
+	}
+
+	@Override
+	public int getTexturePositionY() {
+		return this.mTexturePositionY;
+	}
+
+	@Override
+	public void setTexturePositionX(final int pTexturePositionX) {
+		this.mTexturePositionX = pTexturePositionX;
+	}
+
+	@Override
+	public void setTexturePositionY(final int pTexturePositionY) {
+		this.mTexturePositionY = pTexturePositionY;
+	}
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + "( " + this.getWidth() + "x" + this.getHeight() + " @ "+ this.mTexturePositionX + "/" + this.mTexturePositionY + " )";
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+}

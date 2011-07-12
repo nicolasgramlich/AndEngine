@@ -363,16 +363,16 @@ public class Scene extends Entity {
 		}
 	}
 
-	private Boolean onAreaTouchEvent(final TouchEvent pSceneTouchEvent, final float sceneTouchEventX, final float sceneTouchEventY, final ITouchArea touchArea) {
-		final float[] touchAreaLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
+	private Boolean onAreaTouchEvent(final TouchEvent pSceneTouchEvent, final float pSceneTouchEventX, final float pSceneTouchEventY, final ITouchArea pTouchArea) {
+		final float[] touchAreaLocalCoordinates = pTouchArea.convertSceneToLocalCoordinates(pSceneTouchEventX, pSceneTouchEventY);
 		final float touchAreaLocalX = touchAreaLocalCoordinates[Constants.VERTEX_INDEX_X];
 		final float touchAreaLocalY = touchAreaLocalCoordinates[Constants.VERTEX_INDEX_Y];
 
-		final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
+		final boolean handledSelf = pTouchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
 		if(handledSelf) {
 			return Boolean.TRUE;
 		} else if(this.mOnAreaTouchListener != null) {
-			return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, touchArea, touchAreaLocalX, touchAreaLocalY);
+			return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, touchAreaLocalX, touchAreaLocalY);
 		} else {
 			return null;
 		}

@@ -3,6 +3,7 @@ package org.anddev.andengine.opengl.texture.bitmap.source;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.anddev.andengine.opengl.texture.source.BaseTextureSource;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 
@@ -18,7 +19,7 @@ import android.graphics.BitmapFactory;
  * @author Nicolas Gramlich
  * @since 12:07:52 - 09.03.2010
  */
-public class AssetBitmapTextureSource extends BaseBitmapTextureSource {
+public class AssetBitmapTextureSource extends BaseTextureSource implements IBitmapTextureSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================

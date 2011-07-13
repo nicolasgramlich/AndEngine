@@ -14,9 +14,9 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
-import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -87,7 +87,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 	@Override
 	public void onLoadResources() {
 		final BitmapTexture loadingScreenTexture = BitmapTextureFactory.createForTextureSourceSize(TextureFormat.RGBA_8888, this.mSplashTextureSource, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		this.mLoadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0, true);
+		this.mLoadingScreenTextureRegion = BitmapTextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
 
 		this.getEngine().getTextureManager().loadTexture(loadingScreenTexture);
 	}

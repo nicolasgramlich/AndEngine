@@ -5,9 +5,9 @@ import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
-import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -66,7 +66,7 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 
 	private Sprite loadSprite(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final IBitmapTextureSource pBitmapTextureSource) throws IllegalArgumentException {
 		this.mBitmapTexture = new BitmapTexture(pBitmapTextureSource.getWidth(), pBitmapTextureSource.getHeight(), TextureFormat.RGBA_8888, TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA);
-		final TextureRegion textureRegion = TextureRegionFactory.createFromSource(this.mBitmapTexture, pBitmapTextureSource, 0, 0, true);
+		final TextureRegion textureRegion = BitmapTextureRegionFactory.createFromSource(this.mBitmapTexture, pBitmapTextureSource, 0, 0);
 
 		final int width = Math.round(pCameraWidth / this.mScale);
 		final int height = Math.round(pCameraHeight / this.mScale);

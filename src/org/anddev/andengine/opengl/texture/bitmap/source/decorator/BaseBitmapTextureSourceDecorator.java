@@ -1,7 +1,7 @@
 package org.anddev.andengine.opengl.texture.bitmap.source.decorator;
 
-import org.anddev.andengine.opengl.texture.bitmap.source.BaseBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
+import org.anddev.andengine.opengl.texture.source.BaseTextureSource;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,7 +15,7 @@ import android.graphics.Bitmap.Config;
  * @author Nicolas Gramlich
  * @since 16:43:29 - 06.08.2010
  */
-public abstract class BaseBitmapTextureSourceDecorator extends BaseBitmapTextureSource {
+public abstract class BaseBitmapTextureSourceDecorator extends BaseTextureSource implements IBitmapTextureSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================

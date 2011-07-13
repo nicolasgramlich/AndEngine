@@ -1,5 +1,7 @@
 package org.anddev.andengine.opengl.texture.bitmap.source;
 
+import org.anddev.andengine.opengl.texture.source.BaseTextureSource;
+
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
@@ -10,7 +12,7 @@ import android.graphics.Bitmap.Config;
  * @author Nicolas Gramlich
  * @since 20:20:36 - 08.08.2010
  */
-public class EmptyBitmapTextureSource extends BaseBitmapTextureSource {
+public class EmptyBitmapTextureSource extends BaseTextureSource implements IBitmapTextureSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================

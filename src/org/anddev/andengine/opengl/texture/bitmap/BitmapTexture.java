@@ -10,7 +10,6 @@ import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
-import org.anddev.andengine.util.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -32,8 +31,6 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 	// Fields
 	// ===========================================================
 
-	private final int mWidth;
-	private final int mHeight;
 	private final TextureFormat mTextureFormat;
 
 	// ===========================================================
@@ -121,13 +118,9 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 	 * @param pTextureStateListener to be informed when this {@link BitmapTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
 	public BitmapTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener<IBitmapTextureSource> pTextureStateListener) throws IllegalArgumentException {
-		super(pTextureOptions, pTextureStateListener);
-		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
-			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
-		}
+		super(pWidth, pHeight, pTextureOptions, pTextureStateListener);
+
 		this.mTextureFormat = pTextureFormat;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
 	}
 
 	// ===========================================================
@@ -136,14 +129,6 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 
 	public TextureFormat getTextureFormat() {
 		return this.mTextureFormat;
-	}
-
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	public int getHeight() {
-		return this.mHeight;
 	}
 
 	// ===========================================================
@@ -218,11 +203,11 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 	protected void bindTextureOnHardware(final GL10 pGL) {
 		super.bindTextureOnHardware(pGL);
 
-		this.sendPlaceholderBitmapToHardware(this.mWidth, this.mHeight);
+		this.sendPlaceholderBitmapToHardware();
 	}
 
-	private void sendPlaceholderBitmapToHardware(final int pWidth, final int pHeight) {
-		final Bitmap textureBitmap = Bitmap.createBitmap(pWidth, pHeight, this.mTextureFormat.getBitmapConfig());
+	private void sendPlaceholderBitmapToHardware() {
+		final Bitmap textureBitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, this.mTextureFormat.getBitmapConfig());
 		// TODO Check if there is an easier/faster method to create a white placeholder bitmap.
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);

@@ -1,4 +1,5 @@
-package org.anddev.andengine.opengl.texture.bitmap.source;
+package org.anddev.andengine.opengl.texture.source;
+
 
 
 /**
@@ -8,7 +9,7 @@ package org.anddev.andengine.opengl.texture.bitmap.source;
  * @author Nicolas Gramlich
  * @since 13:55:12 - 12.07.2011
  */
-public abstract class BaseBitmapTextureSource implements IBitmapTextureSource {
+public abstract class BaseTextureSource implements ITextureSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -24,13 +25,13 @@ public abstract class BaseBitmapTextureSource implements IBitmapTextureSource {
 	// Constructors
 	// ===========================================================
 
-	public BaseBitmapTextureSource(final int pTexturePositionX, final int pTexturePositionY) {
+	public BaseTextureSource(final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTexturePositionX = pTexturePositionX;
 		this.mTexturePositionY = pTexturePositionY;
 	}
 
 	@Override
-	public abstract BaseBitmapTextureSource clone();
+	public abstract BaseTextureSource clone();
 
 	// ===========================================================
 	// Getter & Setter

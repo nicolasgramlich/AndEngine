@@ -36,14 +36,12 @@ public class TextureRegionFactory {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	// ===========================================================
-	// Methods using BuildableBitmapTexture
-	// ===========================================================
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
+	
+	public static TextureRegion extractFromTexture(final ITexture<?> pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final boolean pTextureRegionBufferManaged) {
+		final TextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
+		textureRegion.setTextureRegionBufferManaged(pTextureRegionBufferManaged);
+		return textureRegion;
+	}
 
 	public static <T extends ITextureSource> TextureRegion createFromSource(final ITexture<T> pTexture, final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY, final boolean pCreateTextureRegionBuffersManaged) {
 		final TextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pTextureSource.getWidth(), pTextureSource.getHeight());

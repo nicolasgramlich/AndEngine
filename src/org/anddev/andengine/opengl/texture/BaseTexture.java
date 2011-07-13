@@ -8,6 +8,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -27,6 +28,9 @@ public abstract class BaseTexture<T extends ITextureSource> implements ITexture<
 	// Fields
 	// ===========================================================
 
+	protected final int mWidth;
+	protected final int mHeight;
+
 	protected boolean mLoadedToHardware;
 	protected int mHardwareTextureID = -1;
 	protected final TextureOptions mTextureOptions;
@@ -45,7 +49,12 @@ public abstract class BaseTexture<T extends ITextureSource> implements ITexture<
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 * @param pTextureStateListener to be informed when this {@link BaseTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public BaseTexture(final TextureOptions pTextureOptions, final ITextureStateListener<T> pTextureStateListener) throws IllegalArgumentException {
+	public BaseTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener<T> pTextureStateListener) throws IllegalArgumentException {
+		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
+			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
+		}
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
 		this.mTextureOptions = pTextureOptions;
 		this.mTextureStateListener = pTextureStateListener;
 	}
@@ -53,6 +62,16 @@ public abstract class BaseTexture<T extends ITextureSource> implements ITexture<
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	@Override
+	public int getWidth() {
+		return this.mWidth;
+	}
+
+	@Override
+	public int getHeight() {
+		return this.mHeight;
+	}
 
 	@Override
 	public int getHardwareTextureID() {
@@ -93,7 +112,6 @@ public abstract class BaseTexture<T extends ITextureSource> implements ITexture<
 	// ===========================================================
 
 	protected abstract void writeTextureToHardware(final GL10 pGL) throws IOException;
-
 
 	@Override
 	public void loadToHardware(final GL10 pGL) throws IOException {

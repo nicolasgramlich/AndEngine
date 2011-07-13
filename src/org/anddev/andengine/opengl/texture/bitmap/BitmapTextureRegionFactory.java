@@ -13,9 +13,9 @@ import android.content.Context;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 18:15:14 - 09.03.2010
  */
@@ -73,23 +73,31 @@ public class BitmapTextureRegionFactory {
 
 	public static TextureRegion createFromAsset(final BitmapTexture pBitmapTexture, final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY) {
 		final IBitmapTextureSource bitmapTextureSource = new AssetBitmapTextureSource(pContext, BitmapTextureRegionFactory.sAssetBasePath + pAssetPath);
-		return TextureRegionFactory.createFromSource(pBitmapTexture, bitmapTextureSource, pTexturePositionX, pTexturePositionY, sCreateTextureRegionBuffersManaged);
+		return BitmapTextureRegionFactory.createFromSource(pBitmapTexture, bitmapTextureSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	public static TiledTextureRegion createTiledFromAsset(final BitmapTexture pBitmapTexture, final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
 		final IBitmapTextureSource bitmapTextureSource = new AssetBitmapTextureSource(pContext, BitmapTextureRegionFactory.sAssetBasePath + pAssetPath);
-		return TextureRegionFactory.createTiledFromSource(pBitmapTexture, bitmapTextureSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows, sCreateTextureRegionBuffersManaged);
+		return BitmapTextureRegionFactory.createTiledFromSource(pBitmapTexture, bitmapTextureSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows);
 	}
 
 
 	public static TextureRegion createFromResource(final BitmapTexture pBitmapTexture, final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY) {
 		final IBitmapTextureSource bitmapTextureSource = new ResourceBitmapTextureSource(pContext, pDrawableResourceID);
-		return TextureRegionFactory.createFromSource(pBitmapTexture, bitmapTextureSource, pTexturePositionX, pTexturePositionY, sCreateTextureRegionBuffersManaged);
+		return BitmapTextureRegionFactory.createFromSource(pBitmapTexture, bitmapTextureSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	public static TiledTextureRegion createTiledFromResource(final BitmapTexture pBitmapTexture, final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
 		final IBitmapTextureSource bitmapTextureSource = new ResourceBitmapTextureSource(pContext, pDrawableResourceID);
-		return TextureRegionFactory.createTiledFromSource(pBitmapTexture, bitmapTextureSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows, sCreateTextureRegionBuffersManaged);
+		return BitmapTextureRegionFactory.createTiledFromSource(pBitmapTexture, bitmapTextureSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows);
+	}
+
+	public static TextureRegion createFromSource(final BitmapTexture pBitmapTexture, final IBitmapTextureSource pBitmapTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
+		return TextureRegionFactory.createFromSource(pBitmapTexture, pBitmapTextureSource, pTexturePositionX, pTexturePositionY, sCreateTextureRegionBuffersManaged);
+	}
+
+	public static TiledTextureRegion createTiledFromSource(final BitmapTexture pBitmapTexture, final IBitmapTextureSource pBitmapTextureSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
+		return TextureRegionFactory.createTiledFromSource(pBitmapTexture, pBitmapTextureSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows, sCreateTextureRegionBuffersManaged);
 	}
 
 	// ===========================================================
@@ -98,23 +106,32 @@ public class BitmapTextureRegionFactory {
 
 	public static TextureRegion createFromAsset(final BuildableBitmapTexture pBuildableBitmapTexture, final Context pContext, final String pAssetPath) {
 		final IBitmapTextureSource bitmapTextureSource = new AssetBitmapTextureSource(pContext, BitmapTextureRegionFactory.sAssetBasePath + pAssetPath);
-		return BuildableTextureRegionFactory.createFromSource(pBuildableBitmapTexture, bitmapTextureSource, sCreateTextureRegionBuffersManaged);
+		return BitmapTextureRegionFactory.createFromSource(pBuildableBitmapTexture, bitmapTextureSource);
 	}
 
 	public static TiledTextureRegion createTiledFromAsset(final BuildableBitmapTexture pBuildableBitmapTexture, final Context pContext, final String pAssetPath, final int pTileColumns, final int pTileRows) {
 		final IBitmapTextureSource bitmapTextureSource = new AssetBitmapTextureSource(pContext, BitmapTextureRegionFactory.sAssetBasePath + pAssetPath);
-		return BuildableTextureRegionFactory.createTiledFromSource(pBuildableBitmapTexture, bitmapTextureSource, pTileColumns, pTileRows, sCreateTextureRegionBuffersManaged);
+		return BitmapTextureRegionFactory.createTiledFromSource(pBuildableBitmapTexture, bitmapTextureSource, pTileColumns, pTileRows);
 	}
 
 
 	public static TextureRegion createFromResource(final BuildableBitmapTexture pBuildableBitmapTexture, final Context pContext, final int pDrawableResourceID) {
 		final IBitmapTextureSource bitmapTextureSource = new ResourceBitmapTextureSource(pContext, pDrawableResourceID);
-		return BuildableTextureRegionFactory.createFromSource(pBuildableBitmapTexture, bitmapTextureSource, sCreateTextureRegionBuffersManaged);
+		return BitmapTextureRegionFactory.createFromSource(pBuildableBitmapTexture, bitmapTextureSource);
 	}
 
 	public static TiledTextureRegion createTiledFromResource(final BuildableBitmapTexture pBuildableBitmapTexture, final Context pContext, final int pDrawableResourceID, final int pTileColumns, final int pTileRows) {
 		final IBitmapTextureSource bitmapTextureSource = new ResourceBitmapTextureSource(pContext, pDrawableResourceID);
-		return BuildableTextureRegionFactory.createTiledFromSource(pBuildableBitmapTexture, bitmapTextureSource, pTileColumns, pTileRows, sCreateTextureRegionBuffersManaged);
+		return BitmapTextureRegionFactory.createTiledFromSource(pBuildableBitmapTexture, bitmapTextureSource, pTileColumns, pTileRows);
+	}
+
+
+	public static TextureRegion createFromSource(final BuildableBitmapTexture pBuildableBitmapTexture, final IBitmapTextureSource pBitmapTextureSource) {
+		return BuildableTextureRegionFactory.createFromSource(pBuildableBitmapTexture, pBitmapTextureSource, sCreateTextureRegionBuffersManaged);
+	}
+
+	public static TiledTextureRegion createTiledFromSource(final BuildableBitmapTexture pBuildableBitmapTexture, final IBitmapTextureSource pBitmapTextureSource, final int pTileColumns, final int pTileRows) {
+		return BuildableTextureRegionFactory.createTiledFromSource(pBuildableBitmapTexture, pBitmapTextureSource, pTileColumns, pTileRows, sCreateTextureRegionBuffersManaged);
 	}
 
 	// ===========================================================

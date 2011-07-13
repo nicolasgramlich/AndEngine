@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.anddev.andengine.opengl.texture.source.BaseTextureSource;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 
@@ -20,7 +21,7 @@ import android.graphics.BitmapFactory;
  * @author Nicolas Gramlich
  * @since 16:39:22 - 10.08.2010
  */
-public class FileBitmapTextureSource extends BaseBitmapTextureSource {
+public class FileBitmapTextureSource extends BaseTextureSource implements IBitmapTextureSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -7,11 +7,11 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.source.AssetBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.bitmap.source.decorator.ColorKeyBitmapTextureSourceDecorator;
 import org.anddev.andengine.opengl.texture.bitmap.source.decorator.shape.RectangleBitmapTextureSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
-import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
@@ -105,11 +105,11 @@ public class TMXTileSet implements TMXConstants {
 
 		final String transparentColor = SAXUtils.getAttribute(pAttributes, TAG_IMAGE_ATTRIBUTE_TRANS, null);
 		if(transparentColor == null) {
-			TextureRegionFactory.createFromSource(this.mBitmapTexture, assetBitmapTextureSource, 0, 0, true);
+			BitmapTextureRegionFactory.createFromSource(this.mBitmapTexture, assetBitmapTextureSource, 0, 0);
 		} else {
 			try{
 				final int color = Color.parseColor((transparentColor.charAt(0) == '#') ? transparentColor : "#" + transparentColor);
-				TextureRegionFactory.createFromSource(this.mBitmapTexture, new ColorKeyBitmapTextureSourceDecorator(assetBitmapTextureSource, RectangleBitmapTextureSourceDecoratorShape.getDefaultInstance(), color), 0, 0, true);
+				BitmapTextureRegionFactory.createFromSource(this.mBitmapTexture, new ColorKeyBitmapTextureSourceDecorator(assetBitmapTextureSource, RectangleBitmapTextureSourceDecoratorShape.getDefaultInstance(), color), 0, 0);
 			} catch (final IllegalArgumentException e) {
 				throw new TMXParseException("Illegal value: '" + transparentColor + "' for attribute 'trans' supplied!", e);
 			}

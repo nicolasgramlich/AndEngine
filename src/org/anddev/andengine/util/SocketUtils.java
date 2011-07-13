@@ -6,6 +6,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:42:15 - 18.09.2009
  */

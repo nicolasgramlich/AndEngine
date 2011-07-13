@@ -8,6 +8,9 @@ import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
  * @author Jonathan Heek
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:51:50 - 05.07.2011
  */

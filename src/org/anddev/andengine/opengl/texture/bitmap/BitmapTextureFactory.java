@@ -7,6 +7,9 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.util.MathUtils;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 09:38:51 - 03.05.2010
  */

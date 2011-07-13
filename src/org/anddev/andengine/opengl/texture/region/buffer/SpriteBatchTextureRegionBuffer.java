@@ -8,6 +8,9 @@ import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
 import org.anddev.andengine.opengl.util.FastFloatBuffer;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:32:14 - 14.06.2011
  */

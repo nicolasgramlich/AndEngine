@@ -2,6 +2,9 @@ package org.anddev.andengine.opengl.texture.bitmap.source;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:55:12 - 12.07.2011
  */

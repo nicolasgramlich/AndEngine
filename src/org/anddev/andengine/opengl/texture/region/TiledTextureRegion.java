@@ -3,6 +3,9 @@ package org.anddev.andengine.opengl.texture.region;
 import org.anddev.andengine.opengl.texture.ITexture;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:14:42 - 09.03.2010
  */

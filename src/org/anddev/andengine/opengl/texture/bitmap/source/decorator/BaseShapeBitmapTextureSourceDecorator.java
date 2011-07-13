@@ -6,6 +6,9 @@ import org.anddev.andengine.opengl.texture.bitmap.source.decorator.shape.IBitmap
 import android.graphics.Canvas;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:09:41 - 05.11.2010
  */

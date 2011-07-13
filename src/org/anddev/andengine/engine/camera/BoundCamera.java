@@ -1,6 +1,9 @@
 package org.anddev.andengine.engine.camera;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:55:54 - 27.07.2010
  */

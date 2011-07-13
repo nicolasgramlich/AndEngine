@@ -6,6 +6,9 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:07:23 - 09.03.2010
  */

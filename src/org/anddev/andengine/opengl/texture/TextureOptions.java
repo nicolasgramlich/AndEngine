@@ -3,6 +3,9 @@ package org.anddev.andengine.opengl.texture;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:00:09 - 05.04.2010
  */

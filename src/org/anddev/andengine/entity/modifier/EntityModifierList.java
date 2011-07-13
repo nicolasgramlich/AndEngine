@@ -4,6 +4,9 @@ import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.ModifierList;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:19:18 - 24.12.2010
  */

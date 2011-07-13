@@ -9,6 +9,9 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.util.Debug;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 17:48:46 - 08.03.2010
  */

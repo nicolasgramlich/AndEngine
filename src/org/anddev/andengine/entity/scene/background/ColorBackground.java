@@ -7,6 +7,9 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.Camera;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:45:24 - 19.07.2010
  */

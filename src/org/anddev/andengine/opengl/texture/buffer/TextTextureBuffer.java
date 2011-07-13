@@ -6,6 +6,9 @@ import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.opengl.util.FastFloatBuffer;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:05:56 - 03.04.2010
  */

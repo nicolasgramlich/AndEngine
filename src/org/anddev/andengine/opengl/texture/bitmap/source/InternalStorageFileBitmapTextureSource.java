@@ -7,6 +7,9 @@ import org.anddev.andengine.util.FileUtils;
 import android.content.Context;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:01:19 - 30.05.2011
  */

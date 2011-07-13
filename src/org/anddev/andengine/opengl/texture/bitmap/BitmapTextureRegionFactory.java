@@ -13,6 +13,9 @@ import android.content.Context;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:15:14 - 09.03.2010
  */

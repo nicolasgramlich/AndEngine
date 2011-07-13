@@ -6,6 +6,9 @@ import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.util.HorizontalAlign;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:05:08 - 07.04.2010
  */

@@ -4,6 +4,9 @@ import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.BaseDurationModifier;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 16:10:42 - 19.03.2010
  */

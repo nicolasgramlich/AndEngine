@@ -2,6 +2,9 @@ package org.anddev.andengine.util.progress;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:52:44 - 03.01.2010
  */

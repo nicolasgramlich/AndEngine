@@ -3,6 +3,9 @@ package org.anddev.andengine.util.pool;
 import org.anddev.andengine.entity.IEntity;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 00:53:22 - 28.08.2010
  */

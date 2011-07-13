@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.particle.initializer;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */

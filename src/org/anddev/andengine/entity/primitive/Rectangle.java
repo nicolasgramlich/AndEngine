@@ -6,6 +6,9 @@ import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:18:49 - 13.03.2010
  */

@@ -22,6 +22,9 @@ import android.util.FloatMath;
 /**
  * TODO Check if SpriteBatch can be used here to improve performance. 
  * 
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
  */

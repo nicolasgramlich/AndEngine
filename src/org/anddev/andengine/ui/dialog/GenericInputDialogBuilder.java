@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 09:35:55 - 14.12.2009
  */

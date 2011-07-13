@@ -3,6 +3,9 @@ package org.anddev.andengine.engine.handler;
 import org.anddev.andengine.util.SmartList;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 09:45:22 - 31.03.2010
  */

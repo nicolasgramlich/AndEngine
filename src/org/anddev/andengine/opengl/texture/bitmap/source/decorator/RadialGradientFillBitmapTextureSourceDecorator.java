@@ -9,6 +9,9 @@ import android.graphics.RadialGradient;
 import android.graphics.Shader.TileMode;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:21:24 - 05.11.2010
  */

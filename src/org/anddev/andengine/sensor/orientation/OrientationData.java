@@ -9,6 +9,9 @@ import android.hardware.SensorManager;
 import android.view.Surface;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:30:33 - 25.05.2010
  */

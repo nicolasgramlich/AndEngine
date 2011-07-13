@@ -9,6 +9,9 @@ import org.anddev.andengine.util.MathUtils;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:48:11 - 24.06.2010
  * TODO min/max(X/Y) values could be cached and only updated once the zoomfactor/center changed.

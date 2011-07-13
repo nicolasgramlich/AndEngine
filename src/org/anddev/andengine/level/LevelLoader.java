@@ -20,6 +20,9 @@ import org.xml.sax.XMLReader;
 import android.content.Context;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:16:19 - 11.10.2010
  */

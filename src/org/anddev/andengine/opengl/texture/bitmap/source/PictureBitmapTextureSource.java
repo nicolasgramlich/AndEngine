@@ -8,6 +8,9 @@ import android.graphics.Canvas;
 import android.graphics.Picture;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:52:58 - 21.05.2011
  */

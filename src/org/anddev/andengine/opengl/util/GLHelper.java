@@ -19,6 +19,9 @@ import android.opengl.GLUtils;
 import android.os.Build;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:00:43 - 08.03.2010
  */

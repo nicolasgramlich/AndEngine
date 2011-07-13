@@ -8,6 +8,9 @@ import org.anddev.andengine.util.MultiKey;
 import org.anddev.andengine.util.MultiKeyHashMap;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 21:10:05 - 09.01.2011
  */

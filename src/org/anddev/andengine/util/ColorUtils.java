@@ -3,6 +3,9 @@ package org.anddev.andengine.util;
 import android.graphics.Color;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:13:45 - 04.08.2010
  */

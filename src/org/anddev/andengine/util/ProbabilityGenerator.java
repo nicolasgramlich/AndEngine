@@ -2,6 +2,13 @@ package org.anddev.andengine.util;
 
 import java.util.ArrayList;
 
+/**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
+ * @author Nicolas Gramlich
+ * @since 16:54:24 - 07.11.2010
+ */
 public class ProbabilityGenerator<T> {
 	// ===========================================================
 	// Constants

@@ -8,6 +8,9 @@ import org.anddev.andengine.opengl.texture.buildable.BuildableTexture;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:51:46 - 12.07.2011
  */

@@ -1,6 +1,9 @@
 package org.anddev.andengine.entity.layer.tiled.tmx.util.exception;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:37:53 - 08.08.2010
  */

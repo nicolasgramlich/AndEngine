@@ -4,8 +4,12 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:11:52 - 12.07.2011
+ * 
  * @deprecated Use {@link BitmapTexture} instead.
  */
 @Deprecated

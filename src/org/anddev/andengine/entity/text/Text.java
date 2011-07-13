@@ -13,6 +13,9 @@ import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
  */

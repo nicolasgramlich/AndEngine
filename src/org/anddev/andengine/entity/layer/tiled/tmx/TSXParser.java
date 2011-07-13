@@ -12,6 +12,9 @@ import org.xml.sax.helpers.DefaultHandler;
 import android.content.Context;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:37:32 - 08.08.2010
  */

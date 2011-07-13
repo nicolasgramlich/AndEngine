@@ -4,6 +4,9 @@ import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:32:52 - 07.07.2010
  */

@@ -7,6 +7,9 @@ import android.graphics.AvoidXfermode;
 import android.graphics.AvoidXfermode.Mode;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:41:39 - 07.06.2011
  */

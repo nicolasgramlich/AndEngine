@@ -6,6 +6,9 @@ import java.io.IOException;
 import android.content.Context;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:23:03 - 11.03.2010
  */

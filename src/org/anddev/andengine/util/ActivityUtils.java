@@ -16,6 +16,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:11:54 - 07.03.2011
  */

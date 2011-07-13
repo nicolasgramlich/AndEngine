@@ -54,6 +54,9 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:21:31 - 08.03.2010
  */

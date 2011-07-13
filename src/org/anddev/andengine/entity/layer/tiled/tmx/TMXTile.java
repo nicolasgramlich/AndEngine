@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.layer.tiled.tmx;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:39:48 - 05.08.2010
  */

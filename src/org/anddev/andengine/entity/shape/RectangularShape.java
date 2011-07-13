@@ -8,6 +8,9 @@ import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:37:50 - 04.04.2010
  */

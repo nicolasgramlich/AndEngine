@@ -3,6 +3,9 @@ package org.anddev.andengine.ui.activity;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:18:50 - 06.10.2010
  */

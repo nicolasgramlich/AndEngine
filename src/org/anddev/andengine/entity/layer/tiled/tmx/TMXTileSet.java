@@ -20,6 +20,9 @@ import android.graphics.Color;
 import android.util.SparseArray;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:03:24 - 20.07.2010
  */

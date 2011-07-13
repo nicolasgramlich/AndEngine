@@ -7,6 +7,9 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:01:03 - 11.07.2011
  */

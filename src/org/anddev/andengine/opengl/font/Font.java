@@ -19,6 +19,9 @@ import android.util.FloatMath;
 import android.util.SparseArray;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:39:33 - 03.04.2010
  */

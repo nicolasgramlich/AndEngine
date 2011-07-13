@@ -9,6 +9,9 @@ import android.graphics.Paint;
 import android.graphics.Bitmap.Config;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 16:43:29 - 06.08.2010
  */

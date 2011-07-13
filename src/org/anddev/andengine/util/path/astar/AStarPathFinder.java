@@ -8,6 +8,9 @@ import org.anddev.andengine.util.path.ITiledMap;
 import org.anddev.andengine.util.path.Path;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 23:16:17 - 16.08.2010
  */

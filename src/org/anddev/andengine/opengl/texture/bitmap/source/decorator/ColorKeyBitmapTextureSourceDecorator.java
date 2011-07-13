@@ -6,6 +6,9 @@ import org.anddev.andengine.opengl.texture.bitmap.source.decorator.shape.IBitmap
 import android.graphics.Color;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 22:16:41 - 06.08.2010
  */

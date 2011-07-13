@@ -10,6 +10,9 @@ import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
 import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:29:59 - 08.03.2010
  */

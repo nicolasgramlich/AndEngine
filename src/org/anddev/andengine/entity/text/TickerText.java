@@ -8,6 +8,9 @@ import org.anddev.andengine.opengl.vertex.TextVertexBuffer;
 import org.anddev.andengine.util.HorizontalAlign;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:02:04 - 05.05.2010
  */

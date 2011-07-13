@@ -9,6 +9,9 @@ import org.anddev.andengine.util.Callback;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 16:42:08 - 12.07.2011
  */

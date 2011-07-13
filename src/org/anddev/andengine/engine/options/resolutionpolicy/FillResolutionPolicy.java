@@ -5,6 +5,9 @@ import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import android.view.View.MeasureSpec;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:22:48 - 29.03.2010
  */

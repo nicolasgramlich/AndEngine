@@ -8,6 +8,9 @@ import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.util.SmartList;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:10:35 - 15.06.2011
  */

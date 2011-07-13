@@ -5,6 +5,9 @@ package org.anddev.andengine.opengl.view;
  * This class will choose a supported surface as close to RGB565 as
  * possible, with or without a depth buffer.
  * 
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:53:29 - 28.06.2010
  */

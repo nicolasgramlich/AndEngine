@@ -22,6 +22,9 @@ import android.app.Activity;
 import android.content.Intent;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 08:25:31 - 03.05.2010
  */

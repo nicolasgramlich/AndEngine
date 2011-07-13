@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.layer.tiled.tmx;
 import org.xml.sax.Attributes;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:48:01 - 12.10.2010
  */

@@ -5,6 +5,9 @@ import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.modifier.IModifier;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:47:41 - 19.07.2010
  */

@@ -12,13 +12,13 @@ import org.anddev.andengine.opengl.texture.compressed.etc1.source.IETC1TextureSo
 import android.opengl.ETC1Util;
 
 /**
- * TODO Currently supports only a single IETC1TextureSource that needs to be the same size as the Texture!
+ * TODO Currently supports only a single IPVRTextureSource that needs to be the same size as the Texture!
  * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich
- * @since 3:32:01 PM - Jul 13, 2011
+ * @since 15:32:01 - 13.07.2011
  */
 public class ETC1Texture extends CompressedTexture<IETC1TextureSource> {
 	// ===========================================================

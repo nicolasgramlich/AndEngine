@@ -21,6 +21,7 @@ public interface IBitmapTextureSource extends ITextureSource {
 	// Methods
 	// ===========================================================
 
+	@Override
 	public IBitmapTextureSource clone();
 
 	public Bitmap onLoadBitmap(final Config pBitmapConfig);

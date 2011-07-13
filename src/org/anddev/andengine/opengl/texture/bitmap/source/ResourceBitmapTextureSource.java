@@ -34,10 +34,10 @@ public class ResourceBitmapTextureSource extends BaseTextureSource implements IB
 	// ===========================================================
 
 	public ResourceBitmapTextureSource(final Context pContext, final int pDrawableResourceID) {
-		this(pContext, 0, 0, pDrawableResourceID);
+		this(pContext, pDrawableResourceID, 0, 0);
 	}
 
-	public ResourceBitmapTextureSource(final Context pContext, final int pTexturePositionX, final int pTexturePositionY, final int pDrawableResourceID) {
+	public ResourceBitmapTextureSource(final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY) {
 		super(pTexturePositionX, pTexturePositionY);
 		this.mContext = pContext;
 		this.mDrawableResourceID = pDrawableResourceID;
@@ -52,7 +52,7 @@ public class ResourceBitmapTextureSource extends BaseTextureSource implements IB
 		this.mHeight = decodeOptions.outHeight;
 	}
 
-	protected ResourceBitmapTextureSource(final Context pContext, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pDrawableResourceID) {
+	protected ResourceBitmapTextureSource(final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		super(pTexturePositionX, pTexturePositionY);
 		this.mContext = pContext;
 		this.mDrawableResourceID = pDrawableResourceID;
@@ -62,7 +62,7 @@ public class ResourceBitmapTextureSource extends BaseTextureSource implements IB
 
 	@Override
 	public ResourceBitmapTextureSource clone() {
-		return new ResourceBitmapTextureSource(this.mContext, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight, this.mDrawableResourceID);
+		return new ResourceBitmapTextureSource(this.mContext, this.mDrawableResourceID, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================

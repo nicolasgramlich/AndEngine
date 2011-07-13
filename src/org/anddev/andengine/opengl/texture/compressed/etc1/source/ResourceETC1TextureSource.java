@@ -38,25 +38,27 @@ public class ResourceETC1TextureSource extends BaseTextureSource implements IETC
 	// ===========================================================
 
 	public ResourceETC1TextureSource(final Context pContext, final int pRawResourceID) throws IOException {
-		this(pContext, 0, 0, pRawResourceID);
+		this(pContext, pRawResourceID, 0, 0);
 	}
 
-	public ResourceETC1TextureSource(final Context pContext, final int pTexturePositionX, final int pTexturePositionY, final int pRawResourceID) throws IOException {
+	public ResourceETC1TextureSource(final Context pContext, final int pRawResourceID, final int pTexturePositionX, final int pTexturePositionY) throws IOException {
 		super(pTexturePositionX, pTexturePositionY);
 		this.mContext = pContext;
 		this.mRawResourceID = pRawResourceID;
 
 		final InputStream inputStream = this.onGetInputStream();
-		final byte[] buf = new byte[4096];
+		final byte[] buf = new byte[ETC1.ETC_PKM_HEADER_SIZE];
 		try {
 			if (inputStream.read(buf, 0, ETC1.ETC_PKM_HEADER_SIZE) != ETC1.ETC_PKM_HEADER_SIZE) {
-				throw new IOException("Unable to read PKM file header.");
+				throw new IOException("Invalid PKM header.");
 			}
+
 			final ByteBuffer headerBuffer = ByteBuffer.allocateDirect(ETC1.ETC_PKM_HEADER_SIZE).order(ByteOrder.nativeOrder());
 			headerBuffer.put(buf, 0, ETC1.ETC_PKM_HEADER_SIZE).position(0);
 			if (!ETC1.isValid(headerBuffer)) {
-				throw new IOException("Not a PKM file.");
+				throw new IOException("Invalid PKM header.");
 			}
+
 			this.mWidth = ETC1.getWidth(headerBuffer);
 			this.mHeight = ETC1.getHeight(headerBuffer);
 		} catch(final IOException e) {
@@ -65,7 +67,7 @@ public class ResourceETC1TextureSource extends BaseTextureSource implements IETC
 		}
 	}
 
-	protected ResourceETC1TextureSource(final Context pContext, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pRawResourceID) {
+	protected ResourceETC1TextureSource(final Context pContext, final int pRawResourceID, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		super(pTexturePositionX, pTexturePositionY);
 		this.mContext = pContext;
 		this.mRawResourceID = pRawResourceID;
@@ -75,7 +77,7 @@ public class ResourceETC1TextureSource extends BaseTextureSource implements IETC
 
 	@Override
 	public ResourceETC1TextureSource clone() {
-		return new ResourceETC1TextureSource(this.mContext, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight, this.mRawResourceID);
+		return new ResourceETC1TextureSource(this.mContext, this.mRawResourceID, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================

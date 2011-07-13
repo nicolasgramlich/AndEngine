@@ -40,10 +40,10 @@ public class FileBitmapTextureSource extends BaseTextureSource implements IBitma
 	// ===========================================================
 	
 	public FileBitmapTextureSource(final File pFile) {
-		this(0, 0, pFile);
+		this(pFile, 0, 0);
 	}
 
-	public FileBitmapTextureSource(final int pTexturePositionX, final int pTexturePositionY, final File pFile) {
+	public FileBitmapTextureSource(final File pFile, final int pTexturePositionX, final int pTexturePositionY) {
 		super(pTexturePositionX, pTexturePositionY);
 		this.mFile = pFile;
 
@@ -64,7 +64,7 @@ public class FileBitmapTextureSource extends BaseTextureSource implements IBitma
 		this.mHeight = decodeOptions.outHeight;
 	}
 
-	FileBitmapTextureSource(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final File pFile) {
+	FileBitmapTextureSource(final File pFile, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		super(pTexturePositionX, pTexturePositionY);
 		this.mFile = pFile;
 		this.mWidth = pWidth;
@@ -73,7 +73,7 @@ public class FileBitmapTextureSource extends BaseTextureSource implements IBitma
 
 	@Override
 	public FileBitmapTextureSource clone() {
-		return new FileBitmapTextureSource(this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight, this.mFile);
+		return new FileBitmapTextureSource(this.mFile, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================

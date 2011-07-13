@@ -39,10 +39,10 @@ public class AssetBitmapTextureSource extends BaseTextureSource implements IBitm
 	// ===========================================================
 
 	public AssetBitmapTextureSource(final Context pContext, final String pAssetPath) {
-		this(pContext, 0, 0, pAssetPath);
+		this(pContext, pAssetPath, 0, 0);
 	}
 
-	public AssetBitmapTextureSource(final Context pContext, final int pTexturePositionX, final int pTexturePositionY, final String pAssetPath) {
+	public AssetBitmapTextureSource(final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY) {
 		super(pTexturePositionX, pTexturePositionY);
 		this.mContext = pContext;
 		this.mAssetPath = pAssetPath;
@@ -64,7 +64,7 @@ public class AssetBitmapTextureSource extends BaseTextureSource implements IBitm
 		this.mHeight = decodeOptions.outHeight;
 	}
 
-	AssetBitmapTextureSource(final Context pContext, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final String pAssetPath) {
+	AssetBitmapTextureSource(final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		super(pTexturePositionX, pTexturePositionY);
 		this.mContext = pContext;
 		this.mAssetPath = pAssetPath;
@@ -74,7 +74,7 @@ public class AssetBitmapTextureSource extends BaseTextureSource implements IBitm
 
 	@Override
 	public AssetBitmapTextureSource clone() {
-		return new AssetBitmapTextureSource(this.mContext, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight, this.mAssetPath);
+		return new AssetBitmapTextureSource(this.mContext, this.mAssetPath, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================

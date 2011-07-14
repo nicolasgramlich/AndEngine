@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

@@ -21,7 +21,7 @@ import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.TextureManager;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.sensor.SensorDelay;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;

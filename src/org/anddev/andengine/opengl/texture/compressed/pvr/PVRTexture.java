@@ -1,29 +1,33 @@
 package org.anddev.andengine.opengl.texture.compressed.pvr;
 
+import static org.anddev.andengine.util.constants.DataConstants.BYTES_PER_INT;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.ITexture.ITextureStateListener;
 import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
 import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.util.ArrayUtils;
+import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.util.StreamUtils;
 
 /**
+ * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes: glPixelStorei(GL_UNPACK_ALIGNMENT,1);"
+ * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich
  * @since 16:18:10 - 13.07.2011
  */
-public class PVRTexture extends Texture {
+public abstract class PVRTexture extends Texture {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final int PVR_TEXTURE_FLAG_TYPE_MASK = 0xFF;
 
 	private static final byte[] MAGIC_IDENTIFIER = {
 		(byte)'P',
@@ -46,83 +50,133 @@ public class PVRTexture extends Texture {
 	// Fields
 	// ===========================================================
 
+	private final PVRTextureHeader mPVRTextureHeader;
+	private final PVRTextureFormat mPVRTextureFormat;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	//	- (id)initWithContentsOfFile:(NSString *)path
-	//	{
-	//		if((self = [super init]))
-	//		{
-	//			unsigned char *pvrdata = NULL;
-	//			NSInteger pvrlen = 0;
-	//			NSString *lowerCase = [path lowercaseString];
-	//
-	//			if ( [lowerCase hasSuffix:@".ccz"])
-	//				pvrlen = ccInflateCCZFile( [path UTF8String], &pvrdata );
-	//
-	//			else if( [lowerCase hasSuffix:@".gz"] )
-	//				pvrlen = ccInflateGZipFile( [path UTF8String], &pvrdata );
-	//
-	//			else
-	//				pvrlen = ccLoadFileIntoMemory( [path UTF8String], &pvrdata );
-	//
-	//			if( pvrlen < 0 ) {
-	//				[self release];
-	//				return nil;
-	//			}
-	//
-	//
-	//			numberOfMipmaps_ = 0;
-	//
-	//			name_ = 0;
-	//			width_ = height_ = 0;
-	//			tableFormatIndex_ = -1;
-	//			hasAlpha_ = FALSE;
-	//
-	//			retainName_ = NO; // cocos2d integration
-	//
-	//			if( ! [self unpackPVRData:pvrdata PVRLen:pvrlen] || ![self createGLTexture] ) {
-	//				free(pvrdata);
-	//				[self release];
-	//				return nil;
-	//			}
-	//
-	//			free(pvrdata);
-	//		}
-	//
-	//		return self;
-	//	}
-
-	public PVRTexture(final int pWidth, final int pHeight, final PVRTextureFormat pPVRTextureFormat) {
-		this(pWidth, pHeight, pPVRTextureFormat, TextureOptions.DEFAULT, null);
+	public PVRTexture(final PVRTextureFormat pPVRTextureFormat) throws IllegalArgumentException, IOException {
+		this(pPVRTextureFormat, TextureOptions.DEFAULT, null);
 	}
 
-	public PVRTexture(final int pWidth, final int pHeight, final PVRTextureFormat pPVRTextureFormat, final ITextureStateListener pTextureStateListener) {
-		this(pWidth, pHeight, pPVRTextureFormat, TextureOptions.DEFAULT, pTextureStateListener);
+	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
+		this(pPVRTextureFormat, TextureOptions.DEFAULT, pTextureStateListener);
 	}
 
-	public PVRTexture(final int pWidth, final int pHeight, final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException {
-		this(pWidth, pHeight, pPVRTextureFormat, pTextureOptions, null);
+	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException, IOException {
+		this(pPVRTextureFormat, pTextureOptions, null);
 	}
 
-	public PVRTexture(final int pWidth, final int pHeight, final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
-		super(pWidth, pHeight, pPVRTextureFormat.getTextureFormat(), pTextureOptions, pTextureStateListener);
+	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
+		super(pPVRTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
+
+		final InputStream inputStream = this.getInputStream();
+		try {
+			this.mPVRTextureHeader = new PVRTextureHeader(StreamUtils.streamToBytes(inputStream, PVRTextureHeader.SIZE));
+		} catch(IOException e) {
+			throw e;
+		} finally {
+			StreamUtils.close(inputStream);
+		}
+
+		if (!this.mPVRTextureHeader.isValid()) {
+			throw new IllegalArgumentException("Invalid " + this.mPVRTextureHeader.getClass().getSimpleName() + "!");
+		}
+
+		if(!MathUtils.isPowerOfTwo(this.getWidth()) || !MathUtils.isPowerOfTwo(this.getHeight())) {  // TODO GLHelper.EXTENSIONS_NON_POWER_OF_TWO
+			throw new IllegalArgumentException("mWidth and mHeight must be a power of 2!");
+		}
+
+		if(this.mPVRTextureHeader.getPVRTextureFormat().getPixelFormat() != pPVRTextureFormat.getPixelFormat()) {
+			throw new IllegalArgumentException("Other PVRTextureFormat: '" + this.mPVRTextureHeader.getPVRTextureFormat().getPixelFormat() + "' found than expected: '" + pPVRTextureFormat.getPixelFormat() + "'.");
+		}
+
+		this.mPVRTextureFormat = this.mPVRTextureHeader.getPVRTextureFormat();
+
+		if(this.mPVRTextureFormat.isCompressed()) { // TODO && ! GLHELPER_EXTENSION_PVRTC] ) {
+			throw new IllegalArgumentException("Invalid PVRTextureFormat: '" + this.mPVRTextureFormat + "'.");
+		}
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
+	public int getWidth() {
+		return this.mPVRTextureHeader.getWidth();
+	}
+
+	@Override
+	public int getHeight() {
+		return this.mPVRTextureHeader.getHeight();
+	}
+
+	public PVRTextureHeader getPVRTextureHeader() {
+		return this.mPVRTextureHeader;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract InputStream getInputStream();
+
 	@Override
 	protected void writeTextureToHardware(final GL10 pGL) throws IOException {
-//		final InputStream inputStream = ...
-//		pGL.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels)
-		// TODO ...
+		final InputStream inputStream = this.getInputStream();
+		try {
+			final byte[] data = StreamUtils.streamToBytes(inputStream);
+			final ByteBuffer dataByteBuffer = ByteBuffer.wrap(data);
+			dataByteBuffer.rewind();
+			dataByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+
+			int width = this.getWidth();
+			int height = this.getHeight();
+
+			final int dataLength = this.mPVRTextureHeader.getDataLength();
+			final int glFormat = this.mPixelFormat.getGLFormat();
+			final int glType = this.mPixelFormat.getGLType();
+
+			final int bpp = this.mPVRTextureHeader.getBitsPerPixel();
+
+			// Calculate the data size for each texture level and respect the minimum number of blocks
+			int mipmapLevel = 0;
+			int dataOffset = 0;
+			while (dataOffset < dataLength) {
+				final int blockSize = 1;
+				int widthBlocks = width;
+				int heightBlocks = height;
+
+				// Clamp to minimum number of blocks
+				if (widthBlocks < 2) {
+					widthBlocks = 2;
+				}
+				if (heightBlocks < 2) {
+					heightBlocks = 2;
+				}
+
+				final int dataSize  = widthBlocks * heightBlocks * ((blockSize * bpp) / 8);
+				final ByteBuffer buffer = ByteBuffer.allocateDirect(dataSize).order(ByteOrder.nativeOrder());
+				buffer.put(data, dataOffset + PVRTextureHeader.SIZE, dataSize);
+
+				//			if( level > 0 && (width != height || ccNextPOT(width) != width ) )
+				//				CCLOG(@"cocos2d: TexturePVR. WARNING. Mipmap level %u is not squared. Texture won't render correctly. width=%u != height=%u", level, width, height);
+
+				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, buffer);
+
+				dataOffset += dataSize;
+
+				width = Math.max(width >> 1, 1);
+				height = Math.max(height >> 1, 1);
+
+				mipmapLevel++;
+			}
+		} finally {
+			StreamUtils.close(inputStream);
+		}
 	}
 
 	// ===========================================================
@@ -133,28 +187,35 @@ public class PVRTexture extends Texture {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	static class PVRTexHeader {
+	static class PVRTextureHeader {
 		// ===========================================================
 		// Constants
 		// ===========================================================
 
-		public static final int SIZE = 13 * 4;
+		public static final int SIZE = 13 * BYTES_PER_INT;
+		private static final int FORMAT_FLAG_MASK = 0x0FF;
 
 		// ===========================================================
 		// Fields
 		// ===========================================================
 
-		ByteBuffer bb;
+		private final byte[] mData;
+		private final ByteBuffer mDataByteBuffer;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
+		public PVRTextureHeader(final byte[] pData) {
+			this.mData = pData;
+			this.mDataByteBuffer = ByteBuffer.wrap(pData);
+			this.mDataByteBuffer.rewind();
+			this.mDataByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		}
 
-		public PVRTexHeader(final ByteBuffer b) {
-			this.bb = b;
-			this.bb.rewind();
-			this.bb.order(ByteOrder.LITTLE_ENDIAN);
+		public PVRTextureFormat getPVRTextureFormat() {
+			// TODO flags = CFSwapInt32LittleToHost(header->flags); ???
+			return PVRTextureFormat.fromID(this.getFlags() & FORMAT_FLAG_MASK);
 		}
 
 		// ===========================================================
@@ -162,55 +223,63 @@ public class PVRTexture extends Texture {
 		// ===========================================================
 
 		public int headerLength() {
-			return this.bb.getInt(0 * 4);
+			return this.mDataByteBuffer.getInt(0 * BYTES_PER_INT); // TODO Constants
 		}
 
-		public int height() {
-			return this.bb.getInt(1 * 4);
+		public int getHeight() {
+			return this.mDataByteBuffer.getInt(1 * BYTES_PER_INT);
 		}
 
-		public int width() {
-			return this.bb.getInt(2 * 4);
+		public int getWidth() {
+			return this.mDataByteBuffer.getInt(2 * BYTES_PER_INT);
 		}
 
-		public int numMipmaps() {
-			return this.bb.getInt(3 * 4);
+		public int getNumMipmaps() {
+			return this.mDataByteBuffer.getInt(3 * BYTES_PER_INT);
 		}
 
-		public int flags() {
-			return this.bb.getInt(4 * 4);
+		public int getFlags() {
+			return this.mDataByteBuffer.getInt(4 * BYTES_PER_INT);
 		}
 
-		public int dataLength() {
-			return this.bb.getInt(5 * 4);
+		public int getDataLength() {
+			return this.mDataByteBuffer.getInt(5 * BYTES_PER_INT);
 		}
 
-		public int bpp() {
-			return this.bb.getInt(6 * 4);
+		public int getBitsPerPixel() {
+			return this.mDataByteBuffer.getInt(6 * BYTES_PER_INT);
 		}
 
-		public int bitmaskRed() {
-			return this.bb.getInt(7 * 4);
+		public int getBitmaskRed() {
+			return this.mDataByteBuffer.getInt(7 * BYTES_PER_INT);
 		}
 
-		public int bitmaskGreen() {
-			return this.bb.getInt(8 * 4);
+		public int getBitmaskGreen() {
+			return this.mDataByteBuffer.getInt(8 * BYTES_PER_INT);
 		}
 
-		public int bitmaskBlue() {
-			return this.bb.getInt(9 * 4);
+		public int getBitmaskBlue() {
+			return this.mDataByteBuffer.getInt(9 * BYTES_PER_INT);
 		}
 
-		public int bitmaskAlpha() {
-			return this.bb.getInt(10 * 4);
+		public int getBitmaskAlpha() {
+			return this.mDataByteBuffer.getInt(10 * BYTES_PER_INT);
 		}
 
-		public int pvrTag() {
-			return this.bb.getInt(11 * 4);
+		public boolean hasAlpha() {
+			return this.getBitmaskAlpha() != 0;
+		}
+
+		public int getPVRTag() {
+			return this.mDataByteBuffer.getInt(11 * BYTES_PER_INT);
+		}
+
+		public boolean isValid() {
+			return ArrayUtils.equals(this.mData, 11 * BYTES_PER_INT, MAGIC_IDENTIFIER, 0, MAGIC_IDENTIFIER.length);
 		}
 
 		public int numSurfs() {
-			return this.bb.getInt(12 * 4);
+			return this.mDataByteBuffer.getInt(12 * BYTES_PER_INT);
 		}
 
 		// ===========================================================
@@ -231,18 +300,18 @@ public class PVRTexture extends Texture {
 		// Elements
 		// ===========================================================
 
-		RGBA_4444(0x10, false, TextureFormat.RGBA_4444), 
-		RGBA_5551(0x11, false, TextureFormat.RGBA_5551), 
-		RGBA_8888(0x12, false, TextureFormat.RGBA_8888), 
-		RGB_565(0x13, false, TextureFormat.RGB_565),
-//		RGB_555( 0x14, ...),
-//		RGB_888( 0x15, ...),
-		I_8(0x16, false, TextureFormat.I_8), 
-		AI_88(0x17, false, TextureFormat.AI_8),
-//		PVRTC_2(0x18, GL10.GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG, true, TextureFormat.???),
-//		PVRTC_4(0x19, GL10.GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, true, TextureFormat.???),
-//		BGRA_8888(0x1A, GL10.GL_RGBA, TextureFormat.???),
-		A_8(0x1B, false, TextureFormat.A_8);
+		RGBA_4444(0x10, false, PixelFormat.RGBA_4444),
+		RGBA_5551(0x11, false, PixelFormat.RGBA_5551),
+		RGBA_8888(0x12, false, PixelFormat.RGBA_8888),
+		RGB_565(0x13, false, PixelFormat.RGB_565),
+		//		RGB_555( 0x14, ...),
+		//		RGB_888( 0x15, ...),
+		I_8(0x16, false, PixelFormat.I_8),
+		AI_88(0x17, false, PixelFormat.AI_8),
+		//		PVRTC_2(0x18, GL10.GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG, true, TextureFormat.???),
+		//		PVRTC_4(0x19, GL10.GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, true, TextureFormat.???),
+		//		BGRA_8888(0x1A, GL10.GL_RGBA, TextureFormat.???),
+		A_8(0x1B, false, PixelFormat.A_8);
 
 		// ===========================================================
 		// Constants
@@ -254,20 +323,28 @@ public class PVRTexture extends Texture {
 
 		private final int mID;
 		private final boolean mCompressed;
-		private final TextureFormat mTextureFormat;
+		private final PixelFormat mPixelFormat;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		private PVRTextureFormat(final int pID, final boolean pCompressed, final org.anddev.andengine.opengl.texture.Texture.TextureFormat pTextureFormat) {
+		private PVRTextureFormat(final int pID, final boolean pCompressed, final PixelFormat pPixelFormat) {
 			this.mID = pID;
 			this.mCompressed = pCompressed;
-			this.mTextureFormat = pTextureFormat;
+			this.mPixelFormat = pPixelFormat;
 		}
 
-		public static void fromID(final int pID) {
-			// TODO
+		public static PVRTextureFormat fromID(final int pID) {
+			final PVRTextureFormat[] pvrTextureFormats = PVRTextureFormat.values();
+			final int pvrTextureFormatCount = pvrTextureFormats.length;
+			for(int i = 0; i < pvrTextureFormatCount; i++) {
+				final PVRTextureFormat pvrTextureFormat = pvrTextureFormats[i];
+				if(pvrTextureFormat.mID == pID) {
+					return pvrTextureFormat;
+				}
+			}
+			throw new IllegalArgumentException("Unexpected " + PVRTextureFormat.class.getSimpleName() + "-ID: '" + pID + "'");
 		}
 
 		// ===========================================================
@@ -282,8 +359,8 @@ public class PVRTexture extends Texture {
 			return this.mCompressed;
 		}
 
-		public TextureFormat getTextureFormat() {
-			return this.mTextureFormat;
+		public PixelFormat getPixelFormat() {
+			return this.mPixelFormat;
 		}
 
 		// ===========================================================

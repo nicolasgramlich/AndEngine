@@ -4,13 +4,13 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXParseException;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas.BitmapTextureFormat;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlasFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.bitmap.source.AssetBitmapTextureSource;
-import org.anddev.andengine.opengl.texture.bitmap.source.decorator.ColorKeyBitmapTextureSourceDecorator;
-import org.anddev.andengine.opengl.texture.bitmap.source.decorator.shape.RectangleBitmapTextureSourceDecoratorShape;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasFactory;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.AssetBitmapTextureAtlasSource;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.ColorKeyBitmapTextureAtlasSourceDecorator;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.RectangleBitmapTextureAtlasSourceDecoratorShape;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
@@ -98,18 +98,18 @@ public class TMXTileSet implements TMXConstants {
 	public void setImageSource(final Context pContext, final TextureManager pTextureManager, final Attributes pAttributes) throws TMXParseException {
 		this.mImageSource = pAttributes.getValue("", TAG_IMAGE_ATTRIBUTE_SOURCE);
 
-		final AssetBitmapTextureSource assetBitmapTextureSource = new AssetBitmapTextureSource(pContext, this.mImageSource);
-		this.mTilesHorizontal = TMXTileSet.determineCount(assetBitmapTextureSource.getWidth(), this.mTileWidth, this.mMargin, this.mSpacing);
-		this.mTilesVertical = TMXTileSet.determineCount(assetBitmapTextureSource.getHeight(), this.mTileHeight, this.mMargin, this.mSpacing);
-		this.mBitmapTextureAtlas = BitmapTextureAtlasFactory.createForTextureSourceSize(BitmapTextureFormat.RGBA_8888, assetBitmapTextureSource, this.mTextureOptions); // TODO Make TextureFormat variable
+		final AssetBitmapTextureAtlasSource assetBitmapTextureAtlasSource = new AssetBitmapTextureAtlasSource(pContext, this.mImageSource);
+		this.mTilesHorizontal = TMXTileSet.determineCount(assetBitmapTextureAtlasSource.getWidth(), this.mTileWidth, this.mMargin, this.mSpacing);
+		this.mTilesVertical = TMXTileSet.determineCount(assetBitmapTextureAtlasSource.getHeight(), this.mTileHeight, this.mMargin, this.mSpacing);
+		this.mBitmapTextureAtlas = BitmapTextureAtlasFactory.createForTextureAtlasSourceSize(BitmapTextureFormat.RGBA_8888, assetBitmapTextureAtlasSource, this.mTextureOptions); // TODO Make TextureFormat variable
 
 		final String transparentColor = SAXUtils.getAttribute(pAttributes, TAG_IMAGE_ATTRIBUTE_TRANS, null);
 		if(transparentColor == null) {
-			BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, assetBitmapTextureSource, 0, 0);
+			BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, assetBitmapTextureAtlasSource, 0, 0);
 		} else {
 			try{
 				final int color = Color.parseColor((transparentColor.charAt(0) == '#') ? transparentColor : "#" + transparentColor);
-				BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, new ColorKeyBitmapTextureSourceDecorator(assetBitmapTextureSource, RectangleBitmapTextureSourceDecoratorShape.getDefaultInstance(), color), 0, 0);
+				BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, new ColorKeyBitmapTextureAtlasSourceDecorator(assetBitmapTextureAtlasSource, RectangleBitmapTextureAtlasSourceDecoratorShape.getDefaultInstance(), color), 0, 0);
 			} catch (final IllegalArgumentException e) {
 				throw new TMXParseException("Illegal value: '" + transparentColor + "' for attribute 'trans' supplied!", e);
 			}

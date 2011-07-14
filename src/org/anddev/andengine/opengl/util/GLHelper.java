@@ -10,7 +10,7 @@ import javax.microedition.khronos.opengles.GL11;
 import javax.microedition.khronos.opengles.GL11Ext;
 
 import org.anddev.andengine.engine.options.RenderOptions;
-import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
+import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
 import org.anddev.andengine.util.Debug;
 
@@ -416,11 +416,11 @@ public class GLHelper {
 	 * </br>
 	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 */
-	public static void glTexSubImage2D(final GL10 pGL, final int pTarget, final int pLevel, final int pXOffset, final int pYOffset, final Bitmap pBitmap, final int pFormat, final int pType, final TextureFormat pTextureFormat) {
+	public static void glTexSubImage2D(final GL10 pGL, final int pTarget, final int pLevel, final int pXOffset, final int pYOffset, final Bitmap pBitmap, final int pFormat, final int pType, final PixelFormat pPixelFormat) {
 		final int[] pixelsARGB_8888 = GLHelper.getPixelsARGB_8888(pBitmap);
 
 		final Buffer pixelBuffer;
-		switch(pTextureFormat) {
+		switch(pPixelFormat) {
 			case RGB_565:
 				pixelBuffer = ByteBuffer.wrap(GLHelper.convertARGB_8888toRGB_565(pixelsARGB_8888));
 				break;
@@ -428,7 +428,7 @@ public class GLHelper {
 				pixelBuffer = IntBuffer.wrap(GLHelper.convertARGB_8888toRGBA_8888(pixelsARGB_8888));
 				break;
 			default:
-				throw new IllegalArgumentException("Unexpected pTextureFormat: '" + pTextureFormat + "'.");
+				throw new IllegalArgumentException("Unexpected pTextureFormat: '" + pPixelFormat + "'.");
 		}
 
 		pGL.glTexSubImage2D(pTarget, pLevel, pXOffset, pYOffset, pBitmap.getWidth(), pBitmap.getHeight(), pFormat, pType, pixelBuffer);

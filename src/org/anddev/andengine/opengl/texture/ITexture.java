@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.util.Debug;
 
 /**
@@ -65,7 +65,7 @@ public interface ITexture {
 		// Inner and Anonymous Classes
 		// ===========================================================
 
-		public static class TextureStateAdapter<T extends ITextureSource> implements ITextureStateListener {
+		public static class TextureStateAdapter<T extends ITextureAtlasSource> implements ITextureStateListener {
 			@Override
 			public void onLoadedToHardware(final ITexture pTexture) { }
 
@@ -73,7 +73,7 @@ public interface ITexture {
 			public void onUnloadedFromHardware(final ITexture pTexture) { }
 		}
 
-		public static class DebugTextureStateListener<T extends ITextureSource> implements ITextureStateListener {
+		public static class DebugTextureStateListener<T extends ITextureAtlasSource> implements ITextureStateListener {
 			@Override
 			public void onLoadedToHardware(final ITexture pTexture) {
 				Debug.d("Texture loaded: " + pTexture.toString());

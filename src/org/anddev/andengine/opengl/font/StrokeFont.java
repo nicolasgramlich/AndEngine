@@ -1,6 +1,6 @@
 package org.anddev.andengine.opengl.font;
 
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 
 import android.graphics.Paint;
 import android.graphics.Paint.Style;

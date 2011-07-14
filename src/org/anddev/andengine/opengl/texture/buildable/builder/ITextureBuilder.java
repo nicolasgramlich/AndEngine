@@ -2,9 +2,9 @@ package org.anddev.andengine.opengl.texture.buildable.builder;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.texture.ITextureAtlas;
-import org.anddev.andengine.opengl.texture.buildable.BuildableTextureAtlas.TextureSourceWithWithLocationCallback;
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
+import org.anddev.andengine.opengl.texture.buildable.BuildableTextureAtlas.TextureAtlasSourceWithWithLocationCallback;
+import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -13,7 +13,7 @@ import org.anddev.andengine.opengl.texture.source.ITextureSource;
  * @author Nicolas Gramlich
  * @since 15:59:14 - 12.08.2010
  */
-public interface ITextureBuilder<T extends ITextureSource, A extends ITextureAtlas<T>> {
+public interface ITextureBuilder<T extends ITextureAtlasSource, A extends ITextureAtlas<T>> {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -22,13 +22,13 @@ public interface ITextureBuilder<T extends ITextureSource, A extends ITextureAtl
 	// Methods
 	// ===========================================================
 
-	public void pack(final A pTextureAtlas, final ArrayList<TextureSourceWithWithLocationCallback<T>> pTextureSourcesWithLocationCallback) throws TextureSourcePackingException;
+	public void pack(final A pTextureAtlas, final ArrayList<TextureAtlasSourceWithWithLocationCallback<T>> pTextureAtlasSourcesWithLocationCallback) throws TextureAtlasSourcePackingException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class TextureSourcePackingException extends Exception {
+	public static class TextureAtlasSourcePackingException extends Exception {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -43,7 +43,7 @@ public interface ITextureBuilder<T extends ITextureSource, A extends ITextureAtl
 		// Constructors
 		// ===========================================================
 
-		public TextureSourcePackingException(final String pMessage) {
+		public TextureAtlasSourcePackingException(final String pMessage) {
 			super(pMessage);
 		}
 

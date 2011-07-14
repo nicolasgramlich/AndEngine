@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.ITextureAtlas;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.bitmap.BuildableBitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.buildable.builder.ITextureBuilder;
-import org.anddev.andengine.opengl.texture.buildable.builder.ITextureBuilder.TextureSourcePackingException;
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.buildable.builder.ITextureBuilder.TextureAtlasSourcePackingException;
+import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.util.Callback;
 
 /**
@@ -20,7 +20,7 @@ import org.anddev.andengine.util.Callback;
  * @author Nicolas Gramlich
  * @since 21:26:38 - 12.08.2010
  */
-public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureAtlas<T>> implements ITextureAtlas<T> {
+public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITextureAtlas<T>> implements ITextureAtlas<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -30,7 +30,7 @@ public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureA
 	// ===========================================================
 
 	private final A mTextureAtlas;
-	private final ArrayList<TextureSourceWithWithLocationCallback<T>> mTextureSourcesToPlace = new ArrayList<TextureSourceWithWithLocationCallback<T>>();
+	private final ArrayList<TextureAtlasSourceWithWithLocationCallback<T>> mTextureAtlasSourcesToPlace = new ArrayList<TextureAtlasSourceWithWithLocationCallback<T>>();
 
 	// ===========================================================
 	// Constructors
@@ -109,24 +109,24 @@ public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureA
 	}
 
 	/**
-	 * Most likely this is not the method you'd want to be using, as the {@link ITextureSource} won't get packed through this.
-	 * @deprecated Use {@link BuildableTextureAtlas#addTextureSource(ITextureSource)} instead.
+	 * Most likely this is not the method you'd want to be using, as the {@link ITextureAtlasSource} won't get packed through this.
+	 * @deprecated Use {@link BuildableTextureAtlas#addTextureAtlasSource(ITextureAtlasSource)} instead.
 	 */
 	@Deprecated
 	@Override
-	public void addTextureSource(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
-		this.mTextureAtlas.addTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
+	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
+		this.mTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	@Override
-	public void removeTextureSource(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
-		this.mTextureAtlas.removeTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
+	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
+		this.mTextureAtlas.removeTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	@Override
-	public void clearTextureSources() {
-		this.mTextureAtlas.clearTextureSources();
-		this.mTextureSourcesToPlace.clear();
+	public void clearTextureAtlasSources() {
+		this.mTextureAtlas.clearTextureAtlasSources();
+		this.mTextureAtlasSourcesToPlace.clear();
 	}
 
 	@Override
@@ -144,23 +144,23 @@ public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureA
 	// ===========================================================
 
 	/**
-	 * When all {@link ITextureSource}s are added you have to call {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)}.
-	 * @param pTextureSource to be added.
+	 * When all {@link ITextureAtlasSource}s are added you have to call {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)}.
+	 * @param pTextureAtlasSource to be added.
 	 * @param pTextureRegion
 	 */
-	public void addTextureSource(final T pTextureSource, final Callback<T> pCallback) {
-		this.mTextureSourcesToPlace.add(new TextureSourceWithWithLocationCallback<T>(pTextureSource, pCallback));
+	public void addTextureAtlasSource(final T pTextureAtlasSource, final Callback<T> pCallback) {
+		this.mTextureAtlasSourcesToPlace.add(new TextureAtlasSourceWithWithLocationCallback<T>(pTextureAtlasSource, pCallback));
 	}
 
 	/**
-	 * Removes a {@link ITextureSource} before {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)} is called.
-	 * @param pBitmapTextureSource to be removed.
+	 * Removes a {@link ITextureAtlasSource} before {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)} is called.
+	 * @param pBitmapTextureAtlasSource to be removed.
 	 */
-	public void removeTextureSource(final ITextureSource pTextureSource) {
-		final ArrayList<TextureSourceWithWithLocationCallback<T>> textureSources = this.mTextureSourcesToPlace;
+	public void removeTextureAtlasSource(final ITextureAtlasSource pTextureAtlasSource) {
+		final ArrayList<TextureAtlasSourceWithWithLocationCallback<T>> textureSources = this.mTextureAtlasSourcesToPlace;
 		for(int i = textureSources.size() - 1; i >= 0; i--) {
-			final TextureSourceWithWithLocationCallback<T> textureSource = textureSources.get(i);
-			if(textureSource.mTextureSource == pTextureSource) {
+			final TextureAtlasSourceWithWithLocationCallback<T> textureSource = textureSources.get(i);
+			if(textureSource.mTextureAtlasSource == pTextureAtlasSource) {
 				textureSources.remove(i);
 				this.mTextureAtlas.setUpdateOnHardwareNeeded(true);
 				return;
@@ -169,14 +169,14 @@ public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureA
 	}
 
 	/**
-	 * May draw over already added {@link ITextureSource}s.
+	 * May draw over already added {@link ITextureAtlasSource}s.
 	 *
-	 * @param pTextureSourcePackingAlgorithm the {@link ITextureBuilder} to use for packing the {@link ITextureSource} in this {@link BuildableBitmapTextureAtlas}.
-	 * @throws TextureSourcePackingException i.e. when the {@link ITextureSource}s didn't fit into this {@link BuildableBitmapTextureAtlas}.
+	 * @param pTextureAtlasSourcePackingAlgorithm the {@link ITextureBuilder} to use for packing the {@link ITextureAtlasSource} in this {@link BuildableBitmapTextureAtlas}.
+	 * @throws TextureAtlasSourcePackingException i.e. when the {@link ITextureAtlasSource}s didn't fit into this {@link BuildableBitmapTextureAtlas}.
 	 */
-	public void build(final ITextureBuilder<T, A> pTextureSourcePackingAlgorithm) throws TextureSourcePackingException {
-		pTextureSourcePackingAlgorithm.pack(this.mTextureAtlas, this.mTextureSourcesToPlace);
-		this.mTextureSourcesToPlace.clear();
+	public void build(final ITextureBuilder<T, A> pTextureAtlasSourcePackingAlgorithm) throws TextureAtlasSourcePackingException {
+		pTextureAtlasSourcePackingAlgorithm.pack(this.mTextureAtlas, this.mTextureAtlasSourcesToPlace);
+		this.mTextureAtlasSourcesToPlace.clear();
 		this.mTextureAtlas.setUpdateOnHardwareNeeded(true);
 	}
 
@@ -184,7 +184,7 @@ public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureA
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class TextureSourceWithWithLocationCallback<T extends ITextureSource> {
+	public static class TextureAtlasSourceWithWithLocationCallback<T extends ITextureAtlasSource> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -193,15 +193,15 @@ public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureA
 		// Fields
 		// ===========================================================
 
-		private final T mTextureSource;
+		private final T mTextureAtlasSource;
 		private final Callback<T> mCallback;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public TextureSourceWithWithLocationCallback(final T pTextureSource, final Callback<T> pCallback) {
-			this.mTextureSource = pTextureSource;
+		public TextureAtlasSourceWithWithLocationCallback(final T pTextureAtlasSource, final Callback<T> pCallback) {
+			this.mTextureAtlasSource = pTextureAtlasSource;
 			this.mCallback = pCallback;
 		}
 
@@ -213,8 +213,8 @@ public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureA
 			return this.mCallback;
 		}
 
-		public T getTextureSource() {
-			return this.mTextureSource;
+		public T getTextureAtlasSource() {
+			return this.mTextureAtlasSource;
 		}
 
 		// ===========================================================

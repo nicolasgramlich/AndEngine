@@ -4,9 +4,8 @@ import java.io.IOException;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
+import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.util.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -26,9 +25,7 @@ public abstract class Texture implements ITexture {
 	// Fields
 	// ===========================================================
 
-	protected final int mWidth;
-	protected final int mHeight;
-	protected final TextureFormat mTextureFormat;
+	protected final PixelFormat mPixelFormat;
 	protected final TextureOptions mTextureOptions;
 
 	protected int mHardwareTextureID = -1;
@@ -42,17 +39,12 @@ public abstract class Texture implements ITexture {
 	// ===========================================================
 
 	/**
-	 * @param pTextureFormat TODO
+	 * @param pPixelFormat
 	 * @param pTextureOptions the (quality) settings of the Texture.
-	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureAtlasSource} failed to load.
 	 */
-	public Texture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
-		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
-			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
-		}
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
-		this.mTextureFormat = pTextureFormat;
+	public Texture(final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+		this.mPixelFormat = pPixelFormat;
 		this.mTextureOptions = pTextureOptions;
 		this.mTextureStateListener = pTextureStateListener;
 	}
@@ -60,16 +52,6 @@ public abstract class Texture implements ITexture {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	@Override
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	@Override
-	public int getHeight() {
-		return this.mHeight;
-	}
 
 	@Override
 	public int getHardwareTextureID() {
@@ -94,6 +76,10 @@ public abstract class Texture implements ITexture {
 	@Override
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded) {
 		this.mUpdateOnHardwareNeeded = pUpdateOnHardwareNeeded;
+	}
+	
+	public PixelFormat getPixelFormat() {
+		return this.mPixelFormat;
 	}
 
 	@Override
@@ -194,7 +180,7 @@ public abstract class Texture implements ITexture {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public enum TextureFormat {
+	public enum PixelFormat {
 		// ===========================================================
 		// Elements
 		// ===========================================================
@@ -217,16 +203,16 @@ public abstract class Texture implements ITexture {
 		// ===========================================================
 
 		private final int mGLFormat;
-		private final int mGLDataType;
+		private final int mGLType;
 		private final int mBitsPerPixel;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		private TextureFormat(final int pGLFormat, final int pGLDataType, final int pBitsPerPixel) {
+		private PixelFormat(final int pGLFormat, final int pGLType, final int pBitsPerPixel) {
 			this.mGLFormat = pGLFormat;
-			this.mGLDataType = pGLDataType;
+			this.mGLType = pGLType;
 			this.mBitsPerPixel = pBitsPerPixel;
 		}
 
@@ -238,8 +224,8 @@ public abstract class Texture implements ITexture {
 			return this.mGLFormat;
 		}
 
-		public int getGLDataType() {
-			return this.mGLDataType;
+		public int getGLType() {
+			return this.mGLType;
 		}
 
 		public int getBitsPerPixel() {

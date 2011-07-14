@@ -122,6 +122,7 @@ public class GLHelper {
 		Debug.d("EXTENSIONS: " + extensions);
 
 		final boolean isOpenGL10 = version.contains("1.0");
+		final boolean isOpenGL2X = version.contains("2.");
 		final boolean isSoftwareRenderer = renderer.contains("PixelFlinger");
 		final boolean isVBOCapable = extensions.contains("_vertex_buffer_object");
 		final boolean isDrawTextureCapable = extensions.contains("draw_texture");
@@ -129,7 +130,7 @@ public class GLHelper {
 
 		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !pRenderOptions.isDisableExtensionVertexBufferObjects() && !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
 		GLHelper.EXTENSIONS_DRAWTEXTURE = !pRenderOptions.isDisableExtensionVertexBufferObjects() && (isDrawTextureCapable || !isOpenGL10);
-		GLHelper.EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = isTextureNonPowerOfTwoCapable;
+		GLHelper.EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = isTextureNonPowerOfTwoCapable || isOpenGL2X;
 
 		GLHelper.hackBrokenDevices();
 		Debug.d("EXTENSIONS_VERXTEXBUFFEROBJECTS = " + GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS);

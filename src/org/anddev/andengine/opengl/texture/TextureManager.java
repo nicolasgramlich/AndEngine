@@ -124,10 +124,10 @@ public class TextureManager {
 
 		if(textursLoadedCount > 0){
 			for(int i = textursLoadedCount - 1; i >= 0; i--){
-				final ITexture textureToBeUpdated = texturesLoaded.get(i);
-				if(textureToBeUpdated.isUpdateOnHardwareNeeded()){
+				final ITexture textureToBeReloaded = texturesLoaded.get(i);
+				if(textureToBeReloaded.isUpdateOnHardwareNeeded()){
 					try {
-						textureToBeUpdated.reloadToHardware(pGL);
+						textureToBeReloaded.reloadToHardware(pGL);
 					} catch(IOException e) {
 						Debug.e(e);
 					}

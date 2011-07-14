@@ -435,8 +435,6 @@ public class GLHelper {
 	}
 
 	private static int[] convertARGB_8888toRGBA_8888(final int[] pPixelsARGB_8888) {
-		final long start = System.nanoTime();
-		
 		if(GLHelper.IS_LITTLE_ENDIAN) {
 			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
@@ -450,10 +448,6 @@ public class GLHelper {
 				pPixelsARGB_8888[i] = (pixel & 0x00FFFFFF) << 8 | (pixel & 0xFF000000) >> 24;
 			}
 		}
-
-		final long end = System.nanoTime();
-		Debug.d("Conversion time: " + (end - start) + " ms");
-
 		return pPixelsARGB_8888;
 	}
 

@@ -107,7 +107,7 @@ public abstract class Texture implements ITexture {
 	public void loadToHardware(final GL10 pGL) throws IOException {
 		GLHelper.enableTextures(pGL);
 
-		this.mHardwareTextureID = Texture.generateHardwareTextureID(pGL);
+		this.mHardwareTextureID = this.generateHardwareTextureID(pGL);
 
 		this.bindTextureOnHardware(pGL);
 
@@ -170,7 +170,7 @@ public abstract class Texture implements ITexture {
 		GLHelper.deleteTexture(pGL, this.mHardwareTextureID);
 	}
 
-	private static int generateHardwareTextureID(final GL10 pGL) {
+	protected int generateHardwareTextureID(final GL10 pGL) {
 		pGL.glGenTextures(1, Texture.HARDWARETEXTUREID_FETCHER, 0);
 
 		return Texture.HARDWARETEXTUREID_FETCHER[0];

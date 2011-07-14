@@ -75,7 +75,7 @@ public abstract class PVRTexture extends Texture {
 		final InputStream inputStream = this.getInputStream();
 		try {
 			this.mPVRTextureHeader = new PVRTextureHeader(StreamUtils.streamToBytes(inputStream, PVRTextureHeader.SIZE));
-		} catch(IOException e) {
+		} catch(final IOException e) {
 			throw e;
 		} finally {
 			StreamUtils.close(inputStream);
@@ -98,6 +98,8 @@ public abstract class PVRTexture extends Texture {
 		if(this.mPVRTextureFormat.isCompressed()) { // TODO && ! GLHELPER_EXTENSION_PVRTC] ) {
 			throw new IllegalArgumentException("Invalid PVRTextureFormat: '" + this.mPVRTextureFormat + "'.");
 		}
+
+		this.mUpdateOnHardwareNeeded = true;
 	}
 
 	// ===========================================================
@@ -123,6 +125,16 @@ public abstract class PVRTexture extends Texture {
 	// ===========================================================
 
 	protected abstract InputStream getInputStream();
+
+	@Override
+	protected int generateHardwareTextureID(final GL10 pGL) {
+		//		// TODO
+		//		if(this.mMipMapCount > 0) {
+		pGL.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT,1);
+		//		}
+
+		return super.generateHardwareTextureID(pGL);
+	}
 
 	@Override
 	protected void writeTextureToHardware(final GL10 pGL) throws IOException {
@@ -158,14 +170,14 @@ public abstract class PVRTexture extends Texture {
 					heightBlocks = 2;
 				}
 
-				final int dataSize  = widthBlocks * heightBlocks * ((blockSize * bpp) / 8);
-				final ByteBuffer buffer = ByteBuffer.allocateDirect(dataSize).order(ByteOrder.nativeOrder());
-				buffer.put(data, dataOffset + PVRTextureHeader.SIZE, dataSize);
+				final int dataSize = widthBlocks * heightBlocks * ((blockSize * bpp) / 8);
+				final ByteBuffer pixels = ByteBuffer.allocateDirect(dataSize);
+				pixels.put(data, dataOffset + PVRTextureHeader.SIZE, dataSize);
 
 				//			if( level > 0 && (width != height || ccNextPOT(width) != width ) )
 				//				CCLOG(@"cocos2d: TexturePVR. WARNING. Mipmap level %u is not squared. Texture won't render correctly. width=%u != height=%u", level, width, height);
 
-				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, buffer);
+				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixels);
 
 				dataOffset += dataSize;
 

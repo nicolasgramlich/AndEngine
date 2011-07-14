@@ -71,6 +71,7 @@ public class GLHelper {
 
 	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 	public static boolean EXTENSIONS_DRAWTEXTURE = false;
+	public static boolean EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = false;
 
 	// ===========================================================
 	// Methods
@@ -108,6 +109,7 @@ public class GLHelper {
 
 		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
 		GLHelper.EXTENSIONS_DRAWTEXTURE = false;
+		GLHelper.EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = false;
 	}
 
 	public static void enableExtensions(final GL10 pGL, final RenderOptions pRenderOptions) {
@@ -123,9 +125,11 @@ public class GLHelper {
 		final boolean isSoftwareRenderer = renderer.contains("PixelFlinger");
 		final boolean isVBOCapable = extensions.contains("_vertex_buffer_object");
 		final boolean isDrawTextureCapable = extensions.contains("draw_texture");
+		final boolean isTextureNonPowerOfTwoCapable = extensions.contains("texture_npot");
 
 		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !pRenderOptions.isDisableExtensionVertexBufferObjects() && !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
 		GLHelper.EXTENSIONS_DRAWTEXTURE = !pRenderOptions.isDisableExtensionVertexBufferObjects() && (isDrawTextureCapable || !isOpenGL10);
+		GLHelper.EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = isTextureNonPowerOfTwoCapable;
 
 		GLHelper.hackBrokenDevices();
 		Debug.d("EXTENSIONS_VERXTEXBUFFEROBJECTS = " + GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS);

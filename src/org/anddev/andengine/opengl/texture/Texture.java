@@ -133,7 +133,7 @@ public class Texture {
 	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
 	public Texture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
-		if (!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)){
+		if(!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)) { // TODO Check if GLHelper.EXTENSIONS_TEXTURE_NON_POWER_OF_TWO is supported 
 			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
 		}
 		this.mTextureFormat = pTextureFormat;

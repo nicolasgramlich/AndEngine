@@ -35,7 +35,7 @@ public class SpriteBatch extends Entity {
 	// Fields
 	// ===========================================================
 
-	private final ITexture<?> mTexture;
+	private final ITexture mTexture;
 	protected final int mCapacity;
 
 	private int mIndex;
@@ -52,7 +52,7 @@ public class SpriteBatch extends Entity {
 	// Constructors
 	// ===========================================================
 
-	public SpriteBatch(final ITexture<?> pTexture, final int pCapacity) {
+	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
 		this.mSpriteBatchVertexBuffer = new SpriteBatchVertexBuffer(pCapacity, GL11.GL_STATIC_DRAW, true);

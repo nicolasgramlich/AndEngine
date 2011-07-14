@@ -4,10 +4,10 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXParseException;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlasFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.source.AssetBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.bitmap.source.decorator.ColorKeyBitmapTextureSourceDecorator;
 import org.anddev.andengine.opengl.texture.bitmap.source.decorator.shape.RectangleBitmapTextureSourceDecoratorShape;
@@ -41,7 +41,7 @@ public class TMXTileSet implements TMXConstants {
 	private final int mTileHeight;
 
 	private String mImageSource;
-	private BitmapTexture mBitmapTexture;
+	private BitmapTextureAtlas mBitmapTextureAtlas;
 	private final TextureOptions mTextureOptions;
 
 	private int mTilesHorizontal;
@@ -91,8 +91,8 @@ public class TMXTileSet implements TMXConstants {
 		return this.mTileHeight;
 	}
 
-	public BitmapTexture getTexture() {
-		return this.mBitmapTexture;
+	public BitmapTextureAtlas getBitmapTextureAtlas() {
+		return this.mBitmapTextureAtlas;
 	}
 
 	public void setImageSource(final Context pContext, final TextureManager pTextureManager, final Attributes pAttributes) throws TMXParseException {
@@ -101,20 +101,20 @@ public class TMXTileSet implements TMXConstants {
 		final AssetBitmapTextureSource assetBitmapTextureSource = new AssetBitmapTextureSource(pContext, this.mImageSource);
 		this.mTilesHorizontal = TMXTileSet.determineCount(assetBitmapTextureSource.getWidth(), this.mTileWidth, this.mMargin, this.mSpacing);
 		this.mTilesVertical = TMXTileSet.determineCount(assetBitmapTextureSource.getHeight(), this.mTileHeight, this.mMargin, this.mSpacing);
-		this.mBitmapTexture = BitmapTextureFactory.createForTextureSourceSize(TextureFormat.RGBA_8888, assetBitmapTextureSource, this.mTextureOptions); // TODO Make TextureFormat variable
+		this.mBitmapTextureAtlas = BitmapTextureAtlasFactory.createForTextureSourceSize(BitmapTextureFormat.RGBA_8888, assetBitmapTextureSource, this.mTextureOptions); // TODO Make TextureFormat variable
 
 		final String transparentColor = SAXUtils.getAttribute(pAttributes, TAG_IMAGE_ATTRIBUTE_TRANS, null);
 		if(transparentColor == null) {
-			BitmapTextureRegionFactory.createFromSource(this.mBitmapTexture, assetBitmapTextureSource, 0, 0);
+			BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, assetBitmapTextureSource, 0, 0);
 		} else {
 			try{
 				final int color = Color.parseColor((transparentColor.charAt(0) == '#') ? transparentColor : "#" + transparentColor);
-				BitmapTextureRegionFactory.createFromSource(this.mBitmapTexture, new ColorKeyBitmapTextureSourceDecorator(assetBitmapTextureSource, RectangleBitmapTextureSourceDecoratorShape.getDefaultInstance(), color), 0, 0);
+				BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, new ColorKeyBitmapTextureSourceDecorator(assetBitmapTextureSource, RectangleBitmapTextureSourceDecoratorShape.getDefaultInstance(), color), 0, 0);
 			} catch (final IllegalArgumentException e) {
 				throw new TMXParseException("Illegal value: '" + transparentColor + "' for attribute 'trans' supplied!", e);
 			}
 		}
-		pTextureManager.loadTexture(this.mBitmapTexture);
+		pTextureManager.loadTexture(this.mBitmapTextureAtlas);
 	}
 
 	public String getImageSource() {
@@ -157,7 +157,7 @@ public class TMXTileSet implements TMXConstants {
 		final int texturePositionX = this.mMargin + (this.mSpacing + this.mTileWidth) * tileColumn;
 		final int texturePositionY = this.mMargin + (this.mSpacing + this.mTileHeight) * tileRow;
 
-		return new TextureRegion(this.mBitmapTexture, texturePositionX, texturePositionY, this.mTileWidth, this.mTileHeight);
+		return new TextureRegion(this.mBitmapTextureAtlas, texturePositionX, texturePositionY, this.mTileWidth, this.mTileHeight);
 	}
 
 	private static int determineCount(final int pTotalExtent, final int pTileExtent, final int pMargin, final int pSpacing) {

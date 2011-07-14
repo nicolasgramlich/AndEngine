@@ -50,7 +50,7 @@ public class SpriteBatchTextureRegionBuffer extends BufferObject {
 	}
 
 	public void add(final BaseTextureRegion pTextureRegion) {
-		final ITexture<?> texture = pTextureRegion.getTexture();
+		final ITexture texture = pTextureRegion.getTexture();
 
 		if(texture == null) { // TODO Check really needed?
 			return;

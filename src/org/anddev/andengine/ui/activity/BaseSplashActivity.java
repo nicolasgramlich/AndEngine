@@ -11,10 +11,10 @@ import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolic
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.SplashScene;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureFactory;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlasFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
@@ -86,10 +86,10 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	@Override
 	public void onLoadResources() {
-		final BitmapTexture loadingScreenTexture = BitmapTextureFactory.createForTextureSourceSize(TextureFormat.RGBA_8888, this.mSplashTextureSource, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		this.mLoadingScreenTextureRegion = BitmapTextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
+		final BitmapTextureAtlas loadingScreenBitmapTextureAtlas = BitmapTextureAtlasFactory.createForTextureSourceSize(BitmapTextureFormat.RGBA_8888, this.mSplashTextureSource, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		this.mLoadingScreenTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromSource(loadingScreenBitmapTextureAtlas, this.mSplashTextureSource, 0, 0);
 
-		this.getEngine().getTextureManager().loadTexture(loadingScreenTexture);
+		this.getEngine().getTextureManager().loadTexture(loadingScreenBitmapTextureAtlas);
 	}
 
 	@Override

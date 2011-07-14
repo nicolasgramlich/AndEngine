@@ -2,8 +2,8 @@ package org.anddev.andengine.opengl.texture.buildable.builder;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.buildable.BuildableTexture.TextureSourceWithWithLocationCallback;
+import org.anddev.andengine.opengl.texture.ITextureAtlas;
+import org.anddev.andengine.opengl.texture.buildable.BuildableTextureAtlas.TextureSourceWithWithLocationCallback;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
@@ -13,7 +13,7 @@ import org.anddev.andengine.opengl.texture.source.ITextureSource;
  * @author Nicolas Gramlich
  * @since 15:59:14 - 12.08.2010
  */
-public interface ITextureBuilder<T extends ITextureSource, K extends ITexture<T>> {
+public interface ITextureBuilder<T extends ITextureSource, A extends ITextureAtlas<T>> {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -22,7 +22,7 @@ public interface ITextureBuilder<T extends ITextureSource, K extends ITexture<T>
 	// Methods
 	// ===========================================================
 
-	public void pack(final K pTexture, final ArrayList<TextureSourceWithWithLocationCallback<T>> pTextureSourcesWithLocationCallback) throws TextureSourcePackingException;
+	public void pack(final A pTextureAtlas, final ArrayList<TextureSourceWithWithLocationCallback<T>> pTextureSourcesWithLocationCallback) throws TextureSourcePackingException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes

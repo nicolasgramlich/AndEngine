@@ -10,7 +10,7 @@ import javax.microedition.khronos.opengles.GL11;
 import javax.microedition.khronos.opengles.GL11Ext;
 
 import org.anddev.andengine.engine.options.RenderOptions;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
+import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
 import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
 import org.anddev.andengine.util.Debug;
 

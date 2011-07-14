@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -37,7 +37,7 @@ public class Font {
 	// Fields
 	// ===========================================================
 
-	private final BitmapTexture mBitmapTexture;
+	private final BitmapTextureAtlas mBitmapTextureAtlas;
 	private final float mTextureWidth;
 	private final float mTextureHeight;
 	private int mCurrentTextureX = 0;
@@ -65,10 +65,10 @@ public class Font {
 	// Constructors
 	// ===========================================================
 
-	public Font(final BitmapTexture pBitmapTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
-		this.mBitmapTexture = pBitmapTexture;
-		this.mTextureWidth = pBitmapTexture.getWidth();
-		this.mTextureHeight = pBitmapTexture.getHeight();
+	public Font(final BitmapTextureAtlas pBitmapTextureAtlas, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+		this.mBitmapTextureAtlas = pBitmapTextureAtlas;
+		this.mTextureWidth = pBitmapTextureAtlas.getWidth();
+		this.mTextureHeight = pBitmapTextureAtlas.getHeight();
 
 		this.mPaint = new Paint();
 		this.mPaint.setTypeface(pTypeface);
@@ -97,8 +97,8 @@ public class Font {
 		return this.mLineHeight;
 	}
 
-	public BitmapTexture getTexture() {
-		return this.mBitmapTexture;
+	public BitmapTextureAtlas getBitmapTextureAtlas() {
+		return this.mBitmapTextureAtlas;
 	}
 
 	// ===========================================================
@@ -203,7 +203,7 @@ public class Font {
 	public synchronized void update(final GL10 pGL) {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
-			this.mBitmapTexture.bind(pGL);
+			this.mBitmapTextureAtlas.bind(pGL);
 
 			final float textureWidth = this.mTextureWidth;
 			final float textureHeight = this.mTextureHeight;

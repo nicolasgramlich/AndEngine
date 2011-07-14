@@ -1,7 +1,7 @@
 package org.anddev.andengine.opengl.texture.bitmap;
 
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas.BitmapTextureFormat;
 import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.util.MathUtils;
@@ -13,7 +13,7 @@ import org.anddev.andengine.util.MathUtils;
  * @author Nicolas Gramlich
  * @since 09:38:51 - 03.05.2010
  */
-public class BitmapTextureFactory {
+public class BitmapTextureAtlasFactory {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -26,24 +26,24 @@ public class BitmapTextureFactory {
 	// Constructors
 	// ===========================================================
 
-	public static BitmapTexture createForTextureSourceSize(final TextureFormat pTextureFormat, final TextureRegion pTextureRegion) {
-		return BitmapTextureFactory.createForTextureRegionSize(pTextureFormat, pTextureRegion, TextureOptions.DEFAULT);
+	public static BitmapTextureAtlas createForTextureSourceSize(final BitmapTextureFormat pBitmapTextureFormat, final TextureRegion pTextureRegion) {
+		return BitmapTextureAtlasFactory.createForTextureRegionSize(pBitmapTextureFormat, pTextureRegion, TextureOptions.DEFAULT);
 	}
 
-	public static BitmapTexture createForTextureRegionSize(final TextureFormat pTextureFormat, final TextureRegion pTextureRegion, final TextureOptions pTextureOptions) {
+	public static BitmapTextureAtlas createForTextureRegionSize(final BitmapTextureFormat pBitmapTextureFormat, final TextureRegion pTextureRegion, final TextureOptions pTextureOptions) {
 		final int textureRegionWidth = pTextureRegion.getWidth();
 		final int textureRegionHeight = pTextureRegion.getHeight();
-		return new BitmapTexture(MathUtils.nextPowerOfTwo(textureRegionWidth), MathUtils.nextPowerOfTwo(textureRegionHeight), pTextureFormat, pTextureOptions);
+		return new BitmapTextureAtlas(MathUtils.nextPowerOfTwo(textureRegionWidth), MathUtils.nextPowerOfTwo(textureRegionHeight), pBitmapTextureFormat, pTextureOptions);
 	}
 
-	public static BitmapTexture createForTextureSourceSize(final TextureFormat pTextureFormat, final IBitmapTextureSource pBitmapTextureSource) {
-		return BitmapTextureFactory.createForTextureSourceSize(pTextureFormat, pBitmapTextureSource, TextureOptions.DEFAULT);
+	public static BitmapTextureAtlas createForTextureSourceSize(final BitmapTextureFormat pBitmapTextureFormat, final IBitmapTextureSource pBitmapTextureSource) {
+		return BitmapTextureAtlasFactory.createForTextureSourceSize(pBitmapTextureFormat, pBitmapTextureSource, TextureOptions.DEFAULT);
 	}
 
-	public static BitmapTexture createForTextureSourceSize(final TextureFormat pTextureFormat, final IBitmapTextureSource pBitmapTextureSource, final TextureOptions pTextureOptions) {
+	public static BitmapTextureAtlas createForTextureSourceSize(final BitmapTextureFormat pBitmapTextureFormat, final IBitmapTextureSource pBitmapTextureSource, final TextureOptions pTextureOptions) {
 		final int textureSourceWidth = pBitmapTextureSource.getWidth();
 		final int textureSourceHeight = pBitmapTextureSource.getHeight();
-		return new BitmapTexture(MathUtils.nextPowerOfTwo(textureSourceWidth), MathUtils.nextPowerOfTwo(textureSourceHeight), pTextureFormat, pTextureOptions);
+		return new BitmapTextureAtlas(MathUtils.nextPowerOfTwo(textureSourceWidth), MathUtils.nextPowerOfTwo(textureSourceHeight), pBitmapTextureFormat, pTextureOptions);
 	}
 
 	// ===========================================================

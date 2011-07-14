@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.BaseTexture;
+import org.anddev.andengine.opengl.texture.TextureAtlas;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
@@ -16,13 +16,13 @@ import android.graphics.Bitmap.Config;
 import android.opengl.GLUtils;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
  * @since 14:55:02 - 08.03.2010
  */
-public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
+public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureSource> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,104 +31,104 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 	// Fields
 	// ===========================================================
 
-	private final TextureFormat mTextureFormat;
+	private final BitmapTextureFormat mBitmapTextureFormat;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	/**
-	 * Uses {@link TextureFormat#RGBA_8888}.
+	 * Uses {@link BitmapTextureFormat#RGBA_8888}.
 	 *
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 */
-	public BitmapTexture(final int pWidth, final int pHeight) {
-		this(pWidth, pHeight, TextureFormat.RGBA_8888);
+	public BitmapTextureAtlas(final int pWidth, final int pHeight) {
+		this(pWidth, pHeight, BitmapTextureFormat.RGBA_8888);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link BitmapTexture}s with transparency and {@link TextureFormat#RGB_565} for {@link BitmapTexture}s without transparency.
+	 * @param pBitmapTextureFormat use {@link BitmapTextureFormat#RGBA_8888} for {@link BitmapTextureAtlas}s with transparency and {@link BitmapTextureFormat#RGB_565} for {@link BitmapTextureAtlas}s without transparency.
 	 */
-	public BitmapTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat) {
-		this(pWidth, pHeight, pTextureFormat, TextureOptions.DEFAULT, null);
+	public BitmapTextureAtlas(final int pWidth, final int pHeight, final BitmapTextureFormat pBitmapTextureFormat) {
+		this(pWidth, pHeight, pBitmapTextureFormat, TextureOptions.DEFAULT, null);
 	}
 
 	/**
-	 * Uses {@link TextureFormat#RGBA_8888}.
+	 * Uses {@link BitmapTextureFormat#RGBA_8888}.
 	 *
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pTextureStateListener to be informed when this {@link BitmapTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 * @param pTextureStateListener to be informed when this {@link BitmapTextureAtlas} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public BitmapTexture(final int pWidth, final int pHeight, final ITextureStateListener<IBitmapTextureSource> pTextureStateListener) {
-		this(pWidth, pHeight, TextureFormat.RGBA_8888, TextureOptions.DEFAULT, pTextureStateListener);
+	public BitmapTextureAtlas(final int pWidth, final int pHeight, final ITextureAtlasStateListener<IBitmapTextureSource> pTextureAtlasStateListener) {
+		this(pWidth, pHeight, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT, pTextureAtlasStateListener);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link BitmapTexture}s with transparency and {@link TextureFormat#RGB_565} for {@link BitmapTexture}s without transparency.
-	 * @param pTextureStateListener to be informed when this {@link BitmapTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 * @param pBitmapTextureFormat use {@link BitmapTextureFormat#RGBA_8888} for {@link BitmapTextureAtlas}s with transparency and {@link BitmapTextureFormat#RGB_565} for {@link BitmapTextureAtlas}s without transparency.
+	 * @param pTextureAtlasStateListener to be informed when this {@link BitmapTextureAtlas} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public BitmapTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final ITextureStateListener<IBitmapTextureSource> pTextureStateListener) {
-		this(pWidth, pHeight, pTextureFormat, TextureOptions.DEFAULT, pTextureStateListener);
+	public BitmapTextureAtlas(final int pWidth, final int pHeight, final BitmapTextureFormat pBitmapTextureFormat, final ITextureAtlasStateListener<IBitmapTextureSource> pTextureAtlasStateListener) {
+		this(pWidth, pHeight, pBitmapTextureFormat, TextureOptions.DEFAULT, pTextureAtlasStateListener);
 	}
 
 	/**
-	 * Uses {@link TextureFormat#RGBA_8888}.
-	 *
-	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pTextureOptions the (quality) settings of the BitmapTexture.
-	 */
-	public BitmapTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) throws IllegalArgumentException {
-		this(pWidth, pHeight, TextureFormat.RGBA_8888, pTextureOptions, null);
-	}
-
-	/**
-	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link BitmapTexture}s with transparency and {@link TextureFormat#RGB_565} for {@link BitmapTexture}s without transparency.
-	 * @param pTextureOptions the (quality) settings of the BitmapTexture.
-	 */
-	public BitmapTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException {
-		this(pWidth, pHeight, pTextureFormat, pTextureOptions, null);
-	}
-
-	/**
-	 * Uses {@link TextureFormat#RGBA_8888}.
+	 * Uses {@link BitmapTextureFormat#RGBA_8888}.
 	 *
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pTextureOptions the (quality) settings of the BitmapTexture.
-	 * @param pTextureStateListener to be informed when this {@link BitmapTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public BitmapTexture(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener<IBitmapTextureSource> pTextureStateListener) throws IllegalArgumentException {
-		this(pWidth, pHeight, TextureFormat.RGBA_8888, pTextureOptions, pTextureStateListener);
+	public BitmapTextureAtlas(final int pWidth, final int pHeight, final TextureOptions pTextureOptions) throws IllegalArgumentException {
+		this(pWidth, pHeight, BitmapTextureFormat.RGBA_8888, pTextureOptions, null);
 	}
 
 	/**
 	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
 	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
-	 * @param pTextureFormat use {@link TextureFormat#RGBA_8888} for {@link BitmapTexture}s with transparency and {@link TextureFormat#RGB_565} for {@link BitmapTexture}s without transparency.
+	 * @param pBitmapTextureFormat use {@link BitmapTextureFormat#RGBA_8888} for {@link BitmapTextureAtlas}s with transparency and {@link BitmapTextureFormat#RGB_565} for {@link BitmapTextureAtlas}s without transparency.
 	 * @param pTextureOptions the (quality) settings of the BitmapTexture.
-	 * @param pTextureStateListener to be informed when this {@link BitmapTexture} is loaded, unloaded or a {@link ITextureSource} failed to load.
 	 */
-	public BitmapTexture(final int pWidth, final int pHeight, final TextureFormat pTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener<IBitmapTextureSource> pTextureStateListener) throws IllegalArgumentException {
-		super(pWidth, pHeight, pTextureOptions, pTextureStateListener);
+	public BitmapTextureAtlas(final int pWidth, final int pHeight, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException {
+		this(pWidth, pHeight, pBitmapTextureFormat, pTextureOptions, null);
+	}
 
-		this.mTextureFormat = pTextureFormat;
+	/**
+	 * Uses {@link BitmapTextureFormat#RGBA_8888}.
+	 *
+	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pTextureOptions the (quality) settings of the BitmapTexture.
+	 * @param pTextureAtlasStateListener to be informed when this {@link BitmapTextureAtlas} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 */
+	public BitmapTextureAtlas(final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureAtlasStateListener<IBitmapTextureSource> pTextureAtlasStateListener) throws IllegalArgumentException {
+		this(pWidth, pHeight, BitmapTextureFormat.RGBA_8888, pTextureOptions, pTextureAtlasStateListener);
+	}
+
+	/**
+	 * @param pWidth must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pHeight must be a power of 2 (i.e. 32, 64, 128, 256, 512, 1024).
+	 * @param pBitmapTextureFormat use {@link BitmapTextureFormat#RGBA_8888} for {@link BitmapTextureAtlas}s with transparency and {@link BitmapTextureFormat#RGB_565} for {@link BitmapTextureAtlas}s without transparency.
+	 * @param pTextureOptions the (quality) settings of the BitmapTexture.
+	 * @param pTextureAtlasStateListener to be informed when this {@link BitmapTextureAtlas} is loaded, unloaded or a {@link ITextureSource} failed to load.
+	 */
+	public BitmapTextureAtlas(final int pWidth, final int pHeight, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureAtlasStateListener<IBitmapTextureSource> pTextureAtlasStateListener) throws IllegalArgumentException {
+		super(pWidth, pHeight, pBitmapTextureFormat.getTextureFormat(), pTextureOptions, pTextureAtlasStateListener);
+
+		this.mBitmapTextureFormat = pBitmapTextureFormat;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public TextureFormat getTextureFormat() {
-		return this.mTextureFormat;
+	public BitmapTextureFormat getBitmapTextureFormat() {
+		return this.mBitmapTextureFormat;
 	}
 
 	// ===========================================================
@@ -141,7 +141,7 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 
 	@Override
 	protected void writeTextureToHardware(final GL10 pGL) {
-		final Config bitmapConfig = this.mTextureFormat.getBitmapConfig();
+		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final int glFormat = this.mTextureFormat.getGLFormat();
 		final int glDataType = this.mTextureFormat.getGLDataType();
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
@@ -189,8 +189,8 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 					//}
 
 					Debug.e("Error loading: " + bitmapTextureSource.toString(), iae);
-					if(this.mTextureStateListener != null) {
-						this.mTextureStateListener.onTextureSourceLoadExeption(this, bitmapTextureSource, iae);
+					if(this.getTextureStateListener() != null) {
+						this.getTextureStateListener().onTextureSourceLoadExeption(this, bitmapTextureSource, iae);
 					} else {
 						throw iae;
 					}
@@ -207,7 +207,7 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 	}
 
 	private void sendPlaceholderBitmapToHardware() {
-		final Bitmap textureBitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, this.mTextureFormat.getBitmapConfig());
+		final Bitmap textureBitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, this.mBitmapTextureFormat.getBitmapConfig());
 		// TODO Check if there is an easier/faster method to create a white placeholder bitmap.
 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);
@@ -219,13 +219,15 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public enum TextureFormat {
+	public static enum BitmapTextureFormat {
 		// ===========================================================
 		// Elements
 		// ===========================================================
 
-		RGBA_8888(GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, Config.ARGB_8888),
-		RGB_565(GL10.GL_RGB, GL10.GL_UNSIGNED_SHORT_5_6_5, Config.RGB_565);
+		RGBA_4444( Config.ARGB_4444, TextureFormat.RGBA_4444),
+		RGBA_8888(Config.ARGB_8888, TextureFormat.RGBA_8888),
+		RGB_565( Config.RGB_565, TextureFormat.RGB_565),
+		A_8( Config.ALPHA_8, TextureFormat.A_8);
 
 		// ===========================================================
 		// Constants
@@ -235,34 +237,28 @@ public class BitmapTexture extends BaseTexture<IBitmapTextureSource> {
 		// Fields
 		// ===========================================================
 
-		private final int mGLFormat;
-		private final int mGLDataType;
 		private final Config mBitmapConfig;
+		private final TextureFormat mTextureFormat;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		private TextureFormat(final int pGLFormat, final int pGLDataType, final Config pBitmapConfig) {
-			this.mGLFormat = pGLFormat;
-			this.mGLDataType = pGLDataType;
+		private BitmapTextureFormat(final Config pBitmapConfig, final TextureFormat pTextureFormat) {
 			this.mBitmapConfig = pBitmapConfig;
+			this.mTextureFormat = pTextureFormat;
 		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
 
-		public int getGLFormat() {
-			return this.mGLFormat;
-		}
-
-		public int getGLDataType() {
-			return this.mGLDataType;
-		}
-
 		public Config getBitmapConfig() {
 			return this.mBitmapConfig;
+		}
+
+		public TextureFormat getTextureFormat() {
+			return this.mTextureFormat;
 		}
 
 		// ===========================================================

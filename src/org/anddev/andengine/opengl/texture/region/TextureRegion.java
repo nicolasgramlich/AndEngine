@@ -22,7 +22,7 @@ public class TextureRegion extends BaseTextureRegion {
 	// Constructors
 	// ===========================================================
 
-	public TextureRegion(final ITexture<?> pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
+	public TextureRegion(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		super(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 	}
 

@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.opengl.texture.ITexture;
+import org.anddev.andengine.opengl.texture.ITextureAtlas;
 import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.bitmap.BuildableBitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.buildable.builder.ITextureBuilder;
 import org.anddev.andengine.opengl.texture.buildable.builder.ITextureBuilder.TextureSourcePackingException;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
@@ -19,7 +20,7 @@ import org.anddev.andengine.util.Callback;
  * @author Nicolas Gramlich
  * @since 21:26:38 - 12.08.2010
  */
-public class BuildableTexture<T extends ITextureSource, K extends ITexture<T>> implements ITexture<T> {
+public class BuildableTextureAtlas<T extends ITextureSource, A extends ITextureAtlas<T>> implements ITextureAtlas<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,15 +29,15 @@ public class BuildableTexture<T extends ITextureSource, K extends ITexture<T>> i
 	// Fields
 	// ===========================================================
 
-	private final K mTexture;
+	private final A mTextureAtlas;
 	private final ArrayList<TextureSourceWithWithLocationCallback<T>> mTextureSourcesToPlace = new ArrayList<TextureSourceWithWithLocationCallback<T>>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BuildableTexture(final K pTexture) {
-		this.mTexture = pTexture;
+	public BuildableTextureAtlas(final A pTextureAtlas) {
+		this.mTextureAtlas = pTextureAtlas;
 	}
 
 	// ===========================================================
@@ -49,83 +50,93 @@ public class BuildableTexture<T extends ITextureSource, K extends ITexture<T>> i
 
 	@Override
 	public int getWidth() {
-		return this.mTexture.getWidth();
+		return this.mTextureAtlas.getWidth();
 	}
 
 	@Override
 	public int getHeight() {
-		return this.mTexture.getHeight();
+		return this.mTextureAtlas.getHeight();
 	}
 
 	@Override
 	public int getHardwareTextureID() {
-		return this.mTexture.getHardwareTextureID();
+		return this.mTextureAtlas.getHardwareTextureID();
 	}
 
 	@Override
 	public boolean isLoadedToHardware() {
-		return this.mTexture.isLoadedToHardware();
+		return this.mTextureAtlas.isLoadedToHardware();
 	}
 
 	@Override
 	public void setLoadedToHardware(final boolean pLoadedToHardware) {
-		this.mTexture.setLoadedToHardware(pLoadedToHardware);
+		this.mTextureAtlas.setLoadedToHardware(pLoadedToHardware);
 	}
 
 	@Override
 	public boolean isUpdateOnHardwareNeeded() {
-		return this.mTexture.isUpdateOnHardwareNeeded();
+		return this.mTextureAtlas.isUpdateOnHardwareNeeded();
 	}
 
 	@Override
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded) {
-		this.mTexture.setUpdateOnHardwareNeeded(pUpdateOnHardwareNeeded);
+		this.mTextureAtlas.setUpdateOnHardwareNeeded(pUpdateOnHardwareNeeded);
 	}
 
 	@Override
 	public void loadToHardware(final GL10 pGL) throws IOException {
-		this.mTexture.loadToHardware(pGL);
+		this.mTextureAtlas.loadToHardware(pGL);
 	}
 
 	@Override
 	public void unloadFromHardware(final GL10 pGL) {
-		this.mTexture.unloadFromHardware(pGL);
+		this.mTextureAtlas.unloadFromHardware(pGL);
 	}
 
 	@Override
 	public void reloadToHardware(final GL10 pGL) throws IOException {
-		this.mTexture.reloadToHardware(pGL);
+		this.mTextureAtlas.reloadToHardware(pGL);
 	}
 
 	@Override
 	public void bind(final GL10 pGL) {
-		this.mTexture.bind(pGL);
+		this.mTextureAtlas.bind(pGL);
 	}
 
 	@Override
 	public TextureOptions getTextureOptions() {
-		return this.mTexture.getTextureOptions();
+		return this.mTextureAtlas.getTextureOptions();
 	}
 
 	/**
 	 * Most likely this is not the method you'd want to be using, as the {@link ITextureSource} won't get packed through this.
-	 * @deprecated Use {@link BuildableTexture#addTextureSource(ITextureSource)} instead.
+	 * @deprecated Use {@link BuildableTextureAtlas#addTextureSource(ITextureSource)} instead.
 	 */
 	@Deprecated
 	@Override
 	public void addTextureSource(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
-		this.mTexture.addTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
+		this.mTextureAtlas.addTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	@Override
 	public void removeTextureSource(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY) {
-		this.mTexture.removeTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
+		this.mTextureAtlas.removeTextureSource(pTextureSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	@Override
 	public void clearTextureSources() {
-		this.mTexture.clearTextureSources();
+		this.mTextureAtlas.clearTextureSources();
 		this.mTextureSourcesToPlace.clear();
+	}
+
+	@Override
+	public boolean hasTextureStateListener() {
+		return this.mTextureAtlas.hasTextureStateListener();
+	}
+
+	@Override
+	public ITextureAtlasStateListener<T> getTextureStateListener() {
+		return this.mTextureAtlas.getTextureStateListener();
 	}
 
 	// ===========================================================
@@ -133,7 +144,7 @@ public class BuildableTexture<T extends ITextureSource, K extends ITexture<T>> i
 	// ===========================================================
 
 	/**
-	 * When all {@link ITextureSource}s are added you have to call {@link BuildableBitmapTexture#build(ITextureBuilder)}.
+	 * When all {@link ITextureSource}s are added you have to call {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)}.
 	 * @param pTextureSource to be added.
 	 * @param pTextureRegion
 	 */
@@ -142,7 +153,7 @@ public class BuildableTexture<T extends ITextureSource, K extends ITexture<T>> i
 	}
 
 	/**
-	 * Removes a {@link ITextureSource} before {@link BuildableBitmapTexture#build(ITextureBuilder)} is called.
+	 * Removes a {@link ITextureSource} before {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)} is called.
 	 * @param pBitmapTextureSource to be removed.
 	 */
 	public void removeTextureSource(final ITextureSource pTextureSource) {
@@ -151,7 +162,7 @@ public class BuildableTexture<T extends ITextureSource, K extends ITexture<T>> i
 			final TextureSourceWithWithLocationCallback<T> textureSource = textureSources.get(i);
 			if(textureSource.mTextureSource == pTextureSource) {
 				textureSources.remove(i);
-				this.mTexture.setUpdateOnHardwareNeeded(true);
+				this.mTextureAtlas.setUpdateOnHardwareNeeded(true);
 				return;
 			}
 		}
@@ -160,13 +171,13 @@ public class BuildableTexture<T extends ITextureSource, K extends ITexture<T>> i
 	/**
 	 * May draw over already added {@link ITextureSource}s.
 	 *
-	 * @param pTextureSourcePackingAlgorithm the {@link ITextureBuilder} to use for packing the {@link ITextureSource} in this {@link BuildableBitmapTexture}.
-	 * @throws TextureSourcePackingException i.e. when the {@link ITextureSource}s didn't fit into this {@link BuildableBitmapTexture}.
+	 * @param pTextureSourcePackingAlgorithm the {@link ITextureBuilder} to use for packing the {@link ITextureSource} in this {@link BuildableBitmapTextureAtlas}.
+	 * @throws TextureSourcePackingException i.e. when the {@link ITextureSource}s didn't fit into this {@link BuildableBitmapTextureAtlas}.
 	 */
-	public void build(final ITextureBuilder<T, K> pTextureSourcePackingAlgorithm) throws TextureSourcePackingException {
-		pTextureSourcePackingAlgorithm.pack(this.mTexture, this.mTextureSourcesToPlace);
+	public void build(final ITextureBuilder<T, A> pTextureSourcePackingAlgorithm) throws TextureSourcePackingException {
+		pTextureSourcePackingAlgorithm.pack(this.mTextureAtlas, this.mTextureSourcesToPlace);
 		this.mTextureSourcesToPlace.clear();
-		this.mTexture.setUpdateOnHardwareNeeded(true);
+		this.mTextureAtlas.setUpdateOnHardwareNeeded(true);
 	}
 
 	// ===========================================================

@@ -28,7 +28,7 @@ public class TiledTextureRegion extends BaseTextureRegion {
 	// Constructors
 	// ===========================================================
 
-	public TiledTextureRegion(final ITexture<?> pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
+	public TiledTextureRegion(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
 		super(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 		this.mTileColumns = pTileColumns;
 		this.mTileRows = pTileRows;

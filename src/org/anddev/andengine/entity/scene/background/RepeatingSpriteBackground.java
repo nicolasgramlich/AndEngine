@@ -3,9 +3,9 @@ package org.anddev.andengine.entity.scene.background;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.TextureFormat;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlas.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.bitmap.source.IBitmapTextureSource;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
@@ -25,7 +25,7 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// Fields
 	// ===========================================================
 
-	private BitmapTexture mBitmapTexture;
+	private BitmapTextureAtlas mBitmapTextureAtlas;
 	private final float mScale;
 
 	// ===========================================================
@@ -52,8 +52,8 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// Getter & Setter
 	// ===========================================================
 
-	public BitmapTexture getTexture() {
-		return this.mBitmapTexture;
+	public BitmapTextureAtlas getBitmapTextureAtlas() {
+		return this.mBitmapTextureAtlas;
 	}
 
 	// ===========================================================
@@ -65,8 +65,8 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// ===========================================================
 
 	private Sprite loadSprite(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final IBitmapTextureSource pBitmapTextureSource) throws IllegalArgumentException {
-		this.mBitmapTexture = new BitmapTexture(pBitmapTextureSource.getWidth(), pBitmapTextureSource.getHeight(), TextureFormat.RGBA_8888, TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA);
-		final TextureRegion textureRegion = BitmapTextureRegionFactory.createFromSource(this.mBitmapTexture, pBitmapTextureSource, 0, 0);
+		this.mBitmapTextureAtlas = new BitmapTextureAtlas(pBitmapTextureSource.getWidth(), pBitmapTextureSource.getHeight(), BitmapTextureFormat.RGBA_8888, TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA);
+		final TextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, pBitmapTextureSource, 0, 0);
 
 		final int width = Math.round(pCameraWidth / this.mScale);
 		final int height = Math.round(pCameraHeight / this.mScale);
@@ -74,7 +74,7 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 		textureRegion.setWidth(width);
 		textureRegion.setHeight(height);
 
-		pTextureManager.loadTexture(this.mBitmapTexture);
+		pTextureManager.loadTexture(this.mBitmapTextureAtlas);
 
 		final Sprite sprite = new Sprite(0, 0, width, height, textureRegion);
 		sprite.setScaleCenter(0, 0);

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.buildable.BuildableTexture.TextureSourceWithWithLocationCallback;
+import org.anddev.andengine.opengl.texture.ITextureAtlas;
+import org.anddev.andengine.opengl.texture.buildable.BuildableTextureAtlas.TextureSourceWithWithLocationCallback;
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 /**
@@ -13,10 +13,11 @@ import org.anddev.andengine.opengl.texture.source.ITextureSource;
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
+ * @author Jim Scott (BlackPawn)
  * @since 16:03:01 - 12.08.2010
  * @see http://www.blackpawn.com/texts/lightmaps/default.html
  */
-public class BlackPawnTextureBuilder<T extends ITextureSource, K extends ITexture<T>> implements ITextureBuilder<T, K> {
+public class BlackPawnTextureBuilder<T extends ITextureSource, A extends ITextureAtlas<T>> implements ITextureBuilder<T, A> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -56,10 +57,10 @@ public class BlackPawnTextureBuilder<T extends ITextureSource, K extends ITextur
 	// ===========================================================
 
 	@Override
-	public void pack(final K pTexture, final ArrayList<TextureSourceWithWithLocationCallback<T>> pTextureSourcesWithLocationCallback) throws TextureSourcePackingException {
+	public void pack(final A pTextureAtlas, final ArrayList<TextureSourceWithWithLocationCallback<T>> pTextureSourcesWithLocationCallback) throws TextureSourcePackingException {
 		Collections.sort(pTextureSourcesWithLocationCallback, TEXTURESOURCE_COMPARATOR);
 
-		final Node root = new Node(new Rect(0, 0, pTexture.getWidth(), pTexture.getHeight()));
+		final Node root = new Node(new Rect(0, 0, pTextureAtlas.getWidth(), pTextureAtlas.getHeight()));
 
 		final int textureSourceCount = pTextureSourcesWithLocationCallback.size();
 
@@ -67,12 +68,12 @@ public class BlackPawnTextureBuilder<T extends ITextureSource, K extends ITextur
 			final TextureSourceWithWithLocationCallback<T> textureSourceWithLocationCallback = pTextureSourcesWithLocationCallback.get(i);
 			final T textureSource = textureSourceWithLocationCallback.getTextureSource();
 
-			final Node inserted = root.insert(textureSource, pTexture.getWidth(), pTexture.getHeight(), this.mTextureSourceSpacing);
+			final Node inserted = root.insert(textureSource, pTextureAtlas.getWidth(), pTextureAtlas.getHeight(), this.mTextureSourceSpacing);
 
 			if(inserted == null) {
 				throw new TextureSourcePackingException("Could not pack: " + textureSource.toString());
 			}
-			pTexture.addTextureSource(textureSource, inserted.mRect.mLeft, inserted.mRect.mTop);
+			pTextureAtlas.addTextureSource(textureSource, inserted.mRect.mLeft, inserted.mRect.mTop);
 			textureSourceWithLocationCallback.getCallback().onCallback(textureSource);
 		}
 	}

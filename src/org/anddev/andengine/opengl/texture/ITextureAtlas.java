@@ -1,9 +1,5 @@
 package org.anddev.andengine.opengl.texture;
 
-import java.io.IOException;
-
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.source.ITextureSource;
 import org.anddev.andengine.util.Debug;
 
@@ -12,44 +8,29 @@ import org.anddev.andengine.util.Debug;
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 15:01:03 - 11.07.2011
+ * @since 14:24:29 - 14.07.2011
  */
-public interface ITexture {
+public interface ITextureAtlas<T extends ITextureSource> extends ITexture {
 	// ===========================================================
-	// Constants
+	// Final Fields
 	// ===========================================================
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 	
-	public int getWidth();
-	public int getHeight();
+	public void addTextureSource(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException;
+	public void removeTextureSource(final T pTextureSource, final int pTexturePositionX, final int pTexturePositionY);
+	public void clearTextureSources();
 	
-	public int getHardwareTextureID();
-
-	public boolean isLoadedToHardware();
-	public void setLoadedToHardware(final boolean pLoadedToHardware);
-
-	public boolean isUpdateOnHardwareNeeded();
-	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded);
-
-	public void loadToHardware(final GL10 pGL) throws IOException;
-	public void unloadFromHardware(final GL10 pGL);
-	public void reloadToHardware(final GL10 pGL) throws IOException;
-
-	public void bind(final GL10 pGL);
-
-	public TextureOptions getTextureOptions();
-	
-	public boolean hasTextureStateListener();
-	public ITextureStateListener getTextureStateListener();
+	@Override
+	public ITextureAtlasStateListener<T> getTextureStateListener();
 
 	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
+	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface ITextureStateListener {
+	
+	public static interface ITextureAtlasStateListener<T extends ITextureSource> extends ITextureStateListener {
 		// ===========================================================
 		// Final Fields
 		// ===========================================================
@@ -58,25 +39,32 @@ public interface ITexture {
 		// Methods
 		// ===========================================================
 
-		public void onLoadedToHardware(final ITexture pTexture);
-		public void onUnloadedFromHardware(final ITexture pTexture);
+		public void onTextureSourceLoadExeption(final ITextureAtlas<T> pTextureAtlas, final T pTextureSource, final Throwable pThrowable);
 
 		// ===========================================================
 		// Inner and Anonymous Classes
 		// ===========================================================
 
-		public static class TextureStateAdapter<T extends ITextureSource> implements ITextureStateListener {
+		public static class TextureAtlasStateAdapter<T extends ITextureSource> implements ITextureAtlasStateListener<T> {
 			@Override
 			public void onLoadedToHardware(final ITexture pTexture) { }
+
+			@Override
+			public void onTextureSourceLoadExeption(final ITextureAtlas<T> pTextureAtlas, final T pTextureSource, final Throwable pThrowable) { }
 
 			@Override
 			public void onUnloadedFromHardware(final ITexture pTexture) { }
 		}
 
-		public static class DebugTextureStateListener<T extends ITextureSource> implements ITextureStateListener {
+		public static class DebugTextureAtlasStateListener<T extends ITextureSource> implements ITextureAtlasStateListener<T> {
 			@Override
 			public void onLoadedToHardware(final ITexture pTexture) {
 				Debug.d("Texture loaded: " + pTexture.toString());
+			}
+
+			@Override
+			public void onTextureSourceLoadExeption(final ITextureAtlas<T> pTextureAtlas, final T pTextureSource, final Throwable pThrowable) {
+				Debug.e("Exception loading TextureSource. TextureAtlas: " + pTextureAtlas.toString() + " TextureSource: " + pTextureSource.toString(), pThrowable);
 			}
 
 			@Override

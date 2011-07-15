@@ -154,12 +154,7 @@ public abstract class Texture implements ITexture {
 	// ===========================================================
 
 	protected void applyTextureOptions(final GL10 pGL) {
-		final TextureOptions textureOptions = this.mTextureOptions;
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, textureOptions.mMinFilter);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, textureOptions.mMagFilter);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, textureOptions.mWrapS);
-		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, textureOptions.mWrapT);
-		pGL.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, textureOptions.mTextureEnvironment);
+		this.mTextureOptions.apply(pGL);
 	}
 
 	protected void bindTextureOnHardware(final GL10 pGL) {

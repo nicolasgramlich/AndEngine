@@ -140,37 +140,25 @@ public abstract class PVRTexture extends Texture {
 			final int glFormat = this.mPixelFormat.getGLFormat();
 			final int glType = this.mPixelFormat.getGLType();
 
-			final int bpp = this.mPVRTextureHeader.getBitsPerPixel();
+			final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / 8;
 
 			/* Calculate the data size for each texture level and respect the minimum number of blocks. */
 			int mipmapLevel = 0;
-			int dataOffset = 0;
-			while (dataOffset < dataLength) {
-				final int blockSize = 1;
-				int widthBlocks = width;
-				int heightBlocks = height;
-
-				/* Clamp to minimum number of blocks */
-				if (widthBlocks < 2) {
-					widthBlocks = 2;
-				}
-				if (heightBlocks < 2) {
-					heightBlocks = 2;
-				}
-
-				final int dataSize = widthBlocks * heightBlocks * ((blockSize * bpp) / 8);
-				final ByteBuffer pixels = ByteBuffer.allocate(dataSize).order(ByteOrder.nativeOrder());
-				pixels.put(data, dataOffset + PVRTextureHeader.SIZE, dataSize);
+			int currentPixelDataOffset = 0;
+			while (currentPixelDataOffset < dataLength) {
+				final int currentPixelDataSize = width * height * bytesPerPixel;
+				final ByteBuffer pixelData = ByteBuffer.allocate(currentPixelDataSize).order(ByteOrder.nativeOrder());
+				pixelData.put(data, PVRTextureHeader.SIZE + currentPixelDataOffset, currentPixelDataSize);
 
 				if (mipmapLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
-					Debug.w(String.format("Mipmap level '%u' is not squared. Texture won't render correctly. width: '%u', height: '%u'.", mipmapLevel, width, height));
+					Debug.w(String.format("Mipmap level '%u' is not squared. Width: '%u', height: '%u'. Texture won't render correctly.", mipmapLevel, width, height));
 				}
 
-				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixels);
+				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelData);
 
 				GLHelper.checkGLError(pGL);
 
-				dataOffset += dataSize;
+				currentPixelDataOffset += currentPixelDataSize;
 
 				/* Prepare next mipmap level. */
 				width = Math.max(width >> 1, 1);

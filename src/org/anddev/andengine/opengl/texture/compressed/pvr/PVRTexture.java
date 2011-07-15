@@ -11,47 +11,41 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.ArrayUtils;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.StreamUtils;
 
 /**
  * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes: glPixelStorei(GL_UNPACK_ALIGNMENT,1);"
- * 
+ *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich
  * @since 16:18:10 - 13.07.2011
+ * @see https://github.com/cocos2d/cocos2d-iphone/blob/develop/cocos2d/CCTexturePVR.m
  */
 public abstract class PVRTexture extends Texture {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static final byte[] MAGIC_IDENTIFIER = {
-		(byte)'P',
-		(byte)'V',
-		(byte)'R',
-		(byte)'!'
-	};
-
-	private static final int FLAG_MIPMAP = (1<<8); // has mip map levels
-	private static final int FLAG_TWIDDLE = (1<<9); // is twiddled
-	private static final int FLAG_BUMPMAP = (1<<10); // has normals encoded for a bump map
-	private static final int FLAG_TILING = (1<<11); // is bordered for tiled pvr
-	private static final int FLAG_CUBEMAP = (1<<12); // is a cubemap/skybox
-	private static final int FLAG_FALSEMIPCOL = (1<<13); // are there false colored MIP levels
-	private static final int FLAG_VOLUME = (1<<14); // is this a volume texture
-	private static final int FLAG_ALPHA = (1<<15); // v2.1 is there transparency info in the texture
-	private static final int FLAG_VERTICALFLIP = (1<<16); // v2.1 is the texture vertically flipped
+	public static final int FLAG_MIPMAP = (1<<8); // has mip map levels
+	public static final int FLAG_TWIDDLE = (1<<9); // is twiddled
+	public static final int FLAG_BUMPMAP = (1<<10); // has normals encoded for a bump map
+	public static final int FLAG_TILING = (1<<11); // is bordered for tiled pvr
+	public static final int FLAG_CUBEMAP = (1<<12); // is a cubemap/skybox
+	public static final int FLAG_FALSEMIPCOL = (1<<13); // are there false colored MIP levels
+	public static final int FLAG_VOLUME = (1<<14); // is this a volume texture
+	public static final int FLAG_ALPHA = (1<<15); // v2.1 is there transparency info in the texture
+	public static final int FLAG_VERTICALFLIP = (1<<16); // v2.1 is the texture vertically flipped
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private final PVRTextureHeader mPVRTextureHeader;
-	private final PVRTextureFormat mPVRTextureFormat;
 
 	// ===========================================================
 	// Constructors
@@ -72,17 +66,12 @@ public abstract class PVRTexture extends Texture {
 	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
 		super(pPVRTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
 
-		final InputStream inputStream = this.getInputStream();
+		InputStream inputStream = null;
 		try {
+			inputStream = this.getInputStream();
 			this.mPVRTextureHeader = new PVRTextureHeader(StreamUtils.streamToBytes(inputStream, PVRTextureHeader.SIZE));
-		} catch(final IOException e) {
-			throw e;
 		} finally {
 			StreamUtils.close(inputStream);
-		}
-
-		if (!this.mPVRTextureHeader.isValid()) {
-			throw new IllegalArgumentException("Invalid " + this.mPVRTextureHeader.getClass().getSimpleName() + "!");
 		}
 
 		if(!MathUtils.isPowerOfTwo(this.getWidth()) || !MathUtils.isPowerOfTwo(this.getHeight())) {  // TODO GLHelper.EXTENSIONS_NON_POWER_OF_TWO
@@ -93,10 +82,8 @@ public abstract class PVRTexture extends Texture {
 			throw new IllegalArgumentException("Other PVRTextureFormat: '" + this.mPVRTextureHeader.getPVRTextureFormat().getPixelFormat() + "' found than expected: '" + pPVRTextureFormat.getPixelFormat() + "'.");
 		}
 
-		this.mPVRTextureFormat = this.mPVRTextureHeader.getPVRTextureFormat();
-
-		if(this.mPVRTextureFormat.isCompressed()) { // TODO && ! GLHELPER_EXTENSION_PVRTC] ) {
-			throw new IllegalArgumentException("Invalid PVRTextureFormat: '" + this.mPVRTextureFormat + "'.");
+		if(this.mPVRTextureHeader.getPVRTextureFormat().isCompressed()) { // TODO && ! GLHELPER_EXTENSION_PVRTC] ) {
+			throw new IllegalArgumentException("Invalid PVRTextureFormat: '" + this.mPVRTextureHeader.getPVRTextureFormat() + "'.");
 		}
 
 		this.mUpdateOnHardwareNeeded = true;
@@ -127,13 +114,13 @@ public abstract class PVRTexture extends Texture {
 	protected abstract InputStream getInputStream();
 
 	@Override
-	protected int generateHardwareTextureID(final GL10 pGL) {
+	protected void generateHardwareTextureID(final GL10 pGL) {
 		//		// TODO
 		//		if(this.mMipMapCount > 0) {
-		pGL.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT,1);
+		pGL.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT, 1);
 		//		}
 
-		return super.generateHardwareTextureID(pGL);
+		super.generateHardwareTextureID(pGL);
 	}
 
 	@Override
@@ -158,6 +145,7 @@ public abstract class PVRTexture extends Texture {
 			int mipmapLevel = 0;
 			int dataOffset = 0;
 			while (dataOffset < dataLength) {
+				// TODO Optimize
 				final int blockSize = 1;
 				int widthBlocks = width;
 				int heightBlocks = height;
@@ -171,13 +159,15 @@ public abstract class PVRTexture extends Texture {
 				}
 
 				final int dataSize = widthBlocks * heightBlocks * ((blockSize * bpp) / 8);
-				final ByteBuffer pixels = ByteBuffer.allocateDirect(dataSize);
+				final ByteBuffer pixels = ByteBuffer.allocate(dataSize).order(ByteOrder.nativeOrder());
 				pixels.put(data, dataOffset + PVRTextureHeader.SIZE, dataSize);
 
 				//			if( level > 0 && (width != height || ccNextPOT(width) != width ) )
 				//				CCLOG(@"cocos2d: TexturePVR. WARNING. Mipmap level %u is not squared. Texture won't render correctly. width=%u != height=%u", level, width, height);
 
 				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixels);
+
+				GLHelper.checkGLError(pGL);
 
 				dataOffset += dataSize;
 
@@ -199,10 +189,17 @@ public abstract class PVRTexture extends Texture {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	static class PVRTextureHeader {
+	public static class PVRTextureHeader {
 		// ===========================================================
 		// Constants
 		// ===========================================================
+
+		public static final byte[] MAGIC_IDENTIFIER = {
+			(byte)'P',
+			(byte)'V',
+			(byte)'R',
+			(byte)'!'
+		};
 
 		public static final int SIZE = 13 * BYTES_PER_INT;
 		private static final int FORMAT_FLAG_MASK = 0x0FF;
@@ -211,28 +208,33 @@ public abstract class PVRTexture extends Texture {
 		// Fields
 		// ===========================================================
 
-		private final byte[] mData;
 		private final ByteBuffer mDataByteBuffer;
+		private final PVRTextureFormat mPVRTextureFormat;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
 		public PVRTextureHeader(final byte[] pData) {
-			this.mData = pData;
 			this.mDataByteBuffer = ByteBuffer.wrap(pData);
 			this.mDataByteBuffer.rewind();
 			this.mDataByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-		}
 
-		public PVRTextureFormat getPVRTextureFormat() {
-			// TODO flags = CFSwapInt32LittleToHost(header->flags); ???
-			return PVRTextureFormat.fromID(this.getFlags() & FORMAT_FLAG_MASK);
+			/* Check magic bytes. */
+			if(!ArrayUtils.equals(pData, 11 * BYTES_PER_INT, MAGIC_IDENTIFIER, 0, MAGIC_IDENTIFIER.length)) {
+				throw new IllegalArgumentException("Invalid " + this.getClass().getSimpleName() + "!");
+			}
+
+			this.mPVRTextureFormat = PVRTextureFormat.fromID(this.getFlags() & FORMAT_FLAG_MASK);
 		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
+
+		public PVRTextureFormat getPVRTextureFormat() {
+			return this.mPVRTextureFormat;
+		}
 
 		public int headerLength() {
 			return this.mDataByteBuffer.getInt(0 * BYTES_PER_INT); // TODO Constants
@@ -284,10 +286,6 @@ public abstract class PVRTexture extends Texture {
 
 		public int getPVRTag() {
 			return this.mDataByteBuffer.getInt(11 * BYTES_PER_INT);
-		}
-
-		public boolean isValid() {
-			return ArrayUtils.equals(this.mData, 11 * BYTES_PER_INT, MAGIC_IDENTIFIER, 0, MAGIC_IDENTIFIER.length);
 		}
 
 		public int numSurfs() {

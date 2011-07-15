@@ -107,7 +107,7 @@ public abstract class Texture implements ITexture {
 	public void loadToHardware(final GL10 pGL) throws IOException {
 		GLHelper.enableTextures(pGL);
 
-		this.mHardwareTextureID = this.generateHardwareTextureID(pGL);
+		this.generateHardwareTextureID(pGL);
 
 		this.bindTextureOnHardware(pGL);
 
@@ -153,7 +153,7 @@ public abstract class Texture implements ITexture {
 	// Methods
 	// ===========================================================
 
-	private void applyTextureOptions(final GL10 pGL) {
+	protected void applyTextureOptions(final GL10 pGL) {
 		final TextureOptions textureOptions = this.mTextureOptions;
 		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, textureOptions.mMinFilter);
 		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, textureOptions.mMagFilter);
@@ -166,14 +166,14 @@ public abstract class Texture implements ITexture {
 		GLHelper.forceBindTexture(pGL, this.mHardwareTextureID);
 	}
 
-	private void deleteTextureOnHardware(final GL10 pGL) {
+	protected void deleteTextureOnHardware(final GL10 pGL) {
 		GLHelper.deleteTexture(pGL, this.mHardwareTextureID);
 	}
 
-	protected int generateHardwareTextureID(final GL10 pGL) {
+	protected void generateHardwareTextureID(final GL10 pGL) {
 		pGL.glGenTextures(1, Texture.HARDWARETEXTUREID_FETCHER, 0);
 
-		return Texture.HARDWARETEXTUREID_FETCHER[0];
+		this.mHardwareTextureID = Texture.HARDWARETEXTUREID_FETCHER[0];
 	}
 
 	// ===========================================================

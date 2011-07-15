@@ -22,6 +22,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 21:13:55 - 18.10.2010
  */

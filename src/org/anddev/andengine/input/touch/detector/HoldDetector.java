@@ -13,6 +13,9 @@ import android.view.MotionEvent;
 /**
  * Note: Needs to be registered as an {@link IUpdateHandler} to the {@link Engine} or {@link Scene} to work properly.
  * 
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:49:25 - 23.08.2010
  */

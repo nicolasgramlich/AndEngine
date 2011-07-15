@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.particle.modifier;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 16:10:16 - 04.05.2010
  */

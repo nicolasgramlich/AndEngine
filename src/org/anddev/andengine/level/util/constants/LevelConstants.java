@@ -2,6 +2,9 @@ package org.anddev.andengine.level.util.constants;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:23:27 - 11.10.2010
  */

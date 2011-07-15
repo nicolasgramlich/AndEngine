@@ -4,6 +4,9 @@ import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 23:37:53 - 19.03.2010
  */

@@ -6,6 +6,9 @@ import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:22:56 - 07.04.2010
  */

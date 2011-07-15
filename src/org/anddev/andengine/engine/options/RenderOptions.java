@@ -1,6 +1,9 @@
 package org.anddev.andengine.engine.options;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:01:40 - 02.07.2010
  */

@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.layer.tiled.tmx.util.constants;
 /**
  * See: <a href="http://sourceforge.net/apps/mediawiki/tiled/index.php?title=TMX_Map_Format">TMX Map Format</a>.
  * 
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:20:22 - 20.07.2010
  */

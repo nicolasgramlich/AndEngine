@@ -4,6 +4,9 @@ import org.anddev.andengine.util.modifier.IModifier.IModifierListener;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:18:37 - 03.09.2010
  * @param <T>

@@ -15,6 +15,9 @@ import org.anddev.andengine.util.Transformation;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:20:25 - 08.03.2010
  */

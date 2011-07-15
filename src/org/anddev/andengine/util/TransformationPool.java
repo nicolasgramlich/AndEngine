@@ -3,6 +3,9 @@ package org.anddev.andengine.util;
 import org.anddev.andengine.util.pool.GenericPool;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 23:07:53 - 23.02.2011
  */

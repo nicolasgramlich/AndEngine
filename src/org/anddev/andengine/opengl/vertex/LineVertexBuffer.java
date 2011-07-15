@@ -3,6 +3,9 @@ package org.anddev.andengine.opengl.vertex;
 import org.anddev.andengine.opengl.util.FastFloatBuffer;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:07:25 - 13.03.2010
  */

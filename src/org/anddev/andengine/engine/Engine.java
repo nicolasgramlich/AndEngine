@@ -21,7 +21,7 @@ import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.TextureManager;
-import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.sensor.SensorDelay;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
@@ -54,6 +54,9 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:21:31 - 08.03.2010
  */
@@ -116,7 +119,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	public Engine(final EngineOptions pEngineOptions) {
-		TextureRegionFactory.reset();
+		BitmapTextureAtlasTextureRegionFactory.reset();
 		SoundFactory.reset();
 		MusicFactory.reset();
 		FontFactory.reset();

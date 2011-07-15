@@ -5,6 +5,9 @@ import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.constants.TimeConstants;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:52:31 - 09.03.2010
  */

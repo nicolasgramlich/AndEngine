@@ -1,6 +1,9 @@
 package org.anddev.andengine.audio;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:53:29 - 13.06.2010
  */

@@ -12,6 +12,9 @@ import android.content.Context;
 import android.os.Environment;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:53:33 - 20.06.2010
  */

@@ -10,15 +10,19 @@ import javax.microedition.khronos.opengles.GL11;
 import javax.microedition.khronos.opengles.GL11Ext;
 
 import org.anddev.andengine.engine.options.RenderOptions;
-import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
+import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
 import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
+import android.opengl.GLException;
 import android.opengl.GLUtils;
 import android.os.Build;
 
 /**
+ * (c) 2010 Nicolas Gramlich
+ * (c) 2011 Zynga Inc.
+ *
  * @author Nicolas Gramlich
  * @since 18:00:43 - 08.03.2010
  */
@@ -418,27 +422,31 @@ public class GLHelper {
 	 * </br>
 	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 */
-	public static void glTexSubImage2D(final GL10 pGL, final int pTarget, final int pLevel, final int pXOffset, final int pYOffset, final Bitmap pBitmap, final int pFormat, final int pType, final TextureFormat pTextureFormat) {
+	public static void glTexSubImage2D(final GL10 pGL, final int pTarget, final int pLevel, final int pXOffset, final int pYOffset, final Bitmap pBitmap, final PixelFormat pPixelFormat) {
 		final int[] pixelsARGB_8888 = GLHelper.getPixelsARGB_8888(pBitmap);
 
 		final Buffer pixelBuffer;
-		switch(pTextureFormat) {
+		switch(pPixelFormat) {
 			case RGB_565:
 				pixelBuffer = ByteBuffer.wrap(GLHelper.convertARGB_8888toRGB_565(pixelsARGB_8888));
 				break;
 			case RGBA_8888:
 				pixelBuffer = IntBuffer.wrap(GLHelper.convertARGB_8888toRGBA_8888(pixelsARGB_8888));
 				break;
+			case RGBA_4444:
+				pixelBuffer = ByteBuffer.wrap(GLHelper.convertARGB_8888toARGB_4444(pixelsARGB_8888));
+				break;
+			case A_8:
+				pixelBuffer = ByteBuffer.wrap(GLHelper.convertARGB_8888toA_8(pixelsARGB_8888));
+				break;
 			default:
-				throw new IllegalArgumentException("Unexpected pTextureFormat: '" + pTextureFormat + "'.");
+				throw new IllegalArgumentException("Unexpected pTextureFormat: '" + pPixelFormat + "'.");
 		}
 
-		pGL.glTexSubImage2D(pTarget, pLevel, pXOffset, pYOffset, pBitmap.getWidth(), pBitmap.getHeight(), pFormat, pType, pixelBuffer);
+		pGL.glTexSubImage2D(pTarget, pLevel, pXOffset, pYOffset, pBitmap.getWidth(), pBitmap.getHeight(), pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
 	}
 
 	private static int[] convertARGB_8888toRGBA_8888(final int[] pPixelsARGB_8888) {
-		final long start = System.nanoTime();
-		
 		if(GLHelper.IS_LITTLE_ENDIAN) {
 			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
@@ -452,10 +460,6 @@ public class GLHelper {
 				pPixelsARGB_8888[i] = (pixel & 0x00FFFFFF) << 8 | (pixel & 0xFF000000) >> 24;
 			}
 		}
-
-		final long end = System.nanoTime();
-		Debug.d("Conversion time: " + (end - start) + " ms");
-
 		return pPixelsARGB_8888;
 	}
 
@@ -493,6 +497,56 @@ public class GLHelper {
 		return pixelsRGB_565;
 	}
 
+	private static byte[] convertARGB_8888toARGB_4444(final int[] pPixelsARGB_8888) {
+		final byte[] pixelsARGB_4444 = new byte[pPixelsARGB_8888.length * 2];
+		if(GLHelper.IS_LITTLE_ENDIAN) {
+			for(int i = pPixelsARGB_8888.length - 1, j = pixelsARGB_4444.length - 1; i >= 0; i--) {
+				final int pixel = pPixelsARGB_8888[i];
+
+				final int alpha = ((pixel >> 28) & 0x0F);
+				final int red = ((pixel >> 16) & 0xF0);
+				final int green = ((pixel >> 8) & 0xF0);
+				final int blue = ((pixel) & 0x0F);
+
+				/* Byte1: [A1 A2 A3 A4 R1 R2 R3 R4]
+				 * Byte2: [G1 G2 G3 G4 G2 G2 G3 G4] */
+
+				pixelsARGB_4444[j--] = (byte)(alpha | red);
+				pixelsARGB_4444[j--] = (byte)(green | blue);
+			}
+		} else {
+			for(int i = pPixelsARGB_8888.length - 1, j = pixelsARGB_4444.length - 1; i >= 0; i--) {
+				final int pixel = pPixelsARGB_8888[i];
+
+				final int alpha = ((pixel >> 28) & 0x0F);
+				final int red = ((pixel >> 16) & 0xF0);
+				final int green = ((pixel >> 8) & 0xF0);
+				final int blue = ((pixel) & 0x0F);
+
+				/* Byte2: [G1 G2 G3 G4 G2 G2 G3 G4]
+				 * Byte1: [A1 A2 A3 A4 R1 R2 R3 R4] */
+
+				pixelsARGB_4444[j--] = (byte)(green | blue);
+				pixelsARGB_4444[j--] = (byte)(alpha | red);
+			}
+		}
+		return pixelsARGB_4444;
+	}
+
+	private static byte[] convertARGB_8888toA_8(final int[] pPixelsARGB_8888) {
+		final byte[] pixelsA_8 = new byte[pPixelsARGB_8888.length];
+		if(GLHelper.IS_LITTLE_ENDIAN) {
+			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+				pixelsA_8[i] = (byte) (pPixelsARGB_8888[i] >> 24);
+			}
+		} else {
+			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+				pixelsA_8[i] = (byte) (pPixelsARGB_8888[i] & 0xFF);
+			}
+		}
+		return pixelsA_8;
+	}
+
 	public static int[] getPixelsARGB_8888(final Bitmap pBitmap) {
 		final int w = pBitmap.getWidth();
 		final int h = pBitmap.getHeight();
@@ -501,6 +555,13 @@ public class GLHelper {
 		pBitmap.getPixels(pixelsARGB_8888, 0, w, 0, 0, w, h);
 
 		return pixelsARGB_8888;
+	}
+
+	public static void checkGLError(final GL10 pGL) throws GLException { // TODO Use more often!
+		final int err = pGL.glGetError();
+		if (err != GL10.GL_NO_ERROR) {
+			throw new GLException(err);
+		}
 	}
 
 	// ===========================================================

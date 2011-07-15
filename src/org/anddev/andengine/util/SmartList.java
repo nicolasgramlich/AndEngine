@@ -3,6 +3,9 @@ package org.anddev.andengine.util;
 import java.util.ArrayList;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 22:20:08 - 27.12.2010
  */

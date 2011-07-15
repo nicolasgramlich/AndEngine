@@ -7,6 +7,9 @@ import org.anddev.andengine.util.Debug;
 
 /**
  * @author Valentin Milea
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * 
  * @since 22:19:55 - 31.08.2010

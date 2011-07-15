@@ -8,6 +8,9 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:55:12 - 02.08.2010
  */

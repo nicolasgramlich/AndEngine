@@ -19,6 +19,9 @@ import org.anddev.andengine.util.constants.Constants;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:00:48 - 08.03.2010
  */

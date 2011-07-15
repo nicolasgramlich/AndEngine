@@ -13,6 +13,9 @@ import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 09:50:36 - 04.04.2010
  */

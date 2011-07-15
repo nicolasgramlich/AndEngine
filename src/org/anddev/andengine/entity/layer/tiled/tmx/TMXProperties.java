@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:14:06 - 27.07.2010
  */

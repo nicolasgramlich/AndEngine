@@ -8,6 +8,9 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.Shape;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:36:26 - 19.07.2010
  */

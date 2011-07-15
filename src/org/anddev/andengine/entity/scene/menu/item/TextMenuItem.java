@@ -4,6 +4,9 @@ import org.anddev.andengine.entity.text.Text;
 import org.anddev.andengine.opengl.font.Font;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:15:20 - 01.04.2010
  */

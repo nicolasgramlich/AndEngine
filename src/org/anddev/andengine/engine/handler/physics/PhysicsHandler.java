@@ -4,6 +4,9 @@ import org.anddev.andengine.engine.handler.BaseEntityUpdateHandler;
 import org.anddev.andengine.entity.IEntity;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:53:07 - 24.12.2010
  */

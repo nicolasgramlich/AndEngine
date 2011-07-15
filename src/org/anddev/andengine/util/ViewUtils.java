@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:55:35 - 08.09.2009
  */

@@ -6,6 +6,9 @@ import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.util.HorizontalAlign;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:46:34 - 14.05.2010
  */

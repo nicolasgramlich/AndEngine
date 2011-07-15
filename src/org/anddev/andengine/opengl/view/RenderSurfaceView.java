@@ -11,6 +11,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:57:29 - 08.03.2010
  */
@@ -72,7 +75,10 @@ public class RenderSurfaceView extends GLSurfaceView {
 	// ===========================================================
 
 	/**
-	 * @author Nicolas Gramlich
+	 * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
+ * @author Nicolas Gramlich
 	 * @since 11:45:59 - 08.03.2010
 	 */
 	public static class Renderer implements GLSurfaceView.Renderer {

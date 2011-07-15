@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.util;
 import org.anddev.andengine.util.Debug;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:52:31 - 09.03.2010
  */

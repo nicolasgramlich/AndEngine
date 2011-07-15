@@ -8,6 +8,9 @@ import java.io.Writer;
 import android.util.Log;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:42:02 - 28.06.2010
  */

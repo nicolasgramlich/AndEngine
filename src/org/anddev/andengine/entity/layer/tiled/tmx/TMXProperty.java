@@ -4,6 +4,9 @@ import org.anddev.andengine.entity.layer.tiled.tmx.util.constants.TMXConstants;
 import org.xml.sax.Attributes;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:14:06 - 27.07.2010
  */

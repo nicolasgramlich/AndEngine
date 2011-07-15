@@ -5,6 +5,9 @@ import java.util.Arrays;
 import org.anddev.andengine.util.modifier.IModifier.IModifierListener;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:21:22 - 03.09.2010
  * @param <T>

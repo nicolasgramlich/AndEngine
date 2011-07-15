@@ -4,8 +4,11 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 
 /**
- * @author  Nicolas Gramlich
- * @since  15:59:52 - 09.03.2010
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
+ * @author Nicolas Gramlich
+ * @since 15:59:52 - 09.03.2010
  */
 public class EngineOptions {
 	// ===========================================================

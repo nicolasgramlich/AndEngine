@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.scene.menu.item.decorator;
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:25:35 - 07.07.2010
  */

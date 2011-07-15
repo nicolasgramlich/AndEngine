@@ -10,18 +10,21 @@ import org.anddev.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.SplashScene;
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.Texture.TextureFormat;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasFactory;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas.BitmapTextureFormat;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
-import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
-import org.anddev.andengine.opengl.texture.source.ITextureSource;
 
 import android.app.Activity;
 import android.content.Intent;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 08:25:31 - 03.05.2010
  */
@@ -35,7 +38,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 	// ===========================================================
 
 	private Camera mCamera;
-	private ITextureSource mSplashTextureSource;
+	private IBitmapTextureAtlasSource mSplashTextureAtlasSource;
 	private TextureRegion mLoadingScreenTextureRegion;
 
 	// ===========================================================
@@ -52,7 +55,7 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	protected abstract ScreenOrientation getScreenOrientation();
 
-	protected abstract ITextureSource onGetSplashTextureSource();
+	protected abstract IBitmapTextureAtlasSource onGetSplashTextureAtlasSource();
 
 	protected abstract float getSplashDuration();
 
@@ -72,10 +75,10 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	@Override
 	public Engine onLoadEngine() {
-		this.mSplashTextureSource = this.onGetSplashTextureSource();
+		this.mSplashTextureAtlasSource = this.onGetSplashTextureAtlasSource();
 
-		final int width = this.mSplashTextureSource.getWidth();
-		final int height = this.mSplashTextureSource.getHeight();
+		final int width = this.mSplashTextureAtlasSource.getWidth();
+		final int height = this.mSplashTextureAtlasSource.getHeight();
 
 		this.mCamera = this.getSplashCamera(width, height);
 		return new Engine(new EngineOptions(true, this.getScreenOrientation(), this.getSplashResolutionPolicy(width, height), this.mCamera));
@@ -83,10 +86,10 @@ public abstract class BaseSplashActivity extends BaseGameActivity {
 
 	@Override
 	public void onLoadResources() {
-		final Texture loadingScreenTexture = TextureFactory.createForTextureSourceSize(TextureFormat.RGBA_8888, this.mSplashTextureSource, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		this.mLoadingScreenTextureRegion = TextureRegionFactory.createFromSource(loadingScreenTexture, this.mSplashTextureSource, 0, 0);
+		final BitmapTextureAtlas loadingScreenBitmapTextureAtlas = BitmapTextureAtlasFactory.createForTextureAtlasSourceSize(BitmapTextureFormat.RGBA_8888, this.mSplashTextureAtlasSource, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		this.mLoadingScreenTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromSource(loadingScreenBitmapTextureAtlas, this.mSplashTextureAtlasSource, 0, 0);
 
-		this.getEngine().getTextureManager().loadTexture(loadingScreenTexture);
+		this.getEngine().getTextureManager().loadTexture(loadingScreenBitmapTextureAtlas);
 	}
 
 	@Override

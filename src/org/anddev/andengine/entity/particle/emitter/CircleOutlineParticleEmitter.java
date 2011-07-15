@@ -9,6 +9,9 @@ import org.anddev.andengine.util.constants.MathConstants;
 import android.util.FloatMath;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:18:41 - 01.10.2010
  */

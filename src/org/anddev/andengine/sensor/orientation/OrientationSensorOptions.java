@@ -3,6 +3,9 @@ package org.anddev.andengine.sensor.orientation;
 import org.anddev.andengine.sensor.SensorDelay;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:12:36 - 31.10.2010
  */

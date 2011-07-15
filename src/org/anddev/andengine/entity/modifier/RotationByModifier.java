@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.modifier;
 import org.anddev.andengine.entity.IEntity;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 16:12:52 - 19.03.2010
  */

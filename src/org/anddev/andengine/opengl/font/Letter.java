@@ -4,6 +4,9 @@
 package org.anddev.andengine.opengl.font;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:30:22 - 03.04.2010
  */

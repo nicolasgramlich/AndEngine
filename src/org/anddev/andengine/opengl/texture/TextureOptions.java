@@ -3,6 +3,9 @@ package org.anddev.andengine.opengl.texture;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 13:00:09 - 05.04.2010
  */
@@ -58,6 +61,14 @@ public class TextureOptions {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void apply(GL10 pGL) {
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, this.mMinFilter);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, this.mMagFilter);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, this.mWrapS);
+		pGL.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, this.mWrapT);
+		pGL.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, this.mTextureEnvironment);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

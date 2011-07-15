@@ -5,6 +5,9 @@ import static org.anddev.andengine.util.MathUtils.RANDOM;
 import org.anddev.andengine.entity.particle.Particle;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:58:29 - 04.05.2010
  */

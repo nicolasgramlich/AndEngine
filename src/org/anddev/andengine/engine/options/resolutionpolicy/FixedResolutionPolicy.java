@@ -3,6 +3,9 @@ package org.anddev.andengine.engine.options.resolutionpolicy;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:23:00 - 29.03.2010
  */

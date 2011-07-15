@@ -3,6 +3,9 @@ package org.anddev.andengine.audio.sound;
 import org.anddev.andengine.util.Library;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:41:56 - 20.08.2010
  */

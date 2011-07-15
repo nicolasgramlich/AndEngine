@@ -3,6 +3,9 @@ package org.anddev.andengine.util.pool;
 import android.util.SparseArray;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:13:26 - 02.03.2011
  */

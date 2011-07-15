@@ -13,6 +13,9 @@ import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
  */
@@ -164,7 +167,7 @@ public class Text extends RectangularShape {
 	// ===========================================================
 
 	private void initBlendFunction() {
-		if(this.mFont.getTexture().getTextureOptions().mPreMultipyAlpha) {
+		if(this.mFont.getBitmapTextureAtlas().getTextureOptions().mPreMultipyAlpha) {
 			this.setBlendFunction(BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
 		}
 	}
@@ -175,10 +178,10 @@ public class Text extends RectangularShape {
 
 			this.mTextTextureBuffer.selectOnHardware(gl11);
 
-			this.mFont.getTexture().bind(pGL);
+			this.mFont.getBitmapTextureAtlas().bind(pGL);
 			GLHelper.texCoordZeroPointer(gl11);
 		} else {
-			this.mFont.getTexture().bind(pGL);
+			this.mFont.getBitmapTextureAtlas().bind(pGL);
 			GLHelper.texCoordPointer(pGL, this.mTextTextureBuffer.getFloatBuffer());
 		}
 	}

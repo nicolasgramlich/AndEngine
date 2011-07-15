@@ -4,6 +4,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:14:31 - 06.08.2010
  * @param <T>

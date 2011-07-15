@@ -21,6 +21,9 @@ import org.anddev.andengine.util.constants.Constants;
 import android.util.SparseArray;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
  */
@@ -363,16 +366,16 @@ public class Scene extends Entity {
 		}
 	}
 
-	private Boolean onAreaTouchEvent(final TouchEvent pSceneTouchEvent, final float pSceneTouchEventX, final float pSceneTouchEventY, final ITouchArea pTouchArea) {
-		final float[] touchAreaLocalCoordinates = pTouchArea.convertSceneToLocalCoordinates(pSceneTouchEventX, pSceneTouchEventY);
+	private Boolean onAreaTouchEvent(final TouchEvent pSceneTouchEvent, final float sceneTouchEventX, final float sceneTouchEventY, final ITouchArea touchArea) {
+		final float[] touchAreaLocalCoordinates = touchArea.convertSceneToLocalCoordinates(sceneTouchEventX, sceneTouchEventY);
 		final float touchAreaLocalX = touchAreaLocalCoordinates[Constants.VERTEX_INDEX_X];
 		final float touchAreaLocalY = touchAreaLocalCoordinates[Constants.VERTEX_INDEX_Y];
 
-		final boolean handledSelf = pTouchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
+		final boolean handledSelf = touchArea.onAreaTouched(pSceneTouchEvent, touchAreaLocalX, touchAreaLocalY);
 		if(handledSelf) {
 			return Boolean.TRUE;
 		} else if(this.mOnAreaTouchListener != null) {
-			return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, touchAreaLocalX, touchAreaLocalY);
+			return this.mOnAreaTouchListener.onAreaTouched(pSceneTouchEvent, touchArea, touchAreaLocalX, touchAreaLocalY);
 		} else {
 			return null;
 		}

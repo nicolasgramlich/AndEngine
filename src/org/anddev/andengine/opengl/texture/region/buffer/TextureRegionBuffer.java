@@ -3,11 +3,14 @@ package org.anddev.andengine.opengl.texture.region.buffer;
 import static org.anddev.andengine.opengl.vertex.RectangleVertexBuffer.VERTICES_PER_RECTANGLE;
 
 import org.anddev.andengine.opengl.buffer.BufferObject;
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
 import org.anddev.andengine.opengl.util.FastFloatBuffer;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:05:50 - 09.03.2010
  */
@@ -73,7 +76,7 @@ public class TextureRegionBuffer extends BufferObject {
 
 	public synchronized void update() {
 		final BaseTextureRegion textureRegion = this.mTextureRegion;
-		final Texture texture = textureRegion.getTexture();
+		final ITexture texture = textureRegion.getTexture();
 
 		if(texture == null) { // TODO Check really needed?
 			return;

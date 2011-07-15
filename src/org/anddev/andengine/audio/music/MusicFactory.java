@@ -9,6 +9,9 @@ import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:05:49 - 13.06.2010
  */

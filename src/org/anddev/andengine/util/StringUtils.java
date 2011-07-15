@@ -1,6 +1,9 @@
 package org.anddev.andengine.util;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 19:01:08 - 03.04.2010
  */

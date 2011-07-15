@@ -3,6 +3,9 @@ package org.anddev.andengine.entity.layer.tiled.tmx.util.exception;
 import org.xml.sax.SAXException;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 00:10:02 - 28.07.2010
  */

@@ -11,6 +11,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:35:28 - 29.08.2009
  */

@@ -1,10 +1,15 @@
 package org.anddev.andengine.util;
 
+import org.anddev.andengine.util.constants.DataConstants;
+
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:01:49 - 20.03.2011
  */
-public class DataUtils {
+public class DataUtils implements DataConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================

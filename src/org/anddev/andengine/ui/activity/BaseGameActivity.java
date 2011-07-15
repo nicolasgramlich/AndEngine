@@ -29,6 +29,9 @@ import android.view.Gravity;
 import android.widget.FrameLayout.LayoutParams;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:27:06 - 08.03.2010
  */

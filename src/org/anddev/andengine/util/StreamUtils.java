@@ -9,6 +9,9 @@ import java.io.Writer;
 import java.util.Scanner;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:48:56 - 03.09.2009
  */
@@ -42,7 +45,7 @@ public class StreamUtils {
 	public static final String readFully(final InputStream pInputStream) throws IOException {
 		final StringBuilder sb = new StringBuilder();
 		final Scanner sc = new Scanner(pInputStream);
-		while(sc.hasNextLine()){
+		while(sc.hasNextLine()) {
 			sb.append(sc.nextLine());
 		}
 		return sb.toString();
@@ -53,7 +56,7 @@ public class StreamUtils {
 	}
 
 	public static byte[] streamToBytes(final InputStream pInputStream, final int pReadLimit) throws IOException {
-		final ByteArrayOutputStream os = new ByteArrayOutputStream(Math.min(pReadLimit, IO_BUFFER_SIZE));
+		final ByteArrayOutputStream os = new ByteArrayOutputStream((pReadLimit == -1) ? IO_BUFFER_SIZE : pReadLimit);
 		StreamUtils.copy(pInputStream, os, pReadLimit);
 		return os.toByteArray();
 	}
@@ -86,19 +89,19 @@ public class StreamUtils {
 	 */
 	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream, final long pByteLimit) throws IOException {
 		final byte[] b = new byte[IO_BUFFER_SIZE];
-		long pBytesLeftToRead = pByteLimit;
 		int read;
-		if(pByteLimit < 0){
-			while ((read = pInputStream.read(b)) != -1) {
+		if(pByteLimit < 0) {
+			while((read = pInputStream.read(b)) != -1) {
 				pOutputStream.write(b, 0, read);
 			}
-		}else{
-			while ((read = pInputStream.read(b)) != -1) {
-				if(pBytesLeftToRead > read){
+		} else {
+			long pBytesLeftToRead = pByteLimit;
+			while((read = pInputStream.read(b)) != -1) {
+				if(pBytesLeftToRead > read) {
 					pOutputStream.write(b, 0, read);
 					pBytesLeftToRead -= read;
 				} else {
-					pOutputStream.write(b, 0, (int)pBytesLeftToRead);
+					pOutputStream.write(b, 0, (int) pBytesLeftToRead);
 					break;
 				}
 			}
@@ -112,7 +115,7 @@ public class StreamUtils {
 	 * @param pCloseable The stream to close.
 	 */
 	public static void close(final Closeable pCloseable) {
-		if (pCloseable != null) {
+		if(pCloseable != null) {
 			try {
 				pCloseable.close();
 			} catch (final IOException e) {
@@ -127,7 +130,7 @@ public class StreamUtils {
 	 * @param pOutputStream The stream to close.
 	 */
 	public static void flushCloseStream(final OutputStream pOutputStream) {
-		if (pOutputStream != null) {
+		if(pOutputStream != null) {
 			try {
 				pOutputStream.flush();
 			} catch (final IOException e) {
@@ -144,7 +147,7 @@ public class StreamUtils {
 	 * @param pWriter The Writer to close.
 	 */
 	public static void flushCloseWriter(final Writer pWriter) {
-		if (pWriter != null) {
+		if(pWriter != null) {
 			try {
 				pWriter.flush();
 			} catch (final IOException e) {

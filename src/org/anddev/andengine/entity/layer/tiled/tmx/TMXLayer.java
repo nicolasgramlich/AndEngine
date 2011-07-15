@@ -27,6 +27,9 @@ import org.anddev.andengine.util.StreamUtils;
 import org.xml.sax.Attributes;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:27:31 - 20.07.2010
  */

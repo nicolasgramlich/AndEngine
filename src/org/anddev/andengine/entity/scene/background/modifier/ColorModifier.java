@@ -5,6 +5,9 @@ import org.anddev.andengine.util.modifier.BaseTripleValueSpanModifier;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 14:51:03 - 03.09.2010
  */

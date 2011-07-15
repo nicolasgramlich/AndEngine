@@ -3,6 +3,9 @@ package org.anddev.andengine.util.modifier.util;
 import org.anddev.andengine.util.modifier.IModifier;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:16:36 - 03.09.2010
  */

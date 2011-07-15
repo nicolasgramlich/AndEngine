@@ -1,12 +1,15 @@
 package org.anddev.andengine.opengl.font;
 
-import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 10:39:33 - 03.04.2010
  */
@@ -26,12 +29,12 @@ public class StrokeFont extends Font {
 	// Constructors
 	// ===========================================================
 
-	public StrokeFont(final Texture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
-		this(pTexture, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor, false);
+	public StrokeFont(final BitmapTextureAtlas pBitmapTextureAtlas, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		this(pBitmapTextureAtlas, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor, false);
 	}
 
-	public StrokeFont(final Texture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor, final boolean pStrokeOnly) {
-		super(pTexture, pTypeface, pSize, pAntiAlias, pColor);
+	public StrokeFont(final BitmapTextureAtlas pBitmapTextureAtlas, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor, final boolean pStrokeOnly) {
+		super(pBitmapTextureAtlas, pTypeface, pSize, pAntiAlias, pColor);
 		this.mStrokePaint = new Paint();
 		this.mStrokePaint.setTypeface(pTypeface);
 		this.mStrokePaint.setStyle(Style.STROKE);

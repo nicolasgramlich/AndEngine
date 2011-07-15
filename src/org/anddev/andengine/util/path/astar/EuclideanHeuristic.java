@@ -5,6 +5,9 @@ import org.anddev.andengine.util.path.ITiledMap;
 import android.util.FloatMath;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 22:58:01 - 16.08.2010
  */

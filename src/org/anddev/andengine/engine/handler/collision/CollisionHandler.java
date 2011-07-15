@@ -7,6 +7,9 @@ import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.util.ListUtils;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 12:19:35 - 11.03.2010
  */

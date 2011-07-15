@@ -15,6 +15,9 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.util.Transformation;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:05:44 - 18.11.2010
  */

@@ -11,6 +11,9 @@ import javax.microedition.khronos.egl.EGLDisplay;
  * This interface must be implemented by clients wishing to call
  * {@link GLSurfaceView#setEGLConfigChooser(EGLConfigChooser)}
  *
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:53:49 - 28.06.2010
  */

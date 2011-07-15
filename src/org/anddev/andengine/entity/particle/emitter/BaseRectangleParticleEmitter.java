@@ -2,6 +2,9 @@ package org.anddev.andengine.entity.particle.emitter;
 
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:53:18 - 01.10.2010
  */

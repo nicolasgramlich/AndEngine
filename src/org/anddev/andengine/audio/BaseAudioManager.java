@@ -3,6 +3,9 @@ package org.anddev.andengine.audio;
 import java.util.ArrayList;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 18:07:02 - 13.06.2010
  */

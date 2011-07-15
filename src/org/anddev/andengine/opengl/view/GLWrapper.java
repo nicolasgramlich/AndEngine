@@ -24,6 +24,9 @@ import javax.microedition.khronos.opengles.GL;
  * 
  * @see #setGLWrapper(GLWrapper)
  *
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 20:53:38 - 28.06.2010
  */

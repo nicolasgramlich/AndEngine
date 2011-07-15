@@ -5,6 +5,9 @@ import org.anddev.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 11:21:01 - 29.07.2010
  */

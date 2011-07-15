@@ -13,6 +13,9 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 
 /**
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
  * @author Nicolas Gramlich
  * @since 15:50:31 - 14.07.2010
  */

@@ -81,7 +81,7 @@ public abstract class ETC1Texture extends Texture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract InputStream getInputStream();
+	protected abstract InputStream getInputStream() throws IOException;
 
 	@Override
 	protected void writeTextureToHardware(final GL10 pGL) throws IOException {

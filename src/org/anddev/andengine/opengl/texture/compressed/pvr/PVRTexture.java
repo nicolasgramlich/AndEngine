@@ -13,6 +13,7 @@ import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.ArrayUtils;
+import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.StreamUtils;
 
@@ -111,7 +112,7 @@ public abstract class PVRTexture extends Texture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract InputStream getInputStream();
+	protected abstract InputStream getInputStream() throws IOException;
 
 	@Override
 	protected void generateHardwareTextureID(final GL10 pGL) {
@@ -141,16 +142,15 @@ public abstract class PVRTexture extends Texture {
 
 			final int bpp = this.mPVRTextureHeader.getBitsPerPixel();
 
-			// Calculate the data size for each texture level and respect the minimum number of blocks
+			/* Calculate the data size for each texture level and respect the minimum number of blocks. */
 			int mipmapLevel = 0;
 			int dataOffset = 0;
 			while (dataOffset < dataLength) {
-				// TODO Optimize
 				final int blockSize = 1;
 				int widthBlocks = width;
 				int heightBlocks = height;
 
-				// Clamp to minimum number of blocks
+				/* Clamp to minimum number of blocks */
 				if (widthBlocks < 2) {
 					widthBlocks = 2;
 				}
@@ -162,8 +162,9 @@ public abstract class PVRTexture extends Texture {
 				final ByteBuffer pixels = ByteBuffer.allocate(dataSize).order(ByteOrder.nativeOrder());
 				pixels.put(data, dataOffset + PVRTextureHeader.SIZE, dataSize);
 
-				//			if( level > 0 && (width != height || ccNextPOT(width) != width ) )
-				//				CCLOG(@"cocos2d: TexturePVR. WARNING. Mipmap level %u is not squared. Texture won't render correctly. width=%u != height=%u", level, width, height);
+				if (mipmapLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
+					Debug.w(String.format("Mipmap level '%u' is not squared. Texture won't render correctly. width: '%u', height: '%u'.", mipmapLevel, width, height));
+				}
 
 				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixels);
 
@@ -171,6 +172,7 @@ public abstract class PVRTexture extends Texture {
 
 				dataOffset += dataSize;
 
+				/* Prepare next mipmap level. */
 				width = Math.max(width >> 1, 1);
 				height = Math.max(height >> 1, 1);
 

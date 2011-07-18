@@ -35,6 +35,18 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * @param pDuration
+	 * @param pX1 x coordinate of the start point.
+	 * @param pY1 y coordinate of the start point.
+	 * @param pX2 x coordinate of the first control point.
+	 * @param pY2 y coordinate of the first control point.
+	 * @param pX3 x coordinate of the second control point.
+	 * @param pY3 y coordinate of the second control point.
+	 * @param pX4 x coordinate of the end point.
+	 * @param pY4 y coordinate of the end point.
+	 * @param pEaseFunction
+	 */
 	public CubicBezierMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final IEaseFunction pEaseFunction) {
 		super(pDuration);
 
@@ -65,7 +77,7 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed, final IEntity pEntity) {
-		final float percentageDone = this.mEaseFunction.getPercentageDone(this.getSecondsElapsed(), this.mDuration, 0, 1);
+		final float percentageDone = this.mEaseFunction.getPercentage(this.getSecondsElapsed(), this.mDuration);
 
 		final float u = 1 - percentageDone;
 		final float tt = percentageDone * percentageDone;

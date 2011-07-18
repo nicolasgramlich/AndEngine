@@ -71,7 +71,7 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed, final T pItem) {
-		final float percentageDone = this.mEaseFunction.getPercentageDone(this.getSecondsElapsed(), this.mDuration, 0, 1);
+		final float percentageDone = this.mEaseFunction.getPercentage(this.getSecondsElapsed(), this.mDuration);
 
 		this.onSetValue(pItem, percentageDone, this.mFromValue + percentageDone * this.mValueSpan);
 	}

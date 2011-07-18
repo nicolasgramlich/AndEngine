@@ -1,13 +1,12 @@
 package org.anddev.andengine.util.modifier.ease;
 
-import org.anddev.andengine.util.constants.MathConstants;
-
+import static org.anddev.andengine.util.constants.MathConstants.PI;
 import android.util.FloatMath;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Gil
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
@@ -28,6 +27,7 @@ public class EaseSineInOut implements IEaseFunction {
 	// ===========================================================
 
 	private EaseSineInOut() {
+
 	}
 
 	public static EaseSineInOut getInstance() {
@@ -46,8 +46,10 @@ public class EaseSineInOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float getPercentageDone(final float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
-		return (-pMaxValue * 0.5f * (FloatMath.cos(MathConstants.PI * pSecondsElapsed / pDuration) - 1) + pMinValue);
+	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
+		final float percentage = pSecondsElapsed / pDuration;
+
+		return -0.5f * (FloatMath.cos(percentage * PI) - 1);
 	}
 
 	// ===========================================================

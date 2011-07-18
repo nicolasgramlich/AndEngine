@@ -60,7 +60,7 @@ public class QuadraticBezierMoveModifier extends DurationEntityModifier {
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed, final IEntity pEntity) {
-		final float percentageDone = this.mEaseFunction.getPercentageDone(this.getSecondsElapsed(), this.mDuration, 0, 1);
+		final float percentageDone = this.mEaseFunction.getPercentage(this.getSecondsElapsed(), this.mDuration);
 
 		final float u = 1 - percentageDone;
 		final float tt = percentageDone*percentageDone;

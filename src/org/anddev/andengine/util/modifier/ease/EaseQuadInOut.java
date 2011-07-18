@@ -1,9 +1,9 @@
 package org.anddev.andengine.util.modifier.ease;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Gil
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
@@ -24,6 +24,7 @@ public class EaseQuadInOut implements IEaseFunction {
 	// ===========================================================
 
 	private EaseQuadInOut() {
+
 	}
 
 	public static EaseQuadInOut getInstance() {
@@ -42,11 +43,14 @@ public class EaseQuadInOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
-		if((pSecondsElapsed /= pDuration * 0.5f) < 1) {
-			return pMaxValue * 0.5f * pSecondsElapsed * pSecondsElapsed + pMinValue;
+	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
+		final float percentage = pSecondsElapsed / pDuration;
+
+		if(percentage < 0.5f) {
+			return 0.5f * EaseQuadIn.getValue(2 * percentage);
+		} else {
+			return 0.5f + 0.5f * EaseQuadOut.getValue(percentage * 2 - 1);
 		}
-		return -pMaxValue * 0.5f * ((--pSecondsElapsed) * (pSecondsElapsed - 2) - 1) + pMinValue;
 	}
 
 	// ===========================================================

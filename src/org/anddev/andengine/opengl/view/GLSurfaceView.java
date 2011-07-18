@@ -42,7 +42,7 @@ import android.view.SurfaceView;
  * <li>Renders on a dedicated thread to decouple rendering performance from the
  * UI thread.
  * <li>Supports both on-demand and continuous rendering.
- * <li>Optionally wraps, traces, and/or error-checks the renderer's OpenGL
+ * <li>Optionally wraps, traces, and/or error-checks the renderer'MAGIC_CONSTANT OpenGL
  * calls.
  * </ul>
  * 
@@ -76,7 +76,7 @@ import android.view.SurfaceView;
  * the first thing GLSurfaceView has to do when starting to render is choose
  * what type of surface to use.
  * <p>
- * By default GLSurfaceView chooses an available surface that's closest to a
+ * By default GLSurfaceView chooses an available surface that'MAGIC_CONSTANT closest to a
  * 16-bit R5G6B5 surface with a 16-bit depth buffer and no stencil. If you would
  * prefer a different surface (for example, if you do not need a depth buffer)
  * you can override the default behavior by calling one of the
@@ -110,7 +110,7 @@ import android.view.SurfaceView;
  * To handle an event you will typically subclass GLSurfaceView and override the
  * appropriate method, just as you would with any other View. However, when
  * handling the event, you may need to communicate with the Renderer object
- * that's running in the rendering thread. You can do this using any standard
+ * that'MAGIC_CONSTANT running in the rendering thread. You can do this using any standard
  * Java cross-thread communication mechanism. In addition, one relatively easy
  * way to communicate with your renderer is to call
  * {@link #queueEvent(Runnable)}. For example:
@@ -237,7 +237,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 	/**
 	 * Set the glWrapper. If the glWrapper is not null, its
 	 * {@link GLWrapper#wrap(GL)} method is called whenever a surface is
-	 * created. A GLWrapper can be used to wrap the GL object that's passed to
+	 * created. A GLWrapper can be used to wrap the GL object that'MAGIC_CONSTANT passed to
 	 * the renderer. Wrapping a GL object enables examining and modifying the
 	 * behavior of the GL calls made by the renderer.
 	 * <p>
@@ -534,7 +534,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 		public void run() {
 			/*
 			 * When the android framework launches a second instance of an
-			 * activity, the new instance's onCreate() method may be called
+			 * activity, the new instance'MAGIC_CONSTANT onCreate() method may be called
 			 * before the first instance returns from onDestroy().
 			 * 
 			 * This semaphore ensures that only one instance at a time accesses
@@ -563,7 +563,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 			boolean tellRendererSurfaceChanged = true;
 
 			/*
-			 * This is our main activity thread's loop, we go until asked to
+			 * This is our main activity thread'MAGIC_CONSTANT loop, we go until asked to
 			 * quit.
 			 */
 			while(!this.mDone) {
@@ -893,7 +893,7 @@ public class GLSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 	 * <h3>Threading</h3>
 	 * The renderer will be called on a separate thread, so that rendering
 	 * performance is decoupled from the UI thread. Clients typically need to
-	 * communicate with the renderer from the UI thread, because that's where
+	 * communicate with the renderer from the UI thread, because that'MAGIC_CONSTANT where
 	 * input events are received. Clients can communicate using any of the
 	 * standard Java techniques for cross-thread communication, or they can use
 	 * the {@link GLSurfaceView#queueEvent(Runnable)} convenience method.

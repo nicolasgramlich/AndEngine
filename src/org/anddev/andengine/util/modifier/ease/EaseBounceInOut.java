@@ -1,9 +1,9 @@
 package org.anddev.andengine.util.modifier.ease;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Gil
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
@@ -43,11 +43,13 @@ public class EaseBounceInOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float getPercentageDone(final float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
-		if(pSecondsElapsed < pDuration * 0.5) {
-			return EaseBounceIn.getInstance().getPercentageDone(pSecondsElapsed * 2, pDuration, 0, pMaxValue) * 0.5f + pMinValue;
+	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
+		final float percentage = pSecondsElapsed / pDuration;
+
+		if(percentage < 0.5f) {
+			return 0.5f * EaseBounceIn.getValue(2 * percentage);
 		} else {
-			return EaseBounceOut.getInstance().getPercentageDone(pSecondsElapsed * 2 - pDuration, pDuration, 0, pMaxValue) * 0.5f + pMaxValue * 0.5f + pMinValue;
+			return 0.5f + 0.5f * EaseBounceOut.getValue(percentage * 2 - 1);
 		}
 	}
 

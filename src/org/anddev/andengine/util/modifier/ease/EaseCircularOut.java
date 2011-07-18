@@ -3,9 +3,9 @@ package org.anddev.andengine.util.modifier.ease;
 import android.util.FloatMath;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Gil
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
@@ -26,6 +26,7 @@ public class EaseCircularOut implements IEaseFunction {
 	// ===========================================================
 
 	private EaseCircularOut() {
+
 	}
 
 	public static EaseCircularOut getInstance() {
@@ -44,13 +45,18 @@ public class EaseCircularOut implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
-		return (pMaxValue * FloatMath.sqrt(1 - (pSecondsElapsed = pSecondsElapsed / pDuration - 1) * pSecondsElapsed) + pMinValue);
+	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
+		return EaseCircularOut.getValue(pSecondsElapsed / pDuration);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static float getValue(final float pPercentage) {
+		final float t = pPercentage - 1;
+		return FloatMath.sqrt(1 - t * t);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

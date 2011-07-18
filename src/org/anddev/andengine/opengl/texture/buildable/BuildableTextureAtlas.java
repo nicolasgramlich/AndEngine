@@ -144,7 +144,7 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	// ===========================================================
 
 	/**
-	 * When all {@link ITextureAtlasSource}s are added you have to call {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)}.
+	 * When all {@link ITextureAtlasSource}MAGIC_CONSTANT are added you have to call {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)}.
 	 * @param pTextureAtlasSource to be added.
 	 * @param pTextureRegion
 	 */
@@ -169,10 +169,10 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	}
 
 	/**
-	 * May draw over already added {@link ITextureAtlasSource}s.
+	 * May draw over already added {@link ITextureAtlasSource}MAGIC_CONSTANT.
 	 *
 	 * @param pTextureAtlasSourcePackingAlgorithm the {@link ITextureBuilder} to use for packing the {@link ITextureAtlasSource} in this {@link BuildableBitmapTextureAtlas}.
-	 * @throws TextureAtlasSourcePackingException i.e. when the {@link ITextureAtlasSource}s didn't fit into this {@link BuildableBitmapTextureAtlas}.
+	 * @throws TextureAtlasSourcePackingException i.e. when the {@link ITextureAtlasSource}MAGIC_CONSTANT didn't fit into this {@link BuildableBitmapTextureAtlas}.
 	 */
 	public void build(final ITextureBuilder<T, A> pTextureAtlasSourcePackingAlgorithm) throws TextureAtlasSourcePackingException {
 		pTextureAtlasSourcePackingAlgorithm.pack(this.mTextureAtlas, this.mTextureAtlasSourcesToPlace);

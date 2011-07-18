@@ -5,9 +5,9 @@ import org.anddev.andengine.util.constants.MathConstants;
 import android.util.FloatMath;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Gil
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
@@ -28,6 +28,7 @@ public class EaseSineIn implements IEaseFunction, MathConstants {
 	// ===========================================================
 
 	private EaseSineIn() {
+
 	}
 
 	public static EaseSineIn getInstance() {
@@ -46,13 +47,17 @@ public class EaseSineIn implements IEaseFunction, MathConstants {
 	// ===========================================================
 
 	@Override
-	public float getPercentageDone(final float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
-		return (-pMaxValue * FloatMath.cos(pSecondsElapsed / pDuration * PI_HALF) + pMaxValue + pMinValue);
+	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
+		return EaseSineIn.getValue(pSecondsElapsed / pDuration);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static float getValue(final float pPercentage) {
+		return -FloatMath.cos(pPercentage * PI_HALF) + 1;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

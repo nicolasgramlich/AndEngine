@@ -1,9 +1,9 @@
 package org.anddev.andengine.util.modifier.ease;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Gil
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
@@ -12,6 +12,8 @@ public class EaseBackIn implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final float OVERSHOOT_CONSTANT = 1.70158f;
 
 	// ===========================================================
 	// Fields
@@ -43,13 +45,17 @@ public class EaseBackIn implements IEaseFunction {
 	// ===========================================================
 
 	@Override
-	public float getPercentageDone(float pSecondsElapsed, final float pDuration, final float pMinValue, final float pMaxValue) {
-		return pMaxValue * (pSecondsElapsed /= pDuration) * pSecondsElapsed * ((1.70158f + 1) * pSecondsElapsed - 1.70158f) + pMinValue;
+	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
+		return EaseBackIn.getValue(pSecondsElapsed / pDuration);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static float getValue(final float pPercentage) {
+		return pPercentage * pPercentage * ((OVERSHOOT_CONSTANT + 1) * pPercentage - OVERSHOOT_CONSTANT);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -84,7 +84,7 @@ public class FastFloatBuffer {
 	}
 
 	/**
-	 * It's like {@link FloatBuffer#put(float[])}, but about 10 times faster
+	 * It'MAGIC_CONSTANT like {@link FloatBuffer#put(float[])}, but about 10 times faster
 	 */
 	public void put(final float[] data) {
 		final int length = data.length;

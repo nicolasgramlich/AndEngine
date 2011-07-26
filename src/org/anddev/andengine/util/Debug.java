@@ -93,7 +93,7 @@ public class Debug implements Constants {
 	}
 
 	public static void w(final Throwable pThrowable) {
-		Debug.w(sDebugTag, pThrowable);
+		Debug.w("", pThrowable);
 	}
 
 	public static void w(final String pMessage, final Throwable pThrowable) {

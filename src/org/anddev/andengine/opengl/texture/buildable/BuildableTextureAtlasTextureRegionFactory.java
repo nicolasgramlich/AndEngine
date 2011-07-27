@@ -48,9 +48,9 @@ public class BuildableTextureAtlasTextureRegionFactory {
 	// Methods
 	// ===========================================================
 
-	public static <T extends ITextureAtlasSource, A extends ITextureAtlas<T>> TextureRegion createFromSource(final BuildableTextureAtlas<T, A> pBuildableTexture, final T pTextureAtlasSource, final boolean pTextureRegionBufferManaged) {
-		final TextureRegion textureRegion = new TextureRegion(pBuildableTexture, 0, 0, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight());
-		pBuildableTexture.addTextureAtlasSource(pTextureAtlasSource, new Callback<T>() {
+	public static <T extends ITextureAtlasSource, A extends ITextureAtlas<T>> TextureRegion createFromSource(final BuildableTextureAtlas<T, A> pBuildableTextureAtlas, final T pTextureAtlasSource, final boolean pTextureRegionBufferManaged) {
+		final TextureRegion textureRegion = new TextureRegion(pBuildableTextureAtlas, 0, 0, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight());
+		pBuildableTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, new Callback<T>() {
 			@Override
 			public void onCallback(final T pCallbackValue) {
 				textureRegion.setTexturePosition(pCallbackValue.getTexturePositionX(), pCallbackValue.getTexturePositionY());
@@ -60,9 +60,9 @@ public class BuildableTextureAtlasTextureRegionFactory {
 		return textureRegion;
 	}
 
-	public static <T extends ITextureAtlasSource, A extends ITextureAtlas<T>> TiledTextureRegion createTiledFromSource(final BuildableTextureAtlas<T, A> pBuildableTexture, final T pTextureAtlasSource, final int pTileColumns, final int pTileRows, final boolean pTextureRegionBufferManaged) {
-		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pBuildableTexture, 0, 0, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight(), pTileColumns, pTileRows);
-		pBuildableTexture.addTextureAtlasSource(pTextureAtlasSource, new Callback<T>() {
+	public static <T extends ITextureAtlasSource, A extends ITextureAtlas<T>> TiledTextureRegion createTiledFromSource(final BuildableTextureAtlas<T, A> pBuildableTextureAtlas, final T pTextureAtlasSource, final int pTileColumns, final int pTileRows, final boolean pTextureRegionBufferManaged) {
+		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pBuildableTextureAtlas, 0, 0, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight(), pTileColumns, pTileRows);
+		pBuildableTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, new Callback<T>() {
 			@Override
 			public void onCallback(final T pCallbackValue) {
 				tiledTextureRegion.setTexturePosition(pCallbackValue.getTexturePositionX(), pCallbackValue.getTexturePositionY());

@@ -13,14 +13,7 @@
 	
 	<property name="binfile" value="bin/andengine.jar" />
 	
-	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar,
-	../AndEngineAugmentedRealityExtension/lib/andengine.jar,
-	../AndEngineLiveWallpaperExtension/lib/andengine.jar,
-	../AndEngineMODPlayerExtension/lib/andengine.jar,
-	../AndEngineMultiplayerExtension/lib/andengine.jar,
-	../AndEngineMultiTouchExtension/lib/andengine.jar,
-	../AndEnginePhysicsBox2DExtension/lib/andengine.jar,
-	../AndEngineSVGTextureRegionExtension/lib/andengine.jar"/>
+	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar"/>
    	
    	<target name="package">
 		<jar destfile="${binfile}">

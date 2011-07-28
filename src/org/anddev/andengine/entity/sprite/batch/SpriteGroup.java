@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.BaseSprite;
 import org.anddev.andengine.opengl.texture.ITexture;
+import org.anddev.andengine.opengl.texture.region.buffer.SpriteBatchTextureRegionBuffer;
+import org.anddev.andengine.opengl.vertex.SpriteBatchVertexBuffer;
 import org.anddev.andengine.util.SmartList;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -29,6 +31,12 @@ public class SpriteGroup extends SpriteBatch {
 
 	public SpriteGroup(final ITexture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity);
+		/* Make children not be drawn automatically, as we handle the drawing ourself. */
+		this.setChildrenVisible(false);
+	}
+
+	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBuffer pSpriteBatchVertexBuffer, final SpriteBatchTextureRegionBuffer pSpriteBatchTextureRegionBuffer) {
+		super(pTexture, pCapacity, pSpriteBatchVertexBuffer, pSpriteBatchTextureRegionBuffer);
 		/* Make children not be drawn automatically, as we handle the drawing ourself. */
 		this.setChildrenVisible(false);
 	}
@@ -72,9 +80,11 @@ public class SpriteGroup extends SpriteBatch {
 	@Override
 	protected void onDrawSpriteBatch() {
 		final SmartList<IEntity> children = this.mChildren;
-		final int childCount = children.size();
-		for(int i = 0; i < childCount; i++) {
-			super.drawWithoutChecks((BaseSprite)children.get(i));
+		if(children != null) {
+			final int childCount = children.size();
+			for(int i = 0; i < childCount; i++) {
+				super.drawWithoutChecks((BaseSprite)children.get(i));
+			}
 		}
 	}
 

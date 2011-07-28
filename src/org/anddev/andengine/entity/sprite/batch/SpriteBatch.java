@@ -53,10 +53,14 @@ public class SpriteBatch extends Entity {
 	// ===========================================================
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
+		this(pTexture, pCapacity, new SpriteBatchVertexBuffer(pCapacity, GL11.GL_STATIC_DRAW, true), new SpriteBatchTextureRegionBuffer(pCapacity, GL11.GL_STATIC_DRAW, true));
+	}
+	
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBuffer pSpriteBatchVertexBuffer, final SpriteBatchTextureRegionBuffer pSpriteBatchTextureRegionBuffer) {
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
-		this.mSpriteBatchVertexBuffer = new SpriteBatchVertexBuffer(pCapacity, GL11.GL_STATIC_DRAW, true);
-		this.mSpriteBatchTextureRegionBuffer = new SpriteBatchTextureRegionBuffer(pCapacity, GL11.GL_STATIC_DRAW, true);
+		this.mSpriteBatchVertexBuffer = pSpriteBatchVertexBuffer;
+		this.mSpriteBatchTextureRegionBuffer = pSpriteBatchTextureRegionBuffer;
 
 		this.initBlendFunction();
 	}

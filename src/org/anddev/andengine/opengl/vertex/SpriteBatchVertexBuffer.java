@@ -26,7 +26,7 @@ public class SpriteBatchVertexBuffer extends VertexBuffer {
 	// Fields
 	// ===========================================================
 
-	private int mIndex;
+	protected int mIndex;
 
 	// ===========================================================
 	// Constructors

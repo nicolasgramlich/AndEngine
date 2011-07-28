@@ -50,11 +50,11 @@ public abstract class PVRGZTexture extends PVRTexture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract GZIPInputStream getGZIPInputStream() throws IOException;
+	protected abstract InputStream getInputStream() throws IOException;
 
 	@Override
-	protected final InputStream getInputStream() throws IOException {
-		return this.getGZIPInputStream();
+	protected final InputStream onGetInputStream() throws IOException {
+		return new GZIPInputStream(this.getInputStream());
 	}
 
 	// ===========================================================

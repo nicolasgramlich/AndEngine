@@ -69,7 +69,7 @@ public abstract class PVRTexture extends Texture {
 
 		InputStream inputStream = null;
 		try {
-			inputStream = this.getInputStream();
+			inputStream = this.onGetInputStream();
 			this.mPVRTextureHeader = new PVRTextureHeader(StreamUtils.streamToBytes(inputStream, PVRTextureHeader.SIZE));
 		} finally {
 			StreamUtils.close(inputStream);
@@ -112,7 +112,7 @@ public abstract class PVRTexture extends Texture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract InputStream getInputStream() throws IOException;
+	protected abstract InputStream onGetInputStream() throws IOException;
 
 	@Override
 	protected void generateHardwareTextureID(final GL10 pGL) {
@@ -126,7 +126,7 @@ public abstract class PVRTexture extends Texture {
 
 	@Override
 	protected void writeTextureToHardware(final GL10 pGL) throws IOException {
-		final InputStream inputStream = this.getInputStream();
+		final InputStream inputStream = this.onGetInputStream();
 		try {
 			final byte[] data = StreamUtils.streamToBytes(inputStream);
 			final ByteBuffer dataByteBuffer = ByteBuffer.wrap(data);
@@ -344,7 +344,7 @@ public abstract class PVRTexture extends Texture {
 					return pvrTextureFormat;
 				}
 			}
-			throw new IllegalArgumentException("Unexpected " + PVRTextureFormat.class.getSimpleName() + "-ID: '" + pID + "'");
+			throw new IllegalArgumentException("Unexpected " + PVRTextureFormat.class.getSimpleName() + "-ID: '" + pID + "'.");
 		}
 
 		// ===========================================================

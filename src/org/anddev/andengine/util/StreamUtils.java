@@ -88,15 +88,19 @@ public class StreamUtils {
 	 * @throws IOException If any error occurs during the copy.
 	 */
 	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream, final long pByteLimit) throws IOException {
-		final byte[] b = new byte[IO_BUFFER_SIZE];
-		int read;
 		if(pByteLimit < 0) {
+			final byte[] b = new byte[IO_BUFFER_SIZE];
+			int read;
 			while((read = pInputStream.read(b)) != -1) {
 				pOutputStream.write(b, 0, read);
 			}
 		} else {
+			final byte[] b = new byte[IO_BUFFER_SIZE];
+			final int bufferReadLimit = Math.min((int)pByteLimit, IO_BUFFER_SIZE);
 			long pBytesLeftToRead = pByteLimit;
-			while((read = pInputStream.read(b)) != -1) {
+			
+			int read;
+			while((read = pInputStream.read(b, 0, bufferReadLimit)) != -1) {
 				if(pBytesLeftToRead > read) {
 					pOutputStream.write(b, 0, read);
 					pBytesLeftToRead -= read;

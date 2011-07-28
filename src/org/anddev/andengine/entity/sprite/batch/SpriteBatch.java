@@ -160,7 +160,7 @@ public class SpriteBatch extends Entity {
 		this.mDirty = true;
 	}
 	
-	protected void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight) {
+	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -182,7 +182,7 @@ public class SpriteBatch extends Entity {
 		this.mDirty = true;
 	}
 	
-	protected void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation) {
+	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation) {
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pRotation);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -204,7 +204,7 @@ public class SpriteBatch extends Entity {
 		this.mDirty = true;
 	}
 	
-	protected void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY) {
+	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY) {
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pScaleX, pScaleY);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -226,7 +226,7 @@ public class SpriteBatch extends Entity {
 		this.mDirty = true;
 	}
 	
-	protected void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY) {
+	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY) {
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -248,7 +248,7 @@ public class SpriteBatch extends Entity {
 		this.mDirty = true;
 	}
 	
-	protected void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
+	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
 		this.mSpriteBatchVertexBuffer.addInner(pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -275,11 +275,11 @@ public class SpriteBatch extends Entity {
 			this.mSpriteBatchTextureRegionBuffer.add(textureRegion);
 	
 			this.mIndex++;
-			this.mDirty = true;
 		}
+		this.mDirty = true;
 	}
 	
-	protected void drawWithoutChecks(final BaseSprite pBaseSprite) {
+	public void drawWithoutChecks(final BaseSprite pBaseSprite) {
 		if(pBaseSprite.isVisible()) {
 			final BaseTextureRegion textureRegion = pBaseSprite.getTextureRegion();
 	
@@ -292,8 +292,8 @@ public class SpriteBatch extends Entity {
 			this.mSpriteBatchTextureRegionBuffer.add(textureRegion);
 	
 			this.mIndex++;
-			this.mDirty = true;
 		}
+		this.mDirty = true;
 	}
 
 	public void submit() {
@@ -306,6 +306,9 @@ public class SpriteBatch extends Entity {
 		this.mSpriteBatchVertexBuffer.setIndex(0);
 		this.mSpriteBatchTextureRegionBuffer.setIndex(0);
 		this.mDirty = false;
+		
+		this.mDirty = (this.mIndex > 0) ? true : false;
+        this.mIndex = 0;
 	}
 
 	private void initBlendFunction() {

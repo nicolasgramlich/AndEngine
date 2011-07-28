@@ -16,7 +16,7 @@ import org.anddev.andengine.util.SmartList;
  * @author Nicolas Gramlich
  * @since 12:10:35 - 15.06.2011
  */
-public class SpriteGroup extends SpriteBatch {
+public class SpriteGroup extends DynamicSpriteBatch {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -56,9 +56,7 @@ public class SpriteGroup extends SpriteBatch {
 	@Deprecated
 	public void attachChild(final IEntity pEntity) throws IllegalArgumentException {
 		if(pEntity instanceof BaseSprite) {
-			this.assertCapacity();
-			this.assertTexture(((BaseSprite)pEntity).getTextureRegion());
-			super.attachChild(pEntity);
+			this.attachChild((BaseSprite)pEntity);
 		} else {
 			throw new IllegalArgumentException("A SpriteGroup can only handle children of type BaseSprite or subclasses of BaseSprite, like Sprite, TiledSprite or AnimatedSprite.");
 		}
@@ -78,13 +76,16 @@ public class SpriteGroup extends SpriteBatch {
 	}
 
 	@Override
-	protected void onDrawSpriteBatch() {
+	protected boolean onUpdateSpriteBatch() {
 		final SmartList<IEntity> children = this.mChildren;
-		if(children != null) {
+		if(children == null) {
+			return false;
+		} else {
 			final int childCount = children.size();
 			for(int i = 0; i < childCount; i++) {
 				super.drawWithoutChecks((BaseSprite)children.get(i));
 			}
+			return true;
 		}
 	}
 

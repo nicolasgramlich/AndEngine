@@ -1,6 +1,5 @@
 package org.anddev.andengine.opengl.texture.compressed.pvr;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -64,9 +63,8 @@ public abstract class PVRCCZTexture extends PVRTexture {
 		final InputStream inputStream = this.getInputStream();
 
 		final CCZHeader cczHeader = new CCZHeader(StreamUtils.streamToBytes(inputStream, CCZHeader.SIZE));
-		final byte[] compressed = StreamUtils.streamToBytes(inputStream);
 
-		return cczHeader.getCCZCompressionFormat().wrap(new ByteArrayInputStream(compressed), cczHeader.getUncompressedSize());
+		return cczHeader.getCCZCompressionFormat().wrap(inputStream, cczHeader.getUncompressedSize());
 	}
 
 	// ===========================================================
@@ -111,8 +109,8 @@ public abstract class PVRCCZTexture extends PVRTexture {
 			if(!ArrayUtils.equals(pData, 0, CCZHeader.MAGIC_IDENTIFIER, 0, CCZHeader.MAGIC_IDENTIFIER.length)) {
 				throw new IllegalArgumentException("Invalid " + this.getClass().getSimpleName() + "!");
 			}
-			
-			// TODO What about the version, are we supporting '1' and/or '2'?
+
+			// TODO Check the version?
 
 			this.mCCZCompressionFormat = CCZCompressionFormat.fromID(this.getCCZCompressionFormatID());
 		}
@@ -191,7 +189,7 @@ public abstract class PVRCCZTexture extends PVRTexture {
 				case NONE:
 				case BZIP2:
 				default:
-						throw new IllegalArgumentException("Unexpected " + CCZCompressionFormat.class.getSimpleName() + ": '" + this + "'.");
+					throw new IllegalArgumentException("Unexpected " + CCZCompressionFormat.class.getSimpleName() + ": '" + this + "'.");
 			}
 		}
 

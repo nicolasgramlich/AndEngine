@@ -421,29 +421,41 @@ public class GLHelper {
 	 * Except that difference, same as: {@link GLUtils#texSubImage2D(int, int, int, int, Bitmap, int, int)}</br>
 	 * </br>
 	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
+	 * @param pBorder
+	 */
+	public static void glTexImage2D(final GL10 pGL, final int pTarget, final int pLevel, final Bitmap pBitmap, final int pBorder, final PixelFormat pPixelFormat) {
+		final Buffer pixelBuffer = GLHelper.getPixels(pBitmap, pPixelFormat);
+
+		pGL.glTexImage2D(pTarget, pLevel, pPixelFormat.getGLFormat(), pBitmap.getWidth(), pBitmap.getHeight(), pBorder, pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
+	}
+
+	/**
+	 * <b>Note:</b> does not pre-multiply the alpha channel!</br>
+	 * Except that difference, same as: {@link GLUtils#texSubImage2D(int, int, int, int, Bitmap, int, int)}</br>
+	 * </br>
+	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 */
 	public static void glTexSubImage2D(final GL10 pGL, final int pTarget, final int pLevel, final int pXOffset, final int pYOffset, final Bitmap pBitmap, final PixelFormat pPixelFormat) {
-		final int[] pixelsARGB_8888 = GLHelper.getPixelsARGB_8888(pBitmap);
-
-		final Buffer pixelBuffer;
-		switch(pPixelFormat) {
-			case RGB_565:
-				pixelBuffer = ByteBuffer.wrap(GLHelper.convertARGB_8888toRGB_565(pixelsARGB_8888));
-				break;
-			case RGBA_8888:
-				pixelBuffer = IntBuffer.wrap(GLHelper.convertARGB_8888toRGBA_8888(pixelsARGB_8888));
-				break;
-			case RGBA_4444:
-				pixelBuffer = ByteBuffer.wrap(GLHelper.convertARGB_8888toARGB_4444(pixelsARGB_8888));
-				break;
-			case A_8:
-				pixelBuffer = ByteBuffer.wrap(GLHelper.convertARGB_8888toA_8(pixelsARGB_8888));
-				break;
-			default:
-				throw new IllegalArgumentException("Unexpected pTextureFormat: '" + pPixelFormat + "'.");
-		}
+		final Buffer pixelBuffer = GLHelper.getPixels(pBitmap, pPixelFormat);
 
 		pGL.glTexSubImage2D(pTarget, pLevel, pXOffset, pYOffset, pBitmap.getWidth(), pBitmap.getHeight(), pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
+	}
+
+	private static Buffer getPixels(final Bitmap pBitmap, final PixelFormat pPixelFormat) {
+		final int[] pixelsARGB_8888 = GLHelper.getPixelsARGB_8888(pBitmap);
+
+		switch(pPixelFormat) {
+			case RGB_565:
+				return ByteBuffer.wrap(GLHelper.convertARGB_8888toRGB_565(pixelsARGB_8888));
+			case RGBA_8888:
+				return IntBuffer.wrap(GLHelper.convertARGB_8888toRGBA_8888(pixelsARGB_8888));
+			case RGBA_4444:
+				return ByteBuffer.wrap(GLHelper.convertARGB_8888toARGB_4444(pixelsARGB_8888));
+			case A_8:
+				return ByteBuffer.wrap(GLHelper.convertARGB_8888toA_8(pixelsARGB_8888));
+			default:
+				throw new IllegalArgumentException("Unexpected " + PixelFormat.class.getSimpleName() + ": '" + pPixelFormat + "'.");
+		}
 	}
 
 	private static int[] convertARGB_8888toRGBA_8888(final int[] pPixelsARGB_8888) {

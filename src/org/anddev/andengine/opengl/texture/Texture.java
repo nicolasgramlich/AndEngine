@@ -187,7 +187,7 @@ public abstract class Texture implements ITexture {
 		RGB_565(GL10.GL_RGB, GL10.GL_UNSIGNED_SHORT_5_6_5, 16),
 		A_8(GL10.GL_ALPHA, GL10.GL_UNSIGNED_BYTE, 8),
 		I_8(GL10.GL_LUMINANCE, GL10.GL_UNSIGNED_BYTE, 8),
-		AI_8(GL10.GL_LUMINANCE_ALPHA, GL10.GL_UNSIGNED_BYTE, 16);
+		AI_88(GL10.GL_LUMINANCE_ALPHA, GL10.GL_UNSIGNED_BYTE, 16);
 
 		// ===========================================================
 		// Constants

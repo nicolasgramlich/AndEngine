@@ -1,9 +1,9 @@
-package org.anddev.andengine.opengl.texture.buildable.builder;
+package org.anddev.andengine.opengl.texture.atlas.buildable.builder;
 
 import java.util.ArrayList;
 
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
-import org.anddev.andengine.opengl.texture.buildable.BuildableTextureAtlas.TextureAtlasSourceWithWithLocationCallback;
+import org.anddev.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas.TextureAtlasSourceWithWithLocationCallback;
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 
 /**

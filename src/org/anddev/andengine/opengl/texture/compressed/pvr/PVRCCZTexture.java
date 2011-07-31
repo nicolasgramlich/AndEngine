@@ -56,10 +56,8 @@ public abstract class PVRCCZTexture extends PVRTexture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract InputStream getInputStream() throws IOException;
-
 	@Override
-	protected final InputStream onGetInputStream() throws IOException {
+	protected final InputStream getInputStream() throws IOException {
 		final InputStream inputStream = this.getInputStream();
 
 		final CCZHeader cczHeader = new CCZHeader(StreamUtils.streamToBytes(inputStream, CCZHeader.SIZE));

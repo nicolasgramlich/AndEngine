@@ -1,9 +1,10 @@
 package org.anddev.andengine.opengl.texture.region;
 
+import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.util.Library;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -18,21 +19,31 @@ public class TextureRegionLibrary extends Library<BaseTextureRegion> {
 	// Fields
 	// ===========================================================
 
+	private final ITexture mTexture;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TextureRegionLibrary() {
+	public TextureRegionLibrary(final ITexture pTexture) {
 		super();
+
+		this.mTexture = pTexture;
 	}
 
-	public TextureRegionLibrary(final int pInitialCapacity) {
+	public TextureRegionLibrary(final ITexture pTexture, final int pInitialCapacity) {
 		super(pInitialCapacity);
+
+		this.mTexture = pTexture;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public ITexture getTexture() {
+		return mTexture;
+	}
 
 	@Override
 	public TextureRegion get(final int pID) {

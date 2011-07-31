@@ -7,6 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.TextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
@@ -218,59 +219,4 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static enum BitmapTextureFormat {
-		// ===========================================================
-		// Elements
-		// ===========================================================
-
-		RGBA_4444( Config.ARGB_4444, PixelFormat.RGBA_4444), // TODO
-		RGBA_8888(Config.ARGB_8888, PixelFormat.RGBA_8888),
-		RGB_565( Config.RGB_565, PixelFormat.RGB_565),
-		A_8( Config.ALPHA_8, PixelFormat.A_8); // TODO
-
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		private final Config mBitmapConfig;
-		private final PixelFormat mPixelFormat;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		private BitmapTextureFormat(final Config pBitmapConfig, final PixelFormat pPixelFormat) {
-			this.mBitmapConfig = pBitmapConfig;
-			this.mPixelFormat = pPixelFormat;
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		public Config getBitmapConfig() {
-			return this.mBitmapConfig;
-		}
-
-		public PixelFormat getPixelFormat() {
-			return this.mPixelFormat;
-		}
-
-		// ===========================================================
-		// Methods from SuperClass/Interfaces
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

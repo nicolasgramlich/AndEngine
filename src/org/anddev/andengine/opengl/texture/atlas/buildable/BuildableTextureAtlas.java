@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.texture.buildable;
+package org.anddev.andengine.opengl.texture.atlas.buildable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,8 +8,8 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.buildable.builder.ITextureBuilder;
-import org.anddev.andengine.opengl.texture.buildable.builder.ITextureBuilder.TextureAtlasSourcePackingException;
+import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureBuilder;
+import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureBuilder.TextureAtlasSourcePackingException;
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.util.Callback;
 

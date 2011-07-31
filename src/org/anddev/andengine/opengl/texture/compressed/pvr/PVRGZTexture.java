@@ -1,7 +1,6 @@
 package org.anddev.andengine.opengl.texture.compressed.pvr;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
 import org.anddev.andengine.opengl.texture.TextureOptions;
@@ -50,11 +49,9 @@ public abstract class PVRGZTexture extends PVRTexture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract InputStream getInputStream() throws IOException;
-
 	@Override
-	protected final InputStream onGetInputStream() throws IOException {
-		return new GZIPInputStream(this.getInputStream());
+	protected GZIPInputStream getInputStream() throws IOException {
+		return new GZIPInputStream(this.onGetInputStream());
 	}
 
 	// ===========================================================

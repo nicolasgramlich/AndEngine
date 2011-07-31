@@ -1,7 +1,5 @@
 package org.anddev.andengine.opengl.texture.compressed.pvr;
 
-import static org.anddev.andengine.util.constants.DataConstants.BYTES_PER_INT;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -16,6 +14,7 @@ import org.anddev.andengine.util.ArrayUtils;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.StreamUtils;
+import org.anddev.andengine.util.constants.DataConstants;
 
 /**
  * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes: glPixelStorei(GL_UNPACK_ALIGNMENT,1);"
@@ -69,7 +68,7 @@ public abstract class PVRTexture extends Texture {
 
 		InputStream inputStream = null;
 		try {
-			inputStream = this.onGetInputStream();
+			inputStream = this.getInputStream();
 			this.mPVRTextureHeader = new PVRTextureHeader(StreamUtils.streamToBytes(inputStream, PVRTextureHeader.SIZE));
 		} finally {
 			StreamUtils.close(inputStream);
@@ -114,6 +113,10 @@ public abstract class PVRTexture extends Texture {
 
 	protected abstract InputStream onGetInputStream() throws IOException;
 
+	protected InputStream getInputStream() throws IOException {
+		return this.onGetInputStream();
+	}
+
 	@Override
 	protected void generateHardwareTextureID(final GL10 pGL) {
 		//		// TODO
@@ -126,7 +129,7 @@ public abstract class PVRTexture extends Texture {
 
 	@Override
 	protected void writeTextureToHardware(final GL10 pGL) throws IOException {
-		final InputStream inputStream = this.onGetInputStream();
+		final InputStream inputStream = this.getInputStream();
 		try {
 			final byte[] data = StreamUtils.streamToBytes(inputStream);
 			final ByteBuffer dataByteBuffer = ByteBuffer.wrap(data);
@@ -191,7 +194,7 @@ public abstract class PVRTexture extends Texture {
 			(byte)'!'
 		};
 
-		public static final int SIZE = 13 * BYTES_PER_INT;
+		public static final int SIZE = 13 * DataConstants.BYTES_PER_INT;
 		private static final int FORMAT_FLAG_MASK = 0x0FF;
 
 		// ===========================================================
@@ -211,11 +214,11 @@ public abstract class PVRTexture extends Texture {
 			this.mDataByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
 			/* Check magic bytes. */
-			if(!ArrayUtils.equals(pData, 11 * BYTES_PER_INT, MAGIC_IDENTIFIER, 0, MAGIC_IDENTIFIER.length)) {
+			if(!ArrayUtils.equals(pData, 11 * DataConstants.BYTES_PER_INT, PVRTextureHeader.MAGIC_IDENTIFIER, 0, PVRTextureHeader.MAGIC_IDENTIFIER.length)) {
 				throw new IllegalArgumentException("Invalid " + this.getClass().getSimpleName() + "!");
 			}
 
-			this.mPVRTextureFormat = PVRTextureFormat.fromID(this.getFlags() & FORMAT_FLAG_MASK);
+			this.mPVRTextureFormat = PVRTextureFormat.fromID(this.getFlags() & PVRTextureHeader.FORMAT_FLAG_MASK);
 		}
 
 		// ===========================================================
@@ -227,47 +230,47 @@ public abstract class PVRTexture extends Texture {
 		}
 
 		public int headerLength() {
-			return this.mDataByteBuffer.getInt(0 * BYTES_PER_INT); // TODO Constants
+			return this.mDataByteBuffer.getInt(0 * DataConstants.BYTES_PER_INT); // TODO Constants
 		}
 
 		public int getHeight() {
-			return this.mDataByteBuffer.getInt(1 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(1 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getWidth() {
-			return this.mDataByteBuffer.getInt(2 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(2 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getNumMipmaps() {
-			return this.mDataByteBuffer.getInt(3 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(3 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getFlags() {
-			return this.mDataByteBuffer.getInt(4 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(4 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getDataLength() {
-			return this.mDataByteBuffer.getInt(5 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(5 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getBitsPerPixel() {
-			return this.mDataByteBuffer.getInt(6 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(6 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getBitmaskRed() {
-			return this.mDataByteBuffer.getInt(7 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(7 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getBitmaskGreen() {
-			return this.mDataByteBuffer.getInt(8 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(8 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getBitmaskBlue() {
-			return this.mDataByteBuffer.getInt(9 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(9 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int getBitmaskAlpha() {
-			return this.mDataByteBuffer.getInt(10 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(10 * DataConstants.BYTES_PER_INT);
 		}
 
 		public boolean hasAlpha() {
@@ -275,11 +278,11 @@ public abstract class PVRTexture extends Texture {
 		}
 
 		public int getPVRTag() {
-			return this.mDataByteBuffer.getInt(11 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(11 * DataConstants.BYTES_PER_INT);
 		}
 
 		public int numSurfs() {
-			return this.mDataByteBuffer.getInt(12 * BYTES_PER_INT);
+			return this.mDataByteBuffer.getInt(12 * DataConstants.BYTES_PER_INT);
 		}
 
 		// ===========================================================
@@ -307,7 +310,7 @@ public abstract class PVRTexture extends Texture {
 		//		RGB_555( 0x14, ...),
 		//		RGB_888( 0x15, ...),
 		I_8(0x16, false, PixelFormat.I_8),
-		AI_88(0x17, false, PixelFormat.AI_8),
+		AI_88(0x17, false, PixelFormat.AI_88),
 		//		PVRTC_2(0x18, GL10.GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG, true, TextureFormat.???),
 		//		PVRTC_4(0x19, GL10.GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, true, TextureFormat.???),
 		//		BGRA_8888(0x1A, GL10.GL_RGBA, TextureFormat.???),
@@ -345,6 +348,15 @@ public abstract class PVRTexture extends Texture {
 				}
 			}
 			throw new IllegalArgumentException("Unexpected " + PVRTextureFormat.class.getSimpleName() + "-ID: '" + pID + "'.");
+		}
+
+		public static PVRTextureFormat fromPixelFormat(final PixelFormat pPixelFormat) throws IllegalArgumentException {
+			switch(pPixelFormat) {
+				case RGBA_8888:
+					return PVRTextureFormat.RGBA_8888;
+				default:
+					throw new IllegalArgumentException("Unsupported " + PixelFormat.class.getName() + ": '" + pPixelFormat + "'.");
+			}
 		}
 
 		// ===========================================================

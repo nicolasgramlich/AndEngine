@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.texture.buildable;
+package org.anddev.andengine.opengl.texture.atlas.buildable;
 
 
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;

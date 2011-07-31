@@ -58,7 +58,7 @@ public abstract class PVRCCZTexture extends PVRTexture {
 
 	@Override
 	protected final InputStream getInputStream() throws IOException {
-		final InputStream inputStream = this.getInputStream();
+		final InputStream inputStream = this.onGetInputStream();
 
 		final CCZHeader cczHeader = new CCZHeader(StreamUtils.streamToBytes(inputStream, CCZHeader.SIZE));
 

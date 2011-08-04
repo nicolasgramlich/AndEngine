@@ -83,7 +83,7 @@ public class LevelStatsDBConnector {
 					final HttpPost httpPost = new HttpPost(LevelStatsDBConnector.this.mSubmitURL);
 
 					/* Append POST data. */
-					final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+					final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
 
 					nameValuePairs.add(new BasicNameValuePair("level_id", String.valueOf(pLevelID)));
 					nameValuePairs.add(new BasicNameValuePair("solved", (pSolved) ? "1" : "0"));

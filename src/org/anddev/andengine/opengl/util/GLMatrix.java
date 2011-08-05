@@ -47,6 +47,10 @@ public class GLMatrix {
 		return this;
 	}
 
+	public void setToResult(final GLMatrix pGLMatrixA, final GLMatrix pGLMatrixB) {
+		Matrix.multiplyMM(this.mValues, 0, pGLMatrixA.mValues, 0, pGLMatrixB.mValues, 0);
+	}
+
 	public void translate(final float pX, final float pY, final float pZ) {
 		Matrix.translateM(this.mValues, 0, pX, pY, pZ);
 	}

@@ -32,6 +32,8 @@ public class GLMatrixStack {
 	private MatrixMode mMatrixMode;
 	private Stack<GLMatrix> mCurrentGLMatrixStack = this.mModelViewGLMatrixStack;
 
+	private final GLMatrix mModelViewProjectionMatrix = new GLMatrix();
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -66,14 +68,14 @@ public class GLMatrixStack {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void reset() {
 		this.setMatrixMode(MatrixMode.MODELVIEW);
 		while(this.mModelViewGLMatrixStack.size() > 1) {
 			this.popMatrix();
 		}
 		this.mModelViewGLMatrixStack.peek().setToIdentity();
-		
+
 		this.setMatrixMode(MatrixMode.MODELVIEW);
 		while(this.mProjectionGLMatrixStack.size() > 1) {
 			this.popMatrix();
@@ -105,7 +107,7 @@ public class GLMatrixStack {
 		this.mCurrentGLMatrixStack.peek().rotate(pAngle, pX, pY, pZ);
 	}
 
-	public void scale(float pScaleX, float pScaleY, int pScaleZ) {
+	public void scale(final float pScaleX, final float pScaleY, final int pScaleZ) {
 		this.mCurrentGLMatrixStack.peek().scale(pScaleX, pScaleY, pScaleZ);
 	}
 
@@ -119,6 +121,11 @@ public class GLMatrixStack {
 
 	public GLMatrix getProjectionMatrix() {
 		return this.mProjectionGLMatrixStack.peek();
+	}
+
+	public GLMatrix getModelViewProjectionMatrix() {
+		this.mModelViewProjectionMatrix.setToResult(this.mProjectionGLMatrixStack.peek(), this.mModelViewGLMatrixStack.peek());
+		return this.mModelViewProjectionMatrix;
 	}
 
 	// ===========================================================

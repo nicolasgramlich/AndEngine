@@ -277,7 +277,15 @@ public class GLHelper {
 	public static void switchToMatrix(final MatrixMode pMatrixMode) {
 		GLHelper.sGLMatrixStack.setMatrixMode(pMatrixMode);
 	}
-	
+
+	public static GLMatrix getProjectionMatrix() {
+		return GLHelper.sGLMatrixStack.getProjectionMatrix();
+	}
+
+	public static GLMatrix getModelViewMatrix() {
+		return GLHelper.sGLMatrixStack.getModelViewMatrix();
+	}
+
 	public static GLMatrix getModelViewProjectionMatrix() {
 		return GLHelper.sGLMatrixStack.getModelViewProjectionMatrix();
 	}

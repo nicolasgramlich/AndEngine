@@ -1,8 +1,5 @@
 package org.anddev.andengine.engine;
 
-import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
-
 import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.audio.music.MusicManager;
 import org.anddev.andengine.audio.sound.SoundFactory;
@@ -22,7 +19,6 @@ import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.sensor.SensorDelay;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
@@ -495,28 +491,26 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.getCamera().onUpdate(pSecondsElapsed);
 	}
 
-	public void onDrawFrame(final GL10 pGL) throws InterruptedException {
+	public void onDrawFrame() throws InterruptedException {
 		final State threadLocker = this.mThreadLocker;
 
 		threadLocker.waitUntilCanDraw();
 
-		this.mTextureManager.updateTextures(pGL);
-		this.mFontManager.updateFonts(pGL);
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			this.mBufferObjectManager.updateBufferObjects((GL11) pGL);
-		}
+		this.mTextureManager.updateTextures();
+		this.mFontManager.updateFonts();
+		this.mBufferObjectManager.updateBufferObjects();
 
-		this.onDrawScene(pGL);
+		this.onDrawScene();
 
 		threadLocker.notifyCanUpdate();
 	}
 
-	protected void onDrawScene(final GL10 pGL) {
+	protected void onDrawScene() {
 		final Camera camera = this.getCamera();
 
-		this.mScene.onDraw(pGL, camera);
+		this.mScene.onDraw(camera);
 
-		camera.onDrawHUD(pGL);
+		camera.onDrawHUD();
 	}
 
 	private long getNanosecondsElapsed() {

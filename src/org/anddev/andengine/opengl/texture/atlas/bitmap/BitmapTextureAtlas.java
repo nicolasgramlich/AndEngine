@@ -141,7 +141,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	// ===========================================================
 
 	@Override
-	protected void writeTextureToHardware(final GL10 pGL) {
+	protected void writeTextureToHardware() {
 		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final int glFormat = this.mPixelFormat.getGLFormat();
 		final int glType = this.mPixelFormat.getGLType();
@@ -161,7 +161,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 					if(preMultipyAlpha) {
 						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, glFormat, glType);
 					} else {
-						GLHelper.glTexSubImage2D(pGL, GL10.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
+						GLHelper.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
 					}
 
 					bitmap.recycle();
@@ -201,8 +201,8 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	}
 
 	@Override
-	protected void bindTextureOnHardware(final GL10 pGL) {
-		super.bindTextureOnHardware(pGL);
+	protected void bindTextureOnHardware() {
+		super.bindTextureOnHardware();
 
 		this.sendPlaceholderBitmapToHardware();
 	}

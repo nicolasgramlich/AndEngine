@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.entity.modifier.EntityModifierList;
 import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.Transformation;
@@ -870,9 +869,9 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public final void onDraw(final GL10 pGL, final Camera pCamera) {
+	public final void onDraw(final Camera pCamera) {
 		if(this.mVisible) {
-			this.onManagedDraw(pGL, pCamera);
+			this.onManagedDraw(pCamera);
 		}
 	}
 
@@ -918,10 +917,9 @@ public class Entity implements IEntity {
 	// ===========================================================
 
 	/**
-	 * @param pGL the OpenGL GL1.0 Context (potentially higher than 1.0) to use for drawing.
 	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
 	 */
-	protected void doDraw(final GL10 pGL, final Camera pCamera) {
+	protected void doDraw(final Camera pCamera) {
 
 	}
 
@@ -937,31 +935,31 @@ public class Entity implements IEntity {
 		this.mUpdateHandlers = new UpdateHandlerList(Entity.UPDATEHANDLERS_CAPACITY_DEFAULT);
 	}
 
-	protected void onApplyTransformations(final GL10 pGL) {
+	protected void onApplyTransformations() {
 		/* Translation. */
-		this.applyTranslation(pGL);
+		this.applyTranslation();
 
 		/* Rotation. */
-		this.applyRotation(pGL);
+		this.applyRotation();
 
 		/* Scale. */
-		this.applyScale(pGL);
+		this.applyScale();
 	}
 
-	protected void applyTranslation(final GL10 pGL) {
-		pGL.glTranslatef(this.mX, this.mY, 0);
+	protected void applyTranslation() {
+		GLHelper.glTranslatef(this.mX, this.mY, 0);
 	}
 
-	protected void applyRotation(final GL10 pGL) {
+	protected void applyRotation() {
 		final float rotation = this.mRotation;
 
 		if(rotation != 0) {
 			final float rotationCenterX = this.mRotationCenterX;
 			final float rotationCenterY = this.mRotationCenterY;
 
-			pGL.glTranslatef(rotationCenterX, rotationCenterY, 0);
-			pGL.glRotatef(rotation, 0, 0, 1);
-			pGL.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
+			GLHelper.glTranslatef(rotationCenterX, rotationCenterY, 0);
+			GLHelper.glRotatef(rotation, 0, 0, 1);
+			GLHelper.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
 
 			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
 			 * In that case the last glTranslatef of the rotation and the first glTranslatef of the scale is superfluous.
@@ -969,7 +967,7 @@ public class Entity implements IEntity {
 		}
 	}
 
-	protected void applyScale(final GL10 pGL) {
+	protected void applyScale() {
 		final float scaleX = this.mScaleX;
 		final float scaleY = this.mScaleY;
 
@@ -977,35 +975,35 @@ public class Entity implements IEntity {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;
 
-			pGL.glTranslatef(scaleCenterX, scaleCenterY, 0);
-			pGL.glScalef(scaleX, scaleY, 1);
-			pGL.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
+			GLHelper.glTranslatef(scaleCenterX, scaleCenterY, 0);
+			GLHelper.glScalef(scaleX, scaleY, 1);
+			GLHelper.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
 		}
 	}
 
-	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
-		pGL.glPushMatrix();
+	protected void onManagedDraw(final Camera pCamera) {
+		GLHelper.glPushMatrix();
 		{
-			this.onApplyTransformations(pGL);
+			this.onApplyTransformations();
 
-			this.doDraw(pGL, pCamera);
+			this.doDraw(pCamera);
 
-			this.onDrawChildren(pGL, pCamera);
+			this.onDrawChildren(pCamera);
 		}
-		pGL.glPopMatrix();
+		GLHelper.glPopMatrix();
 	}
 
-	protected void onDrawChildren(final GL10 pGL, final Camera pCamera) {
+	protected void onDrawChildren(final Camera pCamera) {
 		if(this.mChildren != null && this.mChildrenVisible) {
-			this.onManagedDrawChildren(pGL, pCamera);
+			this.onManagedDrawChildren(pCamera);
 		}
 	}
 
-	public void onManagedDrawChildren(final GL10 pGL, final Camera pCamera) {
+	public void onManagedDrawChildren(final Camera pCamera) {
 		final ArrayList<IEntity> children = this.mChildren;
 		final int childCount = children.size();
 		for(int i = 0; i < childCount; i++) {
-			children.get(i).onDraw(pGL, pCamera);
+			children.get(i).onDraw(pCamera);
 		}
 	}
 

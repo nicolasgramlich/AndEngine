@@ -1,0 +1,4 @@
+- Move glClearColor to Engine or SurfaceView
+	- Introduce Engine.setClearColor(...)/enableClearColor(boolean)
+- Maybe introduce Color3/4 objects
+	- Add Color3/4Pool

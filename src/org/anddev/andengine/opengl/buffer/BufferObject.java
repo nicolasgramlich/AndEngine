@@ -1,9 +1,9 @@
 package org.anddev.andengine.opengl.buffer;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
+
+import android.opengl.GLES20;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -95,20 +95,27 @@ public abstract class BufferObject {
 	// Methods
 	// ===========================================================
 
-	public void selectOnHardware(final GL11 pGL11) {
+	public void selectOnHardware() { // TODO Rename to bind, parameter: ShaderProgram
 		final int hardwareBufferID = this.mHardwareBufferID;
 		if(hardwareBufferID == -1) {
 			return;
 		}
 
-		GLHelper.bindBuffer(pGL11, hardwareBufferID); // TODO Does this always need to be bound, or are just for buffers of the same 'type'(texture/vertex)?
+		GLHelper.bindBuffer(hardwareBufferID); // TODO Does this always need to be bound, or are just for buffers of the same 'type'(texture/vertex)?
 
 		if(this.mHardwareBufferNeedsUpdate) {
 			this.mHardwareBufferNeedsUpdate = false;
 			synchronized(this) {
-				GLHelper.bufferData(pGL11, this.mFloatBuffer.mByteBuffer, this.mDrawType);
+				GLHelper.bufferData(this.mFloatBuffer.mByteBuffer, this.mDrawType);
 			}
 		}
+		
+		// TODO pShader.enableVertexAttributes
+		// TODO pShader.setVertexAttributes
+	}
+	
+	public void unbind() { // TODO Use, parameter: ShaderProgram
+//		TODO Use: pShader.disableVertexAttributes
 	}
 
 	public void loadToActiveBufferObjectManager() {
@@ -119,25 +126,25 @@ public abstract class BufferObject {
 		BufferObjectManager.getActiveInstance().unloadBufferObject(this);
 	}
 
-	public void loadToHardware(final GL11 pGL11) {
-		this.mHardwareBufferID = this.generateHardwareBufferID(pGL11);
+	public void loadToHardware() {
+		this.mHardwareBufferID = this.generateHardwareBufferID();
 
 		this.mLoadedToHardware = true;
 	}
 
-	public void unloadFromHardware(final GL11 pGL11) {
-		this.deleteBufferOnHardware(pGL11);
+	public void unloadFromHardware() {
+		this.deleteBufferOnHardware();
 
 		this.mHardwareBufferID = -1;
 		this.mLoadedToHardware = false;
 	}
 
-	private void deleteBufferOnHardware(final GL11 pGL11) {
-		GLHelper.deleteBuffer(pGL11, this.mHardwareBufferID);
+	private void deleteBufferOnHardware() {
+		GLHelper.deleteBuffer(this.mHardwareBufferID);
 	}
 
-	private int generateHardwareBufferID(final GL11 pGL11) {
-		pGL11.glGenBuffers(1, HARDWAREBUFFERID_FETCHER, 0);
+	private int generateHardwareBufferID() {
+		GLES20.glGenBuffers(1, HARDWAREBUFFERID_FETCHER, 0);
 
 		return HARDWAREBUFFERID_FETCHER[0];
 	}

@@ -3,8 +3,6 @@ package org.anddev.andengine.entity.util;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.util.ScreenGrabber.IScreenGrabberCallback;
@@ -49,8 +47,8 @@ public class ScreenCapture extends Entity implements IScreenGrabberCallback {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
-		this.mScreenGrabber.onManagedDraw(pGL, pCamera);
+	protected void onManagedDraw(final Camera pCamera) {
+		this.mScreenGrabber.onManagedDraw(pCamera);
 	}
 
 	@Override

@@ -7,6 +7,8 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.util.GLHelper;
 
+import android.opengl.GLES20;
+
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -101,19 +103,19 @@ public abstract class Texture implements ITexture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void writeTextureToHardware(final GL10 pGL) throws IOException;
+	protected abstract void writeTextureToHardware() throws IOException;
 
 	@Override
-	public void loadToHardware(final GL10 pGL) throws IOException {
-		GLHelper.enableTextures(pGL);
+	public void loadToHardware() throws IOException {
+		GLHelper.enableTextures();
 
-		this.generateHardwareTextureID(pGL);
+		this.generateHardwareTextureID();
 
-		this.bindTextureOnHardware(pGL);
+		this.bindTextureOnHardware();
 
-		this.applyTextureOptions(pGL);
+		this.applyTextureOptions();
 
-		this.writeTextureToHardware(pGL);
+		this.writeTextureToHardware();
 
 		this.mUpdateOnHardwareNeeded = false;
 		this.mLoadedToHardware = true;
@@ -124,10 +126,10 @@ public abstract class Texture implements ITexture {
 	}
 
 	@Override
-	public void unloadFromHardware(final GL10 pGL) {
-		GLHelper.enableTextures(pGL);
+	public void unloadFromHardware() {
+		GLHelper.enableTextures();
 
-		this.deleteTextureOnHardware(pGL);
+		this.deleteTextureOnHardware();
 
 		this.mHardwareTextureID = -1;
 
@@ -139,34 +141,34 @@ public abstract class Texture implements ITexture {
 	}
 
 	@Override
-	public void reloadToHardware(final GL10 pGL) throws IOException {
-		this.unloadFromHardware(pGL);
-		this.loadToHardware(pGL);
+	public void reloadToHardware() throws IOException {
+		this.unloadFromHardware();
+		this.loadToHardware();
 	}
 
 	@Override
-	public void bind(final GL10 pGL) {
-		GLHelper.bindTexture(pGL, this.mHardwareTextureID);
+	public void bind() {
+		GLHelper.bindTexture(this.mHardwareTextureID);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	protected void applyTextureOptions(final GL10 pGL) {
-		this.mTextureOptions.apply(pGL);
+	protected void applyTextureOptions() {
+		this.mTextureOptions.apply();
 	}
 
-	protected void bindTextureOnHardware(final GL10 pGL) {
-		GLHelper.forceBindTexture(pGL, this.mHardwareTextureID);
+	protected void bindTextureOnHardware() {
+		GLHelper.forceBindTexture(this.mHardwareTextureID);
 	}
 
-	protected void deleteTextureOnHardware(final GL10 pGL) {
-		GLHelper.deleteTexture(pGL, this.mHardwareTextureID);
+	protected void deleteTextureOnHardware() {
+		GLHelper.deleteTexture(this.mHardwareTextureID);
 	}
 
-	protected void generateHardwareTextureID(final GL10 pGL) {
-		pGL.glGenTextures(1, Texture.HARDWARETEXTUREID_FETCHER, 0);
+	protected void generateHardwareTextureID() {
+		GLES20.glGenTextures(1, Texture.HARDWARETEXTUREID_FETCHER, 0);
 
 		this.mHardwareTextureID = Texture.HARDWARETEXTUREID_FETCHER[0];
 	}

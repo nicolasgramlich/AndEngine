@@ -2,8 +2,6 @@ package org.anddev.andengine.entity.scene.menu.item.decorator;
 
 import java.util.Comparator;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.entity.IEntity;
@@ -325,8 +323,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void onDraw(final GL10 pGL, final Camera pCamera) {
-		this.mMenuItem.onDraw(pGL, pCamera);
+	public void onDraw(final Camera pCamera) {
+		this.mMenuItem.onDraw(pCamera);
 	}
 
 	@Override

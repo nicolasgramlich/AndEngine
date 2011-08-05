@@ -2,8 +2,6 @@ package org.anddev.andengine.opengl.font;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL10;
-
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -60,12 +58,12 @@ public class FontManager {
 		}
 	}
 
-	public void updateFonts(final GL10 pGL) {
+	public void updateFonts() {
 		final ArrayList<Font> fonts = this.mFontsManaged;
 		final int fontCount = fonts.size();
 		if(fontCount > 0){
 			for(int i = fontCount - 1; i >= 0; i--){
-				fonts.get(i).update(pGL);
+				fonts.get(i).update();
 			}
 		}
 	}

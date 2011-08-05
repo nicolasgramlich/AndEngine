@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.util.Debug;
 
 /**
@@ -113,7 +111,7 @@ public class TextureManager {
 		this.mTexturesToBeUnloaded.clear();
 	}
 
-	public void updateTextures(final GL10 pGL) {
+	public void updateTextures() {
 		final HashSet<ITexture> texturesManaged = this.mTexturesManaged;
 		final ArrayList<ITexture> texturesLoaded = this.mTexturesLoaded;
 		final ArrayList<ITexture> texturesToBeLoaded = this.mTexturesToBeLoaded;
@@ -127,7 +125,7 @@ public class TextureManager {
 				final ITexture textureToBeReloaded = texturesLoaded.get(i);
 				if(textureToBeReloaded.isUpdateOnHardwareNeeded()){
 					try {
-						textureToBeReloaded.reloadToHardware(pGL);
+						textureToBeReloaded.reloadToHardware();
 					} catch(IOException e) {
 						Debug.e(e);
 					}
@@ -143,7 +141,7 @@ public class TextureManager {
 				final ITexture textureToBeLoaded = texturesToBeLoaded.remove(i);
 				if(!textureToBeLoaded.isLoadedToHardware()){
 					try {
-						textureToBeLoaded.loadToHardware(pGL);
+						textureToBeLoaded.loadToHardware();
 					} catch(IOException e) {
 						Debug.e(e);
 					}
@@ -159,7 +157,7 @@ public class TextureManager {
 			for(int i = texturesToBeUnloadedCount - 1; i >= 0; i--){
 				final ITexture textureToBeUnloaded = texturesToBeUnloaded.remove(i);
 				if(textureToBeUnloaded.isLoadedToHardware()){
-					textureToBeUnloaded.unloadFromHardware(pGL);
+					textureToBeUnloaded.unloadFromHardware();
 				}
 				texturesLoaded.remove(textureToBeUnloaded);
 				texturesManaged.remove(textureToBeUnloaded);

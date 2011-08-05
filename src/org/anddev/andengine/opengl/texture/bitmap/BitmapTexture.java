@@ -98,7 +98,7 @@ public abstract class BitmapTexture extends Texture {
 	protected abstract InputStream onGetInputStream() throws IOException;
 
 	@Override
-	protected void writeTextureToHardware(final GL10 pGL) throws IOException {
+	protected void writeTextureToHardware() throws IOException {
 		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
 
@@ -110,7 +110,7 @@ public abstract class BitmapTexture extends Texture {
 		if(preMultipyAlpha) {
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
 		} else {
-			GLHelper.glTexImage2D(pGL, GL10.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
+			GLHelper.glTexImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
 		}
 
 		bitmap.recycle();

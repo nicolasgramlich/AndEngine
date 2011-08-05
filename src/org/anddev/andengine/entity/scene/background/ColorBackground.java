@@ -6,6 +6,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.camera.Camera;
 
+import android.opengl.GLES20;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -113,10 +115,10 @@ public class ColorBackground extends BaseBackground {
 	// ===========================================================
 
 	@Override
-	public void onDraw(final GL10 pGL, final Camera pCamera) {
+	public void onDraw(final Camera pCamera) {
 		if(this.mColorEnabled) {
-			pGL.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
-			pGL.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			GLES20.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
+			GLES20.glClear(GL10.GL_COLOR_BUFFER_BIT); // TODO See commented out code in Renderer, bc of MultiSample
 		}
 	}
 

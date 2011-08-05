@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity.scene.background;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.IEntity;
 
@@ -45,9 +43,9 @@ public class EntityBackground extends ColorBackground {
 	// ===========================================================
 
 	@Override
-	public void onDraw(final GL10 pGL, final Camera pCamera) {
-		super.onDraw(pGL, pCamera);
-		this.mEntity.onDraw(pGL, pCamera);
+	public void onDraw(final Camera pCamera) {
+		super.onDraw(pCamera);
+		this.mEntity.onDraw(pCamera);
 	}
 
 	// ===========================================================

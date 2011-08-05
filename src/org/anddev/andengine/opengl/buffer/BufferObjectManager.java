@@ -3,8 +3,6 @@ package org.anddev.andengine.opengl.buffer;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javax.microedition.khronos.opengles.GL11;
-
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -110,7 +108,7 @@ public class BufferObjectManager {
 		loadedBufferObjects.clear();
 	}
 
-	public synchronized void updateBufferObjects(final GL11 pGL11) {
+	public synchronized void updateBufferObjects() {
 		final HashSet<BufferObject> bufferObjectsManaged = BufferObjectManager.mBufferObjectsManaged;
 		final ArrayList<BufferObject> bufferObjectsLoaded = BufferObjectManager.mBufferObjectsLoaded;
 		final ArrayList<BufferObject> bufferObjectsToBeLoaded = BufferObjectManager.mBufferObjectsToBeLoaded;
@@ -123,7 +121,7 @@ public class BufferObjectManager {
 			for(int i = bufferObjectToBeLoadedCount - 1; i >= 0; i--) {
 				final BufferObject bufferObjectToBeLoaded = bufferObjectsToBeLoaded.get(i);
 				if(!bufferObjectToBeLoaded.isLoadedToHardware()) {
-					bufferObjectToBeLoaded.loadToHardware(pGL11);
+					bufferObjectToBeLoaded.loadToHardware();
 					bufferObjectToBeLoaded.setHardwareBufferNeedsUpdate();
 				}
 				bufferObjectsLoaded.add(bufferObjectToBeLoaded);
@@ -139,7 +137,7 @@ public class BufferObjectManager {
 			for(int i = bufferObjectsToBeUnloadedCount - 1; i >= 0; i--){
 				final BufferObject bufferObjectToBeUnloaded = bufferObjectsToBeUnloaded.remove(i);
 				if(bufferObjectToBeUnloaded.isLoadedToHardware()){
-					bufferObjectToBeUnloaded.unloadFromHardware(pGL11);
+					bufferObjectToBeUnloaded.unloadFromHardware();
 				}
 				bufferObjectsLoaded.remove(bufferObjectToBeUnloaded);
 				bufferObjectsManaged.remove(bufferObjectToBeUnloaded);

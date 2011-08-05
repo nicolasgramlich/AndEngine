@@ -1,19 +1,19 @@
-package org.anddev.andengine.entity.sprite.batch;
-
-import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.region.buffer.SpriteBatchTextureRegionBuffer;
-import org.anddev.andengine.opengl.vertex.SpriteBatchVertexBuffer;
+package org.anddev.andengine.opengl;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 21:48:21 - 27.07.2011
+ * @since 5:44:43 PM - Aug 4, 2011
  */
-public abstract class DynamicSpriteBatch extends SpriteBatch {
+public class GLES20Fix {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	static {
+		System.loadLibrary("GLES20Fix");
+	}
 
 	// ===========================================================
 	// Fields
@@ -23,12 +23,8 @@ public abstract class DynamicSpriteBatch extends SpriteBatch {
 	// Constructors
 	// ===========================================================
 
-	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity) {
-		super(pTexture, pCapacity);
-	}
+	private GLES20Fix() {
 
-	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBuffer pSpriteBatchVertexBuffer, final SpriteBatchTextureRegionBuffer pSpriteBatchTextureRegionBuffer) {
-		super(pTexture, pCapacity, pSpriteBatchVertexBuffer, pSpriteBatchTextureRegionBuffer);
 	}
 
 	// ===========================================================
@@ -39,23 +35,12 @@ public abstract class DynamicSpriteBatch extends SpriteBatch {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	/**
-	 * @return <code>true</code> to submit, if you made any changes, or <code>false</code> otherwise.
-	 */
-	protected abstract boolean onUpdateSpriteBatch();
-
-	@Override
-	protected void begin() {
-		super.begin();
-
-		if(this.onUpdateSpriteBatch()) {
-			this.submit();
-		}
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	native public static void glVertexAttribPointer(final int pIndex, final int pSize, final int pType, final boolean pNormalized, final int pStride, final int pOffset);
+	native public static void glDrawElements(final int pMode, final int pCount, final int pType, final int pOffset);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

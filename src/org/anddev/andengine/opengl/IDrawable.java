@@ -1,7 +1,5 @@
 package org.anddev.andengine.opengl;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 
 
@@ -21,5 +19,5 @@ public interface IDrawable {
 	// Methods
 	// ===========================================================
 
-	public void onDraw(final GL10 pGL, final Camera pCamera);
+	public void onDraw(final Camera pCamera);
 }

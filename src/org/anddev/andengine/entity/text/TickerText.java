@@ -7,6 +7,8 @@ import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.vertex.TextVertexBuffer;
 import org.anddev.andengine.util.HorizontalAlign;
 
+import android.opengl.GLES20;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -87,8 +89,8 @@ public class TickerText extends Text {
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
-		pGL.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mCharactersVisible * TextVertexBuffer.VERTICES_PER_CHARACTER);
+	protected void drawVertices(final Camera pCamera) {
+		GLES20.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mCharactersVisible * TextVertexBuffer.VERTICES_PER_CHARACTER);
 	}
 
 	@Override

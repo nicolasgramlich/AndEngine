@@ -2,8 +2,6 @@ package org.anddev.andengine.opengl.texture;
 
 import java.io.IOException;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.util.Debug;
 
@@ -34,11 +32,11 @@ public interface ITexture {
 	public boolean isUpdateOnHardwareNeeded();
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded);
 
-	public void loadToHardware(final GL10 pGL) throws IOException;
-	public void unloadFromHardware(final GL10 pGL);
-	public void reloadToHardware(final GL10 pGL) throws IOException;
+	public void loadToHardware() throws IOException;
+	public void unloadFromHardware();
+	public void reloadToHardware() throws IOException;
 
-	public void bind(final GL10 pGL);
+	public void bind();
 
 	public TextureOptions getTextureOptions();
 	

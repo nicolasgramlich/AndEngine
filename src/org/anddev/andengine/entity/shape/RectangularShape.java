@@ -7,6 +7,8 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.opengl.vertex.VertexBuffer;
 
+import android.opengl.GLES20;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -114,15 +116,15 @@ public abstract class RectangularShape extends Shape {
 	protected boolean isCulled(final Camera pCamera) { // TODO Advanced culling!
 		final float x = this.mX;
 		final float y = this.mY;
-		return x > pCamera.getMaxX()
-			|| y > pCamera.getMaxY()
-			|| x + this.getWidth() < pCamera.getMinX()
-			|| y + this.getHeight() < pCamera.getMinY();
+		return x > pCamera.getXMax()
+			|| y > pCamera.getYMax()
+			|| x + this.getWidth() < pCamera.getXMin()
+			|| y + this.getHeight() < pCamera.getYMin();
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
-		pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+	protected void drawVertices(final Camera pCamera) {
+		GLES20.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 	}
 
 	@Override

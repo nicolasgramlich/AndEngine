@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.shape;
 
 import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
@@ -93,13 +92,13 @@ public abstract class Shape extends Entity implements IShape {
 	protected abstract void onUpdateVertexBuffer();
 	protected abstract VertexBuffer getVertexBuffer();
 
-	protected abstract void drawVertices(final GL10 pGL, final Camera pCamera);
+	protected abstract void drawVertices(final Camera pCamera);
 
 	@Override
-	protected void doDraw(final GL10 pGL, final Camera pCamera) {
-		this.onInitDraw(pGL);
-		this.onApplyVertices(pGL);
-		this.drawVertices(pGL, pCamera);
+	protected void doDraw(final Camera pCamera) {
+		this.onInitDraw();
+		this.onApplyVertices();
+		this.drawVertices(pCamera);
 	}
 
 	@Override
@@ -115,9 +114,9 @@ public abstract class Shape extends Entity implements IShape {
 	protected abstract boolean isCulled(final Camera pCamera);
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
+	protected void onManagedDraw(final Camera pCamera) {
 		if(!this.mCullingEnabled || !this.isCulled(pCamera)) {
-			super.onManagedDraw(pGL, pCamera);
+			super.onManagedDraw(pCamera);
 		}
 	}
 
@@ -142,22 +141,14 @@ public abstract class Shape extends Entity implements IShape {
 	// Methods
 	// ===========================================================
 
-	protected void onInitDraw(final GL10 pGL) {
-		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
-
-		GLHelper.enableVertexArray(pGL);
-		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
+	protected void onInitDraw() {
+		GLHelper.enableVertexArray();
+		GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 	}
 
-	protected void onApplyVertices(final GL10 pGL) {
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			final GL11 gl11 = (GL11)pGL;
-
-			this.getVertexBuffer().selectOnHardware(gl11);
-			GLHelper.vertexZeroPointer(gl11);
-		} else {
-			GLHelper.vertexPointer(pGL, this.getVertexBuffer().getFloatBuffer());
-		}
+	protected void onApplyVertices() {
+		this.getVertexBuffer().selectOnHardware();
+		GLHelper.vertexZeroPointer();
 	}
 
 	protected void updateVertexBuffer() {

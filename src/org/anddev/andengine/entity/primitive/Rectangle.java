@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity.primitive;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
 
@@ -42,10 +40,10 @@ public class Rectangle extends BaseRectangle {
 	// ===========================================================
 
 	@Override
-	protected void onInitDraw(final GL10 pGL) {
-		super.onInitDraw(pGL);
-		GLHelper.disableTextures(pGL);
-		GLHelper.disableTexCoordArray(pGL);
+	protected void onInitDraw() {
+		super.onInitDraw();
+		GLHelper.disableTextures();
+		GLHelper.disableTexCoordArray();
 	}
 
 	// ===========================================================

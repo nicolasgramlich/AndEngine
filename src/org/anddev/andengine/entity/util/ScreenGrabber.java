@@ -9,6 +9,7 @@ import org.anddev.andengine.entity.Entity;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.opengl.GLES20;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -47,10 +48,10 @@ public class ScreenGrabber extends Entity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
+	protected void onManagedDraw(final Camera pCamera) {
 		if(this.mScreenGrabPending) {
 			try {
-				final Bitmap screenGrab = ScreenGrabber.grab(this.mGrabX, this.mGrabY, this.mGrabWidth, this.mGrabHeight, pGL);
+				final Bitmap screenGrab = ScreenGrabber.grab(this.mGrabX, this.mGrabY, this.mGrabWidth, this.mGrabHeight);
 
 				this.mScreenGrabCallback.onScreenGrabbed(screenGrab);
 			} catch (final Exception e) {
@@ -89,14 +90,14 @@ public class ScreenGrabber extends Entity {
 		this.mScreenGrabPending = true;
 	}
 
-	private static Bitmap grab(final int pGrabX, final int pGrabY, final int pGrabWidth, final int pGrabHeight, final GL10 pGL) {
+	private static Bitmap grab(final int pGrabX, final int pGrabY, final int pGrabWidth, final int pGrabHeight) {
 		final int[] source = new int[pGrabWidth * (pGrabY + pGrabHeight)];
 		final IntBuffer sourceBuffer = IntBuffer.wrap(source);
 		sourceBuffer.position(0);
 
 		// TODO Check availability of OpenGL and GL10.GL_RGBA combinations that require less conversion operations.
 		// Note: There is (said to be) a bug with glReadPixels when 'y != 0', so we simply read starting from 'y == 0'.
-		pGL.glReadPixels(pGrabX, 0, pGrabWidth, pGrabY + pGrabHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, sourceBuffer);
+		GLES20.glReadPixels(pGrabX, 0, pGrabWidth, pGrabY + pGrabHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, sourceBuffer);
 
 		final int[] pixels = new int[pGrabWidth * pGrabHeight];
 

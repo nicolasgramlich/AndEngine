@@ -3,8 +3,6 @@ package org.anddev.andengine.opengl.texture.atlas.buildable;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
@@ -84,23 +82,23 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	}
 
 	@Override
-	public void loadToHardware(final GL10 pGL) throws IOException {
-		this.mTextureAtlas.loadToHardware(pGL);
+	public void loadToHardware() throws IOException {
+		this.mTextureAtlas.loadToHardware();
 	}
 
 	@Override
-	public void unloadFromHardware(final GL10 pGL) {
-		this.mTextureAtlas.unloadFromHardware(pGL);
+	public void unloadFromHardware() {
+		this.mTextureAtlas.unloadFromHardware();
 	}
 
 	@Override
-	public void reloadToHardware(final GL10 pGL) throws IOException {
-		this.mTextureAtlas.reloadToHardware(pGL);
+	public void reloadToHardware() throws IOException {
+		this.mTextureAtlas.reloadToHardware();
 	}
 
 	@Override
-	public void bind(final GL10 pGL) {
-		this.mTextureAtlas.bind(pGL);
+	public void bind() {
+		this.mTextureAtlas.bind();
 	}
 
 	@Override

@@ -2,10 +2,9 @@ package org.anddev.andengine.entity.scene.background;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -49,14 +48,14 @@ public class ParallaxBackground extends ColorBackground {
 	// ===========================================================
 
 	@Override
-	public void onDraw(final GL10 pGL, final Camera pCamera) {
-		super.onDraw(pGL, pCamera);
+	public void onDraw(final Camera pCamera) {
+		super.onDraw(pCamera);
 
 		final float parallaxValue = this.mParallaxValue;
 		final ArrayList<ParallaxEntity> parallaxEntities = this.mParallaxEntities;
 
 		for(int i = 0; i < this.mParallaxEntityCount; i++) {
-			parallaxEntities.get(i).onDraw(pGL, parallaxValue, pCamera);
+			parallaxEntities.get(i).onDraw(parallaxValue, pCamera);
 		}
 	}
 
@@ -115,8 +114,8 @@ public class ParallaxBackground extends ColorBackground {
 		// Methods
 		// ===========================================================
 
-		public void onDraw(final GL10 pGL, final float pParallaxValue, final Camera pCamera) {
-			pGL.glPushMatrix();
+		public void onDraw(final float pParallaxValue, final Camera pCamera) {
+			GLHelper.glPushMatrix();
 			{
 				final float cameraWidth = pCamera.getWidth();
 				final float shapeWidthScaled = this.mShape.getWidthScaled();
@@ -125,17 +124,17 @@ public class ParallaxBackground extends ColorBackground {
 				while(baseOffset > 0) {
 					baseOffset -= shapeWidthScaled;
 				}
-				pGL.glTranslatef(baseOffset, 0, 0);
+				GLHelper.glTranslatef(baseOffset, 0, 0);
 
 				float currentMaxX = baseOffset;
-
+				
 				do {
-					this.mShape.onDraw(pGL, pCamera);
-					pGL.glTranslatef(shapeWidthScaled, 0, 0);
+					this.mShape.onDraw(pCamera);
+					GLHelper.glTranslatef(shapeWidthScaled, 0, 0);
 					currentMaxX += shapeWidthScaled;
 				} while(currentMaxX < cameraWidth);
 			}
-			pGL.glPopMatrix();
+			GLHelper.glPopMatrix();
 		}
 
 		// ===========================================================

@@ -12,6 +12,8 @@ import org.anddev.andengine.opengl.vertex.TextVertexBuffer;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
 
+import android.opengl.GLES20;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -129,15 +131,15 @@ public class Text extends RectangularShape {
 	// ===========================================================
 
 	@Override
-	protected void onInitDraw(final GL10 pGL) {
-		super.onInitDraw(pGL);
-		GLHelper.enableTextures(pGL);
-		GLHelper.enableTexCoordArray(pGL);
+	protected void onInitDraw() {
+		super.onInitDraw();
+		GLHelper.enableTextures();
+		GLHelper.enableTexCoordArray();
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
-		pGL.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mVertexCount);
+	protected void drawVertices(final Camera pCamera) {
+		GLES20.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mVertexCount);
 	}
 
 	@Override
@@ -149,9 +151,9 @@ public class Text extends RectangularShape {
 	}
 
 	@Override
-	protected void onApplyTransformations(final GL10 pGL) {
-		super.onApplyTransformations(pGL);
-		this.applyTexture(pGL);
+	protected void onApplyTransformations() {
+		super.onApplyTransformations();
+		this.applyTexture();
 	}
 
 	@Override
@@ -172,18 +174,11 @@ public class Text extends RectangularShape {
 		}
 	}
 
-	private void applyTexture(final GL10 pGL) {
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			final GL11 gl11 = (GL11)pGL;
+	private void applyTexture() {
+		this.mTextTextureBuffer.selectOnHardware();
 
-			this.mTextTextureBuffer.selectOnHardware(gl11);
-
-			this.mFont.getBitmapTextureAtlas().bind(pGL);
-			GLHelper.texCoordZeroPointer(gl11);
-		} else {
-			this.mFont.getBitmapTextureAtlas().bind(pGL);
-			GLHelper.texCoordPointer(pGL, this.mTextTextureBuffer.getFloatBuffer());
-		}
+		this.mFont.getBitmapTextureAtlas().bind();
+		GLHelper.texCoordZeroPointer();
 	}
 
 	// ===========================================================

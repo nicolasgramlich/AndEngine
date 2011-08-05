@@ -13,6 +13,8 @@ import org.anddev.andengine.opengl.texture.region.buffer.SpriteBatchTextureRegio
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.SpriteBatchVertexBuffer;
 
+import android.opengl.GLES20;
+
 /**
  * TODO Texture could be semi-changeable, being resetting to null in end(...)
  * TODO Make use of pGL.glColorPointer(size, type, stride, pointer) which should allow individual color tinting.
@@ -90,16 +92,16 @@ public class SpriteBatch extends Entity {
 	// ===========================================================
 	
 	@Override
-	protected void doDraw(final GL10 pGL, final Camera pCamera) {
-		this.onInitDraw(pGL);
+	protected void doDraw(final Camera pCamera) {
+		this.onInitDraw();
 
-		this.begin(pGL);
+		this.begin();
 
-		this.onApplyVertices(pGL);
-		this.onApplyTextureRegion(pGL);
-		this.drawVertices(pGL, pCamera);
+		this.onApplyVertices();
+		this.onApplyTextureRegion();
+		this.drawVertices(pCamera);
 
-		this.end(pGL);
+		this.end();
 	}
 
 	@Override
@@ -125,11 +127,11 @@ public class SpriteBatch extends Entity {
 	// Methods
 	// ===========================================================
 
-	protected void begin(@SuppressWarnings("unused") final GL10 pGL) {
+	protected void begin() {
 //		GLHelper.disableDepthMask(pGL);
 	}
 
-	protected void end(@SuppressWarnings("unused") final GL10 pGL) {
+	protected void end() {
 //		GLHelper.enableDepthMask(pGL);
 	}
 
@@ -292,43 +294,30 @@ public class SpriteBatch extends Entity {
 		}
 	}
 
-	protected void onInitDraw(final GL10 pGL) {
-		GLHelper.setColor(pGL, this.mRed, this.mGreen, this.mBlue, this.mAlpha);
+	protected void onInitDraw() {
+		GLHelper.setColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
 
-		GLHelper.enableVertexArray(pGL);
-		GLHelper.blendFunction(pGL, this.mSourceBlendFunction, this.mDestinationBlendFunction);
+		GLHelper.enableVertexArray();
+		GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 
-		GLHelper.enableTextures(pGL);
-		GLHelper.enableTexCoordArray(pGL);
+		GLHelper.enableTextures();
+		GLHelper.enableTexCoordArray();
 	}
 
-	protected void onApplyVertices(final GL10 pGL) {
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			final GL11 gl11 = (GL11)pGL;
-
-			this.mSpriteBatchVertexBuffer.selectOnHardware(gl11);
-			GLHelper.vertexZeroPointer(gl11);
-		} else {
-			GLHelper.vertexPointer(pGL, this.mSpriteBatchVertexBuffer.getFloatBuffer());
-		}
+	protected void onApplyVertices() {
+		this.mSpriteBatchVertexBuffer.selectOnHardware();
+		GLHelper.vertexZeroPointer();
 	}
 
-	private void onApplyTextureRegion(final GL10 pGL) {
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			final GL11 gl11 = (GL11)pGL;
+	private void onApplyTextureRegion() {
+		this.mSpriteBatchTextureRegionBuffer.selectOnHardware();
 
-			this.mSpriteBatchTextureRegionBuffer.selectOnHardware(gl11);
-
-			this.mTexture.bind(pGL);
-			GLHelper.texCoordZeroPointer(gl11);
-		} else {
-			this.mTexture.bind(pGL);
-			GLHelper.texCoordPointer(pGL, this.mSpriteBatchTextureRegionBuffer.getFloatBuffer());
-		}
+		this.mTexture.bind();
+		GLHelper.texCoordZeroPointer();
 	}
 
-	private void drawVertices(final GL10 pGL, @SuppressWarnings("unused") final Camera pCamera) {
-		pGL.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mVertices);
+	private void drawVertices(@SuppressWarnings("unused") final Camera pCamera) {
+		GLES20.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mVertices);
 	}
 
 	private void assertCapacity(final int pIndex) {

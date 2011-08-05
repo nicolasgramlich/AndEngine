@@ -84,7 +84,7 @@ public abstract class ETC1Texture extends Texture {
 	protected abstract InputStream getInputStream() throws IOException;
 
 	@Override
-	protected void writeTextureToHardware(final GL10 pGL) throws IOException {
+	protected void writeTextureToHardware() throws IOException {
 		final InputStream inputStream = this.getInputStream();
 		ETC1Util.loadTexture(GL10.GL_TEXTURE_2D, 0, 0, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), inputStream);
 	}

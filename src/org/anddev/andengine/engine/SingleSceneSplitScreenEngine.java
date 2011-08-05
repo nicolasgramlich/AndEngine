@@ -1,11 +1,11 @@
 package org.anddev.andengine.engine;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
+
+import android.opengl.GLES20;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -57,7 +57,7 @@ public class SingleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 
 	@Override
-	protected void onDrawScene(final GL10 pGL) {
+	protected void onDrawScene() {
 		final Camera firstCamera = this.getFirstCamera();
 		final Camera secondCamera = this.getSecondCamera();
 
@@ -66,27 +66,27 @@ public class SingleSceneSplitScreenEngine extends Engine {
 
 		final int surfaceHeight = this.mSurfaceHeight;
 
-		GLHelper.enableScissorTest(pGL);
+		GLHelper.enableScissorTest();
 
 		/* First Screen. With first camera, on the left half of the screens width. */
 		{
-			pGL.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
-			pGL.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
+			GLES20.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
+			GLES20.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
 
-			super.mScene.onDraw(pGL, firstCamera);
-			firstCamera.onDrawHUD(pGL);
+			super.mScene.onDraw(firstCamera);
+			firstCamera.onDrawHUD();
 		}
 
 		/* Second Screen. With second camera, on the right half of the screens width. */
 		{
-			pGL.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
-			pGL.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+			GLES20.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+			GLES20.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 
-			super.mScene.onDraw(pGL, secondCamera);
-			secondCamera.onDrawHUD(pGL);
+			super.mScene.onDraw(secondCamera);
+			secondCamera.onDrawHUD();
 		}
 
-		GLHelper.disableScissorTest(pGL);
+		GLHelper.disableScissorTest();
 	}
 
 	@Override

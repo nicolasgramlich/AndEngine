@@ -16,6 +16,8 @@ import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.constants.DataConstants;
 
+import android.opengl.GLES20;
+
 /**
  * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes: glPixelStorei(GL_UNPACK_ALIGNMENT,1);"
  *
@@ -118,17 +120,17 @@ public abstract class PVRTexture extends Texture {
 	}
 
 	@Override
-	protected void generateHardwareTextureID(final GL10 pGL) {
+	protected void generateHardwareTextureID() {
 		//		// TODO
 		//		if(this.mMipMapCount > 0) {
-		pGL.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT, 1);
+		GLES20.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT, 1);
 		//		}
 
-		super.generateHardwareTextureID(pGL);
+		super.generateHardwareTextureID();
 	}
 
 	@Override
-	protected void writeTextureToHardware(final GL10 pGL) throws IOException {
+	protected void writeTextureToHardware() throws IOException {
 		final InputStream inputStream = this.getInputStream();
 		try {
 			final byte[] data = StreamUtils.streamToBytes(inputStream);
@@ -157,9 +159,9 @@ public abstract class PVRTexture extends Texture {
 					Debug.w(String.format("Mipmap level '%u' is not squared. Width: '%u', height: '%u'. Texture won't render correctly.", mipmapLevel, width, height));
 				}
 
-				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelData);
+				GLES20.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelData);
 
-				GLHelper.checkGLError(pGL);
+				GLHelper.checkGLError();
 
 				currentPixelDataOffset += currentPixelDataSize;
 

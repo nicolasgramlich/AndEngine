@@ -200,10 +200,10 @@ public class Font {
 		return letter;
 	}
 
-	public synchronized void update(final GL10 pGL) {
+	public synchronized void update() {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
-			this.mBitmapTextureAtlas.bind(pGL);
+			this.mBitmapTextureAtlas.bind();
 
 			final float textureWidth = this.mTextureWidth;
 			final float textureHeight = this.mTextureHeight;

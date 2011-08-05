@@ -66,6 +66,20 @@ public class GLMatrixStack {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void reset() {
+		this.setMatrixMode(MatrixMode.MODELVIEW);
+		while(this.mModelViewGLMatrixStack.size() > 1) {
+			this.popMatrix();
+		}
+		this.mModelViewGLMatrixStack.peek().setToIdentity();
+		
+		this.setMatrixMode(MatrixMode.MODELVIEW);
+		while(this.mProjectionGLMatrixStack.size() > 1) {
+			this.popMatrix();
+		}
+		this.mProjectionGLMatrixStack.peek().setToIdentity();
+	}
 
 	public void pushMatrix() {
 		this.mCurrentGLMatrixStack.push(this.mGLMatrixPool.obtainPoolItem().setTo(this.mCurrentGLMatrixStack.peek()));
@@ -89,6 +103,10 @@ public class GLMatrixStack {
 
 	public void rotate(final float pAngle, final float pX, final float pY, final float pZ) {
 		this.mCurrentGLMatrixStack.peek().rotate(pAngle, pX, pY, pZ);
+	}
+
+	public void scale(float pScaleX, float pScaleY, int pScaleZ) {
+		this.mCurrentGLMatrixStack.peek().scale(pScaleX, pScaleY, pScaleZ);
 	}
 
 	public void ortho(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
@@ -143,5 +161,4 @@ public class GLMatrixStack {
 		// Inner and Anonymous Classes
 		// ===========================================================
 	}
-
 }

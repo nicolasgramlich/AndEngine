@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
 import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
@@ -25,6 +24,8 @@ import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.SAXUtils;
 import org.anddev.andengine.util.StreamUtils;
 import org.xml.sax.Attributes;
+
+import android.opengl.GLES20;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -158,27 +159,21 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 	}
 
 	@Override
-	protected void onInitDraw(final GL10 pGL) {
-		super.onInitDraw(pGL);
+	protected void onInitDraw() {
+		super.onInitDraw();
 
-		GLHelper.enableTextures(pGL);
-		GLHelper.enableTexCoordArray(pGL);
+		GLHelper.enableTextures();
+		GLHelper.enableTexCoordArray();
 	}
 
 	@Override
-	protected void onApplyVertices(final GL10 pGL) {
-		if(GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS) {
-			final GL11 gl11 = (GL11)pGL;
-
-			this.mTMXTiledMap.getSharedVertexBuffer().selectOnHardware(gl11);
-			GLHelper.vertexZeroPointer(gl11);
-		} else {
-			GLHelper.vertexPointer(pGL, this.mTMXTiledMap.getSharedVertexBuffer().getFloatBuffer());
-		}
+	protected void onApplyVertices() {
+		this.mTMXTiledMap.getSharedVertexBuffer().selectOnHardware();
+		GLHelper.vertexZeroPointer();
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
+	protected void drawVertices(final Camera pCamera) {
 		final TMXTile[][] tmxTiles = this.mTMXTiles;
 
 		final int tileColumns = this.mTileColumns;
@@ -195,8 +190,8 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 		final float layerMinX = cullingVertices[VERTEX_INDEX_X];
 		final float layerMinY = cullingVertices[VERTEX_INDEX_Y];
 
-		final float cameraMinX = pCamera.getMinX();
-		final float cameraMinY = pCamera.getMinY();
+		final float cameraMinX = pCamera.getXMin();
+		final float cameraMinY = pCamera.getYMin();
 		final float cameraWidth = pCamera.getWidth();
 		final float cameraHeight = pCamera.getHeight();
 
@@ -211,7 +206,7 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 
 		final int visibleTilesTotalWidth = (lastColumn - firstColumn + 1) * tileWidth;
 
-		pGL.glTranslatef(firstColumn * tileWidth, firstRow * tileHeight, 0);
+		GLHelper.glTranslatef(firstColumn * tileWidth, firstRow * tileHeight, 0);
 
 		for(int row = firstRow; row <= lastRow; row++) {
 			final TMXTile[] tmxTileRow = tmxTiles[row];
@@ -219,17 +214,17 @@ public class TMXLayer extends RectangularShape implements TMXConstants {
 			for(int column = firstColumn; column <= lastColumn; column++) {
 				final TextureRegion textureRegion = tmxTileRow[column].mTextureRegion;
 				if(textureRegion != null) {
-					textureRegion.onApply(pGL);
+					textureRegion.onApply();
 
-					pGL.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+					GLES20.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 				}
-				pGL.glTranslatef(tileWidth, 0, 0);
+				GLHelper.glTranslatef(tileWidth, 0, 0);
 			}
 			/* Translate one row downwards and the back left to the first column.
 			 * Just like the 'Carriage Return' + 'New Line' (\r\n) on a typewriter. */
-			pGL.glTranslatef(-visibleTilesTotalWidth, tileHeight, 0);
+			GLHelper.glTranslatef(-visibleTilesTotalWidth, tileHeight, 0);
 		}
-		pGL.glLoadIdentity();
+		GLHelper.glLoadIdentity();
 	}
 
 	@Override

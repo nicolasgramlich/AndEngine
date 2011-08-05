@@ -55,6 +55,10 @@ public class GLMatrix {
 		Matrix.rotateM(this.mValues, 0, pAngle, pX, pY, pZ);
 	}
 
+	public void scale(final float pScaleX, final float pScaleY, final float pScaleZ) {
+		Matrix.scaleM(this.mValues, 0, pScaleX, pScaleY, pScaleZ);
+	}
+
 	public void ortho(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
 		Matrix.orthoM(this.mValues, 0, pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}

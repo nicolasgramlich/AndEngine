@@ -2,8 +2,6 @@ package org.anddev.andengine.entity.scene;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.Entity;
@@ -216,25 +214,25 @@ public class Scene extends Entity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
+	protected void onManagedDraw(final Camera pCamera) {
 		final Scene childScene = this.mChildScene;
 
 		if(childScene == null || !this.mChildSceneModalDraw) {
 			if(this.mBackgroundEnabled) {
-				pCamera.onApplySceneBackgroundMatrix(pGL);
-				GLHelper.setModelViewIdentityMatrix(pGL);
+				pCamera.onApplySceneBackgroundMatrix();
+				GLHelper.setModelViewIdentityMatrix();
 
-				this.mBackground.onDraw(pGL, pCamera);
+				this.mBackground.onDraw(pCamera);
 			}
 
-			pCamera.onApplySceneMatrix(pGL);
-			GLHelper.setModelViewIdentityMatrix(pGL);
+			pCamera.onApplySceneMatrix();
+			GLHelper.setModelViewIdentityMatrix();
 
-			super.onManagedDraw(pGL, pCamera);
+			super.onManagedDraw(pCamera);
 		}
 
 		if(childScene != null) {
-			childScene.onDraw(pGL, pCamera);
+			childScene.onDraw(pCamera);
 		}
 	}
 

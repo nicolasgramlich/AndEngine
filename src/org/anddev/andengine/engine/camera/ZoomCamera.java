@@ -56,42 +56,42 @@ public class ZoomCamera extends BoundCamera {
 	// ===========================================================
 
 	@Override
-	public float getMinX() {
+	public float getXMin() {
 		if(this.mZoomFactor == 1.0f) {
-			return super.getMinX();
+			return super.getXMin();
 		} else {
 			final float centerX = this.getCenterX();
-			return centerX - (centerX - super.getMinX()) / this.mZoomFactor;
+			return centerX - (centerX - super.getXMin()) / this.mZoomFactor;
 		}
 	}
 
 	@Override
-	public float getMaxX() {
+	public float getXMax() {
 		if(this.mZoomFactor == 1.0f) {
-			return super.getMaxX();
+			return super.getXMax();
 		} else {
 			final float centerX = this.getCenterX();
-			return centerX + (super.getMaxX() - centerX) / this.mZoomFactor;
+			return centerX + (super.getXMax() - centerX) / this.mZoomFactor;
 		}
 	}
 
 	@Override
-	public float getMinY() {
+	public float getYMin() {
 		if(this.mZoomFactor == 1.0f) {
-			return super.getMinY();
+			return super.getYMin();
 		} else {
 			final float centerY = this.getCenterY();
-			return centerY - (centerY - super.getMinY()) / this.mZoomFactor;
+			return centerY - (centerY - super.getYMin()) / this.mZoomFactor;
 		}
 	}
 
 	@Override
-	public float getMaxY() {
+	public float getYMax() {
 		if(this.mZoomFactor == 1.0f) {
-			return super.getMaxY();
+			return super.getYMax();
 		} else {
 			final float centerY = this.getCenterY();
-			return centerY + (super.getMaxY() - centerY) / this.mZoomFactor;
+			return centerY + (super.getYMax() - centerY) / this.mZoomFactor;
 		}
 	}
 

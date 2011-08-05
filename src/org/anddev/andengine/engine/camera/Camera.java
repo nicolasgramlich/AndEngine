@@ -3,8 +3,6 @@ package org.anddev.andengine.engine.camera;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
@@ -33,13 +31,13 @@ public class Camera implements IUpdateHandler {
 	// Fields
 	// ===========================================================
 
-	private float mMinX;
-	private float mMaxX;
-	private float mMinY;
-	private float mMaxY;
+	private float mXMin;
+	private float mXMax;
+	private float mYMin;
+	private float mYMax;
 
-	private float mNearZ = -1.0f;
-	private float mFarZ = 1.0f;
+	private float mZNear = -1.0f;
+	private float mZFar = 1.0f;
 
 	private HUD mHUD;
 
@@ -58,87 +56,87 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 
 	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this.mMinX = pX;
-		this.mMaxX = pX + pWidth;
-		this.mMinY = pY;
-		this.mMaxY = pY + pHeight;
+		this.mXMin = pX;
+		this.mXMax = pX + pWidth;
+		this.mYMin = pY;
+		this.mYMax = pY + pHeight;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public float getMinX() {
-		return this.mMinX;
+	public float getXMin() {
+		return this.mXMin;
 	}
 
-	public float getMaxX() {
-		return this.mMaxX;
+	public float getXMax() {
+		return this.mXMax;
 	}
 
-	public float getMinY() {
-		return this.mMinY;
+	public float getYMin() {
+		return this.mYMin;
 	}
 
-	public float getMaxY() {
-		return this.mMaxY;
+	public float getYMax() {
+		return this.mYMax;
 	}
 
-	public float getNearZClippingPlane() {
-		return this.mNearZ;
+	public float getZNear() {
+		return this.mZNear;
 	}
 
-	public float getFarZClippingPlane() {
-		return this.mFarZ;
+	public float getZFar() {
+		return this.mZFar;
 	}
 
-	public void setNearZClippingPlane(final float pNearZClippingPlane) {
-		this.mNearZ = pNearZClippingPlane;
+	public void setZNear(final float pZNear) {
+		this.mZNear = pZNear;
 	}
 
-	public void setFarZClippingPlane(final float pFarZClippingPlane) {
-		this.mFarZ = pFarZClippingPlane;
+	public void setZFar(final float pZFar) {
+		this.mZFar = pZFar;
 	}
 
 	public void setZClippingPlanes(final float pNearZClippingPlane, final float pFarZClippingPlane) {
-		this.mNearZ = pNearZClippingPlane;
-		this.mFarZ = pFarZClippingPlane;
+		this.mZNear = pNearZClippingPlane;
+		this.mZFar = pFarZClippingPlane;
 	}
 
 	public float getWidth() {
-		return this.mMaxX - this.mMinX;
+		return this.mXMax - this.mXMin;
 	}
 
 	public float getHeight() {
-		return this.mMaxY - this.mMinY;
+		return this.mYMax - this.mYMin;
 	}
 
 	public float getWidthRaw() {
-		return this.mMaxX - this.mMinX;
+		return this.mXMax - this.mXMin;
 	}
 
 	public float getHeightRaw() {
-		return this.mMaxY - this.mMinY;
+		return this.mYMax - this.mYMin;
 	}
 
 	public float getCenterX() {
-		final float minX = this.mMinX;
-		return minX + (this.mMaxX - minX) * 0.5f;
+		final float minX = this.mXMin;
+		return minX + (this.mXMax - minX) * 0.5f;
 	}
 
 	public float getCenterY() {
-		final float minY = this.mMinY;
-		return minY + (this.mMaxY - minY) * 0.5f;
+		final float minY = this.mYMin;
+		return minY + (this.mYMax - minY) * 0.5f;
 	}
 
 	public void setCenter(final float pCenterX, final float pCenterY) {
 		final float dX = pCenterX - this.getCenterX();
 		final float dY = pCenterY - this.getCenterY();
 
-		this.mMinX += dX;
-		this.mMaxX += dX;
-		this.mMinY += dY;
-		this.mMaxY += dY;
+		this.mXMin += dX;
+		this.mXMax += dX;
+		this.mYMin += dY;
+		this.mYMax += dY;
 	}
 
 	public void offsetCenter(final float pX, final float pY) {
@@ -227,9 +225,9 @@ public class Camera implements IUpdateHandler {
 	// Methods
 	// ===========================================================
 
-	public void onDrawHUD(final GL10 pGL) {
+	public void onDrawHUD() {
 		if(this.mHUD != null) {
-			this.mHUD.onDraw(pGL, this);
+			this.mHUD.onDraw(this);
 		}
 	}
 
@@ -248,49 +246,48 @@ public class Camera implements IUpdateHandler {
 		return RectangularShapeCollisionChecker.isVisible(this, pRectangularShape);
 	}
 
-	public void onApplySceneMatrix(final GL10 pGL) {
-		GLHelper.setProjectionIdentityMatrix(pGL);
+	public void onApplySceneMatrix() {
+		GLHelper.setProjectionIdentityMatrix();
 
-		pGL.glOrthof(this.getMinX(), this.getMaxX(), this.getMaxY(), this.getMinY(), this.mNearZ, this.mFarZ);
+		GLHelper.glOrthof(this.getXMin(), this.getXMax(), this.getYMax(), this.getYMin(), this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			this.applyRotation(pGL, this.getCenterX(), this.getCenterY(), rotation);
+			this.applyRotation(this.getCenterX(), this.getCenterY(), rotation);
 		}
 	}
 
-	public void onApplySceneBackgroundMatrix(final GL10 pGL) {
-		GLHelper.setProjectionIdentityMatrix(pGL);
+	public void onApplySceneBackgroundMatrix() {
+		GLHelper.setProjectionIdentityMatrix();
 
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
 
-		pGL.glOrthof(0, widthRaw, heightRaw, 0, this.mNearZ, this.mFarZ);
+		GLHelper.glOrthof(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			this.applyRotation(pGL, widthRaw * 0.5f, heightRaw * 0.5f, rotation);
+			this.applyRotation(widthRaw * 0.5f, heightRaw * 0.5f, rotation);
 		}
 	}
 
-	public void onApplyCameraSceneMatrix(final GL10 pGL) {
-		GLHelper.setProjectionIdentityMatrix(pGL);
+	public void onApplyCameraSceneMatrix() {
+		GLHelper.setProjectionIdentityMatrix();
 
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
-
-		pGL.glOrthof(0, widthRaw, heightRaw, 0, this.mNearZ, this.mFarZ);
+		GLHelper.glOrthof(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
 
 		final float cameraSceneRotation = this.mCameraSceneRotation;
 		if(cameraSceneRotation != 0) {
-			this.applyRotation(pGL, widthRaw * 0.5f, heightRaw * 0.5f, cameraSceneRotation);
+			this.applyRotation(widthRaw * 0.5f, heightRaw * 0.5f, cameraSceneRotation);
 		}
 	}
 
-	private void applyRotation(final GL10 pGL, final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
-		pGL.glTranslatef(pRotationCenterX, pRotationCenterY, 0);
-		pGL.glRotatef(pAngle, 0, 0, 1);
-		pGL.glTranslatef(-pRotationCenterX, -pRotationCenterY, 0);
+	private void applyRotation(final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
+		GLHelper.glTranslatef(pRotationCenterX, pRotationCenterY, 0);
+		GLHelper.glRotatef(pAngle, 0, 0, 1);
+		GLHelper.glTranslatef(-pRotationCenterX, -pRotationCenterY, 0);
 	}
 
 	public void convertSceneToCameraSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
@@ -310,11 +307,11 @@ public class Camera implements IUpdateHandler {
 	}
 
 	protected void applySceneToCameraSceneOffset(final TouchEvent pSceneTouchEvent) {
-		pSceneTouchEvent.offset(-this.mMinX, -this.mMinY);
+		pSceneTouchEvent.offset(-this.mXMin, -this.mYMin);
 	}
 
 	protected void unapplySceneToCameraSceneOffset(final TouchEvent pCameraSceneTouchEvent) {
-		pCameraSceneTouchEvent.offset(this.mMinX, this.mMinY);
+		pCameraSceneTouchEvent.offset(this.mXMin, this.mYMin);
 	}
 
 	private void applySceneRotation(final TouchEvent pCameraSceneTouchEvent) {
@@ -349,7 +346,7 @@ public class Camera implements IUpdateHandler {
 			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pSceneTouchEvent.getX();
 			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
 
-			MathUtils.rotateAroundCenter(VERTICES_TOUCH_TMP, cameraSceneRotation, (this.mMaxX - this.mMinX) * 0.5f, (this.mMaxY - this.mMinY) * 0.5f);
+			MathUtils.rotateAroundCenter(VERTICES_TOUCH_TMP, cameraSceneRotation, (this.mXMax - this.mXMin) * 0.5f, (this.mYMax - this.mYMin) * 0.5f);
 
 			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
 		}
@@ -362,7 +359,7 @@ public class Camera implements IUpdateHandler {
 			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pCameraSceneTouchEvent.getX();
 			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
 
-			MathUtils.revertRotateAroundCenter(VERTICES_TOUCH_TMP, cameraSceneRotation, (this.mMaxX - this.mMinX) * 0.5f, (this.mMaxY - this.mMinY) * 0.5f);
+			MathUtils.revertRotateAroundCenter(VERTICES_TOUCH_TMP, cameraSceneRotation, (this.mXMax - this.mXMin) * 0.5f, (this.mYMax - this.mYMin) * 0.5f);
 
 			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
 		}
@@ -393,13 +390,13 @@ public class Camera implements IUpdateHandler {
 	}
 
 	private void convertAxisAlignedSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final float pRelativeX, final float pRelativeY) {
-		final float minX = this.getMinX();
-		final float maxX = this.getMaxX();
-		final float minY = this.getMinY();
-		final float maxY = this.getMaxY();
+		final float xMin = this.getXMin();
+		final float xMax = this.getXMax();
+		final float yMin = this.getYMin();
+		final float yMax = this.getYMax();
 
-		final float x = minX + pRelativeX * (maxX - minX);
-		final float y = minY + pRelativeY * (maxY - minY);
+		final float x = xMin + pRelativeX * (xMax - xMin);
+		final float y = yMin + pRelativeY * (yMax - yMin);
 
 		pSurfaceTouchEvent.set(x, y);
 	}

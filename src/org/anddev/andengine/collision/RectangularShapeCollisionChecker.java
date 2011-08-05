@@ -102,17 +102,17 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	}
 
 	private static void fillVertices(final Camera pCamera, final float[] pVertices) {
-		pVertices[0 + VERTEX_INDEX_X] = pCamera.getMinX();
-		pVertices[0 + VERTEX_INDEX_Y] = pCamera.getMinY();
+		pVertices[0 + VERTEX_INDEX_X] = pCamera.getXMin();
+		pVertices[0 + VERTEX_INDEX_Y] = pCamera.getYMin();
 
-		pVertices[2 + VERTEX_INDEX_X] = pCamera.getMaxX();
-		pVertices[2 + VERTEX_INDEX_Y] = pCamera.getMinY();
+		pVertices[2 + VERTEX_INDEX_X] = pCamera.getXMax();
+		pVertices[2 + VERTEX_INDEX_Y] = pCamera.getYMin();
 
-		pVertices[4 + VERTEX_INDEX_X] = pCamera.getMaxX();
-		pVertices[4 + VERTEX_INDEX_Y] = pCamera.getMaxY();
+		pVertices[4 + VERTEX_INDEX_X] = pCamera.getXMax();
+		pVertices[4 + VERTEX_INDEX_Y] = pCamera.getYMax();
 
-		pVertices[6 + VERTEX_INDEX_X] = pCamera.getMinX();
-		pVertices[6 + VERTEX_INDEX_Y] = pCamera.getMaxY();
+		pVertices[6 + VERTEX_INDEX_X] = pCamera.getXMin();
+		pVertices[6 + VERTEX_INDEX_Y] = pCamera.getYMax();
 
 		MathUtils.rotateAroundCenter(pVertices, pCamera.getRotation(), pCamera.getCenterX(), pCamera.getCenterY());
 	}

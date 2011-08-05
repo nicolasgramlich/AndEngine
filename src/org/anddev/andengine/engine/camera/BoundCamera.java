@@ -103,10 +103,10 @@ public class BoundCamera extends Camera {
 		} else {
 			final float currentCenterX = this.getCenterX();
 
-			final float minXBoundExceededAmount = this.mBoundsMinX - this.getMinX();
+			final float minXBoundExceededAmount = this.mBoundsMinX - this.getXMin();
 			final boolean minXBoundExceeded = minXBoundExceededAmount > 0;
 
-			final float maxXBoundExceededAmount = this.getMaxX() - this.mBoundsMaxX;
+			final float maxXBoundExceededAmount = this.getXMax() - this.mBoundsMaxX;
 			final boolean maxXBoundExceeded = maxXBoundExceededAmount > 0;
 
 			if(minXBoundExceeded) {
@@ -135,10 +135,10 @@ public class BoundCamera extends Camera {
 		} else {
 			final float currentCenterY = this.getCenterY();
 
-			final float minYBoundExceededAmount = this.mBoundsMinY - this.getMinY();
+			final float minYBoundExceededAmount = this.mBoundsMinY - this.getYMin();
 			final boolean minYBoundExceeded = minYBoundExceededAmount > 0;
 
-			final float maxYBoundExceededAmount = this.getMaxY() - this.mBoundsMaxY;
+			final float maxYBoundExceededAmount = this.getYMax() - this.mBoundsMaxY;
 			final boolean maxYBoundExceeded = maxYBoundExceededAmount > 0;
 
 			if(minYBoundExceeded) {

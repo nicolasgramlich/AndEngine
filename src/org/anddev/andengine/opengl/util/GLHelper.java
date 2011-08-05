@@ -7,17 +7,17 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
-import javax.microedition.khronos.opengles.GL11Ext;
 
 import org.anddev.andengine.engine.options.RenderOptions;
+import org.anddev.andengine.opengl.GLES20Fix;
 import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
+import org.anddev.andengine.opengl.util.GLMatrixStack.MatrixMode;
 import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
+import android.opengl.GLES20;
 import android.opengl.GLException;
 import android.opengl.GLUtils;
-import android.os.Build;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -43,16 +43,13 @@ public class GLHelper {
 	// Fields
 	// ===========================================================
 
+	private static GLMatrixStack sGLMatrixStack = new GLMatrixStack();
+
 	private static int sCurrentHardwareBufferID = -1;
 	private static int sCurrentHardwareTextureID = -1;
-	private static int sCurrentMatrix = -1;
 
 	private static int sCurrentSourceBlendMode = -1;
 	private static int sCurrentDestinationBlendMode = -1;
-
-	private static FastFloatBuffer sCurrentVertexFloatBuffer = null;
-	private static FastFloatBuffer sCurrentTextureFloatBuffer = null;
-	private static TextureRegionCrop sCurrentTextureRegionCrop = null;
 
 	private static boolean sEnableDither = true;
 	private static boolean sEnableLightning = true;
@@ -63,357 +60,268 @@ public class GLHelper {
 	private static boolean sEnableBlend = false;
 	private static boolean sEnableCulling = false;
 	private static boolean sEnableTextures = false;
-	private static boolean sEnableTexCoordArray = false;
-	private static boolean sEnableVertexArray = false;
 
 	private static float sLineWidth = 1;
-
-	private static float sRed = -1;
-	private static float sGreen = -1;
-	private static float sBlue = -1;
-	private static float sAlpha = -1;
-
-	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
-	public static boolean EXTENSIONS_DRAWTEXTURE = false;
-	public static boolean EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = false;
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	public static void reset(final GL10 pGL) {
+	public static void reset() {
+		GLHelper.sGLMatrixStack.reset();
+
 		GLHelper.sCurrentHardwareBufferID = -1;
 		GLHelper.sCurrentHardwareTextureID = -1;
-		GLHelper.sCurrentMatrix = -1;
 
 		GLHelper.sCurrentSourceBlendMode = -1;
 		GLHelper.sCurrentDestinationBlendMode = -1;
 
-		GLHelper.sCurrentVertexFloatBuffer = null;
-		GLHelper.sCurrentTextureFloatBuffer = null;
-		GLHelper.sCurrentTextureRegionCrop = null;
+		GLHelper.enableDither();
+		GLHelper.enableLightning();
+		GLHelper.enableDepthTest();
+		GLHelper.enableMultisample();
 
-		GLHelper.enableDither(pGL);
-		GLHelper.enableLightning(pGL);
-		GLHelper.enableDepthTest(pGL);
-		GLHelper.enableMultisample(pGL);
-
-		GLHelper.disableBlend(pGL);
-		GLHelper.disableCulling(pGL);
-		GLHelper.disableTextures(pGL);
-		GLHelper.disableTexCoordArray(pGL);
-		GLHelper.disableVertexArray(pGL);
+		GLHelper.disableBlend();
+		GLHelper.disableCulling();
+		GLHelper.disableTextures();
 
 		GLHelper.sLineWidth = 1;
-
-		GLHelper.sRed = -1;
-		GLHelper.sGreen = -1;
-		GLHelper.sBlue = -1;
-		GLHelper.sAlpha = -1;
-
-		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
-		GLHelper.EXTENSIONS_DRAWTEXTURE = false;
-		GLHelper.EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = false;
 	}
 
-	public static void enableExtensions(final GL10 pGL, final RenderOptions pRenderOptions) {
-		final String version = pGL.glGetString(GL10.GL_VERSION);
-		final String renderer = pGL.glGetString(GL10.GL_RENDERER);
-		final String extensions = pGL.glGetString(GL10.GL_EXTENSIONS);
+	public static void enableExtensions(final RenderOptions pRenderOptions) {
+		final String version = GLES20.glGetString(GL10.GL_VERSION);
+		final String renderer = GLES20.glGetString(GL10.GL_RENDERER);
+		final String extensions = GLES20.glGetString(GL10.GL_EXTENSIONS);
 
 		Debug.d("RENDERER: " + renderer);
 		Debug.d("VERSION: " + version);
 		Debug.d("EXTENSIONS: " + extensions);
-
-		final boolean isOpenGL10 = version.contains("1.0");
-		final boolean isOpenGL2X = version.contains("2.");
-		final boolean isSoftwareRenderer = renderer.contains("PixelFlinger");
-		final boolean isVBOCapable = extensions.contains("_vertex_buffer_object");
-		final boolean isDrawTextureCapable = extensions.contains("draw_texture");
-		final boolean isTextureNonPowerOfTwoCapable = extensions.contains("texture_npot");
-
-		GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = !pRenderOptions.isDisableExtensionVertexBufferObjects() && !isSoftwareRenderer && (isVBOCapable || !isOpenGL10);
-		GLHelper.EXTENSIONS_DRAWTEXTURE = !pRenderOptions.isDisableExtensionVertexBufferObjects() && (isDrawTextureCapable || !isOpenGL10);
-		GLHelper.EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = isTextureNonPowerOfTwoCapable || isOpenGL2X;
-
-		GLHelper.hackBrokenDevices();
-		Debug.d("EXTENSIONS_VERXTEXBUFFEROBJECTS = " + GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS);
-		Debug.d("EXTENSIONS_DRAWTEXTURE = " + GLHelper.EXTENSIONS_DRAWTEXTURE);
 	}
 
-	private static void hackBrokenDevices() {
-		if (Build.PRODUCT.contains("morrison")) {
-			// This is the Motorola Cliq. This device LIES and says it supports
-			// VBOs, which it actually does not (or, more likely, the extensions string
-			// is correct and the GL JNI glue is broken).
-			GLHelper.EXTENSIONS_VERTEXBUFFEROBJECTS = false;
-			// TODO: if Motorola fixes this, I should switch to using the fingerprint
-			// (blur/morrison/morrison/morrison:1.5/CUPCAKE/091007:user/ota-rel-keys,release-keys)
-			// instead of the product name so that newer versions use VBOs
-		}
-	}
-
-	public static void setColor(final GL10 pGL, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(pAlpha != GLHelper.sAlpha || pRed != GLHelper.sRed || pGreen != GLHelper.sGreen || pBlue != GLHelper.sBlue) {
-			GLHelper.sAlpha = pAlpha;
-			GLHelper.sRed = pRed;
-			GLHelper.sGreen = pGreen;
-			GLHelper.sBlue = pBlue;
-			pGL.glColor4f(pRed, pGreen, pBlue, pAlpha);
-		}
-	}
-
-	public static void enableVertexArray(final GL10 pGL) {
-		if(!GLHelper.sEnableVertexArray) {
-			GLHelper.sEnableVertexArray = true;
-			pGL.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		}
-	}
-	public static void disableVertexArray(final GL10 pGL) {
-		if(GLHelper.sEnableVertexArray) {
-			GLHelper.sEnableVertexArray = false;
-			pGL.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-		}
-	}
-
-	public static void enableTexCoordArray(final GL10 pGL) {
-		if(!GLHelper.sEnableTexCoordArray) {
-			GLHelper.sEnableTexCoordArray = true;
-			pGL.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		}
-	}
-	public static void disableTexCoordArray(final GL10 pGL) {
-		if(GLHelper.sEnableTexCoordArray) {
-			GLHelper.sEnableTexCoordArray = false;
-			pGL.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		}
-	}
-
-	public static void enableScissorTest(final GL10 pGL) {
+	public static void enableScissorTest() {
 		if(!GLHelper.sEnableScissorTest) {
 			GLHelper.sEnableScissorTest = true;
-			pGL.glEnable(GL10.GL_SCISSOR_TEST);
+			GLES20.glEnable(GL10.GL_SCISSOR_TEST);
 		}
 	}
-	public static void disableScissorTest(final GL10 pGL) {
+	public static void disableScissorTest() {
 		if(GLHelper.sEnableScissorTest) {
 			GLHelper.sEnableScissorTest = false;
-			pGL.glDisable(GL10.GL_SCISSOR_TEST);
+			GLES20.glDisable(GL10.GL_SCISSOR_TEST);
 		}
 	}
 
-	public static void enableBlend(final GL10 pGL) {
+	public static void enableBlend() {
 		if(!GLHelper.sEnableBlend) {
 			GLHelper.sEnableBlend = true;
-			pGL.glEnable(GL10.GL_BLEND);
+			GLES20.glEnable(GL10.GL_BLEND);
 		}
 	}
-	public static void disableBlend(final GL10 pGL) {
+	public static void disableBlend() {
 		if(GLHelper.sEnableBlend) {
 			GLHelper.sEnableBlend = false;
-			pGL.glDisable(GL10.GL_BLEND);
+			GLES20.glDisable(GL10.GL_BLEND);
 		}
 	}
 
-	public static void enableCulling(final GL10 pGL) {
+	public static void enableCulling() {
 		if(!GLHelper.sEnableCulling) {
 			GLHelper.sEnableCulling = true;
-			pGL.glEnable(GL10.GL_CULL_FACE);
+			GLES20.glEnable(GL10.GL_CULL_FACE);
 		}
 	}
-	public static void disableCulling(final GL10 pGL) {
+	public static void disableCulling() {
 		if(GLHelper.sEnableCulling) {
 			GLHelper.sEnableCulling = false;
-			pGL.glDisable(GL10.GL_CULL_FACE);
+			GLES20.glDisable(GL10.GL_CULL_FACE);
 		}
 	}
 
-	public static void enableTextures(final GL10 pGL) {
+	public static void enableTextures() {
 		if(!GLHelper.sEnableTextures) {
 			GLHelper.sEnableTextures = true;
-			pGL.glEnable(GL10.GL_TEXTURE_2D);
+			GLES20.glEnable(GL10.GL_TEXTURE_2D);
 		}
 	}
-	public static void disableTextures(final GL10 pGL) {
+	public static void disableTextures() {
 		if(GLHelper.sEnableTextures) {
 			GLHelper.sEnableTextures = false;
-			pGL.glDisable(GL10.GL_TEXTURE_2D);
+			GLES20.glDisable(GL10.GL_TEXTURE_2D);
 		}
 	}
 
-	public static void enableLightning(final GL10 pGL) {
+	public static void enableLightning() {
 		if(!GLHelper.sEnableLightning) {
 			GLHelper.sEnableLightning = true;
-			pGL.glEnable(GL10.GL_LIGHTING);
+			GLES20.glEnable(GL10.GL_LIGHTING);
 		}
 	}
-	public static void disableLightning(final GL10 pGL) {
+	public static void disableLightning() {
 		if(GLHelper.sEnableLightning) {
 			GLHelper.sEnableLightning = false;
-			pGL.glDisable(GL10.GL_LIGHTING);
+			GLES20.glDisable(GL10.GL_LIGHTING);
 		}
 	}
 
-	public static void enableDither(final GL10 pGL) {
+	public static void enableDither() {
 		if(!GLHelper.sEnableDither) {
 			GLHelper.sEnableDither = true;
-			pGL.glEnable(GL10.GL_DITHER);
+			GLES20.glEnable(GL10.GL_DITHER);
 		}
 	}
-	public static void disableDither(final GL10 pGL) {
+	public static void disableDither() {
 		if(GLHelper.sEnableDither) {
 			GLHelper.sEnableDither = false;
-			pGL.glDisable(GL10.GL_DITHER);
+			GLES20.glDisable(GL10.GL_DITHER);
 		}
 	}
 
-	public static void enableDepthTest(final GL10 pGL) {
+	public static void enableDepthTest() {
 		if(!GLHelper.sEnableDepthTest) {
 			GLHelper.sEnableDepthTest = true;
-			pGL.glEnable(GL10.GL_DEPTH_TEST);
+			GLES20.glEnable(GL10.GL_DEPTH_TEST);
 		}
 	}
-	public static void disableDepthTest(final GL10 pGL) {
+	public static void disableDepthTest() {
 		if(GLHelper.sEnableDepthTest) {
 			GLHelper.sEnableDepthTest = false;
-			pGL.glDisable(GL10.GL_DEPTH_TEST);
+			GLES20.glDisable(GL10.GL_DEPTH_TEST);
 		}
 	}
 
-	public static void enableMultisample(final GL10 pGL) {
+	public static void enableMultisample() {
 		if(!GLHelper.sEnableMultisample) {
 			GLHelper.sEnableMultisample = true;
-			pGL.glEnable(GL10.GL_MULTISAMPLE);
+			GLES20.glEnable(GL10.GL_MULTISAMPLE);
 		}
 	}
-	public static void disableMultisample(final GL10 pGL) {
+	public static void disableMultisample() {
 		if(GLHelper.sEnableMultisample) {
 			GLHelper.sEnableMultisample = false;
-			pGL.glDisable(GL10.GL_MULTISAMPLE);
+			GLES20.glDisable(GL10.GL_MULTISAMPLE);
 		}
 	}
 
-	public static void bindBuffer(final GL11 pGL11, final int pHardwareBufferID) {
+	public static void bindBuffer(final int pHardwareBufferID) {
 		/* Reduce unnecessary buffer switching calls. */
 		if(GLHelper.sCurrentHardwareBufferID != pHardwareBufferID) {
 			GLHelper.sCurrentHardwareBufferID = pHardwareBufferID;
-			pGL11.glBindBuffer(GL11.GL_ARRAY_BUFFER, pHardwareBufferID);
+			GLES20.glBindBuffer(GL11.GL_ARRAY_BUFFER, pHardwareBufferID);
 		}
 	}
 
-	public static void deleteBuffer(final GL11 pGL11, final int pHardwareBufferID) {
+	public static void deleteBuffer(final int pHardwareBufferID) {
 		GLHelper.HARDWAREBUFFERID_CONTAINER[0] = pHardwareBufferID;
-		pGL11.glDeleteBuffers(1, GLHelper.HARDWAREBUFFERID_CONTAINER, 0);
+		GLES20.glDeleteBuffers(1, GLHelper.HARDWAREBUFFERID_CONTAINER, 0);
 	}
 
 	/**
 	 * @see {@link GLHelper#forceBindTexture(GL10, int)}
-	 * @param pGL
+	 * @param GLES20
 	 * @param pHardwareTextureID
 	 */
-	public static void bindTexture(final GL10 pGL, final int pHardwareTextureID) {
+	public static void bindTexture(final int pHardwareTextureID) {
 		/* Reduce unnecessary texture switching calls. */
 		if(GLHelper.sCurrentHardwareTextureID != pHardwareTextureID) {
 			GLHelper.sCurrentHardwareTextureID = pHardwareTextureID;
-			pGL.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
+			GLES20.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
 		}
 	}
 
 	/**
 	 * @see {@link GLHelper#bindTexture(GL10, int)}
-	 * @param pGL
+	 * @param GLES20
 	 * @param pHardwareTextureID
 	 */
-	public static void forceBindTexture(final GL10 pGL, final int pHardwareTextureID) {
+	public static void forceBindTexture(final int pHardwareTextureID) {
 		GLHelper.sCurrentHardwareTextureID = pHardwareTextureID;
-		pGL.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
+		GLES20.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
 	}
 
-	public static void deleteTexture(final GL10 pGL, final int pHardwareTextureID) {
+	public static void deleteTexture(final int pHardwareTextureID) {
 		GLHelper.HARDWARETEXTUREID_CONTAINER[0] = pHardwareTextureID;
-		pGL.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);
+		GLES20.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);
 	}
 
-	public static void texCoordPointer(final GL10 pGL, final FastFloatBuffer pTextureFloatBuffer) {
-		if(GLHelper.sCurrentTextureFloatBuffer  != pTextureFloatBuffer) {
-			GLHelper.sCurrentTextureFloatBuffer = pTextureFloatBuffer;
-			pGL.glTexCoordPointer(2, GL10.GL_FLOAT, 0, pTextureFloatBuffer.mByteBuffer);
-		}
+	public static void texCoordZeroPointer(final int pTextureCoordinateAttribute) { // TODO Name, Parameters, Inline(?)
+		GLES20Fix.glVertexAttribPointer(pTextureCoordinateAttribute, 2, GL10.GL_FLOAT, false, 0, 0);
 	}
 
-	public static void texCoordZeroPointer(final GL11 pGL11) {
-		pGL11.glTexCoordPointer(2, GL10.GL_FLOAT, 0, 0);
+	public static void vertexZeroPointer(final int pVertexAttribute) { // TODO Name, Parameters, Inline(?)
+		GLES20Fix.glVertexAttribPointer(pVertexAttribute, 2, GL10.GL_FLOAT, false, 0, 0);
 	}
 
-	public static void vertexPointer(final GL10 pGL, final FastFloatBuffer pVertexFloatBuffer) {
-		if(GLHelper.sCurrentVertexFloatBuffer != pVertexFloatBuffer) {
-			GLHelper.sCurrentVertexFloatBuffer = pVertexFloatBuffer;
-			pGL.glVertexPointer(2, GL10.GL_FLOAT, 0, pVertexFloatBuffer.mByteBuffer);
-		}
-	}
-
-	public static void vertexZeroPointer(final GL11 pGL11) {
-		pGL11.glVertexPointer(2, GL10.GL_FLOAT, 0, 0);
-	}
-
-	public static void blendFunction(final GL10 pGL, final int pSourceBlendMode, final int pDestinationBlendMode) {
+	public static void blendFunction(final int pSourceBlendMode, final int pDestinationBlendMode) {
 		if(GLHelper.sCurrentSourceBlendMode != pSourceBlendMode || GLHelper.sCurrentDestinationBlendMode != pDestinationBlendMode) {
 			GLHelper.sCurrentSourceBlendMode = pSourceBlendMode;
 			GLHelper.sCurrentDestinationBlendMode = pDestinationBlendMode;
-			pGL.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
+			GLES20.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 		}
 	}
 
-	public static void lineWidth(final GL10 pGL, final float pLineWidth) {
+	public static void lineWidth(final float pLineWidth) {
 		if(GLHelper.sLineWidth  != pLineWidth) {
 			GLHelper.sLineWidth = pLineWidth;
-			pGL.glLineWidth(pLineWidth);
+			GLES20.glLineWidth(pLineWidth);
 		}
 	}
 
-	public static void switchToModelViewMatrix(final GL10 pGL) {
-		/* Reduce unnecessary matrix switching calls. */
-		if(GLHelper.sCurrentMatrix != GL10.GL_MODELVIEW) {
-			GLHelper.sCurrentMatrix = GL10.GL_MODELVIEW;
-			pGL.glMatrixMode(GL10.GL_MODELVIEW);
-		}
+	public static void switchToModelViewMatrix() {
+		GLHelper.sGLMatrixStack.setMatrixMode(MatrixMode.MODELVIEW);
 	}
 
-	public static void switchToProjectionMatrix(final GL10 pGL) {
-		/* Reduce unnecessary matrix switching calls. */
-		if(GLHelper.sCurrentMatrix != GL10.GL_PROJECTION) {
-			GLHelper.sCurrentMatrix = GL10.GL_PROJECTION;
-			pGL.glMatrixMode(GL10.GL_PROJECTION);
-		}
+	public static void switchToProjectionMatrix() {
+		GLHelper.sGLMatrixStack.setMatrixMode(MatrixMode.PROJECTION);
 	}
 
-	public static void setProjectionIdentityMatrix(final GL10 pGL) {
-		GLHelper.switchToProjectionMatrix(pGL);
-		pGL.glLoadIdentity();
+	public static void switchToMatrix(final MatrixMode pMatrixMode) {
+		GLHelper.sGLMatrixStack.setMatrixMode(pMatrixMode);
 	}
 
-	public static void setModelViewIdentityMatrix(final GL10 pGL) {
-		GLHelper.switchToModelViewMatrix(pGL);
-		pGL.glLoadIdentity();
+	public static void setProjectionIdentityMatrix() {
+		GLHelper.switchToProjectionMatrix();
+		GLHelper.sGLMatrixStack.loadIdentity();
 	}
 
-	public static void setShadeModelFlat(final GL10 pGL) {
-		pGL.glShadeModel(GL10.GL_FLAT);
+	public static void setModelViewIdentityMatrix() {
+		GLHelper.switchToModelViewMatrix();
+		GLHelper.sGLMatrixStack.loadIdentity();
 	}
 
-	public static void setPerspectiveCorrectionHintFastest(final GL10 pGL) {
-		pGL.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
+	public static void glLoadIdentity() {
+		GLHelper.sGLMatrixStack.loadIdentity();
 	}
 
-	public static void bufferData(final GL11 pGL11, final ByteBuffer pByteBuffer, final int pUsage) {
-		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pByteBuffer.capacity(), pByteBuffer, pUsage);
+	public static void glPushMatrix() {
+		GLHelper.sGLMatrixStack.pushMatrix();
 	}
 
-	public static void textureCrop(final GL11 pGL11, final TextureRegionCrop pTextureRegionCrop) {
-		if (pTextureRegionCrop != GLHelper.sCurrentTextureRegionCrop || pTextureRegionCrop.isDirty()) {
-			GLHelper.sCurrentTextureRegionCrop = pTextureRegionCrop;
-			pGL11.glTexParameteriv(GL10.GL_TEXTURE_2D, GL11Ext.GL_TEXTURE_CROP_RECT_OES, pTextureRegionCrop.getData(), 0);
-		}
+	public static void glPopMatrix() {
+		GLHelper.sGLMatrixStack.popMatrix();
+	}
+
+	public static void glTranslatef(final float pX, final float pY, final int pZ) {
+		GLHelper.sGLMatrixStack.translate(pX, pY, pZ);
+	}
+
+	public static void glRotatef(final float pAngle, final float pX, final float pY, final int pZ) {
+		GLHelper.sGLMatrixStack.rotate(pAngle, pX, pY, pZ);
+	}
+
+	public static void glScalef(final float pScaleX, final float pScaleY, final int pScaleZ) {
+		GLHelper.sGLMatrixStack.scale(pScaleX, pScaleY, pScaleZ);
+	}
+
+	public static void glOrthof(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
+		GLHelper.sGLMatrixStack.ortho(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
+	}
+
+	public static void setPerspectiveCorrectionHintFastest() {
+		GLES20.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
+	}
+
+	public static void bufferData(final ByteBuffer pByteBuffer, final int pUsage) {
+		GLES20.glBufferData(GL11.GL_ARRAY_BUFFER, pByteBuffer.capacity(), pByteBuffer, pUsage);
 	}
 
 	/**
@@ -423,10 +331,10 @@ public class GLHelper {
 	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 * @param pBorder
 	 */
-	public static void glTexImage2D(final GL10 pGL, final int pTarget, final int pLevel, final Bitmap pBitmap, final int pBorder, final PixelFormat pPixelFormat) {
+	public static void glTexImage2D(final int pTarget, final int pLevel, final Bitmap pBitmap, final int pBorder, final PixelFormat pPixelFormat) {
 		final Buffer pixelBuffer = GLHelper.getPixels(pBitmap, pPixelFormat);
 
-		pGL.glTexImage2D(pTarget, pLevel, pPixelFormat.getGLFormat(), pBitmap.getWidth(), pBitmap.getHeight(), pBorder, pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
+		GLES20.glTexImage2D(pTarget, pLevel, pPixelFormat.getGLFormat(), pBitmap.getWidth(), pBitmap.getHeight(), pBorder, pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
 	}
 
 	/**
@@ -435,10 +343,10 @@ public class GLHelper {
 	 * </br>
 	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 */
-	public static void glTexSubImage2D(final GL10 pGL, final int pTarget, final int pLevel, final int pXOffset, final int pYOffset, final Bitmap pBitmap, final PixelFormat pPixelFormat) {
+	public static void glTexSubImage2D(final int pTarget, final int pLevel, final int pXOffset, final int pYOffset, final Bitmap pBitmap, final PixelFormat pPixelFormat) {
 		final Buffer pixelBuffer = GLHelper.getPixels(pBitmap, pPixelFormat);
 
-		pGL.glTexSubImage2D(pTarget, pLevel, pXOffset, pYOffset, pBitmap.getWidth(), pBitmap.getHeight(), pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
+		GLES20.glTexSubImage2D(pTarget, pLevel, pXOffset, pYOffset, pBitmap.getWidth(), pBitmap.getHeight(), pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
 	}
 
 	private static Buffer getPixels(final Bitmap pBitmap, final PixelFormat pPixelFormat) {
@@ -569,8 +477,8 @@ public class GLHelper {
 		return pixelsARGB_8888;
 	}
 
-	public static void checkGLError(final GL10 pGL) throws GLException { // TODO Use more often!
-		final int err = pGL.glGetError();
+	public static void checkGLError() throws GLException { // TODO Use more often!
+		final int err = GLES20.glGetError();
 		if (err != GL10.GL_NO_ERROR) {
 			throw new GLException(err);
 		}

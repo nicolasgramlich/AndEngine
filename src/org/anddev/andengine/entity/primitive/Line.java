@@ -12,6 +12,8 @@ import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
 
+import android.opengl.GLES20;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -166,11 +168,11 @@ public class Line extends Shape {
 	}
 
 	@Override
-	protected void onInitDraw(final GL10 pGL) {
-		super.onInitDraw(pGL);
-		GLHelper.disableTextures(pGL);
-		GLHelper.disableTexCoordArray(pGL);
-		GLHelper.lineWidth(pGL, this.mLineWidth);
+	protected void onInitDraw() {
+		super.onInitDraw();
+		GLHelper.disableTextures();
+		GLHelper.disableTexCoordArray();
+		GLHelper.lineWidth(this.mLineWidth);
 	}
 
 	@Override
@@ -184,8 +186,8 @@ public class Line extends Shape {
 	}
 
 	@Override
-	protected void drawVertices(final GL10 pGL, final Camera pCamera) {
-		pGL.glDrawArrays(GL10.GL_LINES, 0, LineVertexBuffer.VERTICES_PER_LINE);
+	protected void drawVertices(final Camera pCamera) {
+		GLES20.glDrawArrays(GL10.GL_LINES, 0, LineVertexBuffer.VERTICES_PER_LINE);
 	}
 
 	@Override

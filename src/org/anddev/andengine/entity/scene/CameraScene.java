@@ -1,10 +1,9 @@
 package org.anddev.andengine.entity.scene;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -87,20 +86,20 @@ public class CameraScene extends Scene {
 	}
 
 	@Override
-	protected void onManagedDraw(final GL10 pGL, final Camera pCamera) {
+	protected void onManagedDraw(final Camera pCamera) {
 		if(this.mCamera != null) {
-			pGL.glMatrixMode(GL10.GL_PROJECTION);
-			this.mCamera.onApplyCameraSceneMatrix(pGL);
+			GLHelper.switchToProjectionMatrix();
+			this.mCamera.onApplyCameraSceneMatrix();
 			{
-				pGL.glMatrixMode(GL10.GL_MODELVIEW);
-				pGL.glPushMatrix();
-				pGL.glLoadIdentity();
+				GLHelper.switchToModelViewMatrix();
+				GLHelper.glPushMatrix();
+				GLHelper.glLoadIdentity();
 
-				super.onManagedDraw(pGL, pCamera);
+				super.onManagedDraw(pCamera);
 
-				pGL.glPopMatrix();
+				GLHelper.glPopMatrix();
 			}
-			pGL.glMatrixMode(GL10.GL_PROJECTION);
+			GLHelper.switchToProjectionMatrix();
 		}
 	}
 

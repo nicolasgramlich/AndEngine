@@ -5,9 +5,9 @@ import javax.microedition.khronos.opengles.GL10;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
-import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.opengl.vertex.VertexBuffer;
+import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -26,7 +26,7 @@ public abstract class Shape extends Entity implements IShape {
 
 	public static final int BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT = GL10.GL_ONE;
 	public static final int BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
-
+	
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -35,13 +35,19 @@ public abstract class Shape extends Entity implements IShape {
 	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	private boolean mCullingEnabled = false;
+	
+	protected Mesh mMesh;
+	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY) {
+	public Shape(final float pX, final float pY, final Mesh pMesh, final ShaderProgram pShaderProgram) {
 		super(pX, pY);
+		
+		this.mMesh = pMesh;
+		this.mShaderProgram = pShaderProgram;
 	}
 
 	// ===========================================================
@@ -73,33 +79,20 @@ public abstract class Shape extends Entity implements IShape {
 	public float getHeightScaled() {
 		return this.getHeight() * this.mScaleY;
 	}
-
-	public boolean isVertexBufferManaged() {
-		return this.getVertexBuffer().isManaged();
+	
+	public Mesh getMesh() {
+		return mMesh;
 	}
-
-	/**
-	 * @param pVertexBufferManaged when passing <code>true</code> this {@link Shape} will make its {@link VertexBuffer} unload itself from the active {@link BufferObjectManager}, when this {@link Shape} is finalized/garbage-collected. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
-	 */
-	public void setVertexBufferManaged(final boolean pVertexBufferManaged) {
-		this.getVertexBuffer().setManaged(pVertexBufferManaged);
+	
+	public ShaderProgram getShaderProgram() {
+		return mShaderProgram;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onUpdateVertexBuffer();
-	protected abstract VertexBuffer getVertexBuffer();
-
-	protected abstract void drawVertices(final Camera pCamera);
-
-	@Override
-	protected void doDraw(final Camera pCamera) {
-		this.onInitDraw();
-		this.onApplyVertices();
-		this.drawVertices(pCamera);
-	}
+	protected abstract void onUpdateVertices();
 
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
@@ -131,29 +124,15 @@ public abstract class Shape extends Entity implements IShape {
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		final VertexBuffer vertexBuffer = this.getVertexBuffer();
-		if(vertexBuffer.isManaged()) {
-			vertexBuffer.unloadFromActiveBufferObjectManager();
+		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		if(vertexBufferObject.isManaged()) {
+			vertexBufferObject.unloadFromActiveBufferObjectManager();
 		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	protected void onInitDraw() {
-		GLHelper.enableVertexArray();
-		GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
-	}
-
-	protected void onApplyVertices() {
-		this.getVertexBuffer().selectOnHardware();
-		GLHelper.vertexZeroPointer();
-	}
-
-	protected void updateVertexBuffer() {
-		this.onUpdateVertexBuffer();
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

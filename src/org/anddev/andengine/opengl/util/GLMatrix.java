@@ -29,6 +29,10 @@ public class GLMatrix {
 	// Getter & Setter
 	// ===========================================================
 
+	public float[] getValues() {
+		return this.mValues;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -43,7 +47,7 @@ public class GLMatrix {
 	}
 
 	public GLMatrix setTo(final GLMatrix pGLMatrix) {
-		System.arraycopy(pGLMatrix, 0, this.mValues, 0, GLMatrix.GLMATRIX_SIZE);
+		System.arraycopy(pGLMatrix.mValues, 0, this.mValues, 0, GLMatrix.GLMATRIX_SIZE);
 		return this;
 	}
 

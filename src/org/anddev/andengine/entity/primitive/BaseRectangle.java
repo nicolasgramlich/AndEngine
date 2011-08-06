@@ -1,9 +1,8 @@
 package org.anddev.andengine.entity.primitive;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -25,13 +24,9 @@ public abstract class BaseRectangle extends RectangularShape {
 	// Constructors
 	// ===========================================================
 
-	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		super(pX, pY, pWidth, pHeight, new RectangleVertexBuffer(GL11.GL_STATIC_DRAW, true));
-		this.updateVertexBuffer();
-	}
-
-	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight, final RectangleVertexBuffer pRectangleVertexBuffer) {
-		super(pX, pY, pWidth, pHeight, pRectangleVertexBuffer);
+	public BaseRectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pWidth, pHeight, pMesh, pShaderProgram);
+		this.onUpdateVertices();
 	}
 
 	// ===========================================================
@@ -41,16 +36,6 @@ public abstract class BaseRectangle extends RectangularShape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public RectangleVertexBuffer getVertexBuffer() {
-		return (RectangleVertexBuffer)this.mVertexBuffer;
-	}
-
-	@Override
-	protected void onUpdateVertexBuffer(){
-		this.getVertexBuffer().update(this.mWidth, this.mHeight);
-	}
 
 	// ===========================================================
 	// Methods

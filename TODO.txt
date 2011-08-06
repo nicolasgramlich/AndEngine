@@ -1,4 +1,11 @@
-- Move glClearColor to Engine or SurfaceView
-	- Introduce Engine.setClearColor(...)/enableClearColor(boolean)
-- Maybe introduce Color3/4 objects
-	- Add Color3/4Pool
+IMPORTANT NOTES:
+	- Maybe from now on one Buffer had to be used for Vertices, Color and and Tex coords.
+		- Easy object coloring might not so easy anymore, as the color data in the buffer would need to be updated then.
+		- Might be the easiest to introduce a common Mesh of constructor-defineable size, instead of 
+
+
+OTHER NOTES:
+	- Move glClearColor to Engine or SurfaceView
+		- Introduce Engine.setClearColor(...)/enableClearColor(boolean)
+	- Maybe introduce Color3/4 objects
+		- Add Color3/4Pool

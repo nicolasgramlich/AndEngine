@@ -14,11 +14,7 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.controller.ITouchController;
 import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
 import org.anddev.andengine.input.touch.controller.SingleTouchControler;
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
-import org.anddev.andengine.opengl.font.FontFactory;
-import org.anddev.andengine.opengl.font.FontManager;
-import org.anddev.andengine.opengl.texture.TextureManager;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.anddev.andengine.sensor.SensorDelay;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
@@ -86,9 +82,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private SoundManager mSoundManager;
 	private MusicManager mMusicManager;
-	private final TextureManager mTextureManager = new TextureManager();
-	private final BufferObjectManager mBufferObjectManager = new BufferObjectManager();
-	private final FontManager mFontManager = new FontManager();
+//¦	private final TextureManager mTextureManager = new TextureManager();
+	private final VertexBufferObjectManager mBufferObjectManager = new VertexBufferObjectManager();
+//	private final FontManager mFontManager = new FontManager();
 
 	protected Scene mScene;
 
@@ -115,12 +111,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	public Engine(final EngineOptions pEngineOptions) {
-		BitmapTextureAtlasTextureRegionFactory.reset();
 		SoundFactory.reset();
 		MusicFactory.reset();
-		FontFactory.reset();
+//		FontFactory.reset();
 
-		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
+		VertexBufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 
 		this.mEngineOptions = pEngineOptions;
 		this.setTouchController(new SingleTouchControler());
@@ -231,13 +226,13 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
-	public TextureManager getTextureManager() {
-		return this.mTextureManager;
-	}
-
-	public FontManager getFontManager() {
-		return this.mFontManager;
-	}
+//	public TextureManager getTextureManager() {
+//		return this.mTextureManager;
+//	}
+//
+//	public FontManager getFontManager() {
+//		return this.mFontManager;
+//	}
 
 	public void clearUpdateHandlers() {
 		this.mUpdateHandlers.clear();
@@ -422,9 +417,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public void onResume() {
 		// TODO GLHelper.reset(pGL); ?
-		this.mTextureManager.reloadTextures();
-		this.mFontManager.reloadFonts();
-		BufferObjectManager.setActiveInstance(this.mBufferObjectManager);
+//		this.mTextureManager.reloadTextures();
+//		this.mFontManager.reloadFonts();
+		VertexBufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 		this.mBufferObjectManager.reloadBufferObjects();
 	}
 
@@ -432,11 +427,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	}
 
-	protected Camera getCameraFromSurfaceTouchEvent(@SuppressWarnings("unused") final TouchEvent pTouchEvent) {
+	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
 		return this.getCamera();
 	}
 
-	protected Scene getSceneFromSurfaceTouchEvent(@SuppressWarnings("unused") final TouchEvent pTouchEvent) {
+	protected Scene getSceneFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
 		return this.mScene;
 	}
 
@@ -496,8 +491,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		threadLocker.waitUntilCanDraw();
 
-		this.mTextureManager.updateTextures();
-		this.mFontManager.updateFonts();
+//		this.mTextureManager.updateTextures();
+//		this.mFontManager.updateFonts();
 		this.mBufferObjectManager.updateBufferObjects();
 
 		this.onDrawScene();

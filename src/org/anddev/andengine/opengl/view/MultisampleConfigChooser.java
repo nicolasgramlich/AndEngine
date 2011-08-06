@@ -7,16 +7,12 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import android.opengl.GLSurfaceView;
 
 /**
+ * TODO Check with GLES1 version for DEPTH_SIZE...
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:31:48 - 04.08.2011
  */
-// This class shows how to use multisampling. To use this, call
-//   myGLSurfaceView.setEGLConfigChooser(new MultisampleConfigChooser());
-// before calling setRenderer(). Multisampling will probably slow down
-// your app -- measure performance carefully and decide if the vastly
-// improved visual quality is worth the cost.
 public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser {
 
 	// ===========================================================

@@ -126,11 +126,12 @@ public class RenderSurfaceView extends GLSurfaceView {
 		}
 
 		@Override
-		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pConfig) {
+		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pEGLConfig) {
 			Debug.d("onSurfaceCreated");
 			GLHelper.reset();
 
 			GLHelper.setPerspectiveCorrectionHintFastest();
+			// TODO Check if available and make available through EngineOptions-RenderOptions
 			//			pGL.glEnable(GL10.GL_POLYGON_SMOOTH);
 			//			pGL.glHint(GL10.GL_POLYGON_SMOOTH_HINT, GL10.GL_NICEST);
 			//			pGL.glEnable(GL10.GL_LINE_SMOOTH);
@@ -145,8 +146,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 			GLHelper.enableBlend();
 			GLHelper.enableTextures();
-			GLHelper.enableTexCoordArray();
-			GLHelper.enableVertexArray();
 
 			GLHelper.enableCulling();
 			GLES20.glFrontFace(GL10.GL_CCW);
@@ -157,7 +156,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
-			int clearMask = GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT;
+			int clearMask = GLES20.GL_COLOR_BUFFER_BIT;
 			if (RenderSurfaceView.this.mUseMultisampling && RenderSurfaceView.this.mMultisampleConfigChooser.usesCoverageAa()) {
 				final int GL_COVERAGE_BUFFER_BIT_NV = 0x8000;
 				clearMask |= GL_COVERAGE_BUFFER_BIT_NV;

@@ -1,16 +1,12 @@
 package org.anddev.andengine.entity.shape;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.primitive.Line;
-import org.anddev.andengine.opengl.vertex.VertexBuffer;
-
-import android.opengl.GLES20;
+import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -31,22 +27,18 @@ public abstract class RectangularShape extends Shape {
 	protected float mWidth;
 	protected float mHeight;
 
-	protected final VertexBuffer mVertexBuffer;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final VertexBuffer pVertexBuffer) {
-		super(pX, pY);
+	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pMesh, pShaderProgram);
 
 		this.mBaseWidth = pWidth;
 		this.mBaseHeight = pHeight;
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-
-		this.mVertexBuffer = pVertexBuffer;
 
 		this.mRotationCenterX = pWidth * 0.5f;
 		this.mRotationCenterY = pHeight * 0.5f;
@@ -58,11 +50,6 @@ public abstract class RectangularShape extends Shape {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	@Override
-	public VertexBuffer getVertexBuffer() {
-		return this.mVertexBuffer;
-	}
 
 	@Override
 	public float getWidth() {
@@ -86,18 +73,18 @@ public abstract class RectangularShape extends Shape {
 
 	public void setWidth(final float pWidth) {
 		this.mWidth = pWidth;
-		this.updateVertexBuffer();
+		this.onUpdateVertices();
 	}
 
 	public void setHeight(final float pHeight) {
 		this.mHeight = pHeight;
-		this.updateVertexBuffer();
+		this.onUpdateVertices();
 	}
 
 	public void setSize(final float pWidth, final float pHeight) {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
-		this.updateVertexBuffer();
+		this.onUpdateVertices();
 	}
 
 	// ===========================================================
@@ -108,7 +95,7 @@ public abstract class RectangularShape extends Shape {
 		if(this.mWidth != this.mBaseWidth || this.mHeight != this.mBaseHeight) {
 			this.mWidth = this.mBaseWidth;
 			this.mHeight = this.mBaseHeight;
-			this.updateVertexBuffer();
+			this.onUpdateVertices();
 		}
 	}
 
@@ -117,14 +104,9 @@ public abstract class RectangularShape extends Shape {
 		final float x = this.mX;
 		final float y = this.mY;
 		return x > pCamera.getXMax()
-			|| y > pCamera.getYMax()
-			|| x + this.getWidth() < pCamera.getXMin()
-			|| y + this.getHeight() < pCamera.getYMin();
-	}
-
-	@Override
-	protected void drawVertices(final Camera pCamera) {
-		GLES20.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+				|| y > pCamera.getYMax()
+				|| x + this.getWidth() < pCamera.getXMin()
+				|| y + this.getHeight() < pCamera.getYMin();
 	}
 
 	@Override
@@ -157,9 +139,9 @@ public abstract class RectangularShape extends Shape {
 		if(pOtherShape instanceof RectangularShape) {
 			final RectangularShape pOtherRectangularShape = (RectangularShape) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(this, pOtherRectangularShape);
-		} else if(pOtherShape instanceof Line) {
-			final Line line = (Line) pOtherShape;
-			return RectangularShapeCollisionChecker.checkCollision(this, line);
+//		} else if(pOtherShape instanceof Line) {
+//			final Line line = (Line) pOtherShape;
+//			return RectangularShapeCollisionChecker.checkCollision(this, line);
 		} else {
 			return false;
 		}

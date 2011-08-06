@@ -5,6 +5,7 @@ import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.util.constants.MathConstants;
 
 import android.opengl.GLES20;
 
@@ -20,7 +21,7 @@ public class Rectangle extends BaseRectangle {
 	// Constants
 	// ===========================================================
 
-	private static final int FLOAT_TO_RAW_INT_BITS_ZERO = Float.floatToIntBits(0);
+	private static final int VERTICES_PER_RECTANGLE = 4;
 
 	// ===========================================================
 	// Fields
@@ -44,15 +45,15 @@ public class Rectangle extends BaseRectangle {
 
 	@Override
 	protected void doDraw(final Camera pCamera) {
-		this.mMesh.render(this.mShaderProgram, GLES20.GL_TRIANGLE_STRIP, 4);
+		this.mMesh.render(this.mShaderProgram, GLES20.GL_TRIANGLE_STRIP, VERTICES_PER_RECTANGLE);
 	}
 
 	@Override
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 
-		final int x = Rectangle.FLOAT_TO_RAW_INT_BITS_ZERO;
-		final int y = Rectangle.FLOAT_TO_RAW_INT_BITS_ZERO;
+		final int x = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
+		final int y = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
 		final int x2 = Float.floatToRawIntBits(this.mWidth);
 		final int y2 = Float.floatToRawIntBits(this.mHeight);
 

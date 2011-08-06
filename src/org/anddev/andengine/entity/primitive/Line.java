@@ -1,16 +1,18 @@
 package org.anddev.andengine.entity.primitive;
 
-import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
-
 import org.anddev.andengine.collision.LineCollisionChecker;
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.opengl.vertex.LineVertexBuffer;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.util.constants.Constants;
+import org.anddev.andengine.util.constants.MathConstants;
 
 import android.opengl.GLES20;
 
@@ -28,6 +30,8 @@ public class Line extends Shape {
 
 	private static final float LINEWIDTH_DEFAULT = 1.0f;
 
+	private static final int VERTICES_PER_LINE = 2;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -37,26 +41,23 @@ public class Line extends Shape {
 
 	private float mLineWidth;
 
-	private final LineVertexBuffer mLineVertexBuffer;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
-		this(pX1, pY1, pX2, pY2, LINEWIDTH_DEFAULT);
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, Mesh pMesh, ShaderProgram pShaderProgram) {
+		this(pX1, pY1, pX2, pY2, LINEWIDTH_DEFAULT, pMesh, pShaderProgram);
 	}
 
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
-		super(pX1, pY1);
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, Mesh pMesh, ShaderProgram pShaderProgram) {
+		super(pX1, pY1, pMesh, pShaderProgram);
 
 		this.mX2 = pX2;
 		this.mY2 = pY2;
 
 		this.mLineWidth = pLineWidth;
 
-		this.mLineVertexBuffer = new LineVertexBuffer(GL11.GL_STATIC_DRAW, true);
-		this.updateVertexBuffer();
+		this.onUpdateVertices();
 
 		final float width = this.getWidth();
 		final float height = this.getHeight();
@@ -155,7 +156,7 @@ public class Line extends Shape {
 
 		super.setPosition(pX1, pY1);
 
-		this.updateVertexBuffer();
+		this.onUpdateVertices();
 	}
 
 	// ===========================================================
@@ -166,28 +167,31 @@ public class Line extends Shape {
 	protected boolean isCulled(final Camera pCamera) {
 		return pCamera.isLineVisible(this);
 	}
-
+	
 	@Override
-	protected void onInitDraw() {
-		super.onInitDraw();
-		GLHelper.disableTextures();
-		GLHelper.disableTexCoordArray();
+	protected void onUpdateVertices() {
+        VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final int[] bufferData = vertexBufferObject.getBufferData();
+
+        bufferData[0 + Constants.VERTEX_INDEX_X]  = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO; 
+        bufferData[0 + Constants.VERTEX_INDEX_Y]  = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
+
+        bufferData[2 + Constants.VERTEX_INDEX_X]  = Float.floatToRawIntBits(this.mX2 - this.mX);
+        bufferData[2 + Constants.VERTEX_INDEX_Y]  = Float.floatToRawIntBits(this.mY2 - this.mY);
+
+        final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
+        buffer.position(0);
+        buffer.put(bufferData);
+        buffer.position(0);
+
+        vertexBufferObject.setDirty();
+	}
+	
+	@Override
+	protected void doDraw(Camera pCamera) {
 		GLHelper.lineWidth(this.mLineWidth);
-	}
 
-	@Override
-	public LineVertexBuffer getVertexBuffer() {
-		return this.mLineVertexBuffer;
-	}
-
-	@Override
-	protected void onUpdateVertexBuffer() {
-		this.mLineVertexBuffer.update(0, 0, this.mX2 - this.mX, this.mY2 - this.mY);
-	}
-
-	@Override
-	protected void drawVertices(final Camera pCamera) {
-		GLES20.glDrawArrays(GL10.GL_LINES, 0, LineVertexBuffer.VERTICES_PER_LINE);
+		GLES20.glDrawArrays(GLES20.GL_LINES, 0, VERTICES_PER_LINE);		
 	}
 
 	@Override

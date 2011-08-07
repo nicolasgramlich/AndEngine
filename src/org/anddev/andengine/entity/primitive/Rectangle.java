@@ -9,6 +9,7 @@ import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
+import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.constants.DataConstants;
 import org.anddev.andengine.util.constants.MathConstants;
 
@@ -34,17 +35,17 @@ public class Rectangle extends RectangularShape {
 
 	private static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
 			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
-					"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-					"void main() {\n" +
-					"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-					"}";
+			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+			"void main() {\n" +
+			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+			"}";
 
 	private static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
 			"precision mediump float;\n" +
-					"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
-					"void main() {\n" +
-					"  gl_FragColor = " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
-					"}";
+			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+			"void main() {\n" +
+			"  gl_FragColor = " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+			"}";
 
 	// ===========================================================
 	// Fields
@@ -55,17 +56,19 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 
 	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT} and a default {@link ShaderProgram}.
+	 * 
 	 * @param pX
 	 * @param pY
 	 * @param pWidth
 	 * @param pHeight
 	 */
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this(pX, pY, pWidth, pHeight, new Mesh(Rectangle.RECTANGLE_SIZE, GLES20.GL_STATIC_DRAW, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), null);
+		this(pX, pY, pWidth, pHeight, null);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 * 
 	 * @param pX
 	 * @param pY
@@ -77,8 +80,18 @@ public class Rectangle extends RectangularShape {
 		this(pX, pY, pWidth, pHeight, new Mesh(Rectangle.RECTANGLE_SIZE, GLES20.GL_STATIC_DRAW, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
 	}
 
+	/**
+	 * @param pX
+	 * @param pY
+	 * @param pWidth
+	 * @param pHeight
+	 * @param pMesh
+	 * @param pShaderProgram if <code>null</code> is passed, a default {@link ShaderProgram} is used.
+	 */
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, final ShaderProgram pShaderProgram) {
-		super(pX, pY, pWidth, pHeight, pMesh, pShaderProgram);
+		super(pX, pY, pWidth, pHeight, pMesh);
+
+		this.setShaderProgram((pShaderProgram == null) ? this.createDefaultShaderProgram() : pShaderProgram);
 	}
 
 	// ===========================================================
@@ -88,19 +101,6 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected ShaderProgram createDefaultShaderProgram() {
-		return new ShaderProgram(Rectangle.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Rectangle.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
-			@Override
-			public void bind() {
-				super.bind();
-
-				GLES20.glUniformMatrix4fv(this.getUniformLocation(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX), 1, false, GLHelper.getModelViewProjectionMatrix().getValues(), 0);
-				GLES20.glUniform4f(this.getUniformLocation(ShaderProgramConstants.UNIFORM_COLOR), Rectangle.this.mRed, Rectangle.this.mGreen, Rectangle.this.mBlue, Rectangle.this.mAlpha);
-			}
-		};
-	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
@@ -117,17 +117,17 @@ public class Rectangle extends RectangularShape {
 		final int y2 = Float.floatToRawIntBits(this.mHeight);
 
 		final int[] bufferData = vertexBufferObject.getBufferData();
-		bufferData[0] = x;
-		bufferData[1] = y;
+		bufferData[0 + Constants.VERTEX_INDEX_X] = x;
+		bufferData[0 + Constants.VERTEX_INDEX_Y] = y;
 
-		bufferData[2] = x;
-		bufferData[3] = y2;
+		bufferData[2 + Constants.VERTEX_INDEX_X] = x;
+		bufferData[2 + Constants.VERTEX_INDEX_Y] = y2;
 
-		bufferData[4] = x2;
-		bufferData[5] = y;
+		bufferData[4 + Constants.VERTEX_INDEX_X] = x2;
+		bufferData[4 + Constants.VERTEX_INDEX_Y] = y;
 
-		bufferData[6] = x2;
-		bufferData[7] = y2;
+		bufferData[6 + Constants.VERTEX_INDEX_X] = x2;
+		bufferData[6 + Constants.VERTEX_INDEX_Y] = y2;
 
 		final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
 		buffer.position(0);
@@ -138,6 +138,18 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public ShaderProgram createDefaultShaderProgram() {
+		return new ShaderProgram(Rectangle.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Rectangle.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
+			@Override
+			public void bind() {
+				super.bind();
+
+				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
+				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, Rectangle.this.mRed, Rectangle.this.mGreen, Rectangle.this.mBlue, Rectangle.this.mAlpha); // TODO Cache Rectangle.this access? (Applies to similar classes too)
+			}
+		};
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

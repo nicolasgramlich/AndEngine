@@ -22,15 +22,6 @@ public interface IShape extends IEntity, ITouchArea {
 	public boolean isCullingEnabled();
 	public void setCullingEnabled(final boolean pCullingEnabled);
 
-	public float getWidth();
-	public float getHeight();
-
-	public float getBaseWidth();
-	public float getBaseHeight();
-
-	public float getWidthScaled();
-	public float getHeightScaled();
-
 //	public boolean isVisible(final Camera pCamera); // TODO. Could be use for automated culling.
 	public boolean collidesWith(final IShape pOtherShape);
 

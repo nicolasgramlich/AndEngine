@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.scene;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IAreaShape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
 
@@ -107,17 +107,17 @@ public class CameraScene extends Scene {
 	// Methods
 	// ===========================================================
 
-	public void centerShapeInCamera(final Shape pShape) {
+	public void centerShapeInCamera(final IAreaShape pAreaShape) {
 		final Camera camera = this.mCamera;
-		pShape.setPosition((camera.getWidth() - pShape.getWidth()) * 0.5f, (camera.getHeight() - pShape.getHeight()) * 0.5f);
+		pAreaShape.setPosition((camera.getWidth() - pAreaShape.getWidth()) * 0.5f, (camera.getHeight() - pAreaShape.getHeight()) * 0.5f);
 	}
 
-	public void centerShapeInCameraHorizontally(final Shape pShape) {
-		pShape.setPosition((this.mCamera.getWidth() - pShape.getWidth()) * 0.5f, pShape.getY());
+	public void centerShapeInCameraHorizontally(final IAreaShape pAreaShape) {
+		pAreaShape.setPosition((this.mCamera.getWidth() - pAreaShape.getWidth()) * 0.5f, pAreaShape.getY());
 	}
 
-	public void centerShapeInCameraVertically(final Shape pShape) {
-		pShape.setPosition(pShape.getX(), (this.mCamera.getHeight() - pShape.getHeight()) * 0.5f);
+	public void centerShapeInCameraVertically(final IAreaShape pAreaShape) {
+		pAreaShape.setPosition(pAreaShape.getX(), (this.mCamera.getHeight() - pAreaShape.getHeight()) * 0.5f);
 	}
 
 	// ===========================================================

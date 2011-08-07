@@ -8,16 +8,19 @@ import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
 import org.anddev.andengine.util.constants.Constants;
+import org.anddev.andengine.util.constants.DataConstants;
 import org.anddev.andengine.util.constants.MathConstants;
 
 import android.opengl.GLES20;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -27,10 +30,28 @@ public class Line extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+	
+	public static final float LINE_WIDTH_DEFAULT = 1.0f;
 
-	private static final float LINEWIDTH_DEFAULT = 1.0f;
+	public static final int VERTEX_SIZE = 2;
+	public static final int VERTICES_PER_LINE = 4;
+	public static final int LINE_SIZE = Line.VERTEX_SIZE * Line.VERTICES_PER_LINE;
 
-	private static final int VERTICES_PER_LINE = 2;
+	public static final VertexBufferObjectAttribute[] VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = { new VertexBufferObjectAttribute(ShaderProgramConstants.ATTRIBUTE_POSITION, Rectangle.VERTEX_SIZE, GLES20.GL_FLOAT, false, Line.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT, 0) };
+
+	private static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
+			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
+					"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+					"void main() {\n" +
+					"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+					"}";
+
+	private static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
+			"precision mediump float;\n" +
+					"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+					"void main() {\n" +
+					"  gl_FragColor = " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+					"}";
 
 	// ===========================================================
 	// Fields
@@ -45,12 +66,24 @@ public class Line extends Shape {
 	// Constructors
 	// ===========================================================
 
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, Mesh pMesh, ShaderProgram pShaderProgram) {
-		this(pX1, pY1, pX2, pY2, LINEWIDTH_DEFAULT, pMesh, pShaderProgram);
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
+		this(pX1, pY1, pX2, pY2, LINE_WIDTH_DEFAULT);
+	}
+	
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
+		this(pX1, pY1, pX2, pY2, pLineWidth, null);
 	}
 
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, Mesh pMesh, ShaderProgram pShaderProgram) {
-		super(pX1, pY1, pMesh, pShaderProgram);
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final ShaderProgram pShaderProgram) {
+		this(pX1, pY1, pX2, pY2, LINE_WIDTH_DEFAULT, pShaderProgram);
+	}
+	
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final ShaderProgram pShaderProgram) {
+		this(pX1, pY1, pX2, pY2, pLineWidth, new Mesh(Line.LINE_SIZE, GLES20.GL_STATIC_DRAW, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	}
+
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final Mesh pMesh, final ShaderProgram pShaderProgram) {
+		super(pX1, pY1, pMesh);
 
 		this.mX2 = pX2;
 		this.mY2 = pY2;
@@ -59,14 +92,16 @@ public class Line extends Shape {
 
 		this.onUpdateVertices();
 
-		final float width = this.getWidth();
-		final float height = this.getHeight();
+		final float centerX = (this.mX2 - this.mX) * 0.5f;
+		final float centerY = (this.mY2 - this.mY) * 0.5f;
 
-		this.mRotationCenterX = width * 0.5f;
-		this.mRotationCenterY = height * 0.5f;
+		this.mRotationCenterX = centerX;
+		this.mRotationCenterY = centerY;
 
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
+
+		this.setShaderProgram((pShaderProgram == null) ? this.createDefaultShaderProgram() : pShaderProgram);
 	}
 
 	// ===========================================================
@@ -115,26 +150,6 @@ public class Line extends Shape {
 		this.mLineWidth = pLineWidth;
 	}
 
-	@Override
-	public float getBaseHeight() {
-		return this.mY2 - this.mY;
-	}
-
-	@Override
-	public float getBaseWidth() {
-		return this.mX2 - this.mX;
-	}
-
-	@Override
-	public float getHeight() {
-		return this.mY2 - this.mY;
-	}
-
-	@Override
-	public float getWidth() {
-		return this.mX2 - this.mX;
-	}
-
 	/**
 	 * @deprecated Instead use {@link Line#setPosition(float, float, float, float)}.
 	 */
@@ -162,41 +177,41 @@ public class Line extends Shape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
-	@Override
-	protected ShaderProgram createDefaultShaderProgram() {
-		return null; // TODO 
-	}
 
 	@Override
 	protected boolean isCulled(final Camera pCamera) {
 		return pCamera.isLineVisible(this);
 	}
-	
+
 	@Override
 	protected void onUpdateVertices() {
-        VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final int[] bufferData = vertexBufferObject.getBufferData();
 
-        bufferData[0 + Constants.VERTEX_INDEX_X]  = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO; 
-        bufferData[0 + Constants.VERTEX_INDEX_Y]  = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
+		bufferData[0 + Constants.VERTEX_INDEX_X] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
+		bufferData[0 + Constants.VERTEX_INDEX_Y] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
 
-        bufferData[2 + Constants.VERTEX_INDEX_X]  = Float.floatToRawIntBits(this.mX2 - this.mX);
-        bufferData[2 + Constants.VERTEX_INDEX_Y]  = Float.floatToRawIntBits(this.mY2 - this.mY);
+		bufferData[2 + Constants.VERTEX_INDEX_X] = Float.floatToRawIntBits(this.mX2 - this.mX);
+		bufferData[2 + Constants.VERTEX_INDEX_Y] = Float.floatToRawIntBits(this.mY2 - this.mY);
 
-        final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
-        buffer.position(0);
-        buffer.put(bufferData);
-        buffer.position(0);
+		final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
+		buffer.position(0);
+		buffer.put(bufferData);
+		buffer.position(0);
 
-        vertexBufferObject.setDirtyOnHardware();
+		vertexBufferObject.setDirtyOnHardware();
 	}
 	
 	@Override
-	protected void draw(Camera pCamera) {
+	protected void preDraw(Camera pCamera) {
+		super.preDraw(pCamera);
+		
 		GLHelper.lineWidth(this.mLineWidth);
+	}
 
-		GLES20.glDrawArrays(GLES20.GL_LINES, 0, VERTICES_PER_LINE);		
+	@Override
+	protected void draw(final Camera pCamera) {
+		this.mMesh.draw(this.mShaderProgram, GLES20.GL_LINES, Line.VERTICES_PER_LINE);
 	}
 
 	@Override
@@ -239,6 +254,18 @@ public class Line extends Shape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public ShaderProgram createDefaultShaderProgram() {
+		return new ShaderProgram(Line.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Line.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
+			@Override
+			public void bind() {
+				super.bind();
+
+				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
+				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, Line.this.mRed, Line.this.mGreen, Line.this.mBlue, Line.this.mAlpha);
+			}
+		};
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

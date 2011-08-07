@@ -2,10 +2,13 @@ package org.anddev.andengine.opengl.shader;
 
 import java.util.HashMap;
 
+import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLMatrix;
 
 import android.opengl.GLES20;
 
@@ -42,8 +45,8 @@ public class ShaderProgram implements ShaderProgramConstants {
 
 	protected boolean mCompiled;
 
-	private final HashMap<String, Integer> mUniformLocations = new HashMap<String, Integer>();
-	private final HashMap<String, Integer> mAttributeLocations = new HashMap<String, Integer>();
+	protected final HashMap<String, Integer> mUniformLocations = new HashMap<String, Integer>();
+	protected final HashMap<String, Integer> mAttributeLocations = new HashMap<String, Integer>();
 
 	// ===========================================================
 	// Constructors
@@ -166,6 +169,30 @@ public class ShaderProgram implements ShaderProgramConstants {
 			final int location = GLES20.glGetAttribLocation(this.mProgramID, name);
 			this.mAttributeLocations.put(name, location);
 		}
+	}
+	
+	public void setUniform(final String pUniformName, final GLMatrix pGLMatrix) {
+		GLES20.glUniformMatrix4fv(this.getUniformLocation(pUniformName), 1, false, pGLMatrix.getValues(), 0);	
+	}
+
+	public void setUniform(final String pUniformName, final float pX) {
+		GLES20.glUniform1f(this.getUniformLocation(pUniformName), pX);
+	}
+	
+	public void setUniform(final String pUniformName, final float pX, final float pY) {
+		GLES20.glUniform2f(this.getUniformLocation(pUniformName), pX, pY);
+	}
+	
+	public void setUniform(final String pUniformName, final float pX, final float pY, final float pZ) {
+		GLES20.glUniform3f(this.getUniformLocation(pUniformName), pX, pY, pZ);
+	}
+
+	public void setUniform(final String pUniformName, final float pX, final float pY, final float pZ, final float pW) {
+		GLES20.glUniform4f(this.getUniformLocation(pUniformName), pX, pY, pZ, pW);	
+	}
+	
+	public void setTexture(final String pUniformName, final int pTexture) {
+		GLES20.glUniform1i(this.getUniformLocation(pUniformName), pTexture);	
 	}
 
 	// ===========================================================

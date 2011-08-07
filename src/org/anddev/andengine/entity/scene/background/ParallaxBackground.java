@@ -3,7 +3,7 @@ package org.anddev.andengine.entity.scene.background;
 import java.util.ArrayList;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.Shape;
+import org.anddev.andengine.entity.shape.IAreaShape;
 import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
@@ -91,15 +91,15 @@ public class ParallaxBackground extends ColorBackground {
 		// ===========================================================
 
 		final float mParallaxFactor;
-		final Shape mShape;
+		final IAreaShape mAreaShape;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public ParallaxEntity(final float pParallaxFactor, final Shape pShape) {
+		public ParallaxEntity(final float pParallaxFactor, final IAreaShape pAreaShape) {
 			this.mParallaxFactor = pParallaxFactor;
-			this.mShape = pShape;
+			this.mAreaShape = pAreaShape;
 		}
 
 		// ===========================================================
@@ -118,7 +118,7 @@ public class ParallaxBackground extends ColorBackground {
 			GLHelper.glPushMatrix();
 			{
 				final float cameraWidth = pCamera.getWidth();
-				final float shapeWidthScaled = this.mShape.getWidthScaled();
+				final float shapeWidthScaled = this.mAreaShape.getWidthScaled();
 				float baseOffset = (pParallaxValue * this.mParallaxFactor) % shapeWidthScaled;
 
 				while(baseOffset > 0) {
@@ -129,7 +129,7 @@ public class ParallaxBackground extends ColorBackground {
 				float currentMaxX = baseOffset;
 				
 				do {
-					this.mShape.onDraw(pCamera);
+					this.mAreaShape.onDraw(pCamera);
 					GLHelper.glTranslatef(shapeWidthScaled, 0, 0);
 					currentMaxX += shapeWidthScaled;
 				} while(currentMaxX < cameraWidth);

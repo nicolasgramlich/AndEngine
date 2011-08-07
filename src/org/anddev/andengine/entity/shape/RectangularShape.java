@@ -2,8 +2,8 @@ package org.anddev.andengine.entity.shape;
 
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.opengl.Mesh;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -12,7 +12,7 @@ import org.anddev.andengine.opengl.shader.ShaderProgram;
  * @author Nicolas Gramlich
  * @since 11:37:50 - 04.04.2010
  */
-public abstract class RectangularShape extends Shape {
+public abstract class RectangularShape extends Shape implements IAreaShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,8 +31,8 @@ public abstract class RectangularShape extends Shape {
 	// Constructors
 	// ===========================================================
 
-	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, final ShaderProgram pShaderProgram) {
-		super(pX, pY, pMesh, pShaderProgram);
+	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
+		super(pX, pY, pMesh);
 
 		this.mBaseWidth = pWidth;
 		this.mBaseHeight = pHeight;
@@ -40,12 +40,8 @@ public abstract class RectangularShape extends Shape {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 
-		this.mRotationCenterX = pWidth * 0.5f;
-		this.mRotationCenterY = pHeight * 0.5f;
+		this.resetRotationandScaleCenter();
 
-		this.mScaleCenterX = this.mRotationCenterX;
-		this.mScaleCenterY = this.mRotationCenterY;
-		
 		this.onUpdateVertices();
 	}
 
@@ -73,6 +69,7 @@ public abstract class RectangularShape extends Shape {
 		return this.mBaseHeight;
 	}
 
+	//TODO @Override
 	public void setWidth(final float pWidth) {
 		this.mWidth = pWidth;
 		this.onUpdateVertices();
@@ -87,6 +84,16 @@ public abstract class RectangularShape extends Shape {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.onUpdateVertices();
+	}
+
+	@Override
+	public float getWidthScaled() {
+		return this.getWidth() * this.mScaleX;
+	}
+
+	@Override
+	public float getHeightScaled() {
+		return this.getHeight() * this.mScaleY;
 	}
 
 	// ===========================================================
@@ -116,14 +123,7 @@ public abstract class RectangularShape extends Shape {
 		super.reset();
 		this.setBaseSize();
 
-		final float baseWidth = this.getBaseWidth();
-		final float baseHeight = this.getBaseHeight();
-
-		this.mRotationCenterX = baseWidth * 0.5f;
-		this.mRotationCenterY = baseHeight * 0.5f;
-
-		this.mScaleCenterX = this.mRotationCenterX;
-		this.mScaleCenterY = this.mRotationCenterY;
+		this.resetRotationandScaleCenter();
 	}
 
 	@Override
@@ -141,9 +141,9 @@ public abstract class RectangularShape extends Shape {
 		if(pOtherShape instanceof RectangularShape) {
 			final RectangularShape pOtherRectangularShape = (RectangularShape) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(this, pOtherRectangularShape);
-//		} else if(pOtherShape instanceof Line) {
-//			final Line line = (Line) pOtherShape;
-//			return RectangularShapeCollisionChecker.checkCollision(this, line); // TODO
+		} else if(pOtherShape instanceof Line) {
+			final Line line = (Line) pOtherShape;
+			return RectangularShapeCollisionChecker.checkCollision(this, line);
 		} else {
 			return false;
 		}
@@ -152,6 +152,14 @@ public abstract class RectangularShape extends Shape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void resetRotationandScaleCenter() {
+		this.mRotationCenterX = this.mWidth * 0.5f;
+		this.mRotationCenterY = this.mHeight * 0.5f;
+
+		this.mScaleCenterX = this.mRotationCenterX;
+		this.mScaleCenterY = this.mRotationCenterY;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

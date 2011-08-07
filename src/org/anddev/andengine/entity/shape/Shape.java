@@ -45,21 +45,22 @@ public abstract class Shape extends Entity implements IShape {
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final Mesh pMesh, final ShaderProgram pShaderProgram) {
+	public Shape(final float pX, final float pY, final Mesh pMesh) {
 		super(pX, pY);
 
 		this.mMesh = pMesh;
-		this.mShaderProgram = (pShaderProgram == null) ? this.createDefaultShaderProgram() : pShaderProgram;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public boolean isBlendingEnabled() {
 		return this.mBlendingEnabled;
 	}
 
+	@Override
 	public void setBlendingEnabled(final boolean pBlendingEnabled) {
 		this.mBlendingEnabled = pBlendingEnabled;
 	}
@@ -80,16 +81,6 @@ public abstract class Shape extends Entity implements IShape {
 		this.mCullingEnabled = pCullingEnabled;
 	}
 
-	@Override
-	public float getWidthScaled() {
-		return this.getWidth() * this.mScaleX;
-	}
-
-	@Override
-	public float getHeightScaled() {
-		return this.getHeight() * this.mScaleY;
-	}
-
 	public Mesh getMesh() {
 		return this.mMesh;
 	}
@@ -98,11 +89,14 @@ public abstract class Shape extends Entity implements IShape {
 		return this.mShaderProgram;
 	}
 
+	public void setShaderProgram(final ShaderProgram pShaderProgram) {
+		this.mShaderProgram = pShaderProgram;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract ShaderProgram createDefaultShaderProgram();
 	protected abstract void onUpdateVertices();
 
 	@Override

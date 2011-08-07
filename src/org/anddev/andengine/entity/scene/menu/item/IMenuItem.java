@@ -1,6 +1,6 @@
 package org.anddev.andengine.entity.scene.menu.item;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.IAreaShape;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -9,7 +9,7 @@ import org.anddev.andengine.entity.shape.IShape;
  * @author Nicolas Gramlich
  * @since 13:27:16 - 07.07.2010
  */
-public interface IMenuItem extends IShape {
+public interface IMenuItem extends IAreaShape {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================

@@ -3,3 +3,5 @@ bin/**
 doc/**
 .DS_Store
 Thumbs.db
+gdb.setup
+gdbserver

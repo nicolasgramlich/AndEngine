@@ -2,10 +2,13 @@ package org.anddev.andengine.opengl.shader;
 
 import java.util.HashMap;
 
+import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
+import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 
 import android.opengl.GLES20;
+
 
 /**
  * (c) Zynga 2011
@@ -107,12 +110,12 @@ public class ShaderProgram implements ShaderProgramConstants {
 		this.link();
 	}
 
-	protected void link() {
+	protected void link() throws ShaderProgramLinkException {
 		GLES20.glLinkProgram(this.mProgramID);
 
 		GLES20.glGetProgramiv(this.mProgramID, GLES20.GL_LINK_STATUS, ShaderProgram.HARDWAREID_CONTAINER, 0);
 		if(ShaderProgram.HARDWAREID_CONTAINER[0] == 0) {
-			throw new ShaderProgramException(GLES20.glGetProgramInfoLog(this.mProgramID));
+			throw new ShaderProgramLinkException(GLES20.glGetProgramInfoLog(this.mProgramID));
 		}
 
 		this.initAttributeLocations();
@@ -132,7 +135,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 
 		GLES20.glGetShaderiv(shaderID, GLES20.GL_COMPILE_STATUS, ShaderProgram.HARDWAREID_CONTAINER, 0);
 		if(ShaderProgram.HARDWAREID_CONTAINER[0] == 0) {
-			throw new ShaderProgramException(GLES20.glGetShaderInfoLog(shaderID));
+			throw new ShaderProgramCompileException(GLES20.glGetShaderInfoLog(shaderID));
 		}
 		return shaderID;
 	}

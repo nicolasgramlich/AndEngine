@@ -122,7 +122,7 @@ public class VertexBufferObjectManager {
 				final VertexBufferObject vertexBufferObjectToBeLoaded = vertexBufferObjectsToBeLoaded.get(i);
 				if(!vertexBufferObjectToBeLoaded.isLoadedToHardware()) {
 					vertexBufferObjectToBeLoaded.loadToHardware();
-					vertexBufferObjectToBeLoaded.setDirty();
+					vertexBufferObjectToBeLoaded.setDirtyOnHardware();
 				}
 				vertexBufferObjectsLoaded.add(vertexBufferObjectToBeLoaded);
 			}

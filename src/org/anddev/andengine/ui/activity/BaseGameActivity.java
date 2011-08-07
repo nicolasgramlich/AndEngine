@@ -8,6 +8,7 @@ import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.opengl.view.MultisampleConfigChooser;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
@@ -189,7 +190,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this);
-		this.mRenderSurfaceView.setEGLConfigChooser(false);
 		this.mRenderSurfaceView.setRenderer(this.mEngine);
 
 		this.setContentView(this.mRenderSurfaceView, this.createSurfaceViewLayoutParams());

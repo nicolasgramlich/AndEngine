@@ -13,7 +13,7 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.util.Transformation;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -300,6 +300,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void setInitialPosition() {
 		this.mMenuItem.setInitialPosition();
+	}
+
+	@Override
+	public boolean isBlendingEnabled() {
+		return this.mMenuItem.isBlendingEnabled();
+	}
+
+	@Override
+	public void setBlendingEnabled(final boolean pBlendingEnabled) {
+		this.mMenuItem.setBlendingEnabled(pBlendingEnabled);
 	}
 
 	@Override

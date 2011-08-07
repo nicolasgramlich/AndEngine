@@ -7,10 +7,11 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -26,16 +27,17 @@ public abstract class Shape extends Entity implements IShape {
 
 	public static final int BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT = GL10.GL_ONE;
 	public static final int BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT = GL10.GL_ONE_MINUS_SRC_ALPHA;
-	
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	protected int mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
-	protected int mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+	protected int mSourceBlendFunction = Shape.BLENDFUNCTION_SOURCE_DEFAULT;
+	protected int mDestinationBlendFunction = Shape.BLENDFUNCTION_DESTINATION_DEFAULT;
 
-	private boolean mCullingEnabled = false;
-	
+	protected boolean mBlendingEnabled = false;
+	protected boolean mCullingEnabled = false;
+
 	protected Mesh mMesh;
 	protected ShaderProgram mShaderProgram;
 
@@ -45,14 +47,22 @@ public abstract class Shape extends Entity implements IShape {
 
 	public Shape(final float pX, final float pY, final Mesh pMesh, final ShaderProgram pShaderProgram) {
 		super(pX, pY);
-		
+
 		this.mMesh = pMesh;
-		this.mShaderProgram = pShaderProgram;
+		this.mShaderProgram = (pShaderProgram == null) ? this.createDefaultShaderProgram() : pShaderProgram;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public boolean isBlendingEnabled() {
+		return this.mBlendingEnabled;
+	}
+
+	public void setBlendingEnabled(final boolean pBlendingEnabled) {
+		this.mBlendingEnabled = pBlendingEnabled;
+	}
 
 	@Override
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
@@ -79,20 +89,40 @@ public abstract class Shape extends Entity implements IShape {
 	public float getHeightScaled() {
 		return this.getHeight() * this.mScaleY;
 	}
-	
+
 	public Mesh getMesh() {
-		return mMesh;
+		return this.mMesh;
 	}
-	
+
 	public ShaderProgram getShaderProgram() {
-		return mShaderProgram;
+		return this.mShaderProgram;
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract ShaderProgram createDefaultShaderProgram();
 	protected abstract void onUpdateVertices();
+
+	@Override
+	protected void preDraw(final Camera pCamera) {
+		super.preDraw(pCamera);
+
+		if(this.mBlendingEnabled) {
+			GLHelper.enableBlend();
+			GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+		}
+	}
+
+	@Override
+	protected void postDraw(final Camera pCamera) {
+		if(this.mBlendingEnabled) {
+			GLHelper.disableBlend();
+		}
+
+		super.postDraw(pCamera);
+	}
 
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
@@ -116,8 +146,8 @@ public abstract class Shape extends Entity implements IShape {
 	@Override
 	public void reset() {
 		super.reset();
-		this.mSourceBlendFunction = BLENDFUNCTION_SOURCE_DEFAULT;
-		this.mDestinationBlendFunction = BLENDFUNCTION_DESTINATION_DEFAULT;
+		this.mSourceBlendFunction = Shape.BLENDFUNCTION_SOURCE_DEFAULT;
+		this.mDestinationBlendFunction = Shape.BLENDFUNCTION_DESTINATION_DEFAULT;
 	}
 
 	@Override

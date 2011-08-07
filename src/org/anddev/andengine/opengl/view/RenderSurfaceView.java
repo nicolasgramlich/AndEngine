@@ -30,7 +30,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 	private Renderer mRenderer;
 	private MultisampleConfigChooser mMultisampleConfigChooser;
-	private boolean mUseMultisampling;
 
 	// ===========================================================
 	// Constructors
@@ -40,16 +39,24 @@ public class RenderSurfaceView extends GLSurfaceView {
 		super(pContext);
 
 		this.setEGLContextClientVersion(2);
-		if (this.mUseMultisampling) {
-			this.setEGLConfigChooser(this.mMultisampleConfigChooser = new MultisampleConfigChooser());
-		}
 	}
 
 	public RenderSurfaceView(final Context pContext, final AttributeSet pAttrs) {
 		super(pContext, pAttrs);
+
+		this.setEGLContextClientVersion(2);
 	}
 
 	public void setRenderer(final Engine pEngine) {
+		if (pEngine.getEngineOptions().getRenderOptions().isMultiSampling()) {
+			if(this.mMultisampleConfigChooser == null) {
+				this.mMultisampleConfigChooser = new MultisampleConfigChooser();
+			}
+			this.setEGLConfigChooser(this.mMultisampleConfigChooser);
+		} else {
+			this.setEGLConfigChooser(false);
+		}
+
 		this.setOnTouchListener(pEngine);
 		this.mRenderer = new Renderer(pEngine);
 		this.setRenderer(this.mRenderer);
@@ -100,6 +107,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// ===========================================================
 
 		private final Engine mEngine;
+		private final boolean mMultiSampling;
 
 		// ===========================================================
 		// Constructors
@@ -107,6 +115,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		public Renderer(final Engine pEngine) {
 			this.mEngine = pEngine;
+			this.mMultiSampling = this.mEngine.getEngineOptions().getRenderOptions().isMultiSampling();
 		}
 
 		// ===========================================================
@@ -130,38 +139,33 @@ public class RenderSurfaceView extends GLSurfaceView {
 			Debug.d("onSurfaceCreated");
 			GLHelper.reset();
 
-			GLHelper.setPerspectiveCorrectionHintFastest();
 			// TODO Check if available and make available through EngineOptions-RenderOptions
-			//			pGL.glEnable(GL10.GL_POLYGON_SMOOTH);
-			//			pGL.glHint(GL10.GL_POLYGON_SMOOTH_HINT, GL10.GL_NICEST);
-			//			pGL.glEnable(GL10.GL_LINE_SMOOTH);
-			//			pGL.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST);
-			//			pGL.glEnable(GL10.GL_POINT_SMOOTH);
-			//			pGL.glHint(GL10.GL_POINT_SMOOTH_HINT, GL10.GL_NICEST);
+//			GLES20.glEnable(GLES20.GL_POLYGON_SMOOTH);
+//			GLES20.glHint(GLES20.GL_POLYGON_SMOOTH_HINT, GLES20.GL_NICEST);
+//			GLES20.glEnable(GLES20.GL_LINE_SMOOTH);
+//			GLES20.glHint(GLES20.GL_LINE_SMOOTH_HINT, GLES20.GL_NICEST);
+//			GLES20.glEnable(GLES20.GL_POINT_SMOOTH);
+//			GLES20.glHint(GLES20.GL_POINT_SMOOTH_HINT, GLES20.GL_NICEST);
 
-			GLHelper.disableLightning();
 			GLHelper.disableDither();
 			GLHelper.disableDepthTest();
-			GLHelper.disableMultisample();
 
 			GLHelper.enableBlend();
 			GLHelper.enableTextures();
 
 			GLHelper.enableCulling();
-			GLES20.glFrontFace(GL10.GL_CCW);
-			GLES20.glCullFace(GL10.GL_BACK);
+			GLES20.glFrontFace(GLES20.GL_CCW);
+			GLES20.glCullFace(GLES20.GL_BACK);
 
 			GLHelper.enableExtensions(this.mEngine.getEngineOptions().getRenderOptions());
 		}
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
-			int clearMask = GLES20.GL_COLOR_BUFFER_BIT;
-			if (RenderSurfaceView.this.mUseMultisampling && RenderSurfaceView.this.mMultisampleConfigChooser.usesCoverageAa()) {
+			if (this.mMultiSampling && RenderSurfaceView.this.mMultisampleConfigChooser.isCoverageMultiSampling()) {
 				final int GL_COVERAGE_BUFFER_BIT_NV = 0x8000;
-				clearMask |= GL_COVERAGE_BUFFER_BIT_NV;
+				GLES20.glClear(GL_COVERAGE_BUFFER_BIT_NV);
 			}
-			GLES20.glClear(clearMask);
 
 			try {
 				this.mEngine.onDrawFrame();

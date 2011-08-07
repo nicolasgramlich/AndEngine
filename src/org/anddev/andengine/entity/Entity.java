@@ -916,10 +916,18 @@ public class Entity implements IEntity {
 	// Methods
 	// ===========================================================
 
+	protected void preDraw(final Camera pCamera) {
+
+	}
+	
 	/**
 	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
 	 */
-	protected void doDraw(final Camera pCamera) {
+	protected void draw(final Camera pCamera) {
+
+	}
+	
+	protected void postDraw(final Camera pCamera) {
 
 	}
 
@@ -986,7 +994,9 @@ public class Entity implements IEntity {
 		{
 			this.onApplyTransformations();
 
-			this.doDraw(pCamera);
+			this.preDraw(pCamera);
+			this.draw(pCamera);
+			this.postDraw(pCamera);
 
 			this.onDrawChildren(pCamera);
 		}

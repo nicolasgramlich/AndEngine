@@ -84,6 +84,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private MusicManager mMusicManager;
 //¦	private final TextureManager mTextureManager = new TextureManager();
 	private final VertexBufferObjectManager mBufferObjectManager = new VertexBufferObjectManager();
+//	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager(); // TODO Probably quite simple, like FontManager.
 //	private final FontManager mFontManager = new FontManager();
 
 	protected Scene mScene;
@@ -232,6 +233,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 //
 //	public FontManager getFontManager() {
 //		return this.mFontManager;
+//	}
+//	
+//	public ShaderProgramManager getShaderProgramManager() {
+//		return this.mShaderProgramManager;
 //	}
 
 	public void clearUpdateHandlers() {

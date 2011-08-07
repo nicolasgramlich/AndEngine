@@ -45,6 +45,8 @@ public abstract class RectangularShape extends Shape {
 
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
+		
+		this.onUpdateVertices();
 	}
 
 	// ===========================================================
@@ -141,7 +143,7 @@ public abstract class RectangularShape extends Shape {
 			return RectangularShapeCollisionChecker.checkCollision(this, pOtherRectangularShape);
 //		} else if(pOtherShape instanceof Line) {
 //			final Line line = (Line) pOtherShape;
-//			return RectangularShapeCollisionChecker.checkCollision(this, line);
+//			return RectangularShapeCollisionChecker.checkCollision(this, line); // TODO
 		} else {
 			return false;
 		}

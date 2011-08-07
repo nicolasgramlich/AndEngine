@@ -34,5 +34,7 @@ public interface IShape extends IEntity, ITouchArea {
 //	public boolean isVisible(final Camera pCamera); // TODO. Could be use for automated culling.
 	public boolean collidesWith(final IShape pOtherShape);
 
+	public boolean isBlendingEnabled();
+	public void setBlendingEnabled(final boolean pBlendingEnabled);
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction);
 }

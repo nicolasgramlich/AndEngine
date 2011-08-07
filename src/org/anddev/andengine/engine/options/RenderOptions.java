@@ -1,7 +1,7 @@
 package org.anddev.andengine.engine.options;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -16,6 +16,7 @@ public class RenderOptions {
 	// Fields
 	// ===========================================================
 
+	private boolean mMultiSampling = false;
 	private boolean mDisableExtensionVertexBufferObjects = false;
 	private boolean mDisableExtensionDrawTexture = false;
 
@@ -65,6 +66,17 @@ public class RenderOptions {
 	public RenderOptions setDisableExtensionDrawTexture(final boolean pDisableExtensionDrawTexture) {
 		this.mDisableExtensionDrawTexture = pDisableExtensionDrawTexture;
 		return this;
+	}
+
+	/**
+	 * <u><b>Default:</b></u> <code>false</code>
+	 */
+	public boolean isMultiSampling() {
+		return this.mMultiSampling;
+	}
+
+	public void setMultiSampling(final boolean pMultiSampling) {
+		this.mMultiSampling = pMultiSampling;
 	}
 
 	// ===========================================================

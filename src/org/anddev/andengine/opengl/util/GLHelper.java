@@ -3,11 +3,9 @@ package org.anddev.andengine.opengl.util;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.engine.options.RenderOptions;
-import org.anddev.andengine.opengl.GLES20Fix;
 import org.anddev.andengine.opengl.util.GLMatrixStack.MatrixMode;
 import org.anddev.andengine.util.Debug;
 
@@ -33,7 +31,6 @@ public class GLHelper {
 	private static final boolean IS_LITTLE_ENDIAN = (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN);
 
 	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
-	private static final int[] HARDWAREBUFFERID_CONTAINER = new int[1];
 
 	// ===========================================================
 	// Fields
@@ -48,9 +45,7 @@ public class GLHelper {
 	private static int sCurrentDestinationBlendMode = -1;
 
 	private static boolean sEnableDither = true;
-	private static boolean sEnableLightning = true;
 	private static boolean sEnableDepthTest = true;
-	private static boolean sEnableMultisample = true;
 
 	private static boolean sEnableScissorTest = false;
 	private static boolean sEnableBlend = false;
@@ -73,9 +68,7 @@ public class GLHelper {
 		GLHelper.sCurrentDestinationBlendMode = -1;
 
 		GLHelper.enableDither();
-		GLHelper.enableLightning();
 		GLHelper.enableDepthTest();
-		GLHelper.enableMultisample();
 
 		GLHelper.disableBlend();
 		GLHelper.disableCulling();
@@ -85,9 +78,9 @@ public class GLHelper {
 	}
 
 	public static void enableExtensions(final RenderOptions pRenderOptions) {
-		final String version = GLES20.glGetString(GL10.GL_VERSION);
-		final String renderer = GLES20.glGetString(GL10.GL_RENDERER);
-		final String extensions = GLES20.glGetString(GL10.GL_EXTENSIONS);
+		final String version = GLES20.glGetString(GLES20.GL_VERSION);
+		final String renderer = GLES20.glGetString(GLES20.GL_RENDERER);
+		final String extensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
 
 		Debug.d("RENDERER: " + renderer);
 		Debug.d("VERSION: " + version);
@@ -97,104 +90,78 @@ public class GLHelper {
 	public static void enableScissorTest() {
 		if(!GLHelper.sEnableScissorTest) {
 			GLHelper.sEnableScissorTest = true;
-			GLES20.glEnable(GL10.GL_SCISSOR_TEST);
+			GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
 		}
 	}
 	public static void disableScissorTest() {
 		if(GLHelper.sEnableScissorTest) {
 			GLHelper.sEnableScissorTest = false;
-			GLES20.glDisable(GL10.GL_SCISSOR_TEST);
+			GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
 		}
 	}
 
 	public static void enableBlend() {
 		if(!GLHelper.sEnableBlend) {
 			GLHelper.sEnableBlend = true;
-			GLES20.glEnable(GL10.GL_BLEND);
+			GLES20.glEnable(GLES20.GL_BLEND);
 		}
 	}
 	public static void disableBlend() {
 		if(GLHelper.sEnableBlend) {
 			GLHelper.sEnableBlend = false;
-			GLES20.glDisable(GL10.GL_BLEND);
+			GLES20.glDisable(GLES20.GL_BLEND);
 		}
 	}
 
 	public static void enableCulling() {
 		if(!GLHelper.sEnableCulling) {
 			GLHelper.sEnableCulling = true;
-			GLES20.glEnable(GL10.GL_CULL_FACE);
+			GLES20.glEnable(GLES20.GL_CULL_FACE);
 		}
 	}
 	public static void disableCulling() {
 		if(GLHelper.sEnableCulling) {
 			GLHelper.sEnableCulling = false;
-			GLES20.glDisable(GL10.GL_CULL_FACE);
+			GLES20.glDisable(GLES20.GL_CULL_FACE);
 		}
 	}
 
 	public static void enableTextures() {
 		if(!GLHelper.sEnableTextures) {
 			GLHelper.sEnableTextures = true;
-			GLES20.glEnable(GL10.GL_TEXTURE_2D);
+			GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		}
 	}
 	public static void disableTextures() {
 		if(GLHelper.sEnableTextures) {
 			GLHelper.sEnableTextures = false;
-			GLES20.glDisable(GL10.GL_TEXTURE_2D);
-		}
-	}
-
-	public static void enableLightning() {
-		if(!GLHelper.sEnableLightning) {
-			GLHelper.sEnableLightning = true;
-			GLES20.glEnable(GL10.GL_LIGHTING);
-		}
-	}
-	public static void disableLightning() {
-		if(GLHelper.sEnableLightning) {
-			GLHelper.sEnableLightning = false;
-			GLES20.glDisable(GL10.GL_LIGHTING);
+			GLES20.glDisable(GLES20.GL_TEXTURE_2D);
 		}
 	}
 
 	public static void enableDither() {
 		if(!GLHelper.sEnableDither) {
 			GLHelper.sEnableDither = true;
-			GLES20.glEnable(GL10.GL_DITHER);
+			GLES20.glEnable(GLES20.GL_DITHER);
 		}
 	}
 	public static void disableDither() {
 		if(GLHelper.sEnableDither) {
 			GLHelper.sEnableDither = false;
-			GLES20.glDisable(GL10.GL_DITHER);
+			GLES20.glDisable(GLES20.GL_DITHER);
 		}
 	}
 
 	public static void enableDepthTest() {
 		if(!GLHelper.sEnableDepthTest) {
 			GLHelper.sEnableDepthTest = true;
-			GLES20.glEnable(GL10.GL_DEPTH_TEST);
+			GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 		}
 	}
 	public static void disableDepthTest() {
 		if(GLHelper.sEnableDepthTest) {
 			GLHelper.sEnableDepthTest = false;
-			GLES20.glDisable(GL10.GL_DEPTH_TEST);
-		}
-	}
-
-	public static void enableMultisample() {
-		if(!GLHelper.sEnableMultisample) {
-			GLHelper.sEnableMultisample = true;
-			GLES20.glEnable(GL10.GL_MULTISAMPLE);
-		}
-	}
-	public static void disableMultisample() {
-		if(GLHelper.sEnableMultisample) {
-			GLHelper.sEnableMultisample = false;
-			GLES20.glDisable(GL10.GL_MULTISAMPLE);
+			GLES20.glDisable(GLES20.GL_DEPTH_TEST);
 		}
 	}
 
@@ -207,7 +174,7 @@ public class GLHelper {
 	}
 
 	/**
-	 * @see {@link GLHelper#forceBindTexture(GL10, int)}
+	 * @see {@link GLHelper#forceBindTexture(GLES20, int)}
 	 * @param GLES20
 	 * @param pHardwareTextureID
 	 */
@@ -220,26 +187,18 @@ public class GLHelper {
 	}
 
 	/**
-	 * @see {@link GLHelper#bindTexture(GL10, int)}
+	 * @see {@link GLHelper#bindTexture(GLES20, int)}
 	 * @param GLES20
 	 * @param pHardwareTextureID
 	 */
 	public static void forceBindTexture(final int pHardwareTextureID) {
 		GLHelper.sCurrentHardwareTextureID = pHardwareTextureID;
-		GLES20.glBindTexture(GL10.GL_TEXTURE_2D, pHardwareTextureID);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, pHardwareTextureID);
 	}
 
 	public static void deleteTexture(final int pHardwareTextureID) {
 		GLHelper.HARDWARETEXTUREID_CONTAINER[0] = pHardwareTextureID;
 		GLES20.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);
-	}
-
-	public static void texCoordZeroPointer(final int pTextureCoordinateAttribute) { // TODO Name, Parameters, Inline(?)
-		GLES20Fix.glVertexAttribPointer(pTextureCoordinateAttribute, 2, GL10.GL_FLOAT, false, 0, 0);
-	}
-
-	public static void vertexZeroPointer(final int pVertexAttribute) { // TODO Name, Parameters, Inline(?)
-		GLES20Fix.glVertexAttribPointer(pVertexAttribute, 2, GL10.GL_FLOAT, false, 0, 0);
 	}
 
 	public static void blendFunction(final int pSourceBlendMode, final int pDestinationBlendMode) {
@@ -317,10 +276,6 @@ public class GLHelper {
 
 	public static void glOrthof(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
 		GLHelper.sGLMatrixStack.ortho(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
-	}
-
-	public static void setPerspectiveCorrectionHintFastest() {
-		GLES20.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 	}
 
 	public static void bufferData(final ByteBuffer pByteBuffer, final int pUsage) {
@@ -482,7 +437,7 @@ public class GLHelper {
 
 	public static void checkGLError() throws GLException { // TODO Use more often!
 		final int err = GLES20.glGetError();
-		if (err != GL10.GL_NO_ERROR) {
+		if (err != GLES20.GL_NO_ERROR) {
 			throw new GLException(err);
 		}
 	}

@@ -162,6 +162,11 @@ public class Line extends Shape {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	protected ShaderProgram createDefaultShaderProgram() {
+		return null; // TODO 
+	}
 
 	@Override
 	protected boolean isCulled(final Camera pCamera) {
@@ -184,11 +189,11 @@ public class Line extends Shape {
         buffer.put(bufferData);
         buffer.position(0);
 
-        vertexBufferObject.setDirty();
+        vertexBufferObject.setDirtyOnHardware();
 	}
 	
 	@Override
-	protected void doDraw(Camera pCamera) {
+	protected void draw(Camera pCamera) {
 		GLHelper.lineWidth(this.mLineWidth);
 
 		GLES20.glDrawArrays(GLES20.GL_LINES, 0, VERTICES_PER_LINE);		

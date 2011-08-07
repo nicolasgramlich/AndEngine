@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -18,7 +18,16 @@ public interface IModifier<T> extends Cloneable {
 	public static final Comparator<IModifier<?>> MODIFIER_COMPARATOR_DURATION_DESCENDING = new Comparator<IModifier<?>>() {
 		@Override
 		public int compare(final IModifier<?> pModifierA, final IModifier<?> pModifierB) {
-			return (int)Math.signum(pModifierA.getDuration() - pModifierB.getDuration());
+			final float durationA = pModifierA.getDuration();
+			final float durationB = pModifierB.getDuration();
+
+			if (durationA < durationB) {
+				return 1;
+			} else if (durationA > durationB) {
+				return -1;
+			} else {
+				return 0;
+			}
 		}
 	};
 

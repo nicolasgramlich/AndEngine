@@ -18,9 +18,10 @@ public interface IAreaShape extends IShape {
 	public float getWidth();
 	public float getHeight();
 
-	public float getBaseWidth();
-	public float getBaseHeight();
-
 	public float getWidthScaled();
 	public float getHeightScaled();
+
+	public void setHeight(final float pHeight);
+	public void setWidth(final float pWidth);
+	public void setSize(final float pWidth, final float pHeight);
 }

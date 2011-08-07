@@ -2,12 +2,10 @@ package org.anddev.andengine.opengl.shader;
 
 import java.util.HashMap;
 
-import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.util.GLMatrix;
 
 import android.opengl.GLES20;
@@ -191,6 +189,10 @@ public class ShaderProgram implements ShaderProgramConstants {
 		GLES20.glUniform4f(this.getUniformLocation(pUniformName), pX, pY, pZ, pW);	
 	}
 	
+	/**
+	 * @param pUniformName
+	 * @param pTexture the index of the Texture to use. Similar to {@link GLES20#GL_TEXTURE0}, {@link GLES20#GL_TEXTURE1}, ... except that it is <b><code>0</code></b> based. 
+	 */
 	public void setTexture(final String pUniformName, final int pTexture) {
 		GLES20.glUniform1i(this.getUniformLocation(pUniformName), pTexture);	
 	}

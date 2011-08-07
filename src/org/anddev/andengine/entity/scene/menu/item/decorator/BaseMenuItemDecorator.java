@@ -88,16 +88,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public float getBaseWidth() {
-		return this.mMenuItem.getBaseWidth();
-	}
-
-	@Override
-	public float getBaseHeight() {
-		return this.mMenuItem.getBaseHeight();
-	}
-
-	@Override
 	public float getWidth() {
 		return this.mMenuItem.getWidth();
 	}
@@ -115,6 +105,21 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public float getHeightScaled() {
 		return this.mMenuItem.getHeightScaled();
+	}
+
+	@Override
+	public void setWidth(final float pWidth) {
+		this.mMenuItem.setWidth(pWidth);
+	}
+
+	@Override
+	public void setHeight(final float pHeight) {
+		this.mMenuItem.setHeight(pHeight);
+	}
+
+	@Override
+	public void setSize(final float pWidth, final float pHeight) {
+		this.mMenuItem.setSize(pWidth, pHeight);
 	}
 
 	@Override

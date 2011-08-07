@@ -59,27 +59,27 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 		return this.mHeight;
 	}
 
-	@Override
 	public float getBaseWidth() {
 		return this.mBaseWidth;
 	}
 
-	@Override
 	public float getBaseHeight() {
 		return this.mBaseHeight;
 	}
 
-	//TODO @Override
+	@Override
 	public void setWidth(final float pWidth) {
 		this.mWidth = pWidth;
 		this.onUpdateVertices();
 	}
 
+	@Override
 	public void setHeight(final float pHeight) {
 		this.mHeight = pHeight;
 		this.onUpdateVertices();
 	}
 
+	@Override
 	public void setSize(final float pWidth, final float pHeight) {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;

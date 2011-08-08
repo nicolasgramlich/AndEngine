@@ -1,4 +1,9 @@
 TODOS:
+	- Old TextureRegionBuffer stuff now also goes into Mesh.
+	- Eventually separate a TextureRegion from knowing what Texture it is on.
+		- Makes it easier to switch textures during runtime.
+		- Less disturbing when using multiple textures. 
+		- Drawbacks?
 	- All custom Exceptions extend from AndEngineException
 	- Remove POT texture restriction
 	- Maybe introduce Color3/4 objects

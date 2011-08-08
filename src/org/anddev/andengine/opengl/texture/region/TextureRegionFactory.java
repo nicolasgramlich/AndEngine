@@ -38,23 +38,20 @@ public class TextureRegionFactory {
 	// Methods
 	// ===========================================================
 	
-	public static TextureRegion extractFromTexture(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final boolean pTextureRegionBufferManaged) {
-		final TextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
-		textureRegion.setTextureRegionBufferManaged(pTextureRegionBufferManaged);
+	public static ITextureRegion extractFromTexture(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final boolean pTextureRegionBufferManaged) {
+		final ITextureRegion textureRegion = new TextureRegion(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight);
 		return textureRegion;
 	}
 
-	public static <T extends ITextureAtlasSource> TextureRegion createFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final boolean pCreateTextureRegionBuffersManaged) {
+	public static <T extends ITextureAtlasSource> ITextureRegion createFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
 		final TextureRegion textureRegion = new TextureRegion(pTextureAtlas, pTexturePositionX, pTexturePositionY, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight());
-		pTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, textureRegion.getTexturePositionX(), textureRegion.getTexturePositionY());
-		textureRegion.setTextureRegionBufferManaged(pCreateTextureRegionBuffersManaged);
+		pTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, textureRegion.getX(), textureRegion.getY());
 		return textureRegion;
 	}
 
-	public static <T extends ITextureAtlasSource> TiledTextureRegion createTiledFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows, final boolean pCreateTextureRegionBuffersManaged) {
-		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(pTextureAtlas, pTexturePositionX, pTexturePositionY, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight(), pTileColumns, pTileRows);
-		pTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, tiledTextureRegion.getTexturePositionX(), tiledTextureRegion.getTexturePositionY());
-		tiledTextureRegion.setTextureRegionBufferManaged(pCreateTextureRegionBuffersManaged);
+	public static <T extends ITextureAtlasSource> TiledTextureRegion createTiledFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
+		final TiledTextureRegion tiledTextureRegion = TiledTextureRegion.create(pTextureAtlas, pTexturePositionX, pTexturePositionY, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight(), pTileColumns, pTileRows);
+		pTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, tiledTextureRegion.getX(), tiledTextureRegion.getY());
 		return tiledTextureRegion;
 	}
 

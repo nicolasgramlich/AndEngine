@@ -5,7 +5,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.source.AssetBitmapTextur
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.ResourceBitmapTextureAtlasSource;
 import org.anddev.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
@@ -29,7 +29,6 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	// ===========================================================
 
 	private static String sAssetBasePath = "";
-	private static boolean sCreateTextureRegionBuffersManaged;
 
 	// ===========================================================
 	// Constructors
@@ -50,13 +49,8 @@ public class BitmapTextureAtlasTextureRegionFactory {
 		}
 	}
 
-	public static void setCreateTextureRegionBuffersManaged(final boolean pCreateTextureRegionBuffersManaged) {
-		BitmapTextureAtlasTextureRegionFactory.sCreateTextureRegionBuffersManaged = pCreateTextureRegionBuffersManaged;
-	}
-
 	public static void reset() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("");
-		BitmapTextureAtlasTextureRegionFactory.setCreateTextureRegionBuffersManaged(false);
 	}
 
 	// ===========================================================
@@ -71,7 +65,7 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	// Methods using BitmapTexture
 	// ===========================================================
 
-	public static TextureRegion createFromAsset(final BitmapTextureAtlas pBitmapTextureAtlas, final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY) {
+	public static ITextureRegion createFromAsset(final BitmapTextureAtlas pBitmapTextureAtlas, final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY) {
 		final IBitmapTextureAtlasSource bitmapTextureAtlasSource = new AssetBitmapTextureAtlasSource(pContext, BitmapTextureAtlasTextureRegionFactory.sAssetBasePath + pAssetPath);
 		return BitmapTextureAtlasTextureRegionFactory.createFromSource(pBitmapTextureAtlas, bitmapTextureAtlasSource, pTexturePositionX, pTexturePositionY);
 	}
@@ -82,7 +76,7 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	}
 
 
-	public static TextureRegion createFromResource(final BitmapTextureAtlas pBitmapTextureAtlas, final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY) {
+	public static ITextureRegion createFromResource(final BitmapTextureAtlas pBitmapTextureAtlas, final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY) {
 		final IBitmapTextureAtlasSource bitmapTextureAtlasSource = new ResourceBitmapTextureAtlasSource(pContext, pDrawableResourceID);
 		return BitmapTextureAtlasTextureRegionFactory.createFromSource(pBitmapTextureAtlas, bitmapTextureAtlasSource, pTexturePositionX, pTexturePositionY);
 	}
@@ -92,19 +86,19 @@ public class BitmapTextureAtlasTextureRegionFactory {
 		return BitmapTextureAtlasTextureRegionFactory.createTiledFromSource(pBitmapTextureAtlas, bitmapTextureAtlasSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows);
 	}
 
-	public static TextureRegion createFromSource(final BitmapTextureAtlas pBitmapTextureAtlas, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
-		return TextureRegionFactory.createFromSource(pBitmapTextureAtlas, pBitmapTextureAtlasSource, pTexturePositionX, pTexturePositionY, sCreateTextureRegionBuffersManaged);
+	public static ITextureRegion createFromSource(final BitmapTextureAtlas pBitmapTextureAtlas, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
+		return TextureRegionFactory.createFromSource(pBitmapTextureAtlas, pBitmapTextureAtlasSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	public static TiledTextureRegion createTiledFromSource(final BitmapTextureAtlas pBitmapTextureAtlas, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows) {
-		return TextureRegionFactory.createTiledFromSource(pBitmapTextureAtlas, pBitmapTextureAtlasSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows, sCreateTextureRegionBuffersManaged);
+		return TextureRegionFactory.createTiledFromSource(pBitmapTextureAtlas, pBitmapTextureAtlasSource, pTexturePositionX, pTexturePositionY, pTileColumns, pTileRows);
 	}
 
 	// ===========================================================
 	// Methods using BuildableTexture
 	// ===========================================================
 
-	public static TextureRegion createFromAsset(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final Context pContext, final String pAssetPath) {
+	public static ITextureRegion createFromAsset(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final Context pContext, final String pAssetPath) {
 		final IBitmapTextureAtlasSource bitmapTextureAtlasSource = new AssetBitmapTextureAtlasSource(pContext, BitmapTextureAtlasTextureRegionFactory.sAssetBasePath + pAssetPath);
 		return BitmapTextureAtlasTextureRegionFactory.createFromSource(pBuildableBitmapTextureAtlas, bitmapTextureAtlasSource);
 	}
@@ -115,7 +109,7 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	}
 
 
-	public static TextureRegion createFromResource(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final Context pContext, final int pDrawableResourceID) {
+	public static ITextureRegion createFromResource(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final Context pContext, final int pDrawableResourceID) {
 		final IBitmapTextureAtlasSource bitmapTextureAtlasSource = new ResourceBitmapTextureAtlasSource(pContext, pDrawableResourceID);
 		return BitmapTextureAtlasTextureRegionFactory.createFromSource(pBuildableBitmapTextureAtlas, bitmapTextureAtlasSource);
 	}
@@ -126,12 +120,12 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	}
 
 
-	public static TextureRegion createFromSource(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource) {
-		return BuildableTextureAtlasTextureRegionFactory.createFromSource(pBuildableBitmapTextureAtlas, pBitmapTextureAtlasSource, sCreateTextureRegionBuffersManaged);
+	public static ITextureRegion createFromSource(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource) {
+		return BuildableTextureAtlasTextureRegionFactory.createFromSource(pBuildableBitmapTextureAtlas, pBitmapTextureAtlasSource);
 	}
 
 	public static TiledTextureRegion createTiledFromSource(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final int pTileColumns, final int pTileRows) {
-		return BuildableTextureAtlasTextureRegionFactory.createTiledFromSource(pBuildableBitmapTextureAtlas, pBitmapTextureAtlasSource, pTileColumns, pTileRows, sCreateTextureRegionBuffersManaged);
+		return BuildableTextureAtlasTextureRegionFactory.createTiledFromSource(pBuildableBitmapTextureAtlas, pBitmapTextureAtlasSource, pTileColumns, pTileRows);
 	}
 
 	// ===========================================================

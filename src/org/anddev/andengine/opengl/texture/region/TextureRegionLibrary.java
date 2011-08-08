@@ -9,7 +9,7 @@ import org.anddev.andengine.util.Library;
  * @author Nicolas Gramlich
  * @since 11:52:26 - 20.08.2010
  */
-public class TextureRegionLibrary extends Library<BaseTextureRegion> {
+public class TextureRegionLibrary extends Library<ITextureRegion> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

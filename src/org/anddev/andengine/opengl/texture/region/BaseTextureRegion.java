@@ -1,20 +1,15 @@
 package org.anddev.andengine.opengl.texture.region;
 
-import javax.microedition.khronos.opengles.GL11;
-
-import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
-import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
  * @since 14:29:59 - 08.03.2010
  */
-public abstract class BaseTextureRegion {
+public abstract class BaseTextureRegion implements ITextureRegion {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -25,137 +20,65 @@ public abstract class BaseTextureRegion {
 
 	protected final ITexture mTexture;
 
-	protected final TextureRegionBuffer mTextureRegionBuffer;
-
-	protected int mWidth;
-	protected int mHeight;
-
-	protected int mTexturePositionX;
-	protected int mTexturePositionY;
+	protected float mU;
+	protected float mU2;
+	protected float mV;
+	protected float mV2;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseTextureRegion(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
+	public BaseTextureRegion(final ITexture pTexture) {
 		this.mTexture = pTexture;
-		this.mTexturePositionX = pTexturePositionX;
-		this.mTexturePositionY = pTexturePositionY;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
-
-		this.mTextureRegionBuffer = new TextureRegionBuffer(this, GL11.GL_STATIC_DRAW, true);
-
-		this.initTextureBuffer();
-	}
-
-	protected void initTextureBuffer() {
-		this.updateTextureRegionBuffer();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	public int getHeight() {
-		return this.mHeight;
-	}
-
-	public void setWidth(final int pWidth) {
-		this.mWidth = pWidth;
-		this.updateTextureRegionBuffer();
-	}
-
-	public void setHeight(final int pHeight) {
-		this.mHeight = pHeight;
-		this.updateTextureRegionBuffer();
-	}
-
-	public void setTexturePosition(final int pTexturePositionX, final int pTexturePositionY) {
-		this.mTexturePositionX = pTexturePositionX;
-		this.mTexturePositionY = pTexturePositionY;
-		this.updateTextureRegionBuffer();
-	}
-
-	public int getTexturePositionX() {
-		return this.mTexturePositionX;
-	}
-
-	public int getTexturePositionY() {
-		return this.mTexturePositionY;
-	}
-
-	public ITexture getTexture() {
-		return this.mTexture;
-	}
-
-	public TextureRegionBuffer getTextureBuffer() {
-		return this.mTextureRegionBuffer;
-	}
-	
-	public boolean isFlippedHorizontal() {
-		return this.mTextureRegionBuffer.isFlippedHorizontal();
-	}
-
-	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
-		this.mTextureRegionBuffer.setFlippedHorizontal(pFlippedHorizontal);
-	}
-
-	public boolean isFlippedVertical() {
-		return this.mTextureRegionBuffer.isFlippedVertical();
-	}
-
-	public void setFlippedVertical(final boolean pFlippedVertical) {
-		this.mTextureRegionBuffer.setFlippedVertical(pFlippedVertical);
-	}
-
-	public boolean isTextureRegionBufferManaged() {
-		return this.mTextureRegionBuffer.isManaged();
-	}
-
-	/**
-	 * @param pVertexBufferManaged when passing <code>true</code> this {@link BaseTextureRegion} will make its {@link TextureRegionBuffer} unload itself from the active {@link BufferObjectManager}, when this {@link BaseTextureRegion} is finalized/garbage-collected.<b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
-	 */
-	public void setTextureRegionBufferManaged(final boolean pTextureRegionBufferManaged) {
-		this.mTextureRegionBuffer.setManaged(pTextureRegionBufferManaged);
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public abstract float getTextureCoordinateX1();
-	public abstract float getTextureCoordinateY1();
-	public abstract float getTextureCoordinateX2();
-	public abstract float getTextureCoordinateY2();
-	public abstract int getTextureCropLeft();
-	public abstract int getTextureCropTop();
-	public abstract int getTextureCropWidth();
-	public abstract int getTextureCropHeight();
+	@Override
+	public float getU() {
+		return this.mU;
+	}
+
+	@Override
+	public float getU2() {
+		return this.mU2;
+	}
+
+	@Override
+	public float getV() {
+		return this.mV;
+	}
+
+	@Override
+	public float getV2() {
+		return this.mV2;
+	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	protected void updateTextureRegionBuffer() {
-		this.mTextureRegionBuffer.update();
-	}
+	public void updateUV() {
+		final ITexture texture = this.mTexture;
+		final int textureWidth = texture.getWidth();
+		final int textureHeight = texture.getHeight();
 
-	public void onApply() {
-		this.mTexture.bind();
-		
-		this.mTextureRegionBuffer.selectOnHardware();
-		GLHelper.texCoordZeroPointer();
-	}
+		final int x = this.getX();
+		final int y = this.getY();
 
-	public void onApplyCrop() {
-		this.mTexture.bind();
-	}
+		this.mU = (float) x / textureWidth;
+		this.mU2 = (float) (x + this.getWidth()) / textureWidth;
 
+		this.mV = (float) y / textureHeight;
+		this.mV2 = (float) (y + this.getHeight()) / textureHeight;
+	}
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

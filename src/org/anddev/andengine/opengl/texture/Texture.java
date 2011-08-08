@@ -160,7 +160,7 @@ public abstract class Texture implements ITexture {
 	}
 
 	protected void bindTextureOnHardware() {
-		GLHelper.forceBindTexture(this.mHardwareTextureID);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, this.mHardwareTextureID);
 	}
 
 	protected void deleteTextureOnHardware() {

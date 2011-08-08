@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.shape;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -28,4 +29,8 @@ public interface IShape extends IEntity, ITouchArea {
 	public boolean isBlendingEnabled();
 	public void setBlendingEnabled(final boolean pBlendingEnabled);
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction);
+	
+	public ShaderProgram getShaderProgram();
+	public IShape setDefaultShaderProgram();
+	public IShape setShaderProgram(final ShaderProgram pShaderProgram);
 }

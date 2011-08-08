@@ -190,16 +190,6 @@ public class GLHelper {
 		}
 	}
 
-	/**
-	 * @see {@link GLHelper#bindTexture(GLES20, int)}
-	 * @param GLES20
-	 * @param pHardwareTextureID
-	 */
-	public static void forceBindTexture(final int pHardwareTextureID) {
-		GLHelper.sCurrentHardwareTextureID = pHardwareTextureID;
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, pHardwareTextureID);
-	}
-
 	public static void deleteTexture(final int pHardwareTextureID) {
 		GLHelper.HARDWARETEXTUREID_CONTAINER[0] = pHardwareTextureID;
 		GLES20.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);

@@ -30,7 +30,7 @@ public class Line extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	public static final float LINE_WIDTH_DEFAULT = 1.0f;
 
 	public static final int VERTEX_SIZE = 2;
@@ -41,17 +41,17 @@ public class Line extends Shape {
 
 	private static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
 			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
-					"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-					"void main() {\n" +
-					"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-					"}";
+			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+			"void main() {\n" +
+			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+			"}";
 
 	private static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
 			"precision mediump float;\n" +
-					"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
-					"void main() {\n" +
-					"  gl_FragColor = " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
-					"}";
+			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+			"void main() {\n" +
+			"  gl_FragColor = " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+			"}";
 
 	// ===========================================================
 	// Fields
@@ -67,17 +67,17 @@ public class Line extends Shape {
 	// ===========================================================
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
-		this(pX1, pY1, pX2, pY2, LINE_WIDTH_DEFAULT);
+		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT);
 	}
-	
+
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
 		this(pX1, pY1, pX2, pY2, pLineWidth, null);
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final ShaderProgram pShaderProgram) {
-		this(pX1, pY1, pX2, pY2, LINE_WIDTH_DEFAULT, pShaderProgram);
+		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pShaderProgram);
 	}
-	
+
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final ShaderProgram pShaderProgram) {
 		this(pX1, pY1, pX2, pY2, pLineWidth, new Mesh(Line.LINE_SIZE, GLES20.GL_STATIC_DRAW, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
 	}
@@ -101,7 +101,7 @@ public class Line extends Shape {
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
 
-		this.setShaderProgram((pShaderProgram == null) ? this.createDefaultShaderProgram() : pShaderProgram);
+		this.setShaderProgram((pShaderProgram == null) ? new ShaderProgram(Line.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Line.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) : pShaderProgram);
 	}
 
 	// ===========================================================
@@ -173,6 +173,24 @@ public class Line extends Shape {
 
 		this.onUpdateVertices();
 	}
+	
+	@Override
+	public Line setShaderProgram(ShaderProgram pShaderProgram) {
+		return (Line)super.setShaderProgram(pShaderProgram);
+	}
+	
+	@Override
+	public Line setDefaultShaderProgram() {
+		return this.setShaderProgram(new ShaderProgram(SHADERPROGRAM_VERTEXSHADER_DEFAULT, SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
+			@Override
+			public void bind() {
+				super.bind();
+
+				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
+				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, Line.this.mRed, Line.this.mGreen, Line.this.mBlue, Line.this.mAlpha);
+			}
+		});
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -184,15 +202,27 @@ public class Line extends Shape {
 	}
 
 	@Override
+	protected void preDraw(final Camera pCamera) {
+		super.preDraw(pCamera);
+
+		GLHelper.lineWidth(this.mLineWidth);
+	}
+
+	@Override
+	protected void draw(final Camera pCamera) {
+		this.mMesh.draw(this.mShaderProgram, GLES20.GL_LINES, Line.VERTICES_PER_LINE);
+	}
+	
+	@Override
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final int[] bufferData = vertexBufferObject.getBufferData();
 
-		bufferData[0 + Constants.VERTEX_INDEX_X] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
-		bufferData[0 + Constants.VERTEX_INDEX_Y] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
+		bufferData[0 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
+		bufferData[0 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
 
-		bufferData[2 + Constants.VERTEX_INDEX_X] = Float.floatToRawIntBits(this.mX2 - this.mX);
-		bufferData[2 + Constants.VERTEX_INDEX_Y] = Float.floatToRawIntBits(this.mY2 - this.mY);
+		bufferData[1 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = Float.floatToRawIntBits(this.mX2 - this.mX);
+		bufferData[1 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = Float.floatToRawIntBits(this.mY2 - this.mY);
 
 		final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
 		buffer.position(0);
@@ -200,18 +230,6 @@ public class Line extends Shape {
 		buffer.position(0);
 
 		vertexBufferObject.setDirtyOnHardware();
-	}
-	
-	@Override
-	protected void preDraw(Camera pCamera) {
-		super.preDraw(pCamera);
-		
-		GLHelper.lineWidth(this.mLineWidth);
-	}
-
-	@Override
-	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(this.mShaderProgram, GLES20.GL_LINES, Line.VERTICES_PER_LINE);
 	}
 
 	@Override
@@ -254,18 +272,6 @@ public class Line extends Shape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public ShaderProgram createDefaultShaderProgram() {
-		return new ShaderProgram(Line.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Line.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
-			@Override
-			public void bind() {
-				super.bind();
-
-				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
-				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, Line.this.mRed, Line.this.mGreen, Line.this.mBlue, Line.this.mAlpha);
-			}
-		};
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

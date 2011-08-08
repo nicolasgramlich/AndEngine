@@ -10,9 +10,12 @@ import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatch
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.util.Transformation;
 
 /**
+ * I HATE THIS CLASS!
+ * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
@@ -335,6 +338,21 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void setZIndex(final int pZIndex) {
 		this.mMenuItem.setZIndex(pZIndex);
+	}
+
+	@Override
+	public ShaderProgram getShaderProgram() {
+		return this.mMenuItem.getShaderProgram();
+	}
+
+	@Override
+	public IShape setShaderProgram(final ShaderProgram pShaderProgram) {
+		return this.mMenuItem.setShaderProgram(pShaderProgram);
+	}
+
+	@Override
+	public IShape setDefaultShaderProgram() {
+		return this.mMenuItem.setDefaultShaderProgram();
 	}
 
 	@Override

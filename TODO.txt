@@ -1,4 +1,7 @@
 TODOS:
+	- Build allocation free Matrix class!
+	- TODO Think about the default blendfunction (for sprites, but also for primitives).
+		- For Sprites, keep premultiplyalpha in mind.
 	- Old TextureRegionBuffer stuff now also goes into Mesh.
 	- Eventually separate a TextureRegion from knowing what Texture it is on.
 		- Makes it easier to switch textures during runtime.
@@ -8,3 +11,8 @@ TODOS:
 	- Remove POT texture restriction
 	- Maybe introduce Color3/4 objects
 		- Add Color3/4Pool
+
+EXAMPLES:
+	- Blur/Bloom Shader?
+		- http://stackoverflow.com/questions/4712042/iphone-post-processing-with-a-single-fbo-with-opengl-es-2-0
+	- Custom Text Mesh that shows how to color letters individually and make those colors change over time using a custom shader.

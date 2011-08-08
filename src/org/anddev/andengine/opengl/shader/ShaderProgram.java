@@ -194,11 +194,10 @@ public class ShaderProgram implements ShaderProgramConstants {
 	 * @param pTexture the index of the Texture to use. Similar to {@link GLES20#GL_TEXTURE0}, {@link GLES20#GL_TEXTURE1}, ... except that it is <b><code>0</code></b> based. 
 	 */
 	public void setTexture(final String pUniformName, final int pTexture) {
-		GLES20.glUniform1i(this.getUniformLocation(pUniformName), pTexture);	
+		GLES20.glUniform1i(this.getUniformLocation(pUniformName), pTexture);
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
 }

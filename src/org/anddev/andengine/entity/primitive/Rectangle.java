@@ -30,17 +30,20 @@ public class Rectangle extends RectangularShape {
 	public static final int VERTEX_SIZE = 2;
 	public static final int VERTICES_PER_RECTANGLE = 4;
 	public static final int RECTANGLE_SIZE = Rectangle.VERTEX_SIZE * Rectangle.VERTICES_PER_RECTANGLE;
+	public static final int VERTEX_STRIDE = Rectangle.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
-	public static final VertexBufferObjectAttribute[] VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = { new VertexBufferObjectAttribute(ShaderProgramConstants.ATTRIBUTE_POSITION, Rectangle.VERTEX_SIZE, GLES20.GL_FLOAT, false, Rectangle.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT, 0) };
+	public static final VertexBufferObjectAttribute[] VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = {
+		new VertexBufferObjectAttribute(ShaderProgramConstants.ATTRIBUTE_POSITION, Rectangle.VERTEX_SIZE, GLES20.GL_FLOAT, false, Rectangle.VERTEX_STRIDE, 0)
+	};
 
-	private static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
+	public static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
 			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
 			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
 			"void main() {\n" +
 			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
 			"}";
 
-	private static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
+	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
 			"precision mediump float;\n" +
 			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
 			"void main() {\n" +
@@ -56,18 +59,6 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT} and a default {@link ShaderProgram}.
-	 * 
-	 * @param pX
-	 * @param pY
-	 * @param pWidth
-	 * @param pHeight
-	 */
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this(pX, pY, pWidth, pHeight, null);
-	}
-
-	/**
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 * 
 	 * @param pX
@@ -76,8 +67,8 @@ public class Rectangle extends RectangularShape {
 	 * @param pHeight
 	 * @param pShaderProgram
 	 */
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pWidth, pHeight, new Mesh(Rectangle.RECTANGLE_SIZE, GLES20.GL_STATIC_DRAW, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
+		this(pX, pY, pWidth, pHeight, new Mesh(Rectangle.RECTANGLE_SIZE, GLES20.GL_STATIC_DRAW, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
 	/**
@@ -88,15 +79,31 @@ public class Rectangle extends RectangularShape {
 	 * @param pMesh
 	 * @param pShaderProgram if <code>null</code> is passed, a default {@link ShaderProgram} is used.
 	 */
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, final ShaderProgram pShaderProgram) {
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
 		super(pX, pY, pWidth, pHeight, pMesh);
-
-		this.setShaderProgram((pShaderProgram == null) ? this.createDefaultShaderProgram() : pShaderProgram);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	@Override
+	public Rectangle setShaderProgram(ShaderProgram pShaderProgram) {
+		return (Rectangle) super.setShaderProgram(pShaderProgram);
+	}
+
+	@Override
+	public Rectangle setDefaultShaderProgram() {
+		return this.setShaderProgram(new ShaderProgram(SHADERPROGRAM_VERTEXSHADER_DEFAULT, SHADERPROGRAM_FRAGMENTSHADER_DEFAULT){
+			@Override
+			public void bind() {
+				super.bind();
+
+				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
+				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, Rectangle.this.mRed, Rectangle.this.mGreen, Rectangle.this.mBlue, Rectangle.this.mAlpha);
+			}
+		});
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -117,17 +124,17 @@ public class Rectangle extends RectangularShape {
 		final int y2 = Float.floatToRawIntBits(this.mHeight);
 
 		final int[] bufferData = vertexBufferObject.getBufferData();
-		bufferData[0 + Constants.VERTEX_INDEX_X] = x;
-		bufferData[0 + Constants.VERTEX_INDEX_Y] = y;
+		bufferData[0 * Rectangle.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x;
+		bufferData[0 * Rectangle.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y;
 
-		bufferData[2 + Constants.VERTEX_INDEX_X] = x;
-		bufferData[2 + Constants.VERTEX_INDEX_Y] = y2;
+		bufferData[1 * Rectangle.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x;
+		bufferData[1 * Rectangle.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y2;
 
-		bufferData[4 + Constants.VERTEX_INDEX_X] = x2;
-		bufferData[4 + Constants.VERTEX_INDEX_Y] = y;
+		bufferData[2 * Rectangle.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x2;
+		bufferData[2 * Rectangle.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y;
 
-		bufferData[6 + Constants.VERTEX_INDEX_X] = x2;
-		bufferData[6 + Constants.VERTEX_INDEX_Y] = y2;
+		bufferData[3 * Rectangle.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x2;
+		bufferData[3 * Rectangle.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y2;
 
 		final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
 		buffer.position(0);
@@ -138,18 +145,6 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public ShaderProgram createDefaultShaderProgram() {
-		return new ShaderProgram(Rectangle.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Rectangle.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
-			@Override
-			public void bind() {
-				super.bind();
-
-				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
-				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, Rectangle.this.mRed, Rectangle.this.mGreen, Rectangle.this.mBlue, Rectangle.this.mAlpha); // TODO Cache Rectangle.this access? (Applies to similar classes too)
-			}
-		};
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

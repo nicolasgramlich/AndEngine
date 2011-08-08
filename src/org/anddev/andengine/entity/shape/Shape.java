@@ -89,8 +89,9 @@ public abstract class Shape extends Entity implements IShape {
 		return this.mShaderProgram;
 	}
 
-	public void setShaderProgram(final ShaderProgram pShaderProgram) {
+	public IShape setShaderProgram(final ShaderProgram pShaderProgram) {
 		this.mShaderProgram = pShaderProgram;
+		return this;
 	}
 
 	// ===========================================================

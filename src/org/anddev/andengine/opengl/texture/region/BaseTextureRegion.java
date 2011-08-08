@@ -42,6 +42,11 @@ public abstract class BaseTextureRegion implements ITextureRegion {
 	// ===========================================================
 
 	@Override
+	public ITexture getTexture() {
+		return this.mTexture;
+	}
+
+	@Override
 	public float getU() {
 		return this.mU;
 	}

@@ -1,5 +1,7 @@
 package org.anddev.andengine.opengl.texture.region;
 
+import org.anddev.andengine.opengl.texture.ITexture;
+
 /**
  * (c) Zynga 2011
  *
@@ -31,8 +33,11 @@ public interface ITextureRegion {
 
 	public void set(final int pX, final int pY, final int pWidth, final int pHeight);
 
+	// TODO Potentially the U/U2/V/V2 could be provided/stored with Float.floatToRawIntBits(..) so that they don't need to be permanently converted in the Sprite class, potentially improving performance of updating texturecoordinates by a factor of 10. 
 	public float getU();
 	public float getU2();
 	public float getV();
 	public float getV2();
+
+	public ITexture getTexture();
 }

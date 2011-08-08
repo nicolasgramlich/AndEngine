@@ -124,6 +124,25 @@ public class FastFloatBuffer {
 	}
 
 	/**
+	 * For use with pre-converted data. This is 50x faster than
+	 * {@link #put(float[])}, and 500x faster than
+	 * {@link FloatBuffer#put(float[])}, so if you've got float[] data that
+	 * won't change, {@link #convert(float...)} it to an int[] once and use this
+	 * method to put it in the buffer
+	 * 
+	 * @param data floats that have been converted with {@link Float#floatToIntBits(float)}
+	 * @param offset in data
+	 * @param length of data
+	 */
+	public void put(final int[] data, final int offset, final int length) {
+		final ByteBuffer byteBuffer = this.mByteBuffer;
+		byteBuffer.position(byteBuffer.position() + BYTES_PER_FLOAT * length);
+		final FloatBuffer floatBuffer = this.mFloatBuffer;
+		floatBuffer.position(floatBuffer.position() + length);
+		this.mIntBuffer.put(data, offset, length);
+	}
+
+	/**
 	 * Converts float data to a format that can be quickly added to the buffer
 	 * with {@link #put(int[])}
 	 * 

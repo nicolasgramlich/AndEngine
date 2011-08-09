@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity.shape;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
@@ -9,8 +7,6 @@ import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-
-import android.opengl.GLES20;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -24,18 +20,12 @@ public abstract class Shape extends Entity implements IShape {
 	// Constants
 	// ===========================================================
 
-	public static final int BLENDFUNCTION_SOURCE_DEFAULT = GLES20.GL_SRC_ALPHA;
-	public static final int BLENDFUNCTION_DESTINATION_DEFAULT = GLES20.GL_ONE_MINUS_SRC_ALPHA;
-
-	public static final int BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT = GLES20.GL_ONE;
-	public static final int BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT = GLES20.GL_ONE_MINUS_SRC_ALPHA;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	protected int mSourceBlendFunction = Shape.BLENDFUNCTION_SOURCE_DEFAULT;
-	protected int mDestinationBlendFunction = Shape.BLENDFUNCTION_DESTINATION_DEFAULT;
+	protected int mSourceBlendFunction = IShape.BLENDFUNCTION_SOURCE_DEFAULT;
+	protected int mDestinationBlendFunction = IShape.BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	protected boolean mBlendingEnabled = false;
 	protected boolean mCullingEnabled = false;
@@ -87,10 +77,12 @@ public abstract class Shape extends Entity implements IShape {
 		return this.mMesh;
 	}
 
+	@Override
 	public ShaderProgram getShaderProgram() {
 		return this.mShaderProgram;
 	}
 
+	@Override
 	public IShape setShaderProgram(final ShaderProgram pShaderProgram) {
 		this.mShaderProgram = pShaderProgram;
 		return this;
@@ -143,8 +135,8 @@ public abstract class Shape extends Entity implements IShape {
 	@Override
 	public void reset() {
 		super.reset();
-		this.mSourceBlendFunction = Shape.BLENDFUNCTION_SOURCE_DEFAULT;
-		this.mDestinationBlendFunction = Shape.BLENDFUNCTION_DESTINATION_DEFAULT;
+		this.mSourceBlendFunction = IShape.BLENDFUNCTION_SOURCE_DEFAULT;
+		this.mDestinationBlendFunction = IShape.BLENDFUNCTION_DESTINATION_DEFAULT;
 	}
 
 	@Override

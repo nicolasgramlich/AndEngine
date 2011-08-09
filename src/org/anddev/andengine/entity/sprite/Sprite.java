@@ -54,7 +54,7 @@ public class Sprite extends RectangularShape {
 			"}";
 
 	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
-			"precision mediump float;\n" +
+			"precision mediump float;\n" + // TODO Try 'precision lowp float;\n'
 		    "uniform sampler2D " + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ";\n" +
 			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
             "varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
@@ -92,6 +92,7 @@ public class Sprite extends RectangularShape {
 
 		this.mTextureRegion = pTextureRegion;
 		this.initBlendFunction();
+		this.setBlendingEnabled(true);
 
 		this.onUpdateTextureCoordinates();
 	}
@@ -225,13 +226,13 @@ public class Sprite extends RectangularShape {
 			if(this.mFlippedHorizontal) {
 				u = Float.floatToRawIntBits(textureRegion.getU2());
 				u2 = Float.floatToRawIntBits(textureRegion.getU());
-				v = Float.floatToRawIntBits(textureRegion.getU2());
-				v2 = Float.floatToRawIntBits(textureRegion.getU());
+				v = Float.floatToRawIntBits(textureRegion.getV());
+				v2 = Float.floatToRawIntBits(textureRegion.getV2());
 			} else {
 				u = Float.floatToRawIntBits(textureRegion.getU());
 				u2 = Float.floatToRawIntBits(textureRegion.getU2());
-				v = Float.floatToRawIntBits(textureRegion.getU2());
-				v2 = Float.floatToRawIntBits(textureRegion.getU());
+				v = Float.floatToRawIntBits(textureRegion.getV());
+				v2 = Float.floatToRawIntBits(textureRegion.getV2());
 			}
 		}
 
@@ -262,7 +263,7 @@ public class Sprite extends RectangularShape {
 
 	private void initBlendFunction() {
 		if(this.mTextureRegion.getTexture().getTextureOptions().mPreMultipyAlpha) {
-			this.setBlendFunction(Shape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, Shape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
+//			this.setBlendFunction(Shape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, Shape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT); // TODO
 		}
 	}
 

@@ -63,6 +63,11 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public AnimatedSprite setDefaultShaderProgram() {
+		return (AnimatedSprite)super.setDefaultShaderProgram();
+	}
 
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {

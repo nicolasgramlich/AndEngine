@@ -17,6 +17,8 @@ public interface ShaderProgramConstants {
 	public static final String ATTRIBUTE_TEXTURECOORDINATES = "a_textureCoordinates";
 
 	public static final String UNIFORM_MODELVIEWPROJECTIONMATRIX = "u_modelViewProjectionMatrix";
+	public static final String UNIFORM_MODELVIEWMATRIX = "u_modelViewMatrix";
+	public static final String UNIFORM_PROJECTIONMATRIX = "u_projectionMatrix";
 	public static final String UNIFORM_COLOR = "u_color";
 	public static final String UNIFORM_TEXTURE_0 = "u_texture_0";
 

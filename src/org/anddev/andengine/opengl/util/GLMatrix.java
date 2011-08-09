@@ -3,6 +3,8 @@ package org.anddev.andengine.opengl.util;
 import android.opengl.Matrix;
 
 /**
+ * TODO Measure performance with inlined or native Matrix implementations.
+ * 
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
@@ -20,6 +22,7 @@ public class GLMatrix {
 	// ===========================================================
 
 	private final float[] mValues = new float[GLMatrix.GLMATRIX_SIZE];
+	private final float[] mTemp = new float[2 * GLMatrix.GLMATRIX_SIZE];
 
 	// ===========================================================
 	// Constructors
@@ -60,7 +63,9 @@ public class GLMatrix {
 	}
 
 	public void rotate(final float pAngle, final float pX, final float pY, final float pZ) {
-		Matrix.rotateM(this.mValues, 0, pAngle, pX, pY, pZ);
+		Matrix.setRotateM(this.mTemp, 0, pAngle, pX, pY, pZ);
+		System.arraycopy(this.mValues, 0, this.mTemp, GLMatrix.GLMATRIX_SIZE, GLMatrix.GLMATRIX_SIZE);
+		Matrix.multiplyMM(this.mValues, 0, this.mTemp, GLMatrix.GLMATRIX_SIZE, this.mTemp, 0);
 	}
 
 	public void scale(final float pScaleX, final float pScaleY, final float pScaleZ) {

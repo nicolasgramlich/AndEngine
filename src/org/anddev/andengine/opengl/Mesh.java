@@ -22,7 +22,7 @@ public class Mesh {
 	// Fields
 	// ===========================================================
 
-	final VertexBufferObject mVertexBufferObject;
+	protected final VertexBufferObject mVertexBufferObject;
 
 	// ===========================================================
 	// Constructors

@@ -2,8 +2,6 @@ package org.anddev.andengine.entity.scene.background;
 
 import static org.anddev.andengine.util.constants.ColorConstants.COLOR_FACTOR_INT_TO_FLOAT;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 
 import android.opengl.GLES20;
@@ -118,7 +116,7 @@ public class ColorBackground extends BaseBackground {
 	public void onDraw(final Camera pCamera) {
 		if(this.mColorEnabled) {
 			GLES20.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
-			GLES20.glClear(GL10.GL_COLOR_BUFFER_BIT); // TODO See commented out code in Renderer, bc of MultiSample
+			GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT); // TODO See commented out code in Renderer, bc of MultiSample
 		}
 	}
 

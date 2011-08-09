@@ -2,8 +2,6 @@ package org.anddev.andengine.opengl.texture;
 
 import java.io.IOException;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.util.GLHelper;
 
@@ -183,13 +181,13 @@ public abstract class Texture implements ITexture {
 		// ===========================================================
 
 		UNDEFINED(-1, -1, -1),
-		RGBA_4444(GL10.GL_RGBA, GL10.GL_UNSIGNED_SHORT_4_4_4_4, 16),
-		RGBA_5551(GL10.GL_RGBA, GL10.GL_UNSIGNED_SHORT_5_5_5_1, 16),
-		RGBA_8888(GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, 32),
-		RGB_565(GL10.GL_RGB, GL10.GL_UNSIGNED_SHORT_5_6_5, 16),
-		A_8(GL10.GL_ALPHA, GL10.GL_UNSIGNED_BYTE, 8),
-		I_8(GL10.GL_LUMINANCE, GL10.GL_UNSIGNED_BYTE, 8),
-		AI_88(GL10.GL_LUMINANCE_ALPHA, GL10.GL_UNSIGNED_BYTE, 16);
+		RGBA_4444(GLES20.GL_RGBA, GLES20.GL_UNSIGNED_SHORT_4_4_4_4, 16),
+		RGBA_5551(GLES20.GL_RGBA, GLES20.GL_UNSIGNED_SHORT_5_5_5_1, 16),
+		RGBA_8888(GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, 32),
+		RGB_565(GLES20.GL_RGB, GLES20.GL_UNSIGNED_SHORT_5_6_5, 16),
+		A_8(GLES20.GL_ALPHA, GLES20.GL_UNSIGNED_BYTE, 8),
+		I_8(GLES20.GL_LUMINANCE, GLES20.GL_UNSIGNED_BYTE, 8),
+		AI_88(GLES20.GL_LUMINANCE_ALPHA, GLES20.GL_UNSIGNED_BYTE, 16);
 
 		// ===========================================================
 		// Constants

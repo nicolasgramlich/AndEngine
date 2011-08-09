@@ -3,8 +3,6 @@ package org.anddev.andengine.opengl.texture.bitmap;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -14,6 +12,7 @@ import org.anddev.andengine.util.StreamUtils;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
 /**
@@ -108,9 +107,9 @@ public abstract class BitmapTexture extends Texture {
 		final Bitmap bitmap = BitmapFactory.decodeStream(this.onGetInputStream(), null, decodeOptions);
 
 		if(preMultipyAlpha) {
-			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 		} else {
-			GLHelper.glTexImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
+			GLHelper.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
 		}
 
 		bitmap.recycle();

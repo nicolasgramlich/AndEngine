@@ -2,8 +2,6 @@ package org.anddev.andengine.entity.util;
 
 import java.nio.IntBuffer;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 
@@ -95,9 +93,9 @@ public class ScreenGrabber extends Entity {
 		final IntBuffer sourceBuffer = IntBuffer.wrap(source);
 		sourceBuffer.position(0);
 
-		// TODO Check availability of OpenGL and GL10.GL_RGBA combinations that require less conversion operations.
+		// TODO Check availability of OpenGL and GLES20.GL_RGBA combinations that require less conversion operations.
 		// Note: There is (said to be) a bug with glReadPixels when 'y != 0', so we simply read starting from 'y == 0'.
-		GLES20.glReadPixels(pGrabX, 0, pGrabWidth, pGrabY + pGrabHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, sourceBuffer);
+		GLES20.glReadPixels(pGrabX, 0, pGrabWidth, pGrabY + pGrabHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, sourceBuffer);
 
 		final int[] pixels = new int[pGrabWidth * pGrabHeight];
 

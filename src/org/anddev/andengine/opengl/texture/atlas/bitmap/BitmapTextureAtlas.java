@@ -14,6 +14,7 @@ import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
 /**
@@ -159,9 +160,9 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 						throw new IllegalArgumentException(bitmapTextureAtlasSource.getClass().getSimpleName() + ": " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
 					}
 					if(preMultipyAlpha) {
-						GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, glFormat, glType);
+						GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, glFormat, glType);
 					} else {
-						GLHelper.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
+						GLHelper.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
 					}
 
 					bitmap.recycle();
@@ -211,7 +212,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		final Bitmap textureBitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, this.mBitmapTextureFormat.getBitmapConfig());
 		// TODO Check if there is an easier/faster method to create a white placeholder bitmap.
 
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, textureBitmap, 0);
+		GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, textureBitmap, 0);
 
 		textureBitmap.recycle();
 	}

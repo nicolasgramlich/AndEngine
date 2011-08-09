@@ -5,14 +5,13 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.util.StreamUtils;
 
 import android.opengl.ETC1;
 import android.opengl.ETC1Util;
+import android.opengl.GLES20;
 
 /**
  * TODO if(!SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.FROYO)) --> Meaningful Exception!
@@ -86,7 +85,7 @@ public abstract class ETC1Texture extends Texture {
 	@Override
 	protected void writeTextureToHardware() throws IOException {
 		final InputStream inputStream = this.getInputStream();
-		ETC1Util.loadTexture(GL10.GL_TEXTURE_2D, 0, 0, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), inputStream);
+		ETC1Util.loadTexture(GLES20.GL_TEXTURE_2D, 0, 0, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), inputStream);
 	}
 
 	// ===========================================================

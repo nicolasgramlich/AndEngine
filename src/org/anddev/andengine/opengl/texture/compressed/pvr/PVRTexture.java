@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -123,7 +121,7 @@ public abstract class PVRTexture extends Texture {
 	protected void generateHardwareTextureID() {
 		//		// TODO
 		//		if(this.mMipMapCount > 0) {
-		GLES20.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT, 1);
+		GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 		//		}
 
 		super.generateHardwareTextureID();
@@ -159,7 +157,7 @@ public abstract class PVRTexture extends Texture {
 					Debug.w(String.format("Mipmap level '%u' is not squared. Width: '%u', height: '%u'. Texture won't render correctly.", mipmapLevel, width, height));
 				}
 
-				GLES20.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelData);
+				GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelData);
 
 				GLHelper.checkGLError();
 

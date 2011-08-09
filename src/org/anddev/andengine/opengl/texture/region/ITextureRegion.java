@@ -40,4 +40,6 @@ public interface ITextureRegion {
 	public float getV2();
 
 	public ITexture getTexture();
+
+	public ITextureRegion clone() throws CloneNotSupportedException;
 }

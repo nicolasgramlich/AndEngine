@@ -80,14 +80,14 @@ public class Sprite extends RectangularShape {
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, new Mesh(Sprite.SPRITE_SIZE, GLES20.GL_STATIC_DRAW, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), null);
+		this(pX, pY, pWidth, pHeight, pTextureRegion, new Mesh(Sprite.SPRITE_SIZE, GLES20.GL_STATIC_DRAW, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final Mesh pMesh, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pMesh, pShaderProgram);
+	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final Mesh pMesh) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pMesh);
 	}
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final Mesh pMesh, final ShaderProgram pShaderProgram) {
+	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final Mesh pMesh) {
 		super(pX, pY, pWidth, pHeight, pMesh);
 
 		this.mTextureRegion = pTextureRegion;

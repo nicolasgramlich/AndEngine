@@ -5,19 +5,22 @@ import javax.microedition.khronos.opengles.GL11;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
+import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.entity.sprite.BaseSprite;
+import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.region.BaseTextureRegion;
-import org.anddev.andengine.opengl.texture.region.buffer.SpriteBatchTextureRegionBuffer;
+import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.opengl.vertex.SpriteBatchVertexBuffer;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
+import org.anddev.andengine.util.constants.DataConstants;
 
 import android.opengl.GLES20;
 
 /**
- * TODO Texture could be semi-changeable, being resetting to null in end(...)
- * TODO Make use of pGL.glColorPointer(size, type, stride, pointer) which should allow individual color tinting.
+ * TODO Might extend Shape
  * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -43,22 +46,18 @@ public class SpriteBatch extends Entity {
 	private int mSourceBlendFunction;
 	private int mDestinationBlendFunction;
 
-	private final SpriteBatchVertexBuffer mSpriteBatchVertexBuffer;
-	private final SpriteBatchTextureRegionBuffer mSpriteBatchTextureRegionBuffer;
+	private final SpriteBatchMesh mSpriteBatchMesh;
+	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
-		this(pTexture, pCapacity, new SpriteBatchVertexBuffer(pCapacity, GL11.GL_STATIC_DRAW, true), new SpriteBatchTextureRegionBuffer(pCapacity, GL11.GL_STATIC_DRAW, true));
-	}
-
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBuffer pSpriteBatchVertexBuffer, final SpriteBatchTextureRegionBuffer pSpriteBatchTextureRegionBuffer) {
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
-		this.mSpriteBatchVertexBuffer = pSpriteBatchVertexBuffer;
-		this.mSpriteBatchTextureRegionBuffer = pSpriteBatchTextureRegionBuffer;
+		
+		this.mSpriteBatchMesh = new SpriteBatch(pCapacity, GLES20.GL_STATIC_DRAW, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT); // TODO Measure: GLES20.GL_STATIC_DRAW against GLES20.GL_STREAM_DRAW and GLES20.GL_DYNAMIC_DRAW 
 
 		this.initBlendFunction();
 	}
@@ -76,34 +75,60 @@ public class SpriteBatch extends Entity {
 		return this.mIndex;
 	}
 
-	public void setIndex(final int pIndex) {
-		this.assertCapacity(pIndex);
+	public ShaderProgram getShaderProgram() {
+		return this.mShaderProgram;
+	}
 
-		this.mIndex = pIndex;
+	public SpriteBatch setShaderProgram(final ShaderProgram pShaderProgram) {
+		this.mShaderProgram = pShaderProgram;
+		return this;
+	}
+	
+	public SpriteBatch setDefaultShaderProgram() {
+		return this.setShaderProgram(new ShaderProgram(Sprite.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Sprite.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
+			@Override
+			public void bind() {
+				super.bind();
 
-		final int vertexIndex = pIndex * SpriteBatchVertexBuffer.VERTICES_PER_RECTANGLE;
-
-		this.mSpriteBatchVertexBuffer.setIndex(vertexIndex);
-		this.mSpriteBatchTextureRegionBuffer.setIndex(vertexIndex);
+				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
+				this.setTexture(ShaderProgramConstants.UNIFORM_TEXTURE_0, 0);
+				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, SpriteBatch.this.mRed, SpriteBatch.this.mGreen, SpriteBatch.this.mBlue, SpriteBatch.this.mAlpha);
+			}
+		});
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
+
 	@Override
-	protected void doDraw(final Camera pCamera) {
-		this.onInitDraw();
+	protected void preDraw(Camera pCamera) {
+		super.preDraw(pCamera);
+		
+		GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 
+		GLHelper.enableTextures();
+		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+		this.mTexture.bind();
+	}
+
+	@Override
+	protected void draw(final Camera pCamera) {
 		this.begin();
-
-		this.onApplyVertices();
-		this.onApplyTextureRegion();
-		this.drawVertices(pCamera);
+		
+		this.mMesh.draw(this.mShaderProgram, GLES20.GL_TRIANGLES, mVertices);
 
 		this.end();
 	}
 
+	@Override
+	protected void postDraw(final Camera pCamera) {
+		GLHelper.enableTextures();
+
+		super.postDraw(pCamera);
+	}
+	
 	@Override
 	public void reset() {
 		super.reset();
@@ -115,11 +140,8 @@ public class SpriteBatch extends Entity {
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(this.mSpriteBatchVertexBuffer.isManaged()) {
-			this.mSpriteBatchVertexBuffer.unloadFromActiveBufferObjectManager();
-		}
-		if(this.mSpriteBatchTextureRegionBuffer.isManaged()) {
-			this.mSpriteBatchTextureRegionBuffer.unloadFromActiveBufferObjectManager();
+		if(this.mMesh.getVertexBufferObject().isManaged()) {
+			this.mMesh.getVertexBufferObject().unloadFromActiveBufferObjectManager();
 		}
 	}
 
@@ -138,7 +160,7 @@ public class SpriteBatch extends Entity {
 	/**
 	 * @see {@link SpriteBatchVertexBuffer#add(float, float, float, float)}.
 	 */
-	public void draw(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight) {
+	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
@@ -148,7 +170,7 @@ public class SpriteBatch extends Entity {
 		this.mIndex++;
 	}
 
-	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight) {
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -158,7 +180,7 @@ public class SpriteBatch extends Entity {
 	/**
 	 * @see {@link SpriteBatchVertexBuffer#add(float, float, float, float, float)}.
 	 */
-	public void draw(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation) {
+	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
@@ -168,7 +190,7 @@ public class SpriteBatch extends Entity {
 		this.mIndex++;
 	}
 
-	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation) {
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation) {
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pRotation);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -178,7 +200,7 @@ public class SpriteBatch extends Entity {
 	/**
 	 * @see {@link SpriteBatchVertexBuffer#add(float, float, float, float, float, float)}.
 	 */
-	public void draw(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY) {
+	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
@@ -188,7 +210,7 @@ public class SpriteBatch extends Entity {
 		this.mIndex++;
 	}
 
-	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY) {
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY) {
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pScaleX, pScaleY);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -198,7 +220,7 @@ public class SpriteBatch extends Entity {
 	/**
 	 * @see {@link SpriteBatchVertexBuffer#add(float, float, float, float, float, float, float)}.
 	 */
-	public void draw(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY) {
+	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
@@ -208,7 +230,7 @@ public class SpriteBatch extends Entity {
 		this.mIndex++;
 	}
 
-	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY) {
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY) {
 		this.mSpriteBatchVertexBuffer.add(pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -218,7 +240,7 @@ public class SpriteBatch extends Entity {
 	/**
 	 * {@link SpriteBatchVertexBuffer#add(float, float, float, float, float, float, float, float)}.
 	 */
-	public void draw(final BaseTextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
+	public void draw(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
@@ -228,7 +250,7 @@ public class SpriteBatch extends Entity {
 		this.mIndex++;
 	}
 
-	public void drawWithoutChecks(final BaseTextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
 		this.mSpriteBatchVertexBuffer.addInner(pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4);
 		this.mSpriteBatchTextureRegionBuffer.add(pTextureRegion);
 
@@ -236,19 +258,19 @@ public class SpriteBatch extends Entity {
 	}
 
 	/**
-	 * {@link SpriteBatchVertexBuffer#add(BaseSprite)}.
+	 * {@link SpriteBatchVertexBuffer#add(Sprite)}.
 	 */
-	public void draw(final BaseSprite pBaseSprite) {
-		if(pBaseSprite.isVisible()) {
+	public void draw(final Sprite pSprite) {
+		if(pSprite.isVisible()) {
 			this.assertCapacity();
 
-			final BaseTextureRegion textureRegion = pBaseSprite.getTextureRegion();
+			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 			this.assertTexture(textureRegion);
 
-			if(pBaseSprite.getRotation() == 0 && !pBaseSprite.isScaled()) {
-				this.mSpriteBatchVertexBuffer.add(pBaseSprite.getX(), pBaseSprite.getY(), pBaseSprite.getWidth(), pBaseSprite.getHeight());
+			if(pSprite.getRotation() == 0 && !pSprite.isScaled()) {
+				this.mSpriteBatchVertexBuffer.add(pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight());
 			} else {
-				this.mSpriteBatchVertexBuffer.add(pBaseSprite.getWidth(), pBaseSprite.getHeight(), pBaseSprite.getLocalToParentTransformation());
+				this.mSpriteBatchVertexBuffer.add(pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation());
 			}
 
 			this.mSpriteBatchTextureRegionBuffer.add(textureRegion);
@@ -257,14 +279,14 @@ public class SpriteBatch extends Entity {
 		}
 	}
 
-	public void drawWithoutChecks(final BaseSprite pBaseSprite) {
-		if(pBaseSprite.isVisible()) {
-			final BaseTextureRegion textureRegion = pBaseSprite.getTextureRegion();
+	public void drawWithoutChecks(final Sprite pSprite) {
+		if(pSprite.isVisible()) {
+			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
-			if(pBaseSprite.getRotation() == 0 && !pBaseSprite.isScaled()) {
-				this.mSpriteBatchVertexBuffer.add(pBaseSprite.getX(), pBaseSprite.getY(), pBaseSprite.getWidth(), pBaseSprite.getHeight());
+			if(pSprite.getRotation() == 0 && !pSprite.isScaled()) {
+				this.mSpriteBatchVertexBuffer.add(pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight());
 			} else {
-				this.mSpriteBatchVertexBuffer.add(pBaseSprite.getWidth(), pBaseSprite.getHeight(), pBaseSprite.getLocalToParentTransformation());
+				this.mSpriteBatchVertexBuffer.add(pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation());
 			}
 
 			this.mSpriteBatchTextureRegionBuffer.add(textureRegion);
@@ -294,32 +316,6 @@ public class SpriteBatch extends Entity {
 		}
 	}
 
-	protected void onInitDraw() {
-		GLHelper.setColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
-
-		GLHelper.enableVertexArray();
-		GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
-
-		GLHelper.enableTextures();
-		GLHelper.enableTexCoordArray();
-	}
-
-	protected void onApplyVertices() {
-		this.mSpriteBatchVertexBuffer.selectOnHardware();
-		GLHelper.vertexZeroPointer();
-	}
-
-	private void onApplyTextureRegion() {
-		this.mSpriteBatchTextureRegionBuffer.selectOnHardware();
-
-		this.mTexture.bind();
-		GLHelper.texCoordZeroPointer();
-	}
-
-	private void drawVertices(@SuppressWarnings("unused") final Camera pCamera) {
-		GLES20.glDrawArrays(GL10.GL_TRIANGLES, 0, this.mVertices);
-	}
-
 	private void assertCapacity(final int pIndex) {
 		if(pIndex >= this.mCapacity) {
 			throw new IllegalStateException("This supplied pIndex: '" + pIndex + "' is exceeding the capacity: '" + this.mCapacity + "' of this SpriteBatch!");
@@ -332,7 +328,7 @@ public class SpriteBatch extends Entity {
 		}
 	}
 
-	protected void assertTexture(final BaseTextureRegion pTextureRegion) {
+	protected void assertTexture(final ITextureRegion pTextureRegion) {
 		if(pTextureRegion.getTexture() != this.mTexture) {
 			throw new IllegalArgumentException("The supplied Texture does match the Texture of this SpriteBatch!");
 		}

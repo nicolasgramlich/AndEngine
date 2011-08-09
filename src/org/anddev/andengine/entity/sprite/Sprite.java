@@ -43,7 +43,7 @@ public class Sprite extends RectangularShape {
 		new VertexBufferObjectAttribute(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false, Sprite.VERTEX_STRIDE, 2 * DataConstants.BYTES_PER_FLOAT)
 	};
 
-	private static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
+	public static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
 			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
 			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
 			"attribute vec2 " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
@@ -53,7 +53,7 @@ public class Sprite extends RectangularShape {
 			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
 			"}";
 
-	private static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
+	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
 			"precision mediump float;\n" +
 		    "uniform sampler2D " + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ";\n" +
 			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +

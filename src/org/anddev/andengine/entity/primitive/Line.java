@@ -39,14 +39,14 @@ public class Line extends Shape {
 
 	public static final VertexBufferObjectAttribute[] VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = { new VertexBufferObjectAttribute(ShaderProgramConstants.ATTRIBUTE_POSITION, Rectangle.VERTEX_SIZE, GLES20.GL_FLOAT, false, Line.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT, 0) };
 
-	private static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
+	public static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
 			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
 			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
 			"void main() {\n" +
 			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
 			"}";
 
-	private static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
+	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
 			"precision mediump float;\n" +
 			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
 			"void main() {\n" +

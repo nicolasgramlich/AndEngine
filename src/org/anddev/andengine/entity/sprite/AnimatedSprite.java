@@ -2,8 +2,8 @@ package org.anddev.andengine.entity.sprite;
 
 import java.util.Arrays;
 
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -36,20 +36,20 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// Constructors
 	// ===========================================================
 
-	public AnimatedSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion) {
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion) {
 		super(pX, pY, pTiledTextureRegion);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final float pTileWidth, final float pTileHeight, final TiledTextureRegion pTiledTextureRegion) {
-		super(pX, pY, pTileWidth, pTileHeight, pTiledTextureRegion);
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
+		super(pX, pY, pTiledTextureRegion, pMesh);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
-		super(pX, pY, pTiledTextureRegion, pRectangleVertexBuffer);
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final float pTileWidth, final float pTileHeight, final TiledTextureRegion pTiledTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
-		super(pX, pY, pTileWidth, pTileHeight, pTiledTextureRegion, pRectangleVertexBuffer);
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pMesh);
 	}
 
 	// ===========================================================
@@ -80,7 +80,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 
 			if(this.mInitialLoopCount == AnimatedSprite.LOOP_CONTINUOUS || this.mLoopCount >= 0) {
 				final int currentFrameIndex = this.calculateCurrentFrameIndex();
-				
+
 				if(this.mFrames == null) {
 					this.setCurrentTileIndex(this.mFirstTileIndex + currentFrameIndex);
 				} else {

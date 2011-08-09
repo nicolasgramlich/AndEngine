@@ -1,16 +1,16 @@
 package org.anddev.andengine.entity.sprite;
 
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-import org.anddev.andengine.opengl.vertex.RectangleVertexBuffer;
+import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
  * @since 19:30:13 - 09.03.2010
  */
-public class TiledSprite extends BaseSprite {
+public class TiledSprite extends Sprite {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,20 +23,20 @@ public class TiledSprite extends BaseSprite {
 	// Constructors
 	// ===========================================================
 
-	public TiledSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion) {
-		super(pX, pY, pTiledTextureRegion.getTileWidth(), pTiledTextureRegion.getTileHeight(), pTiledTextureRegion);
+	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion) {
+		super(pX, pY, pTiledTextureRegion);
 	}
 
-	public TiledSprite(final float pX, final float pY, final float pTileWidth, final float pTileHeight, final TiledTextureRegion pTiledTextureRegion) {
-		super(pX, pY, pTileWidth, pTileHeight, pTiledTextureRegion);
+	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
+		super(pX, pY, pTiledTextureRegion, pMesh);
 	}
 
-	public TiledSprite(final float pX, final float pY, final TiledTextureRegion pTiledTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
-		super(pX, pY, pTiledTextureRegion.getTileWidth(), pTiledTextureRegion.getTileHeight(), pTiledTextureRegion, pRectangleVertexBuffer);
+	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion);
 	}
 
-	public TiledSprite(final float pX, final float pY, final float pTileWidth, final float pTileHeight, final TiledTextureRegion pTiledTextureRegion, final RectangleVertexBuffer pRectangleVertexBuffer) {
-		super(pX, pY, pTileWidth, pTileHeight, pTiledTextureRegion, pRectangleVertexBuffer);
+	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pMesh);
 	}
 
 	// ===========================================================
@@ -48,8 +48,8 @@ public class TiledSprite extends BaseSprite {
 	// ===========================================================
 
 	@Override
-	public TiledTextureRegion getTextureRegion() {
-		return (TiledTextureRegion)super.getTextureRegion();
+	public ITiledTextureRegion getTextureRegion() {
+		return (ITiledTextureRegion)super.getTextureRegion();
 	}
 
 	// ===========================================================
@@ -57,19 +57,21 @@ public class TiledSprite extends BaseSprite {
 	// ===========================================================
 
 	public int getCurrentTileIndex() {
-		return this.getTextureRegion().getCurrentTileIndex();
+		return this.getTextureRegion().getTileIndex();
 	}
 
 	public void setCurrentTileIndex(final int pTileIndex) {
-		this.getTextureRegion().setCurrentTileIndex(pTileIndex);
-	}
-
-	public void setCurrentTileIndex(final int pTileColumn, final int pTileRow) {
-		this.getTextureRegion().setCurrentTileIndex(pTileColumn, pTileRow);
+		this.getTextureRegion().setTileIndex(pTileIndex);
+		this.onUpdateTextureCoordinates();
 	}
 
 	public void nextTile() {
 		this.getTextureRegion().nextTile();
+		this.onUpdateTextureCoordinates();
+	}
+	
+	public int getTileCount() {
+		return this.getTextureRegion().getTileCount();
 	}
 
 	// ===========================================================

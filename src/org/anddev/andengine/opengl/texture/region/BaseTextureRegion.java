@@ -32,6 +32,11 @@ public abstract class BaseTextureRegion implements ITextureRegion {
 	public BaseTextureRegion(final ITexture pTexture) {
 		this.mTexture = pTexture;
 	}
+	
+	@Override
+	public ITextureRegion clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException();
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -84,6 +89,7 @@ public abstract class BaseTextureRegion implements ITextureRegion {
 		this.mV = (float) y / textureHeight;
 		this.mV2 = (float) (y + this.getHeight()) / textureHeight;
 	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

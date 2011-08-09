@@ -11,7 +11,7 @@ import org.anddev.andengine.opengl.texture.ITexture;
  * @author Nicolas Gramlich
  * @since 18:14:42 - 09.03.2010
  */
-public class TiledTextureRegion extends BaseTextureRegion {
+public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextureRegion {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,6 +21,7 @@ public class TiledTextureRegion extends BaseTextureRegion {
 	// ===========================================================
 
 	protected int mTileIndex;
+	protected int mTileCount;
 
 	protected int[] mXs;
 	protected int[] mYs;
@@ -31,14 +32,15 @@ public class TiledTextureRegion extends BaseTextureRegion {
 	// Constructors
 	// ===========================================================
 
-	public TiledTextureRegion(final ITexture pTexture, final int[] pX, final int[] pY, final int[] pWidth, final int[] pHeight) {
+	public TiledTextureRegion(final ITexture pTexture, final int[] pXs, final int[] pYs, final int[] pWidths, final int[] pHeights) {
 		super(pTexture);
+		this.mTileCount = pWidths.length;
 
-		this.mXs = pX;
-		this.mYs = pY;
+		this.mXs = pXs;
+		this.mYs = pYs;
 
-		this.mWidths = pWidth;
-		this.mHeights = pHeight;
+		this.mWidths = pWidths;
+		this.mHeights = pHeights;
 
 		this.updateUV();
 	}
@@ -68,9 +70,49 @@ public class TiledTextureRegion extends BaseTextureRegion {
 		return new TiledTextureRegion(pTexture, xs, ys, widths, heights);
 	}
 
+	@Override
+	public TiledTextureRegion clone() {
+		final int tileCount = this.mTileCount;
+
+		final int[] xs = new int[tileCount];
+		final int[] ys = new int[tileCount];
+		final int[] widths = new int[tileCount];
+		final int[] heights = new int[tileCount];
+
+		System.arraycopy(this.mXs, 0, xs, 0, tileCount);
+		System.arraycopy(this.mYs, 0, ys, 0, tileCount);
+		System.arraycopy(this.mWidths, 0, widths, 0, tileCount);
+		System.arraycopy(this.mHeights, 0, heights, 0, tileCount);
+
+		return new TiledTextureRegion(this.mTexture, xs, ys, widths, heights);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	@Override
+	public int getTileIndex() {
+		return this.mTileIndex;
+	}
+
+	@Override
+	public void setTileIndex(final int pTileIndex) {
+		this.mTileIndex = pTileIndex;
+	}
+
+	@Override
+	public void nextTile() {
+		this.mTileIndex++;
+		if(this.mTileIndex >= this.mTileCount) {
+			this.mTileIndex = this.mTileIndex % this.mTileCount;
+		}
+	}
+
+	@Override
+	public int getTileCount() {
+		return this.mTileCount;
+	}
 
 	@Override
 	public int getX() {

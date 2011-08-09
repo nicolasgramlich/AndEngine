@@ -9,7 +9,7 @@ import org.anddev.andengine.entity.particle.modifier.OffCameraExpireModifier;
  * 
  * <p>This allows you to create a particle off camera, move it on camera, and have it expire once it leaves the camera.</p>
  * 
- * <p>(c) 2010 Nicolas Gramlich<br> 
+ * <p>(c) 2011 Nicolas Gramlich<br> 
  * (c) 2011 Zynga Inc.</p>
  * 
  * @author Scott Kennedy

@@ -4,7 +4,7 @@ import org.anddev.andengine.entity.particle.Particle;
 import org.anddev.andengine.entity.particle.initializer.BaseSingleValueInitializer;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Scott Kennedy

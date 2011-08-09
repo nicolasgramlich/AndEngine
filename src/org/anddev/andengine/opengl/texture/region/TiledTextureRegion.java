@@ -60,8 +60,8 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		Arrays.fill(heights, tileHeight);
 
 		for(int i = 0; i < tileCount; i++) {
-			final int tileRow = i % pTileColumns;
-			final int tileColumn = i / pTileColumns;
+			final int tileColumn = i % pTileColumns;
+			final int tileRow = i / pTileColumns;
 
 			xs[i] = pX + tileColumn * tileWidth;
 			ys[i] = pY + tileRow * tileHeight;
@@ -99,6 +99,8 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	@Override
 	public void setTileIndex(final int pTileIndex) {
 		this.mTileIndex = pTileIndex;
+
+		this.updateUV();
 	}
 
 	@Override

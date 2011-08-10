@@ -16,8 +16,8 @@ class Size {
 	// Fields
 	// ===========================================================
 
-	private float mWidth;
-	private float mHeight;
+	private int mWidth;
+	private int mHeight;
 
 	// ===========================================================
 	// Constructors
@@ -27,7 +27,7 @@ class Size {
 		this(0, 0);
 	}
 
-	public Size(final float pWidth, final float pHeight) {
+	public Size(final int pWidth, final int pHeight) {
 		this.setWidth(pWidth);
 		this.setHeight(pHeight);
 	}
@@ -36,25 +36,25 @@ class Size {
 	// Getter & Setter
 	// ===========================================================
 
-	public void setWidth(final float width) {
+	public void setWidth(final int width) {
 		this.mWidth = width;
 	}
 
-	public float getWidth() {
+	public int getWidth() {
 		return this.mWidth;
 	}
 
-	public void setHeight(final float height) {
+	public void setHeight(final int height) {
 		this.mHeight = height;
 	}
 
-	public float getHeight() {
+	public int getHeight() {
 		return this.mHeight;
 	}
 
 	public void set(final int pWidth, final int pHeight) {
-		this.setWidth(pWidth);
-		this.setHeight(pHeight);
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
 	}
 
 	// ===========================================================

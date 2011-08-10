@@ -4,7 +4,7 @@
 package org.anddev.andengine.opengl.font;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -19,28 +19,32 @@ public class Letter {
 	// Fields
 	// ===========================================================
 
+	public final char mCharacter;
 	public final int mAdvance;
 	public final int mWidth;
 	public final int mHeight;
-	public final float mTextureX;
-	public final float mTextureY;
-	public final float mTextureWidth;
-	public final float mTextureHeight;
-	public final char mCharacter;
+	public final int mTextureX;
+	public final int mTextureY;
+	public final int mU;
+	public final int mV;
+	public final int mU2;
+	public final int mV2;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	Letter(final char pCharacter, final int pAdvance, final int pWidth, final int pHeight, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight) {
+	Letter(final char pCharacter, final int pAdvance, final int pWidth, final int pHeight, final int pTextureX, final int pTextureY, final int pU, final int pV, final int pU2, final int pV2) {
 		this.mCharacter = pCharacter;
 		this.mAdvance = pAdvance;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mTextureX = pTextureX;
 		this.mTextureY = pTextureY;
-		this.mTextureWidth = pTextureWidth;
-		this.mTextureHeight = pTextureHeight;
+		this.mU = pU;
+		this.mV = pV;
+		this.mU2 = pU2;
+		this.mV2 = pV2;
 	}
 
 	// ===========================================================

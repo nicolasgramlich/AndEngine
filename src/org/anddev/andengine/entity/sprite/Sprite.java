@@ -191,7 +191,7 @@ public class Sprite extends RectangularShape {
 
 		final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
 		buffer.position(0);
-		buffer.put(bufferData);
+		buffer.put(bufferData); // TODO Check if there is a way not to write the whole data
 		buffer.position(0);
 	}
 

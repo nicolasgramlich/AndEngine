@@ -11,6 +11,9 @@ TODOS:
 		- Less disturbing when using multiple textures. 
 		- Drawbacks?
 	- All custom Exceptions extend from AndEngineException
+	- Replace: 
+		- mEngine.getTextureManager() -> getTextureManager()
+		- mEngine.getFontManager() -> getFontManager()
 	- Remove POT texture restriction
 	- Maybe introduce Color3/4 objects
 		- Add Color3/4Pool

@@ -14,6 +14,7 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.controller.ITouchController;
 import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
 import org.anddev.andengine.input.touch.controller.SingleTouchControler;
+import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.anddev.andengine.sensor.SensorDelay;
@@ -86,7 +87,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private final TextureManager mTextureManager = new TextureManager();
 	private final VertexBufferObjectManager mBufferObjectManager = new VertexBufferObjectManager();
 //	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager(); // TODO Probably quite simple, like FontManager.
-//	private final FontManager mFontManager = new FontManager(); // TODO
+	private final FontManager mFontManager = new FontManager();
 
 	protected Scene mScene;
 
@@ -232,10 +233,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		return this.mTextureManager;
 	}
 
-//	public FontManager getFontManager() {
-//		return this.mFontManager;
-//	}
-//	
+	public FontManager getFontManager() {
+		return this.mFontManager;
+	}
+
 //	public ShaderProgramManager getShaderProgramManager() {
 //		return this.mShaderProgramManager;
 //	}
@@ -424,7 +425,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public void onResume() {
 		// TODO GLHelper.reset(pGL); ?
 		this.mTextureManager.reloadTextures();
-//		this.mFontManager.reloadFonts();
+		this.mFontManager.reloadFonts();
 		VertexBufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 		this.mBufferObjectManager.reloadBufferObjects();
 	}
@@ -498,7 +499,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		threadLocker.waitUntilCanDraw();
 
 		this.mTextureManager.updateTextures();
-//		this.mFontManager.updateFonts(); // TODO
+		this.mFontManager.updateFonts();
 		this.mBufferObjectManager.updateBufferObjects();
 
 		this.onDrawScene();

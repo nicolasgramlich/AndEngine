@@ -26,6 +26,10 @@ public class RotationByModifier extends SingleValueChangeEntityModifier {
 		super(pDuration, pRotation);
 	}
 
+	public RotationByModifier(final float pDuration, final float pRotation, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pRotation, pEntityModifierListener);
+	}
+
 	protected RotationByModifier(final RotationByModifier pRotationByModifier) {
 		super(pRotationByModifier);
 	}

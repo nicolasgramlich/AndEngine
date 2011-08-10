@@ -27,16 +27,21 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 	// Constructors
 	// ===========================================================
 
-	public TextureRegion(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
+	public TextureRegion(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight) {
 		super(pTexture);
 
-		this.mX = pTexturePositionX;
-		this.mY = pTexturePositionY;
+		this.mX = pX;
+		this.mY = pY;
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 
 		this.updateUV();
+	}
+	
+	@Override
+	public TextureRegion clone() {
+		return new TextureRegion(mTexture, mX, mY, mWidth, mHeight);
 	}
 
 	// ===========================================================

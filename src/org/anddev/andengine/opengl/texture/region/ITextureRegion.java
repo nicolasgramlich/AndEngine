@@ -41,5 +41,5 @@ public interface ITextureRegion {
 
 	public ITexture getTexture();
 
-	public ITextureRegion clone() throws CloneNotSupportedException;
+	public ITextureRegion clone();
 }

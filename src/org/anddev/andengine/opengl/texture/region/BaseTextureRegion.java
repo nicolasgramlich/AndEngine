@@ -34,9 +34,7 @@ public abstract class BaseTextureRegion implements ITextureRegion {
 	}
 	
 	@Override
-	public ITextureRegion clone() throws CloneNotSupportedException {
-		throw new CloneNotSupportedException();
-	}
+	public abstract ITextureRegion clone();
 
 	// ===========================================================
 	// Getter & Setter

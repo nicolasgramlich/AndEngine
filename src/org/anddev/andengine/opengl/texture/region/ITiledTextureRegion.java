@@ -21,5 +21,5 @@ public interface ITiledTextureRegion extends ITextureRegion {
 	public int getTileCount();
 
 	@Override
-	public ITiledTextureRegion clone() throws CloneNotSupportedException;
+	public ITiledTextureRegion clone();
 }

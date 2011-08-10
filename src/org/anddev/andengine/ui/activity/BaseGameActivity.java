@@ -1,13 +1,13 @@
 package org.anddev.andengine.ui.activity;
 
-import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
-
 import org.anddev.andengine.audio.music.MusicManager;
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.opengl.font.FontManager;
+import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
@@ -29,7 +29,7 @@ import android.view.Gravity;
 import android.widget.FrameLayout.LayoutParams;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -127,6 +127,14 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	public Engine getEngine() {
 		return this.mEngine;
+	}
+
+	public TextureManager getTextureManager() {
+		return this.mEngine.getTextureManager();
+	}
+
+	public FontManager getFontManager() {
+		return this.mEngine.getFontManager();
 	}
 
 	public SoundManager getSoundManager() {
@@ -235,7 +243,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	protected LayoutParams createSurfaceViewLayoutParams() {
-		final LayoutParams layoutParams = new LayoutParams(FILL_PARENT, FILL_PARENT);
+		final LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		layoutParams.gravity = Gravity.CENTER;
 		return layoutParams;
 	}

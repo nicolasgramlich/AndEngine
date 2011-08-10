@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.anddev.andengine.util.modifier.BaseDoubleValueChangeModifier;
 
 /**
@@ -10,7 +9,7 @@ import org.anddev.andengine.util.modifier.BaseDoubleValueChangeModifier;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:27:48 - 10.08.2011
  */
-public abstract class DoubleValueChangeEntityModifier extends BaseDoubleValueChangeModifier<IEntity> {
+public abstract class DoubleValueChangeEntityModifier extends BaseDoubleValueChangeModifier<IEntity> implements IEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================

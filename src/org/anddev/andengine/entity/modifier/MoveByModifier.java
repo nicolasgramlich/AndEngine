@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 
 /**
  * (c) 2011 Zynga Inc.
@@ -22,12 +21,12 @@ public class MoveByModifier extends DoubleValueChangeEntityModifier {
 	// Constructors
 	// ===========================================================
 
-	public MoveByModifier(final float pDuration, final float pValueChangeA, final float pValueChangeB) {
-		super(pDuration, pValueChangeA, pValueChangeB);
+	public MoveByModifier(final float pDuration, final float pX, final float pY) {
+		super(pDuration, pX, pY);
 	}
 
-	public MoveByModifier(final float pDuration, final float pValueChangeA, final float pValueChangeB, final IEntityModifierListener pModifierListener) {
-		super(pDuration, pValueChangeA, pValueChangeB, pModifierListener);
+	public MoveByModifier(final float pDuration, final float pX, final float pY, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pX, pY, pEntityModifierListener);
 	}
 
 	protected MoveByModifier(final DoubleValueChangeEntityModifier pDoubleValueChangeEntityModifier) {

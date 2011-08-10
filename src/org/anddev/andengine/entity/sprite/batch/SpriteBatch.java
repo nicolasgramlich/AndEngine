@@ -79,7 +79,7 @@ public class SpriteBatch extends Entity {
 
 		this.mIndex = pIndex;
 
-		final int vertexIndex = pIndex * SpriteBatchVertexBuffer.VERTICES_PER_RECTANGLE;
+		final int vertexIndex = pIndex * 2 * SpriteBatchVertexBuffer.VERTICES_PER_RECTANGLE;
 
 		this.mSpriteBatchVertexBuffer.setIndex(vertexIndex);
 		this.mSpriteBatchTextureRegionBuffer.setIndex(vertexIndex);

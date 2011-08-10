@@ -29,6 +29,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 	private static final int[] TYPE_CONTAINER = new int[1];
 	private static final int NAME_CONTAINER_SIZE = 64;
 	private static final byte[] NAME_CONTAINER = new byte[ShaderProgram.NAME_CONTAINER_SIZE];
+	private static final int LOCATION_INVALID = 0;
 
 	// ===========================================================
 	// Fields
@@ -72,12 +73,30 @@ public class ShaderProgram implements ShaderProgramConstants {
 		}
 	}
 
+	public int getAttributeLocationOptional(final String pAttributeName) {
+		final Integer location = this.mAttributeLocations.get(pAttributeName);
+		if(location != null) {
+			return location.intValue();
+		} else {
+			return ShaderProgram.LOCATION_INVALID;
+		}
+	}
+
 	public int getUniformLocation(final String pUniformName) {
 		final Integer location = this.mUniformLocations.get(pUniformName);
 		if(location != null) {
 			return location.intValue();
 		} else {
 			throw new ShaderProgramException("Unexpected uniform: '" + pUniformName + "'.");
+		}
+	}
+
+	public int getUniformLocationOptional(final String pUniformName) {
+		final Integer location = this.mUniformLocations.get(pUniformName);
+		if(location != null) {
+			return location.intValue();
+		} else {
+			return ShaderProgram.LOCATION_INVALID;
 		}
 	}
 
@@ -168,33 +187,79 @@ public class ShaderProgram implements ShaderProgramConstants {
 			this.mAttributeLocations.put(name, location);
 		}
 	}
-	
+
 	public void setUniform(final String pUniformName, final GLMatrix pGLMatrix) {
-		GLES20.glUniformMatrix4fv(this.getUniformLocation(pUniformName), 1, false, pGLMatrix.getValues(), 0);	
+		GLES20.glUniformMatrix4fv(this.getUniformLocation(pUniformName), 1, false, pGLMatrix.getValues(), 0);
+	}
+
+	public void setUniformOptional(final String pUniformName, final GLMatrix pGLMatrix) {
+		final int location = this.getUniformLocationOptional(pUniformName);
+		if(location != ShaderProgram.LOCATION_INVALID) {
+			GLES20.glUniformMatrix4fv(this.getUniformLocationOptional(pUniformName), 1, false, pGLMatrix.getValues(), 0);
+		}
 	}
 
 	public void setUniform(final String pUniformName, final float pX) {
 		GLES20.glUniform1f(this.getUniformLocation(pUniformName), pX);
 	}
-	
+
+	public void setUniformOptional(final String pUniformName, final float pX) {
+		final int location = this.getUniformLocationOptional(pUniformName);
+		if(location != ShaderProgram.LOCATION_INVALID) {
+			GLES20.glUniform1f(this.getUniformLocationOptional(pUniformName), pX);
+		}
+	}
+
 	public void setUniform(final String pUniformName, final float pX, final float pY) {
 		GLES20.glUniform2f(this.getUniformLocation(pUniformName), pX, pY);
 	}
-	
+
+	public void setUniformOptional(final String pUniformName, final float pX, final float pY) {
+		final int location = this.getUniformLocationOptional(pUniformName);
+		if(location != ShaderProgram.LOCATION_INVALID) {
+			GLES20.glUniform2f(this.getUniformLocationOptional(pUniformName), pX, pY);
+		}
+	}
+
 	public void setUniform(final String pUniformName, final float pX, final float pY, final float pZ) {
 		GLES20.glUniform3f(this.getUniformLocation(pUniformName), pX, pY, pZ);
 	}
 
-	public void setUniform(final String pUniformName, final float pX, final float pY, final float pZ, final float pW) {
-		GLES20.glUniform4f(this.getUniformLocation(pUniformName), pX, pY, pZ, pW);	
+	public void setUniformOptional(final String pUniformName, final float pX, final float pY, final float pZ) {
+		final int location = this.getUniformLocationOptional(pUniformName);
+		if(location != ShaderProgram.LOCATION_INVALID) {
+			GLES20.glUniform3f(this.getUniformLocationOptional(pUniformName), pX, pY, pZ);
+		}
 	}
-	
+
+	public void setUniform(final String pUniformName, final float pX, final float pY, final float pZ, final float pW) {
+		GLES20.glUniform4f(this.getUniformLocation(pUniformName), pX, pY, pZ, pW);
+	}
+
+	public void setUniformOptional(final String pUniformName, final float pX, final float pY, final float pZ, final float pW) {
+		final int location = this.getUniformLocationOptional(pUniformName);
+		if(location != ShaderProgram.LOCATION_INVALID) {
+			GLES20.glUniform4f(this.getUniformLocationOptional(pUniformName), pX, pY, pZ, pW);
+		}
+	}
+
 	/**
 	 * @param pUniformName
-	 * @param pTexture the index of the Texture to use. Similar to {@link GLES20#GL_TEXTURE0}, {@link GLES20#GL_TEXTURE1}, ... except that it is <b><code>0</code></b> based. 
+	 * @param pTexture the index of the Texture to use. Similar to {@link GLES20#GL_TEXTURE0}, {@link GLES20#GL_TEXTURE1}, ... except that it is <b><code>0</code></b> based.
 	 */
 	public void setTexture(final String pUniformName, final int pTexture) {
 		GLES20.glUniform1i(this.getUniformLocation(pUniformName), pTexture);
+	}
+
+	/**
+	 * @param pUniformName
+	 * @param pTexture the index of the Texture to use. Similar to {@link GLES20#GL_TEXTURE0}, {@link GLES20#GL_TEXTURE1}, ... except that it is <b><code>0</code></b> based.
+	 */
+	public void setTextureOptional(final String pUniformName, final int pTexture) {
+		final int location = this.getUniformLocationOptional(pUniformName);
+		if(location != ShaderProgram.LOCATION_INVALID) {
+			GLES20.glUniform1i(location, pTexture);
+		}
 	}
 
 	// ===========================================================

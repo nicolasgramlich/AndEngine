@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.util.SmartList;
 
@@ -29,15 +30,31 @@ public class SpriteGroup extends DynamicSpriteBatch {
 
 	public SpriteGroup(final ITexture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity);
+
+		/* Make children not be drawn automatically, as we handle the drawing ourself. */
+		this.setChildrenVisible(false);
 	}
 
 	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
 		super(pTexture, pCapacity, pSpriteBatchMesh);
+
+		/* Make children not be drawn automatically, as we handle the drawing ourself. */
+		this.setChildrenVisible(false);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	@Override
+	public SpriteBatch setShaderProgram(final ShaderProgram pShaderProgram) {
+		return super.setShaderProgram(pShaderProgram);
+	}
+
+	@Override
+	public SpriteBatch setDefaultShaderProgram() {
+		return super.setDefaultShaderProgram();
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -52,20 +69,20 @@ public class SpriteGroup extends DynamicSpriteBatch {
 		if(pEntity instanceof Sprite) {
 			this.attachChild((Sprite)pEntity);
 		} else {
-			throw new IllegalArgumentException("A SpriteGroup can only handle children of type BaseSprite or subclasses of BaseSprite, like Sprite, TiledSprite or AnimatedSprite.");
+			throw new IllegalArgumentException("A " + SpriteGroup.class.getSimpleName() + " can only handle children of type Sprite or subclasses of Sprite, like TiledSprite or AnimatedSprite.");
 		}
 	}
 
-	public void attachChild(final Sprite pBaseSprite) {
+	public void attachChild(final Sprite pSprite) {
 		this.assertCapacity();
-		this.assertTexture(pBaseSprite.getTextureRegion());
-		super.attachChild(pBaseSprite);
+		this.assertTexture(pSprite.getTextureRegion());
+		super.attachChild(pSprite);
 	}
 
-	public void attachChildren(final ArrayList<? extends Sprite> pBaseSprites) {
-		final int baseSpriteCount = pBaseSprites.size();
+	public void attachChildren(final ArrayList<? extends Sprite> pSprites) {
+		final int baseSpriteCount = pSprites.size();
 		for(int i = 0; i < baseSpriteCount; i++) {
-			this.attachChild(pBaseSprites.get(i));
+			this.attachChild(pSprites.get(i));
 		}
 	}
 
@@ -89,7 +106,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 
 	private void assertCapacity() {
 		if(this.getChildCount() >= this.mCapacity) {
-			throw new IllegalStateException("This SpriteGroup has already reached its capacity (" + this.mCapacity + ") !");
+			throw new IllegalStateException("This " + SpriteGroup.class.getSimpleName() + " has already reached its capacity (" + this.mCapacity + ") !");
 		}
 	}
 

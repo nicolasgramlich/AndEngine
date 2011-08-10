@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
@@ -90,8 +91,9 @@ public class Sprite extends RectangularShape {
 		super(pX, pY, pWidth, pHeight, pMesh);
 
 		this.mTextureRegion = pTextureRegion;
-		this.initBlendFunction();
+
 		this.setBlendingEnabled(true);
+		this.initBlendFunction();
 
 		this.onUpdateTextureCoordinates();
 	}
@@ -160,7 +162,7 @@ public class Sprite extends RectangularShape {
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		GLHelper.enableTextures();
+		GLHelper.disableTextures();
 
 		super.postDraw(pCamera);
 	}
@@ -262,7 +264,7 @@ public class Sprite extends RectangularShape {
 
 	private void initBlendFunction() {
 		if(this.mTextureRegion.getTexture().getTextureOptions().mPreMultipyAlpha) {
-//			this.setBlendFunction(Shape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, Shape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT); // TODO
+			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT); // TODO
 		}
 	}
 

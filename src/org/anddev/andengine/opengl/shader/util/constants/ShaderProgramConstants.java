@@ -20,6 +20,10 @@ public interface ShaderProgramConstants {
 	public static final String UNIFORM_MODELVIEWMATRIX = "u_modelViewMatrix";
 	public static final String UNIFORM_PROJECTIONMATRIX = "u_projectionMatrix";
 	public static final String UNIFORM_COLOR = "u_color";
+	public static final String UNIFORM_RED = "u_red";
+	public static final String UNIFORM_GREEN = "u_green";
+	public static final String UNIFORM_BLUE = "u_blue";
+	public static final String UNIFORM_ALPHA = "u_alpha";
 	public static final String UNIFORM_TEXTURE_0 = "u_texture_0";
 
 	public static final String VARYING_TEXTURECOORDINATES = "v_textureCoordinates";

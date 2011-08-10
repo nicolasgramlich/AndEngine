@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.sprite.batch;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
+import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
@@ -31,10 +32,6 @@ public class SpriteBatch extends Entity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final float[] VERTICES_TMP = new float[8];
-
-	private static final Transformation TRANSFORATION_TMP = new Transformation();
 
 	public static final int VERTEX_SIZE = 2 + 2;
 	public static final int VERTICES_PER_SPRITE = 6;
@@ -84,6 +81,8 @@ public class SpriteBatch extends Entity {
 	private final SpriteBatchMesh mSpriteBatchMesh;
 	protected ShaderProgram mShaderProgram;
 
+	private boolean mBlendingEnabled;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -98,12 +97,21 @@ public class SpriteBatch extends Entity {
 
 		this.mSpriteBatchMesh = pSpriteBatchMesh; // TODO Measure: GLES20.GL_STATIC_DRAW against GLES20.GL_STREAM_DRAW and GLES20.GL_DYNAMIC_DRAW
 
+		this.setBlendingEnabled(true);
 		this.initBlendFunction();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public boolean isBlendingEnabled() {
+		return this.mBlendingEnabled;
+	}
+
+	public void setBlendingEnabled(final boolean pBlendingEnabled) {
+		this.mBlendingEnabled = pBlendingEnabled;
+	}
 
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
 		this.mSourceBlendFunction = pSourceBlendFunction;
@@ -150,12 +158,14 @@ public class SpriteBatch extends Entity {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-
 	@Override
 	protected void preDraw(final Camera pCamera) {
 		super.preDraw(pCamera);
 
-		GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+		if(this.mBlendingEnabled) {
+			GLHelper.enableBlend();
+			GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+		}
 
 		GLHelper.enableTextures();
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -173,7 +183,11 @@ public class SpriteBatch extends Entity {
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		GLHelper.enableTextures();
+		if(this.mBlendingEnabled) {
+			GLHelper.disableBlend();
+		}
+		
+		GLHelper.disableTextures();
 
 		super.postDraw(pCamera);
 	}
@@ -199,7 +213,7 @@ public class SpriteBatch extends Entity {
 	// ===========================================================
 
 	protected void begin() {
-//		GLHelper.disableDepthMask(pGL);
+//		GLHelper.disableDepthMask(pGL); // TODO Test effect of this
 	}
 
 	protected void end() {
@@ -345,7 +359,9 @@ public class SpriteBatch extends Entity {
 
 	private void initBlendFunction() {
 		if(this.mTexture.getTextureOptions().mPreMultipyAlpha) {
-//			this.setBlendFunction(Shape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, Shape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT); // TODO
+			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT); // TODO
+		} else {
+			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_DEFAULT); // TODO
 		}
 	}
 
@@ -375,6 +391,10 @@ public class SpriteBatch extends Entity {
 		// ===========================================================
 		// Constants
 		// ===========================================================
+
+		private static final float[] VERTICES_TMP = new float[8];
+
+		private static final Transformation TRANSFORATION_TMP = new Transformation();
 
 		// ===========================================================
 		// Fields
@@ -628,7 +648,7 @@ public class SpriteBatch extends Entity {
 			final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
 
 			buffer.position(0);
-			buffer.put(vertexBufferObject.getBufferData());
+			buffer.put(vertexBufferObject.getBufferData()); // TODO Only write data up to 'index'!
 			buffer.position(0);
 
 			vertexBufferObject.setDirtyOnHardware();

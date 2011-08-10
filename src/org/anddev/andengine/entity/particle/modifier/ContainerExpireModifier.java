@@ -60,19 +60,23 @@ public class ContainerExpireModifier extends ExpireModifier {
 	// ===========================================================
 	
 	/**
-	 * Adds the specified modifier to the contained modifier list.
+	 * <p>Adds the specified modifier to the contained modifier list.</p>
+	 * 
+	 * <p>The <code>toTime</code> in the modifier will be ignored, and replaced with the actual
+	 * lifetime of the {@link Particle}.</p>
+	 * 
 	 * @param pModifier The modifier to add
 	 */
-	public void addModifier(final BaseSingleValueSpanModifier pModifier) {
+	public void addParticleModifier(final BaseSingleValueSpanModifier pModifier) {
 	    mModifiers.add(pModifier);
 	}
 	
 	/**
-	 * Remvoes the specified modifier from the contained modifier list
+	 * <p>Removes the specified modifier from the contained modifier list.</p>
 	 * @param pModifier The modifier to remove
 	 * @return true if the list was modified by this operation, false otherwise.
 	 */
-	public boolean removeModifier(final BaseSingleValueSpanModifier pModifier) {
+	public boolean removeParticleModifier(final BaseSingleValueSpanModifier pModifier) {
 	    return mModifiers.remove(pModifier);
 	}
 

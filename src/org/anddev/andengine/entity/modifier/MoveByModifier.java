@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 
 /**
  * (c) 2011 Zynga Inc.

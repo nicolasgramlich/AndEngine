@@ -167,7 +167,7 @@ public class Text extends RectangularShape {
 	// ===========================================================
 
 	private void initBlendFunction() {
-		if(this.mFont.getBitmapTextureAtlas().getTextureOptions().mPreMultipyAlpha) {
+		if(this.mFont.getTexture().getTextureOptions().mPreMultipyAlpha) {
 			this.setBlendFunction(BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
 		}
 	}
@@ -178,10 +178,10 @@ public class Text extends RectangularShape {
 
 			this.mTextTextureBuffer.selectOnHardware(gl11);
 
-			this.mFont.getBitmapTextureAtlas().bind(pGL);
+			this.mFont.getTexture().bind(pGL);
 			GLHelper.texCoordZeroPointer(gl11);
 		} else {
-			this.mFont.getBitmapTextureAtlas().bind(pGL);
+			this.mFont.getTexture().bind(pGL);
 			GLHelper.texCoordPointer(pGL, this.mTextTextureBuffer.getFloatBuffer());
 		}
 	}

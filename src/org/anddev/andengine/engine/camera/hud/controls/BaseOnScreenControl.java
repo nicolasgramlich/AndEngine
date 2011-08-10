@@ -11,7 +11,7 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.util.MathUtils;
 
 import android.view.MotionEvent;
@@ -48,7 +48,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	// Constructors
 	// ===========================================================
 
-	public BaseOnScreenControl(final float pX, final float pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IOnScreenControlListener pOnScreenControlListener) {
+	public BaseOnScreenControl(final float pX, final float pY, final Camera pCamera, final ITextureRegion pControlBaseTextureRegion, final ITextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IOnScreenControlListener pOnScreenControlListener) {
 		this.setCamera(pCamera);
 
 		this.mOnScreenControlListener = pOnScreenControlListener;

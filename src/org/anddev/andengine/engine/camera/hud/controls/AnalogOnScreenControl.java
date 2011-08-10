@@ -4,7 +4,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.detector.ClickDetector;
 import org.anddev.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
 
@@ -32,12 +32,12 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	// Constructors
 	// ===========================================================
 
-	public AnalogOnScreenControl(final float pX, final float pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
+	public AnalogOnScreenControl(final float pX, final float pY, final Camera pCamera, final ITextureRegion pControlBaseTextureRegion, final ITextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
 		super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pAnalogOnScreenControlListener);
 		this.mClickDetector.setEnabled(false);
 	}
 
-	public AnalogOnScreenControl(final float pX, final float pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final long pOnControlClickMaximumMilliseconds, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
+	public AnalogOnScreenControl(final float pX, final float pY, final Camera pCamera, final ITextureRegion pControlBaseTextureRegion, final ITextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final long pOnControlClickMaximumMilliseconds, final IAnalogOnScreenControlListener pAnalogOnScreenControlListener) {
 		super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pAnalogOnScreenControlListener);
 		this.mClickDetector.setTriggerClickMaximumMilliseconds(pOnControlClickMaximumMilliseconds);
 	}

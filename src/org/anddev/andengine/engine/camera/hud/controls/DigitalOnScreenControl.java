@@ -1,7 +1,7 @@
 package org.anddev.andengine.engine.camera.hud.controls;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.util.MathUtils;
 
 /**
@@ -32,11 +32,11 @@ public class DigitalOnScreenControl extends BaseOnScreenControl {
 	// Constructors
 	// ===========================================================
 
-	public DigitalOnScreenControl(final float pX, final float pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IOnScreenControlListener pOnScreenControlListener) {
+	public DigitalOnScreenControl(final float pX, final float pY, final Camera pCamera, final ITextureRegion pControlBaseTextureRegion, final ITextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IOnScreenControlListener pOnScreenControlListener) {
 		this(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, false, pOnScreenControlListener);
 	}
 
-	public DigitalOnScreenControl(final float pX, final float pY, final Camera pCamera, final TextureRegion pControlBaseTextureRegion, final TextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final boolean pAllowDiagonal, final IOnScreenControlListener pOnScreenControlListener) {
+	public DigitalOnScreenControl(final float pX, final float pY, final Camera pCamera, final ITextureRegion pControlBaseTextureRegion, final ITextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final boolean pAllowDiagonal, final IOnScreenControlListener pOnScreenControlListener) {
 		super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pOnScreenControlListener);
 		this.mAllowDiagonal = pAllowDiagonal;
 	}

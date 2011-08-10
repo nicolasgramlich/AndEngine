@@ -3,10 +3,8 @@ package org.anddev.andengine.entity.sprite.batch;
 import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.sprite.BaseSprite;
+import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.region.buffer.SpriteBatchTextureRegionBuffer;
-import org.anddev.andengine.opengl.vertex.SpriteBatchVertexBuffer;
 import org.anddev.andengine.util.SmartList;
 
 /**
@@ -31,14 +29,10 @@ public class SpriteGroup extends DynamicSpriteBatch {
 
 	public SpriteGroup(final ITexture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity);
-		/* Make children not be drawn automatically, as we handle the drawing ourself. */
-		this.setChildrenVisible(false);
 	}
 
-	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBuffer pSpriteBatchVertexBuffer, final SpriteBatchTextureRegionBuffer pSpriteBatchTextureRegionBuffer) {
-		super(pTexture, pCapacity, pSpriteBatchVertexBuffer, pSpriteBatchTextureRegionBuffer);
-		/* Make children not be drawn automatically, as we handle the drawing ourself. */
-		this.setChildrenVisible(false);
+	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
+		super(pTexture, pCapacity, pSpriteBatchMesh);
 	}
 
 	// ===========================================================
@@ -55,20 +49,20 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	@Override
 	@Deprecated
 	public void attachChild(final IEntity pEntity) throws IllegalArgumentException {
-		if(pEntity instanceof BaseSprite) {
-			this.attachChild((BaseSprite)pEntity);
+		if(pEntity instanceof Sprite) {
+			this.attachChild((Sprite)pEntity);
 		} else {
 			throw new IllegalArgumentException("A SpriteGroup can only handle children of type BaseSprite or subclasses of BaseSprite, like Sprite, TiledSprite or AnimatedSprite.");
 		}
 	}
 
-	public void attachChild(final BaseSprite pBaseSprite) {
+	public void attachChild(final Sprite pBaseSprite) {
 		this.assertCapacity();
 		this.assertTexture(pBaseSprite.getTextureRegion());
 		super.attachChild(pBaseSprite);
 	}
 
-	public void attachChildren(final ArrayList<? extends BaseSprite> pBaseSprites) {
+	public void attachChildren(final ArrayList<? extends Sprite> pBaseSprites) {
 		final int baseSpriteCount = pBaseSprites.size();
 		for(int i = 0; i < baseSpriteCount; i++) {
 			this.attachChild(pBaseSprites.get(i));
@@ -83,7 +77,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 		} else {
 			final int childCount = children.size();
 			for(int i = 0; i < childCount; i++) {
-				super.drawWithoutChecks((BaseSprite)children.get(i));
+				super.drawWithoutChecks((Sprite)children.get(i));
 			}
 			return true;
 		}

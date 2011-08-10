@@ -89,10 +89,14 @@ public class SpriteBatch extends Entity {
 	// ===========================================================
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
+		this(pTexture, pCapacity, new SpriteBatchMesh(pCapacity, GLES20.GL_STATIC_DRAW, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	}
+
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, SpriteBatchMesh pSpriteBatchMesh) {
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
 
-		this.mSpriteBatchMesh = new SpriteBatchMesh(pCapacity, GLES20.GL_STATIC_DRAW, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT); // TODO Measure: GLES20.GL_STATIC_DRAW against GLES20.GL_STREAM_DRAW and GLES20.GL_DYNAMIC_DRAW
+		this.mSpriteBatchMesh = pSpriteBatchMesh; // TODO Measure: GLES20.GL_STATIC_DRAW against GLES20.GL_STREAM_DRAW and GLES20.GL_DYNAMIC_DRAW
 
 		this.initBlendFunction();
 	}
@@ -367,7 +371,7 @@ public class SpriteBatch extends Entity {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class SpriteBatchMesh extends Mesh {
+	public static class SpriteBatchMesh extends Mesh {
 		// ===========================================================
 		// Constants
 		// ===========================================================

@@ -1,8 +1,6 @@
 package org.anddev.andengine.entity.sprite.batch;
 
 import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.region.buffer.SpriteBatchTextureRegionBuffer;
-import org.anddev.andengine.opengl.vertex.SpriteBatchVertexBuffer;
 
 /**
  * (c) Zynga 2011
@@ -23,12 +21,12 @@ public abstract class DynamicSpriteBatch extends SpriteBatch {
 	// Constructors
 	// ===========================================================
 
-	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity) {
+	public DynamicSpriteBatch(ITexture pTexture, int pCapacity) {
 		super(pTexture, pCapacity);
 	}
 
-	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBuffer pSpriteBatchVertexBuffer, final SpriteBatchTextureRegionBuffer pSpriteBatchTextureRegionBuffer) {
-		super(pTexture, pCapacity, pSpriteBatchVertexBuffer, pSpriteBatchTextureRegionBuffer);
+	public DynamicSpriteBatch(ITexture pTexture, int pCapacity, SpriteBatchMesh pSpriteBatchMesh) {
+		super(pTexture, pCapacity, pSpriteBatchMesh);
 	}
 
 	// ===========================================================

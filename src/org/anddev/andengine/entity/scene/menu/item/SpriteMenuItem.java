@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.scene.menu.item;
 
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -25,7 +25,7 @@ public class SpriteMenuItem extends Sprite implements IMenuItem {
 	// Constructors
 	// ===========================================================
 
-	public SpriteMenuItem(final int pID, final TextureRegion pTextureRegion) {
+	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion) {
 		super(0, 0, pTextureRegion);
 		this.mID = pID;
 	}

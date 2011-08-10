@@ -1,8 +1,11 @@
 TODOS:
-	- Build allocation free Matrix class!
-	- TODO Think about the default blendfunction (for sprites, but also for primitives).
-		- For Sprites, keep premultiplyalpha in mind.
-	- Old TextureRegionBuffer stuff now also goes into Mesh.
+	- Find higher performance Matrix4f class?
+	- Test if only unbinding a ShaderProgram if different one comes in improves performance.
+	- Think about a way to update the Mesh of a Sprite more efficient.
+		- Currently when updating the TextureCoordinates, the whole data array is sent to the buffer.
+			- This could be optimized by not storing the data alternating (X0,Y0,U0,V0,X1,Y1,...) but in (X0,Y0,X1,Y1,...,U0,V0,U1,V1,...) 
+	- Think about the default blendfunction (for sprites, but also for primitives).
+		- For Sprites, keep premultiplyalpha in mind..
 	- Eventually separate a TextureRegion from knowing what Texture it is on.
 		- Makes it easier to switch textures during runtime.
 		- Less disturbing when using multiple textures. 

@@ -206,7 +206,7 @@ public class Transformation {
 	}
 
 	public void transform(final float[] pVertices) {
-		int count = pVertices.length / 2;
+		int count = pVertices.length >> 1;
 		int i = 0;
 		int j = 0;
 		while(--count >= 0) {

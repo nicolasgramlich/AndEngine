@@ -727,7 +727,7 @@ public class Entity implements IEntity {
 				final float scaleCenterY = this.mScaleCenterY;
 
 				parentToLocalTransformation.postTranslate(-scaleCenterX, -scaleCenterY);
-				parentToLocalTransformation.postScale(1 / scaleX, 1 / scaleY);
+				parentToLocalTransformation.postScale(1 / scaleX, 1 / scaleY); // TODO Division could be replaced by a multiplication of 'scale(X/Y)Inverse'...
 				parentToLocalTransformation.postTranslate(scaleCenterX, scaleCenterY);
 			}
 

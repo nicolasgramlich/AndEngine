@@ -100,7 +100,7 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 			edgeResultSum += edgeResult;
 		}
 
-		final int vertexCount = pVerticesLength / 2;
+		final int vertexCount = pVerticesLength >> 1;
 		/* Point is not on the edge, so check if the edge is on the same side(left or right) of all edges. */
 		return edgeResultSum == vertexCount || edgeResultSum == -vertexCount ;
 	}

@@ -3,7 +3,7 @@ package org.anddev.andengine.entity.modifier;
 import org.anddev.andengine.entity.IEntity;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -24,6 +24,10 @@ public class RotationByModifier extends SingleValueChangeEntityModifier {
 
 	public RotationByModifier(final float pDuration, final float pRotation) {
 		super(pDuration, pRotation);
+	}
+
+	public RotationByModifier(final float pDuration, final float pRotation, final IEntityModifierListener pEntityModifierListener) {
+		super(pDuration, pRotation, pEntityModifierListener);
 	}
 
 	protected RotationByModifier(final RotationByModifier pRotationByModifier) {

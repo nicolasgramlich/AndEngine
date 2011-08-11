@@ -43,6 +43,7 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 		this.resetRotationandScaleCenter();
 
 		this.onUpdateVertices();
+		this.onUpdateColor();
 	}
 
 	// ===========================================================

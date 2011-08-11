@@ -27,6 +27,7 @@ public interface ShaderProgramConstants {
 	public static final String UNIFORM_TEXTURE_0 = "u_texture_0";
 
 	public static final String VARYING_TEXTURECOORDINATES = "v_textureCoordinates";
+	public static final String VARYING_COLOR = "v_color";
 	
 	// ===========================================================
 	// Methods

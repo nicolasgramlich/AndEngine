@@ -9,12 +9,11 @@ import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.constants.DataConstants;
 import org.anddev.andengine.util.constants.MathConstants;
 
 import android.opengl.GLES20;
@@ -33,24 +32,40 @@ public class Line extends Shape {
 
 	public static final float LINE_WIDTH_DEFAULT = 1.0f;
 
-	public static final int VERTEX_SIZE = 2;
-	public static final int VERTICES_PER_LINE = 4;
+	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
+	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
+	
+	public static final int VERTEX_INDEX_X = 0;
+	public static final int VERTEX_INDEX_Y = Line.VERTEX_INDEX_X + 1;
+	public static final int COLOR_INDEX_R = Line.VERTEX_INDEX_Y + 1;
+	public static final int COLOR_INDEX_G = Line.COLOR_INDEX_R + 1;
+	public static final int COLOR_INDEX_B = Line.COLOR_INDEX_G + 1;
+	public static final int COLOR_INDEX_A = Line.COLOR_INDEX_B + 1;
+
+	public static final int VERTEX_SIZE = POSITIONCOORDINATES_PER_VERTEX + COLORCOMPONENTS_PER_VERTEX;
+	public static final int VERTICES_PER_LINE = 2;
 	public static final int LINE_SIZE = Line.VERTEX_SIZE * Line.VERTICES_PER_LINE;
 
-	public static final VertexBufferObjectAttribute[] VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = { new VertexBufferObjectAttribute(ShaderProgramConstants.ATTRIBUTE_POSITION, Rectangle.VERTEX_SIZE, GLES20.GL_FLOAT, false, Line.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT, 0) };
+	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
+		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.build();
 
 	public static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
 			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
 			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
+			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
 			"void main() {\n" +
 			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+			"   " + ShaderProgramConstants.VARYING_COLOR + " = " + ShaderProgram.ATTRIBUTE_COLOR + ";\n" +
 			"}";
 
 	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
 			"precision mediump float;\n" +
-			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
 			"void main() {\n" +
-			"  gl_FragColor = " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+			"  gl_FragColor = " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
 			"}";
 
 	// ===========================================================
@@ -91,6 +106,7 @@ public class Line extends Shape {
 		this.mLineWidth = pLineWidth;
 
 		this.onUpdateVertices();
+		this.onUpdateColor();
 
 		final float centerX = (this.mX2 - this.mX) * 0.5f;
 		final float centerY = (this.mY2 - this.mY) * 0.5f;
@@ -187,7 +203,6 @@ public class Line extends Shape {
 				super.bind();
 
 				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
-				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, Line.this.mRed, Line.this.mGreen, Line.this.mBlue, Line.this.mAlpha);
 			}
 		});
 	}
@@ -214,20 +229,38 @@ public class Line extends Shape {
 	}
 	
 	@Override
+	protected void onUpdateColor() {
+		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final int[] bufferData = vertexBufferObject.getBufferData();
+
+		final int redBits = Float.floatToRawIntBits(this.mRed);
+		final int greenBits = Float.floatToRawIntBits(this.mGreen);
+		final int blueBits = Float.floatToRawIntBits(this.mBlue);
+		final int alphaBits = Float.floatToRawIntBits(this.mAlpha);
+
+		bufferData[0 * Line.VERTEX_SIZE + Line.COLOR_INDEX_R] = redBits;
+		bufferData[0 * Line.VERTEX_SIZE + Line.COLOR_INDEX_G] = greenBits;
+		bufferData[0 * Line.VERTEX_SIZE + Line.COLOR_INDEX_B] = blueBits;
+		bufferData[0 * Line.VERTEX_SIZE + Line.COLOR_INDEX_A] = alphaBits;
+
+		bufferData[1 * Line.VERTEX_SIZE + Line.COLOR_INDEX_R] = redBits;
+		bufferData[1 * Line.VERTEX_SIZE + Line.COLOR_INDEX_G] = greenBits;
+		bufferData[1 * Line.VERTEX_SIZE + Line.COLOR_INDEX_B] = blueBits;
+		bufferData[1 * Line.VERTEX_SIZE + Line.COLOR_INDEX_A] = alphaBits;
+
+		vertexBufferObject.setDirtyOnHardware();
+	}
+	
+	@Override
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final int[] bufferData = vertexBufferObject.getBufferData();
 
-		bufferData[0 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
-		bufferData[0 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
+		bufferData[0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
+		bufferData[0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_Y] = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
 
-		bufferData[1 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = Float.floatToRawIntBits(this.mX2 - this.mX);
+		bufferData[1 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X] = Float.floatToRawIntBits(this.mX2 - this.mX);
 		bufferData[1 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = Float.floatToRawIntBits(this.mY2 - this.mY);
-
-		final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
-		buffer.position(0);
-		buffer.put(bufferData);
-		buffer.position(0);
 
 		vertexBufferObject.setDirtyOnHardware();
 	}

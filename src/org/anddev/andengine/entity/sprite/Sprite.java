@@ -8,10 +8,10 @@ import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.constants.DataConstants;
 import org.anddev.andengine.util.constants.MathConstants;
@@ -30,25 +30,39 @@ public class Sprite extends RectangularShape {
 	// Constants
 	// ===========================================================
 
-	public static final int VERTEX_SIZE = 2 + 2;
+	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
+	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
+	public static final int TEXTURECOORDINATES_PER_VERTEX = 2;
+	
+	public static final int VERTEX_INDEX_X = 0;
+	public static final int VERTEX_INDEX_Y = Sprite.VERTEX_INDEX_X + 1;
+	public static final int COLOR_INDEX_R = Sprite.VERTEX_INDEX_Y + 1;
+	public static final int COLOR_INDEX_G = Sprite.COLOR_INDEX_R + 1;
+	public static final int COLOR_INDEX_B = Sprite.COLOR_INDEX_G + 1;
+	public static final int COLOR_INDEX_A = Sprite.COLOR_INDEX_B + 1;
+	public static final int TEXTURECOORDINATES_INDEX_U = Sprite.COLOR_INDEX_A + 1;
+	public static final int TEXTURECOORDINATES_INDEX_V = Sprite.TEXTURECOORDINATES_INDEX_U + 1;
+
+	public static final int VERTEX_SIZE = POSITIONCOORDINATES_PER_VERTEX + COLORCOMPONENTS_PER_VERTEX + TEXTURECOORDINATES_PER_VERTEX;
 	public static final int VERTICES_PER_SPRITE = 4;
 	public static final int SPRITE_SIZE = Sprite.VERTEX_SIZE * Sprite.VERTICES_PER_SPRITE;
 	public static final int VERTEX_STRIDE = Sprite.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
-	public static final int TEXTURECOORDINATES_INDEX_U = 2;
-	public static final int TEXTURECOORDINATES_INDEX_V = 3;
-
-	public static final VertexBufferObjectAttribute[] VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = {
-		new VertexBufferObjectAttribute(ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false, Sprite.VERTEX_STRIDE, 0),
-		new VertexBufferObjectAttribute(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false, Sprite.VERTEX_STRIDE, 2 * DataConstants.BYTES_PER_FLOAT)
-	};
+	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
+		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, TEXTURECOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.build();
 
 	public static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
 			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
 			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
+			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
 			"attribute vec2 " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
+			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
             "varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
 			"void main() {\n" +
+            "   " + ShaderProgramConstants.VARYING_COLOR + " = " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
             "   " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + " = " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
 			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
 			"}";
@@ -56,10 +70,10 @@ public class Sprite extends RectangularShape {
 	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
 			"precision mediump float;\n" + // TODO Try 'precision lowp float;\n'
 		    "uniform sampler2D " + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ";\n" +
-			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
+			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
             "varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
 			"void main() {\n" +
-			"  gl_FragColor = " + ShaderProgramConstants.UNIFORM_COLOR + " * texture2D(" + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ", " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ");\n" +
+			"  gl_FragColor = " + ShaderProgramConstants.VARYING_COLOR + " * texture2D(" + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ", " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ");\n" +
 			"}";
 
 	// ===========================================================
@@ -130,7 +144,6 @@ public class Sprite extends RectangularShape {
 
 				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
 				this.setTexture(ShaderProgramConstants.UNIFORM_TEXTURE_0, 0);
-				this.setUniform(ShaderProgramConstants.UNIFORM_COLOR, Sprite.this.mRed, Sprite.this.mGreen, Sprite.this.mBlue, Sprite.this.mAlpha);
 			}
 		});
 	}
@@ -166,6 +179,40 @@ public class Sprite extends RectangularShape {
 
 		super.postDraw(pCamera);
 	}
+	
+	@Override
+	protected void onUpdateColor() {
+		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+
+		final int redBits = Float.floatToRawIntBits(this.mRed);
+		final int greenBits = Float.floatToRawIntBits(this.mGreen);
+		final int blueBits = Float.floatToRawIntBits(this.mBlue);
+		final int alphaBits = Float.floatToRawIntBits(this.mAlpha);
+
+		final int[] bufferData = vertexBufferObject.getBufferData();
+
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_R] = redBits;
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_G] = greenBits;
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_B] = blueBits;
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_A] = alphaBits;
+
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_R] = redBits;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_G] = greenBits;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_B] = blueBits;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_A] = alphaBits;
+
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_R] = redBits;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_G] = greenBits;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_B] = blueBits;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_A] = alphaBits;
+
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_R] = redBits;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_G] = greenBits;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_B] = blueBits;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_A] = alphaBits;
+
+		vertexBufferObject.setDirtyOnHardware();
+	}
 
 	@Override
 	protected void onUpdateVertices() {
@@ -189,10 +236,7 @@ public class Sprite extends RectangularShape {
 		bufferData[3 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x2;
 		bufferData[3 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y2;
 
-		final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
-		buffer.position(0);
-		buffer.put(bufferData); // TODO Check if there is a way not to write the whole data
-		buffer.position(0);
+		vertexBufferObject.setDirtyOnHardware();
 	}
 
 	protected void onUpdateTextureCoordinates() {
@@ -237,8 +281,6 @@ public class Sprite extends RectangularShape {
 			}
 		}
 
-		final FastFloatBuffer buffer = vertexBufferObject.getFloatBuffer();
-
 		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
 		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
 
@@ -250,10 +292,6 @@ public class Sprite extends RectangularShape {
 
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
-
-		buffer.position(0);
-		buffer.put(bufferData);
-		buffer.position(0);
 
 		vertexBufferObject.setDirtyOnHardware();
 	}

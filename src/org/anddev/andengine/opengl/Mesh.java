@@ -2,7 +2,7 @@ package org.anddev.andengine.opengl;
 
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
 
@@ -28,7 +28,7 @@ public class Mesh {
 	// Constructors
 	// ===========================================================
 
-	public Mesh(final int pCapacity, final int pDrawType, final boolean pManaged, final VertexBufferObjectAttribute ... pVertexBufferObjectAttributes) {
+	public Mesh(final int pCapacity, final int pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		this.mVertexBufferObject = new VertexBufferObject(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 	}
 

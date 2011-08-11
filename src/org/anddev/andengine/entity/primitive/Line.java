@@ -8,7 +8,7 @@ import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
@@ -73,7 +73,7 @@ public class Line extends Shape {
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final Mesh pMesh) {
-		super(pX1, pY1, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
+		super(pX1, pY1, pMesh, DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
 
 		this.mX2 = pX2;
 		this.mY2 = pY2;

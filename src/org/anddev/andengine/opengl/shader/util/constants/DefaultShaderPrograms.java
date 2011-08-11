@@ -9,7 +9,7 @@ import org.anddev.andengine.opengl.util.GLHelper;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:56:14 - 10.08.2011
  */
-public interface ShaderPrograms {
+public interface DefaultShaderPrograms {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -64,6 +64,10 @@ public class ShaderProgram implements ShaderProgramConstants {
 		return this.mCompiled;
 	}
 
+	public void setCompiled(final boolean pCompiled) {
+		this.mCompiled = false;
+	}
+
 	public int getAttributeLocation(final String pAttributeName) {
 		final Integer location = this.mAttributeLocations.get(pAttributeName);
 		if(location != null) {

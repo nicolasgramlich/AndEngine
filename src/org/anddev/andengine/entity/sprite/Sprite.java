@@ -5,7 +5,7 @@ import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -80,7 +80,7 @@ public class Sprite extends RectangularShape {
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final Mesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
+		super(pX, pY, pWidth, pHeight, pMesh, DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 
 		this.mTextureRegion = pTextureRegion;
 

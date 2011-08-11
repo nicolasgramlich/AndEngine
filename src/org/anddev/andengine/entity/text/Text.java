@@ -10,7 +10,7 @@ import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
@@ -87,7 +87,7 @@ public class Text extends RectangularShape {
 	}
 
 	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum) {
-		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GL11.GL_STATIC_DRAW, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
+		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GL11.GL_STATIC_DRAW, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
@@ -174,7 +174,7 @@ public class Text extends RectangularShape {
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
+		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
 		this.mMesh.draw(shaderProgram, GLES20.GL_TRIANGLES, this.mVertexCount);
 	}
 

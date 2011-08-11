@@ -118,6 +118,10 @@ public class Entity implements IEntity {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected void onUpdateColor() {
+		
+	}
+
 	@Override
 	public boolean isVisible() {
 		return this.mVisible;
@@ -376,6 +380,8 @@ public class Entity implements IEntity {
 	@Override
 	public void setAlpha(final float pAlpha) {
 		this.mAlpha = pAlpha;
+
+		this.onUpdateColor(); // TODO Potentially could be only updating the alpha
 	}
 
 	/**
@@ -388,6 +394,8 @@ public class Entity implements IEntity {
 		this.mRed = pRed;
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
+
+		this.onUpdateColor();
 	}
 
 	/**
@@ -402,6 +410,8 @@ public class Entity implements IEntity {
 		this.mGreen = pGreen;
 		this.mBlue = pBlue;
 		this.mAlpha = pAlpha;
+
+		this.onUpdateColor(); 
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
@@ -75,7 +75,7 @@ public class Rectangle extends RectangularShape {
 	 * @param pShaderProgram if <code>null</code> is passed, a default {@link ShaderProgram} is used.
 	 */
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
+		super(pX, pY, pWidth, pHeight, pMesh, DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
 	}
 
 	// ===========================================================

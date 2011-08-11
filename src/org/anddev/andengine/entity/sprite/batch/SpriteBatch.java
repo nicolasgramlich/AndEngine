@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -153,7 +153,7 @@ public class SpriteBatch extends Entity {
 	protected void draw(final Camera pCamera) {
 		this.begin();
 
-		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
+		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
 		this.mSpriteBatchMesh.draw(shaderProgram, GLES20.GL_TRIANGLES, this.mVertices);
 
 		this.end();

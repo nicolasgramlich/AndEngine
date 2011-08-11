@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.background;
 
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -37,16 +36,6 @@ public class SpriteBackground extends EntityBackground {
 	
 	public Sprite getSprite() {
 		return (Sprite)this.mEntity;
-	}
-	
-	public SpriteBackground setShaderProgram(ShaderProgram pShaderProgram) {
-		this.getSprite().setShaderProgram(pShaderProgram);
-		return this;
-	}
-
-	public SpriteBackground setDefaultShaderProgram() {
-		this.getSprite().setDefaultShaderProgram();
-		return this;
 	}
 	
 	// ===========================================================

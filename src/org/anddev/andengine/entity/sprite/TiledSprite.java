@@ -52,11 +52,6 @@ public class TiledSprite extends Sprite {
 		return (ITiledTextureRegion)super.getTextureRegion();
 	}
 
-	@Override
-	public TiledSprite setDefaultShaderProgram() {
-		return (TiledSprite)super.setDefaultShaderProgram();
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

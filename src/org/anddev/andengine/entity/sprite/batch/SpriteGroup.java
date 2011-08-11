@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.util.SmartList;
 
@@ -45,16 +44,6 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	@Override
-	public SpriteBatch setShaderProgram(final ShaderProgram pShaderProgram) {
-		return super.setShaderProgram(pShaderProgram);
-	}
-
-	@Override
-	public SpriteBatch setDefaultShaderProgram() {
-		return super.setDefaultShaderProgram();
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

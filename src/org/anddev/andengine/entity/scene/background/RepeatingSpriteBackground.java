@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.background;
 
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -55,18 +54,6 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 
 	public BitmapTextureAtlas getBitmapTextureAtlas() {
 		return this.mBitmapTextureAtlas;
-	}
-
-	@Override
-	public RepeatingSpriteBackground setShaderProgram(ShaderProgram pShaderProgram) {
-		super.setShaderProgram(pShaderProgram);
-		return this;
-	}
-
-	@Override
-	public RepeatingSpriteBackground setDefaultShaderProgram() {
-		super.setDefaultShaderProgram();
-		return this;
 	}
 
 	// ===========================================================

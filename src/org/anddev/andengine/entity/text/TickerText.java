@@ -2,7 +2,6 @@ package org.anddev.andengine.entity.text;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.font.Font;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.util.HorizontalAlign;
 
 import android.opengl.GLES20;
@@ -64,16 +63,6 @@ public class TickerText extends Text {
 
 	public int getCharactersVisible() {
 		return this.mCharactersVisible;
-	}
-
-	@Override
-	public TickerText setShaderProgram(ShaderProgram pShaderProgram) {
-		return (TickerText) super.setShaderProgram(pShaderProgram);
-	}
-
-	@Override
-	public TickerText setDefaultShaderProgram() {
-		return (TickerText) super.setDefaultShaderProgram();
 	}
 
 	// ===========================================================

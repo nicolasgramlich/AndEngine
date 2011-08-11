@@ -2,7 +2,6 @@ package org.anddev.andengine.entity.text;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.font.Font;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
 
@@ -72,16 +71,6 @@ public class ChangeableText extends Text {
 			this.updateText(pText);
 			this.mCharacterCountCurrentText = textCharacterCount;
 		}
-	}
-
-	@Override
-	public ChangeableText setShaderProgram(ShaderProgram pShaderProgram) {
-		return (ChangeableText) super.setShaderProgram(pShaderProgram);
-	}
-
-	@Override
-	public ChangeableText setDefaultShaderProgram() {
-		return (ChangeableText) super.setDefaultShaderProgram();
 	}
 
 	// ===========================================================

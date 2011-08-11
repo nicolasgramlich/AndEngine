@@ -346,13 +346,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public IShape setShaderProgram(final ShaderProgram pShaderProgram) {
-		return this.mMenuItem.setShaderProgram(pShaderProgram);
-	}
-
-	@Override
-	public IShape setDefaultShaderProgram() {
-		return this.mMenuItem.setDefaultShaderProgram();
+	public void setShaderProgram(final ShaderProgram pShaderProgram) {
+		this.mMenuItem.setShaderProgram(pShaderProgram);
 	}
 
 	@Override

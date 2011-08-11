@@ -39,6 +39,5 @@ public interface IShape extends IEntity, ITouchArea {
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction);
 	
 	public ShaderProgram getShaderProgram();
-	public IShape setDefaultShaderProgram();
-	public IShape setShaderProgram(final ShaderProgram pShaderProgram);
+	public void setShaderProgram(final ShaderProgram pShaderProgram);
 }

@@ -10,6 +10,7 @@ import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
@@ -36,7 +37,7 @@ public class Text extends RectangularShape {
 	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
 	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
 	public static final int TEXTURECOORDINATES_PER_VERTEX = 2;
-	
+
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Text.VERTEX_INDEX_X + 1;
 	public static final int COLOR_INDEX_R = Text.VERTEX_INDEX_Y + 1;
@@ -46,39 +47,16 @@ public class Text extends RectangularShape {
 	public static final int TEXTURECOORDINATES_INDEX_U = Text.COLOR_INDEX_A + 1;
 	public static final int TEXTURECOORDINATES_INDEX_V = Text.TEXTURECOORDINATES_INDEX_U + 1;
 
-	public static final int VERTEX_SIZE = POSITIONCOORDINATES_PER_VERTEX + COLORCOMPONENTS_PER_VERTEX + TEXTURECOORDINATES_PER_VERTEX;
+	public static final int VERTEX_SIZE = Text.POSITIONCOORDINATES_PER_VERTEX + Text.COLORCOMPONENTS_PER_VERTEX + Text.TEXTURECOORDINATES_PER_VERTEX;
 	public static final int VERTICES_PER_LETTER = 4;
 	public static final int LETTER_SIZE = Text.VERTEX_SIZE * Text.VERTICES_PER_LETTER;
 	public static final int VERTEX_STRIDE = Text.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
-	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, TEXTURECOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
+		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, Text.POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, Text.COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, Text.TEXTURECOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
 		.build();
-
-	public static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
-			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
-			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
-			"attribute vec2 " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
-			"varying vec2 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
-            "varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
-			"void main() {\n" +
-            "   " + ShaderProgramConstants.VARYING_COLOR + " = " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
-            "   " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + " = " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
-			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-			"}";
-
-	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
-			"precision mediump float;\n" + // TODO Try 'precision lowp float;\n'
-		    "uniform sampler2D " + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ";\n" +
-			"varying vec2 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
-            "varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
-			"void main() {\n" +
-			"  gl_FragColor = " + ShaderProgramConstants.VARYING_COLOR + " * texture2D(" + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ", " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ");\n" +
-			"}";
-
 
 	// ===========================================================
 	// Fields
@@ -109,7 +87,7 @@ public class Text extends RectangularShape {
 	}
 
 	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum) {
-		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GL11.GL_STATIC_DRAW, true, VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GL11.GL_STATIC_DRAW, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
@@ -182,24 +160,6 @@ public class Text extends RectangularShape {
 	//		this.mHorizontalAlign = pHorizontalAlign; // TODO
 	//	}
 
-	@Override
-	public Text setShaderProgram(final ShaderProgram pShaderProgram) {
-		return (Text)super.setShaderProgram(pShaderProgram);
-	}
-
-	@Override
-	public Text setDefaultShaderProgram() {
-		return this.setShaderProgram(new ShaderProgram(Text.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Text.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
-			@Override
-			public void bind() {
-				super.bind();
-
-				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
-				this.setTexture(ShaderProgramConstants.UNIFORM_TEXTURE_0, 0);
-			}
-		});
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -214,15 +174,16 @@ public class Text extends RectangularShape {
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(this.mShaderProgram, GLES20.GL_TRIANGLES, this.mVertexCount);
+		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
+		this.mMesh.draw(shaderProgram, GLES20.GL_TRIANGLES, this.mVertexCount);
 	}
-	
+
 	@Override
-	protected void postDraw(Camera pCamera) {
+	protected void postDraw(final Camera pCamera) {
 		GLHelper.disableTextures();
 		super.postDraw(pCamera);
 	}
-	
+
 	@Override
 	protected void onUpdateColor() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
@@ -240,22 +201,22 @@ public class Text extends RectangularShape {
 			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
 			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
 			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-	
+
 			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
 			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
 			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
 			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-	
+
 			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
 			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
 			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
 			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-	
+
 			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
 			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
 			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
 			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-			
+
 			index += Text.LETTER_SIZE;
 		}
 
@@ -289,10 +250,10 @@ public class Text extends RectangularShape {
 					break;
 				case CENTER:
 					lineX = (this.mMaximumLineWidth - widths[lineIndex]) >> 1;
-					break;
-				case LEFT:
-				default:
-					lineX = 0;
+		break;
+		case LEFT:
+		default:
+			lineX = 0;
 			}
 
 			final int lineY = lineIndex * (font.getLineHeight() + font.getLineGap());

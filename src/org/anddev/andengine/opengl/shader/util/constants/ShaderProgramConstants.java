@@ -1,5 +1,6 @@
 package org.anddev.andengine.opengl.shader.util.constants;
 
+
 /**
  * (c) Zynga 2011
  *

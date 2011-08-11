@@ -1,4 +1,11 @@
 TODOS:
+	- Add static default shader for Line/Rectangle/Sprite/SpriteBatch/Text
+		- Check which of these can be shared across classes, i.e. using a ShaderProgramCache.
+		- Remove 'setDefaultShaderProgram' OR make it not generate a new one but return a static one.  
+	- Test performance of colors as bytes.
+		- See if it makes sense to overall store color as bytes.
+	- Try to minimize usage Float.floatToIntRawBits by smartly. 
+		- Keep in mind: I.e. more benefits in SpriteGroup as it writes the colors even if they didn't change. 
 	- Find higher performance Matrix4f class?
 	- Test if only unbinding a ShaderProgram if different one comes in improves performance.
 	- Think about a way to update the Mesh of a Sprite more efficient.
@@ -11,12 +18,20 @@ TODOS:
 		- Less disturbing when using multiple textures. 
 		- Drawbacks?
 	- All custom Exceptions extend from AndEngineException
+	- Convert "IllegalArgumentException("Unexpected..." to "UnexpectedArgumentException extends AndEngineException
 	- Replace: 
 		- mEngine.getTextureManager() -> getTextureManager()
 		- mEngine.getFontManager() -> getFontManager()
 	- Remove POT texture restriction
 	- Maybe introduce Color3/4 objects
 		- Add Color3/4Pool
+	- According to the Performance myths, pulling class attributes to local fields is not necessary anymore with the JIT.
+		- As GLES2 is only available on JIT devices, this might be something to consider
+	- I think I once wrote a commment to remove some legacy code when > 1.6. 
+		- FIND IT!!!
+	- TODO See if mediump precision and lowp precision make a difference. (cocos2d-gles2 seems to use lowp precision mostly).
+	- Shadercache, as with the color in the VBO, shaders can be reused A LOT more easily !!!!!
+	- Instead of directly updating the buffers in onUpdatePosition/onUpdateColor, they could be only marked as dirty and actually written when needed.
 
 EXAMPLES:
 	- Blur/Bloom Shader?

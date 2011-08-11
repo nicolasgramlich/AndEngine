@@ -4,6 +4,7 @@ import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -31,8 +32,8 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	// Constructors
 	// ===========================================================
 
-	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
-		super(pX, pY, pMesh);
+	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, ShaderProgram pShaderProgram) {
+		super(pX, pY, pMesh, pShaderProgram);
 
 		this.mBaseWidth = pWidth;
 		this.mBaseHeight = pHeight;

@@ -4,8 +4,8 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -33,7 +33,7 @@ public class Sprite extends RectangularShape {
 	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
 	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
 	public static final int TEXTURECOORDINATES_PER_VERTEX = 2;
-	
+
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Sprite.VERTEX_INDEX_X + 1;
 	public static final int COLOR_INDEX_R = Sprite.VERTEX_INDEX_Y + 1;
@@ -43,38 +43,16 @@ public class Sprite extends RectangularShape {
 	public static final int TEXTURECOORDINATES_INDEX_U = Sprite.COLOR_INDEX_A + 1;
 	public static final int TEXTURECOORDINATES_INDEX_V = Sprite.TEXTURECOORDINATES_INDEX_U + 1;
 
-	public static final int VERTEX_SIZE = POSITIONCOORDINATES_PER_VERTEX + COLORCOMPONENTS_PER_VERTEX + TEXTURECOORDINATES_PER_VERTEX;
+	public static final int VERTEX_SIZE = Sprite.POSITIONCOORDINATES_PER_VERTEX + Sprite.COLORCOMPONENTS_PER_VERTEX + Sprite.TEXTURECOORDINATES_PER_VERTEX;
 	public static final int VERTICES_PER_SPRITE = 4;
 	public static final int SPRITE_SIZE = Sprite.VERTEX_SIZE * Sprite.VERTICES_PER_SPRITE;
 	public static final int VERTEX_STRIDE = Sprite.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, TEXTURECOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, Sprite.POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, Sprite.COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, Sprite.TEXTURECOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
 		.build();
-
-	public static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
-			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
-			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
-			"attribute vec2 " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
-			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
-            "varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
-			"void main() {\n" +
-            "   " + ShaderProgramConstants.VARYING_COLOR + " = " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
-            "   " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + " = " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
-			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-			"}";
-
-	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
-			"precision mediump float;\n" + // TODO Try 'precision lowp float;\n'
-		    "uniform sampler2D " + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ";\n" +
-			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
-            "varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
-			"void main() {\n" +
-			"  gl_FragColor = " + ShaderProgramConstants.VARYING_COLOR + " * texture2D(" + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ", " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ");\n" +
-			"}";
 
 	// ===========================================================
 	// Fields
@@ -102,7 +80,7 @@ public class Sprite extends RectangularShape {
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final Mesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pMesh);
+		super(pX, pY, pWidth, pHeight, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 
 		this.mTextureRegion = pTextureRegion;
 
@@ -128,24 +106,6 @@ public class Sprite extends RectangularShape {
 	public void setFlippedVertical(final boolean pFlippedVertical) {
 		this.mFlippedVertical = pFlippedVertical;
 		this.onUpdateTextureCoordinates();
-	}
-
-	@Override
-	public Sprite setShaderProgram(final ShaderProgram pShaderProgram) {
-		return (Sprite) super.setShaderProgram(pShaderProgram);
-	}
-
-	@Override
-	public Sprite setDefaultShaderProgram() {
-		return this.setShaderProgram(new ShaderProgram(Sprite.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Sprite.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
-			@Override
-			public void bind() {
-				super.bind();
-
-				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
-				this.setTexture(ShaderProgramConstants.UNIFORM_TEXTURE_0, 0);
-			}
-		});
 	}
 
 	// ===========================================================
@@ -179,7 +139,7 @@ public class Sprite extends RectangularShape {
 
 		super.postDraw(pCamera);
 	}
-	
+
 	@Override
 	protected void onUpdateColor() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();

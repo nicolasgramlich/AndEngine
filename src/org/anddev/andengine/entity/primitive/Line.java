@@ -7,8 +7,8 @@ import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.Mesh;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
@@ -34,7 +34,7 @@ public class Line extends Shape {
 
 	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
 	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
-	
+
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Line.VERTEX_INDEX_X + 1;
 	public static final int COLOR_INDEX_R = Line.VERTEX_INDEX_Y + 1;
@@ -42,31 +42,14 @@ public class Line extends Shape {
 	public static final int COLOR_INDEX_B = Line.COLOR_INDEX_G + 1;
 	public static final int COLOR_INDEX_A = Line.COLOR_INDEX_B + 1;
 
-	public static final int VERTEX_SIZE = POSITIONCOORDINATES_PER_VERTEX + COLORCOMPONENTS_PER_VERTEX;
+	public static final int VERTEX_SIZE = Line.POSITIONCOORDINATES_PER_VERTEX + Line.COLORCOMPONENTS_PER_VERTEX;
 	public static final int VERTICES_PER_LINE = 2;
 	public static final int LINE_SIZE = Line.VERTEX_SIZE * Line.VERTICES_PER_LINE;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, Line.POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, Line.COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
 		.build();
-
-	public static final String SHADERPROGRAM_VERTEXSHADER_DEFAULT =
-			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
-			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
-			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
-			"void main() {\n" +
-			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-			"   " + ShaderProgramConstants.VARYING_COLOR + " = " + ShaderProgram.ATTRIBUTE_COLOR + ";\n" +
-			"}";
-
-	public static final String SHADERPROGRAM_FRAGMENTSHADER_DEFAULT =
-			"precision mediump float;\n" +
-			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
-			"void main() {\n" +
-			"  gl_FragColor = " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
-			"}";
 
 	// ===========================================================
 	// Fields
@@ -86,19 +69,11 @@ public class Line extends Shape {
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
-		this(pX1, pY1, pX2, pY2, pLineWidth, null);
+		this(pX1, pY1, pX2, pY2, pLineWidth, new Mesh(Line.LINE_SIZE, GLES20.GL_STATIC_DRAW, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final ShaderProgram pShaderProgram) {
-		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pShaderProgram);
-	}
-
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final ShaderProgram pShaderProgram) {
-		this(pX1, pY1, pX2, pY2, pLineWidth, new Mesh(Line.LINE_SIZE, GLES20.GL_STATIC_DRAW, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
-	}
-
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final Mesh pMesh, final ShaderProgram pShaderProgram) {
-		super(pX1, pY1, pMesh);
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final Mesh pMesh) {
+		super(pX1, pY1, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
 
 		this.mX2 = pX2;
 		this.mY2 = pY2;
@@ -116,8 +91,6 @@ public class Line extends Shape {
 
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
-
-		this.setShaderProgram((pShaderProgram == null) ? new ShaderProgram(Line.SHADERPROGRAM_VERTEXSHADER_DEFAULT, Line.SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) : pShaderProgram);
 	}
 
 	// ===========================================================
@@ -189,23 +162,6 @@ public class Line extends Shape {
 
 		this.onUpdateVertices();
 	}
-	
-	@Override
-	public Line setShaderProgram(ShaderProgram pShaderProgram) {
-		return (Line)super.setShaderProgram(pShaderProgram);
-	}
-	
-	@Override
-	public Line setDefaultShaderProgram() {
-		return this.setShaderProgram(new ShaderProgram(SHADERPROGRAM_VERTEXSHADER_DEFAULT, SHADERPROGRAM_FRAGMENTSHADER_DEFAULT) {
-			@Override
-			public void bind() {
-				super.bind();
-
-				this.setUniform(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX, GLHelper.getModelViewProjectionMatrix());
-			}
-		});
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -227,7 +183,7 @@ public class Line extends Shape {
 	protected void draw(final Camera pCamera) {
 		this.mMesh.draw(this.mShaderProgram, GLES20.GL_LINES, Line.VERTICES_PER_LINE);
 	}
-	
+
 	@Override
 	protected void onUpdateColor() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
@@ -250,7 +206,7 @@ public class Line extends Shape {
 
 		vertexBufferObject.setDirtyOnHardware();
 	}
-	
+
 	@Override
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();

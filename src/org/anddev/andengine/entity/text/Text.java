@@ -48,7 +48,7 @@ public class Text extends RectangularShape {
 	public static final int TEXTURECOORDINATES_INDEX_V = Text.TEXTURECOORDINATES_INDEX_U + 1;
 
 	public static final int VERTEX_SIZE = Text.POSITIONCOORDINATES_PER_VERTEX + Text.COLORCOMPONENTS_PER_VERTEX + Text.TEXTURECOORDINATES_PER_VERTEX;
-	public static final int VERTICES_PER_LETTER = 4;
+	public static final int VERTICES_PER_LETTER = 6;
 	public static final int LETTER_SIZE = Text.VERTEX_SIZE * Text.VERTICES_PER_LETTER;
 	public static final int VERTEX_STRIDE = Text.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
@@ -217,6 +217,16 @@ public class Text extends RectangularShape {
 			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
 			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
 
+			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
+			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
+			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
+			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
+
+			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
+			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
+			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
+			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
+
 			index += Text.LETTER_SIZE;
 		}
 
@@ -250,10 +260,10 @@ public class Text extends RectangularShape {
 					break;
 				case CENTER:
 					lineX = (this.mMaximumLineWidth - widths[lineIndex]) >> 1;
-		break;
-		case LEFT:
-		default:
-			lineX = 0;
+				break;
+					case LEFT:
+				default:
+					lineX = 0;
 			}
 
 			final int lineY = lineIndex * (font.getLineHeight() + font.getLineGap());

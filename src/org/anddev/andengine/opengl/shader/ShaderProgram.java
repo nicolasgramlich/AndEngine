@@ -22,6 +22,8 @@ public class ShaderProgram implements ShaderProgramConstants {
 	// Constants
 	// ===========================================================
 
+	public static final int LOCATION_INVALID = -1;
+
 	private static final int[] HARDWAREID_CONTAINER = new int[1];
 	private static final int[] PARAMETERS_CONTAINER = new int[1];
 	private static final int[] LENGTH_CONTAINER = new int[1];
@@ -29,7 +31,6 @@ public class ShaderProgram implements ShaderProgramConstants {
 	private static final int[] TYPE_CONTAINER = new int[1];
 	private static final int NAME_CONTAINER_SIZE = 64;
 	private static final byte[] NAME_CONTAINER = new byte[ShaderProgram.NAME_CONTAINER_SIZE];
-	private static final int LOCATION_INVALID = 0;
 
 	// ===========================================================
 	// Fields
@@ -108,6 +109,10 @@ public class ShaderProgram implements ShaderProgramConstants {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected void onCompiled() {
+
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -132,6 +137,8 @@ public class ShaderProgram implements ShaderProgramConstants {
 		GLES20.glAttachShader(this.mProgramID, this.mFragmentShaderID);
 
 		this.link();
+
+		this.onCompiled();
 	}
 
 	protected void link() throws ShaderProgramLinkException {

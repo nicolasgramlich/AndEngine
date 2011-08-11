@@ -14,7 +14,6 @@ import android.opengl.GLSurfaceView;
  * @since 15:31:48 - 04.08.2011
  */
 public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser {
-
 	// ===========================================================
 	// Constants
 	// ===========================================================

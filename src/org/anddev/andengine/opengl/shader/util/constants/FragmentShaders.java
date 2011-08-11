@@ -14,7 +14,7 @@ public interface FragmentShaders {
 
 	// TODO Try 'precision lowp float;\n'
 	public static final String FRAGMENTSHADER_COLOR_TEXTURECOORDINATES =
-			"precision mediump float;\n" + 
+			"precision lowp float;\n" + 
 			"uniform sampler2D " + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ";\n" +
 			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
 			"varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
@@ -23,7 +23,7 @@ public interface FragmentShaders {
 			"}";
 
 	public static final String FRAGMENTSHADER_COLOR =
-			"precision mediump float;\n" +
+			"precision lowp float;\n" +
 			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
 			"void main() {\n" +
 			"  gl_FragColor = " + ShaderProgramConstants.VARYING_COLOR + ";\n" +

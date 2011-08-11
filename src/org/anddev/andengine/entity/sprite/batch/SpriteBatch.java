@@ -6,15 +6,14 @@ import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.Transformation;
-import org.anddev.andengine.util.constants.DataConstants;
 
 import android.opengl.GLES20;
 
@@ -48,7 +47,6 @@ public class SpriteBatch extends Entity {
 	public static final int VERTEX_SIZE = SpriteBatch.POSITIONCOORDINATES_PER_VERTEX + SpriteBatch.COLORCOMPONENTS_PER_VERTEX + SpriteBatch.TEXTURECOORDINATES_PER_VERTEX;
 	public static final int VERTICES_PER_SPRITE = 6;
 	public static final int SPRITE_SIZE = SpriteBatch.VERTEX_SIZE * SpriteBatch.VERTICES_PER_SPRITE;
-	public static final int VERTEX_STRIDE = SpriteBatch.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
 		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, SpriteBatch.POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)

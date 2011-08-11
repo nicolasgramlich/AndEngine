@@ -1,7 +1,5 @@
 package org.anddev.andengine.entity.text;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
@@ -9,8 +7,8 @@ import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
@@ -87,7 +85,7 @@ public class Text extends RectangularShape {
 	}
 
 	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum) {
-		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GL11.GL_STATIC_DRAW, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
+		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GLES20.GL_STATIC_DRAW, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;

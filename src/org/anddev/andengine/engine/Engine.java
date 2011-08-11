@@ -14,8 +14,11 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.controller.ITouchController;
 import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
 import org.anddev.andengine.input.touch.controller.SingleTouchControler;
+import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
+import org.anddev.andengine.opengl.shader.ShaderProgramManager;
 import org.anddev.andengine.opengl.texture.TextureManager;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.anddev.andengine.sensor.SensorDelay;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
@@ -86,7 +89,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private MusicManager mMusicManager;
 	private final TextureManager mTextureManager = new TextureManager();
 	private final VertexBufferObjectManager mBufferObjectManager = new VertexBufferObjectManager();
-//	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager(); // TODO Probably quite simple, like FontManager.
+	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager();
 	private final FontManager mFontManager = new FontManager();
 
 	protected Scene mScene;
@@ -114,9 +117,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	public Engine(final EngineOptions pEngineOptions) {
+		BitmapTextureAtlasTextureRegionFactory.reset();
 		SoundFactory.reset();
 		MusicFactory.reset();
-//		FontFactory.reset(); // TODO
+		FontFactory.reset();
 
 		VertexBufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 
@@ -237,9 +241,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		return this.mFontManager;
 	}
 
-//	public ShaderProgramManager getShaderProgramManager() {
-//		return this.mShaderProgramManager;
-//	}
+	public ShaderProgramManager getShaderProgramManager() {
+		return this.mShaderProgramManager;
+	}
 
 	public void clearUpdateHandlers() {
 		this.mUpdateHandlers.clear();
@@ -426,6 +430,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		// TODO GLHelper.reset(pGL); ?
 		this.mTextureManager.reloadTextures();
 		this.mFontManager.reloadFonts();
+		this.mShaderProgramManager.reloadShaderPrograms();
 		VertexBufferObjectManager.setActiveInstance(this.mBufferObjectManager);
 		this.mBufferObjectManager.reloadBufferObjects();
 	}
@@ -510,7 +515,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	protected void onDrawScene() {
 		final Camera camera = this.getCamera();
 
-		this.mScene.onDraw(camera);
+		if(this.mScene != null) {
+			this.mScene.onDraw(camera);
+		}
 
 		camera.onDrawHUD();
 	}

@@ -5,6 +5,7 @@ import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.FastFloatBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.constants.DataConstants;
+import org.xml.sax.DTDHandler;
 
 import android.opengl.GLES20;
 
@@ -131,7 +132,7 @@ public class VertexBufferObject {
 			this.mFloatBuffer.position(0);
 
 			synchronized(this) {
-				GLHelper.bufferData(this.mFloatBuffer.mByteBuffer, this.mDrawType);
+				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mFloatBuffer.mByteBuffer.capacity(), this.mFloatBuffer.mByteBuffer, this.mDrawType);
 			}
 		}
 
@@ -196,9 +197,13 @@ public class VertexBufferObject {
 		// Constants
 		// ===========================================================
 
+		private static final int LOCATION_INVALID = -1;
+
 		// ===========================================================
 		// Fields
 		// ===========================================================
+
+		private int mLocation = LOCATION_INVALID;
 
 		private final String mName;
 		private final int mSize;
@@ -227,13 +232,16 @@ public class VertexBufferObject {
 		// ===========================================================
 
 		public void enable(final ShaderProgram pShaderProgram, final int pStride) {
-			final int location = pShaderProgram.getAttributeLocation(this.mName);
-			GLES20.glEnableVertexAttribArray(location);
-			GLES20Fix.glVertexAttribPointer(location, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
+			if(this.mLocation == VertexBufferObjectAttribute.LOCATION_INVALID) {
+				this.mLocation = pShaderProgram.getAttributeLocation(this.mName);
+			}
+
+			GLES20.glEnableVertexAttribArray(this.mLocation);
+			GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
 		}
 
 		public void disable(final ShaderProgram pShaderProgram) {
-			GLES20.glDisableVertexAttribArray(pShaderProgram.getAttributeLocation(this.mName));
+			GLES20.glDisableVertexAttribArray(this.mLocation);
 		}
 
 		// ===========================================================
@@ -343,6 +351,9 @@ public class VertexBufferObject {
 			switch(pType) {
 				case GLES20.GL_FLOAT:
 					this.mOffset += pSize * DataConstants.BYTES_PER_FLOAT;
+					break;
+				case GLES20.GL_UNSIGNED_BYTE:
+					this.mOffset += pSize * DataConstants.BYTES_PER_BYTE;
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected pType: '" + pType + "'.");

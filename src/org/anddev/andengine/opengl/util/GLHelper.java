@@ -5,8 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-import javax.microedition.khronos.opengles.GL11;
-
 import org.anddev.andengine.engine.options.RenderOptions;
 import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
 import org.anddev.andengine.opengl.util.GLMatrixStack.MatrixMode;
@@ -270,10 +268,6 @@ public class GLHelper {
 
 	public static void glOrthof(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
 		GLHelper.sGLMatrixStack.ortho(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
-	}
-
-	public static void bufferData(final ByteBuffer pByteBuffer, final int pUsage) {
-		GLES20.glBufferData(GL11.GL_ARRAY_BUFFER, pByteBuffer.capacity(), pByteBuffer, pUsage);
 	}
 
 	/**

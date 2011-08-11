@@ -379,9 +379,11 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setAlpha(final float pAlpha) {
-		this.mAlpha = pAlpha;
-
-		this.onUpdateColor(); // TODO Potentially could be only updating the alpha
+		if(this.mAlpha != pAlpha ) {
+			this.mAlpha = pAlpha;
+	
+			this.onUpdateColor(); // TODO Potentially could be only updating the alpha
+		}
 	}
 
 	/**
@@ -391,11 +393,13 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
-
-		this.onUpdateColor();
+		if(this.mRed != pRed || this.mGreen != pGreen || this.mBlue != pBlue) { // TODO Is this check worth it?
+			this.mRed = pRed;
+			this.mGreen = pGreen;
+			this.mBlue = pBlue;
+	
+			this.onUpdateColor();
+		}
 	}
 
 	/**
@@ -406,12 +410,14 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
-		this.mAlpha = pAlpha;
-
-		this.onUpdateColor(); 
+		if(this.mAlpha != pAlpha || this.mRed != pRed || this.mGreen != pGreen || this.mBlue != pBlue) { // TODO Is this check worth it?
+			this.mRed = pRed;
+			this.mGreen = pGreen;
+			this.mBlue = pBlue;
+			this.mAlpha = pAlpha;
+		
+			this.onUpdateColor(); 
+		}
 	}
 
 	@Override

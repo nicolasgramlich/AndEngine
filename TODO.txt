@@ -1,7 +1,5 @@
 TODOS:
-	- Add static default shader for Line/Rectangle/Sprite/SpriteBatch/Text
-		- Check which of these can be shared across classes, i.e. using a ShaderProgramCache.
-		- Remove 'setDefaultShaderProgram' OR make it not generate a new one but return a static one.  
+	- http://developer.apple.com/library/ios/#documentation/3DDrawing/Conceptual/OpenGLES_ProgrammingGuide/TechniquesforWorkingwithVertexData/TechniquesforWorkingwithVertexData.html
 	- Test performance of colors as bytes.
 		- See if it makes sense to overall store color as bytes.
 	- Try to minimize usage Float.floatToIntRawBits by smartly. 

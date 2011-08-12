@@ -354,6 +354,10 @@ public abstract class PVRTexture extends Texture {
 			switch(pPixelFormat) {
 				case RGBA_8888:
 					return PVRTextureFormat.RGBA_8888;
+				case RGBA_4444:
+					return PVRTextureFormat.RGBA_4444;
+				case RGB_565:
+					return PVRTextureFormat.RGB_565;
 				default:
 					throw new IllegalArgumentException("Unsupported " + PixelFormat.class.getName() + ": '" + pPixelFormat + "'.");
 			}

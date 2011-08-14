@@ -9,12 +9,14 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.ArrayUtils;
+import org.anddev.andengine.util.ByteArrayOutputStream;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.constants.DataConstants;
+
+import android.opengl.GLES20;
 
 /**
  * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes: glPixelStorei(GL_UNPACK_ALIGNMENT,1);"
@@ -121,7 +123,7 @@ public abstract class PVRTexture extends Texture {
 	protected void generateHardwareTextureID(final GL10 pGL) {
 		//		// TODO
 		//		if(this.mMipMapCount > 0) {
-		pGL.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT, 1);
+		GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 		//		}
 
 		super.generateHardwareTextureID(pGL);
@@ -129,54 +131,57 @@ public abstract class PVRTexture extends Texture {
 
 	@Override
 	protected void writeTextureToHardware(final GL10 pGL) throws IOException {
-		final InputStream inputStream = this.getInputStream();
-		try {
-			final byte[] data = StreamUtils.streamToBytes(inputStream);
-			final ByteBuffer dataByteBuffer = ByteBuffer.wrap(data);
-			dataByteBuffer.rewind();
-			dataByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		final ByteBuffer pvrDataBuffer = ByteBuffer.wrap(this.getPVRData());
 
-			int width = this.getWidth();
-			int height = this.getHeight();
+		int width = this.getWidth();
+		int height = this.getHeight();
 
-			final int dataLength = this.mPVRTextureHeader.getDataLength();
-			final int glFormat = this.mPixelFormat.getGLFormat();
-			final int glType = this.mPixelFormat.getGLType();
+		final int dataLength = this.mPVRTextureHeader.getDataLength();
+		final int glFormat = this.mPixelFormat.getGLFormat();
+		final int glType = this.mPixelFormat.getGLType();
 
-			final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / 8;
+		final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / DataConstants.BITS_PER_BYTE;
 
-			/* Calculate the data size for each texture level and respect the minimum number of blocks. */
-			int mipmapLevel = 0;
-			int currentPixelDataOffset = 0;
-			while (currentPixelDataOffset < dataLength) {
-				final int currentPixelDataSize = width * height * bytesPerPixel;
-				final ByteBuffer pixelData = ByteBuffer.allocate(currentPixelDataSize).order(ByteOrder.nativeOrder());
-				pixelData.put(data, PVRTextureHeader.SIZE + currentPixelDataOffset, currentPixelDataSize);
+		/* Calculate the data size for each texture level and respect the minimum number of blocks. */
+		int mipmapLevel = 0;
+		int currentPixelDataOffset = 0;
+		while (currentPixelDataOffset < dataLength) {
+			final int currentPixelDataSize = width * height * bytesPerPixel;
 
-				if (mipmapLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
-					Debug.w(String.format("Mipmap level '%u' is not squared. Width: '%u', height: '%u'. Texture won't render correctly.", mipmapLevel, width, height));
-				}
-
-				pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelData);
-
-				GLHelper.checkGLError(pGL);
-
-				currentPixelDataOffset += currentPixelDataSize;
-
-				/* Prepare next mipmap level. */
-				width = Math.max(width >> 1, 1);
-				height = Math.max(height >> 1, 1);
-
-				mipmapLevel++;
+			if (mipmapLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
+				Debug.w(String.format("Mipmap level '%u' is not squared. Width: '%u', height: '%u'. Texture won't render correctly.", mipmapLevel, width, height));
 			}
-		} finally {
-			StreamUtils.close(inputStream);
+
+			pvrDataBuffer.position(PVRTextureHeader.SIZE + currentPixelDataOffset);
+			pvrDataBuffer.limit(PVRTextureHeader.SIZE + currentPixelDataOffset + currentPixelDataSize);
+			ByteBuffer pixelBuffer = pvrDataBuffer.slice();
+
+			pGL.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelBuffer);
+
+			currentPixelDataOffset += currentPixelDataSize;
+
+			/* Prepare next mipmap level. */
+			width = Math.max(width >> 1, 1);
+			height = Math.max(height >> 1, 1);
+
+			mipmapLevel++;
 		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected byte[] getPVRData() throws IOException {
+		final InputStream inputStream = this.getInputStream();
+		try {
+			final ByteArrayOutputStream os = new ByteArrayOutputStream(DataConstants.BYTES_PER_KILOBYTE, DataConstants.BYTES_PER_MEGABYTE / 2);
+			StreamUtils.copy(inputStream, os);
+			return os.toByteArray();
+		} finally {
+			StreamUtils.close(inputStream);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

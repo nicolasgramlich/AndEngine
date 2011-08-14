@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.nio.ByteBuffer;
 import java.util.Scanner;
 
 /**
@@ -64,16 +65,22 @@ public class StreamUtils {
 	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream) throws IOException {
 		StreamUtils.copy(pInputStream, pOutputStream, -1);
 	}
-
-	public static boolean copyAndClose(final InputStream pInputStream, final OutputStream pOutputStream) {
-		try {
-			StreamUtils.copy(pInputStream, pOutputStream, -1);
-			return true;
-		} catch (final IOException e) {
-			return false;
-		} finally {
-			StreamUtils.close(pInputStream);
-			StreamUtils.close(pOutputStream);
+	
+	public static void copy(final InputStream pInputStream, final byte[] pData) throws IOException {
+		int dataOffset = 0;
+		final byte[] buf = new byte[IO_BUFFER_SIZE];
+		int read;
+		while((read = pInputStream.read(buf)) != -1) {
+			System.arraycopy(buf, 0, pData, dataOffset, read);
+			dataOffset += read;
+		}
+	}
+	
+	public static void copy(final InputStream pInputStream, final ByteBuffer pByteBuffer) throws IOException {
+		final byte[] buf = new byte[IO_BUFFER_SIZE];
+		int read;
+		while((read = pInputStream.read(buf)) != -1) {
+			pByteBuffer.put(buf, 0, read);
 		}
 	}
 
@@ -89,28 +96,40 @@ public class StreamUtils {
 	 */
 	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream, final long pByteLimit) throws IOException {
 		if(pByteLimit < 0) {
-			final byte[] b = new byte[IO_BUFFER_SIZE];
+			final byte[] buf = new byte[IO_BUFFER_SIZE];
 			int read;
-			while((read = pInputStream.read(b)) != -1) {
-				pOutputStream.write(b, 0, read);
+			while((read = pInputStream.read(buf)) != -1) {
+				pOutputStream.write(buf, 0, read);
 			}
 		} else {
-			final byte[] b = new byte[IO_BUFFER_SIZE];
+			final byte[] buf = new byte[IO_BUFFER_SIZE];
 			final int bufferReadLimit = Math.min((int)pByteLimit, IO_BUFFER_SIZE);
 			long pBytesLeftToRead = pByteLimit;
 			
 			int read;
-			while((read = pInputStream.read(b, 0, bufferReadLimit)) != -1) {
+			while((read = pInputStream.read(buf, 0, bufferReadLimit)) != -1) {
 				if(pBytesLeftToRead > read) {
-					pOutputStream.write(b, 0, read);
+					pOutputStream.write(buf, 0, read);
 					pBytesLeftToRead -= read;
 				} else {
-					pOutputStream.write(b, 0, (int) pBytesLeftToRead);
+					pOutputStream.write(buf, 0, (int) pBytesLeftToRead);
 					break;
 				}
 			}
 		}
 		pOutputStream.flush();
+	}
+
+	public static boolean copyAndClose(final InputStream pInputStream, final OutputStream pOutputStream) {
+		try {
+			StreamUtils.copy(pInputStream, pOutputStream, -1);
+			return true;
+		} catch (final IOException e) {
+			return false;
+		} finally {
+			StreamUtils.close(pInputStream);
+			StreamUtils.close(pOutputStream);
+		}
 	}
 
 	/**

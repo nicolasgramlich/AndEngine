@@ -75,10 +75,6 @@ public abstract class PVRTexture extends Texture {
 			StreamUtils.close(inputStream);
 		}
 
-		if(!MathUtils.isPowerOfTwo(this.getWidth()) || !MathUtils.isPowerOfTwo(this.getHeight())) {  // TODO GLHelper.EXTENSIONS_NON_POWER_OF_TWO
-			throw new IllegalArgumentException("mWidth and mHeight must be a power of 2!");
-		}
-
 		if(this.mPVRTextureHeader.getPVRTextureFormat().getPixelFormat() != pPVRTextureFormat.getPixelFormat()) {
 			throw new IllegalArgumentException("Other PVRTextureFormat: '" + this.mPVRTextureHeader.getPVRTextureFormat().getPixelFormat() + "' found than expected: '" + pPVRTextureFormat.getPixelFormat() + "'.");
 		}

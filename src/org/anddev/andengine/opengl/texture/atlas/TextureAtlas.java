@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
-import org.anddev.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -35,9 +34,6 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	public TextureAtlas(final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureAtlasStateListener<T> pTextureAtlasStateListener) {
 		super(pPixelFormat, pTextureOptions, pTextureAtlasStateListener);
 		
-		if(!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)) { // TODO GLHelper.EXTENSIONS_NON_POWER_OF_TWO
-			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
-		}
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 	}

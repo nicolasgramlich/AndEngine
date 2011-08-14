@@ -7,7 +7,6 @@ import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -70,10 +69,6 @@ public abstract class BitmapTexture extends Texture {
 
 		this.mWidth = decodeOptions.outWidth;
 		this.mHeight = decodeOptions.outHeight;
-		
-		if(!MathUtils.isPowerOfTwo(this.mWidth) || !MathUtils.isPowerOfTwo(this.mHeight)) { // TODO GLHelper.EXTENSIONS_NON_POWER_OF_TWO
-			throw new IllegalArgumentException("pWidth and pHeight must be a power of 2!");
-		}
 	}
 
 	// ===========================================================

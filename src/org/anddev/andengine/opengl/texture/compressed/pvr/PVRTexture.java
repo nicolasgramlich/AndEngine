@@ -11,7 +11,7 @@ import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.ArrayUtils;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.data.ByteArrayOutputStream;
+import org.anddev.andengine.util.data.ByteBufferOutputStream;
 import org.anddev.andengine.util.data.DataConstants;
 import org.anddev.andengine.util.math.MathUtils;
 
@@ -126,7 +126,7 @@ public abstract class PVRTexture extends Texture {
 
 	@Override
 	protected void writeTextureToHardware() throws IOException {
-		final ByteBuffer pvrDataBuffer = ByteBuffer.wrap(this.getPVRData());
+		final ByteBuffer pvrDataBuffer = this.getPVRDataBuffer();
 
 		int width = this.getWidth();
 		int height = this.getHeight();
@@ -171,12 +171,12 @@ public abstract class PVRTexture extends Texture {
 	// Methods
 	// ===========================================================
 
-	protected byte[] getPVRData() throws IOException {
+	protected ByteBuffer getPVRDataBuffer() throws IOException {
 		final InputStream inputStream = this.getInputStream();
 		try {
-			final ByteArrayOutputStream os = new ByteArrayOutputStream(DataConstants.BYTES_PER_KILOBYTE, DataConstants.BYTES_PER_MEGABYTE / 2);
+			final ByteBufferOutputStream os = new ByteBufferOutputStream(DataConstants.BYTES_PER_KILOBYTE, DataConstants.BYTES_PER_MEGABYTE / 2);
 			StreamUtils.copy(inputStream, os);
-			return os.toByteArray();
+			return os.toByteBuffer();
 		} finally {
 			StreamUtils.close(inputStream);
 		}

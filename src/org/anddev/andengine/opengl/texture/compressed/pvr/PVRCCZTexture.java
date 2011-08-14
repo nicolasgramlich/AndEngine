@@ -20,8 +20,6 @@ import org.anddev.andengine.util.StreamUtils;
  * @since 14:17:23 - 27.07.2011
  */
 public abstract class PVRCCZTexture extends PVRTexture {
-	private CCZHeader mCCZHeader;
-
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -29,6 +27,8 @@ public abstract class PVRCCZTexture extends PVRTexture {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private CCZHeader mCCZHeader;
 
 	// ===========================================================
 	// Constructors

@@ -1,15 +1,15 @@
-package org.anddev.andengine.util;
+package org.anddev.andengine.util.transformation;
 
-import org.anddev.andengine.util.constants.DataConstants;
+import org.anddev.andengine.util.pool.GenericPool;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 15:01:49 - 20.03.2011
+ * @since 23:07:53 - 23.02.2011
  */
-public class DataUtils implements DataConstants {
+public class TransformationPool {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,6 +17,13 @@ public class DataUtils implements DataConstants {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private static final GenericPool<Transformation> POOL = new GenericPool<Transformation>() {
+		@Override
+		protected Transformation onAllocatePoolItem() {
+			return new Transformation();
+		}
+	};
 
 	// ===========================================================
 	// Constructors
@@ -29,9 +36,14 @@ public class DataUtils implements DataConstants {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	public static int unsignedByteToInt(final byte bByte) {
-		return bByte & 0xFF;
+	
+	public static Transformation obtain() {
+		return POOL.obtainPoolItem();
+	}
+	
+	public static void recycle(final Transformation pTransformation) {
+		pTransformation.setToIdentity();
+		POOL.recyclePoolItem(pTransformation);
 	}
 
 	// ===========================================================

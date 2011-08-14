@@ -11,7 +11,7 @@ import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 

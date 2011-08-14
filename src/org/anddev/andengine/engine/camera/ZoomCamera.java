@@ -4,7 +4,7 @@ import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
 import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.util.math.MathUtils;
 
 
 

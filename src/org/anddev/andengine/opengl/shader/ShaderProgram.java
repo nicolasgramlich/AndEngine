@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.util.GLMatrix;
 
 import android.opengl.GLES20;
@@ -17,7 +17,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 19:56:34 - 05.08.2011
  */
-public class ShaderProgram implements ShaderProgramConstants {
+public class ShaderProgram implements ShaderPrograms {
 	// ===========================================================
 	// Constants
 	// ===========================================================

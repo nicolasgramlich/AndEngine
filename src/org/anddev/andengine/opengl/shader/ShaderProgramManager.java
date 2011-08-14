@@ -2,7 +2,7 @@ package org.anddev.andengine.opengl.shader;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 
 
 /**
@@ -27,8 +27,8 @@ public class ShaderProgramManager {
 	// ===========================================================
 	
 	public ShaderProgramManager() {
-		this.loadShaderProgram(DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
-		this.loadShaderProgram(DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
+		this.loadShaderProgram(ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
+		this.loadShaderProgram(ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 	}
 
 	// ===========================================================

@@ -4,17 +4,13 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
-import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.constants.DataConstants;
-import org.anddev.andengine.util.constants.MathConstants;
 
 import android.opengl.GLES20;
 
@@ -30,28 +26,20 @@ public class Sprite extends RectangularShape {
 	// Constants
 	// ===========================================================
 
-	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
-	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
-	public static final int TEXTURECOORDINATES_PER_VERTEX = 2;
-
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Sprite.VERTEX_INDEX_X + 1;
-	public static final int COLOR_INDEX_R = Sprite.VERTEX_INDEX_Y + 1;
-	public static final int COLOR_INDEX_G = Sprite.COLOR_INDEX_R + 1;
-	public static final int COLOR_INDEX_B = Sprite.COLOR_INDEX_G + 1;
-	public static final int COLOR_INDEX_A = Sprite.COLOR_INDEX_B + 1;
-	public static final int TEXTURECOORDINATES_INDEX_U = Sprite.COLOR_INDEX_A + 1;
+	public static final int COLOR_INDEX = Sprite.VERTEX_INDEX_Y + 1;
+	public static final int TEXTURECOORDINATES_INDEX_U = Sprite.COLOR_INDEX + 1;
 	public static final int TEXTURECOORDINATES_INDEX_V = Sprite.TEXTURECOORDINATES_INDEX_U + 1;
 
-	public static final int VERTEX_SIZE = Sprite.POSITIONCOORDINATES_PER_VERTEX + Sprite.COLORCOMPONENTS_PER_VERTEX + Sprite.TEXTURECOORDINATES_PER_VERTEX;
+	public static final int VERTEX_SIZE = 2 + 1 + 2;
 	public static final int VERTICES_PER_SPRITE = 4;
 	public static final int SPRITE_SIZE = Sprite.VERTEX_SIZE * Sprite.VERTICES_PER_SPRITE;
-	public static final int VERTEX_STRIDE = Sprite.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, Sprite.POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, Sprite.COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, Sprite.TEXTURECOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderPrograms.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderPrograms.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
+		.add(ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
 		.build();
 
 	// ===========================================================
@@ -80,7 +68,7 @@ public class Sprite extends RectangularShape {
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final Mesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pMesh, DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
+		super(pX, pY, pWidth, pHeight, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 
 		this.mTextureRegion = pTextureRegion;
 
@@ -143,33 +131,14 @@ public class Sprite extends RectangularShape {
 	@Override
 	protected void onUpdateColor() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 
-		final int redBits = Float.floatToRawIntBits(this.mRed);
-		final int greenBits = Float.floatToRawIntBits(this.mGreen);
-		final int blueBits = Float.floatToRawIntBits(this.mBlue);
-		final int alphaBits = Float.floatToRawIntBits(this.mAlpha);
-
-		final int[] bufferData = vertexBufferObject.getBufferData();
-
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_R] = redBits;
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_G] = greenBits;
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_B] = blueBits;
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_A] = alphaBits;
-
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_R] = redBits;
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_G] = greenBits;
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_B] = blueBits;
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_A] = alphaBits;
-
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_R] = redBits;
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_G] = greenBits;
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_B] = blueBits;
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_A] = alphaBits;
-
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_R] = redBits;
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_G] = greenBits;
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_B] = blueBits;
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX_A] = alphaBits;
+		final float packedColor = this.mColor.getPacked();
+		
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
 
 		vertexBufferObject.setDirtyOnHardware();
 	}
@@ -178,23 +147,23 @@ public class Sprite extends RectangularShape {
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 
-		final int x = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
-		final int y = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
-		final int x2 = Float.floatToRawIntBits(this.mWidth);
-		final int y2 = Float.floatToRawIntBits(this.mHeight);
+		final float x = 0;
+		final float y = 0;
+		final float x2 = this.mWidth;
+		final float y2 = this.mHeight;
 
-		final int[] bufferData = vertexBufferObject.getBufferData();
-		bufferData[0 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x;
-		bufferData[0 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y;
+		final float[] bufferData = vertexBufferObject.getBufferData();
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x;
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y;
 
-		bufferData[1 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x;
-		bufferData[1 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y2;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
 
-		bufferData[2 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x2;
-		bufferData[2 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y;
 
-		bufferData[3 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = x2;
-		bufferData[3 * Sprite.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = y2;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
 
 		vertexBufferObject.setDirtyOnHardware();
 	}
@@ -208,36 +177,36 @@ public class Sprite extends RectangularShape {
 		}
 
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final int[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 
-		final int u;
-		final int v;
-		final int u2;
-		final int v2;
+		final float u;
+		final float v;
+		final float u2;
+		final float v2;
 
 		if(this.mFlippedVertical) {
 			if(this.mFlippedHorizontal) {
-				u = Float.floatToRawIntBits(textureRegion.getU2());
-				u2 = Float.floatToRawIntBits(textureRegion.getU());
-				v = Float.floatToRawIntBits(textureRegion.getV2());
-				v2 = Float.floatToRawIntBits(textureRegion.getV());
+				u = textureRegion.getU2();
+				u2 = textureRegion.getU();
+				v = textureRegion.getV2();
+				v2 = textureRegion.getV();
 			} else {
-				u = Float.floatToRawIntBits(textureRegion.getU());
-				u2 = Float.floatToRawIntBits(textureRegion.getU2());
-				v = Float.floatToRawIntBits(textureRegion.getV2());
-				v2 = Float.floatToRawIntBits(textureRegion.getV());
+				u = textureRegion.getU();
+				u2 = textureRegion.getU2();
+				v = textureRegion.getV2();
+				v2 = textureRegion.getV();
 			}
 		} else {
 			if(this.mFlippedHorizontal) {
-				u = Float.floatToRawIntBits(textureRegion.getU2());
-				u2 = Float.floatToRawIntBits(textureRegion.getU());
-				v = Float.floatToRawIntBits(textureRegion.getV());
-				v2 = Float.floatToRawIntBits(textureRegion.getV2());
+				u = textureRegion.getU2();
+				u2 = textureRegion.getU();
+				v = textureRegion.getV();
+				v2 = textureRegion.getV2();
 			} else {
-				u = Float.floatToRawIntBits(textureRegion.getU());
-				u2 = Float.floatToRawIntBits(textureRegion.getU2());
-				v = Float.floatToRawIntBits(textureRegion.getV());
-				v2 = Float.floatToRawIntBits(textureRegion.getV2());
+				u = textureRegion.getU();
+				u2 = textureRegion.getU2();
+				v = textureRegion.getV();
+				v2 = textureRegion.getV2();
 			}
 		}
 

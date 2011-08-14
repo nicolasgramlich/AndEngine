@@ -6,7 +6,7 @@ import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 

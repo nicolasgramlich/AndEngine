@@ -1,19 +1,17 @@
-package org.anddev.andengine.opengl;
+package org.anddev.andengine.util.color;
+
+import org.anddev.andengine.util.pool.GenericPool;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 5:44:43 PM - Aug 4, 2011
+ * @since 2:25:20 - 12.08.2011
  */
-public class GLES20Fix {
+public class ColorPool extends GenericPool<Color> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	static {
-		System.loadLibrary("andengine");
-	}
 
 	// ===========================================================
 	// Fields
@@ -23,10 +21,6 @@ public class GLES20Fix {
 	// Constructors
 	// ===========================================================
 
-	private GLES20Fix() {
-
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -35,12 +29,21 @@ public class GLES20Fix {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	protected Color onAllocatePoolItem() {
+		return new Color(1, 1, 1, 1);
+	}
+
+	@Override
+	protected void onHandleRecycleItem(final Color pColor) {
+		pColor.setChanging(1, 1, 1, 1);
+
+		super.onHandleRecycleItem(pColor);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	native public static void glVertexAttribPointer(final int pIndex, final int pSize, final int pType, final boolean pNormalized, final int pStride, final int pOffset);
-	native public static void glDrawElements(final int pMode, final int pCount, final int pType, final int pOffset);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

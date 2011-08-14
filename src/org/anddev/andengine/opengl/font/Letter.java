@@ -25,16 +25,16 @@ public class Letter {
 	public final int mHeight;
 	public final int mTextureX;
 	public final int mTextureY;
-	public final int mU;
-	public final int mV;
-	public final int mU2;
-	public final int mV2;
+	public final float mU;
+	public final float mV;
+	public final float mU2;
+	public final float mV2;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	Letter(final char pCharacter, final int pAdvance, final int pWidth, final int pHeight, final int pTextureX, final int pTextureY, final int pU, final int pV, final int pU2, final int pV2) {
+	Letter(final char pCharacter, final int pAdvance, final int pWidth, final int pHeight, final int pTextureX, final int pTextureY, final float pU, final float pV, final float pU2, final float pV2) {
 		this.mCharacter = pCharacter;
 		this.mAdvance = pAdvance;
 		this.mWidth = pWidth;

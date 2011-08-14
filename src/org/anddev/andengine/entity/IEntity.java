@@ -11,7 +11,8 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.ParameterCallable;
-import org.anddev.andengine.util.Transformation;
+import org.anddev.andengine.util.color.Color;
+import org.anddev.andengine.util.transformation.Transformation;
 
 
 /**
@@ -87,8 +88,10 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public float getGreen();
 	public float getBlue();
 	public float getAlpha();
+	public Color getColor();
+	
 	public void setAlpha(final float pAlpha);
-
+	public void setColor(final Color pColor);
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 

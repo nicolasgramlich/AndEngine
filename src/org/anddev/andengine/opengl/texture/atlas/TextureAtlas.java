@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
-import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich

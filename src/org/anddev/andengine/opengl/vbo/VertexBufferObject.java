@@ -1,11 +1,14 @@
 package org.anddev.andengine.opengl.vbo;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+
 import org.anddev.andengine.opengl.GLES20Fix;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.util.FastFloatBuffer;
+import org.anddev.andengine.opengl.util.BufferUtils;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.util.constants.DataConstants;
-import org.xml.sax.DTDHandler;
+import org.anddev.andengine.util.data.DataConstants;
 
 import android.opengl.GLES20;
 
@@ -27,11 +30,12 @@ public class VertexBufferObject {
 	// Fields
 	// ===========================================================
 
-	private final int[] mBufferData;
+	private final float[] mBufferData;
 
 	private final int mDrawType;
 
-	private final FastFloatBuffer mFloatBuffer;
+	private final ByteBuffer mByteBuffer;
+	private final FloatBuffer mFloatBuffer;
 
 	private int mHardwareBufferID = -1;
 	private boolean mLoadedToHardware;
@@ -64,8 +68,10 @@ public class VertexBufferObject {
 		this.mDrawType = pDrawType;
 		this.mManaged = pManaged;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
-		this.mBufferData = new int[pCapacity];
-		this.mFloatBuffer = new FastFloatBuffer(pCapacity);
+		this.mBufferData = new float[pCapacity];
+
+		this.mByteBuffer = ByteBuffer.allocateDirect((pCapacity * GLHelper.BYTES_PER_FLOAT)).order(ByteOrder.nativeOrder());
+		this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 
 		if(pManaged) {
 			this.loadToActiveBufferObjectManager();
@@ -84,7 +90,7 @@ public class VertexBufferObject {
 		this.mManaged = pManaged;
 	}
 
-	public int[] getBufferData() {
+	public float[] getBufferData() {
 		return this.mBufferData;
 	}
 
@@ -127,12 +133,16 @@ public class VertexBufferObject {
 		if(this.mDirtyOnHardware) {
 			this.mDirtyOnHardware = false;
 
-			this.mFloatBuffer.position(0);
-			this.mFloatBuffer.put(this.mBufferData);
+			// TODO On honeycomb the nio buffers are significantly faster, and below native call might not be needed!			
+//			this.mFloatBuffer.position(0);
+//			this.mFloatBuffer.put(this.mBufferData);
+//			this.mFloatBuffer.position(0);
+
+			BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
 			this.mFloatBuffer.position(0);
 
 			synchronized(this) {
-				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mFloatBuffer.mByteBuffer.capacity(), this.mFloatBuffer.mByteBuffer, this.mDrawType);
+				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mDrawType);
 			}
 		}
 
@@ -203,7 +213,7 @@ public class VertexBufferObject {
 		// Fields
 		// ===========================================================
 
-		private int mLocation = LOCATION_INVALID;
+		private int mLocation = VertexBufferObjectAttribute.LOCATION_INVALID;
 
 		private final String mName;
 		private final int mSize;

@@ -6,8 +6,8 @@ import java.io.InputStream;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.StreamUtils;
+import org.anddev.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

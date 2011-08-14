@@ -1,8 +1,7 @@
-package org.anddev.andengine.util;
+package org.anddev.andengine.util.math;
 
 import java.util.Random;
 
-import org.anddev.andengine.util.constants.MathConstants;
 
 import android.util.FloatMath;
 

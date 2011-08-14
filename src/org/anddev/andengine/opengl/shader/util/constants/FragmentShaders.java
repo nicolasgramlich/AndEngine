@@ -15,18 +15,18 @@ public interface FragmentShaders {
 	// TODO Try 'precision lowp float;\n'
 	public static final String FRAGMENTSHADER_COLOR_TEXTURECOORDINATES =
 			"precision lowp float;\n" + 
-			"uniform sampler2D " + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ";\n" +
-			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
-			"varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
+			"uniform sampler2D " + ShaderPrograms.UNIFORM_TEXTURE_0 + ";\n" +
+			"varying lowp vec4 " + ShaderPrograms.VARYING_COLOR + ";\n" +
+			"varying mediump vec2 " + ShaderPrograms.VARYING_TEXTURECOORDINATES + ";\n" +
 			"void main() {\n" +
-			"  gl_FragColor = " + ShaderProgramConstants.VARYING_COLOR + " * texture2D(" + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ", " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ");\n" +
+			"  gl_FragColor = " + ShaderPrograms.VARYING_COLOR + " * texture2D(" + ShaderPrograms.UNIFORM_TEXTURE_0 + ", " + ShaderPrograms.VARYING_TEXTURECOORDINATES + ");\n" +
 			"}";
 
 	public static final String FRAGMENTSHADER_COLOR =
 			"precision lowp float;\n" +
-			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
+			"varying vec4 " + ShaderPrograms.VARYING_COLOR + ";\n" +
 			"void main() {\n" +
-			"  gl_FragColor = " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
+			"  gl_FragColor = " + ShaderPrograms.VARYING_COLOR + ";\n" +
 			"}";
 
 	// ===========================================================

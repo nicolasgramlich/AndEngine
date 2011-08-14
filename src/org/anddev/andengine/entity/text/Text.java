@@ -7,8 +7,7 @@ import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
@@ -16,13 +15,14 @@ import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttr
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
 import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.constants.DataConstants;
+import org.anddev.andengine.util.data.DataConstants;
 
 import android.opengl.GLES20;
 
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
+ * TODO Try Degenerate Triangles?
  * 
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
@@ -32,28 +32,21 @@ public class Text extends RectangularShape {
 	// Constants
 	// ===========================================================
 
-	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
-	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
-	public static final int TEXTURECOORDINATES_PER_VERTEX = 2;
-
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Text.VERTEX_INDEX_X + 1;
-	public static final int COLOR_INDEX_R = Text.VERTEX_INDEX_Y + 1;
-	public static final int COLOR_INDEX_G = Text.COLOR_INDEX_R + 1;
-	public static final int COLOR_INDEX_B = Text.COLOR_INDEX_G + 1;
-	public static final int COLOR_INDEX_A = Text.COLOR_INDEX_B + 1;
-	public static final int TEXTURECOORDINATES_INDEX_U = Text.COLOR_INDEX_A + 1;
+	public static final int COLOR_INDEX = Text.VERTEX_INDEX_Y + 1;
+	public static final int TEXTURECOORDINATES_INDEX_U = Text.COLOR_INDEX + 1;
 	public static final int TEXTURECOORDINATES_INDEX_V = Text.TEXTURECOORDINATES_INDEX_U + 1;
 
-	public static final int VERTEX_SIZE = Text.POSITIONCOORDINATES_PER_VERTEX + Text.COLORCOMPONENTS_PER_VERTEX + Text.TEXTURECOORDINATES_PER_VERTEX;
+	public static final int VERTEX_SIZE = 2 + 1 + 2;
 	public static final int VERTICES_PER_LETTER = 6;
 	public static final int LETTER_SIZE = Text.VERTEX_SIZE * Text.VERTICES_PER_LETTER;
 	public static final int VERTEX_STRIDE = Text.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, Text.POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, Text.COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, Text.TEXTURECOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderPrograms.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderPrograms.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
+		.add(ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
 		.build();
 
 	// ===========================================================
@@ -85,7 +78,7 @@ public class Text extends RectangularShape {
 	}
 
 	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum) {
-		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GLES20.GL_STATIC_DRAW, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
+		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GLES20.GL_STATIC_DRAW, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
@@ -172,7 +165,7 @@ public class Text extends RectangularShape {
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
+		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
 		this.mMesh.draw(shaderProgram, GLES20.GL_TRIANGLES, this.mVertexCount);
 	}
 
@@ -185,45 +178,18 @@ public class Text extends RectangularShape {
 	@Override
 	protected void onUpdateColor() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 
-		final int redBits = Float.floatToRawIntBits(this.mRed);
-		final int greenBits = Float.floatToRawIntBits(this.mGreen);
-		final int blueBits = Float.floatToRawIntBits(this.mBlue);
-		final int alphaBits = Float.floatToRawIntBits(this.mAlpha);
-
-		final int[] bufferData = vertexBufferObject.getBufferData();
-
+		final float packedColor = this.mColor.getPacked();
+		
 		int index = 0;
 		for(int i = 0; i < this.mCharactersMaximum; i++) {
-			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
-			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-
-			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
-			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-
-			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
-			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-
-			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
-			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-
-			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
-			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
-
-			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX_R] = redBits;
-			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
 
 			index += Text.LETTER_SIZE;
 		}
@@ -238,7 +204,7 @@ public class Text extends RectangularShape {
 		}
 
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final int[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final Font font = this.mFont;
 		final String[] lines = this.mLines;
@@ -265,7 +231,6 @@ public class Text extends RectangularShape {
 			}
 
 			final int lineY = lineIndex * (font.getLineHeight() + font.getLineGap());
-			final int lineYBits = Float.floatToRawIntBits(lineY);
 
 			final int lineLength = line.length();
 			for (int letterIndex = 0; letterIndex < lineLength; letterIndex++) {
@@ -274,42 +239,38 @@ public class Text extends RectangularShape {
 				final int lineY2 = lineY + lineHeight;
 				final int lineX2 = lineX + letter.mWidth;
 
-				final int lineXBits = Float.floatToRawIntBits(lineX);
-				final int lineX2Bits = Float.floatToRawIntBits(lineX2);
-				final int lineY2Bits = Float.floatToRawIntBits(lineY2);
+				final float u = letter.mU;
+				final float v = letter.mV;
+				final float u2 = letter.mU2;
+				final float v2 = letter.mV2;
 
-				final int u = letter.mU;
-				final int v = letter.mV;
-				final int u2 = letter.mU2;
-				final int v2 = letter.mV2;
-
-				bufferData[index + 0 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineXBits;
-				bufferData[index + 0 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineYBits;
+				bufferData[index + 0 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX;
+				bufferData[index + 0 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY;
 				bufferData[index + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 				bufferData[index + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 1 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineXBits;
-				bufferData[index + 1 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2Bits;
+				bufferData[index + 1 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX;
+				bufferData[index + 1 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2;
 				bufferData[index + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 				bufferData[index + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 2 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2Bits;
-				bufferData[index + 2 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2Bits;
+				bufferData[index + 2 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2;
+				bufferData[index + 2 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2;
 				bufferData[index + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 				bufferData[index + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 3 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2Bits;
-				bufferData[index + 3 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2Bits;
+				bufferData[index + 3 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2;
+				bufferData[index + 3 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2;
 				bufferData[index + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 				bufferData[index + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 4 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2Bits;
-				bufferData[index + 4 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineYBits;
+				bufferData[index + 4 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2;
+				bufferData[index + 4 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY;
 				bufferData[index + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 				bufferData[index + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 5 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineXBits;
-				bufferData[index + 5 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineYBits;
+				bufferData[index + 5 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX;
+				bufferData[index + 5 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY;
 				bufferData[index + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 				bufferData[index + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 

@@ -2,7 +2,7 @@ package org.anddev.andengine.engine.camera.hud.controls;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.util.MathUtils;
+import org.anddev.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 

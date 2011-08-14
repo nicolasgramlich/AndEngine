@@ -4,13 +4,11 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
-import org.anddev.andengine.util.constants.MathConstants;
 
 import android.opengl.GLES20;
 
@@ -26,23 +24,17 @@ public class Rectangle extends RectangularShape {
 	// Constants
 	// ===========================================================
 
-	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
-	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
-
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Rectangle.VERTEX_INDEX_X + 1;
-	public static final int COLOR_INDEX_R = Rectangle.VERTEX_INDEX_Y + 1;
-	public static final int COLOR_INDEX_G = Rectangle.COLOR_INDEX_R + 1;
-	public static final int COLOR_INDEX_B = Rectangle.COLOR_INDEX_G + 1;
-	public static final int COLOR_INDEX_A = Rectangle.COLOR_INDEX_B + 1;
+	public static final int COLOR_INDEX = Rectangle.VERTEX_INDEX_Y + 1;
 
-	public static final int VERTEX_SIZE = Rectangle.POSITIONCOORDINATES_PER_VERTEX + Rectangle.COLORCOMPONENTS_PER_VERTEX;
+	public static final int VERTEX_SIZE = 2 + 1;
 	public static final int VERTICES_PER_RECTANGLE = 4;
 	public static final int RECTANGLE_SIZE = Rectangle.VERTEX_SIZE * Rectangle.VERTICES_PER_RECTANGLE;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, Rectangle.POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, Rectangle.COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderPrograms.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderPrograms.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
 		.build();
 
 	// ===========================================================
@@ -75,7 +67,7 @@ public class Rectangle extends RectangularShape {
 	 * @param pShaderProgram if <code>null</code> is passed, a default {@link ShaderProgram} is used.
 	 */
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pMesh, DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
+		super(pX, pY, pWidth, pHeight, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
 	}
 
 	// ===========================================================
@@ -94,33 +86,14 @@ public class Rectangle extends RectangularShape {
 	@Override
 	protected void onUpdateColor() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 
-		final int redBits = Float.floatToRawIntBits(this.mRed);
-		final int greenBits = Float.floatToRawIntBits(this.mGreen);
-		final int blueBits = Float.floatToRawIntBits(this.mBlue);
-		final int alphaBits = Float.floatToRawIntBits(this.mAlpha);
+		final float packedColor = this.mColor.getPacked();
 
-		final int[] bufferData = vertexBufferObject.getBufferData();
-
-		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_R] = redBits;
-		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_G] = greenBits;
-		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_B] = blueBits;
-		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_A] = alphaBits;
-
-		bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_R] = redBits;
-		bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_G] = greenBits;
-		bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_B] = blueBits;
-		bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_A] = alphaBits;
-
-		bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_R] = redBits;
-		bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_G] = greenBits;
-		bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_B] = blueBits;
-		bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_A] = alphaBits;
-
-		bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_R] = redBits;
-		bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_G] = greenBits;
-		bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_B] = blueBits;
-		bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX_A] = alphaBits;
+		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
+		bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
+		bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
+		bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
 
 		vertexBufferObject.setDirtyOnHardware();
 	}
@@ -129,12 +102,12 @@ public class Rectangle extends RectangularShape {
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 
-		final int x = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
-		final int y = MathConstants.FLOAT_TO_RAW_INT_BITS_ZERO;
-		final int x2 = Float.floatToRawIntBits(this.mWidth);
-		final int y2 = Float.floatToRawIntBits(this.mHeight);
+		final float x = 0;
+		final float y = 0;
+		final float x2 = this.mWidth;
+		final float y2 = this.mHeight;
 
-		final int[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x;
 		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y;
 

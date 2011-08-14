@@ -1,12 +1,15 @@
-package org.anddev.andengine.opengl;
+package org.anddev.andengine.opengl.util;
+
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 5:44:43 PM - Aug 4, 2011
+ * @since 23:06:51 - 11.08.2011
  */
-public class GLES20Fix {
+public class BufferUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,10 +26,6 @@ public class GLES20Fix {
 	// Constructors
 	// ===========================================================
 
-	private GLES20Fix() {
-
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -39,8 +38,19 @@ public class GLES20Fix {
 	// Methods
 	// ===========================================================
 
-	native public static void glVertexAttribPointer(final int pIndex, final int pSize, final int pType, final boolean pNormalized, final int pStride, final int pOffset);
-	native public static void glDrawElements(final int pMode, final int pCount, final int pType, final int pOffset);
+	/**
+	 * @param pByteBuffer must be a direct Buffer.
+	 * @param pSource 
+	 * @param pLength to copy in pSource.
+	 * @param pOffset in pSource.
+	 */
+	public static void put(final ByteBuffer pByteBuffer, final float[] pSource, final int pLength, final int pOffset) {
+		BufferUtils.jniPut(pByteBuffer, pSource, pLength, pOffset);
+		pByteBuffer.position(0);
+		pByteBuffer.limit(pLength << 2);
+	}
+
+	private native static void jniPut(final Buffer pBuffer, final float[] pSource, final int pLength, final int pOffset);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

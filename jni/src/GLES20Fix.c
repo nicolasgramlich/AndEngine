@@ -1,6 +1,9 @@
 #include <jni.h>
 #include <GLES2/gl2.h>
-//#include <GLES2/gl2ext.h>
+
+// ===========================================================
+// org.anddev.andengine.opengl.GLES20Fix
+// ===========================================================
 
 void Java_org_anddev_andengine_opengl_GLES20Fix_glVertexAttribPointer (JNIEnv *env, jclass c, jint index, jint size, jint type, jboolean normalized, jint stride, jint offset) {
 	glVertexAttribPointer(index, size, type, normalized, stride, (void*) offset);

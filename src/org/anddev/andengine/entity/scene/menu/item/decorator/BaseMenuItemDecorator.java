@@ -11,7 +11,8 @@ import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.util.Transformation;
+import org.anddev.andengine.util.color.Color;
+import org.anddev.andengine.util.transformation.Transformation;
 
 /**
  * I HATE THIS CLASS!
@@ -94,6 +95,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	public float getWidth() {
 		return this.mMenuItem.getWidth();
 	}
+	
+	@Override
+	public float getBaseWidth() {
+		return 0;
+	}
 
 	@Override
 	public float getWidthScaled() {
@@ -103,6 +109,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public float getHeight() {
 		return this.mMenuItem.getHeight();
+	}
+	
+	@Override
+	public float getBaseHeight() {
+		return this.mMenuItem.getBaseHeight();
 	}
 
 	@Override
@@ -158,6 +169,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void setAlpha(final float pAlpha) {
 		this.mMenuItem.setAlpha(pAlpha);
+	}
+
+	@Override
+	public Color getColor() {
+		return this.mMenuItem.getColor();
+	}
+
+	@Override
+	public void setColor(final Color pColor) {
+		this.mMenuItem.setColor(pColor);
 	}
 
 	@Override

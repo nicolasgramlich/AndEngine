@@ -2,6 +2,8 @@ package org.anddev.andengine.util;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.util.math.MathUtils;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.

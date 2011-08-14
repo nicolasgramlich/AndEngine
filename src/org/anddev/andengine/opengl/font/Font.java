@@ -192,10 +192,10 @@ public class Font {
 			this.mCurrentTextureY += this.getLineGap() + this.getLineHeight();
 		}
 
-		final int u = Float.floatToRawIntBits(this.mCurrentTextureX / textureWidth);
-		final int v = Float.floatToRawIntBits(this.mCurrentTextureY / textureHeight);
-		final int u2 = Float.floatToRawIntBits((this.mCurrentTextureX + letterWidth) / textureWidth);
-		final int v2 = Float.floatToRawIntBits((this.mCurrentTextureY + letterHeight) / textureHeight); // Calculations could be optimized
+		final float u = this.mCurrentTextureX / textureWidth;
+		final float v = this.mCurrentTextureY / textureHeight;
+		final float u2 = (this.mCurrentTextureX + letterWidth) / textureWidth;
+		final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight; // TODO Calculations could be optimized
 
 		final Letter letter = new Letter(pCharacter, this.getLetterAdvance(pCharacter), letterWidth, letterHeight, this.mCurrentTextureX, this.mCurrentTextureY, u, v, u2, v2);
 		this.mCurrentTextureX += letterWidth;

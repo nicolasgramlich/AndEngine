@@ -6,19 +6,21 @@ import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.DefaultShaderPrograms;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
-import org.anddev.andengine.util.Transformation;
+import org.anddev.andengine.util.color.Color;
+import org.anddev.andengine.util.transformation.Transformation;
 
 import android.opengl.GLES20;
 
 /**
  * TODO Might extend Shape
+ * TODO TRY DEGENERATE TRIANGLES!
+ * TODO Check if there is this multiple-of-X-byte(?) alignment optimization?
  * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -31,27 +33,20 @@ public class SpriteBatch extends Entity {
 	// Constants
 	// ===========================================================
 
-	public static final int POSITIONCOORDINATES_PER_VERTEX = 2;
-	public static final int COLORCOMPONENTS_PER_VERTEX = 4;
-	public static final int TEXTURECOORDINATES_PER_VERTEX = 2;
-
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = SpriteBatch.VERTEX_INDEX_X + 1;
-	public static final int COLOR_INDEX_R = SpriteBatch.VERTEX_INDEX_Y + 1;
-	public static final int COLOR_INDEX_G = SpriteBatch.COLOR_INDEX_R + 1;
-	public static final int COLOR_INDEX_B = SpriteBatch.COLOR_INDEX_G + 1;
-	public static final int COLOR_INDEX_A = SpriteBatch.COLOR_INDEX_B + 1;
-	public static final int TEXTURECOORDINATES_INDEX_U = SpriteBatch.COLOR_INDEX_A + 1;
+	public static final int COLOR_INDEX = SpriteBatch.VERTEX_INDEX_Y + 1;
+	public static final int TEXTURECOORDINATES_INDEX_U = SpriteBatch.COLOR_INDEX + 1;
 	public static final int TEXTURECOORDINATES_INDEX_V = SpriteBatch.TEXTURECOORDINATES_INDEX_U + 1;
 
-	public static final int VERTEX_SIZE = SpriteBatch.POSITIONCOORDINATES_PER_VERTEX + SpriteBatch.COLORCOMPONENTS_PER_VERTEX + SpriteBatch.TEXTURECOORDINATES_PER_VERTEX;
+	public static final int VERTEX_SIZE = 2 + 1 + 2;
 	public static final int VERTICES_PER_SPRITE = 6;
 	public static final int SPRITE_SIZE = SpriteBatch.VERTEX_SIZE * SpriteBatch.VERTICES_PER_SPRITE;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION, SpriteBatch.POSITIONCOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR, SpriteBatch.COLORCOMPONENTS_PER_VERTEX, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, SpriteBatch.TEXTURECOORDINATES_PER_VERTEX, GLES20.GL_FLOAT, false)
+		.add(ShaderPrograms.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderPrograms.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
+		.add(ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
 		.build();
 
 	// ===========================================================
@@ -151,7 +146,7 @@ public class SpriteBatch extends Entity {
 	protected void draw(final Camera pCamera) {
 		this.begin();
 
-		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? DefaultShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
+		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
 		this.mSpriteBatchMesh.draw(shaderProgram, GLES20.GL_TRIANGLES, this.mVertices);
 
 		this.end();
@@ -545,72 +540,51 @@ public class SpriteBatch extends Entity {
 		 * +-2
 		 */
 		private void addInner(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-			final int x1 = Float.floatToRawIntBits(pX1);
-			final int y1 = Float.floatToRawIntBits(pY1);
-			final int x2 = Float.floatToRawIntBits(pX2);
-			final int y2 = Float.floatToRawIntBits(pY2);
-			final int redBits = Float.floatToRawIntBits(pRed);
-			final int greenBits = Float.floatToRawIntBits(pGreen);
-			final int blueBits = Float.floatToRawIntBits(pBlue);
-			final int alphaBits = Float.floatToRawIntBits(pAlpha);
-			final int u = Float.floatToRawIntBits(pTextureRegion.getU());
-			final int v = Float.floatToRawIntBits(pTextureRegion.getV());
-			final int u2 = Float.floatToRawIntBits(pTextureRegion.getU2());
-			final int v2 = Float.floatToRawIntBits(pTextureRegion.getV2());
+			final float x1 = pX1;
+			final float y1 = pY1;
+			final float x2 = pX2;
+			final float y2 = pY2;
+			final float packedColor = Color.pack(pRed, pGreen, pBlue, pAlpha);
+			final float u = pTextureRegion.getU();
+			final float v = pTextureRegion.getV();
+			final float u2 = pTextureRegion.getU2();
+			final float v2 = pTextureRegion.getV2();
 
-			final int[] bufferData = this.mVertexBufferObject.getBufferData();
+			final float[] bufferData = this.mVertexBufferObject.getBufferData();
 			final int index = this.mIndex;
 			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
 			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
 			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
 
 			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
 			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
 			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
 
 			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
 			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
 			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
 
 			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
 			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
 			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
 
 			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
 			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
 			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
 
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
 
@@ -623,76 +597,55 @@ public class SpriteBatch extends Entity {
 		 * 2-4
 		 */
 		private void addInner(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-			final int x1 = Float.floatToRawIntBits(pX1);
-			final int y1 = Float.floatToRawIntBits(pY1);
-			final int x2 = Float.floatToRawIntBits(pX2);
-			final int y2 = Float.floatToRawIntBits(pY2);
-			final int x3 = Float.floatToRawIntBits(pX3);
-			final int y3 = Float.floatToRawIntBits(pY3);
-			final int x4 = Float.floatToRawIntBits(pX4);
-			final int y4 = Float.floatToRawIntBits(pY4);
-			final int redBits = Float.floatToRawIntBits(pRed);
-			final int greenBits = Float.floatToRawIntBits(pGreen);
-			final int blueBits = Float.floatToRawIntBits(pBlue);
-			final int alphaBits = Float.floatToRawIntBits(pAlpha);
-			final int u = Float.floatToRawIntBits(pTextureRegion.getU());
-			final int v = Float.floatToRawIntBits(pTextureRegion.getV());
-			final int u2 = Float.floatToRawIntBits(pTextureRegion.getU2());
-			final int v2 = Float.floatToRawIntBits(pTextureRegion.getV2());
+			final float x1 = pX1;
+			final float y1 = pY1;
+			final float x2 = pX2;
+			final float y2 = pY2;
+			final float x3 = pX3;
+			final float y3 = pY3;
+			final float x4 = pX4;
+			final float y4 = pY4;
+			final float packedColor = Color.pack(pRed, pGreen, pBlue, pAlpha);
+			final float u = pTextureRegion.getU();
+			final float v = pTextureRegion.getV();
+			final float u2 = pTextureRegion.getU2();
+			final float v2 = pTextureRegion.getV2();
 
-			final int[] bufferData = this.mVertexBufferObject.getBufferData();
+			final float[] bufferData = this.mVertexBufferObject.getBufferData();
 			final int index = this.mIndex;
 			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
 			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
 			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
 
 			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
 			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
 			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
 
 			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x3;
 			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y3;
-			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
 			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
 
 			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x3;
 			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y3;
-			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
 			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
 
 			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
 			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
 			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
 
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x4;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y4;
-			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_R] = redBits;
-			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_G] = greenBits;
-			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_B] = blueBits;
-			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX_A] = alphaBits;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
 

@@ -3,7 +3,7 @@ package org.anddev.andengine.sensor.orientation;
 import java.util.Arrays;
 
 import org.anddev.andengine.sensor.BaseSensorData;
-import org.anddev.andengine.util.constants.MathConstants;
+import org.anddev.andengine.util.math.MathConstants;
 
 import android.hardware.SensorManager;
 import android.view.Surface;

@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.constants.TimeConstants;
+import org.anddev.andengine.util.math.MathUtils;
 
 public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================

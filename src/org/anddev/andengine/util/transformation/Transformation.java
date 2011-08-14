@@ -1,4 +1,6 @@
-package org.anddev.andengine.util;
+package org.anddev.andengine.util.transformation;
+
+import org.anddev.andengine.util.math.MathUtils;
 
 import android.util.FloatMath;
 

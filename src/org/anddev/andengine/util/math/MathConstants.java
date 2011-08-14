@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.constants;
+package org.anddev.andengine.util.math;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -20,8 +20,6 @@ public interface MathConstants {
 	public static final float DEG_TO_RAD = PI / 180.0f;
 	public static final float RAD_TO_DEG = 180.0f / PI;
 
-	public static final int FLOAT_TO_RAW_INT_BITS_ZERO = Float.floatToRawIntBits(0);
-	
 	// ===========================================================
 	// Methods
 	// ===========================================================

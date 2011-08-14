@@ -1,6 +1,6 @@
 package org.anddev.andengine.util.modifier.ease;
 
-import org.anddev.andengine.util.constants.MathConstants;
+import org.anddev.andengine.util.math.MathConstants;
 
 /**
  * (c) 2010 Nicolas Gramlich

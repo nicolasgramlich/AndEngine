@@ -13,8 +13,9 @@ import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatch
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.SmartList;
-import org.anddev.andengine.util.Transformation;
+import org.anddev.andengine.util.color.Color;
 import org.anddev.andengine.util.constants.Constants;
+import org.anddev.andengine.util.transformation.Transformation;
 
 
 /**
@@ -61,10 +62,7 @@ public class Entity implements IEntity {
 	private EntityModifierList mEntityModifiers;
 	private UpdateHandlerList mUpdateHandlers;
 
-	protected float mRed = 1f;
-	protected float mGreen = 1f;
-	protected float mBlue = 1f;
-	protected float mAlpha = 1f;
+	protected Color mColor = new Color(1, 1, 1, 1);
 
 	protected float mX;
 	protected float mY;
@@ -356,22 +354,32 @@ public class Entity implements IEntity {
 
 	@Override
 	public float getRed() {
-		return this.mRed;
+		return this.mColor.getRed();
 	}
 
 	@Override
 	public float getGreen() {
-		return this.mGreen;
+		return this.mColor.getGreen();
 	}
 
 	@Override
 	public float getBlue() {
-		return this.mBlue;
+		return this.mColor.getBlue();
 	}
 
 	@Override
 	public float getAlpha() {
-		return this.mAlpha;
+		return this.mColor.getAlpha();
+	}
+	
+	@Override
+	public Color getColor() {
+		return this.mColor;
+	}
+	
+	@Override
+	public void setColor(Color pColor) {
+		this.mColor.set(pColor);
 	}
 
 	/**
@@ -379,10 +387,8 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setAlpha(final float pAlpha) {
-		if(this.mAlpha != pAlpha ) {
-			this.mAlpha = pAlpha;
-	
-			this.onUpdateColor(); // TODO Potentially could be only updating the alpha
+		if(this.mColor.setAlphaChecking(pAlpha)) {
+			this.onUpdateColor();
 		}
 	}
 
@@ -393,11 +399,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
-		if(this.mRed != pRed || this.mGreen != pGreen || this.mBlue != pBlue) { // TODO Is this check worth it?
-			this.mRed = pRed;
-			this.mGreen = pGreen;
-			this.mBlue = pBlue;
-	
+		if(this.mColor.setChanging(pRed, pGreen, pBlue)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}
@@ -410,12 +412,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(this.mAlpha != pAlpha || this.mRed != pRed || this.mGreen != pGreen || this.mBlue != pBlue) { // TODO Is this check worth it?
-			this.mRed = pRed;
-			this.mGreen = pGreen;
-			this.mBlue = pBlue;
-			this.mAlpha = pAlpha;
-		
+		if(this.mColor.setChanging(pRed, pGreen, pBlue, pAlpha)) { // TODO Is this check worth it?
 			this.onUpdateColor(); 
 		}
 	}
@@ -911,10 +908,7 @@ public class Entity implements IEntity {
 		this.mScaleX = 1;
 		this.mScaleY = 1;
 
-		this.mRed = 1.0f;
-		this.mGreen = 1.0f;
-		this.mBlue = 1.0f;
-		this.mAlpha = 1.0f;
+		this.mColor.reset();
 
 		if(this.mEntityModifiers != null) {
 			this.mEntityModifiers.reset();

@@ -1,4 +1,4 @@
-package org.anddev.andengine.util;
+package org.anddev.andengine.util.color;
 
 import android.graphics.Color;
 
@@ -52,7 +52,7 @@ public class ColorUtils {
 	public static int RGBToColor(final float pRed, final float pGreen, final float pBlue) {
 		return Color.rgb((int)(pRed * COLOR_FLOAT_TO_INT_FACTOR), (int)(pGreen * COLOR_FLOAT_TO_INT_FACTOR), (int)(pBlue * COLOR_FLOAT_TO_INT_FACTOR));
 	}
-
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================

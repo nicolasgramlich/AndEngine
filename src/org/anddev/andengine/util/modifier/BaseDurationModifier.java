@@ -1,7 +1,5 @@
 package org.anddev.andengine.util.modifier;
 
-
-
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.

@@ -423,6 +423,10 @@ public class GLHelper {
 		return pixelsARGB_8888;
 	}
 
+	public static void clearGLError() {
+		GLES20.glGetError();
+	}
+
 	public static void checkGLError() throws GLException { // TODO Use more often!
 		final int err = GLES20.glGetError();
 		if (err != GLES20.GL_NO_ERROR) {

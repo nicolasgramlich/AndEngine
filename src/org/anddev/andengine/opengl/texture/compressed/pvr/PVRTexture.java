@@ -10,9 +10,10 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.ArrayUtils;
 import org.anddev.andengine.util.Debug;
-import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.constants.DataConstants;
+import org.anddev.andengine.util.data.ByteArrayOutputStream;
+import org.anddev.andengine.util.data.DataConstants;
+import org.anddev.andengine.util.math.MathUtils;
 
 import android.opengl.GLES20;
 
@@ -129,54 +130,61 @@ public abstract class PVRTexture extends Texture {
 
 	@Override
 	protected void writeTextureToHardware() throws IOException {
-		final InputStream inputStream = this.getInputStream();
-		try {
-			final byte[] data = StreamUtils.streamToBytes(inputStream);
-			final ByteBuffer dataByteBuffer = ByteBuffer.wrap(data);
-			dataByteBuffer.rewind();
-			dataByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		final ByteBuffer pvrDataBuffer = ByteBuffer.wrap(this.getPVRData());
 
-			int width = this.getWidth();
-			int height = this.getHeight();
+		int width = this.getWidth();
+		int height = this.getHeight();
 
-			final int dataLength = this.mPVRTextureHeader.getDataLength();
-			final int glFormat = this.mPixelFormat.getGLFormat();
-			final int glType = this.mPixelFormat.getGLType();
+		final int dataLength = this.mPVRTextureHeader.getDataLength();
+		final int glFormat = this.mPixelFormat.getGLFormat();
+		final int glType = this.mPixelFormat.getGLType();
 
-			final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / 8;
+		final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / DataConstants.BITS_PER_BYTE;
 
-			/* Calculate the data size for each texture level and respect the minimum number of blocks. */
-			int mipmapLevel = 0;
-			int currentPixelDataOffset = 0;
-			while (currentPixelDataOffset < dataLength) {
-				final int currentPixelDataSize = width * height * bytesPerPixel;
-				final ByteBuffer pixelData = ByteBuffer.allocate(currentPixelDataSize).order(ByteOrder.nativeOrder());
-				pixelData.put(data, PVRTextureHeader.SIZE + currentPixelDataOffset, currentPixelDataSize);
+		GLHelper.clearGLError();
+		
+		/* Calculate the data size for each texture level and respect the minimum number of blocks. */
+		int mipmapLevel = 0;
+		int currentPixelDataOffset = 0;
+		while (currentPixelDataOffset < dataLength) {
+			final int currentPixelDataSize = width * height * bytesPerPixel;
 
-				if (mipmapLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
-					Debug.w(String.format("Mipmap level '%u' is not squared. Width: '%u', height: '%u'. Texture won't render correctly.", mipmapLevel, width, height));
-				}
-
-				GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelData);
-
-				GLHelper.checkGLError();
-
-				currentPixelDataOffset += currentPixelDataSize;
-
-				/* Prepare next mipmap level. */
-				width = Math.max(width >> 1, 1);
-				height = Math.max(height >> 1, 1);
-
-				mipmapLevel++;
+			if (mipmapLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
+				Debug.w(String.format("Mipmap level '%u' is not squared. Width: '%u', height: '%u'. Texture won't render correctly.", mipmapLevel, width, height));
 			}
-		} finally {
-			StreamUtils.close(inputStream);
+
+			pvrDataBuffer.position(PVRTextureHeader.SIZE + currentPixelDataOffset);
+			pvrDataBuffer.limit(PVRTextureHeader.SIZE + currentPixelDataOffset + currentPixelDataSize);
+			ByteBuffer pixelBuffer = pvrDataBuffer.slice();
+
+			GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelBuffer);
+
+			GLHelper.checkGLError();
+
+			currentPixelDataOffset += currentPixelDataSize;
+
+			/* Prepare next mipmap level. */
+			width = Math.max(width >> 1, 1);
+			height = Math.max(height >> 1, 1);
+
+			mipmapLevel++;
 		}
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected byte[] getPVRData() throws IOException {
+		final InputStream inputStream = this.getInputStream();
+		try {
+			final ByteArrayOutputStream os = new ByteArrayOutputStream(DataConstants.BYTES_PER_KILOBYTE, DataConstants.BYTES_PER_MEGABYTE / 2);
+			StreamUtils.copy(inputStream, os);
+			return os.toByteArray();
+		} finally {
+			StreamUtils.close(inputStream);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
@@ -354,6 +362,10 @@ public abstract class PVRTexture extends Texture {
 			switch(pPixelFormat) {
 				case RGBA_8888:
 					return PVRTextureFormat.RGBA_8888;
+				case RGBA_4444:
+					return PVRTextureFormat.RGBA_4444;
+				case RGB_565:
+					return PVRTextureFormat.RGB_565;
 				default:
 					throw new IllegalArgumentException("Unsupported " + PixelFormat.class.getName() + ": '" + pPixelFormat + "'.");
 			}

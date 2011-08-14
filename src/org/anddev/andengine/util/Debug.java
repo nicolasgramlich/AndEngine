@@ -89,7 +89,7 @@ public class Debug implements Constants {
 	}
 
 	public static void w(final String pMessage) {
-		Debug.w(pMessage, null);
+		Debug.w(pMessage, new Exception());
 	}
 
 	public static void w(final Throwable pThrowable) {
@@ -99,7 +99,7 @@ public class Debug implements Constants {
 	public static void w(final String pMessage, final Throwable pThrowable) {
 		if(sDebugLevel.isSameOrLessThan(DebugLevel.WARNING)) {
 			if(pThrowable == null) {
-				Log.w(sDebugTag, pMessage, new Exception());
+				Log.w(sDebugTag, pMessage);
 			} else {
 				Log.w(sDebugTag, pMessage, pThrowable);
 			}
@@ -107,7 +107,7 @@ public class Debug implements Constants {
 	}
 
 	public static void e(final String pMessage) {
-		Debug.e(pMessage, null);
+		Debug.e(pMessage, new Exception());
 	}
 
 	public static void e(final Throwable pThrowable) {
@@ -117,7 +117,7 @@ public class Debug implements Constants {
 	public static void e(final String pMessage, final Throwable pThrowable) {
 		if(sDebugLevel.isSameOrLessThan(DebugLevel.ERROR)) {
 			if(pThrowable == null) {
-				Log.e(sDebugTag, pMessage, new Exception());
+				Log.e(sDebugTag, pMessage);
 			} else {
 				Log.e(sDebugTag, pMessage, pThrowable);
 			}

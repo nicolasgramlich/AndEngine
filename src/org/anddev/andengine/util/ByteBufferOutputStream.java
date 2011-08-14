@@ -2,11 +2,17 @@ package org.anddev.andengine.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 import org.anddev.andengine.util.Debug;
 
-public class ByteArrayOutputStream extends OutputStream {
-
+/**
+ * (c) Zynga 2011
+ *
+ * @author Nicolas Gramlich <ngramlich@zynga.com>
+ * @since 02:19:02 - 14.08.2011
+ */
+public class ByteBufferOutputStream extends OutputStream {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,7 +22,7 @@ public class ByteArrayOutputStream extends OutputStream {
 	// ===========================================================
 
 	protected final int mMaximumGrow;
-	
+
 	protected byte mData[];
 	protected int mCount;
 
@@ -24,7 +30,7 @@ public class ByteArrayOutputStream extends OutputStream {
 	// Constructors
 	// ===========================================================
 
-	public ByteArrayOutputStream(final int pInitialCapacity, final int pMaximumGrow) {
+	public ByteBufferOutputStream(final int pInitialCapacity, final int pMaximumGrow) {
 		this.mMaximumGrow = pMaximumGrow;
 		this.mData = new byte[pInitialCapacity];
 	}
@@ -88,10 +94,8 @@ public class ByteArrayOutputStream extends OutputStream {
 		this.mData = data;
 	}
 
-	public byte[] toByteArray() {
-		final byte[] data = new byte[this.mCount];
-		System.arraycopy(this.mData, 0, data, 0, this.mCount);
-		return data;
+	public ByteBuffer toByteBuffer() {
+		return ByteBuffer.wrap(this.mData, 0, this.mCount).slice();
 	}
 
 	// ===========================================================

@@ -128,26 +128,6 @@ public class TiledTextureRegion extends BaseTextureRegion {
 		return (float)(this.getTexturePositionOfCurrentTileY() + this.getTileHeight()) / this.mTexture.getHeight();
 	}
 	
-	@Override
-	public int getTextureCropLeft() {
-		return this.getTexturePositionOfCurrentTileX();
-	}
-
-	@Override
-	public int getTextureCropTop() {
-		return this.getTexturePositionOfCurrentTileY();
-	}
-
-	@Override
-	public int getTextureCropWidth() {
-		return this.getTileWidth();
-	}
-
-	@Override
-	public int getTextureCropHeight() {
-		return this.getTileHeight();
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

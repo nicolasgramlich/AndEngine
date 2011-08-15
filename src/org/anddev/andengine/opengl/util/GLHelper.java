@@ -7,11 +7,9 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
-import javax.microedition.khronos.opengles.GL11Ext;
 
 import org.anddev.andengine.engine.options.RenderOptions;
 import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
 import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
@@ -52,7 +50,6 @@ public class GLHelper {
 
 	private static FastFloatBuffer sCurrentVertexFloatBuffer = null;
 	private static FastFloatBuffer sCurrentTextureFloatBuffer = null;
-	private static TextureRegionCrop sCurrentTextureRegionCrop = null;
 
 	private static boolean sEnableDither = true;
 	private static boolean sEnableLightning = true;
@@ -91,7 +88,6 @@ public class GLHelper {
 
 		GLHelper.sCurrentVertexFloatBuffer = null;
 		GLHelper.sCurrentTextureFloatBuffer = null;
-		GLHelper.sCurrentTextureRegionCrop = null;
 
 		GLHelper.enableDither(pGL);
 		GLHelper.enableLightning(pGL);
@@ -407,13 +403,6 @@ public class GLHelper {
 
 	public static void bufferData(final GL11 pGL11, final ByteBuffer pByteBuffer, final int pUsage) {
 		pGL11.glBufferData(GL11.GL_ARRAY_BUFFER, pByteBuffer.capacity(), pByteBuffer, pUsage);
-	}
-
-	public static void textureCrop(final GL11 pGL11, final TextureRegionCrop pTextureRegionCrop) {
-		if (pTextureRegionCrop != GLHelper.sCurrentTextureRegionCrop || pTextureRegionCrop.isDirty()) {
-			GLHelper.sCurrentTextureRegionCrop = pTextureRegionCrop;
-			pGL11.glTexParameteriv(GL10.GL_TEXTURE_2D, GL11Ext.GL_TEXTURE_CROP_RECT_OES, pTextureRegionCrop.getData(), 0);
-		}
 	}
 
 	/**

@@ -22,7 +22,7 @@ import android.util.FloatMath;
  *  <li><b>ty</b> is the <b>y translation</b></li>
  * </ul>
  *
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -94,11 +94,13 @@ public class Transformation {
 	}
 
 	public void preTranslate(final float pX, final float pY) {
-		this.preConcat(1.0f, 0.0f, 0.0f, 1.0f, pX, pY);
+		this.tx += pX * this.a + pY * this.c;
+		this.ty += pX * this.b + pY * this.d;
 	}
 
 	public void postTranslate(final float pX, final float pY) {
-		this.postConcat(1.0f, 0.0f, 0.0f, 1.0f, pX, pY);
+		this.tx += pX;
+		this.ty += pY;
 	}
 
 	public Transformation setToTranslate(final float pX, final float pY) {
@@ -113,11 +115,19 @@ public class Transformation {
 	}
 
 	public void preScale(final float pScaleX, final float pScaleY) {
-		this.preConcat(pScaleX, 0.0f, 0.0f, pScaleY, 0.0f, 0.0f);
+		this.a *= pScaleX;
+		this.b *= pScaleX;
+		this.c *= pScaleY;
+		this.d *= pScaleY;
 	}
 
 	public void postScale(final float pScaleX, final float pScaleY) {
-		this.postConcat(pScaleX, 0.0f, 0.0f, pScaleY, 0.0f, 0.0f);
+		this.a = this.a * pScaleX;
+		this.b = this.b * pScaleY;
+		this.c = this.c * pScaleX;
+		this.d = this.d * pScaleY;
+		this.tx = this.tx * pScaleX;
+		this.ty = this.ty * pScaleY;
 	}
 
 	public Transformation setToScale(final float pScaleX, final float pScaleY) {
@@ -137,7 +147,15 @@ public class Transformation {
 		final float sin = FloatMath.sin(angleRad);
 		final float cos = FloatMath.cos(angleRad);
 
-		this.preConcat(cos, sin, -sin, cos, 0.0f, 0.0f);
+		final float a = this.a;
+		final float b = this.b;
+		final float c = this.c;
+		final float d = this.d;
+
+		this.a = cos * a + sin * c;
+		this.b = cos * b + sin * d;
+		this.c = cos * c - sin * a;
+		this.d = cos * d - sin * b;
 	}
 
 	public void postRotate(final float pAngle) {
@@ -146,7 +164,19 @@ public class Transformation {
 		final float sin = FloatMath.sin(angleRad);
 		final float cos = FloatMath.cos(angleRad);
 
-		this.postConcat(cos, sin, -sin, cos, 0.0f, 0.0f);
+		final float a = this.a;
+		final float b = this.b;
+		final float c = this.c;
+		final float d = this.d;
+		final float tx = this.tx;
+		final float ty = this.ty;
+
+		this.a = a * cos - b * sin;
+		this.b = a * sin + b * cos;
+		this.c = c * cos - d * sin;
+		this.d = c * sin + d * cos;
+		this.tx = tx * cos - ty * sin;
+		this.ty = tx * sin + ty * cos;
 	}
 
 	public Transformation setToRotate(final float pAngle) {
@@ -206,7 +236,7 @@ public class Transformation {
 	}
 
 	public void transform(final float[] pVertices) {
-		int count = pVertices.length / 2;
+		int count = pVertices.length >> 1;
 		int i = 0;
 		int j = 0;
 		while(--count >= 0) {

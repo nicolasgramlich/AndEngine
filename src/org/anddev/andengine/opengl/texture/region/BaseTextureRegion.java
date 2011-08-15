@@ -6,7 +6,6 @@ import javax.microedition.khronos.opengles.GL11;
 import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
-import org.anddev.andengine.opengl.texture.region.crop.TextureRegionCrop;
 import org.anddev.andengine.opengl.util.GLHelper;
 
 /**
@@ -27,9 +26,7 @@ public abstract class BaseTextureRegion {
 
 	protected final ITexture mTexture;
 
-	// TODO Should TextureRegionCrop be a part of TextureRegionCrop ?
 	protected final TextureRegionBuffer mTextureRegionBuffer;
-	protected final TextureRegionCrop mTextureRegionCrop;
 
 	protected int mWidth;
 	protected int mHeight;
@@ -49,7 +46,6 @@ public abstract class BaseTextureRegion {
 		this.mHeight = pHeight;
 
 		this.mTextureRegionBuffer = new TextureRegionBuffer(this, GL11.GL_STATIC_DRAW, true);
-		this.mTextureRegionCrop = new TextureRegionCrop(this);
 
 		this.initTextureBuffer();
 	}
@@ -102,17 +98,12 @@ public abstract class BaseTextureRegion {
 		return this.mTextureRegionBuffer;
 	}
 	
-	public TextureRegionCrop getTexureRegionCrop() {
-		return this.mTextureRegionCrop;
-	}
-
 	public boolean isFlippedHorizontal() {
 		return this.mTextureRegionBuffer.isFlippedHorizontal();
 	}
 
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
 		this.mTextureRegionBuffer.setFlippedHorizontal(pFlippedHorizontal);
-		this.mTextureRegionCrop.setFlippedHorizontal(pFlippedHorizontal);
 	}
 
 	public boolean isFlippedVertical() {
@@ -121,7 +112,6 @@ public abstract class BaseTextureRegion {
 
 	public void setFlippedVertical(final boolean pFlippedVertical) {
 		this.mTextureRegionBuffer.setFlippedVertical(pFlippedVertical);
-		this.mTextureRegionCrop.setFlippedVertical(pFlippedVertical);
 	}
 
 	public boolean isTextureRegionBufferManaged() {
@@ -143,10 +133,6 @@ public abstract class BaseTextureRegion {
 	public abstract float getTextureCoordinateY1();
 	public abstract float getTextureCoordinateX2();
 	public abstract float getTextureCoordinateY2();
-	public abstract int getTextureCropLeft();
-	public abstract int getTextureCropTop();
-	public abstract int getTextureCropWidth();
-	public abstract int getTextureCropHeight();
 
 	// ===========================================================
 	// Methods
@@ -154,7 +140,6 @@ public abstract class BaseTextureRegion {
 
 	protected void updateTextureRegionBuffer() {
 		this.mTextureRegionBuffer.update();
-		this.mTextureRegionCrop.update();
 	}
 
 	public void onApply(final GL10 pGL) {
@@ -168,11 +153,6 @@ public abstract class BaseTextureRegion {
 		} else {
 			GLHelper.texCoordPointer(pGL, this.mTextureRegionBuffer.getFloatBuffer());
 		}
-	}
-
-	public void onApplyCrop(final GL11 pGL11) {
-		this.mTexture.bind(pGL11);
-		this.mTextureRegionCrop.apply(pGL11);
 	}
 
 	// ===========================================================

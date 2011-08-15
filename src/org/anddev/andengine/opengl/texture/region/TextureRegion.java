@@ -59,26 +59,6 @@ public class TextureRegion extends BaseTextureRegion {
 		return (float) (this.mTexturePositionY + this.mHeight) / this.mTexture.getHeight();
 	}
 
-	@Override
-	public int getTextureCropLeft() {
-		return this.getTexturePositionX();
-	}
-
-	@Override
-	public int getTextureCropTop() {
-		return this.getTexturePositionY();
-	}
-
-	@Override
-	public int getTextureCropWidth() {
-		return this.getWidth();
-	}
-
-	@Override
-	public int getTextureCropHeight() {
-		return this.getHeight();
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

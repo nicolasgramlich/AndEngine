@@ -4,11 +4,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.opengl.GLES20Fix;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.BufferUtils;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.util.data.DataConstants;
 
 import android.opengl.GLES20;
 
@@ -146,23 +144,11 @@ public class VertexBufferObject {
 			}
 		}
 
-		pShaderProgram.bind();
-
-		this.enableVertexBufferObjectAttributes(pShaderProgram);
+		pShaderProgram.bind(this.mVertexBufferObjectAttributes);
 	}
 
 	public void unbind(final ShaderProgram pShaderProgram) {
-		this.disableVertexBufferObjectAttributes(pShaderProgram);
-
-		pShaderProgram.unbind();
-	}
-
-	protected void enableVertexBufferObjectAttributes(final ShaderProgram pShaderProgram) {
-		this.mVertexBufferObjectAttributes.enableVertexBufferObjectAttributes(pShaderProgram);
-	}
-
-	protected void disableVertexBufferObjectAttributes(final ShaderProgram pShaderProgram) {
-		this.mVertexBufferObjectAttributes.disableVertexBufferObjectAttributes(pShaderProgram);
+		pShaderProgram.unbind(this.mVertexBufferObjectAttributes);
 	}
 
 	public void loadToActiveBufferObjectManager() {
@@ -201,183 +187,4 @@ public class VertexBufferObject {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static class VertexBufferObjectAttribute {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		private static final int LOCATION_INVALID = -1;
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		private int mLocation = VertexBufferObjectAttribute.LOCATION_INVALID;
-
-		private final String mName;
-		private final int mSize;
-		private final int mType;
-		private final boolean mNormalized;
-		private final int mOffset;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public VertexBufferObjectAttribute(final String pName, final int pSize, final int pType, final boolean pNormalized, final int pOffset) {
-			this.mName = pName;
-			this.mSize = pSize;
-			this.mType = pType;
-			this.mNormalized = pNormalized;
-			this.mOffset = pOffset;
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		public void enable(final ShaderProgram pShaderProgram, final int pStride) {
-			if(this.mLocation == VertexBufferObjectAttribute.LOCATION_INVALID) {
-				this.mLocation = pShaderProgram.getAttributeLocation(this.mName);
-			}
-
-			GLES20.glEnableVertexAttribArray(this.mLocation);
-			GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
-		}
-
-		public void disable(final ShaderProgram pShaderProgram) {
-			GLES20.glDisableVertexAttribArray(this.mLocation);
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
-	public static class VertexBufferObjectAttributes {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		private final int mStride;
-		private final VertexBufferObjectAttribute[] mVertexBufferObjectAttributes;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public VertexBufferObjectAttributes(final int pStride, final VertexBufferObjectAttribute ... pVertexBufferObjectAttributes) {
-			this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
-			this.mStride = pStride;
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public void enableVertexBufferObjectAttributes(final ShaderProgram pShaderProgram) {
-			final VertexBufferObjectAttribute[] vertexBufferObjectAttributes = this.mVertexBufferObjectAttributes;
-			if(vertexBufferObjectAttributes != null) {
-				final int vertexBuggerObjectAttributeCount = vertexBufferObjectAttributes.length;
-				for(int i = 0; i < vertexBuggerObjectAttributeCount; i++) {
-					vertexBufferObjectAttributes[i].enable(pShaderProgram, this.mStride);
-				}
-			}
-		}
-
-		public void disableVertexBufferObjectAttributes(final ShaderProgram pShaderProgram) {
-			final VertexBufferObjectAttribute[] vertexBufferObjectAttributes = this.mVertexBufferObjectAttributes;
-			if(vertexBufferObjectAttributes != null) {
-				final int vertexBuggerObjectAttributeCount = vertexBufferObjectAttributes.length;
-				for(int i = 0; i < vertexBuggerObjectAttributeCount; i++) {
-					vertexBufferObjectAttributes[i].disable(pShaderProgram);
-				}
-			}
-		}
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
-	public static class VertexBufferObjectAttributesBuilder {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		private int mIndex;
-		private final VertexBufferObjectAttribute[] mVertexBufferObjectAttributes;
-
-		private int mOffset;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public VertexBufferObjectAttributesBuilder(final int pCount) {
-			this.mVertexBufferObjectAttributes = new VertexBufferObjectAttribute[pCount];
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public VertexBufferObjectAttributesBuilder add(final String pName, final int pSize, final int pType, final boolean pNormalized) {
-			this.mVertexBufferObjectAttributes[this.mIndex] = new VertexBufferObjectAttribute(pName, pSize, pType, pNormalized, this.mOffset);
-
-			switch(pType) {
-				case GLES20.GL_FLOAT:
-					this.mOffset += pSize * DataConstants.BYTES_PER_FLOAT;
-					break;
-				case GLES20.GL_UNSIGNED_BYTE:
-					this.mOffset += pSize * DataConstants.BYTES_PER_BYTE;
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected pType: '" + pType + "'.");
-			}
-			this.mIndex++;
-			return this;
-		}
-
-		public VertexBufferObjectAttributes build() {
-			return new VertexBufferObjectAttributes(this.mOffset, this.mVertexBufferObjectAttributes);
-		}
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

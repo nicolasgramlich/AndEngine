@@ -9,8 +9,8 @@ import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
 

@@ -10,8 +10,8 @@ import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.constants.Constants;
 
 import android.opengl.GLES20;
@@ -169,11 +169,6 @@ public class Line extends Shape {
 		super.preDraw(pCamera);
 
 		GLHelper.lineWidth(this.mLineWidth);
-	}
-
-	@Override
-	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(this.mShaderProgram, GLES20.GL_LINES, Line.VERTICES_PER_LINE);
 	}
 
 	@Override

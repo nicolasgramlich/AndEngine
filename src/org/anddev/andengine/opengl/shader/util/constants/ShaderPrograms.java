@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.shader.util.constants;
 
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
 
@@ -43,7 +44,7 @@ public interface ShaderPrograms {
 
 	public static final String VARYING_TEXTURECOORDINATES = "v_textureCoordinates";
 	public static final String VARYING_COLOR = "v_color";
-	
+
 	public static final ShaderProgram SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES = new ShaderProgram(VertexShaders.VERTEXSHADER_POSITION_COLOR_TEXTURECOORDINATES, FragmentShaders.FRAGMENTSHADER_COLOR_TEXTURECOORDINATES) {
 		private int mUniformModelViewPositionMatrixLocation = ShaderProgram.LOCATION_INVALID;
 		private int mUniformTexture0Location = ShaderProgram.LOCATION_INVALID;
@@ -55,8 +56,8 @@ public interface ShaderPrograms {
 		};
 
 		@Override
-		public void bind() {
-			super.bind();
+		public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super.bind(pVertexBufferObjectAttributes);
 			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
 			GLES20.glUniform1i(this.mUniformTexture0Location, 0);
 		};
@@ -71,12 +72,12 @@ public interface ShaderPrograms {
 		};
 
 		@Override
-		public void bind() {
-			super.bind();
+		public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super.bind(pVertexBufferObjectAttributes);
 			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
 		};
 	};
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

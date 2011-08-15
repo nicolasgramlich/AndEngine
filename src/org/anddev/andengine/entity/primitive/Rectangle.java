@@ -6,9 +6,9 @@ import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
 

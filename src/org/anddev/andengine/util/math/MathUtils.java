@@ -2,7 +2,6 @@ package org.anddev.andengine.util.math;
 
 import java.util.Random;
 
-
 import android.util.FloatMath;
 
 /**

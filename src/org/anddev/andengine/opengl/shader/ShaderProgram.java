@@ -6,6 +6,7 @@ import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileExceptio
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
 
@@ -116,14 +117,18 @@ public class ShaderProgram implements ShaderPrograms {
 	// Methods
 	// ===========================================================
 
-	public void bind() {
+	public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		if(!this.mCompiled) {
 			this.compile();
 		}
 		GLES20.glUseProgram(this.mProgramID);
+
+		pVertexBufferObjectAttributes.enableVertexBufferObjectAttributes(this);
 	}
 
-	public void unbind() {
+	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		pVertexBufferObjectAttributes.enableVertexBufferObjectAttributes(this);
+
 		GLES20.glUseProgram(0);
 	}
 

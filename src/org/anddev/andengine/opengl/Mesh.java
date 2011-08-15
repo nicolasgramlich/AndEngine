@@ -2,7 +2,7 @@ package org.anddev.andengine.opengl;
 
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
 
@@ -49,7 +49,11 @@ public class Mesh {
 	// ===========================================================
 
 	public void draw(final ShaderProgram pShaderProgram, final int pPrimitiveType, final int pCount) {
-		this.draw(pShaderProgram, pPrimitiveType, 0, pCount);
+		this.mVertexBufferObject.bind(pShaderProgram);
+		
+		GLES20.glDrawArrays(pPrimitiveType, 0, pCount);
+		
+		this.mVertexBufferObject.unbind(pShaderProgram);
 	}
 
 	public void draw(final ShaderProgram pShaderProgram, final int pPrimitiveType, final int pOffset, final int pCount) {

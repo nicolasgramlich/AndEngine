@@ -70,6 +70,30 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		return new TiledTextureRegion(pTexture, xs, ys, widths, heights);
 	}
 
+	public static TiledTextureRegion create(final ITexture pTexture, final ITextureRegion ... pTextureRegions) {
+		final int textureRegionCount = pTextureRegions.length;
+
+		final int[] xs = new int[textureRegionCount];
+		final int[] ys = new int[textureRegionCount];
+		final int[] widths = new int[textureRegionCount];
+		final int[] heights = new int[textureRegionCount];
+
+		for(int i = 0; i < textureRegionCount; i++) {
+			final ITextureRegion textureRegion = pTextureRegions[i];
+
+			if(textureRegion.getTexture() != pTexture) {
+				throw new IllegalArgumentException("Illegal TextureRegion detected that does not match the Texture passed.");
+			}
+
+			xs[i] = textureRegion.getX();
+			ys[i] = textureRegion.getY();
+			widths[i] = textureRegion.getWidth();
+			heights[i] = textureRegion.getHeight();
+		}
+
+		return new TiledTextureRegion(pTexture, xs, ys, widths, heights);
+	}
+
 	@Override
 	public TiledTextureRegion clone() {
 		final int tileCount = this.mTileCount;
@@ -100,7 +124,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	public boolean setTileIndex(final int pTileIndex) {
 		if(this.mTileIndex != pTileIndex) {
 			this.mTileIndex = pTileIndex;
-	
+
 			this.updateUV();
 			return true;
 		} else {

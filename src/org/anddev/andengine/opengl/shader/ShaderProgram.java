@@ -6,7 +6,6 @@ import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileExceptio
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
-import org.anddev.andengine.opengl.util.GLMatrix;
 
 import android.opengl.GLES20;
 
@@ -199,14 +198,14 @@ public class ShaderProgram implements ShaderPrograms {
 		}
 	}
 
-	public void setUniform(final String pUniformName, final GLMatrix pGLMatrix) {
-		GLES20.glUniformMatrix4fv(this.getUniformLocation(pUniformName), 1, false, pGLMatrix.getValues(), 0);
+	public void setUniform(final String pUniformName, final float[] pGLMatrix) {
+		GLES20.glUniformMatrix4fv(this.getUniformLocation(pUniformName), 1, false, pGLMatrix, 0);
 	}
 
-	public void setUniformOptional(final String pUniformName, final GLMatrix pGLMatrix) {
+	public void setUniformOptional(final String pUniformName, final float[] pGLMatrix) {
 		final int location = this.getUniformLocationOptional(pUniformName);
 		if(location != ShaderProgram.LOCATION_INVALID) {
-			GLES20.glUniformMatrix4fv(this.getUniformLocationOptional(pUniformName), 1, false, pGLMatrix.getValues(), 0);
+			GLES20.glUniformMatrix4fv(this.getUniformLocationOptional(pUniformName), 1, false, pGLMatrix, 0);
 		}
 	}
 

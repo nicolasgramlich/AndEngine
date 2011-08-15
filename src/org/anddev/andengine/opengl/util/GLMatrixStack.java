@@ -1,64 +1,50 @@
 package org.anddev.andengine.opengl.util;
 
-import java.util.Stack;
-
-import org.anddev.andengine.util.pool.GenericPool;
+import android.opengl.Matrix;
 
 /**
+ * TODO Measure performance with inlined or native Matrix implementations.
+ * 
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 14:38:21 - 04.08.2011
+ * @since 14:49:23 - 04.08.2011
  */
 public class GLMatrixStack {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
+	public final static int MAX_DEPTH = 32;
+	public static final int GLMATRIX_SIZE = 16;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final GenericPool<GLMatrix> mGLMatrixPool = new GenericPool<GLMatrix>() {
-		@Override
-		protected GLMatrix onAllocatePoolItem() {
-			return new GLMatrix();
-		}
-	};
+	final float[] mValues = new float[GLMatrixStack.MAX_DEPTH * GLMatrixStack.GLMATRIX_SIZE];  // TODO Better name
+	int mTop; // TODO Better name
 
-	private final Stack<GLMatrix> mModelViewGLMatrixStack = new Stack<GLMatrix>();
-	private final Stack<GLMatrix> mProjectionGLMatrixStack = new Stack<GLMatrix>();
-
-	private MatrixMode mMatrixMode;
-	private Stack<GLMatrix> mCurrentGLMatrixStack = this.mModelViewGLMatrixStack;
-
-	private final GLMatrix mModelViewProjectionMatrix = new GLMatrix();
+	private final float[] mTemp = new float[2 * GLMatrixStack.GLMATRIX_SIZE];
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public GLMatrixStack() {
-		this.mModelViewGLMatrixStack.push(this.mGLMatrixPool.obtainPoolItem().setToIdentity());
-		this.mProjectionGLMatrixStack.push(this.mGLMatrixPool.obtainPoolItem().setToIdentity());
+		this.glLoadIdentity();
 	}
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public void setMatrixMode(final MatrixMode pMatrixMode) {
-		this.mMatrixMode = pMatrixMode;
-		switch(this.mMatrixMode) {
-			case PROJECTION:
-				this.mCurrentGLMatrixStack = this.mProjectionGLMatrixStack;
-				return;
-			case MODELVIEW:
-				this.mCurrentGLMatrixStack = this.mModelViewGLMatrixStack;
-				return;
-			default:
-				throw new IllegalArgumentException("Unexpected " + MatrixMode.class.getSimpleName() + ": '" + pMatrixMode + "'.");
-		}
+	public void getMatrix(final float[] pMatrix) {
+		System.arraycopy(this.mValues, this.mTop, pMatrix, 0, GLMatrixStack.GLMATRIX_SIZE);
 	}
 
 	// ===========================================================
@@ -69,103 +55,49 @@ public class GLMatrixStack {
 	// Methods
 	// ===========================================================
 
+	public GLMatrixStack glLoadIdentity() {
+		Matrix.setIdentityM(this.mValues, this.mTop);
+		return this;
+	}
+
+	public void setToResult(final GLMatrixStack pGLMatrixA, final GLMatrixStack pGLMatrixB) {
+		System.arraycopy(this.mValues, this.mTop, this.mTemp, 0, GLMatrixStack.GLMATRIX_SIZE);
+		Matrix.multiplyMM(this.mValues, this.mTop, this.mTemp, 0, pGLMatrixB.mValues, 0);
+	}
+
+	public void glTranslatef(final float pX, final float pY, final float pZ) {
+		Matrix.translateM(this.mValues, this.mTop, pX, pY, pZ);
+	}
+
+	public void glRotatef(final float pAngle, final float pX, final float pY, final float pZ) {
+		Matrix.setRotateM(this.mTemp, 0, pAngle, pX, pY, pZ);
+		System.arraycopy(this.mValues, this.mTop, this.mTemp, GLMatrixStack.GLMATRIX_SIZE, GLMatrixStack.GLMATRIX_SIZE);
+		Matrix.multiplyMM(this.mValues, this.mTop, this.mTemp, GLMatrixStack.GLMATRIX_SIZE, this.mTemp, 0);
+	}
+
+	public void glScalef(final float pScaleX, final float pScaleY, final float pScaleZ) {
+		Matrix.scaleM(this.mValues, this.mTop, pScaleX, pScaleY, pScaleZ);
+	}
+
+	public void glOrthof(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
+		Matrix.orthoM(this.mValues, this.mTop, pLeft, pRight, pBottom, pTop, pZNear, pZFar);
+	}
+
+	public void glPushMatrix() {
+		System.arraycopy(this.mValues, this.mTop, this.mValues, this.mTop + GLMatrixStack.GLMATRIX_SIZE, GLMatrixStack.GLMATRIX_SIZE);
+		this.mTop += GLMatrixStack.GLMATRIX_SIZE;
+	}
+
+	public void glPopMatrix() {
+		this.mTop -= GLMatrixStack.GLMATRIX_SIZE;
+	}
+
 	public void reset() {
-		this.setMatrixMode(MatrixMode.MODELVIEW);
-		while(this.mModelViewGLMatrixStack.size() > 1) {
-			this.popMatrix();
-		}
-		this.mModelViewGLMatrixStack.peek().setToIdentity();
-
-		this.setMatrixMode(MatrixMode.MODELVIEW);
-		while(this.mProjectionGLMatrixStack.size() > 1) {
-			this.popMatrix();
-		}
-		this.mProjectionGLMatrixStack.peek().setToIdentity();
-	}
-
-	public void pushMatrix() {
-		this.mCurrentGLMatrixStack.push(this.mGLMatrixPool.obtainPoolItem().setTo(this.mCurrentGLMatrixStack.peek()));
-	}
-
-	public void popMatrix() {
-		this.mGLMatrixPool.recyclePoolItem(this.mCurrentGLMatrixStack.pop());
-	}
-
-	public void loadIdentity() {
-		this.mCurrentGLMatrixStack.peek().setToIdentity();
-	}
-
-	public void loadMatrix(final GLMatrix pGLMatrix) {
-		this.mCurrentGLMatrixStack.peek().setTo(pGLMatrix);
-	}
-
-	public void translate(final float pX, final float pY, final float pZ) {
-		this.mCurrentGLMatrixStack.peek().translate(pX, pY, pZ);
-	}
-
-	public void rotate(final float pAngle, final float pX, final float pY, final float pZ) {
-		this.mCurrentGLMatrixStack.peek().rotate(pAngle, pX, pY, pZ);
-	}
-
-	public void scale(final float pScaleX, final float pScaleY, final int pScaleZ) {
-		this.mCurrentGLMatrixStack.peek().scale(pScaleX, pScaleY, pScaleZ);
-	}
-
-	public void ortho(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
-		this.mCurrentGLMatrixStack.peek().ortho(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
-	}
-
-	public GLMatrix getModelViewMatrix() {
-		return this.mModelViewGLMatrixStack.peek();
-	}
-
-	public GLMatrix getProjectionMatrix() {
-		return this.mProjectionGLMatrixStack.peek();
-	}
-
-	public GLMatrix getModelViewProjectionMatrix() {
-		this.mModelViewProjectionMatrix.setToResult(this.mProjectionGLMatrixStack.peek(), this.mModelViewGLMatrixStack.peek());
-		return this.mModelViewProjectionMatrix;
+		this.mTop = 0;
+		glLoadIdentity();
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public enum MatrixMode {
-		// ===========================================================
-		// Elements
-		// ===========================================================
-
-		PROJECTION,
-		MODELVIEW;
-
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

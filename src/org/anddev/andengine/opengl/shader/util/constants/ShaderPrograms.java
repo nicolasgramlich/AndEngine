@@ -57,7 +57,7 @@ public interface ShaderPrograms {
 		@Override
 		public void bind() {
 			super.bind();
-			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix().getValues(), 0);
+			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
 			GLES20.glUniform1i(this.mUniformTexture0Location, 0);
 		};
 	};
@@ -73,7 +73,7 @@ public interface ShaderPrograms {
 		@Override
 		public void bind() {
 			super.bind();
-			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix().getValues(), 0);
+			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
 		};
 	};
 	

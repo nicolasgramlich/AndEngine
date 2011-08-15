@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.texture.source;
+package org.anddev.andengine.opengl.texture.atlas.source;
 
 
 /**

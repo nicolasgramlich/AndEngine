@@ -3,7 +3,7 @@ package org.anddev.andengine.opengl.texture.region;
 
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
-import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
+import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
 
 /**

@@ -2,10 +2,10 @@ package org.anddev.andengine.opengl.texture.atlas.buildable;
 
 
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
-import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.util.Callback;
 
 

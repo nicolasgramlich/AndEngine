@@ -3,7 +3,7 @@ package org.anddev.andengine.opengl.texture.atlas.bitmap.source;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.anddev.andengine.opengl.texture.source.BaseTextureAtlasSource;
+import org.anddev.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 

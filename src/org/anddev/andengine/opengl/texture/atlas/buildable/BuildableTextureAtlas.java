@@ -8,7 +8,7 @@ import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureBuilder;
 import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureBuilder.TextureAtlasSourcePackingException;
-import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
+import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.util.Callback;
 
 /**

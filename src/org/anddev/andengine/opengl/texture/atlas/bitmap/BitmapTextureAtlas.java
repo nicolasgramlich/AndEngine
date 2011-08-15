@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.TextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.util.Debug;
 

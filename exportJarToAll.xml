@@ -13,7 +13,7 @@
 	
 	<property name="binfile" value="bin/andengine.jar" />
 	
-	<property name="targetlist" value="../AndEngineExamples2/lib/andengine.jar"/>
+	<property name="targetlist" value="../AndEngineExamples/lib/andengine.jar"/>
    	
    	<target name="package">
 		<jar destfile="${binfile}">

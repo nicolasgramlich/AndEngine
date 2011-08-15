@@ -144,7 +144,7 @@ public class Transformation {
 	}
 
 	public void preRotate(final float pAngle) {
-		final float angleRad = MathUtils.degToRad(pAngle);
+		final float angleRad = MathUtils.DEG_TO_RAD * pAngle;
 
 		final float sin = FloatMath.sin(angleRad);
 		final float cos = FloatMath.cos(angleRad);
@@ -161,7 +161,7 @@ public class Transformation {
 	}
 
 	public void postRotate(final float pAngle) {
-		final float angleRad = MathUtils.degToRad(pAngle);
+		final float angleRad = MathUtils.DEG_TO_RAD * pAngle;
 
 		final float sin = FloatMath.sin(angleRad);
 		final float cos = FloatMath.cos(angleRad);
@@ -182,7 +182,7 @@ public class Transformation {
 	}
 
 	public Transformation setToRotate(final float pAngle) {
-		final float angleRad = MathUtils.degToRad(pAngle);
+		final float angleRad = MathUtils.DEG_TO_RAD * pAngle;
 
 		final float sin = FloatMath.sin(angleRad);
 		final float cos = FloatMath.cos(angleRad);

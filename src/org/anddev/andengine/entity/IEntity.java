@@ -78,6 +78,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setScale(final float pScale);
 	public void setScale(final float pScaleX, final float pScaleY);
 
+	public boolean isRotatedOrScaled();
+
 	public float getScaleCenterX();
 	public float getScaleCenterY();
 	public void setScaleCenterX(final float pScaleCenterX);

@@ -298,7 +298,7 @@ public class SpriteBatch extends Entity {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 			this.assertTexture(textureRegion);
 
-			if(pSprite.isRotated() || pSprite.isScaled()) {
+			if(pSprite.isRotatedOrScaled()) {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
@@ -318,7 +318,7 @@ public class SpriteBatch extends Entity {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 			this.assertTexture(textureRegion);
 
-			if(pSprite.isRotated() || pSprite.isScaled()) {
+			if(pSprite.isRotatedOrScaled()) {
 				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
 			} else {
 				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);

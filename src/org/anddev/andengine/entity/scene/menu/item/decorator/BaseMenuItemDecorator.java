@@ -297,6 +297,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public boolean isRotatedOrScaled() {
+		return this.mMenuItem.isRotatedOrScaled();
+	}
+
+	@Override
 	public float[] getSceneCenterCoordinates() {
 		return this.mMenuItem.getSceneCenterCoordinates();
 	}

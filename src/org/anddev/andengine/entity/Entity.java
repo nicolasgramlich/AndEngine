@@ -351,6 +351,11 @@ public class Entity implements IEntity {
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
+	
+	@Override
+	public boolean isRotatedOrScaled() {
+		return this.mRotation != 0 || this.mScaleX != 1 || this.mScaleY != 1;
+	}
 
 	@Override
 	public float getRed() {

@@ -203,7 +203,6 @@ public class Color {
 	}
 
 	public static float pack(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		int o = android.graphics.Color.argb(255, 128, 64, 32);
 		final int packed = ((int)(255 * pAlpha) << 24) | ((int)(255 * pBlue) << 16) | ((int)(255 * pGreen) << 8) | ((int)(255 * pRed));
 		return Float.intBitsToFloat(packed & 0XFEFFFFFF);
 	}

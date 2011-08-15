@@ -282,14 +282,14 @@ public class SpriteBatch extends Entity {
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float, float, float)}.
+	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float)}.
 	 */
 	public void draw(final Sprite pSprite) {
-		this.draw(pSprite, pSprite.getRed(), pSprite.getGreen(), pSprite.getBlue(), pSprite.getAlpha());
+		this.draw(pSprite, pSprite.getColor().getPacked());
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float, float, float)}.
+	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
 	 */
 	public void draw(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		if(pSprite.isVisible()) {
@@ -298,10 +298,30 @@ public class SpriteBatch extends Entity {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 			this.assertTexture(textureRegion);
 
-			if(pSprite.getRotation() == 0 && !pSprite.isScaled()) {
-				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
-			} else {
+			if(pSprite.isRotated() || pSprite.isScaled()) {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+			} else {
+				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+			}
+
+			this.mIndex++;
+		}
+	}
+	
+	/**
+	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
+	 */
+	public void draw(final Sprite pSprite, final float pPackedColor) {
+		if(pSprite.isVisible()) {
+			this.assertCapacity();
+
+			final ITextureRegion textureRegion = pSprite.getTextureRegion();
+			this.assertTexture(textureRegion);
+
+			if(pSprite.isRotated() || pSprite.isScaled()) {
+				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
+			} else {
+				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
 			}
 
 			this.mIndex++;
@@ -309,17 +329,31 @@ public class SpriteBatch extends Entity {
 	}
 
 	public void drawWithoutChecks(final Sprite pSprite) {
-		this.drawWithoutChecks(pSprite, pSprite.getRed(), pSprite.getGreen(), pSprite.getBlue(), pSprite.getAlpha());
+		this.drawWithoutChecks(pSprite, pSprite.getColor().getPacked());
 	}
 
 	public void drawWithoutChecks(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		if(pSprite.isVisible()) {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
-			if(pSprite.getRotation() == 0 && !pSprite.isScaled()) {
-				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
-			} else {
+			if(pSprite.isRotated() || pSprite.isScaled()) {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+			} else {
+				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+			}
+
+			this.mIndex++;
+		}
+	}
+
+	public void drawWithoutChecks(final Sprite pSprite, final float pPackedColor) {
+		if(pSprite.isVisible()) {
+			final ITextureRegion textureRegion = pSprite.getTextureRegion();
+
+			if(pSprite.isRotated() || pSprite.isScaled()) {
+				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
+			} else {
+				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
 			}
 
 			this.mIndex++;
@@ -433,6 +467,29 @@ public class SpriteBatch extends Entity {
 
 			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
 		}
+		
+		/**
+		 * @param pTextureRegion
+		 * @param pX
+		 * @param pY
+		 * @param pWidth
+		 * @param pHeight
+		 * @param pRotation around the center (pWidth * 0.5f, pHeight * 0.5f)
+		 * @param pPackedColor
+		 */
+		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pPackedColor) {
+			final float widthHalf = pWidth * 0.5f;
+			final float heightHalf = pHeight * 0.5f;
+
+			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchMesh.TRANSFORATION_TMP.postRotate(pRotation);
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+
+			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pPackedColor);
+		}
 
 		/**
 		 * @param pTextureRegion
@@ -460,6 +517,31 @@ public class SpriteBatch extends Entity {
 			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
 
 			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
+		}
+		
+		/**
+		 * @param pTextureRegion
+		 * @param pX
+		 * @param pY
+		 * @param pWidth
+		 * @param pHeight
+		 * @param pRotation around the center (pWidth * 0.5f, pHeight * 0.5f)
+		 * @param pScaleX around the center (pWidth * 0.5f, pHeight * 0.5f)
+		 * @param pScaleY around the center (pWidth * 0.5f, pHeight * 0.5f)
+		 * @param pPackedColor
+		 */
+		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY, final float pPackedColor) {
+			final float widthHalf = pWidth * 0.5f;
+			final float heightHalf = pHeight * 0.5f;
+
+			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchMesh.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+
+			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pPackedColor);
 		}
 
 		/**
@@ -490,7 +572,33 @@ public class SpriteBatch extends Entity {
 
 			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
 		}
+		
+		/**
+		 * @param pTextureRegion
+		 * @param pX
+		 * @param pY
+		 * @param pWidth
+		 * @param pHeight
+		 * @param pRotation around the center (pWidth * 0.5f, pHeight * 0.5f)
+		 * @param pScaleX around the center (pWidth * 0.5f, pHeight * 0.5f)
+		 * @param pScaleY around the center (pWidth * 0.5f, pHeight * 0.5f)
+		 * @param pPackedColor
+		 */
+		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY, final float pPackedColor) {
+			final float widthHalf = pWidth * 0.5f;
+			final float heightHalf = pHeight * 0.5f;
 
+			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchMesh.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
+			SpriteBatchMesh.TRANSFORATION_TMP.postRotate(pRotation);
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+
+			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pPackedColor);
+		}
+		
 		/**
 		 * @param pTextureRegion
 		 * @param pWidth
@@ -521,6 +629,31 @@ public class SpriteBatch extends Entity {
 
 		/**
 		 * @param pTextureRegion
+		 * @param pWidth
+		 * @param pHeight
+		 * @param pTransformation
+		 * @param pPackedColor
+		 */
+		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pWidth, final float pHeight, final Transformation pTransformation, final float pPackedColor) {
+			SpriteBatchMesh.VERTICES_TMP[0] = 0;
+			SpriteBatchMesh.VERTICES_TMP[1] = 0;
+
+			SpriteBatchMesh.VERTICES_TMP[2] = 0;
+			SpriteBatchMesh.VERTICES_TMP[3] = pHeight;
+
+			SpriteBatchMesh.VERTICES_TMP[4] = pWidth;
+			SpriteBatchMesh.VERTICES_TMP[5] = 0;
+
+			SpriteBatchMesh.VERTICES_TMP[6] = pWidth;
+			SpriteBatchMesh.VERTICES_TMP[7] = pHeight;
+
+			pTransformation.transform(SpriteBatchMesh.VERTICES_TMP);
+
+			this.addInnerWithPackedColor(pTextureRegion, SpriteBatchMesh.VERTICES_TMP[0], SpriteBatchMesh.VERTICES_TMP[1], SpriteBatchMesh.VERTICES_TMP[2], SpriteBatchMesh.VERTICES_TMP[3],  SpriteBatchMesh.VERTICES_TMP[4], SpriteBatchMesh.VERTICES_TMP[5], SpriteBatchMesh.VERTICES_TMP[6], SpriteBatchMesh.VERTICES_TMP[7], pPackedColor);
+		}
+
+		/**
+		 * @param pTextureRegion
 		 * @param pX
 		 * @param pY
 		 * @param pWidth
@@ -532,6 +665,18 @@ public class SpriteBatch extends Entity {
 		 */
 		public void add(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 			this.addInner(pTextureRegion, pX, pY, pX + pWidth, pY + pHeight, pRed, pGreen, pBlue, pAlpha);
+		}
+		
+		/**
+		 * @param pTextureRegion
+		 * @param pX
+		 * @param pY
+		 * @param pWidth
+		 * @param pHeight
+		 * @param pPackedColor
+		 */
+		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
+			this.addInnerWithPackedColor(pTextureRegion, pX, pY, pX + pWidth, pY + pHeight, pPackedColor);
 		}
 
 		/**
@@ -585,6 +730,62 @@ public class SpriteBatch extends Entity {
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
+
+			this.mIndex += SpriteBatch.SPRITE_SIZE;
+		}
+		
+		/**
+		 * 1-+
+		 * |X|
+		 * +-2
+		 */
+		private void addInnerWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pPackedColor) {
+			final float x1 = pX1;
+			final float y1 = pY1;
+			final float x2 = pX2;
+			final float y2 = pY2;
+			final float u = pTextureRegion.getU();
+			final float v = pTextureRegion.getV();
+			final float u2 = pTextureRegion.getU2();
+			final float v2 = pTextureRegion.getV2();
+
+			final float[] bufferData = this.mVertexBufferObject.getBufferData();
+			final int index = this.mIndex;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
+
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
+
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
+
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
+
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
+
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
 
@@ -646,6 +847,66 @@ public class SpriteBatch extends Entity {
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x4;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y4;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = packedColor;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
+
+			this.mIndex += SpriteBatch.SPRITE_SIZE;
+		}
+		
+		/**
+		 * 1-3
+		 * |X|
+		 * 2-4
+		 */
+		private void addInnerWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pPackedColor) {
+			final float x1 = pX1;
+			final float y1 = pY1;
+			final float x2 = pX2;
+			final float y2 = pY2;
+			final float x3 = pX3;
+			final float y3 = pY3;
+			final float x4 = pX4;
+			final float y4 = pY4;
+			final float u = pTextureRegion.getU();
+			final float v = pTextureRegion.getV();
+			final float u2 = pTextureRegion.getU2();
+			final float v2 = pTextureRegion.getV2();
+
+			final float[] bufferData = this.mVertexBufferObject.getBufferData();
+			final int index = this.mIndex;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
+			bufferData[index + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
+
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
+			bufferData[index + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
+
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x3;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y3;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
+			bufferData[index + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
+
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x3;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y3;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
+			bufferData[index + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
+
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
+			bufferData[index + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
+
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x4;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y4;
+			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
 			bufferData[index + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
 

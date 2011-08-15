@@ -14,7 +14,6 @@ import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
 /**
@@ -208,7 +207,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		final PixelFormat pixelFormat = this.mBitmapTextureFormat.getPixelFormat();
 		final int glFormat = pixelFormat.getGLFormat();
 		final int glType = pixelFormat.getGLType();
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
+		pGL.glTexImage2D(GL10.GL_TEXTURE_2D, 0, glFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
 	}
 
 	// ===========================================================

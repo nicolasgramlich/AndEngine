@@ -16,8 +16,6 @@ import org.anddev.andengine.util.MathUtils;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.constants.DataConstants;
 
-import android.opengl.GLES20;
-
 /**
  * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes: glPixelStorei(GL_UNPACK_ALIGNMENT,1);"
  *
@@ -123,7 +121,7 @@ public abstract class PVRTexture extends Texture {
 	protected void generateHardwareTextureID(final GL10 pGL) {
 		//		// TODO
 		//		if(this.mMipMapCount > 0) {
-		GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
+		pGL.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT, 1);
 		//		}
 
 		super.generateHardwareTextureID(pGL);
@@ -156,7 +154,7 @@ public abstract class PVRTexture extends Texture {
 			pvrDataBuffer.limit(PVRTextureHeader.SIZE + currentPixelDataOffset + currentPixelDataSize);
 			ByteBuffer pixelBuffer = pvrDataBuffer.slice();
 
-			pGL.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelBuffer);
+			pGL.glTexImage2D(GL10.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelBuffer);
 
 			currentPixelDataOffset += currentPixelDataSize;
 

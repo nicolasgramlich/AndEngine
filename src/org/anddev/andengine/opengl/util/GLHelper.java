@@ -7,7 +7,7 @@ import java.nio.IntBuffer;
 
 import org.anddev.andengine.engine.options.RenderOptions;
 import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
-import org.anddev.andengine.opengl.util.GLMatrices.MatrixMode;
+import org.anddev.andengine.opengl.util.GLMatrixStacks.MatrixMode;
 import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
@@ -38,7 +38,7 @@ public class GLHelper {
 	// Fields
 	// ===========================================================
 
-	private static GLMatrices sGLMatrices = new GLMatrices();
+	private static GLMatrixStacks sGLMatrixStacks = new GLMatrixStacks();
 
 	private static int sCurrentHardwareBufferID = -1;
 	private static int sCurrentHardwareTextureID = -1;
@@ -61,7 +61,7 @@ public class GLHelper {
 	// ===========================================================
 
 	public static void reset() {
-		GLHelper.sGLMatrices.reset();
+		GLHelper.sGLMatrixStacks.reset();
 
 		GLHelper.sCurrentHardwareBufferID = -1;
 		GLHelper.sCurrentHardwareTextureID = -1;
@@ -209,65 +209,65 @@ public class GLHelper {
 	}
 
 	public static void switchToModelViewMatrix() {
-		GLHelper.sGLMatrices.setMatrixMode(MatrixMode.MODELVIEW);
+		GLHelper.sGLMatrixStacks.setMatrixMode(MatrixMode.MODELVIEW);
 	}
 
 	public static void switchToProjectionMatrix() {
-		GLHelper.sGLMatrices.setMatrixMode(MatrixMode.PROJECTION);
+		GLHelper.sGLMatrixStacks.setMatrixMode(MatrixMode.PROJECTION);
 	}
 
 	public static void switchToMatrix(final MatrixMode pMatrixMode) {
-		GLHelper.sGLMatrices.setMatrixMode(pMatrixMode);
+		GLHelper.sGLMatrixStacks.setMatrixMode(pMatrixMode);
 	}
 
 	public static float[] getProjectionMatrix() {
-		return GLHelper.sGLMatrices.getProjectionGLMatrix();
+		return GLHelper.sGLMatrixStacks.getProjectionGLMatrix();
 	}
 
 	public static float[] getModelViewMatrix() {
-		return GLHelper.sGLMatrices.getModelViewGLMatrix();
+		return GLHelper.sGLMatrixStacks.getModelViewGLMatrix();
 	}
 
 	public static float[] getModelViewProjectionMatrix() {
-		return GLHelper.sGLMatrices.getModelViewProjectionGLMatrix();
+		return GLHelper.sGLMatrixStacks.getModelViewProjectionGLMatrix();
 	}
 
 	public static void setProjectionIdentityMatrix() {
 		GLHelper.switchToProjectionMatrix();
-		GLHelper.sGLMatrices.glLoadIdentity();
+		GLHelper.sGLMatrixStacks.glLoadIdentity();
 	}
 
 	public static void setModelViewIdentityMatrix() {
 		GLHelper.switchToModelViewMatrix();
-		GLHelper.sGLMatrices.glLoadIdentity();
+		GLHelper.sGLMatrixStacks.glLoadIdentity();
 	}
 
 	public static void glLoadIdentity() {
-		GLHelper.sGLMatrices.glLoadIdentity();
+		GLHelper.sGLMatrixStacks.glLoadIdentity();
 	}
 
 	public static void glPushMatrix() {
-		GLHelper.sGLMatrices.glPushMatrix();
+		GLHelper.sGLMatrixStacks.glPushMatrix();
 	}
 
 	public static void glPopMatrix() {
-		GLHelper.sGLMatrices.glPopMatrix();
+		GLHelper.sGLMatrixStacks.glPopMatrix();
 	}
 
 	public static void glTranslatef(final float pX, final float pY, final int pZ) {
-		GLHelper.sGLMatrices.glTranslatef(pX, pY, pZ);
+		GLHelper.sGLMatrixStacks.glTranslatef(pX, pY, pZ);
 	}
 
 	public static void glRotatef(final float pAngle, final float pX, final float pY, final int pZ) {
-		GLHelper.sGLMatrices.glRotatef(pAngle, pX, pY, pZ);
+		GLHelper.sGLMatrixStacks.glRotatef(pAngle, pX, pY, pZ);
 	}
 
 	public static void glScalef(final float pScaleX, final float pScaleY, final int pScaleZ) {
-		GLHelper.sGLMatrices.glScalef(pScaleX, pScaleY, pScaleZ);
+		GLHelper.sGLMatrixStacks.glScalef(pScaleX, pScaleY, pScaleZ);
 	}
 
 	public static void glOrthof(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
-		GLHelper.sGLMatrices.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
+		GLHelper.sGLMatrixStacks.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}
 
 	/**

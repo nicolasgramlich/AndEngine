@@ -8,7 +8,7 @@ import android.opengl.Matrix;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:38:21 - 04.08.2011
  */
-public class GLMatrices {
+public class GLMatrixStacks {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,7 +31,7 @@ public class GLMatrices {
 	// Constructors
 	// ===========================================================
 
-	public GLMatrices() {
+	public GLMatrixStacks() {
 
 	}
 

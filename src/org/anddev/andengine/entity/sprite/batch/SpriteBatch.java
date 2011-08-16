@@ -62,7 +62,7 @@ public class SpriteBatch extends Entity {
 	private int mSourceBlendFunction;
 	private int mDestinationBlendFunction;
 
-	private final SpriteBatchMesh mSpriteBatchMesh;
+	protected final SpriteBatchMesh mSpriteBatchMesh;
 	protected ShaderProgram mShaderProgram;
 
 	private boolean mBlendingEnabled;
@@ -72,7 +72,7 @@ public class SpriteBatch extends Entity {
 	// ===========================================================
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
-		this(pTexture, pCapacity, new SpriteBatchMesh(pCapacity, GLES20.GL_STATIC_DRAW, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT)); // TODO Measure: GLES20.GL_STATIC_DRAW against GLES20.GL_STREAM_DRAW and GLES20.GL_DYNAMIC_DRAW
+		this(pTexture, pCapacity, new SpriteBatchMesh(pCapacity * SpriteBatch.SPRITE_SIZE, GLES20.GL_STATIC_DRAW, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT)); // TODO Measure: GLES20.GL_STATIC_DRAW against GLES20.GL_STREAM_DRAW and GLES20.GL_DYNAMIC_DRAW
 	}
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
@@ -336,7 +336,7 @@ public class SpriteBatch extends Entity {
 		if(pSprite.isVisible()) {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
-			if(pSprite.isRotated() || pSprite.isScaled()) {
+			if(pSprite.isRotatedOrScaled()) {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
@@ -350,7 +350,7 @@ public class SpriteBatch extends Entity {
 		if(pSprite.isVisible()) {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
-			if(pSprite.isRotated() || pSprite.isScaled()) {
+			if(pSprite.isRotatedOrScaled()) {
 				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
 			} else {
 				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
@@ -416,14 +416,14 @@ public class SpriteBatch extends Entity {
 		// Fields
 		// ===========================================================
 
-		private int mIndex;
+		protected int mIndex;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
 		public SpriteBatchMesh(final int pCapacity, final int pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, pManaged, pVertexBufferObjectAttributes);
+			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================

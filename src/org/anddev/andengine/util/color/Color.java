@@ -133,6 +133,8 @@ public class Color {
 			this.mRed = pRed;
 			this.mGreen = pGreen;
 			this.mBlue = pBlue;
+
+			this.pack();
 			return true;
 		}
 		return false;

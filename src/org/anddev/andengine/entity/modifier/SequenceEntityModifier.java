@@ -39,12 +39,12 @@ public class SequenceEntityModifier extends SequenceModifier<IEntity> implements
 		super(pSubSequenceShapeModifierListener, pEntityModifierListener, pEntityModifiers);
 	}
 
-	protected SequenceEntityModifier(final SequenceEntityModifier pSequenceShapeModifier) throws CloneNotSupportedException {
+	protected SequenceEntityModifier(final SequenceEntityModifier pSequenceShapeModifier) throws DeepCopyNotSupportedException {
 		super(pSequenceShapeModifier);
 	}
 
 	@Override
-	public SequenceEntityModifier deepCopy() throws CloneNotSupportedException {
+	public SequenceEntityModifier deepCopy() throws DeepCopyNotSupportedException {
 		return new SequenceEntityModifier(this);
 	}
 

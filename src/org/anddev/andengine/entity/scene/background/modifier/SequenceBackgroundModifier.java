@@ -39,12 +39,12 @@ public class SequenceBackgroundModifier extends SequenceModifier<IBackground> im
 		super(pSubSequenceBackgroundModifierListener, pBackgroundModifierListener, pBackgroundModifiers);
 	}
 
-	protected SequenceBackgroundModifier(final SequenceBackgroundModifier pSequenceBackgroundModifier) throws CloneNotSupportedException {
+	protected SequenceBackgroundModifier(final SequenceBackgroundModifier pSequenceBackgroundModifier) throws DeepCopyNotSupportedException {
 		super(pSequenceBackgroundModifier);
 	}
 
 	@Override
-	public SequenceBackgroundModifier deepCopy() throws CloneNotSupportedException {
+	public SequenceBackgroundModifier deepCopy() throws DeepCopyNotSupportedException {
 		return new SequenceBackgroundModifier(this);
 	}
 

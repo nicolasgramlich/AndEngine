@@ -49,7 +49,7 @@ public class ParallelModifier<T> extends BaseModifier<T> implements IModifierLis
 	}
 
 	@SuppressWarnings("unchecked")
-	protected ParallelModifier(final ParallelModifier<T> pParallelModifier) throws CloneNotSupportedException {
+	protected ParallelModifier(final ParallelModifier<T> pParallelModifier) throws DeepCopyNotSupportedException {
 		final IModifier<T>[] otherModifiers = pParallelModifier.mModifiers;
 		this.mModifiers = new IModifier[otherModifiers.length];
 
@@ -64,7 +64,7 @@ public class ParallelModifier<T> extends BaseModifier<T> implements IModifierLis
 	}
 
 	@Override
-	public ParallelModifier<T> deepCopy() throws CloneNotSupportedException{
+	public ParallelModifier<T> deepCopy() throws DeepCopyNotSupportedException{
 		return new ParallelModifier<T>(this);
 	}
 

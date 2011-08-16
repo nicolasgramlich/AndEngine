@@ -43,12 +43,12 @@ public class LoopBackgroundModifier extends LoopModifier<IBackground> implements
 		super(pBackgroundModifier, pLoopCount, pLoopModifierListener, pBackgroundModifierListener);
 	}
 
-	protected LoopBackgroundModifier(final LoopBackgroundModifier pLoopBackgroundModifier) throws CloneNotSupportedException {
+	protected LoopBackgroundModifier(final LoopBackgroundModifier pLoopBackgroundModifier) throws DeepCopyNotSupportedException {
 		super(pLoopBackgroundModifier);
 	}
 
 	@Override
-	public LoopBackgroundModifier deepCopy() throws CloneNotSupportedException {
+	public LoopBackgroundModifier deepCopy() throws DeepCopyNotSupportedException {
 		return new LoopBackgroundModifier(this);
 	}
 

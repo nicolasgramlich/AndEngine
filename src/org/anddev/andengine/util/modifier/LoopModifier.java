@@ -67,12 +67,12 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 		this.mModifier.addModifierListener(this);
 	}
 
-	protected LoopModifier(final LoopModifier<T> pLoopModifier) throws CloneNotSupportedException {
+	protected LoopModifier(final LoopModifier<T> pLoopModifier) throws DeepCopyNotSupportedException {
 		this(pLoopModifier.mModifier.deepCopy(), pLoopModifier.mLoopCount);
 	}
 
 	@Override
-	public LoopModifier<T> deepCopy() throws CloneNotSupportedException {
+	public LoopModifier<T> deepCopy() throws DeepCopyNotSupportedException {
 		return new LoopModifier<T>(this);
 	}
 

@@ -7,7 +7,7 @@ import org.anddev.andengine.opengl.buffer.BufferObjectManager;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.buffer.TextureRegionBuffer;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.util.modifier.IModifier.CloneNotSupportedException;
+import org.anddev.andengine.util.modifier.IModifier.DeepCopyNotSupportedException;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -55,7 +55,7 @@ public abstract class BaseTextureRegion {
 		this.updateTextureRegionBuffer();
 	}
 
-	protected abstract BaseTextureRegion deepCopy() throws CloneNotSupportedException;
+	protected abstract BaseTextureRegion deepCopy() throws DeepCopyNotSupportedException;
 
 	// ===========================================================
 	// Getter & Setter

@@ -61,7 +61,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 	}
 
 	@SuppressWarnings("unchecked")
-	protected SequenceModifier(final SequenceModifier<T> pSequenceModifier) throws CloneNotSupportedException {
+	protected SequenceModifier(final SequenceModifier<T> pSequenceModifier) throws DeepCopyNotSupportedException {
 		this.mDuration = pSequenceModifier.mDuration;
 
 		final IModifier<T>[] otherModifiers = pSequenceModifier.mSubSequenceModifiers;
@@ -76,7 +76,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 	}
 
 	@Override
-	public SequenceModifier<T> deepCopy() throws CloneNotSupportedException{
+	public SequenceModifier<T> deepCopy() throws DeepCopyNotSupportedException{
 		return new SequenceModifier<T>(this);
 	}
 

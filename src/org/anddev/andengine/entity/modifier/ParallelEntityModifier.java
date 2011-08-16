@@ -31,12 +31,12 @@ public class ParallelEntityModifier extends ParallelModifier<IEntity> implements
 		super(pEntityModifierListener, pEntityModifiers);
 	}
 
-	protected ParallelEntityModifier(final ParallelEntityModifier pParallelShapeModifier) throws CloneNotSupportedException {
+	protected ParallelEntityModifier(final ParallelEntityModifier pParallelShapeModifier) throws DeepCopyNotSupportedException {
 		super(pParallelShapeModifier);
 	}
 
 	@Override
-	public ParallelEntityModifier deepCopy() throws CloneNotSupportedException {
+	public ParallelEntityModifier deepCopy() throws DeepCopyNotSupportedException {
 		return new ParallelEntityModifier(this);
 	}
 

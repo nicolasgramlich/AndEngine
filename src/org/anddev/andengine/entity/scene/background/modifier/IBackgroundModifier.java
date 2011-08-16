@@ -20,7 +20,7 @@ public interface IBackgroundModifier extends IModifier<IBackground> {
 	// ===========================================================
 
 	@Override
-	public IBackgroundModifier deepCopy() throws CloneNotSupportedException;
+	public IBackgroundModifier deepCopy() throws DeepCopyNotSupportedException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -1,5 +1,7 @@
 package org.anddev.andengine.opengl.texture.source;
 
+import org.anddev.andengine.util.modifier.IModifier.DeepCopyNotSupportedException;
+
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -8,7 +10,7 @@ package org.anddev.andengine.opengl.texture.source;
  * @author Nicolas Gramlich
  * @since 11:46:56 - 12.07.2011
  */
-public interface ITextureAtlasSource extends Cloneable {
+public interface ITextureAtlasSource {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -25,5 +27,5 @@ public interface ITextureAtlasSource extends Cloneable {
 	public int getWidth();
 	public int getHeight();
 
-	public ITextureAtlasSource deepCopy();
+	public ITextureAtlasSource deepCopy() throws DeepCopyNotSupportedException;
 }

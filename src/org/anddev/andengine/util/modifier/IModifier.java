@@ -10,7 +10,7 @@ import java.util.Comparator;
  * @author Nicolas Gramlich
  * @since 11:17:50 - 19.03.2010
  */
-public interface IModifier<T> extends Cloneable {
+public interface IModifier<T> {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -41,8 +41,7 @@ public interface IModifier<T> extends Cloneable {
 	public boolean isRemoveWhenFinished();
 	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
 
-	public IModifier<T> deepCopy() throws CloneNotSupportedException;
-	//	public IModifier<T> deepCopy(final IModifierListener<T> pModifierListener) throws CloneNotSupportedException; TODO
+	public IModifier<T> deepCopy() throws DeepCopyNotSupportedException;
 
 	public float getSecondsElapsed();
 	public float getDuration();
@@ -69,7 +68,7 @@ public interface IModifier<T> extends Cloneable {
 		public void onModifierFinished(final IModifier<T> pModifier, final T pItem);
 	}
 
-	public static class CloneNotSupportedException extends RuntimeException {
+	public static class DeepCopyNotSupportedException extends RuntimeException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

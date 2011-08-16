@@ -2,13 +2,14 @@ package org.anddev.andengine.entity.text;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
 
 import android.opengl.GLES20;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -20,7 +21,7 @@ public class ChangeableText extends Text {
 	// ===========================================================
 
 	private static final String ELLIPSIS = "...";
-	private static final int ELLIPSIS_CHARACTER_COUNT = ELLIPSIS.length();
+	private static final int ELLIPSIS_CHARACTER_COUNT = ChangeableText.ELLIPSIS.length();
 
 	// ===========================================================
 	// Fields
@@ -33,15 +34,23 @@ public class ChangeableText extends Text {
 	// ===========================================================
 
 	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText) {
-		this(pX, pY, pFont, pText, pText.length() - StringUtils.countOccurrences(pText, '\n'));
+		this(pX, pY, pFont, pText, DrawType.DYNAMIC);
+	}
+
+	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, pText.length() - StringUtils.countOccurrences(pText, '\n'), pDrawType);
 	}
 
 	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final int pCharactersMaximum) {
-		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum);
+		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum, DrawType.DYNAMIC);
 	}
 
-	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum) {
-		super(pX, pY, pFont, pText, pHorizontalAlign, pCharactersMaximum);
+	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final int pCharactersMaximum, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum, pDrawType);
+	}
+
+	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
+		super(pX, pY, pFont, pText, pHorizontalAlign, pCharactersMaximum, pDrawType);
 		this.mCharacterCountCurrentText = pText.length() - StringUtils.countOccurrences(pText, '\n');
 	}
 
@@ -61,8 +70,8 @@ public class ChangeableText extends Text {
 	public void setText(final String pText, final boolean pAllowEllipsis) {
 		final int textCharacterCount = pText.length() - StringUtils.countOccurrences(pText, '\n');
 		if(textCharacterCount > this.mCharactersMaximum) {
-			if(pAllowEllipsis && this.mCharactersMaximum > ELLIPSIS_CHARACTER_COUNT) {
-				this.updateText(pText.substring(0, this.mCharactersMaximum - ELLIPSIS_CHARACTER_COUNT).concat(ELLIPSIS)); // TODO This allocation could maybe be avoided...
+			if(pAllowEllipsis && this.mCharactersMaximum > ChangeableText.ELLIPSIS_CHARACTER_COUNT) {
+				this.updateText(pText.substring(0, this.mCharactersMaximum - ChangeableText.ELLIPSIS_CHARACTER_COUNT).concat(ChangeableText.ELLIPSIS)); // TODO This allocation could maybe be avoided...
 			} else {
 				this.updateText(pText.substring(0, this.mCharactersMaximum)); // TODO This allocation could be avoided...
 			}
@@ -79,7 +88,7 @@ public class ChangeableText extends Text {
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(mShaderProgram, GLES20.GL_TRIANGLES, this.mCharacterCountCurrentText * Text.VERTICES_PER_LETTER);
+		this.mMesh.draw(this.mShaderProgram, GLES20.GL_TRIANGLES, this.mCharacterCountCurrentText * Text.VERTICES_PER_LETTER);
 	}
 
 	// ===========================================================

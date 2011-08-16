@@ -3,9 +3,9 @@ package org.anddev.andengine.entity.primitive;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
@@ -46,26 +46,19 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 * 
-	 * @param pX
-	 * @param pY
-	 * @param pWidth
-	 * @param pHeight
-	 * @param pShaderProgram
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this(pX, pY, pWidth, pHeight, new Mesh(Rectangle.RECTANGLE_SIZE, GLES20.GL_STATIC_DRAW, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX, pY, pWidth, pHeight, DrawType.STATIC);
 	}
 
 	/**
-	 * @param pX
-	 * @param pY
-	 * @param pWidth
-	 * @param pHeight
-	 * @param pMesh
-	 * @param pShaderProgram if <code>null</code> is passed, a default {@link ShaderProgram} is used.
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final DrawType pDrawType) {
+		this(pX, pY, pWidth, pHeight, new Mesh(Rectangle.RECTANGLE_SIZE, pDrawType, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	}
+
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
 		super(pX, pY, pWidth, pHeight, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
 	}

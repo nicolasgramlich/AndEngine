@@ -37,7 +37,7 @@ public abstract class Shape extends Entity implements IShape {
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final Mesh pMesh, ShaderProgram pShaderProgram) {
+	public Shape(final float pX, final float pY, final Mesh pMesh, final ShaderProgram pShaderProgram) {
 		super(pX, pY);
 
 		this.mMesh = pMesh;

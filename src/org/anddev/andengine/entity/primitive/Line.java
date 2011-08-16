@@ -10,6 +10,8 @@ import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.constants.Constants;
@@ -56,12 +58,29 @@ public class Line extends Shape {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
-		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT);
+		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, DrawType.STATIC);
 	}
 
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final DrawType pDrawType) {
+		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pDrawType);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
-		this(pX1, pY1, pX2, pY2, pLineWidth, new Mesh(Line.LINE_SIZE, GLES20.GL_STATIC_DRAW, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX1, pY1, pX2, pY2, pLineWidth, DrawType.STATIC);
+	}
+
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final DrawType pDrawType) {
+		this(pX1, pY1, pX2, pY2, pLineWidth, new Mesh(Line.LINE_SIZE, pDrawType, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final Mesh pMesh) {

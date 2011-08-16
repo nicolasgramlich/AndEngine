@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.texture.ITexture;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.util.SmartList;
 
 /**
@@ -27,6 +30,9 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public SpriteGroup(final ITexture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity);
 

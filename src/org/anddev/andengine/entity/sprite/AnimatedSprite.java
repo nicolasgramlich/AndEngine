@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.util.constants.TimeConstants;
 import org.anddev.andengine.util.math.MathUtils;
 
@@ -36,16 +38,36 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion) {
-		super(pX, pY, pTiledTextureRegion);
+		super(pX, pY, pTiledTextureRegion, DrawType.DYNAMIC);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
+		super(pX, pY, pTiledTextureRegion, pDrawType);
 	}
 
 	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
 		super(pX, pY, pTiledTextureRegion, pMesh);
 	}
 
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion);
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, DrawType.DYNAMIC);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pDrawType);
 	}
 
 	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
@@ -63,7 +85,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);

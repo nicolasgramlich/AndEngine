@@ -10,11 +10,12 @@ import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
-import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.data.DataConstants;
 
 import android.opengl.GLES20;
@@ -69,16 +70,39 @@ public class Text extends RectangularShape {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public Text(final float pX, final float pY, final Font pFont, final String pText) {
-		this(pX, pY, pFont, pText, HorizontalAlign.LEFT);
+		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, DrawType.STATIC);
 	}
 
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Text(final float pX, final float pY, final Font pFont, final String pText, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pDrawType);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pText.length() - StringUtils.countOccurrences(pText, '\n'));
+		this(pX, pY, pFont, pText, pHorizontalAlign, pText.length() - StringUtils.countOccurrences(pText, '\n'), DrawType.STATIC);
 	}
 
-	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum) {
-		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, GLES20.GL_STATIC_DRAW, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, pHorizontalAlign, pText.length() - StringUtils.countOccurrences(pText, '\n'), pDrawType);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
+		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
@@ -181,7 +205,7 @@ public class Text extends RectangularShape {
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
-		
+
 		int index = 0;
 		for(int i = 0; i < this.mCharactersMaximum; i++) {
 			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
@@ -244,33 +268,33 @@ public class Text extends RectangularShape {
 				final float u2 = letter.mU2;
 				final float v2 = letter.mV2;
 
-				bufferData[index + 0 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX;
-				bufferData[index + 0 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY;
+				bufferData[index + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX;
+				bufferData[index + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY;
 				bufferData[index + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 				bufferData[index + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 1 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX;
-				bufferData[index + 1 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2;
+				bufferData[index + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX;
+				bufferData[index + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY2;
 				bufferData[index + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 				bufferData[index + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 2 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2;
-				bufferData[index + 2 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2;
+				bufferData[index + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX2;
+				bufferData[index + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY2;
 				bufferData[index + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 				bufferData[index + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 3 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2;
-				bufferData[index + 3 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY2;
+				bufferData[index + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX2;
+				bufferData[index + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY2;
 				bufferData[index + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 				bufferData[index + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 4 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX2;
-				bufferData[index + 4 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY;
+				bufferData[index + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX2;
+				bufferData[index + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY;
 				bufferData[index + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 				bufferData[index + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 5 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_X] = lineX;
-				bufferData[index + 5 * Text.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = lineY;
+				bufferData[index + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX;
+				bufferData[index + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY;
 				bufferData[index + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 				bufferData[index + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 

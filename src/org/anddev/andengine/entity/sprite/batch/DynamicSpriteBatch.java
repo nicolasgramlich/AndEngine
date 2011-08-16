@@ -1,6 +1,9 @@
 package org.anddev.andengine.entity.sprite.batch;
 
+import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.texture.ITexture;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 
 /**
  * (c) Zynga 2011
@@ -21,11 +24,14 @@ public abstract class DynamicSpriteBatch extends SpriteBatch {
 	// Constructors
 	// ===========================================================
 
-	public DynamicSpriteBatch(ITexture pTexture, int pCapacity) {
-		super(pTexture, pCapacity);
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity) {
+		super(pTexture, pCapacity, DrawType.DYNAMIC);
 	}
 
-	public DynamicSpriteBatch(ITexture pTexture, int pCapacity, SpriteBatchMesh pSpriteBatchMesh) {
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
 		super(pTexture, pCapacity, pSpriteBatchMesh);
 	}
 

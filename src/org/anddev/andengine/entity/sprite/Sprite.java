@@ -5,10 +5,11 @@ import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
-import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
 
@@ -55,12 +56,32 @@ public class Sprite extends RectangularShape {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion);
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, DrawType.STATIC);
 	}
 
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pDrawType);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, new Mesh(Sprite.SPRITE_SIZE, GLES20.GL_STATIC_DRAW, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX, pY, pWidth, pHeight, pTextureRegion, DrawType.STATIC);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, new Mesh(Sprite.SPRITE_SIZE, pDrawType, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final Mesh pMesh) {
@@ -134,7 +155,7 @@ public class Sprite extends RectangularShape {
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
-		
+
 		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
 		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
 		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
@@ -170,11 +191,6 @@ public class Sprite extends RectangularShape {
 
 	protected void onUpdateTextureCoordinates() {
 		final ITextureRegion textureRegion = this.mTextureRegion;
-		final ITexture texture = textureRegion.getTexture();
-
-		if(texture == null) { // TODO Check really needed?
-			return;
-		}
 
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();

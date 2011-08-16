@@ -32,7 +32,7 @@ public class GLHelper {
 
 	private static final boolean IS_LITTLE_ENDIAN = (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN);
 
-	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
+	private static final int[] HARDWAREID_CONTAINER = new int[1];
 
 	// ===========================================================
 	// Fields
@@ -41,6 +41,7 @@ public class GLHelper {
 	private static GLMatrixStacks sGLMatrixStacks = new GLMatrixStacks();
 
 	private static int sCurrentHardwareBufferID = -1;
+	private static int sCurrentShaderProgramID = -1;
 	private static int sCurrentHardwareTextureID = -1;
 
 	private static int sCurrentSourceBlendMode = -1;
@@ -64,6 +65,7 @@ public class GLHelper {
 		GLHelper.sGLMatrixStacks.reset();
 
 		GLHelper.sCurrentHardwareBufferID = -1;
+		GLHelper.sCurrentShaderProgramID = -1;
 		GLHelper.sCurrentHardwareTextureID = -1;
 
 		GLHelper.sCurrentSourceBlendMode = -1;
@@ -175,6 +177,29 @@ public class GLHelper {
 		}
 	}
 
+	public static void deleteHardwareBuffer(final int pHardwareBufferID) {
+		if(GLHelper.sCurrentHardwareBufferID == pHardwareBufferID) {
+			GLHelper.sCurrentHardwareBufferID = -1;
+		}
+		GLHelper.HARDWAREID_CONTAINER[0] = pHardwareBufferID;
+		GLES20.glDeleteBuffers(1, GLHelper.HARDWAREID_CONTAINER, 0);
+	}
+
+	public static void useProgram(final int pShaderProgramID) {
+		/* Reduce unnecessary shader switching calls. */
+		if(GLHelper.sCurrentShaderProgramID != pShaderProgramID) {
+			GLHelper.sCurrentShaderProgramID = pShaderProgramID;
+			GLES20.glUseProgram(pShaderProgramID);
+		}
+	}
+
+	public static void deleteShaderProgram(final int pShaderProgramID) {
+		if(GLHelper.sCurrentShaderProgramID == pShaderProgramID) {
+			GLHelper.sCurrentShaderProgramID = -1;
+		}
+		GLES20.glDeleteProgram(pShaderProgramID);
+	}
+
 	/**
 	 * @see {@link GLHelper#forceBindTexture(GLES20, int)}
 	 * @param GLES20
@@ -189,8 +214,11 @@ public class GLHelper {
 	}
 
 	public static void deleteTexture(final int pHardwareTextureID) {
-		GLHelper.HARDWARETEXTUREID_CONTAINER[0] = pHardwareTextureID;
-		GLES20.glDeleteTextures(1, GLHelper.HARDWARETEXTUREID_CONTAINER, 0);
+		if(GLHelper.sCurrentHardwareTextureID == pHardwareTextureID) {
+			GLHelper.sCurrentHardwareTextureID = -1;
+		}
+		GLHelper.HARDWAREID_CONTAINER[0] = pHardwareTextureID;
+		GLES20.glDeleteTextures(1, GLHelper.HARDWAREID_CONTAINER, 0);
 	}
 
 	public static void blendFunction(final int pSourceBlendMode, final int pDestinationBlendMode) {

@@ -2,7 +2,6 @@ package org.anddev.andengine.opengl.vbo;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.BufferUtils;
@@ -33,7 +32,6 @@ public class VertexBufferObject {
 	private final int mDrawType;
 
 	private final ByteBuffer mByteBuffer;
-	private final FloatBuffer mFloatBuffer;
 
 	private int mHardwareBufferID = -1;
 	private boolean mLoadedToHardware;
@@ -52,7 +50,7 @@ public class VertexBufferObject {
 	 * @param pDrawType
 	 * @param pManaged when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
 	 */
-	public VertexBufferObject(final int pCapacity, final int pDrawType, final boolean pManaged) {
+	public VertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged) {
 		this(pCapacity, pDrawType, pManaged, null);
 	}
 
@@ -62,14 +60,13 @@ public class VertexBufferObject {
 	 * @param pManaged when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
 	 * @param pVertexBufferObjectAttributes to be automatically enabled on the {@link ShaderProgram} used in {@link VertexBufferObject#bind(ShaderProgram)}.
 	 */
-	public VertexBufferObject(final int pCapacity, final int pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		this.mDrawType = pDrawType;
+	public VertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		this.mDrawType = pDrawType.getGLConstant();
 		this.mManaged = pManaged;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
 		this.mBufferData = new float[pCapacity];
 
 		this.mByteBuffer = ByteBuffer.allocateDirect((pCapacity * GLHelper.BYTES_PER_FLOAT)).order(ByteOrder.nativeOrder());
-		this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 
 		if(pManaged) {
 			this.loadToActiveBufferObjectManager();
@@ -131,13 +128,13 @@ public class VertexBufferObject {
 		if(this.mDirtyOnHardware) {
 			this.mDirtyOnHardware = false;
 
-			// TODO On honeycomb the nio buffers are significantly faster, and below native call might not be needed!			
+			// TODO On honeycomb the nio buffers are significantly faster, and below native call might not be needed!
 //			this.mFloatBuffer.position(0);
 //			this.mFloatBuffer.put(this.mBufferData);
 //			this.mFloatBuffer.position(0);
 
 			BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
-			this.mFloatBuffer.position(0);
+			this.mByteBuffer.position(0);
 
 			synchronized(this) {
 				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mDrawType);
@@ -187,4 +184,52 @@ public class VertexBufferObject {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static enum DrawType {
+		// ===========================================================
+		// Elements
+		// ===========================================================
+
+		STATIC(GLES20.GL_STATIC_DRAW),
+		DYNAMIC(GLES20.GL_DYNAMIC_DRAW),
+		STREAM(GLES20.GL_STREAM_DRAW);
+
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		private final int mGLConstant;
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		private DrawType(final int pGLConstant) {
+			this.mGLConstant = pGLConstant;
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		public int getGLConstant() {
+			return this.mGLConstant;
+		}
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

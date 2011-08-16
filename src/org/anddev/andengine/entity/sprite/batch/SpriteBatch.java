@@ -10,6 +10,8 @@ import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.color.Color;
@@ -71,8 +73,18 @@ public class SpriteBatch extends Entity {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
 	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
-		this(pTexture, pCapacity, new SpriteBatchMesh(pCapacity * SpriteBatch.SPRITE_SIZE, GLES20.GL_STATIC_DRAW, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT)); // TODO Measure: GLES20.GL_STATIC_DRAW against GLES20.GL_STREAM_DRAW and GLES20.GL_DYNAMIC_DRAW
+		this(pTexture, pCapacity, DrawType.STATIC);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final DrawType pDrawType) {
+		this(pTexture, pCapacity, new SpriteBatchMesh(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
@@ -307,7 +319,7 @@ public class SpriteBatch extends Entity {
 			this.mIndex++;
 		}
 	}
-	
+
 	/**
 	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
 	 */
@@ -422,7 +434,7 @@ public class SpriteBatch extends Entity {
 		// Constructors
 		// ===========================================================
 
-		public SpriteBatchMesh(final int pCapacity, final int pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		public SpriteBatchMesh(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
@@ -467,7 +479,7 @@ public class SpriteBatch extends Entity {
 
 			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
 		}
-		
+
 		/**
 		 * @param pTextureRegion
 		 * @param pX
@@ -518,7 +530,7 @@ public class SpriteBatch extends Entity {
 
 			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
 		}
-		
+
 		/**
 		 * @param pTextureRegion
 		 * @param pX
@@ -572,7 +584,7 @@ public class SpriteBatch extends Entity {
 
 			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
 		}
-		
+
 		/**
 		 * @param pTextureRegion
 		 * @param pX
@@ -598,7 +610,7 @@ public class SpriteBatch extends Entity {
 
 			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pPackedColor);
 		}
-		
+
 		/**
 		 * @param pTextureRegion
 		 * @param pWidth
@@ -666,7 +678,7 @@ public class SpriteBatch extends Entity {
 		public void add(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 			this.addInner(pTextureRegion, pX, pY, pX + pWidth, pY + pHeight, pRed, pGreen, pBlue, pAlpha);
 		}
-		
+
 		/**
 		 * @param pTextureRegion
 		 * @param pX
@@ -735,7 +747,7 @@ public class SpriteBatch extends Entity {
 
 			this.mIndex += SpriteBatch.SPRITE_SIZE;
 		}
-		
+
 		/**
 		 * 1-+
 		 * |X|
@@ -852,7 +864,7 @@ public class SpriteBatch extends Entity {
 
 			this.mIndex += SpriteBatch.SPRITE_SIZE;
 		}
-		
+
 		/**
 		 * 1-3
 		 * |X|

@@ -55,7 +55,7 @@ public class ColorModifier2 extends DurationEntityModifier {
 	}
 
 	@Override
-	public ColorModifier2 clone() {
+	public ColorModifier2 deepCopy() {
 		return null;
 	}
 

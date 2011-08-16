@@ -45,5 +45,5 @@ public interface ITiledTextureRegion extends ITextureRegion {
 	public float getV2(final int pTileIndex);
 
 	@Override
-	public ITiledTextureRegion clone();
+	public ITiledTextureRegion deepCopy();
 }

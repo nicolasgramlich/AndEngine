@@ -74,7 +74,7 @@ public class RadialGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 	}
 
 	@Override
-	public RadialGradientFillBitmapTextureAtlasSourceDecorator clone() {
+	public RadialGradientFillBitmapTextureAtlasSourceDecorator deepCopy() {
 		return new RadialGradientFillBitmapTextureAtlasSourceDecorator(this.mBitmapTextureAtlasSource, this.mBitmapTextureAtlasSourceDecoratorShape, this.mColors, this.mPositions, this.mRadialGradientDirection, this.mTextureAtlasSourceDecoratorOptions);
 	}
 

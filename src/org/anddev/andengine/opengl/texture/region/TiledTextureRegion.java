@@ -54,7 +54,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	}
 
 	@Override
-	public TiledTextureRegion clone() {
+	public TiledTextureRegion deepCopy() {
 		final int tileCount = this.mTileCount;
 
 		final ITextureRegion[] textureRegions = new ITextureRegion[tileCount];
@@ -64,7 +64,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 				throw new IllegalArgumentException("Illegal TextureRegion detected that does not match the Texture passed.");
 			}
 
-			textureRegions[i] = this.mTextureRegions[i].clone();
+			textureRegions[i] = this.mTextureRegions[i].deepCopy();
 		}
 
 		return new TiledTextureRegion(this.mTexture, textureRegions);

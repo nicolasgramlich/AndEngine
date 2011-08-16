@@ -63,7 +63,7 @@ public class LinearGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 	}
 
 	@Override
-	public LinearGradientFillBitmapTextureAtlasSourceDecorator clone() {
+	public LinearGradientFillBitmapTextureAtlasSourceDecorator deepCopy() {
 		return new LinearGradientFillBitmapTextureAtlasSourceDecorator(this.mBitmapTextureAtlasSource, this.mBitmapTextureAtlasSourceDecoratorShape, this.mColors, this.mPositions, this.mLinearGradientDirection, this.mTextureAtlasSourceDecoratorOptions);
 	}
 

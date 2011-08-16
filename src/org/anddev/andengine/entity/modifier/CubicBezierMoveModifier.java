@@ -63,7 +63,7 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 	}
 
 	@Override
-	public CubicBezierMoveModifier clone() {
+	public CubicBezierMoveModifier deepCopy() {
 		return new CubicBezierMoveModifier(this.mDuration, this.mX1, this.mY1, this.mX2, this.mY2, this.mX3, this.mY3, this.mX4, this.mY4, this.mEaseFunction);
 	}
 

@@ -42,7 +42,7 @@ public class ColorKeyBitmapTextureAtlasSourceDecorator extends ColorSwapBitmapTe
 	}
 
 	@Override
-	public ColorKeyBitmapTextureAtlasSourceDecorator clone() {
+	public ColorKeyBitmapTextureAtlasSourceDecorator deepCopy() {
 		return new ColorKeyBitmapTextureAtlasSourceDecorator(this.mBitmapTextureAtlasSource, this.mBitmapTextureAtlasSourceDecoratorShape, this.mColorKeyColor, this.mTolerance, this.mTextureAtlasSourceDecoratorOptions);
 	}
 

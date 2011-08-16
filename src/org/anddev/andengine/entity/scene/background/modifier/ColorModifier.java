@@ -45,7 +45,7 @@ public class ColorModifier extends BaseTripleValueSpanModifier<IBackground> impl
 	}
 
 	@Override
-	public ColorModifier clone(){
+	public ColorModifier deepCopy(){
 		return new ColorModifier(this);
 	}
 

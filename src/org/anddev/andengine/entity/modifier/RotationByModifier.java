@@ -35,7 +35,7 @@ public class RotationByModifier extends SingleValueChangeEntityModifier {
 	}
 
 	@Override
-	public RotationByModifier clone(){
+	public RotationByModifier deepCopy(){
 		return new RotationByModifier(this);
 	}
 

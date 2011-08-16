@@ -52,7 +52,7 @@ public abstract class PictureBitmapTextureAtlasSource extends BaseTextureAtlasSo
 	}
 
 	@Override
-	public abstract PictureBitmapTextureAtlasSource clone();
+	public abstract PictureBitmapTextureAtlasSource deepCopy();
 
 	// ===========================================================
 	// Getter & Setter

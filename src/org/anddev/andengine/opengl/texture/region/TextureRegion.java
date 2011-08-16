@@ -45,7 +45,7 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 	}
 	
 	@Override
-	public TextureRegion clone() {
+	public TextureRegion deepCopy() {
 		return new TextureRegion(mTexture, mX, mY, mWidth, mHeight);
 	}
 

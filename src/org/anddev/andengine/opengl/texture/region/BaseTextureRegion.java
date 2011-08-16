@@ -29,7 +29,7 @@ public abstract class BaseTextureRegion implements ITextureRegion {
 	}
 	
 	@Override
-	public abstract ITextureRegion clone();
+	public abstract ITextureRegion deepCopy();
 
 	// ===========================================================
 	// Getter & Setter

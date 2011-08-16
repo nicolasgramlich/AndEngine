@@ -54,7 +54,7 @@ public class ColorSwapBitmapTextureAtlasSourceDecorator extends BaseShapeBitmapT
 	}
 
 	@Override
-	public ColorSwapBitmapTextureAtlasSourceDecorator clone() {
+	public ColorSwapBitmapTextureAtlasSourceDecorator deepCopy() {
 		return new ColorSwapBitmapTextureAtlasSourceDecorator(this.mBitmapTextureAtlasSource, this.mBitmapTextureAtlasSourceDecoratorShape, this.mColorKeyColor, this.mTolerance, this.mColorSwapColor, this.mTextureAtlasSourceDecoratorOptions);
 	}
 

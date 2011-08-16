@@ -44,7 +44,7 @@ public class MoveModifier extends DoubleValueSpanEntityModifier {
 	}
 
 	@Override
-	public MoveModifier clone(){
+	public MoveModifier deepCopy(){
 		return new MoveModifier(this);
 	}
 

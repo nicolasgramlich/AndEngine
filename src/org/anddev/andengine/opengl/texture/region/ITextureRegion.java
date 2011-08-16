@@ -40,5 +40,5 @@ public interface ITextureRegion {
 
 	public ITexture getTexture();
 
-	public ITextureRegion clone();
+	public ITextureRegion deepCopy();
 }

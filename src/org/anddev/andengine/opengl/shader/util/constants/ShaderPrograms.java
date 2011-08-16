@@ -63,6 +63,24 @@ public interface ShaderPrograms {
 		};
 	};
 
+	public static final ShaderProgram SHADERPROGRAM_POSITION_TEXTURECOORDINATES = new ShaderProgram(VertexShaders.VERTEXSHADER_POSITION_TEXTURECOORDINATES, FragmentShaders.FRAGMENTSHADER_TEXTURECOORDINATES) {
+		private int mUniformModelViewPositionMatrixLocation = ShaderProgram.LOCATION_INVALID;
+		private int mUniformTexture0Location = ShaderProgram.LOCATION_INVALID;
+
+		@Override
+		protected void onCompiled() {
+			this.mUniformModelViewPositionMatrixLocation = this.getUniformLocation(ShaderPrograms.UNIFORM_MODELVIEWPROJECTIONMATRIX);
+			this.mUniformTexture0Location = this.getUniformLocation(ShaderPrograms.UNIFORM_TEXTURE_0);
+		};
+
+		@Override
+		public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super.bind(pVertexBufferObjectAttributes);
+			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
+			GLES20.glUniform1i(this.mUniformTexture0Location, 0);
+		};
+	};
+
 	public static final ShaderProgram SHADERPROGRAM_POSITION_COLOR = new ShaderProgram(VertexShaders.VERTEXSHADER_POSITION_COLOR, FragmentShaders.FRAGMENTSHADER_COLOR) {
 		private int mUniformModelViewPositionMatrixLocation = ShaderProgram.LOCATION_INVALID;
 

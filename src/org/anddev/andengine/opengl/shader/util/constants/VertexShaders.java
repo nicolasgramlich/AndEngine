@@ -25,6 +25,16 @@ public interface VertexShaders {
 		    "   " + ShaderPrograms.VARYING_TEXTURECOORDINATES + " = " + ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
 			"   gl_Position = " + ShaderPrograms.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderPrograms.ATTRIBUTE_POSITION + ";\n" +
 			"}";
+	
+	public static final String VERTEXSHADER_POSITION_TEXTURECOORDINATES =  
+			"uniform mat4 " + ShaderPrograms.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
+			"attribute vec4 " + ShaderPrograms.ATTRIBUTE_POSITION + ";\n" +
+			"attribute vec2 " + ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
+			"varying vec2 " + ShaderPrograms.VARYING_TEXTURECOORDINATES + ";\n" +
+			"void main() {\n" +
+			"   " + ShaderPrograms.VARYING_TEXTURECOORDINATES + " = " + ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
+			"   gl_Position = " + ShaderPrograms.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderPrograms.ATTRIBUTE_POSITION + ";\n" +
+			"}";
 
 	public static final String VERTEXSHADER_POSITION_COLOR =
 			"uniform mat4 " + ShaderPrograms.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +

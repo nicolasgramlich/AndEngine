@@ -49,13 +49,13 @@ public class ParallelModifier<T> extends BaseModifier<T> implements IModifierLis
 	}
 
 	@SuppressWarnings("unchecked")
-	protected ParallelModifier(final ParallelModifier<T> pParallelModifier) throws CloneNotSupportedException {
+	protected ParallelModifier(final ParallelModifier<T> pParallelModifier) throws DeepCopyNotSupportedException {
 		final IModifier<T>[] otherModifiers = pParallelModifier.mModifiers;
 		this.mModifiers = new IModifier[otherModifiers.length];
 
 		final IModifier<T>[] modifiers = this.mModifiers;
 		for(int i = modifiers.length - 1; i >= 0; i--) {
-			modifiers[i] = otherModifiers[i].clone();
+			modifiers[i] = otherModifiers[i].deepCopy();
 		}
 
 		final IModifier<T> modifierWithLongestDuration = modifiers[0];
@@ -64,7 +64,7 @@ public class ParallelModifier<T> extends BaseModifier<T> implements IModifierLis
 	}
 
 	@Override
-	public ParallelModifier<T> clone() throws CloneNotSupportedException{
+	public ParallelModifier<T> deepCopy() throws DeepCopyNotSupportedException{
 		return new ParallelModifier<T>(this);
 	}
 

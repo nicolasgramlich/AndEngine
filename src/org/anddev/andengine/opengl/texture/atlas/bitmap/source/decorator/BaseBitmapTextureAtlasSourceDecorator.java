@@ -44,7 +44,7 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 	}
 
 	@Override
-	public abstract BaseBitmapTextureAtlasSourceDecorator clone();
+	public abstract BaseBitmapTextureAtlasSourceDecorator deepCopy();
 
 	// ===========================================================
 	// Getter & Setter
@@ -131,8 +131,7 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 		// Constructors
 		// ===========================================================
 
-		@Override
-		protected TextureAtlasSourceDecoratorOptions clone() {
+		protected TextureAtlasSourceDecoratorOptions deepCopy() {
 			final TextureAtlasSourceDecoratorOptions textureSourceDecoratorOptions = new TextureAtlasSourceDecoratorOptions();
 			textureSourceDecoratorOptions.setInsets(this.mInsetLeft, this.mInsetTop, this.mInsetRight, this.mInsetBottom);
 			textureSourceDecoratorOptions.setAntiAliasing(this.mAntiAliasing);

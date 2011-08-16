@@ -43,12 +43,12 @@ public class LoopEntityModifier extends LoopModifier<IEntity> implements IEntity
 		super(pEntityModifier, pLoopCount, pLoopModifierListener, pEntityModifierListener);
 	}
 
-	protected LoopEntityModifier(final LoopEntityModifier pLoopEntityModifier) throws CloneNotSupportedException {
+	protected LoopEntityModifier(final LoopEntityModifier pLoopEntityModifier) throws DeepCopyNotSupportedException {
 		super(pLoopEntityModifier);
 	}
 
 	@Override
-	public LoopEntityModifier clone() throws CloneNotSupportedException {
+	public LoopEntityModifier deepCopy() throws DeepCopyNotSupportedException {
 		return new LoopEntityModifier(this);
 	}
 

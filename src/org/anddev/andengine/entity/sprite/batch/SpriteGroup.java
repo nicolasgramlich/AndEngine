@@ -83,7 +83,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 		} else {
 			final int childCount = children.size();
 			for(int i = 0; i < childCount; i++) {
-				super.drawWithoutChecks((Sprite)children.get(i));
+				this.drawWithoutChecks((Sprite)children.get(i));
 			}
 			return true;
 		}

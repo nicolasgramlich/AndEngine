@@ -1,7 +1,5 @@
 package org.anddev.andengine.opengl.texture.region;
 
-import java.util.Arrays;
-
 import org.anddev.andengine.opengl.texture.ITexture;
 
 /**
@@ -21,94 +19,55 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	// ===========================================================
 
 	protected int mTileIndex;
-	protected int mTileCount;
-
-	protected int[] mXs;
-	protected int[] mYs;
-	protected int[] mWidths;
-	protected int[] mHeights;
+	protected final int mTileCount;
+	protected final ITextureRegion[] mTextureRegions;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TiledTextureRegion(final ITexture pTexture, final int[] pXs, final int[] pYs, final int[] pWidths, final int[] pHeights) {
+	public TiledTextureRegion(final ITexture pTexture, final ITextureRegion ... pTextureRegions) {
 		super(pTexture);
-		this.mTileCount = pWidths.length;
 
-		this.mXs = pXs;
-		this.mYs = pYs;
-
-		this.mWidths = pWidths;
-		this.mHeights = pHeights;
-
-		this.updateUV();
+		this.mTextureRegions = pTextureRegions;
+		this.mTileCount = this.mTextureRegions.length;
 	}
 
 	public static TiledTextureRegion create(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
 		final int tileCount = pTileColumns * pTileRows;
 
-		final int[] xs = new int[tileCount];
-		final int[] ys = new int[tileCount];
-		final int[] widths = new int[tileCount];
-		final int[] heights = new int[tileCount];
+		final ITextureRegion[] textureRegions = new ITextureRegion[tileCount];
 
 		final int tileWidth = pWidth / pTileColumns;
 		final int tileHeight = pHeight / pTileRows;
-
-		Arrays.fill(widths, tileWidth);
-		Arrays.fill(heights, tileHeight);
 
 		for(int i = 0; i < tileCount; i++) {
 			final int tileColumn = i % pTileColumns;
 			final int tileRow = i / pTileColumns;
 
-			xs[i] = pX + tileColumn * tileWidth;
-			ys[i] = pY + tileRow * tileHeight;
+			final int x = pX + tileColumn * tileWidth;
+			final int y = pY + tileRow * tileHeight;
+			textureRegions[i] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight);
 		}
 
-		return new TiledTextureRegion(pTexture, xs, ys, widths, heights);
-	}
-
-	public static TiledTextureRegion create(final ITexture pTexture, final ITextureRegion ... pTextureRegions) {
-		final int textureRegionCount = pTextureRegions.length;
-
-		final int[] xs = new int[textureRegionCount];
-		final int[] ys = new int[textureRegionCount];
-		final int[] widths = new int[textureRegionCount];
-		final int[] heights = new int[textureRegionCount];
-
-		for(int i = 0; i < textureRegionCount; i++) {
-			final ITextureRegion textureRegion = pTextureRegions[i];
-
-			if(textureRegion.getTexture() != pTexture) {
-				throw new IllegalArgumentException("Illegal TextureRegion detected that does not match the Texture passed.");
-			}
-
-			xs[i] = textureRegion.getX();
-			ys[i] = textureRegion.getY();
-			widths[i] = textureRegion.getWidth();
-			heights[i] = textureRegion.getHeight();
-		}
-
-		return new TiledTextureRegion(pTexture, xs, ys, widths, heights);
+		return new TiledTextureRegion(pTexture, textureRegions);
 	}
 
 	@Override
 	public TiledTextureRegion clone() {
 		final int tileCount = this.mTileCount;
 
-		final int[] xs = new int[tileCount];
-		final int[] ys = new int[tileCount];
-		final int[] widths = new int[tileCount];
-		final int[] heights = new int[tileCount];
+		final ITextureRegion[] textureRegions = new ITextureRegion[tileCount];
 
-		System.arraycopy(this.mXs, 0, xs, 0, tileCount);
-		System.arraycopy(this.mYs, 0, ys, 0, tileCount);
-		System.arraycopy(this.mWidths, 0, widths, 0, tileCount);
-		System.arraycopy(this.mHeights, 0, heights, 0, tileCount);
+		for(int i = 0; i < tileCount; i++) {
+			if(this.mTextureRegions[i].getTexture() != this.mTexture) {
+				throw new IllegalArgumentException("Illegal TextureRegion detected that does not match the Texture passed.");
+			}
 
-		return new TiledTextureRegion(this.mTexture, xs, ys, widths, heights);
+			textureRegions[i] = this.mTextureRegions[i].clone();
+		}
+
+		return new TiledTextureRegion(this.mTexture, textureRegions);
 	}
 
 	// ===========================================================
@@ -124,8 +83,6 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	public boolean setTileIndex(final int pTileIndex) {
 		if(this.mTileIndex != pTileIndex) {
 			this.mTileIndex = pTileIndex;
-
-			this.updateUV();
 			return true;
 		} else {
 			return false;
@@ -138,8 +95,6 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		if(this.mTileIndex >= this.mTileCount) {
 			this.mTileIndex = this.mTileIndex % this.mTileCount;
 		}
-
-		this.updateUV();
 	}
 
 	@Override
@@ -149,82 +104,152 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 
 	@Override
 	public int getX() {
-		return this.mXs[this.mTileIndex];
+		return this.mTextureRegions[this.mTileIndex].getX();
+	}
+
+	@Override
+	public int getX(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getX();
 	}
 
 	@Override
 	public int getY() {
-		return this.mYs[this.mTileIndex];
+		return this.mTextureRegions[this.mTileIndex].getY();
+	}
+
+	@Override
+	public int getY(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getY();
 	}
 
 	@Override
 	public void setX(final int pX) {
-		this.mXs[this.mTileIndex] = pX;
+		this.mTextureRegions[this.mTileIndex].setX(pX);
+	}
 
-		this.updateUV();
+	@Override
+	public void setX(final int pTileIndex, final int pX) {
+		this.mTextureRegions[pTileIndex].setY(pX);
 	}
 
 	@Override
 	public void setY(final int pY) {
-		this.mYs[this.mTileIndex] = pY;
+		this.mTextureRegions[this.mTileIndex].setY(pY);
+	}
 
-		this.updateUV();
+	@Override
+	public void setY(final int pTileIndex, final int pY) {
+		this.mTextureRegions[pTileIndex].setY(pY);
 	}
 
 	@Override
 	public void setPosition(final int pX, final int pY) {
-		final int tileIndex = this.mTileIndex;
+		this.mTextureRegions[this.mTileIndex].setPosition(pX, pY);
+	}
 
-		this.mXs[tileIndex] = pX;
-		this.mYs[tileIndex] = pY;
-
-		this.updateUV();
+	@Override
+	public void setPosition(final int pTileIndex, final int pX, final int pY) {
+		this.mTextureRegions[pTileIndex].setPosition(pX, pY);
 	}
 
 	@Override
 	public int getWidth() {
-		return this.mWidths[this.mTileIndex];
+		return this.mTextureRegions[this.mTileIndex].getWidth();
+	}
+
+	@Override
+	public int getWidth(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getWidth();
 	}
 
 	@Override
 	public int getHeight() {
-		return this.mHeights[this.mTileIndex];
+		return this.mTextureRegions[this.mTileIndex].getHeight();
+	}
+
+	@Override
+	public int getHeight(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getHeight();
 	}
 
 	@Override
 	public void setWidth(final int pWidth) {
-		this.mWidths[this.mTileIndex] = pWidth;
+		this.mTextureRegions[this.mTileIndex].setWidth(pWidth);
+	}
 
-		this.updateUV();
+	@Override
+	public void setWidth(final int pTileIndex, final int pWidth) {
+		this.mTextureRegions[pTileIndex].setWidth(pWidth);
 	}
 
 	@Override
 	public void setHeight(final int pHeight) {
-		this.mHeights[this.mTileIndex] = pHeight;
+		this.mTextureRegions[this.mTileIndex].setHeight(pHeight);
+	}
 
-		this.updateUV();
+	@Override
+	public void setHeight(final int pTileIndex, final int pHeight) {
+		this.mTextureRegions[pTileIndex].setHeight(pHeight);
 	}
 
 	@Override
 	public void setSize(final int pWidth, final int pHeight) {
-		final int tileIndex = this.mTileIndex;
+		this.mTextureRegions[this.mTileIndex].setSize(pWidth, pHeight);
+	}
 
-		this.mWidths[tileIndex] = pWidth;
-		this.mHeights[tileIndex] = pHeight;
-
-		this.updateUV();
+	@Override
+	public void setSize(final int pTileIndex, final int pWidth, final int pHeight) {
+		this.mTextureRegions[pTileIndex].setSize(pWidth, pHeight);
 	}
 
 	@Override
 	public void set(final int pX, final int pY, final int pWidth, final int pHeight) {
-		final int tileIndex = this.mTileIndex;
+		this.mTextureRegions[this.mTileIndex].set(pX, pY, pWidth, pHeight);
+	}
 
-		this.mXs[tileIndex] = pX;
-		this.mYs[tileIndex] = pY;
-		this.mWidths[tileIndex] = pWidth;
-		this.mHeights[tileIndex] = pHeight;
+	@Override
+	public void set(final int pTileIndex, final int pX, final int pY, final int pWidth, final int pHeight) {
+		this.mTextureRegions[pTileIndex].set(pX, pY, pWidth, pHeight);
+	}
 
-		this.updateUV();
+	@Override
+	public float getU() {
+		return this.mTextureRegions[this.mTileIndex].getU();
+	}
+
+	@Override
+	public float getU(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getU();
+	}
+
+	@Override
+	public float getV() {
+		return this.mTextureRegions[this.mTileIndex].getV();
+	}
+
+	@Override
+	public float getV(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getV();
+	}
+
+	@Override
+	public float getU2() {
+		return this.mTextureRegions[this.mTileIndex].getU2();
+	}
+
+	@Override
+	public float getU2(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getU2();
+	}
+
+	@Override
+	public float getV2() {
+		return this.mTextureRegions[this.mTileIndex].getV2();
+	}
+
+	@Override
+	public float getV2(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getV2();
 	}
 
 	// ===========================================================

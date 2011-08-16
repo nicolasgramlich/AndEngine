@@ -33,7 +33,6 @@ public interface ITextureRegion {
 
 	public void set(final int pX, final int pY, final int pWidth, final int pHeight);
 
-	// TODO Potentially the U/U2/V/V2 could be provided/stored with Float.floatToRawIntBits(..) so that they don't need to be permanently converted in the Sprite class, potentially improving performance of updating texturecoordinates by a factor of 10. 
 	public float getU();
 	public float getU2();
 	public float getV();

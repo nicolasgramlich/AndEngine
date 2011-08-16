@@ -1,6 +1,7 @@
 package org.anddev.andengine.opengl.shader.util.constants;
 
 import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
@@ -19,9 +20,13 @@ public interface ShaderPrograms {
 	// ===========================================================
 
 	public static final String ATTRIBUTE_POSITION = "a_position";
+	public static final int ATTRIBUTE_POSITION_LOCATION = 0;
 	public static final String ATTRIBUTE_COLOR = "a_color";
+	public static final int ATTRIBUTE_COLOR_LOCATION = 1;
 	public static final String ATTRIBUTE_NORMAL = "a_normal";
+	public static final int ATTRIBUTE_NORMAL_LOCATION = 2;
 	public static final String ATTRIBUTE_TEXTURECOORDINATES = "a_textureCoordinates";
+	public static final int ATTRIBUTE_TEXTURECOORDINATES_LOCATION = 3;
 
 	public static final String UNIFORM_MODELVIEWPROJECTIONMATRIX = "u_modelViewProjectionMatrix";
 	public static final String UNIFORM_MODELVIEWMATRIX = "u_modelViewMatrix";
@@ -50,14 +55,21 @@ public interface ShaderPrograms {
 		private int mUniformTexture0Location = ShaderProgram.LOCATION_INVALID;
 
 		@Override
-		protected void onCompiled() {
+		protected void link() throws ShaderProgramLinkException {
+			GLES20.glBindAttribLocation(this.mProgramID, ShaderPrograms.ATTRIBUTE_POSITION_LOCATION, ShaderPrograms.ATTRIBUTE_POSITION);
+			GLES20.glBindAttribLocation(this.mProgramID, ShaderPrograms.ATTRIBUTE_COLOR_LOCATION, ShaderPrograms.ATTRIBUTE_COLOR);
+			GLES20.glBindAttribLocation(this.mProgramID, ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES);
+
+			super.link();
+
 			this.mUniformModelViewPositionMatrixLocation = this.getUniformLocation(ShaderPrograms.UNIFORM_MODELVIEWPROJECTIONMATRIX);
 			this.mUniformTexture0Location = this.getUniformLocation(ShaderPrograms.UNIFORM_TEXTURE_0);
-		};
+		}
 
 		@Override
 		public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 			super.bind(pVertexBufferObjectAttributes);
+
 			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
 			GLES20.glUniform1i(this.mUniformTexture0Location, 0);
 		};
@@ -68,16 +80,30 @@ public interface ShaderPrograms {
 		private int mUniformTexture0Location = ShaderProgram.LOCATION_INVALID;
 
 		@Override
-		protected void onCompiled() {
+		protected void link() throws ShaderProgramLinkException {
+			GLES20.glBindAttribLocation(this.mProgramID, ShaderPrograms.ATTRIBUTE_POSITION_LOCATION, ShaderPrograms.ATTRIBUTE_POSITION);
+			GLES20.glBindAttribLocation(this.mProgramID, ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES);
+
+			super.link();
+
 			this.mUniformModelViewPositionMatrixLocation = this.getUniformLocation(ShaderPrograms.UNIFORM_MODELVIEWPROJECTIONMATRIX);
 			this.mUniformTexture0Location = this.getUniformLocation(ShaderPrograms.UNIFORM_TEXTURE_0);
-		};
+		}
 
 		@Override
 		public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			GLES20.glDisableVertexAttribArray(ShaderProgram.ATTRIBUTE_COLOR_LOCATION);
+			
 			super.bind(pVertexBufferObjectAttributes);
+
 			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
 			GLES20.glUniform1i(this.mUniformTexture0Location, 0);
+		};
+		
+		public void unbind(VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super.unbind(pVertexBufferObjectAttributes);
+			
+			GLES20.glEnableVertexAttribArray(ShaderProgram.ATTRIBUTE_COLOR_LOCATION);
 		};
 	};
 
@@ -85,14 +111,28 @@ public interface ShaderPrograms {
 		private int mUniformModelViewPositionMatrixLocation = ShaderProgram.LOCATION_INVALID;
 
 		@Override
-		protected void onCompiled() {
+		protected void link() throws ShaderProgramLinkException {
+			GLES20.glBindAttribLocation(this.mProgramID, ShaderPrograms.ATTRIBUTE_POSITION_LOCATION, ShaderPrograms.ATTRIBUTE_POSITION);
+			GLES20.glBindAttribLocation(this.mProgramID, ShaderPrograms.ATTRIBUTE_COLOR_LOCATION, ShaderPrograms.ATTRIBUTE_COLOR);
+
+			super.link();
+
 			this.mUniformModelViewPositionMatrixLocation = this.getUniformLocation(ShaderPrograms.UNIFORM_MODELVIEWPROJECTIONMATRIX);
-		};
+		}
 
 		@Override
 		public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			GLES20.glDisableVertexAttribArray(ShaderProgram.ATTRIBUTE_TEXTURECOORDINATES_LOCATION);
+
 			super.bind(pVertexBufferObjectAttributes);
+
 			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
+		};
+		
+		public void unbind(VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super.unbind(pVertexBufferObjectAttributes);
+			
+			GLES20.glEnableVertexAttribArray(ShaderProgram.ATTRIBUTE_TEXTURECOORDINATES_LOCATION);
 		};
 	};
 

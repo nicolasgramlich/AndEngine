@@ -134,9 +134,7 @@ public class VertexBufferObject {
 			BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
 			this.mByteBuffer.position(0);
 
-			synchronized(this) {
-				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mDrawType);
-			}
+			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mDrawType);
 		}
 
 		pShaderProgram.bind(this.mVertexBufferObjectAttributes);

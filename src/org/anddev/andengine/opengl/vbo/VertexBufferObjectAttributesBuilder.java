@@ -44,8 +44,8 @@ public class VertexBufferObjectAttributesBuilder {
 	// Methods
 	// ===========================================================
 
-	public VertexBufferObjectAttributesBuilder add(final String pName, final int pSize, final int pType, final boolean pNormalized) {
-		this.mVertexBufferObjectAttributes[this.mIndex] = new VertexBufferObjectAttribute(pName, pSize, pType, pNormalized, this.mOffset);
+	public VertexBufferObjectAttributesBuilder add(final int pLocation, final String pName, final int pSize, final int pType, final boolean pNormalized) {
+		this.mVertexBufferObjectAttributes[this.mIndex] = new VertexBufferObjectAttribute(pLocation, pName, pSize, pType, pNormalized, this.mOffset);
 
 		switch(pType) {
 			case GLES20.GL_FLOAT:
@@ -57,7 +57,9 @@ public class VertexBufferObjectAttributesBuilder {
 			default:
 				throw new IllegalArgumentException("Unexpected pType: '" + pType + "'.");
 		}
+
 		this.mIndex++;
+
 		return this;
 	}
 

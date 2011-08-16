@@ -3,8 +3,6 @@ package org.anddev.andengine.opengl.vbo;
 import org.anddev.andengine.opengl.GLES20Fix;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 
-import android.opengl.GLES20;
-
 /**
  * (c) Zynga 2011
  *
@@ -16,14 +14,11 @@ public class VertexBufferObjectAttribute {
 	// Constants
 	// ===========================================================
 
-	private static final int LOCATION_INVALID = -1;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private int mLocation = VertexBufferObjectAttribute.LOCATION_INVALID;
-
+	private final int mLocation;
 	private final String mName;
 	private final int mSize;
 	private final int mType;
@@ -34,7 +29,8 @@ public class VertexBufferObjectAttribute {
 	// Constructors
 	// ===========================================================
 
-	public VertexBufferObjectAttribute(final String pName, final int pSize, final int pType, final boolean pNormalized, final int pOffset) {
+	public VertexBufferObjectAttribute(final int pLocation, final String pName, final int pSize, final int pType, final boolean pNormalized, final int pOffset) {
+		this.mLocation = pLocation;
 		this.mName = pName;
 		this.mSize = pSize;
 		this.mType = pType;
@@ -46,21 +42,36 @@ public class VertexBufferObjectAttribute {
 	// Getter & Setter
 	// ===========================================================
 
+	public int getLocation() {
+		return this.mLocation;
+	}
+
+	public String getName() {
+		return this.mName;
+	}
+
+	public int getSize() {
+		return this.mSize;
+	}
+
+	public int getType() {
+		return this.mType;
+	}
+
+	public boolean isNormalized() {
+		return this.mNormalized;
+	}
+
+	public int getOffset() {
+		return this.mOffset;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public void enable(final ShaderProgram pShaderProgram, final int pStride) {
-		if(this.mLocation == VertexBufferObjectAttribute.LOCATION_INVALID) {
-			this.mLocation = pShaderProgram.getAttributeLocation(this.mName);
-		}
-
-		GLES20.glEnableVertexAttribArray(this.mLocation);
+	public void glVertexAttribPointer(final ShaderProgram pShaderProgram, final int pStride) {
 		GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
-	}
-
-	public void disable(final ShaderProgram pShaderProgram) {
-		GLES20.glDisableVertexAttribArray(this.mLocation);
 	}
 
 	// ===========================================================

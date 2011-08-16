@@ -25,7 +25,7 @@ public class ShaderProgramManager {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public ShaderProgramManager() {
 		this.loadShaderProgram(ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
 		this.loadShaderProgram(ShaderPrograms.SHADERPROGRAM_POSITION_TEXTURECOORDINATES);

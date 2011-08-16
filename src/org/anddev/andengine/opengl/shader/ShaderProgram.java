@@ -7,6 +7,7 @@ import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
@@ -40,8 +41,6 @@ public class ShaderProgram implements ShaderPrograms {
 	protected final String mVertexShaderSource;
 	protected final String mFragmentShaderSource;
 
-	protected int mVertexShaderID = -1;
-	protected int mFragmentShaderID = -1;
 	protected int mProgramID = -1;
 
 	protected boolean mCompiled;
@@ -110,10 +109,6 @@ public class ShaderProgram implements ShaderPrograms {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected void onCompiled() {
-
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -124,12 +119,10 @@ public class ShaderProgram implements ShaderPrograms {
 		}
 		GLHelper.useProgram(this.mProgramID);
 
-		pVertexBufferObjectAttributes.enableVertexBufferObjectAttributes(this);
+		pVertexBufferObjectAttributes.glVertexAttribPointers(this);
 	}
 
 	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		pVertexBufferObjectAttributes.disableVertexBufferObjectAttributes(this);
-
 //		GLES20.glUseProgram(0);
 	}
 	
@@ -142,16 +135,17 @@ public class ShaderProgram implements ShaderPrograms {
 	}
 
 	protected void compile() throws ShaderProgramException {
-		this.mVertexShaderID = ShaderProgram.compileShader(this.mVertexShaderSource, GLES20.GL_VERTEX_SHADER);
-		this.mFragmentShaderID = ShaderProgram.compileShader(this.mFragmentShaderSource, GLES20.GL_FRAGMENT_SHADER);
+		final int vertexShaderID = ShaderProgram.compileShader(this.mVertexShaderSource, GLES20.GL_VERTEX_SHADER);
+		final int fragmentShaderID = ShaderProgram.compileShader(this.mFragmentShaderSource, GLES20.GL_FRAGMENT_SHADER);
 
 		this.mProgramID = GLES20.glCreateProgram();
-		GLES20.glAttachShader(this.mProgramID, this.mVertexShaderID);
-		GLES20.glAttachShader(this.mProgramID, this.mFragmentShaderID);
+		GLES20.glAttachShader(this.mProgramID, vertexShaderID);
+		GLES20.glAttachShader(this.mProgramID, fragmentShaderID);
 
 		this.link();
 
-		this.onCompiled();
+		GLES20.glDeleteShader(vertexShaderID);
+		GLES20.glDeleteShader(fragmentShaderID);
 	}
 
 	protected void link() throws ShaderProgramLinkException {
@@ -186,6 +180,7 @@ public class ShaderProgram implements ShaderPrograms {
 
 	private void initUniformLocations() {
 		this.mUniformLocations.clear();
+
 		ShaderProgram.PARAMETERS_CONTAINER[0] = 0;
 		GLES20.glGetProgramiv(this.mProgramID, GLES20.GL_ACTIVE_UNIFORMS, ShaderProgram.PARAMETERS_CONTAINER, 0);
 		final int numUniforms = ShaderProgram.PARAMETERS_CONTAINER[0];
@@ -198,8 +193,13 @@ public class ShaderProgram implements ShaderPrograms {
 		}
 	}
 
+	/**
+	 * TODO Is this actually needed? As the locations of {@link VertexBufferObjectAttribute}s are now 'predefined'. 
+	 */
+	@Deprecated
 	private void initAttributeLocations() {
 		this.mAttributeLocations.clear();
+
 		ShaderProgram.PARAMETERS_CONTAINER[0] = 0;
 		GLES20.glGetProgramiv(this.mProgramID, GLES20.GL_ACTIVE_ATTRIBUTES, ShaderProgram.PARAMETERS_CONTAINER, 0);
 		final int numAttributes = ShaderProgram.PARAMETERS_CONTAINER[0];

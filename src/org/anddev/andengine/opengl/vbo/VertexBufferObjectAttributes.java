@@ -41,22 +41,14 @@ public class VertexBufferObjectAttributes {
 	// Methods
 	// ===========================================================
 
-	public void enableVertexBufferObjectAttributes(final ShaderProgram pShaderProgram) {
+	public void glVertexAttribPointers(final ShaderProgram pShaderProgram) {
 		final VertexBufferObjectAttribute[] vertexBufferObjectAttributes = this.mVertexBufferObjectAttributes;
 
 		final int stride = this.mStride;
 
 		final int vertexBuggerObjectAttributeCount = vertexBufferObjectAttributes.length;
 		for(int i = 0; i < vertexBuggerObjectAttributeCount; i++) {
-			vertexBufferObjectAttributes[i].enable(pShaderProgram, stride);
-		}
-	}
-
-	public void disableVertexBufferObjectAttributes(final ShaderProgram pShaderProgram) {
-		final VertexBufferObjectAttribute[] vertexBufferObjectAttributes = this.mVertexBufferObjectAttributes;
-		final int vertexBuggerObjectAttributeCount = vertexBufferObjectAttributes.length;
-		for(int i = 0; i < vertexBuggerObjectAttributeCount; i++) {
-			vertexBufferObjectAttributes[i].disable(pShaderProgram);
+			vertexBufferObjectAttributes[i].glVertexAttribPointer(pShaderProgram, stride);
 		}
 	}
 

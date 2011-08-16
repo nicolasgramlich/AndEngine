@@ -177,12 +177,17 @@ public class GLHelper {
 		}
 	}
 
-	public static void deleteHardwareBuffer(final int pHardwareBufferID) {
+	public static void deleteBuffer(final int pHardwareBufferID) {
 		if(GLHelper.sCurrentHardwareBufferID == pHardwareBufferID) {
 			GLHelper.sCurrentHardwareBufferID = -1;
 		}
 		GLHelper.HARDWAREID_CONTAINER[0] = pHardwareBufferID;
 		GLES20.glDeleteBuffers(1, GLHelper.HARDWAREID_CONTAINER, 0);
+	}
+
+	public static int generateBuffer() {
+		GLES20.glGenBuffers(1, GLHelper.HARDWAREID_CONTAINER, 0);
+		return GLHelper.HARDWAREID_CONTAINER[0];
 	}
 
 	public static void useProgram(final int pShaderProgramID) {
@@ -193,11 +198,16 @@ public class GLHelper {
 		}
 	}
 
-	public static void deleteShaderProgram(final int pShaderProgramID) {
+	public static void deleteProgram(final int pShaderProgramID) {
 		if(GLHelper.sCurrentShaderProgramID == pShaderProgramID) {
 			GLHelper.sCurrentShaderProgramID = -1;
 		}
 		GLES20.glDeleteProgram(pShaderProgramID);
+	}
+
+	public static int generateTexture() {
+		GLES20.glGenTextures(1, GLHelper.HARDWAREID_CONTAINER, 0);
+		return GLHelper.HARDWAREID_CONTAINER[0];
 	}
 
 	/**

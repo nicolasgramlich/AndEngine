@@ -19,8 +19,6 @@ public abstract class Texture implements ITexture {
 	// Constants
 	// ===========================================================
 
-	private static final int[] HARDWARETEXTUREID_FETCHER = new int[1];
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -107,7 +105,7 @@ public abstract class Texture implements ITexture {
 	public void loadToHardware() throws IOException {
 		GLHelper.enableTextures();
 
-		this.generateHardwareTextureID();
+		this.mHardwareTextureID = GLHelper.generateTexture();
 
 		this.bindTextureOnHardware();
 
@@ -127,7 +125,7 @@ public abstract class Texture implements ITexture {
 	public void unloadFromHardware() {
 		GLHelper.enableTextures();
 
-		this.deleteTextureOnHardware();
+		GLHelper.deleteTexture(this.mHardwareTextureID);
 
 		this.mHardwareTextureID = -1;
 
@@ -160,17 +158,7 @@ public abstract class Texture implements ITexture {
 	protected void bindTextureOnHardware() {
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, this.mHardwareTextureID);
 	}
-
-	protected void deleteTextureOnHardware() {
-		GLHelper.deleteTexture(this.mHardwareTextureID);
-	}
-
-	protected void generateHardwareTextureID() {
-		GLES20.glGenTextures(1, Texture.HARDWARETEXTUREID_FETCHER, 0);
-
-		this.mHardwareTextureID = Texture.HARDWARETEXTUREID_FETCHER[0];
-	}
-
+	
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

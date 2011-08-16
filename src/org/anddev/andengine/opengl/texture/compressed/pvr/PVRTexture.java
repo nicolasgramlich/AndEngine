@@ -18,7 +18,8 @@ import org.anddev.andengine.util.math.MathUtils;
 import android.opengl.GLES20;
 
 /**
- * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes: glPixelStorei(GL_UNPACK_ALIGNMENT,1);"
+ * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes:"
+ * <code>GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);</code>
  *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -112,16 +113,6 @@ public abstract class PVRTexture extends Texture {
 
 	protected InputStream getInputStream() throws IOException {
 		return this.onGetInputStream();
-	}
-
-	@Override
-	protected void generateHardwareTextureID() {
-		//		// TODO
-		//		if(this.mMipMapCount > 0) {
-		GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
-		//		}
-
-		super.generateHardwareTextureID();
 	}
 
 	@Override

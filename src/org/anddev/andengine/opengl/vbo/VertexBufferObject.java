@@ -21,8 +21,6 @@ public class VertexBufferObject {
 	// Constants
 	// ===========================================================
 
-	private static final int[] HARDWAREID_CONTAINER = new int[1];
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -157,28 +155,16 @@ public class VertexBufferObject {
 	}
 
 	public void loadToHardware() {
-		this.mHardwareBufferID = this.generateHardwareBufferID();
+		this.mHardwareBufferID = GLHelper.generateBuffer();
 
 		this.mLoadedToHardware = true;
 	}
 
 	public void unloadFromHardware() {
-		this.deleteBufferOnHardware();
+		GLHelper.deleteBuffer(this.mHardwareBufferID);
 
 		this.mHardwareBufferID = -1;
 		this.mLoadedToHardware = false;
-	}
-
-	private void deleteBufferOnHardware() {
-		VertexBufferObject.HARDWAREID_CONTAINER[0] = this.mHardwareBufferID;
-
-		GLES20.glDeleteBuffers(1, VertexBufferObject.HARDWAREID_CONTAINER, 0);
-	}
-
-	private int generateHardwareBufferID() {
-		GLES20.glGenBuffers(1, VertexBufferObject.HARDWAREID_CONTAINER, 0);
-
-		return VertexBufferObject.HARDWAREID_CONTAINER[0];
 	}
 
 	// ===========================================================

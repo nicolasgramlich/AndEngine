@@ -48,7 +48,7 @@ public class LoopBackgroundModifier extends LoopModifier<IBackground> implements
 	}
 
 	@Override
-	public LoopBackgroundModifier clone() throws CloneNotSupportedException {
+	public LoopBackgroundModifier deepCopy() throws CloneNotSupportedException {
 		return new LoopBackgroundModifier(this);
 	}
 

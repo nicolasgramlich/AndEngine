@@ -48,7 +48,7 @@ public class LoopEntityModifier extends LoopModifier<IEntity> implements IEntity
 	}
 
 	@Override
-	public LoopEntityModifier clone() throws CloneNotSupportedException {
+	public LoopEntityModifier deepCopy() throws CloneNotSupportedException {
 		return new LoopEntityModifier(this);
 	}
 

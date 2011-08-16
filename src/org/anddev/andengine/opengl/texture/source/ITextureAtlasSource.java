@@ -25,5 +25,5 @@ public interface ITextureAtlasSource extends Cloneable {
 	public int getWidth();
 	public int getHeight();
 
-	public ITextureAtlasSource clone();
+	public ITextureAtlasSource deepCopy();
 }

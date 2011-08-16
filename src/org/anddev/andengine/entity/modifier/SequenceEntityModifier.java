@@ -44,7 +44,7 @@ public class SequenceEntityModifier extends SequenceModifier<IEntity> implements
 	}
 
 	@Override
-	public SequenceEntityModifier clone() throws CloneNotSupportedException {
+	public SequenceEntityModifier deepCopy() throws CloneNotSupportedException {
 		return new SequenceEntityModifier(this);
 	}
 

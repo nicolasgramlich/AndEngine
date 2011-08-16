@@ -39,7 +39,7 @@ public class EmptyBitmapTextureAtlasSource extends BaseTextureAtlasSource implem
 	}
 
 	@Override
-	public EmptyBitmapTextureAtlasSource clone() {
+	public EmptyBitmapTextureAtlasSource deepCopy() {
 		return new EmptyBitmapTextureAtlasSource(this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 

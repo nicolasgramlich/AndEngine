@@ -69,14 +69,14 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 
 		final IModifier<T>[] shapeModifiers = this.mSubSequenceModifiers;
 		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
-			shapeModifiers[i] = otherModifiers[i].clone();
+			shapeModifiers[i] = otherModifiers[i].deepCopy();
 		}
 
 		shapeModifiers[0].addModifierListener(this);
 	}
 
 	@Override
-	public SequenceModifier<T> clone() throws CloneNotSupportedException{
+	public SequenceModifier<T> deepCopy() throws CloneNotSupportedException{
 		return new SequenceModifier<T>(this);
 	}
 

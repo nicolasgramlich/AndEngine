@@ -102,10 +102,10 @@ public class TiledTextureRegion extends BaseTextureRegion {
 	// ===========================================================
 
 	@Override
-	public TiledTextureRegion clone() {
-		final TiledTextureRegion clone = new TiledTextureRegion(this.mTexture, this.getTexturePositionX(), this.getTexturePositionY(), this.getWidth(), this.getHeight(), this.mTileColumns, this.mTileRows);
-		clone.setCurrentTileIndex(this.mCurrentTileColumn, this.mCurrentTileRow);
-		return clone;
+	public TiledTextureRegion deepCopy() {
+		final TiledTextureRegion deepCopy = new TiledTextureRegion(this.mTexture, this.getTexturePositionX(), this.getTexturePositionY(), this.getWidth(), this.getHeight(), this.mTileColumns, this.mTileRows);
+		deepCopy.setCurrentTileIndex(this.mCurrentTileColumn, this.mCurrentTileRow);
+		return deepCopy;
 	}
 
 	@Override

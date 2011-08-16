@@ -126,12 +126,12 @@ public class PathModifier extends EntityModifier {
 	}
 
 	protected PathModifier(final PathModifier pPathModifier) throws CloneNotSupportedException {
-		this.mPath = pPathModifier.mPath.clone();
-		this.mSequenceModifier = pPathModifier.mSequenceModifier.clone();
+		this.mPath = pPathModifier.mPath.deepCopy();
+		this.mSequenceModifier = pPathModifier.mSequenceModifier.deepCopy();
 	}
 
 	@Override
-	public PathModifier clone() throws CloneNotSupportedException {
+	public PathModifier deepCopy() throws CloneNotSupportedException {
 		return new PathModifier(this);
 	}
 
@@ -256,8 +256,7 @@ public class PathModifier extends EntityModifier {
 			this.mLength = pPath.mLength;
 		}
 
-		@Override
-		public Path clone() {
+		public Path deepCopy() {
 			return new Path(this);
 		}
 

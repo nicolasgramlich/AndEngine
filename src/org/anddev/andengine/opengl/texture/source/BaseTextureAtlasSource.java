@@ -31,7 +31,7 @@ public abstract class BaseTextureAtlasSource implements ITextureAtlasSource {
 	}
 
 	@Override
-	public abstract BaseTextureAtlasSource clone();
+	public abstract BaseTextureAtlasSource deepCopy();
 
 	// ===========================================================
 	// Getter & Setter

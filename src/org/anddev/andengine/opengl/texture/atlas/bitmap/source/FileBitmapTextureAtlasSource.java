@@ -72,7 +72,7 @@ public class FileBitmapTextureAtlasSource extends BaseTextureAtlasSource impleme
 	}
 
 	@Override
-	public FileBitmapTextureAtlasSource clone() {
+	public FileBitmapTextureAtlasSource deepCopy() {
 		return new FileBitmapTextureAtlasSource(this.mFile, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 

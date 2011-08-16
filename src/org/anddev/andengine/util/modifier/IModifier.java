@@ -41,8 +41,8 @@ public interface IModifier<T> extends Cloneable {
 	public boolean isRemoveWhenFinished();
 	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
 
-	public IModifier<T> clone() throws CloneNotSupportedException;
-	//	public IModifier<T> clone(final IModifierListener<T> pModifierListener) throws CloneNotSupportedException; TODO
+	public IModifier<T> deepCopy() throws CloneNotSupportedException;
+	//	public IModifier<T> deepCopy(final IModifierListener<T> pModifierListener) throws CloneNotSupportedException; TODO
 
 	public float getSecondsElapsed();
 	public float getDuration();

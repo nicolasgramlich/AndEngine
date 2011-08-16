@@ -61,7 +61,7 @@ public class ResourceBitmapTextureAtlasSource extends BaseTextureAtlasSource imp
 	}
 
 	@Override
-	public ResourceBitmapTextureAtlasSource clone() {
+	public ResourceBitmapTextureAtlasSource deepCopy() {
 		return new ResourceBitmapTextureAtlasSource(this.mContext, this.mDrawableResourceID, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
 	}
 

@@ -40,7 +40,7 @@ public class OutlineBitmapTextureAtlasSourceDecorator extends BaseShapeBitmapTex
 	}
 
 	@Override
-	public OutlineBitmapTextureAtlasSourceDecorator clone() {
+	public OutlineBitmapTextureAtlasSourceDecorator deepCopy() {
 		return new OutlineBitmapTextureAtlasSourceDecorator(this.mBitmapTextureAtlasSource, this.mBitmapTextureAtlasSourceDecoratorShape, this.mOutlineColor, this.mTextureAtlasSourceDecoratorOptions);
 	}
 

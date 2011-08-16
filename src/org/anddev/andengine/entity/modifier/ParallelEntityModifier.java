@@ -36,7 +36,7 @@ public class ParallelEntityModifier extends ParallelModifier<IEntity> implements
 	}
 
 	@Override
-	public ParallelEntityModifier clone() throws CloneNotSupportedException {
+	public ParallelEntityModifier deepCopy() throws CloneNotSupportedException {
 		return new ParallelEntityModifier(this);
 	}
 

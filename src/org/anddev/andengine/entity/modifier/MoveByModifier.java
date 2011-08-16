@@ -34,7 +34,7 @@ public class MoveByModifier extends DoubleValueChangeEntityModifier {
 	}
 
 	@Override
-	public MoveByModifier clone(){
+	public MoveByModifier deepCopy(){
 		return new MoveByModifier(this);
 	}
 

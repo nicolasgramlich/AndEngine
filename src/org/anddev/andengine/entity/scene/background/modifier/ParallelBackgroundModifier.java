@@ -36,7 +36,7 @@ public class ParallelBackgroundModifier extends ParallelModifier<IBackground> im
 	}
 
 	@Override
-	public ParallelBackgroundModifier clone() throws CloneNotSupportedException {
+	public ParallelBackgroundModifier deepCopy() throws CloneNotSupportedException {
 		return new ParallelBackgroundModifier(this);
 	}
 

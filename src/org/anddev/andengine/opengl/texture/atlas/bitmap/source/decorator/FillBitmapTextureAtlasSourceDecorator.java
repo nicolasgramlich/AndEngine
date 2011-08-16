@@ -40,7 +40,7 @@ public class FillBitmapTextureAtlasSourceDecorator extends BaseShapeBitmapTextur
 	}
 
 	@Override
-	public FillBitmapTextureAtlasSourceDecorator clone() {
+	public FillBitmapTextureAtlasSourceDecorator deepCopy() {
 		return new FillBitmapTextureAtlasSourceDecorator(this.mBitmapTextureAtlasSource, this.mBitmapTextureAtlasSourceDecoratorShape, this.mFillColor, this.mTextureAtlasSourceDecoratorOptions);
 	}
 

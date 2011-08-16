@@ -44,7 +44,7 @@ public class SequenceBackgroundModifier extends SequenceModifier<IBackground> im
 	}
 
 	@Override
-	public SequenceBackgroundModifier clone() throws CloneNotSupportedException {
+	public SequenceBackgroundModifier deepCopy() throws CloneNotSupportedException {
 		return new SequenceBackgroundModifier(this);
 	}
 

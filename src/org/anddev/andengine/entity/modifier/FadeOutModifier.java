@@ -44,7 +44,7 @@ public class FadeOutModifier extends AlphaModifier {
 	}
 
 	@Override
-	public FadeOutModifier clone() {
+	public FadeOutModifier deepCopy() {
 		return new FadeOutModifier(this);
 	}
 

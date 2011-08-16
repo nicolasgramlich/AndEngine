@@ -58,7 +58,7 @@ public class RotationAtModifier extends RotationModifier {
 	}
 
 	@Override
-	public RotationAtModifier clone(){
+	public RotationAtModifier deepCopy(){
 		return new RotationAtModifier(this);
 	}
 

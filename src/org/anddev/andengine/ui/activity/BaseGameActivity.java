@@ -134,7 +134,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	public FontManager getFontManager() {
-		return this.mEngine.getFontManager();
+		return this.getFontManager();
 	}
 
 	public SoundManager getSoundManager() {

@@ -34,7 +34,7 @@ public abstract class BaseShapeBitmapTextureAtlasSourceDecorator extends BaseBit
 	}
 
 	@Override
-	public abstract BaseShapeBitmapTextureAtlasSourceDecorator clone();
+	public abstract BaseShapeBitmapTextureAtlasSourceDecorator deepCopy();
 
 	// ===========================================================
 	// Getter & Setter

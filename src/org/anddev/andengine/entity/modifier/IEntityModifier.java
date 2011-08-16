@@ -21,7 +21,7 @@ public interface IEntityModifier extends IModifier<IEntity> {
 	// ===========================================================
 	
 	@Override
-	public IEntityModifier clone() throws CloneNotSupportedException;
+	public IEntityModifier deepCopy() throws CloneNotSupportedException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes

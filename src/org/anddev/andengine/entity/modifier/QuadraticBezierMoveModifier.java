@@ -46,7 +46,7 @@ public class QuadraticBezierMoveModifier extends DurationEntityModifier {
 	}
 
 	@Override
-	public QuadraticBezierMoveModifier clone() {
+	public QuadraticBezierMoveModifier deepCopy() {
 		return new QuadraticBezierMoveModifier(this.mDuration, this.mX1, this.mY1, this.mX2, this.mY2, this.mX3, this.mY3, this.mEaseFunction);
 	}
 

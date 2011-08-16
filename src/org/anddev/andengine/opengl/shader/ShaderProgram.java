@@ -6,6 +6,7 @@ import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileExceptio
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
@@ -39,9 +40,9 @@ public class ShaderProgram implements ShaderPrograms {
 	protected final String mVertexShaderSource;
 	protected final String mFragmentShaderSource;
 
-	protected int mVertexShaderID;
-	protected int mFragmentShaderID;
-	protected int mProgramID;
+	protected int mVertexShaderID = -1;
+	protected int mFragmentShaderID = -1;
+	protected int mProgramID = -1;
 
 	protected boolean mCompiled;
 
@@ -121,15 +122,23 @@ public class ShaderProgram implements ShaderPrograms {
 		if(!this.mCompiled) {
 			this.compile();
 		}
-		GLES20.glUseProgram(this.mProgramID);
+		GLHelper.useProgram(this.mProgramID);
 
 		pVertexBufferObjectAttributes.enableVertexBufferObjectAttributes(this);
 	}
 
 	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		pVertexBufferObjectAttributes.enableVertexBufferObjectAttributes(this);
+		pVertexBufferObjectAttributes.disableVertexBufferObjectAttributes(this);
 
-		GLES20.glUseProgram(0);
+//		GLES20.glUseProgram(0);
+	}
+	
+	public void delete() {
+		if(this.mCompiled) {
+			this.mCompiled = false;
+			GLHelper.deleteProgram(this.mProgramID);
+			this.mProgramID = -1;
+		}
 	}
 
 	protected void compile() throws ShaderProgramException {

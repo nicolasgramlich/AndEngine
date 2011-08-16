@@ -1,4 +1,6 @@
 TODOS:
+	- Try fixing locations of common vbo attribute (position, color, textcoords).
+		- Minimize calls of glEnableVertexAttribArray/glDisableVertexAttribArray, by disabling the not-needed attributes and enabling them afterwards. 
 	- http://developer.apple.com/library/ios/#documentation/3DDrawing/Conceptual/OpenGLES_ProgrammingGuide/TechniquesforWorkingwithVertexData/TechniquesforWorkingwithVertexData.html
 	- Think about a way to update the Mesh of a Sprite more efficient.
 		- Currently when updating the TextureCoordinates, the whole data array is sent to the buffer.

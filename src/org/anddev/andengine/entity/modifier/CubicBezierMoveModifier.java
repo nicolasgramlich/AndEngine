@@ -109,24 +109,4 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public void updatePosition(final float pPercentageDone, final IEntity pEntity) {
-		final float u = 1 - pPercentageDone;
-		final float tt = pPercentageDone * pPercentageDone;
-		final float uu = u * u;
-		final float uuu = uu * u;
-		final float ttt = tt * pPercentageDone;
-
-		final float ut3 = 3 * uu * pPercentageDone;
-		final float utt3 = 3 * u * tt;
-
-		/*
-		 * Formula: ((1-t)^3 * p1) + (3*(t)*(1-t)^2 * p2) + (3*(t^2)*(1-t) * p3)
-		 * + (t^3 * p4)
-		 */
-		final float x = (uuu * this.mX1) + (ut3 * this.mX2) + (utt3 * this.mX3) + (ttt * this.mX4);
-		final float y = (uuu * this.mY1) + (ut3 * this.mY2) + (utt3 * this.mY3) + (ttt * this.mY4);
-
-		pEntity.setPosition(x, y);
-	}
 }

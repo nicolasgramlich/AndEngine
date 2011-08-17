@@ -135,10 +135,12 @@ public class VertexBufferObject {
 
 			BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
 
+			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
+
 //			if(this.mBufferSubData) {
 //				GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, 0, this.mByteBuffer.limit(), this.mByteBuffer);
 //			} else {
-				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
+//				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.capacity(), this.mByteBuffer, this.mUsage);
 //				this.mBufferSubData = true;
 //			}
 		}
@@ -148,7 +150,7 @@ public class VertexBufferObject {
 
 	public void unbind(final ShaderProgram pShaderProgram) {
 		pShaderProgram.unbind(this.mVertexBufferObjectAttributes);
-//
+
 //		GLHelper.bindBuffer(0);
 	}
 

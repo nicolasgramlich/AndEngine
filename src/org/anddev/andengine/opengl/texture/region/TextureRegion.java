@@ -57,7 +57,11 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 
 	@Override
 	public TextureRegion deepCopy() {
-		return new TextureRegion(this.mTexture, this.mX, this.mY, this.mWidth, this.mHeight, this.mRotated);
+		if(this.mRotated) {
+			return new TextureRegion(this.mTexture, this.mX, this.mY, this.mWidth, this.mHeight, this.mRotated);
+		} else {
+			return new TextureRegion(this.mTexture, this.mX, this.mY, this.mHeight, this.mWidth, this.mRotated);
+		}
 	}
 
 	// ===========================================================

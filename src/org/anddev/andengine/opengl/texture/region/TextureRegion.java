@@ -28,25 +28,36 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 	protected float mV;
 	protected float mV2;
 
+	protected final boolean mRotated;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TextureRegion(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight) {
+	public TextureRegion(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final boolean pRotated) {
 		super(pTexture);
 
 		this.mX = pX;
 		this.mY = pY;
 
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+		if(pRotated) {
+			this.mRotated = true;
+
+			this.mWidth = pHeight;
+			this.mHeight = pWidth;
+		} else {
+			this.mRotated = false;
+
+			this.mWidth = pWidth;
+			this.mHeight = pHeight;
+		}
 
 		this.updateUV();
 	}
-	
+
 	@Override
 	public TextureRegion deepCopy() {
-		return new TextureRegion(mTexture, mX, mY, mWidth, mHeight);
+		return new TextureRegion(this.mTexture, this.mX, this.mY, this.mWidth, this.mHeight, this.mRotated);
 	}
 
 	// ===========================================================
@@ -84,12 +95,20 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 
 	@Override
 	public int getWidth() {
-		return this.mWidth;
+		if(this.mRotated) {
+			return this.mHeight;
+		} else {
+			return this.mWidth;
+		}
 	}
 
 	@Override
 	public int getHeight() {
-		return this.mHeight;
+		if(this.mRotated) {
+			return this.mWidth;
+		} else {
+			return this.mHeight;
+		}
 	}
 
 	@Override
@@ -140,6 +159,11 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 		return this.mV2;
 	}
 
+	@Override
+	public boolean isRotated() {
+		return this.mRotated;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -157,10 +181,10 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 		final int y = this.getY();
 
 		this.mU = (float) x / textureWidth;
-		this.mU2 = (float) (x + this.getWidth()) / textureWidth;
+		this.mU2 = (float) (x + this.mWidth) / textureWidth;
 
 		this.mV = (float) y / textureHeight;
-		this.mV2 = (float) (y + this.getHeight()) / textureHeight;
+		this.mV2 = (float) (y + this.mHeight) / textureHeight;
 	}
 
 	// ===========================================================

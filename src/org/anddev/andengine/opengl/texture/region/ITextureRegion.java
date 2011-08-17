@@ -38,6 +38,8 @@ public interface ITextureRegion {
 	public float getV();
 	public float getV2();
 
+	public boolean isRotated();
+
 	public ITexture getTexture();
 
 	public ITextureRegion deepCopy();

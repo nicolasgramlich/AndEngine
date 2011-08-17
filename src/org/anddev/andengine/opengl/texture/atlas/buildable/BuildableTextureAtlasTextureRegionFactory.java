@@ -49,8 +49,8 @@ public class BuildableTextureAtlasTextureRegionFactory {
 	// Methods
 	// ===========================================================
 
-	public static <T extends ITextureAtlasSource, A extends ITextureAtlas<T>> ITextureRegion createFromSource(final BuildableTextureAtlas<T, A> pBuildableTextureAtlas, final T pTextureAtlasSource) {
-		final TextureRegion textureRegion = new TextureRegion(pBuildableTextureAtlas, 0, 0, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight());
+	public static <T extends ITextureAtlasSource, A extends ITextureAtlas<T>> ITextureRegion createFromSource(final BuildableTextureAtlas<T, A> pBuildableTextureAtlas, final T pTextureAtlasSource, final boolean pRotated) {
+		final TextureRegion textureRegion = new TextureRegion(pBuildableTextureAtlas, 0, 0, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight(), pRotated);
 		pBuildableTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, new Callback<T>() {
 			@Override
 			public void onCallback(final T pCallbackValue) {

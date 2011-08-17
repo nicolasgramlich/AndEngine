@@ -47,7 +47,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 
 			final int x = pX + tileColumn * tileWidth;
 			final int y = pY + tileRow * tileHeight;
-			textureRegions[i] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight);
+			textureRegions[i] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight, false);
 		}
 
 		return new TiledTextureRegion(pTexture, textureRegions);
@@ -252,6 +252,16 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		return this.mTextureRegions[pTileIndex].getV2();
 	}
 
+	@Override
+	public boolean isRotated() {
+		return this.mTextureRegions[this.mTileIndex].isRotated();
+	}
+
+	@Override
+	public boolean isRotated(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].isRotated();
+	}
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

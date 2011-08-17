@@ -44,6 +44,8 @@ public interface ITiledTextureRegion extends ITextureRegion {
 	public float getV(final int pTileIndex);
 	public float getV2(final int pTileIndex);
 
+	public boolean isRotated(final int pTileIndex);
+
 	@Override
 	public ITiledTextureRegion deepCopy();
 }

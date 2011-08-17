@@ -138,7 +138,7 @@ public class VertexBufferObject {
 //			if(this.mBufferSubData) {
 //				GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, 0, this.mByteBuffer.limit(), this.mByteBuffer);
 //			} else {
-				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.capacity(), this.mByteBuffer, this.mUsage);
+				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
 //				this.mBufferSubData = true;
 //			}
 		}

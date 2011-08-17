@@ -61,6 +61,9 @@ public class Rectangle extends RectangularShape {
 
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
 		super(pX, pY, pWidth, pHeight, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
+
+		this.onUpdateVertices();
+		this.onUpdateColor();
 	}
 
 	// ===========================================================

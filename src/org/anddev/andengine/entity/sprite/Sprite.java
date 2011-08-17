@@ -49,8 +49,8 @@ public class Sprite extends RectangularShape {
 
 	protected final ITextureRegion mTextureRegion;
 
-	private boolean mFlippedVertical;
-	private boolean mFlippedHorizontal;
+	protected boolean mFlippedVertical;
+	protected boolean mFlippedHorizontal;
 
 	// ===========================================================
 	// Constructors
@@ -96,6 +96,8 @@ public class Sprite extends RectangularShape {
 		this.setBlendingEnabled(true);
 		this.initBlendFunction();
 
+		this.onUpdateVertices();
+		this.onUpdateColor();
 		this.onUpdateTextureCoordinates();
 	}
 
@@ -150,21 +152,6 @@ public class Sprite extends RectangularShape {
 	}
 
 	@Override
-	protected void onUpdateColor() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
-
-		final float packedColor = this.mColor.getPacked();
-
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-
-		vertexBufferObject.setDirtyOnHardware();
-	}
-
-	@Override
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 
@@ -186,6 +173,21 @@ public class Sprite extends RectangularShape {
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
 
+		vertexBufferObject.setDirtyOnHardware();
+	}
+	
+	@Override
+	protected void onUpdateColor() {
+		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final float[] bufferData = vertexBufferObject.getBufferData();
+		
+		final float packedColor = this.mColor.getPacked();
+		
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+		
 		vertexBufferObject.setDirtyOnHardware();
 	}
 

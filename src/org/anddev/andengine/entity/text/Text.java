@@ -223,10 +223,6 @@ public class Text extends RectangularShape {
 
 	@Override
 	protected void onUpdateVertices() {
-		if(this.mFont == null) {
-			return;
-		}
-
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 

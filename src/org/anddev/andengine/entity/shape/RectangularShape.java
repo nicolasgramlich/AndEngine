@@ -42,9 +42,6 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 		this.mHeight = pHeight;
 
 		this.resetRotationandScaleCenter();
-
-		this.onUpdateVertices();
-		this.onUpdateColor();
 	}
 
 	// ===========================================================

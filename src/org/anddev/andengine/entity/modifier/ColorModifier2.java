@@ -35,6 +35,11 @@ public class ColorModifier2 extends DurationEntityModifier {
 		this.mEaseFunction = pEaseFunction;
 	}
 
+	@Override
+	public ColorModifier2 deepCopy() {
+		return new ColorModifier2(this.mDuration, this.mFromColor, this.mToColor, this.mEaseFunction);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -47,16 +52,14 @@ public class ColorModifier2 extends DurationEntityModifier {
 	protected void onManagedUpdate(final float pSecondsElapsed, final IEntity pItem) {
 		final float percentageDone = this.mEaseFunction.getPercentage(this.getSecondsElapsed(), this.mDuration);
 
-		this.mInterpolatedColor.mix(this.mFromColor,percentageDone,  this.mToColor, 1 - percentageDone);
+		this.mInterpolatedColor.mix(this.mFromColor, percentageDone, this.mToColor, 1 - percentageDone);
+
+		pItem.setColor(this.mInterpolatedColor);
 	}
 
 	@Override
 	protected void onManagedInitialize(final IEntity pItem) {
-	}
-
-	@Override
-	public ColorModifier2 deepCopy() {
-		return null;
+		pItem.setColor(this.mFromColor);
 	}
 
 	// ===========================================================

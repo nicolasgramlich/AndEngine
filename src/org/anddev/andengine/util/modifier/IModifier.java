@@ -2,6 +2,8 @@ package org.anddev.andengine.util.modifier;
 
 import java.util.Comparator;
 
+import org.anddev.andengine.util.exception.AndEngineException;
+
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -10,7 +12,7 @@ import java.util.Comparator;
  * @author Nicolas Gramlich
  * @since 11:17:50 - 19.03.2010
  */
-public interface IModifier<T> extends Cloneable {
+public interface IModifier<T> {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
@@ -41,8 +43,7 @@ public interface IModifier<T> extends Cloneable {
 	public boolean isRemoveWhenFinished();
 	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
 
-	public IModifier<T> clone() throws CloneNotSupportedException;
-	//	public IModifier<T> clone(final IModifierListener<T> pModifierListener) throws CloneNotSupportedException; TODO
+	public IModifier<T> deepCopy() throws DeepCopyNotSupportedException;
 
 	public float getSecondsElapsed();
 	public float getDuration();
@@ -69,7 +70,7 @@ public interface IModifier<T> extends Cloneable {
 		public void onModifierFinished(final IModifier<T> pModifier, final T pItem);
 	}
 
-	public static class CloneNotSupportedException extends RuntimeException {
+	public static class DeepCopyNotSupportedException extends AndEngineException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

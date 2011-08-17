@@ -8,7 +8,7 @@ package org.anddev.andengine.opengl.texture.atlas.source;
  * @author Nicolas Gramlich
  * @since 11:46:56 - 12.07.2011
  */
-public interface ITextureAtlasSource extends Cloneable {
+public interface ITextureAtlasSource {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================

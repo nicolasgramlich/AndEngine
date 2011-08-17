@@ -22,6 +22,7 @@ TODOS:
 	- FIND MORE LEGACY CODE AND GET RID OF IT =) *YAY*
 	- TODO See if mediump precision and lowp precision make a difference. (cocos2d-gles2 seems to use lowp precision mostly).
 	- Shadercache, as with the color in the VBO, shaders can be reused A LOT more easily !!!!!
+	- Add a possibility to draw Sprites using SpriteBatch without having to put them as a child.
 
 EXAMPLES:
 	- Replace: 

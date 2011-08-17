@@ -27,13 +27,14 @@ public class VertexBufferObject {
 
 	private final float[] mBufferData;
 
-	private final int mDrawType;
+	private final int mUsage;
 
 	private final ByteBuffer mByteBuffer;
 
 	private int mHardwareBufferID = -1;
 	private boolean mLoadedToHardware;
 	private boolean mDirtyOnHardware = true;
+//	private boolean mBufferSubData;
 
 	private boolean mManaged;
 
@@ -59,7 +60,7 @@ public class VertexBufferObject {
 	 * @param pVertexBufferObjectAttributes to be automatically enabled on the {@link ShaderProgram} used in {@link VertexBufferObject#bind(ShaderProgram)}.
 	 */
 	public VertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		this.mDrawType = pDrawType.getGLConstant();
+		this.mUsage = pDrawType.getUsage();
 		this.mManaged = pManaged;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
 		this.mBufferData = new float[pCapacity];
@@ -97,6 +98,7 @@ public class VertexBufferObject {
 
 	void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
+//		this.mBufferSubData = false;
 	}
 
 	public boolean isDirtyOnHardware() {
@@ -132,9 +134,13 @@ public class VertexBufferObject {
 //			this.mFloatBuffer.position(0);
 
 			BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
-			this.mByteBuffer.position(0);
 
-			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mDrawType);
+//			if(this.mBufferSubData) {
+//				GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, 0, this.mByteBuffer.limit(), this.mByteBuffer);
+//			} else {
+				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.capacity(), this.mByteBuffer, this.mUsage);
+//				this.mBufferSubData = true;
+//			}
 		}
 
 		pShaderProgram.bind(this.mVertexBufferObjectAttributes);
@@ -142,6 +148,8 @@ public class VertexBufferObject {
 
 	public void unbind(final ShaderProgram pShaderProgram) {
 		pShaderProgram.unbind(this.mVertexBufferObjectAttributes);
+//
+//		GLHelper.bindBuffer(0);
 	}
 
 	public void loadToActiveBufferObjectManager() {
@@ -154,6 +162,7 @@ public class VertexBufferObject {
 
 	public void loadToHardware() {
 		this.mHardwareBufferID = GLHelper.generateBuffer();
+//		this.mHardwareBufferID = GLHelper.generateBuffer(this.mByteBuffer.capacity(), this.mUsage);
 
 		this.mLoadedToHardware = true;
 	}
@@ -163,6 +172,7 @@ public class VertexBufferObject {
 
 		this.mHardwareBufferID = -1;
 		this.mLoadedToHardware = false;
+//		this.mBufferSubData = false;
 	}
 
 	// ===========================================================
@@ -182,7 +192,7 @@ public class VertexBufferObject {
 		// Constants
 		// ===========================================================
 
-		private final int mGLConstant;
+		private final int mUsage;
 
 		// ===========================================================
 		// Fields
@@ -192,16 +202,16 @@ public class VertexBufferObject {
 		// Constructors
 		// ===========================================================
 
-		private DrawType(final int pGLConstant) {
-			this.mGLConstant = pGLConstant;
+		private DrawType(final int pUsage) {
+			this.mUsage = pUsage;
 		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
 
-		public int getGLConstant() {
-			return this.mGLConstant;
+		public int getUsage() {
+			return this.mUsage;
 		}
 
 		// ===========================================================

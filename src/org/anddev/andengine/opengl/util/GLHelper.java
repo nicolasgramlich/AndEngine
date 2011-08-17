@@ -195,6 +195,17 @@ public class GLHelper {
 		return GLHelper.HARDWAREID_CONTAINER[0];
 	}
 
+	public static int generateBuffer(final int pSize, final int pUsage) {
+		GLES20.glGenBuffers(1, GLHelper.HARDWAREID_CONTAINER, 0);
+		final int hardwareBufferID = GLHelper.HARDWAREID_CONTAINER[0];
+
+		GLHelper.bindBuffer(hardwareBufferID);
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, pSize, null, pUsage);
+		GLHelper.bindBuffer(0);
+
+		return hardwareBufferID;
+	}
+
 	public static void useProgram(final int pShaderProgramID) {
 		/* Reduce unnecessary shader switching calls. */
 		if(GLHelper.sCurrentShaderProgramID != pShaderProgramID) {

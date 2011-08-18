@@ -59,7 +59,7 @@ public class SpriteBatch extends Entity {
 	protected final int mCapacity;
 
 	protected int mIndex;
-	private int mVertices;
+	protected int mVertices;
 
 	private int mSourceBlendFunction;
 	private int mDestinationBlendFunction;
@@ -216,7 +216,7 @@ public class SpriteBatch extends Entity {
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float)}.
+	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)}.
 	 */
 	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
 		this.assertCapacity();
@@ -224,6 +224,15 @@ public class SpriteBatch extends Entity {
 
 		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
 
+		this.mIndex++;
+	}
+
+	/**
+	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)}.
+	 */
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
+		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
+		
 		this.mIndex++;
 	}
 
@@ -388,7 +397,7 @@ public class SpriteBatch extends Entity {
 		this.onSubmit();
 	}
 
-	private void onSubmit() {
+	protected void onSubmit() {
 		this.mVertices = this.mIndex * Sprite.VERTICES_PER_SPRITE;
 
 		this.mSpriteBatchMesh.submit();

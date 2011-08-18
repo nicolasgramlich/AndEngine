@@ -31,9 +31,6 @@ public abstract class BaseTextureAtlasSource implements ITextureAtlasSource {
 		this.mTexturePositionY = pTexturePositionY;
 	}
 
-	@Override
-	public abstract BaseTextureAtlasSource deepCopy();
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

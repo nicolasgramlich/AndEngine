@@ -7,7 +7,6 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 import android.os.SystemClock;
-import android.speech.tts.TextToSpeech.Engine;
 import android.view.MotionEvent;
 
 /**

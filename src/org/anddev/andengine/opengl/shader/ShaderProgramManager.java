@@ -44,11 +44,11 @@ public class ShaderProgramManager {
 	// Methods
 	// ===========================================================
 
-	public void clear() {
+	public synchronized void clear() {
 		this.mShaderProgramsManaged.clear();
 	}
 
-	public void loadShaderProgram(final ShaderProgram pShaderProgram) {
+	public synchronized void loadShaderProgram(final ShaderProgram pShaderProgram) {
 		if(pShaderProgram == null) {
 			throw new IllegalArgumentException("pShaderProgram must not be null!");
 		}
@@ -61,7 +61,7 @@ public class ShaderProgramManager {
 		}
 	}
 
-	public void reloadShaderPrograms() {
+	public synchronized void reloadShaderPrograms() {
 		final ArrayList<ShaderProgram> managedShaderPrograms = this.mShaderProgramsManaged;
 		for(int i = managedShaderPrograms.size() - 1; i >= 0; i--) {
 			managedShaderPrograms.get(i).setCompiled(false);

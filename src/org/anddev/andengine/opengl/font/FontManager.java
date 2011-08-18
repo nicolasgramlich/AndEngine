@@ -39,18 +39,18 @@ public class FontManager {
 	// Methods
 	// ===========================================================
 
-	public void clear() {
+	public synchronized void clear() {
 		this.mFontsManaged.clear();
 	}
 
-	public void loadFont(final Font pFont) {
+	public synchronized void loadFont(final Font pFont) {
 		if(pFont == null) {
 			throw new IllegalArgumentException("pFont must not be null!");
 		}
 		this.mFontsManaged.add(pFont);
 	}
 
-	public void loadFonts(final FontLibrary pFontLibrary) {
+	public synchronized void loadFonts(final FontLibrary pFontLibrary) {
 		pFontLibrary.loadFonts(this);
 	}
 
@@ -60,7 +60,7 @@ public class FontManager {
 		}
 	}
 
-	public void updateFonts(final GL10 pGL) {
+	public synchronized void updateFonts(final GL10 pGL) {
 		final ArrayList<Font> fonts = this.mFontsManaged;
 		final int fontCount = fonts.size();
 		if(fontCount > 0){
@@ -70,7 +70,7 @@ public class FontManager {
 		}
 	}
 
-	public void reloadFonts() {
+	public synchronized void reloadFonts() {
 		final ArrayList<Font> managedFonts = this.mFontsManaged;
 		for(int i = managedFonts.size() - 1; i >= 0; i--) {
 			managedFonts.get(i).reload();

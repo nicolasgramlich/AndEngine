@@ -47,7 +47,7 @@ public class TextureManager {
 	// Methods
 	// ===========================================================
 
-	protected void clear() {
+	protected synchronized void clear() {
 		this.mTexturesToBeLoaded.clear();
 		this.mTexturesLoaded.clear();
 		this.mTexturesManaged.clear();
@@ -57,7 +57,7 @@ public class TextureManager {
 	 * @param pTexture the {@link ITexture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then).
 	 * @return <code>true</code> when the {@link ITexture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
-	public boolean loadTexture(final ITexture pTexture) {
+	public synchronized boolean loadTexture(final ITexture pTexture) {
 		if(this.mTexturesManaged.contains(pTexture)) {
 			/* Just make sure it doesn't get deleted. */
 			this.mTexturesToBeUnloaded.remove(pTexture);
@@ -73,7 +73,7 @@ public class TextureManager {
 	 * @param pTexture the {@link ITexture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then).
 	 * @return <code>true</code> when the {@link ITexture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
-	public boolean unloadTexture(final ITexture pTexture) {
+	public synchronized boolean unloadTexture(final ITexture pTexture) {
 		if(this.mTexturesManaged.contains(pTexture)) {
 			/* If the Texture is loaded, unload it.
 			 * If the Texture is about to be loaded, stop it from being loaded. */
@@ -100,7 +100,7 @@ public class TextureManager {
 		}
 	}
 
-	public void reloadTextures() {
+	public synchronized void reloadTextures() {
 		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
 		for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
 			texture.setLoadedToHardware(false);
@@ -113,7 +113,7 @@ public class TextureManager {
 		this.mTexturesToBeUnloaded.clear();
 	}
 
-	public void updateTextures(final GL10 pGL) {
+	public synchronized void updateTextures(final GL10 pGL) {
 		final HashSet<ITexture> texturesManaged = this.mTexturesManaged;
 		final ArrayList<ITexture> texturesLoaded = this.mTexturesLoaded;
 		final ArrayList<ITexture> texturesToBeLoaded = this.mTexturesToBeLoaded;

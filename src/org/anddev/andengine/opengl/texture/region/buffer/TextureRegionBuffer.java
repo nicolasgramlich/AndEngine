@@ -76,11 +76,6 @@ public class TextureRegionBuffer extends BufferObject {
 
 	public synchronized void update() {
 		final BaseTextureRegion textureRegion = this.mTextureRegion;
-		final ITexture texture = textureRegion.getTexture();
-
-		if(texture == null) { // TODO Check really needed?
-			return;
-		}
 
 		final int x1 = Float.floatToRawIntBits(textureRegion.getTextureCoordinateX1());
 		final int y1 = Float.floatToRawIntBits(textureRegion.getTextureCoordinateY1());

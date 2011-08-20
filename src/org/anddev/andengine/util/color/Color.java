@@ -13,6 +13,9 @@ public class Color {
 	// Constants
 	// ===========================================================
 
+	public static final Color WHITE = new Color(1, 1, 1, 1);
+	public static final float WHITE_PACKED = Color.WHITE.getPacked();
+
 	// ===========================================================
 	// Fields
 	// ===========================================================

@@ -191,6 +191,11 @@ public class Line extends Shape {
 	}
 
 	@Override
+	protected void draw(Camera pCamera) {
+		this.mMesh.draw(this.mShaderProgram, GLES20.GL_LINES, Line.VERTICES_PER_LINE);
+	}
+
+	@Override
 	protected void onUpdateColor() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();

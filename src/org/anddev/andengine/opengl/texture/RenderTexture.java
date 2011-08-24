@@ -127,7 +127,7 @@ public class RenderTexture {
 	public void begin() {
 		this.savePreviousViewport();
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
-		
+
 		GLHelper.switchToProjectionMatrix();
 		GLHelper.glPushMatrix();
 
@@ -136,7 +136,7 @@ public class RenderTexture {
 		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.HARDWAREID_CONTAINER, 0);
 		this.mPreviousFBO = RenderTexture.HARDWAREID_CONTAINER[0];
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFBO);
-		
+
 		GLHelper.switchToModelViewMatrix();
 		GLHelper.glPushMatrix();
 		GLHelper.glLoadIdentity();
@@ -144,14 +144,14 @@ public class RenderTexture {
 
 	public void end() {
 		GLHelper.glPopMatrix();
-		
+
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFBO);
 
 		GLHelper.switchToProjectionMatrix();
 		GLHelper.glPopMatrix();
 
 		this.resotorePreviousViewport();
-		
+
 		GLHelper.switchToModelViewMatrix();
 	}
 
@@ -168,34 +168,53 @@ public class RenderTexture {
 	}
 
 	public Bitmap getBitmap() {
+		return this.getBitmap(false);
+	}
+
+	public Bitmap getBitmap(final boolean pFlipVertical) {
 		if(this.mPixelFormat != PixelFormat.RGBA_8888){
 			throw new IllegalStateException(); // TODO Description...
 		}
 
-		final int[] rawPixels = new int[this.mWidth * this.mHeight];
-		final IntBuffer rawPixelBuffer = IntBuffer.wrap(rawPixels);
-		rawPixelBuffer.position(0);
+		final int[] pixelsRGBA_8888 = new int[this.mWidth * this.mHeight];
+		final IntBuffer glPixelBuffer = IntBuffer.wrap(pixelsRGBA_8888);
+		glPixelBuffer.position(0);
 
 		this.begin();
-		GLES20.glReadPixels(0, 0, this.mWidth, this.mHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), rawPixelBuffer);
+		GLES20.glReadPixels(0, 0, this.mWidth, this.mHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), glPixelBuffer);
 		this.end();
 
-		final int[] pixels = new int[this.mWidth * this.mHeight];
-
-		// Convert from RGBA_8888 (Which is actually ABGR as the whole buffer seems to be inverted) --> ARGB_8888
-		for (int y = 0; y < this.mHeight; y++) {
-			for (int x = 0; x < this.mWidth; x++) {
-				final int pixel = rawPixels[x + (y * this.mWidth)];
-
-				final int blue = (pixel & 0x00FF0000) >> 16;
-			final int red = (pixel  & 0x000000FF) << 16;
-			final int greenAlpha = pixel & 0xFF00FF00;
-
-			pixels[x + ((this.mHeight - y - 1) * this.mWidth)] = greenAlpha | red | blue;
-			}
+		final int[] pixelsARGB_8888;
+		if(pFlipVertical) {
+			pixelsARGB_8888 = RenderTexture.convertRGBA_8888toARGB_8888_FlippedVertical(pixelsRGBA_8888, this.mWidth, this.mHeight);
+		} else {
+			pixelsARGB_8888 = GLHelper.convertRGBA_8888toARGB_8888(pixelsRGBA_8888);
 		}
 
-		return Bitmap.createBitmap(pixels, this.mWidth, this.mHeight, Config.ARGB_8888);
+		return Bitmap.createBitmap(pixelsARGB_8888, this.mWidth, this.mHeight, Config.ARGB_8888);
+	}
+
+	private static int[] convertRGBA_8888toARGB_8888_FlippedVertical(final int[] pPixelsRGBA_8888, final int pWidth, final int pHeight) {
+		final int[] pixelsARGB_8888 = new int[pWidth * pHeight];
+
+		if(GLHelper.IS_LITTLE_ENDIAN) {
+			for(int y = 0; y < pHeight; y++) {
+				for(int x = 0; x < pWidth; x++) {
+					final int pixel = pPixelsRGBA_8888[x + (y * pWidth)];
+					/* ABGR to ARGB */
+					pixelsARGB_8888[x + ((pHeight - y - 1) * pWidth)] = pixel & 0xFF00FF00 | (pixel & 0x000000FF) << 16 | (pixel & 0x00FF0000) >> 16;
+				}
+			}
+		} else {
+			for(int y = 0; y < pHeight; y++) {
+				for(int x = 0; x < pWidth; x++) {
+					final int pixel = pPixelsRGBA_8888[x + (y * pWidth)];
+					/* RGBA to ARGB */
+					pixelsARGB_8888[x + ((pHeight - y - 1) * pWidth)] = (pixel >> 8) & 0x00FFFFFF | (pixel & 0x000000FF) << 24;
+				}
+			}
+		}
+		return pixelsARGB_8888;
 	}
 
 	// ===========================================================

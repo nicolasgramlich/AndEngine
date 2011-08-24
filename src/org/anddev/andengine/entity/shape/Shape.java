@@ -96,8 +96,6 @@ public abstract class Shape extends Entity implements IShape {
 
 	@Override
 	protected void preDraw(final Camera pCamera) {
-		super.preDraw(pCamera);
-
 		if(this.mBlendingEnabled) {
 			GLHelper.enableBlend();
 			GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
@@ -109,8 +107,6 @@ public abstract class Shape extends Entity implements IShape {
 		if(this.mBlendingEnabled) {
 			GLHelper.disableBlend();
 		}
-
-		super.postDraw(pCamera);
 	}
 
 	@Override

@@ -217,7 +217,7 @@ public class Color {
 		final float green = pColorA.mGreen * pPercentageA + pColorB.mGreen * pPercentageB;
 		final float blue = pColorA.mBlue * pPercentageA + pColorB.mBlue * pPercentageB;
 		final float alpha = pColorA.mAlpha * pPercentageA + pColorB.mAlpha * pPercentageB;
-		
+
 		this.set(red, green, blue, alpha);
 	}
 

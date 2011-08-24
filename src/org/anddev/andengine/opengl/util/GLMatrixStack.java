@@ -22,8 +22,8 @@ public class GLMatrixStack {
 	// Fields
 	// ===========================================================
 
-	final float[] mValues = new float[GLMatrixStack.MAX_DEPTH * GLMatrixStack.GLMATRIX_SIZE];
-	int mTop;
+	final float[] mValues = new float[GLMatrixStack.MAX_DEPTH * GLMatrixStack.GLMATRIX_SIZE];  // TODO Better name
+	int mTop; // TODO Better name
 
 	private final float[] mTemp = new float[2 * GLMatrixStack.GLMATRIX_SIZE];
 

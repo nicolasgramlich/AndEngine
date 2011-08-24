@@ -48,6 +48,22 @@ public class Mesh {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void preDraw(final ShaderProgram pShaderProgram) {
+		this.mVertexBufferObject.bind(pShaderProgram);
+	}
+
+	public void draw(final int pPrimitiveType, final int pCount) {
+		GLES20.glDrawArrays(pPrimitiveType, 0, pCount);
+	}
+	
+	public void draw(final int pPrimitiveType, final int pOffset, final int pCount) {
+		GLES20.glDrawArrays(pPrimitiveType, pOffset, pCount);
+	}
+	
+	public void postDraw(final ShaderProgram pShaderProgram) {
+		this.mVertexBufferObject.unbind(pShaderProgram);
+	}
 
 	public void draw(final ShaderProgram pShaderProgram, final int pPrimitiveType, final int pCount) {
 		this.mVertexBufferObject.bind(pShaderProgram);

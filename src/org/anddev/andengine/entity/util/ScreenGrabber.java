@@ -95,6 +95,7 @@ public class ScreenGrabber extends Entity {
 
 		// TODO Check availability of OpenGL and GLES20.GL_RGBA combinations that require less conversion operations.
 		// Note: There is (said to be) a bug with glReadPixels when 'y != 0', so we simply read starting from 'y == 0'.
+		// TODO Does that bug still exist?
 		GLES20.glReadPixels(pGrabX, 0, pGrabWidth, pGrabY + pGrabHeight, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, sourceBuffer);
 
 		final int[] pixels = new int[pGrabWidth * pGrabHeight];

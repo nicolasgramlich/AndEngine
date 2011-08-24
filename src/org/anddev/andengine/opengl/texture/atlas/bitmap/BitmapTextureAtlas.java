@@ -124,11 +124,14 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 
 	@Override
 	protected void writeTextureToHardware() {
-		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
-		final int glFormat = this.mPixelFormat.getGLFormat();
-		final int glType = this.mPixelFormat.getGLType();
-		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
+		final PixelFormat pixelFormat = this.mBitmapTextureFormat.getPixelFormat();
+		final int glFormat = pixelFormat.getGLFormat();
+		final int glType = pixelFormat.getGLType();
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
 
+		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
+		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
+		
 		final ArrayList<IBitmapTextureAtlasSource> textureSources = this.mTextureAtlasSources;
 		final int textureSourceCount = textureSources.size();
 
@@ -180,16 +183,6 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void bindTextureOnHardware() {
-		super.bindTextureOnHardware();
-
-		final PixelFormat pixelFormat = this.mBitmapTextureFormat.getPixelFormat();
-		final int glFormat = pixelFormat.getGLFormat();
-		final int glType = pixelFormat.getGLType();
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
 	}
 
 	// ===========================================================

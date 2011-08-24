@@ -13,6 +13,9 @@ public class Color {
 	// Constants
 	// ===========================================================
 
+	public static final Color WHITE = new Color(1, 1, 1, 1);
+	public static final float WHITE_PACKED = Color.WHITE.getPacked();
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -214,7 +217,7 @@ public class Color {
 		final float green = pColorA.mGreen * pPercentageA + pColorB.mGreen * pPercentageB;
 		final float blue = pColorA.mBlue * pPercentageA + pColorB.mBlue * pPercentageB;
 		final float alpha = pColorA.mAlpha * pPercentageA + pColorB.mAlpha * pPercentageB;
-		
+
 		this.set(red, green, blue, alpha);
 	}
 

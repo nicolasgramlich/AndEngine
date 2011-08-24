@@ -107,11 +107,11 @@ public abstract class Texture implements ITexture {
 
 		this.mHardwareTextureID = GLHelper.generateTexture();
 
-		this.bindTextureOnHardware();
-
-		this.applyTextureOptions();
+		GLHelper.bindTexture(this.mHardwareTextureID);
 
 		this.writeTextureToHardware();
+		
+		this.mTextureOptions.apply();
 
 		this.mUpdateOnHardwareNeeded = false;
 		this.mLoadedToHardware = true;
@@ -151,14 +151,6 @@ public abstract class Texture implements ITexture {
 	// Methods
 	// ===========================================================
 
-	protected void applyTextureOptions() {
-		this.mTextureOptions.apply();
-	}
-
-	protected void bindTextureOnHardware() {
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, this.mHardwareTextureID);
-	}
-	
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

@@ -84,6 +84,22 @@ public class BufferUtils {
 		pByteBuffer.putShort(pPosition, (short) (pValue & 0xFFFF));
 	}
 
+	public static long getUnsignedInt(final ByteBuffer pByteBuffer) {
+		return pByteBuffer.getInt() & 0xFFFFFFFFL;
+	}
+
+	public static void putUnsignedInt(final ByteBuffer pByteBuffer, final long pValue) {
+		pByteBuffer.putInt((int) (pValue & 0xFFFFFFFFL));
+	}
+
+	public static long getUnsignedInt(final ByteBuffer pByteBuffer, final int pPosition) {
+		return pByteBuffer.getInt(pPosition) & 0xFFFFFFFFL;
+	}
+
+	public static void putUnsignedInt(final ByteBuffer pByteBuffer, final int pPosition, final long pValue) {
+		pByteBuffer.putInt(pPosition, (short) (pValue & 0xFFFFFFFFL));
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

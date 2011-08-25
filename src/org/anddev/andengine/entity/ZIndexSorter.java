@@ -5,6 +5,13 @@ import java.util.List;
 
 import org.anddev.andengine.util.sort.InsertionSorter;
 
+/**
+ * (c) Nicolas Gramlich 2010
+ * (c) Zynga 2011
+ *
+ * @author Nicolas Gramlich <ngramlich@zynga.com>
+ * @since 12:08:56 - 06.08.2010
+ */
 public class ZIndexSorter extends InsertionSorter<IEntity> {
 	// ===========================================================
 	// Constants

@@ -7,7 +7,7 @@ import java.nio.ByteOrder;
 
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.ArrayUtils;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
@@ -128,7 +128,7 @@ public abstract class PVRTexture extends Texture {
 
 		final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / DataConstants.BITS_PER_BYTE;
 
-		GLHelper.clearGLError();
+		GLState.clearGLError();
 		
 		/* Calculate the data size for each texture level and respect the minimum number of blocks. */
 		int mipmapLevel = 0;
@@ -146,7 +146,7 @@ public abstract class PVRTexture extends Texture {
 
 			GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelBuffer);
 
-			GLHelper.checkGLError();
+			GLState.checkGLError();
 
 			currentPixelDataOffset += currentPixelDataSize;
 

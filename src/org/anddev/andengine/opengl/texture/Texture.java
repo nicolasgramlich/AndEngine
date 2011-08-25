@@ -3,7 +3,7 @@ package org.anddev.andengine.opengl.texture;
 import java.io.IOException;
 
 import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 
 import android.opengl.GLES20;
 
@@ -103,11 +103,11 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void loadToHardware() throws IOException {
-		GLHelper.enableTextures();
+		GLState.enableTextures();
 
-		this.mHardwareTextureID = GLHelper.generateTexture();
+		this.mHardwareTextureID = GLState.generateTexture();
 
-		GLHelper.bindTexture(this.mHardwareTextureID);
+		GLState.bindTexture(this.mHardwareTextureID);
 
 		this.writeTextureToHardware();
 		
@@ -123,9 +123,9 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void unloadFromHardware() {
-		GLHelper.enableTextures();
+		GLState.enableTextures();
 
-		GLHelper.deleteTexture(this.mHardwareTextureID);
+		GLState.deleteTexture(this.mHardwareTextureID);
 
 		this.mHardwareTextureID = -1;
 
@@ -144,7 +144,7 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void bind() {
-		GLHelper.bindTexture(this.mHardwareTextureID);
+		GLState.bindTexture(this.mHardwareTextureID);
 	}
 
 	// ===========================================================

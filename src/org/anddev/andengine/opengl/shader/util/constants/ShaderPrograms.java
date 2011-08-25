@@ -2,7 +2,7 @@ package org.anddev.andengine.opengl.shader.util.constants;
 
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
@@ -70,7 +70,7 @@ public interface ShaderPrograms {
 		public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 			super.bind(pVertexBufferObjectAttributes);
 
-			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
+			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionMatrix(), 0);
 			GLES20.glUniform1i(this.mUniformTexture0Location, 0);
 		};
 	};
@@ -96,7 +96,7 @@ public interface ShaderPrograms {
 			
 			super.bind(pVertexBufferObjectAttributes);
 
-			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
+			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionMatrix(), 0);
 			GLES20.glUniform1i(this.mUniformTexture0Location, 0);
 		};
 		
@@ -126,7 +126,7 @@ public interface ShaderPrograms {
 
 			super.bind(pVertexBufferObjectAttributes);
 
-			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
+			GLES20.glUniformMatrix4fv(this.mUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionMatrix(), 0);
 		};
 		
 		public void unbind(VertexBufferObjectAttributes pVertexBufferObjectAttributes) {

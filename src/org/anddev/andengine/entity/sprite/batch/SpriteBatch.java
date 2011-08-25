@@ -9,7 +9,7 @@ import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
@@ -145,11 +145,11 @@ public class SpriteBatch extends Entity {
 		super.preDraw(pCamera);
 
 		if(this.mBlendingEnabled) {
-			GLHelper.enableBlend();
-			GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+			GLState.enableBlend();
+			GLState.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 		}
 
-		GLHelper.enableTextures();
+		GLState.enableTextures();
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		this.mTexture.bind();
 	}
@@ -167,10 +167,10 @@ public class SpriteBatch extends Entity {
 	@Override
 	protected void postDraw(final Camera pCamera) {
 		if(this.mBlendingEnabled) {
-			GLHelper.disableBlend();
+			GLState.disableBlend();
 		}
 
-		GLHelper.disableTextures();
+		GLState.disableTextures();
 
 		super.postDraw(pCamera);
 	}
@@ -196,11 +196,11 @@ public class SpriteBatch extends Entity {
 	// ===========================================================
 
 	protected void begin() {
-//		GLHelper.disableDepthMask(pGL); // TODO Test effect of this
+//		GLState.disableDepthMask(pGL); // TODO Test effect of this
 	}
 
 	protected void end() {
-//		GLHelper.enableDepthMask(pGL);
+//		GLState.enableDepthMask(pGL);
 	}
 
 	/**

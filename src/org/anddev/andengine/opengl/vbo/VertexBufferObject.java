@@ -5,7 +5,8 @@ import java.nio.ByteOrder;
 
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.BufferUtils;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
+import org.anddev.andengine.util.data.DataConstants;
 
 import android.opengl.GLES20;
 
@@ -65,7 +66,7 @@ public class VertexBufferObject {
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
 		this.mBufferData = new float[pCapacity];
 
-		this.mByteBuffer = ByteBuffer.allocateDirect((pCapacity * GLHelper.BYTES_PER_FLOAT)).order(ByteOrder.nativeOrder());
+		this.mByteBuffer = ByteBuffer.allocateDirect((pCapacity * DataConstants.BYTES_PER_FLOAT)).order(ByteOrder.nativeOrder());
 
 		if(pManaged) {
 			this.loadToActiveBufferObjectManager();
@@ -123,7 +124,7 @@ public class VertexBufferObject {
 			return;
 		}
 
-		GLHelper.bindBuffer(hardwareBufferID);
+		GLState.bindBuffer(hardwareBufferID);
 
 		if(this.mDirtyOnHardware) {
 			this.mDirtyOnHardware = false;
@@ -151,7 +152,7 @@ public class VertexBufferObject {
 	public void unbind(final ShaderProgram pShaderProgram) {
 		pShaderProgram.unbind(this.mVertexBufferObjectAttributes);
 
-//		GLHelper.bindBuffer(0);
+//		GLState.bindBuffer(0);
 	}
 
 	public void loadToActiveBufferObjectManager() {
@@ -163,14 +164,14 @@ public class VertexBufferObject {
 	}
 
 	public void loadToHardware() {
-		this.mHardwareBufferID = GLHelper.generateBuffer();
-//		this.mHardwareBufferID = GLHelper.generateBuffer(this.mByteBuffer.capacity(), this.mUsage);
+		this.mHardwareBufferID = GLState.generateBuffer();
+//		this.mHardwareBufferID = GLState.generateBuffer(this.mByteBuffer.capacity(), this.mUsage);
 
 		this.mLoadedToHardware = true;
 	}
 
 	public void unloadFromHardware() {
-		GLHelper.deleteBuffer(this.mHardwareBufferID);
+		GLState.deleteBuffer(this.mHardwareBufferID);
 
 		this.mHardwareBufferID = -1;
 		this.mLoadedToHardware = false;

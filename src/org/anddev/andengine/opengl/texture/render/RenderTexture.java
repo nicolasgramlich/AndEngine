@@ -1,10 +1,13 @@
-package org.anddev.andengine.opengl.texture;
+package org.anddev.andengine.opengl.texture.render;
 
 import java.io.IOException;
 import java.nio.IntBuffer;
 
-import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
+import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
+import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.exception.AndEngineException;
 import org.anddev.andengine.util.math.MathUtils;
 
@@ -13,13 +16,14 @@ import android.graphics.Bitmap.Config;
 import android.opengl.GLES20;
 
 /**
- * TODO When rendering inverted (upside-down), there might be no need to for two byte[] in getBitmap()!?!
+ * A {@link RenderTexture} might only be created during runtime, which might not yet be in {@link BaseGameActivity#onLoadResources()}, but I need to try this.
+ *
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 07:13:05 - 24.08.2011
  */
-public class RenderTexture {
+public class RenderTexture extends Texture {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -38,14 +42,12 @@ public class RenderTexture {
 	private final int mWidth;
 	private final int mHeight;
 	private final PixelFormat mPixelFormat;
-	private int mFBO;
+	private final int mFBO;
 	private int mPreviousFBO;
 	private int mPreviousViewPortX;
 	private int mPreviousViewPortY;
 	private int mPreviousViewPortWidth;
 	private int mPreviousViewPortHeight;
-
-	private Texture mTexture;
 
 	// ===========================================================
 	// Constructors
@@ -56,6 +58,8 @@ public class RenderTexture {
 	}
 
 	public RenderTexture(final int pWidth, final int pHeight, final PixelFormat pPixelFormat) {
+		super(pPixelFormat, TextureOptions.NEAREST, null);
+
 		if(!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)) {
 			throw new IllegalArgumentException("pWidth and pHeight must be powers of two!");
 		}
@@ -67,27 +71,8 @@ public class RenderTexture {
 		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.HARDWAREID_CONTAINER, 0);
 		this.mPreviousFBO = RenderTexture.HARDWAREID_CONTAINER[0];
 
-		this.mTexture = new Texture(pPixelFormat, TextureOptions.NEAREST, null) {
-			@Override
-			public int getWidth() {
-				return pWidth;
-			}
-
-			@Override
-			public int getHeight() {
-				return pHeight;
-			}
-
-			@Override
-			protected void writeTextureToHardware() {
-				final int glFormat = pPixelFormat.getGLFormat();
-				final int glType = pPixelFormat.getGLType();
-				GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glFormat, pWidth, pHeight, 0, glFormat, glType, null);
-			}
-		};
-
 		try{
-			this.mTexture.loadToHardware();
+			this.loadToHardware();
 		} catch(final IOException e) {
 			/* Can not happen. */
 		}
@@ -98,9 +83,9 @@ public class RenderTexture {
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFBO);
 
 		/* Attach texture to FBO. */
-		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTexture.mHardwareTextureID, 0);
+		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mHardwareTextureID, 0);
 
-		final int status = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER); // TODO Put to GLHelper...
+		final int status = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER); // TODO Put to GLState...
 		if (status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
 			throw new AndEngineException("Could not attach texture to framebuffer"); // TODO Description...
 		}
@@ -112,13 +97,26 @@ public class RenderTexture {
 	// Getter & Setter
 	// ===========================================================
 
-	public ITexture getTexture() {
-		return this.mTexture;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public int getWidth() {
+		return this.mWidth;
+	}
+
+	@Override
+	public int getHeight() {
+		return this.mHeight;
+	}
+
+	@Override
+	protected void writeTextureToHardware() {
+		final int glFormat = this.mPixelFormat.getGLFormat();
+		final int glType = this.mPixelFormat.getGLType();
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
+	}
 
 	// ===========================================================
 	// Methods
@@ -128,31 +126,31 @@ public class RenderTexture {
 		this.savePreviousViewport();
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
 
-		GLHelper.switchToProjectionMatrix();
-		GLHelper.glPushMatrix();
+		GLState.switchToProjectionMatrix();
+		GLState.glPushMatrix();
 
-		GLHelper.glOrthof(0, this.mWidth, this.mHeight, 0, -1, 1);
+		GLState.glOrthof(0, this.mWidth, this.mHeight, 0, -1, 1);
 
 		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.HARDWAREID_CONTAINER, 0);
 		this.mPreviousFBO = RenderTexture.HARDWAREID_CONTAINER[0];
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFBO);
 
-		GLHelper.switchToModelViewMatrix();
-		GLHelper.glPushMatrix();
-		GLHelper.glLoadIdentity();
+		GLState.switchToModelViewMatrix();
+		GLState.glPushMatrix();
+		GLState.glLoadIdentity();
 	}
 
 	public void end() {
-		GLHelper.glPopMatrix();
+		GLState.glPopMatrix();
 
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFBO);
 
-		GLHelper.switchToProjectionMatrix();
-		GLHelper.glPopMatrix();
+		GLState.switchToProjectionMatrix();
+		GLState.glPopMatrix();
 
 		this.resotorePreviousViewport();
 
-		GLHelper.switchToModelViewMatrix();
+		GLState.switchToModelViewMatrix();
 	}
 
 	private void savePreviousViewport() {
@@ -186,35 +184,12 @@ public class RenderTexture {
 
 		final int[] pixelsARGB_8888;
 		if(pFlipVertical) {
-			pixelsARGB_8888 = RenderTexture.convertRGBA_8888toARGB_8888_FlippedVertical(pixelsRGBA_8888, this.mWidth, this.mHeight);
+			pixelsARGB_8888 = GLHelper.convertRGBA_8888toARGB_8888_FlippedVertical(pixelsRGBA_8888, this.mWidth, this.mHeight);
 		} else {
 			pixelsARGB_8888 = GLHelper.convertRGBA_8888toARGB_8888(pixelsRGBA_8888);
 		}
 
 		return Bitmap.createBitmap(pixelsARGB_8888, this.mWidth, this.mHeight, Config.ARGB_8888);
-	}
-
-	private static int[] convertRGBA_8888toARGB_8888_FlippedVertical(final int[] pPixelsRGBA_8888, final int pWidth, final int pHeight) {
-		final int[] pixelsARGB_8888 = new int[pWidth * pHeight];
-
-		if(GLHelper.IS_LITTLE_ENDIAN) {
-			for(int y = 0; y < pHeight; y++) {
-				for(int x = 0; x < pWidth; x++) {
-					final int pixel = pPixelsRGBA_8888[x + (y * pWidth)];
-					/* ABGR to ARGB */
-					pixelsARGB_8888[x + ((pHeight - y - 1) * pWidth)] = pixel & 0xFF00FF00 | (pixel & 0x000000FF) << 16 | (pixel & 0x00FF0000) >> 16;
-				}
-			}
-		} else {
-			for(int y = 0; y < pHeight; y++) {
-				for(int x = 0; x < pWidth; x++) {
-					final int pixel = pPixelsRGBA_8888[x + (y * pWidth)];
-					/* RGBA to ARGB */
-					pixelsARGB_8888[x + ((pHeight - y - 1) * pWidth)] = (pixel >> 8) & 0x00FFFFFF | (pixel & 0x000000FF) << 24;
-				}
-			}
-		}
-		return pixelsARGB_8888;
 	}
 
 	// ===========================================================

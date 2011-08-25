@@ -11,7 +11,7 @@ import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.constants.Constants;
@@ -220,13 +220,13 @@ public class Scene extends Entity {
 		if(childScene == null || !this.mChildSceneModalDraw) {
 			if(this.mBackgroundEnabled) {
 				pCamera.onApplySceneBackgroundMatrix();
-				GLHelper.setModelViewIdentityMatrix();
+				GLState.setModelViewIdentityMatrix();
 
 				this.mBackground.onDraw(pCamera);
 			}
 
 			pCamera.onApplySceneMatrix();
-			GLHelper.setModelViewIdentityMatrix();
+			GLState.setModelViewIdentityMatrix();
 
 			super.onManagedDraw(pCamera);
 		}

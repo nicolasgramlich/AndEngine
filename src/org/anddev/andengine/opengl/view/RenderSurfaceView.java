@@ -4,7 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.Debug;
 
 import android.content.Context;
@@ -131,13 +131,13 @@ public class RenderSurfaceView extends GLSurfaceView {
 			Debug.d("onSurfaceChanged: pWidth=" + pWidth + "  pHeight=" + pHeight);
 			this.mEngine.setSurfaceSize(pWidth, pHeight);
 			GLES20.glViewport(0, 0, pWidth, pHeight);
-			GLHelper.glLoadIdentity();
+			GLState.glLoadIdentity();
 		}
 
 		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pEGLConfig) {
 			Debug.d("onSurfaceCreated");
-			GLHelper.reset();
+			GLState.reset();
 
 			// TODO Check if available and make available through EngineOptions-RenderOptions
 //			GLES20.glEnable(GLES20.GL_POLYGON_SMOOTH);
@@ -147,17 +147,17 @@ public class RenderSurfaceView extends GLSurfaceView {
 //			GLES20.glEnable(GLES20.GL_POINT_SMOOTH);
 //			GLES20.glHint(GLES20.GL_POINT_SMOOTH_HINT, GLES20.GL_NICEST);
 
-			GLHelper.disableDither();
-			GLHelper.disableDepthTest();
+			GLState.disableDither();
+			GLState.disableDepthTest();
 
-			GLHelper.enableBlend();
-			GLHelper.enableTextures();
+			GLState.enableBlend();
+			GLState.enableTextures();
 
-			GLHelper.enableCulling();
+			GLState.enableCulling();
 			GLES20.glFrontFace(GLES20.GL_CCW);
 			GLES20.glCullFace(GLES20.GL_BACK);
 
-			GLHelper.enableExtensions(this.mEngine.getEngineOptions().getRenderOptions());
+			GLState.enableExtensions(this.mEngine.getEngineOptions().getRenderOptions());
 		}
 
 		@Override

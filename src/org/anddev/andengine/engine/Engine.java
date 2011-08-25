@@ -427,7 +427,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onResume() {
-		// TODO GLHelper.reset(pGL); ?
+		// TODO GLState.reset(pGL); ?
 		this.mTextureManager.reloadTextures();
 		this.mFontManager.reloadFonts();
 		this.mShaderProgramManager.reloadShaderPrograms();

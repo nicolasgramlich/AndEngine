@@ -8,7 +8,7 @@ import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
@@ -187,7 +187,7 @@ public class Line extends Shape {
 	protected void preDraw(final Camera pCamera) {
 		super.preDraw(pCamera);
 
-		GLHelper.lineWidth(this.mLineWidth);
+		GLState.lineWidth(this.mLineWidth);
 	}
 
 	@Override

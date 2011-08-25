@@ -8,7 +8,6 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
-import org.anddev.andengine.util.exception.AndEngineException;
 import org.anddev.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
@@ -28,8 +27,10 @@ public class RenderTexture extends Texture {
 	// Constants
 	// ===========================================================
 
-	private static final int[] HARDWAREID_CONTAINER = new int[1];
+	private static final int[] FRAMEBUFFEROBJECTID_CONTAINER = new int[1];
+
 	private static final int[] VIEWPORT_CONTAINER = new int[4];
+
 	private static final int VIEWPORT_CONTAINER_X = 0;
 	private static final int VIEWPORT_CONTAINER_Y = 1;
 	private static final int VIEWPORT_CONTAINER_WIDTH = 2;
@@ -42,8 +43,8 @@ public class RenderTexture extends Texture {
 	private final int mWidth;
 	private final int mHeight;
 	private final PixelFormat mPixelFormat;
-	private final int mFBO;
-	private int mPreviousFBO;
+	private final int mFrameBufferObjectID;
+	private int mPreviousFrameBufferObjectID;
 	private int mPreviousViewPortX;
 	private int mPreviousViewPortY;
 	private int mPreviousViewPortWidth;
@@ -68,8 +69,8 @@ public class RenderTexture extends Texture {
 		this.mHeight = pHeight;
 		this.mPixelFormat = pPixelFormat;
 
-		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.HARDWAREID_CONTAINER, 0);
-		this.mPreviousFBO = RenderTexture.HARDWAREID_CONTAINER[0];
+		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER, 0);
+		this.mPreviousFrameBufferObjectID = RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER[0];
 
 		try{
 			this.loadToHardware();
@@ -78,38 +79,35 @@ public class RenderTexture extends Texture {
 		}
 
 		/* Generate FBO. */
-		GLES20.glGenFramebuffers(1, RenderTexture.HARDWAREID_CONTAINER, 0);
-		this.mFBO = RenderTexture.HARDWAREID_CONTAINER[0];
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFBO);
+		GLES20.glGenFramebuffers(1, RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER, 0);
+		this.mFrameBufferObjectID = RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER[0];
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFrameBufferObjectID);
 
 		/* Attach texture to FBO. */
-		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mHardwareTextureID, 0);
+		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTextureID, 0);
 
-		final int status = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER); // TODO Put to GLState...
-		if (status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
-			throw new AndEngineException("Could not attach texture to framebuffer"); // TODO Description...
-		}
+		GLState.checkFrameBufferStatus();
 
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFBO);
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFrameBufferObjectID);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-
+	
 	@Override
 	public int getWidth() {
 		return this.mWidth;
 	}
-
+	
 	@Override
 	public int getHeight() {
 		return this.mHeight;
 	}
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
 
 	@Override
 	protected void writeTextureToHardware() {
@@ -131,9 +129,9 @@ public class RenderTexture extends Texture {
 
 		GLState.glOrthof(0, this.mWidth, this.mHeight, 0, -1, 1);
 
-		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.HARDWAREID_CONTAINER, 0);
-		this.mPreviousFBO = RenderTexture.HARDWAREID_CONTAINER[0];
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFBO);
+		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER, 0);
+		this.mPreviousFrameBufferObjectID = RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER[0];
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFrameBufferObjectID);
 
 		GLState.switchToModelViewMatrix();
 		GLState.glPushMatrix();
@@ -143,7 +141,7 @@ public class RenderTexture extends Texture {
 	public void end() {
 		GLState.glPopMatrix();
 
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFBO);
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFrameBufferObjectID);
 
 		GLState.switchToProjectionMatrix();
 		GLState.glPopMatrix();

@@ -341,14 +341,29 @@ public class GLState {
 		GLES20.glTexSubImage2D(pTarget, pLevel, pX, pY, pBitmap.getWidth(), pBitmap.getHeight(), pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
 	}
 
-	public static void clearGLError() {
-		GLES20.glGetError();
+	public static int getGLError() {
+		return GLES20.glGetError();
 	}
 
 	public static void checkGLError() throws GLException { // TODO Use more often!
 		final int err = GLES20.glGetError();
 		if (err != GLES20.GL_NO_ERROR) {
 			throw new GLException(err);
+		}
+	}
+
+	public static void clearGLError() {
+		GLES20.glGetError();
+	}
+
+	public static int getFrameBufferStatus() {
+		return GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER);
+	}
+
+	public static void checkFrameBufferStatus() {
+		final int status = GLState.getFrameBufferStatus();
+		if (status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
+			throw new GLException(status);
 		}
 	}
 

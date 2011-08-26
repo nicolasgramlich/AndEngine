@@ -2,8 +2,6 @@ package org.anddev.andengine.opengl.shader;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
-
 
 /**
  * (c) 2011 Zynga Inc.
@@ -27,9 +25,10 @@ public class ShaderProgramManager {
 	// ===========================================================
 
 	public ShaderProgramManager() {
-		this.loadShaderProgram(ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
-		this.loadShaderProgram(ShaderPrograms.SHADERPROGRAM_POSITION_TEXTURECOORDINATES);
-		this.loadShaderProgram(ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
+		this.loadShaderProgram(PositionColorTextureCoordinatesShaderProgram.getInstance());
+		this.loadShaderProgram(PositionTextureCoordinatesShaderProgram.getInstance());
+		this.loadShaderProgram(PositionColorShaderProgram.getInstance());
+		this.loadShaderProgram(PositionTextureCoordinatesTextureSelectShaderProgram.getInstance());
 	}
 
 	// ===========================================================

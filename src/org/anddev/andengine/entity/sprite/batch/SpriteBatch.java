@@ -5,8 +5,9 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -46,9 +47,9 @@ public class SpriteBatch extends Entity {
 	public static final int SPRITE_SIZE = SpriteBatch.VERTEX_SIZE * SpriteBatch.VERTICES_PER_SPRITE;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
-		.add(ShaderPrograms.ATTRIBUTE_POSITION_LOCATION, ShaderPrograms.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
-		.add(ShaderPrograms.ATTRIBUTE_COLOR_LOCATION, ShaderPrograms.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
-		.add(ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION, ShaderProgramConstants.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
+		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
 		.build();
 
 	// ===========================================================
@@ -158,7 +159,7 @@ public class SpriteBatch extends Entity {
 	protected void draw(final Camera pCamera) {
 		this.begin();
 
-		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
+		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? PositionColorTextureCoordinatesShaderProgram.getInstance() : this.mShaderProgram;
 		this.mSpriteBatchMesh.draw(shaderProgram, GLES20.GL_TRIANGLES, this.mVertices);
 
 		this.end();

@@ -6,7 +6,7 @@ import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 import org.anddev.andengine.engine.options.RenderOptions;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
 import org.anddev.andengine.opengl.util.GLMatrixStacks.MatrixMode;
 import org.anddev.andengine.util.Debug;
@@ -79,9 +79,9 @@ public class GLHelper {
 		GLHelper.disableCulling();
 		GLHelper.disableTextures();
 
-		GLES20.glEnableVertexAttribArray(ShaderPrograms.ATTRIBUTE_POSITION_LOCATION);
-		GLES20.glEnableVertexAttribArray(ShaderPrograms.ATTRIBUTE_COLOR_LOCATION);
-		GLES20.glEnableVertexAttribArray(ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES_LOCATION);
+		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION);
+		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
+		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION);
 
 		GLHelper.sLineWidth = 1;
 	}

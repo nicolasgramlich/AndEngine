@@ -7,7 +7,8 @@ import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.opengl.Mesh;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.PositionColorShaderProgram;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
@@ -41,8 +42,8 @@ public class Line extends Shape {
 	public static final int LINE_SIZE = Line.VERTEX_SIZE * Line.VERTICES_PER_LINE;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
-		.add(ShaderPrograms.ATTRIBUTE_POSITION_LOCATION, ShaderPrograms.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
-		.add(ShaderPrograms.ATTRIBUTE_COLOR_LOCATION, ShaderPrograms.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
+		.add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION, ShaderProgramConstants.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
 		.build();
 
 	// ===========================================================
@@ -84,7 +85,7 @@ public class Line extends Shape {
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final Mesh pMesh) {
-		super(pX1, pY1, pMesh, ShaderPrograms.SHADERPROGRAM_POSITION_COLOR);
+		super(pX1, pY1, pMesh, PositionColorShaderProgram.getInstance());
 
 		this.mX2 = pX2;
 		this.mY2 = pY2;

@@ -6,8 +6,8 @@ import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.font.Font;
 import org.anddev.andengine.opengl.font.Letter;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
@@ -45,9 +45,9 @@ public class Text extends RectangularShape {
 	public static final int VERTEX_STRIDE = Text.VERTEX_SIZE * DataConstants.BYTES_PER_FLOAT;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
-		.add(ShaderPrograms.ATTRIBUTE_POSITION_LOCATION, ShaderPrograms.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
-		.add(ShaderPrograms.ATTRIBUTE_COLOR_LOCATION, ShaderPrograms.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
-		.add(ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderPrograms.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION, ShaderProgramConstants.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
+		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
 		.build();
 
 	// ===========================================================
@@ -102,7 +102,7 @@ public class Text extends RectangularShape {
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
-		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES);
+		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), PositionColorTextureCoordinatesShaderProgram.getInstance());
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
@@ -189,8 +189,7 @@ public class Text extends RectangularShape {
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? ShaderPrograms.SHADERPROGRAM_POSITION_COLOR_TEXTURECOORDINATES : this.mShaderProgram;
-		this.mMesh.draw(shaderProgram, GLES20.GL_TRIANGLES, this.mVertexCount);
+		this.mMesh.draw(this.mShaderProgram, GLES20.GL_TRIANGLES, this.mVertexCount);
 	}
 
 	@Override

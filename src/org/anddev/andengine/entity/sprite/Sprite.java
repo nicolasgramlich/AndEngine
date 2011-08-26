@@ -4,10 +4,9 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
-import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
@@ -135,7 +134,7 @@ public class Sprite extends RectangularShape {
 	protected void preDraw(final Camera pCamera) {
 		super.preDraw(pCamera);
 
-		GLHelper.enableTextures();
+		GLState.enableTextures();
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		this.mTextureRegion.getTexture().bind();
 	}
@@ -147,7 +146,7 @@ public class Sprite extends RectangularShape {
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		GLHelper.disableTextures();
+		GLState.disableTextures();
 
 		super.postDraw(pCamera);
 	}

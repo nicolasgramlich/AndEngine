@@ -5,8 +5,8 @@ import java.util.HashMap;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
@@ -19,7 +19,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 19:56:34 - 05.08.2011
  */
-public class ShaderProgram implements ShaderProgramConstants {
+public class ShaderProgram implements ShaderPrograms {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -117,7 +117,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		if(!this.mCompiled) {
 			this.compile();
 		}
-		GLHelper.useProgram(this.mProgramID);
+		GLState.useProgram(this.mProgramID);
 
 		pVertexBufferObjectAttributes.glVertexAttribPointers(this);
 	}
@@ -129,7 +129,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 	public void delete() {
 		if(this.mCompiled) {
 			this.mCompiled = false;
-			GLHelper.deleteProgram(this.mProgramID);
+			GLState.deleteProgram(this.mProgramID);
 			this.mProgramID = -1;
 		}
 	}

@@ -5,7 +5,7 @@ import java.io.InputStream;
 
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.StreamUtils;
 
 import android.graphics.Bitmap;
@@ -104,7 +104,7 @@ public abstract class BitmapTexture extends Texture {
 		if(preMultipyAlpha) {
 			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 		} else {
-			GLHelper.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
+			GLState.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
 		}
 
 		bitmap.recycle();

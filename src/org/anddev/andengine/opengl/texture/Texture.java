@@ -3,7 +3,7 @@ package org.anddev.andengine.opengl.texture;
 import java.io.IOException;
 
 import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 
 import android.opengl.GLES20;
 
@@ -26,7 +26,7 @@ public abstract class Texture implements ITexture {
 	protected final PixelFormat mPixelFormat;
 	protected final TextureOptions mTextureOptions;
 
-	protected int mHardwareTextureID = -1;
+	protected int mTextureID = -1;
 	protected boolean mLoadedToHardware;
 	protected boolean mUpdateOnHardwareNeeded = false;
 
@@ -53,7 +53,7 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public int getHardwareTextureID() {
-		return this.mHardwareTextureID;
+		return this.mTextureID;
 	}
 
 	@Override
@@ -103,11 +103,11 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void loadToHardware() throws IOException {
-		GLHelper.enableTextures();
+		GLState.enableTextures();
 
-		this.mHardwareTextureID = GLHelper.generateTexture();
+		this.mTextureID = GLState.generateTexture();
 
-		GLHelper.bindTexture(this.mHardwareTextureID);
+		GLState.bindTexture(this.mTextureID);
 
 		this.writeTextureToHardware();
 		
@@ -123,11 +123,11 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void unloadFromHardware() {
-		GLHelper.enableTextures();
+		GLState.enableTextures();
 
-		GLHelper.deleteTexture(this.mHardwareTextureID);
+		GLState.deleteTexture(this.mTextureID);
 
-		this.mHardwareTextureID = -1;
+		this.mTextureID = -1;
 
 		this.mLoadedToHardware = false;
 
@@ -144,7 +144,7 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void bind() {
-		GLHelper.bindTexture(this.mHardwareTextureID);
+		GLState.bindTexture(this.mTextureID);
 	}
 
 	// ===========================================================

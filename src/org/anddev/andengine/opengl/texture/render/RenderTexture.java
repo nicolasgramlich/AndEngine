@@ -6,8 +6,7 @@ import java.nio.IntBuffer;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.ui.activity.BaseGameActivity;
-import org.anddev.andengine.util.exception.AndEngineException;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
@@ -15,7 +14,7 @@ import android.graphics.Bitmap.Config;
 import android.opengl.GLES20;
 
 /**
- * A {@link RenderTexture} might only be created during runtime, which might not yet be in {@link BaseGameActivity#onLoadResources()}, but I need to try this.
+ * Currently a {@link RenderTexture} can only be created during runtime, i.e. inside of the draw loop on the GL-Thread.
  *
  * (c) Zynga 2011
  *
@@ -27,8 +26,10 @@ public class RenderTexture extends Texture {
 	// Constants
 	// ===========================================================
 
-	private static final int[] HARDWAREID_CONTAINER = new int[1];
+	private static final int[] FRAMEBUFFEROBJECTID_CONTAINER = new int[1];
+
 	private static final int[] VIEWPORT_CONTAINER = new int[4];
+
 	private static final int VIEWPORT_CONTAINER_X = 0;
 	private static final int VIEWPORT_CONTAINER_Y = 1;
 	private static final int VIEWPORT_CONTAINER_WIDTH = 2;
@@ -41,8 +42,8 @@ public class RenderTexture extends Texture {
 	private final int mWidth;
 	private final int mHeight;
 	private final PixelFormat mPixelFormat;
-	private final int mFBO;
-	private int mPreviousFBO;
+	private final int mFrameBufferObjectID;
+	private int mPreviousFrameBufferObjectID;
 	private int mPreviousViewPortX;
 	private int mPreviousViewPortY;
 	private int mPreviousViewPortWidth;
@@ -60,15 +61,14 @@ public class RenderTexture extends Texture {
 		super(pPixelFormat, TextureOptions.NEAREST, null);
 
 		if(!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)) {
-			throw new IllegalArgumentException("pWidth and pHeight must be powers of two!");
+			throw new IllegalArgumentException("pWidth and pHeight must be powers of two!"); // TODO Really?
 		}
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mPixelFormat = pPixelFormat;
 
-		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.HARDWAREID_CONTAINER, 0);
-		this.mPreviousFBO = RenderTexture.HARDWAREID_CONTAINER[0];
+		this.savePreviousFrameBufferObjectID();
 
 		try{
 			this.loadToHardware();
@@ -77,27 +77,20 @@ public class RenderTexture extends Texture {
 		}
 
 		/* Generate FBO. */
-		GLES20.glGenFramebuffers(1, RenderTexture.HARDWAREID_CONTAINER, 0);
-		this.mFBO = RenderTexture.HARDWAREID_CONTAINER[0];
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFBO);
+		GLES20.glGenFramebuffers(1, RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER, 0);
+		this.mFrameBufferObjectID = RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER[0];
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFrameBufferObjectID);
 
 		/* Attach texture to FBO. */
-		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mHardwareTextureID, 0);
+		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTextureID, 0);
 
-		final int status = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER); // TODO Put to GLHelper...
-		if (status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
-			throw new AndEngineException("Could not attach texture to framebuffer"); // TODO Description...
-		}
+		GLState.checkFrameBufferStatus();
 
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFBO);
+		this.restorePreviousFrameBufferObject();
 	}
 
 	// ===========================================================
 	// Getter & Setter
-	// ===========================================================
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
@@ -109,6 +102,10 @@ public class RenderTexture extends Texture {
 	public int getHeight() {
 		return this.mHeight;
 	}
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
 
 	@Override
 	protected void writeTextureToHardware() {
@@ -125,35 +122,44 @@ public class RenderTexture extends Texture {
 		this.savePreviousViewport();
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
 
-		GLHelper.switchToProjectionMatrix();
-		GLHelper.glPushMatrix();
+		GLState.switchToProjectionMatrix();
+		GLState.glPushMatrix();
 
-		GLHelper.glOrthof(0, this.mWidth, this.mHeight, 0, -1, 1);
+		GLState.glOrthof(0, this.mWidth, this.mHeight, 0, -1, 1);
 
-		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.HARDWAREID_CONTAINER, 0);
-		this.mPreviousFBO = RenderTexture.HARDWAREID_CONTAINER[0];
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFBO);
+		this.savePreviousFrameBufferObjectID();
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFrameBufferObjectID);
 
-		GLHelper.switchToModelViewMatrix();
-		GLHelper.glPushMatrix();
-		GLHelper.glLoadIdentity();
+		GLState.switchToModelViewMatrix();
+		GLState.glPushMatrix();
+		GLState.glLoadIdentity();
 	}
 
 	public void end() {
-		GLHelper.glPopMatrix();
+		GLState.glPopMatrix();
 
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFBO);
+		this.restorePreviousFrameBufferObject();
 
-		GLHelper.switchToProjectionMatrix();
-		GLHelper.glPopMatrix();
+		GLState.switchToProjectionMatrix();
+		GLState.glPopMatrix();
 
 		this.resotorePreviousViewport();
 
-		GLHelper.switchToModelViewMatrix();
+		GLState.switchToModelViewMatrix();
+	}
+
+	private void savePreviousFrameBufferObjectID() {
+		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER, 0);
+		this.mPreviousFrameBufferObjectID = RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER[0];
+	}
+
+	private void restorePreviousFrameBufferObject() {
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFrameBufferObjectID);
 	}
 
 	private void savePreviousViewport() {
 		GLES20.glGetIntegerv(GLES20.GL_VIEWPORT, RenderTexture.VIEWPORT_CONTAINER, 0);
+
 		this.mPreviousViewPortX = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_X];
 		this.mPreviousViewPortY = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_Y];
 		this.mPreviousViewPortWidth = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_WIDTH];
@@ -164,15 +170,11 @@ public class RenderTexture extends Texture {
 		GLES20.glViewport(this.mPreviousViewPortX, this.mPreviousViewPortY, this.mPreviousViewPortWidth, this.mPreviousViewPortHeight);
 	}
 
-	public Bitmap getBitmap() {
-		return this.getBitmap(false);
+	public int[] getPixelsARGB_8888() {
+		return this.getPixelsARGB_8888(false);
 	}
 
-	public Bitmap getBitmap(final boolean pFlipVertical) {
-		if(this.mPixelFormat != PixelFormat.RGBA_8888){
-			throw new IllegalStateException(); // TODO Description...
-		}
-
+	public int[] getPixelsARGB_8888(final boolean pFlipVertical) {
 		final int[] pixelsRGBA_8888 = new int[this.mWidth * this.mHeight];
 		final IntBuffer glPixelBuffer = IntBuffer.wrap(pixelsRGBA_8888);
 		glPixelBuffer.position(0);
@@ -181,37 +183,23 @@ public class RenderTexture extends Texture {
 		GLES20.glReadPixels(0, 0, this.mWidth, this.mHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), glPixelBuffer);
 		this.end();
 
-		final int[] pixelsARGB_8888;
 		if(pFlipVertical) {
-			pixelsARGB_8888 = RenderTexture.convertRGBA_8888toARGB_8888_FlippedVertical(pixelsRGBA_8888, this.mWidth, this.mHeight);
+			return GLHelper.convertRGBA_8888toARGB_8888_FlippedVertical(pixelsRGBA_8888, this.mWidth, this.mHeight);
 		} else {
-			pixelsARGB_8888 = GLHelper.convertRGBA_8888toARGB_8888(pixelsRGBA_8888);
+			return GLHelper.convertRGBA_8888toARGB_8888(pixelsRGBA_8888);
 		}
-
-		return Bitmap.createBitmap(pixelsARGB_8888, this.mWidth, this.mHeight, Config.ARGB_8888);
 	}
 
-	private static int[] convertRGBA_8888toARGB_8888_FlippedVertical(final int[] pPixelsRGBA_8888, final int pWidth, final int pHeight) {
-		final int[] pixelsARGB_8888 = new int[pWidth * pHeight];
+	public Bitmap getBitmap() {
+		return this.getBitmap(false);
+	}
 
-		if(GLHelper.IS_LITTLE_ENDIAN) {
-			for(int y = 0; y < pHeight; y++) {
-				for(int x = 0; x < pWidth; x++) {
-					final int pixel = pPixelsRGBA_8888[x + (y * pWidth)];
-					/* ABGR to ARGB */
-					pixelsARGB_8888[x + ((pHeight - y - 1) * pWidth)] = pixel & 0xFF00FF00 | (pixel & 0x000000FF) << 16 | (pixel & 0x00FF0000) >> 16;
-				}
-			}
-		} else {
-			for(int y = 0; y < pHeight; y++) {
-				for(int x = 0; x < pWidth; x++) {
-					final int pixel = pPixelsRGBA_8888[x + (y * pWidth)];
-					/* RGBA to ARGB */
-					pixelsARGB_8888[x + ((pHeight - y - 1) * pWidth)] = (pixel >> 8) & 0x00FFFFFF | (pixel & 0x000000FF) << 24;
-				}
-			}
+	public Bitmap getBitmap(final boolean pFlipVertical) {
+		if(this.mPixelFormat != PixelFormat.RGBA_8888){
+			throw new IllegalStateException("Currently only 'PixelFormat." + PixelFormat.RGBA_8888 + "' is supported to be retrieved as a Bitmap.");
 		}
-		return pixelsARGB_8888;
+
+		return Bitmap.createBitmap(this.getPixelsARGB_8888(pFlipVertical), this.mWidth, this.mHeight, Config.ARGB_8888);
 	}
 
 	// ===========================================================

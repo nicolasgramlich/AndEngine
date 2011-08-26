@@ -10,7 +10,7 @@ import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.entity.modifier.EntityModifierList;
 import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.color.Color;
@@ -970,7 +970,7 @@ public class Entity implements IEntity {
 	}
 
 	protected void applyTranslation() {
-		GLHelper.glTranslatef(this.mX, this.mY, 0);
+		GLState.glTranslatef(this.mX, this.mY, 0);
 	}
 
 	protected void applyRotation() {
@@ -980,9 +980,9 @@ public class Entity implements IEntity {
 			final float rotationCenterX = this.mRotationCenterX;
 			final float rotationCenterY = this.mRotationCenterY;
 
-			GLHelper.glTranslatef(rotationCenterX, rotationCenterY, 0);
-			GLHelper.glRotatef(rotation, 0, 0, 1);
-			GLHelper.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
+			GLState.glTranslatef(rotationCenterX, rotationCenterY, 0);
+			GLState.glRotatef(rotation, 0, 0, 1);
+			GLState.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
 
 			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
 			 * In that case the last glTranslatef of the rotation and the first glTranslatef of the scale is superfluous.
@@ -998,14 +998,14 @@ public class Entity implements IEntity {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;
 
-			GLHelper.glTranslatef(scaleCenterX, scaleCenterY, 0);
-			GLHelper.glScalef(scaleX, scaleY, 1);
-			GLHelper.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
+			GLState.glTranslatef(scaleCenterX, scaleCenterY, 0);
+			GLState.glScalef(scaleX, scaleY, 1);
+			GLState.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
 		}
 	}
 
 	protected void onManagedDraw(final Camera pCamera) {
-		GLHelper.glPushMatrix();
+		GLState.glPushMatrix();
 		{
 			this.onApplyTransformations();
 
@@ -1015,7 +1015,7 @@ public class Entity implements IEntity {
 
 			this.onDrawChildren(pCamera);
 		}
-		GLHelper.glPopMatrix();
+		GLState.glPopMatrix();
 	}
 
 	protected void onDrawChildren(final Camera pCamera) {

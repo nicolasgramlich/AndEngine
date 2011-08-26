@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IAreaShape;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -115,7 +115,7 @@ public class ParallaxBackground extends ColorBackground {
 		// ===========================================================
 
 		public void onDraw(final float pParallaxValue, final Camera pCamera) {
-			GLHelper.glPushMatrix();
+			GLState.glPushMatrix();
 			{
 				final float cameraWidth = pCamera.getWidth();
 				final float shapeWidthScaled = this.mAreaShape.getWidthScaled();
@@ -124,17 +124,17 @@ public class ParallaxBackground extends ColorBackground {
 				while(baseOffset > 0) {
 					baseOffset -= shapeWidthScaled;
 				}
-				GLHelper.glTranslatef(baseOffset, 0, 0);
+				GLState.glTranslatef(baseOffset, 0, 0);
 
 				float currentMaxX = baseOffset;
 				
 				do {
 					this.mAreaShape.onDraw(pCamera);
-					GLHelper.glTranslatef(shapeWidthScaled, 0, 0);
+					GLState.glTranslatef(shapeWidthScaled, 0, 0);
 					currentMaxX += shapeWidthScaled;
 				} while(currentMaxX < cameraWidth);
 			}
-			GLHelper.glPopMatrix();
+			GLState.glPopMatrix();
 		}
 
 		// ===========================================================

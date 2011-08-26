@@ -5,7 +5,7 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 
 /**
@@ -97,15 +97,15 @@ public abstract class Shape extends Entity implements IShape {
 	@Override
 	protected void preDraw(final Camera pCamera) {
 		if(this.mBlendingEnabled) {
-			GLHelper.enableBlend();
-			GLHelper.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+			GLState.enableBlend();
+			GLState.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 		}
 	}
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
 		if(this.mBlendingEnabled) {
-			GLHelper.disableBlend();
+			GLState.disableBlend();
 		}
 	}
 

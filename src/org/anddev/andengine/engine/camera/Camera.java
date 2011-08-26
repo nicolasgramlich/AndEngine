@@ -10,7 +10,7 @@ import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.math.MathUtils;
 
 /**
@@ -247,9 +247,9 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplySceneMatrix() {
-		GLHelper.setProjectionIdentityMatrix();
+		GLState.setProjectionIdentityMatrix();
 
-		GLHelper.glOrthof(this.getXMin(), this.getXMax(), this.getYMax(), this.getYMin(), this.mZNear, this.mZFar);
+		GLState.glOrthof(this.getXMin(), this.getXMax(), this.getYMax(), this.getYMin(), this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
@@ -258,12 +258,12 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplySceneBackgroundMatrix() {
-		GLHelper.setProjectionIdentityMatrix();
+		GLState.setProjectionIdentityMatrix();
 
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
 
-		GLHelper.glOrthof(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
+		GLState.glOrthof(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
@@ -272,11 +272,11 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplyCameraSceneMatrix() {
-		GLHelper.setProjectionIdentityMatrix();
+		GLState.setProjectionIdentityMatrix();
 
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
-		GLHelper.glOrthof(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
+		GLState.glOrthof(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
 
 		final float cameraSceneRotation = this.mCameraSceneRotation;
 		if(cameraSceneRotation != 0) {
@@ -285,9 +285,9 @@ public class Camera implements IUpdateHandler {
 	}
 
 	private void applyRotation(final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
-		GLHelper.glTranslatef(pRotationCenterX, pRotationCenterY, 0);
-		GLHelper.glRotatef(pAngle, 0, 0, 1);
-		GLHelper.glTranslatef(-pRotationCenterX, -pRotationCenterY, 0);
+		GLState.glTranslatef(pRotationCenterX, pRotationCenterY, 0);
+		GLState.glRotatef(pAngle, 0, 0, 1);
+		GLState.glTranslatef(-pRotationCenterX, -pRotationCenterY, 0);
 	}
 
 	public void convertSceneToCameraSceneTouchEvent(final TouchEvent pSceneTouchEvent) {

@@ -4,7 +4,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 
 import android.opengl.GLES20;
 
@@ -96,7 +96,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 
 		final int surfaceHeight = this.mSurfaceHeight;
 
-		GLHelper.enableScissorTest();
+		GLState.enableScissorTest();
 
 		/* First Screen. With first camera, on the left half of the screens width. */
 		{
@@ -116,7 +116,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 			secondCamera.onDrawHUD();
 		}
 
-		GLHelper.disableScissorTest();
+		GLState.disableScissorTest();
 	}
 
 	@Override

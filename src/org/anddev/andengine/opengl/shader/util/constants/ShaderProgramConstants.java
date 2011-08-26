@@ -11,6 +11,8 @@ public interface ShaderProgramConstants {
 	// Constants
 	// ===========================================================
 
+	public static final int LOCATION_INVALID = -1;
+
 	public static final String ATTRIBUTE_POSITION = "a_position";
 	public static final int ATTRIBUTE_POSITION_LOCATION = 0;
 	public static final String ATTRIBUTE_COLOR = "a_color";

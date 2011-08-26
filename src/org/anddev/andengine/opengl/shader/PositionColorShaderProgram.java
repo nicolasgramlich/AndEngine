@@ -27,7 +27,7 @@ public class PositionColorShaderProgram extends ShaderProgram {
 			"varying vec4 " + ShaderProgramConstants.VARYING_COLOR + ";\n" +
 			"void main() {\n" +
 			"   gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
-			"   " + ShaderProgramConstants.VARYING_COLOR + " = " + ShaderProgram.ATTRIBUTE_COLOR + ";\n" +
+			"   " + ShaderProgramConstants.VARYING_COLOR + " = " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
 			"}";
 
 	public static final String FRAGMENTSHADER =

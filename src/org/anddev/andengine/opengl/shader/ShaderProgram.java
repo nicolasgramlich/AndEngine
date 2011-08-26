@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderPrograms;
+import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
@@ -19,12 +19,10 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 19:56:34 - 05.08.2011
  */
-public class ShaderProgram implements ShaderPrograms {
+public class ShaderProgram implements ShaderProgramConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	public static final int LOCATION_INVALID = -1;
 
 	private static final int[] HARDWAREID_CONTAINER = new int[1];
 	private static final int[] PARAMETERS_CONTAINER = new int[1];
@@ -83,7 +81,7 @@ public class ShaderProgram implements ShaderPrograms {
 		if(location != null) {
 			return location.intValue();
 		} else {
-			return ShaderProgram.LOCATION_INVALID;
+			return ShaderProgramConstants.LOCATION_INVALID;
 		}
 	}
 
@@ -101,7 +99,7 @@ public class ShaderProgram implements ShaderPrograms {
 		if(location != null) {
 			return location.intValue();
 		} else {
-			return ShaderProgram.LOCATION_INVALID;
+			return ShaderProgramConstants.LOCATION_INVALID;
 		}
 	}
 
@@ -218,7 +216,7 @@ public class ShaderProgram implements ShaderPrograms {
 
 	public void setUniformOptional(final String pUniformName, final float[] pGLMatrix) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgram.LOCATION_INVALID) {
+		if(location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniformMatrix4fv(this.getUniformLocationOptional(pUniformName), 1, false, pGLMatrix, 0);
 		}
 	}
@@ -229,7 +227,7 @@ public class ShaderProgram implements ShaderPrograms {
 
 	public void setUniformOptional(final String pUniformName, final float pX) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgram.LOCATION_INVALID) {
+		if(location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform1f(this.getUniformLocationOptional(pUniformName), pX);
 		}
 	}
@@ -240,7 +238,7 @@ public class ShaderProgram implements ShaderPrograms {
 
 	public void setUniformOptional(final String pUniformName, final float pX, final float pY) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgram.LOCATION_INVALID) {
+		if(location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform2f(this.getUniformLocationOptional(pUniformName), pX, pY);
 		}
 	}
@@ -251,7 +249,7 @@ public class ShaderProgram implements ShaderPrograms {
 
 	public void setUniformOptional(final String pUniformName, final float pX, final float pY, final float pZ) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgram.LOCATION_INVALID) {
+		if(location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform3f(this.getUniformLocationOptional(pUniformName), pX, pY, pZ);
 		}
 	}
@@ -262,7 +260,7 @@ public class ShaderProgram implements ShaderPrograms {
 
 	public void setUniformOptional(final String pUniformName, final float pX, final float pY, final float pZ, final float pW) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgram.LOCATION_INVALID) {
+		if(location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform4f(this.getUniformLocationOptional(pUniformName), pX, pY, pZ, pW);
 		}
 	}
@@ -281,7 +279,7 @@ public class ShaderProgram implements ShaderPrograms {
 	 */
 	public void setTextureOptional(final String pUniformName, final int pTexture) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgram.LOCATION_INVALID) {
+		if(location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform1i(location, pTexture);
 		}
 	}

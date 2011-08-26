@@ -42,7 +42,7 @@ public class FontFactory {
 		}
 	}
 
-	public static void reset() {
+	public static void onCreate() {
 		FontFactory.setAssetBasePath("");
 	}
 

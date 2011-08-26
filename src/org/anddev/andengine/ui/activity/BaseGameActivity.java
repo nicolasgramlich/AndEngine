@@ -6,9 +6,6 @@ import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.opengl.font.FontManager;
-import org.anddev.andengine.opengl.shader.ShaderProgramManager;
-import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
@@ -107,7 +104,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected void onDestroy() {
 		super.onDestroy();
 
-		this.mEngine.interruptUpdateThread();
+		this.mEngine.onDestroy();
 
 		this.onUnloadResources();
 	}
@@ -128,18 +125,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	public Engine getEngine() {
 		return this.mEngine;
-	}
-
-	public TextureManager getTextureManager() {
-		return this.mEngine.getTextureManager();
-	}
-
-	public FontManager getFontManager() {
-		return this.mEngine.getFontManager();
-	}
-
-	public ShaderProgramManager getShaderProgramManager() {
-		return this.mEngine.getShaderProgramManager();
 	}
 
 	public SoundManager getSoundManager() {

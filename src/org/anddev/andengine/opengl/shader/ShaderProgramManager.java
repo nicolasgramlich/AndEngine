@@ -18,17 +18,14 @@ public class ShaderProgramManager {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<ShaderProgram> mShaderProgramsManaged = new ArrayList<ShaderProgram>();
+	private static final ArrayList<ShaderProgram> sShaderProgramsManaged = new ArrayList<ShaderProgram>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ShaderProgramManager() {
-		this.loadShaderProgram(PositionColorTextureCoordinatesShaderProgram.getInstance());
-		this.loadShaderProgram(PositionTextureCoordinatesShaderProgram.getInstance());
-		this.loadShaderProgram(PositionColorShaderProgram.getInstance());
-		this.loadShaderProgram(PositionTextureCoordinatesTextureSelectShaderProgram.getInstance());
+	private ShaderProgramManager() {
+
 	}
 
 	// ===========================================================
@@ -43,25 +40,37 @@ public class ShaderProgramManager {
 	// Methods
 	// ===========================================================
 
-	public synchronized void clear() {
-		this.mShaderProgramsManaged.clear();
+	public static void onCreate() {
+		ShaderProgramManager.loadShaderProgram(PositionColorTextureCoordinatesShaderProgram.getInstance());
+		ShaderProgramManager.loadShaderProgram(PositionTextureCoordinatesShaderProgram.getInstance());
+		ShaderProgramManager.loadShaderProgram(PositionColorShaderProgram.getInstance());
+		ShaderProgramManager.loadShaderProgram(PositionTextureCoordinatesTextureSelectShaderProgram.getInstance());
 	}
 
-	public synchronized void loadShaderProgram(final ShaderProgram pShaderProgram) {
+	public static synchronized void onDestroy() {
+		final ArrayList<ShaderProgram> managedShaderPrograms = ShaderProgramManager.sShaderProgramsManaged;
+		for(int i = managedShaderPrograms.size() - 1; i >= 0; i--) {
+			managedShaderPrograms.get(i).setCompiled(false);
+		}
+
+		ShaderProgramManager.sShaderProgramsManaged.clear();
+	}
+
+	public static synchronized void loadShaderProgram(final ShaderProgram pShaderProgram) {
 		if(pShaderProgram == null) {
 			throw new IllegalArgumentException("pShaderProgram must not be null!");
 		}
-		this.mShaderProgramsManaged.add(pShaderProgram);
+		ShaderProgramManager.sShaderProgramsManaged.add(pShaderProgram);
 	}
 
-	public void loadShaderPrograms(final ShaderProgram ... pShaderPrograms) {
+	public static void loadShaderPrograms(final ShaderProgram ... pShaderPrograms) {
 		for(int i = pShaderPrograms.length - 1; i >= 0; i--) {
-			this.loadShaderProgram(pShaderPrograms[i]);
+			ShaderProgramManager.loadShaderProgram(pShaderPrograms[i]);
 		}
 	}
 
-	public synchronized void reloadShaderPrograms() {
-		final ArrayList<ShaderProgram> managedShaderPrograms = this.mShaderProgramsManaged;
+	public static synchronized void onReload() {
+		final ArrayList<ShaderProgram> managedShaderPrograms = ShaderProgramManager.sShaderProgramsManaged;
 		for(int i = managedShaderPrograms.size() - 1; i >= 0; i--) {
 			managedShaderPrograms.get(i).setCompiled(false);
 		}

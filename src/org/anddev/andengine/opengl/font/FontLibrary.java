@@ -44,12 +44,12 @@ public class FontLibrary extends Library<Font> {
 	// Methods
 	// ===========================================================
 
-	void loadFonts(final FontManager pFontManager) {
+	void loadFonts() {
 		final SparseArray<Font> items = this.mItems;
 		for(int i = items.size() - 1; i >= 0; i--) {
 			final Font font = items.valueAt(i);
 			if(font != null) {
-				pFontManager.loadFont(font);
+				FontManager.loadFont(font);
 			}
 		}
 	}

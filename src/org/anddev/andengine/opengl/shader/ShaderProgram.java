@@ -66,7 +66,7 @@ public class ShaderProgram implements ShaderPrograms {
 	}
 
 	public void setCompiled(final boolean pCompiled) {
-		this.mCompiled = false;
+		this.mCompiled = pCompiled;
 	}
 
 	public int getAttributeLocation(final String pAttributeName) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -19,11 +19,15 @@ public class FontManager {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Font> mFontsManaged = new ArrayList<Font>();
+	private static final ArrayList<Font> sFontsManaged = new ArrayList<Font>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private FontManager() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -37,29 +41,38 @@ public class FontManager {
 	// Methods
 	// ===========================================================
 
-	public synchronized void clear() {
-		this.mFontsManaged.clear();
+	public static void onCreate() {
+
 	}
 
-	public synchronized void loadFont(final Font pFont) {
+	public static synchronized void onDestroy() {
+		final ArrayList<Font> managedFonts = FontManager.sFontsManaged;
+		for(int i = managedFonts.size() - 1; i >= 0; i--) {
+			managedFonts.get(i).reloadLetters();
+		}
+
+		FontManager.sFontsManaged.clear();
+	}
+
+	public static synchronized void loadFont(final Font pFont) {
 		if(pFont == null) {
 			throw new IllegalArgumentException("pFont must not be null!");
 		}
-		this.mFontsManaged.add(pFont);
+		FontManager.sFontsManaged.add(pFont);
 	}
 
-	public synchronized void loadFonts(final FontLibrary pFontLibrary) {
-		pFontLibrary.loadFonts(this);
+	public static synchronized void loadFonts(final FontLibrary pFontLibrary) {
+		pFontLibrary.loadFonts();
 	}
 
-	public void loadFonts(final Font ... pFonts) {
+	public static void loadFonts(final Font ... pFonts) {
 		for(int i = pFonts.length - 1; i >= 0; i--) {
-			this.loadFont(pFonts[i]);
+			FontManager.loadFont(pFonts[i]);
 		}
 	}
 
-	public synchronized void updateFonts() {
-		final ArrayList<Font> fonts = this.mFontsManaged;
+	public static synchronized void updateFonts() {
+		final ArrayList<Font> fonts = FontManager.sFontsManaged;
 		final int fontCount = fonts.size();
 		if(fontCount > 0){
 			for(int i = fontCount - 1; i >= 0; i--){
@@ -68,10 +81,10 @@ public class FontManager {
 		}
 	}
 
-	public synchronized void reloadFonts() {
-		final ArrayList<Font> managedFonts = this.mFontsManaged;
+	public static synchronized void onReload() {
+		final ArrayList<Font> managedFonts = FontManager.sFontsManaged;
 		for(int i = managedFonts.size() - 1; i >= 0; i--) {
-			managedFonts.get(i).reload();
+			managedFonts.get(i).reloadLetters();
 		}
 	}
 

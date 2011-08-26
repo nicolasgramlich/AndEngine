@@ -87,10 +87,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private SoundManager mSoundManager;
 	private MusicManager mMusicManager;
-	private final TextureManager mTextureManager = new TextureManager();
-	private final VertexBufferObjectManager mBufferObjectManager = new VertexBufferObjectManager();
-	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager();
-	private final FontManager mFontManager = new FontManager();
 
 	protected Scene mScene;
 
@@ -118,11 +114,13 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public Engine(final EngineOptions pEngineOptions) {
 		BitmapTextureAtlasTextureRegionFactory.reset();
-		SoundFactory.reset();
-		MusicFactory.reset();
-		FontFactory.reset();
-
-		VertexBufferObjectManager.setActiveInstance(this.mBufferObjectManager);
+		SoundFactory.onCreate();
+		MusicFactory.onCreate();
+		FontFactory.onCreate();
+		VertexBufferObjectManager.onCreate();
+		TextureManager.onCreate();
+		FontManager.onCreate();
+		ShaderProgramManager.onCreate();
 
 		this.mEngineOptions = pEngineOptions;
 		this.setTouchController(new SingleTouchControler());
@@ -231,18 +229,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		} else {
 			throw new IllegalStateException("To enable the MusicManager, check the EngineOptions!");
 		}
-	}
-
-	public TextureManager getTextureManager() {
-		return this.mTextureManager;
-	}
-
-	public FontManager getFontManager() {
-		return this.mFontManager;
-	}
-
-	public ShaderProgramManager getShaderProgramManager() {
-		return this.mShaderProgramManager;
 	}
 
 	public void clearUpdateHandlers() {
@@ -422,17 +408,22 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mUpdateThreadRunnableHandler.postRunnable(pRunnable);
 	}
 
-	public void interruptUpdateThread(){
+	public void onDestroy() {
+		VertexBufferObjectManager.onDestroy();
+		TextureManager.onDestroy();
+		FontManager.onDestroy();
+		ShaderProgramManager.onDestroy();
+
 		this.mUpdateThread.interrupt();
 	}
 
 	public void onResume() {
 		// TODO GLState.reset(pGL); ?
-		this.mTextureManager.reloadTextures();
-		this.mFontManager.reloadFonts();
-		this.mShaderProgramManager.reloadShaderPrograms();
-		VertexBufferObjectManager.setActiveInstance(this.mBufferObjectManager);
-		this.mBufferObjectManager.reloadBufferObjects();
+
+		TextureManager.onReload();
+		FontManager.onReload();
+		ShaderProgramManager.onReload();
+		VertexBufferObjectManager.onReload();
 	}
 
 	public void onPause() {
@@ -503,9 +494,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		threadLocker.waitUntilCanDraw();
 
-		this.mTextureManager.updateTextures();
-		this.mFontManager.updateFonts();
-		this.mBufferObjectManager.updateBufferObjects();
+		TextureManager.updateTextures();
+		FontManager.updateFonts();
+		VertexBufferObjectManager.updateBufferObjects();
 
 		this.onDrawScene();
 

@@ -110,7 +110,7 @@ public class Font {
 	// Methods
 	// ===========================================================
 
-	public synchronized void reload() {
+	public synchronized void reloadLetters() {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
 

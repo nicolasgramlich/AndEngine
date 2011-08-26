@@ -45,7 +45,7 @@ public class MusicFactory {
 		}
 	}
 
-	public static void reset() {
+	public static void onCreate() {
 		MusicFactory.setAssetBasePath("");
 	}
 

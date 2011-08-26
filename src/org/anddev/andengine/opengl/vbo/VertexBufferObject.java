@@ -156,11 +156,11 @@ public class VertexBufferObject {
 	}
 
 	public void loadToActiveBufferObjectManager() {
-		VertexBufferObjectManager.getActiveInstance().loadBufferObject(this);
+		VertexBufferObjectManager.loadBufferObject(this);
 	}
 
 	public void unloadFromActiveBufferObjectManager() {
-		VertexBufferObjectManager.getActiveInstance().unloadBufferObject(this);
+		VertexBufferObjectManager.unloadBufferObject(this);
 	}
 
 	public void loadToHardware() {

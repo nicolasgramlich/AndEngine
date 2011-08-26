@@ -7,7 +7,7 @@ import java.util.HashSet;
 import org.anddev.andengine.util.Debug;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -22,16 +22,20 @@ public class TextureManager {
 	// Fields
 	// ===========================================================
 
-	private final HashSet<ITexture> mTexturesManaged = new HashSet<ITexture>();
+	private static final HashSet<ITexture> sTexturesManaged = new HashSet<ITexture>();
 
-	private final ArrayList<ITexture> mTexturesLoaded = new ArrayList<ITexture>();
+	private static final ArrayList<ITexture> sTexturesLoaded = new ArrayList<ITexture>();
 
-	private final ArrayList<ITexture> mTexturesToBeLoaded = new ArrayList<ITexture>();
-	private final ArrayList<ITexture> mTexturesToBeUnloaded = new ArrayList<ITexture>();
+	private static final ArrayList<ITexture> sTexturesToBeLoaded = new ArrayList<ITexture>();
+	private static final ArrayList<ITexture> sTexturesToBeUnloaded = new ArrayList<ITexture>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private TextureManager() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -45,24 +49,33 @@ public class TextureManager {
 	// Methods
 	// ===========================================================
 
-	protected synchronized void clear() {
-		this.mTexturesToBeLoaded.clear();
-		this.mTexturesLoaded.clear();
-		this.mTexturesManaged.clear();
+	public static void onCreate() {
+
+	}
+
+	public static synchronized void onDestroy() {
+		final HashSet<ITexture> managedTextures = TextureManager.sTexturesManaged;
+		for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
+			texture.setLoadedToHardware(false);
+		}
+
+		TextureManager.sTexturesToBeLoaded.clear();
+		TextureManager.sTexturesLoaded.clear();
+		TextureManager.sTexturesManaged.clear();
 	}
 
 	/**
 	 * @param pTexture the {@link ITexture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then).
 	 * @return <code>true</code> when the {@link ITexture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
-	public synchronized boolean loadTexture(final ITexture pTexture) {
-		if(this.mTexturesManaged.contains(pTexture)) {
+	public static synchronized boolean loadTexture(final ITexture pTexture) {
+		if(TextureManager.sTexturesManaged.contains(pTexture)) {
 			/* Just make sure it doesn't get deleted. */
-			this.mTexturesToBeUnloaded.remove(pTexture);
+			TextureManager.sTexturesToBeUnloaded.remove(pTexture);
 			return false;
 		} else {
-			this.mTexturesManaged.add(pTexture);
-			this.mTexturesToBeLoaded.add(pTexture);
+			TextureManager.sTexturesManaged.add(pTexture);
+			TextureManager.sTexturesToBeLoaded.add(pTexture);
 			return true;
 		}
 	}
@@ -71,14 +84,14 @@ public class TextureManager {
 	 * @param pTexture the {@link ITexture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then).
 	 * @return <code>true</code> when the {@link ITexture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
-	public synchronized boolean unloadTexture(final ITexture pTexture) {
-		if(this.mTexturesManaged.contains(pTexture)) {
+	public static synchronized boolean unloadTexture(final ITexture pTexture) {
+		if(TextureManager.sTexturesManaged.contains(pTexture)) {
 			/* If the Texture is loaded, unload it.
 			 * If the Texture is about to be loaded, stop it from being loaded. */
-			if(this.mTexturesLoaded.contains(pTexture)){
-				this.mTexturesToBeUnloaded.add(pTexture);
-			} else if(this.mTexturesToBeLoaded.remove(pTexture)){
-				this.mTexturesManaged.remove(pTexture);
+			if(TextureManager.sTexturesLoaded.contains(pTexture)){
+				TextureManager.sTexturesToBeUnloaded.add(pTexture);
+			} else if(TextureManager.sTexturesToBeLoaded.remove(pTexture)){
+				TextureManager.sTexturesManaged.remove(pTexture);
 			}
 			return true;
 		} else {
@@ -86,36 +99,36 @@ public class TextureManager {
 		}
 	}
 
-	public void loadTextures(final ITexture ... pTextures) {
+	public static void loadTextures(final ITexture ... pTextures) {
 		for(int i = pTextures.length - 1; i >= 0; i--) {
-			this.loadTexture(pTextures[i]);
+			TextureManager.loadTexture(pTextures[i]);
 		}
 	}
 
-	public void unloadTextures(final ITexture ... pTextures) {
+	public static void unloadTextures(final ITexture ... pTextures) {
 		for(int i = pTextures.length - 1; i >= 0; i--) {
-			this.unloadTexture(pTextures[i]);
+			TextureManager.unloadTexture(pTextures[i]);
 		}
 	}
 
-	public synchronized void reloadTextures() {
-		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
+	public static synchronized void onReload() {
+		final HashSet<ITexture> managedTextures = TextureManager.sTexturesManaged;
 		for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
 			texture.setLoadedToHardware(false);
 		}
 
-		this.mTexturesToBeLoaded.addAll(this.mTexturesLoaded); // TODO Check if addAll uses iterator internally!
-		this.mTexturesLoaded.clear();
+		TextureManager.sTexturesToBeLoaded.addAll(TextureManager.sTexturesLoaded); // TODO Check if addAll uses iterator internally!
+		TextureManager.sTexturesLoaded.clear();
 
-		this.mTexturesManaged.removeAll(this.mTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
-		this.mTexturesToBeUnloaded.clear();
+		TextureManager.sTexturesManaged.removeAll(TextureManager.sTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
+		TextureManager.sTexturesToBeUnloaded.clear();
 	}
 
-	public synchronized void updateTextures() {
-		final HashSet<ITexture> texturesManaged = this.mTexturesManaged;
-		final ArrayList<ITexture> texturesLoaded = this.mTexturesLoaded;
-		final ArrayList<ITexture> texturesToBeLoaded = this.mTexturesToBeLoaded;
-		final ArrayList<ITexture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
+	public static synchronized void updateTextures() {
+		final HashSet<ITexture> texturesManaged = TextureManager.sTexturesManaged;
+		final ArrayList<ITexture> texturesLoaded = TextureManager.sTexturesLoaded;
+		final ArrayList<ITexture> texturesToBeLoaded = TextureManager.sTexturesToBeLoaded;
+		final ArrayList<ITexture> texturesToBeUnloaded = TextureManager.sTexturesToBeUnloaded;
 
 		/* First reload Textures that need to be updated. */
 		final int textursLoadedCount = texturesLoaded.size();
@@ -126,7 +139,7 @@ public class TextureManager {
 				if(textureToBeReloaded.isUpdateOnHardwareNeeded()){
 					try {
 						textureToBeReloaded.reloadToHardware();
-					} catch(IOException e) {
+					} catch(final IOException e) {
 						Debug.e(e);
 					}
 				}
@@ -142,7 +155,7 @@ public class TextureManager {
 				if(!textureToBeLoaded.isLoadedToHardware()){
 					try {
 						textureToBeLoaded.loadToHardware();
-					} catch(IOException e) {
+					} catch(final IOException e) {
 						Debug.e(e);
 					}
 				}

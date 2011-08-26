@@ -151,8 +151,8 @@ public abstract class PVRTexture extends Texture {
 			currentPixelDataOffset += currentPixelDataSize;
 
 			/* Prepare next mipmap level. */
-			width = Math.max(width >> 1, 1);
-			height = Math.max(height >> 1, 1);
+			width = Math.max(width / 2, 1);
+			height = Math.max(height / 2, 1);
 
 			mipmapLevel++;
 		}

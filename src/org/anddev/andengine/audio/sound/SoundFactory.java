@@ -42,7 +42,7 @@ public class SoundFactory {
 		}
 	}
 
-	public static void reset() {
+	public static void onCreate() {
 		SoundFactory.setAssetBasePath("");
 	}
 

@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.texture;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.anddev.andengine.util.Debug;
@@ -23,6 +24,7 @@ public class TextureManager {
 	// ===========================================================
 
 	private static final HashSet<ITexture> sTexturesManaged = new HashSet<ITexture>();
+	private static final HashMap<String, ITexture> sTexturesMapped = new HashMap<String, ITexture>();
 
 	private static final ArrayList<ITexture> sTexturesLoaded = new ArrayList<ITexture>();
 
@@ -62,6 +64,26 @@ public class TextureManager {
 		TextureManager.sTexturesToBeLoaded.clear();
 		TextureManager.sTexturesLoaded.clear();
 		TextureManager.sTexturesManaged.clear();
+		TextureManager.sTexturesMapped.clear();
+	}
+
+	public static boolean hasMappedTexture(final String pID) {
+		return TextureManager.sTexturesMapped.containsKey(pID);
+	}
+
+	public static ITexture getMappedTexture(final String pID) {
+		return TextureManager.sTexturesMapped.get(pID);
+	}
+
+	public static void addMappedTexture(final String pID, final ITexture pTexture) throws IllegalArgumentException {
+		if(TextureManager.sTexturesMapped.containsKey(pID)) {
+			throw new IllegalArgumentException("Collision for pID: '" + pID + "'.");
+		}
+		TextureManager.sTexturesMapped.put(pID, pTexture);
+	}
+
+	public static ITexture removedMappedTexture(final String pID) {
+		return TextureManager.sTexturesMapped.remove(pID);
 	}
 
 	/**

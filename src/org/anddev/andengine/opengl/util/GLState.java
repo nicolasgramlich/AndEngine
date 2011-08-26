@@ -254,6 +254,10 @@ public class GLState {
 		}
 	}
 
+	public static void resetGLMatrixStacks() {
+		GLState.sGLMatrixStacks.reset();
+	}
+
 	public static void switchToModelViewMatrix() {
 		GLState.sGLMatrixStacks.setMatrixMode(MatrixMode.MODELVIEW);
 	}

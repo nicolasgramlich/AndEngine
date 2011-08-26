@@ -56,7 +56,7 @@ public class GLMatrixStack {
 	// ===========================================================
 
 	public void glLoadIdentity() {
-		Matrix.setIdentityM(this.mValues, this.mTop);
+		Matrix.setIdentityM(this.mValues, this.mTop); // TODO Sometimes the 
 	}
 
 	public void setToResult(final GLMatrixStack pGLMatrixA, final GLMatrixStack pGLMatrixB) {

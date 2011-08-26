@@ -45,6 +45,7 @@ public class ShaderProgramManager {
 		ShaderProgramManager.loadShaderProgram(PositionTextureCoordinatesShaderProgram.getInstance());
 		ShaderProgramManager.loadShaderProgram(PositionColorShaderProgram.getInstance());
 		ShaderProgramManager.loadShaderProgram(PositionTextureCoordinatesTextureSelectShaderProgram.getInstance());
+		ShaderProgramManager.loadShaderProgram(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.getInstance());
 	}
 
 	public static synchronized void onDestroy() {

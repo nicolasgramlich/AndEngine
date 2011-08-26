@@ -2,7 +2,7 @@ package org.anddev.andengine.opengl.shader;
 
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.util.GLHelper;
+import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
@@ -85,7 +85,7 @@ public class PositionTextureCoordinatesShaderProgram extends ShaderProgram {
 
 		super.bind(pVertexBufferObjectAttributes);
 
-		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLHelper.getModelViewProjectionMatrix(), 0);
+		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionMatrix(), 0);
 		GLES20.glUniform1i(PositionTextureCoordinatesShaderProgram.sUniformTexture0Location, 0);
 	}
 

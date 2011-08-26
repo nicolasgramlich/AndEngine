@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.util.constants.TimeConstants;
 import org.anddev.andengine.util.math.MathUtils;
 

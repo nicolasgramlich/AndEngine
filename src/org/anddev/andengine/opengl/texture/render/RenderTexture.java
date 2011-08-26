@@ -15,6 +15,9 @@ import android.opengl.GLES20;
 
 /**
  * Currently a {@link RenderTexture} can only be created during runtime, i.e. inside of the draw loop on the GL-Thread.
+ * TODO This might become a problem when trying to 'reload' it.
+ *
+ * TODO When GL Context is lost, mFrameBufferObjectID and mPreviousFrameBufferObjectID are invalid!
  *
  * (c) Zynga 2011
  *

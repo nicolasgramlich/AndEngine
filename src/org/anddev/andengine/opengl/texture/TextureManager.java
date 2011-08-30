@@ -1,11 +1,15 @@
 package org.anddev.andengine.opengl.texture;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.anddev.andengine.util.Debug;
+
+import android.content.res.AssetManager;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -202,6 +206,23 @@ public class TextureManager {
 		/* Finally invoke the GC if anything has changed. */
 		if(texturesToBeLoadedCount > 0 || texturesToBeUnloadedCount > 0){
 			System.gc();
+		}
+	}
+
+	public static ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath) throws IOException {
+		if(TextureManager.hasMappedTexture(pID)) {
+			return TextureManager.getMappedTexture(pID);
+		} else {
+			final ITexture texture = new BitmapTexture() {
+				@Override
+				protected InputStream onGetInputStream() throws IOException {
+					return pAssetManager.open(pAssetPath);
+				}
+			};
+			TextureManager.loadTexture(texture);
+			TextureManager.addMappedTexture(pID, texture);
+			
+			return texture;
 		}
 	}
 

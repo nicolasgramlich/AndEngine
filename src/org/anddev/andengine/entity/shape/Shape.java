@@ -30,7 +30,7 @@ public abstract class Shape extends Entity implements IShape {
 	protected boolean mBlendingEnabled = false;
 	protected boolean mCullingEnabled = false;
 
-	protected Mesh mMesh;
+	protected final Mesh mMesh;
 	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================
@@ -139,9 +139,11 @@ public abstract class Shape extends Entity implements IShape {
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		if(vertexBufferObject.isManaged()) {
-			vertexBufferObject.unloadFromActiveBufferObjectManager();
+		if(this.mMesh != null) {
+			final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+			if(vertexBufferObject.isManaged()) {
+				vertexBufferObject.unloadFromActiveBufferObjectManager();
+			}
 		}
 	}
 

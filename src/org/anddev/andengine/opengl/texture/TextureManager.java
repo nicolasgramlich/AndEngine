@@ -55,7 +55,7 @@ public class TextureManager {
 	// Methods
 	// ===========================================================
 
-	public static void onCreate() {
+	public static synchronized void onCreate() {
 
 	}
 
@@ -71,22 +71,22 @@ public class TextureManager {
 		TextureManager.sTexturesMapped.clear();
 	}
 
-	public static boolean hasMappedTexture(final String pID) {
+	public static synchronized boolean hasMappedTexture(final String pID) {
 		return TextureManager.sTexturesMapped.containsKey(pID);
 	}
 
-	public static ITexture getMappedTexture(final String pID) {
+	public static synchronized ITexture getMappedTexture(final String pID) {
 		return TextureManager.sTexturesMapped.get(pID);
 	}
 
-	public static void addMappedTexture(final String pID, final ITexture pTexture) throws IllegalArgumentException {
+	public static synchronized void addMappedTexture(final String pID, final ITexture pTexture) throws IllegalArgumentException {
 		if(TextureManager.sTexturesMapped.containsKey(pID)) {
 			throw new IllegalArgumentException("Collision for pID: '" + pID + "'.");
 		}
 		TextureManager.sTexturesMapped.put(pID, pTexture);
 	}
 
-	public static ITexture removedMappedTexture(final String pID) {
+	public static synchronized ITexture removedMappedTexture(final String pID) {
 		return TextureManager.sTexturesMapped.remove(pID);
 	}
 
@@ -209,7 +209,7 @@ public class TextureManager {
 		}
 	}
 
-	public static ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath) throws IOException {
+	public static synchronized ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath) throws IOException {
 		if(TextureManager.hasMappedTexture(pID)) {
 			return TextureManager.getMappedTexture(pID);
 		} else {

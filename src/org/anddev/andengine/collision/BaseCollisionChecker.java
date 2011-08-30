@@ -1,7 +1,7 @@
 package org.anddev.andengine.collision;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -33,10 +33,17 @@ public class BaseCollisionChecker {
 	// ===========================================================
 
 	public static boolean checkAxisAlignedRectangleCollision(final float pLeftA, final float pTopA, final float pRightA, final float pBottomA, final float pLeftB, final float pTopB, final float pRightB, final float pBottomB) {
-		return (pLeftA < pRightB &&
+		return pLeftA < pRightB &&
 				pLeftB < pRightA &&
 				pTopA < pBottomB &&
-				pTopB < pBottomA);
+				pTopB < pBottomA;
+	}
+
+	public static boolean checkAxisAlignedRectangleContains(final float pLeft, final float pTop, final float pRight, final float pBottom, final float pX, final float pY) {
+		return pX > pLeft &&
+				pX < pRight &&
+				pY > pTop &&
+				pY < pBottom;
 	}
 
 	/**

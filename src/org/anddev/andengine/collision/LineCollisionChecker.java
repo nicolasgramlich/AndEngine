@@ -17,6 +17,8 @@ public class LineCollisionChecker extends ShapeCollisionChecker {
 	// Constants
 	// ===========================================================
 
+	public static final int LINE_VERTEX_COUNT = 2;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================

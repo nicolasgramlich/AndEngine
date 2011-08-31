@@ -185,7 +185,14 @@ public class ShaderProgram implements ShaderProgramConstants {
 
 		for(int i = 0; i < numUniforms; i++) {
 			GLES20.glGetActiveUniform(this.mProgramID, i, ShaderProgram.NAME_CONTAINER_SIZE, ShaderProgram.LENGTH_CONTAINER, 0, ShaderProgram.SIZE_CONTAINER, 0, ShaderProgram.TYPE_CONTAINER, 0, ShaderProgram.NAME_CONTAINER, 0);
-			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, ShaderProgram.LENGTH_CONTAINER[0]);
+			int length = ShaderProgram.LENGTH_CONTAINER[0];
+			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
+			if(length == 0) {
+				while(length < NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
+					 length++;
+				}
+			}
+			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
 			final int location = GLES20.glGetUniformLocation(this.mProgramID, name);
 			this.mUniformLocations.put(name, location);
 		}
@@ -204,7 +211,14 @@ public class ShaderProgram implements ShaderProgramConstants {
 
 		for(int i = 0; i < numAttributes; i++) {
 			GLES20.glGetActiveAttrib(this.mProgramID, i, ShaderProgram.NAME_CONTAINER_SIZE, ShaderProgram.LENGTH_CONTAINER, 0, ShaderProgram.SIZE_CONTAINER, 0, ShaderProgram.TYPE_CONTAINER, 0, ShaderProgram.NAME_CONTAINER, 0);
-			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, ShaderProgram.LENGTH_CONTAINER[0]);
+			int length = ShaderProgram.LENGTH_CONTAINER[0];
+			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
+			if(length == 0) {
+				while(length < NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
+					 length++;
+				}
+			}
+			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
 			final int location = GLES20.glGetAttribLocation(this.mProgramID, name);
 			this.mAttributeLocations.put(name, location);
 		}

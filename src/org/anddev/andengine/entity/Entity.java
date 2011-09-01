@@ -385,6 +385,8 @@ public class Entity implements IEntity {
 	@Override
 	public void setColor(Color pColor) {
 		this.mColor.set(pColor);
+
+		this.onUpdateColor();
 	}
 
 	/**

@@ -153,9 +153,10 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLState.enableBlend();
 			GLState.enableTextures();
 
-			GLState.enableCulling();
-			GLES20.glFrontFace(GLES20.GL_CCW);
-			GLES20.glCullFace(GLES20.GL_BACK);
+			/* Enabling culling doesn't really make sense, because triangles are never drawn 'backwards' on purpose. */
+//			GLState.enableCulling();
+//			GLES20.glFrontFace(GLES20.GL_CCW);
+//			GLES20.glCullFace(GLES20.GL_BACK);
 
 			GLState.enableExtensions(this.mEngine.getEngineOptions().getRenderOptions());
 		}

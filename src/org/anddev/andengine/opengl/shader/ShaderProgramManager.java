@@ -40,7 +40,7 @@ public class ShaderProgramManager {
 	// Methods
 	// ===========================================================
 
-	public static void onCreate() {
+	public synchronized static void onCreate() {
 		ShaderProgramManager.loadShaderProgram(PositionColorTextureCoordinatesShaderProgram.getInstance());
 		ShaderProgramManager.loadShaderProgram(PositionTextureCoordinatesShaderProgram.getInstance());
 		ShaderProgramManager.loadShaderProgram(PositionColorShaderProgram.getInstance());

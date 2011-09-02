@@ -17,7 +17,7 @@ import android.opengl.GLES20;
  * Currently a {@link RenderTexture} can only be created during runtime, i.e. inside of the draw loop on the GL-Thread.
  * TODO This might become a problem when trying to 'reload' it.
  *
- * TODO When GL Context is lost, mFrameBufferObjectID and mPreviousFrameBufferObjectID are invalid!
+ * TODO When GL Context is lost, mFramebufferObjectID and mPreviousFramebufferObjectID are invalid!
  *
  * (c) Zynga 2011
  *
@@ -28,8 +28,6 @@ public class RenderTexture extends Texture {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final int[] FRAMEBUFFEROBJECTID_CONTAINER = new int[1];
 
 	private static final int[] VIEWPORT_CONTAINER = new int[4];
 
@@ -45,8 +43,8 @@ public class RenderTexture extends Texture {
 	private final int mWidth;
 	private final int mHeight;
 	private final PixelFormat mPixelFormat;
-	private final int mFrameBufferObjectID;
-	private int mPreviousFrameBufferObjectID;
+	private int mFramebufferObjectID;
+	private int mPreviousFramebufferObjectID;
 	private int mPreviousViewPortX;
 	private int mPreviousViewPortY;
 	private int mPreviousViewPortWidth;
@@ -70,26 +68,6 @@ public class RenderTexture extends Texture {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mPixelFormat = pPixelFormat;
-
-		this.savePreviousFrameBufferObjectID();
-
-		try{
-			this.loadToHardware();
-		} catch(final IOException e) {
-			/* Can not happen. */
-		}
-
-		/* Generate FBO. */
-		GLES20.glGenFramebuffers(1, RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER, 0);
-		this.mFrameBufferObjectID = RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER[0];
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFrameBufferObjectID);
-
-		/* Attach texture to FBO. */
-		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTextureID, 0);
-
-		GLState.checkFrameBufferStatus();
-
-		this.restorePreviousFrameBufferObject();
 	}
 
 	// ===========================================================
@@ -121,6 +99,27 @@ public class RenderTexture extends Texture {
 	// Methods
 	// ===========================================================
 
+	public void init() {
+		this.savePreviousFramebufferObjectID();
+
+		try{
+			this.loadToHardware();
+		} catch(final IOException e) {
+			/* Can not happen. */
+		}
+
+		/* Generate FBO. */
+		this.mFramebufferObjectID = GLState.generateFramebuffer();
+		GLState.bindFramebuffer(this.mFramebufferObjectID);
+
+		/* Attach texture to FBO. */
+		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTextureID, 0);
+
+		GLState.checkFramebufferStatus();
+
+		this.restorePreviousFramebufferObjectID();
+	}
+
 	public void begin() {
 		this.savePreviousViewport();
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
@@ -130,8 +129,8 @@ public class RenderTexture extends Texture {
 
 		GLState.glOrthof(0, this.mWidth, this.mHeight, 0, -1, 1);
 
-		this.savePreviousFrameBufferObjectID();
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFrameBufferObjectID);
+		this.savePreviousFramebufferObjectID();
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFramebufferObjectID);
 
 		GLState.switchToModelViewMatrix();
 		GLState.glPushMatrix();
@@ -141,7 +140,7 @@ public class RenderTexture extends Texture {
 	public void end() {
 		GLState.glPopMatrix();
 
-		this.restorePreviousFrameBufferObject();
+		this.restorePreviousFramebufferObjectID();
 
 		GLState.switchToProjectionMatrix();
 		GLState.glPopMatrix();
@@ -151,13 +150,18 @@ public class RenderTexture extends Texture {
 		GLState.switchToModelViewMatrix();
 	}
 
-	private void savePreviousFrameBufferObjectID() {
-		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER, 0);
-		this.mPreviousFrameBufferObjectID = RenderTexture.FRAMEBUFFEROBJECTID_CONTAINER[0];
+	public void destroy() {
+		this.unloadFromHardware();
+
+		GLState.deleteFramebuffer(this.mFramebufferObjectID);
 	}
 
-	private void restorePreviousFrameBufferObject() {
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mPreviousFrameBufferObjectID);
+	private void savePreviousFramebufferObjectID() {
+		this.mPreviousFramebufferObjectID = GLState.getActiveFramebuffer();
+	}
+
+	private void restorePreviousFramebufferObjectID() {
+		GLState.bindFramebuffer(this.mPreviousFramebufferObjectID);
 	}
 
 	private void savePreviousViewport() {

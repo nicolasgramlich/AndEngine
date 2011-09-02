@@ -36,6 +36,7 @@ public class GLState {
 	private static int sCurrentHardwareBufferID = -1;
 	private static int sCurrentShaderProgramID = -1;
 	private static int sCurrentHardwareTextureID = -1;
+	private static int sCurrentHardwareFramebufferID = -1;
 
 	private static int sCurrentSourceBlendMode = -1;
 	private static int sCurrentDestinationBlendMode = -1;
@@ -60,6 +61,7 @@ public class GLState {
 		GLState.sCurrentHardwareBufferID = -1;
 		GLState.sCurrentShaderProgramID = -1;
 		GLState.sCurrentHardwareTextureID = -1;
+		GLState.sCurrentHardwareFramebufferID = -1;
 
 		GLState.sCurrentSourceBlendMode = -1;
 		GLState.sCurrentDestinationBlendMode = -1;
@@ -166,22 +168,6 @@ public class GLState {
 		}
 	}
 
-	public static void bindBuffer(final int pHardwareBufferID) {
-		/* Reduce unnecessary buffer switching calls. */
-		if(GLState.sCurrentHardwareBufferID != pHardwareBufferID) {
-			GLState.sCurrentHardwareBufferID = pHardwareBufferID;
-			GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, pHardwareBufferID);
-		}
-	}
-
-	public static void deleteBuffer(final int pHardwareBufferID) {
-		if(GLState.sCurrentHardwareBufferID == pHardwareBufferID) {
-			GLState.sCurrentHardwareBufferID = -1;
-		}
-		GLState.HARDWAREID_CONTAINER[0] = pHardwareBufferID;
-		GLES20.glDeleteBuffers(1, GLState.HARDWAREID_CONTAINER, 0);
-	}
-
 	public static int generateBuffer() {
 		GLES20.glGenBuffers(1, GLState.HARDWAREID_CONTAINER, 0);
 		return GLState.HARDWAREID_CONTAINER[0];
@@ -198,8 +184,55 @@ public class GLState {
 		return hardwareBufferID;
 	}
 
+	public static void bindBuffer(final int pHardwareBufferID) {
+		if(GLState.sCurrentHardwareBufferID != pHardwareBufferID) {
+			GLState.sCurrentHardwareBufferID = pHardwareBufferID;
+			GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, pHardwareBufferID);
+		}
+	}
+
+	public static void deleteBuffer(final int pHardwareBufferID) {
+		if(GLState.sCurrentHardwareBufferID == pHardwareBufferID) {
+			GLState.sCurrentHardwareBufferID = -1;
+		}
+		GLState.HARDWAREID_CONTAINER[0] = pHardwareBufferID;
+		GLES20.glDeleteBuffers(1, GLState.HARDWAREID_CONTAINER, 0);
+	}
+
+	public static int generateFramebuffer() {
+		GLES20.glGenFramebuffers(1, GLState.HARDWAREID_CONTAINER, 0);
+		return GLState.HARDWAREID_CONTAINER[0];
+	}
+
+	public static void bindFramebuffer(final int pFramebufferID) {
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, pFramebufferID);
+	}
+
+	public static int getFramebufferStatus() {
+		return GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER);
+	}
+
+	public static void checkFramebufferStatus() {
+		final int status = GLState.getFramebufferStatus();
+		if(status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
+			throw new GLException(status);
+		}
+	}
+
+	public static int getActiveFramebuffer() {
+		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, GLState.HARDWAREID_CONTAINER, 0);
+		return GLState.HARDWAREID_CONTAINER[0];
+	}
+
+	public static void deleteFramebuffer(final int pHardwareFramebufferID) {
+		if(GLState.sCurrentHardwareFramebufferID == pHardwareFramebufferID) {
+			GLState.sCurrentHardwareFramebufferID = -1;
+		}
+		GLState.HARDWAREID_CONTAINER[0] = pHardwareFramebufferID;
+		GLES20.glDeleteFramebuffers(1, GLState.HARDWAREID_CONTAINER, 0);
+	}
+
 	public static void useProgram(final int pShaderProgramID) {
-		/* Reduce unnecessary shader switching calls. */
 		if(GLState.sCurrentShaderProgramID != pShaderProgramID) {
 			GLState.sCurrentShaderProgramID = pShaderProgramID;
 			GLES20.glUseProgram(pShaderProgramID);
@@ -224,7 +257,6 @@ public class GLState {
 	 * @param pHardwareTextureID
 	 */
 	public static void bindTexture(final int pHardwareTextureID) {
-		/* Reduce unnecessary texture switching calls. */
 		if(GLState.sCurrentHardwareTextureID != pHardwareTextureID) {
 			GLState.sCurrentHardwareTextureID = pHardwareTextureID;
 			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, pHardwareTextureID);
@@ -351,24 +383,13 @@ public class GLState {
 
 	public static void checkGLError() throws GLException { // TODO Use more often!
 		final int err = GLES20.glGetError();
-		if (err != GLES20.GL_NO_ERROR) {
+		if(err != GLES20.GL_NO_ERROR) {
 			throw new GLException(err);
 		}
 	}
 
 	public static void clearGLError() {
 		GLES20.glGetError();
-	}
-
-	public static int getFrameBufferStatus() {
-		return GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER);
-	}
-
-	public static void checkFrameBufferStatus() {
-		final int status = GLState.getFrameBufferStatus();
-		if (status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
-			throw new GLException(status);
-		}
 	}
 
 	// ===========================================================

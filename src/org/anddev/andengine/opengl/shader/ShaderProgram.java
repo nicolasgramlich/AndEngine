@@ -171,7 +171,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 
 		GLES20.glGetShaderiv(shaderID, GLES20.GL_COMPILE_STATUS, ShaderProgram.HARDWAREID_CONTAINER, 0);
 		if(ShaderProgram.HARDWAREID_CONTAINER[0] == 0) {
-			throw new ShaderProgramCompileException(GLES20.glGetShaderInfoLog(shaderID));
+			throw new ShaderProgramCompileException(GLES20.glGetShaderInfoLog(shaderID), pSource);
 		}
 		return shaderID;
 	}

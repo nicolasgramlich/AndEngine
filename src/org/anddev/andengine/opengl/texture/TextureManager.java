@@ -210,10 +210,14 @@ public class TextureManager {
 	}
 
 	public static synchronized ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath) throws IOException {
+		return TextureManager.getTexture(pID, pAssetManager, pAssetPath, TextureOptions.DEFAULT);
+	}
+
+	public static synchronized ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath, final TextureOptions pTextureOptions) throws IOException {
 		if(TextureManager.hasMappedTexture(pID)) {
 			return TextureManager.getMappedTexture(pID);
 		} else {
-			final ITexture texture = new BitmapTexture() {
+			final ITexture texture = new BitmapTexture(pTextureOptions) {
 				@Override
 				protected InputStream onGetInputStream() throws IOException {
 					return pAssetManager.open(pAssetPath);

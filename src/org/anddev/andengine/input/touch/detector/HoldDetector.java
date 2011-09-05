@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 /**
  * Note: Needs to be registered as an {@link IUpdateHandler} to the {@link Engine} or {@link Scene} to work properly.
  * 
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -45,10 +45,13 @@ public class HoldDetector extends BaseDetector implements IUpdateHandler {
 	private float mHoldX;
 	private float mHoldY;
 
-	private boolean mMaximumDistanceExceeded = false;
+	private boolean mMaximumDistanceExceeded;
 
-	private boolean mTriggerOnHold = false;
-	private boolean mTriggerOnHoldFinished = false;
+	private boolean mTriggering;
+	private boolean mOnHoldStartedTriggered;
+	private boolean mTriggerOnHoldStarted;
+	private boolean mTriggerOnHold;
+	private boolean mTriggerOnHoldFinished;
 
 	private final TimerHandler mTimerHandler;
 
@@ -57,7 +60,7 @@ public class HoldDetector extends BaseDetector implements IUpdateHandler {
 	// ===========================================================
 
 	public HoldDetector(final IHoldDetectorListener pClickDetectorListener) {
-		this(TRIGGER_HOLD_MINIMUM_MILLISECONDS_DEFAULT, TRIGGER_HOLD_MAXIMUM_DISTANCE_DEFAULT, TIME_BETWEEN_UPDATES_DEFAULT, pClickDetectorListener);
+		this(HoldDetector.TRIGGER_HOLD_MINIMUM_MILLISECONDS_DEFAULT, HoldDetector.TRIGGER_HOLD_MAXIMUM_DISTANCE_DEFAULT, HoldDetector.TIME_BETWEEN_UPDATES_DEFAULT, pClickDetectorListener);
 	}
 
 	public HoldDetector(final long pTriggerHoldMinimumMilliseconds, final float pTriggerHoldMaximumDistance, final float pTimeBetweenUpdates, final IHoldDetectorListener pClickDetectorListener) {
@@ -94,7 +97,7 @@ public class HoldDetector extends BaseDetector implements IUpdateHandler {
 	}
 
 	public boolean isHolding() {
-		return this.mTriggerOnHold;
+		return this.mTriggering;
 	}
 
 	// ===========================================================
@@ -109,6 +112,14 @@ public class HoldDetector extends BaseDetector implements IUpdateHandler {
 	@Override
 	public void reset() {
 		this.mTimerHandler.reset();
+
+		this.mTriggering = false;
+		this.mTriggerOnHoldFinished = false;
+		this.mTriggerOnHold = false;
+		this.mTriggerOnHoldStarted = false;
+		this.mOnHoldStartedTriggered = false;
+		this.mMaximumDistanceExceeded = false;
+		this.mDownTimeMilliseconds = Long.MIN_VALUE;
 	}
 
 	@Override
@@ -129,12 +140,23 @@ public class HoldDetector extends BaseDetector implements IUpdateHandler {
 			{
 				final long currentTimeMilliseconds = motionEvent.getEventTime();
 
-				final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
-				this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
-				if(this.mTriggerOnHold || !this.mMaximumDistanceExceeded) {
-					final long holdTimeMilliseconds = currentTimeMilliseconds - this.mDownTimeMilliseconds;
-					if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
+				final long holdTimeMilliseconds = currentTimeMilliseconds - this.mDownTimeMilliseconds;
+				if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
+					if(this.mTriggering) {
 						this.mTriggerOnHold = true;
+					} else {
+						final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
+						this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
+
+						if(!this.mMaximumDistanceExceeded) {
+							this.mTriggering = true;
+
+							if(!this.mOnHoldStartedTriggered) {
+								this.mTriggerOnHoldStarted = true;
+							} else {
+								this.mTriggerOnHold = true;
+							}
+						}
 					}
 				}
 				return true;
@@ -144,12 +166,17 @@ public class HoldDetector extends BaseDetector implements IUpdateHandler {
 			{
 				final long upTimeMilliseconds = motionEvent.getEventTime();
 
-				final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
-				this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
-				if(this.mTriggerOnHold || !this.mMaximumDistanceExceeded) {
-					final long holdTimeMilliseconds = upTimeMilliseconds - this.mDownTimeMilliseconds;
-					if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
+				final long holdTimeMilliseconds = upTimeMilliseconds - this.mDownTimeMilliseconds;
+				if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
+					if(this.mTriggering) {
 						this.mTriggerOnHoldFinished = true;
+					} else {
+						final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
+						this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
+
+						if(!this.mMaximumDistanceExceeded) {
+							this.mTriggerOnHoldFinished = true;
+						}
 					}
 				}
 				return true;
@@ -164,12 +191,23 @@ public class HoldDetector extends BaseDetector implements IUpdateHandler {
 	// ===========================================================
 
 	protected void fireListener() {
+		if(this.mTriggerOnHoldStarted) {
+			this.mTriggerOnHoldStarted = false;
+			this.mOnHoldStartedTriggered = true;
+			this.mHoldDetectorListener.onHoldStarted(this, this.mHoldX, this.mHoldY);
+		}
+
+		if(this.mTriggerOnHold) {
+			this.mHoldDetectorListener.onHold(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
+		}
+
 		if(this.mTriggerOnHoldFinished) {
-			this.mHoldDetectorListener.onHoldFinished(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
+			this.mTriggering = false;
 			this.mTriggerOnHoldFinished = false;
 			this.mTriggerOnHold = false;
-		} else if(this.mTriggerOnHold) {
-			this.mHoldDetectorListener.onHold(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
+			this.mTriggerOnHoldStarted = false;
+			this.mOnHoldStartedTriggered = false;
+			this.mHoldDetectorListener.onHoldFinished(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
 		}
 	}
 
@@ -186,6 +224,7 @@ public class HoldDetector extends BaseDetector implements IUpdateHandler {
 		// Methods
 		// ===========================================================
 
+		public void onHoldStarted(final HoldDetector pHoldDetector, final float pHoldX, final float pHoldY);
 		public void onHold(final HoldDetector pHoldDetector, final long pHoldTimeMilliseconds, final float pHoldX, final float pHoldY);
 		public void onHoldFinished(final HoldDetector pHoldDetector, final long pHoldTimeMilliseconds, final float pHoldX, final float pHoldY);
 	}

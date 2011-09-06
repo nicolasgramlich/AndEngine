@@ -29,8 +29,8 @@ public class EngineOptions {
 
 	private boolean mNeedsSound;
 	private boolean mNeedsMusic;
-	private WakeLockOptions mWakeLockOptions = WakeLockOptions.SCREEN_BRIGHT;
-	private int mUpdateThreadPriority = android.os.Process.THREAD_PRIORITY_DEFAULT;;
+	private WakeLockOptions mWakeLockOptions = WakeLockOptions.SCREEN_ON;
+	private int mUpdateThreadPriority = android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 	// ===========================================================
 	// Constructors

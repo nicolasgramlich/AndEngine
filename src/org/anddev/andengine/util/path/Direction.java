@@ -1,7 +1,7 @@
 package org.anddev.andengine.util.path;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -12,6 +12,7 @@ public enum Direction {
 	// Elements
 	// ===========================================================
 
+	// TODO Diagonals!
 	UP(0, -1), DOWN(0, 1), LEFT(-1, 0), RIGHT(1, 0);
 
 	// ===========================================================

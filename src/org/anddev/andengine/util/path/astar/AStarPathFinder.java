@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.anddev.andengine.util.path.IPathFinder;
-import org.anddev.andengine.util.path.ITiledMap;
+import org.anddev.andengine.util.path.IPathFinderMap;
 import org.anddev.andengine.util.path.Path;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -26,11 +26,11 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	private final ArrayList<Node> mVisitedNodes = new ArrayList<Node>();
 	private final ArrayList<Node> mOpenNodes = new ArrayList<Node>();
 
-	private final ITiledMap<T> mTiledMap;
+	private final IPathFinderMap<T> mPathFinderMap;
 	private final int mMaxSearchDepth;
 
 	private final Node[][] mNodes;
-	private final boolean mAllowDiagonalMovement;
+	private final boolean mAllowDiagonal;
 
 	private final IAStarHeuristic<T> mAStarHeuristic;
 
@@ -38,21 +38,26 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// Constructors
 	// ===========================================================
 
-	public AStarPathFinder(final ITiledMap<T> pTiledMap, final int pMaxSearchDepth, final boolean pAllowDiagonalMovement) {
-		this(pTiledMap, pMaxSearchDepth, pAllowDiagonalMovement, new EuclideanHeuristic<T>());
+	public AStarPathFinder(final IPathFinderMap<T> pPathFinderMap, final int pMaxSearchDepth, final boolean pAllowDiagonal) {
+		this(pPathFinderMap, pMaxSearchDepth, pAllowDiagonal, new EuclideanHeuristic<T>());
 	}
 
-	public AStarPathFinder(final ITiledMap<T> pTiledMap, final int pMaxSearchDepth, final boolean pAllowDiagonalMovement, final IAStarHeuristic<T> pAStarHeuristic) {
+	public AStarPathFinder(final IPathFinderMap<T> pPathFinderMap, final int pMaxSearchDepth, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic) {
 		this.mAStarHeuristic = pAStarHeuristic;
-		this.mTiledMap = pTiledMap;
+		this.mPathFinderMap = pPathFinderMap;
 		this.mMaxSearchDepth = pMaxSearchDepth;
-		this.mAllowDiagonalMovement = pAllowDiagonalMovement;
+		this.mAllowDiagonal = pAllowDiagonal;
 
-		this.mNodes = new Node[pTiledMap.getTileRows()][pTiledMap.getTileColumns()];
+		final int pathFinderMapXMin = pPathFinderMap.getXMin();
+		final int pathFinderMapXMax = pPathFinderMap.getXMax();
+		final int pathFinderMapYMin = pPathFinderMap.getYMin();
+		final int pathFinderMapYMax = pPathFinderMap.getYMax();
+
+		this.mNodes = new Node[pPathFinderMap.getHeight()][pPathFinderMap.getWidth()];
 		final Node[][] nodes = this.mNodes;
-		for(int x = pTiledMap.getTileColumns() - 1; x >= 0; x--) {
-			for(int y = pTiledMap.getTileRows() - 1; y >= 0; y--) {
-				nodes[y][x] = new Node(x, y);
+		for(int y = pathFinderMapYMin; y <= pathFinderMapYMax; y++) {
+			for(int x = pathFinderMapXMin; x <= pathFinderMapXMax; x++) {
+				nodes[y - pathFinderMapYMin][x - pathFinderMapXMin] = new Node(x, y);
 			}
 		}
 	}
@@ -66,22 +71,25 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// ===========================================================
 
 	@Override
-	public Path findPath(final T pEntity, final int pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) {
-		final ITiledMap<T> tiledMap = this.mTiledMap;
-		if(tiledMap.isTileBlocked(pEntity, pToTileColumn, pToTileRow)) {
+	public synchronized Path findPath(final T pEntity, final float pMaxCost, final int pFromX, final int pFromY, final int pToX, final int pToY, final IPathFinderListener<T> pPathFinderListener) {
+		final IPathFinderMap<T> pathFinderMap = this.mPathFinderMap;
+		if(pathFinderMap.isBlocked(pToX, pToY, pEntity)) {
 			return null;
 		}
+
+		final int pathFinderMapXMin = pathFinderMap.getXMin();
+		final int pathFinderMapYMin = pathFinderMap.getYMin();
 
 		/* Drag some fields to local variables. */
 		final ArrayList<Node> openNodes = this.mOpenNodes;
 		final ArrayList<Node> visitedNodes = this.mVisitedNodes;
 
 		final Node[][] nodes = this.mNodes;
-		final Node fromNode = nodes[pFromTileRow][pFromTileColumn];
-		final Node toNode = nodes[pToTileRow][pToTileColumn];
+		final Node fromNode = nodes[pFromY - pathFinderMapYMin][pFromX - pathFinderMapXMin];
+		final Node toNode = nodes[pToY - pathFinderMapYMin][pToX - pathFinderMapXMin];
 
 		final IAStarHeuristic<T> aStarHeuristic = this.mAStarHeuristic;
-		final boolean allowDiagonalMovement = this.mAllowDiagonalMovement;
+		final boolean allowDiagonalMovement = this.mAllowDiagonal;
 		final int maxSearchDepth = this.mMaxSearchDepth;
 
 		/* Initialize algorithm. */
@@ -104,7 +112,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 
 			visitedNodes.add(current);
 
-			/* Loop over all neighbors of this tile. */
+			/* Loop over all neighbors of this position. */
 			for(int dX = -1; dX <= 1; dX++) {
 				for(int dY = -1; dY <= 1; dY++) {
 					if((dX == 0) && (dY == 0)) {
@@ -117,13 +125,16 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 						}
 					}
 
-					final int neighborTileColumn = dX + current.mTileColumn;
-					final int neighborTileRow = dY + current.mTileRow;
+					final int neighborX = dX + current.mX;
+					final int neighborY = dY + current.mY;
 
-					if(!this.isTileBlocked(pEntity, pFromTileColumn, pFromTileRow, neighborTileColumn, neighborTileRow)) {
-						final float neighborCost = current.mCost + tiledMap.getStepCost(pEntity, current.mTileColumn, current.mTileRow, neighborTileColumn, neighborTileRow);
-						final Node neighbor = nodes[neighborTileRow][neighborTileColumn];
-						tiledMap.onTileVisitedByPathFinder(neighborTileColumn, neighborTileRow);
+					if(!this.isBlocked(pEntity, pFromX, pFromY, neighborX, neighborY)) {
+						final float neighborCost = current.mCost + pathFinderMap.getCost(current.mX, current.mY, neighborX, neighborY, pEntity);
+						final Node neighbor = nodes[neighborY - pathFinderMapYMin][neighborX - pathFinderMapXMin];
+
+						if(pPathFinderListener != null) {
+							pPathFinderListener.onVisited(pEntity, neighborX, neighborY);
+						}
 
 						/* Re-evaluate if there is a better path. */
 						if(neighborCost < neighbor.mCost) {
@@ -139,7 +150,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 						if(!openNodes.contains(neighbor) && !(visitedNodes.contains(neighbor))) {
 							neighbor.mCost = neighborCost;
 							if(neighbor.mCost <= pMaxCost) {
-								neighbor.mExpectedRestCost = aStarHeuristic.getExpectedRestCost(tiledMap, pEntity, neighborTileColumn, neighborTileRow, pToTileColumn, pToTileRow);
+								neighbor.mExpectedRestCost = aStarHeuristic.getExpectedRestCost(pathFinderMap, pEntity, neighborX, neighborY, pToX, pToY);
 								currentDepth = Math.max(currentDepth, neighbor.setParent(current));
 								openNodes.add(neighbor);
 
@@ -160,12 +171,12 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 
 		/* Traceback path. */
 		final Path path = new Path();
-		Node tmp = nodes[pToTileRow][pToTileColumn];
+		Node tmp = nodes[pToY - pathFinderMapYMin][pToX - pathFinderMapXMin];
 		while(tmp != fromNode) {
-			path.prepend(tmp.mTileColumn, tmp.mTileRow);
+			path.prepend(tmp.mX, tmp.mY);
 			tmp = tmp.mParent;
 		}
-		path.prepend(pFromTileColumn, pFromTileRow);
+		path.prepend(pFromX, pFromY);
 
 		return path;
 	}
@@ -174,14 +185,15 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// Methods
 	// ===========================================================
 
-	protected boolean isTileBlocked(final T pEntity, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) {
-		if((pToTileColumn < 0) || (pToTileRow < 0) || (pToTileColumn >= this.mTiledMap.getTileColumns()) || (pToTileRow >= this.mTiledMap.getTileRows())) {
+	protected boolean isBlocked(final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY) {
+		final IPathFinderMap<T> pathFinderMap = this.mPathFinderMap;
+		if((pToX < pathFinderMap.getXMin()) || (pToY < pathFinderMap.getYMin()) || (pToX > pathFinderMap.getXMax()) || (pToY > pathFinderMap.getYMax())) {
 			return true;
-		} else if((pFromTileColumn == pToTileColumn) && (pFromTileRow == pToTileRow)) {
+		} else if((pFromX == pToX) && (pFromY == pToY)) {
 			return true;
 		}
 
-		return this.mTiledMap.isTileBlocked(pEntity, pToTileColumn, pToTileRow);
+		return pathFinderMap.isBlocked(pToX, pToY, pEntity);
 	}
 
 	// ===========================================================
@@ -200,8 +212,8 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		Node mParent;
 		int mDepth;
 
-		final int mTileColumn;
-		final int mTileRow;
+		final int mX;
+		final int mY;
 
 		float mCost;
 		float mExpectedRestCost;
@@ -210,9 +222,9 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		// Constructors
 		// ===========================================================
 
-		public Node(final int pTileColumn, final int pTileRow) {
-			this.mTileColumn = pTileColumn;
-			this.mTileRow = pTileRow;
+		public Node(final int pX, final int pY) {
+			this.mX = pX;
+			this.mY = pY;
 		}
 
 		// ===========================================================

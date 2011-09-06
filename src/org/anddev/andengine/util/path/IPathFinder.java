@@ -16,5 +16,21 @@ public interface IPathFinder<T> {
 	// Fields
 	// ===========================================================
 
-	public Path findPath(final T pEntity, final int pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow);
+	public Path findPath(final T pEntity, final float pMaxCost, final int pFromX, final int pFromY, final int pToX, final int pToY, final IPathFinderListener<T> pPathFinderListener);
+
+    // ===========================================================
+    // Inner and Anonymous Classes
+    // ===========================================================
+	
+	public interface IPathFinderListener<T> {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+	
+		// ===========================================================
+		// Fields
+		// ===========================================================
+	
+		public void onVisited(final T pEntity, final int pX, final int pY);
+	}
 }

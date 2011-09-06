@@ -1,6 +1,6 @@
 package org.anddev.andengine.util.path.astar;
 
-import org.anddev.andengine.util.path.ITiledMap;
+import org.anddev.andengine.util.path.IPathFinderMap;
 
 import android.util.FloatMath;
 
@@ -33,9 +33,9 @@ public class EuclideanHeuristic<T> implements IAStarHeuristic<T> {
 	// ===========================================================
 
 	@Override
-	public float getExpectedRestCost(final ITiledMap<T> pTileMap, final T pEntity, final int pTileFromX, final int pTileFromY, final int pTileToX, final int pTileToY) {
-		final float dX = pTileToX - pTileFromX;
-		final float dY = pTileToY - pTileFromY;
+	public float getExpectedRestCost(final IPathFinderMap<T> pPathFinderMap, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY) {
+		final float dX = pToX - pFromX;
+		final float dY = pToY - pFromY;
 
 		return FloatMath.sqrt(dX * dX + dY * dY);
 	}

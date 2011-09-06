@@ -1,6 +1,6 @@
 package org.anddev.andengine.util.path.astar;
 
-import org.anddev.andengine.util.path.ITiledMap;
+import org.anddev.andengine.util.path.IPathFinderMap;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -31,8 +31,8 @@ public class ManhattanHeuristic<T> implements IAStarHeuristic<T> {
 	// ===========================================================
 
 	@Override
-	public float getExpectedRestCost(final ITiledMap<T> pTiledMap, final T pEntity, final int pTileFromX, final int pTileFromY, final int pTileToX, final int pTileToY) {
-		return Math.abs(pTileFromX - pTileToX) + Math.abs(pTileToX - pTileToY);
+	public float getExpectedRestCost(final IPathFinderMap<T> pPathFinderMap, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY) {
+		return Math.abs(pFromX - pToX) + Math.abs(pToX - pToY);
 	}
 
 	// ===========================================================

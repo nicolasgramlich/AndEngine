@@ -7,7 +7,7 @@ package org.anddev.andengine.util.path;
  * @author Nicolas Gramlich
  * @since 23:00:24 - 16.08.2010
  */
-public interface ITiledMap<T> {
+public interface IPathFinderMap<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,12 +16,15 @@ public interface ITiledMap<T> {
 	// Fields
 	// ===========================================================
 
-	public int getTileColumns();
-	public int getTileRows();
+	public int getXMin();
+	public int getXMax();
+	public int getYMin();
+	public int getYMax();
 
-	public void onTileVisitedByPathFinder(final int pTileColumn, int pTileRow);
+	public int getWidth();
+	public int getHeight();
 
-	public boolean isTileBlocked(final T pEntity, final int pTileColumn, final int pTileRow);
+	public boolean isBlocked(final int pX, final int pY, final T pEntity);
 
-	public float getStepCost(final T pEntity, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow);
+	public float getCost(final int pFromX, final int pFromY, final int pToX, final int pToY, final T pEntity);
 }

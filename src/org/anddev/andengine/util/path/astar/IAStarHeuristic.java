@@ -1,6 +1,6 @@
 package org.anddev.andengine.util.path.astar;
 
-import org.anddev.andengine.util.path.ITiledMap;
+import org.anddev.andengine.util.path.IPathFinderMap;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -18,5 +18,5 @@ public interface IAStarHeuristic<T> {
 	// Fields
 	// ===========================================================
 
-	public float getExpectedRestCost(final ITiledMap<T> pTiledMap, final T pEntity, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow);
+	public float getExpectedRestCost(final IPathFinderMap<T> pPathFinderMap, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY);
 }

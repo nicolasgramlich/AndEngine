@@ -55,7 +55,7 @@ public abstract class SurfaceGestureDetector extends BaseDetector {
 	protected abstract boolean onSwipeRight();
 
 	@Override
-	protected void reset() {
+	public void reset() {
 
 	}
 

@@ -57,7 +57,7 @@ public class ClickDetector extends BaseDetector {
 	// ===========================================================
 
 	@Override
-	protected void reset() {
+	public void reset() {
 		this.mDownTimeMilliseconds = Long.MIN_VALUE;
 	}
 

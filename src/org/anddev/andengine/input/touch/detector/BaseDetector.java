@@ -42,7 +42,7 @@ public abstract class BaseDetector implements IOnSceneTouchListener {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void reset();
+	public abstract void reset();
 
 	protected abstract boolean onManagedTouchEvent(TouchEvent pSceneTouchEvent);
 

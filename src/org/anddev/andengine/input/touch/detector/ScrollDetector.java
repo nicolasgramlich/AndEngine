@@ -61,7 +61,7 @@ public class ScrollDetector extends BaseDetector {
 	// ===========================================================
 
 	@Override
-	protected void reset() {
+	public void reset() {
 		this.mLastX = 0;
 		this.mLastY = 0;
 		this.mTriggered = false;

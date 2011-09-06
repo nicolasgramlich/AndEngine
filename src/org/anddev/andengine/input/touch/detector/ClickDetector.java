@@ -5,7 +5,7 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import android.view.MotionEvent;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -32,7 +32,7 @@ public class ClickDetector extends BaseDetector {
 	// ===========================================================
 
 	public ClickDetector(final IClickDetectorListener pClickDetectorListener) {
-		this(TRIGGER_CLICK_MAXIMUM_MILLISECONDS_DEFAULT, pClickDetectorListener);
+		this(ClickDetector.TRIGGER_CLICK_MAXIMUM_MILLISECONDS_DEFAULT, pClickDetectorListener);
 	}
 
 	public ClickDetector(final long pTriggerClickMaximumMilliseconds, final IClickDetectorListener pClickDetectorListener) {
@@ -55,6 +55,11 @@ public class ClickDetector extends BaseDetector {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	protected void reset() {
+		this.mDownTimeMilliseconds = Long.MIN_VALUE;
+	}
 
 	@Override
 	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {

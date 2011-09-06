@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 
 /**
  * @author rkpost
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -32,7 +32,7 @@ public abstract class SurfaceGestureDetector extends BaseDetector {
 	// ===========================================================
 
 	public SurfaceGestureDetector() {
-		this(SWIPE_MIN_DISTANCE_DEFAULT);
+		this(SurfaceGestureDetector.SWIPE_MIN_DISTANCE_DEFAULT);
 	}
 
 	public SurfaceGestureDetector(final float pSwipeMinDistance) {
@@ -53,6 +53,11 @@ public abstract class SurfaceGestureDetector extends BaseDetector {
 	protected abstract boolean onSwipeDown();
 	protected abstract boolean onSwipeLeft();
 	protected abstract boolean onSwipeRight();
+
+	@Override
+	protected void reset() {
+
+	}
 
 	@Override
 	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {

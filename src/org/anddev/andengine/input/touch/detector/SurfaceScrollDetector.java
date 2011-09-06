@@ -3,7 +3,7 @@ package org.anddev.andengine.input.touch.detector;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich

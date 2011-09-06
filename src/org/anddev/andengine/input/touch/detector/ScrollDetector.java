@@ -5,7 +5,7 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import android.view.MotionEvent;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -36,7 +36,7 @@ public class ScrollDetector extends BaseDetector {
 	// ===========================================================
 
 	public ScrollDetector(final IScrollDetectorListener pScrollDetectorListener) {
-		this(TRIGGER_SCROLL_MINIMUM_DISTANCE_DEFAULT, pScrollDetectorListener);
+		this(ScrollDetector.TRIGGER_SCROLL_MINIMUM_DISTANCE_DEFAULT, pScrollDetectorListener);
 	}
 
 	public ScrollDetector(final float pTriggerScrollMinimumDistance, final IScrollDetectorListener pScrollDetectorListener) {
@@ -59,6 +59,13 @@ public class ScrollDetector extends BaseDetector {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	protected void reset() {
+		this.mLastX = 0;
+		this.mLastY = 0;
+		this.mTriggered = false;
+	}
 
 	@Override
 	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {

@@ -5,7 +5,7 @@ import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.input.touch.TouchEvent;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -41,6 +41,8 @@ public abstract class BaseDetector implements IOnSceneTouchListener {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	protected abstract void reset();
 
 	protected abstract boolean onManagedTouchEvent(TouchEvent pSceneTouchEvent);
 

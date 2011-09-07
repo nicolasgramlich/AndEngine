@@ -16,7 +16,7 @@ public class TouchOptions {
 	// Fields
 	// ===========================================================
 
-	private boolean mRunOnUpdateThread;
+	private boolean mRunOnUpdateThread = true;
 
 	// ===========================================================
 	// Constructors

@@ -108,7 +108,7 @@ public class GLMatrixStacks {
 	}
 
 	public float[] getModelViewProjectionGLMatrix() {
-		Matrix.multiplyMM(this.mModelViewProjectionGLMatrix, 0, this.mProjectionGLMatrixStack.mValues, this.mProjectionGLMatrixStack.mTop, this.mModelViewGLMatrixStack.mValues, this.mModelViewGLMatrixStack.mTop);
+		Matrix.multiplyMM(this.mModelViewProjectionGLMatrix, 0, this.mProjectionGLMatrixStack.mMatrixStack, this.mProjectionGLMatrixStack.mMatrixStackOffset, this.mModelViewGLMatrixStack.mMatrixStack, this.mModelViewGLMatrixStack.mMatrixStackOffset);
 		return this.mModelViewProjectionGLMatrix;
 	}
 

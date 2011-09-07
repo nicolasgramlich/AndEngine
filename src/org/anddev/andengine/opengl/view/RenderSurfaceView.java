@@ -164,6 +164,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
 			GLState.resetGLMatrixStacks();
+
 			if (this.mMultiSampling && RenderSurfaceView.this.mMultisampleConfigChooser.isCoverageMultiSampling()) {
 				final int GL_COVERAGE_BUFFER_BIT_NV = 0x8000;
 				GLES20.glClear(GL_COVERAGE_BUFFER_BIT_NV);

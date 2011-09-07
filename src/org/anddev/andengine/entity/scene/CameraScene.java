@@ -88,7 +88,6 @@ public class CameraScene extends Scene {
 	@Override
 	protected void onManagedDraw(final Camera pCamera) {
 		if(this.mCamera != null) {
-			GLState.switchToProjectionMatrix();
 			this.mCamera.onApplyCameraSceneMatrix();
 			{
 				GLState.switchToModelViewMatrix();

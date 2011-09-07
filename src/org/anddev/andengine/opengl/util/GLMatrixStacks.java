@@ -65,7 +65,7 @@ public class GLMatrixStacks {
 		this.setMatrixMode(MatrixMode.MODELVIEW);
 		this.mModelViewGLMatrixStack.reset();
 
-		this.setMatrixMode(MatrixMode.MODELVIEW);
+		this.setMatrixMode(MatrixMode.PROJECTION);
 		this.mProjectionGLMatrixStack.reset();
 	}
 

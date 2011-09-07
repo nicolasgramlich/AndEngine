@@ -97,7 +97,7 @@ public class GLMatrixStack {
 	}
 
 	public void glPopMatrix() {
-		if (this.mMatrixStackOffset - GLMatrixStack.GLMATRIX_SIZE < GLMatrixStack.GLMATRIXSTACKOFFSET_UNDERFLOW) {
+		if (this.mMatrixStackOffset - GLMatrixStack.GLMATRIX_SIZE <= GLMatrixStack.GLMATRIXSTACKOFFSET_UNDERFLOW) {
 			throw new GLMatrixStackUnderflowException();
 		}
 

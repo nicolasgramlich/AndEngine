@@ -72,14 +72,26 @@ public class TextureManager {
 	}
 
 	public static synchronized boolean hasMappedTexture(final String pID) {
+		if(pID == null) {
+			throw new IllegalArgumentException("pID must not be null!");
+		}
 		return TextureManager.sTexturesMapped.containsKey(pID);
 	}
 
 	public static synchronized ITexture getMappedTexture(final String pID) {
+		if(pID == null) {
+			throw new IllegalArgumentException("pID must not be null!");
+		}
 		return TextureManager.sTexturesMapped.get(pID);
 	}
 
 	public static synchronized void addMappedTexture(final String pID, final ITexture pTexture) throws IllegalArgumentException {
+		if(pID == null) {
+			throw new IllegalArgumentException("pID must not be null!");
+		}
+		if(pTexture == null) {
+			throw new IllegalArgumentException("pTexture must not be null!");
+		}
 		if(TextureManager.sTexturesMapped.containsKey(pID)) {
 			throw new IllegalArgumentException("Collision for pID: '" + pID + "'.");
 		}
@@ -87,6 +99,9 @@ public class TextureManager {
 	}
 
 	public static synchronized ITexture removedMappedTexture(final String pID) {
+		if(pID == null) {
+			throw new IllegalArgumentException("pID must not be null!");
+		}
 		return TextureManager.sTexturesMapped.remove(pID);
 	}
 
@@ -95,6 +110,9 @@ public class TextureManager {
 	 * @return <code>true</code> when the {@link ITexture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
 	public static synchronized boolean loadTexture(final ITexture pTexture) {
+		if(pTexture == null) {
+			throw new IllegalArgumentException("pTexture must not be null!");
+		}
 		if(TextureManager.sTexturesManaged.contains(pTexture)) {
 			/* Just make sure it doesn't get deleted. */
 			TextureManager.sTexturesToBeUnloaded.remove(pTexture);
@@ -111,6 +129,9 @@ public class TextureManager {
 	 * @return <code>true</code> when the {@link ITexture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
 	public static synchronized boolean unloadTexture(final ITexture pTexture) {
+		if(pTexture == null) {
+			throw new IllegalArgumentException("pTexture must not be null!");
+		}
 		if(TextureManager.sTexturesManaged.contains(pTexture)) {
 			/* If the Texture is loaded, unload it.
 			 * If the Texture is about to be loaded, stop it from being loaded. */

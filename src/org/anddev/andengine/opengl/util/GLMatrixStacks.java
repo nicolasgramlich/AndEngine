@@ -40,16 +40,18 @@ public class GLMatrixStacks {
 	// ===========================================================
 
 	public void setMatrixMode(final MatrixMode pMatrixMode) {
-		this.mMatrixMode = pMatrixMode;
-		switch(this.mMatrixMode) {
-			case PROJECTION:
-				this.mCurrentGLMatrixStack = this.mProjectionGLMatrixStack;
-				return;
-			case MODELVIEW:
-				this.mCurrentGLMatrixStack = this.mModelViewGLMatrixStack;
-				return;
-			default:
-				throw new IllegalArgumentException("Unexpected " + MatrixMode.class.getSimpleName() + ": '" + pMatrixMode + "'.");
+		if(pMatrixMode != this.mMatrixMode) {
+			this.mMatrixMode = pMatrixMode;
+			switch(this.mMatrixMode) {
+				case PROJECTION:
+					this.mCurrentGLMatrixStack = this.mProjectionGLMatrixStack;
+					return;
+				case MODELVIEW:
+					this.mCurrentGLMatrixStack = this.mModelViewGLMatrixStack;
+					return;
+				default:
+					throw new IllegalArgumentException("Unexpected " + MatrixMode.class.getSimpleName() + ": '" + pMatrixMode + "'.");
+			}
 		}
 	}
 

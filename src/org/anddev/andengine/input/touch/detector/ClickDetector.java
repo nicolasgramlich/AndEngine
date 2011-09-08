@@ -9,6 +9,7 @@ import android.view.MotionEvent;
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
+ * @author Greg Haynes
  * @since 14:29:59 - 16.08.2010
  */
 public class ClickDetector extends BaseDetector {
@@ -24,6 +25,8 @@ public class ClickDetector extends BaseDetector {
 
 	private long mTriggerClickMaximumMilliseconds;
 	private final IClickDetectorListener mClickDetectorListener;
+
+	private int mPointerID = TouchEvent.INVALID_POINTER_ID;
 
 	private long mDownTimeMilliseconds = Long.MIN_VALUE;
 
@@ -59,23 +62,30 @@ public class ClickDetector extends BaseDetector {
 	@Override
 	public void reset() {
 		this.mDownTimeMilliseconds = Long.MIN_VALUE;
+		this.mPointerID = TouchEvent.INVALID_POINTER_ID;
 	}
 
 	@Override
 	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {
 		switch(pSceneTouchEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				this.mDownTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getDownTime();
+				this.prepareClick(pSceneTouchEvent);
 				return true;
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
-				final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
+			    if(this.mPointerID != TouchEvent.INVALID_POINTER_ID && this.mPointerID == pSceneTouchEvent.getPointerID()) {
+    				final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
 
-				if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
-					this.mDownTimeMilliseconds = Long.MIN_VALUE;
-					this.mClickDetectorListener.onClick(this, pSceneTouchEvent);
-				}
-				return true;
+    				if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
+    					this.mDownTimeMilliseconds = Long.MIN_VALUE;
+    					this.mClickDetectorListener.onClick(this, pSceneTouchEvent);
+    				}
+
+    				this.mPointerID = TouchEvent.INVALID_POINTER_ID;
+    				return true;
+			    } else {
+			        return false;
+			    }
 			default:
 				return false;
 		}
@@ -84,6 +94,11 @@ public class ClickDetector extends BaseDetector {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	private void prepareClick(final TouchEvent pSceneTouchEvent) {
+		this.mDownTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getDownTime();
+		this.mPointerID = pSceneTouchEvent.getPointerID();
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

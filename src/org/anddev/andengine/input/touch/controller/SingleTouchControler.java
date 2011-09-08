@@ -35,8 +35,8 @@ public class SingleTouchControler extends BaseTouchController {
 	// ===========================================================
 
 	@Override
-	public boolean onHandleMotionEvent(final MotionEvent pMotionEvent) {
-		return this.fireTouchEvent(pMotionEvent.getX(), pMotionEvent.getY(), pMotionEvent.getAction(), 0, pMotionEvent);
+	public void onHandleMotionEvent(final MotionEvent pMotionEvent) {
+		this.fireTouchEvent(pMotionEvent.getX(), pMotionEvent.getY(), pMotionEvent.getAction(), 0, pMotionEvent);
 	}
 
 	// ===========================================================

@@ -9,6 +9,7 @@ import android.view.MotionEvent;
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
+ * @author Greg Haynes
  * @since 20:49:25 - 23.08.2010
  */
 public class HoldDetector extends BaseDetector {
@@ -27,6 +28,8 @@ public class HoldDetector extends BaseDetector {
 	protected float mTriggerHoldMaximumDistance;
 	protected final IHoldDetectorListener mHoldDetectorListener;
 
+	protected int mPointerID = TouchEvent.INVALID_POINTER_ID;
+
 	protected long mDownTimeMilliseconds = Long.MIN_VALUE;
 
 	protected float mDownX;
@@ -38,7 +41,6 @@ public class HoldDetector extends BaseDetector {
 	protected boolean mMaximumDistanceExceeded;
 
 	protected boolean mTriggering;
-	protected boolean mOnHoldStartedTriggered;
 
 	// ===========================================================
 	// Constructors
@@ -83,112 +85,128 @@ public class HoldDetector extends BaseDetector {
 	// ===========================================================
 
 	/**
-	 * When {@link HoldDetector#isHolding()} this method will call through to {@link IHoldDetectorListener#onHoldFinished(HoldDetector, TouchEvent, long, float, float)}, with the supplied {@link TouchEvent} being <code>null</code>.
+	 * When {@link HoldDetector#isHolding()} this method will call through to {@link IHoldDetectorListener#onHoldFinished(HoldDetector, long, int, float, float).
 	 */
 	@Override
 	public void reset() {
 		if(this.mTriggering) {
-			if(this.mHoldDetectorListener != null) {
-				this.mHoldDetectorListener.onHoldFinished(this, null, System.currentTimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
-			}
+			this.triggerOnHoldFinished(System.currentTimeMillis() - this.mDownTimeMilliseconds);
 		}
 
 		this.mTriggering = false;
-		this.mOnHoldStartedTriggered = false;
 		this.mMaximumDistanceExceeded = false;
 		this.mDownTimeMilliseconds = Long.MIN_VALUE;
+		this.mPointerID = TouchEvent.INVALID_POINTER_ID;
 	}
 
 	@Override
 	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {
 		final MotionEvent motionEvent = pSceneTouchEvent.getMotionEvent();
 
-		this.mHoldX = pSceneTouchEvent.getX();
-		this.mHoldY = pSceneTouchEvent.getY();
-
 		switch(pSceneTouchEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				this.mDownTimeMilliseconds = motionEvent.getDownTime();
-				this.mDownX = motionEvent.getX();
-				this.mDownY = motionEvent.getY();
-				this.mMaximumDistanceExceeded = false;
-				return true;
+				if(this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
+					this.prepareHold(pSceneTouchEvent);
+					return true;
+				} else {
+					return false;
+				}
 			case MotionEvent.ACTION_MOVE:
 			{
-				final long currentTimeMilliseconds = motionEvent.getEventTime();
+				if(this.mPointerID != TouchEvent.INVALID_POINTER_ID && this.mPointerID == pSceneTouchEvent.getPointerID()) {
+					this.mHoldX = pSceneTouchEvent.getX();
+					this.mHoldY = pSceneTouchEvent.getY();
 
-				final long holdTimeMilliseconds = currentTimeMilliseconds - this.mDownTimeMilliseconds;
-				if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
-					if(this.mTriggering) {
-						this.triggerOnHold(pSceneTouchEvent, holdTimeMilliseconds);
-					} else {
-						final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
-						this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
+					final long holdTimeMilliseconds = System.currentTimeMillis() - this.mDownTimeMilliseconds;
+					if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
+						if(this.mTriggering) {
+							this.triggerOnHold(holdTimeMilliseconds);
+						} else {
+							final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
+							this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
 
-						if(!this.mMaximumDistanceExceeded) {
-							this.mTriggering = true;
-
-							if(!this.mOnHoldStartedTriggered) {
-								this.triggerOnHoldStarted(pSceneTouchEvent);
-							} else {
-								this.triggerOnHold(pSceneTouchEvent, holdTimeMilliseconds);
+							if(!this.mMaximumDistanceExceeded) {
+								if(!this.mTriggering) {
+									this.triggerOnHoldStarted();
+								} else {
+									this.triggerOnHold(holdTimeMilliseconds);
+								}
 							}
 						}
 					}
+					return true;
+				} else {
+					return false;
 				}
-				return true;
 			}
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
 			{
-				final long upTimeMilliseconds = motionEvent.getEventTime();
+				if(this.mPointerID != TouchEvent.INVALID_POINTER_ID && this.mPointerID == pSceneTouchEvent.getPointerID()) {
+					this.mHoldX = pSceneTouchEvent.getX();
+					this.mHoldY = pSceneTouchEvent.getY();
 
-				final long holdTimeMilliseconds = upTimeMilliseconds - this.mDownTimeMilliseconds;
-				if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
-					if(this.mTriggering) {
-						this.triggerOnHoldFinished(pSceneTouchEvent, holdTimeMilliseconds);
-					} else {
-						final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
-						this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
+					final long holdTimeMilliseconds = System.currentTimeMillis() - this.mDownTimeMilliseconds;
+					if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
+						if(this.mTriggering) {
+							this.triggerOnHoldFinished(holdTimeMilliseconds);
+						} else {
+							final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
+							this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
 
-						if(!this.mMaximumDistanceExceeded) {
-							this.triggerOnHoldFinished(pSceneTouchEvent, holdTimeMilliseconds);
+							if(!this.mMaximumDistanceExceeded) {
+								this.triggerOnHoldFinished(holdTimeMilliseconds);
+							}
 						}
 					}
+
+					this.mPointerID = TouchEvent.INVALID_POINTER_ID;
+					return true;
+				} else {
+					return false;
 				}
-				return true;
 			}
 			default:
 				return false;
 		}
 	}
 
-	protected void triggerOnHoldStarted(final TouchEvent pSceneTouchEvent) {
-		this.mOnHoldStartedTriggered = true;
-
-		if(this.mHoldDetectorListener != null) {
-			this.mHoldDetectorListener.onHoldStarted(this, pSceneTouchEvent, this.mHoldX, this.mHoldY);
-		}
-	}
-
-	protected void triggerOnHold(final TouchEvent pSceneTouchEvent, final long pHoldTimeMilliseconds) {
-		if(this.mHoldDetectorListener != null) {
-			this.mHoldDetectorListener.onHold(this, pSceneTouchEvent, pHoldTimeMilliseconds, this.mHoldX, this.mHoldY);
-		}
-	}
-
-	protected void triggerOnHoldFinished(final TouchEvent pSceneTouchEvent, final long pHoldTimeMilliseconds) {
-		this.mTriggering = false;
-		this.mOnHoldStartedTriggered = false;
-
-		if(this.mHoldDetectorListener != null) {
-			this.mHoldDetectorListener.onHoldFinished(this, pSceneTouchEvent, pHoldTimeMilliseconds, this.mHoldX, this.mHoldY);
-		}
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected void prepareHold(final TouchEvent pSceneTouchEvent) {
+		final MotionEvent motionEvent = pSceneTouchEvent.getMotionEvent();
+		this.mDownTimeMilliseconds = System.currentTimeMillis();
+		this.mDownX = motionEvent.getX();
+		this.mDownY = motionEvent.getY();
+		this.mMaximumDistanceExceeded = false;
+		this.mPointerID = pSceneTouchEvent.getPointerID();
+		this.mHoldX = pSceneTouchEvent.getX();
+		this.mHoldY = pSceneTouchEvent.getY();
+	}
+
+	protected void triggerOnHoldStarted() {
+		this.mTriggering = true;
+
+		if(this.mHoldDetectorListener != null && this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+			this.mHoldDetectorListener.onHoldStarted(this, this.mPointerID, this.mHoldX, this.mHoldY);
+		}
+	}
+
+	protected void triggerOnHold(final long pHoldTimeMilliseconds) {
+		if(this.mHoldDetectorListener != null && this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+			this.mHoldDetectorListener.onHold(this, pHoldTimeMilliseconds, this.mPointerID, this.mHoldX, this.mHoldY);
+		}
+	}
+
+	protected void triggerOnHoldFinished(final long pHoldTimeMilliseconds) {
+		this.mTriggering = false;
+
+		if(this.mHoldDetectorListener != null && this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+			this.mHoldDetectorListener.onHoldFinished(this, pHoldTimeMilliseconds, this.mPointerID, this.mHoldX, this.mHoldY);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
@@ -203,8 +221,8 @@ public class HoldDetector extends BaseDetector {
 		// Methods
 		// ===========================================================
 
-		public void onHoldStarted(final HoldDetector pHoldDetector, final TouchEvent pSceneTouchEvent, final float pHoldX, final float pHoldY);
-		public void onHold(final HoldDetector pHoldDetector, final TouchEvent pSceneTouchEvent, final long pHoldTimeMilliseconds, final float pHoldX, final float pHoldY);
-		public void onHoldFinished(final HoldDetector pHoldDetector, final TouchEvent pSceneTouchEvent, final long pHoldTimeMilliseconds, final float pHoldX, final float pHoldY);
+		public void onHoldStarted(final HoldDetector pHoldDetector, final int pPointerID, final float pHoldX, final float pHoldY);
+		public void onHold(final HoldDetector pHoldDetector, final long pHoldTimeMilliseconds, final int pPointerID, final float pHoldX, final float pHoldY);
+		public void onHoldFinished(final HoldDetector pHoldDetector, final long pHoldTimeMilliseconds, final int pPointerID, final float pHoldX, final float pHoldY);
 	}
 }

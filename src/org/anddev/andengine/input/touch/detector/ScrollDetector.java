@@ -23,8 +23,9 @@ public class ScrollDetector extends BaseDetector {
 	// ===========================================================
 
 	private float mTriggerScrollMinimumDistance;
-
 	private final IScrollDetectorListener mScrollDetectorListener;
+	
+	private int mPointerID = TouchEvent.INVALID_POINTER_ID;
 
 	private boolean mTriggered;
 
@@ -65,6 +66,7 @@ public class ScrollDetector extends BaseDetector {
 		this.mLastX = 0;
 		this.mLastY = 0;
 		this.mTriggered = false;
+		this.mPointerID = TouchEvent.INVALID_POINTER_ID;
 	}
 
 	@Override
@@ -74,24 +76,34 @@ public class ScrollDetector extends BaseDetector {
 
 		switch(pSceneTouchEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				this.mLastX = touchX;
-				this.mLastY = touchY;
-				this.mTriggered = false;
+				this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
 				return true;
 			case MotionEvent.ACTION_MOVE:
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
-				final float distanceX = touchX - this.mLastX;
-				final float distanceY = touchY - this.mLastY;
+				if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+					this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
+					return true;
+				} else if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
+					final float distanceX = touchX - this.mLastX;
+					final float distanceY = touchY - this.mLastY;
 
-				final float triggerScrollMinimumDistance = this.mTriggerScrollMinimumDistance;
-				if(this.mTriggered || Math.abs(distanceX) > triggerScrollMinimumDistance || Math.abs(distanceY) > triggerScrollMinimumDistance) {
-					this.mScrollDetectorListener.onScroll(this, pSceneTouchEvent, distanceX, distanceY);
-					this.mLastX = touchX;
-					this.mLastY = touchY;
-					this.mTriggered = true;
+					final float triggerScrollMinimumDistance = this.mTriggerScrollMinimumDistance;
+					if(this.mTriggered || Math.abs(distanceX) > triggerScrollMinimumDistance || Math.abs(distanceY) > triggerScrollMinimumDistance) {
+						this.mScrollDetectorListener.onScroll(this, pSceneTouchEvent, distanceX, distanceY);
+						this.mLastX = touchX;
+						this.mLastY = touchY;
+						this.mTriggered = true;
+					}
+
+					if(pSceneTouchEvent.isActionCancel() || pSceneTouchEvent.isActionUp()) {
+						this.mPointerID = TouchEvent.INVALID_POINTER_ID;
+					}
+
+					return true;
+				} else {
+					return false;
 				}
-				return true;
 			default:
 				return false;
 		}
@@ -100,6 +112,13 @@ public class ScrollDetector extends BaseDetector {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected void prepareScroll(final int pPointerID, final float pTouchX, final float pTouchY) {
+		this.mLastX = pTouchX;
+		this.mLastY = pTouchY;
+		this.mTriggered = false;
+		this.mPointerID = pPointerID;
+	}
 
 	protected float getX(final TouchEvent pTouchEvent) {
 		return pTouchEvent.getX();

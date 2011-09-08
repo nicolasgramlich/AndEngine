@@ -24,7 +24,6 @@ public class EngineOptions {
 	private final IResolutionPolicy mResolutionPolicy;
 	private final Camera mCamera;
 
-	private final TouchOptions mTouchOptions = new TouchOptions();
 	private final RenderOptions mRenderOptions = new RenderOptions();
 
 	private boolean mNeedsSound;
@@ -46,10 +45,6 @@ public class EngineOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public TouchOptions getTouchOptions() {
-		return this.mTouchOptions;
-	}
 
 	public RenderOptions getRenderOptions() {
 		return this.mRenderOptions;

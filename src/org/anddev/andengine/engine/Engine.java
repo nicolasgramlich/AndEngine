@@ -203,7 +203,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public void setTouchController(final ITouchController pTouchController) {
 		this.mTouchController = pTouchController;
-		this.mTouchController.applyTouchOptions(this.mEngineOptions.getTouchOptions());
 		this.mTouchController.setTouchEventCallback(this);
 	}
 
@@ -349,7 +348,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	@Override
 	public boolean onTouch(final View pView, final MotionEvent pSurfaceMotionEvent) {
 		if(this.mRunning) {
-			final boolean handled = this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent);
+			this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent);
 			try {
 				/*
 				 * As a human cannot interact 1000x per second, we pause the
@@ -359,7 +358,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			} catch (final InterruptedException e) {
 				Debug.e(e);
 			}
-			return handled;
+			return true;
 		} else {
 			return false;
 		}

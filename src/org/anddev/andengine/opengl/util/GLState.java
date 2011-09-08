@@ -363,6 +363,19 @@ public class GLState {
 		return GLState.sModelViewProjectionGLMatrix;
 	}
 
+	public static void resetModelViewGLMatrixStack() {
+		GLState.sModelViewGLMatrixStack.reset();
+	}
+
+	public static void resetProjectionGLMatrixStack() {
+		GLState.sProjectionGLMatrixStack.reset();
+	}
+
+	public static void resetGLMatrixStacks() {
+		GLState.sModelViewGLMatrixStack.reset();
+		GLState.sProjectionGLMatrixStack.reset();
+	}
+
 	/**
 	 * <b>Note:</b> does not pre-multiply the alpha channel!</br>
 	 * Except that difference, same as: {@link GLUtils#texSubImage2D(int, int, int, int, Bitmap, int, int)}</br>

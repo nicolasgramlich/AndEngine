@@ -11,6 +11,7 @@ import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.util.GLMatrixStack.GLMatrixStackUnderflowException;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.IMatcher;
@@ -231,9 +232,9 @@ public class Scene extends Entity {
 
 			try {
 				super.onManagedDraw(pCamera);
-			} catch (Throwable t) {
+			} catch (GLMatrixStackUnderflowException t) {
 				Debug.e(this.toString(), null); // TODO Just here for debugging!
-				throw new RuntimeException(t);
+//				throw t;
 			}
 		}
 

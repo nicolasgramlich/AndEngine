@@ -647,6 +647,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 		return this.mMenuItem.unregisterUpdateHandlers(pUpdateHandlerMatcher);
 	}
 
+	@Override
+	public void toString(final StringBuilder pStringBuilder) {
+		this.mMenuItem.toString(pStringBuilder);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

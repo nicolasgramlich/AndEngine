@@ -233,6 +233,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setUserData(Object pUserData);
 	public Object getUserData();
 
+	public void toString(final StringBuilder pStringBuilder);
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

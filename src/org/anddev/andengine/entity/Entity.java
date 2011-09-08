@@ -929,6 +929,30 @@ public class Entity implements IEntity {
 		}
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder stringBuilder = new StringBuilder();
+		this.toString(stringBuilder);
+		return stringBuilder.toString();
+	}
+
+	@Override
+	public void toString(final StringBuilder pStringBuilder) {
+		pStringBuilder.append(this.getClass().getSimpleName());
+		
+		if(this.mChildren != null && this.mChildren.size() > 0) {
+			pStringBuilder.append(" [");
+			final ArrayList<IEntity> entities = this.mChildren;
+			for(int i = 0; i < entities.size(); i++) {
+				entities.get(i).toString(pStringBuilder);
+				if(i < entities.size() - 1) {
+					pStringBuilder.append(", ");
+				}
+			}
+			pStringBuilder.append("]");
+		}
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

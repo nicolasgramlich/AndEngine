@@ -11,7 +11,9 @@ import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.util.GLMatrixStack.GLMatrixStackUnderflowException;
 import org.anddev.andengine.opengl.util.GLState;
+import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.constants.Constants;
@@ -228,7 +230,12 @@ public class Scene extends Entity {
 			pCamera.onApplySceneMatrix();
 			GLState.setModelViewIdentityMatrix();
 
-			super.onManagedDraw(pCamera);
+			try {
+				super.onManagedDraw(pCamera);
+			} catch (GLMatrixStackUnderflowException e) {
+				Debug.e(this.toString(), null);
+				throw e;
+			}
 		}
 
 		if(childScene != null) {
@@ -392,7 +399,7 @@ public class Scene extends Entity {
 
 	@Override
 	public void setParent(final IEntity pEntity) {
-		//		super.setParent(pEntity);
+//		super.setParent(pEntity);
 	}
 
 	// ===========================================================

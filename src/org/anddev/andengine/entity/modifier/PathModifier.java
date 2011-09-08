@@ -4,6 +4,7 @@ import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.util.modifier.IModifier;
 import org.anddev.andengine.util.modifier.SequenceModifier;
 import org.anddev.andengine.util.modifier.SequenceModifier.ISubSequenceModifierListener;
+import org.anddev.andengine.util.modifier.ease.EaseLinear;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 import android.util.FloatMath;
@@ -35,7 +36,7 @@ public class PathModifier extends EntityModifier {
 	// ===========================================================
 
 	public PathModifier(final float pDuration, final Path pPath) {
-		this(pDuration, pPath, null, null, IEaseFunction.DEFAULT);
+		this(pDuration, pPath, null, null, EaseLinear.getInstance());
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IEaseFunction pEaseFunction) {
@@ -43,11 +44,11 @@ public class PathModifier extends EntityModifier {
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IEntityModifierListener pEntityModiferListener) {
-		this(pDuration, pPath, pEntityModiferListener, null, IEaseFunction.DEFAULT);
+		this(pDuration, pPath, pEntityModiferListener, null, EaseLinear.getInstance());
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IPathModifierListener pPathModifierListener) {
-		this(pDuration, pPath, null, pPathModifierListener, IEaseFunction.DEFAULT);
+		this(pDuration, pPath, null, pPathModifierListener, EaseLinear.getInstance());
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IPathModifierListener pPathModifierListener, final IEaseFunction pEaseFunction) {
@@ -59,7 +60,7 @@ public class PathModifier extends EntityModifier {
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IEntityModifierListener pEntityModiferListener, final IPathModifierListener pPathModifierListener) throws IllegalArgumentException {
-		this(pDuration, pPath, pEntityModiferListener, pPathModifierListener, IEaseFunction.DEFAULT);
+		this(pDuration, pPath, pEntityModiferListener, pPathModifierListener, EaseLinear.getInstance());
 	}
 
 	public PathModifier(final float pDuration, final Path pPath, final IEntityModifierListener pEntityModiferListener, final IPathModifierListener pPathModifierListener, final IEaseFunction pEaseFunction) throws IllegalArgumentException {

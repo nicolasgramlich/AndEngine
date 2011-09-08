@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.util.HorizontalAlign;
+import org.anddev.andengine.util.modifier.ease.EaseLinear;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -61,7 +62,7 @@ public abstract class BaseMenuAnimator implements IMenuAnimator {
 	}
 
 	public BaseMenuAnimator(final HorizontalAlign pHorizontalAlign, final float pMenuItemSpacing) {
-		this(pHorizontalAlign, pMenuItemSpacing, IEaseFunction.DEFAULT);
+		this(pHorizontalAlign, pMenuItemSpacing, EaseLinear.getInstance());
 	}
 
 	public BaseMenuAnimator(final HorizontalAlign pHorizontalAlign, final float pMenuItemSpacing, final IEaseFunction pEaseFunction) {

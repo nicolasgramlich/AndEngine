@@ -92,7 +92,7 @@ public abstract class PVRCCZTexture extends PVRTexture {
 		// Constants
 		// ===========================================================
 
-		public static final byte[] MAGIC_IDENTIFIER = {
+		static final byte[] MAGIC_IDENTIFIER = {
 			(byte)'C',
 			(byte)'C',
 			(byte)'Z',

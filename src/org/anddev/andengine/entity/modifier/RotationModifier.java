@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.ease.EaseLinear;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -24,7 +25,7 @@ public class RotationModifier extends SingleValueSpanEntityModifier {
 	// ===========================================================
 
 	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation) {
-		this(pDuration, pFromRotation, pToRotation, null, IEaseFunction.DEFAULT);
+		this(pDuration, pFromRotation, pToRotation, null, EaseLinear.getInstance());
 	}
 
 	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IEaseFunction pEaseFunction) {
@@ -32,7 +33,7 @@ public class RotationModifier extends SingleValueSpanEntityModifier {
 	}
 
 	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IEntityModifierListener pEntityModifierListener) {
-		super(pDuration, pFromRotation, pToRotation, pEntityModifierListener, IEaseFunction.DEFAULT);
+		super(pDuration, pFromRotation, pToRotation, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
 	public RotationModifier(final float pDuration, final float pFromRotation, final float pToRotation, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {

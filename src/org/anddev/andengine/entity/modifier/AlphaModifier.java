@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.ease.EaseLinear;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -24,7 +25,7 @@ public class AlphaModifier extends SingleValueSpanEntityModifier {
 	// ===========================================================
 
 	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha) {
-		this(pDuration, pFromAlpha, pToAlpha, null, IEaseFunction.DEFAULT);
+		this(pDuration, pFromAlpha, pToAlpha, null, EaseLinear.getInstance());
 	}
 
 	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IEaseFunction pEaseFunction) {
@@ -32,7 +33,7 @@ public class AlphaModifier extends SingleValueSpanEntityModifier {
 	}
 
 	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IEntityModifierListener pEntityModifierListener) {
-		super(pDuration, pFromAlpha, pToAlpha, pEntityModifierListener, IEaseFunction.DEFAULT);
+		super(pDuration, pFromAlpha, pToAlpha, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
 	public AlphaModifier(final float pDuration, final float pFromAlpha, final float pToAlpha, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {

@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.ease.EaseLinear;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -24,7 +25,7 @@ public class MoveXModifier extends SingleValueSpanEntityModifier {
 	// ===========================================================
 
 	public MoveXModifier(final float pDuration, final float pFromX, final float pToX) {
-		this(pDuration, pFromX, pToX, null, IEaseFunction.DEFAULT);
+		this(pDuration, pFromX, pToX, null, EaseLinear.getInstance());
 	}
 
 	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IEaseFunction pEaseFunction) {
@@ -32,7 +33,7 @@ public class MoveXModifier extends SingleValueSpanEntityModifier {
 	}
 
 	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IEntityModifierListener pEntityModifierListener) {
-		super(pDuration, pFromX, pToX, pEntityModifierListener, IEaseFunction.DEFAULT);
+		super(pDuration, pFromX, pToX, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
 	public MoveXModifier(final float pDuration, final float pFromX, final float pToX, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {

@@ -1,5 +1,6 @@
 package org.anddev.andengine.util.modifier;
 
+import org.anddev.andengine.util.modifier.ease.EaseLinear;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -28,7 +29,7 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	// ===========================================================
 
 	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue) {
-		this(pDuration, pFromValue, pToValue, null, IEaseFunction.DEFAULT);
+		this(pDuration, pFromValue, pToValue, null, EaseLinear.getInstance());
 	}
 
 	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IEaseFunction pEaseFunction) {
@@ -36,7 +37,7 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	}
 
 	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModifierListener) {
-		this(pDuration, pFromValue, pToValue, pModifierListener, IEaseFunction.DEFAULT);
+		this(pDuration, pFromValue, pToValue, pModifierListener, EaseLinear.getInstance());
 	}
 
 	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModifierListener, final IEaseFunction pEaseFunction) {

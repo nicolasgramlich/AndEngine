@@ -16,7 +16,7 @@ public class MathUtils implements MathConstants {
 	// Constants
 	// ===========================================================
 
-	public static Random RANDOM = new Random(System.nanoTime());
+	public static final Random RANDOM = new Random(System.nanoTime());
 
 	// ===========================================================
 	// Fields

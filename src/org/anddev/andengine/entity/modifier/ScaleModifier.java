@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.ease.EaseLinear;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -24,7 +25,7 @@ public class ScaleModifier extends DoubleValueSpanEntityModifier {
 	// ===========================================================
 
 	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale) {
-		this(pDuration, pFromScale, pToScale, null, IEaseFunction.DEFAULT);
+		this(pDuration, pFromScale, pToScale, null, EaseLinear.getInstance());
 	}
 
 	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale, final IEaseFunction pEaseFunction) {
@@ -32,7 +33,7 @@ public class ScaleModifier extends DoubleValueSpanEntityModifier {
 	}
 
 	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale, final IEntityModifierListener pEntityModifierListener) {
-		this(pDuration, pFromScale, pToScale, pFromScale, pToScale, pEntityModifierListener, IEaseFunction.DEFAULT);
+		this(pDuration, pFromScale, pToScale, pFromScale, pToScale, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
 	public ScaleModifier(final float pDuration, final float pFromScale, final float pToScale, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
@@ -40,7 +41,7 @@ public class ScaleModifier extends DoubleValueSpanEntityModifier {
 	}
 
 	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY) {
-		this(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, null, IEaseFunction.DEFAULT);
+		this(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, null, EaseLinear.getInstance());
 	}
 
 	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final IEaseFunction pEaseFunction) {
@@ -48,7 +49,7 @@ public class ScaleModifier extends DoubleValueSpanEntityModifier {
 	}
 
 	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final IEntityModifierListener pEntityModifierListener) {
-		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pEntityModifierListener, IEaseFunction.DEFAULT);
+		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
 	public ScaleModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {

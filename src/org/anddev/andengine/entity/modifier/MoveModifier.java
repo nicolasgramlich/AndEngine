@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.modifier;
 
 import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.util.modifier.ease.EaseLinear;
 import org.anddev.andengine.util.modifier.ease.IEaseFunction;
 
 /**
@@ -24,7 +25,7 @@ public class MoveModifier extends DoubleValueSpanEntityModifier {
 	// ===========================================================
 
 	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY) {
-		this(pDuration, pFromX, pToX, pFromY, pToY, null, IEaseFunction.DEFAULT);
+		this(pDuration, pFromX, pToX, pFromY, pToY, null, EaseLinear.getInstance());
 	}
 
 	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEaseFunction pEaseFunction) {
@@ -32,7 +33,7 @@ public class MoveModifier extends DoubleValueSpanEntityModifier {
 	}
 
 	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEntityModifierListener pEntityModifierListener) {
-		super(pDuration, pFromX, pToX, pFromY, pToY, pEntityModifierListener, IEaseFunction.DEFAULT);
+		super(pDuration, pFromX, pToX, pFromY, pToY, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
 	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {

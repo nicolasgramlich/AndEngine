@@ -13,8 +13,6 @@ public interface IEaseFunction {
 	// Final Fields
 	// ===========================================================
 
-	public static final IEaseFunction DEFAULT = EaseLinear.getInstance();
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

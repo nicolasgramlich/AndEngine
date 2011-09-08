@@ -25,7 +25,7 @@ public class Camera implements IUpdateHandler {
 	// Constants
 	// ===========================================================
 
-	protected static final float[] VERTICES_TOUCH_TMP = new float[2];
+	static final float[] VERTICES_TOUCH_TMP = new float[2];
 
 	// ===========================================================
 	// Fields

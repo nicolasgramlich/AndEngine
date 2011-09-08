@@ -247,9 +247,9 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplySceneMatrix() {
-		GLState.setProjectionIdentityMatrix();
+		GLState.loadProjectionGLMatrixIdentity();
 
-		GLState.glOrthof(this.getXMin(), this.getXMax(), this.getYMax(), this.getYMin(), this.mZNear, this.mZFar);
+		GLState.orthoProjectionGLMatrixf(this.getXMin(), this.getXMax(), this.getYMax(), this.getYMin(), this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
@@ -258,12 +258,12 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplySceneBackgroundMatrix() {
-		GLState.setProjectionIdentityMatrix();
+		GLState.loadProjectionGLMatrixIdentity();
 
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
 
-		GLState.glOrthof(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
+		GLState.orthoProjectionGLMatrixf(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
@@ -272,11 +272,11 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplyCameraSceneMatrix() {
-		GLState.setProjectionIdentityMatrix();
+		GLState.loadProjectionGLMatrixIdentity();
 
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
-		GLState.glOrthof(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
+		GLState.orthoProjectionGLMatrixf(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
 
 		final float cameraSceneRotation = this.mCameraSceneRotation;
 		if(cameraSceneRotation != 0) {
@@ -285,9 +285,9 @@ public class Camera implements IUpdateHandler {
 	}
 
 	private void applyRotation(final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
-		GLState.glTranslatef(pRotationCenterX, pRotationCenterY, 0);
-		GLState.glRotatef(pAngle, 0, 0, 1);
-		GLState.glTranslatef(-pRotationCenterX, -pRotationCenterY, 0);
+		GLState.translateProjectionGLMatrixf(pRotationCenterX, pRotationCenterY, 0);
+		GLState.rotateProjectionGLMatrixf(pAngle, 0, 0, 1);
+		GLState.translateProjectionGLMatrixf(-pRotationCenterX, -pRotationCenterY, 0);
 	}
 
 	public void convertSceneToCameraSceneTouchEvent(final TouchEvent pSceneTouchEvent) {

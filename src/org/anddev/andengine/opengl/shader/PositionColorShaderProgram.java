@@ -82,7 +82,7 @@ public class PositionColorShaderProgram extends ShaderProgram {
 
 		super.bind(pVertexBufferObjectAttributes);
 
-		GLES20.glUniformMatrix4fv(PositionColorShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionMatrix(), 0);
+		GLES20.glUniformMatrix4fv(PositionColorShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionGLMatrix(), 0);
 	}
 
 	@Override

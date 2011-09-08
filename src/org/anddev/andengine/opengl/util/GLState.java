@@ -5,13 +5,13 @@ import java.nio.Buffer;
 import org.anddev.andengine.engine.options.RenderOptions;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
-import org.anddev.andengine.opengl.util.GLMatrixStacks.MatrixMode;
 import org.anddev.andengine.util.Debug;
 
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLException;
 import android.opengl.GLUtils;
+import android.opengl.Matrix;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -31,8 +31,6 @@ public class GLState {
 	// Fields
 	// ===========================================================
 
-	private static GLMatrixStacks sGLMatrixStacks = new GLMatrixStacks();
-
 	private static int sCurrentHardwareBufferID = -1;
 	private static int sCurrentShaderProgramID = -1;
 	private static int sCurrentHardwareTextureID = -1;
@@ -51,12 +49,20 @@ public class GLState {
 
 	private static float sLineWidth = 1;
 
+	private static final GLMatrixStack sModelViewGLMatrixStack = new GLMatrixStack();
+	private static final GLMatrixStack sProjectionGLMatrixStack = new GLMatrixStack();
+
+	private static final float[] sModelViewGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
+	private static final float[] sProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
+	private static final float[] sModelViewProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
 	public static void reset() {
-		GLState.sGLMatrixStacks.reset();
+		GLState.sModelViewGLMatrixStack.reset();
+		GLState.sProjectionGLMatrixStack.reset();
 
 		GLState.sCurrentHardwareBufferID = -1;
 		GLState.sCurrentShaderProgramID = -1;
@@ -286,70 +292,75 @@ public class GLState {
 		}
 	}
 
-	public static void resetGLMatrixStacks() {
-		GLState.sGLMatrixStacks.reset();
+	public static void pushModelViewGLMatrix() {
+		GLState.sModelViewGLMatrixStack.glPushMatrix();
 	}
 
-	public static void switchToModelViewMatrix() {
-		GLState.sGLMatrixStacks.setMatrixMode(MatrixMode.MODELVIEW);
+	public static void popModelViewGLMatrix() {
+		GLState.sModelViewGLMatrixStack.glPopMatrix();
 	}
 
-	public static void switchToProjectionMatrix() {
-		GLState.sGLMatrixStacks.setMatrixMode(MatrixMode.PROJECTION);
+	public static void loadModelViewGLMatrixIdentity() {
+		GLState.sModelViewGLMatrixStack.glLoadIdentity();
 	}
 
-	public static void switchToMatrix(final MatrixMode pMatrixMode) {
-		GLState.sGLMatrixStacks.setMatrixMode(pMatrixMode);
+	public static void translateModelViewGLMatrixf(final float pX, final float pY, final float pZ) {
+		GLState.sModelViewGLMatrixStack.glTranslatef(pX, pY, pZ);
 	}
 
-	public static float[] getProjectionMatrix() {
-		return GLState.sGLMatrixStacks.getProjectionGLMatrix();
+	public static void rotateModelViewGLMatrixf(final float pAngle, final float pX, final float pY, final float pZ) {
+		GLState.sModelViewGLMatrixStack.glRotatef(pAngle, pX, pY, pZ);
 	}
 
-	public static float[] getModelViewMatrix() {
-		return GLState.sGLMatrixStacks.getModelViewGLMatrix();
+	public static void scaleModelViewGLMatrixf(final float pScaleX, final float pScaleY, final int pScaleZ) {
+		GLState.sModelViewGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
 	}
 
-	public static float[] getModelViewProjectionMatrix() {
-		return GLState.sGLMatrixStacks.getModelViewProjectionGLMatrix();
+	public static void orthoModelViewGLMatrixf(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
+		GLState.sModelViewGLMatrixStack.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}
 
-	public static void setProjectionIdentityMatrix() {
-		GLState.switchToProjectionMatrix();
-		GLState.sGLMatrixStacks.glLoadIdentity();
+	public static void pushProjectionGLMatrix() {
+		GLState.sProjectionGLMatrixStack.glPushMatrix();
+	}
+	
+	public static void popProjectionGLMatrix() {
+		GLState.sProjectionGLMatrixStack.glPopMatrix();
+	}
+	
+	public static void loadProjectionGLMatrixIdentity() {
+		GLState.sProjectionGLMatrixStack.glLoadIdentity();
+	}
+	
+	public static void translateProjectionGLMatrixf(final float pX, final float pY, final float pZ) {
+		GLState.sProjectionGLMatrixStack.glTranslatef(pX, pY, pZ);
+	}
+	
+	public static void rotateProjectionGLMatrixf(final float pAngle, final float pX, final float pY, final float pZ) {
+		GLState.sProjectionGLMatrixStack.glRotatef(pAngle, pX, pY, pZ);
+	}
+	
+	public static void scaleProjectionGLMatrixf(final float pScaleX, final float pScaleY, final int pScaleZ) {
+		GLState.sProjectionGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
+	}
+	
+	public static void orthoProjectionGLMatrixf(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
+		GLState.sProjectionGLMatrixStack.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}
 
-	public static void setModelViewIdentityMatrix() {
-		GLState.switchToModelViewMatrix();
-		GLState.sGLMatrixStacks.glLoadIdentity();
+	public static float[] getModelViewGLMatrix() {
+		GLState.sModelViewGLMatrixStack.getMatrix(GLState.sModelViewGLMatrix);
+		return GLState.sModelViewGLMatrix;
 	}
 
-	public static void glLoadIdentity() {
-		GLState.sGLMatrixStacks.glLoadIdentity();
+	public static float[] getProjectionGLMatrix() {
+		GLState.sProjectionGLMatrixStack.getMatrix(GLState.sProjectionGLMatrix);
+		return GLState.sProjectionGLMatrix;
 	}
 
-	public static void glPushMatrix() {
-		GLState.sGLMatrixStacks.glPushMatrix();
-	}
-
-	public static void glPopMatrix() {
-		GLState.sGLMatrixStacks.glPopMatrix();
-	}
-
-	public static void glTranslatef(final float pX, final float pY, final int pZ) {
-		GLState.sGLMatrixStacks.glTranslatef(pX, pY, pZ);
-	}
-
-	public static void glRotatef(final float pAngle, final float pX, final float pY, final int pZ) {
-		GLState.sGLMatrixStacks.glRotatef(pAngle, pX, pY, pZ);
-	}
-
-	public static void glScalef(final float pScaleX, final float pScaleY, final int pScaleZ) {
-		GLState.sGLMatrixStacks.glScalef(pScaleX, pScaleY, pScaleZ);
-	}
-
-	public static void glOrthof(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
-		GLState.sGLMatrixStacks.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
+	public static float[] getModelViewProjectionGLMatrix() {
+		Matrix.multiplyMM(GLState.sModelViewProjectionGLMatrix, 0, GLState.sProjectionGLMatrixStack.mMatrixStack, GLState.sProjectionGLMatrixStack.mMatrixStackOffset, GLState.sModelViewGLMatrixStack.mMatrixStack, GLState.sModelViewGLMatrixStack.mMatrixStackOffset);
+		return GLState.sModelViewProjectionGLMatrix;
 	}
 
 	/**

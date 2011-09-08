@@ -124,30 +124,24 @@ public class RenderTexture extends Texture {
 		this.savePreviousViewport();
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
 
-		GLState.switchToProjectionMatrix();
-		GLState.glPushMatrix();
-
-		GLState.glOrthof(0, this.mWidth, this.mHeight, 0, -1, 1);
+		GLState.pushProjectionGLMatrix();
+		GLState.orthoProjectionGLMatrixf(0, this.mWidth, this.mHeight, 0, -1, 1);
 
 		this.savePreviousFramebufferObjectID();
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFramebufferObjectID);
 
-		GLState.switchToModelViewMatrix();
-		GLState.glPushMatrix();
-		GLState.glLoadIdentity();
+		GLState.pushModelViewGLMatrix();
+		GLState.loadModelViewGLMatrixIdentity();
 	}
 
 	public void end() {
-		GLState.glPopMatrix();
+		GLState.popModelViewGLMatrix();
 
 		this.restorePreviousFramebufferObjectID();
 
-		GLState.switchToProjectionMatrix();
-		GLState.glPopMatrix();
+		GLState.popProjectionGLMatrix();
 
 		this.resotorePreviousViewport();
-
-		GLState.switchToModelViewMatrix();
 	}
 
 	public void destroy() {

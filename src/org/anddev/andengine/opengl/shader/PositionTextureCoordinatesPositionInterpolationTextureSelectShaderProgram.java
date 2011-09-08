@@ -92,7 +92,7 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 
 		super.bind(pVertexBufferObjectAttributes);
 
-		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionMatrix(), 0);
+		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionGLMatrix(), 0);
 		GLES20.glUniform1i(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformTexture0Location, 0);
 		GLES20.glUniform1i(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformTexture1Location, 1);
 	}

@@ -115,7 +115,7 @@ public class ParallaxBackground extends ColorBackground {
 		// ===========================================================
 
 		public void onDraw(final float pParallaxValue, final Camera pCamera) {
-			GLState.glPushMatrix();
+			GLState.pushModelViewGLMatrix();
 			{
 				final float cameraWidth = pCamera.getWidth();
 				final float shapeWidthScaled = this.mAreaShape.getWidthScaled();
@@ -124,17 +124,17 @@ public class ParallaxBackground extends ColorBackground {
 				while(baseOffset > 0) {
 					baseOffset -= shapeWidthScaled;
 				}
-				GLState.glTranslatef(baseOffset, 0, 0);
+				GLState.translateModelViewGLMatrixf(baseOffset, 0, 0);
 
 				float currentMaxX = baseOffset;
 				
 				do {
 					this.mAreaShape.onDraw(pCamera);
-					GLState.glTranslatef(shapeWidthScaled, 0, 0);
+					GLState.translateModelViewGLMatrixf(shapeWidthScaled, 0, 0);
 					currentMaxX += shapeWidthScaled;
 				} while(currentMaxX < cameraWidth);
 			}
-			GLState.glPopMatrix();
+			GLState.popModelViewGLMatrix();
 		}
 
 		// ===========================================================

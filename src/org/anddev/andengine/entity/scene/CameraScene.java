@@ -90,15 +90,13 @@ public class CameraScene extends Scene {
 		if(this.mCamera != null) {
 			this.mCamera.onApplyCameraSceneMatrix();
 			{
-				GLState.switchToModelViewMatrix();
-				GLState.glPushMatrix();
-				GLState.glLoadIdentity();
+				GLState.pushModelViewGLMatrix();
+				GLState.loadModelViewGLMatrixIdentity();
 
 				super.onManagedDraw(pCamera);
 
-				GLState.glPopMatrix();
+				GLState.popModelViewGLMatrix();
 			}
-			GLState.switchToProjectionMatrix();
 		}
 	}
 

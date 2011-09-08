@@ -996,7 +996,7 @@ public class Entity implements IEntity {
 	}
 
 	protected void applyTranslation() {
-		GLState.glTranslatef(this.mX, this.mY, 0);
+		GLState.translateModelViewGLMatrixf(this.mX, this.mY, 0);
 	}
 
 	protected void applyRotation() {
@@ -1006,9 +1006,9 @@ public class Entity implements IEntity {
 			final float rotationCenterX = this.mRotationCenterX;
 			final float rotationCenterY = this.mRotationCenterY;
 
-			GLState.glTranslatef(rotationCenterX, rotationCenterY, 0);
-			GLState.glRotatef(rotation, 0, 0, 1);
-			GLState.glTranslatef(-rotationCenterX, -rotationCenterY, 0);
+			GLState.translateModelViewGLMatrixf(rotationCenterX, rotationCenterY, 0);
+			GLState.rotateModelViewGLMatrixf(rotation, 0, 0, 1);
+			GLState.translateModelViewGLMatrixf(-rotationCenterX, -rotationCenterY, 0);
 
 			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
 			 * In that case the last glTranslatef of the rotation and the first glTranslatef of the scale is superfluous.
@@ -1024,14 +1024,14 @@ public class Entity implements IEntity {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;
 
-			GLState.glTranslatef(scaleCenterX, scaleCenterY, 0);
-			GLState.glScalef(scaleX, scaleY, 1);
-			GLState.glTranslatef(-scaleCenterX, -scaleCenterY, 0);
+			GLState.translateModelViewGLMatrixf(scaleCenterX, scaleCenterY, 0);
+			GLState.scaleModelViewGLMatrixf(scaleX, scaleY, 1);
+			GLState.translateModelViewGLMatrixf(-scaleCenterX, -scaleCenterY, 0);
 		}
 	}
 
 	protected void onManagedDraw(final Camera pCamera) {
-		GLState.glPushMatrix();
+		GLState.pushModelViewGLMatrix();
 		{
 			this.onApplyTransformations();
 
@@ -1041,7 +1041,7 @@ public class Entity implements IEntity {
 
 			this.onDrawChildren(pCamera);
 		}
-		GLState.glPopMatrix();
+		GLState.popModelViewGLMatrix();
 	}
 
 	protected void onDrawChildren(final Camera pCamera) {

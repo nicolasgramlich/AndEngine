@@ -85,7 +85,7 @@ public class PositionTextureCoordinatesShaderProgram extends ShaderProgram {
 
 		super.bind(pVertexBufferObjectAttributes);
 
-		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionMatrix(), 0);
+		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionGLMatrix(), 0);
 		GLES20.glUniform1i(PositionTextureCoordinatesShaderProgram.sUniformTexture0Location, 0);
 	}
 

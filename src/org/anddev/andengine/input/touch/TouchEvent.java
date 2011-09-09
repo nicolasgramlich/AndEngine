@@ -16,6 +16,8 @@ public class TouchEvent {
 	// Constants
 	// ===========================================================
 
+	public static final int INVALID_POINTER_ID = -1;
+
 	public static final int ACTION_CANCEL = MotionEvent.ACTION_CANCEL;
 	public static final int ACTION_DOWN = MotionEvent.ACTION_DOWN;
 	public static final int ACTION_MOVE = MotionEvent.ACTION_MOVE;

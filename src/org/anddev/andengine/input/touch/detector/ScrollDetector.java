@@ -76,20 +76,14 @@ public class ScrollDetector extends BaseDetector {
 
 		switch(pSceneTouchEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-			    if (this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
-    				this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
-    				return true;
-			    }
+				this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
+				return true;
 			case MotionEvent.ACTION_MOVE:
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
-			    boolean actionUpOrCancel = pSceneTouchEvent.isActionUp() || pSceneTouchEvent.isActionCancel();
 				if(this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
-				    if (!actionUpOrCancel)
-				    {
-    					this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
-    					return true;
-				    }
+					this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
+					return true;
 				} else if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
 					final float distanceX = touchX - this.mLastX;
 					final float distanceY = touchY - this.mLastY;
@@ -102,7 +96,7 @@ public class ScrollDetector extends BaseDetector {
 						this.mTriggered = true;
 					}
 
-					if(actionUpOrCancel) {
+					if(pSceneTouchEvent.isActionCancel() || pSceneTouchEvent.isActionUp()) {
 						this.mPointerID = TouchEvent.INVALID_POINTER_ID;
 					}
 

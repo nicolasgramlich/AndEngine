@@ -1,6 +1,5 @@
 package org.anddev.andengine.input.touch.controller;
 
-import org.anddev.andengine.engine.options.TouchOptions;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.util.pool.RunnablePoolItem;
 import org.anddev.andengine.util.pool.RunnablePoolUpdateHandler;
@@ -8,7 +7,7 @@ import org.anddev.andengine.util.pool.RunnablePoolUpdateHandler;
 import android.view.MotionEvent;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -24,8 +23,6 @@ public abstract class BaseTouchController implements ITouchController  {
 	// ===========================================================
 
 	private ITouchEventCallback mTouchEventCallback;
-
-	private boolean mRunOnUpdateThread;
 
 	private final RunnablePoolUpdateHandler<TouchEventRunnablePoolItem> mTouchEventRunnablePoolUpdateHandler = new RunnablePoolUpdateHandler<TouchEventRunnablePoolItem>() {
 		@Override
@@ -57,46 +54,25 @@ public abstract class BaseTouchController implements ITouchController  {
 
 	@Override
 	public void reset() {
-		if(this.mRunOnUpdateThread) {
-			this.mTouchEventRunnablePoolUpdateHandler.reset();
-		}
+		this.mTouchEventRunnablePoolUpdateHandler.reset();
 	}
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		if(this.mRunOnUpdateThread) {
-			this.mTouchEventRunnablePoolUpdateHandler.onUpdate(pSecondsElapsed);
-		}
+		this.mTouchEventRunnablePoolUpdateHandler.onUpdate(pSecondsElapsed);
 	}
 
-	protected boolean fireTouchEvent(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent) {
-		final boolean handled;
+	protected void fireTouchEvent(final float pX, final float pY, final int pAction, final int pPointerID, final MotionEvent pMotionEvent) {
+		final TouchEvent touchEvent = TouchEvent.obtain(pX, pY, pAction, pPointerID, MotionEvent.obtain(pMotionEvent));
 
-		if(this.mRunOnUpdateThread) {
-			final TouchEvent touchEvent = TouchEvent.obtain(pX, pY, pAction, pPointerID, MotionEvent.obtain(pMotionEvent));
-
-			final TouchEventRunnablePoolItem touchEventRunnablePoolItem = this.mTouchEventRunnablePoolUpdateHandler.obtainPoolItem();
-			touchEventRunnablePoolItem.set(touchEvent);
-			this.mTouchEventRunnablePoolUpdateHandler.postPoolItem(touchEventRunnablePoolItem);
-
-			handled = true;
-		} else {
-			final TouchEvent touchEvent = TouchEvent.obtain(pX, pY, pAction, pPointerID, pMotionEvent);
-			handled = this.mTouchEventCallback.onTouchEvent(touchEvent);
-			touchEvent.recycle();
-		}
-
-		return handled;
+		final TouchEventRunnablePoolItem touchEventRunnablePoolItem = this.mTouchEventRunnablePoolUpdateHandler.obtainPoolItem();
+		touchEventRunnablePoolItem.set(touchEvent);
+		this.mTouchEventRunnablePoolUpdateHandler.postPoolItem(touchEventRunnablePoolItem);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	@Override
-	public void applyTouchOptions(final TouchOptions pTouchOptions) {
-		this.mRunOnUpdateThread = pTouchOptions.isRunOnUpdateThread();
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

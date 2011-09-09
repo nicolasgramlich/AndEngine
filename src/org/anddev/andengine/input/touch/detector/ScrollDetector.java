@@ -81,7 +81,7 @@ public class ScrollDetector extends BaseDetector {
 			case MotionEvent.ACTION_MOVE:
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
-				if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+				if(this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
 					this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
 					return true;
 				} else if(this.mPointerID == pSceneTouchEvent.getPointerID()) {

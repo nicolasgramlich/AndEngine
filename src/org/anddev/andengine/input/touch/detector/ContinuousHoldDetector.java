@@ -6,8 +6,8 @@ import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.input.touch.TouchEvent;
 
-import android.os.SystemClock;
 import android.speech.tts.TextToSpeech.Engine;
+import android.view.MotionEvent;
 
 /**
  * Note: Needs to be registered as an {@link IUpdateHandler} to the {@link Engine} or {@link Scene} to work properly.
@@ -16,6 +16,7 @@ import android.speech.tts.TextToSpeech.Engine;
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
+ * @author Greg Haynes
  * @since 20:49:25 - 23.08.2010
  */
 public class ContinuousHoldDetector extends HoldDetector implements IUpdateHandler {
@@ -29,27 +30,18 @@ public class ContinuousHoldDetector extends HoldDetector implements IUpdateHandl
 	// Fields
 	// ===========================================================
 
-	private final IContinuousHoldDetectorListener mContinuousHoldDetectorListener;
-
-	private boolean mTriggerOnHoldStarted;
-	private boolean mTriggerOnHold;
-	private boolean mTriggerOnHoldFinished;
-
 	private final TimerHandler mTimerHandler;
-
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ContinuousHoldDetector(final IContinuousHoldDetectorListener pContinuousHoldDetectorListener) {
-		this(HoldDetector.TRIGGER_HOLD_MINIMUM_MILLISECONDS_DEFAULT, HoldDetector.TRIGGER_HOLD_MAXIMUM_DISTANCE_DEFAULT, ContinuousHoldDetector.TIME_BETWEEN_UPDATES_DEFAULT, pContinuousHoldDetectorListener);
+	public ContinuousHoldDetector(final IHoldDetectorListener pHoldDetectorListener) {
+		this(HoldDetector.TRIGGER_HOLD_MINIMUM_MILLISECONDS_DEFAULT, HoldDetector.TRIGGER_HOLD_MAXIMUM_DISTANCE_DEFAULT, ContinuousHoldDetector.TIME_BETWEEN_UPDATES_DEFAULT, pHoldDetectorListener);
 	}
 
-	public ContinuousHoldDetector(final long pTriggerHoldMinimumMilliseconds, final float pTriggerHoldMaximumDistance, final float pTimeBetweenUpdates, final IContinuousHoldDetectorListener pContinuousHoldDetectorListener) {
-		super(pTriggerHoldMinimumMilliseconds, pTriggerHoldMaximumDistance, null);
-
-		this.mContinuousHoldDetectorListener = pContinuousHoldDetectorListener;
+	public ContinuousHoldDetector(final long pTriggerHoldMinimumMilliseconds, final float pTriggerHoldMaximumDistance, final float pTimeBetweenUpdates, final IHoldDetectorListener pHoldDetectorListener) {
+		super(pTriggerHoldMinimumMilliseconds, pTriggerHoldMaximumDistance, pHoldDetectorListener);
 
 		this.mTimerHandler = new TimerHandler(pTimeBetweenUpdates, true, new ITimerCallback() {
 			@Override
@@ -73,22 +65,63 @@ public class ContinuousHoldDetector extends HoldDetector implements IUpdateHandl
 	}
 
 	/**
-	 * When {@link ContinuousHoldDetector#isHolding()} this method will call through to {@link IContinuousHoldDetectorListener#onHoldFinished(ContinuousHoldDetector, long, float, float)}.
+	 * When {@link ContinuousHoldDetector#isHolding()} this method will call through to {@link IHoldDetectorListener#onHoldFinished(HoldDetector, long, int, float, float)}.
 	 */
 	@Override
 	public void reset() {
-		if(this.mTriggering) {
-			if(this.mContinuousHoldDetectorListener != null) {
-				this.mContinuousHoldDetectorListener.onHoldFinished(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
-			}
-		}
-
 		super.reset();
+		this.mTimerHandler.reset();
+	}
 
-		this.mTriggerOnHoldFinished = false;
-		this.mTriggerOnHold = false;
-		this.mTriggerOnHoldStarted = false;
+	@Override
+	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {
+		final MotionEvent motionEvent = pSceneTouchEvent.getMotionEvent();
 
+		switch(pSceneTouchEvent.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				if(this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
+					this.prepareHold(pSceneTouchEvent);
+					return true;
+				} else {
+					return false;
+				}
+			case MotionEvent.ACTION_MOVE:
+			{
+				if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
+					this.mHoldX = pSceneTouchEvent.getX();
+					this.mHoldY = pSceneTouchEvent.getY();
+
+					this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > this.mTriggerHoldMaximumDistance || Math.abs(this.mDownY - motionEvent.getY()) > this.mTriggerHoldMaximumDistance;
+					return true;
+				} else {
+					return false;
+				}
+			}
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_CANCEL:
+			{
+				if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
+					this.mHoldX = pSceneTouchEvent.getX();
+					this.mHoldY = pSceneTouchEvent.getY();
+
+					if(this.mTriggering) {
+						this.triggerOnHoldFinished(motionEvent.getEventTime() - this.mDownTimeMilliseconds);
+					}
+
+					this.mPointerID = TouchEvent.INVALID_POINTER_ID;
+					return true;
+				} else {
+					return false;
+				}
+			}
+			default:
+				return false;
+		}
+	}
+
+	@Override
+	protected void prepareHold(final TouchEvent pSceneTouchEvent) {
+		super.prepareHold(pSceneTouchEvent);
 		this.mTimerHandler.reset();
 	}
 
@@ -96,46 +129,15 @@ public class ContinuousHoldDetector extends HoldDetector implements IUpdateHandl
 	// Methods
 	// ===========================================================
 
-	@Override
-	protected void triggerOnHoldStarted(final TouchEvent pSceneTouchEvent) {
-		this.mTriggerOnHoldStarted = true;
-	}
-
-	@Override
-	protected void triggerOnHold(final TouchEvent pSceneTouchEvent, final long pHoldTimeMilliseconds) {
-		this.mTriggerOnHold = true;
-	}
-
-	@Override
-	protected void triggerOnHoldFinished(final TouchEvent pSceneTouchEvent, final long pHoldTimeMilliseconds) {
-		this.mTriggerOnHoldFinished = true;
-	}
-
-	protected void fireListener() {
-		if(this.mTriggerOnHoldStarted) {
-			this.mTriggerOnHoldStarted = false;
-			this.mOnHoldStartedTriggered = true;
-
-			if(this.mContinuousHoldDetectorListener != null) {
-				this.mContinuousHoldDetectorListener.onHoldStarted(this, this.mHoldX, this.mHoldY);
-			}
-		}
-
-		if(this.mTriggerOnHold) {
-			if(this.mContinuousHoldDetectorListener != null) {
-				this.mContinuousHoldDetectorListener.onHold(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
-			}
-		}
-
-		if(this.mTriggerOnHoldFinished) {
-			this.mTriggering = false;
-			this.mTriggerOnHoldFinished = false;
-			this.mTriggerOnHold = false;
-			this.mTriggerOnHoldStarted = false;
-			this.mOnHoldStartedTriggered = false;
-
-			if(this.mContinuousHoldDetectorListener != null) {
-				this.mContinuousHoldDetectorListener.onHoldFinished(this, SystemClock.uptimeMillis() - this.mDownTimeMilliseconds, this.mHoldX, this.mHoldY);
+	void fireListener() {
+		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+			final long holdTimeMilliseconds = System.currentTimeMillis() - this.mDownTimeMilliseconds;
+			if(holdTimeMilliseconds >= this.mTriggerHoldMinimumMilliseconds) {
+				if(this.mTriggering) {
+					this.triggerOnHold(holdTimeMilliseconds);
+				} else if(!this.mMaximumDistanceExceeded) {
+					this.triggerOnHoldStarted();
+				}
 			}
 		}
 	}
@@ -143,18 +145,4 @@ public class ContinuousHoldDetector extends HoldDetector implements IUpdateHandl
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface IContinuousHoldDetectorListener {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public void onHoldStarted(final ContinuousHoldDetector pContinuousHoldDetector, final float pHoldX, final float pHoldY);
-		public void onHold(final ContinuousHoldDetector pContinuousHoldDetector, final long pHoldTimeMilliseconds, final float pHoldX, final float pHoldY);
-		public void onHoldFinished(final ContinuousHoldDetector pContinuousHoldDetector, final long pHoldTimeMilliseconds, final float pHoldX, final float pHoldY);
-	}
 }

@@ -51,8 +51,8 @@ public class HoldDetector extends BaseDetector {
 	}
 
 	public HoldDetector(final long pTriggerHoldMinimumMilliseconds, final float pTriggerHoldMaximumDistance, final IHoldDetectorListener pHoldDetectorListener) {
-		this.mTriggerHoldMinimumMilliseconds = pTriggerHoldMinimumMilliseconds;
-		this.mTriggerHoldMaximumDistance = pTriggerHoldMaximumDistance;
+		this.setTriggerHoldMinimumMilliseconds(pTriggerHoldMinimumMilliseconds);
+		this.setTriggerHoldMaximumDistance(pTriggerHoldMaximumDistance);
 		this.mHoldDetectorListener = pHoldDetectorListener;
 	}
 
@@ -65,6 +65,9 @@ public class HoldDetector extends BaseDetector {
 	}
 
 	public void setTriggerHoldMinimumMilliseconds(final long pTriggerHoldMinimumMilliseconds) {
+		if(pTriggerHoldMinimumMilliseconds < 0) {
+			throw new IllegalArgumentException("pTriggerHoldMinimumMilliseconds must not be < 0.");
+		}
 		this.mTriggerHoldMinimumMilliseconds = pTriggerHoldMinimumMilliseconds;
 	}
 
@@ -73,6 +76,9 @@ public class HoldDetector extends BaseDetector {
 	}
 
 	public void setTriggerHoldMaximumDistance(final float pTriggerHoldMaximumDistance) {
+		if(pTriggerHoldMaximumDistance < 0) {
+			throw new IllegalArgumentException("pTriggerHoldMaximumDistance must not be < 0.");
+		}
 		this.mTriggerHoldMaximumDistance = pTriggerHoldMaximumDistance;
 	}
 
@@ -184,6 +190,10 @@ public class HoldDetector extends BaseDetector {
 		this.mPointerID = pSceneTouchEvent.getPointerID();
 		this.mHoldX = pSceneTouchEvent.getX();
 		this.mHoldY = pSceneTouchEvent.getY();
+
+		if(this.mTriggerHoldMinimumMilliseconds == 0) {
+			this.triggerOnHoldStarted();
+		}
 	}
 
 	protected void triggerOnHoldStarted() {

@@ -94,13 +94,9 @@ public abstract class BitmapTexture extends Texture {
 	@Override
 	protected void writeTextureToHardware() throws IOException {
 		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
+		final Bitmap bitmap = this.onGetBitmap(bitmapConfig);
+
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
-
-		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
-		decodeOptions.inPreferredConfig = bitmapConfig;
-
-		final Bitmap bitmap = BitmapFactory.decodeStream(this.onGetInputStream(), null, decodeOptions);
-
 		if(preMultipyAlpha) {
 			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 		} else {
@@ -113,6 +109,13 @@ public abstract class BitmapTexture extends Texture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected Bitmap onGetBitmap(final Config pBitmapConfig) throws IOException {
+		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+		decodeOptions.inPreferredConfig = pBitmapConfig;
+
+		return BitmapFactory.decodeStream(this.onGetInputStream(), null, decodeOptions);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

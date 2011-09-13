@@ -251,7 +251,40 @@ public class TextureManager {
 		}
 	}
 
+	public static synchronized ITexture getTexture(final String pID, final IAssetInputStreamOpener pAssetInputStreamOpener, final String pAssetPath) throws IOException {
+		return TextureManager.getTexture(pID, pAssetInputStreamOpener, pAssetPath, TextureOptions.DEFAULT);
+	}
+
+	public static synchronized ITexture getTexture(final String pID, final IAssetInputStreamOpener pAssetInputStreamOpener, final String pAssetPath, final TextureOptions pTextureOptions) throws IOException {
+		if(TextureManager.hasMappedTexture(pID)) {
+			return TextureManager.getMappedTexture(pID);
+		} else {
+			final ITexture texture = new BitmapTexture(pTextureOptions) {
+				@Override
+				protected InputStream onGetInputStream() throws IOException {
+					return pAssetInputStreamOpener.open(pAssetPath);
+				}
+			};
+			TextureManager.loadTexture(texture);
+			TextureManager.addMappedTexture(pID, texture);
+			
+			return texture;
+		}
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static interface IAssetInputStreamOpener {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public InputStream open(final String pAssetPath);
+	}	
 }

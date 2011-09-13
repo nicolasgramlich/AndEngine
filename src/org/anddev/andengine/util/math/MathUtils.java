@@ -50,6 +50,16 @@ public class MathUtils implements MathConstants {
 		return DEG_TO_RAD * pDegree;
 	}
 
+	public static final int signum(final int n) {
+		if(n == 0) {
+			return 0;
+		} else if(n > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
 	public static final int randomSign() {
 		if(RANDOM.nextBoolean()) {
 			return 1;

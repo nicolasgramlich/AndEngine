@@ -94,69 +94,69 @@ public class BoundCamera extends Camera {
 	// ===========================================================
 
 	protected void ensureInBounds() {
-		super.setCenter(this.determineBoundedX(), this.determineBoundedY());
+		final float centerX;
+		if(this.mBoundsWidth < this.getWidth()) {
+			centerX = this.mBoundsCenterX;
+		} else {
+			centerX = getBoundedX(this.getCenterX()); 
+		}
+		final float centerY;
+		if(this.mBoundsHeight < this.getHeight()) {
+			centerY = this.mBoundsCenterY;
+		} else {
+			centerY = getBoundedY(this.getCenterY()); 
+		}
+		super.setCenter(centerX, centerY);
 	}
 
-	protected float determineBoundedX() {
-		if(this.mBoundsWidth < this.getWidth()) {
-			return this.mBoundsCenterX;
-		} else {
-			final float currentCenterX = this.getCenterX();
+	protected float getBoundedX(final float pX) {
+		final float minXBoundExceededAmount = this.mBoundsMinX - this.getXMin();
+		final boolean minXBoundExceeded = minXBoundExceededAmount > 0;
 
-			final float minXBoundExceededAmount = this.mBoundsMinX - this.getXMin();
-			final boolean minXBoundExceeded = minXBoundExceededAmount > 0;
+		final float maxXBoundExceededAmount = this.getXMax() - this.mBoundsMaxX;
+		final boolean maxXBoundExceeded = maxXBoundExceededAmount > 0;
 
-			final float maxXBoundExceededAmount = this.getXMax() - this.mBoundsMaxX;
-			final boolean maxXBoundExceeded = maxXBoundExceededAmount > 0;
-
-			if(minXBoundExceeded) {
-				if(maxXBoundExceeded) {
-					/* Min and max X exceeded. */
-					return currentCenterX - maxXBoundExceededAmount + minXBoundExceededAmount;
-				} else {
-					/* Only min X exceeded. */
-					return currentCenterX + minXBoundExceededAmount;
-				}
+		if(minXBoundExceeded) {
+			if(maxXBoundExceeded) {
+				/* Min and max X exceeded. */
+				return pX - maxXBoundExceededAmount + minXBoundExceededAmount;
 			} else {
-				if(maxXBoundExceeded) {
-					/* Only max X exceeded. */
-					return currentCenterX - maxXBoundExceededAmount;
-				} else {
-					/* Nothing exceeded. */
-					return currentCenterX;
-				}
+				/* Only min X exceeded. */
+				return pX + minXBoundExceededAmount;
+			}
+		} else {
+			if(maxXBoundExceeded) {
+				/* Only max X exceeded. */
+				return pX - maxXBoundExceededAmount;
+			} else {
+				/* Nothing exceeded. */
+				return pX;
 			}
 		}
 	}
 
-	protected float determineBoundedY() {
-		if(this.mBoundsHeight < this.getHeight()) {
-			return this.mBoundsCenterY;
-		} else {
-			final float currentCenterY = this.getCenterY();
+	protected float getBoundedY(final float pY) {
+		final float minYBoundExceededAmount = this.mBoundsMinY - this.getYMin();
+		final boolean minYBoundExceeded = minYBoundExceededAmount > 0;
 
-			final float minYBoundExceededAmount = this.mBoundsMinY - this.getYMin();
-			final boolean minYBoundExceeded = minYBoundExceededAmount > 0;
+		final float maxYBoundExceededAmount = this.getYMax() - this.mBoundsMaxY;
+		final boolean maxYBoundExceeded = maxYBoundExceededAmount > 0;
 
-			final float maxYBoundExceededAmount = this.getYMax() - this.mBoundsMaxY;
-			final boolean maxYBoundExceeded = maxYBoundExceededAmount > 0;
-
-			if(minYBoundExceeded) {
-				if(maxYBoundExceeded) {
-					/* Min and max Y exceeded. */
-					return currentCenterY - maxYBoundExceededAmount + minYBoundExceededAmount;
-				} else {
-					/* Only min Y exceeded. */
-					return currentCenterY + minYBoundExceededAmount;
-				}
+		if(minYBoundExceeded) {
+			if(maxYBoundExceeded) {
+				/* Min and max Y exceeded. */
+				return pY - maxYBoundExceededAmount + minYBoundExceededAmount;
 			} else {
-				if(maxYBoundExceeded) {
-					/* Only max Y exceeded. */
-					return currentCenterY - maxYBoundExceededAmount;
-				} else {
-					/* Nothing exceeded. */
-					return currentCenterY;
-				}
+				/* Only min Y exceeded. */
+				return pY + minYBoundExceededAmount;
+			}
+		} else {
+			if(maxYBoundExceeded) {
+				/* Only max Y exceeded. */
+				return pY - maxYBoundExceededAmount;
+			} else {
+				/* Nothing exceeded. */
+				return pY;
 			}
 		}
 	}

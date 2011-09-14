@@ -64,7 +64,7 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 	// ===========================================================
 
 	@Override
-	public void onClick(final ClickDetector pClickDetector, final TouchEvent pTouchEvent) {
+	public void onClick(final ClickDetector pClickDetector, final int pPointerID, final float pSceneX, final float pSceneY) {
 		this.getOnScreenControlListener().onControlClick(this);
 	}
 

@@ -97,7 +97,7 @@ public class BoundCamera extends Camera {
 		super.setCenter(this.determineBoundedX(), this.determineBoundedY());
 	}
 
-	private float determineBoundedX() {
+	protected float determineBoundedX() {
 		if(this.mBoundsWidth < this.getWidth()) {
 			return this.mBoundsCenterX;
 		} else {
@@ -129,7 +129,7 @@ public class BoundCamera extends Camera {
 		}
 	}
 
-	private float determineBoundedY() {
+	protected float determineBoundedY() {
 		if(this.mBoundsHeight < this.getHeight()) {
 			return this.mBoundsCenterY;
 		} else {

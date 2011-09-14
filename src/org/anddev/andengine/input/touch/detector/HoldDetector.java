@@ -199,13 +199,13 @@ public class HoldDetector extends BaseDetector {
 	protected void triggerOnHoldStarted() {
 		this.mTriggering = true;
 
-		if(this.mHoldDetectorListener != null && this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mHoldDetectorListener.onHoldStarted(this, this.mPointerID, this.mHoldX, this.mHoldY);
 		}
 	}
 
 	protected void triggerOnHold(final long pHoldTimeMilliseconds) {
-		if(this.mHoldDetectorListener != null && this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mHoldDetectorListener.onHold(this, pHoldTimeMilliseconds, this.mPointerID, this.mHoldX, this.mHoldY);
 		}
 	}
@@ -213,7 +213,7 @@ public class HoldDetector extends BaseDetector {
 	protected void triggerOnHoldFinished(final long pHoldTimeMilliseconds) {
 		this.mTriggering = false;
 
-		if(this.mHoldDetectorListener != null && this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mHoldDetectorListener.onHoldFinished(this, pHoldTimeMilliseconds, this.mPointerID, this.mHoldX, this.mHoldY);
 		}
 	}

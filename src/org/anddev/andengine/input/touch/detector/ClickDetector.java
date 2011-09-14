@@ -78,7 +78,7 @@ public class ClickDetector extends BaseDetector {
 
     				if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
     					this.mDownTimeMilliseconds = Long.MIN_VALUE;
-    					this.mClickDetectorListener.onClick(this, pSceneTouchEvent);
+    					this.mClickDetectorListener.onClick(this, pSceneTouchEvent.getPointerID(), pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
     				}
 
     				this.mPointerID = TouchEvent.INVALID_POINTER_ID;
@@ -113,6 +113,6 @@ public class ClickDetector extends BaseDetector {
 		// Methods
 		// ===========================================================
 
-		public void onClick(final ClickDetector pClickDetector, final TouchEvent pTouchEvent);
+		public void onClick(final ClickDetector pClickDetector, final int pPointerID, final float pSceneX, final float pSceneY);
 	}
 }

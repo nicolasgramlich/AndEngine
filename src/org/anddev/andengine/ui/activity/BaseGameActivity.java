@@ -56,6 +56,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	@Override
 	protected void onCreate(final Bundle pSavedInstanceState) {
 		super.onCreate(pSavedInstanceState);
+
 		this.mPaused = true;
 
 		this.mEngine = this.onLoadEngine();
@@ -189,7 +190,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.mRenderSurfaceView = new RenderSurfaceView(this);
 		this.mRenderSurfaceView.setRenderer(this.mEngine);
 
-		this.setContentView(this.mRenderSurfaceView, this.createSurfaceViewLayoutParams());
+		this.setContentView(this.mRenderSurfaceView, BaseGameActivity.createSurfaceViewLayoutParams());
 	}
 
 	private void acquireWakeLock(final WakeLockOptions pWakeLockOptions) {
@@ -231,7 +232,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		}
 	}
 
-	protected LayoutParams createSurfaceViewLayoutParams() {
+	protected static LayoutParams createSurfaceViewLayoutParams() {
 		final LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		layoutParams.gravity = Gravity.CENTER;
 		return layoutParams;

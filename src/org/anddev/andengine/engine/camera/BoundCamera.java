@@ -18,16 +18,16 @@ public class BoundCamera extends Camera {
 
 	protected boolean mBoundsEnabled;
 
-	private float mBoundsMinX;
-	private float mBoundsMaxX;
-	private float mBoundsMinY;
-	private float mBoundsMaxY;
+	protected float mBoundsXMin;
+	protected float mBoundsXMax;
+	protected float mBoundsYMin;
+	protected float mBoundsYMax;
 
-	private float mBoundsCenterX;
-	private float mBoundsCenterY;
+	protected float mBoundsCenterX;
+	protected float mBoundsCenterY;
 
-	private float mBoundsWidth;
-	private float mBoundsHeight;
+	protected float mBoundsWidth;
+	protected float mBoundsHeight;
 
 	// ===========================================================
 	// Constructors
@@ -39,7 +39,7 @@ public class BoundCamera extends Camera {
 
 	public BoundCamera(final float pX, final float pY, final float pWidth, final float pHeight, final float pBoundMinX, final float pBoundMaxX, final float pBoundMinY, final float pBoundMaxY) {
 		super(pX, pY, pWidth, pHeight);
-		this.setBounds(pBoundMinX, pBoundMaxX, pBoundMinY, pBoundMaxY);
+		this.setBounds(pBoundMinX, pBoundMinY, pBoundMaxX, pBoundMaxY);
 		this.mBoundsEnabled = true;
 	}
 
@@ -55,17 +55,33 @@ public class BoundCamera extends Camera {
 		this.mBoundsEnabled = pBoundsEnabled;
 	}
 
-	public void setBounds(final float pBoundMinX, final float pBoundMaxX, final float pBoundMinY, final float pBoundMaxY) {
-		this.mBoundsMinX = pBoundMinX;
-		this.mBoundsMaxX = pBoundMaxX;
-		this.mBoundsMinY = pBoundMinY;
-		this.mBoundsMaxY = pBoundMaxY;
+	public void setBounds(final float pBoundsXMin, final float pBoundsYMin, final float pBoundsXMax, final float pBoundsYMax) {
+		this.mBoundsXMin = pBoundsXMin;
+		this.mBoundsXMax = pBoundsXMax;
+		this.mBoundsYMin = pBoundsYMin;
+		this.mBoundsYMax = pBoundsYMax;
 
-		this.mBoundsWidth = this.mBoundsMaxX - this.mBoundsMinX;
-		this.mBoundsHeight = this.mBoundsMaxY - this.mBoundsMinY;
+		this.mBoundsWidth = this.mBoundsXMax - this.mBoundsXMin;
+		this.mBoundsHeight = this.mBoundsYMax - this.mBoundsYMin;
 
-		this.mBoundsCenterX = this.mBoundsMinX + this.mBoundsWidth * 0.5f;
-		this.mBoundsCenterY = this.mBoundsMinY + this.mBoundsHeight * 0.5f;
+		this.mBoundsCenterX = this.mBoundsXMin + this.mBoundsWidth * 0.5f;
+		this.mBoundsCenterY = this.mBoundsYMin + this.mBoundsHeight * 0.5f;
+	}
+
+	public float getBoundsXMin() {
+		return this.mBoundsXMin;
+	}
+
+	public float getBoundsXMax() {
+		return this.mBoundsXMax;
+	}
+
+	public float getBoundsYMin() {
+		return this.mBoundsYMin;
+	}
+
+	public float getBoundsYMax() {
+		return this.mBoundsYMax;
 	}
 
 	public float getBoundsWidth() {
@@ -76,18 +92,18 @@ public class BoundCamera extends Camera {
 		return this.mBoundsHeight;
 	}
 
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+	
 	@Override
 	public void setCenter(final float pCenterX, final float pCenterY) {
 		super.setCenter(pCenterX, pCenterY);
-
+		
 		if(this.mBoundsEnabled) {
 			this.ensureInBounds();
 		}
 	}
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
 
 	// ===========================================================
 	// Methods
@@ -110,10 +126,10 @@ public class BoundCamera extends Camera {
 	}
 
 	protected float getBoundedX(final float pX) {
-		final float minXBoundExceededAmount = this.mBoundsMinX - this.getXMin();
+		final float minXBoundExceededAmount = this.mBoundsXMin - this.getXMin();
 		final boolean minXBoundExceeded = minXBoundExceededAmount > 0;
 
-		final float maxXBoundExceededAmount = this.getXMax() - this.mBoundsMaxX;
+		final float maxXBoundExceededAmount = this.getXMax() - this.mBoundsXMax;
 		final boolean maxXBoundExceeded = maxXBoundExceededAmount > 0;
 
 		if(minXBoundExceeded) {
@@ -136,10 +152,10 @@ public class BoundCamera extends Camera {
 	}
 
 	protected float getBoundedY(final float pY) {
-		final float minYBoundExceededAmount = this.mBoundsMinY - this.getYMin();
+		final float minYBoundExceededAmount = this.mBoundsYMin - this.getYMin();
 		final boolean minYBoundExceeded = minYBoundExceededAmount > 0;
 
-		final float maxYBoundExceededAmount = this.getYMax() - this.mBoundsMaxY;
+		final float maxYBoundExceededAmount = this.getYMax() - this.mBoundsYMax;
 		final boolean maxYBoundExceeded = maxYBoundExceededAmount > 0;
 
 		if(minYBoundExceeded) {

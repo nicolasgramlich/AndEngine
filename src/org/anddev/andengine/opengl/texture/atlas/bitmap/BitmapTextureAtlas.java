@@ -8,7 +8,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtl
 import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.exception.NullBitmapException;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -141,8 +141,9 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 				final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(bitmapConfig);
 				try {
 					if(bitmap == null) {
-						throw new IllegalArgumentException(bitmapTextureAtlasSource.getClass().getSimpleName() + ": " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
+						throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
 					}
+
 					if(preMultipyAlpha) {
 						GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, glFormat, glType);
 					} else {
@@ -150,7 +151,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 					}
 
 					bitmap.recycle();
-				} catch (final IllegalArgumentException iae) {
+				} catch (final NullBitmapException e) {
 					// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
 					//private Buffer createImage(final int width, final int height) {
 					//	final int stride = 3 * width;
@@ -174,11 +175,10 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 					//	return image;
 					//}
 
-					Debug.e("Error loading: " + bitmapTextureAtlasSource.toString(), iae);
 					if(this.getTextureStateListener() != null) {
-						this.getTextureStateListener().onTextureAtlasSourceLoadExeption(this, bitmapTextureAtlasSource, iae);
+						this.getTextureStateListener().onTextureAtlasSourceLoadExeption(this, bitmapTextureAtlasSource, e);
 					} else {
-						throw iae;
+						throw e;
 					}
 				}
 			}

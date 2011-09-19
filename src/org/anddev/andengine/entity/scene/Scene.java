@@ -7,7 +7,7 @@ import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
-import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.scene.background.Background;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
@@ -54,7 +54,7 @@ public class Scene extends Entity {
 
 	private IOnAreaTouchListener mOnAreaTouchListener;
 
-	private IBackground mBackground = new ColorBackground(0, 0, 0); // Black
+	private IBackground mBackground = new Background(0, 0, 0); // Black
 	private boolean mBackgroundEnabled = true;
 
 	private boolean mOnAreaTouchTraversalBackToFront = true;

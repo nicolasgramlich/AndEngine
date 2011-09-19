@@ -7,6 +7,7 @@ import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.StreamUtils;
+import org.anddev.andengine.util.exception.NullBitmapException;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -95,6 +96,10 @@ public abstract class BitmapTexture extends Texture {
 	protected void writeTextureToHardware() throws IOException {
 		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final Bitmap bitmap = this.onGetBitmap(bitmapConfig);
+
+		if(bitmap == null) {
+			throw new NullBitmapException("Caused by: '" + this.toString() + "'.");
+		}
 
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
 		if(preMultipyAlpha) {

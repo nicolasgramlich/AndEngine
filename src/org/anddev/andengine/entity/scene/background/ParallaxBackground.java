@@ -13,7 +13,7 @@ import org.anddev.andengine.opengl.util.GLState;
  * @author Nicolas Gramlich
  * @since 15:36:26 - 19.07.2010
  */
-public class ParallaxBackground extends ColorBackground {
+public class ParallaxBackground extends Background {
 	// ===========================================================
 	// Constants
 	// ===========================================================

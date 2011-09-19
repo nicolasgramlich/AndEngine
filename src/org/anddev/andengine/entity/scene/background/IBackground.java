@@ -2,6 +2,7 @@ package org.anddev.andengine.entity.scene.background;
 
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.opengl.IDrawable;
+import org.anddev.andengine.util.color.Color;
 import org.anddev.andengine.util.modifier.IModifier;
 
 /**
@@ -24,6 +25,10 @@ public interface IBackground extends IDrawable, IUpdateHandler {
 	public boolean removeBackgroundModifier(final IModifier<IBackground> pBackgroundModifier);
 	public void clearBackgroundModifiers();
 
+	public boolean isColorEnabled();
+	public void setColorEnabled(final boolean pColorEnabled);
+
+	public void setColor(final Color pColor);
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 }

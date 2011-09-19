@@ -62,7 +62,7 @@ public class RenderTexture extends Texture {
 		super(pPixelFormat, TextureOptions.NEAREST, null);
 
 		if(!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)) {
-			throw new IllegalArgumentException("pWidth and pHeight must be powers of two!"); // TODO Really?
+			throw new IllegalArgumentException("pWidth (" + pWidth + ") and pHeight (" + pHeight + ") must be powers of two!");
 		}
 
 		this.mWidth = pWidth;
@@ -108,6 +108,9 @@ public class RenderTexture extends Texture {
 			/* Can not happen. */
 		}
 
+		/* The texture to render to must not be bound. */
+//		GLState.bindTexture(0);
+
 		/* Generate FBO. */
 		this.mFramebufferObjectID = GLState.generateFramebuffer();
 		GLState.bindFramebuffer(this.mFramebufferObjectID);
@@ -128,7 +131,7 @@ public class RenderTexture extends Texture {
 		GLState.orthoProjectionGLMatrixf(0, this.mWidth, this.mHeight, 0, -1, 1);
 
 		this.savePreviousFramebufferObjectID();
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.mFramebufferObjectID);
+		GLState.bindFramebuffer(this.mFramebufferObjectID);
 
 		GLState.pushModelViewGLMatrix();
 		GLState.loadModelViewGLMatrixIdentity();

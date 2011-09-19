@@ -10,7 +10,7 @@ import org.anddev.andengine.entity.IEntity;
  * @author Nicolas Gramlich
  * @since 18:25:10 - 21.07.2010
  */
-public class EntityBackground extends ColorBackground {
+public class EntityBackground extends Background {
 	// ===========================================================
 	// Constants
 	// ===========================================================

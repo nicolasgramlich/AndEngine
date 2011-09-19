@@ -1,53 +1,54 @@
 package org.anddev.andengine.entity.scene.background;
 
-import static org.anddev.andengine.util.constants.ColorConstants.COLOR_FACTOR_INT_TO_FLOAT;
-
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.util.color.Color;
+import org.anddev.andengine.util.modifier.IModifier;
+import org.anddev.andengine.util.modifier.ModifierList;
 
 import android.opengl.GLES20;
+
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 13:45:24 - 19.07.2010
+ * @since 14:08:17 - 19.07.2010
  */
-public class ColorBackground extends BaseBackground {
+public class Background implements IBackground {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final int BACKGROUNDMODIFIERS_CAPACITY_DEFAULT = 4;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private float mRed = 0.0f;
-	private float mGreen = 0.0f;
-	private float mBlue = 0.0f;
-	private float mAlpha = 1.0f;
-
+	private final ModifierList<IBackground> mBackgroundModifiers = new ModifierList<IBackground>(this, BACKGROUNDMODIFIERS_CAPACITY_DEFAULT);
+	
+	private Color mColor = new Color(0, 0, 0, 1);
 	private boolean mColorEnabled = true;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	protected ColorBackground() {
+	protected Background() {
 
 	}
 
-	public ColorBackground(final float pRed, final float pGreen, final float pBlue) {
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
+	public Background(final float pRed, final float pGreen, final float pBlue) {
+		this.mColor.set(pRed, pGreen, pBlue);
 	}
 
-	public ColorBackground(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
-		this.mAlpha = pAlpha;
+	public Background(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.mColor.set(pRed, pGreen, pBlue, pAlpha);
+	}
+
+	public Background(final Color pColor) {
+		this.mColor.set(pColor);
 	}
 
 	// ===========================================================
@@ -62,9 +63,7 @@ public class ColorBackground extends BaseBackground {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
-		this.mRed = pRed;
-		this.mGreen = pGreen;
-		this.mBlue = pBlue;
+		this.mColor.set(pRed, pGreen, pBlue);
 	}
 
 	/**
@@ -76,36 +75,22 @@ public class ColorBackground extends BaseBackground {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.setColor(pRed, pGreen, pBlue);
-		this.mAlpha = pAlpha;
+		this.mColor.set(pRed, pGreen, pBlue, pAlpha);
+	}
+	
+	@Override
+	public void setColor(final Color pColor) {
+		this.mColor.set(pColor);
 	}
 
-	/**
-	 * Sets the color using the digital 8-bit per channel scheme (0 - 255 RGB triple).
-	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
-	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
-	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
-	 */
-	public void setColor(final int pRed, final int pGreen, final int pBlue) throws IllegalArgumentException {
-		this.setColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT);
-	}
-
-	/**
-	 * Sets the color using the digital 8-bit per channel scheme (0 - 255 RGB quadruple).
-	 * @param pRed The red color value. Should be between 0 and 255, inclusive.
-	 * @param pGreen The green color value. Should be between 0 and 255, inclusive.
-	 * @param pBlue The blue color value. Should be between 0 and 255, inclusive.
-	 */
-	public void setColor(final int pRed, final int pGreen, final int pBlue, final int pAlpha) throws IllegalArgumentException {
-		this.setColor(pRed / COLOR_FACTOR_INT_TO_FLOAT, pGreen / COLOR_FACTOR_INT_TO_FLOAT, pBlue / COLOR_FACTOR_INT_TO_FLOAT, pAlpha / COLOR_FACTOR_INT_TO_FLOAT);
-	}
-
-	public void setColorEnabled(final boolean pColorEnabled) {
-		this.mColorEnabled = pColorEnabled;
-	}
-
+	@Override
 	public boolean isColorEnabled() {
 		return this.mColorEnabled;
+	}
+
+	@Override
+	public void setColorEnabled(final boolean pColorEnabled) {
+		this.mColorEnabled = pColorEnabled;
 	}
 
 	// ===========================================================
@@ -113,11 +98,36 @@ public class ColorBackground extends BaseBackground {
 	// ===========================================================
 
 	@Override
+	public void addBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
+		this.mBackgroundModifiers.add(pBackgroundModifier);
+	}
+
+	@Override
+	public boolean removeBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
+		return this.mBackgroundModifiers.remove(pBackgroundModifier);
+	}
+
+	@Override
+	public void clearBackgroundModifiers() {
+		this.mBackgroundModifiers.clear();
+	}
+
+	@Override
+	public void onUpdate(final float pSecondsElapsed) {
+		this.mBackgroundModifiers.onUpdate(pSecondsElapsed);
+	}
+
+	@Override
 	public void onDraw(final Camera pCamera) {
 		if(this.mColorEnabled) {
-			GLES20.glClearColor(this.mRed, this.mGreen, this.mBlue, this.mAlpha);
+			GLES20.glClearColor(this.mColor.getRed(), this.mColor.getGreen(), this.mColor.getBlue(), this.mColor.getAlpha());
 			GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT); // TODO See commented out code in Renderer, bc of MultiSample
 		}
+	}
+
+	@Override
+	public void reset() {
+		this.mBackgroundModifiers.reset();
 	}
 
 	// ===========================================================

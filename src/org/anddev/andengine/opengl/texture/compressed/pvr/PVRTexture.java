@@ -18,15 +18,11 @@ import org.anddev.andengine.util.math.MathUtils;
 import android.opengl.GLES20;
 
 /**
- * [16:32:42] Ricardo Quesada: "quick tip for PVR + NPOT + RGBA4444 textures: Don't forget to pack the bytes:"
- * <code>GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);</code>
- *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich
  * @since 16:18:10 - 13.07.2011
- * @see https://github.com/cocos2d/cocos2d-iphone/blob/develop/cocos2d/CCTexturePVR.m
  */
 public abstract class PVRTexture extends Texture {
 	// ===========================================================
@@ -129,11 +125,17 @@ public abstract class PVRTexture extends Texture {
 		final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / DataConstants.BITS_PER_BYTE;
 
 		GLState.clearGLError();
-		
+
+		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(width) && MathUtils.isPowerOfTwo(height) && this.mPVRTextureHeader.mPVRTextureFormat != PVRTextureFormat.RGBA_4444;
+		if(!useDefaultAlignment) {
+			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
+		}
+
 		/* Calculate the data size for each texture level and respect the minimum number of blocks. */
 		int mipmapLevel = 0;
 		int currentPixelDataOffset = 0;
 		while (currentPixelDataOffset < dataLength) {
+//			GLES20.glPixelStorei(GLES20.GL_UNPACK_ROW_LENGTH, img_width );
 			final int currentPixelDataSize = width * height * bytesPerPixel;
 
 			if (mipmapLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
@@ -142,7 +144,7 @@ public abstract class PVRTexture extends Texture {
 
 			pvrDataBuffer.position(PVRTextureHeader.SIZE + currentPixelDataOffset);
 			pvrDataBuffer.limit(PVRTextureHeader.SIZE + currentPixelDataOffset + currentPixelDataSize);
-			ByteBuffer pixelBuffer = pvrDataBuffer.slice();
+			final ByteBuffer pixelBuffer = pvrDataBuffer.slice();
 
 			GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelBuffer);
 
@@ -155,6 +157,10 @@ public abstract class PVRTexture extends Texture {
 			height = Math.max(height / 2, 1);
 
 			mipmapLevel++;
+		}
+
+		if(!useDefaultAlignment) {
+			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 		}
 	}
 

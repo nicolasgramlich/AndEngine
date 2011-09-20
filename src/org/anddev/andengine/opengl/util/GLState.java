@@ -56,6 +56,8 @@ public class GLState {
 	private static final float[] sProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
 	private static final float[] sModelViewProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
 
+	public static final int GL_UNPACK_ALIGNMENT_DEFAULT = 4;
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

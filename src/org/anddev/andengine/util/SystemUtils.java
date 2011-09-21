@@ -28,6 +28,8 @@ public class SystemUtils {
 	private static final String MEMTOTAL_PATTERN = "MemTotal[\\s]*:[\\s]*(\\d+)[\\s]*kB\n";
 	private static final String MEMFREE_PATTERN = "MemFree[\\s]*:[\\s]*(\\d+)[\\s]*kB\n";
 
+	private static final int BUILD_VERSION_SDK = Integer.parseInt(Build.VERSION.SDK);
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -77,8 +79,22 @@ public class SystemUtils {
 	/**
 	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
 	 */
+	public static boolean isAndroidVersionOrLower(final int pBuildVersionCode) {
+		return BUILD_VERSION_SDK <= pBuildVersionCode;
+	}
+
+	/**
+	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
+	 */
 	public static boolean isAndroidVersionOrHigher(final int pBuildVersionCode) {
-		return Integer.parseInt(Build.VERSION.SDK) >= pBuildVersionCode;
+		return BUILD_VERSION_SDK >= pBuildVersionCode;
+	}
+
+	/**
+	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
+	 */
+	public static boolean isAndroidVersion(final int pBuildVersionCodeMin, final int pBuildVersionCodeMax) {
+		return BUILD_VERSION_SDK >= pBuildVersionCodeMin && BUILD_VERSION_SDK <= pBuildVersionCodeMax;
 	}
 
 	public static float getCPUBogoMips() throws SystemUtilsException {

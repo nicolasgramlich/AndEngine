@@ -13,3 +13,8 @@ JNIEXPORT void JNICALL Java_org_anddev_andengine_opengl_util_BufferUtils_jniPut(
 	memcpy(bufferAddress, dataAddress + pOffset, pLength << 2);
 	env->ReleasePrimitiveArrayCritical(pData, dataAddress, 0);
 }
+
+JNIEXPORT jobject JNICALL Java_org_anddev_andengine_opengl_util_BufferUtils_jniAllocateDirect(JNIEnv *env, jclass, jint pCapacity) {
+	jbyte* bytebuffer = (jbyte*) malloc(sizeof(jbyte) * pCapacity);
+	return env->NewDirectByteBuffer(bytebuffer, pCapacity);
+} 

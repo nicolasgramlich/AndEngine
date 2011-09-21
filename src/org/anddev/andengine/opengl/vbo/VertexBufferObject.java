@@ -6,9 +6,11 @@ import java.nio.ByteOrder;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.BufferUtils;
 import org.anddev.andengine.opengl.util.GLState;
+import org.anddev.andengine.util.SystemUtils;
 import org.anddev.andengine.util.data.DataConstants;
 
 import android.opengl.GLES20;
+import android.os.Build;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -26,6 +28,7 @@ public class VertexBufferObject {
 	// Fields
 	// ===========================================================
 
+	private final int mCapacity;
 	private final float[] mBufferData;
 
 	private final int mUsage;
@@ -40,6 +43,7 @@ public class VertexBufferObject {
 	private boolean mManaged;
 
 	private final VertexBufferObjectAttributes mVertexBufferObjectAttributes;
+
 
 	// ===========================================================
 	// Constructors
@@ -61,12 +65,20 @@ public class VertexBufferObject {
 	 * @param pVertexBufferObjectAttributes to be automatically enabled on the {@link ShaderProgram} used in {@link VertexBufferObject#bind(ShaderProgram)}.
 	 */
 	public VertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		this.mCapacity = pCapacity;
 		this.mUsage = pDrawType.getUsage();
 		this.mManaged = pManaged;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
 		this.mBufferData = new float[pCapacity];
 
-		this.mByteBuffer = ByteBuffer.allocateDirect((pCapacity * DataConstants.BYTES_PER_FLOAT)).order(ByteOrder.nativeOrder());
+		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
+			/* Honeycomb workaround for issue 16941. */
+			this.mByteBuffer = BufferUtils.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
+		} else {
+			/* Other SDK versions. */
+			this.mByteBuffer = ByteBuffer.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
+		}
+		this.mByteBuffer.order(ByteOrder.nativeOrder());
 
 		if(pManaged) {
 			this.loadToActiveBufferObjectManager();
@@ -108,6 +120,14 @@ public class VertexBufferObject {
 
 	public void setDirtyOnHardware() {
 		this.mDirtyOnHardware = true;
+	}
+
+	public int getCapacity() {
+		return this.mCapacity;
+	}
+
+	public int getSize() {
+		return this.mByteBuffer.capacity();
 	}
 
 	// ===========================================================

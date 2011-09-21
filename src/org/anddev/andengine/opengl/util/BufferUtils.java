@@ -38,6 +38,12 @@ public class BufferUtils {
 	// Methods
 	// ===========================================================
 
+	public static ByteBuffer allocateDirect(final int pCapacity) {
+		return BufferUtils.jniAllocateDirect(pCapacity);
+	}
+
+	private native static ByteBuffer jniAllocateDirect(final int pCapacity);
+
 	/**
 	 * @param pByteBuffer must be a direct Buffer.
 	 * @param pSource

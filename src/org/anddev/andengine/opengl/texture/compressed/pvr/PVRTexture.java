@@ -491,14 +491,17 @@ public abstract class PVRTexture extends Texture {
 		// Fields
 		// ===========================================================
 
-		private final int mAllocationSizeMaximum;
+		private final int mBufferSizeLimit;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public SmartPVRTexturePixelBufferStrategy(final int pAllocationSizeMaximum) {
-			this.mAllocationSizeMaximum = pAllocationSizeMaximum;
+		/**
+		 * @param pBufferSizeLimit in Bytes.
+		 */
+		public SmartPVRTexturePixelBufferStrategy(final int pBufferSizeLimit) {
+			this.mBufferSizeLimit = pBufferSizeLimit;
 		}
 
 		// ===========================================================
@@ -516,11 +519,11 @@ public abstract class PVRTexture extends Texture {
 
 		@Override
 		public void loadPVRTextureData(final IPVRTexturePixelBufferStrategyBufferManager pPVRTexturePixelBufferStrategyManager, final int pWidth, final int pHeight, final int pBytesPerPixel, final int pGLFormat, final int pGLType, final int pLevel, final int pCurrentPixelDataOffset, final int pCurrentPixelDataSize) throws IOException {
-			/* Create the texture with the required parameters but without data. */
+			/* Create the texture with the required parameters but without data, which will be supplied below in stripes. */
 			GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, pLevel, pGLFormat, pWidth, pHeight, 0, pGLFormat, pGLType, null);
 
 			final int bytesPerRow = pWidth * pBytesPerPixel;
-			final int stripeHeight = Math.max(1, this.mAllocationSizeMaximum / bytesPerRow);
+			final int stripeHeight = Math.max(1, this.mBufferSizeLimit / bytesPerRow);
 
 			/* Load stripes. */
 			int currentStripePixelDataOffset = pCurrentPixelDataOffset;

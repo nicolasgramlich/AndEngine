@@ -38,16 +38,32 @@ public abstract class PVRCCZTexture extends PVRTexture {
 		super(pPVRTextureFormat);
 	}
 
+	public PVRCCZTexture(final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy) throws IllegalArgumentException, IOException {
+		super(pPVRTextureFormat, pPVRTexturePixelBufferStrategy);
+	}
+
 	public PVRCCZTexture(final PVRTextureFormat pPVRTextureFormat, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
 		super(pPVRTextureFormat, pTextureStateListener);
+	}
+
+	public PVRCCZTexture(final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
+		super(pPVRTextureFormat, pPVRTexturePixelBufferStrategy, pTextureStateListener);
 	}
 
 	public PVRCCZTexture(final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException, IOException {
 		super(pPVRTextureFormat, pTextureOptions);
 	}
 
+	public PVRCCZTexture(final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final TextureOptions pTextureOptions) throws IllegalArgumentException, IOException {
+		super(pPVRTextureFormat, pPVRTexturePixelBufferStrategy, pTextureOptions);
+	}
+
 	public PVRCCZTexture(final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
 		super(pPVRTextureFormat, pTextureOptions, pTextureStateListener);
+	}
+
+	public PVRCCZTexture(final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
+		super(pPVRTextureFormat, pPVRTexturePixelBufferStrategy, pTextureOptions, pTextureStateListener);
 	}
 
 	// ===========================================================

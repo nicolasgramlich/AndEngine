@@ -16,7 +16,7 @@ public interface IPathFinder<T> {
 	// Fields
 	// ===========================================================
 
-	public Path findPath(final T pEntity, final ICostFunction<T> pCostFunction, final float pMaxCost, final int pFromX, final int pFromY, final int pToX, final int pToY, final IPathFinderListener<T> pPathFinderListener);
+	public Path findPath(final int pFromX, final int pFromY, final int pToX, final int pToY, final IPathFinderMap<T> pPathFinderMap, final T pEntity, final ICostFunction<T> pCostFunction, final float pMaxCost, final IPathFinderListener<T> pPathFinderListener);
 
     // ===========================================================
     // Inner and Anonymous Classes

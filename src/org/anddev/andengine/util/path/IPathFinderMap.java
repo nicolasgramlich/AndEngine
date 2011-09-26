@@ -16,13 +16,5 @@ public interface IPathFinderMap<T> {
 	// Fields
 	// ===========================================================
 
-	public int getXMin();
-	public int getXMax();
-	public int getYMin();
-	public int getYMax();
-
-	public int getWidth();
-	public int getHeight();
-
 	public boolean isBlocked(final int pX, final int pY, final T pEntity);
 }

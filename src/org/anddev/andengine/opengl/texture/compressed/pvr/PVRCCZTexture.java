@@ -68,13 +68,14 @@ public abstract class PVRCCZTexture extends PVRTexture {
 	}
 
 	@Override
-	protected ByteBuffer getPVRDataBuffer(final InputStream pInputStream) throws IOException {
+	protected ByteBuffer getPVRDataBuffer() throws IOException {
+		final InputStream inputStream = this.getInputStream();
 		try {
 			final byte[] data = new byte[this.mCCZHeader.getUncompressedSize()];
-			StreamUtils.copy(pInputStream, data);
+			StreamUtils.copy(inputStream, data);
 			return ByteBuffer.wrap(data);
 		} finally {
-			StreamUtils.close(pInputStream);
+			StreamUtils.close(inputStream);
 		}
 	}
 

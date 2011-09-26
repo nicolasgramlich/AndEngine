@@ -7,7 +7,7 @@ package org.anddev.andengine.util.path;
  * @author Nicolas Gramlich
  * @since 23:00:24 - 16.08.2010
  */
-public interface IPathFinderMap<T> {
+public interface ICostFunction<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,13 +16,5 @@ public interface IPathFinderMap<T> {
 	// Fields
 	// ===========================================================
 
-	public int getXMin();
-	public int getXMax();
-	public int getYMin();
-	public int getYMax();
-
-	public int getWidth();
-	public int getHeight();
-
-	public boolean isBlocked(final int pX, final int pY, final T pEntity);
+	public float getCost(final IPathFinderMap<T> pPathFinderMap, final int pFromX, final int pFromY, final int pToX, final int pToY, final T pEntity);
 }

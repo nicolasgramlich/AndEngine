@@ -1,8 +1,10 @@
 package org.anddev.andengine.util.path.astar;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.anddev.andengine.util.path.ICostFunction;
 import org.anddev.andengine.util.path.IPathFinder;
 import org.anddev.andengine.util.path.IPathFinderMap;
 import org.anddev.andengine.util.path.Path;
@@ -23,8 +25,8 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Node> mVisitedNodes = new ArrayList<Node>();
-	private final ArrayList<Node> mOpenNodes = new ArrayList<Node>();
+	private final List<Node> mVisitedNodes = new LinkedList<Node>();
+	private final List<Node> mOpenNodes = new LinkedList<Node>();
 
 	private final IPathFinderMap<T> mPathFinderMap;
 	private final int mMaxSearchDepth;
@@ -71,7 +73,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// ===========================================================
 
 	@Override
-	public synchronized Path findPath(final T pEntity, final float pMaxCost, final int pFromX, final int pFromY, final int pToX, final int pToY, final IPathFinderListener<T> pPathFinderListener) {
+	public synchronized Path findPath(final T pEntity, final ICostFunction<T> pCostFunction, final float pMaxCost, final int pFromX, final int pFromY, final int pToX, final int pToY, final IPathFinderListener<T> pPathFinderListener) {
 		final IPathFinderMap<T> pathFinderMap = this.mPathFinderMap;
 		if(pathFinderMap.isBlocked(pToX, pToY, pEntity)) {
 			return null;
@@ -81,8 +83,8 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		final int pathFinderMapYMin = pathFinderMap.getYMin();
 
 		/* Drag some fields to local variables. */
-		final ArrayList<Node> openNodes = this.mOpenNodes;
-		final ArrayList<Node> visitedNodes = this.mVisitedNodes;
+		final List<Node> openNodes = this.mOpenNodes;
+		final List<Node> visitedNodes = this.mVisitedNodes;
 
 		final Node[][] nodes = this.mNodes;
 		final Node fromNode = nodes[pFromY - pathFinderMapYMin][pFromX - pathFinderMapXMin];
@@ -129,7 +131,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 					final int neighborY = dY + current.mY;
 
 					if(!this.isBlocked(pEntity, pFromX, pFromY, neighborX, neighborY)) {
-						final float neighborCost = current.mCost + pathFinderMap.getCost(current.mX, current.mY, neighborX, neighborY, pEntity);
+						final float neighborCost = current.mCost + pCostFunction.getCost(pathFinderMap, current.mX, current.mY, neighborX, neighborY, pEntity);
 						final Node neighbor = nodes[neighborY - pathFinderMapYMin][neighborX - pathFinderMapXMin];
 
 						if(pPathFinderListener != null) {

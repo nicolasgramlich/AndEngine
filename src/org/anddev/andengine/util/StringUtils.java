@@ -1,7 +1,7 @@
 package org.anddev.andengine.util;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -106,45 +106,30 @@ public class StringUtils {
 		return out;
 	}
 
-    public static String formatStackTrace(StackTraceElement ste)
-    {
-        return ste.getClassName() + "." + ste.getMethodName() + "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")";
-    }
+	public static String formatStackTrace(final StackTraceElement pStackTraceElement) {
+		return new StringBuilder()
+			.append(pStackTraceElement.getClassName())
+			.append('.')
+			.append(pStackTraceElement.getMethodName())
+			.append('(')
+			.append(pStackTraceElement.getFileName())
+			.append(':')
+			.append(pStackTraceElement.getLineNumber())
+			.append(')')
+			.toString();
+	}
 
-    public static String formatStackTrace(StackTraceElement[] st)
-    {
-        if (st.length == 0)
-        {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(formatStackTrace(st[0]));
-        for (int i = 1; i < st.length; i++)
-        {
-            sb.append("\n").append(st[i]);
-        }
-        return sb.toString();
-    }
-
-    public static String formatStackTrace(StackTraceElement ste)
-    { 
-        return ste.getClassName() + "." + ste.getMethodName() + "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")"; 
-    } 
-
-    public static String formatStackTrace(StackTraceElement[] st)
-    { 
-        if (st.length == 0)
-        { 
-            return "";
-        } 
-        StringBuilder sb = new StringBuilder();
-        sb.append(formatStackTrace(st[0]));
-        for (int i = 1; i < st.length; i++)
-        { 
-            sb.append("\n").append(st[i]);
-        } 
-        return sb.toString();
-    } 
+	public static String formatStackTrace(final StackTraceElement[] pStackTraceElements) {
+		final StringBuilder sb = new StringBuilder();
+		final int stackTraceElementCount = pStackTraceElements.length;
+		for(int i = 0; i < stackTraceElementCount; i++) {
+			sb.append(pStackTraceElements[i]);
+			if(i < stackTraceElementCount - 1) {
+				sb.append('\n');
+			}
+		}
+		return sb.toString();
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

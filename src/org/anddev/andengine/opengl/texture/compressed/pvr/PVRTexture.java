@@ -29,15 +29,18 @@ public abstract class PVRTexture extends Texture {
 	// Constants
 	// ===========================================================
 
-	public static final int FLAG_MIPMAP = (1<<8); // has mip map levels
-	public static final int FLAG_TWIDDLE = (1<<9); // is twiddled
-	public static final int FLAG_BUMPMAP = (1<<10); // has normals encoded for a bump map
-	public static final int FLAG_TILING = (1<<11); // is bordered for tiled pvr
-	public static final int FLAG_CUBEMAP = (1<<12); // is a cubemap/skybox
-	public static final int FLAG_FALSEMIPCOL = (1<<13); // are there false colored MIP levels
-	public static final int FLAG_VOLUME = (1<<14); // is this a volume texture
-	public static final int FLAG_ALPHA = (1<<15); // v2.1 is there transparency info in the texture
-	public static final int FLAG_VERTICALFLIP = (1<<16); // v2.1 is the texture vertically flipped
+	public static final int FLAG_MIPMAP = (1 << 8); // has mip map levels
+	public static final int FLAG_TWIDDLE = (1 << 9); // is twiddled
+	public static final int FLAG_BUMPMAP = (1 << 10); // has normals encoded for a bump map
+	public static final int FLAG_TILING = (1 << 11); // is bordered for tiled pvr
+	public static final int FLAG_CUBEMAP = (1 << 12); // is a cubemap/skybox
+	public static final int FLAG_FALSEMIPCOL = (1 << 13); // are there false colored MIP levels
+	public static final int FLAG_VOLUME = (1 << 14); // is this a volume texture
+	public static final int FLAG_ALPHA = (1 << 15); // v2.1 is there transparency info in the texture
+	public static final int FLAG_VERTICALFLIP = (1 << 16); // v2.1 is the texture vertically flipped
+
+	private static final int ALLOCATION_SIZE_MAX = 15 * PixelFormat.RGBA_4444.getBitsPerPixel() / DataConstants.BITS_PER_BYTE;
+	private static final boolean ALLOCATION_GREEDY = false;
 
 	// ===========================================================
 	// Fields
@@ -135,20 +138,53 @@ public abstract class PVRTexture extends Texture {
 		int mipmapLevel = 0;
 		int currentPixelDataOffset = 0;
 		while (currentPixelDataOffset < dataLength) {
-//			GLES20.glPixelStorei(GLES20.GL_UNPACK_ROW_LENGTH, img_width );
-			final int currentPixelDataSize = width * height * bytesPerPixel;
+			final int bytesPerRow = width * bytesPerPixel;
+			final int currentPixelDataSize = height * bytesPerRow;
 
 			if (mipmapLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
 				Debug.w(String.format("Mipmap level '%u' is not squared. Width: '%u', height: '%u'. Texture won't render correctly.", mipmapLevel, width, height));
 			}
 
-			pvrDataBuffer.position(PVRTextureHeader.SIZE + currentPixelDataOffset);
-			pvrDataBuffer.limit(PVRTextureHeader.SIZE + currentPixelDataOffset + currentPixelDataSize);
-			final ByteBuffer pixelBuffer = pvrDataBuffer.slice();
+			if(ALLOCATION_GREEDY || currentPixelDataSize <= ALLOCATION_SIZE_MAX) {
+				/* Load current level at once. */
+				
+				/* Adjust buffer. */
+				pvrDataBuffer.position(PVRTextureHeader.SIZE + currentPixelDataOffset);
+				pvrDataBuffer.limit(PVRTextureHeader.SIZE + currentPixelDataOffset + currentPixelDataSize);
+				final ByteBuffer pixelBuffer = pvrDataBuffer.slice();
 
-			GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelBuffer);
+				/* Send to hardware. */
+				GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, pixelBuffer);
+			} else {
+				/* Load current level in stripes, never holding more than the maximum size in the heap. */
 
-			GLState.checkGLError();
+				/* Create the texture with the required parameters but without data. */
+				GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, null);
+		
+				/* We load at least one line. */
+				final int stripeHeightDefault = Math.max(1, ALLOCATION_SIZE_MAX / bytesPerRow);
+
+				/* Load stripes. */
+				int currentStripePixelDataOffset = currentPixelDataOffset;
+				int currentStripeOffsetY = 0;
+				while(currentStripeOffsetY < height) {
+					final int currentStripeHeight = Math.min(height - currentStripeOffsetY, stripeHeightDefault);
+					final int currentStripePixelDataSize = currentStripeHeight * bytesPerRow; 
+					
+					/* Adjust buffer. */
+					pvrDataBuffer.position(PVRTextureHeader.SIZE + currentStripePixelDataOffset);
+					pvrDataBuffer.limit(PVRTextureHeader.SIZE + currentStripePixelDataOffset + currentStripePixelDataSize);
+					final ByteBuffer pixelBuffer = pvrDataBuffer.slice();
+					
+					/* Send to hardware. */
+					GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, 0, currentStripeOffsetY, width, currentStripeHeight, glFormat, glType, pixelBuffer);
+
+					currentStripePixelDataOffset += currentStripePixelDataSize;
+					currentStripeOffsetY += currentStripeHeight;
+				}
+		
+				GLState.checkGLError();
+			}
 
 			currentPixelDataOffset += currentPixelDataSize;
 
@@ -159,6 +195,7 @@ public abstract class PVRTexture extends Texture {
 			mipmapLevel++;
 		}
 
+		/* Restore default alignment. */
 		if(!useDefaultAlignment) {
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 		}

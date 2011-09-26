@@ -116,7 +116,7 @@ public abstract class PVRTexture extends Texture {
 
 	@Override
 	protected void writeTextureToHardware() throws IOException {
-		final ByteBuffer pvrDataBuffer = this.getPVRDataBuffer();
+		final ByteBuffer pvrDataBuffer = this.getPVRDataBuffer(this.getInputStream());
 
 		int width = this.getWidth();
 		int height = this.getHeight();
@@ -161,14 +161,21 @@ public abstract class PVRTexture extends Texture {
 				/* Create the texture with the required parameters but without data. */
 				GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, mipmapLevel, glFormat, width, height, 0, glFormat, glType, null);
 		
-				/* We load at least one line. */
-				final int stripeHeightDefault = Math.max(1, ALLOCATION_SIZE_MAX / bytesPerRow);
+				final int desiredStripeHeight = ALLOCATION_SIZE_MAX / bytesPerRow;
+				final int stripeHeight;
+				if(desiredStripeHeight < 1) {
+					/* At least one line. */
+					Debug.w("Defaulting to at least one row!");
+					stripeHeight = 1;
+				} else {
+					stripeHeight = desiredStripeHeight;
+				}
 
 				/* Load stripes. */
 				int currentStripePixelDataOffset = currentPixelDataOffset;
 				int currentStripeOffsetY = 0;
 				while(currentStripeOffsetY < height) {
-					final int currentStripeHeight = Math.min(height - currentStripeOffsetY, stripeHeightDefault);
+					final int currentStripeHeight = Math.min(height - currentStripeOffsetY, stripeHeight);
 					final int currentStripePixelDataSize = currentStripeHeight * bytesPerRow; 
 					
 					/* Adjust buffer. */
@@ -205,14 +212,13 @@ public abstract class PVRTexture extends Texture {
 	// Methods
 	// ===========================================================
 
-	protected ByteBuffer getPVRDataBuffer() throws IOException {
-		final InputStream inputStream = this.getInputStream();
+	protected ByteBuffer getPVRDataBuffer(final InputStream pInputStream) throws IOException {
 		try {
 			final ByteBufferOutputStream os = new ByteBufferOutputStream(DataConstants.BYTES_PER_KILOBYTE, DataConstants.BYTES_PER_MEGABYTE / 2);
-			StreamUtils.copy(inputStream, os);
+			StreamUtils.copy(pInputStream, os);
 			return os.toByteBuffer();
 		} finally {
-			StreamUtils.close(inputStream);
+			StreamUtils.close(pInputStream);
 		}
 	}
 

@@ -73,10 +73,39 @@ public class StreamUtils {
 		return os.toByteArray();
 	}
 
-	public static void streamToBytes(final InputStream pInputStream, final int pReadLimit, final byte[] pData, final int pOffset) throws IOException {
-		final int read = pInputStream.read(pData, pOffset, pReadLimit);
-		if(read != pReadLimit) {
-			throw new IOException("ReadLimit: '" + pReadLimit + "', read: '" + read + "'.");
+	/**
+	 * @see {@link StreamUtils#streamToBytes(InputStream, int, byte[], int)}
+	 */
+	public static void streamToBytes(final InputStream pInputStream, final int pByteLimit, final byte[] pData) throws IOException {
+		StreamUtils.streamToBytes(pInputStream, pByteLimit, pData, 0);
+	}
+
+	/**
+	 * @param pInputStream the sources of the bytes.
+	 * @param pByteLimit the amount of bytes to read.
+	 * @param pData the array to place the read bytes in.
+	 * @param pOffset the offset within pData.
+	 * @throws IOException
+	 */
+	public static void streamToBytes(final InputStream pInputStream, final int pByteLimit, final byte[] pData, final int pOffset) throws IOException {
+		if(pByteLimit > pData.length - pOffset) {
+			throw new IOException("pData is not big enough.");
+		}
+
+		int pBytesLeftToRead = pByteLimit;
+		int readTotal = 0;
+		int read;
+		while((read = pInputStream.read(pData, pOffset + readTotal, pBytesLeftToRead)) != StreamUtils.END_OF_STREAM) {
+			readTotal += read;
+			if(pBytesLeftToRead > read) {
+				pBytesLeftToRead -= read;
+			} else {
+				break;
+			}
+		}
+
+		if(readTotal != pByteLimit) {
+			throw new IOException("ReadLimit: '" + pByteLimit + "', Read: '" + readTotal + "'.");
 		}
 	}
 
@@ -108,11 +137,11 @@ public class StreamUtils {
 	 *
 	 * @param pInputStream The input stream to copy from.
 	 * @param pOutputStream The output stream to copy to.
-	 * @param pByteLimit not more than so much bytes to read, or unlimited if smaller than 0.
+	 * @param pByteLimit not more than so much bytes to read, or unlimited if {@link StreamUtils#END_OF_STREAM}.
 	 *
 	 * @throws IOException If any error occurs during the copy.
 	 */
-	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream, final long pByteLimit) throws IOException {
+	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream, final int pByteLimit) throws IOException {
 		if(pByteLimit == StreamUtils.END_OF_STREAM) {
 			final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
 			int read;

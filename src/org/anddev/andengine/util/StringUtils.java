@@ -106,6 +106,46 @@ public class StringUtils {
 		return out;
 	}
 
+    public static String formatStackTrace(StackTraceElement ste)
+    {
+        return ste.getClassName() + "." + ste.getMethodName() + "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")";
+    }
+
+    public static String formatStackTrace(StackTraceElement[] st)
+    {
+        if (st.length == 0)
+        {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(formatStackTrace(st[0]));
+        for (int i = 1; i < st.length; i++)
+        {
+            sb.append("\n").append(st[i]);
+        }
+        return sb.toString();
+    }
+
+    public static String formatStackTrace(StackTraceElement ste)
+    { 
+        return ste.getClassName() + "." + ste.getMethodName() + "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")"; 
+    } 
+
+    public static String formatStackTrace(StackTraceElement[] st)
+    { 
+        if (st.length == 0)
+        { 
+            return "";
+        } 
+        StringBuilder sb = new StringBuilder();
+        sb.append(formatStackTrace(st[0]));
+        for (int i = 1; i < st.length; i++)
+        { 
+            sb.append("\n").append(st[i]);
+        } 
+        return sb.toString();
+    } 
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

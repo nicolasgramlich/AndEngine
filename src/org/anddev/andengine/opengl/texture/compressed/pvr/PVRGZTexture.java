@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 
 import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -66,7 +67,7 @@ public abstract class PVRGZTexture extends PVRTexture {
 	// ===========================================================
 
 	@Override
-	protected GZIPInputStream getInputStream() throws IOException {
+	public GZIPInputStream getInputStream() throws IOException {
 		return new GZIPInputStream(this.onGetInputStream());
 	}
 

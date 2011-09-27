@@ -9,6 +9,7 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
 import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy;
 import org.anddev.andengine.util.ArrayUtils;
 import org.anddev.andengine.util.StreamUtils;
 
@@ -75,7 +76,7 @@ public abstract class PVRCCZTexture extends PVRTexture {
 	// ===========================================================
 
 	@Override
-	protected final InputStream getInputStream() throws IOException {
+	public final InflaterInputStream getInputStream() throws IOException {
 		final InputStream inputStream = this.onGetInputStream();
 
 		this.mCCZHeader = new CCZHeader(StreamUtils.streamToBytes(inputStream, CCZHeader.SIZE));
@@ -84,7 +85,7 @@ public abstract class PVRCCZTexture extends PVRTexture {
 	}
 
 	@Override
-	protected ByteBuffer getPVRDataBuffer() throws IOException {
+	public ByteBuffer getPVRTextureBuffer() throws IOException {
 		final InputStream inputStream = this.getInputStream();
 		try {
 			final byte[] data = new byte[this.mCCZHeader.getUncompressedSize()];
@@ -208,7 +209,7 @@ public abstract class PVRCCZTexture extends PVRTexture {
 			this.mID = pID;
 		}
 
-		public InputStream wrap(final InputStream pInputStream) throws IOException {
+		public InflaterInputStream wrap(final InputStream pInputStream) throws IOException {
 			switch(this) {
 				case GZIP:
 					return new GZIPInputStream(pInputStream);

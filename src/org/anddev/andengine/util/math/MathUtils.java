@@ -202,6 +202,14 @@ public class MathUtils implements MathConstants {
 		return MathUtils.revertRotateAroundCenter(pVertices, pRotation, pRotationCenterX, pRotationCenterY);
 	}
 
+	public static boolean isInBounds(final int pMinValue, final int pMaxValue, final int pValue) {
+		return pValue >= pMinValue && pValue <= pMaxValue;
+	}
+
+	public static boolean isInBounds(final float pMinValue, final float pMaxValue, final float pValue) {
+		return pValue >= pMinValue && pValue <= pMaxValue;
+	}
+
 	public static int bringToBounds(final int pMinValue, final int pMaxValue, final int pValue) {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}

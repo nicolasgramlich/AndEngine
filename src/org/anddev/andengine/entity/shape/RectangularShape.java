@@ -32,7 +32,7 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	// Constructors
 	// ===========================================================
 
-	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, ShaderProgram pShaderProgram) {
+	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, final ShaderProgram pShaderProgram) {
 		super(pX, pY, pMesh, pShaderProgram);
 
 		this.mBaseWidth = pWidth;
@@ -41,7 +41,9 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 
-		this.resetRotationandScaleCenter();
+		this.resetRotationCenter();
+		this.resetScaleCenter();
+		this.resetSkewCenter();
 	}
 
 	// ===========================================================
@@ -58,10 +60,12 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 		return this.mHeight;
 	}
 
+	@Override
 	public float getBaseWidth() {
 		return this.mBaseWidth;
 	}
 
+	@Override
 	public float getBaseHeight() {
 		return this.mBaseHeight;
 	}
@@ -122,7 +126,9 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 		super.reset();
 		this.setBaseSize();
 
-		this.resetRotationandScaleCenter();
+		this.resetRotationCenter();
+		this.resetSkewCenter();
+		this.resetScaleCenter();
 	}
 
 	@Override
@@ -152,12 +158,19 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	// Methods
 	// ===========================================================
 
-	public void resetRotationandScaleCenter() {
+	public void resetRotationCenter() {
 		this.mRotationCenterX = this.mWidth * 0.5f;
 		this.mRotationCenterY = this.mHeight * 0.5f;
+	}
 
-		this.mScaleCenterX = this.mRotationCenterX;
-		this.mScaleCenterY = this.mRotationCenterY;
+	public void resetScaleCenter() {
+		this.mScaleCenterX = this.mWidth * 0.5f;
+		this.mScaleCenterY = this.mHeight * 0.5f;
+	}
+
+	public void resetSkewCenter() {
+		this.mSkewCenterX = this.mWidth * 0.5f;
+		this.mSkewCenterY = this.mHeight * 0.5f;
 	}
 
 	// ===========================================================

@@ -332,7 +332,7 @@ public class SpriteBatch extends Entity {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 			this.assertTexture(textureRegion);
 
-			if(pSprite.isRotatedOrScaled()) {
+			if(pSprite.isRotatedOrScaledOrSkewed()) {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
@@ -352,7 +352,7 @@ public class SpriteBatch extends Entity {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 			this.assertTexture(textureRegion);
 
-			if(pSprite.isRotatedOrScaled()) {
+			if(pSprite.isRotatedOrScaledOrSkewed()) {
 				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
 			} else {
 				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
@@ -370,7 +370,7 @@ public class SpriteBatch extends Entity {
 		if(pSprite.isVisible()) {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
-			if(pSprite.isRotatedOrScaled()) {
+			if(pSprite.isRotatedOrScaledOrSkewed()) {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
 				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
@@ -384,7 +384,7 @@ public class SpriteBatch extends Entity {
 		if(pSprite.isVisible()) {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
-			if(pSprite.isRotatedOrScaled()) {
+			if(pSprite.isRotatedOrScaledOrSkewed()) {
 				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
 			} else {
 				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);

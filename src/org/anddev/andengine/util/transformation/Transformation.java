@@ -1,6 +1,6 @@
 package org.anddev.andengine.util.transformation;
 
-import org.anddev.andengine.util.math.MathUtils;
+import org.anddev.andengine.util.math.MathConstants;
 
 import android.util.FloatMath;
 
@@ -116,6 +116,60 @@ public class Transformation {
 		return this;
 	}
 
+	public void preRotate(final float pAngle) {
+		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
+
+		final float sin = FloatMath.sin(angleRad);
+		final float cos = FloatMath.cos(angleRad);
+
+		final float a = this.a;
+		final float b = this.b;
+		final float c = this.c;
+		final float d = this.d;
+
+		this.a = cos * a + sin * c;
+		this.b = cos * b + sin * d;
+		this.c = cos * c - sin * a;
+		this.d = cos * d - sin * b;
+	}
+
+	public void postRotate(final float pAngle) {
+		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
+
+		final float sin = FloatMath.sin(angleRad);
+		final float cos = FloatMath.cos(angleRad);
+
+		final float a = this.a;
+		final float b = this.b;
+		final float c = this.c;
+		final float d = this.d;
+		final float tx = this.tx;
+		final float ty = this.ty;
+
+		this.a = a * cos - b * sin;
+		this.b = a * sin + b * cos;
+		this.c = c * cos - d * sin;
+		this.d = c * sin + d * cos;
+		this.tx = tx * cos - ty * sin;
+		this.ty = tx * sin + ty * cos;
+	}
+
+	public Transformation setToRotate(final float pAngle) {
+		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
+
+		final float sin = FloatMath.sin(angleRad);
+		final float cos = FloatMath.cos(angleRad);
+
+		this.a = cos;
+		this.b = sin;
+		this.c = -sin;
+		this.d = cos;
+		this.tx = 0.0f;
+		this.ty = 0.0f;
+
+		return this;
+	}
+
 	public void preScale(final float pScaleX, final float pScaleY) {
 		this.a *= pScaleX;
 		this.b *= pScaleX;
@@ -143,28 +197,9 @@ public class Transformation {
 		return this;
 	}
 
-	public void preRotate(final float pAngle) {
-		final float angleRad = MathUtils.DEG_TO_RAD * pAngle;
-
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
-
-		final float a = this.a;
-		final float b = this.b;
-		final float c = this.c;
-		final float d = this.d;
-
-		this.a = cos * a + sin * c;
-		this.b = cos * b + sin * d;
-		this.c = cos * c - sin * a;
-		this.d = cos * d - sin * b;
-	}
-
-	public void postRotate(final float pAngle) {
-		final float angleRad = MathUtils.DEG_TO_RAD * pAngle;
-
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
+	public void preSkew(final float pSkewX, final float pSkewY) {
+		final float tanX = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
+		final float tanY = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
 
 		final float a = this.a;
 		final float b = this.b;
@@ -173,24 +208,38 @@ public class Transformation {
 		final float tx = this.tx;
 		final float ty = this.ty;
 
-		this.a = a * cos - b * sin;
-		this.b = a * sin + b * cos;
-		this.c = c * cos - d * sin;
-		this.d = c * sin + d * cos;
-		this.tx = tx * cos - ty * sin;
-		this.ty = tx * sin + ty * cos;
+		this.a = a + tanY * c;
+		this.b = b + tanY * d;
+		this.c = tanX * a + c;
+		this.d = tanX * b + d;
+		this.tx = tx;
+		this.ty = ty;
 	}
 
-	public Transformation setToRotate(final float pAngle) {
-		final float angleRad = MathUtils.DEG_TO_RAD * pAngle;
+	public void postSkew(final float pSkewX, final float pSkewY) {
+		final float tanX = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
+		final float tanY = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
 
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
+		final float a = this.a;
+		final float b = this.b;
+		final float c = this.c;
+		final float d = this.d;
+		final float tx = this.tx;
+		final float ty = this.ty;
 
-		this.a = cos;
-		this.b = sin;
-		this.c = -sin;
-		this.d = cos;
+		this.a = a + b * tanX;
+		this.b = a * tanY + b;
+		this.c = c + d * tanX;
+		this.d = c * tanY + d;
+		this.tx = tx + ty * tanX;
+		this.ty = tx * tanY + ty;
+	}
+
+	public Transformation setToSkew(final float pSkewX, final float pSkewY) {
+		this.a = 1.0f;
+		this.b = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
+		this.c = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
+		this.d = 1.0f;
 		this.tx = 0.0f;
 		this.ty = 0.0f;
 

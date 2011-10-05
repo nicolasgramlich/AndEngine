@@ -290,15 +290,75 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY) {
 		this.mMenuItem.setScaleCenter(pScaleCenterX, pScaleCenterY);
 	}
-
+	
 	@Override
-	public boolean collidesWith(final IShape pOtherShape) {
-		return this.mMenuItem.collidesWith(pOtherShape);
+	public boolean isSkewed() {
+		return this.mMenuItem.isSkewed();
+	}
+	
+	@Override
+	public float getSkewX() {
+		return this.mMenuItem.getSkewX();
+	}
+	
+	@Override
+	public float getSkewY() {
+		return this.mMenuItem.getSkewY();
+	}
+	
+	@Override
+	public void setSkew(final float pSkew) {
+		this.mMenuItem.setSkew(pSkew);
+	}
+	
+	@Override
+	public void setSkew(final float pSkewX, final float pSkewY) {
+		this.mMenuItem.setSkew(pSkewX, pSkewY);
+	}
+	
+	@Override
+	public void setSkewX(final float pSkewX) {
+		this.mMenuItem.setSkewX(pSkewX);
+	}
+	
+	@Override
+	public void setSkewY(final float pSkewY) {
+		this.mMenuItem.setSkewY(pSkewY);
+	}
+	
+	@Override
+	public float getSkewCenterX() {
+		return this.mMenuItem.getSkewCenterX();
+	}
+	
+	@Override
+	public float getSkewCenterY() {
+		return this.mMenuItem.getSkewCenterY();
+	}
+	
+	@Override
+	public void setSkewCenterX(final float pSkewCenterX) {
+		this.mMenuItem.setSkewCenterX(pSkewCenterX);
+	}
+	
+	@Override
+	public void setSkewCenterY(final float pSkewCenterY) {
+		this.mMenuItem.setSkewCenterY(pSkewCenterY);
+	}
+	
+	@Override
+	public void setSkewCenter(final float pSkewCenterX, final float pSkewCenterY) {
+		this.mMenuItem.setSkewCenter(pSkewCenterX, pSkewCenterY);
 	}
 
 	@Override
-	public boolean isRotatedOrScaled() {
-		return this.mMenuItem.isRotatedOrScaled();
+	public boolean isRotatedOrScaledOrSkewed() {
+		return this.mMenuItem.isRotatedOrScaledOrSkewed();
+	}
+	
+	@Override
+	public boolean collidesWith(final IShape pOtherShape) {
+		return this.mMenuItem.collidesWith(pOtherShape);
 	}
 
 	@Override

@@ -19,7 +19,7 @@ import org.anddev.andengine.util.transformation.Transformation;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -81,6 +81,12 @@ public class Entity implements IEntity {
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;
 
+	protected float mSkewX = 0;
+	protected float mSkewY = 0;
+
+	protected float mSkewCenterX = 0;
+	protected float mSkewCenterY = 0;
+
 	private boolean mLocalToParentTransformationDirty = true;
 	private boolean mParentToLocalTransformationDirty = true;
 
@@ -117,7 +123,7 @@ public class Entity implements IEntity {
 	// ===========================================================
 
 	protected void onUpdateColor() {
-		
+
 	}
 
 	@Override
@@ -351,10 +357,87 @@ public class Entity implements IEntity {
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
-	
+
 	@Override
-	public boolean isRotatedOrScaled() {
-		return this.mRotation != 0 || this.mScaleX != 1 || this.mScaleY != 1;
+	public boolean isSkewed() {
+		return this.mSkewX != 1 || this.mSkewY != 1;
+	}
+
+	@Override
+	public float getSkewX() {
+		return this.mSkewX;
+	}
+
+	@Override
+	public float getSkewY() {
+		return this.mSkewY;
+	}
+
+	@Override
+	public void setSkewX(final float pSkewX) {
+		this.mSkewX = pSkewX;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public void setSkewY(final float pSkewY) {
+		this.mSkewY = pSkewY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public void setSkew(final float pSkew) {
+		this.mSkewX = pSkew;
+		this.mSkewY = pSkew;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public void setSkew(final float pSkewX, final float pSkewY) {
+		this.mSkewX = pSkewX;
+		this.mSkewY = pSkewY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public float getSkewCenterX() {
+		return this.mSkewCenterX;
+	}
+
+	@Override
+	public float getSkewCenterY() {
+		return this.mSkewCenterY;
+	}
+
+	@Override
+	public void setSkewCenterX(final float pSkewCenterX) {
+		this.mSkewCenterX = pSkewCenterX;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public void setSkewCenterY(final float pSkewCenterY) {
+		this.mSkewCenterY = pSkewCenterY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public void setSkewCenter(final float pSkewCenterX, final float pSkewCenterY) {
+		this.mSkewCenterX = pSkewCenterX;
+		this.mSkewCenterY = pSkewCenterY;
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public boolean isRotatedOrScaledOrSkewed() {
+		return this.mRotation != 0 || this.mScaleX != 1 || this.mScaleY != 1 || this.mSkewX != 0 || this.mSkewY != 0;
 	}
 
 	@Override
@@ -376,14 +459,14 @@ public class Entity implements IEntity {
 	public float getAlpha() {
 		return this.mColor.getAlpha();
 	}
-	
+
 	@Override
 	public Color getColor() {
 		return this.mColor;
 	}
-	
+
 	@Override
-	public void setColor(Color pColor) {
+	public void setColor(final Color pColor) {
 		this.mColor.set(pColor);
 
 		this.onUpdateColor();
@@ -420,7 +503,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		if(this.mColor.setChanging(pRed, pGreen, pBlue, pAlpha)) { // TODO Is this check worth it?
-			this.onUpdateColor(); 
+			this.onUpdateColor();
 		}
 	}
 
@@ -493,7 +576,7 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return;
 		}
-		this.mChildren.clear(PARAMETERCALLABLE_DETACHCHILD);
+		this.mChildren.clear(Entity.PARAMETERCALLABLE_DETACHCHILD);
 	}
 
 	@Override
@@ -571,7 +654,7 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return false;
 		}
-		return this.mChildren.remove(pEntity, PARAMETERCALLABLE_DETACHCHILD);
+		return this.mChildren.remove(pEntity, Entity.PARAMETERCALLABLE_DETACHCHILD);
 	}
 
 	@Override
@@ -695,8 +778,17 @@ public class Entity implements IEntity {
 				localToParentTransformation.postTranslate(scaleCenterX, scaleCenterY);
 			}
 
-			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
-			 * In that case the last postTranslate of the scale and the first postTranslate of the rotation is superfluous. */
+			/* Skew. */
+			final float skewX = this.mSkewX;
+			final float skewY = this.mSkewY;
+			if(skewX != 0 || skewY != 0) {
+				final float skewCenterX = this.mSkewCenterX;
+				final float skewCenterY = this.mSkewCenterY;
+
+				localToParentTransformation.postTranslate(-skewCenterX, -skewCenterY);
+				localToParentTransformation.postSkew(skewX, skewY);
+				localToParentTransformation.postTranslate(skewCenterX, skewCenterY);
+			}
 
 			/* Rotation. */
 			final float rotation = this.mRotation;
@@ -736,8 +828,17 @@ public class Entity implements IEntity {
 				parentToLocalTransformation.postTranslate(rotationCenterX, rotationCenterY);
 			}
 
-			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
-			 * In that case the last postTranslate of the rotation and the first postTranslate of the scale is superfluous. */
+			/* Skew. */
+			final float skewX = this.mSkewX;
+			final float skewY = this.mSkewY;
+			if(skewX != 0 || skewY != 0) {
+				final float skewCenterX = this.mSkewCenterX;
+				final float skewCenterY = this.mSkewCenterY;
+
+				parentToLocalTransformation.postTranslate(-skewCenterX, -skewCenterY);
+				parentToLocalTransformation.postSkew(-skewX, -skewY);
+				parentToLocalTransformation.postTranslate(skewCenterX, skewCenterY);
+			}
 
 			/* Scale. */
 			final float scaleX = this.mScaleX;
@@ -789,7 +890,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
-		return this.convertLocalToSceneCoordinates(pX, pY, VERTICES_LOCAL_TO_SCENE_TMP);
+		return this.convertLocalToSceneCoordinates(pX, pY, Entity.VERTICES_LOCAL_TO_SCENE_TMP);
 	}
 
 	/* (non-Javadoc)
@@ -810,7 +911,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates) {
-		return this.convertSceneToLocalCoordinates(pCoordinates, VERTICES_LOCAL_TO_SCENE_TMP);
+		return this.convertSceneToLocalCoordinates(pCoordinates, Entity.VERTICES_LOCAL_TO_SCENE_TMP);
 	}
 
 	/* (non-Javadoc)
@@ -831,7 +932,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
-		return this.convertSceneToLocalCoordinates(pX, pY, VERTICES_SCENE_TO_LOCAL_TMP);
+		return this.convertSceneToLocalCoordinates(pX, pY, Entity.VERTICES_SCENE_TO_LOCAL_TMP);
 	}
 
 	/* (non-Javadoc)
@@ -852,7 +953,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates) {
-		return this.convertSceneToLocalCoordinates(pCoordinates, VERTICES_SCENE_TO_LOCAL_TMP);
+		return this.convertSceneToLocalCoordinates(pCoordinates, Entity.VERTICES_SCENE_TO_LOCAL_TMP);
 	}
 
 	/* (non-Javadoc)
@@ -939,7 +1040,7 @@ public class Entity implements IEntity {
 	@Override
 	public void toString(final StringBuilder pStringBuilder) {
 		pStringBuilder.append(this.getClass().getSimpleName());
-		
+
 		if(this.mChildren != null && this.mChildren.size() > 0) {
 			pStringBuilder.append(" [");
 			final ArrayList<IEntity> entities = this.mChildren;
@@ -960,14 +1061,14 @@ public class Entity implements IEntity {
 	protected void preDraw(final Camera pCamera) {
 
 	}
-	
+
 	/**
 	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
 	 */
 	protected void draw(final Camera pCamera) {
 
 	}
-	
+
 	protected void postDraw(final Camera pCamera) {
 
 	}
@@ -991,6 +1092,9 @@ public class Entity implements IEntity {
 		/* Rotation. */
 		this.applyRotation();
 
+		/* Skew. */
+		this.applySkew();
+
 		/* Scale. */
 		this.applyScale();
 	}
@@ -1013,6 +1117,20 @@ public class Entity implements IEntity {
 			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
 			 * In that case the last glTranslatef of the rotation and the first glTranslatef of the scale is superfluous.
 			 * The problem is that applyRotation and applyScale would need to be "merged" in order to efficiently check for that condition.  */
+		}
+	}
+
+	protected void applySkew() {
+		final float skewX = this.mSkewX;
+		final float skewY = this.mSkewY;
+
+		if(skewX != 0 || skewY != 0) {
+			final float skewCenterX = this.mSkewCenterX;
+			final float skewCenterY = this.mSkewCenterY;
+
+			GLState.translateModelViewGLMatrixf(skewCenterX, skewCenterY, 0);
+			GLState.skewModelViewGLMatrixf(skewX, skewY);
+			GLState.translateModelViewGLMatrixf(-skewCenterX, -skewCenterY, 0);
 		}
 	}
 

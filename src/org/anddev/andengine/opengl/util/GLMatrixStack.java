@@ -1,6 +1,7 @@
 package org.anddev.andengine.opengl.util;
 
 import org.anddev.andengine.util.exception.AndEngineException;
+import org.anddev.andengine.util.math.MathConstants;
 
 import android.opengl.Matrix;
 
@@ -83,6 +84,12 @@ public class GLMatrixStack {
 		Matrix.scaleM(this.mMatrixStack, this.mMatrixStackOffset, pScaleX, pScaleY, pScaleZ);
 	}
 
+	public void glSkewf(final float pSkewX, final float pSkewY) {
+		GLMatrixStack.setSkewM(this.mTemp, 0, pSkewX, pSkewY);
+		System.arraycopy(this.mMatrixStack, this.mMatrixStackOffset, this.mTemp, GLMatrixStack.GLMATRIX_SIZE, GLMatrixStack.GLMATRIX_SIZE);
+		Matrix.multiplyMM(this.mMatrixStack, this.mMatrixStackOffset, this.mTemp, GLMatrixStack.GLMATRIX_SIZE, this.mTemp, 0);
+	}
+
 	public void glOrthof(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
 		Matrix.orthoM(this.mMatrixStack, this.mMatrixStackOffset, pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}
@@ -107,6 +114,28 @@ public class GLMatrixStack {
 	public void reset() {
 		this.mMatrixStackOffset = 0;
 		this.glLoadIdentity();
+	}
+
+	private static void setSkewM(final float[] pMatrixStack, final int pOffset, final float pSkewX, final float pSkewY) {
+		pMatrixStack[pOffset + 0] = 1.0f;
+		pMatrixStack[pOffset + 1] = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
+		pMatrixStack[pOffset + 2] = 0.0f;
+		pMatrixStack[pOffset + 3] = 0.0f;
+
+		pMatrixStack[pOffset + 4] = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
+		pMatrixStack[pOffset + 5] = 1.0f;
+		pMatrixStack[pOffset + 6] = 0.0f;
+		pMatrixStack[pOffset + 7] = 0.0f;
+
+		pMatrixStack[pOffset + 8] = 0.0f;
+		pMatrixStack[pOffset + 9] = 0.0f;
+		pMatrixStack[pOffset + 10] = 1.0f;
+		pMatrixStack[pOffset + 11] = 0.0f;
+
+		pMatrixStack[pOffset + 12] = 0.0f;
+		pMatrixStack[pOffset + 13] = 0.0f;
+		pMatrixStack[pOffset + 14] = 0.0f;
+		pMatrixStack[pOffset + 15] = 1.0f;
 	}
 
 	// ===========================================================

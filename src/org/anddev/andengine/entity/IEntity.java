@@ -16,7 +16,7 @@ import org.anddev.andengine.util.transformation.Transformation;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -78,20 +78,34 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public void setScale(final float pScale);
 	public void setScale(final float pScaleX, final float pScaleY);
 
-	public boolean isRotatedOrScaled();
-
 	public float getScaleCenterX();
 	public float getScaleCenterY();
 	public void setScaleCenterX(final float pScaleCenterX);
 	public void setScaleCenterY(final float pScaleCenterY);
 	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY);
 
+	public boolean isSkewed();
+	public float getSkewX();
+	public float getSkewY();
+	public void setSkewX(final float pSkewX);
+	public void setSkewY(final float pSkewY);
+	public void setSkew(final float pSkew);
+	public void setSkew(final float pSkewX, final float pSkewY);
+
+	public float getSkewCenterX();
+	public float getSkewCenterY();
+	public void setSkewCenterX(final float pSkewCenterX);
+	public void setSkewCenterY(final float pSkewCenterY);
+	public void setSkewCenter(final float pSkewCenterX, final float pSkewCenterY);
+
+	public boolean isRotatedOrScaledOrSkewed();
+
 	public float getRed();
 	public float getGreen();
 	public float getBlue();
 	public float getAlpha();
 	public Color getColor();
-	
+
 	public void setAlpha(final float pAlpha);
 	public void setColor(final Color pColor);
 	public void setColor(final float pRed, final float pGreen, final float pBlue);

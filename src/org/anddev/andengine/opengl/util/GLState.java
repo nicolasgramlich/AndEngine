@@ -318,6 +318,10 @@ public class GLState {
 		GLState.sModelViewGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
 	}
 
+	public static void skewModelViewGLMatrixf(final float pSkewX, final float pSkewY) {
+		GLState.sModelViewGLMatrixStack.glSkewf(pSkewX, pSkewY);
+	}
+
 	public static void orthoModelViewGLMatrixf(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
 		GLState.sModelViewGLMatrixStack.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}
@@ -325,27 +329,31 @@ public class GLState {
 	public static void pushProjectionGLMatrix() {
 		GLState.sProjectionGLMatrixStack.glPushMatrix();
 	}
-	
+
 	public static void popProjectionGLMatrix() {
 		GLState.sProjectionGLMatrixStack.glPopMatrix();
 	}
-	
+
 	public static void loadProjectionGLMatrixIdentity() {
 		GLState.sProjectionGLMatrixStack.glLoadIdentity();
 	}
-	
+
 	public static void translateProjectionGLMatrixf(final float pX, final float pY, final float pZ) {
 		GLState.sProjectionGLMatrixStack.glTranslatef(pX, pY, pZ);
 	}
-	
+
 	public static void rotateProjectionGLMatrixf(final float pAngle, final float pX, final float pY, final float pZ) {
 		GLState.sProjectionGLMatrixStack.glRotatef(pAngle, pX, pY, pZ);
 	}
-	
+
 	public static void scaleProjectionGLMatrixf(final float pScaleX, final float pScaleY, final int pScaleZ) {
 		GLState.sProjectionGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
 	}
-	
+
+	public static void skewProjectionGLMatrixf(final float pSkewX, final float pSkewY) {
+		GLState.sProjectionGLMatrixStack.glSkewf(pSkewX, pSkewY);
+	}
+
 	public static void orthoProjectionGLMatrixf(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
 		GLState.sProjectionGLMatrixStack.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}

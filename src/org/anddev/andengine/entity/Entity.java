@@ -879,7 +879,7 @@ public class Entity implements IEntity {
 
 		final IEntity parent = this.mParent;
 		if(parent != null) {
-			sceneToLocalTransformation.postConcat(parent.getSceneToLocalTransformation());
+			sceneToLocalTransformation.preConcat(parent.getSceneToLocalTransformation());
 		}
 
 		return sceneToLocalTransformation;

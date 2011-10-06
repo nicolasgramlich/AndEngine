@@ -594,7 +594,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 
 	@Override
 	public void callOnChildren(final IEntityCallable pEntityCallable) {
-		this.callOnChildren(pEntityCallable);
+		this.mMenuItem.callOnChildren(pEntityCallable);
 	}
 
 	@Override

@@ -203,7 +203,7 @@ public abstract class PVRTexture extends Texture {
 		// Constants
 		// ===========================================================
 
-		public static final byte[] MAGIC_IDENTIFIER = {
+		static final byte[] MAGIC_IDENTIFIER = {
 			(byte)'P',
 			(byte)'V',
 			(byte)'R',

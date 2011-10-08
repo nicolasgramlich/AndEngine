@@ -34,6 +34,30 @@ public class ArrayUtils {
 	// Methods
 	// ===========================================================
 
+	public static byte random(final byte[] pArray) {
+		return pArray[MathUtils.random(0, pArray.length - 1)];
+	}
+	
+	public static short random(final short[] pArray) {
+		return pArray[MathUtils.random(0, pArray.length - 1)];
+	}
+	
+	public static int random(final int[] pArray) {
+		return pArray[MathUtils.random(0, pArray.length - 1)];
+	}
+	
+	public static long random(final long[] pArray) {
+		return pArray[MathUtils.random(0, pArray.length - 1)];
+	}
+	
+	public static float random(final float[] pArray) {
+		return pArray[MathUtils.random(0, pArray.length - 1)];
+	}
+	
+	public static double random(final double[] pArray) {
+		return pArray[MathUtils.random(0, pArray.length - 1)];
+	}
+	
 	public static <T> T random(final T[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}

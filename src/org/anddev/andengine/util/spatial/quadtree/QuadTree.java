@@ -32,8 +32,8 @@ public class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 	// Constructors
 	// ===========================================================
 
-	public QuadTree(final B pSpatialBounds) {
-		this.mBounds = pSpatialBounds;
+	public QuadTree(final B pBounds) {
+		this.mBounds = pBounds;
 		this.mRoot = new QuadTreeNode<B, T>(QuadTree.LEVEL_ROOT, this.mBounds);
 	}
 
@@ -62,20 +62,20 @@ public class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 		this.mRoot.remove(pItem);
 	}
 
-	public List<T> query(final B pSpatialBounds) {
-		return this.query(pSpatialBounds, new LinkedList<T>());
+	public List<T> query(final B pBounds) {
+		return this.query(pBounds, new LinkedList<T>());
 	}
 
-	public List<T> query(final B pSpatialBounds, final List<T> pResult) {
-		return this.mRoot.query(pSpatialBounds, pResult);
+	public List<T> query(final B pBounds, final List<T> pResult) {
+		return this.mRoot.query(pBounds, pResult);
 	}
 
-	public List<T> query(final B pSpatialBounds, final IMatcher<T> pMatcher) {
-		return this.query(pSpatialBounds, pMatcher, new LinkedList<T>());
+	public List<T> query(final B pBounds, final IMatcher<T> pMatcher) {
+		return this.query(pBounds, pMatcher, new LinkedList<T>());
 	}
 
-	public List<T> query(final B pSpatialBounds, final IMatcher<T> pMatcher, final List<T> pResult) {
-		return this.mRoot.query(pSpatialBounds, pMatcher, pResult);
+	public List<T> query(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult) {
+		return this.mRoot.query(pBounds, pMatcher, pResult);
 	}
 
 	public void callItems(final ParameterCallable<T> pParameterCallable) {

@@ -40,9 +40,9 @@ public class QuadTreeNode<B extends IBounds, T extends ISpatialItem<B>> {
 	// Constructors
 	// ===========================================================
 
-	public QuadTreeNode(final int pLevel, final B pSpatialBounds) {
+	public QuadTreeNode(final int pLevel, final B pBounds) {
 		this.mLevel = pLevel;
-		this.mBounds = pSpatialBounds;
+		this.mBounds = pBounds;
 	}
 
 	// ===========================================================
@@ -114,7 +114,7 @@ public class QuadTreeNode<B extends IBounds, T extends ISpatialItem<B>> {
 	 * @return the items of this {@link QuadTreeNode} and all children (recursively).
 	 */
 	public List<T> getItemsAndItemsBelow(final List<T> pResult) {
-		pResult.addAll(this.mItems);
+		pResult.addAll(this.mItems); // TODO Does addAll use an iterator internally?
 
 		if(this.mTopLeftChild != null) {
 			this.mTopLeftChild.getItemsAndItemsBelow(pResult);
@@ -147,14 +147,14 @@ public class QuadTreeNode<B extends IBounds, T extends ISpatialItem<B>> {
 		return pResult;
 	}
 
-	public List<T> query(final B pSpatialBounds) {
-		return this.query(pSpatialBounds, new LinkedList<T>());
+	public List<T> query(final B pBounds) {
+		return this.query(pBounds, new LinkedList<T>());
 	}
 
-	public List<T> query(final B pSpatialBounds, final List<T> pResult) {
+	public List<T> query(final B pBounds, final List<T> pResult) {
 		/* Test against all items in this node. */
 		for(final T item : this.mItems) {
-			if(pSpatialBounds.intersects(item.getBounds())) {
+			if(pBounds.intersects(item.getBounds())) {
 				pResult.add(item);
 			}
 		}
@@ -165,23 +165,23 @@ public class QuadTreeNode<B extends IBounds, T extends ISpatialItem<B>> {
 		}
 
 		/* Check children. */
-		if(this.queryChild(pSpatialBounds, pResult, this.mTopLeftChild)) {
+		if(this.queryChild(pBounds, pResult, this.mTopLeftChild)) {
 			return pResult;
-		} else if(this.queryChild(pSpatialBounds, pResult, this.mTopRightChild)) {
+		} else if(this.queryChild(pBounds, pResult, this.mTopRightChild)) {
 			return pResult;
-		} else if(this.queryChild(pSpatialBounds, pResult, this.mBottomLeftChild)) {
+		} else if(this.queryChild(pBounds, pResult, this.mBottomLeftChild)) {
 			return pResult;
-		} else if(this.queryChild(pSpatialBounds, pResult, this.mBottomRightChild)) {
+		} else if(this.queryChild(pBounds, pResult, this.mBottomRightChild)) {
 			return pResult;
 		} else {
 			return pResult;
 		}
 	}
 
-	public List<T> query(final B pSpatialBounds, final IMatcher<T> pMatcher, final List<T> pResult) {
+	public List<T> query(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult) {
 		/* Test against all items in this node. */
 		for(final T item : this.mItems) {
-			if(pSpatialBounds.intersects(item.getBounds()) && pMatcher.matches(item)) {
+			if(pBounds.intersects(item.getBounds()) && pMatcher.matches(item)) {
 				pResult.add(item);
 			}
 		}
@@ -192,13 +192,13 @@ public class QuadTreeNode<B extends IBounds, T extends ISpatialItem<B>> {
 		}
 
 		/* Check children. */
-		if(this.queryChild(pSpatialBounds, pMatcher, pResult, this.mTopLeftChild)) {
+		if(this.queryChild(pBounds, pMatcher, pResult, this.mTopLeftChild)) {
 			return pResult;
-		} else if(this.queryChild(pSpatialBounds, pMatcher, pResult, this.mTopRightChild)) {
+		} else if(this.queryChild(pBounds, pMatcher, pResult, this.mTopRightChild)) {
 			return pResult;
-		} else if(this.queryChild(pSpatialBounds, pMatcher, pResult, this.mBottomLeftChild)) {
+		} else if(this.queryChild(pBounds, pMatcher, pResult, this.mBottomLeftChild)) {
 			return pResult;
-		} else if(this.queryChild(pSpatialBounds, pMatcher, pResult, this.mBottomRightChild)) {
+		} else if(this.queryChild(pBounds, pMatcher, pResult, this.mBottomRightChild)) {
 			return pResult;
 		} else {
 			return pResult;
@@ -206,45 +206,45 @@ public class QuadTreeNode<B extends IBounds, T extends ISpatialItem<B>> {
 	}
 
 	/**
-	 * @param pSpatialBounds
+	 * @param pBounds
 	 * @param pResult
 	 * @param pChild
-	 * @return <code>true</code> when the child contains pSpatialBounds, <code>false</code> otherwise.
+	 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 	 */
-	private boolean queryChild(final B pSpatialBounds, final List<T> pResult, final QuadTreeNode<B, T> pChild) {
+	private boolean queryChild(final B pBounds, final List<T> pResult, final QuadTreeNode<B, T> pChild) {
 		if(!pChild.isEmpty()) {
-			if(pChild.mBounds.contains(pSpatialBounds)) {
-				pResult.addAll(pChild.query(pSpatialBounds, pResult));
+			if(pChild.mBounds.contains(pBounds)) {
+				pChild.query(pBounds, pResult);
 				return true;
 			}
 
-			if(pSpatialBounds.contains(pChild.mBounds)) {
-				pResult.addAll(pChild.getItemsAndItemsBelow(pResult));
-			} else if(pChild.mBounds.intersects(pSpatialBounds)) {
-				pResult.addAll(pChild.query(pSpatialBounds, pResult));
+			if(pBounds.contains(pChild.mBounds)) {
+				pChild.getItemsAndItemsBelow(pResult);
+			} else if(pChild.mBounds.intersects(pBounds)) {
+				pChild.query(pBounds, pResult);
 			}
 		}
 		return false;
 	}
 
 	/**
-	 * @param pSpatialBounds
+	 * @param pBounds
 	 * @param pMatcher
 	 * @param pResult
 	 * @param pChild
-	 * @return <code>true</code> when the child contains pSpatialBounds, <code>false</code> otherwise.
+	 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 	 */
-	private boolean queryChild(final B pSpatialBounds, final IMatcher<T> pMatcher, final List<T> pResult, final QuadTreeNode<B, T> pChild) {
+	private boolean queryChild(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult, final QuadTreeNode<B, T> pChild) {
 		if(!pChild.isEmpty()) {
-			if(pChild.mBounds.contains(pSpatialBounds)) {
-				pResult.addAll(pChild.query(pSpatialBounds, pMatcher, pResult));
+			if(pChild.mBounds.contains(pBounds)) {
+				pChild.query(pBounds, pMatcher, pResult);
 				return true;
 			}
 
-			if(pSpatialBounds.contains(pChild.mBounds)) {
-				pResult.addAll(pChild.getItemsAndItemsBelow(pMatcher, pResult));
-			} else if(pChild.mBounds.intersects(pSpatialBounds)) {
-				pResult.addAll(pChild.query(pSpatialBounds, pMatcher, pResult));
+			if(pBounds.contains(pChild.mBounds)) {
+				pChild.getItemsAndItemsBelow(pMatcher, pResult);
+			} else if(pChild.mBounds.intersects(pBounds)) {
+				pChild.query(pBounds, pMatcher, pResult);
 			}
 		}
 		return false;

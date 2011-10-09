@@ -1,5 +1,7 @@
 package org.anddev.andengine.util.spatial.adt.bounds;
 
+import org.anddev.andengine.util.exception.AndEngineException;
+
 /**
  * (c) Zynga 2011
  *
@@ -14,19 +16,17 @@ public interface IBounds {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
 	public boolean isEmpty();
-
 	public boolean contains(final IBounds pBounds);
-
 	public boolean intersects(final IBounds pBounds);
-
-	public IBounds split(final BoundsSplit pBoundsSplit); // TODO Allow to throw Exception that has to be catched.
+	public IBounds split(final BoundsSplit pBoundsSplit) throws BoundsSplitException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public enum BoundsSplit {
+	public static enum BoundsSplit {
 		// ===========================================================
 		// Elements
 		// ===========================================================
@@ -36,6 +36,38 @@ public interface IBounds {
 		// ===========================================================
 		// Constants
 		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
+
+	public class BoundsSplitException extends AndEngineException {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		private static final long serialVersionUID = 7970869239897412727L;
 
 		// ===========================================================
 		// Fields

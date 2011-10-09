@@ -15,14 +15,18 @@ public class FloatBounds implements IBounds {
 	// Fields
 	// ===========================================================
 
-	public final float mLeft;
-	public final float mRight;
-	public final float mTop;
-	public final float mBottom;
+	public float mLeft;
+	public float mRight;
+	public float mTop;
+	public float mBottom;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public FloatBounds(final float pX, final float pY) throws IllegalArgumentException {
+		this(pX, pX, pY, pY);
+	}
 
 	public FloatBounds(final float pLeft, final float pRight, final float pTop, final float pBottom) throws IllegalArgumentException {
 		this.mLeft = pLeft;
@@ -46,16 +50,32 @@ public class FloatBounds implements IBounds {
 		return this.mLeft;
 	}
 
+	public void setLeft(final float pLeft) {
+		this.mLeft = pLeft;
+	}
+
 	public float getRight() {
 		return this.mRight;
+	}
+
+	public void setRight(final float pRight) {
+		this.mRight = pRight;
 	}
 
 	public float getTop() {
 		return this.mTop;
 	}
 
+	public void setTop(final float pTop) {
+		this.mTop = pTop;
+	}
+
 	public float getBottom() {
 		return this.mBottom;
+	}
+
+	public void setBottom(final float pBottom) {
+		this.mBottom = pBottom;
 	}
 
 	public float getWidth() {
@@ -70,10 +90,6 @@ public class FloatBounds implements IBounds {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
 	@Override
 	public boolean intersects(final IBounds pBounds) {
 		if(!(pBounds instanceof FloatBounds)) {
@@ -83,7 +99,7 @@ public class FloatBounds implements IBounds {
 
 		final FloatBounds other = (FloatBounds) pBounds;
 
-		return (this.mLeft < other.mRight) && (other.mLeft < this.mRight) && (this.mTop < other.mBottom) && (other.mTop < this.mBottom);
+		return this.intersects(other);
 	}
 
 	@Override
@@ -95,7 +111,7 @@ public class FloatBounds implements IBounds {
 
 		final FloatBounds other = (FloatBounds) pBounds;
 
-		return (this.mLeft <= other.mLeft) && (this.mTop <= other.mTop) && (this.mRight >= other.mRight) && (this.mBottom >= other.mBottom);
+		return this.contains(other);
 	}
 
 	@Override
@@ -122,6 +138,41 @@ public class FloatBounds implements IBounds {
 			default:
 				throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 		}
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder()
+		.append("[Left: ")
+		.append(this.mLeft)
+		.append(", Right: ")
+		.append(this.mRight)
+		.append(", Top: ")
+		.append(this.mTop)
+		.append(", Bottom: ")
+		.append(this.mBottom)
+		.append("]")
+		.toString();
+	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	public boolean intersects(final FloatBounds pFloatBounds) {
+		return (this.mLeft < pFloatBounds.mRight) && (pFloatBounds.mLeft < this.mRight) && (this.mTop < pFloatBounds.mBottom) && (pFloatBounds.mTop < this.mBottom);
+	}
+
+	public boolean intersects(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+		return (this.mLeft < pRight) && (pLeft < this.mRight) && (this.mTop < pBottom) && (pTop < this.mBottom);
+	}
+
+	public boolean contains(final FloatBounds pFloatBounds) {
+		return (this.mLeft <= pFloatBounds.mLeft) && (this.mTop <= pFloatBounds.mTop) && (this.mRight >= pFloatBounds.mRight) && (this.mBottom >= pFloatBounds.mBottom);
+	}
+
+	public boolean contains(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+		return (this.mLeft <= pLeft) && (this.mTop <= pTop) && (this.mRight >= pRight) && (this.mBottom >= pBottom);
 	}
 
 	// ===========================================================

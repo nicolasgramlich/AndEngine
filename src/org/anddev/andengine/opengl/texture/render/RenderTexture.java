@@ -14,10 +14,6 @@ import android.graphics.Bitmap.Config;
 import android.opengl.GLES20;
 
 /**
- * Currently a {@link RenderTexture} can only be created during runtime, i.e. inside of the draw loop on the GL-Thread.
- * TODO This might become a problem when trying to 'reload' it.
- *
- * TODO When GL Context is lost, mFramebufferObjectID and mPreviousFramebufferObjectID are invalid!
  *
  * (c) Zynga 2011
  *
@@ -175,35 +171,42 @@ public class RenderTexture extends Texture {
 	}
 
 	public int[] getPixelsARGB_8888() {
-		return this.getPixelsARGB_8888(false);
+		return this.getPixelsARGB_8888(0, 0, this.mWidth, this.mHeight, false);
 	}
 
-	public int[] getPixelsARGB_8888(final boolean pFlipVertical) {
-		final int[] pixelsRGBA_8888 = new int[this.mWidth * this.mHeight];
+	public int[] getPixelsARGB_8888(final int pX, final int pY, final int pWidth, final int pHeight, final boolean pFlipVertical) {
+		final int[] pixelsRGBA_8888 = new int[pWidth * pHeight];
 		final IntBuffer glPixelBuffer = IntBuffer.wrap(pixelsRGBA_8888);
 		glPixelBuffer.position(0);
 
 		this.begin();
-		GLES20.glReadPixels(0, 0, this.mWidth, this.mHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), glPixelBuffer);
+		/* Convert to GL coordinates. */
+		final int x = pX;
+		final int y = this.mHeight - pHeight - pY;
+		GLES20.glReadPixels(x, y, pWidth, pHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), glPixelBuffer);
 		this.end();
 
 		if(pFlipVertical) {
-			return GLHelper.convertRGBA_8888toARGB_8888_FlippedVertical(pixelsRGBA_8888, this.mWidth, this.mHeight);
+			return GLHelper.convertRGBA_8888toARGB_8888_FlippedVertical(pixelsRGBA_8888, pWidth, pHeight);
 		} else {
 			return GLHelper.convertRGBA_8888toARGB_8888(pixelsRGBA_8888);
 		}
 	}
 
 	public Bitmap getBitmap() {
-		return this.getBitmap(false);
+		return this.getBitmap(0, 0, this.mWidth, this.mHeight, false);
 	}
 
 	public Bitmap getBitmap(final boolean pFlipVertical) {
+		return this.getBitmap(0, 0, this.mWidth, this.mHeight, pFlipVertical);
+	}
+
+	public Bitmap getBitmap(final int pX, final int pY, final int pWidth, final int pHeight, final boolean pFlipVertical) {
 		if(this.mPixelFormat != PixelFormat.RGBA_8888){
 			throw new IllegalStateException("Currently only 'PixelFormat." + PixelFormat.RGBA_8888 + "' is supported to be retrieved as a Bitmap.");
 		}
 
-		return Bitmap.createBitmap(this.getPixelsARGB_8888(pFlipVertical), this.mWidth, this.mHeight, Config.ARGB_8888);
+		return Bitmap.createBitmap(this.getPixelsARGB_8888(pX, pY, pWidth, pHeight, pFlipVertical), pWidth, pHeight, Config.ARGB_8888);
 	}
 
 	// ===========================================================

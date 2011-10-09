@@ -37,7 +37,7 @@ public class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 	// ===========================================================
 
 	public QuadTree(final B pBounds) {
-		this(pBounds, LEVEL_MAX_DEFAULT);
+		this(pBounds, QuadTree.LEVEL_MAX_DEFAULT);
 	}
 
 	public QuadTree(final B pBounds, final int pMaxLevel) {
@@ -66,12 +66,18 @@ public class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 	public synchronized void add(final T pItem) {
 		this.mRoot.add(pItem, pItem.getBounds());
 	}
-	
+
 	@Deprecated
 	public synchronized void add(final T pItem, final B pBounds) {
 		this.mRoot.add(pItem, pBounds);
 	}
-	
+
+	/**
+	 * Shorthand for <code>remove(pItem, pBounds)</code> followed by a <code>add(pItem)</code>.
+	 *
+	 * @param pItem to be freshly added.
+	 * @param pBounds to remove the pItem from.
+	 */
 	public synchronized void move(final T pItem, final B pBounds) {
 		this.remove(pItem, pBounds);
 		this.add(pItem);

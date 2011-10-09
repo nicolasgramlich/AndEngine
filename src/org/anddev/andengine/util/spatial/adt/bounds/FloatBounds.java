@@ -19,23 +19,23 @@ public class FloatBounds implements IBounds {
 	public final float mRight;
 	public final float mTop;
 	public final float mBottom;
-	public final float mWidth;
-	public final float mHeight;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FloatBounds(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+	public FloatBounds(final float pLeft, final float pRight, final float pTop, final float pBottom) throws IllegalArgumentException {
 		this.mLeft = pLeft;
 		this.mRight = pRight;
 		this.mTop = pTop;
 		this.mBottom = pBottom;
 
-		this.mWidth = this.mRight - this.mLeft;
-		this.mHeight = this.mBottom - this.mTop;
-
-// this.left < this.right && this.top < this.bottom
+		if(pLeft > pRight) {
+			throw new IllegalArgumentException("pLeft must be smaller or equal to pRight.");
+		}
+		if(pTop > pBottom) {
+			throw new IllegalArgumentException("pTop must be smaller or equal to pBottom.");
+		}
 	}
 
 	// ===========================================================
@@ -59,11 +59,11 @@ public class FloatBounds implements IBounds {
 	}
 
 	public float getWidth() {
-		return this.mWidth;
+		return this.mRight - this.mLeft;
 	}
 
 	public float getHeight() {
-		return this.mHeight;
+		return this.mBottom - this.mTop;
 	}
 
 	// ===========================================================
@@ -79,6 +79,7 @@ public class FloatBounds implements IBounds {
 		if(!(pBounds instanceof FloatBounds)) {
 			throw new IllegalArgumentException("pBounds must be an instance of '" + FloatBounds.class.getSimpleName() + "'.");
 		}
+		// TODO Also support IntBounds?
 
 		final FloatBounds other = (FloatBounds) pBounds;
 
@@ -90,6 +91,7 @@ public class FloatBounds implements IBounds {
 		if(!(pBounds instanceof FloatBounds)) {
 			throw new IllegalArgumentException("pBounds must be an instance of '" + FloatBounds.class.getSimpleName() + "'.");
 		}
+		// TODO Also support IntBounds?
 
 		final FloatBounds other = (FloatBounds) pBounds;
 
@@ -105,8 +107,8 @@ public class FloatBounds implements IBounds {
 	public FloatBounds split(final BoundsSplit pBoundsSplit) {
 		// TODO Does split work properly, when "mWidth % 2 != 0" or "mHeight % 2 != 0"
 
-		final float halfWidth = this.mWidth / 2;
-		final float halfHeight = this.mHeight / 2;
+		final float halfWidth = this.getWidth() / 2;
+		final float halfHeight = this.getHeight() / 2;
 
 		switch(pBoundsSplit) {
 			case TOP_LEFT:

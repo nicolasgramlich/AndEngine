@@ -19,8 +19,6 @@ public class IntBounds implements IBounds {
 	public final int mRight;
 	public final int mTop;
 	public final int mBottom;
-	public final int mWidth;
-	public final int mHeight;
 
 	// ===========================================================
 	// Constructors
@@ -31,9 +29,6 @@ public class IntBounds implements IBounds {
 		this.mRight = pRight;
 		this.mTop = pTop;
 		this.mBottom = pBottom;
-
-		this.mWidth = this.mRight - this.mLeft;
-		this.mHeight = this.mBottom - this.mTop;
 
 // this.left < this.right && this.top < this.bottom
 	}
@@ -59,11 +54,11 @@ public class IntBounds implements IBounds {
 	}
 
 	public int getWidth() {
-		return this.mWidth;
+		return this.mRight - this.mLeft;
 	}
 
 	public int getHeight() {
-		return this.mHeight;
+		return this.mBottom - this.mTop;
 	}
 
 	// ===========================================================
@@ -101,8 +96,8 @@ public class IntBounds implements IBounds {
 	public IntBounds split(final BoundsSplit pBoundsSplit) {
 		// TODO Does split work properly, when "mWidth % 2 != 0" or "mHeight % 2 != 0"
 
-		final int halfWidth = this.mWidth / 2;
-		final int halfHeight = this.mHeight / 2;
+		final int halfWidth = this.getWidth() / 2;
+		final int halfHeight = this.getHeight() / 2;
 
 		switch(pBoundsSplit) {
 			case TOP_LEFT:

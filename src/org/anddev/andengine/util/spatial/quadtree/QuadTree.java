@@ -76,11 +76,24 @@ public class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 	 * Shorthand for <code>remove(pItem, pBounds)</code> followed by a <code>add(pItem)</code>.
 	 *
 	 * @param pItem to be freshly added.
-	 * @param pBounds to remove the pItem from.
+	 * @param pBounds to remove pItem with.
 	 */
 	public synchronized void move(final T pItem, final B pBounds) {
 		this.remove(pItem, pBounds);
 		this.add(pItem);
+	}
+
+	/**
+	 * Shorthand for <code>remove(pItem, pOldBounds)</code> followed by a <code>add(pItem, pNewBounds)</code>.
+	 *
+	 * @param pItem to be freshly added.
+	 * @param pOldBounds to remove pItem with.
+	 * @param pNewBounds to add pItem with.
+	 */
+	@Deprecated
+	public synchronized void move(final T pItem, final B pOldBounds, final B pNewBounds) {
+		this.remove(pItem, pOldBounds);
+		this.add(pItem, pNewBounds);
 	}
 
 	public synchronized void remove(final T pItem) {

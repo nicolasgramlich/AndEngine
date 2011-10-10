@@ -30,9 +30,10 @@ public class GLState {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static String sGLVersion;
 	private static String sGLRenderer;
+	private static String sGLExtensions;
 
 	private static int sCurrentHardwareBufferID = -1;
 	private static int sCurrentShaderProgramID = -1;
@@ -71,7 +72,11 @@ public class GLState {
 
 	public static String getGLRenderer() {
 		return GLState.sGLRenderer;
-	}	
+	}
+
+	public static String getGLExtensions() {
+		return GLState.sGLExtensions;
+	}
 
 	// ===========================================================
 	// Methods
@@ -106,11 +111,11 @@ public class GLState {
 	public static void enableExtensions(final RenderOptions pRenderOptions) {
 		GLState.sGLVersion = GLES20.glGetString(GLES20.GL_VERSION);
 		GLState.sGLRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
-		final String extensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
+		GLState.sGLExtensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
 
 		Debug.d("RENDERER: " + GLState.sGLRenderer);
 		Debug.d("VERSION: " + GLState.sGLVersion);
-		Debug.d("EXTENSIONS: " + extensions);
+		Debug.d("EXTENSIONS: " + GLState.sGLExtensions);
 	}
 
 	public static void enableScissorTest() {

@@ -65,6 +65,8 @@ public class GLMatrixStack {
 		Matrix.setIdentityM(this.mMatrixStack, this.mMatrixStackOffset);
 	}
 
+	@Deprecated
+	// FIXME pGLMatrixA not used!
 	public void setToResult(final GLMatrixStack pGLMatrixA, final GLMatrixStack pGLMatrixB) {
 		System.arraycopy(this.mMatrixStack, this.mMatrixStackOffset, this.mTemp, 0, GLMatrixStack.GLMATRIX_SIZE);
 		Matrix.multiplyMM(this.mMatrixStack, this.mMatrixStackOffset, this.mTemp, 0, pGLMatrixB.mMatrixStack, 0);

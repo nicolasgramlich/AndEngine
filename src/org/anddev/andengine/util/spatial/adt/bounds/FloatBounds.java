@@ -1,12 +1,15 @@
 package org.anddev.andengine.util.spatial.adt.bounds;
 
+import org.anddev.andengine.util.spatial.adt.bounds.source.IBoundsSource;
+import org.anddev.andengine.util.spatial.adt.bounds.source.IFloatBoundsSource;
+
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:12:02 - 07.10.2011
  */
-public class FloatBounds implements IBounds {
+public class FloatBounds implements IBounds<IFloatBoundsSource>, IFloatBoundsSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,6 +31,10 @@ public class FloatBounds implements IBounds {
 		this(pX, pX, pY, pY);
 	}
 
+	public FloatBounds(final IFloatBoundsSource pFloatBoundsSource) {
+		this(pFloatBoundsSource.getLeft(), pFloatBoundsSource.getRight(), pFloatBoundsSource.getTop(), pFloatBoundsSource.getBottom());
+	}
+
 	public FloatBounds(final float pLeft, final float pRight, final float pTop, final float pBottom) throws IllegalArgumentException {
 		this.mLeft = pLeft;
 		this.mRight = pRight;
@@ -46,6 +53,7 @@ public class FloatBounds implements IBounds {
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public float getLeft() {
 		return this.mLeft;
 	}
@@ -54,6 +62,7 @@ public class FloatBounds implements IBounds {
 		this.mLeft = pLeft;
 	}
 
+	@Override
 	public float getRight() {
 		return this.mRight;
 	}
@@ -62,6 +71,7 @@ public class FloatBounds implements IBounds {
 		this.mRight = pRight;
 	}
 
+	@Override
 	public float getTop() {
 		return this.mTop;
 	}
@@ -70,6 +80,7 @@ public class FloatBounds implements IBounds {
 		this.mTop = pTop;
 	}
 
+	@Override
 	public float getBottom() {
 		return this.mBottom;
 	}
@@ -86,12 +97,33 @@ public class FloatBounds implements IBounds {
 		return this.mBottom - this.mTop;
 	}
 
+	public void set(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+		this.mLeft = pLeft;
+		this.mRight = pRight;
+		this.mTop = pTop;
+		this.mBottom = pBottom;
+	}
+
+	@Override
+	public void set(final IBoundsSource pBoundsSource) {
+		if(!(pBoundsSource instanceof IFloatBoundsSource)) {
+			throw new IllegalArgumentException("pBounds must be an instance of '" + IFloatBoundsSource.class.getSimpleName() + "'.");
+		}
+		// TODO Also support IntBounds?
+
+		this.set((IFloatBoundsSource)pBoundsSource);
+	}
+
+	public void set(final IFloatBoundsSource pFloatBoundsSource) {
+		this.set(pFloatBoundsSource.getLeft(), pFloatBoundsSource.getRight(), pFloatBoundsSource.getTop(), pFloatBoundsSource.getBottom());
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	public boolean intersects(final IBounds pBounds) {
+	public boolean intersects(final IBounds<IFloatBoundsSource> pBounds) {
 		if(!(pBounds instanceof FloatBounds)) {
 			throw new IllegalArgumentException("pBounds must be an instance of '" + FloatBounds.class.getSimpleName() + "'.");
 		}
@@ -103,7 +135,12 @@ public class FloatBounds implements IBounds {
 	}
 
 	@Override
-	public boolean contains(final IBounds pBounds) {
+	public boolean intersects(final IFloatBoundsSource pFloatBoundsSource) {
+		return this.intersects(pFloatBoundsSource.getLeft(), pFloatBoundsSource.getRight(), pFloatBoundsSource.getTop(), pFloatBoundsSource.getBottom());
+	}
+
+	@Override
+	public boolean contains(final IBounds<IFloatBoundsSource> pBounds) {
 		if(!(pBounds instanceof FloatBounds)) {
 			throw new IllegalArgumentException("pBounds must be an instance of '" + FloatBounds.class.getSimpleName() + "'.");
 		}
@@ -112,6 +149,11 @@ public class FloatBounds implements IBounds {
 		final FloatBounds other = (FloatBounds) pBounds;
 
 		return this.contains(other);
+	}
+
+	@Override
+	public boolean contains(final IFloatBoundsSource pFloatBoundsSource) {
+		return this.contains(pFloatBoundsSource.getLeft(), pFloatBoundsSource.getRight(), pFloatBoundsSource.getTop(), pFloatBoundsSource.getBottom());
 	}
 
 	@Override

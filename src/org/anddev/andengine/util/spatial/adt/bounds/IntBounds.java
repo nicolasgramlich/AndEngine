@@ -1,12 +1,15 @@
 package org.anddev.andengine.util.spatial.adt.bounds;
 
+import org.anddev.andengine.util.spatial.adt.bounds.source.IBoundsSource;
+import org.anddev.andengine.util.spatial.adt.bounds.source.IIntBoundsSource;
+
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:05:32 - 08.10.2011
  */
-public class IntBounds implements IBounds {
+public class IntBounds implements IBounds<IIntBoundsSource>, IIntBoundsSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,6 +31,10 @@ public class IntBounds implements IBounds {
 		this(pX, pX, pY, pY);
 	}
 
+	public IntBounds(final IIntBoundsSource pIntBoundsSource) {
+		this(pIntBoundsSource.getLeft(), pIntBoundsSource.getRight(), pIntBoundsSource.getTop(), pIntBoundsSource.getBottom());
+	}
+
 	public IntBounds(final int pLeft, final int pRight, final int pTop, final int pBottom) throws IllegalArgumentException {
 		this.mLeft = pLeft;
 		this.mRight = pRight;
@@ -46,6 +53,7 @@ public class IntBounds implements IBounds {
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public int getLeft() {
 		return this.mLeft;
 	}
@@ -54,6 +62,7 @@ public class IntBounds implements IBounds {
 		this.mLeft = pLeft;
 	}
 
+	@Override
 	public int getRight() {
 		return this.mRight;
 	}
@@ -62,6 +71,7 @@ public class IntBounds implements IBounds {
 		this.mRight = pRight;
 	}
 
+	@Override
 	public int getTop() {
 		return this.mTop;
 	}
@@ -70,6 +80,7 @@ public class IntBounds implements IBounds {
 		this.mTop = pTop;
 	}
 
+	@Override
 	public int getBottom() {
 		return this.mBottom;
 	}
@@ -86,12 +97,32 @@ public class IntBounds implements IBounds {
 		return this.mBottom - this.mTop + 1;
 	}
 
+	public void set(final int pLeft, final int pRight, final int pTop, final int pBottom) {
+		this.mLeft = pLeft;
+		this.mRight = pRight;
+		this.mTop = pTop;
+		this.mBottom = pBottom;
+	}
+
+	@Override
+	public void set(final IBoundsSource pBoundsSource) {
+		if(!(pBoundsSource instanceof IIntBoundsSource)) {
+			throw new IllegalArgumentException("pBounds must be an instance of '" + IIntBoundsSource.class.getSimpleName() + "'.");
+		}
+
+		this.set((IIntBoundsSource)pBoundsSource);
+	}
+
+	public void set(final IIntBoundsSource pIntBoundsSource) {
+		this.set(pIntBoundsSource.getLeft(), pIntBoundsSource.getRight(), pIntBoundsSource.getTop(), pIntBoundsSource.getBottom());
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	public boolean intersects(final IBounds pBounds) {
+	public boolean intersects(final IBounds<IIntBoundsSource> pBounds) {
 		if(!(pBounds instanceof IntBounds)) {
 			throw new IllegalArgumentException("pBounds must be an instance of '" + IntBounds.class.getSimpleName() + "'.");
 		}
@@ -100,12 +131,22 @@ public class IntBounds implements IBounds {
 	}
 
 	@Override
-	public boolean contains(final IBounds pBounds) {
+	public boolean intersects(final IIntBoundsSource pIntBoundsSource) {
+		return this.intersects(pIntBoundsSource.getLeft(), pIntBoundsSource.getRight(), pIntBoundsSource.getTop(), pIntBoundsSource.getBottom());
+	}
+
+	@Override
+	public boolean contains(final IBounds<IIntBoundsSource> pBounds) {
 		if(!(pBounds instanceof IntBounds)) {
 			throw new IllegalArgumentException("pBounds must be an instance of '" + IntBounds.class.getSimpleName() + "'.");
 		}
 
 		return this.contains((IntBounds) pBounds);
+	}
+
+	@Override
+	public boolean contains(final IIntBoundsSource pIntBoundsSource) {
+		return this.contains(pIntBoundsSource.getLeft(), pIntBoundsSource.getRight(), pIntBoundsSource.getTop(), pIntBoundsSource.getBottom());
 	}
 
 	@Override

@@ -1,15 +1,12 @@
-package org.anddev.andengine.util.spatial;
-
-import org.anddev.andengine.util.spatial.adt.bounds.source.IBoundsSource;
-
+package org.anddev.andengine.util.spatial.adt.bounds.source;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 20:23:12 - 07.10.2011
+ * @since 7:42:02 AM - Oct 10, 2011
  */
-public interface ISpatialItem<S extends IBoundsSource> {
+public interface IIntBoundsSource extends IBoundsSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,5 +15,8 @@ public interface ISpatialItem<S extends IBoundsSource> {
 	// Methods
 	// ===========================================================
 
-	public S getBoundsSource();
+	public int getLeft();
+	public int getRight();
+	public int getTop();
+	public int getBottom();
 }

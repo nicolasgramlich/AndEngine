@@ -1,6 +1,7 @@
 package org.anddev.andengine.util.spatial.adt.bounds;
 
 import org.anddev.andengine.util.exception.AndEngineException;
+import org.anddev.andengine.util.spatial.adt.bounds.source.IBoundsSource;
 
 /**
  * (c) Zynga 2011
@@ -8,7 +9,7 @@ import org.anddev.andengine.util.exception.AndEngineException;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:19:39 - 08.10.2011
  */
-public interface IBounds {
+public interface IBounds<S extends IBoundsSource> extends IBoundsSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,10 +18,13 @@ public interface IBounds {
 	// Methods
 	// ===========================================================
 
+	public void set(final IBoundsSource pBoundsSource);
 	public boolean isEmpty();
-	public boolean contains(final IBounds pBounds);
-	public boolean intersects(final IBounds pBounds);
-	public IBounds split(final BoundsSplit pBoundsSplit) throws BoundsSplitException;
+	public boolean contains(final S pBoundsSource);
+	public boolean contains(final IBounds<S> pBounds);
+	public boolean intersects(final S pBoundsSource);
+	public boolean intersects(final IBounds<S> pBounds);
+	public IBounds<S> split(final BoundsSplit pBoundsSplit) throws BoundsSplitException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes

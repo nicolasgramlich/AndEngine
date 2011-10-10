@@ -28,7 +28,7 @@ public class SystemUtils {
 	private static final String MEMTOTAL_PATTERN = "MemTotal[\\s]*:[\\s]*(\\d+)[\\s]*kB\n";
 	private static final String MEMFREE_PATTERN = "MemFree[\\s]*:[\\s]*(\\d+)[\\s]*kB\n";
 
-	private static final int BUILD_VERSION_SDK = Integer.parseInt(Build.VERSION.SDK);
+	public static final int BUILD_VERSION_SDK = Integer.parseInt(Build.VERSION.SDK);
 
 	// ===========================================================
 	// Fields

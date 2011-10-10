@@ -30,6 +30,9 @@ public class GLState {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private static String sGLVersion;
+	private static String sGLRenderer;
 
 	private static int sCurrentHardwareBufferID = -1;
 	private static int sCurrentShaderProgramID = -1;
@@ -57,6 +60,18 @@ public class GLState {
 	private static final float[] sModelViewProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
 
 	public static final int GL_UNPACK_ALIGNMENT_DEFAULT = 4;
+
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
+
+	public static String getGLVersion() {
+		return GLState.sGLVersion;
+	}
+
+	public static String getGLRenderer() {
+		return GLState.sGLRenderer;
+	}	
 
 	// ===========================================================
 	// Methods
@@ -89,12 +104,12 @@ public class GLState {
 	}
 
 	public static void enableExtensions(final RenderOptions pRenderOptions) {
-		final String version = GLES20.glGetString(GLES20.GL_VERSION);
-		final String renderer = GLES20.glGetString(GLES20.GL_RENDERER);
+		GLState.sGLVersion = GLES20.glGetString(GLES20.GL_VERSION);
+		GLState.sGLRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
 		final String extensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
 
-		Debug.d("RENDERER: " + renderer);
-		Debug.d("VERSION: " + version);
+		Debug.d("RENDERER: " + GLState.sGLRenderer);
+		Debug.d("VERSION: " + GLState.sGLVersion);
 		Debug.d("EXTENSIONS: " + extensions);
 	}
 

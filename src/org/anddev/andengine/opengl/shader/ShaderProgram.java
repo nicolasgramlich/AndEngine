@@ -5,6 +5,8 @@ import java.util.HashMap;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
 import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
+import org.anddev.andengine.opengl.shader.source.IShaderSource;
+import org.anddev.andengine.opengl.shader.source.StringShaderSource;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
@@ -36,8 +38,8 @@ public class ShaderProgram implements ShaderProgramConstants {
 	// Fields
 	// ===========================================================
 
-	protected final String mVertexShaderSource;
-	protected final String mFragmentShaderSource;
+	protected final IShaderSource mVertexShaderSource;
+	protected final IShaderSource mFragmentShaderSource;
 
 	protected int mProgramID = -1;
 
@@ -50,7 +52,11 @@ public class ShaderProgram implements ShaderProgramConstants {
 	// Constructors
 	// ===========================================================
 
-	public ShaderProgram(final String pVertexShaderSource, final String pFragmentShaderSource) throws ShaderProgramException {
+	public ShaderProgram(final String pVertexShaderSource, final String pFragmentShaderSource) {
+		this(new StringShaderSource(pVertexShaderSource), new StringShaderSource(pFragmentShaderSource));
+	}
+	
+	public ShaderProgram(final IShaderSource pVertexShaderSource, final IShaderSource pFragmentShaderSource) {
 		this.mVertexShaderSource = pVertexShaderSource;
 		this.mFragmentShaderSource = pFragmentShaderSource;
 	}
@@ -111,7 +117,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 	// Methods
 	// ===========================================================
 
-	public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) throws ShaderProgramException {
 		if(!this.mCompiled) {
 			this.compile();
 		}
@@ -120,7 +126,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		pVertexBufferObjectAttributes.glVertexAttribPointers(this);
 	}
 
-	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) throws ShaderProgramException {
 //		GLES20.glUseProgram(0);
 	}
 	
@@ -133,8 +139,8 @@ public class ShaderProgram implements ShaderProgramConstants {
 	}
 
 	protected void compile() throws ShaderProgramException {
-		final int vertexShaderID = ShaderProgram.compileShader(this.mVertexShaderSource, GLES20.GL_VERTEX_SHADER);
-		final int fragmentShaderID = ShaderProgram.compileShader(this.mFragmentShaderSource, GLES20.GL_FRAGMENT_SHADER);
+		final int vertexShaderID = ShaderProgram.compileShader(this.mVertexShaderSource.getShaderSource(), GLES20.GL_VERTEX_SHADER);
+		final int fragmentShaderID = ShaderProgram.compileShader(this.mFragmentShaderSource.getShaderSource(), GLES20.GL_FRAGMENT_SHADER);
 
 		this.mProgramID = GLES20.glCreateProgram();
 		GLES20.glAttachShader(this.mProgramID, vertexShaderID);

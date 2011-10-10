@@ -31,7 +31,7 @@ public class FloatBounds implements IBounds<IFloatBoundsSource>, IFloatBoundsSou
 		this(pX, pX, pY, pY);
 	}
 
-	public FloatBounds(final IFloatBoundsSource pFloatBoundsSource) {
+	public FloatBounds(final IFloatBoundsSource pFloatBoundsSource) throws IllegalArgumentException {
 		this(pFloatBoundsSource.getLeft(), pFloatBoundsSource.getRight(), pFloatBoundsSource.getTop(), pFloatBoundsSource.getBottom());
 	}
 
@@ -95,6 +95,13 @@ public class FloatBounds implements IBounds<IFloatBoundsSource>, IFloatBoundsSou
 
 	public float getHeight() {
 		return this.mBottom - this.mTop;
+	}
+
+	public void set(final float pX, final float pY) {
+		this.mLeft = pX;
+		this.mRight = pX;
+		this.mTop = pY;
+		this.mBottom = pY;
 	}
 
 	public void set(final float pLeft, final float pRight, final float pTop, final float pBottom) {

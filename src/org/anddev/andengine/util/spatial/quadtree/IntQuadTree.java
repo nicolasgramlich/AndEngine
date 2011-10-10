@@ -1,5 +1,9 @@
 package org.anddev.andengine.util.spatial.quadtree;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.spatial.ISpatialItem;
 import org.anddev.andengine.util.spatial.adt.bounds.IntBounds;
 import org.anddev.andengine.util.spatial.adt.bounds.source.IIntBoundsSource;
@@ -19,6 +23,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private final IntBounds mQueryIntBounds = new IntBounds(0, 0, 0, 0);
 
 	// ===========================================================
 	// Constructors
@@ -43,6 +49,42 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public synchronized List<T> query(final int pX, final int pY) {
+		return this.query(pX, pY, new LinkedList<T>());
+	}
+
+	public synchronized List<T> query(final int pX, final int pY, final List<T> pResult) {
+		this.mQueryIntBounds.set(pX, pY);
+		return this.query(this.mQueryIntBounds, pResult);
+	}
+	
+	public synchronized List<T> query(final int pX, final int pY, final IMatcher<T> pMatcher) {
+		return this.query(pX, pY, pMatcher, new LinkedList<T>());
+	}
+	
+	public synchronized List<T> query(final int pX, final int pY, final IMatcher<T> pMatcher, final List<T> pResult) {
+		this.mQueryIntBounds.set(pX, pY);
+		return this.query(this.mQueryIntBounds, pMatcher, pResult);
+	}
+
+	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom) {
+		return this.query(pLeft, pRight, pTop, pBottom, new LinkedList<T>());
+	}
+
+	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom, final List<T> pResult) {
+		this.mQueryIntBounds.set(pLeft, pRight, pTop, pBottom);
+		return this.query(this.mQueryIntBounds, pResult);
+	}
+	
+	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom, final IMatcher<T> pMatcher) {
+		return this.query(pLeft, pRight, pTop, pBottom, pMatcher, new LinkedList<T>());
+	}
+	
+	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom, final IMatcher<T> pMatcher, final List<T> pResult) {
+		this.mQueryIntBounds.set(pLeft, pRight, pTop, pBottom);
+		return this.query(this.mQueryIntBounds, pMatcher, pResult);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

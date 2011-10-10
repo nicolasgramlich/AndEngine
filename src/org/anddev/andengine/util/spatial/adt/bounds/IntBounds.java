@@ -31,7 +31,7 @@ public class IntBounds implements IBounds<IIntBoundsSource>, IIntBoundsSource {
 		this(pX, pX, pY, pY);
 	}
 
-	public IntBounds(final IIntBoundsSource pIntBoundsSource) {
+	public IntBounds(final IIntBoundsSource pIntBoundsSource) throws IllegalArgumentException {
 		this(pIntBoundsSource.getLeft(), pIntBoundsSource.getRight(), pIntBoundsSource.getTop(), pIntBoundsSource.getBottom());
 	}
 
@@ -95,6 +95,13 @@ public class IntBounds implements IBounds<IIntBoundsSource>, IIntBoundsSource {
 
 	public int getHeight() {
 		return this.mBottom - this.mTop + 1;
+	}
+
+	public void set(final int pX, final int pY) {
+		this.mLeft = pX;
+		this.mRight = pX;
+		this.mTop = pY;
+		this.mBottom = pY;
 	}
 
 	public void set(final int pLeft, final int pRight, final int pTop, final int pBottom) {

@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.spatial.ISpatialItem;
-import org.anddev.andengine.util.spatial.adt.bounds.IBounds.BoundsSplit;
+import org.anddev.andengine.util.spatial.adt.bounds.BoundsSplit;
+import org.anddev.andengine.util.spatial.adt.bounds.BoundsSplit.BoundsSplitException;
+import org.anddev.andengine.util.spatial.adt.bounds.IIntBounds;
 import org.anddev.andengine.util.spatial.adt.bounds.IntBounds;
-import org.anddev.andengine.util.spatial.adt.bounds.source.IIntBoundsSource;
+import org.anddev.andengine.util.spatial.adt.bounds.util.IntBoundsUtils;
 
 
 /**
@@ -16,7 +18,7 @@ import org.anddev.andengine.util.spatial.adt.bounds.source.IIntBoundsSource;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:22:18 - 10.10.2011
  */
-public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadTree<IIntBoundsSource, IntBounds, T> {
+public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<IIntBounds, T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,16 +33,16 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 	// Constructors
 	// ===========================================================
 
-	public IntQuadTree(final IntBounds pIntBounds) {
+	public IntQuadTree(final IIntBounds pIntBounds) {
 		super(pIntBounds);
 	}
 
-	public IntQuadTree(final IntBounds pIntBounds, final int pMaxLevel) {
+	public IntQuadTree(final IIntBounds pIntBounds, final int pMaxLevel) {
 		super(pIntBounds, pMaxLevel);
 	}
 
 	@Override
-	protected IntQuadTreeNode initRoot(final IntBounds pIntBounds) {
+	protected IntQuadTreeNode initRoot(final IIntBounds pIntBounds) {
 		return new IntQuadTreeNode(QuadTree.LEVEL_ROOT, pIntBounds);
 	}
 
@@ -105,17 +107,62 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 		// Fields
 		// ===========================================================
 
+		private final int mLeft;
+		private final int mRight;
+		private final int mTop;
+		private final int mBottom;
+
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public IntQuadTreeNode(final int pLevel, final IntBounds pBounds) {
-			super(pLevel, pBounds);
+		public IntQuadTreeNode(final int pLevel, final IIntBounds pIntBounds) {
+			this(pLevel, pIntBounds.getLeft(), pIntBounds.getRight(), pIntBounds.getTop(), pIntBounds.getBottom());
+		}
+
+		public IntQuadTreeNode(final int pLevel, final int pLeft, final int pRight, final int pTop, final int pBottom) {
+			super(pLevel);
+
+			this.mLeft = pLeft;
+			this.mRight = pRight;
+			this.mTop = pTop;
+			this.mBottom = pBottom;
+
+			if(pLeft > pRight) {
+				throw new IllegalArgumentException("pLeft must be smaller or equal to pRight.");
+			}
+			if(pTop > pBottom) {
+				throw new IllegalArgumentException("pTop must be smaller or equal to pBottom.");
+			}
 		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
+
+		public int getLeft() {
+			return this.mLeft;
+		}
+
+		public int getRight() {
+			return this.mRight;
+		}
+
+		public int getTop() {
+			return this.mTop;
+		}
+
+		public int getBottom() {
+			return this.mBottom;
+		}
+
+		public int getWidth() {
+			return this.mRight - this.mLeft + 1;
+		}
+
+		public int getHeight() {
+			return this.mBottom - this.mTop + 1;
+		}
 
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
@@ -123,12 +170,195 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 
 		@Override
 		protected IntQuadTreeNode split(final BoundsSplit pBoundsSplit) {
-			return new IntQuadTreeNode(this.mLevel + 1, this.mBounds.split(pBoundsSplit));
+			final int width = this.getWidth();
+			final int height = this.getHeight();
+
+			if(width <= 2 && height <= 2) {
+				throw new BoundsSplitException();
+			}
+
+			final int left = this.getLeft(pBoundsSplit);
+			final int right = this.getRight(pBoundsSplit);
+			final int top = this.getTop(pBoundsSplit);
+			final int bottom = this.getBottom(pBoundsSplit);
+
+			return new IntQuadTreeNode(this.mLevel + 1, left, right, top, bottom);
+		}
+
+		@Override
+		protected boolean contains(final IIntBounds pIntBounds) {
+			return this.contains(pIntBounds.getLeft(), pIntBounds.getRight(), pIntBounds.getTop(), pIntBounds.getBottom());
+		}
+
+		@Override
+		protected boolean contains(final BoundsSplit pBoundsSplit, final IIntBounds pIntBounds) {
+			return IntBoundsUtils.contains(this.getLeft(pBoundsSplit), this.getRight(pBoundsSplit), this.getTop(pBoundsSplit), this.getBottom(pBoundsSplit), pIntBounds.getLeft(), pIntBounds.getRight(), pIntBounds.getTop(), pIntBounds.getBottom());
+		}
+
+		@Override
+		protected boolean intersects(final IIntBounds pIntBounds) {
+			return IntBoundsUtils.intersects(this.mLeft, this.mRight, this.mTop, this.mBottom, pIntBounds.getLeft(), pIntBounds.getRight(), pIntBounds.getTop(), pIntBounds.getBottom());
+		}
+
+		@Override
+		protected boolean intersects(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
+			return IntBoundsUtils.intersects(pIntBoundsA, pIntBoundsB);
+		}
+
+		@Override
+		protected boolean containedBy(final IIntBounds pBounds) {
+			return IntBoundsUtils.contains(pBounds.getLeft(), pBounds.getRight(), pBounds.getTop(), pBounds.getBottom(), this.mLeft, this.mRight, this.mTop, this.mBottom);
+		}
+
+		@Override
+		protected void appendBoundsToString(final StringBuilder pStringBuilder) {
+			pStringBuilder
+				.append("[Left: ")
+				.append(this.mLeft)
+				.append(", Right: ")
+				.append(this.mRight)
+				.append(", Top: ")
+				.append(this.mTop)
+				.append(", Bottom: ")
+				.append(this.mBottom)
+				.append("]");
 		}
 
 		// ===========================================================
 		// Methods
 		// ===========================================================
+
+		private int getLeft(final BoundsSplit pBoundsSplit) {
+			final int width = this.getWidth();
+			final int halfWidth = width / 2;
+
+			if(width <= 2) {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+					case BOTTOM_LEFT:
+						return this.mLeft;
+					case BOTTOM_RIGHT:
+					case TOP_RIGHT:
+						throw new BoundsSplitException();
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			} else {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+						return this.mLeft;
+					case TOP_RIGHT:
+						return this.mLeft + halfWidth;
+					case BOTTOM_LEFT:
+						return this.mLeft;
+					case BOTTOM_RIGHT:
+						return this.mLeft + halfWidth;
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			}
+		}
+
+		private int getRight(final BoundsSplit pBoundsSplit) {
+			final int width = this.getWidth();
+			final int halfWidth = width / 2;
+
+			if(width <= 2) {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+					case BOTTOM_LEFT:
+						return this.mRight;
+					case BOTTOM_RIGHT:
+					case TOP_RIGHT:
+						throw new BoundsSplitException();
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			} else {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+						return this.mLeft + halfWidth;
+					case TOP_RIGHT:
+						return this.mRight;
+					case BOTTOM_LEFT:
+						return this.mLeft + halfWidth;
+					case BOTTOM_RIGHT:
+						return this.mRight;
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			}
+		}
+
+		private int getBottom(final BoundsSplit pBoundsSplit) {
+			final int height = this.getHeight();
+			final int halfHeight = height / 2;
+
+			if(height <= 2) {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+					case TOP_RIGHT:
+						return this.mBottom;
+					case BOTTOM_LEFT:
+					case BOTTOM_RIGHT:
+						throw new BoundsSplitException();
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			} else {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+						return this.mTop + halfHeight;
+					case TOP_RIGHT:
+						return this.mTop + halfHeight;
+					case BOTTOM_LEFT:
+						return this.mBottom;
+					case BOTTOM_RIGHT:
+						return this.mBottom;
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			}
+		}
+
+		private int getTop(final BoundsSplit pBoundsSplit) {
+			final int height = this.getHeight();
+			final int halfHeight = height / 2;
+
+			if(height <= 2) {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+					case TOP_RIGHT:
+						return  this.mTop;
+					case BOTTOM_LEFT:
+					case BOTTOM_RIGHT:
+						throw new BoundsSplitException();
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			} else {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+						return  this.mTop;
+					case TOP_RIGHT:
+						return this.mTop;
+					case BOTTOM_LEFT:
+						return this.mTop + halfHeight;
+					case BOTTOM_RIGHT:
+						return this.mTop + halfHeight;
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			}
+		}
+
+		public boolean intersects(final int pLeft, final int pRight, final int pTop, final int pBottom) {
+			return IntBoundsUtils.intersects(this.mLeft, this.mRight, this.mTop, this.mBottom, pLeft, pRight, pTop, pBottom);
+		}
+
+		public boolean contains(final int pLeft, final int pRight, final int pTop, final int pBottom) {
+			return IntBoundsUtils.contains(this.mLeft, this.mRight, this.mTop, this.mBottom, pLeft, pRight, pTop, pBottom);
+		}
 
 		// ===========================================================
 		// Inner and Anonymous Classes

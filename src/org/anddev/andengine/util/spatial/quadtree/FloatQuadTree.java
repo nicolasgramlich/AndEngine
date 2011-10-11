@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.spatial.ISpatialItem;
+import org.anddev.andengine.util.spatial.adt.bounds.BoundsSplit;
 import org.anddev.andengine.util.spatial.adt.bounds.FloatBounds;
-import org.anddev.andengine.util.spatial.adt.bounds.IBounds.BoundsSplit;
-import org.anddev.andengine.util.spatial.adt.bounds.source.IFloatBoundsSource;
+import org.anddev.andengine.util.spatial.adt.bounds.IFloatBounds;
+import org.anddev.andengine.util.spatial.adt.bounds.util.FloatBoundsUtils;
 
 
 /**
@@ -16,7 +17,7 @@ import org.anddev.andengine.util.spatial.adt.bounds.source.IFloatBoundsSource;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:15:21 - 10.10.2011
  */
-public class FloatQuadTree<T extends ISpatialItem<IFloatBoundsSource>> extends QuadTree<IFloatBoundsSource, FloatBounds, T> {
+public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTree<IFloatBounds, T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,16 +32,16 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBoundsSource>> extends Q
 	// Constructors
 	// ===========================================================
 
-	public FloatQuadTree(final FloatBounds pFloatBounds) {
+	public FloatQuadTree(final IFloatBounds pFloatBounds) {
 		super(pFloatBounds);
 	}
 
-	public FloatQuadTree(final FloatBounds pFloatBounds, final int pMaxLevel) {
+	public FloatQuadTree(final IFloatBounds pFloatBounds, final int pMaxLevel) {
 		super(pFloatBounds, pMaxLevel);
 	}
 
 	@Override
-	protected FloatQuadTreeNode initRoot(final FloatBounds pFloatBounds) {
+	protected FloatQuadTreeNode initRoot(final IFloatBounds pFloatBounds) {
 		return new FloatQuadTreeNode(QuadTree.LEVEL_ROOT, pFloatBounds);
 	}
 
@@ -105,17 +106,62 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBoundsSource>> extends Q
 		// Fields
 		// ===========================================================
 
+		private final float mLeft;
+		private final float mRight;
+		private final float mTop;
+		private final float mBottom;
+
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public FloatQuadTreeNode(final int pLevel, final FloatBounds pBounds) {
-			super(pLevel, pBounds);
+		public FloatQuadTreeNode(final int pLevel, final IFloatBounds pFloatBounds) {
+			this(pLevel, pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom());
+		}
+
+		public FloatQuadTreeNode(final int pLevel, final float pLeft, final float pRight, final float pTop, final float pBottom) {
+			super(pLevel);
+
+			this.mLeft = pLeft;
+			this.mRight = pRight;
+			this.mTop = pTop;
+			this.mBottom = pBottom;
+
+			if(pLeft > pRight) {
+				throw new IllegalArgumentException("pLeft must be smaller or equal to pRight.");
+			}
+			if(pTop > pBottom) {
+				throw new IllegalArgumentException("pTop must be smaller or equal to pBottom.");
+			}
 		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
+
+		public float getLeft() {
+			return this.mLeft;
+		}
+
+		public float getRight() {
+			return this.mRight;
+		}
+
+		public float getTop() {
+			return this.mTop;
+		}
+
+		public float getBottom() {
+			return this.mBottom;
+		}
+
+		public float getWidth() {
+			return this.mRight - this.mLeft;
+		}
+
+		public float getHeight() {
+			return this.mBottom - this.mTop;
+		}
 
 		// ===========================================================
 		// Methods for/from SuperClass/Floaterfaces
@@ -123,12 +169,132 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBoundsSource>> extends Q
 
 		@Override
 		protected FloatQuadTreeNode split(final BoundsSplit pBoundsSplit) {
-			return new FloatQuadTreeNode(this.mLevel + 1, this.mBounds.split(pBoundsSplit));
+			final float left = this.getLeft(pBoundsSplit);
+			final float right = this.getRight(pBoundsSplit);
+			final float top = this.getTop(pBoundsSplit);
+			final float bottom = this.getBottom(pBoundsSplit);
+
+			return new FloatQuadTreeNode(this.mLevel + 1, left, right, top, bottom);
+		}
+
+		@Override
+		protected boolean contains(final IFloatBounds pFloatBounds) {
+			return this.contains(pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom());
+		}
+
+		@Override
+		protected boolean contains(final BoundsSplit pBoundsSplit, final IFloatBounds pFloatBounds) {
+			return FloatBoundsUtils.contains(this.getLeft(pBoundsSplit), this.getRight(pBoundsSplit), this.getTop(pBoundsSplit), this.getBottom(pBoundsSplit), pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom());
+		}
+
+		@Override
+		protected boolean intersects(final IFloatBounds pFloatBounds) {
+			return FloatBoundsUtils.intersects(this.mLeft, this.mRight, this.mTop, this.mBottom, pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom());
+		}
+
+		@Override
+		protected boolean intersects(final IFloatBounds pFloatBoundsA, final IFloatBounds pFloatBoundsB) {
+			return FloatBoundsUtils.intersects(pFloatBoundsA, pFloatBoundsB);
+		}
+
+		@Override
+		protected boolean containedBy(final IFloatBounds pFloatBounds) {
+			return FloatBoundsUtils.contains(pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom(), this.mLeft, this.mRight, this.mTop, this.mBottom);
+		}
+
+		@Override
+		protected void appendBoundsToString(final StringBuilder pStringBuilder) {
+			pStringBuilder
+				.append("[Left: ")
+				.append(this.mLeft)
+				.append(", Right: ")
+				.append(this.mRight)
+				.append(", Top: ")
+				.append(this.mTop)
+				.append(", Bottom: ")
+				.append(this.mBottom)
+				.append("]");
 		}
 
 		// ===========================================================
 		// Methods
 		// ===========================================================
+
+		private float getLeft(final BoundsSplit pBoundsSplit) {
+			final float halfWidth = this.getWidth() / 2;
+
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return this.mLeft;
+				case TOP_RIGHT:
+					return this.mLeft + halfWidth;
+				case BOTTOM_LEFT:
+					return this.mLeft;
+				case BOTTOM_RIGHT:
+					return this.mLeft + halfWidth;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+
+		private float getRight(final BoundsSplit pBoundsSplit) {
+			final float halfWidth = this.getWidth() / 2;
+
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return this.mLeft + halfWidth;
+				case TOP_RIGHT:
+					return this.mRight;
+				case BOTTOM_LEFT:
+					return this.mLeft + halfWidth;
+				case BOTTOM_RIGHT:
+					return this.mRight;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+
+		private float getTop(final BoundsSplit pBoundsSplit) {
+			final float halfHeight = this.getHeight() / 2;
+
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return this.mTop;
+				case TOP_RIGHT:
+					return this.mTop;
+				case BOTTOM_LEFT:
+					return this.mTop + halfHeight;
+				case BOTTOM_RIGHT:
+					return this.mTop + halfHeight;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+
+		private float getBottom(final BoundsSplit pBoundsSplit) {
+			final float halfHeight = this.getHeight() / 2;
+
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return this.mTop + halfHeight;
+				case TOP_RIGHT:
+					return this.mTop + halfHeight;
+				case BOTTOM_LEFT:
+					return this.mBottom;
+				case BOTTOM_RIGHT:
+					return this.mBottom;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+
+		public boolean intersects(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+			return FloatBoundsUtils.intersects(this.mLeft, this.mRight, this.mTop, this.mBottom, pLeft, pRight, pTop, pBottom);
+		}
+
+		public boolean contains(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+			return FloatBoundsUtils.contains(this.mLeft, this.mRight, this.mTop, this.mBottom, pLeft, pRight, pTop, pBottom);
+		}
 
 		// ===========================================================
 		// Inner and Anonymous Classes

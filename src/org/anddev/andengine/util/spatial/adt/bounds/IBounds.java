@@ -21,6 +21,7 @@ public interface IBounds<S extends IBoundsSource> extends IBoundsSource {
 	public void set(final IBoundsSource pBoundsSource);
 	public boolean isEmpty();
 	public boolean contains(final S pBoundsSource);
+	public boolean contains(final BoundsSplit pBoundsSplit, final S pBoundsSource);
 	public boolean contains(final IBounds<S> pBounds);
 	public boolean intersects(final S pBoundsSource);
 	public boolean intersects(final IBounds<S> pBounds);

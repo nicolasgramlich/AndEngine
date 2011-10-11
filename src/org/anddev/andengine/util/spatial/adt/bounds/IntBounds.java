@@ -157,6 +157,15 @@ public class IntBounds implements IBounds<IIntBoundsSource>, IIntBoundsSource {
 	}
 
 	@Override
+	public boolean contains(final BoundsSplit pBoundsSplit, final IIntBoundsSource pIntBoundsSource) {
+		try {
+			return IntBounds.contains(this.getLeft(pBoundsSplit), this.getRight(pBoundsSplit), this.getTop(pBoundsSplit), this.getBottom(pBoundsSplit), pIntBoundsSource.getLeft(), pIntBoundsSource.getRight(), pIntBoundsSource.getTop(), pIntBoundsSource.getBottom());
+		} catch (BoundsSplitException e) {
+			return false;
+		}
+	}
+
+	@Override
 	public boolean isEmpty() {
 		return this.mLeft >= this.mRight || this.mTop >= this.mBottom;
 	}
@@ -170,78 +179,10 @@ public class IntBounds implements IBounds<IIntBoundsSource>, IIntBoundsSource {
 			throw new BoundsSplitException();
 		}
 
-		final int halfWidth = width / 2;
-		final int halfHeight = height / 2;
-
-		final int left;
-		final int right;
-		if(width <= 2) {
-			switch(pBoundsSplit) {
-				case TOP_LEFT:
-				case BOTTOM_LEFT:
-					left = this.mLeft;
-					right = this.mRight;
-					break;
-				default:
-					return null;
-			}
-		} else {
-			switch(pBoundsSplit) {
-				case TOP_LEFT:
-					left = this.mLeft;
-					right = this.mLeft + halfWidth;
-					break;
-				case TOP_RIGHT:
-					left = this.mLeft + halfWidth;
-					right = this.mRight;
-					break;
-				case BOTTOM_LEFT:
-					left = this.mLeft;
-					right = this.mLeft + halfWidth;
-					break;
-				case BOTTOM_RIGHT:
-					left = this.mLeft + halfWidth;
-					right = this.mRight;
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
-			}
-		}
-
-		final int top;
-		final int bottom;
-		if(height <= 2) {
-			switch(pBoundsSplit) {
-				case TOP_LEFT:
-				case TOP_RIGHT:
-					top = this.mTop;
-					bottom = this.mBottom;
-					break;
-				default:
-					return null;
-			}
-		} else {
-			switch(pBoundsSplit) {
-				case TOP_LEFT:
-					top = this.mTop;
-					bottom = this.mTop + halfHeight;
-					break;
-				case TOP_RIGHT:
-					top = this.mTop;
-					bottom = this.mTop + halfHeight;
-					break;
-				case BOTTOM_LEFT:
-					top = this.mTop + halfHeight;
-					bottom = this.mBottom;
-					break;
-				case BOTTOM_RIGHT:
-					top = this.mTop + halfHeight;
-					bottom = this.mBottom;
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
-			}
-		}
+		final int left = this.getLeft(pBoundsSplit);
+		final int right = this.getRight(pBoundsSplit);
+		final int top = this.getTop(pBoundsSplit);
+		final int bottom = this.getBottom(pBoundsSplit);
 
 		return new IntBounds(left, right, top, bottom);
 	}
@@ -249,21 +190,146 @@ public class IntBounds implements IBounds<IIntBoundsSource>, IIntBoundsSource {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-		.append("[Left: ")
-		.append(this.mLeft)
-		.append(", Right: ")
-		.append(this.mRight)
-		.append(", Top: ")
-		.append(this.mTop)
-		.append(", Bottom: ")
-		.append(this.mBottom)
-		.append("]")
-		.toString();
+			.append("[Left: ")
+			.append(this.mLeft)
+			.append(", Right: ")
+			.append(this.mRight)
+			.append(", Top: ")
+			.append(this.mTop)
+			.append(", Bottom: ")
+			.append(this.mBottom)
+			.append("]")
+			.toString();
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+
+	private int getLeft(final BoundsSplit pBoundsSplit) {
+		final int width = this.getWidth();
+		final int halfWidth = width / 2;
+
+		if(width <= 2) {
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+				case BOTTOM_LEFT:
+					return this.mLeft;
+				case BOTTOM_RIGHT:
+				case TOP_RIGHT:
+					throw new BoundsSplitException();
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		} else {
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return this.mLeft;
+				case TOP_RIGHT:
+					return this.mLeft + halfWidth;
+				case BOTTOM_LEFT:
+					return this.mLeft;
+				case BOTTOM_RIGHT:
+					return this.mLeft + halfWidth;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+	}
+
+	private int getRight(final BoundsSplit pBoundsSplit) {
+		final int width = this.getWidth();
+		final int halfWidth = width / 2;
+
+		if(width <= 2) {
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+				case BOTTOM_LEFT:
+					return this.mRight;
+				case BOTTOM_RIGHT:
+				case TOP_RIGHT:
+					throw new BoundsSplitException();
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		} else {
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return this.mLeft + halfWidth;
+				case TOP_RIGHT:
+					return this.mRight;
+				case BOTTOM_LEFT:
+					return this.mLeft + halfWidth;
+				case BOTTOM_RIGHT:
+					return this.mRight;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+	}
+
+	private int getBottom(final BoundsSplit pBoundsSplit) {
+		final int height = this.getHeight();
+		final int halfHeight = height / 2;
+
+		if(height <= 2) {
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+				case TOP_RIGHT:
+					return this.mBottom;
+				case BOTTOM_LEFT:
+				case BOTTOM_RIGHT:
+					throw new BoundsSplitException();
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		} else {
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return this.mTop + halfHeight;
+				case TOP_RIGHT:
+					return this.mTop + halfHeight;
+				case BOTTOM_LEFT:
+					return this.mBottom;
+				case BOTTOM_RIGHT:
+					return this.mBottom;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+	}
+
+	private int getTop(final BoundsSplit pBoundsSplit) {
+		final int height = this.getHeight();
+		final int halfHeight = height / 2;
+
+		if(height <= 2) {
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+				case TOP_RIGHT:
+					return  this.mTop;
+				case BOTTOM_LEFT:
+				case BOTTOM_RIGHT:
+					throw new BoundsSplitException();
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		} else {
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return  this.mTop;
+				case TOP_RIGHT:
+					return this.mTop;
+				case BOTTOM_LEFT:
+					return this.mTop + halfHeight;
+				case BOTTOM_RIGHT:
+					return this.mTop + halfHeight;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+	}
 
 	public boolean intersects(final IntBounds pIntBounds) {
 		return (this.mLeft < pIntBounds.mRight) && (pIntBounds.mLeft < this.mRight) && (this.mTop < pIntBounds.mBottom) && (pIntBounds.mTop < this.mBottom);
@@ -273,12 +339,20 @@ public class IntBounds implements IBounds<IIntBoundsSource>, IIntBoundsSource {
 		return (this.mLeft < pRight) && (pLeft < this.mRight) && (this.mTop < pBottom) && (pTop < this.mBottom);
 	}
 
+	public static boolean intersects(final int pLeftA, final int pRightA, final int pTopA, final int pBottomA, final int pLeftB, final int pRightB, final int pTopB, final int pBottomB) {
+		return (pLeftA < pRightB) && (pLeftB < pRightA) && (pTopA < pBottomB) && (pTopB < pBottomA);
+	}
+
 	public boolean contains(final IntBounds pIntBounds) {
 		return (this.mLeft <= pIntBounds.mLeft) && (this.mTop <= pIntBounds.mTop) && (this.mRight >= pIntBounds.mRight) && (this.mBottom >= pIntBounds.mBottom);
 	}
 
 	public boolean contains(final int pLeft, final int pRight, final int pTop, final int pBottom) {
 		return (this.mLeft <= pLeft) && (this.mTop <= pTop) && (this.mRight >= pRight) && (this.mBottom >= pBottom);
+	}
+
+	public static boolean contains(final int pLeftA, final int pRightA, final int pTopA, final int pBottomA, final int pLeftB, final int pRightB, final int pTopB, final int pBottomB) {
+		return (pLeftA <= pLeftB) && (pTopA <= pTopB) && (pRightA >= pRightB) && (pBottomA >= pBottomB);
 	}
 
 	// ===========================================================

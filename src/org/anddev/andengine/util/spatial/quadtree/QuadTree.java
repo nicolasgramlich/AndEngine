@@ -20,7 +20,7 @@ import org.anddev.andengine.util.spatial.adt.bounds.source.IBoundsSource;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:16:01 - 07.10.2011
  */
-public class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T extends ISpatialItem<S>> {
+public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T extends ISpatialItem<S>> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -70,12 +70,22 @@ public class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T extends I
 	public String toString() {
 		return new StringBuilder()
 			.append('[')
-			.append(this.mBounds.getClass().getSimpleName())
-			.append(": ")
+			.append(" Class: ")
+			.append(this.getClass().getSimpleName())
+			.append('\n')
+			.append('\t')
+			.append("MaxLevel: ")
+			.append(this.mMaxLevel)
+			.append('\n')
+			.append('\t')
+			.append("Bounds: ")
 			.append(this.mBounds.toString())
 			.append(',')
 			.append('\n')
-			.append(this.mRoot.toString(1))
+			.append('\t')
+			.append("Root:")
+			.append('\n')
+			.append(this.mRoot.toString(2))
 			.append('\n')
 			.append(']')
 			.toString();
@@ -233,13 +243,17 @@ public class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T extends I
 			final StringBuilder sb = new StringBuilder()
 				.append(indents)
 				.append('[')
-				.append(this.mBounds.getClass().getSimpleName())
-				.append(": ")
+				.append(" Class: ")
+				.append(this.getClass().getSimpleName())
+				.append('\n')
+				.append(indents)
+				.append('\t')
+				.append("Bounds: ")
 				.append(this.mBounds.toString())
 				.append(',' )
 				.append('\n')
 				.append(indents)
-				.append("Items: ");
+				.append("\tItems: ");
 
 			if(this.mItems != null) {
 				sb.append(this.mItems.toString());
@@ -249,39 +263,45 @@ public class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T extends I
 	
 			sb.append('\n')
 				.append(indents)
-				.append("Children: [")
-				.append('\n');
+				.append('\t')
+				.append("Children: [");
 
 			/* Children */
-			if(this.mTopLeftChild != null) {
-				sb.append(this.mTopLeftChild.toString(pIndent + 1));
-				if(this.mTopRightChild != null || this.mBottomLeftChild != null || this.mBottomRightChild != null) {
-					sb.append(',');
+			if(this.mTopLeftChild == null && this.mTopRightChild == null && this.mBottomLeftChild == null && this.mBottomRightChild == null) {
+				sb.append(']');
+			} else {
+				if(this.mTopLeftChild != null) {
 					sb.append('\n');
+					sb.append(this.mTopLeftChild.toString(pIndent + 2));
+					if(this.mTopRightChild != null || this.mBottomLeftChild != null || this.mBottomRightChild != null) {
+						sb.append(',');
+					}
 				}
-			}
-			if(this.mTopRightChild != null) {
-				sb.append(this.mTopRightChild.toString(pIndent + 1));
-				if(this.mBottomLeftChild != null || this.mBottomRightChild != null) {
-					sb.append(',');
+				if(this.mTopRightChild != null) {
 					sb.append('\n');
+					sb.append(this.mTopRightChild.toString(pIndent + 2));
+					if(this.mBottomLeftChild != null || this.mBottomRightChild != null) {
+						sb.append(',');
+					}
 				}
-			}
-			if(this.mBottomLeftChild != null) {
-				sb.append(this.mBottomLeftChild.toString(pIndent + 1));
+				if(this.mBottomLeftChild != null) {
+					sb.append('\n');
+					sb.append(this.mBottomLeftChild.toString(pIndent + 2));
+					if(this.mBottomRightChild != null) {
+						sb.append(',');
+					}
+				}
 				if(this.mBottomRightChild != null) {
-					sb.append(',');
 					sb.append('\n');
+					sb.append(this.mBottomRightChild.toString(pIndent + 2));
 				}
-			}
-			if(this.mBottomRightChild != null) {
-				sb.append(this.mBottomRightChild.toString(pIndent + 1));
-				sb.append('\n');
+				sb.append('\n')
+					.append(indents)
+					.append('\t')
+					.append(']');
 			}
 
-			sb.append(indents)
-				.append(']')
-				.append('\n')
+			sb.append('\n')
 				.append(indents)
 				.append(']');
 			
@@ -508,6 +528,7 @@ public class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T extends I
 			this.add(pItem, pItem.getBoundsSource());
 		}
 
+		@SuppressWarnings("unchecked")
 		public void add(final T pItem, final S pBoundsSource) throws IllegalArgumentException {
 			// if the item is not contained in this quad, there's a problem
 			if(!this.mBounds.contains(pBoundsSource)) { // TODO Perform this check only for the root?
@@ -521,26 +542,69 @@ public class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T extends I
 					this.ensureItemsAllocated();
 					this.mItems.add(pItem);
 					return;
-				} else {
-					this.mChildrenAllocated = true;
-					this.allocateChildren();
 				}
 			}
 
 			/* If the node contains the item, add the item to that node. */
 			if(this.mTopLeftChild != null && this.mTopLeftChild.mBounds.contains(pBoundsSource)) {
 				this.mTopLeftChild.add(pItem, pBoundsSource);
-			} else if(this.mTopRightChild != null && this.mTopRightChild.mBounds.contains(pBoundsSource)) {
-				this.mTopRightChild.add(pItem, pBoundsSource);
-			} else if(this.mBottomLeftChild != null && this.mBottomLeftChild.mBounds.contains(pBoundsSource)) {
-				this.mBottomLeftChild.add(pItem, pBoundsSource);
-			} else if(this.mBottomRightChild != null && this.mBottomRightChild.mBounds.contains(pBoundsSource)) {
-				this.mBottomRightChild.add(pItem, pBoundsSource);
-			} else {
-				/* None of the children completely contained the item. */
-				this.ensureItemsAllocated();
-				this.mItems.add(pItem);
+			} else if(this.mBounds.contains(BoundsSplit.TOP_LEFT, pBoundsSource)) {
+				if(this.mTopLeftChild == null) {
+					try {
+						this.mTopLeftChild = new QuadTreeNode<S, B, T>(this.mLevel + 1, (B) this.mBounds.split(BoundsSplit.TOP_LEFT));
+						this.mTopLeftChild.add(pItem, pBoundsSource);
+						return;
+					} catch (final BoundsSplitException e) {
+						/* Nothing. */
+					}
+				}
 			}
+
+			if(this.mTopRightChild != null && this.mTopRightChild.mBounds.contains(pBoundsSource)) {
+				this.mTopRightChild.add(pItem, pBoundsSource);
+			} else if(this.mBounds.contains(BoundsSplit.TOP_RIGHT, pBoundsSource)) {
+				if(this.mTopRightChild == null) {
+					try {
+						this.mTopRightChild = new QuadTreeNode<S, B, T>(this.mLevel + 1, (B) this.mBounds.split(BoundsSplit.TOP_RIGHT));
+						this.mTopRightChild.add(pItem, pBoundsSource);
+						return;
+					} catch (final BoundsSplitException e) {
+						/* Nothing. */
+					}
+				}
+			}
+			
+			if(this.mBottomLeftChild != null && this.mBottomLeftChild.mBounds.contains(pBoundsSource)) {
+				this.mBottomLeftChild.add(pItem, pBoundsSource);
+			} else if(this.mBounds.contains(BoundsSplit.BOTTOM_LEFT, pBoundsSource)) {
+				if(this.mBottomLeftChild == null) {
+					try {
+						this.mBottomLeftChild = new QuadTreeNode<S, B, T>(this.mLevel + 1, (B) this.mBounds.split(BoundsSplit.BOTTOM_LEFT));
+						this.mBottomLeftChild.add(pItem, pBoundsSource);
+						return;
+					} catch (final BoundsSplitException e) {
+						/* Nothing. */
+					}
+				}
+			}
+			
+			if(this.mBottomRightChild != null && this.mBottomRightChild.mBounds.contains(pBoundsSource)) {
+				this.mBottomRightChild.add(pItem, pBoundsSource);
+			} else if(this.mBounds.contains(BoundsSplit.BOTTOM_RIGHT, pBoundsSource)) {
+				if(this.mBottomRightChild == null) {
+					try {
+						this.mBottomRightChild = new QuadTreeNode<S, B, T>(this.mLevel + 1, (B) this.mBounds.split(BoundsSplit.BOTTOM_RIGHT));
+						this.mBottomRightChild.add(pItem, pBoundsSource);
+						return;
+					} catch (final BoundsSplitException e) {
+						/* Nothing. */
+					}
+				}
+			}
+			
+			/* None of the children completely contained the item. */
+			this.ensureItemsAllocated();
+			this.mItems.add(pItem);
 		}
 
 		public boolean remove(final T pItem) throws IllegalArgumentException {
@@ -569,35 +633,6 @@ public class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T extends I
 					// TODO Potentially mItems could be set to null when its size is 0.
 					return this.mItems.remove(pItem);
 				}
-			}
-		}
-
-		@SuppressWarnings("unchecked")
-		private void allocateChildren() {
-			final int nextLevel = this.mLevel + 1;
-
-			try {
-				this.mTopLeftChild = new QuadTreeNode<S, B, T>(nextLevel, (B) this.mBounds.split(BoundsSplit.TOP_LEFT));
-			} catch (final BoundsSplitException e) {
-				/* Nothing. */
-			}
-
-			try {
-				this.mTopRightChild = new QuadTreeNode<S, B, T>(nextLevel, (B) this.mBounds.split(BoundsSplit.TOP_RIGHT));
-			} catch (final BoundsSplitException e) {
-				/* Nothing. */
-			}
-
-			try {
-				this.mBottomLeftChild = new QuadTreeNode<S, B, T>(nextLevel, (B) this.mBounds.split(BoundsSplit.BOTTOM_LEFT));
-			} catch (final BoundsSplitException e) {
-				/* Nothing. */
-			}
-
-			try {
-				this.mBottomRightChild = new QuadTreeNode<S, B, T>(nextLevel, (B) this.mBounds.split(BoundsSplit.BOTTOM_RIGHT));
-			} catch (final BoundsSplitException e) {
-				/* Nothing. */
 			}
 		}
 

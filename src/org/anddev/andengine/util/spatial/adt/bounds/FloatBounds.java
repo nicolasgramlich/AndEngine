@@ -136,9 +136,7 @@ public class FloatBounds implements IBounds<IFloatBoundsSource>, IFloatBoundsSou
 		}
 		// TODO Also support IntBounds?
 
-		final FloatBounds other = (FloatBounds) pBounds;
-
-		return this.intersects(other);
+		return this.intersects((FloatBounds) pBounds);
 	}
 
 	@Override
@@ -153,14 +151,17 @@ public class FloatBounds implements IBounds<IFloatBoundsSource>, IFloatBoundsSou
 		}
 		// TODO Also support IntBounds?
 
-		final FloatBounds other = (FloatBounds) pBounds;
-
-		return this.contains(other);
+		return this.contains((FloatBounds) pBounds);
 	}
-
+	
 	@Override
 	public boolean contains(final IFloatBoundsSource pFloatBoundsSource) {
 		return this.contains(pFloatBoundsSource.getLeft(), pFloatBoundsSource.getRight(), pFloatBoundsSource.getTop(), pFloatBoundsSource.getBottom());
+	}
+
+	@Override
+	public boolean contains(final BoundsSplit pBoundsSplit, final IFloatBoundsSource pFloatBoundsSource) {
+		return FloatBounds.contains(this.getLeft(pBoundsSplit), this.getRight(pBoundsSplit), this.getTop(pBoundsSplit), this.getBottom(pBoundsSplit), pFloatBoundsSource.getLeft(), pFloatBoundsSource.getRight(), pFloatBoundsSource.getTop(), pFloatBoundsSource.getBottom());
 	}
 
 	@Override
@@ -170,43 +171,102 @@ public class FloatBounds implements IBounds<IFloatBoundsSource>, IFloatBoundsSou
 
 	@Override
 	public FloatBounds split(final BoundsSplit pBoundsSplit) {
-		// TODO Does split work properly, when "mWidth % 2 != 0" or "mHeight % 2 != 0"
+		final float left = this.getLeft(pBoundsSplit);
+		final float right = this.getRight(pBoundsSplit);
+		final float top = this.getTop(pBoundsSplit);
+		final float bottom = this.getBottom(pBoundsSplit);
 
-		final float halfWidth = this.getWidth() / 2;
-		final float halfHeight = this.getHeight() / 2;
-
-		switch(pBoundsSplit) {
-			case TOP_LEFT:
-				return new FloatBounds(this.mLeft, this.mLeft + halfWidth, this.mTop, this.mTop + halfHeight);
-			case TOP_RIGHT:
-				return new FloatBounds(this.mLeft + halfWidth, this.mRight, this.mTop, this.mTop + halfHeight);
-			case BOTTOM_LEFT:
-				return new FloatBounds(this.mLeft, this.mLeft + halfWidth, this.mTop + halfHeight, this.mBottom);
-			case BOTTOM_RIGHT:
-				return new FloatBounds(this.mLeft + halfWidth, this.mRight, this.mTop + halfHeight, this.mBottom);
-			default:
-				throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
-		}
+		return new FloatBounds(left, right, top, bottom);
 	}
 
 	@Override
 	public String toString() {
 		return new StringBuilder()
-		.append("[Left: ")
-		.append(this.mLeft)
-		.append(", Right: ")
-		.append(this.mRight)
-		.append(", Top: ")
-		.append(this.mTop)
-		.append(", Bottom: ")
-		.append(this.mBottom)
-		.append("]")
-		.toString();
+			.append(this.getClass().getSimpleName())
+			.append('@')
+			.append("[Left: ")
+			.append(this.mLeft)
+			.append(", Right: ")
+			.append(this.mRight)
+			.append(", Top: ")
+			.append(this.mTop)
+			.append(", Bottom: ")
+			.append(this.mBottom)
+			.append("]")
+			.toString();
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private float getLeft(final BoundsSplit pBoundsSplit) {
+		final float halfWidth = this.getWidth() / 2;
+
+		switch(pBoundsSplit) {
+			case TOP_LEFT:
+				return this.mLeft;
+			case TOP_RIGHT:
+				return this.mLeft + halfWidth;
+			case BOTTOM_LEFT:
+				return this.mLeft;
+			case BOTTOM_RIGHT:
+				return this.mLeft + halfWidth;
+			default:
+				throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+		}
+	}
+
+	private float getRight(final BoundsSplit pBoundsSplit) {
+		final float halfWidth = this.getWidth() / 2;
+
+		switch(pBoundsSplit) {
+			case TOP_LEFT:
+				return this.mLeft + halfWidth;
+			case TOP_RIGHT:
+				return this.mRight;
+			case BOTTOM_LEFT:
+				return this.mLeft + halfWidth;
+			case BOTTOM_RIGHT:
+				return this.mRight;
+			default:
+				throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+		}
+	}
+
+	private float getTop(final BoundsSplit pBoundsSplit) {
+		final float halfHeight = this.getHeight() / 2;
+
+		switch(pBoundsSplit) {
+			case TOP_LEFT:
+				return this.mTop;
+			case TOP_RIGHT:
+				return this.mTop;
+			case BOTTOM_LEFT:
+				return this.mTop + halfHeight;
+			case BOTTOM_RIGHT:
+				return this.mTop + halfHeight;
+			default:
+				throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+		}
+	}
+
+	private float getBottom(final BoundsSplit pBoundsSplit) {
+		final float halfHeight = this.getHeight() / 2;
+
+		switch(pBoundsSplit) {
+			case TOP_LEFT:
+				return this.mTop + halfHeight;
+			case TOP_RIGHT:
+				return this.mTop + halfHeight;
+			case BOTTOM_LEFT:
+				return this.mBottom;
+			case BOTTOM_RIGHT:
+				return this.mBottom;
+			default:
+				throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+		}
+	}
 
 	public boolean intersects(final FloatBounds pFloatBounds) {
 		return (this.mLeft < pFloatBounds.mRight) && (pFloatBounds.mLeft < this.mRight) && (this.mTop < pFloatBounds.mBottom) && (pFloatBounds.mTop < this.mBottom);
@@ -216,12 +276,20 @@ public class FloatBounds implements IBounds<IFloatBoundsSource>, IFloatBoundsSou
 		return (this.mLeft < pRight) && (pLeft < this.mRight) && (this.mTop < pBottom) && (pTop < this.mBottom);
 	}
 
+	public static boolean intersects(final float pLeftA, final float pRightA, final float pTopA, final float pBottomA, final float pLeftB, final float pRightB, final float pTopB, final float pBottomB) {
+		return (pLeftA < pRightB) && (pLeftB < pRightA) && (pTopA < pBottomB) && (pTopB < pBottomA);
+	}
+
 	public boolean contains(final FloatBounds pFloatBounds) {
 		return (this.mLeft <= pFloatBounds.mLeft) && (this.mTop <= pFloatBounds.mTop) && (this.mRight >= pFloatBounds.mRight) && (this.mBottom >= pFloatBounds.mBottom);
 	}
 
 	public boolean contains(final float pLeft, final float pRight, final float pTop, final float pBottom) {
 		return (this.mLeft <= pLeft) && (this.mTop <= pTop) && (this.mRight >= pRight) && (this.mBottom >= pBottom);
+	}
+
+	public static boolean contains(final float pLeftA, final float pRightA, final float pTopA, final float pBottomA, final float pLeftB, final float pRightB, final float pTopB, final float pBottomB) {
+		return (pLeftA <= pLeftB) && (pTopA <= pTopB) && (pRightA >= pRightB) && (pBottomA >= pBottomB);
 	}
 
 	// ===========================================================

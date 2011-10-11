@@ -156,7 +156,7 @@ public abstract class PVRTexture extends Texture {
 		int currentPixelDataOffset = 0;
 		while (currentPixelDataOffset < dataLength) {
 			if (currentLevel > 0 && (width != height || MathUtils.nextPowerOfTwo(width) != width)) {
-				Debug.w(String.format("Mipmap level '%d' is not squared. Width: '%d', height: '%d'. Texture won't render correctly.", currentLevel, width, height));
+				Debug.w("Mipmap level '" + currentLevel + "' is not squared. Width: '" + width + "', height: '" + height + "'. Texture won't render correctly.");
 			}
 
 			final int currentPixelDataSize = height * width * bytesPerPixel;

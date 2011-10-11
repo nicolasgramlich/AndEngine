@@ -6,6 +6,7 @@ import java.util.List;
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.spatial.ISpatialItem;
 import org.anddev.andengine.util.spatial.adt.bounds.FloatBounds;
+import org.anddev.andengine.util.spatial.adt.bounds.IBounds.BoundsSplit;
 import org.anddev.andengine.util.spatial.adt.bounds.source.IFloatBoundsSource;
 
 
@@ -38,6 +39,11 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBoundsSource>> extends Q
 		super(pFloatBounds, pMaxLevel);
 	}
 
+	@Override
+	protected FloatQuadTreeNode initRoot(final FloatBounds pFloatBounds) {
+		return new FloatQuadTreeNode(QuadTree.LEVEL_ROOT, pFloatBounds);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -58,11 +64,11 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBoundsSource>> extends Q
 		this.mQueryFloatBounds.set(pX, pY);
 		return this.query(this.mQueryFloatBounds, pResult);
 	}
-	
+
 	public synchronized List<T> query(final float pX, final float pY, final IMatcher<T> pMatcher) {
 		return this.query(pX, pY, pMatcher, new LinkedList<T>());
 	}
-	
+
 	public synchronized List<T> query(final float pX, final float pY, final IMatcher<T> pMatcher, final List<T> pResult) {
 		this.mQueryFloatBounds.set(pX, pY);
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
@@ -76,11 +82,11 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBoundsSource>> extends Q
 		this.mQueryFloatBounds.set(pLeft, pRight, pTop, pBottom);
 		return this.query(this.mQueryFloatBounds, pResult);
 	}
-	
+
 	public synchronized List<T> query(final float pLeft, final float pRight, final float pTop, final float pBottom, final IMatcher<T> pMatcher) {
 		return this.query(pLeft, pRight, pTop, pBottom, pMatcher, new LinkedList<T>());
 	}
-	
+
 	public synchronized List<T> query(final float pLeft, final float pRight, final float pTop, final float pBottom, final IMatcher<T> pMatcher, final List<T> pResult) {
 		this.mQueryFloatBounds.set(pLeft, pRight, pTop, pBottom);
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
@@ -89,4 +95,43 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBoundsSource>> extends Q
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public class FloatQuadTreeNode extends QuadTreeNode {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public FloatQuadTreeNode(final int pLevel, final FloatBounds pBounds) {
+			super(pLevel, pBounds);
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Floaterfaces
+		// ===========================================================
+
+		@Override
+		protected FloatQuadTreeNode split(final BoundsSplit pBoundsSplit) {
+			return new FloatQuadTreeNode(this.mLevel + 1, this.mBounds.split(pBoundsSplit));
+		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

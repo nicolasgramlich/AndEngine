@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.spatial.ISpatialItem;
+import org.anddev.andengine.util.spatial.adt.bounds.IBounds.BoundsSplit;
 import org.anddev.andengine.util.spatial.adt.bounds.IntBounds;
 import org.anddev.andengine.util.spatial.adt.bounds.source.IIntBoundsSource;
 
@@ -38,6 +39,11 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 		super(pIntBounds, pMaxLevel);
 	}
 
+	@Override
+	protected IntQuadTreeNode initRoot(final IntBounds pIntBounds) {
+		return new IntQuadTreeNode(QuadTree.LEVEL_ROOT, pIntBounds);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -58,11 +64,11 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 		this.mQueryIntBounds.set(pX, pY);
 		return this.query(this.mQueryIntBounds, pResult);
 	}
-	
+
 	public synchronized List<T> query(final int pX, final int pY, final IMatcher<T> pMatcher) {
 		return this.query(pX, pY, pMatcher, new LinkedList<T>());
 	}
-	
+
 	public synchronized List<T> query(final int pX, final int pY, final IMatcher<T> pMatcher, final List<T> pResult) {
 		this.mQueryIntBounds.set(pX, pY);
 		return this.query(this.mQueryIntBounds, pMatcher, pResult);
@@ -76,11 +82,11 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 		this.mQueryIntBounds.set(pLeft, pRight, pTop, pBottom);
 		return this.query(this.mQueryIntBounds, pResult);
 	}
-	
+
 	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom, final IMatcher<T> pMatcher) {
 		return this.query(pLeft, pRight, pTop, pBottom, pMatcher, new LinkedList<T>());
 	}
-	
+
 	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom, final IMatcher<T> pMatcher, final List<T> pResult) {
 		this.mQueryIntBounds.set(pLeft, pRight, pTop, pBottom);
 		return this.query(this.mQueryIntBounds, pMatcher, pResult);
@@ -89,4 +95,43 @@ public class IntQuadTree<T extends ISpatialItem<IIntBoundsSource>> extends QuadT
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public class IntQuadTreeNode extends QuadTreeNode {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public IntQuadTreeNode(final int pLevel, final IntBounds pBounds) {
+			super(pLevel, pBounds);
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		@Override
+		protected IntQuadTreeNode split(final BoundsSplit pBoundsSplit) {
+			return new IntQuadTreeNode(this.mLevel + 1, this.mBounds.split(pBoundsSplit));
+		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

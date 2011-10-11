@@ -25,15 +25,14 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 	// Constants
 	// ===========================================================
 
-	private static final int LEVEL_ROOT = 0;
-	private static final int LEVEL_MAX_DEFAULT = 8;
+	protected static final int LEVEL_ROOT = 0;
+	protected static final int LEVEL_MAX_DEFAULT = 8;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final QuadTreeNode<S, B, T> mRoot;
-	private final B mBounds;
+	private final QuadTreeNode mRoot;
 	private final int mMaxLevel;
 
 	// ===========================================================
@@ -44,11 +43,12 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 		this(pBounds, QuadTree.LEVEL_MAX_DEFAULT);
 	}
 
-	public QuadTree(final B pBounds, final int pMaxLevel) {
-		this.mBounds = pBounds;
+	protected QuadTree(final B pBounds, final int pMaxLevel) {
 		this.mMaxLevel = pMaxLevel;
-		this.mRoot = new QuadTreeNode<S, B, T>(QuadTree.LEVEL_ROOT, this.mBounds);
+		this.mRoot = this.initRoot(pBounds);
 	}
+
+	protected abstract QuadTreeNode initRoot(final B pBounds);
 
 	// ===========================================================
 	// Getter & Setter
@@ -59,7 +59,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 	}
 
 	public B getBounds() {
-		return this.mBounds;
+		return this.mRoot.getBounds();
 	}
 
 	// ===========================================================
@@ -79,7 +79,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 			.append('\n')
 			.append('\t')
 			.append("Bounds: ")
-			.append(this.mBounds.toString())
+			.append(this.getBounds().toString())
 			.append(',')
 			.append('\n')
 			.append('\t')
@@ -171,7 +171,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 		this.mRoot.callItems(pParameterCallable);
 	}
 
-	public synchronized void callNodes(final ParameterCallable<QuadTreeNode<S, B, T>> pParameterCallable) {
+	public synchronized void callNodes(final ParameterCallable<QuadTreeNode> pParameterCallable) {
 		this.mRoot.callNodes(pParameterCallable);
 	}
 
@@ -179,8 +179,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	@SuppressWarnings("hiding")
-	public class QuadTreeNode<S extends IBoundsSource, B extends IBounds<S>, T extends ISpatialItem<S>> {
+	public abstract class QuadTreeNode {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -189,15 +188,14 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 		// Fields
 		// ===========================================================
 
-		private final int mLevel;
-		private final B mBounds;
-		private List<T> mItems;
+		protected final int mLevel;
+		protected final B mBounds;
+		protected List<T> mItems;
 
-		private QuadTreeNode<S, B, T> mTopLeftChild;
-		private QuadTreeNode<S, B, T> mTopRightChild;
-		private QuadTreeNode<S, B, T> mBottomLeftChild;
-		private QuadTreeNode<S, B, T> mBottomRightChild;
-		private boolean mChildrenAllocated;
+		protected QuadTreeNode mTopLeftChild;
+		protected QuadTreeNode mTopRightChild;
+		protected QuadTreeNode mBottomLeftChild;
+		protected QuadTreeNode mBottomRightChild;
 
 		// ===========================================================
 		// Constructors
@@ -230,6 +228,8 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
+		
+		protected abstract QuadTreeNode split(final BoundsSplit pBoundsSplit);
 
 		@Override
 		public String toString() {
@@ -357,7 +357,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 			}
 		}
 
-		public void callNodes(final ParameterCallable<QuadTreeNode<S, B, T>> pParameterCallable) {
+		public void callNodes(final ParameterCallable<QuadTreeNode> pParameterCallable) {
 			pParameterCallable.call(this);
 
 			if(this.mTopLeftChild != null) {
@@ -489,7 +489,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 		 * @param pChild
 		 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 		 */
-		private boolean queryChild(final B pBounds, final List<T> pResult, final QuadTreeNode<S, B, T> pChild) {
+		private boolean queryChild(final B pBounds, final List<T> pResult, final QuadTreeNode pChild) {
 			if(pChild.mBounds.contains(pBounds)) {
 				pChild.query(pBounds, pResult);
 				return true;
@@ -510,7 +510,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 		 * @param pChild
 		 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 		 */
-		private boolean queryChild(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult, final QuadTreeNode<S, B, T> pChild) {
+		private boolean queryChild(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult, final QuadTreeNode pChild) {
 			if(pChild.mBounds.contains(pBounds)) {
 				pChild.query(pBounds, pMatcher, pResult);
 				return true;
@@ -528,21 +528,18 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 			this.add(pItem, pItem.getBoundsSource());
 		}
 
-		@SuppressWarnings("unchecked")
 		public void add(final T pItem, final S pBoundsSource) throws IllegalArgumentException {
 			// if the item is not contained in this quad, there's a problem
 			if(!this.mBounds.contains(pBoundsSource)) { // TODO Perform this check only for the root?
 				throw new IllegalArgumentException("pItem is out of the bounds of this " + this.getClass().getSimpleName() + ".");
 			}
 
-			/* Check if this node has children and eventually create them.*/
-			if(!this.mChildrenAllocated) {
-				if(this.mLevel > QuadTree.this.mMaxLevel) {
-					/* No more levels allowed, so this node has to take the item. */
-					this.ensureItemsAllocated();
-					this.mItems.add(pItem);
-					return;
-				}
+			/* Check if this node is in the maximum level. */
+			if(this.mLevel > QuadTree.this.mMaxLevel) {
+				/* No more levels allowed, so this node has to take the item. */
+				this.ensureItemsAllocated();
+				this.mItems.add(pItem);
+				return;
 			}
 
 			/* If the node contains the item, add the item to that node. */
@@ -551,7 +548,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 			} else if(this.mBounds.contains(BoundsSplit.TOP_LEFT, pBoundsSource)) {
 				if(this.mTopLeftChild == null) {
 					try {
-						this.mTopLeftChild = new QuadTreeNode<S, B, T>(this.mLevel + 1, (B) this.mBounds.split(BoundsSplit.TOP_LEFT));
+						this.mTopLeftChild = this.split(BoundsSplit.TOP_LEFT);
 						this.mTopLeftChild.add(pItem, pBoundsSource);
 						return;
 					} catch (final BoundsSplitException e) {
@@ -565,7 +562,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 			} else if(this.mBounds.contains(BoundsSplit.TOP_RIGHT, pBoundsSource)) {
 				if(this.mTopRightChild == null) {
 					try {
-						this.mTopRightChild = new QuadTreeNode<S, B, T>(this.mLevel + 1, (B) this.mBounds.split(BoundsSplit.TOP_RIGHT));
+						this.mTopRightChild = this.split(BoundsSplit.TOP_RIGHT);
 						this.mTopRightChild.add(pItem, pBoundsSource);
 						return;
 					} catch (final BoundsSplitException e) {
@@ -573,13 +570,13 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 					}
 				}
 			}
-			
+
 			if(this.mBottomLeftChild != null && this.mBottomLeftChild.mBounds.contains(pBoundsSource)) {
 				this.mBottomLeftChild.add(pItem, pBoundsSource);
 			} else if(this.mBounds.contains(BoundsSplit.BOTTOM_LEFT, pBoundsSource)) {
 				if(this.mBottomLeftChild == null) {
 					try {
-						this.mBottomLeftChild = new QuadTreeNode<S, B, T>(this.mLevel + 1, (B) this.mBounds.split(BoundsSplit.BOTTOM_LEFT));
+						this.mBottomLeftChild = this.split(BoundsSplit.BOTTOM_LEFT);
 						this.mBottomLeftChild.add(pItem, pBoundsSource);
 						return;
 					} catch (final BoundsSplitException e) {
@@ -587,13 +584,13 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 					}
 				}
 			}
-			
+
 			if(this.mBottomRightChild != null && this.mBottomRightChild.mBounds.contains(pBoundsSource)) {
 				this.mBottomRightChild.add(pItem, pBoundsSource);
 			} else if(this.mBounds.contains(BoundsSplit.BOTTOM_RIGHT, pBoundsSource)) {
 				if(this.mBottomRightChild == null) {
 					try {
-						this.mBottomRightChild = new QuadTreeNode<S, B, T>(this.mLevel + 1, (B) this.mBounds.split(BoundsSplit.BOTTOM_RIGHT));
+						this.mBottomRightChild = this.split(BoundsSplit.BOTTOM_RIGHT);
 						this.mBottomRightChild.add(pItem, pBoundsSource);
 						return;
 					} catch (final BoundsSplitException e) {
@@ -601,7 +598,7 @@ public abstract class QuadTree<S extends IBoundsSource, B extends IBounds<S>, T 
 					}
 				}
 			}
-			
+
 			/* None of the children completely contained the item. */
 			this.ensureItemsAllocated();
 			this.mItems.add(pItem);

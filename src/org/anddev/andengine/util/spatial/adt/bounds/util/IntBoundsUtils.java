@@ -34,16 +34,20 @@ public class IntBoundsUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static boolean intersects(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
+		return IntBoundsUtils.intersects(pIntBoundsA.getLeft(), pIntBoundsA.getTop(), pIntBoundsA.getRight(), pIntBoundsA.getBottom(), pIntBoundsB.getLeft(), pIntBoundsB.getTop(), pIntBoundsB.getRight(), pIntBoundsB.getBottom());
+	}
 
-	public static boolean intersects(final int pLeftA, final int pRightA, final int pTopA, final int pBottomA, final int pLeftB, final int pRightB, final int pTopB, final int pBottomB) {
+	public static boolean intersects(final int pLeftA, final int pTopA, final int pRightA, final int pBottomA, final int pLeftB, final int pTopB, final int pRightB, final int pBottomB) {
 		return (pLeftA < pRightB) && (pLeftB < pRightA) && (pTopA < pBottomB) && (pTopB < pBottomA);
 	}
-
-	public static boolean intersects(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
-		return IntBoundsUtils.intersects(pIntBoundsA.getLeft(), pIntBoundsA.getRight(), pIntBoundsA.getTop(), pIntBoundsA.getBottom(), pIntBoundsB.getLeft(), pIntBoundsB.getRight(), pIntBoundsB.getTop(), pIntBoundsB.getBottom());
+	
+	public static boolean contains(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
+		return IntBoundsUtils.contains(pIntBoundsA.getLeft(), pIntBoundsA.getTop(), pIntBoundsA.getRight(), pIntBoundsA.getBottom(), pIntBoundsB.getLeft(), pIntBoundsB.getTop(), pIntBoundsB.getRight(), pIntBoundsB.getBottom());
 	}
 
-	public static boolean contains(final int pLeftA, final int pRightA, final int pTopA, final int pBottomA, final int pLeftB, final int pRightB, final int pTopB, final int pBottomB) {
+	public static boolean contains(final int pLeftA, final int pTopA, final int pRightA, final int pBottomA, final int pLeftB, final int pTopB, final int pRightB, final int pBottomB) {
 		return (pLeftA <= pLeftB) && (pTopA <= pTopB) && (pRightA >= pRightB) && (pBottomA >= pBottomB);
 	}
 

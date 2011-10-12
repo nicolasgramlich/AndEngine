@@ -75,21 +75,21 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
 	}
 
-	public synchronized List<T> query(final float pLeft, final float pRight, final float pTop, final float pBottom) {
-		return this.query(pLeft, pRight, pTop, pBottom, new LinkedList<T>());
+	public synchronized List<T> query(final float pLeft, final float pTop, final float pRight, final float pBottom) {
+		return this.query(pLeft, pTop, pRight, pBottom, new LinkedList<T>());
 	}
 
-	public synchronized List<T> query(final float pLeft, final float pRight, final float pTop, final float pBottom, final List<T> pResult) {
-		this.mQueryFloatBounds.set(pLeft, pRight, pTop, pBottom);
+	public synchronized List<T> query(final float pLeft, final float pTop, final float pRight, final float pBottom, final List<T> pResult) {
+		this.mQueryFloatBounds.set(pLeft, pTop, pRight, pBottom);
 		return this.query(this.mQueryFloatBounds, pResult);
 	}
 
-	public synchronized List<T> query(final float pLeft, final float pRight, final float pTop, final float pBottom, final IMatcher<T> pMatcher) {
-		return this.query(pLeft, pRight, pTop, pBottom, pMatcher, new LinkedList<T>());
+	public synchronized List<T> query(final float pLeft, final float pTop, final float pRight, final float pBottom, final IMatcher<T> pMatcher) {
+		return this.query(pLeft, pTop, pRight, pBottom, pMatcher, new LinkedList<T>());
 	}
 
-	public synchronized List<T> query(final float pLeft, final float pRight, final float pTop, final float pBottom, final IMatcher<T> pMatcher, final List<T> pResult) {
-		this.mQueryFloatBounds.set(pLeft, pRight, pTop, pBottom);
+	public synchronized List<T> query(final float pLeft, final float pTop, final float pRight, final float pBottom, final IMatcher<T> pMatcher, final List<T> pResult) {
+		this.mQueryFloatBounds.set(pLeft, pTop, pRight, pBottom);
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
 	}
 
@@ -184,12 +184,12 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 
 		@Override
 		protected boolean contains(final BoundsSplit pBoundsSplit, final IFloatBounds pFloatBounds) {
-			return FloatBoundsUtils.contains(this.getLeft(pBoundsSplit), this.getRight(pBoundsSplit), this.getTop(pBoundsSplit), this.getBottom(pBoundsSplit), pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom());
+			return FloatBoundsUtils.contains(this.getLeft(pBoundsSplit), this.getTop(pBoundsSplit), this.getRight(pBoundsSplit), this.getBottom(pBoundsSplit), pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom());
 		}
 
 		@Override
 		protected boolean intersects(final IFloatBounds pFloatBounds) {
-			return FloatBoundsUtils.intersects(this.mLeft, this.mRight, this.mTop, this.mBottom, pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom());
+			return FloatBoundsUtils.intersects(this.mLeft, this.mTop, this.mRight, this.mBottom, pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom());
 		}
 
 		@Override
@@ -199,7 +199,7 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 
 		@Override
 		protected boolean containedBy(final IFloatBounds pFloatBounds) {
-			return FloatBoundsUtils.contains(pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom(), this.mLeft, this.mRight, this.mTop, this.mBottom);
+			return FloatBoundsUtils.contains(pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom(), this.mLeft, this.mTop, this.mRight, this.mBottom);
 		}
 
 		@Override
@@ -289,11 +289,11 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		}
 
 		public boolean intersects(final float pLeft, final float pRight, final float pTop, final float pBottom) {
-			return FloatBoundsUtils.intersects(this.mLeft, this.mRight, this.mTop, this.mBottom, pLeft, pRight, pTop, pBottom);
+			return FloatBoundsUtils.intersects(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
 		}
 
 		public boolean contains(final float pLeft, final float pRight, final float pTop, final float pBottom) {
-			return FloatBoundsUtils.contains(this.mLeft, this.mRight, this.mTop, this.mBottom, pLeft, pRight, pTop, pBottom);
+			return FloatBoundsUtils.contains(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
 		}
 
 		// ===========================================================

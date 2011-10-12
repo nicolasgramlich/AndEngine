@@ -33,16 +33,20 @@ public class FloatBoundsUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static boolean intersects(final IFloatBounds pFloatBoundsA, final IFloatBounds pFloatBoundsB) {
+		return FloatBoundsUtils.intersects(pFloatBoundsA.getLeft(), pFloatBoundsA.getTop(), pFloatBoundsA.getRight(), pFloatBoundsA.getBottom(), pFloatBoundsB.getLeft(), pFloatBoundsB.getTop(), pFloatBoundsB.getRight(), pFloatBoundsB.getBottom());
+	}
 
-	public static boolean intersects(final float pLeftA, final float pRightA, final float pTopA, final float pBottomA, final float pLeftB, final float pRightB, final float pTopB, final float pBottomB) {
+	public static boolean intersects(final float pLeftA, final float pTopA, final float pRightA, final float pBottomA, final float pLeftB, final float pTopB, final float pRightB, final float pBottomB) {
 		return (pLeftA < pRightB) && (pLeftB < pRightA) && (pTopA < pBottomB) && (pTopB < pBottomA);
 	}
 
-	public static boolean intersects(final IFloatBounds pFloatBoundsA, final IFloatBounds pFloatBoundsB) {
-		return FloatBoundsUtils.intersects(pFloatBoundsA.getLeft(), pFloatBoundsA.getRight(), pFloatBoundsA.getTop(), pFloatBoundsA.getBottom(), pFloatBoundsB.getLeft(), pFloatBoundsB.getRight(), pFloatBoundsB.getTop(), pFloatBoundsB.getBottom());
+	public static boolean contains(final IFloatBounds pFloatBoundsA, final IFloatBounds pFloatBoundsB) {
+		return FloatBoundsUtils.intersects(pFloatBoundsA.getLeft(), pFloatBoundsA.getTop(), pFloatBoundsA.getRight(), pFloatBoundsA.getBottom(), pFloatBoundsB.getLeft(), pFloatBoundsB.getTop(), pFloatBoundsB.getRight(), pFloatBoundsB.getBottom());
 	}
 
-	public static boolean contains(final float pLeftA, final float pRightA, final float pTopA, final float pBottomA, final float pLeftB, final float pRightB, final float pTopB, final float pBottomB) {
+	public static boolean contains(final float pLeftA, final float pTopA, final float pRightA, final float pBottomA, final float pLeftB, final float pTopB, final float pRightB, final float pBottomB) {
 		return (pLeftA <= pLeftB) && (pTopA <= pTopB) && (pRightA >= pRightB) && (pBottomA >= pBottomB);
 	}
 

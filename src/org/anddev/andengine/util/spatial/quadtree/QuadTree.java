@@ -127,7 +127,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 	}
 
 	/**
-	 * Shorthand for <code>remove(pItem, pOldBoundsSource)</code> followed by a <code>add(pItem, pNewBoundsSource)</code>.
+	 * Shorthand for <code>remove(pItem, pOldBounds)</code> followed by a <code>add(pItem, pNewBounds)</code>.
 	 *
 	 * @param pItem to be freshly added.
 	 * @param pOldBounds to remove pItem with.

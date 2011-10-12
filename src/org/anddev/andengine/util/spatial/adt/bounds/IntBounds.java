@@ -16,15 +16,15 @@ public class IntBounds implements IIntBounds {
 	// ===========================================================
 
 	private int mLeft;
-	private int mRight;
 	private int mTop;
+	private int mRight;
 	private int mBottom;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public IntBounds(final int pLeft, final int pRight, final int pTop, final int pBottom) {
+	public IntBounds(final int pLeft, final int pTop, final int pRight, final int pBottom) {
 		this.mLeft = pLeft;
 		this.mRight = pRight;
 		this.mTop = pTop;
@@ -43,15 +43,15 @@ public class IntBounds implements IIntBounds {
 	public int getLeft() {
 		return this.mLeft;
 	}
+	
+	@Override
+	public int getTop() {
+		return this.mTop;
+	}
 
 	@Override
 	public int getRight() {
 		return this.mRight;
-	}
-
-	@Override
-	public int getTop() {
-		return this.mTop;
 	}
 
 	@Override
@@ -60,10 +60,10 @@ public class IntBounds implements IIntBounds {
 	}
 
 	public void set(final int pX, final int pY) {
-		this.set(pX, pX, pY, pY);
+		this.set(pX, pY, pX, pY);
 	}
 
-	public void set(final int pLeft, final int pRight, final int pTop, final int pBottom) {
+	public void set(final int pLeft, final int pTop, final int pRight, final int pBottom) {
 		this.mLeft = pLeft;
 		this.mRight = pRight;
 		this.mTop = pTop;

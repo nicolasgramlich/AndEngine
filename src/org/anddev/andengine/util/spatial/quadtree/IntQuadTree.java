@@ -76,21 +76,21 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		return this.query(this.mQueryIntBounds, pMatcher, pResult);
 	}
 
-	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom) {
-		return this.query(pLeft, pRight, pTop, pBottom, new LinkedList<T>());
+	public synchronized List<T> query(final int pLeft, final int pTop, final int pRight, final int pBottom) {
+		return this.query(pLeft, pTop, pRight, pBottom, new LinkedList<T>());
 	}
 
-	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom, final List<T> pResult) {
-		this.mQueryIntBounds.set(pLeft, pRight, pTop, pBottom);
+	public synchronized List<T> query(final int pLeft, final int pTop, final int pRight, final int pBottom, final List<T> pResult) {
+		this.mQueryIntBounds.set(pLeft, pTop, pRight, pBottom);
 		return this.query(this.mQueryIntBounds, pResult);
 	}
 
-	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom, final IMatcher<T> pMatcher) {
-		return this.query(pLeft, pRight, pTop, pBottom, pMatcher, new LinkedList<T>());
+	public synchronized List<T> query(final int pLeft, final int pTop, final int pRight, final int pBottom, final IMatcher<T> pMatcher) {
+		return this.query(pLeft, pTop, pRight, pBottom, pMatcher, new LinkedList<T>());
 	}
 
-	public synchronized List<T> query(final int pLeft, final int pRight, final int pTop, final int pBottom, final IMatcher<T> pMatcher, final List<T> pResult) {
-		this.mQueryIntBounds.set(pLeft, pRight, pTop, pBottom);
+	public synchronized List<T> query(final int pLeft, final int pTop, final int pRight, final int pBottom, final IMatcher<T> pMatcher, final List<T> pResult) {
+		this.mQueryIntBounds.set(pLeft, pTop, pRight, pBottom);
 		return this.query(this.mQueryIntBounds, pMatcher, pResult);
 	}
 
@@ -192,12 +192,12 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 
 		@Override
 		protected boolean contains(final BoundsSplit pBoundsSplit, final IIntBounds pIntBounds) {
-			return IntBoundsUtils.contains(this.getLeft(pBoundsSplit), this.getRight(pBoundsSplit), this.getTop(pBoundsSplit), this.getBottom(pBoundsSplit), pIntBounds.getLeft(), pIntBounds.getRight(), pIntBounds.getTop(), pIntBounds.getBottom());
+			return IntBoundsUtils.contains(this.getLeft(pBoundsSplit), this.getTop(pBoundsSplit), this.getRight(pBoundsSplit), this.getBottom(pBoundsSplit), pIntBounds.getLeft(), pIntBounds.getTop(), pIntBounds.getRight(), pIntBounds.getBottom());
 		}
 
 		@Override
 		protected boolean intersects(final IIntBounds pIntBounds) {
-			return IntBoundsUtils.intersects(this.mLeft, this.mRight, this.mTop, this.mBottom, pIntBounds.getLeft(), pIntBounds.getRight(), pIntBounds.getTop(), pIntBounds.getBottom());
+			return IntBoundsUtils.intersects(this.mLeft, this.mTop, this.mRight, this.mBottom, pIntBounds.getLeft(), pIntBounds.getTop(), pIntBounds.getRight(), pIntBounds.getBottom());
 		}
 
 		@Override
@@ -207,7 +207,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 
 		@Override
 		protected boolean containedBy(final IIntBounds pBounds) {
-			return IntBoundsUtils.contains(pBounds.getLeft(), pBounds.getRight(), pBounds.getTop(), pBounds.getBottom(), this.mLeft, this.mRight, this.mTop, this.mBottom);
+			return IntBoundsUtils.contains(pBounds.getLeft(), pBounds.getTop(), pBounds.getRight(), pBounds.getBottom(), this.mLeft, this.mTop, this.mRight, this.mBottom);
 		}
 
 		@Override
@@ -353,11 +353,11 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		}
 
 		public boolean intersects(final int pLeft, final int pRight, final int pTop, final int pBottom) {
-			return IntBoundsUtils.intersects(this.mLeft, this.mRight, this.mTop, this.mBottom, pLeft, pRight, pTop, pBottom);
+			return IntBoundsUtils.intersects(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
 		}
 
 		public boolean contains(final int pLeft, final int pRight, final int pTop, final int pBottom) {
-			return IntBoundsUtils.contains(this.mLeft, this.mRight, this.mTop, this.mBottom, pLeft, pRight, pTop, pBottom);
+			return IntBoundsUtils.contains(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
 		}
 
 		// ===========================================================

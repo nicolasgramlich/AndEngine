@@ -16,15 +16,15 @@ public class FloatBounds implements IFloatBounds {
 	// ===========================================================
 
 	private float mLeft;
-	private float mRight;
 	private float mTop;
+	private float mRight;
 	private float mBottom;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FloatBounds(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+	public FloatBounds(final float pLeft, final float pTop, final float pRight, final float pBottom) {
 		this.mLeft = pLeft;
 		this.mRight = pRight;
 		this.mTop = pTop;
@@ -43,15 +43,15 @@ public class FloatBounds implements IFloatBounds {
 	public float getLeft() {
 		return this.mLeft;
 	}
+	
+	@Override
+	public float getTop() {
+		return this.mTop;
+	}
 
 	@Override
 	public float getRight() {
 		return this.mRight;
-	}
-
-	@Override
-	public float getTop() {
-		return this.mTop;
 	}
 
 	@Override
@@ -60,10 +60,10 @@ public class FloatBounds implements IFloatBounds {
 	}
 
 	public void set(final float pX, final float pY) {
-		this.set(pX, pX, pY, pY);
+		this.set(pX, pY, pX, pY);
 	}
 
-	public void set(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+	public void set(final float pLeft, final float pTop, final float pRight, final float pBottom) {
 		this.mLeft = pLeft;
 		this.mRight = pRight;
 		this.mTop = pTop;

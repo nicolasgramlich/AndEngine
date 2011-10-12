@@ -16,7 +16,7 @@ public interface IIntBounds extends IBounds {
 	// ===========================================================
 
 	public int getLeft();
-	public int getRight();
 	public int getTop();
+	public int getRight();
 	public int getBottom();
 }

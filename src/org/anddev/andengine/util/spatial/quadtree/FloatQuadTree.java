@@ -75,22 +75,42 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
 	}
 
-	public synchronized List<T> query(final float pLeft, final float pTop, final float pRight, final float pBottom) {
-		return this.query(pLeft, pTop, pRight, pBottom, new LinkedList<T>());
+	public synchronized List<T> query(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY) {
+		return this.query(pMinX, pMinY, pMaxX, pMaxY, new LinkedList<T>());
 	}
 
-	public synchronized List<T> query(final float pLeft, final float pTop, final float pRight, final float pBottom, final List<T> pResult) {
-		this.mQueryFloatBounds.set(pLeft, pTop, pRight, pBottom);
+	public synchronized List<T> query(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY, final List<T> pResult) {
+		this.mQueryFloatBounds.set(pMinX, pMinY, pMaxX, pMaxY);
 		return this.query(this.mQueryFloatBounds, pResult);
 	}
 
-	public synchronized List<T> query(final float pLeft, final float pTop, final float pRight, final float pBottom, final IMatcher<T> pMatcher) {
-		return this.query(pLeft, pTop, pRight, pBottom, pMatcher, new LinkedList<T>());
+	public synchronized List<T> query(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY, final IMatcher<T> pMatcher) {
+		return this.query(pMinX, pMinY, pMaxX, pMaxY, pMatcher, new LinkedList<T>());
 	}
 
-	public synchronized List<T> query(final float pLeft, final float pTop, final float pRight, final float pBottom, final IMatcher<T> pMatcher, final List<T> pResult) {
-		this.mQueryFloatBounds.set(pLeft, pTop, pRight, pBottom);
+	public synchronized List<T> query(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY, final IMatcher<T> pMatcher, final List<T> pResult) {
+		this.mQueryFloatBounds.set(pMinX, pMinY, pMaxX, pMaxY);
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
+	}
+
+	public synchronized boolean containsAny(final float pX, final float pY) {
+		this.mQueryFloatBounds.set(pX, pY);
+		return this.containsAny(this.mQueryFloatBounds);
+	}
+
+	public synchronized boolean containsAny(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY) {
+		this.mQueryFloatBounds.set(pMinX, pMinY, pMaxX, pMaxY);
+		return this.containsAny(this.mQueryFloatBounds);
+	}
+
+	public synchronized boolean containsAny(final float pX, final float pY, final IMatcher<T> pMatcher) {
+		this.mQueryFloatBounds.set(pX, pY);
+		return this.containsAny(this.mQueryFloatBounds, pMatcher);
+	}
+
+	public synchronized boolean containsAny(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY, final IMatcher<T> pMatcher) {
+		this.mQueryFloatBounds.set(pMinX, pMinY, pMaxX, pMaxY);
+		return this.containsAny(this.mQueryFloatBounds, pMatcher);
 	}
 
 	// ===========================================================
@@ -106,32 +126,32 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		// Fields
 		// ===========================================================
 
-		private final float mLeft;
-		private final float mTop;
-		private final float mRight;
-		private final float mBottom;
+		private final float mMinX;
+		private final float mMinY;
+		private final float mMaxX;
+		private final float mMaxY;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
 		public FloatQuadTreeNode(final int pLevel, final IFloatBounds pFloatBounds) {
-			this(pLevel, pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom());
+			this(pLevel, pFloatBounds.getMinX(), pFloatBounds.getMinY(), pFloatBounds.getMaxX(), pFloatBounds.getMaxY());
 		}
 
-		public FloatQuadTreeNode(final int pLevel, final float pLeft, final float pTop, final float pRight, final float pBottom) {
+		public FloatQuadTreeNode(final int pLevel, final float pMinX, final float pMinY, final float pMaxX, final float pMaxY) {
 			super(pLevel);
 
-			this.mLeft = pLeft;
-			this.mTop = pTop;
-			this.mRight = pRight;
-			this.mBottom = pBottom;
+			this.mMinX = pMinX;
+			this.mMinY = pMinY;
+			this.mMaxX = pMaxX;
+			this.mMaxY = pMaxY;
 
-			if(pLeft > pRight) {
-				throw new IllegalArgumentException("pLeft must be smaller or equal to pRight.");
+			if(pMinX > pMaxX) {
+				throw new IllegalArgumentException("pMinX must be smaller or equal to pMaxX.");
 			}
-			if(pTop > pBottom) {
-				throw new IllegalArgumentException("pTop must be smaller or equal to pBottom.");
+			if(pMinY > pMaxY) {
+				throw new IllegalArgumentException("pMinY must be smaller or equal to pMaxY.");
 			}
 		}
 
@@ -139,28 +159,28 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		// Getter & Setter
 		// ===========================================================
 
-		public float getLeft() {
-			return this.mLeft;
+		public float getMinX() {
+			return this.mMinX;
 		}
 		
-		public float getTop() {
-			return this.mTop;
+		public float getMinY() {
+			return this.mMinY;
 		}
 
-		public float getRight() {
-			return this.mRight;
+		public float getMaxX() {
+			return this.mMaxX;
 		}
 
-		public float getBottom() {
-			return this.mBottom;
+		public float getMaxY() {
+			return this.mMaxY;
 		}
 
 		public float getWidth() {
-			return this.mRight - this.mLeft;
+			return this.mMaxX - this.mMinX;
 		}
 
 		public float getHeight() {
-			return this.mBottom - this.mTop;
+			return this.mMaxY - this.mMinY;
 		}
 
 		// ===========================================================
@@ -169,27 +189,27 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 
 		@Override
 		protected FloatQuadTreeNode split(final BoundsSplit pBoundsSplit) {
-			final float left = this.getLeft(pBoundsSplit);
-			final float top = this.getTop(pBoundsSplit);
-			final float right = this.getRight(pBoundsSplit);
-			final float bottom = this.getBottom(pBoundsSplit);
+			final float minX = this.getMinX(pBoundsSplit);
+			final float minY = this.getMinY(pBoundsSplit);
+			final float maxX = this.getMaxX(pBoundsSplit);
+			final float maxY = this.getMaxY(pBoundsSplit);
 
-			return new FloatQuadTreeNode(this.mLevel + 1, left, top, right, bottom);
+			return new FloatQuadTreeNode(this.mLevel + 1, minX, minY, maxX, maxY);
 		}
 
 		@Override
 		protected boolean contains(final IFloatBounds pFloatBounds) {
-			return this.contains(pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom());
+			return this.contains(pFloatBounds.getMinX(), pFloatBounds.getMinY(), pFloatBounds.getMaxX(), pFloatBounds.getMaxY());
 		}
 
 		@Override
 		protected boolean contains(final BoundsSplit pBoundsSplit, final IFloatBounds pFloatBounds) {
-			return FloatBoundsUtils.contains(this.getLeft(pBoundsSplit), this.getTop(pBoundsSplit), this.getRight(pBoundsSplit), this.getBottom(pBoundsSplit), pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom());
+			return FloatBoundsUtils.contains(this.getMinX(pBoundsSplit), this.getMinY(pBoundsSplit), this.getMaxX(pBoundsSplit), this.getMaxY(pBoundsSplit), pFloatBounds.getMinX(), pFloatBounds.getMinY(), pFloatBounds.getMaxX(), pFloatBounds.getMaxY());
 		}
 
 		@Override
 		protected boolean intersects(final IFloatBounds pFloatBounds) {
-			return FloatBoundsUtils.intersects(this.mLeft, this.mTop, this.mRight, this.mBottom, pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom());
+			return FloatBoundsUtils.intersects(this.mMinX, this.mMinY, this.mMaxX, this.mMaxY, pFloatBounds.getMinX(), pFloatBounds.getMinY(), pFloatBounds.getMaxX(), pFloatBounds.getMaxY());
 		}
 
 		@Override
@@ -199,20 +219,20 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 
 		@Override
 		protected boolean containedBy(final IFloatBounds pFloatBounds) {
-			return FloatBoundsUtils.contains(pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom(), this.mLeft, this.mTop, this.mRight, this.mBottom);
+			return FloatBoundsUtils.contains(pFloatBounds.getMinX(), pFloatBounds.getMinY(), pFloatBounds.getMaxX(), pFloatBounds.getMaxY(), this.mMinX, this.mMinY, this.mMaxX, this.mMaxY);
 		}
 
 		@Override
 		protected void appendBoundsToString(final StringBuilder pStringBuilder) {
 			pStringBuilder
-				.append("[Left: ")
-				.append(this.mLeft)
-				.append(", Top: ")
-				.append(this.mTop)
-				.append(", Right: ")
-				.append(this.mRight)
-				.append(", Bottom: ")
-				.append(this.mBottom)
+				.append("[MinX: ")
+				.append(this.mMinX)
+				.append(", MinY: ")
+				.append(this.mMinY)
+				.append(", MaxX: ")
+				.append(this.mMaxX)
+				.append(", MaxY: ")
+				.append(this.mMaxY)
 				.append("]");
 		}
 
@@ -220,80 +240,80 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		// Methods
 		// ===========================================================
 
-		private float getLeft(final BoundsSplit pBoundsSplit) {
+		private float getMinX(final BoundsSplit pBoundsSplit) {
 			final float halfWidth = this.getWidth() / 2;
 
 			switch(pBoundsSplit) {
 				case TOP_LEFT:
-					return this.mLeft;
+					return this.mMinX;
 				case TOP_RIGHT:
-					return this.mLeft + halfWidth;
+					return this.mMinX + halfWidth;
 				case BOTTOM_LEFT:
-					return this.mLeft;
+					return this.mMinX;
 				case BOTTOM_RIGHT:
-					return this.mLeft + halfWidth;
+					return this.mMinX + halfWidth;
 				default:
 					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 			}
 		}
 
-		private float getTop(final BoundsSplit pBoundsSplit) {
+		private float getMinY(final BoundsSplit pBoundsSplit) {
 			final float halfHeight = this.getHeight() / 2;
 
 			switch(pBoundsSplit) {
 				case TOP_LEFT:
-					return this.mTop;
+					return this.mMinY;
 				case TOP_RIGHT:
-					return this.mTop;
+					return this.mMinY;
 				case BOTTOM_LEFT:
-					return this.mTop + halfHeight;
+					return this.mMinY + halfHeight;
 				case BOTTOM_RIGHT:
-					return this.mTop + halfHeight;
+					return this.mMinY + halfHeight;
 				default:
 					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 			}
 		}
 		
-		private float getRight(final BoundsSplit pBoundsSplit) {
+		private float getMaxX(final BoundsSplit pBoundsSplit) {
 			final float halfWidth = this.getWidth() / 2;
 			
 			switch(pBoundsSplit) {
 				case TOP_LEFT:
-					return this.mLeft + halfWidth;
+					return this.mMinX + halfWidth;
 				case TOP_RIGHT:
-					return this.mRight;
+					return this.mMaxX;
 				case BOTTOM_LEFT:
-					return this.mLeft + halfWidth;
+					return this.mMinX + halfWidth;
 				case BOTTOM_RIGHT:
-					return this.mRight;
+					return this.mMaxX;
 				default:
 					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 			}
 		}
 
-		private float getBottom(final BoundsSplit pBoundsSplit) {
+		private float getMaxY(final BoundsSplit pBoundsSplit) {
 			final float halfHeight = this.getHeight() / 2;
 
 			switch(pBoundsSplit) {
 				case TOP_LEFT:
-					return this.mTop + halfHeight;
+					return this.mMinY + halfHeight;
 				case TOP_RIGHT:
-					return this.mTop + halfHeight;
+					return this.mMinY + halfHeight;
 				case BOTTOM_LEFT:
-					return this.mBottom;
+					return this.mMaxY;
 				case BOTTOM_RIGHT:
-					return this.mBottom;
+					return this.mMaxY;
 				default:
 					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 			}
 		}
 
-		public boolean intersects(final float pLeft, final float pTop, final float pRight, final float pBottom) {
-			return FloatBoundsUtils.intersects(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
+		public boolean intersects(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY) {
+			return FloatBoundsUtils.intersects(this.mMinX, this.mMinY, this.mMaxX, this.mMaxY, pMinX, pMinY, pMaxX, pMaxY);
 		}
 
-		public boolean contains(final float pLeft, final float pTop, final float pRight, final float pBottom) {
-			return FloatBoundsUtils.contains(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
+		public boolean contains(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY) {
+			return FloatBoundsUtils.contains(this.mMinX, this.mMinY, this.mMaxX, this.mMaxY, pMinX, pMinY, pMaxX, pMaxY);
 		}
 
 		// ===========================================================

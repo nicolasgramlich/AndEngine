@@ -15,20 +15,21 @@ public class FloatBounds implements IFloatBounds {
 	// Fields
 	// ===========================================================
 
-	private float mLeft;
-	private float mTop;
-	private float mRight;
-	private float mBottom;
+	private float mMinX;
+	private float mMinY;
+	private float mMaxX;
+	private float mMaxY;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public FloatBounds(final float pX, final float pY) {
+		this.set(pX, pY);
+	}
 
-	public FloatBounds(final float pLeft, final float pTop, final float pRight, final float pBottom) {
-		this.mLeft = pLeft;
-		this.mRight = pRight;
-		this.mTop = pTop;
-		this.mBottom = pBottom;
+	public FloatBounds(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY) {
+		this.set(pMinX, pMinY, pMaxX, pMaxY);
 	}
 
 	// ===========================================================
@@ -40,34 +41,41 @@ public class FloatBounds implements IFloatBounds {
 	// ===========================================================
 
 	@Override
-	public float getLeft() {
-		return this.mLeft;
+	public float getMinX() {
+		return this.mMinX;
 	}
 	
 	@Override
-	public float getTop() {
-		return this.mTop;
+	public float getMinY() {
+		return this.mMinY;
 	}
 
 	@Override
-	public float getRight() {
-		return this.mRight;
+	public float getMaxX() {
+		return this.mMaxX;
 	}
 
 	@Override
-	public float getBottom() {
-		return this.mBottom;
+	public float getMaxY() {
+		return this.mMaxY;
 	}
 
 	public void set(final float pX, final float pY) {
 		this.set(pX, pY, pX, pY);
 	}
 
-	public void set(final float pLeft, final float pTop, final float pRight, final float pBottom) {
-		this.mLeft = pLeft;
-		this.mRight = pRight;
-		this.mTop = pTop;
-		this.mBottom = pBottom;
+	public void set(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY) {
+		this.mMinX = pMinX;
+		this.mMinY = pMinY;
+		this.mMaxX = pMaxX;
+		this.mMaxY = pMaxY;
+
+		if(pMinX > pMaxX) {
+			throw new IllegalArgumentException("pMinX must be smaller or equal to pMaxX.");
+		}
+		if(pMinY > pMaxY) {
+			throw new IllegalArgumentException("pMinY must be smaller or equal to pMaxY.");
+		}
 	}
 
 	// ===========================================================

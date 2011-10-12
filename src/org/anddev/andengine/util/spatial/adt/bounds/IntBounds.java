@@ -15,20 +15,21 @@ public class IntBounds implements IIntBounds {
 	// Fields
 	// ===========================================================
 
-	private int mLeft;
-	private int mTop;
-	private int mRight;
-	private int mBottom;
+	private int mMinX;
+	private int mMinY;
+	private int mMaxX;
+	private int mMaxY;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	public IntBounds(final int pX, final int pY) {
+		this.set(pX, pY);
+	}
 
-	public IntBounds(final int pLeft, final int pTop, final int pRight, final int pBottom) {
-		this.mLeft = pLeft;
-		this.mRight = pRight;
-		this.mTop = pTop;
-		this.mBottom = pBottom;
+	public IntBounds(final int pMinX, final int pMinY, final int pMaxX, final int pMaxY) {
+		this.set(pMinX, pMinY, pMaxX, pMaxY);
 	}
 
 	// ===========================================================
@@ -40,34 +41,41 @@ public class IntBounds implements IIntBounds {
 	// ===========================================================
 
 	@Override
-	public int getLeft() {
-		return this.mLeft;
+	public int getMinX() {
+		return this.mMinX;
 	}
 	
 	@Override
-	public int getTop() {
-		return this.mTop;
+	public int getMinY() {
+		return this.mMinY;
 	}
 
 	@Override
-	public int getRight() {
-		return this.mRight;
+	public int getMaxX() {
+		return this.mMaxX;
 	}
 
 	@Override
-	public int getBottom() {
-		return this.mBottom;
+	public int getMaxY() {
+		return this.mMaxY;
 	}
 
 	public void set(final int pX, final int pY) {
 		this.set(pX, pY, pX, pY);
 	}
 
-	public void set(final int pLeft, final int pTop, final int pRight, final int pBottom) {
-		this.mLeft = pLeft;
-		this.mRight = pRight;
-		this.mTop = pTop;
-		this.mBottom = pBottom;
+	public void set(final int pMinX, final int pMinY, final int pMaxX, final int pMaxY) {
+		this.mMinX = pMinX;
+		this.mMinY = pMinY;
+		this.mMaxX = pMaxX;
+		this.mMaxY = pMaxY;
+
+		if(pMinX > pMaxX) {
+			throw new IllegalArgumentException("pMinX must be smaller or equal to pMaxX.");
+		}
+		if(pMinY > pMaxY) {
+			throw new IllegalArgumentException("pMinY must be smaller or equal to pMaxY.");
+		}
 	}
 
 	// ===========================================================

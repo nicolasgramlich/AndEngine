@@ -165,6 +165,14 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 	public synchronized List<T> query(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult) {
 		return this.mRoot.query(pBounds, pMatcher, pResult);
 	}
+	
+	public synchronized boolean containsAny(final B pBounds) {
+		return this.mRoot.containsAny(pBounds);
+	}
+
+	public synchronized boolean containsAny(final B pBounds, final IMatcher<T> pMatcher) {
+		return this.mRoot.containsAny(pBounds, pMatcher);
+	}
 
 	public synchronized void callItems(final ParameterCallable<T> pParameterCallable) {
 		this.mRoot.callItems(pParameterCallable);
@@ -244,6 +252,12 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 				.append('[')
 				.append(" Class: ")
 				.append(this.getClass().getSimpleName())
+				.append('\n')
+				.append(indents)
+				.append('\t')
+				.append("Level: ")
+				.append(this.mLevel)
+				.append(',' )
 				.append('\n')
 				.append(indents)
 				.append('\t')
@@ -447,13 +461,13 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 			}
 
 			/* Check children. */
-			if(this.mTopLeftChild != null && this.queryChild(pBounds, pResult, this.mTopLeftChild)) {
+			if(this.queryChild(pBounds, pResult, this.mTopLeftChild)) {
 				return pResult;
-			} else if(this.mTopRightChild != null && this.queryChild(pBounds, pResult, this.mTopRightChild)) {
+			} else if(this.queryChild(pBounds, pResult, this.mTopRightChild)) {
 				return pResult;
-			} else if(this.mBottomLeftChild != null && this.queryChild(pBounds, pResult, this.mBottomLeftChild)) {
+			} else if(this.queryChild(pBounds, pResult, this.mBottomLeftChild)) {
 				return pResult;
-			} else if(this.mBottomRightChild != null && this.queryChild(pBounds, pResult, this.mBottomRightChild)) {
+			} else if(this.queryChild(pBounds, pResult, this.mBottomRightChild)) {
 				return pResult;
 			} else {
 				return pResult;
@@ -471,13 +485,13 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 			}
 
 			/* Check children. */
-			if(this.mTopLeftChild != null && this.queryChild(pBounds, pMatcher, pResult, this.mTopLeftChild)) {
+			if(this.queryChild(pBounds, pMatcher, pResult, this.mTopLeftChild)) {
 				return pResult;
-			} else if(this.mTopRightChild != null && this.queryChild(pBounds, pMatcher, pResult, this.mTopRightChild)) {
+			} else if(this.queryChild(pBounds, pMatcher, pResult, this.mTopRightChild)) {
 				return pResult;
-			} else if(this.mBottomLeftChild != null && this.queryChild(pBounds, pMatcher, pResult, this.mBottomLeftChild)) {
+			} else if(this.queryChild(pBounds, pMatcher, pResult, this.mBottomLeftChild)) {
 				return pResult;
-			} else if(this.mBottomRightChild != null && this.queryChild(pBounds, pMatcher, pResult, this.mBottomRightChild)) {
+			} else if(this.queryChild(pBounds, pMatcher, pResult, this.mBottomRightChild)) {
 				return pResult;
 			} else {
 				return pResult;
@@ -491,6 +505,10 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 		 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 		 */
 		private boolean queryChild(final B pBounds, final List<T> pResult, final QuadTreeNode pChild) {
+			if(pChild == null) {
+				return false;
+			}
+
 			if(pChild.contains(pBounds)) {
 				pChild.query(pBounds, pResult);
 				return true;
@@ -501,6 +519,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 			} else if(pChild.intersects(pBounds)) {
 				pChild.query(pBounds, pResult);
 			}
+
 			return false;
 		}
 
@@ -512,6 +531,10 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 		 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 		 */
 		private boolean queryChild(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult, final QuadTreeNode pChild) {
+			if(pChild == null) {
+				return false;
+			}
+
 			if(pChild.contains(pBounds)) {
 				pChild.query(pBounds, pMatcher, pResult);
 				return true;
@@ -522,6 +545,79 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 			} else if(pChild.intersects(pBounds)) {
 				pChild.query(pBounds, pMatcher, pResult);
 			}
+
+			return false;
+		}
+
+		public boolean containsAny(final B pBounds, final IMatcher<T> pMatcher) {
+			/* Test against all items in this node. */
+			if(this.mItems != null) {
+				for(final T item : this.mItems) {
+					if(this.intersects(pBounds, item.getBounds()) && pMatcher.matches(item)) {
+						return true;
+					}
+				}
+			}
+
+			/* Check children. */
+			if(this.containsAnyChild(pBounds, pMatcher, this.mTopLeftChild)) {
+				return true;
+			} else if(this.containsAnyChild(pBounds, pMatcher, this.mTopRightChild)) {
+				return true;
+			} else if(this.containsAnyChild(pBounds, pMatcher, this.mBottomLeftChild)) {
+				return true;
+			} else if(this.containsAnyChild(pBounds, pMatcher, this.mBottomRightChild)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public boolean containsAny(final B pBounds) {
+			/* Test against all items in this node. */
+			if(this.mItems != null) {
+				for(final T item : this.mItems) {
+					if(this.intersects(pBounds, item.getBounds())) {
+						return true;
+					}
+				}
+			}
+
+			/* Check children. */
+			if(this.containsAnyChild(pBounds, this.mTopLeftChild)) {
+				return true;
+			} else if(this.containsAnyChild(pBounds, this.mTopRightChild)) {
+				return true;
+			} else if(this.containsAnyChild(pBounds, this.mBottomLeftChild)) {
+				return true;
+			} else if(this.containsAnyChild(pBounds, this.mBottomRightChild)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		private boolean containsAnyChild(final B pBounds, final IMatcher<T> pMatcher, final QuadTreeNode pChild) {
+			if(pChild == null) {
+				return false;
+			}
+
+			if(pChild.intersects(pBounds) && pChild.containsAny(pBounds, pMatcher)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		private boolean containsAnyChild(final B pBounds, final QuadTreeNode pChild) {
+			if(pChild == null) {
+				return false;
+			}
+
+			if(pChild.intersects(pBounds)) {
+				return true;
+			}
+
 			return false;
 		}
 
@@ -546,6 +642,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 			/* If the node contains the item, add the item to that node. */
 			if(this.mTopLeftChild != null && this.mTopLeftChild.contains(pBounds)) {
 				this.mTopLeftChild.add(pItem, pBounds);
+				return;
 			} else if(this.contains(BoundsSplit.TOP_LEFT, pBounds)) {
 				if(this.mTopLeftChild == null) {
 					try {
@@ -561,6 +658,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 
 			if(this.mTopRightChild != null && this.mTopRightChild.contains(pBounds)) {
 				this.mTopRightChild.add(pItem, pBounds);
+				return;
 			} else if(this.contains(BoundsSplit.TOP_RIGHT, pBounds)) {
 				if(this.mTopRightChild == null) {
 					try {
@@ -576,6 +674,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 
 			if(this.mBottomLeftChild != null && this.mBottomLeftChild.contains(pBounds)) {
 				this.mBottomLeftChild.add(pItem, pBounds);
+				return;
 			} else if(this.contains(BoundsSplit.BOTTOM_LEFT, pBounds)) {
 				if(this.mBottomLeftChild == null) {
 					try {
@@ -591,6 +690,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 
 			if(this.mBottomRightChild != null && this.mBottomRightChild.contains(pBounds)) {
 				this.mBottomRightChild.add(pItem, pBounds);
+				return;
 			} else if(this.contains(BoundsSplit.BOTTOM_RIGHT, pBounds)) {
 				if(this.mBottomRightChild == null) {
 					try {

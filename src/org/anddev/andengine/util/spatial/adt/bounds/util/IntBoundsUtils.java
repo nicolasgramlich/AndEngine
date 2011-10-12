@@ -36,19 +36,19 @@ public class IntBoundsUtils {
 	// ===========================================================
 	
 	public static boolean intersects(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
-		return IntBoundsUtils.intersects(pIntBoundsA.getLeft(), pIntBoundsA.getTop(), pIntBoundsA.getRight(), pIntBoundsA.getBottom(), pIntBoundsB.getLeft(), pIntBoundsB.getTop(), pIntBoundsB.getRight(), pIntBoundsB.getBottom());
+		return IntBoundsUtils.intersects(pIntBoundsA.getMinX(), pIntBoundsA.getMinY(), pIntBoundsA.getMaxX(), pIntBoundsA.getMaxY(), pIntBoundsB.getMinX(), pIntBoundsB.getMinY(), pIntBoundsB.getMaxX(), pIntBoundsB.getMaxY());
 	}
 
-	public static boolean intersects(final int pLeftA, final int pTopA, final int pRightA, final int pBottomA, final int pLeftB, final int pTopB, final int pRightB, final int pBottomB) {
-		return (pLeftA < pRightB) && (pLeftB < pRightA) && (pTopA < pBottomB) && (pTopB < pBottomA);
+	public static boolean intersects(final int pMinXA, final int pMinYA, final int pMaxXA, final int pMaxYA, final int pMinXB, final int pMinYB, final int pMaxXB, final int pMaxYB) {
+		return (pMinXA < pMaxXB) && (pMinXB < pMaxXA) && (pMinYA < pMaxYB) && (pMinYB < pMaxYA);
 	}
 	
 	public static boolean contains(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
-		return IntBoundsUtils.contains(pIntBoundsA.getLeft(), pIntBoundsA.getTop(), pIntBoundsA.getRight(), pIntBoundsA.getBottom(), pIntBoundsB.getLeft(), pIntBoundsB.getTop(), pIntBoundsB.getRight(), pIntBoundsB.getBottom());
+		return IntBoundsUtils.contains(pIntBoundsA.getMinX(), pIntBoundsA.getMinY(), pIntBoundsA.getMaxX(), pIntBoundsA.getMaxY(), pIntBoundsB.getMinX(), pIntBoundsB.getMinY(), pIntBoundsB.getMaxX(), pIntBoundsB.getMaxY());
 	}
 
-	public static boolean contains(final int pLeftA, final int pTopA, final int pRightA, final int pBottomA, final int pLeftB, final int pTopB, final int pRightB, final int pBottomB) {
-		return (pLeftA <= pLeftB) && (pTopA <= pTopB) && (pRightA >= pRightB) && (pBottomA >= pBottomB);
+	public static boolean contains(final int pMinXA, final int pMinYA, final int pMaxXA, final int pMaxYA, final int pMinXB, final int pMinYB, final int pMaxXB, final int pMaxYB) {
+		return (pMinXA <= pMinXB) && (pMinYA <= pMinYB) && (pMaxXA >= pMaxXB) && (pMaxYA >= pMaxYB);
 	}
 
 	// ===========================================================

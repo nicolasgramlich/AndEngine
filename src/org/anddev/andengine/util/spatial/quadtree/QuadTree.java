@@ -614,7 +614,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 				return false;
 			}
 
-			if(pChild.intersects(pBounds)) {
+			if(pChild.intersects(pBounds) && pChild.containsAny(pBounds)) {
 				return true;
 			}
 

@@ -71,10 +71,10 @@ public class IntBounds implements IIntBounds {
 		this.mMaxY = pMaxY;
 
 		if(pMinX > pMaxX) {
-			throw new IllegalArgumentException("pMinX must be smaller or equal to pMaxX.");
+			throw new IllegalArgumentException("pMinX: '" + pMinX + "' must be smaller or equal to pMaxX: '" + pMaxX + "'.");
 		}
 		if(pMinY > pMaxY) {
-			throw new IllegalArgumentException("pMinY must be smaller or equal to pMaxY.");
+			throw new IllegalArgumentException("pMinY: '" + pMinY + "' must be smaller or equal to pMaxY: '" + pMaxY + "'.");
 		}
 	}
 

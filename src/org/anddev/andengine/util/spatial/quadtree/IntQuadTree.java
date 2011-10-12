@@ -108,8 +108,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		// ===========================================================
 
 		private final int mLeft;
-		private final int mRight;
 		private final int mTop;
+		private final int mRight;
 		private final int mBottom;
 
 		// ===========================================================
@@ -117,15 +117,15 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		// ===========================================================
 
 		public IntQuadTreeNode(final int pLevel, final IIntBounds pIntBounds) {
-			this(pLevel, pIntBounds.getLeft(), pIntBounds.getRight(), pIntBounds.getTop(), pIntBounds.getBottom());
+			this(pLevel, pIntBounds.getLeft(), pIntBounds.getTop(), pIntBounds.getRight(), pIntBounds.getBottom());
 		}
 
-		public IntQuadTreeNode(final int pLevel, final int pLeft, final int pRight, final int pTop, final int pBottom) {
+		public IntQuadTreeNode(final int pLevel, final int pLeft, final int pTop, final int pRight, final int pBottom) {
 			super(pLevel);
 
 			this.mLeft = pLeft;
-			this.mRight = pRight;
 			this.mTop = pTop;
+			this.mRight = pRight;
 			this.mBottom = pBottom;
 
 			if(pLeft > pRight) {
@@ -143,13 +143,13 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		public int getLeft() {
 			return this.mLeft;
 		}
+		
+		public int getTop() {
+			return this.mTop;
+		}
 
 		public int getRight() {
 			return this.mRight;
-		}
-
-		public int getTop() {
-			return this.mTop;
 		}
 
 		public int getBottom() {
@@ -178,16 +178,16 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			}
 
 			final int left = this.getLeft(pBoundsSplit);
-			final int right = this.getRight(pBoundsSplit);
 			final int top = this.getTop(pBoundsSplit);
+			final int right = this.getRight(pBoundsSplit);
 			final int bottom = this.getBottom(pBoundsSplit);
 
-			return new IntQuadTreeNode(this.mLevel + 1, left, right, top, bottom);
+			return new IntQuadTreeNode(this.mLevel + 1, left, top, right, bottom);
 		}
 
 		@Override
 		protected boolean contains(final IIntBounds pIntBounds) {
-			return this.contains(pIntBounds.getLeft(), pIntBounds.getRight(), pIntBounds.getTop(), pIntBounds.getBottom());
+			return this.contains(pIntBounds.getLeft(), pIntBounds.getTop(), pIntBounds.getRight(), pIntBounds.getBottom());
 		}
 
 		@Override
@@ -215,10 +215,10 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			pStringBuilder
 				.append("[Left: ")
 				.append(this.mLeft)
-				.append(", Right: ")
-				.append(this.mRight)
 				.append(", Top: ")
 				.append(this.mTop)
+				.append(", Right: ")
+				.append(this.mRight)
 				.append(", Bottom: ")
 				.append(this.mBottom)
 				.append("]");
@@ -253,6 +253,37 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 						return this.mLeft;
 					case BOTTOM_RIGHT:
 						return this.mLeft + halfWidth;
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			}
+		}
+		
+		private int getTop(final BoundsSplit pBoundsSplit) {
+			final int height = this.getHeight();
+			final int halfHeight = height / 2;
+			
+			if(height <= 2) {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+					case TOP_RIGHT:
+						return  this.mTop;
+					case BOTTOM_LEFT:
+					case BOTTOM_RIGHT:
+						throw new BoundsSplitException();
+					default:
+						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+				}
+			} else {
+				switch(pBoundsSplit) {
+					case TOP_LEFT:
+						return  this.mTop;
+					case TOP_RIGHT:
+						return this.mTop;
+					case BOTTOM_LEFT:
+						return this.mTop + halfHeight;
+					case BOTTOM_RIGHT:
+						return this.mTop + halfHeight;
 					default:
 						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 				}
@@ -321,42 +352,11 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			}
 		}
 
-		private int getTop(final BoundsSplit pBoundsSplit) {
-			final int height = this.getHeight();
-			final int halfHeight = height / 2;
-
-			if(height <= 2) {
-				switch(pBoundsSplit) {
-					case TOP_LEFT:
-					case TOP_RIGHT:
-						return  this.mTop;
-					case BOTTOM_LEFT:
-					case BOTTOM_RIGHT:
-						throw new BoundsSplitException();
-					default:
-						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
-				}
-			} else {
-				switch(pBoundsSplit) {
-					case TOP_LEFT:
-						return  this.mTop;
-					case TOP_RIGHT:
-						return this.mTop;
-					case BOTTOM_LEFT:
-						return this.mTop + halfHeight;
-					case BOTTOM_RIGHT:
-						return this.mTop + halfHeight;
-					default:
-						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
-				}
-			}
-		}
-
-		public boolean intersects(final int pLeft, final int pRight, final int pTop, final int pBottom) {
+		public boolean intersects(final int pLeft, final int pTop, final int pRight, final int pBottom) {
 			return IntBoundsUtils.intersects(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
 		}
 
-		public boolean contains(final int pLeft, final int pRight, final int pTop, final int pBottom) {
+		public boolean contains(final int pLeft, final int pTop, final int pRight, final int pBottom) {
 			return IntBoundsUtils.contains(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
 		}
 

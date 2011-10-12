@@ -107,8 +107,8 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		// ===========================================================
 
 		private final float mLeft;
-		private final float mRight;
 		private final float mTop;
+		private final float mRight;
 		private final float mBottom;
 
 		// ===========================================================
@@ -116,15 +116,15 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		// ===========================================================
 
 		public FloatQuadTreeNode(final int pLevel, final IFloatBounds pFloatBounds) {
-			this(pLevel, pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom());
+			this(pLevel, pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom());
 		}
 
-		public FloatQuadTreeNode(final int pLevel, final float pLeft, final float pRight, final float pTop, final float pBottom) {
+		public FloatQuadTreeNode(final int pLevel, final float pLeft, final float pTop, final float pRight, final float pBottom) {
 			super(pLevel);
 
 			this.mLeft = pLeft;
-			this.mRight = pRight;
 			this.mTop = pTop;
+			this.mRight = pRight;
 			this.mBottom = pBottom;
 
 			if(pLeft > pRight) {
@@ -142,13 +142,13 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		public float getLeft() {
 			return this.mLeft;
 		}
+		
+		public float getTop() {
+			return this.mTop;
+		}
 
 		public float getRight() {
 			return this.mRight;
-		}
-
-		public float getTop() {
-			return this.mTop;
 		}
 
 		public float getBottom() {
@@ -170,16 +170,16 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		@Override
 		protected FloatQuadTreeNode split(final BoundsSplit pBoundsSplit) {
 			final float left = this.getLeft(pBoundsSplit);
-			final float right = this.getRight(pBoundsSplit);
 			final float top = this.getTop(pBoundsSplit);
+			final float right = this.getRight(pBoundsSplit);
 			final float bottom = this.getBottom(pBoundsSplit);
 
-			return new FloatQuadTreeNode(this.mLevel + 1, left, right, top, bottom);
+			return new FloatQuadTreeNode(this.mLevel + 1, left, top, right, bottom);
 		}
 
 		@Override
 		protected boolean contains(final IFloatBounds pFloatBounds) {
-			return this.contains(pFloatBounds.getLeft(), pFloatBounds.getRight(), pFloatBounds.getTop(), pFloatBounds.getBottom());
+			return this.contains(pFloatBounds.getLeft(), pFloatBounds.getTop(), pFloatBounds.getRight(), pFloatBounds.getBottom());
 		}
 
 		@Override
@@ -207,10 +207,10 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 			pStringBuilder
 				.append("[Left: ")
 				.append(this.mLeft)
-				.append(", Right: ")
-				.append(this.mRight)
 				.append(", Top: ")
 				.append(this.mTop)
+				.append(", Right: ")
+				.append(this.mRight)
 				.append(", Bottom: ")
 				.append(this.mBottom)
 				.append("]");
@@ -237,23 +237,6 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 			}
 		}
 
-		private float getRight(final BoundsSplit pBoundsSplit) {
-			final float halfWidth = this.getWidth() / 2;
-
-			switch(pBoundsSplit) {
-				case TOP_LEFT:
-					return this.mLeft + halfWidth;
-				case TOP_RIGHT:
-					return this.mRight;
-				case BOTTOM_LEFT:
-					return this.mLeft + halfWidth;
-				case BOTTOM_RIGHT:
-					return this.mRight;
-				default:
-					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
-			}
-		}
-
 		private float getTop(final BoundsSplit pBoundsSplit) {
 			final float halfHeight = this.getHeight() / 2;
 
@@ -266,6 +249,23 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 					return this.mTop + halfHeight;
 				case BOTTOM_RIGHT:
 					return this.mTop + halfHeight;
+				default:
+					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
+			}
+		}
+		
+		private float getRight(final BoundsSplit pBoundsSplit) {
+			final float halfWidth = this.getWidth() / 2;
+			
+			switch(pBoundsSplit) {
+				case TOP_LEFT:
+					return this.mLeft + halfWidth;
+				case TOP_RIGHT:
+					return this.mRight;
+				case BOTTOM_LEFT:
+					return this.mLeft + halfWidth;
+				case BOTTOM_RIGHT:
+					return this.mRight;
 				default:
 					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 			}
@@ -288,11 +288,11 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 			}
 		}
 
-		public boolean intersects(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+		public boolean intersects(final float pLeft, final float pTop, final float pRight, final float pBottom) {
 			return FloatBoundsUtils.intersects(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
 		}
 
-		public boolean contains(final float pLeft, final float pRight, final float pTop, final float pBottom) {
+		public boolean contains(final float pLeft, final float pTop, final float pRight, final float pBottom) {
 			return FloatBoundsUtils.contains(this.mLeft, this.mTop, this.mRight, this.mBottom, pLeft, pTop, pRight, pBottom);
 		}
 

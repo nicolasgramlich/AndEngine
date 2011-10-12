@@ -35,19 +35,19 @@ public class FloatBoundsUtils {
 	// ===========================================================
 	
 	public static boolean intersects(final IFloatBounds pFloatBoundsA, final IFloatBounds pFloatBoundsB) {
-		return FloatBoundsUtils.intersects(pFloatBoundsA.getMinX(), pFloatBoundsA.getMinY(), pFloatBoundsA.getMaxX(), pFloatBoundsA.getMaxY(), pFloatBoundsB.getMinX(), pFloatBoundsB.getMinY(), pFloatBoundsB.getMaxX(), pFloatBoundsB.getMaxY());
+		return FloatBoundsUtils.intersects(pFloatBoundsA.getXMin(), pFloatBoundsA.getYMin(), pFloatBoundsA.getXMax(), pFloatBoundsA.getYMax(), pFloatBoundsB.getXMin(), pFloatBoundsB.getYMin(), pFloatBoundsB.getXMax(), pFloatBoundsB.getYMax());
 	}
 
-	public static boolean intersects(final float pMinXA, final float pMinYA, final float pMaxXA, final float pMaxYA, final float pMinXB, final float pMinYB, final float pMaxXB, final float pMaxYB) {
-		return (pMinXA < pMaxXB) && (pMinXB < pMaxXA) && (pMinYA < pMaxYB) && (pMinYB < pMaxYA);
+	public static boolean intersects(final float pXMinA, final float pYMinA, final float pXMaxA, final float pYMaxA, final float pXMinB, final float pYMinB, final float pXMaxB, final float pYMaxB) {
+		return (pXMinA < pXMaxB) && (pXMinB < pXMaxA) && (pYMinA < pYMaxB) && (pYMinB < pYMaxA);
 	}
 
 	public static boolean contains(final IFloatBounds pFloatBoundsA, final IFloatBounds pFloatBoundsB) {
-		return FloatBoundsUtils.intersects(pFloatBoundsA.getMinX(), pFloatBoundsA.getMinY(), pFloatBoundsA.getMaxX(), pFloatBoundsA.getMaxY(), pFloatBoundsB.getMinX(), pFloatBoundsB.getMinY(), pFloatBoundsB.getMaxX(), pFloatBoundsB.getMaxY());
+		return FloatBoundsUtils.intersects(pFloatBoundsA.getXMin(), pFloatBoundsA.getYMin(), pFloatBoundsA.getXMax(), pFloatBoundsA.getYMax(), pFloatBoundsB.getXMin(), pFloatBoundsB.getYMin(), pFloatBoundsB.getXMax(), pFloatBoundsB.getYMax());
 	}
 
-	public static boolean contains(final float pMinXA, final float pMinYA, final float pMaxXA, final float pMaxYA, final float pMinXB, final float pMinYB, final float pMaxXB, final float pMaxYB) {
-		return (pMinXA <= pMinXB) && (pMinYA <= pMinYB) && (pMaxXA >= pMaxXB) && (pMaxYA >= pMaxYB);
+	public static boolean contains(final float pXMinA, final float pYMinA, final float pXMaxA, final float pYMaxA, final float pXMinB, final float pYMinB, final float pXMaxB, final float pYMaxB) {
+		return (pXMinA <= pXMinB) && (pYMinA <= pYMinB) && (pXMaxA >= pXMaxB) && (pYMaxA >= pYMaxB);
 	}
 
 	// ===========================================================

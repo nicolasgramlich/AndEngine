@@ -15,8 +15,8 @@ public interface IIntBounds extends IBounds {
 	// Methods
 	// ===========================================================
 
-	public int getMinX();
-	public int getMinY();
-	public int getMaxX();
-	public int getMaxY();
+	public int getXMin();
+	public int getYMin();
+	public int getXMax();
+	public int getYMax();
 }

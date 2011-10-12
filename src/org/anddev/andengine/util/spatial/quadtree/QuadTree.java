@@ -632,7 +632,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 			}
 
 			/* Check if this node is in the maximum level. */
-			if(this.mLevel > QuadTree.this.mMaxLevel) {
+			if(this.mLevel >= QuadTree.this.mMaxLevel) {
 				/* No more levels allowed, so this node has to take the item. */
 				this.ensureItemsAllocated();
 				this.mItems.add(pItem);

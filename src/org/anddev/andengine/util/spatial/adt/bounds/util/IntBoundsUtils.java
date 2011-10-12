@@ -36,19 +36,19 @@ public class IntBoundsUtils {
 	// ===========================================================
 	
 	public static boolean intersects(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
-		return IntBoundsUtils.intersects(pIntBoundsA.getMinX(), pIntBoundsA.getMinY(), pIntBoundsA.getMaxX(), pIntBoundsA.getMaxY(), pIntBoundsB.getMinX(), pIntBoundsB.getMinY(), pIntBoundsB.getMaxX(), pIntBoundsB.getMaxY());
+		return IntBoundsUtils.intersects(pIntBoundsA.getXMin(), pIntBoundsA.getYMin(), pIntBoundsA.getXMax(), pIntBoundsA.getYMax(), pIntBoundsB.getXMin(), pIntBoundsB.getYMin(), pIntBoundsB.getXMax(), pIntBoundsB.getYMax());
 	}
 
-	public static boolean intersects(final int pMinXA, final int pMinYA, final int pMaxXA, final int pMaxYA, final int pMinXB, final int pMinYB, final int pMaxXB, final int pMaxYB) {
-		return (pMinXA < pMaxXB) && (pMinXB < pMaxXA) && (pMinYA < pMaxYB) && (pMinYB < pMaxYA);
+	public static boolean intersects(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {
+		return (pXMinA < pXMaxB) && (pXMinB < pXMaxA) && (pYMinA < pYMaxB) && (pYMinB < pYMaxA);
 	}
 	
 	public static boolean contains(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
-		return IntBoundsUtils.contains(pIntBoundsA.getMinX(), pIntBoundsA.getMinY(), pIntBoundsA.getMaxX(), pIntBoundsA.getMaxY(), pIntBoundsB.getMinX(), pIntBoundsB.getMinY(), pIntBoundsB.getMaxX(), pIntBoundsB.getMaxY());
+		return IntBoundsUtils.contains(pIntBoundsA.getXMin(), pIntBoundsA.getYMin(), pIntBoundsA.getXMax(), pIntBoundsA.getYMax(), pIntBoundsB.getXMin(), pIntBoundsB.getYMin(), pIntBoundsB.getXMax(), pIntBoundsB.getYMax());
 	}
 
-	public static boolean contains(final int pMinXA, final int pMinYA, final int pMaxXA, final int pMaxYA, final int pMinXB, final int pMinYB, final int pMaxXB, final int pMaxYB) {
-		return (pMinXA <= pMinXB) && (pMinYA <= pMinYB) && (pMaxXA >= pMaxXB) && (pMaxYA >= pMaxYB);
+	public static boolean contains(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {
+		return (pXMinA <= pXMinB) && (pYMinA <= pYMinB) && (pXMaxA >= pXMaxB) && (pYMaxA >= pYMaxB);
 	}
 
 	// ===========================================================

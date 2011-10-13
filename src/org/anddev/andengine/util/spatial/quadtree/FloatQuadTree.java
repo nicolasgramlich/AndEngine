@@ -93,6 +93,11 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
 	}
 
+	public synchronized <S> List<S> queryForSubclass(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+		this.mQueryFloatBounds.set(pXMin, pYMin, pXMax, pYMax);
+		return this.queryForSubclass(this.mQueryFloatBounds, pMatcher, pResult);
+	}
+
 	public synchronized boolean containsAny(final float pX, final float pY) {
 		this.mQueryFloatBounds.set(pX, pY);
 		return this.containsAny(this.mQueryFloatBounds);

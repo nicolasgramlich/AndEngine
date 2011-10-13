@@ -165,7 +165,18 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 	public synchronized List<T> query(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult) {
 		return this.mRoot.query(pBounds, pMatcher, pResult);
 	}
-	
+
+	/**
+	 * @param pBounds
+	 * @param pMatcher must only {@link IMatcher#matches(T)} when the item is <code>instanceof</code> S, otherwise it will an {@link ClassCastException}.
+	 * @param pResult
+	 * @return
+	 * @throws ClassCastException when pMatcher matched an item that was not <code>instanceof</code> S.
+	 */
+	public synchronized <S> List<S> queryForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+		return this.mRoot.queryForSubclass(pBounds, pMatcher, pResult);
+	}
+
 	public synchronized boolean containsAny(final B pBounds) {
 		return this.mRoot.containsAny(pBounds);
 	}
@@ -446,6 +457,32 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 			return pResult;
 		}
 
+		@SuppressWarnings("unchecked")
+		public <S> List<S> getItemsAndItemsBelowForSubclass(final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+			if(this.mItems != null) {
+				for(final T item : this.mItems) { // TODO Check if iteration is allocation free.
+					if(pMatcher.matches(item)) {
+						pResult.add((S)item);
+					}
+				}
+			}
+
+			if(this.mTopLeftChild != null) {
+				this.mTopLeftChild.getItemsAndItemsBelowForSubclass(pMatcher, pResult);
+			}
+			if(this.mTopRightChild != null) {
+				this.mTopRightChild.getItemsAndItemsBelowForSubclass(pMatcher, pResult);
+			}
+			if(this.mBottomLeftChild != null) {
+				this.mBottomLeftChild.getItemsAndItemsBelowForSubclass(pMatcher, pResult);
+			}
+			if(this.mBottomRightChild != null) {
+				this.mBottomRightChild.getItemsAndItemsBelowForSubclass(pMatcher, pResult);
+			}
+
+			return pResult;
+		}
+
 		public List<T> query(final B pBounds) {
 			return this.query(pBounds, new LinkedList<T>());
 		}
@@ -492,6 +529,31 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 			} else if(this.queryChild(pBounds, pMatcher, pResult, this.mBottomLeftChild)) {
 				return pResult;
 			} else if(this.queryChild(pBounds, pMatcher, pResult, this.mBottomRightChild)) {
+				return pResult;
+			} else {
+				return pResult;
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		public <S> List<S> queryForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+			/* Test against all items in this node. */
+			if(this.mItems != null) {
+				for(final T item : this.mItems) {
+					if(this.intersects(pBounds, item.getBounds()) && pMatcher.matches(item)) {
+						pResult.add((S)item);
+					}
+				}
+			}
+
+			/* Check children. */
+			if(this.queryChildForSubclass(pBounds, pMatcher, pResult, this.mTopLeftChild)) {
+				return pResult;
+			} else if(this.queryChildForSubclass(pBounds, pMatcher, pResult, this.mTopRightChild)) {
+				return pResult;
+			} else if(this.queryChildForSubclass(pBounds, pMatcher, pResult, this.mBottomLeftChild)) {
+				return pResult;
+			} else if(this.queryChildForSubclass(pBounds, pMatcher, pResult, this.mBottomRightChild)) {
 				return pResult;
 			} else {
 				return pResult;
@@ -546,6 +608,32 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> {
 				pChild.query(pBounds, pMatcher, pResult);
 			}
 
+			return false;
+		}
+
+		/**
+		 * @param pBounds
+		 * @param pMatcher
+		 * @param pResult
+		 * @param pChild
+		 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
+		 */
+		private <S> boolean queryChildForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult, final QuadTreeNode pChild) throws ClassCastException {
+			if(pChild == null) {
+				return false;
+			}
+			
+			if(pChild.contains(pBounds)) {
+				pChild.queryForSubclass(pBounds, pMatcher, pResult);
+				return true;
+			}
+			
+			if(pChild.containedBy(pBounds)) {
+				pChild.getItemsAndItemsBelowForSubclass(pMatcher, pResult);
+			} else if(pChild.intersects(pBounds)) {
+				pChild.queryForSubclass(pBounds, pMatcher, pResult);
+			}
+			
 			return false;
 		}
 

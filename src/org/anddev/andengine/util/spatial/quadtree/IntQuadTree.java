@@ -94,6 +94,11 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		return this.query(this.mQueryIntBounds, pMatcher, pResult);
 	}
 
+	public synchronized <S> List<S> queryForSubclass(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+		this.mQueryIntBounds.set(pXMin, pYMin, pXMax, pYMax);
+		return this.queryForSubclass(this.mQueryIntBounds, pMatcher, pResult);
+	}
+
 	public synchronized boolean containsAny(final int pX, final int pY) {
 		this.mQueryIntBounds.set(pX, pY);
 		return this.containsAny(this.mQueryIntBounds);

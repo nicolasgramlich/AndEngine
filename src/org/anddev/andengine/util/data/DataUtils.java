@@ -8,7 +8,7 @@ package org.anddev.andengine.util.data;
  * @author Nicolas Gramlich
  * @since 15:01:49 - 20.03.2011
  */
-public class DataUtils implements DataConstants {
+public final class DataUtils implements DataConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -29,8 +29,8 @@ public class DataUtils implements DataConstants {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public static int unsignedByteToInt(final byte bByte) {
-		return bByte & 0xFF;
+	public static final int unsignedByteToInt(final byte pByte) {
+		return pByte & 0xFF;
 	}
 
 	// ===========================================================

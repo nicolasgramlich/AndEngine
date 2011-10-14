@@ -7,7 +7,7 @@ package org.anddev.andengine.util;
  * @author Nicolas Gramlich
  * @since 19:01:08 - 03.04.2010
  */
-public class StringUtils {
+public final class StringUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -32,7 +32,7 @@ public class StringUtils {
 	// Methods
 	// ===========================================================
 
-	public static String padFront(final String pString, final char pPadChar, final int pLength) {
+	public static final String padFront(final String pString, final char pPadChar, final int pLength) {
 		final int padCount = pLength - pString.length();
 		if(padCount <= 0) {
 			return pString;
@@ -48,7 +48,7 @@ public class StringUtils {
 		}
 	}
 
-	public static int countOccurrences(final String pString, final char pCharacter) {
+	public static final int countOccurrences(final String pString, final char pCharacter) {
 		int count = 0;
 
 		int lastOccurrence = pString.indexOf(pCharacter, 0);
@@ -69,7 +69,7 @@ public class StringUtils {
 	 * @param pCharacter
 	 * @return
 	 */
-	public static String[] split(final String pString, final char pCharacter) {
+	public static final String[] split(final String pString, final char pCharacter) {
 		return StringUtils.split(pString, pCharacter, null);
 	}
 
@@ -82,7 +82,7 @@ public class StringUtils {
 	 * @param pReuse tries to reuse the String[] if the length is the same as the length needed.
 	 * @return
 	 */
-	public static String[] split(final String pString, final char pCharacter, final String[] pReuse) {
+	public static final String[] split(final String pString, final char pCharacter, final String[] pReuse) {
 		final int partCount = StringUtils.countOccurrences(pString, pCharacter) + 1;
 
 		final boolean reuseable = pReuse != null && pReuse.length == partCount;
@@ -106,7 +106,7 @@ public class StringUtils {
 		return out;
 	}
 
-	public static String formatStackTrace(final StackTraceElement pStackTraceElement) {
+	public static final String formatStackTrace(final StackTraceElement pStackTraceElement) {
 		return new StringBuilder()
 			.append(pStackTraceElement.getClassName())
 			.append('.')
@@ -119,7 +119,7 @@ public class StringUtils {
 			.toString();
 	}
 
-	public static String formatStackTrace(final StackTraceElement[] pStackTraceElements) {
+	public static final String formatStackTrace(final StackTraceElement[] pStackTraceElements) {
 		final StringBuilder sb = new StringBuilder();
 		final int stackTraceElementCount = pStackTraceElements.length;
 		for(int i = 0; i < stackTraceElementCount; i++) {

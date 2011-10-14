@@ -12,7 +12,7 @@ import java.net.Socket;
  * @author Nicolas Gramlich
  * @since 14:42:15 - 18.09.2009
  */
-public class SocketUtils {
+public final class SocketUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -37,13 +37,13 @@ public class SocketUtils {
 	// Methods
 	// ===========================================================
 
-	public static void closeSocket(final DatagramSocket pDatagramSocket) {
+	public static final void closeSocket(final DatagramSocket pDatagramSocket) {
 		if(pDatagramSocket != null && !pDatagramSocket.isClosed()) {
 			pDatagramSocket.close();
 		}
 	}
 
-	public static void closeSocket(final Socket pSocket) {
+	public static final void closeSocket(final Socket pSocket) {
 		if(pSocket != null && !pSocket.isClosed()) {
 			try {
 				pSocket.close();
@@ -53,7 +53,7 @@ public class SocketUtils {
 		}
 	}
 
-	public static void closeSocket(final ServerSocket pServerSocket) {
+	public static final void closeSocket(final ServerSocket pServerSocket) {
 		if(pServerSocket != null && !pServerSocket.isClosed()) {
 			try {
 				pServerSocket.close();

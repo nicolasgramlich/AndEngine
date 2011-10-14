@@ -9,7 +9,7 @@ import org.anddev.andengine.util.math.MathUtils;
  * @author Nicolas Gramlich
  * @since 22:35:42 - 01.05.2011
  */
-public class ArrayUtils {
+public final class ArrayUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -34,35 +34,35 @@ public class ArrayUtils {
 	// Methods
 	// ===========================================================
 
-	public static byte random(final byte[] pArray) {
+	public static final byte random(final byte[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
 	
-	public static short random(final short[] pArray) {
+	public static final short random(final short[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
 	
-	public static int random(final int[] pArray) {
+	public static final int random(final int[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
 	
-	public static long random(final long[] pArray) {
+	public static final long random(final long[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
 	
-	public static float random(final float[] pArray) {
+	public static final float random(final float[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
 	
-	public static double random(final double[] pArray) {
+	public static final double random(final double[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
 	
-	public static <T> T random(final T[] pArray) {
+	public static final <T> T random(final T[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
 	
-	public static void reverse(final byte[] pArray) {
+	public static final void reverse(final byte[] pArray) {
 		if (pArray == null) {
 			return;
 		}
@@ -78,7 +78,7 @@ public class ArrayUtils {
 		}
 	}
 
-	public static void reverse(final short[] pArray) {
+	public static final void reverse(final short[] pArray) {
 		if (pArray == null) {
 			return;
 		}
@@ -94,7 +94,7 @@ public class ArrayUtils {
 		}
 	}
 
-	public static void reverse(final int[] pArray) {
+	public static final void reverse(final int[] pArray) {
 		if (pArray == null) {
 			return;
 		}
@@ -110,7 +110,7 @@ public class ArrayUtils {
 		}
 	}
 
-	public static void reverse(final long[] pArray) {
+	public static final void reverse(final long[] pArray) {
 		if (pArray == null) {
 			return;
 		}
@@ -126,7 +126,7 @@ public class ArrayUtils {
 		}
 	}
 
-	public static void reverse(final float[] pArray) {
+	public static final void reverse(final float[] pArray) {
 		if (pArray == null) {
 			return;
 		}
@@ -142,7 +142,7 @@ public class ArrayUtils {
 		}
 	}
 
-	public static void reverse(final double[] pArray) {
+	public static final void reverse(final double[] pArray) {
 		if (pArray == null) {
 			return;
 		}
@@ -158,7 +158,7 @@ public class ArrayUtils {
 		}
 	}
 
-	public static void reverse(final Object[] pArray) {
+	public static final void reverse(final Object[] pArray) {
 		if (pArray == null) {
 			return;
 		}
@@ -174,7 +174,7 @@ public class ArrayUtils {
 		}
 	}
 	
-	public static boolean equals(final byte[] pArrayA, final int pOffsetA, final byte[] pArrayB, final int pOffsetB, final int pLength) {
+	public static final boolean equals(final byte[] pArrayA, final int pOffsetA, final byte[] pArrayB, final int pOffsetB, final int pLength) {
 		final int lastIndexA = pOffsetA + pLength;
 		if(lastIndexA > pArrayA.length) {
 			throw new ArrayIndexOutOfBoundsException(pArrayA.length);

@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
  * @author Nicolas Gramlich
  * @since 15:48:56 - 03.09.2009
  */
-public class StreamUtils {
+public final class StreamUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -63,11 +63,11 @@ public class StreamUtils {
 		return writer.toString();
 	}
 
-	public static byte[] streamToBytes(final InputStream pInputStream) throws IOException {
+	public static final byte[] streamToBytes(final InputStream pInputStream) throws IOException {
 		return StreamUtils.streamToBytes(pInputStream, StreamUtils.END_OF_STREAM);
 	}
 
-	public static byte[] streamToBytes(final InputStream pInputStream, final int pReadLimit) throws IOException {
+	public static final byte[] streamToBytes(final InputStream pInputStream, final int pReadLimit) throws IOException {
 		final ByteArrayOutputStream os = new ByteArrayOutputStream((pReadLimit == StreamUtils.END_OF_STREAM) ? StreamUtils.IO_BUFFER_SIZE : pReadLimit);
 		StreamUtils.copy(pInputStream, os, pReadLimit);
 		return os.toByteArray();
@@ -76,7 +76,7 @@ public class StreamUtils {
 	/**
 	 * @see {@link StreamUtils#streamToBytes(InputStream, int, byte[], int)}
 	 */
-	public static void streamToBytes(final InputStream pInputStream, final int pByteLimit, final byte[] pData) throws IOException {
+	public static final void streamToBytes(final InputStream pInputStream, final int pByteLimit, final byte[] pData) throws IOException {
 		StreamUtils.streamToBytes(pInputStream, pByteLimit, pData, 0);
 	}
 
@@ -87,7 +87,7 @@ public class StreamUtils {
 	 * @param pOffset the offset within pData.
 	 * @throws IOException
 	 */
-	public static void streamToBytes(final InputStream pInputStream, final int pByteLimit, final byte[] pData, final int pOffset) throws IOException {
+	public static final void streamToBytes(final InputStream pInputStream, final int pByteLimit, final byte[] pData, final int pOffset) throws IOException {
 		if(pByteLimit > pData.length - pOffset) {
 			throw new IOException("pData is not big enough.");
 		}
@@ -109,11 +109,11 @@ public class StreamUtils {
 		}
 	}
 
-	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream) throws IOException {
+	public static final void copy(final InputStream pInputStream, final OutputStream pOutputStream) throws IOException {
 		StreamUtils.copy(pInputStream, pOutputStream, StreamUtils.END_OF_STREAM);
 	}
 
-	public static void copy(final InputStream pInputStream, final byte[] pData) throws IOException {
+	public static final void copy(final InputStream pInputStream, final byte[] pData) throws IOException {
 		int dataOffset = 0;
 		final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
 		int read;
@@ -123,7 +123,7 @@ public class StreamUtils {
 		}
 	}
 
-	public static void copy(final InputStream pInputStream, final ByteBuffer pByteBuffer) throws IOException {
+	public static final void copy(final InputStream pInputStream, final ByteBuffer pByteBuffer) throws IOException {
 		final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
 		int read;
 		while((read = pInputStream.read(buf)) != StreamUtils.END_OF_STREAM) {
@@ -141,7 +141,7 @@ public class StreamUtils {
 	 *
 	 * @throws IOException If any error occurs during the copy.
 	 */
-	public static void copy(final InputStream pInputStream, final OutputStream pOutputStream, final int pByteLimit) throws IOException {
+	public static final void copy(final InputStream pInputStream, final OutputStream pOutputStream, final int pByteLimit) throws IOException {
 		if(pByteLimit == StreamUtils.END_OF_STREAM) {
 			final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
 			int read;
@@ -167,7 +167,7 @@ public class StreamUtils {
 		pOutputStream.flush();
 	}
 
-	public static boolean copyAndClose(final InputStream pInputStream, final OutputStream pOutputStream) {
+	public static final boolean copyAndClose(final InputStream pInputStream, final OutputStream pOutputStream) {
 		try {
 			StreamUtils.copy(pInputStream, pOutputStream, StreamUtils.END_OF_STREAM);
 			return true;
@@ -184,7 +184,7 @@ public class StreamUtils {
 	 *
 	 * @param pCloseable The stream to close.
 	 */
-	public static void close(final Closeable pCloseable) {
+	public static final void close(final Closeable pCloseable) {
 		if(pCloseable != null) {
 			try {
 				pCloseable.close();
@@ -199,7 +199,7 @@ public class StreamUtils {
 	 *
 	 * @param pOutputStream The stream to close.
 	 */
-	public static void flushCloseStream(final OutputStream pOutputStream) {
+	public static final void flushCloseStream(final OutputStream pOutputStream) {
 		if(pOutputStream != null) {
 			try {
 				pOutputStream.flush();
@@ -216,7 +216,7 @@ public class StreamUtils {
 	 *
 	 * @param pWriter The Writer to close.
 	 */
-	public static void flushCloseWriter(final Writer pWriter) {
+	public static final void flushCloseWriter(final Writer pWriter) {
 		if(pWriter != null) {
 			try {
 				pWriter.flush();

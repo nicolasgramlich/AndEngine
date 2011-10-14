@@ -1,6 +1,9 @@
 package org.anddev.andengine.util;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.anddev.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -9,7 +12,7 @@ import java.util.ArrayList;
  * @author Nicolas Gramlich
  * @since 12:43:39 - 11.03.2010
  */
-public class ListUtils {
+public final class ListUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -33,14 +36,18 @@ public class ListUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static final <T> T random(final List<T> pList) {
+		return pList.get(MathUtils.random(0, pList.size() - 1));
+	}
 
-	public static <T> ArrayList<? extends T> toList(final T pItem) {
+	public static final <T> ArrayList<? extends T> toList(final T pItem) {
 		final ArrayList<T> out = new ArrayList<T>();
 		out.add(pItem);
 		return out;
 	}
 
-	public static <T> ArrayList<? extends T> toList(final T ... pItems) {
+	public static final <T> ArrayList<? extends T> toList(final T ... pItems) {
 		final ArrayList<T> out = new ArrayList<T>();
 		final int itemCount = pItems.length;
 		for(int i = 0; i < itemCount; i++) {

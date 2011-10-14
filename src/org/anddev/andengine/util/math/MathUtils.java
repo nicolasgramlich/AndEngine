@@ -11,7 +11,7 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 20:42:15 - 17.12.2009
  */
-public class MathUtils implements MathConstants {
+public final class MathUtils implements MathConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -38,7 +38,7 @@ public class MathUtils implements MathConstants {
 	// Methods
 	// ===========================================================
 
-	public static float atan2(final float dY, final float dX) {
+	public static final float atan2(final float dY, final float dX) {
 		return (float)Math.atan2(dY, dX);
 	}
 
@@ -202,23 +202,23 @@ public class MathUtils implements MathConstants {
 		return MathUtils.revertRotateAroundCenter(pVertices, pRotation, pRotationCenterX, pRotationCenterY);
 	}
 
-	public static boolean isInBounds(final int pMinValue, final int pMaxValue, final int pValue) {
+	public static final boolean isInBounds(final int pMinValue, final int pMaxValue, final int pValue) {
 		return pValue >= pMinValue && pValue <= pMaxValue;
 	}
 
-	public static boolean isInBounds(final float pMinValue, final float pMaxValue, final float pValue) {
+	public static final boolean isInBounds(final float pMinValue, final float pMaxValue, final float pValue) {
 		return pValue >= pMinValue && pValue <= pMaxValue;
 	}
 
-	public static int bringToBounds(final int pMinValue, final int pMaxValue, final int pValue) {
+	public static final int bringToBounds(final int pMinValue, final int pMaxValue, final int pValue) {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}
 
-	public static float bringToBounds(final float pMinValue, final float pMaxValue, final float pValue) {
+	public static final float bringToBounds(final float pMinValue, final float pMaxValue, final float pValue) {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}
 
-	public static float distance(final float pX1, final float pY1, final float pX2, final float pY2){
+	public static final float distance(final float pX1, final float pY1, final float pX2, final float pY2){
 		final float dX = pX2 - pX1;
 		final float dY = pY2 - pY1;
 		return FloatMath.sqrt((dX * dX) + (dY * dY));

@@ -17,10 +17,20 @@ public class ManhattanHeuristic<T> implements IAStarHeuristic<T> {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private final float mFactor;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public ManhattanHeuristic() {
+		this(1);
+	}
+
+	public ManhattanHeuristic(final float pFactor) {
+		this.mFactor = pFactor;
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -32,7 +42,7 @@ public class ManhattanHeuristic<T> implements IAStarHeuristic<T> {
 
 	@Override
 	public float getExpectedRestCost(final IPathFinderMap<T> pPathFinderMap, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY) {
-		return Math.abs(pFromX - pToX) + Math.abs(pToX - pToY);
+		return this.mFactor * (Math.abs(pFromX - pToX) + Math.abs(pToX - pToY));
 	}
 
 	// ===========================================================

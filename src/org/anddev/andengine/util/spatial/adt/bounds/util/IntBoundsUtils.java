@@ -9,7 +9,7 @@ import org.anddev.andengine.util.spatial.adt.bounds.IIntBounds;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:05:32 - 08.10.2011
  */
-public class IntBoundsUtils {
+public final class IntBoundsUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,7 +17,6 @@ public class IntBoundsUtils {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
 
 	// ===========================================================
 	// Constructors
@@ -35,27 +34,33 @@ public class IntBoundsUtils {
 	// Methods
 	// ===========================================================
 	
-	public static boolean intersects(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
+	public static final boolean intersects(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
 		return IntBoundsUtils.intersects(pIntBoundsA.getXMin(), pIntBoundsA.getYMin(), pIntBoundsA.getXMax(), pIntBoundsA.getYMax(), pIntBoundsB.getXMin(), pIntBoundsB.getYMin(), pIntBoundsB.getXMax(), pIntBoundsB.getYMax());
 	}
 
-	public static boolean intersects(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {
-		return (pXMinA < pXMaxB) && (pXMinB < pXMaxA) && (pYMinA < pYMaxB) && (pYMinB < pYMaxA);
+	public static final boolean intersects(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {
+		return ((pXMinA < pXMaxB) && (pXMinB < pXMaxA) && (pYMinA < pYMaxB) && (pYMinB < pYMaxA))
+				|| IntBoundsUtils.contains(pXMinA, pYMinA, pXMaxA, pYMaxA, pXMinB, pYMinB, pXMaxB, pYMaxB)
+				|| IntBoundsUtils.contains(pXMinB, pYMinB, pXMaxB, pYMaxB, pXMinA, pYMinA, pXMaxA, pYMaxA);
 	}
 	
-	public static boolean contains(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
+	public static final boolean contains(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
 		return IntBoundsUtils.contains(pIntBoundsA.getXMin(), pIntBoundsA.getYMin(), pIntBoundsA.getXMax(), pIntBoundsA.getYMax(), pIntBoundsB.getXMin(), pIntBoundsB.getYMin(), pIntBoundsB.getXMax(), pIntBoundsB.getYMax());
 	}
+	
+	public static final boolean contains(final IIntBounds pIntBounds, final int pXMin, final int pYMin, final int pXMax, final int pYMax) {
+		return IntBoundsUtils.contains(pIntBounds.getXMin(), pIntBounds.getYMin(), pIntBounds.getXMax(), pIntBounds.getYMax(), pXMin, pYMin, pXMax, pYMax);
+	}
 
-	public static boolean contains(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {
+	public static final boolean contains(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {
 		return (pXMinA <= pXMinB) && (pYMinA <= pYMinB) && (pXMaxA >= pXMaxB) && (pYMaxA >= pYMaxB);
 	}
 
-	public static boolean adjacent(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
+	public static final boolean adjacent(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
 		return IntBoundsUtils.adjacent(pIntBoundsA.getXMin(), pIntBoundsA.getYMin(), pIntBoundsA.getXMax(), pIntBoundsA.getYMax(), pIntBoundsB.getXMin(), pIntBoundsB.getYMin(), pIntBoundsB.getXMax(), pIntBoundsB.getYMax());
 	}
 
-	public static boolean adjacent(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {
+	public static final boolean adjacent(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {
 		final int width = Math.min(pXMaxA, pXMaxB) - Math.max(pXMinA, pXMinB);
 		final int height = Math.min(pYMaxA, pYMaxB) - Math.max(pYMinA, pYMinB);
 

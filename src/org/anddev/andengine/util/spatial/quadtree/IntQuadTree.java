@@ -1,6 +1,5 @@
 package org.anddev.andengine.util.spatial.quadtree;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.anddev.andengine.util.IMatcher;
@@ -18,7 +17,7 @@ import org.anddev.andengine.util.spatial.adt.bounds.util.IntBoundsUtils;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:22:18 - 10.10.2011
  */
-public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<IIntBounds, T> {
+public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<IIntBounds, T> implements IIntBounds {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -50,16 +49,43 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
+	public int getXMin() {
+		return this.getRoot().getXMin();
+	}
+
+	@Override
+	public int getYMin() {
+		return this.getRoot().getYMin();
+	}
+
+	@Override
+	public int getXMax() {
+		return this.getRoot().getXMax();
+	}
+
+	@Override
+	public int getYMax() {
+		return this.getRoot().getYMax();
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected IntQuadTreeNode getRoot() {
+		return (IntQuadTreeNode) this.mRoot;
+	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
 	public synchronized List<T> query(final int pX, final int pY) {
-		return this.query(pX, pY, new LinkedList<T>());
+		this.mQueryIntBounds.set(pX, pY);
+		return this.query(this.mQueryIntBounds);
 	}
 
 	public synchronized List<T> query(final int pX, final int pY, final List<T> pResult) {
@@ -68,7 +94,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 	}
 
 	public synchronized List<T> query(final int pX, final int pY, final IMatcher<T> pMatcher) {
-		return this.query(pX, pY, pMatcher, new LinkedList<T>());
+		this.mQueryIntBounds.set(pX, pY);
+		return this.query(this.mQueryIntBounds, pMatcher);
 	}
 
 	public synchronized List<T> query(final int pX, final int pY, final IMatcher<T> pMatcher, final List<T> pResult) {
@@ -77,7 +104,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 	}
 
 	public synchronized List<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax) {
-		return this.query(pXMin, pYMin, pXMax, pYMax, new LinkedList<T>());
+		this.mQueryIntBounds.set(pXMin, pYMin, pXMax, pYMax);
+		return this.query(this.mQueryIntBounds);
 	}
 
 	public synchronized List<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final List<T> pResult) {
@@ -86,7 +114,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 	}
 
 	public synchronized List<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher) {
-		return this.query(pXMin, pYMin, pXMax, pYMax, pMatcher, new LinkedList<T>());
+		this.mQueryIntBounds.set(pXMin, pYMin, pXMax, pYMax);
+		return this.query(this.mQueryIntBounds, pMatcher);
 	}
 
 	public synchronized List<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher, final List<T> pResult) {
@@ -123,7 +152,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class IntQuadTreeNode extends QuadTreeNode {
+	public class IntQuadTreeNode extends QuadTreeNode implements IIntBounds {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -165,18 +194,22 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		// Getter & Setter
 		// ===========================================================
 
+		@Override
 		public int getXMin() {
 			return this.mXMin;
 		}
 		
+		@Override
 		public int getYMin() {
 			return this.mYMin;
 		}
 
+		@Override
 		public int getXMax() {
 			return this.mXMax;
 		}
 
+		@Override
 		public int getYMax() {
 			return this.mYMax;
 		}

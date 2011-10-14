@@ -1,6 +1,5 @@
 package org.anddev.andengine.util.spatial.quadtree;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.anddev.andengine.util.IMatcher;
@@ -17,7 +16,7 @@ import org.anddev.andengine.util.spatial.adt.bounds.util.FloatBoundsUtils;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:15:21 - 10.10.2011
  */
-public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTree<IFloatBounds, T> {
+public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTree<IFloatBounds, T> implements IFloatBounds {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -49,16 +48,43 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
+	public float getXMin() {
+		return this.getRoot().getXMin();
+	}
+
+	@Override
+	public float getYMin() {
+		return this.getRoot().getYMin();
+	}
+
+	@Override
+	public float getXMax() {
+		return this.getRoot().getXMax();
+	}
+
+	@Override
+	public float getYMax() {
+		return this.getRoot().getYMax();
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected FloatQuadTreeNode getRoot() {
+		return (FloatQuadTreeNode) this.mRoot;
+	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
 	public synchronized List<T> query(final float pX, final float pY) {
-		return this.query(pX, pY, new LinkedList<T>());
+		this.mQueryFloatBounds.set(pX, pY);
+		return this.query(this.mQueryFloatBounds);
 	}
 
 	public synchronized List<T> query(final float pX, final float pY, final List<T> pResult) {
@@ -67,7 +93,8 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 	}
 
 	public synchronized List<T> query(final float pX, final float pY, final IMatcher<T> pMatcher) {
-		return this.query(pX, pY, pMatcher, new LinkedList<T>());
+		this.mQueryFloatBounds.set(pX, pY);
+		return this.query(this.mQueryFloatBounds, pMatcher);
 	}
 
 	public synchronized List<T> query(final float pX, final float pY, final IMatcher<T> pMatcher, final List<T> pResult) {
@@ -76,7 +103,8 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 	}
 
 	public synchronized List<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax) {
-		return this.query(pXMin, pYMin, pXMax, pYMax, new LinkedList<T>());
+		this.mQueryFloatBounds.set(pXMin, pYMin, pXMax, pYMax);
+		return this.query(this.mQueryFloatBounds);
 	}
 
 	public synchronized List<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final List<T> pResult) {
@@ -85,7 +113,8 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 	}
 
 	public synchronized List<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final IMatcher<T> pMatcher) {
-		return this.query(pXMin, pYMin, pXMax, pYMax, pMatcher, new LinkedList<T>());
+		this.mQueryFloatBounds.set(pXMin, pYMin, pXMax, pYMax);
+		return this.query(this.mQueryFloatBounds, pMatcher);
 	}
 
 	public synchronized List<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final IMatcher<T> pMatcher, final List<T> pResult) {
@@ -122,7 +151,7 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class FloatQuadTreeNode extends QuadTreeNode {
+	public class FloatQuadTreeNode extends QuadTreeNode implements IFloatBounds {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -164,18 +193,22 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		// Getter & Setter
 		// ===========================================================
 
+		@Override
 		public float getXMin() {
 			return this.mXMin;
 		}
-		
+
+		@Override
 		public float getYMin() {
 			return this.mYMin;
 		}
 
+		@Override
 		public float getXMax() {
 			return this.mXMax;
 		}
 
+		@Override
 		public float getYMax() {
 			return this.mYMax;
 		}

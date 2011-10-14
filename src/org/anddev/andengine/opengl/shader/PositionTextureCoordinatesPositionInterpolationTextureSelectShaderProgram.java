@@ -28,9 +28,10 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 			"attribute vec2 " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
 			"varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
 			"void main() {\n" +
-			"	vec4 position = mix(" + ShaderProgramConstants.ATTRIBUTE_POSITION_0 + "," + ShaderProgramConstants.ATTRIBUTE_POSITION_1 + "," + ShaderProgramConstants.UNIFORM_POSITION_INTERPOLATION_MIX_0 + ");\n" +
+			"	vec4 position = vec4(0, 0, 0, 1);\n" +
+			"	position.xy = mix(" + ShaderProgramConstants.ATTRIBUTE_POSITION_0 + ".xy," + ShaderProgramConstants.ATTRIBUTE_POSITION_1 + ".xy," + ShaderProgramConstants.UNIFORM_POSITION_INTERPOLATION_MIX_0 + ");\n" +
 			"	" + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + " = " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
-			"	gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * vec4(position.x, -position.y, 0, 1);\n" +
+			"	gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * position;\n" +
 			"}";
 
 	public static final String FRAGMENTSHADER = PositionTextureCoordinatesTextureSelectShaderProgram.FRAGMENTSHADER;

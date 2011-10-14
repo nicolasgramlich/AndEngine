@@ -25,6 +25,8 @@ public interface ShaderProgramConstants {
 	public static final int ATTRIBUTE_POSITION_0_LOCATION = 4;
 	public static final String ATTRIBUTE_POSITION_1 = "a_position_1";
 	public static final int ATTRIBUTE_POSITION_1_LOCATION = 5;
+	public static final String ATTRIBUTE_POSITION_2 = "a_position_2";
+	public static final int ATTRIBUTE_POSITION_2_LOCATION = 6;
 
 	public static final String UNIFORM_MODELVIEWPROJECTIONMATRIX = "u_modelViewProjectionMatrix";
 	public static final String UNIFORM_MODELVIEWMATRIX = "u_modelViewMatrix";
@@ -45,7 +47,8 @@ public interface ShaderProgramConstants {
 	public static final String UNIFORM_TEXTURE_8 = "u_texture_8";
 	public static final String UNIFORM_TEXTURE_9 = "u_texture_9";
 	public static final String UNIFORM_TEXTURESELECT_TEXTURE_0 = "u_textureselect_texture_0";
-	public static final String UNIFORM_POSITION_INTERPOLATION_MIX = "u_position_interpolation_mix";
+	public static final String UNIFORM_POSITION_INTERPOLATION_MIX_0 = "u_position_interpolation_mix_0";
+	public static final String UNIFORM_POSITION_INTERPOLATION_MIX_1 = "u_position_interpolation_mix_1";
 
 	public static final String VARYING_TEXTURECOORDINATES = "v_textureCoordinates";
 	public static final String VARYING_COLOR = "v_color";

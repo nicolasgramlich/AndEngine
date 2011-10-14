@@ -22,13 +22,13 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 
 	public static final String VERTEXSHADER =
 			"uniform mat4 " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + ";\n" +
-			"uniform float " + ShaderProgramConstants.UNIFORM_POSITION_INTERPOLATION_MIX + ";\n" +
+			"uniform float " + ShaderProgramConstants.UNIFORM_POSITION_INTERPOLATION_MIX_0 + ";\n" +
 			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION_0 + ";\n" +
 			"attribute vec4 " + ShaderProgramConstants.ATTRIBUTE_POSITION_1 + ";\n" +
 			"attribute vec2 " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
 			"varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
 			"void main() {\n" +
-			"	vec4 position = mix(" + ShaderProgramConstants.ATTRIBUTE_POSITION_0 + "," + ShaderProgramConstants.ATTRIBUTE_POSITION_1 + "," + ShaderProgramConstants.UNIFORM_POSITION_INTERPOLATION_MIX + ");\n" +
+			"	vec4 position = mix(" + ShaderProgramConstants.ATTRIBUTE_POSITION_0 + "," + ShaderProgramConstants.ATTRIBUTE_POSITION_1 + "," + ShaderProgramConstants.UNIFORM_POSITION_INTERPOLATION_MIX_0 + ");\n" +
 			"	" + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + " = " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
 			"	gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * vec4(position.x, -position.y, 0, 1);\n" +
 			"}";
@@ -43,7 +43,7 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 	public static int sUniformTexture0Location = ShaderProgram.LOCATION_INVALID;
 	public static int sUniformTexture1Location = ShaderProgram.LOCATION_INVALID;
 	public static int sUniformTextureSelectTexture0Location = ShaderProgram.LOCATION_INVALID;
-	public static int sUniformPositionInterpolationMixLocation = ShaderProgram.LOCATION_INVALID;
+	public static int sUniformPositionInterpolationMix0Location = ShaderProgram.LOCATION_INVALID;
 
 	// ===========================================================
 	// Constructors
@@ -80,7 +80,7 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 		PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformTexture0Location = this.getUniformLocation(ShaderProgramConstants.UNIFORM_TEXTURE_0);
 		PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformTexture1Location = this.getUniformLocation(ShaderProgramConstants.UNIFORM_TEXTURE_1);
 		PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformTextureSelectTexture0Location = this.getUniformLocation(ShaderProgramConstants.UNIFORM_TEXTURESELECT_TEXTURE_0);
-		PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformPositionInterpolationMixLocation = this.getUniformLocation(ShaderProgramConstants.UNIFORM_POSITION_INTERPOLATION_MIX);
+		PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformPositionInterpolationMix0Location = this.getUniformLocation(ShaderProgramConstants.UNIFORM_POSITION_INTERPOLATION_MIX_0);
 	}
 
 	@Override

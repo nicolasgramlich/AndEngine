@@ -237,8 +237,8 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 
 	public void detachChildren();
 
-	public void callOnChildren(final IEntityCallable pEntityCallable);
-	public void callOnChildren(final IEntityMatcher pEntityMatcher, final IEntityCallable pEntityCallable);
+	public void callOnChildren(final IEntityParameterCallable pEntityParameterCallable);
+	public void callOnChildren(final IEntityParameterCallable pEntityParameterCallable, final IEntityMatcher pEntityMatcher);
 
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler);
@@ -272,7 +272,7 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 		public boolean matches(final IEntity pEntity);
 	}
 
-	public interface IEntityCallable extends ParameterCallable<IEntity> {
+	public interface IEntityParameterCallable extends ParameterCallable<IEntity> {
 		// ===========================================================
 		// Constants
 		// ===========================================================

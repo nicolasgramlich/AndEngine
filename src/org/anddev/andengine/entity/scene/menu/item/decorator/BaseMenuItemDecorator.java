@@ -598,13 +598,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void callOnChildren(final IEntityCallable pEntityCallable) {
-		this.mMenuItem.callOnChildren(pEntityCallable);
+	public void callOnChildren(final IEntityParameterCallable pEntityParameterCallable) {
+		this.mMenuItem.callOnChildren(pEntityParameterCallable);
 	}
 
 	@Override
-	public void callOnChildren(final IEntityMatcher pEntityMatcher, final IEntityCallable pEntityCallable) {
-		this.mMenuItem.callOnChildren(pEntityMatcher, pEntityCallable);
+	public void callOnChildren(final IEntityParameterCallable pEntityParameterCallable, final IEntityMatcher pEntityMatcher) {
+		this.mMenuItem.callOnChildren(pEntityParameterCallable, pEntityMatcher);
 	}
 
 	@Override

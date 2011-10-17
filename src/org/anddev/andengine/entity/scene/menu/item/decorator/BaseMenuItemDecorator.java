@@ -561,6 +561,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	public void sortChildren() {
 		this.mMenuItem.sortChildren();
 	}
+	
+	@Override
+	public void sortChildren(final boolean pImmediate) {
+		this.mMenuItem.sortChildren(pImmediate);
+	}
 
 	@Override
 	public void sortChildren(final Comparator<IEntity> pEntityComparator) {

@@ -53,6 +53,7 @@ public class Entity implements IEntity {
 	protected boolean mIgnoreUpdate = false;
 	protected boolean mChildrenVisible = true;
 	protected boolean mChildrenIgnoreUpdate = false;
+	protected boolean mChildrenSortPending = false;
 
 	protected int mZIndex = 0;
 
@@ -635,10 +636,19 @@ public class Entity implements IEntity {
 
 	@Override
 	public void sortChildren() {
+		this.sortChildren(true);
+	}
+
+	@Override
+	public void sortChildren(final boolean pImmediate) {
 		if(this.mChildren == null) {
 			return;
 		}
-		ZIndexSorter.getInstance().sort(this.mChildren);
+		if(pImmediate) {
+			ZIndexSorter.getInstance().sort(this.mChildren);
+		} else {
+			this.mChildrenSortPending = true;
+		}
 	}
 
 	@Override
@@ -1164,6 +1174,9 @@ public class Entity implements IEntity {
 
 	protected void onDrawChildren(final Camera pCamera) {
 		if(this.mChildren != null && this.mChildrenVisible) {
+			if(this.mChildrenSortPending) {
+				ZIndexSorter.getInstance().sort(this.mChildren);
+			}
 			this.onManagedDrawChildren(pCamera);
 		}
 	}

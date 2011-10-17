@@ -192,10 +192,16 @@ public interface IEntity extends IDrawable, IUpdateHandler {
 	public boolean swapChildren(final IEntity pEntityA, final IEntity pEntityB);
 
 	/**
-	 * Sorts the {@link IEntity}s based on their ZIndex. Sort is stable.
+	 * Immediately sorts the {@link IEntity}s based on their ZIndex. Sort is stable.
 	 */
 	public void sortChildren();
-
+	/**
+	 * Sorts the {@link IEntity}s based on their ZIndex. Sort is stable.
+	 * In contrast to {@link IEntity#sortChildren()} this method is particularly useful to avoid multiple sorts per frame. 
+	 * @param pImmediate if <code>true</code>, the sorting is executed immediately.
+	 * If <code>false</code> the sorting is executed before the next (visible) drawing of the children of this {@link IEntity}. 
+	 */
+	public void sortChildren(final boolean pImmediate);
 	/**
 	 * Sorts the {@link IEntity}s based on the {@link Comparator} supplied. Sort is stable.
 	 * @param pEntityComparator

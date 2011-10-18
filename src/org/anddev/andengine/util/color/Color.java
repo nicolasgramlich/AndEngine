@@ -215,6 +215,19 @@ public class Color {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	public String toString() {
+		return new StringBuilder()
+			.append("[Red: ")
+			.append(this.mRed)
+			.append(", Green: ")
+			.append(this.mGreen)
+			.append(", Blue: ")
+			.append(this.mBlue)
+			.append("]")
+			.toString();
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

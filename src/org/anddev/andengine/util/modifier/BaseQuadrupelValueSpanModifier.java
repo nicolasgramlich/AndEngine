@@ -18,8 +18,8 @@ public abstract class BaseQuadrupelValueSpanModifier<T> extends BaseTripleValueS
 	// Fields
 	// ===========================================================
 
-	private final float mFromValueD;
-	private final float mValueSpanD;
+	private float mFromValueD;
+	private float mValueSpanD;
 
 	// ===========================================================
 	// Constructors
@@ -31,8 +31,8 @@ public abstract class BaseQuadrupelValueSpanModifier<T> extends BaseTripleValueS
 
 	public BaseQuadrupelValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final float pFromValueD, final float pToValueD, final IModifierListener<T> pModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pModifierListener, pEaseFunction);
-		this.mFromValueD = pFromValueC;
-		this.mValueSpanD = pToValueC - pFromValueC;
+		this.mFromValueD = pFromValueD;
+		this.mValueSpanD = pToValueD - pFromValueD;
 	}
 
 	protected BaseQuadrupelValueSpanModifier(final BaseQuadrupelValueSpanModifier<T> pBaseTripleValueSpanModifier) {
@@ -65,6 +65,19 @@ public abstract class BaseQuadrupelValueSpanModifier<T> extends BaseTripleValueS
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	@Override
+	@Deprecated
+	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC) {
+		super.reset(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC);
+	}
+
+	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final float pFromValueD, final float pToValueD) {
+		super.reset(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC);
+
+		this.mFromValueD = pFromValueD;
+		this.mValueSpanD = pToValueD - pFromValueD;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

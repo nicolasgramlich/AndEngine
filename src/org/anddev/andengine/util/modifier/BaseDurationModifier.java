@@ -18,7 +18,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 	// ===========================================================
 
 	private float mSecondsElapsed;
-	protected final float mDuration;
+	protected float mDuration;
 
 	// ===========================================================
 	// Constructors

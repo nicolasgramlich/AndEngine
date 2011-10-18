@@ -19,8 +19,8 @@ public abstract class BaseTripleValueSpanModifier<T> extends BaseDoubleValueSpan
 	// Fields
 	// ===========================================================
 
-	private final float mFromValueC;
-	private final float mValueSpanC;
+	private float mFromValueC;
+	private float mValueSpanC;
 
 	// ===========================================================
 	// Constructors
@@ -46,6 +46,14 @@ public abstract class BaseTripleValueSpanModifier<T> extends BaseDoubleValueSpan
 	// Getter & Setter
 	// ===========================================================
 
+	public float getFromValueC() {
+		return this.mFromValueC;
+	}
+
+	public float getToValueC() {
+		return this.mFromValueC + this.mValueSpanC;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -66,6 +74,19 @@ public abstract class BaseTripleValueSpanModifier<T> extends BaseDoubleValueSpan
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	@Override
+	@Deprecated
+	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
+		super.reset(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB);
+	}
+
+	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC) {
+		super.reset(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB);
+
+		this.mFromValueC = pFromValueC;
+		this.mValueSpanC = pToValueC - pFromValueC;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

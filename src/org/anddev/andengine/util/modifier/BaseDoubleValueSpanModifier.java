@@ -20,8 +20,8 @@ public abstract class BaseDoubleValueSpanModifier<T> extends BaseSingleValueSpan
 	// Fields
 	// ===========================================================
 
-	private final float mFromValueB;
-	private final float mValueSpanB;
+	private float mFromValueB;
+	private float mValueSpanB;
 
 	// ===========================================================
 	// Constructors
@@ -55,6 +55,32 @@ public abstract class BaseDoubleValueSpanModifier<T> extends BaseSingleValueSpan
 	// Getter & Setter
 	// ===========================================================
 
+	@Deprecated
+	public float getFromValue() {
+		return super.getFromValue();
+	}
+
+	@Deprecated
+	public float getToValue() {
+		return this.getToValue();
+	}
+
+	public float getFromValueA() {
+		return super.getFromValue();
+	}
+
+	public float getToValueA() {
+		return super.getToValue();
+	}
+
+	public float getFromValueB() {
+		return this.mFromValueB;
+	}
+
+	public float getToValueB() {
+		return this.mFromValueB + this.mValueSpanB;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -75,6 +101,19 @@ public abstract class BaseDoubleValueSpanModifier<T> extends BaseSingleValueSpan
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	@Override
+	@Deprecated
+	public void reset(final float pDuration, final float pFromValue, final float pToValue) {
+		super.reset(pDuration, pFromValue, pToValue);
+	}
+	
+	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
+		super.reset(pDuration, pFromValueA, pToValueA);
+
+		this.mFromValueB = pFromValueB;
+		this.mValueSpanB = pToValueB - pFromValueB;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

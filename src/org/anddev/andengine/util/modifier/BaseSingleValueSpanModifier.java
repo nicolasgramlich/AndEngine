@@ -19,8 +19,8 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	// Fields
 	// ===========================================================
 
-	private final float mFromValue;
-	private final float mValueSpan;
+	private float mFromValue;
+	private float mValueSpan;
 
 	protected final IEaseFunction mEaseFunction;
 
@@ -58,6 +58,14 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	// Getter & Setter
 	// ===========================================================
 
+	public float getFromValue() {
+		return this.mFromValue;
+	}
+
+	public float getToValue() {
+		return this.mFromValue + this.mValueSpan;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -80,6 +88,14 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public void reset(final float pDuration, final float pFromValue, final float pToValue) {
+		super.reset();
+		
+		this.mDuration = pDuration;
+		this.mFromValue = pFromValue;
+		this.mValueSpan = pToValue - pFromValue;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

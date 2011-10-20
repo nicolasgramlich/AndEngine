@@ -19,7 +19,7 @@ import org.anddev.andengine.util.constants.Constants;
 import android.util.SparseArray;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -44,7 +44,7 @@ public class Scene extends Entity {
 	private boolean mChildSceneModalUpdate;
 	private boolean mChildSceneModalTouch;
 
-	protected SmartList<ITouchArea> mTouchAreas = new SmartList<ITouchArea>(TOUCHAREAS_CAPACITY_DEFAULT);
+	protected SmartList<ITouchArea> mTouchAreas = new SmartList<ITouchArea>(Scene.TOUCHAREAS_CAPACITY_DEFAULT);
 
 	private final RunnableHandler mRunnableHandler = new RunnableHandler();
 

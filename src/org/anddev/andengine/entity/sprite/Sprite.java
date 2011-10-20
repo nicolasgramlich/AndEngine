@@ -176,7 +176,7 @@ public class Sprite extends RectangularShape {
 
 		vertexBufferObject.setDirtyOnHardware();
 	}
-	
+
 	@Override
 	protected void onUpdateColor() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();

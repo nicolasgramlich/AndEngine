@@ -224,6 +224,8 @@ public class Color {
 			.append(this.mGreen)
 			.append(", Blue: ")
 			.append(this.mBlue)
+			.append(", Alpha: ")
+			.append(this.mAlpha)
 			.append("]")
 			.toString();
 	}

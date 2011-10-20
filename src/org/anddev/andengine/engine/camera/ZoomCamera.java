@@ -1,15 +1,13 @@
 package org.anddev.andengine.engine.camera;
 
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
-
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.math.MathUtils;
 
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -109,17 +107,25 @@ public class ZoomCamera extends BoundCamera {
 	protected void applySceneToCameraSceneOffset(final TouchEvent pSceneTouchEvent) {
 		final float zoomFactor = this.mZoomFactor;
 		if(zoomFactor != 1) {
-			final float scaleCenterX = this.getCenterX();
-			final float scaleCenterY = this.getCenterY();
+			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pSceneTouchEvent.getX();
+			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
 
-			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pSceneTouchEvent.getX();
-			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
+			MathUtils.scaleAroundCenter(Camera.VERTICES_TMP, zoomFactor, zoomFactor, this.getCenterX(), this.getCenterY()); // TODO Use a Transformation object instead!?!
 
-			MathUtils.scaleAroundCenter(VERTICES_TOUCH_TMP, zoomFactor, zoomFactor, scaleCenterX, scaleCenterY); // TODO Use a Transformation object instead!?! 
-
-			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
+			pSceneTouchEvent.set(Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X], Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y]);
 		}
+
 		super.applySceneToCameraSceneOffset(pSceneTouchEvent);
+	}
+
+	@Override
+	protected void applySceneToCameraSceneOffset(final float[] pSceneCoordinates) {
+		final float zoomFactor = this.mZoomFactor;
+		if(zoomFactor != 1) {
+			MathUtils.scaleAroundCenter(pSceneCoordinates, zoomFactor, zoomFactor, this.getCenterX(), this.getCenterY()); // TODO Use a Transformation object instead!?!
+		}
+
+		super.applySceneToCameraSceneOffset(pSceneCoordinates);
 	}
 
 	@Override
@@ -128,15 +134,22 @@ public class ZoomCamera extends BoundCamera {
 
 		final float zoomFactor = this.mZoomFactor;
 		if(zoomFactor != 1) {
-			final float scaleCenterX = this.getCenterX();
-			final float scaleCenterY = this.getCenterY();
+			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pCameraSceneTouchEvent.getX();
+			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
 
-			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pCameraSceneTouchEvent.getX();
-			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
+			MathUtils.revertScaleAroundCenter(Camera.VERTICES_TMP, zoomFactor, zoomFactor, this.getCenterX(), this.getCenterY()); // TODO Use a Transformation object instead!?!
 
-			MathUtils.revertScaleAroundCenter(VERTICES_TOUCH_TMP, zoomFactor, zoomFactor, scaleCenterX, scaleCenterY);
+			pCameraSceneTouchEvent.set(Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X], Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y]);
+		}
+	}
 
-			pCameraSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
+	@Override
+	protected void unapplySceneToCameraSceneOffset(final float[] pCameraSceneCoordinates) {
+		super.unapplySceneToCameraSceneOffset(pCameraSceneCoordinates);
+
+		final float zoomFactor = this.mZoomFactor;
+		if(zoomFactor != 1) {
+			MathUtils.revertScaleAroundCenter(pCameraSceneCoordinates, zoomFactor, zoomFactor, this.getCenterX(), this.getCenterY()); // TODO Use a Transformation object instead!?!
 		}
 	}
 

@@ -3,10 +3,9 @@ package org.anddev.andengine.entity.scene;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IAreaShape;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLState;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -86,18 +85,8 @@ public class CameraScene extends Scene {
 	}
 
 	@Override
-	protected void onManagedDraw(final Camera pCamera) {
-		if(this.mCamera != null) {
-			this.mCamera.onApplyCameraSceneMatrix();
-			{
-				GLState.pushModelViewGLMatrix();
-				GLState.loadModelViewGLMatrixIdentity();
-
-				super.onManagedDraw(pCamera);
-
-				GLState.popModelViewGLMatrix();
-			}
-		}
+	protected void onApplyMatrix(final Camera pCamera) {
+		this.mCamera.onApplyCameraSceneMatrix();
 	}
 
 	// ===========================================================

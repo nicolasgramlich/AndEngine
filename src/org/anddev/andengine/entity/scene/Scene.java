@@ -11,9 +11,7 @@ import org.anddev.andengine.entity.scene.background.Background;
 import org.anddev.andengine.entity.scene.background.IBackground;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLMatrixStack.GLMatrixStackUnderflowException;
 import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.SmartList;
 import org.anddev.andengine.util.constants.Constants;
@@ -227,20 +225,19 @@ public class Scene extends Entity {
 				this.mBackground.onDraw(pCamera);
 			}
 
-			pCamera.onApplySceneMatrix();
+			this.onApplyMatrix(pCamera);
 			GLState.loadModelViewGLMatrixIdentity();
 
-			try {
-				super.onManagedDraw(pCamera);
-			} catch (GLMatrixStackUnderflowException t) {
-				Debug.e(this.toString(), null); // TODO Just here for debugging!
-//				throw t;
-			}
+			super.onManagedDraw(pCamera);
 		}
 
 		if(childScene != null) {
 			childScene.onDraw(pCamera);
 		}
+	}
+
+	protected void onApplyMatrix(final Camera pCamera) {
+		pCamera.onApplySceneMatrix();
 	}
 
 	@Override

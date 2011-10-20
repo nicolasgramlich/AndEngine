@@ -30,7 +30,7 @@ public class LimitedFPSEngine extends Engine {
 
 	public LimitedFPSEngine(final EngineOptions pEngineOptions, final int pFramesPerSecond) {
 		super(pEngineOptions);
-		this.mPreferredFrameLengthNanoseconds = NANOSECONDSPERSECOND / pFramesPerSecond;
+		this.mPreferredFrameLengthNanoseconds = NANOSECONDS_PER_SECOND / pFramesPerSecond;
 	}
 
 	// ===========================================================
@@ -49,7 +49,7 @@ public class LimitedFPSEngine extends Engine {
 		if(deltaFrameLengthNanoseconds <= 0) {
 			super.onUpdate(pNanosecondsElapsed);
 		} else {
-			final int sleepTimeMilliseconds = (int) (deltaFrameLengthNanoseconds / NANOSECONDSPERMILLISECOND);
+			final int sleepTimeMilliseconds = (int) (deltaFrameLengthNanoseconds / NANOSECONDS_PER_MILLISECOND);
 
 			Thread.sleep(sleepTimeMilliseconds);
 			super.onUpdate(pNanosecondsElapsed + deltaFrameLengthNanoseconds);

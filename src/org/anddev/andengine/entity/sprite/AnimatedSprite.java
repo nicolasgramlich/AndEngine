@@ -90,7 +90,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 		if(this.mAnimationRunning) {
-			final long nanoSecondsElapsed = (long) (pSecondsElapsed * TimeConstants.NANOSECONDSPERSECOND);
+			final long nanoSecondsElapsed = (long) (pSecondsElapsed * TimeConstants.NANOSECONDS_PER_SECOND);
 			this.mAnimationProgress += nanoSecondsElapsed;
 
 			if(this.mAnimationProgress > this.mAnimationDuration) {
@@ -249,7 +249,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		}
 
 		final long[] frameEndsInNanoseconds = this.mFrameEndsInNanoseconds;
-		MathUtils.arraySumInto(pFrameDurations, frameEndsInNanoseconds, TimeConstants.NANOSECONDSPERMILLISECOND);
+		MathUtils.arraySumInto(pFrameDurations, frameEndsInNanoseconds, TimeConstants.NANOSECONDS_PER_MILLISECOND);
 
 		final long lastFrameEnd = frameEndsInNanoseconds[this.mFrameCount - 1];
 		this.mAnimationDuration = lastFrameEnd;

@@ -54,10 +54,7 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 
 	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this.mXMin = pX;
-		this.mXMax = pX + pWidth;
-		this.mYMin = pY;
-		this.mYMax = pY + pHeight;
+		this.set(pX, pY, pX + pWidth, pY + pHeight); 
 	}
 
 	// ===========================================================
@@ -78,6 +75,13 @@ public class Camera implements IUpdateHandler {
 
 	public float getYMax() {
 		return this.mYMax;
+	}
+
+	public void set(final float pXMin, final float pYMin, final float pXMax, final float pYMax) {
+		this.mXMin = pXMin;
+		this.mXMax = pXMax;
+		this.mYMin = pYMin;
+		this.mYMax = pYMax;
 	}
 
 	public float getZNear() {
@@ -118,13 +122,11 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public float getCenterX() {
-		final float minX = this.mXMin;
-		return minX + (this.mXMax - minX) * 0.5f;
+		return (this.mXMin + this.mXMax) * 0.5f;
 	}
 
 	public float getCenterY() {
-		final float minY = this.mYMin;
-		return minY + (this.mYMax - minY) * 0.5f;
+		return (this.mYMin + this.mYMax) * 0.5f;
 	}
 
 	public void setCenter(final float pCenterX, final float pCenterY) {
@@ -193,6 +195,30 @@ public class Camera implements IUpdateHandler {
 	public void setSurfaceSize(final int pSurfaceX, final int pSurfaceY, final int pSurfaceWidth, final int pSurfaceHeight) {
 		this.mSurfaceX = pSurfaceX;
 		this.mSurfaceY = pSurfaceY;
+
+		if(this.mSurfaceHeight != 0 && this.mSurfaceWidth != 0) {
+			if(this.mSurfaceWidth != pSurfaceWidth || this.mSurfaceHeight != pSurfaceHeight) {
+				final float surfaceWidthRatio = (float)pSurfaceWidth / this.mSurfaceWidth;
+				final float surfaceHeightRatio = (float)pSurfaceHeight / this.mSurfaceHeight;
+
+				final float centerX = this.getCenterX();
+				final float centerY = this.getCenterY();
+
+				final float newWidthRaw = this.getWidthRaw() * surfaceWidthRatio; 
+				final float newHeightRaw = this.getHeightRaw() * surfaceHeightRatio;
+
+				final float newWidthRawHalf = newWidthRaw * 0.5f; 
+				final float newHeightRawHalf = newHeightRaw * 0.5f;
+
+				final float xMin = centerX - newWidthRawHalf;
+				final float yMin = centerY - newHeightRawHalf;
+				final float xMax = centerX + newWidthRawHalf;
+				final float yMax = centerY + newHeightRawHalf;
+
+				this.set(xMin, yMin, xMax, yMax);
+			}
+		}
+
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
 	}

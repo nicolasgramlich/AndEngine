@@ -3,6 +3,7 @@ package org.anddev.andengine.opengl.font;
 import java.util.ArrayList;
 
 import org.anddev.andengine.opengl.texture.ITexture;
+import org.anddev.andengine.util.exception.AndEngineException;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,7 +19,7 @@ import android.util.FloatMath;
 import android.util.SparseArray;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -32,7 +33,7 @@ public class Font {
 	protected static final float LETTER_LEFT_OFFSET = 0;
 	protected static final int LETTER_EXTRA_WIDTH = 10;
 
-	protected final static int PADDING = 1; 
+	protected final static int PADDING = 1;
 
 	// ===========================================================
 	// Fields
@@ -82,7 +83,7 @@ public class Font {
 		this.mBackgroundPaint.setStyle(Style.FILL);
 
 		this.mFontMetrics = this.mPaint.getFontMetrics();
-		this.mLineHeight = (int) FloatMath.ceil(Math.abs(this.mFontMetrics.ascent) + Math.abs(this.mFontMetrics.descent)) + (PADDING * 2);
+		this.mLineHeight = (int) FloatMath.ceil(Math.abs(this.mFontMetrics.ascent) + Math.abs(this.mFontMetrics.descent)) + (Font.PADDING * 2);
 		this.mLineGap = (int) (FloatMath.ceil(this.mFontMetrics.leading));
 	}
 
@@ -124,16 +125,16 @@ public class Font {
 		this.mPaint.getTextWidths(String.valueOf(pCharacter), this.mTemporaryTextWidthFetchers);
 		return (int) (FloatMath.ceil(this.mTemporaryTextWidthFetchers[0]));
 	}
-	
+
 	private Bitmap getLetterBitmap(final char pCharacter) {
 		final Rect getLetterBitmapTemporaryRect = this.mGetLetterBitmapTemporaryRect;
 		final String characterAsString = String.valueOf(pCharacter);
 		this.mPaint.getTextBounds(characterAsString, 0, 1, getLetterBitmapTemporaryRect);
-		
-		getLetterBitmapTemporaryRect.right += PADDING * 2;
+
+		getLetterBitmapTemporaryRect.right += Font.PADDING * 2;
 
 		final int lineHeight = this.getLineHeight();
-		final Bitmap bitmap = Bitmap.createBitmap(getLetterBitmapTemporaryRect.width() == 0 ? 1 + (2 * PADDING) : getLetterBitmapTemporaryRect.width() + LETTER_EXTRA_WIDTH, lineHeight, Bitmap.Config.ARGB_8888);
+		final Bitmap bitmap = Bitmap.createBitmap(getLetterBitmapTemporaryRect.width() == 0 ? 1 + (2 * Font.PADDING) : getLetterBitmapTemporaryRect.width() + Font.LETTER_EXTRA_WIDTH, lineHeight, Bitmap.Config.ARGB_8888);
 		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */
@@ -146,7 +147,7 @@ public class Font {
 	}
 
 	protected void drawCharacterString(final String pCharacterAsString) {
-		this.mCanvas.drawText(pCharacterAsString, LETTER_LEFT_OFFSET + PADDING, -this.mFontMetrics.ascent + PADDING, this.mPaint);
+		this.mCanvas.drawText(pCharacterAsString, Font.LETTER_LEFT_OFFSET + Font.PADDING, -this.mFontMetrics.ascent + Font.PADDING, this.mPaint);
 	}
 
 	public int getStringWidth(final String pText) {
@@ -156,16 +157,16 @@ public class Font {
 
 	private void getLetterBounds(final char pCharacter, final Size pSize) {
 		this.mPaint.getTextBounds(String.valueOf(pCharacter), 0, 1, this.mGetLetterBoundsTemporaryRect);
-		pSize.set(this.mGetLetterBoundsTemporaryRect.width() + LETTER_EXTRA_WIDTH + (2 * PADDING), this.getLineHeight());
+		pSize.set(this.mGetLetterBoundsTemporaryRect.width() + Font.LETTER_EXTRA_WIDTH + (2 * Font.PADDING), this.getLineHeight());
 	}
 
-	public void prepareLetters(final char ... pCharacters) {
+	public void prepareLetters(final char ... pCharacters) throws FontException {
 		for(final char character : pCharacters) {
 			this.getLetter(character);
 		}
 	}
 
-	public synchronized Letter getLetter(final char pCharacter) {
+	public synchronized Letter getLetter(final char pCharacter) throws FontException {
 		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
 		Letter letter = managedCharacterToLetterMap.get(pCharacter);
 		if (letter == null) {
@@ -177,7 +178,7 @@ public class Font {
 		return letter;
 	}
 
-	private Letter createLetter(final char pCharacter) {
+	private Letter createLetter(final char pCharacter) throws FontException {
 		final float textureWidth = this.mTextureWidth;
 		final float textureHeight = this.mTextureHeight;
 
@@ -192,10 +193,14 @@ public class Font {
 			this.mCurrentTextureY += this.getLineGap() + this.getLineHeight();
 		}
 
+		if(this.mCurrentTextureY + letterHeight >= textureHeight) {
+			throw new FontException("Letter: '" + pCharacter + "' doesn't onto the Texture.");
+		}
+
 		final float u = this.mCurrentTextureX / textureWidth;
 		final float v = this.mCurrentTextureY / textureHeight;
 		final float u2 = (this.mCurrentTextureX + letterWidth) / textureWidth;
-		final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight; // TODO Calculations could be optimized
+		final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight;
 
 		final Letter letter = new Letter(pCharacter, this.getLetterAdvance(pCharacter), letterWidth, letterHeight, this.mCurrentTextureX, this.mCurrentTextureY, u, v, u2, v2);
 		this.mCurrentTextureX += letterWidth;
@@ -225,4 +230,52 @@ public class Font {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static class FontException extends AndEngineException {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		private static final long serialVersionUID = 2766566088383545102L;
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public FontException() {
+			super();
+		}
+
+		public FontException(final String pMessage) {
+			super(pMessage);
+		}
+
+		public FontException(final Throwable pThrowable) {
+			super(pThrowable);
+		}
+
+		public FontException(final String pMessage, final Throwable pThrowable) {
+			super(pMessage, pThrowable);
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

@@ -12,7 +12,6 @@ public interface DataConstants {
 	// Final Fields
 	// ===========================================================
 
-
 	public static final int BYTES_PER_BYTE = 1;
 	public static final int BYTES_PER_SHORT = Short.SIZE / Byte.SIZE;
 	public static final int BYTES_PER_INT = Integer.SIZE / Byte.SIZE;
@@ -22,6 +21,11 @@ public interface DataConstants {
 
 	public static final int BYTES_PER_KILOBYTE = 1024;
 	public static final int BYTES_PER_MEGABYTE = 1024 * DataConstants.BYTES_PER_KILOBYTE;
+	public static final int BYTES_PER_GIGABYTE = 1024 * DataConstants.BYTES_PER_MEGABYTE;
+
+	public static final int BYTE_TO_KILOBYTE_SHIFT = 10;
+	public static final int BYTE_TO_MEGABYTE_SHIFT = 20;
+	public static final int BYTE_TO_GIGABYTE_SHIFT = 30;
 
 	public static final short UNSIGNED_BYTE_MAX_VALUE = (short)Byte.MAX_VALUE - (short)Byte.MIN_VALUE;
 	public static final int UNSIGNED_SHORT_MAX_VALUE = (int)Short.MAX_VALUE - (int)Short.MIN_VALUE;

@@ -1,7 +1,7 @@
 package org.anddev.andengine.opengl.shader.source.criteria;
 
-import org.anddev.andengine.util.SystemUtils;
 import org.anddev.andengine.util.operator.IntOperator;
+import org.anddev.andengine.util.system.SystemUtils;
 
 /**
  * (c) Zynga 2011

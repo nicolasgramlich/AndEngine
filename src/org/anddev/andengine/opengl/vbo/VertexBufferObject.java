@@ -6,8 +6,8 @@ import java.nio.ByteOrder;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.BufferUtils;
 import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.SystemUtils;
 import org.anddev.andengine.util.data.DataConstants;
+import org.anddev.andengine.util.system.SystemUtils;
 
 import android.opengl.GLES20;
 import android.os.Build;

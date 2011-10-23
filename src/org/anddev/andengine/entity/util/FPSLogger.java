@@ -1,9 +1,10 @@
 package org.anddev.andengine.entity.util;
 
 import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.constants.TimeConstants;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -71,9 +72,9 @@ public class FPSLogger extends AverageFPSCounter {
 
 	protected void onLogFPS() {
 		Debug.d(String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)",
-				this.mFrames / this.mSecondsElapsed,
-				this.mShortestFrame * MILLISECONDS_PER_SECOND,
-				this.mLongestFrame * MILLISECONDS_PER_SECOND));
+			this.mFrames / this.mSecondsElapsed,
+			this.mShortestFrame * TimeConstants.MILLISECONDS_PER_SECOND,
+			this.mLongestFrame * TimeConstants.MILLISECONDS_PER_SECOND));
 	}
 
 	// ===========================================================

@@ -1,10 +1,13 @@
-package org.anddev.andengine.util;
+package org.anddev.andengine.util.system;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
+
+import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.StreamUtils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -13,7 +16,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -80,25 +83,25 @@ public class SystemUtils {
 	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersionOrLower(final int pBuildVersionCode) {
-		return BUILD_VERSION_SDK <= pBuildVersionCode;
+		return SystemUtils.BUILD_VERSION_SDK <= pBuildVersionCode;
 	}
 
 	/**
 	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersionOrHigher(final int pBuildVersionCode) {
-		return BUILD_VERSION_SDK >= pBuildVersionCode;
+		return SystemUtils.BUILD_VERSION_SDK >= pBuildVersionCode;
 	}
 
 	/**
 	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersion(final int pBuildVersionCodeMin, final int pBuildVersionCodeMax) {
-		return BUILD_VERSION_SDK >= pBuildVersionCodeMin && BUILD_VERSION_SDK <= pBuildVersionCodeMax;
+		return SystemUtils.BUILD_VERSION_SDK >= pBuildVersionCodeMin && SystemUtils.BUILD_VERSION_SDK <= pBuildVersionCodeMax;
 	}
 
 	public static float getCPUBogoMips() throws SystemUtilsException {
-		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/cpuinfo", BOGOMIPS_PATTERN, 1000);
+		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/cpuinfo", SystemUtils.BOGOMIPS_PATTERN, 1000);
 
 		try {
 			if(matchResult.groupCount() > 0) {
@@ -116,7 +119,7 @@ public class SystemUtils {
 	 * @throws SystemUtilsException
 	 */
 	public static int getMemoryTotal() throws SystemUtilsException {
-		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", MEMTOTAL_PATTERN, 1000);
+		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", SystemUtils.MEMTOTAL_PATTERN, 1000);
 
 		try {
 			if(matchResult.groupCount() > 0) {
@@ -134,7 +137,7 @@ public class SystemUtils {
 	 * @throws SystemUtilsException
 	 */
 	public static int getMemoryFree() throws SystemUtilsException {
-		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", MEMFREE_PATTERN, 1000);
+		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", SystemUtils.MEMFREE_PATTERN, 1000);
 
 		try {
 			if(matchResult.groupCount() > 0) {

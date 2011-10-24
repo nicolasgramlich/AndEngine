@@ -34,6 +34,10 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	}
 
 	public static TiledTextureRegion create(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
+		return TiledTextureRegion.create(pTexture, pX, pY, pWidth, pHeight, pTileColumns, pTileRows, false);
+	}
+
+	public static TiledTextureRegion create(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows, final boolean pRotated) {
 		final int tileCount = pTileColumns * pTileRows;
 
 		final ITextureRegion[] textureRegions = new ITextureRegion[tileCount];
@@ -47,7 +51,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 
 			final int x = pX + tileColumn * tileWidth;
 			final int y = pY + tileRow * tileHeight;
-			textureRegions[i] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight, false);
+			textureRegions[i] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight, pRotated);
 		}
 
 		return new TiledTextureRegion(pTexture, textureRegions);

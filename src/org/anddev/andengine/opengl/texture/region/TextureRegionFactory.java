@@ -37,9 +37,17 @@ public class TextureRegionFactory {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static ITextureRegion extractFromTexture(final ITexture pTexture) {
+		return TextureRegionFactory.extractFromTexture(pTexture, false);
+	}
 
 	public static ITextureRegion extractFromTexture(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
 		return TextureRegionFactory.extractFromTexture(pTexture, pTexturePositionX, pTexturePositionY, pWidth, pHeight, false);
+	}
+
+	public static ITextureRegion extractFromTexture(final ITexture pTexture, final boolean pRotated) {
+		return new TextureRegion(pTexture, 0, 0, pTexture.getWidth() - 1, pTexture.getHeight() - 1, pRotated);
 	}
 
 	public static ITextureRegion extractFromTexture(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final boolean pRotated) {
@@ -61,7 +69,7 @@ public class TextureRegionFactory {
 	}
 
 	public static <T extends ITextureAtlasSource> TiledTextureRegion createTiledFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTileColumns, final int pTileRows, final boolean pRotated) {
-		final TiledTextureRegion tiledTextureRegion = TiledTextureRegion.create(pTextureAtlas, pTexturePositionX, pTexturePositionY, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight(), pTileColumns, pTileRows);
+		final TiledTextureRegion tiledTextureRegion = TiledTextureRegion.create(pTextureAtlas, pTexturePositionX, pTexturePositionY, pTextureAtlasSource.getWidth(), pTextureAtlasSource.getHeight(), pTileColumns, pTileRows, pRotated);
 		pTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, tiledTextureRegion.getX(), tiledTextureRegion.getY());
 		return tiledTextureRegion;
 	}

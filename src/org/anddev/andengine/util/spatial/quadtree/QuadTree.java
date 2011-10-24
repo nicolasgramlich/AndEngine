@@ -193,7 +193,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 	 * @return
 	 * @throws ClassCastException when pMatcher matched an item that was not <code>instanceof</code> S.
 	 */
-	public synchronized <S> List<S> queryForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+	public synchronized <S extends T> List<S> queryForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
 		return this.mRoot.queryForSubclass(pBounds, pMatcher, pResult);
 	}
 
@@ -480,7 +480,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 		}
 
 		@SuppressWarnings("unchecked")
-		public <S> List<S> getItemsAndItemsBelowForSubclass(final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+		public <S extends T> List<S> getItemsAndItemsBelowForSubclass(final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
 			if(this.mItems != null) {
 				final int itemCount = this.mItems.size();
 				for(int i = 0; i < itemCount; i++) {
@@ -562,7 +562,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 		}
 
 		@SuppressWarnings("unchecked")
-		public <S> List<S> queryForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+		public <S extends T> List<S> queryForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
 			/* Test against all items in this node. */
 			if(this.mItems != null) {
 				for(final T item : this.mItems) {
@@ -644,7 +644,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 		 * @param pChild
 		 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 		 */
-		private <S> boolean queryChildForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult, final QuadTreeNode pChild) throws ClassCastException {
+		private <S extends T> boolean queryChildForSubclass(final B pBounds, final IMatcher<T> pMatcher, final List<S> pResult, final QuadTreeNode pChild) throws ClassCastException {
 			if(pChild == null) {
 				return false;
 			}

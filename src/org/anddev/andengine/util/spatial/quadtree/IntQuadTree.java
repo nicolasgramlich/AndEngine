@@ -123,7 +123,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		return this.query(this.mQueryIntBounds, pMatcher, pResult);
 	}
 
-	public synchronized <S> List<S> queryForSubclass(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
+	public synchronized <S extends T> List<S> queryForSubclass(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher, final List<S> pResult) throws ClassCastException {
 		this.mQueryIntBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.queryForSubclass(this.mQueryIntBounds, pMatcher, pResult);
 	}

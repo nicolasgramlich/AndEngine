@@ -27,7 +27,7 @@ public abstract class GenericPool<T> {
 	private final Stack<T> mAvailableItems = new Stack<T>();
 	private int mUnrecycledCount;
 	private final int mGrowth;
-	private final int mMaxAvailableItems;
+	private final int mAvailableItemsMaximum;
 
 	// ===========================================================
 	// Constructors
@@ -45,16 +45,16 @@ public abstract class GenericPool<T> {
 		this(pInitialSize, pGrowth, Integer.MAX_VALUE);
 	}
 
-	public GenericPool(final int pInitialSize, final int pGrowth, final int pMaxAvailableItems) {
+	public GenericPool(final int pInitialSize, final int pGrowth, final int pAvailableItemsMaximum) {
 		if(pGrowth <= 0) {
 			throw new IllegalArgumentException("pGrowth must be greater than 0!");
 		}
-		if(pMaxAvailableItems < 0) {
-			throw new IllegalArgumentException("pMaximumAvailableItems must be at least 0!");
+		if(pAvailableItemsMaximum < 0) {
+			throw new IllegalArgumentException("pAvailableItemsMaximum must be at least 0!");
 		}
 
 		this.mGrowth = pGrowth;
-		this.mMaxAvailableItems = pMaxAvailableItems;
+		this.mAvailableItemsMaximum = pAvailableItemsMaximum;
 
 		if(pInitialSize > 0) {
 			this.batchAllocatePoolItems(pInitialSize);
@@ -100,7 +100,7 @@ public abstract class GenericPool<T> {
 	public synchronized void batchAllocatePoolItems(final int pCount) {
 		final Stack<T> availableItems = this.mAvailableItems;
 
-		int allocationCount = this.mMaxAvailableItems - availableItems.size();
+		int allocationCount = this.mAvailableItemsMaximum - availableItems.size();
 		if(pCount < allocationCount) {
 			allocationCount = pCount;
 		}
@@ -116,7 +116,7 @@ public abstract class GenericPool<T> {
 		if(this.mAvailableItems.size() > 0) {
 			item = this.mAvailableItems.pop();
 		} else {
-			if(this.mGrowth == 1 || this.mMaxAvailableItems == 0) {
+			if(this.mGrowth == 1 || this.mAvailableItemsMaximum == 0) {
 				item = this.onHandleAllocatePoolItem();
 			} else {
 				this.batchAllocatePoolItems(this.mGrowth);
@@ -137,7 +137,7 @@ public abstract class GenericPool<T> {
 
 		this.onHandleRecycleItem(pItem);
 
-		if(this.mAvailableItems.size() < this.mMaxAvailableItems) {
+		if(this.mAvailableItems.size() < this.mAvailableItemsMaximum) {
 			this.mAvailableItems.push(pItem);
 		}
 

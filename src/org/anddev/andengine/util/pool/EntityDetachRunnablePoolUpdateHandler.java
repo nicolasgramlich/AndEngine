@@ -1,7 +1,7 @@
 package org.anddev.andengine.util.pool;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -19,6 +19,22 @@ public class EntityDetachRunnablePoolUpdateHandler extends RunnablePoolUpdateHan
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public EntityDetachRunnablePoolUpdateHandler() {
+		super();
+	}
+
+	public EntityDetachRunnablePoolUpdateHandler(final int pInitialPoolSize) {
+		super(pInitialPoolSize);
+	}
+
+	public EntityDetachRunnablePoolUpdateHandler(final int pInitialPoolSize, final int pGrowth) {
+		super(pInitialPoolSize, pGrowth);
+	}
+
+	public EntityDetachRunnablePoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pAvailableItemsMaximum) {
+		super(pInitialPoolSize, pGrowth, pAvailableItemsMaximum);
+	}
 
 	// ===========================================================
 	// Getter & Setter

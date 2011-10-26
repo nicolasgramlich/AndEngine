@@ -36,8 +36,8 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 		super(pInitialSize, pGrowth);
 	}
 
-	public Pool(final int pInitialSize, final int pGrowth, final int pMaxAvailableItems) {
-		super(pInitialSize, pGrowth, pMaxAvailableItems);
+	public Pool(final int pInitialSize, final int pGrowth, final int pAvailableItemsMaximum) {
+		super(pInitialSize, pGrowth, pAvailableItemsMaximum);
 	}
 
 	// ===========================================================

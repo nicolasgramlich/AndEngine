@@ -35,8 +35,8 @@ public abstract class RunnablePoolUpdateHandler<T extends RunnablePoolItem> exte
 		super(pInitialPoolSize, pGrowth);
 	}
 
-	public RunnablePoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pMaxAvailableItems) {
-		super(pInitialPoolSize, pGrowth, pMaxAvailableItems);
+	public RunnablePoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pAvailableItemsMaximum) {
+		super(pInitialPoolSize, pGrowth, pAvailableItemsMaximum);
 	}
 
 	// ===========================================================

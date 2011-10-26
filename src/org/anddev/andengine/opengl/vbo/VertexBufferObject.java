@@ -118,6 +118,7 @@ public class VertexBufferObject {
 		return this.mDirtyOnHardware;
 	}
 
+	/** Mark this {@link VertexBufferObject} dirty so it gets updated on the hardware. */
 	public void setDirtyOnHardware() {
 		this.mDirtyOnHardware = true;
 	}

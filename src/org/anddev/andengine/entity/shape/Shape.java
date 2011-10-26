@@ -30,7 +30,7 @@ public abstract class Shape extends Entity implements IShape {
 	protected boolean mBlendingEnabled = false;
 	protected boolean mCullingEnabled = false;
 
-	protected final Mesh mMesh;
+	protected Mesh mMesh;
 	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================

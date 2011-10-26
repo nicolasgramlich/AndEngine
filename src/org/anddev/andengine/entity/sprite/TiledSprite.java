@@ -240,6 +240,7 @@ public class TiledSprite extends Sprite {
 
 	public void setCurrentTileIndex(final int pTileIndex) {
 		this.getTextureRegion().setTileIndex(pTileIndex);
+		this.onUpdateTextureCoordinates();
 	}
 
 	public void nextTile() {

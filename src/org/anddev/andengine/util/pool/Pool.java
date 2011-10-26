@@ -3,7 +3,7 @@ package org.anddev.andengine.util.pool;
 
 /**
  * @author Valentin Milea
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -34,6 +34,10 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T>{
 
 	public Pool(final int pInitialSize, final int pGrowth) {
 		super(pInitialSize, pGrowth);
+	}
+
+	public Pool(final int pInitialSize, final int pGrowth, final int pMaxAvailableItems) {
+		super(pInitialSize, pGrowth, pMaxAvailableItems);
 	}
 
 	// ===========================================================

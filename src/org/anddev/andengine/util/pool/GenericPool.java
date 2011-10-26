@@ -7,7 +7,7 @@ import org.anddev.andengine.util.Debug;
 
 /**
  * @author Valentin Milea
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -27,6 +27,7 @@ public abstract class GenericPool<T> {
 	private final Stack<T> mAvailableItems = new Stack<T>();
 	private int mUnrecycledCount;
 	private final int mGrowth;
+	private final int mMaxAvailableItems;
 
 	// ===========================================================
 	// Constructors
@@ -41,11 +42,19 @@ public abstract class GenericPool<T> {
 	}
 
 	public GenericPool(final int pInitialSize, final int pGrowth) {
-		if(pGrowth < 0) {
-			throw new IllegalArgumentException("pGrowth must be at least 0!");
+		this(pInitialSize, pGrowth, Integer.MAX_VALUE);
+	}
+
+	public GenericPool(final int pInitialSize, final int pGrowth, final int pMaxAvailableItems) {
+		if(pGrowth <= 0) {
+			throw new IllegalArgumentException("pGrowth must be greater than 0!");
+		}
+		if(pMaxAvailableItems < 0) {
+			throw new IllegalArgumentException("pMaximumAvailableItems must be at least 0!");
 		}
 
 		this.mGrowth = pGrowth;
+		this.mMaxAvailableItems = pMaxAvailableItems;
 
 		if(pInitialSize > 0) {
 			this.batchAllocatePoolItems(pInitialSize);
@@ -82,7 +91,7 @@ public abstract class GenericPool<T> {
 	}
 
 	/**
-	 * @param pItem every item that was just obtained from the pool, passes this method. 
+	 * @param pItem every item that was just obtained from the pool, passes this method.
 	 */
 	protected void onHandleObtainItem(final T pItem) {
 
@@ -90,7 +99,13 @@ public abstract class GenericPool<T> {
 
 	public synchronized void batchAllocatePoolItems(final int pCount) {
 		final Stack<T> availableItems = this.mAvailableItems;
-		for(int i = pCount - 1; i >= 0; i--) {
+
+		int allocationCount = this.mMaxAvailableItems - availableItems.size();
+		if(pCount < allocationCount) {
+			allocationCount = pCount;
+		}
+
+		for(int i = allocationCount - 1; i >= 0; i--) {
 			availableItems.push(this.onHandleAllocatePoolItem());
 		}
 	}
@@ -101,7 +116,7 @@ public abstract class GenericPool<T> {
 		if(this.mAvailableItems.size() > 0) {
 			item = this.mAvailableItems.pop();
 		} else {
-			if(this.mGrowth == 1) {
+			if(this.mGrowth == 1 || this.mMaxAvailableItems == 0) {
 				item = this.onHandleAllocatePoolItem();
 			} else {
 				this.batchAllocatePoolItems(this.mGrowth);
@@ -122,7 +137,9 @@ public abstract class GenericPool<T> {
 
 		this.onHandleRecycleItem(pItem);
 
-		this.mAvailableItems.push(pItem);
+		if(this.mAvailableItems.size() < this.mMaxAvailableItems) {
+			this.mAvailableItems.push(pItem);
+		}
 
 		this.mUnrecycledCount--;
 

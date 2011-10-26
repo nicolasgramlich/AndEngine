@@ -6,7 +6,7 @@ import org.anddev.andengine.engine.handler.IUpdateHandler;
 
 /**
  * @author Valentin Milea
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -50,6 +50,15 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 
 	public PoolUpdateHandler(final int pInitialPoolSize, final int pGrowth) {
 		this.mPool = new Pool<T>(pInitialPoolSize, pGrowth) {
+			@Override
+			protected T onAllocatePoolItem() {
+				return PoolUpdateHandler.this.onAllocatePoolItem();
+			}
+		};
+	}
+
+	public PoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pMaxAvailableItems) {
+		this.mPool = new Pool<T>(pInitialPoolSize, pGrowth, pMaxAvailableItems) {
 			@Override
 			protected T onAllocatePoolItem() {
 				return PoolUpdateHandler.this.onAllocatePoolItem();

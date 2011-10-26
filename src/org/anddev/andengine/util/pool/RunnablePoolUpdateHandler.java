@@ -2,7 +2,7 @@ package org.anddev.andengine.util.pool;
 
 /**
  * @author Valentin Milea
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -29,6 +29,14 @@ public abstract class RunnablePoolUpdateHandler<T extends RunnablePoolItem> exte
 
 	public RunnablePoolUpdateHandler(final int pInitialPoolSize) {
 		super(pInitialPoolSize);
+	}
+
+	public RunnablePoolUpdateHandler(final int pInitialPoolSize, final int pGrowth) {
+		super(pInitialPoolSize, pGrowth);
+	}
+
+	public RunnablePoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pMaxAvailableItems) {
+		super(pInitialPoolSize, pGrowth, pMaxAvailableItems);
 	}
 
 	// ===========================================================

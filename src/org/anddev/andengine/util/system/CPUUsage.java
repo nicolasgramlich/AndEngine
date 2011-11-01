@@ -61,7 +61,7 @@ public class CPUUsage {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream("/proc/stat")), StreamUtils.IO_BUFFER_SIZE);
 			final String procStatString = reader.readLine();
 
-			final String[] parts = StringUtils.SPACE_SPLIT_PATTERN.split(procStatString);
+			final String[] parts = StringUtils.SPLITPATTERN_SPACE.split(procStatString);
 
 			final long user = Long.parseLong(parts[2]);
 			final long nice = Long.parseLong(parts[3]);

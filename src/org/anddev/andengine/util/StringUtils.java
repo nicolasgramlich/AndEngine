@@ -14,7 +14,8 @@ public final class StringUtils {
 	// Constants
 	// ===========================================================
 
-	public static final Pattern SPACE_SPLIT_PATTERN = Pattern.compile(" "); // TODO Rename?
+	public static final Pattern SPLITPATTERN_SPACE = Pattern.compile(" ");
+	public static final Pattern SPLITPATTERN_COMMA = Pattern.compile(",");
 
 	// ===========================================================
 	// Fields

@@ -24,6 +24,7 @@ import android.opengl.GLES20;
  * TODO Might extend Shape
  * TODO TRY DEGENERATE TRIANGLES!
  * TODO Check if there is this multiple-of-X-byte(?) alignment optimization?
+ * TODO Add constructors taking x/y !
  * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -399,7 +400,7 @@ public class SpriteBatch extends Entity {
 	}
 
 	protected void onSubmit() {
-		this.mVertices = this.mIndex * Sprite.VERTICES_PER_SPRITE;
+		this.mVertices = this.mIndex * SpriteBatch.VERTICES_PER_SPRITE;
 
 		this.mSpriteBatchMesh.submit();
 
@@ -409,9 +410,9 @@ public class SpriteBatch extends Entity {
 
 	private void initBlendFunction() {
 		if(this.mTexture.getTextureOptions().mPreMultipyAlpha) {
-			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT); // TODO
+			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
 		} else {
-			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_DEFAULT); // TODO
+			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_DEFAULT);
 		}
 	}
 

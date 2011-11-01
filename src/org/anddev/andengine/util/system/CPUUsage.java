@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Pattern;
 
 import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
+import org.anddev.andengine.util.StringUtils;
 
 /**
  * (c) Zynga 2011
@@ -19,8 +19,6 @@ public class CPUUsage {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final Pattern PROC_STAT_SPLIT_PATTERN = Pattern.compile(" ");
 
 	// ===========================================================
 	// Fields
@@ -63,7 +61,7 @@ public class CPUUsage {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream("/proc/stat")), StreamUtils.IO_BUFFER_SIZE);
 			final String procStatString = reader.readLine();
 
-			final String[] parts = CPUUsage.PROC_STAT_SPLIT_PATTERN.split(procStatString);
+			final String[] parts = StringUtils.SPACE_SPLIT_PATTERN.split(procStatString);
 
 			final long user = Long.parseLong(parts[2]);
 			final long nice = Long.parseLong(parts[3]);

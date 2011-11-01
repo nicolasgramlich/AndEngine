@@ -10,7 +10,7 @@ package org.anddev.andengine.level.util.constants;
  */
 public interface LevelConstants {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	public static final String TAG_LEVEL = "level";

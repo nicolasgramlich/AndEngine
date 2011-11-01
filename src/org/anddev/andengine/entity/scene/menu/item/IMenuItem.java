@@ -11,7 +11,7 @@ import org.anddev.andengine.entity.shape.IAreaShape;
  */
 public interface IMenuItem extends IAreaShape {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

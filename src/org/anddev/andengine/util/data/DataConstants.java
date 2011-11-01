@@ -9,7 +9,7 @@ package org.anddev.andengine.util.data;
  */
 public interface DataConstants {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	public static final int BYTES_PER_BYTE = 1;

@@ -10,7 +10,7 @@ import org.anddev.andengine.opengl.texture.ITexture;
  */
 public interface ITextureRegion {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

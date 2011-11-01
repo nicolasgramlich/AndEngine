@@ -66,7 +66,7 @@ public class SequenceEntityModifier extends SequenceModifier<IEntity> implements
 
 	public interface ISubSequenceShapeModifierListener extends ISubSequenceModifierListener<IEntity> {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

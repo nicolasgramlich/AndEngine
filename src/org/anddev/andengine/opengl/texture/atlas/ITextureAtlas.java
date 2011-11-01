@@ -13,7 +13,7 @@ import org.anddev.andengine.util.Debug;
  */
 public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================
@@ -33,7 +33,7 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 	
 	public static interface ITextureAtlasStateListener<T extends ITextureAtlasSource> extends ITextureStateListener {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

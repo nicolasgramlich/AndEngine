@@ -9,7 +9,7 @@ package org.anddev.andengine.util.math;
  */
 public interface MathConstants {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	public static final float PI = (float) Math.PI;

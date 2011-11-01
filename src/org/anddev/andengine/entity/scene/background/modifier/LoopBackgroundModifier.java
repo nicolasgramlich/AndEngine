@@ -70,7 +70,7 @@ public class LoopBackgroundModifier extends LoopModifier<IBackground> implements
 
 	public interface ILoopBackgroundModifierListener extends ILoopModifierListener<IBackground> {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

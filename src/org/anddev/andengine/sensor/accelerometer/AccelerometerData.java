@@ -129,7 +129,7 @@ public class AccelerometerData extends BaseSensorData {
 
 	private static interface IAxisSwap {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

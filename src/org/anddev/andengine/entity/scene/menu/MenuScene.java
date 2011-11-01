@@ -197,7 +197,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 
 	public static interface IOnMenuItemClickListener {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

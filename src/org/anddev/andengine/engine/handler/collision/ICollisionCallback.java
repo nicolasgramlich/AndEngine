@@ -11,7 +11,7 @@ import org.anddev.andengine.entity.shape.IShape;
  */
 public interface ICollisionCallback {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

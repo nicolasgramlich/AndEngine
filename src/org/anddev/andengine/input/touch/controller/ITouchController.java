@@ -14,7 +14,7 @@ import android.view.MotionEvent;
  */
 public interface ITouchController extends IUpdateHandler {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

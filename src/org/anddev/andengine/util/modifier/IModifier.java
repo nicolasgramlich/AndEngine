@@ -14,7 +14,7 @@ import org.anddev.andengine.util.exception.AndEngineException;
  */
 public interface IModifier<T> {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	public static final Comparator<IModifier<?>> MODIFIER_COMPARATOR_DURATION_DESCENDING = new Comparator<IModifier<?>>() {
@@ -59,7 +59,7 @@ public interface IModifier<T> {
 
 	public static interface IModifierListener<T> {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

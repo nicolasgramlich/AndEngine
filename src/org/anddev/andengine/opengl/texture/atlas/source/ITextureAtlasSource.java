@@ -10,7 +10,7 @@ package org.anddev.andengine.opengl.texture.atlas.source;
  */
 public interface ITextureAtlasSource {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

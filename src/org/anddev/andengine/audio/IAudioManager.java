@@ -9,7 +9,7 @@ package org.anddev.andengine.audio;
  */
 public interface IAudioManager<T extends IAudioEntity> {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

@@ -14,7 +14,7 @@ import android.graphics.Bitmap.Config;
  */
 public interface IBitmapTextureAtlasSource extends ITextureAtlasSource {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

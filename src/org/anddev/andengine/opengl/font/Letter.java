@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.anddev.andengine.opengl.font;
 
 /**
@@ -20,11 +17,13 @@ public class Letter {
 	// ===========================================================
 
 	public final char mCharacter;
-	public final int mAdvance;
-	public final int mWidth;
-	public final int mHeight;
 	public final int mTextureX;
 	public final int mTextureY;
+	public final int mTextureWidth;
+	public final int mTextureHeight;
+	public final int mAdvance;
+	public final int mOffsetX;
+	public final int mOffsetY;
 	public final float mU;
 	public final float mV;
 	public final float mU2;
@@ -34,13 +33,15 @@ public class Letter {
 	// Constructors
 	// ===========================================================
 
-	Letter(final char pCharacter, final int pAdvance, final int pWidth, final int pHeight, final int pTextureX, final int pTextureY, final float pU, final float pV, final float pU2, final float pV2) {
+	Letter(final char pCharacter, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight, final int pAdvance, final int pOffsetX, final int pOffsetY, final float pU, final float pV, final float pU2, final float pV2) {
 		this.mCharacter = pCharacter;
 		this.mAdvance = pAdvance;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+		this.mTextureWidth = pTextureWidth;
+		this.mTextureHeight = pTextureHeight;
 		this.mTextureX = pTextureX;
 		this.mTextureY = pTextureY;
+		this.mOffsetX = pOffsetX;
+		this.mOffsetY = pOffsetY;
 		this.mU = pU;
 		this.mV = pV;
 		this.mU2 = pU2;

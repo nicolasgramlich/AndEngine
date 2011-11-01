@@ -12,7 +12,7 @@ import org.anddev.andengine.util.modifier.IModifier;
  */
 public interface IBackgroundModifier extends IModifier<IBackground> {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================
@@ -28,7 +28,7 @@ public interface IBackgroundModifier extends IModifier<IBackground> {
 
 	public static interface IBackgroundModifierListener extends IModifierListener<IBackground>{
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

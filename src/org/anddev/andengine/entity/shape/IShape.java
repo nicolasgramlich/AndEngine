@@ -15,7 +15,7 @@ import android.opengl.GLES20;
  */
 public interface IShape extends IEntity, ITouchArea {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	public static final int BLENDFUNCTION_SOURCE_DEFAULT = GLES20.GL_SRC_ALPHA;

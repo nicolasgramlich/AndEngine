@@ -66,7 +66,7 @@ public class SequenceBackgroundModifier extends SequenceModifier<IBackground> im
 
 	public interface ISubSequenceBackgroundModifierListener extends ISubSequenceModifierListener<IBackground> {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

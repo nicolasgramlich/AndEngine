@@ -24,7 +24,7 @@ import org.anddev.andengine.util.transformation.Transformation;
  */
 public interface IEntity extends IDrawable, IUpdateHandler {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

@@ -1,5 +1,7 @@
 package org.anddev.andengine.util;
 
+import java.util.regex.Pattern;
+
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -11,6 +13,8 @@ public final class StringUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	public static final Pattern SPACE_SPLIT_PATTERN = Pattern.compile(" "); // TODO Rename?
 
 	// ===========================================================
 	// Fields

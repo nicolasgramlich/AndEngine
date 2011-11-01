@@ -70,7 +70,7 @@ public class LoopEntityModifier extends LoopModifier<IEntity> implements IEntity
 
 	public interface ILoopEntityModifierListener extends ILoopModifierListener<IEntity> {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

@@ -9,7 +9,7 @@ package org.anddev.andengine.sensor.orientation;
  */
 public interface IOrientationListener {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

@@ -15,7 +15,7 @@ import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
  */
 public interface ITextureBuilder<T extends ITextureAtlasSource, A extends ITextureAtlas<T>> {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

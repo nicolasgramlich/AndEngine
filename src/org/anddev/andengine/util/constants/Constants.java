@@ -9,7 +9,7 @@ package org.anddev.andengine.util.constants;
  */
 public interface Constants {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	public static final String DEBUGTAG = "AndEngine";

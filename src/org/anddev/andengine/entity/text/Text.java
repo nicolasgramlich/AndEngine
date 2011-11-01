@@ -257,7 +257,7 @@ public class Text extends RectangularShape {
 				final Letter letter = font.getLetter(line.charAt(letterIndex));
 
 				final int lineY2 = lineY + lineHeight;
-				final int lineX2 = lineX + letter.mWidth;
+				final int lineX2 = lineX + letter.mTextureWidth;
 
 				final float u = letter.mU;
 				final float v = letter.mV;

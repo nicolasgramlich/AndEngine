@@ -9,7 +9,7 @@ package org.anddev.andengine.util.constants;
  */
 public interface ColorConstants {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	public static final float COLOR_FACTOR_INT_TO_FLOAT = 255.0f;

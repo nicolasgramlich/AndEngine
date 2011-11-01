@@ -9,7 +9,7 @@ package org.anddev.andengine.engine.handler.timer;
  */
 public interface ITimerCallback {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

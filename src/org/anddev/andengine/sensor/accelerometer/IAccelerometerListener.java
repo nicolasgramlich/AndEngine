@@ -9,7 +9,7 @@ package org.anddev.andengine.sensor.accelerometer;
  */
 public interface IAccelerometerListener {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

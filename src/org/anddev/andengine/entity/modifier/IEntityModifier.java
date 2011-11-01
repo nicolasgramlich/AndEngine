@@ -13,7 +13,7 @@ import org.anddev.andengine.util.modifier.IModifier;
  */
 public interface IEntityModifier extends IModifier<IEntity> {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================
@@ -29,7 +29,7 @@ public interface IEntityModifier extends IModifier<IEntity> {
 
 	public static interface IEntityModifierListener extends IModifierListener<IEntity>{
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

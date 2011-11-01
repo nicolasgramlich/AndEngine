@@ -94,7 +94,7 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeCo
 
 	public interface IAnalogOnScreenControlListener extends IOnScreenControlListener {
 		// ===========================================================
-		// Final Fields
+		// Constants
 		// ===========================================================
 
 		// ===========================================================

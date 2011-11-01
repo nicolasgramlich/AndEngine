@@ -14,7 +14,7 @@ import org.anddev.andengine.util.modifier.IModifier;
  */
 public interface IBackground extends IDrawable, IUpdateHandler {
 	// ===========================================================
-	// Final Fields
+	// Constants
 	// ===========================================================
 
 	// ===========================================================

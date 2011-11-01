@@ -3,7 +3,6 @@ package org.anddev.andengine.opengl.font;
 import java.util.ArrayList;
 
 import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.util.exception.AndEngineException;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -202,7 +201,7 @@ public class Font {
 		final float u2 = (this.mCurrentTextureX + letterWidth) / textureWidth;
 		final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight;
 
-		final Letter letter = new Letter(pCharacter, this.getLetterAdvance(pCharacter), letterWidth, letterHeight, this.mCurrentTextureX, this.mCurrentTextureY, u, v, u2, v2);
+		final Letter letter = new Letter(pCharacter, this.mCurrentTextureX, this.mCurrentTextureY, letterWidth, letterHeight, this.getLetterAdvance(pCharacter), 0, 0, u, v, u2, v2);
 		this.mCurrentTextureX += letterWidth;
 
 		return letter;
@@ -230,52 +229,4 @@ public class Font {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static class FontException extends AndEngineException {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		private static final long serialVersionUID = 2766566088383545102L;
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public FontException() {
-			super();
-		}
-
-		public FontException(final String pMessage) {
-			super(pMessage);
-		}
-
-		public FontException(final Throwable pThrowable) {
-			super(pThrowable);
-		}
-
-		public FontException(final String pMessage, final Throwable pThrowable) {
-			super(pMessage, pThrowable);
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

@@ -69,7 +69,7 @@ public class LRUCache<K, V> extends HashMap<K, V> {
 	}
 
 	@Override
-	public V get(final Object pKey) {
+	public synchronized V get(final Object pKey) {
 		final V value = super.get(pKey);
 		if (value != null) {
 			this.updateKey(pKey);

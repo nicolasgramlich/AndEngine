@@ -51,13 +51,13 @@ public class LRUCache<K, V> extends HashMap<K, V> {
 	// ===========================================================
 
 	@Override
-	public synchronized void clear() {
+	public void clear() {
 		super.clear();
 		this.mCache.clear();
 	}
 
 	@Override
-	public synchronized V put(final K pKey, final V pValue) {
+	public V put(final K pKey, final V pValue) {
 		/* If the key isn't in the cache and the cache is full, drop the last entry. */
 		if (!super.containsKey(pKey) && !this.mCache.isEmpty() && this.mCache.size() + 1 > this.mCapacity) {
 			final K deadKey = this.mCache.removeLast();
@@ -69,7 +69,7 @@ public class LRUCache<K, V> extends HashMap<K, V> {
 	}
 
 	@Override
-	public synchronized V get(final Object pKey) {
+	public V get(final Object pKey) {
 		final V value = super.get(pKey);
 		if (value != null) {
 			this.updateKey(pKey);
@@ -78,7 +78,7 @@ public class LRUCache<K, V> extends HashMap<K, V> {
 	}
 
 	@Override
-	public synchronized V remove(final Object pKey) {
+	public V remove(final Object pKey) {
 		this.mCache.remove(pKey);
 		return super.remove(pKey);
 	}

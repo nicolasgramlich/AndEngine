@@ -83,12 +83,6 @@ public class LRUCache<K, V> extends HashMap<K, V> {
 		return super.remove(pKey);
 	}
 
-	/**
-	 * Moves the specified value to the top of the LRU list (the bottom of the
-	 * list is where least recently used items live).
-	 * 
-	 * @param pKey
-	 */
 	@SuppressWarnings("unchecked")
 	private void updateKey(final Object pKey) {
 		this.mCache.remove(pKey);

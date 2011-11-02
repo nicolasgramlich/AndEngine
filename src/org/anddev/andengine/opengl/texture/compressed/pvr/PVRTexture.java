@@ -147,7 +147,7 @@ public abstract class PVRTexture extends Texture {
 
 		GLState.clearGLError();
 
-		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(width) && MathUtils.isPowerOfTwo(height) && this.mPVRTextureHeader.mPVRTextureFormat != PVRTextureFormat.RGBA_4444;
+		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(width) && MathUtils.isPowerOfTwo(height) && this.mPVRTextureHeader.mPVRTextureFormat == PVRTextureFormat.RGBA_8888;
 		if(!useDefaultAlignment) {
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 		}

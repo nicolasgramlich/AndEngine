@@ -172,7 +172,7 @@ public class VertexBufferObject {
 	public void unbind(final ShaderProgram pShaderProgram) {
 		pShaderProgram.unbind(this.mVertexBufferObjectAttributes);
 
-//		GLState.bindBuffer(0);
+//		GLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
 	}
 
 	public void loadToActiveBufferObjectManager() {

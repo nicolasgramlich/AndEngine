@@ -127,9 +127,9 @@ public class ShaderProgram implements ShaderProgramConstants {
 	}
 
 	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) throws ShaderProgramException {
-		GLES20.glUseProgram(0);
+//		GLES20.glUseProgram(0); // TODO Does this have an positive/negative impact on performance?
 	}
-	
+
 	public void delete() {
 		if(this.mCompiled) {
 			this.mCompiled = false;

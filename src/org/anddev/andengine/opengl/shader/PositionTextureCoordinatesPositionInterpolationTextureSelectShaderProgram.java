@@ -100,12 +100,12 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 
 	@Override
 	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		super.unbind(pVertexBufferObjectAttributes);
-
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION);
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_0_LOCATION);
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_1_LOCATION);
+		
+		super.unbind(pVertexBufferObjectAttributes);
 	}
 
 	// ===========================================================

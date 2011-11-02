@@ -87,9 +87,9 @@ public class PositionColorShaderProgram extends ShaderProgram {
 
 	@Override
 	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		super.unbind(pVertexBufferObjectAttributes);
-
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION);
+		
+		super.unbind(pVertexBufferObjectAttributes);
 	}
 
 	// ===========================================================

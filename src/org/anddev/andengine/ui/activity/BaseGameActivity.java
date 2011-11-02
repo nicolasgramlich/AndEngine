@@ -15,7 +15,7 @@ import org.anddev.andengine.sensor.orientation.IOrientationListener;
 import org.anddev.andengine.sensor.orientation.OrientationSensorOptions;
 import org.anddev.andengine.ui.IGameInterface;
 import org.anddev.andengine.util.ActivityUtils;
-import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.debug.Debug;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;

@@ -1,8 +1,8 @@
 package org.anddev.andengine.entity.util;
 
 import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.constants.TimeConstants;
+import org.anddev.andengine.util.debug.Debug;
 
 /**
  * (c) 2010 Nicolas Gramlich 

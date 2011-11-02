@@ -1,4 +1,4 @@
-package org.anddev.andengine.util;
+package org.anddev.andengine.util.debug;
 
 import org.anddev.andengine.util.constants.Constants;
 

@@ -6,8 +6,8 @@ import java.lang.reflect.Method;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
+import org.anddev.andengine.util.debug.Debug;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

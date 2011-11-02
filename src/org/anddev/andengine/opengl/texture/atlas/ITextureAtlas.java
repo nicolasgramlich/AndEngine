@@ -2,7 +2,7 @@ package org.anddev.andengine.opengl.texture.atlas;
 
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
-import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.debug.Debug;
 
 /**
  * (c) 2010 Nicolas Gramlich 

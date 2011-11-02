@@ -5,7 +5,7 @@ import java.nio.Buffer;
 import org.anddev.andengine.engine.options.RenderOptions;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
-import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
 import android.opengl.GLES20;

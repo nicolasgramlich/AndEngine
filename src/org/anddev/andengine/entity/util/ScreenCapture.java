@@ -6,8 +6,8 @@ import java.io.FileOutputStream;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.util.ScreenGrabber.IScreenGrabberCallback;
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
+import org.anddev.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;

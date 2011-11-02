@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.anddev.andengine.util.Callback;
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.SimplePreferences;
 import org.anddev.andengine.util.StreamUtils;
+import org.anddev.andengine.util.debug.Debug;
 import org.anddev.andengine.util.math.MathUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;

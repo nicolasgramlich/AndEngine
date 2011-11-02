@@ -3,7 +3,7 @@ package org.anddev.andengine.util.pool;
 import java.util.Collections;
 import java.util.Stack;
 
-import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.debug.Debug;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -121,7 +121,7 @@ public abstract class GenericPool<T> {
 				this.batchAllocatePoolItems(this.mGrowth);
 				item = this.mAvailableItems.pop();
 			}
-			Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
+//			Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
 		}
 		this.onHandleObtainItem(item);
 

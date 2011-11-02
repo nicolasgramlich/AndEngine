@@ -12,10 +12,10 @@ import org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IP
 import org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy.IPVRTexturePixelBufferStrategyBufferManager;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.ArrayUtils;
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.data.ByteBufferOutputStream;
 import org.anddev.andengine.util.data.DataConstants;
+import org.anddev.andengine.util.debug.Debug;
 import org.anddev.andengine.util.math.MathUtils;
 
 import android.opengl.GLES20;

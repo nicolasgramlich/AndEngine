@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.util.debug.Debug;
 
 import android.content.res.AssetManager;
 

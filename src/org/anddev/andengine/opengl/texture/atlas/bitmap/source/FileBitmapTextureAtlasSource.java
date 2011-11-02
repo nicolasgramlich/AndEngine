@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.anddev.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
-import org.anddev.andengine.util.Debug;
 import org.anddev.andengine.util.StreamUtils;
+import org.anddev.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

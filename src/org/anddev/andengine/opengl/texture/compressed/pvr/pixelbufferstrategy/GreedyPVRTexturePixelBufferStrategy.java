@@ -58,7 +58,7 @@ public class GreedyPVRTexturePixelBufferStrategy implements IPVRTexturePixelBuff
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class GreedyPVRTexturePixelBufferStrategyBufferManager implements IPVRTexturePixelBufferStrategyBufferManager {
+	public static class GreedyPVRTexturePixelBufferStrategyBufferManager implements IPVRTexturePixelBufferStrategyBufferManager {
 		// ===========================================================
 		// Constants
 		// ===========================================================

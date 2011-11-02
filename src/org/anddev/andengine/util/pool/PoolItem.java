@@ -1,10 +1,10 @@
 package org.anddev.andengine.util.pool;
 
 /**
- * @author Valentin Milea
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
+ * @author Valentin Milea
  * @author Nicolas Gramlich
  * 
  * @since 23:02:47 - 21.08.2010

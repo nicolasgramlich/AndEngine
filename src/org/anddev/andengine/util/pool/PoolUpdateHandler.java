@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 
 /**
- * @author Valentin Milea
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
+ * @author Valentin Milea
  * @author Nicolas Gramlich
  * 
  * @since 23:02:58 - 21.08.2010
- * @param <T>
  */
 public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHandler {
 	// ===========================================================

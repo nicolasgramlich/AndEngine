@@ -6,14 +6,13 @@ import java.util.Stack;
 import org.anddev.andengine.util.Debug;
 
 /**
- * @author Valentin Milea
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
+ * @author Valentin Milea
  * @author Nicolas Gramlich
  * 
  * @since 22:19:55 - 31.08.2010
- * @param <T>
  */
 public abstract class GenericPool<T> {
 	// ===========================================================

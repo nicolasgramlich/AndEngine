@@ -1,7 +1,6 @@
 package org.anddev.andengine.opengl.vbo;
 
 import org.anddev.andengine.opengl.GLES20Fix;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) Zynga 2011
@@ -70,7 +69,7 @@ public class VertexBufferObjectAttribute {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public void glVertexAttribPointer(final ShaderProgram pShaderProgram, final int pStride) {
+	public void glVertexAttribPointer(final int pStride) {
 		GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
 	}
 

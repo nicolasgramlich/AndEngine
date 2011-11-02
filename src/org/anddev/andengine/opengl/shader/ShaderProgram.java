@@ -123,11 +123,11 @@ public class ShaderProgram implements ShaderProgramConstants {
 		}
 		GLState.useProgram(this.mProgramID);
 
-		pVertexBufferObjectAttributes.glVertexAttribPointers(this);
+		pVertexBufferObjectAttributes.glVertexAttribPointers();
 	}
 
 	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) throws ShaderProgramException {
-//		GLES20.glUseProgram(0);
+		GLES20.glUseProgram(0);
 	}
 	
 	public void delete() {

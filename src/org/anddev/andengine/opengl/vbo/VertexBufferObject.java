@@ -44,7 +44,6 @@ public class VertexBufferObject {
 
 	private final VertexBufferObjectAttributes mVertexBufferObjectAttributes;
 
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================

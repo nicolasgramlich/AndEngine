@@ -1,6 +1,5 @@
 package org.anddev.andengine.opengl.vbo;
 
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) Zynga 2011
@@ -41,14 +40,14 @@ public class VertexBufferObjectAttributes {
 	// Methods
 	// ===========================================================
 
-	public void glVertexAttribPointers(final ShaderProgram pShaderProgram) {
+	public void glVertexAttribPointers() {
 		final VertexBufferObjectAttribute[] vertexBufferObjectAttributes = this.mVertexBufferObjectAttributes;
 
 		final int stride = this.mStride;
 
 		final int vertexBuggerObjectAttributeCount = vertexBufferObjectAttributes.length;
 		for(int i = 0; i < vertexBuggerObjectAttributeCount; i++) {
-			vertexBufferObjectAttributes[i].glVertexAttribPointer(pShaderProgram, stride);
+			vertexBufferObjectAttributes[i].glVertexAttribPointer(stride);
 		}
 	}
 

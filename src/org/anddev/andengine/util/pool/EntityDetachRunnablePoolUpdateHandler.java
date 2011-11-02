@@ -32,8 +32,8 @@ public class EntityDetachRunnablePoolUpdateHandler extends RunnablePoolUpdateHan
 		super(pInitialPoolSize, pGrowth);
 	}
 
-	public EntityDetachRunnablePoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pAvailableItemsMaximum) {
-		super(pInitialPoolSize, pGrowth, pAvailableItemsMaximum);
+	public EntityDetachRunnablePoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pAvailableItemCountMaximum) {
+		super(pInitialPoolSize, pGrowth, pAvailableItemCountMaximum);
 	}
 
 	// ===========================================================

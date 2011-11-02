@@ -56,8 +56,8 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 		};
 	}
 
-	public PoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pAvailableItemsMaximum) {
-		this.mPool = new Pool<T>(pInitialPoolSize, pGrowth, pAvailableItemsMaximum) {
+	public PoolUpdateHandler(final int pInitialPoolSize, final int pGrowth, final int pAvailableItemCountMaximum) {
+		this.mPool = new Pool<T>(pInitialPoolSize, pGrowth, pAvailableItemCountMaximum) {
 			@Override
 			protected T onAllocatePoolItem() {
 				return PoolUpdateHandler.this.onAllocatePoolItem();

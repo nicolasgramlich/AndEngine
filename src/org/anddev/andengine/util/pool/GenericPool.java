@@ -1,7 +1,7 @@
 package org.anddev.andengine.util.pool;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Stack;
 
 import org.anddev.andengine.util.debug.Debug;
 
@@ -23,10 +23,11 @@ public abstract class GenericPool<T> {
 	// Fields
 	// ===========================================================
 
-	private final Stack<T> mAvailableItems = new Stack<T>();
-	private int mUnrecycledCount;
+	private final ArrayList<T> mAvailableItems;
 	private final int mGrowth;
-	private final int mAvailableItemsMaximum;
+	private final int mAvailableItemCountMaximum;
+
+	private int mUnrecycledItemCount;
 
 	// ===========================================================
 	// Constructors
@@ -53,7 +54,8 @@ public abstract class GenericPool<T> {
 		}
 
 		this.mGrowth = pGrowth;
-		this.mAvailableItemsMaximum = pAvailableItemsMaximum;
+		this.mAvailableItemCountMaximum = pAvailableItemsMaximum;
+		this.mAvailableItems = new ArrayList<T>(pInitialSize);
 
 		if(pInitialSize > 0) {
 			this.batchAllocatePoolItems(pInitialSize);
@@ -64,8 +66,16 @@ public abstract class GenericPool<T> {
 	// Getter & Setter
 	// ===========================================================
 
-	public synchronized int getUnrecycledCount() {
-		return this.mUnrecycledCount;
+	public synchronized int getUnrecycledItemCount() {
+		return this.mUnrecycledItemCount;
+	}
+
+	public synchronized int getAvailableItemCount() {
+		return this.mAvailableItems.size();
+	}
+
+	public int getAvailableItemCountMaximum() {
+		return this.mAvailableItemCountMaximum;
 	}
 
 	// ===========================================================
@@ -97,15 +107,15 @@ public abstract class GenericPool<T> {
 	}
 
 	public synchronized void batchAllocatePoolItems(final int pCount) {
-		final Stack<T> availableItems = this.mAvailableItems;
+		final ArrayList<T> availableItems = this.mAvailableItems;
 
-		int allocationCount = this.mAvailableItemsMaximum - availableItems.size();
+		int allocationCount = this.mAvailableItemCountMaximum - availableItems.size();
 		if(pCount < allocationCount) {
 			allocationCount = pCount;
 		}
 
 		for(int i = allocationCount - 1; i >= 0; i--) {
-			availableItems.push(this.onHandleAllocatePoolItem());
+			availableItems.add(this.onHandleAllocatePoolItem());
 		}
 	}
 
@@ -113,19 +123,19 @@ public abstract class GenericPool<T> {
 		final T item;
 
 		if(this.mAvailableItems.size() > 0) {
-			item = this.mAvailableItems.pop();
+			item = this.mAvailableItems.remove(this.mAvailableItems.size() - 1);
 		} else {
-			if(this.mGrowth == 1 || this.mAvailableItemsMaximum == 0) {
+			if(this.mGrowth == 1 || this.mAvailableItemCountMaximum == 0) {
 				item = this.onHandleAllocatePoolItem();
 			} else {
 				this.batchAllocatePoolItems(this.mGrowth);
-				item = this.mAvailableItems.pop();
+				item = this.mAvailableItems.remove(this.mAvailableItems.size() - 1);
 			}
 //			Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
 		}
 		this.onHandleObtainItem(item);
 
-		this.mUnrecycledCount++;
+		this.mUnrecycledItemCount++;
 		return item;
 	}
 
@@ -136,13 +146,13 @@ public abstract class GenericPool<T> {
 
 		this.onHandleRecycleItem(pItem);
 
-		if(this.mAvailableItems.size() < this.mAvailableItemsMaximum) {
-			this.mAvailableItems.push(pItem);
+		if(this.mAvailableItems.size() < this.mAvailableItemCountMaximum) {
+			this.mAvailableItems.add(pItem);
 		}
 
-		this.mUnrecycledCount--;
+		this.mUnrecycledItemCount--;
 
-		if(this.mUnrecycledCount < 0) {
+		if(this.mUnrecycledItemCount < 0) {
 			Debug.e("More items recycled than obtained!");
 		}
 	}

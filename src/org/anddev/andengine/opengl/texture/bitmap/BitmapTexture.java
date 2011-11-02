@@ -8,6 +8,7 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.exception.NullBitmapException;
+import org.anddev.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -101,11 +102,21 @@ public abstract class BitmapTexture extends Texture {
 			throw new NullBitmapException("Caused by: '" + this.toString() + "'.");
 		}
 
+		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && this.mPixelFormat == PixelFormat.RGBA_8888;
+		if(!useDefaultAlignment) {
+			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
+		}
+
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
 		if(preMultipyAlpha) {
 			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 		} else {
 			GLState.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
+		}
+
+		/* Restore default alignment. */
+		if(!useDefaultAlignment) {
+			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 		}
 
 		bitmap.recycle();

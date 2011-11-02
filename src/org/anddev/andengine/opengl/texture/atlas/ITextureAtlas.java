@@ -40,6 +40,7 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 		// Methods
 		// ===========================================================
 
+		public void onTextureAtlasSourceLoaded(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource);
 		public void onTextureAtlasSourceLoadExeption(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final Throwable pThrowable);
 
 		// ===========================================================
@@ -49,6 +50,9 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 		public static class TextureAtlasStateAdapter<T extends ITextureAtlasSource> implements ITextureAtlasStateListener<T> {
 			@Override
 			public void onLoadedToHardware(final ITexture pTexture) { }
+
+			@Override
+			public void onTextureAtlasSourceLoaded(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource) { }
 
 			@Override
 			public void onTextureAtlasSourceLoadExeption(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final Throwable pThrowable) { }
@@ -61,6 +65,11 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 			@Override
 			public void onLoadedToHardware(final ITexture pTexture) {
 				Debug.d("Texture loaded: " + pTexture.toString());
+			}
+			
+			@Override
+			public void onTextureAtlasSourceLoaded(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource) {
+				Debug.e("Loaded TextureAtlasSource. TextureAtlas: " + pTextureAtlas.toString() + " TextureAtlasSource: " + pTextureAtlasSource.toString());
 			}
 
 			@Override

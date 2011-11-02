@@ -135,6 +135,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		final ArrayList<IBitmapTextureAtlasSource> textureSources = this.mTextureAtlasSources;
 		final int textureSourceCount = textureSources.size();
 
+		final ITextureAtlasStateListener<IBitmapTextureAtlasSource> textureStateListener = this.getTextureStateListener();
 		for(int j = 0; j < textureSourceCount; j++) {
 			final IBitmapTextureAtlasSource bitmapTextureAtlasSource = textureSources.get(j);
 			if(bitmapTextureAtlasSource != null) {
@@ -151,6 +152,10 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 					}
 
 					bitmap.recycle();
+
+					if(textureStateListener != null) {
+						textureStateListener.onTextureAtlasSourceLoaded(this, bitmapTextureAtlasSource);
+					} 
 				} catch (final NullBitmapException e) {
 					// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
 					//private Buffer createImage(final int width, final int height) {
@@ -175,8 +180,8 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 					//	return image;
 					//}
 
-					if(this.getTextureStateListener() != null) {
-						this.getTextureStateListener().onTextureAtlasSourceLoadExeption(this, bitmapTextureAtlasSource, e);
+					if(textureStateListener != null) {
+						textureStateListener.onTextureAtlasSourceLoadExeption(this, bitmapTextureAtlasSource, e);
 					} else {
 						throw e;
 					}

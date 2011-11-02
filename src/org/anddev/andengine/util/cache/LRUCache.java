@@ -104,11 +104,11 @@ public class LRUCache<K, V> implements Map<K, V> {
 		}
 
 		final LRUCacheQueueNode<K> lruCacheQueueNode = this.mLRUCacheQueue.add(pKey);
-		
+
 		final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mLRUCacheValueHolderPool.obtainPoolItem();
 		lruCacheValueHolder.mValue = pValue;
 		lruCacheValueHolder.mLRUCacheQueueNode = lruCacheQueueNode;
-		
+
 		this.mMap.put(pKey, lruCacheValueHolder);
 
 		this.mSize++;
@@ -119,7 +119,6 @@ public class LRUCache<K, V> implements Map<K, V> {
 	/* (non-Javadoc)
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public V get(final Object pKey) {
 		final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mMap.get(pKey);
@@ -127,9 +126,7 @@ public class LRUCache<K, V> implements Map<K, V> {
 			return null;
 		}
 
-		/* Bump the key up in the Queue. */
-		this.mLRUCacheQueue.remove(lruCacheValueHolder.mLRUCacheQueueNode);
-		lruCacheValueHolder.mLRUCacheQueueNode = this.mLRUCacheQueue.add((K) pKey);
+		this.mLRUCacheQueue.moveToTail(lruCacheValueHolder.mLRUCacheQueueNode);
 
 		return lruCacheValueHolder.mValue;
 	}
@@ -286,16 +283,18 @@ public class LRUCache<K, V> implements Map<K, V> {
 		public LRUCacheQueueNode<K> add(final K pKey) {
 			final LRUCacheQueueNode<K> lruCacheQueueNode = this.mLRUCacheQueueNodePool.obtainPoolItem();
 			lruCacheQueueNode.mKey = pKey;
-			
+
+			return this.add(lruCacheQueueNode);
+		}
+
+		private LRUCacheQueueNode<K> add(final LRUCacheQueueNode<K> pLRUCacheQueueNode) {
 			if(this.isEmpty()) {
-				/* Set pKey as the new head. */
-				this.mHead = lruCacheQueueNode;
+				this.mHead = pLRUCacheQueueNode;
 				this.mTail = this.mHead;
 			} else {
-				/* Set pKey as the new tail. */
-				this.mTail.mNext = lruCacheQueueNode;
-				this.mTail.mNext.mPrevious = this.mTail;
-				this.mTail = this.mTail.mNext;
+				this.mTail.mNext = pLRUCacheQueueNode;
+				pLRUCacheQueueNode.mPrevious = this.mTail;
+				this.mTail = pLRUCacheQueueNode;
 			}
 
 			return this.mTail;
@@ -305,10 +304,10 @@ public class LRUCache<K, V> implements Map<K, V> {
 			if(this.isEmpty()) {
 				return null;
 			}
-			
+
 			final LRUCacheQueueNode<K> head = this.mHead;
 			final K key = this.mHead.mKey;
-			
+
 			/* Check if item to poll is the tail. */
 			if(this.mHead.mNext == null) {
 				this.mHead = null;
@@ -322,25 +321,27 @@ public class LRUCache<K, V> implements Map<K, V> {
 			return key;
 		}
 
-		public void remove(final LRUCacheQueueNode<K> pLRUCacheQueueNode) {
-			final LRUCacheQueueNode<K> previous = pLRUCacheQueueNode.mPrevious;
+		public void moveToTail(final LRUCacheQueueNode<K> pLRUCacheQueueNode) {
 			final LRUCacheQueueNode<K> next = pLRUCacheQueueNode.mNext;
 
-			/* Check if item to remove is the head. */
-			if(previous == null) {
-				this.mHead = next;
-			} else {
-				previous.mNext = next;
-			}
-
-			/* Check if item to remove is the tail. */
+			/* Check if the node already is the tail. */
 			if(next == null) {
-				this.mTail = previous;
+				return;
 			} else {
+				final LRUCacheQueueNode<K> previous = pLRUCacheQueueNode.mPrevious;
 				next.mPrevious = previous;
-			}
 
-			this.mLRUCacheQueueNodePool.recyclePoolItem(pLRUCacheQueueNode);
+				/* Check if item to bump is the head. */
+				if(previous == null) {
+					this.mHead = next;
+				} else {
+					previous.mNext = next;
+				}
+
+				this.mTail.mNext = pLRUCacheQueueNode;
+				pLRUCacheQueueNode.mPrevious = this.mTail;
+				this.mTail = pLRUCacheQueueNode;
+			}
 		}
 
 		// ===========================================================

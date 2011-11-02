@@ -135,6 +135,8 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		final ArrayList<IBitmapTextureAtlasSource> textureSources = this.mTextureAtlasSources;
 		final int textureSourceCount = textureSources.size();
 
+		// TODO What about GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1); in here? 
+
 		final ITextureAtlasStateListener<IBitmapTextureAtlasSource> textureStateListener = this.getTextureStateListener();
 		for(int j = 0; j < textureSourceCount; j++) {
 			final IBitmapTextureAtlasSource bitmapTextureAtlasSource = textureSources.get(j);
@@ -160,8 +162,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 					// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
 					//private Buffer createImage(final int width, final int height) {
 					//	final int stride = 3 * width;
-					//	final ByteBuffer image = ByteBuffer.allocateDirect(height * stride)
-					//			.order(ByteOrder.nativeOrder());
+					//	final ByteBuffer image = ByteBuffer.allocateDirect(height * stride).order(ByteOrder.nativeOrder());
 					//
 					//	// Fill with a pretty "munching squares" pattern:
 					//	for (int t = 0; t < height; t++) {

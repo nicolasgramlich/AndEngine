@@ -149,7 +149,9 @@ public class Camera implements IUpdateHandler {
 
 	public void setHUD(final HUD pHUD) {
 		this.mHUD = pHUD;
-		pHUD.setCamera(this);
+		if(pHUD != null) {
+			pHUD.setCamera(this);
+		}
 	}
 
 	public boolean hasHUD() {

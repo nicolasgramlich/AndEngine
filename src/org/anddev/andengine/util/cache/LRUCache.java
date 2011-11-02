@@ -1,13 +1,8 @@
 package org.anddev.andengine.util.cache;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
-import org.anddev.andengine.util.exception.AndEngineException;
-import org.anddev.andengine.util.pool.Pool;
-import org.anddev.andengine.util.pool.PoolItem;
+import org.anddev.andengine.util.pool.GenericPool;
 
 /**
  * (c) Zynga 2011
@@ -15,7 +10,7 @@ import org.anddev.andengine.util.pool.PoolItem;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 00:24:52 - 02.11.2011
  */
-public class LRUCache<K, V> implements Map<K, V> {
+public class LRUCache<K, V>  {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -30,10 +25,15 @@ public class LRUCache<K, V> implements Map<K, V> {
 	private final HashMap<K, LRUCacheValueHolder<K, V>> mMap;
 	private final LRUCacheQueue<K> mLRUCacheQueue;
 
-	private final Pool<LRUCacheValueHolder<K, V>> mLRUCacheValueHolderPool = new Pool<LRUCache.LRUCacheValueHolder<K,V>>() {
+	private final GenericPool<LRUCacheValueHolder<K, V>> mLRUCacheValueHolderPool = new GenericPool<LRUCache.LRUCacheValueHolder<K,V>>() {
 		@Override
 		protected LRUCacheValueHolder<K, V> onAllocatePoolItem() {
 			return new LRUCacheValueHolder<K, V>();
+		}
+
+		protected void onHandleRecycleItem(final LRUCacheValueHolder<K,V> pLRUCacheValueHolder) {
+			pLRUCacheValueHolder.mLRUCacheQueueNode = null;
+			pLRUCacheValueHolder.mValue = null;
 		}
 	};
 
@@ -63,49 +63,29 @@ public class LRUCache<K, V> implements Map<K, V> {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	/* (non-Javadoc)
-	 * @see java.util.Map#isEmpty()
-	 */
-	@Override
 	public boolean isEmpty() {
 		return this.mSize == 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.util.Map#size()
-	 */
-	@Override
-	public int size() {
-		return this.mSize;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.util.Map#containsKey(java.lang.Object)
-	 */
-	@Override
-	public boolean containsKey(final Object pKey) {
-		return this.mMap.containsKey(pKey);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
-	 */
-	@Override
 	public V put(final K pKey, final V pValue) {
+		final LRUCacheValueHolder<K, V> existingLRUCacheValueHolder = this.mMap.get(pKey);
+		if(existingLRUCacheValueHolder != null) {
+			/* Just heat up that item. */
+			this.mLRUCacheQueue.moveToTail(existingLRUCacheValueHolder.mLRUCacheQueueNode);
+			
+			return existingLRUCacheValueHolder.mValue;
+		}
+
 		if(this.mSize >= this.mCapacity) {
 			final K deadKey = this.mLRUCacheQueue.poll();
 			this.mMap.remove(deadKey);
 			this.mSize--;
 		}
 
-		/* Just heat up that item. */
-		if(this.mMap.containsKey(pKey)) {
-			return this.get(pKey);
-		}
-
 		final LRUCacheQueueNode<K> lruCacheQueueNode = this.mLRUCacheQueue.add(pKey);
 
 		final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mLRUCacheValueHolderPool.obtainPoolItem();
+//		final LRUCacheValueHolder<K, V> lruCacheValueHolder = new LRUCacheValueHolder<K, V>();
 		lruCacheValueHolder.mValue = pValue;
 		lruCacheValueHolder.mLRUCacheQueueNode = lruCacheQueueNode;
 
@@ -116,11 +96,7 @@ public class LRUCache<K, V> implements Map<K, V> {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.util.Map#get(java.lang.Object)
-	 */
-	@Override
-	public V get(final Object pKey) {
+	public V get(final K pKey) {
 		final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mMap.get(pKey);
 		if(lruCacheValueHolder == null) {
 			return null;
@@ -131,41 +107,6 @@ public class LRUCache<K, V> implements Map<K, V> {
 		return lruCacheValueHolder.mValue;
 	}
 
-	@Override
-	public void clear() {
-		throw new AndEngineException("Not yet implemented.");
-	}
-
-	@Override
-	public boolean containsValue(final Object pValue) {
-		throw new AndEngineException("Not yet implemented.");
-	}
-
-	@Override
-	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		throw new AndEngineException("Not yet implemented.");
-	}
-
-	@Override
-	public Set<K> keySet() {
-		throw new AndEngineException("Not yet implemented.");
-	}
-
-	@Override
-	public void putAll(final Map<? extends K, ? extends V> pMap) {
-		throw new AndEngineException("Not yet implemented.");
-	}
-
-	@Override
-	public V remove(final Object pKey) {
-		throw new AndEngineException("Not yet implemented.");
-	}
-
-	@Override
-	public Collection<V> values() {
-		throw new AndEngineException("Not yet implemented.");
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -174,7 +115,7 @@ public class LRUCache<K, V> implements Map<K, V> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	private static class LRUCacheQueueNode<K> extends PoolItem {
+	static class LRUCacheQueueNode<K> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -208,7 +149,7 @@ public class LRUCache<K, V> implements Map<K, V> {
 		// ===========================================================
 	}
 
-	private static class LRUCacheValueHolder<K, V> extends PoolItem {
+	static class LRUCacheValueHolder<K, V> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -241,7 +182,7 @@ public class LRUCache<K, V> implements Map<K, V> {
 		// ===========================================================
 	}
 
-	private static class LRUCacheQueue<K> {
+	static class LRUCacheQueue<K> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -253,10 +194,16 @@ public class LRUCache<K, V> implements Map<K, V> {
 		private LRUCacheQueueNode<K> mHead;
 		private LRUCacheQueueNode<K> mTail;
 
-		private final Pool<LRUCacheQueueNode<K>> mLRUCacheQueueNodePool = new Pool<LRUCache.LRUCacheQueueNode<K>>() {
+		private final GenericPool<LRUCacheQueueNode<K>> mLRUCacheQueueNodePool = new GenericPool<LRUCache.LRUCacheQueueNode<K>>() {
 			@Override
 			protected LRUCacheQueueNode<K> onAllocatePoolItem() {
 				return new LRUCacheQueueNode<K>();
+			}
+			
+			protected void onHandleRecycleItem(final LRUCacheQueueNode<K> pLRUCacheQueueNode) {
+				pLRUCacheQueueNode.mKey = null;
+				pLRUCacheQueueNode.mPrevious = null;
+				pLRUCacheQueueNode.mNext = null;
 			}
 		};
 
@@ -282,6 +229,7 @@ public class LRUCache<K, V> implements Map<K, V> {
 
 		public LRUCacheQueueNode<K> add(final K pKey) {
 			final LRUCacheQueueNode<K> lruCacheQueueNode = this.mLRUCacheQueueNodePool.obtainPoolItem();
+//			final LRUCacheQueueNode<K> lruCacheQueueNode = new LRUCacheQueueNode<K>();
 			lruCacheQueueNode.mKey = pKey;
 
 			return this.add(lruCacheQueueNode);

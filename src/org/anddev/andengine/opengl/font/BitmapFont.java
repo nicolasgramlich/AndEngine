@@ -258,8 +258,8 @@ public class BitmapFont {
 			final int id = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_ID_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_ID);
 			final int x = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_X_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_X);
 			final int y = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_Y_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_Y);
-			final int height = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_WIDTH_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_WIDTH);
-			final int width = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_HEIGHT_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_HEIGHT);
+			final int width = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_WIDTH_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_WIDTH);
+			final int height = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_HEIGHT_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_HEIGHT);
 			final int xOffset = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_XOFFSET_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_XOFFSET);
 			final int yOffset = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_YOFFSET_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_YOFFSET);
 			final int xAdvance = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_XADVANCE_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_XADVANCE);

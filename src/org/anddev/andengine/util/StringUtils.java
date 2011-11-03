@@ -15,6 +15,7 @@ public final class StringUtils {
 	// ===========================================================
 
 	public static final Pattern SPLITPATTERN_SPACE = Pattern.compile(" ");
+	public static final Pattern SPLITPATTERN_SPACES = Pattern.compile(" +");
 	public static final Pattern SPLITPATTERN_COMMA = Pattern.compile(",");
 
 	// ===========================================================

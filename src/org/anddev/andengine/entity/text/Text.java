@@ -4,7 +4,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
-import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.font.IFont;
 import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
@@ -58,7 +58,7 @@ public class Text extends RectangularShape {
 	private String[] mLines;
 	private int[] mWidths;
 
-	private final Font mFont;
+	private final IFont mFont;
 
 	private int mMaximumLineWidth;
 
@@ -73,35 +73,35 @@ public class Text extends RectangularShape {
 	/**
 	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Text(final float pX, final float pY, final Font pFont, final String pText) {
+	public Text(final float pX, final float pY, final IFont pFont, final String pText) {
 		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, DrawType.STATIC);
 	}
 
 	/**
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Text(final float pX, final float pY, final Font pFont, final String pText, final DrawType pDrawType) {
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final DrawType pDrawType) {
 		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pDrawType);
 	}
 
 	/**
 	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
 		this(pX, pY, pFont, pText, pHorizontalAlign, pText.length() - StringUtils.countOccurrences(pText, '\n'), DrawType.STATIC);
 	}
 
 	/**
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final DrawType pDrawType) {
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final DrawType pDrawType) {
 		this(pX, pY, pFont, pText, pHorizontalAlign, pText.length() - StringUtils.countOccurrences(pText, '\n'), pDrawType);
 	}
 
 	/**
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	protected Text(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
+	protected Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
 		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), PositionColorTextureCoordinatesShaderProgram.getInstance());
 
 		this.mCharactersMaximum = pCharactersMaximum;
@@ -118,7 +118,7 @@ public class Text extends RectangularShape {
 
 	protected void updateText(final String pText) {
 		this.mText = pText;
-		final Font font = this.mFont;
+		final IFont font = this.mFont;
 
 		this.mLines = StringUtils.split(this.mText, '\n', this.mLines);
 		final String[] lines = this.mLines;
@@ -226,7 +226,7 @@ public class Text extends RectangularShape {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
-		final Font font = this.mFont;
+		final IFont font = this.mFont;
 		final String[] lines = this.mLines;
 		final int lineHeight = font.getLineHeight();
 		final int[] widths = this.mWidths;

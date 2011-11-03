@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.text;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.font.IFont;
 import org.anddev.andengine.util.HorizontalAlign;
 
 import android.opengl.GLES20;
@@ -35,7 +35,7 @@ public class TickerText extends Text {
 	// Constructors
 	// ===========================================================
 
-	public TickerText(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
+	public TickerText(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
 		super(pX, pY, pFont, pText, pHorizontalAlign);
 		this.setCharactersPerSecond(pCharactersPerSecond);
 	}

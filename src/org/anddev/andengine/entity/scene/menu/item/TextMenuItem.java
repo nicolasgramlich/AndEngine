@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.scene.menu.item;
 
 import org.anddev.andengine.entity.text.Text;
-import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.font.IFont;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -25,7 +25,7 @@ public class TextMenuItem extends Text implements IMenuItem{
 	// Constructors
 	// ===========================================================
 
-	public TextMenuItem(final int pID, final Font pFont, final String pText) {
+	public TextMenuItem(final int pID, final IFont pFont, final String pText) {
 		super(0, 0, pFont, pText);
 		this.mID = pID;
 	}

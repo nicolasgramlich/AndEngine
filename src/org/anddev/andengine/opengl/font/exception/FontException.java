@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.font;
+package org.anddev.andengine.opengl.font.exception;
 
 import org.anddev.andengine.util.exception.AndEngineException;
 

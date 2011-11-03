@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.text;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.font.IFont;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
@@ -33,23 +33,23 @@ public class ChangeableText extends Text {
 	// Constructors
 	// ===========================================================
 
-	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText) {
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText) {
 		this(pX, pY, pFont, pText, DrawType.DYNAMIC);
 	}
 
-	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final DrawType pDrawType) {
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final DrawType pDrawType) {
 		this(pX, pY, pFont, pText, pText.length() - StringUtils.countOccurrences(pText, '\n'), pDrawType);
 	}
 
-	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final int pCharactersMaximum) {
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final int pCharactersMaximum) {
 		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum, DrawType.DYNAMIC);
 	}
 
-	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final int pCharactersMaximum, final DrawType pDrawType) {
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final int pCharactersMaximum, final DrawType pDrawType) {
 		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum, pDrawType);
 	}
 
-	public ChangeableText(final float pX, final float pY, final Font pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
 		super(pX, pY, pFont, pText, pHorizontalAlign, pCharactersMaximum, pDrawType);
 		this.mCharacterCountCurrentText = pText.length() - StringUtils.countOccurrences(pText, '\n');
 	}

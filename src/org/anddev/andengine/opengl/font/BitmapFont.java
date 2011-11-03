@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.anddev.andengine.opengl.font.exception.FontException;
+import org.anddev.andengine.opengl.font.exception.LetterNotFoundException;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.StringUtils;
 import org.anddev.andengine.util.debug.Debug;
+import org.anddev.andengine.util.exception.MethodNotYetImplementedException;
 
 import android.content.Context;
 import android.util.SparseArray;
@@ -21,7 +24,7 @@ import android.util.SparseArray;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:54:59 - 01.11.2011
  */
-public class BitmapFont {
+public class BitmapFont implements IFont {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -206,10 +209,6 @@ public class BitmapFont {
 		return this.mBitmapFontInfo;
 	}
 
-	public int getLineHeight() {
-		return this.mLineHeight;
-	}
-
 	public int getBase() {
 		return this.mBase;
 	}
@@ -233,6 +232,34 @@ public class BitmapFont {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	@Override
+	public ITexture getTexture() {
+		return this.mBitmapFontPages[0].getTexture();
+	}
+	
+	public int getLineHeight() {
+		return this.mLineHeight;
+	}
+	
+	@Override
+	public int getLineGap() {
+		throw new MethodNotYetImplementedException();
+	}
+	
+	@Override
+	public Letter getLetter(char pChar) throws LetterNotFoundException {
+		final Letter letter = this.mCharacterToLetterMap.get(pChar);
+		if(letter == null) {
+			throw new LetterNotFoundException("Letter '" + pChar + "' not found.");
+		}
+		return letter;
+	}
+	
+	@Override
+	public int getStringWidth(String pString) {
+		throw new MethodNotYetImplementedException();
+	}
 
 	// ===========================================================
 	// Methods

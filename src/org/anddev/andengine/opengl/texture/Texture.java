@@ -101,11 +101,13 @@ public abstract class Texture implements ITexture {
 
 	protected abstract void writeTextureToHardware() throws IOException;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void load() {
 		TextureManager.loadTexture(this);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void unload() {
 		TextureManager.unloadTexture(this);

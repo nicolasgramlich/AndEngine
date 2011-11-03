@@ -58,7 +58,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		}
 
 		this.setOnTouchListener(pEngine);
-		this.mRenderer = new Renderer(pEngine);
+		this.mRenderer = new Renderer(this, pEngine);
 		this.setRenderer(this.mRenderer);
 	}
 
@@ -97,7 +97,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 	 * @author Nicolas Gramlich
 	 * @since 11:45:59 - 08.03.2010
 	 */
-	public class Renderer implements GLSurfaceView.Renderer {
+	public static class Renderer implements GLSurfaceView.Renderer {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -106,6 +106,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// Fields
 		// ===========================================================
 
+		private final RenderSurfaceView mRenderSurfaceView;
 		private final Engine mEngine;
 		private final boolean mMultiSampling;
 
@@ -113,7 +114,8 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// Constructors
 		// ===========================================================
 
-		public Renderer(final Engine pEngine) {
+		public Renderer(final RenderSurfaceView pRenderSurfaceView, final Engine pEngine) {
+			this.mRenderSurfaceView = pRenderSurfaceView;
 			this.mEngine = pEngine;
 			this.mMultiSampling = this.mEngine.getEngineOptions().getRenderOptions().isMultiSampling();
 		}
@@ -163,7 +165,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 		@Override
 		public void onDrawFrame(final GL10 pGL) {
-			if (this.mMultiSampling && RenderSurfaceView.this.mMultisampleConfigChooser.isCoverageMultiSampling()) {
+			if (this.mMultiSampling && this.mRenderSurfaceView.mMultisampleConfigChooser.isCoverageMultiSampling()) {
 				final int GL_COVERAGE_BUFFER_BIT_NV = 0x8000;
 				GLES20.glClear(GL_COVERAGE_BUFFER_BIT_NV);
 			}

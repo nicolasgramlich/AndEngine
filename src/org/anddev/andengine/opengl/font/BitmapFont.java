@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import org.anddev.andengine.opengl.font.exception.FontException;
 import org.anddev.andengine.opengl.font.exception.LetterNotFoundException;
 import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.StringUtils;
@@ -238,13 +237,8 @@ public class BitmapFont implements IFont {
 		return this.mBitmapFontPages[0].getTexture();
 	}
 	
-	public int getLineHeight() {
-		return this.mLineHeight;
-	}
-	
-	@Override
-	public int getLineGap() {
-		throw new MethodNotYetImplementedException();
+	public float getLineHeight() {
+		return this.mLineHeight; // TODO Correct?
 	}
 	
 	@Override
@@ -268,7 +262,7 @@ public class BitmapFont implements IFont {
 	public void loadTextures() {
 		final int bitmapFontPageCount = this.mBitmapFontPages.length;
 		for(int i = 0; i < bitmapFontPageCount; i++) {
-			TextureManager.loadTexture(this.mBitmapFontPages[i].getTexture());
+			this.mBitmapFontPages[i].getTexture().load();
 		}
 	}
 

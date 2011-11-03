@@ -21,9 +21,9 @@ public class Letter {
 	public final int mTextureY;
 	public final int mTextureWidth;
 	public final int mTextureHeight;
-	public final int mAdvance;
-	public final int mOffsetX;
-	public final int mOffsetY;
+	public final float mAdvance;
+	public final float mOffsetX;
+	public final float mOffsetY;
 	public final float mU;
 	public final float mV;
 	public final float mU2;
@@ -33,7 +33,7 @@ public class Letter {
 	// Constructors
 	// ===========================================================
 
-	Letter(final char pCharacter, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight, final int pAdvance, final int pOffsetX, final int pOffsetY, final float pU, final float pV, final float pU2, final float pV2) {
+	Letter(final char pCharacter, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight, final float pAdvance, final float pOffsetX, final float pOffsetY, final float pU, final float pV, final float pU2, final float pV2) {
 		this.mCharacter = pCharacter;
 		this.mAdvance = pAdvance;
 		this.mTextureWidth = pTextureWidth;

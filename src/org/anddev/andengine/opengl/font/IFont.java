@@ -19,8 +19,7 @@ public interface IFont {
 	// ===========================================================
 
 	public ITexture getTexture();
-	public int getLineHeight();
-	public int getLineGap(); // TODO What exactly is this?
+	public float getLineHeight();
 	public Letter getLetter(final char pChar) throws LetterNotFoundException;
 	public int getStringWidth(final String pString);
 }

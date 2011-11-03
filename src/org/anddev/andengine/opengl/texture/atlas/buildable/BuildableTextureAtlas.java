@@ -18,7 +18,7 @@ import org.anddev.andengine.util.Callback;
  * @author Nicolas Gramlich
  * @since 21:26:38 - 12.08.2010
  */
-public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITextureAtlas<T>> implements ITextureAtlas<T> {
+public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITextureAtlas<S>> implements ITextureAtlas<S> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,14 +27,14 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	// Fields
 	// ===========================================================
 
-	private final A mTextureAtlas;
-	private final ArrayList<TextureAtlasSourceWithWithLocationCallback<T>> mTextureAtlasSourcesToPlace = new ArrayList<TextureAtlasSourceWithWithLocationCallback<T>>();
+	private final T mTextureAtlas;
+	private final ArrayList<TextureAtlasSourceWithWithLocationCallback<S>> mTextureAtlasSourcesToPlace = new ArrayList<TextureAtlasSourceWithWithLocationCallback<S>>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BuildableTextureAtlas(final A pTextureAtlas) {
+	public BuildableTextureAtlas(final T pTextureAtlas) {
 		this.mTextureAtlas = pTextureAtlas;
 	}
 
@@ -82,6 +82,16 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	}
 
 	@Override
+	public void load() {
+		this.mTextureAtlas.load();
+	}
+
+	@Override
+	public void unload() {
+		this.mTextureAtlas.unload();
+	}
+
+	@Override
 	public void loadToHardware() throws IOException {
 		this.mTextureAtlas.loadToHardware();
 	}
@@ -112,12 +122,12 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	 */
 	@Deprecated
 	@Override
-	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
+	public void addTextureAtlasSource(final S pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY);
 	}
 
 	@Override
-	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
+	public void removeTextureAtlasSource(final S pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTextureAtlas.removeTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY);
 	}
 
@@ -133,7 +143,7 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	}
 
 	@Override
-	public ITextureAtlasStateListener<T> getTextureStateListener() {
+	public ITextureAtlasStateListener<S> getTextureStateListener() {
 		return this.mTextureAtlas.getTextureStateListener();
 	}
 
@@ -146,8 +156,8 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	 * @param pTextureAtlasSource to be added.
 	 * @param pTextureRegion
 	 */
-	public void addTextureAtlasSource(final T pTextureAtlasSource, final Callback<T> pCallback) {
-		this.mTextureAtlasSourcesToPlace.add(new TextureAtlasSourceWithWithLocationCallback<T>(pTextureAtlasSource, pCallback));
+	public void addTextureAtlasSource(final S pTextureAtlasSource, final Callback<S> pCallback) {
+		this.mTextureAtlasSourcesToPlace.add(new TextureAtlasSourceWithWithLocationCallback<S>(pTextureAtlasSource, pCallback));
 	}
 
 	/**
@@ -155,9 +165,9 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	 * @param pBitmapTextureAtlasSource to be removed.
 	 */
 	public void removeTextureAtlasSource(final ITextureAtlasSource pTextureAtlasSource) {
-		final ArrayList<TextureAtlasSourceWithWithLocationCallback<T>> textureSources = this.mTextureAtlasSourcesToPlace;
+		final ArrayList<TextureAtlasSourceWithWithLocationCallback<S>> textureSources = this.mTextureAtlasSourcesToPlace;
 		for(int i = textureSources.size() - 1; i >= 0; i--) {
-			final TextureAtlasSourceWithWithLocationCallback<T> textureSource = textureSources.get(i);
+			final TextureAtlasSourceWithWithLocationCallback<S> textureSource = textureSources.get(i);
 			if(textureSource.mTextureAtlasSource == pTextureAtlasSource) {
 				textureSources.remove(i);
 				this.mTextureAtlas.setUpdateOnHardwareNeeded(true);
@@ -172,7 +182,7 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	 * @param pTextureAtlasSourcePackingAlgorithm the {@link ITextureBuilder} to use for packing the {@link ITextureAtlasSource} in this {@link BuildableBitmapTextureAtlas}.
 	 * @throws TextureAtlasSourcePackingException i.e. when the {@link ITextureAtlasSource}MAGIC_CONSTANT didn't fit into this {@link BuildableBitmapTextureAtlas}.
 	 */
-	public void build(final ITextureBuilder<T, A> pTextureAtlasSourcePackingAlgorithm) throws TextureAtlasSourcePackingException {
+	public void build(final ITextureBuilder<S, T> pTextureAtlasSourcePackingAlgorithm) throws TextureAtlasSourcePackingException {
 		pTextureAtlasSourcePackingAlgorithm.pack(this.mTextureAtlas, this.mTextureAtlasSourcesToPlace);
 		this.mTextureAtlasSourcesToPlace.clear();
 		this.mTextureAtlas.setUpdateOnHardwareNeeded(true);

@@ -32,6 +32,9 @@ public interface ITexture {
 	public boolean isUpdateOnHardwareNeeded();
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded);
 
+	public void load();
+	public void unload();
+
 	public void loadToHardware() throws IOException;
 	public void unloadFromHardware();
 	public void reloadToHardware() throws IOException;

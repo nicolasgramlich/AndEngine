@@ -142,7 +142,7 @@ public class Text extends RectangularShape {
 		final float width = super.mWidth;
 		super.mBaseWidth = width;
 
-		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * font.getLineGap();
+		super.mHeight = lineCount * font.getLineHeight(); // TODO Still correct?
 		final float height = super.mHeight;
 		super.mBaseHeight = height;
 
@@ -228,75 +228,75 @@ public class Text extends RectangularShape {
 
 		final IFont font = this.mFont;
 		final String[] lines = this.mLines;
-		final int lineHeight = font.getLineHeight();
+		final float lineHeight = font.getLineHeight();
 		final int[] widths = this.mWidths;
 
-		int index = 0;
+		int bufferDataOffset = 0;
 
 		final int lineCount = lines.length;
-		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
-			final String line = lines[lineIndex];
+		for (int row = 0; row < lineCount; row++) {
+			final String line = lines[row];
 
-			int lineX;
+			int x;
 			switch(this.mHorizontalAlign) {
 				case RIGHT:
-					lineX = this.mMaximumLineWidth - widths[lineIndex];
+					x = this.mMaximumLineWidth - widths[row];
 					break;
 				case CENTER:
-					lineX = (this.mMaximumLineWidth - widths[lineIndex]) >> 1;
+					x = (this.mMaximumLineWidth - widths[row]) >> 1;
 				break;
 					case LEFT:
 				default:
-					lineX = 0;
+					x = 0;
 			}
 
-			final int lineY = lineIndex * (font.getLineHeight() + font.getLineGap());
+			final float y = row * lineHeight;
 
 			final int lineLength = line.length();
-			for (int letterIndex = 0; letterIndex < lineLength; letterIndex++) {
-				final Letter letter = font.getLetter(line.charAt(letterIndex));
+			for (int i = 0; i < lineLength; i++) {
+				final Letter letter = font.getLetter(line.charAt(i));
 
-				final int lineY2 = lineY + lineHeight;
-				final int lineX2 = lineX + letter.mTextureWidth;
+				final float y2 = y + lineHeight;
+				final int x2 = x + letter.mTextureWidth;
 
 				final float u = letter.mU;
 				final float v = letter.mV;
 				final float u2 = letter.mU2;
 				final float v2 = letter.mV2;
 
-				bufferData[index + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX;
-				bufferData[index + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY;
-				bufferData[index + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x;
+				bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y;
+				bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX;
-				bufferData[index + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY2;
-				bufferData[index + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x;
+				bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y2;
+				bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX2;
-				bufferData[index + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY2;
-				bufferData[index + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x2;
+				bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y2;
+				bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX2;
-				bufferData[index + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY2;
-				bufferData[index + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x2;
+				bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y2;
+				bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX2;
-				bufferData[index + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY;
-				bufferData[index + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x2;
+				bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y;
+				bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = lineX;
-				bufferData[index + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = lineY;
-				bufferData[index + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x;
+				bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y;
+				bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 
-				lineX += letter.mAdvance;
+				x += letter.mAdvance;
 
-				index += Text.LETTER_SIZE;
+				bufferDataOffset += Text.LETTER_SIZE;
 			}
 		}
 

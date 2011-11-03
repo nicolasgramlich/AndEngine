@@ -6,6 +6,7 @@ import org.anddev.andengine.opengl.font.exception.FontException;
 import org.anddev.andengine.opengl.texture.ITexture;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,7 +16,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
-import android.util.FloatMath;
 import android.util.SparseArray;
 
 /**
@@ -30,10 +30,8 @@ public class Font implements IFont {
 	// Constants
 	// ===========================================================
 
-	protected static final float LETTER_LEFT_OFFSET = 0;
-	protected static final int LETTER_EXTRA_WIDTH = 10;
-
-	protected final static int PADDING = 1;
+	private static final Rect RECT_TMP = new Rect();
+	private static final float[] TEXTWIDTH_CONTAINER_TMP = new float[1];
 
 	// ===========================================================
 	// Fields
@@ -52,13 +50,9 @@ public class Font implements IFont {
 	private final Paint mBackgroundPaint;
 
 	protected final FontMetrics mFontMetrics;
-	private final int mLineHeight;
-	private final int mLineGap;
+	private final float mHeight;
+	private final float mLineGap;
 
-	private final Rect mGetLetterBitmapTemporaryRect = new Rect();
-	private final Rect mGetStringWidthTemporaryRect = new Rect();
-	private final Rect mGetLetterBoundsTemporaryRect = new Rect();
-	private final float[] mTemporaryTextWidthFetchers = new float[1];
 
 	protected final Canvas mCanvas = new Canvas();
 
@@ -82,28 +76,31 @@ public class Font implements IFont {
 		this.mBackgroundPaint.setStyle(Style.FILL);
 
 		this.mFontMetrics = this.mPaint.getFontMetrics();
-		this.mLineHeight = (int) FloatMath.ceil(Math.abs(this.mFontMetrics.ascent) + Math.abs(this.mFontMetrics.descent)) + (Font.PADDING * 2);
-		this.mLineGap = (int) (FloatMath.ceil(this.mFontMetrics.leading));
+		this.mHeight = Math.abs(this.mFontMetrics.ascent) + Math.abs(this.mFontMetrics.descent);
+		this.mLineGap = this.mFontMetrics.leading;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public float getLeading() {
+		return this.mLineGap;
+	}
+	
+	public float getHeight() {
+		return this.mHeight;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
-	public int getLineGap() {
-		return this.mLineGap;
+	public float getLineHeight() {
+		return this.mLineGap + this.mHeight;
 	}
-	
-	@Override
-	public int getLineHeight() {
-		return this.mLineHeight;
-	}
-	
+
 	@Override
 	public ITexture getTexture() {
 		return this.mTexture;
@@ -124,13 +121,17 @@ public class Font implements IFont {
 
 	@Override
 	public int getStringWidth(final String pText) {
-		this.mPaint.getTextBounds(pText, 0, pText.length(), this.mGetStringWidthTemporaryRect);
-		return this.mGetStringWidthTemporaryRect.width();
+		this.mPaint.getTextBounds(pText, 0, pText.length(), RECT_TMP);
+		return RECT_TMP.width();
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void load() {
+		FontManager.loadFont(this);
+	}
 
 	public synchronized void reloadLetters() {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
@@ -142,20 +143,24 @@ public class Font implements IFont {
 		}
 	}
 
-	private int getLetterAdvance(final char pCharacter) {
-		this.mPaint.getTextWidths(String.valueOf(pCharacter), this.mTemporaryTextWidthFetchers);
-		return (int) (FloatMath.ceil(this.mTemporaryTextWidthFetchers[0]));
+	private float getLetterAdvance(final char pCharacter) {
+		this.mPaint.getTextWidths(String.valueOf(pCharacter), TEXTWIDTH_CONTAINER_TMP);
+		return TEXTWIDTH_CONTAINER_TMP[0];
 	}
 
 	private Bitmap getLetterBitmap(final char pCharacter) {
-		final Rect getLetterBitmapTemporaryRect = this.mGetLetterBitmapTemporaryRect;
 		final String characterAsString = String.valueOf(pCharacter);
-		this.mPaint.getTextBounds(characterAsString, 0, 1, getLetterBitmapTemporaryRect);
 
-		getLetterBitmapTemporaryRect.right += Font.PADDING * 2;
+		this.mPaint.getTextBounds(characterAsString, 0, 1, RECT_TMP);
+		final int letterWidth = RECT_TMP.width();
+		final int letterHeight = RECT_TMP.height();
 
-		final int lineHeight = this.getLineHeight();
-		final Bitmap bitmap = Bitmap.createBitmap(getLetterBitmapTemporaryRect.width() == 0 ? 1 + (2 * Font.PADDING) : getLetterBitmapTemporaryRect.width() + Font.LETTER_EXTRA_WIDTH, lineHeight, Bitmap.Config.ARGB_8888);
+		final Bitmap bitmap;
+		if(letterWidth == 0) {
+			bitmap = Bitmap.createBitmap(1, letterHeight, Config.ARGB_8888);
+		} else {
+			bitmap = Bitmap.createBitmap(letterWidth, letterHeight, Config.ARGB_8888);
+		}
 		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */
@@ -168,7 +173,7 @@ public class Font implements IFont {
 	}
 
 	protected void drawCharacterString(final String pCharacterAsString) {
-		this.mCanvas.drawText(pCharacterAsString, Font.LETTER_LEFT_OFFSET + Font.PADDING, -this.mFontMetrics.ascent + Font.PADDING, this.mPaint);
+		this.mCanvas.drawText(pCharacterAsString, 0, -this.mFontMetrics.ascent, this.mPaint);
 	}
 
 	public void prepareLetters(final char ... pCharacters) throws FontException {
@@ -181,17 +186,17 @@ public class Font implements IFont {
 		final float textureWidth = this.mTextureWidth;
 		final float textureHeight = this.mTextureHeight;
 
-		this.mPaint.getTextBounds(String.valueOf(pCharacter), 0, 1, this.mGetLetterBoundsTemporaryRect);
-		final int letterWidth = this.mGetLetterBoundsTemporaryRect.width() + Font.LETTER_EXTRA_WIDTH + (2 * Font.PADDING);
-		final int letterHeight = this.getLineHeight();
+		this.mPaint.getTextBounds(String.valueOf(pCharacter), 0, 1, RECT_TMP);
+		final int letterWidth = RECT_TMP.width();
+		final int letterHeight = RECT_TMP.height();
 
 		if (this.mCurrentTextureX + letterWidth >= textureWidth) {
 			this.mCurrentTextureX = 0;
-			this.mCurrentTextureY += this.getLineGap() + this.getLineHeight();
+			this.mCurrentTextureY += this.mLineGap + this.mHeight; // TODO Are we wasting space here?
 		}
 
 		if(this.mCurrentTextureY + letterHeight >= textureHeight) {
-			throw new FontException("Letter: '" + pCharacter + "' doesn't onto the Texture.");
+			throw new FontException("Not enough space for Letter: '" + pCharacter + "' on the Texture");
 		}
 
 		final float u = this.mCurrentTextureX / textureWidth;
@@ -199,7 +204,8 @@ public class Font implements IFont {
 		final float u2 = (this.mCurrentTextureX + letterWidth) / textureWidth;
 		final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight;
 
-		final Letter letter = new Letter(pCharacter, this.mCurrentTextureX, this.mCurrentTextureY, letterWidth, letterHeight, this.getLetterAdvance(pCharacter), 0, 0, u, v, u2, v2);
+		final float advance = this.getLetterAdvance(pCharacter);
+		final Letter letter = new Letter(pCharacter, this.mCurrentTextureX, this.mCurrentTextureY, letterWidth, letterHeight, advance, 0, 0, u, v, u2, v2);
 		this.mCurrentTextureX += letterWidth;
 
 		return letter;

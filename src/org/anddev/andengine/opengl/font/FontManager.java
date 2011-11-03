@@ -54,18 +54,18 @@ public class FontManager {
 		FontManager.sFontsManaged.clear();
 	}
 
-	public static synchronized void loadFont(final Font pFont) {
+	static synchronized void loadFont(final Font pFont) {
 		if(pFont == null) {
 			throw new IllegalArgumentException("pFont must not be null!");
 		}
 		FontManager.sFontsManaged.add(pFont);
 	}
 
-	public static synchronized void loadFonts(final FontLibrary pFontLibrary) {
+	static synchronized void loadFonts(final FontLibrary pFontLibrary) {
 		pFontLibrary.loadFonts();
 	}
 
-	public static void loadFonts(final Font ... pFonts) {
+	static void loadFonts(final Font ... pFonts) {
 		for(int i = pFonts.length - 1; i >= 0; i--) {
 			FontManager.loadFont(pFonts[i]);
 		}

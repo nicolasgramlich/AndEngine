@@ -102,6 +102,16 @@ public abstract class Texture implements ITexture {
 	protected abstract void writeTextureToHardware() throws IOException;
 
 	@Override
+	public void load() {
+		TextureManager.loadTexture(this);
+	}
+
+	@Override
+	public void unload() {
+		TextureManager.unloadTexture(this);
+	}
+
+	@Override
 	public void loadToHardware() throws IOException {
 		GLState.enableTextures();
 

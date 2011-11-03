@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.background;
 
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.texture.TextureManager;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -74,7 +73,7 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 		textureRegion.setWidth(width);
 		textureRegion.setHeight(height);
 
-		TextureManager.loadTexture(this.mBitmapTextureAtlas);
+		this.mBitmapTextureAtlas.load();
 
 		final Sprite sprite = new Sprite(0, 0, width, height, textureRegion);
 		sprite.setScaleCenter(0, 0);

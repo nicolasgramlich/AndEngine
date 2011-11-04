@@ -34,6 +34,8 @@ public class Text extends RectangularShape {
 	// Constants
 	// ===========================================================
 
+	private static final float LEADING_DEFAULT = 0;
+
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Text.VERTEX_INDEX_X + 1;
 	public static final int COLOR_INDEX = Text.VERTEX_INDEX_Y + 1;
@@ -63,7 +65,7 @@ public class Text extends RectangularShape {
 
 	private float mMaximumLineWidth;
 
-//	protected final float mLineGap; // TODO Should this be here (probably yes) or in Font?
+	protected final float mLeading;
 	protected final int mCharactersMaximum;
 	protected final int mVertexCount;
 	private final HorizontalAlign mHorizontalAlign;
@@ -76,40 +78,73 @@ public class Text extends RectangularShape {
 	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText) {
-		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, DrawType.STATIC);
+		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * @param pLeading gap between lines.
+	 */
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading) {
+		this(pX, pY, pFont, pText, pLeading, DrawType.STATIC);
 	}
 
 	/**
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final DrawType pDrawType) {
-		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pDrawType);
+		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT, pDrawType);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pLeading, pDrawType);
 	}
 
 	/**
 	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pText.length() - StringUtils.countOccurrences(pText, '\n'), DrawType.STATIC);
+		this(pX, pY, pFont, pText, pHorizontalAlign, Text.LEADING_DEFAULT);
 	}
 
 	/**
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final DrawType pDrawType) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pText.length() - StringUtils.countOccurrences(pText, '\n'), pDrawType);
+		this(pX, pY, pFont, pText, pHorizontalAlign, Text.LEADING_DEFAULT, pDrawType);
+	}
+
+	/**
+	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * @param pLeading gap between lines.
+	 */
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading) {
+		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, DrawType.STATIC);
 	}
 
 	/**
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * @param pLeading gap between lines.
 	 */
-	protected Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, pDrawType, pText.length() - StringUtils.countOccurrences(pText, '\n'));
+	}
+
+	/**
+	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * @param pLeading gap between lines.
+	 */
+	protected Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType, final int pCharactersMaximum) {
 		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), PositionColorTextureCoordinatesShaderProgram.getInstance());
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
 		this.mFont = pFont;
 		this.mHorizontalAlign = pHorizontalAlign;
+		this.mLeading = pLeading;
 
 		this.onUpdateColor();
 		this.updateText(pText);
@@ -144,9 +179,8 @@ public class Text extends RectangularShape {
 		final float width = super.mWidth;
 		super.mBaseWidth = width;
 
-		super.mHeight = lineCount * font.getLineHeight(); // TODO Still correct?
+		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * this.mLeading;
 
-		// TODO Rethink where the center of a text is.
 		final float height = super.mHeight;
 		super.mBaseHeight = height;
 
@@ -174,10 +208,6 @@ public class Text extends RectangularShape {
 	public HorizontalAlign getHorizontalAlign() {
 		return this.mHorizontalAlign;
 	}
-
-	//	public void setHorizontalAlign(final HorizontalAlign pHorizontalAlign) {
-	//		this.mHorizontalAlign = pHorizontalAlign; // TODO
-	//	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -247,24 +277,24 @@ public class Text extends RectangularShape {
 					xBase = this.mMaximumLineWidth - widths[row];
 					break;
 				case CENTER:
-					xBase = (this.mMaximumLineWidth - widths[row])  * 0.5f;
-				break;
-					case LEFT:
+					xBase = (this.mMaximumLineWidth - widths[row]) * 0.5f;
+					break;
+				case LEFT:
 				default:
 					xBase = 0;
 			}
 
-			final float yBase = row * lineHeight;
+			final float yBase = row * (lineHeight + this.mLeading);
 
 			final int lineLength = line.length();
-			for (int i = 0; i < lineLength; i++) {
+			for(int i = 0; i < lineLength; i++) {
 				final Letter letter = font.getLetter(line.charAt(i));
 
 				final float x = xBase + letter.mOffsetX;
 				final float y = yBase + letter.mOffsetY;
 
-				final float y2 = y + letter.mTextureHeight;
-				final float x2 = x + letter.mTextureWidth;
+				final float y2 = y + letter.mHeight;
+				final float x2 = x + letter.mWidth;
 
 				final float u = letter.mU;
 				final float v = letter.mV;

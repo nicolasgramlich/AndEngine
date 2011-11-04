@@ -19,8 +19,8 @@ public class Letter {
 	public final char mCharacter;
 	public final int mTextureX;
 	public final int mTextureY;
-	public final int mTextureWidth;
-	public final int mTextureHeight;
+	public final int mWidth;
+	public final int mHeight;
 	public final float mOffsetX;
 	public final float mOffsetY;
 	public final float mAdvance;
@@ -33,10 +33,10 @@ public class Letter {
 	// Constructors
 	// ===========================================================
 
-	Letter(final char pCharacter, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight, final float pOffsetX, final float pOffsetY, final float pAdvance, final float pU, final float pV, final float pU2, final float pV2) {
+	Letter(final char pCharacter, final int pTextureX, final int pTextureY, final int pWidth, final int pHeight, final float pOffsetX, final float pOffsetY, final float pAdvance, final float pU, final float pV, final float pU2, final float pV2) {
 		this.mCharacter = pCharacter;
-		this.mTextureWidth = pTextureWidth;
-		this.mTextureHeight = pTextureHeight;
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
 		this.mTextureX = pTextureX;
 		this.mTextureY = pTextureY;
 		this.mOffsetX = pOffsetX;
@@ -65,17 +65,17 @@ public class Letter {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if(this == obj) {
+	public boolean equals(final Object pObject) {
+		if(this == pObject) {
 			return true;
 		}
-		if(obj == null) {
+		if(pObject == null) {
 			return false;
 		}
-		if(this.getClass() != obj.getClass()) {
+		if(this.getClass() != pObject.getClass()) {
 			return false;
 		}
-		final Letter other = (Letter) obj;
+		final Letter other = (Letter) pObject;
 		if(this.mCharacter != other.mCharacter) {
 			return false;
 		}

@@ -23,6 +23,8 @@ import android.opengl.GLUtils;
 import android.util.SparseArray;
 
 /**
+ * TODO Allow different {@link PixelFormat}s that {@link PixelFormat#RGBA_8888}.
+ *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
@@ -34,8 +36,10 @@ public class Font implements IFont {
 	// Constants
 	// ===========================================================
 
-	private static final Rect RECT_TMP = new Rect();
-	private static final float[] TEXTWIDTH_CONTAINER_TMP = new float[1];
+	protected static final int LETTER_TEXTURE_PADDING = 1;
+
+	protected static final Rect TEXTBOUNDS_TMP = new Rect();
+	protected static final float[] TEXTWIDTH_CONTAINER_TMP = new float[1];
 
 	// ===========================================================
 	// Fields
@@ -44,8 +48,8 @@ public class Font implements IFont {
 	private final ITexture mTexture;
 	private final int mTextureWidth;
 	private final int mTextureHeight;
-	private int mCurrentTextureX;
-	private int mCurrentTextureY;
+	private int mCurrentTextureX = Font.LETTER_TEXTURE_PADDING;
+	private int mCurrentTextureY = Font.LETTER_TEXTURE_PADDING;
 	private int mCurrentTextureYHeightMax;
 
 	private final SparseArray<Letter> mManagedCharacterToLetterMap = new SparseArray<Letter>();
@@ -55,10 +59,6 @@ public class Font implements IFont {
 	private final Paint mBackgroundPaint;
 
 	protected final FontMetrics mFontMetrics;
-	private final float mAscent;
-	private final float mDescent;
-	private final float mLeading;
-	private final float mLineHeight;
 
 	protected final Canvas mCanvas = new Canvas();
 
@@ -103,21 +103,17 @@ public class Font implements IFont {
 		this.mTextureWidth = pTexture.getWidth();
 		this.mTextureHeight = pTexture.getHeight();
 
+		this.mBackgroundPaint = new Paint();
+		this.mBackgroundPaint.setColor(Color.TRANSPARENT);
+		this.mBackgroundPaint.setStyle(Style.FILL);
+		
 		this.mPaint = new Paint();
 		this.mPaint.setTypeface(pTypeface);
 		this.mPaint.setColor(pColor);
 		this.mPaint.setTextSize(pSize);
 		this.mPaint.setAntiAlias(pAntiAlias);
 
-		this.mBackgroundPaint = new Paint();
-		this.mBackgroundPaint.setColor(Color.TRANSPARENT);
-		this.mBackgroundPaint.setStyle(Style.FILL);
-
 		this.mFontMetrics = this.mPaint.getFontMetrics();
-		this.mAscent = this.mFontMetrics.ascent;
-		this.mDescent = this.mFontMetrics.descent;
-		this.mLineHeight = -this.mAscent + this.mDescent;
-		this.mLeading = this.mFontMetrics.leading;
 	}
 
 	// ===========================================================
@@ -128,21 +124,21 @@ public class Font implements IFont {
 	 * @return the gap between the lines.
 	 */
 	public float getLeading() {
-		return this.mLeading;
+		return this.mFontMetrics.leading;
 	}
 
 	/**
 	 * @return the distance from the baseline to the top, which is usually negative.
 	 */
 	public float getAscent() {
-		return this.mAscent;
+		return this.mFontMetrics.ascent;
 	}
 
 	/**
 	 * @return the distance from the baseline to the bottom, which is usually positive.
 	 */
 	public float getDescent() {
-		return this.mDescent;
+		return this.mFontMetrics.descent;
 	}
 
 	// ===========================================================
@@ -172,7 +168,7 @@ public class Font implements IFont {
 
 	@Override
 	public float getLineHeight() {
-		return this.mLineHeight;
+		return -this.getAscent() + this.getDescent();
 	}
 
 	@Override
@@ -190,8 +186,8 @@ public class Font implements IFont {
 
 	@Override
 	public float getStringWidth(final String pText) {
-		this.mPaint.getTextBounds(pText, 0, pText.length(), Font.RECT_TMP);
-		return Font.RECT_TMP.width();
+		this.mPaint.getTextBounds(pText, 0, pText.length(), Font.TEXTBOUNDS_TMP);
+		return Font.TEXTBOUNDS_TMP.width();
 	}
 
 	// ===========================================================
@@ -213,30 +209,29 @@ public class Font implements IFont {
 		return Font.TEXTWIDTH_CONTAINER_TMP[0];
 	}
 
-	private Bitmap getLetterBitmap(final char pCharacter) {
+	protected Bitmap getLetterBitmap(final char pCharacter) {
 		final String characterAsString = String.valueOf(pCharacter);
 
-		this.mPaint.getTextBounds(characterAsString, 0, 1, Font.RECT_TMP);
-		final int letterLeft = Font.RECT_TMP.left;
-		final int letterTop = Font.RECT_TMP.top;
-		final int letterWidth = Font.RECT_TMP.width();
-		final int letterHeight = Font.RECT_TMP.height();
+		this.updateTextBounds(characterAsString);
+		final int letterLeft = Font.TEXTBOUNDS_TMP.left;
+		final int letterTop = Font.TEXTBOUNDS_TMP.top;
+		final int letterWidth = Font.TEXTBOUNDS_TMP.width() + 2 * Font.LETTER_TEXTURE_PADDING;
+		final int letterHeight = Font.TEXTBOUNDS_TMP.height() + 2 * Font.LETTER_TEXTURE_PADDING;
 
-		final Bitmap bitmap;
-		if(letterWidth == 0) {
-			bitmap = Bitmap.createBitmap(1, 1, Config.ARGB_8888);
-		} else {
-			bitmap = Bitmap.createBitmap(letterWidth, letterHeight, Config.ARGB_8888);
-		}
+		final Bitmap bitmap = Bitmap.createBitmap(letterWidth, letterHeight, Config.ARGB_8888);
 		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */
 		this.mCanvas.drawRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), this.mBackgroundPaint);
 
 		/* Actually draw the character. */
-		this.mCanvas.drawText(characterAsString, -letterLeft, -letterTop, this.mPaint);
+		this.drawLetter(characterAsString, -letterLeft, -letterTop);
 
 		return bitmap;
+	}
+
+	protected void drawLetter(final String pCharacterAsString, final int pLeft, final int pTop) {
+		this.mCanvas.drawText(pCharacterAsString, pLeft + Font.LETTER_TEXTURE_PADDING, pTop + Font.LETTER_TEXTURE_PADDING, this.mPaint);
 	}
 
 	public void prepareLetters(final char... pCharacters) throws FontException {
@@ -251,15 +246,15 @@ public class Font implements IFont {
 		final float textureWidth = this.mTextureWidth;
 		final float textureHeight = this.mTextureHeight;
 
-		this.mPaint.getTextBounds(characterAsString, 0, 1, Font.RECT_TMP);
-		final int letterLeft = Font.RECT_TMP.left;
-		final int letterTop = Font.RECT_TMP.top;
-		final int letterWidth = Font.RECT_TMP.width();
-		final int letterHeight = Font.RECT_TMP.height();
+		this.updateTextBounds(characterAsString);
+		final int letterLeft = Font.TEXTBOUNDS_TMP.left;
+		final int letterTop = Font.TEXTBOUNDS_TMP.top;
+		final int letterWidth = Font.TEXTBOUNDS_TMP.width();
+		final int letterHeight = Font.TEXTBOUNDS_TMP.height();
 
-		if(this.mCurrentTextureX + letterWidth >= textureWidth) {
+		if(this.mCurrentTextureX + Font.LETTER_TEXTURE_PADDING + letterWidth >= textureWidth) {
 			this.mCurrentTextureX = 0;
-			this.mCurrentTextureY += this.mCurrentTextureYHeightMax;
+			this.mCurrentTextureY += this.mCurrentTextureYHeightMax + 2 * Font.LETTER_TEXTURE_PADDING;
 			this.mCurrentTextureYHeightMax = 0;
 		}
 
@@ -269,16 +264,22 @@ public class Font implements IFont {
 
 		this.mCurrentTextureYHeightMax = Math.max(letterHeight, this.mCurrentTextureYHeightMax);
 
+		this.mCurrentTextureX += Font.LETTER_TEXTURE_PADDING;
+
 		final float u = this.mCurrentTextureX / textureWidth;
 		final float v = this.mCurrentTextureY / textureHeight;
 		final float u2 = (this.mCurrentTextureX + letterWidth) / textureWidth;
 		final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight;
 
 		final float advance = this.getLetterAdvance(characterAsString);
-		final Letter letter = new Letter(pCharacter, this.mCurrentTextureX, this.mCurrentTextureY, letterWidth, letterHeight, letterLeft, letterTop, advance, u, v, u2, v2);
-		this.mCurrentTextureX += letterWidth;
+		final Letter letter = new Letter(pCharacter, this.mCurrentTextureX - Font.LETTER_TEXTURE_PADDING, this.mCurrentTextureY - Font.LETTER_TEXTURE_PADDING, letterWidth, letterHeight, letterLeft, letterTop - this.getAscent(), advance, u, v, u2, v2);
+		this.mCurrentTextureX += letterWidth + Font.LETTER_TEXTURE_PADDING;
 
 		return letter;
+	}
+
+	protected void updateTextBounds(final String pCharacterAsString) {
+		this.mPaint.getTextBounds(pCharacterAsString, 0, 1, Font.TEXTBOUNDS_TMP);
 	}
 
 	public synchronized void update() {

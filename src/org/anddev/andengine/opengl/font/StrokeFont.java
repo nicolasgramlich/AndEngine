@@ -26,6 +26,7 @@ public class StrokeFont extends Font {
 
 	private final Paint mStrokePaint;
 	private final boolean mStrokeOnly;
+	private final float mStrokeWidth;
 
 	// ===========================================================
 	// Constructors
@@ -37,6 +38,9 @@ public class StrokeFont extends Font {
 
 	public StrokeFont(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor, final boolean pStrokeOnly) {
 		super(pTexture, pTypeface, pSize, pAntiAlias, pColor);
+		
+		this.mStrokeWidth = pStrokeWidth;
+
 		this.mStrokePaint = new Paint();
 		this.mStrokePaint.setTypeface(pTypeface);
 		this.mStrokePaint.setStyle(Style.STROKE);
@@ -70,13 +74,18 @@ public class StrokeFont extends Font {
 		return this;
 	}
 
-//	@Override
-//	protected void drawCharacterString(final String pCharacterAsString) {
-//		if(!this.mStrokeOnly) {
-//			super.drawCharacterString(pCharacterAsString);
-//		}
-//		this.mCanvas.drawText(pCharacterAsString, 0, -this.mFontMetrics.ascent, this.mStrokePaint);
-//	}
+	protected void updateTextBounds(final String pCharacterAsString) {
+		this.mStrokePaint.getTextBounds(pCharacterAsString, 0, 1, Font.TEXTBOUNDS_TMP);
+		final int inset = -(int)Math.floor(this.mStrokeWidth * 0.5f);
+		Font.TEXTBOUNDS_TMP.inset(inset, inset);
+	}
+
+	protected void drawLetter(final String pCharacterAsString, final int pLeft, final int pTop) {
+		if(!this.mStrokeOnly) {
+			super.drawLetter(pCharacterAsString, pLeft, pTop);
+		}
+		this.mCanvas.drawText(pCharacterAsString, pLeft + Font.LETTER_TEXTURE_PADDING, pTop + Font.LETTER_TEXTURE_PADDING, this.mStrokePaint);
+	}
 
 	// ===========================================================
 	// Methods

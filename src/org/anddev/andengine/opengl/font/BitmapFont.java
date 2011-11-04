@@ -295,9 +295,12 @@ public class BitmapFont implements IFont {
 	@Override
 	public float getStringWidth(final String pString) {
 		final int stringLength = pString.length();
+		if(stringLength == 0) {
+			return 0;
+		}
 
-		float width = 0;
-		for(int i = 0; i < stringLength; i++) {
+		float width = this.getLetter(pString.charAt(pString.length() - 1)).mWidth;
+		for(int i = stringLength - 2; i >= 0; i--) {
 			width += this.getLetter(pString.charAt(i)).mAdvance;
 		}
 		return width;

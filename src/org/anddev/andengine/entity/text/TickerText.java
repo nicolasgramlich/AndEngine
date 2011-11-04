@@ -37,6 +37,7 @@ public class TickerText extends Text {
 
 	public TickerText(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
 		super(pX, pY, pFont, pText, pHorizontalAlign);
+
 		this.setCharactersPerSecond(pCharactersPerSecond);
 	}
 

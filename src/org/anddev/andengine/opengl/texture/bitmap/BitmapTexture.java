@@ -91,6 +91,20 @@ public abstract class BitmapTexture extends Texture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	public BitmapTexture load() {
+		super.load();
+
+		return this;
+	}
+
+	@Override
+	public BitmapTexture unload() {
+		super.unload();
+
+		return this;
+	}
+
 	protected abstract InputStream onGetInputStream() throws IOException;
 
 	@Override

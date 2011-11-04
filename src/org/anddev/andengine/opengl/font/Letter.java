@@ -1,5 +1,7 @@
 package org.anddev.andengine.opengl.font;
 
+import android.util.SparseIntArray;
+
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -28,6 +30,7 @@ public class Letter {
 	public final float mV;
 	public final float mU2;
 	public final float mV2;
+	private SparseIntArray mKernings;
 
 	// ===========================================================
 	// Constructors
@@ -51,6 +54,10 @@ public class Letter {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public int getKerning(final int pCharacter) {
+		return mKernings.get(pCharacter, 0);
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -85,6 +92,13 @@ public class Letter {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	void addKerning(final int pCharacter, final int pKerning) {
+		if(this.mKernings == null) {
+			this.mKernings = new SparseIntArray();
+		}
+		this.mKernings.put(pCharacter, pKerning);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

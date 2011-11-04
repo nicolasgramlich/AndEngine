@@ -287,8 +287,12 @@ public class Text extends RectangularShape {
 			final float yBase = row * (lineHeight + this.mLeading);
 
 			final int lineLength = line.length();
+			Letter previousLetter = null;
 			for(int i = 0; i < lineLength; i++) {
 				final Letter letter = font.getLetter(line.charAt(i));
+				if(previousLetter != null) {
+					xBase += previousLetter.getKerning(letter.mCharacter);
+				}
 
 				final float x = xBase + letter.mOffsetX;
 				final float y = yBase + letter.mOffsetY;

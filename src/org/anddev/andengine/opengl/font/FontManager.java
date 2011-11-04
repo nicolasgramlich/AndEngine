@@ -48,7 +48,7 @@ public class FontManager {
 	public static synchronized void onDestroy() {
 		final ArrayList<Font> managedFonts = FontManager.sFontsManaged;
 		for(int i = managedFonts.size() - 1; i >= 0; i--) {
-			managedFonts.get(i).reloadLetters();
+			managedFonts.get(i).invalidateLetters();
 		}
 
 		FontManager.sFontsManaged.clear();
@@ -61,14 +61,12 @@ public class FontManager {
 		FontManager.sFontsManaged.add(pFont);
 	}
 
-	static synchronized void loadFonts(final FontLibrary pFontLibrary) {
-		pFontLibrary.loadFonts();
-	}
-
-	static void loadFonts(final Font ... pFonts) {
-		for(int i = pFonts.length - 1; i >= 0; i--) {
-			FontManager.loadFont(pFonts[i]);
+	static synchronized void unloadFont(final Font pFont) {
+		if(pFont == null) {
+			throw new IllegalArgumentException("pFont must not be null!");
 		}
+		pFont.invalidateLetters();
+		FontManager.sFontsManaged.remove(pFont);
 	}
 
 	public static synchronized void updateFonts() {
@@ -84,7 +82,7 @@ public class FontManager {
 	public static synchronized void onReload() {
 		final ArrayList<Font> managedFonts = FontManager.sFontsManaged;
 		for(int i = managedFonts.size() - 1; i >= 0; i--) {
-			managedFonts.get(i).reloadLetters();
+			managedFonts.get(i).invalidateLetters();
 		}
 	}
 

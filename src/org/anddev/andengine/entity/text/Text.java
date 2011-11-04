@@ -21,9 +21,10 @@ import org.anddev.andengine.util.data.DataConstants;
 import android.opengl.GLES20;
 
 /**
+ * TODO Try Degenerate Triangles?
+ *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * TODO Try Degenerate Triangles?
  * 
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
@@ -56,12 +57,13 @@ public class Text extends RectangularShape {
 
 	private String mText;
 	private String[] mLines;
-	private int[] mWidths;
+	private float[] mWidths;
 
 	private final IFont mFont;
 
-	private int mMaximumLineWidth;
+	private float mMaximumLineWidth;
 
+//	protected final float mLineGap; // TODO Should this be here (probably yes) or in Font?
 	protected final int mCharactersMaximum;
 	protected final int mVertexCount;
 	private final HorizontalAlign mHorizontalAlign;
@@ -126,11 +128,11 @@ public class Text extends RectangularShape {
 		final int lineCount = lines.length;
 		final boolean widthsReusable = this.mWidths != null && this.mWidths.length == lineCount;
 		if(!widthsReusable) {
-			this.mWidths = new int[lineCount];
+			this.mWidths = new float[lineCount];
 		}
-		final int[] widths = this.mWidths;
+		final float[] widths = this.mWidths;
 
-		int maximumLineWidth = 0;
+		float maximumLineWidth = 0;
 
 		for (int i = lineCount - 1; i >= 0; i--) {
 			widths[i] = font.getStringWidth(lines[i]);
@@ -143,6 +145,8 @@ public class Text extends RectangularShape {
 		super.mBaseWidth = width;
 
 		super.mHeight = lineCount * font.getLineHeight(); // TODO Still correct?
+
+		// TODO Rethink where the center of a text is.
 		final float height = super.mHeight;
 		super.mBaseHeight = height;
 
@@ -229,7 +233,7 @@ public class Text extends RectangularShape {
 		final IFont font = this.mFont;
 		final String[] lines = this.mLines;
 		final float lineHeight = font.getLineHeight();
-		final int[] widths = this.mWidths;
+		final float[] widths = this.mWidths;
 
 		int bufferDataOffset = 0;
 
@@ -237,27 +241,30 @@ public class Text extends RectangularShape {
 		for (int row = 0; row < lineCount; row++) {
 			final String line = lines[row];
 
-			int x;
+			float xBase;
 			switch(this.mHorizontalAlign) {
 				case RIGHT:
-					x = this.mMaximumLineWidth - widths[row];
+					xBase = this.mMaximumLineWidth - widths[row];
 					break;
 				case CENTER:
-					x = (this.mMaximumLineWidth - widths[row]) >> 1;
+					xBase = (this.mMaximumLineWidth - widths[row])  * 0.5f;
 				break;
 					case LEFT:
 				default:
-					x = 0;
+					xBase = 0;
 			}
 
-			final float y = row * lineHeight;
+			final float yBase = row * lineHeight;
 
 			final int lineLength = line.length();
 			for (int i = 0; i < lineLength; i++) {
 				final Letter letter = font.getLetter(line.charAt(i));
 
-				final float y2 = y + lineHeight;
-				final int x2 = x + letter.mTextureWidth;
+				final float x = xBase + letter.mOffsetX;
+				final float y = yBase + letter.mOffsetY;
+
+				final float y2 = y + letter.mTextureHeight;
+				final float x2 = x + letter.mTextureWidth;
 
 				final float u = letter.mU;
 				final float v = letter.mV;
@@ -294,7 +301,7 @@ public class Text extends RectangularShape {
 				bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 				bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
 
-				x += letter.mAdvance;
+				xBase += letter.mAdvance;
 
 				bufferDataOffset += Text.LETTER_SIZE;
 			}

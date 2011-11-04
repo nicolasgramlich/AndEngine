@@ -118,6 +118,20 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	public BitmapTextureAtlas load() {
+		super.load();
+
+		return this;
+	}
+
+	@Override
+	public BitmapTextureAtlas unload() {
+		super.unload();
+
+		return this;
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -131,11 +145,11 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 
 		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
-		
+
 		final ArrayList<IBitmapTextureAtlasSource> textureSources = this.mTextureAtlasSources;
 		final int textureSourceCount = textureSources.size();
 
-		// TODO What about GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1); in here? 
+		// TODO What about GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1); in here?
 
 		final ITextureAtlasStateListener<IBitmapTextureAtlasSource> textureStateListener = this.getTextureStateListener();
 		for(int j = 0; j < textureSourceCount; j++) {
@@ -157,7 +171,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 
 					if(textureStateListener != null) {
 						textureStateListener.onTextureAtlasSourceLoaded(this, bitmapTextureAtlasSource);
-					} 
+					}
 				} catch (final NullBitmapException e) {
 					// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
 					//private Buffer createImage(final int width, final int height) {

@@ -5,7 +5,7 @@ import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.util.debug.Debug;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -19,18 +19,22 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
+	@Override
+	public ITextureAtlas<T> load();
+	@Override
+	public ITextureAtlas<T> unload();
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException;
 	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY);
 	public void clearTextureAtlasSources();
-	
+
 	@Override
 	public ITextureAtlasStateListener<T> getTextureStateListener();
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	public static interface ITextureAtlasStateListener<T extends ITextureAtlasSource> extends ITextureStateListener {
 		// ===========================================================
 		// Constants
@@ -66,7 +70,7 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 			public void onLoadedToHardware(final ITexture pTexture) {
 				Debug.d("Texture loaded: " + pTexture.toString());
 			}
-			
+
 			@Override
 			public void onTextureAtlasSourceLoaded(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource) {
 				Debug.e("Loaded TextureAtlasSource. TextureAtlas: " + pTextureAtlas.toString() + " TextureAtlasSource: " + pTextureAtlasSource.toString());

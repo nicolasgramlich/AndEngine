@@ -7,6 +7,8 @@ import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 
 /**
+ * TODO Re-implement with Font changes.
+ *
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
@@ -55,12 +57,26 @@ public class StrokeFont extends Font {
 	// ===========================================================
 
 	@Override
-	protected void drawCharacterString(final String pCharacterAsString) {
-		if(!this.mStrokeOnly) {
-			super.drawCharacterString(pCharacterAsString);
-		}
-		this.mCanvas.drawText(pCharacterAsString, 0, -this.mFontMetrics.ascent, this.mStrokePaint);
+	public StrokeFont load() {
+		super.load();
+
+		return this;
 	}
+
+	@Override
+	public StrokeFont unload() {
+		super.unload();
+		
+		return this;
+	}
+
+//	@Override
+//	protected void drawCharacterString(final String pCharacterAsString) {
+//		if(!this.mStrokeOnly) {
+//			super.drawCharacterString(pCharacterAsString);
+//		}
+//		this.mCanvas.drawText(pCharacterAsString, 0, -this.mFontMetrics.ascent, this.mStrokePaint);
+//	}
 
 	// ===========================================================
 	// Methods

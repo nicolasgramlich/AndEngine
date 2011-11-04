@@ -6,7 +6,7 @@ import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.util.debug.Debug;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -20,10 +20,10 @@ public interface ITexture {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public int getWidth();
 	public int getHeight();
-	
+
 	public int getHardwareTextureID();
 
 	public boolean isLoadedToHardware();
@@ -32,8 +32,14 @@ public interface ITexture {
 	public boolean isUpdateOnHardwareNeeded();
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded);
 
-	public void load();
-	public void unload();
+	/**
+	 * @return itself for method chaining.
+	 */
+	public ITexture load();
+	/**
+	 * @return itself for method chaining.
+	 */
+	public ITexture unload();
 
 	public void loadToHardware() throws IOException;
 	public void unloadFromHardware();
@@ -42,7 +48,7 @@ public interface ITexture {
 	public void bind();
 
 	public TextureOptions getTextureOptions();
-	
+
 	public boolean hasTextureStateListener();
 	public ITextureStateListener getTextureStateListener();
 

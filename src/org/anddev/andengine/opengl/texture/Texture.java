@@ -75,7 +75,7 @@ public abstract class Texture implements ITexture {
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded) {
 		this.mUpdateOnHardwareNeeded = pUpdateOnHardwareNeeded;
 	}
-	
+
 	public PixelFormat getPixelFormat() {
 		return this.mPixelFormat;
 	}
@@ -101,16 +101,18 @@ public abstract class Texture implements ITexture {
 
 	protected abstract void writeTextureToHardware() throws IOException;
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public void load() {
+	public Texture load() {
 		TextureManager.loadTexture(this);
+
+		return this;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public void unload() {
+	public Texture unload() {
 		TextureManager.unloadTexture(this);
+
+		return this;
 	}
 
 	@Override
@@ -122,7 +124,7 @@ public abstract class Texture implements ITexture {
 		GLState.bindTexture(this.mTextureID);
 
 		this.writeTextureToHardware();
-		
+
 		this.mTextureOptions.apply();
 
 		this.mUpdateOnHardwareNeeded = false;

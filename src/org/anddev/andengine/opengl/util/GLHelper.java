@@ -31,6 +31,9 @@ public class GLHelper {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * TODO These conversions could be done in native code!
+	 */
 	public static Buffer getPixels(final Bitmap pBitmap, final PixelFormat pPixelFormat) {
 		final int[] pixelsARGB_8888 = GLHelper.getPixelsARGB_8888(pBitmap);
 

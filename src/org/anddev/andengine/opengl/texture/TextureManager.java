@@ -106,13 +106,10 @@ public class TextureManager {
 	}
 
 	/**
-	 * Instead use {@link ITexture#load()}
-	 *
 	 * @param pTexture the {@link ITexture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then).
 	 * @return <code>true</code> when the {@link ITexture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
-	@Deprecated
-	public static synchronized boolean loadTexture(final ITexture pTexture) {
+	static synchronized boolean loadTexture(final ITexture pTexture) {
 		if(pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
 		}
@@ -128,13 +125,10 @@ public class TextureManager {
 	}
 
 	/**
-	 * Instead use {@link ITexture#unload()}
-	 *
 	 * @param pTexture the {@link ITexture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then).
 	 * @return <code>true</code> when the {@link ITexture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
-	@Deprecated
-	public static synchronized boolean unloadTexture(final ITexture pTexture) {
+	static synchronized boolean unloadTexture(final ITexture pTexture) {
 		if(pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
 		}
@@ -149,18 +143,6 @@ public class TextureManager {
 			return true;
 		} else {
 			return false;
-		}
-	}
-
-	public static void loadTextures(final ITexture ... pTextures) {
-		for(int i = pTextures.length - 1; i >= 0; i--) {
-			TextureManager.loadTexture(pTextures[i]);
-		}
-	}
-
-	public static void unloadTextures(final ITexture ... pTextures) {
-		for(int i = pTextures.length - 1; i >= 0; i--) {
-			TextureManager.unloadTexture(pTextures[i]);
 		}
 	}
 
@@ -252,7 +234,7 @@ public class TextureManager {
 			};
 			TextureManager.loadTexture(texture);
 			TextureManager.addMappedTexture(pID, texture);
-			
+
 			return texture;
 		}
 	}
@@ -273,7 +255,7 @@ public class TextureManager {
 			};
 			TextureManager.loadTexture(texture);
 			TextureManager.addMappedTexture(pID, texture);
-			
+
 			return texture;
 		}
 	}
@@ -292,5 +274,5 @@ public class TextureManager {
 		// ===========================================================
 
 		public InputStream open(final String pAssetPath);
-	}	
+	}
 }

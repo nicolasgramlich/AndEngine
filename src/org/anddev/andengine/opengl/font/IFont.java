@@ -18,8 +18,19 @@ public interface IFont {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * @return itself for method chaining.
+	 */
+	public IFont load();
+	/**
+	 * @return itself for method chaining.
+	 */
+	public IFont unload();
+
 	public ITexture getTexture();
+
 	public float getLineHeight();
+	public float getStringWidth(final String pString);
+
 	public Letter getLetter(final char pChar) throws LetterNotFoundException;
-	public int getStringWidth(final String pString);
 }

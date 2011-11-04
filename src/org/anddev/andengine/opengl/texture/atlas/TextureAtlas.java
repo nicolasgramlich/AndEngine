@@ -33,7 +33,7 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 
 	public TextureAtlas(final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureAtlasStateListener<T> pTextureAtlasStateListener) {
 		super(pPixelFormat, pTextureOptions, pTextureAtlasStateListener);
-		
+
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 	}
@@ -41,12 +41,12 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	@Override
 	public int getWidth() {
 		return this.mWidth;
 	}
-	
+
 	@Override
 	public int getHeight() {
 		return this.mHeight;
@@ -61,6 +61,20 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public TextureAtlas<T> load() {
+		super.load();
+
+		return this;
+	}
+
+	@Override
+	public TextureAtlas<T> unload() {
+		super.unload();
+
+		return this;
+	}
 
 	@Override
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException {

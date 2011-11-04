@@ -12,7 +12,6 @@ import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.StringUtils;
 import org.anddev.andengine.util.debug.Debug;
-import org.anddev.andengine.util.exception.MethodNotYetImplementedException;
 
 import android.content.Context;
 import android.util.SparseArray;
@@ -126,7 +125,7 @@ public class BitmapFont implements IFont {
 	private int mBase;
 	private int mScaleWidth;
 	private int mScaleHeight;
-	private int mPageCount;
+	private int mBitmapFontPageCount;
 	private boolean mPacked;
 
 	// ===========================================================
@@ -164,13 +163,13 @@ public class BitmapFont implements IFont {
 				this.mBase = BitmapFont.getIntAttribute(commonAttributes, BitmapFont.TAG_COMMON_ATTRIBUTE_BASE_INDEX, BitmapFont.TAG_COMMON_ATTRIBUTE_BASE);
 				this.mScaleWidth = BitmapFont.getIntAttribute(commonAttributes, BitmapFont.TAG_COMMON_ATTRIBUTE_SCALEWIDTH_INDEX, BitmapFont.TAG_COMMON_ATTRIBUTE_SCALEWIDTH);
 				this.mScaleHeight = BitmapFont.getIntAttribute(commonAttributes, BitmapFont.TAG_COMMON_ATTRIBUTE_SCALEHEIGHT_INDEX, BitmapFont.TAG_COMMON_ATTRIBUTE_SCALEHEIGHT);
-				this.mPageCount = BitmapFont.getIntAttribute(commonAttributes, BitmapFont.TAG_COMMON_ATTRIBUTE_PAGES_INDEX, BitmapFont.TAG_COMMON_ATTRIBUTE_PAGES);
+				this.mBitmapFontPageCount = BitmapFont.getIntAttribute(commonAttributes, BitmapFont.TAG_COMMON_ATTRIBUTE_PAGES_INDEX, BitmapFont.TAG_COMMON_ATTRIBUTE_PAGES);
 				this.mPacked = BitmapFont.getBooleanAttribute(commonAttributes, BitmapFont.TAG_COMMON_ATTRIBUTE_PACKED_INDEX, BitmapFont.TAG_COMMON_ATTRIBUTE_PACKED);
 
-				if(this.mPageCount != 1) {
+				if(this.mBitmapFontPageCount != 1) {
 					throw new FontException("Only a single page is supported.");
 				}
-				this.mBitmapFontPages = new BitmapFontPage[this.mPageCount];
+				this.mBitmapFontPages = new BitmapFontPage[this.mBitmapFontPageCount];
 
 				if(this.mPacked) {
 					throw new FontException("Packed is not supported.");
@@ -178,7 +177,7 @@ public class BitmapFont implements IFont {
 			}
 
 			/* Pages. */
-			for(int i = 0; i < this.mPageCount; i++) {
+			for(int i = 0; i < this.mBitmapFontPageCount; i++) {
 				this.mBitmapFontPages[i] = new BitmapFontPage(pContext, assetBasePath, bufferedReader.readLine());
 
 				final String[] charsAttributes = StringUtils.SPLITPATTERN_SPACE.split(bufferedReader.readLine(), BitmapFont.TAG_CHARS_ATTRIBUTECOUNT + 1);
@@ -220,8 +219,16 @@ public class BitmapFont implements IFont {
 		return this.mScaleHeight;
 	}
 
-	public int getPageCount() {
-		return this.mPageCount;
+	public int getBitmapFontPageCount() {
+		return this.mBitmapFontPageCount;
+	}
+
+	public BitmapFontPage[] getBitmapFontPages() {
+		return this.mBitmapFontPages;
+	}
+
+	public BitmapFontPage getBitmapFontPage(final int pIndex) {
+		return this.mBitmapFontPages[pIndex];
 	}
 
 	public boolean isPacked() {
@@ -231,28 +238,49 @@ public class BitmapFont implements IFont {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public ITexture getTexture() {
 		return this.mBitmapFontPages[0].getTexture();
 	}
-	
-	public float getLineHeight() {
-		return this.mLineHeight; // TODO Correct?
-	}
-	
+
 	@Override
-	public Letter getLetter(char pChar) throws LetterNotFoundException {
+	public BitmapFont load() {
+		this.loadTextures();
+
+		return this;
+	}
+
+	@Override
+	public BitmapFont unload() {
+		this.unloadTextures();
+
+		return this;
+	}
+
+	@Override
+	public float getLineHeight() {
+		return this.mLineHeight;
+	}
+
+	@Override
+	public Letter getLetter(final char pChar) throws LetterNotFoundException {
 		final Letter letter = this.mCharacterToLetterMap.get(pChar);
 		if(letter == null) {
 			throw new LetterNotFoundException("Letter '" + pChar + "' not found.");
 		}
 		return letter;
 	}
-	
+
 	@Override
-	public int getStringWidth(String pString) {
-		throw new MethodNotYetImplementedException();
+	public float getStringWidth(final String pString) {
+		final int stringLength = pString.length();
+
+		float width = 0;
+		for(int i = 0; i < stringLength; i++) {
+			width += this.getLetter(pString.charAt(i)).mAdvance;
+		}
+		return width;
 	}
 
 	// ===========================================================
@@ -260,9 +288,18 @@ public class BitmapFont implements IFont {
 	// ===========================================================
 
 	public void loadTextures() {
-		final int bitmapFontPageCount = this.mBitmapFontPages.length;
+		final BitmapFontPage[] bitmapFontPages = this.mBitmapFontPages;
+		final int bitmapFontPageCount = bitmapFontPages.length;
 		for(int i = 0; i < bitmapFontPageCount; i++) {
-			this.mBitmapFontPages[i].getTexture().load();
+			bitmapFontPages[i].getTexture().load();
+		}
+	}
+
+	public void unloadTextures() {
+		final BitmapFontPage[] bitmapFontPages = this.mBitmapFontPages;
+		final int bitmapFontPageCount = bitmapFontPages.length;
+		for(int i = 0; i < bitmapFontPageCount; i++) {
+			bitmapFontPages[i].getTexture().unload();
 		}
 	}
 
@@ -296,7 +333,7 @@ public class BitmapFont implements IFont {
 			final float u2 = (x + width) / textureWidth;
 			final float v2 = (y + height) / textureHeight;
 
-			this.mCharacterToLetterMap.put(id, new Letter((char)id, x, y, width, height, xAdvance, xOffset, yOffset, u, v, u2, v2));
+			this.mCharacterToLetterMap.put(id, new Letter((char)id, x, y, width, height, xOffset, yOffset, xAdvance, u, v, u2, v2));
 		}
 	}
 
@@ -332,15 +369,15 @@ public class BitmapFont implements IFont {
 
 		return data.substring(attributeLength + 2, data.length() - 1);
 	}
-	
+
 	private static String getAttribute(final String[] pData, final int pPosition, final String pAttribute) {
 		final String data = pData[pPosition];
 		final int attributeLength = pAttribute.length();
-		
+
 		if(!data.startsWith(pAttribute)) {
 			throw new FontException("Expected '" + pAttribute + "' at position '" + pPosition + "', but found: '" + data + "'.");
 		}
-		
+
 		return data.substring(attributeLength + 1);
 	}
 

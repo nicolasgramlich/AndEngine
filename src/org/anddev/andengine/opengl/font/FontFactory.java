@@ -6,7 +6,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * TODO Enhance with new Font constructor methods, or pull Font constructors with default parameters in here.
+ *
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -53,6 +55,10 @@ public class FontFactory {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static Font create(final ITexture pTexture, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return new Font(pTexture, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), pSize, pAntiAlias, pColor);
+	}
 
 	public static Font create(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
 		return new Font(pTexture, pTypeface, pSize, pAntiAlias, pColor);

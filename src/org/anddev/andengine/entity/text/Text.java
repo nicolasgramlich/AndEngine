@@ -34,7 +34,7 @@ public class Text extends RectangularShape {
 	// Constants
 	// ===========================================================
 
-	private static final float LEADING_DEFAULT = 0;
+	protected static final float LEADING_DEFAULT = 0;
 
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Text.VERTEX_INDEX_X + 1;

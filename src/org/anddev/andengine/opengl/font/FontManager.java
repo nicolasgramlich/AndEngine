@@ -65,7 +65,6 @@ public class FontManager {
 		if(pFont == null) {
 			throw new IllegalArgumentException("pFont must not be null!");
 		}
-		pFont.invalidateLetters();
 		FontManager.sFontsManaged.remove(pFont);
 	}
 

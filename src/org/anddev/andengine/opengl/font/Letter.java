@@ -56,6 +56,9 @@ public class Letter {
 	// ===========================================================
 
 	public int getKerning(final int pCharacter) {
+		if(this.mKernings == null) {
+			return 0;
+		}
 		return mKernings.get(pCharacter, 0);
 	}
 

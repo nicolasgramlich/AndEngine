@@ -34,23 +34,39 @@ public class ChangeableText extends Text {
 	// ===========================================================
 
 	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText) {
-		this(pX, pY, pFont, pText, DrawType.DYNAMIC);
+		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT);
+	}
+
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading) {
+		this(pX, pY, pFont, pText, pLeading, DrawType.DYNAMIC);
 	}
 
 	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final DrawType pDrawType) {
-		this(pX, pY, pFont, pText, pText.length() - StringUtils.countOccurrences(pText, '\n'), pDrawType);
+		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT, pDrawType);
+	}
+
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, pLeading, pDrawType, pText.length() - StringUtils.countOccurrences(pText, '\n'));
 	}
 
 	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final int pCharactersMaximum) {
-		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum, DrawType.DYNAMIC);
+		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT, pCharactersMaximum);
 	}
 
-	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final int pCharactersMaximum, final DrawType pDrawType) {
-		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pCharactersMaximum, pDrawType);
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading, final int pCharactersMaximum) {
+		this(pX, pY, pFont, pText, pLeading, DrawType.DYNAMIC, pCharactersMaximum);
 	}
 
-	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final int pCharactersMaximum, final DrawType pDrawType) {
-		super(pX, pY, pFont, pText, pHorizontalAlign, pCharactersMaximum, pDrawType);
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final DrawType pDrawType, final int pCharactersMaximum) {
+		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT, pDrawType, pCharactersMaximum);
+	}
+
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading, final DrawType pDrawType, final int pCharactersMaximum) {
+		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pLeading, pDrawType, pCharactersMaximum);
+	}
+
+	public ChangeableText(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType, final int pCharactersMaximum) {
+		super(pX, pY, pFont, pText, pHorizontalAlign, pLeading, pDrawType, pCharactersMaximum);
 		this.mCharacterCountCurrentText = pText.length() - StringUtils.countOccurrences(pText, '\n');
 	}
 

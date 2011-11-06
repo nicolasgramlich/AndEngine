@@ -7,7 +7,6 @@ import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
 import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -26,19 +25,26 @@ public class RenderTexture extends Texture {
 	// ===========================================================
 
 	private static final int[] VIEWPORT_CONTAINER = new int[4];
+	private static final float[] CLEARCOLOR_CONTAINER = new float[4];
 
-	private static final int VIEWPORT_CONTAINER_X = 0;
-	private static final int VIEWPORT_CONTAINER_Y = 1;
-	private static final int VIEWPORT_CONTAINER_WIDTH = 2;
-	private static final int VIEWPORT_CONTAINER_HEIGHT = 3;
+	private static final int VIEWPORT_CONTAINER_X_INDEX = 0;
+	private static final int VIEWPORT_CONTAINER_Y_INDEX = RenderTexture.VIEWPORT_CONTAINER_X_INDEX + 1;
+	private static final int VIEWPORT_CONTAINER_WIDTH_INDEX = RenderTexture.VIEWPORT_CONTAINER_Y_INDEX + 1;
+	private static final int VIEWPORT_CONTAINER_HEIGHT_INDEX = RenderTexture.VIEWPORT_CONTAINER_WIDTH_INDEX + 1;
+
+	private static final int CLEARCOLOR_CONTAINER_RED_INDEX = 0;
+	private static final int CLEARCOLOR_CONTAINER_GREEN_INDEX = RenderTexture.CLEARCOLOR_CONTAINER_RED_INDEX + 1;
+	private static final int CLEARCOLOR_CONTAINER_BLUE_INDEX = RenderTexture.CLEARCOLOR_CONTAINER_GREEN_INDEX + 1;
+	private static final int CLEARCOLOR_CONTAINER_ALPHA_INDEX = RenderTexture.CLEARCOLOR_CONTAINER_BLUE_INDEX + 1;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
+	private final PixelFormat mPixelFormat;
 	private final int mWidth;
 	private final int mHeight;
-	private final PixelFormat mPixelFormat;
+
 	private int mFramebufferObjectID;
 	private int mPreviousFramebufferObjectID;
 	private int mPreviousViewPortX;
@@ -57,12 +63,9 @@ public class RenderTexture extends Texture {
 	public RenderTexture(final int pWidth, final int pHeight, final PixelFormat pPixelFormat) {
 		super(pPixelFormat, TextureOptions.NEAREST, null);
 
-		if(!MathUtils.isPowerOfTwo(pWidth) || !MathUtils.isPowerOfTwo(pHeight)) {
-			throw new IllegalArgumentException("pWidth (" + pWidth + ") and pHeight (" + pHeight + ") must be powers of two!");
-		}
-
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
+
 		this.mPixelFormat = pPixelFormat;
 	}
 
@@ -124,13 +127,27 @@ public class RenderTexture extends Texture {
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
 
 		GLState.pushProjectionGLMatrix();
-		GLState.orthoProjectionGLMatrixf(0, this.mWidth, this.mHeight, 0, -1, 1);
+		/* Note: Bottom and Top are flipped on purpose. */
+		GLState.orthoProjectionGLMatrixf(0, this.mWidth, 0, this.mHeight, -1, 1);
 
 		this.savePreviousFramebufferObjectID();
 		GLState.bindFramebuffer(this.mFramebufferObjectID);
 
 		GLState.pushModelViewGLMatrix();
 		GLState.loadModelViewGLMatrixIdentity();
+	}
+
+	public void begin(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.begin();
+
+		/* Save clear color. */
+		GLES20.glGetFloatv(GLES20.GL_COLOR_CLEAR_VALUE, RenderTexture.CLEARCOLOR_CONTAINER, 0);
+
+		GLES20.glClearColor(pRed, pGreen, pBlue, pAlpha);
+		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+
+		/* Restore clear color. */
+		GLES20.glClearColor(RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_RED_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_GREEN_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_BLUE_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_ALPHA_INDEX]);
 	}
 
 	public void end() {
@@ -160,10 +177,10 @@ public class RenderTexture extends Texture {
 	private void savePreviousViewport() {
 		GLES20.glGetIntegerv(GLES20.GL_VIEWPORT, RenderTexture.VIEWPORT_CONTAINER, 0);
 
-		this.mPreviousViewPortX = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_X];
-		this.mPreviousViewPortY = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_Y];
-		this.mPreviousViewPortWidth = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_WIDTH];
-		this.mPreviousViewPortHeight = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_HEIGHT];
+		this.mPreviousViewPortX = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_X_INDEX];
+		this.mPreviousViewPortY = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_Y_INDEX];
+		this.mPreviousViewPortWidth = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_WIDTH_INDEX];
+		this.mPreviousViewPortHeight = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_HEIGHT_INDEX];
 	}
 
 	private void resotorePreviousViewport() {

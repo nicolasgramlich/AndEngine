@@ -219,16 +219,26 @@ public class Scene extends Entity {
 
 		if(childScene == null || !this.mChildSceneModalDraw) {
 			if(this.mBackgroundEnabled) {
+				GLState.pushProjectionGLMatrix();
+
 				pCamera.onApplySceneBackgroundMatrix();
 				GLState.loadModelViewGLMatrixIdentity();
 
 				this.mBackground.onDraw(pCamera);
+
+				GLState.popProjectionGLMatrix();
 			}
 
-			this.onApplyMatrix(pCamera);
-			GLState.loadModelViewGLMatrixIdentity();
+			{
+				GLState.pushProjectionGLMatrix();
 
-			super.onManagedDraw(pCamera);
+				this.onApplyMatrix(pCamera);
+				GLState.loadModelViewGLMatrixIdentity();
+
+				super.onManagedDraw(pCamera);
+
+				GLState.popProjectionGLMatrix();
+			}
 		}
 
 		if(childScene != null) {

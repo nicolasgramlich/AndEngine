@@ -273,8 +273,6 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplySceneMatrix() {
-		GLState.loadProjectionGLMatrixIdentity();
-
 		GLState.orthoProjectionGLMatrixf(this.getXMin(), this.getXMax(), this.getYMax(), this.getYMin(), this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
@@ -284,8 +282,6 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplySceneBackgroundMatrix() {
-		GLState.loadProjectionGLMatrixIdentity();
-
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
 
@@ -298,8 +294,6 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplyCameraSceneMatrix() {
-		GLState.loadProjectionGLMatrixIdentity();
-
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
 		GLState.orthoProjectionGLMatrixf(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);

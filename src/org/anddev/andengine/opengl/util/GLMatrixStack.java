@@ -18,7 +18,7 @@ public class GLMatrixStack {
 	// Constants
 	// ===========================================================
 
-	public final static int GLMATRIXSTACK_DEPTH_MAX = 32;
+	public static final int GLMATRIXSTACK_DEPTH_MAX = 32;
 	public static final int GLMATRIX_SIZE = 16;
 
 	private static final int GLMATRIXSTACKOFFSET_UNDERFLOW = -1 * GLMatrixStack.GLMATRIX_SIZE;

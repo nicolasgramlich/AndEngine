@@ -219,15 +219,19 @@ public class Text extends RectangularShape {
 
 		GLState.enableTextures();
 		this.mFont.getTexture().bind();
+
+		this.mMesh.preDraw(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(this.mShaderProgram, GLES20.GL_TRIANGLES, this.mVertexCount);
+		this.mMesh.draw(GLES20.GL_TRIANGLES, this.mVertexCount);
 	}
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
+		this.mMesh.postDraw(this.mShaderProgram);
+
 		GLState.disableTextures();
 
 		super.postDraw(pCamera);

@@ -76,8 +76,22 @@ public class Rectangle extends RectangularShape {
 	// ===========================================================
 
 	@Override
+	protected void preDraw(final Camera pCamera) {
+		super.preDraw(pCamera);
+
+		this.mMesh.preDraw(this.mShaderProgram);
+	}
+
+	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(this.mShaderProgram, GLES20.GL_TRIANGLE_STRIP, Rectangle.VERTICES_PER_RECTANGLE);
+		this.mMesh.draw(GLES20.GL_TRIANGLE_STRIP, Rectangle.VERTICES_PER_RECTANGLE);
+	}
+
+	@Override
+	protected void postDraw(final Camera pCamera) {
+		this.mMesh.postDraw(this.mShaderProgram);
+
+		super.postDraw(pCamera);
 	}
 
 	@Override

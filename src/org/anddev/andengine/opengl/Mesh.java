@@ -65,22 +65,6 @@ public class Mesh {
 		this.mVertexBufferObject.unbind(pShaderProgram);
 	}
 
-	public void draw(final ShaderProgram pShaderProgram, final int pPrimitiveType, final int pCount) {
-		this.mVertexBufferObject.bind(pShaderProgram);
-
-		GLES20.glDrawArrays(pPrimitiveType, 0, pCount);
-
-		this.mVertexBufferObject.unbind(pShaderProgram);
-	}
-
-	public void draw(final ShaderProgram pShaderProgram, final int pPrimitiveType, final int pOffset, final int pCount) {
-		this.mVertexBufferObject.bind(pShaderProgram);
-
-		GLES20.glDrawArrays(pPrimitiveType, pOffset, pCount);
-
-		this.mVertexBufferObject.unbind(pShaderProgram);
-	}
-
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

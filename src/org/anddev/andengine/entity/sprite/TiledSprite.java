@@ -84,7 +84,7 @@ public class TiledSprite extends Sprite {
 	
 	@Override
 	protected void draw(Camera pCamera) {
-		this.mMesh.draw(this.mShaderProgram, GLES20.GL_TRIANGLES, this.getCurrentTileIndex() * VERTICES_PER_TILEDSPRITE, TiledSprite.VERTICES_PER_TILEDSPRITE);
+		this.mMesh.draw(GLES20.GL_TRIANGLES, this.getCurrentTileIndex() * VERTICES_PER_TILEDSPRITE, TiledSprite.VERTICES_PER_TILEDSPRITE);
 	}
 
 	@Override

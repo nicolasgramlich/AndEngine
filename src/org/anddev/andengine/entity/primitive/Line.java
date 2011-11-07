@@ -189,11 +189,20 @@ public class Line extends Shape {
 		super.preDraw(pCamera);
 
 		GLState.lineWidth(this.mLineWidth);
+
+		this.mMesh.preDraw(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(Camera pCamera) {
-		this.mMesh.draw(this.mShaderProgram, GLES20.GL_LINES, Line.VERTICES_PER_LINE);
+		this.mMesh.draw(GLES20.GL_LINES, Line.VERTICES_PER_LINE);
+	}
+
+	@Override
+	protected void postDraw(Camera pCamera) {
+		this.mMesh.preDraw(this.mShaderProgram);
+
+		super.postDraw(pCamera);
 	}
 
 	@Override

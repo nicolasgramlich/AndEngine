@@ -136,15 +136,19 @@ public class UncoloredSprite extends RectangularShape {
 		GLState.enableTextures();
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		this.mTextureRegion.getTexture().bind();
+
+		this.mMesh.preDraw(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(this.mShaderProgram, GLES20.GL_TRIANGLE_STRIP, UncoloredSprite.VERTICES_PER_SPRITE);
+		this.mMesh.draw(GLES20.GL_TRIANGLE_STRIP, UncoloredSprite.VERTICES_PER_SPRITE);
 	}
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
+		this.mMesh.postDraw(this.mShaderProgram);
+
 		GLState.disableTextures();
 
 		super.postDraw(pCamera);

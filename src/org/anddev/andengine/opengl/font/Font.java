@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.anddev.andengine.opengl.font.exception.FontException;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.util.GLState;
 
 import android.graphics.Bitmap;
@@ -65,38 +63,6 @@ public class Font implements IFont {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public Font(final int pTextureWidth, final int pTextureHeight, final Typeface pTypeface, final float pSize) {
-		this(pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pTypeface, pSize, true);
-	}
-
-	public Font(final int pTextureWidth, final int pTextureHeight, final Typeface pTypeface, final float pSize, final boolean pAntiAlias) {
-		this(pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pTypeface, pSize, pAntiAlias, Color.BLACK);
-	}
-
-	public Font(final int pTextureWidth, final int pTextureHeight, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
-		this(pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pTypeface, pSize, pAntiAlias, pColor);
-	}
-
-	public Font(final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize) {
-		this(new BitmapTextureAtlas(pTextureWidth, pTextureHeight, pTextureOptions), pTypeface, pSize, true);
-	}
-
-	public Font(final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final boolean pAntiAlias) {
-		this(new BitmapTextureAtlas(pTextureWidth, pTextureHeight, pTextureOptions), pTypeface, pSize, pAntiAlias, Color.BLACK);
-	}
-
-	public Font(final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
-		this(new BitmapTextureAtlas(pTextureWidth, pTextureHeight, pTextureOptions), pTypeface, pSize, pAntiAlias, pColor);
-	}
-
-	public Font(final ITexture pTexture, final Typeface pTypeface, final float pSize) {
-		this(pTexture, pTypeface, pSize, true);
-	}
-
-	public Font(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias) {
-		this(pTexture, pTypeface, pSize, pAntiAlias, Color.BLACK);
-	}
 
 	public Font(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
 		this.mTexture = pTexture;

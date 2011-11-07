@@ -3,6 +3,12 @@ package org.anddev.andengine.opengl.texture;
 import android.opengl.GLES20;
 
 /**
+ * The {@link TextureOptions} defines with what parameters a {@link ITexture} is treated with by the hardware.
+ * The MinFilter and MagFilter are responsible for the resulting render-quality.
+ * I.e. {@link GLES20#GL_NEAREST} will look more pixelated than {@link GLES20#GL_LINEAR}, but will render a bit faster.
+ * WrapT and WrapS define how TextureCoordinates that exceed the [0,1] limit are treated.
+ * I.e. {@link GLES20#GL_REPEAT} will repeat the {@link ITexture} and {@link GLES20#GL_CLAMP_TO_EDGE} will stretch the outermost pixels of the {@link ITexture}.
+ *
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 

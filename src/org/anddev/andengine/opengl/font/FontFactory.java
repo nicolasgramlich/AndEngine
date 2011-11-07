@@ -1,6 +1,9 @@
 package org.anddev.andengine.opengl.font;
 
 import org.anddev.andengine.opengl.texture.ITexture;
+import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -57,12 +60,50 @@ public class FontFactory {
 	// ===========================================================
 
 	public static Font create(final ITexture pTexture, final float pSize, final boolean pAntiAlias, final int pColor) {
-		return new Font(pTexture, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), pSize, pAntiAlias, pColor);
+		return FontFactory.create(pTexture, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), pSize, pAntiAlias, pColor);
+	}
+
+	public static Font create(final int pTextureWidth, final int pTextureHeight, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return FontFactory.create(pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pSize, pAntiAlias, pColor);
+	}
+
+	public static Font create(final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return FontFactory.create(pTextureWidth, pTextureHeight, pTextureOptions, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), pSize, pAntiAlias, pColor);
 	}
 
 	public static Font create(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
 		return new Font(pTexture, pTypeface, pSize, pAntiAlias, pColor);
 	}
+
+	public static Font create(final int pTextureWidth, final int pTextureHeight, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return FontFactory.create(pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pTypeface, pSize, pAntiAlias, pColor);
+	}
+
+	public static Font create(final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return FontFactory.create(pTextureWidth, pTextureHeight, BitmapTextureFormat.RGBA_8888, pTextureOptions, pTypeface, pSize, pAntiAlias, pColor);
+	}
+
+	public static Font create(final int pTextureWidth, final int pTextureHeight, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return new Font(new BitmapTextureAtlas(pTextureWidth, pTextureHeight, pBitmapTextureFormat, pTextureOptions), pTypeface, pSize, pAntiAlias, pColor);
+	}
+
+
+	public static Font createFromAsset(final ITexture pTexture, final Context pContext, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return new Font(pTexture, Typeface.createFromAsset(pContext.getAssets(), FontFactory.sAssetBasePath + pAssetPath), pSize, pAntiAlias, pColor);
+	}
+
+	public static Font createFromAsset(final int pTextureWidth, final int pTextureHeight, final Context pContext, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return FontFactory.createFromAsset(pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pContext, pAssetPath, pSize, pAntiAlias, pColor);
+	}
+
+	public static Font createFromAsset(final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Context pContext, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return FontFactory.createFromAsset(pTextureWidth, pTextureHeight, BitmapTextureFormat.RGBA_8888, pTextureOptions, pContext, pAssetPath, pSize, pAntiAlias, pColor);
+	}
+
+	public static Font createFromAsset(final int pTextureWidth, final int pTextureHeight, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final Context pContext, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor) {
+		return new Font(new BitmapTextureAtlas(pTextureWidth, pTextureHeight, pBitmapTextureFormat, pTextureOptions), Typeface.createFromAsset(pContext.getAssets(), FontFactory.sAssetBasePath + pAssetPath), pSize, pAntiAlias, pColor);
+	}
+
 
 	public static StrokeFont createStroke(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
 		return new StrokeFont(pTexture, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
@@ -70,10 +111,6 @@ public class FontFactory {
 
 	public static StrokeFont createStroke(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor, final boolean pStrokeOnly) {
 		return new StrokeFont(pTexture, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor, pStrokeOnly);
-	}
-
-	public static Font createFromAsset(final ITexture pTexture, final Context pContext, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor) {
-		return new Font(pTexture, Typeface.createFromAsset(pContext.getAssets(), FontFactory.sAssetBasePath + pAssetPath), pSize, pAntiAlias, pColor);
 	}
 
 	public static StrokeFont createStrokeFromAsset(final ITexture pTexture, final Context pContext, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {

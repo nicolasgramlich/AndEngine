@@ -31,7 +31,6 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 
 	private final int mMaxSearchDepth;
 
-	private final Node[][] mNodes;
 	private final boolean mAllowDiagonal;
 
 	private final IAStarHeuristic<T> mAStarHeuristic;
@@ -57,17 +56,6 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 		this.mXMax = pXMax;
 		this.mYMin = pYMin;
 		this.mYMax = pYMax;
-
-		final int width = this.mXMax - this.mXMin + 1;
-		final int height = this.mYMax - this.mYMin + 1;
-
-		this.mNodes = new Node[height][width];
-		final Node[][] nodes = this.mNodes;
-		for(int y = this.mYMin; y <= this.mYMax; y++) {
-			for(int x = this.mXMin; x <= this.mXMax; x++) {
-				nodes[y - this.mYMin][x - this.mXMin] = new Node(x, y);
-			}
-		}
 	}
 
 	// ===========================================================
@@ -103,16 +91,13 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 		if(pPathFinderMap.isBlocked(pToX, pToY, pEntity)) {
 			return null;
 		}
-		
+
 		this.mVisitedNodes.clear();
 		this.mOpenNodes.clear();
 
-		final int xMin = this.mXMin;
-		final int yMin = this.mYMin;
-
 		/* Drag some fields to local variables. */
-		final Node fromNode = this.mNodes[pFromY - yMin][pFromX - xMin];
-		final Node toNode = this.mNodes[pToY - yMin][pToX - xMin];
+		final Node fromNode = new Node(pFromX, pFromY);
+		final Node toNode = new Node(pToX, pToY);
 
 		final IAStarHeuristic<T> aStarHeuristic = this.mAStarHeuristic;
 		final boolean allowDiagonalMovement = this.mAllowDiagonal;
@@ -153,7 +138,7 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 
 					if(!this.isBlocked(pFromX, pFromY, neighborX, neighborY, pPathFinderMap, pEntity)) {
 						final float neighborCost = current.mCost + pCostFunction.getCost(pPathFinderMap, current.mX, current.mY, neighborX, neighborY, pEntity);
-						final Node neighbor = this.mNodes[neighborY - yMin][neighborX - xMin];
+						final Node neighbor = new Node(neighborX, neighborX);
 
 						if(pPathFinderListener != null) {
 							pPathFinderListener.onVisited(pEntity, neighborX, neighborY);
@@ -168,13 +153,15 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 							if(this.mVisitedNodes.contains(neighbor)) {
 								this.mVisitedNodes.remove(neighbor);
 							}
+							throw new IllegalArgumentException("Should not happen?");
 						}
 
 						if(!this.mOpenNodes.contains(neighbor) && !(this.mVisitedNodes.contains(neighbor))) {
 							neighbor.mCost = neighborCost;
 							if(neighbor.mCost <= pMaxCost) {
 								neighbor.mExpectedRestCost = aStarHeuristic.getExpectedRestCost(pPathFinderMap, pEntity, neighborX, neighborY, pToX, pToY);
-								currentDepth = Math.max(currentDepth, neighbor.setParent(current));
+								neighbor.setParent(current);
+								currentDepth = Math.max(currentDepth, neighbor.mDepth);
 								this.mOpenNodes.add(neighbor);
 							}
 						}
@@ -190,7 +177,7 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 
 		/* Traceback path. */
 		final Path path = new Path();
-		Node tmp = this.mNodes[pToY - yMin][pToX - xMin];
+		Node tmp = toNode;
 		while(tmp != fromNode) {
 			path.prepend(tmp.mX, tmp.mY);
 			tmp = tmp.mParent;
@@ -218,7 +205,7 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	private static class Node implements Comparable<Node> {
+	static class Node implements Comparable<Node> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -249,16 +236,35 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 		// Getter & Setter
 		// ===========================================================
 
-		public int setParent(final Node parent) {
+		public void setParent(final Node parent) {
 			this.mDepth = parent.mDepth + 1;
 			this.mParent = parent;
-
-			return this.mDepth;
 		}
 
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
+
+		@Override
+		public int hashCode() {
+			return this.mX << 16 | this.mY;
+		}
+
+		@Override
+		public boolean equals(final Object pOther) {
+			if(this == pOther) {
+				return true;
+			} else if(pOther == null) {
+				return false;
+			} else if(this.getClass() != pOther.getClass()) {
+				return false;
+			}
+			final Node otherNode = (Node) pOther;
+			if(this.mX != otherNode.mX || this.mY != otherNode.mY) {
+				return false;
+			}
+			return true;
+		}
 
 		@Override
 		public int compareTo(final Node pOther) {

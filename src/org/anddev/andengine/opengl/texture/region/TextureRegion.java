@@ -34,6 +34,10 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 	// Constructors
 	// ===========================================================
 
+	public TextureRegion(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight) {
+		this(pTexture, pX, pY, pWidth, pHeight, false);
+	}
+
 	public TextureRegion(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final boolean pRotated) {
 		super(pTexture);
 

@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.text;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.font.IFont;
@@ -29,7 +28,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
  */
-public class Text extends RectangularShape {
+public class Text extends RectangularShape<Mesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -150,7 +149,7 @@ public class Text extends RectangularShape {
 		this.updateText(pText);
 
 		this.setBlendingEnabled(true);
-		this.initBlendFunction();
+		this.initBlendFunction(this.mFont.getTexture());
 	}
 
 	protected void updateText(final String pText) {
@@ -351,12 +350,6 @@ public class Text extends RectangularShape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private void initBlendFunction() {
-		if(this.mFont.getTexture().getTextureOptions().mPreMultipyAlpha) {
-			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -3,6 +3,7 @@ package org.anddev.andengine.opengl.texture.render;
 import java.io.IOException;
 import java.nio.IntBuffer;
 
+import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLHelper;
@@ -89,9 +90,7 @@ public class RenderTexture extends Texture {
 
 	@Override
 	protected void writeTextureToHardware() {
-		final int glFormat = this.mPixelFormat.getGLFormat();
-		final int glType = this.mPixelFormat.getGLType();
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, this.mPixelFormat.getGLInternalFormat(), this.mWidth, this.mHeight, 0, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), null);
 	}
 
 	// ===========================================================
@@ -214,10 +213,10 @@ public class RenderTexture extends Texture {
 	}
 
 	public int[] getPixelsARGB_8888() {
-		return this.getPixelsARGB_8888(0, 0, this.mWidth, this.mHeight, false);
+		return this.getPixelsARGB_8888(0, 0, this.mWidth, this.mHeight);
 	}
 
-	public int[] getPixelsARGB_8888(final int pX, final int pY, final int pWidth, final int pHeight, final boolean pFlipVertical) {
+	public int[] getPixelsARGB_8888(final int pX, final int pY, final int pWidth, final int pHeight) {
 		final int[] pixelsRGBA_8888 = new int[pWidth * pHeight];
 		final IntBuffer glPixelBuffer = IntBuffer.wrap(pixelsRGBA_8888);
 		glPixelBuffer.position(0);
@@ -226,27 +225,19 @@ public class RenderTexture extends Texture {
 		GLES20.glReadPixels(pX, pY, pWidth, pHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), glPixelBuffer);
 		this.end();
 
-		if(pFlipVertical) {
-			return GLHelper.convertRGBA_8888toARGB_8888_FlippedVertical(pixelsRGBA_8888, pWidth, pHeight);
-		} else {
-			return GLHelper.convertRGBA_8888toARGB_8888(pixelsRGBA_8888);
-		}
+		return GLHelper.convertRGBA_8888toARGB_8888(pixelsRGBA_8888);
 	}
 
 	public Bitmap getBitmap() {
-		return this.getBitmap(0, 0, this.mWidth, this.mHeight, false);
+		return this.getBitmap(0, 0, this.mWidth, this.mHeight);
 	}
 
-	public Bitmap getBitmap(final boolean pFlipVertical) {
-		return this.getBitmap(0, 0, this.mWidth, this.mHeight, pFlipVertical);
-	}
-
-	public Bitmap getBitmap(final int pX, final int pY, final int pWidth, final int pHeight, final boolean pFlipVertical) {
+	public Bitmap getBitmap(final int pX, final int pY, final int pWidth, final int pHeight) {
 		if(this.mPixelFormat != PixelFormat.RGBA_8888){
 			throw new IllegalStateException("Currently only 'PixelFormat." + PixelFormat.RGBA_8888 + "' is supported to be retrieved as a Bitmap.");
 		}
 
-		return Bitmap.createBitmap(this.getPixelsARGB_8888(pX, pY, pWidth, pHeight, pFlipVertical), pWidth, pHeight, Config.ARGB_8888);
+		return Bitmap.createBitmap(this.getPixelsARGB_8888(pX, pY, pWidth, pHeight), pWidth, pHeight, Config.ARGB_8888);
 	}
 
 	// ===========================================================

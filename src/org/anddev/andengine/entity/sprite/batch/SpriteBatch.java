@@ -1,9 +1,10 @@
 package org.anddev.andengine.entity.sprite.batch;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.shape.IShape;
+import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.entity.sprite.batch.SpriteBatch.SpriteBatchMesh;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
@@ -21,7 +22,6 @@ import org.anddev.andengine.util.transformation.Transformation;
 import android.opengl.GLES20;
 
 /**
- * TODO Might extend Shape
  * TODO TRY DEGENERATE TRIANGLES!
  * TODO Check if there is this multiple-of-X-byte(?) alignment optimization?
  * TODO Add constructors taking x/y !
@@ -32,7 +32,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 11:45:48 - 14.06.2011
  */
-public class SpriteBatch extends Entity {
+public class SpriteBatch extends Shape<SpriteBatchMesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -63,14 +63,6 @@ public class SpriteBatch extends Entity {
 	protected int mIndex;
 	protected int mVertices;
 
-	private int mSourceBlendFunction;
-	private int mDestinationBlendFunction;
-
-	protected final SpriteBatchMesh mSpriteBatchMesh;
-	protected ShaderProgram mShaderProgram;
-
-	private boolean mBlendingEnabled;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -90,38 +82,20 @@ public class SpriteBatch extends Entity {
 	}
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
+		super(0, 0, pSpriteBatchMesh, null);
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
 
-		this.mSpriteBatchMesh = pSpriteBatchMesh;
-
 		this.setBlendingEnabled(true);
-		this.initBlendFunction();
+		this.initBlendFunction(this.mTexture);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isBlendingEnabled() {
-		return this.mBlendingEnabled;
-	}
-
-	public void setBlendingEnabled(final boolean pBlendingEnabled) {
-		this.mBlendingEnabled = pBlendingEnabled;
-	}
-
-	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
-		this.mSourceBlendFunction = pSourceBlendFunction;
-		this.mDestinationBlendFunction = pDestinationBlendFunction;
-	}
-
 	public int getIndex() {
 		return this.mIndex;
-	}
-
-	public ShaderProgram getShaderProgram() {
-		return this.mShaderProgram;
 	}
 
 	public void setIndex(final int pIndex) {
@@ -131,16 +105,32 @@ public class SpriteBatch extends Entity {
 
 		final int vertexIndex = pIndex * SpriteBatch.VERTICES_PER_SPRITE;
 
-		this.mSpriteBatchMesh.setIndex(vertexIndex);
-	}
-
-	public void setShaderProgram(final ShaderProgram pShaderProgram) {
-		this.mShaderProgram = pShaderProgram;
+		this.mMesh.setIndex(vertexIndex);
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public boolean collidesWith(IShape<?> pOtherShape) {
+		return false;
+	}
+
+	@Override
+	public boolean contains(float pX, float pY) {
+		return false;
+	}
+
+	@Override
+	protected void onUpdateVertices() {
+		/* Nothing. */
+	}
+
+	@Override
+	protected boolean isCulled(Camera pCamera) {
+		return false;
+	}
 
 	@Override
 	protected void preDraw(final Camera pCamera) {
@@ -156,14 +146,14 @@ public class SpriteBatch extends Entity {
 		this.mTexture.bind();
 
 		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? PositionColorTextureCoordinatesShaderProgram.getInstance() : this.mShaderProgram; // TODO Add 'mFallbackShaderProgram' instead of permanent getInstance calls...
-		this.mSpriteBatchMesh.preDraw(shaderProgram);
+		this.mMesh.preDraw(shaderProgram);
 	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
 		this.begin();
 
-		this.mSpriteBatchMesh.draw(GLES20.GL_TRIANGLES, this.mVertices);
+		this.mMesh.draw(GLES20.GL_TRIANGLES, this.mVertices);
 
 		this.end();
 	}
@@ -171,7 +161,7 @@ public class SpriteBatch extends Entity {
 	@Override
 	protected void postDraw(final Camera pCamera) {
 		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? PositionColorTextureCoordinatesShaderProgram.getInstance() : this.mShaderProgram; // TODO Add 'mFallbackShaderProgram' instead of permanent getInstance calls...
-		this.mSpriteBatchMesh.postDraw(shaderProgram);
+		this.mMesh.postDraw(shaderProgram);
 
 		if(this.mBlendingEnabled) {
 			GLState.disableBlend();
@@ -186,15 +176,15 @@ public class SpriteBatch extends Entity {
 	public void reset() {
 		super.reset();
 
-		this.initBlendFunction();
+		this.initBlendFunction(this.mTexture);
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(this.mSpriteBatchMesh.getVertexBufferObject().isManaged()) {
-			this.mSpriteBatchMesh.getVertexBufferObject().unloadFromActiveBufferObjectManager();
+		if(this.mMesh.getVertexBufferObject().isManaged()) {
+			this.mMesh.getVertexBufferObject().unloadFromActiveBufferObjectManager();
 		}
 	}
 
@@ -217,7 +207,7 @@ public class SpriteBatch extends Entity {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
@@ -229,7 +219,7 @@ public class SpriteBatch extends Entity {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
 
 		this.mIndex++;
 	}
@@ -238,13 +228,13 @@ public class SpriteBatch extends Entity {
 	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)}.
 	 */
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
 		
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
@@ -256,13 +246,13 @@ public class SpriteBatch extends Entity {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
@@ -274,13 +264,13 @@ public class SpriteBatch extends Entity {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
@@ -292,13 +282,13 @@ public class SpriteBatch extends Entity {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
@@ -310,13 +300,13 @@ public class SpriteBatch extends Entity {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mSpriteBatchMesh.addInner(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.addInner(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchMesh.addInner(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pRed, pGreen, pBlue, pAlpha);
+		this.mMesh.addInner(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
@@ -339,9 +329,9 @@ public class SpriteBatch extends Entity {
 			this.assertTexture(textureRegion);
 
 			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.mSpriteBatchMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+				this.mMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
-				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+				this.mMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
 			}
 
 			this.mIndex++;
@@ -359,9 +349,9 @@ public class SpriteBatch extends Entity {
 			this.assertTexture(textureRegion);
 
 			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
+				this.mMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
 			} else {
-				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
+				this.mMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
 			}
 
 			this.mIndex++;
@@ -377,9 +367,9 @@ public class SpriteBatch extends Entity {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
 			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.mSpriteBatchMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+				this.mMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
-				this.mSpriteBatchMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+				this.mMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
 			}
 
 			this.mIndex++;
@@ -391,9 +381,9 @@ public class SpriteBatch extends Entity {
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
 			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
+				this.mMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
 			} else {
-				this.mSpriteBatchMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
+				this.mMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
 			}
 
 			this.mIndex++;
@@ -407,18 +397,10 @@ public class SpriteBatch extends Entity {
 	protected void onSubmit() {
 		this.mVertices = this.mIndex * SpriteBatch.VERTICES_PER_SPRITE;
 
-		this.mSpriteBatchMesh.submit();
+		this.mMesh.submit();
 
 		this.mIndex = 0;
-		this.mSpriteBatchMesh.setIndex(0);
-	}
-
-	private void initBlendFunction() {
-		if(this.mTexture.getTextureOptions().mPreMultipyAlpha) {
-			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
-		} else {
-			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_DEFAULT);
-		}
+		this.mMesh.setIndex(0);
 	}
 
 	private void assertCapacity(final int pIndex) {

@@ -26,7 +26,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 09:50:36 - 04.04.2010
  */
-public class Line extends Shape {
+public class Line extends Shape<Mesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -257,12 +257,12 @@ public class Line extends Shape {
 	}
 
 	@Override
-	public boolean collidesWith(final IShape pOtherShape) {
+	public boolean collidesWith(final IShape<?> pOtherShape) {
 		if(pOtherShape instanceof Line) {
 			final Line otherLine = (Line) pOtherShape;
 			return LineCollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
 		} else if(pOtherShape instanceof RectangularShape) {
-			final RectangularShape rectangularShape = (RectangularShape) pOtherShape;
+			final RectangularShape<?> rectangularShape = (RectangularShape<?>) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(rectangularShape, this);
 		} else {
 			return false;

@@ -5,6 +5,9 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.anddev.andengine.opengl.texture.ITexture;
+import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 
@@ -15,7 +18,7 @@ import org.anddev.andengine.opengl.vbo.VertexBufferObject;
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class Shape extends Entity implements IShape {
+public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -30,14 +33,14 @@ public abstract class Shape extends Entity implements IShape {
 	protected boolean mBlendingEnabled = false;
 	protected boolean mCullingEnabled = false;
 
-	protected Mesh mMesh;
+	protected T mMesh;
 	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final Mesh pMesh, final ShaderProgram pShaderProgram) {
+	public Shape(final float pX, final float pY, final T pMesh, final ShaderProgram pShaderProgram) {
 		super(pX, pY);
 
 		this.mMesh = pMesh;
@@ -74,7 +77,8 @@ public abstract class Shape extends Entity implements IShape {
 		this.mCullingEnabled = pCullingEnabled;
 	}
 
-	public Mesh getMesh() {
+	@Override
+	public T getMesh() {
 		return this.mMesh;
 	}
 
@@ -150,6 +154,20 @@ public abstract class Shape extends Entity implements IShape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected void initBlendFunction(final ITextureRegion pTextureRegion) {
+		this.initBlendFunction(pTextureRegion.getTexture());
+	}
+
+	protected void initBlendFunction(final ITexture pTexture) {
+		this.initBlendFunction(pTexture.getTextureOptions());
+	}
+
+	protected void initBlendFunction(final TextureOptions pTextureOptions) {
+		if(pTextureOptions.mPreMultipyAlpha) {
+			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

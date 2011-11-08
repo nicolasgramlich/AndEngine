@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.GreedyPVRTexturePixelBufferStrategy;
@@ -140,8 +141,6 @@ public abstract class PVRTexture extends Texture {
 		int height = this.getHeight();
 
 		final int dataLength = this.mPVRTextureHeader.getDataLength();
-		final int glFormat = this.mPixelFormat.getGLFormat();
-		final int glType = this.mPixelFormat.getGLType();
 
 		final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / DataConstants.BITS_PER_BYTE;
 
@@ -162,7 +161,7 @@ public abstract class PVRTexture extends Texture {
 			final int currentPixelDataSize = height * width * bytesPerPixel;
 
 			/* Load the current level. */
-			this.mPVRTexturePixelBufferStrategy.loadPVRTextureData(pvrTextureLoadStrategyManager, width, height, bytesPerPixel, glFormat, glType, currentLevel, currentPixelDataOffset, currentPixelDataSize);
+			this.mPVRTexturePixelBufferStrategy.loadPVRTextureData(pvrTextureLoadStrategyManager, width, height, bytesPerPixel, this.mPixelFormat, currentLevel, currentPixelDataOffset, currentPixelDataSize);
 
 			currentPixelDataOffset += currentPixelDataSize;
 

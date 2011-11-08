@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.scene.menu.item;
 
 import org.anddev.andengine.entity.sprite.AnimatedSprite;
+import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
 /**
@@ -10,7 +11,7 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
  * @author Nicolas Gramlich
  * @since 15:44:39 - 07.07.2010
  */
-public class AnimatedSpriteMenuItem extends AnimatedSprite implements IMenuItem {
+public class AnimatedSpriteMenuItem extends AnimatedSprite implements IMenuItem<Mesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
+import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.compressed.pvr.PVRTexture;
 import org.anddev.andengine.opengl.texture.compressed.pvr.PVRTexture.PVRTextureHeader;
 import org.anddev.andengine.opengl.util.GLState;
@@ -52,9 +53,12 @@ public class SmartPVRTexturePixelBufferStrategy implements IPVRTexturePixelBuffe
 	}
 
 	@Override
-	public void loadPVRTextureData(final IPVRTexturePixelBufferStrategyBufferManager pPVRTexturePixelBufferStrategyManager, final int pWidth, final int pHeight, final int pBytesPerPixel, final int pGLFormat, final int pGLType, final int pLevel, final int pCurrentPixelDataOffset, final int pCurrentPixelDataSize) throws IOException {
+	public void loadPVRTextureData(final IPVRTexturePixelBufferStrategyBufferManager pPVRTexturePixelBufferStrategyManager, final int pWidth, final int pHeight, final int pBytesPerPixel, final PixelFormat pPixelFormat, final int pLevel, final int pCurrentPixelDataOffset, final int pCurrentPixelDataSize) throws IOException {
+		final int glFormat = pPixelFormat.getGLFormat();
+		final int glType = pPixelFormat.getGLType();
+
 		/* Create the texture with the required parameters but without data. */
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, pLevel, pGLFormat, pWidth, pHeight, 0, pGLFormat, pGLType, null);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, pLevel, pPixelFormat.getGLInternalFormat(), pWidth, pHeight, 0, glFormat, glType, null);
 
 		final int bytesPerRow = pWidth * pBytesPerPixel;
 		final int stripeHeight = Math.max(1, this.mAllocationSizeMaximum / bytesPerRow);
@@ -70,7 +74,7 @@ public class SmartPVRTexturePixelBufferStrategy implements IPVRTexturePixelBuffe
 			final Buffer pixelBuffer = pPVRTexturePixelBufferStrategyManager.getPixelBuffer(PVRTextureHeader.SIZE + currentStripePixelDataOffset, currentStripePixelDataSize);
 
 			/* Send to hardware. */
-			GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D, pLevel, 0, currentStripeOffsetY, pWidth, currentStripeHeight, pGLFormat, pGLType, pixelBuffer);
+			GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D, pLevel, 0, currentStripeOffsetY, pWidth, currentStripeHeight, glFormat, glType, pixelBuffer);
 
 			GLState.checkGLError();
 

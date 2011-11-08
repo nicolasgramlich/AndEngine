@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.texture.atlas.bitmap;
 
 import java.util.ArrayList;
 
+import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.TextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
@@ -139,9 +140,11 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	@Override
 	protected void writeTextureToHardware() {
 		final PixelFormat pixelFormat = this.mBitmapTextureFormat.getPixelFormat();
+		final int glInternalFormat = pixelFormat.getGLInternalFormat();
 		final int glFormat = pixelFormat.getGLFormat();
 		final int glType = pixelFormat.getGLType();
-		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
+
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glInternalFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
 
 		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
@@ -149,57 +152,35 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		final ArrayList<IBitmapTextureAtlasSource> textureSources = this.mTextureAtlasSources;
 		final int textureSourceCount = textureSources.size();
 
-		// TODO What about GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1); in here?
-
 		final ITextureAtlasStateListener<IBitmapTextureAtlasSource> textureStateListener = this.getTextureStateListener();
-		for(int j = 0; j < textureSourceCount; j++) {
-			final IBitmapTextureAtlasSource bitmapTextureAtlasSource = textureSources.get(j);
-			if(bitmapTextureAtlasSource != null) {
-				final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(bitmapConfig);
-				try {
+		for(int i = 0; i < textureSourceCount; i++) {
+			final IBitmapTextureAtlasSource bitmapTextureAtlasSource = textureSources.get(i);
+			try {
+				if(preMultipyAlpha) {
+					final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(bitmapConfig);
 					if(bitmap == null) {
-						throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
+						throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.getClass().toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
 					}
 
-					if(preMultipyAlpha) {
-						GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, glFormat, glType);
-					} else {
-						GLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
-					}
+					GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, glFormat, glType);
 
 					bitmap.recycle();
-
-					if(textureStateListener != null) {
-						textureStateListener.onTextureAtlasSourceLoaded(this, bitmapTextureAtlasSource);
+				} else {
+					final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(Config.ARGB_8888);
+					if(bitmap == null) {
+						throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.getClass().toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
 					}
-				} catch (final NullBitmapException e) {
-					// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
-					//private Buffer createImage(final int width, final int height) {
-					//	final int stride = 3 * width;
-					//	final ByteBuffer image = ByteBuffer.allocateDirect(height * stride).order(ByteOrder.nativeOrder());
-					//
-					//	// Fill with a pretty "munching squares" pattern:
-					//	for (int t = 0; t < height; t++) {
-					//		final byte red = (byte) (255 - 2 * t);
-					//		final byte green = (byte) (2 * t);
-					//		final byte blue = 0;
-					//		for (int x = 0; x < width; x++) {
-					//			final int y = x ^ t;
-					//			image.position(stride * y + x * 3);
-					//			image.put(red);
-					//			image.put(green);
-					//			image.put(blue);
-					//		}
-					//	}
-					//	image.position(0);
-					//	return image;
-					//}
+					GLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
+				}
 
-					if(textureStateListener != null) {
-						textureStateListener.onTextureAtlasSourceLoadExeption(this, bitmapTextureAtlasSource, e);
-					} else {
-						throw e;
-					}
+				if(textureStateListener != null) {
+					textureStateListener.onTextureAtlasSourceLoaded(this, bitmapTextureAtlasSource);
+				}
+			} catch (final NullBitmapException e) {
+				if(textureStateListener != null) {
+					textureStateListener.onTextureAtlasSourceLoadExeption(this, bitmapTextureAtlasSource, e);
+				} else {
+					throw e;
 				}
 			}
 		}

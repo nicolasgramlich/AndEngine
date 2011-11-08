@@ -3,6 +3,7 @@ package org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.compressed.pvr.PVRTexture;
 
 /**
@@ -22,7 +23,7 @@ public interface IPVRTexturePixelBufferStrategy {
 
 	public abstract IPVRTexturePixelBufferStrategyBufferManager newPVRTexturePixelBufferStrategyManager(final PVRTexture pPVRTexture) throws IOException;
 
-	public abstract void loadPVRTextureData(final IPVRTexturePixelBufferStrategyBufferManager pPVRTexturePixelBufferStrategyManager, final int pWidth, final int pHeight, final int pBytesPerPixel, final int pGLFormat, final int pGLType, final int pMipmapLevel, final int pCurrentPixelDataOffset, final int pCurrentPixelDataSize) throws IOException;
+	public abstract void loadPVRTextureData(final IPVRTexturePixelBufferStrategyBufferManager pPVRTexturePixelBufferStrategyManager, final int pWidth, final int pHeight, final int pBytesPerPixel, final PixelFormat pPixelFormat, final int pMipmapLevel, final int pCurrentPixelDataOffset, final int pCurrentPixelDataSize) throws IOException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes

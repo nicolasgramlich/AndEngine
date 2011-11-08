@@ -3,6 +3,7 @@ package org.anddev.andengine.opengl.texture.bitmap;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.util.GLState;

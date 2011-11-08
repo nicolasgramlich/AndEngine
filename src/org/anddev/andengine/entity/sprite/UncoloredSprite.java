@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.PositionTextureCoordinatesShaderProgram;
@@ -23,7 +22,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 19:22:38 - 09.03.2010
  */
-public class UncoloredSprite extends RectangularShape {
+public class UncoloredSprite extends RectangularShape<Mesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -93,7 +92,7 @@ public class UncoloredSprite extends RectangularShape {
 		this.mTextureRegion = pTextureRegion;
 
 		this.setBlendingEnabled(true);
-		this.initBlendFunction();
+		this.initBlendFunction(pTextureRegion);
 
 		this.onUpdateVertices();
 		this.onUpdateColor();
@@ -126,7 +125,7 @@ public class UncoloredSprite extends RectangularShape {
 	public void reset() {
 		super.reset();
 
-		this.initBlendFunction();
+		this.initBlendFunction(this.mTextureRegion);
 	}
 
 	@Override
@@ -249,12 +248,6 @@ public class UncoloredSprite extends RectangularShape {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private void initBlendFunction() {
-		if(this.mTextureRegion.getTexture().getTextureOptions().mPreMultipyAlpha) {
-			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT); // TODO
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

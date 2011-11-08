@@ -10,6 +10,7 @@ import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatch
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.util.color.Color;
 import org.anddev.andengine.util.transformation.Transformation;
@@ -23,7 +24,7 @@ import org.anddev.andengine.util.transformation.Transformation;
  * @author Nicolas Gramlich
  * @since 15:05:44 - 18.11.2010
  */
-public abstract class BaseMenuItemDecorator implements IMenuItem {
+public abstract class BaseMenuItemDecorator<T extends Mesh> implements IMenuItem<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -32,13 +33,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	// Fields
 	// ===========================================================
 
-	private final IMenuItem mMenuItem;
+	protected final IMenuItem<T> mMenuItem;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseMenuItemDecorator(final IMenuItem pMenuItem) {
+	public BaseMenuItemDecorator(final IMenuItem<T> pMenuItem) {
 		this.mMenuItem = pMenuItem;
 	}
 
@@ -50,13 +51,18 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onMenuItemSelected(final IMenuItem pMenuItem);
-	protected abstract void onMenuItemUnselected(final IMenuItem pMenuItem);
-	protected abstract void onMenuItemReset(final IMenuItem pMenuItem);
+	protected abstract void onMenuItemSelected(final IMenuItem<T> pMenuItem);
+	protected abstract void onMenuItemUnselected(final IMenuItem<T> pMenuItem);
+	protected abstract void onMenuItemReset(final IMenuItem<T> pMenuItem);
 
 	@Override
 	public int getID() {
 		return this.mMenuItem.getID();
+	}
+
+	@Override
+	public T getMesh() {
+		return this.mMenuItem.getMesh();
 	}
 
 	@Override
@@ -357,7 +363,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 	
 	@Override
-	public boolean collidesWith(final IShape pOtherShape) {
+	public boolean collidesWith(final IShape<?> pOtherShape) {
 		return this.mMenuItem.collidesWith(pOtherShape);
 	}
 

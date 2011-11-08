@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.opengl.font.exception.FontException;
 import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.Texture.PixelFormat;
+import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.util.GLState;
 
 import android.graphics.Bitmap;
@@ -253,14 +253,11 @@ public class Font implements IFont {
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
 			this.mTexture.bind();
 
+			final boolean preMultipyAlpha = this.mTexture.getTextureOptions().mPreMultipyAlpha;
 			for(int i = lettersPendingToBeDrawnToTexture.size() - 1; i >= 0; i--) {
 				final Letter letter = lettersPendingToBeDrawnToTexture.get(i);
 				final Bitmap bitmap = this.getLetterBitmap(letter.mCharacter);
 
-				// TODO What about premultiplyalpha of the textureOptions?
-				if(this.mTexture.getTextureOptions().mPreMultipyAlpha) {
-				}
-				final boolean preMultipyAlpha = this.mTexture.getTextureOptions().mPreMultipyAlpha;
 				if(preMultipyAlpha) {
 					GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap);
 				} else {

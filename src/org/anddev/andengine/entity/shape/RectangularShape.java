@@ -13,7 +13,7 @@ import org.anddev.andengine.opengl.shader.ShaderProgram;
  * @author Nicolas Gramlich
  * @since 11:37:50 - 04.04.2010
  */
-public abstract class RectangularShape extends Shape implements IAreaShape {
+public abstract class RectangularShape<T extends Mesh> extends Shape<T> implements IAreaShape<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -32,7 +32,7 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	// Constructors
 	// ===========================================================
 
-	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh, final ShaderProgram pShaderProgram) {
+	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final T pMesh, final ShaderProgram pShaderProgram) {
 		super(pX, pY, pMesh, pShaderProgram);
 
 		this.mBaseWidth = pWidth;
@@ -142,9 +142,9 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	}
 
 	@Override
-	public boolean collidesWith(final IShape pOtherShape) {
+	public boolean collidesWith(final IShape<?> pOtherShape) {
 		if(pOtherShape instanceof RectangularShape) {
-			final RectangularShape pOtherRectangularShape = (RectangularShape) pOtherShape;
+			final RectangularShape<?> pOtherRectangularShape = (RectangularShape<?>) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(this, pOtherRectangularShape);
 		} else if(pOtherShape instanceof Line) {
 			final Line line = (Line) pOtherShape;

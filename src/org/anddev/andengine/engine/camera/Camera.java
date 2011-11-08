@@ -268,7 +268,7 @@ public class Camera implements IUpdateHandler {
 		return RectangularShapeCollisionChecker.isVisible(this, pLine);
 	}
 
-	public boolean isRectangularShapeVisible(final RectangularShape pRectangularShape) {
+	public boolean isRectangularShapeVisible(final RectangularShape<?> pRectangularShape) {
 		return RectangularShapeCollisionChecker.isVisible(this, pRectangularShape);
 	}
 

@@ -20,7 +20,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 12:18:49 - 13.03.2010
  */
-public class Rectangle extends RectangularShape {
+public class Rectangle extends RectangularShape<Mesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

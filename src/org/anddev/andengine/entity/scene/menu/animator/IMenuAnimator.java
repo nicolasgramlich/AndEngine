@@ -22,6 +22,6 @@ public interface IMenuAnimator {
 	// Methods
 	// ===========================================================
 
-	public void prepareAnimations(final ArrayList<IMenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight);
-	public void buildAnimations(final ArrayList<IMenuItem> pMenuItems, final float pCameraWidth, final float pCameraHeight);
+	public void prepareAnimations(final ArrayList<IMenuItem<?>> pMenuItems, final float pCameraWidth, final float pCameraHeight);
+	public void buildAnimations(final ArrayList<IMenuItem<?>> pMenuItems, final float pCameraWidth, final float pCameraHeight);
 }

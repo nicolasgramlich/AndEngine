@@ -1,8 +1,7 @@
 package org.anddev.andengine.util.path.astar;
 
 import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.TreeSet;
 
 import org.anddev.andengine.util.path.ICostFunction;
 import org.anddev.andengine.util.path.IPathFinder;
@@ -12,6 +11,7 @@ import org.anddev.andengine.util.spatial.adt.bounds.IIntBounds;
 
 /**
  * TODO Nodes could be recycle in a pool, mXMin/mXMax/mYMin/mYMax could be variable.
+ *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
@@ -27,8 +27,8 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 	// Fields
 	// ===========================================================
 
-	private final Set<Node> mVisitedNodes = new HashSet<Node>();
-	private final PriorityQueue<Node> mOpenNodes = new PriorityQueue<Node>();
+	private final HashSet<Node> mVisitedNodes = new HashSet<Node>();
+	private final TreeSet<Node> mOpenNodes = new TreeSet<Node>();
 
 	private final boolean mAllowDiagonal;
 
@@ -109,15 +109,13 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 
 		/* Initialize algorithm. */
 		fromNode.mExpectedRestCost = this.mAStarHeuristic.getExpectedRestCost(pPathFinderMap, pEntity, pFromX, pFromY, pToX, pToY);
-		
-		this.mVisitedNodes.clear();
-		this.mOpenNodes.clear();
+
 		this.mOpenNodes.add(fromNode);
 
 		Node current = null;
 		while(!this.mOpenNodes.isEmpty()) {
 			/* The first Node in the open list is the one with the lowest cost. */
-			current = this.mOpenNodes.poll();
+			current = this.mOpenNodes.pollFirst();
 			if(current.equals(toNode)) {
 				break;
 			}
@@ -165,6 +163,10 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 				}
 			}
 		}
+
+		/* Cleanup. */
+		this.mVisitedNodes.clear();
+		this.mOpenNodes.clear();
 
 		/* Check if a path was found. */
 		if(!current.equals(toNode)) {

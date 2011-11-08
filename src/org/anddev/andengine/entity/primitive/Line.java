@@ -200,7 +200,7 @@ public class Line extends Shape {
 
 	@Override
 	protected void postDraw(Camera pCamera) {
-		this.mMesh.preDraw(this.mShaderProgram);
+		this.mMesh.postDraw(this.mShaderProgram);
 
 		super.postDraw(pCamera);
 	}

@@ -465,7 +465,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		threadLocker.waitUntilCanUpdate();
 	}
 
-	protected void onUpdate(final long pNanosecondsElapsed) throws InterruptedException {
+	public void onUpdate(final long pNanosecondsElapsed) throws InterruptedException {
 		final float pSecondsElapsed = (float)pNanosecondsElapsed * TimeConstants.SECONDS_PER_NANOSECOND;
 
 		this.mSecondsElapsedTotal += pSecondsElapsed;

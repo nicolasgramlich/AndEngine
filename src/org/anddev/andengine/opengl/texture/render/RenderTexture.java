@@ -123,12 +123,34 @@ public class RenderTexture extends Texture {
 	}
 
 	public void begin() {
+		this.begin(false, false);
+	}
+
+	public void begin(final boolean pFlipX, final boolean pFlipY) {
 		this.savePreviousViewport();
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
 
 		GLState.pushProjectionGLMatrix();
-		/* Note: Bottom and Top are flipped on purpose. */
-		GLState.orthoProjectionGLMatrixf(0, this.mWidth, 0, this.mHeight, -1, 1);
+
+		final float left;
+		final float right;
+		final float bottom;
+		final float top;
+		if(pFlipX) {
+			left = this.mWidth;
+			right = 0;
+		} else {
+			left = 0;
+			right = this.mWidth;
+		}
+		if(pFlipY) {
+			top = this.mHeight;
+			bottom = 0;
+		} else {
+			top = 0;
+			bottom = this.mHeight;
+		}
+		GLState.orthoProjectionGLMatrixf(left, right, bottom, top, -1, 1);
 
 		this.savePreviousFramebufferObjectID();
 		GLState.bindFramebuffer(this.mFramebufferObjectID);
@@ -138,7 +160,11 @@ public class RenderTexture extends Texture {
 	}
 
 	public void begin(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.begin();
+		this.begin(false, false, pRed, pGreen, pBlue, pAlpha);
+	}
+
+	public void begin(final boolean pFlipX, final boolean pFlipY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.begin(pFlipX, pFlipY);
 
 		/* Save clear color. */
 		GLES20.glGetFloatv(GLES20.GL_COLOR_CLEAR_VALUE, RenderTexture.CLEARCOLOR_CONTAINER, 0);
@@ -197,10 +223,7 @@ public class RenderTexture extends Texture {
 		glPixelBuffer.position(0);
 
 		this.begin();
-		/* Convert to GL coordinates. */
-		final int x = pX;
-		final int y = this.mHeight - pHeight - pY;
-		GLES20.glReadPixels(x, y, pWidth, pHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), glPixelBuffer);
+		GLES20.glReadPixels(pX, pY, pWidth, pHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), glPixelBuffer);
 		this.end();
 
 		if(pFlipVertical) {

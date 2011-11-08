@@ -30,7 +30,7 @@ public class TextureOptions {
 	public static final TextureOptions REPEATING_NEAREST_PREMULTIPLYALPHA = new TextureOptions(GLES20.GL_NEAREST, GLES20.GL_NEAREST, GLES20.GL_REPEAT, GLES20.GL_REPEAT, true);
 	public static final TextureOptions REPEATING_BILINEAR_PREMULTIPLYALPHA = new TextureOptions(GLES20.GL_LINEAR, GLES20.GL_LINEAR, GLES20.GL_REPEAT, GLES20.GL_REPEAT, true);
 
-	public static final TextureOptions DEFAULT = NEAREST_PREMULTIPLYALPHA;
+	public static final TextureOptions DEFAULT = NEAREST; 
 
 	// ===========================================================
 	// Fields

@@ -11,6 +11,7 @@ import org.anddev.andengine.util.path.Path;
 import org.anddev.andengine.util.spatial.adt.bounds.IIntBounds;
 
 /**
+ * TODO Nodes could be recycle in a pool, mXMin/mXMax/mYMin/mYMax could be variable.
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
@@ -29,8 +30,6 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 	private final Set<Node> mVisitedNodes = new HashSet<Node>();
 	private final PriorityQueue<Node> mOpenNodes = new PriorityQueue<Node>();
 
-	private final int mMaxSearchDepth;
-
 	private final boolean mAllowDiagonal;
 
 	private final IAStarHeuristic<T> mAStarHeuristic;
@@ -43,13 +42,12 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 	// Constructors
 	// ===========================================================
 
-	public AStarPathFinder(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final int pMaxSearchDepth, final boolean pAllowDiagonal) {
-		this(pXMin, pYMin, pXMax, pYMax, pMaxSearchDepth, pAllowDiagonal, new EuclideanHeuristic<T>());
+	public AStarPathFinder(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final boolean pAllowDiagonal) {
+		this(pXMin, pYMin, pXMax, pYMax, pAllowDiagonal, new EuclideanHeuristic<T>());
 	}
 
-	public AStarPathFinder(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final int pMaxSearchDepth, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic) {
+	public AStarPathFinder(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic) {
 		this.mAStarHeuristic = pAStarHeuristic;
-		this.mMaxSearchDepth = pMaxSearchDepth;
 		this.mAllowDiagonal = pAllowDiagonal;
 
 		this.mXMin = pXMin;
@@ -87,13 +85,20 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 	// ===========================================================
 
 	@Override
-	public synchronized Path findPath(final int pFromX, final int pFromY, final int pToX, final int pToY, final IPathFinderMap<T> pPathFinderMap, final T pEntity, final ICostFunction<T> pCostFunction, final float pMaxCost, final IPathFinderListener<T> pPathFinderListener) {
-		if(pPathFinderMap.isBlocked(pToX, pToY, pEntity)) {
+	public synchronized Path findPath(final int pFromX, final int pFromY, final int pToX, final int pToY, final T pEntity, final IPathFinderMap<T> pPathFinderMap, final ICostFunction<T> pCostFunction) {
+		return this.findPath(pFromX, pFromY, pToX, pToY, pEntity, pPathFinderMap, pCostFunction, Float.MAX_VALUE);
+	}
+	
+	@Override
+	public synchronized Path findPath(final int pFromX, final int pFromY, final int pToX, final int pToY, final T pEntity, final IPathFinderMap<T> pPathFinderMap, final ICostFunction<T> pCostFunction, final float pMaxCost) {
+		return this.findPath(pFromX, pFromY, pToX, pToY, pEntity, pPathFinderMap, pCostFunction, pMaxCost, null);
+	}
+
+	@Override
+	public synchronized Path findPath(final int pFromX, final int pFromY, final int pToX, final int pToY, final T pEntity, final IPathFinderMap<T> pPathFinderMap, final ICostFunction<T> pCostFunction, final float pMaxCost, final IPathFinderListener<T> pPathFinderListener) {
+		if((pFromX == pToX && pFromY == pToY) || pPathFinderMap.isBlocked(pFromX, pFromY, pEntity) || pPathFinderMap.isBlocked(pToX, pToY, pEntity)) {
 			return null;
 		}
-
-		this.mVisitedNodes.clear();
-		this.mOpenNodes.clear();
 
 		/* Drag some fields to local variables. */
 		final Node fromNode = new Node(pFromX, pFromY);
@@ -101,20 +106,19 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 
 		final IAStarHeuristic<T> aStarHeuristic = this.mAStarHeuristic;
 		final boolean allowDiagonalMovement = this.mAllowDiagonal;
-		final int maxSearchDepth = this.mMaxSearchDepth;
 
 		/* Initialize algorithm. */
-		fromNode.mCost = 0;
-		fromNode.mDepth = 0;
-		toNode.mParent = null;
-
+		fromNode.mExpectedRestCost = this.mAStarHeuristic.getExpectedRestCost(pPathFinderMap, pEntity, pFromX, pFromY, pToX, pToY);
+		
+		this.mVisitedNodes.clear();
+		this.mOpenNodes.clear();
 		this.mOpenNodes.add(fromNode);
 
-		int currentDepth = 0;
-		while(currentDepth < maxSearchDepth && !this.mOpenNodes.isEmpty()) {
+		Node current = null;
+		while(!this.mOpenNodes.isEmpty()) {
 			/* The first Node in the open list is the one with the lowest cost. */
-			final Node current = this.mOpenNodes.poll();
-			if(current == toNode) {
+			current = this.mOpenNodes.poll();
+			if(current.equals(toNode)) {
 				break;
 			}
 
@@ -136,53 +140,55 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 					final int neighborX = dX + current.mX;
 					final int neighborY = dY + current.mY;
 
-					if(!this.isBlocked(pFromX, pFromY, neighborX, neighborY, pPathFinderMap, pEntity)) {
-						final float neighborCost = current.mCost + pCostFunction.getCost(pPathFinderMap, current.mX, current.mY, neighborX, neighborY, pEntity);
-						final Node neighbor = new Node(neighborX, neighborX);
+					if(this.isBlocked(pFromX, pFromY, neighborX, neighborY, pPathFinderMap, pEntity)) {
+						continue;
+					}
 
-						if(pPathFinderListener != null) {
-							pPathFinderListener.onVisited(pEntity, neighborX, neighborY);
-						}
+					final Node neighbor = new Node(neighborX, neighborY);
 
-						/* Re-evaluate if there is a better path. */
-						if(neighborCost < neighbor.mCost) {
-							// TODO Is this ever possible with AStar and a proper heuristic ???
-							if(this.mOpenNodes.contains(neighbor)) {
-								this.mOpenNodes.remove(neighbor);
-							}
-							if(this.mVisitedNodes.contains(neighbor)) {
-								this.mVisitedNodes.remove(neighbor);
-							}
-							throw new IllegalArgumentException("Should not happen?");
-						}
+					if(pPathFinderListener != null) {
+						pPathFinderListener.onVisited(pEntity, neighborX, neighborY);
+					}
 
-						if(!this.mOpenNodes.contains(neighbor) && !(this.mVisitedNodes.contains(neighbor))) {
-							neighbor.mCost = neighborCost;
-							if(neighbor.mCost <= pMaxCost) {
-								neighbor.mExpectedRestCost = aStarHeuristic.getExpectedRestCost(pPathFinderMap, pEntity, neighborX, neighborY, pToX, pToY);
-								neighbor.setParent(current);
-								currentDepth = Math.max(currentDepth, neighbor.mDepth);
-								this.mOpenNodes.add(neighbor);
-							}
-						}
+					if(this.mOpenNodes.contains(neighbor) || this.mVisitedNodes.contains(neighbor)) {
+						continue;
+					}
+
+					/* Update cost of neighbor as cost of current plus step from current to neighbor. */
+					final float costFromCurrentToNeigbor = pCostFunction.getCost(pPathFinderMap, current.mX, current.mY, neighborX, neighborY, pEntity);
+					neighbor.mCost = current.mCost + costFromCurrentToNeigbor;
+					if(neighbor.mCost <= pMaxCost) {
+						neighbor.mExpectedRestCost = aStarHeuristic.getExpectedRestCost(pPathFinderMap, pEntity, neighborX, neighborY, pToX, pToY);
+						neighbor.setParent(current);
+						this.mOpenNodes.add(neighbor);
 					}
 				}
 			}
 		}
 
 		/* Check if a path was found. */
-		if(toNode.mParent == null) {
+		if(!current.equals(toNode)) {
 			return null;
 		}
 
-		/* Traceback path. */
-		final Path path = new Path();
-		Node tmp = toNode;
-		while(tmp != fromNode) {
-			path.prepend(tmp.mX, tmp.mY);
+		/* Calculate path length. */
+		int length = 1;
+		Node tmp = current;
+		while(!tmp.equals(fromNode)) {
 			tmp = tmp.mParent;
+			length++;
 		}
-		path.prepend(pFromX, pFromY);
+		
+		/* Traceback path. */
+		final Path path = new Path(length);
+		int index = length - 1;
+		tmp = current;
+		while(!tmp.equals(fromNode)) {
+			path.set(index, tmp.mX, tmp.mY);
+			tmp = tmp.mParent;
+			index--;
+		}
+		path.set(0, pFromX, pFromY);
 
 		return path;
 	}
@@ -205,7 +211,7 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	static class Node implements Comparable<Node> {
+	static final class Node implements Comparable<Node> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -215,7 +221,6 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 		// ===========================================================
 
 		Node mParent;
-		int mDepth;
 
 		final int mX;
 		final int mY;
@@ -237,7 +242,6 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 		// ===========================================================
 
 		public void setParent(final Node parent) {
-			this.mDepth = parent.mDepth + 1;
 			this.mParent = parent;
 		}
 
@@ -259,15 +263,15 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 			} else if(this.getClass() != pOther.getClass()) {
 				return false;
 			}
-			final Node otherNode = (Node) pOther;
-			if(this.mX != otherNode.mX || this.mY != otherNode.mY) {
-				return false;
-			}
-			return true;
+			return this.equals((Node)pOther);
 		}
 
 		@Override
 		public int compareTo(final Node pOther) {
+			if(this.equals(pOther)) {
+				return 0;
+			}
+
 			final float totalCost = this.mExpectedRestCost + this.mCost;
 			final float totalCostOther = pOther.mExpectedRestCost + pOther.mCost;
 
@@ -276,13 +280,28 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 			} else if (totalCost > totalCostOther) {
 				return 1;
 			} else {
-				return 0;
+				if(this.mCost < pOther.mCost) {
+					return -1;
+				} else if(this.mCost > pOther.mCost) {
+					return 1;
+				} else {
+					return 0;
+				}
 			}
+		}
+
+		@Override
+		public String toString() {
+			return "Node [x=" + this.mX + ", y=" + this.mY + "]";
 		}
 
 		// ===========================================================
 		// Methods
 		// ===========================================================
+
+		public boolean equals(final Node pNode) {
+			return this.mX == pNode.mX && this.mY == pNode.mY;
+		}
 
 		// ===========================================================
 		// Inner and Anonymous Classes

@@ -1,6 +1,5 @@
 package org.anddev.andengine.util.path;
 
-import java.util.ArrayList;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -18,22 +17,72 @@ public class Path {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Step> mSteps = new ArrayList<Step>();
+	private final int[] mXs;
+	private final int[] mYs;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public Path(final int pLength) {
+		this.mXs = new int[pLength];
+		this.mYs = new int[pLength];
+	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
 	public int getLength() {
-		return this.mSteps.size();
+		return this.mXs.length;
 	}
 
-	public Step getStep(final int pIndex) {
-		return this.mSteps.get(pIndex);
+	public int getFromX() {
+		return this.getX(0);
+	}
+
+	public int getFromY() {
+		return this.getY(0);
+	}
+
+	public int getToX() {
+		return this.getX(this.getLength() - 1);
+	}
+
+	public int getToY() {
+		return this.getY(this.getLength() - 1);
+	}
+
+	public int getX(final int pIndex) {
+		return this.mXs[pIndex];
+	}
+
+	public int getY(final int pIndex) {
+		return this.mYs[pIndex];
+	}
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
+	public void set(final int pIndex, final int pX, final int pY) {
+		this.mXs[pIndex] = pX;
+		this.mYs[pIndex] = pY;
+	}
+
+	public boolean contains(final int pX, final int pY) {
+		final int[] xs = this.mXs;
+		final int[] ys = this.mYs;
+		for(int i = this.getLength() - 1; i >= 0; i--) {
+			if(xs[i] == pX && ys[i] == pY) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Direction getDirectionToPreviousStep(final int pIndex) {
@@ -56,139 +105,7 @@ public class Path {
 		}
 	}
 
-	public int getX(final int pIndex) {
-		return this.getStep(pIndex).getX();
-	}
-
-	public int getY(final int pIndex) {
-		return this.getStep(pIndex).getY();
-	}
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	public void append(final int pX, final int pY) {
-		this.append(new Step(pX, pY));
-	}
-
-	public void append(final Step pStep) {
-		this.mSteps.add(pStep);
-	}
-
-	public void prepend(final int pX, final int pY) {
-		this.prepend(new Step(pX, pY));
-	}
-
-	public void prepend(final Step pStep) {
-		this.mSteps.add(0, pStep);
-	}
-
-	public boolean contains(final int pX, final int pY) {
-		final ArrayList<Step> steps = this.mSteps;
-		for(int i = steps.size() - 1; i >= 0; i--) {
-			final Step step = steps.get(i);
-			if(step.getX() == pX && step.getY() == pY) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public int getFromY() {
-		return this.getY(0);
-	}
-
-	public int getFromX() {
-		return this.getX(0);
-	}
-
-	public int getToY() {
-		return this.getY(this.mSteps.size() - 1);
-	}
-
-	public int getToX() {
-		return this.getX(this.mSteps.size() - 1);
-	}
-
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static class Step {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		private final int mX;
-		private final int mY;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public Step(final int pX, final int pY) {
-			this.mX = pX;
-			this.mY = pY;
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		public int getX() {
-			return this.mX;
-		}
-
-		public int getY() {
-			return this.mY;
-		}
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		@Override
-		public int hashCode() {
-			return this.mX << 16 + this.mY;
-		}
-
-		@Override
-		public boolean equals(final Object pOther) {
-			if(this == pOther) {
-				return true;
-			}
-			if(pOther == null) {
-				return false;
-			}
-			if(this.getClass() != pOther.getClass()) {
-				return false;
-			}
-			final Step other = (Step) pOther;
-			if(this.mX != other.mX) {
-				return false;
-			}
-			if(this.mY != other.mY) {
-				return false;
-			}
-			return true;
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
 }

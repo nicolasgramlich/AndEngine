@@ -57,6 +57,11 @@ public abstract class BaseAudioManager<T extends IAudioEntity> implements IAudio
 	}
 
 	@Override
+	public boolean remove(final T pAudioEntity) {
+		return this.mAudioEntities.remove(pAudioEntity);
+	}
+
+	@Override
 	public void releaseAll() {
 		final ArrayList<T> audioEntities = this.mAudioEntities;
 		for(int i = audioEntities.size() - 1; i >= 0; i--) {

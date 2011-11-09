@@ -1,12 +1,13 @@
 package org.anddev.andengine.audio.music;
 
 import org.anddev.andengine.audio.BaseAudioEntity;
+import org.anddev.andengine.audio.music.exception.MusicReleasedException;
 
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -21,7 +22,7 @@ public class Music extends BaseAudioEntity {
 	// Fields
 	// ===========================================================
 
-	private final MediaPlayer mMediaPlayer;
+	private MediaPlayer mMediaPlayer;
 
 	// ===========================================================
 	// Constructors
@@ -29,6 +30,7 @@ public class Music extends BaseAudioEntity {
 
 	Music(final MusicManager pMusicManager, final MediaPlayer pMediaPlayer) {
 		super(pMusicManager);
+
 		this.mMediaPlayer = pMediaPlayer;
 	}
 
@@ -36,11 +38,15 @@ public class Music extends BaseAudioEntity {
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isPlaying() {
+	public boolean isPlaying() throws MusicReleasedException {
+		this.assertNotReleased();
+
 		return this.mMediaPlayer.isPlaying();
 	}
 
-	public MediaPlayer getMediaPlayer() {
+	public MediaPlayer getMediaPlayer() throws MusicReleasedException {
+		this.assertNotReleased();
+
 		return this.mMediaPlayer;
 	}
 
@@ -49,42 +55,52 @@ public class Music extends BaseAudioEntity {
 	// ===========================================================
 
 	@Override
-	protected MusicManager getAudioManager() {
+	protected MusicManager getAudioManager() throws MusicReleasedException {
 		return (MusicManager)super.getAudioManager();
 	}
 
 	@Override
-	public void play() {
+	protected void throwOnReleased() throws MusicReleasedException {
+		throw new MusicReleasedException();
+	}
+
+	@Override
+	public void play() throws MusicReleasedException {
+		super.play();
+
 		this.mMediaPlayer.start();
 	}
 
 	@Override
-	public void stop() {
+	public void stop() throws MusicReleasedException {
+		super.stop();
+
 		this.mMediaPlayer.stop();
 	}
 
 	@Override
-	public void resume() {
+	public void resume() throws MusicReleasedException {
+		super.resume();
+
 		this.mMediaPlayer.start();
 	}
 
 	@Override
-	public void pause() {
+	public void pause() throws MusicReleasedException {
+		super.pause();
+
 		this.mMediaPlayer.pause();
 	}
 
 	@Override
-	public void release() {
-		this.mMediaPlayer.release();
-	}
+	public void setLooping(final boolean pLooping) throws MusicReleasedException {
+		super.setLooping(pLooping);
 
-	@Override
-	public void setLooping(final boolean pLooping) {
 		this.mMediaPlayer.setLooping(pLooping);
 	}
 
 	@Override
-	public void setVolume(final float pLeftVolume, final float pRightVolume) {
+	public void setVolume(final float pLeftVolume, final float pRightVolume) throws MusicReleasedException {
 		super.setVolume(pLeftVolume, pRightVolume);
 
 		final float masterVolume = this.getAudioManager().getMasterVolume();
@@ -95,19 +111,33 @@ public class Music extends BaseAudioEntity {
 	}
 
 	@Override
-	public void onMasterVolumeChanged(final float pMasterVolume) {
+	public void onMasterVolumeChanged(final float pMasterVolume) throws MusicReleasedException {
 		this.setVolume(this.mLeftVolume, this.mRightVolume);
+	}
+
+	@Override
+	public void release() throws MusicReleasedException {
+		super.release();
+
+		this.mMediaPlayer.release();
+		this.mMediaPlayer = null;
+
+		this.getAudioManager().remove(this);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	public void seekTo(final int pMilliseconds) {
+	public void seekTo(final int pMilliseconds) throws MusicReleasedException {
+		this.assertNotReleased();
+
 		this.mMediaPlayer.seekTo(pMilliseconds);
 	}
 
-	public void setOnCompletionListener(final OnCompletionListener pOnCompletionListener) {
+	public void setOnCompletionListener(final OnCompletionListener pOnCompletionListener) throws MusicReleasedException {
+		this.assertNotReleased();
+
 		this.mMediaPlayer.setOnCompletionListener(pOnCompletionListener);
 	}
 

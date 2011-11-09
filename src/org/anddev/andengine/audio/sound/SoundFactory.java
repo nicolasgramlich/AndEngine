@@ -1,9 +1,11 @@
 package org.anddev.andengine.audio.sound;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -70,6 +72,17 @@ public class SoundFactory {
 
 	public static Sound createSoundFromResource(final SoundManager pSoundManager, final Context pContext, final int pSoundResID) {
 		final int soundID = pSoundManager.getSoundPool().load(pContext, pSoundResID, 1);
+		final Sound sound = new Sound(pSoundManager, soundID);
+		pSoundManager.add(sound);
+		return sound;
+	}
+
+	public static Sound createSoundFromFile(final SoundManager pSoundManager, final File pFile) throws IOException {
+		return SoundFactory.createSoundFromPath(pSoundManager, pFile.getAbsolutePath());
+	}
+
+	public static Sound createSoundFromAssetFileDescriptor(final SoundManager pSoundManager, final AssetFileDescriptor pAssetFileDescriptor) {
+		final int soundID = pSoundManager.getSoundPool().load(pAssetFileDescriptor, 1);
 		final Sound sound = new Sound(pSoundManager, soundID);
 		pSoundManager.add(sound);
 		return sound;

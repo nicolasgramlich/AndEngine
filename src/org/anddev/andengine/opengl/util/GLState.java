@@ -26,6 +26,8 @@ public class GLState {
 	// Constants
 	// ===========================================================
 
+	public static final int GL_UNPACK_ALIGNMENT_DEFAULT = 4;
+
 	private static final int[] HARDWAREID_CONTAINER = new int[1];
 
 	// ===========================================================
@@ -35,6 +37,8 @@ public class GLState {
 	private static String sGLVersion;
 	private static String sGLRenderer;
 	private static String sGLExtensions;
+
+	private static int sGLMaximumVertexAttributeCount;
 
 	private static int sCurrentHardwareBufferID = -1;
 	private static int sCurrentShaderProgramID = -1;
@@ -61,8 +65,6 @@ public class GLState {
 	private static final float[] sProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
 	private static final float[] sModelViewProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
 
-	public static final int GL_UNPACK_ALIGNMENT_DEFAULT = 4;
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -79,11 +81,25 @@ public class GLState {
 		return GLState.sGLExtensions;
 	}
 
+	public static int getGLMaximumVertexAttributeCount() {
+		return GLState.sGLMaximumVertexAttributeCount;
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	public static void reset() {
+	public static void reset(final RenderOptions pRenderOptions) {
+		GLState.sGLVersion = GLES20.glGetString(GLES20.GL_VERSION);
+		GLState.sGLRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
+		GLState.sGLExtensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
+
+		Debug.d("RENDERER: " + GLState.sGLRenderer);
+		Debug.d("VERSION: " + GLState.sGLVersion);
+		Debug.d("EXTENSIONS: " + GLState.sGLExtensions);
+
+		GLState.sGLMaximumVertexAttributeCount = getInteger(GLES20.GL_MAX_VERTEX_ATTRIBS);
+
 		GLState.sModelViewGLMatrixStack.reset();
 		GLState.sProjectionGLMatrixStack.reset();
 
@@ -107,16 +123,6 @@ public class GLState {
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION);
 
 		GLState.sLineWidth = 1;
-	}
-
-	public static void enableExtensions(final RenderOptions pRenderOptions) {
-		GLState.sGLVersion = GLES20.glGetString(GLES20.GL_VERSION);
-		GLState.sGLRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
-		GLState.sGLExtensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
-
-		Debug.d("RENDERER: " + GLState.sGLRenderer);
-		Debug.d("VERSION: " + GLState.sGLVersion);
-		Debug.d("EXTENSIONS: " + GLState.sGLExtensions);
 	}
 
 	public static void enableScissorTest() {
@@ -249,8 +255,7 @@ public class GLState {
 	}
 
 	public static int getActiveFramebuffer() {
-		GLES20.glGetIntegerv(GLES20.GL_FRAMEBUFFER_BINDING, GLState.HARDWAREID_CONTAINER, 0);
-		return GLState.HARDWAREID_CONTAINER[0];
+		return GLState.getInteger(GLES20.GL_FRAMEBUFFER_BINDING);
 	}
 
 	public static void deleteFramebuffer(final int pHardwareFramebufferID) {
@@ -430,6 +435,11 @@ public class GLState {
 		final Buffer pixelBuffer = GLHelper.getPixels(pBitmap, pPixelFormat, ByteOrder.BIG_ENDIAN);
 
 		GLES20.glTexSubImage2D(pTarget, pLevel, pX, pY, pBitmap.getWidth(), pBitmap.getHeight(), pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
+	}
+
+	public static int getInteger(final int pAttribute) {
+		GLES20.glGetIntegerv(pAttribute, HARDWAREID_CONTAINER, 0);
+		return HARDWAREID_CONTAINER[0];
 	}
 
 	public static int getGLError() {

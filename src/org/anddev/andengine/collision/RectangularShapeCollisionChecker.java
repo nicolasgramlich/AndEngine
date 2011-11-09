@@ -5,6 +5,7 @@ import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.math.MathUtils;
+import org.anddev.andengine.util.transformation.Transformation;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -56,6 +57,13 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		return ShapeCollisionChecker.checkCollision(2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A, 2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
 	}
 
+	public static boolean isVisible(final Camera pCamera, final float pX, final float pY, final float pWidth, final float pHeight, final Transformation pLocalToSceneTransformation) {
+		RectangularShapeCollisionChecker.fillVertices(pCamera, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A);
+		RectangularShapeCollisionChecker.fillVertices(pX, pY, pWidth, pHeight, pLocalToSceneTransformation, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
+		
+		return ShapeCollisionChecker.checkCollision(2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A, 2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
+	}
+
 	public static boolean isVisible(final Camera pCamera, final Line pLine) {
 		RectangularShapeCollisionChecker.fillVertices(pCamera, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A);
 		LineCollisionChecker.fillVertices(pLine, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
@@ -78,10 +86,14 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	}
 
 	public static void fillVertices(final RectangularShape<?> pRectangularShape, final float[] pVertices) {
-		final float left = 0;
-		final float top = 0;
-		final float right = pRectangularShape.getWidth();
-		final float bottom = pRectangularShape.getHeight();
+		RectangularShapeCollisionChecker.fillVertices(0, 0, pRectangularShape.getWidth(), pRectangularShape.getHeight(), pRectangularShape.getLocalToSceneTransformation(), pVertices);
+	}
+
+	public static void fillVertices(final float pX, final float pY, final float pWidth, final float pHeight, final Transformation pLocalToSceneTransformation, final float[] pVertices) {
+		final float left = pX;
+		final float top = pY;
+		final float right = pX + pWidth;
+		final float bottom = pY + pHeight;
 
 		pVertices[0 + Constants.VERTEX_INDEX_X] = left;
 		pVertices[0 + Constants.VERTEX_INDEX_Y] = top;
@@ -95,7 +107,7 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		pVertices[6 + Constants.VERTEX_INDEX_X] = left;
 		pVertices[6 + Constants.VERTEX_INDEX_Y] = bottom;
 
-		pRectangularShape.getLocalToSceneTransformation().transform(pVertices);
+		pLocalToSceneTransformation.transform(pVertices);
 	}
 
 	private static void fillVertices(final Camera pCamera, final float[] pVertices) {

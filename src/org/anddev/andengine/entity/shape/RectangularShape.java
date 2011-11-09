@@ -112,13 +112,8 @@ public abstract class RectangularShape<T extends Mesh> extends Shape<T> implemen
 	}
 
 	@Override
-	protected boolean isCulled(final Camera pCamera) { // TODO Advanced culling!
-		final float x = this.mX;
-		final float y = this.mY;
-		return x > pCamera.getXMax()
-				|| y > pCamera.getYMax()
-				|| x + this.getWidth() < pCamera.getXMin()
-				|| y + this.getHeight() < pCamera.getYMin();
+	protected boolean isCulled(final Camera pCamera) {
+		return false;
 	}
 
 	@Override

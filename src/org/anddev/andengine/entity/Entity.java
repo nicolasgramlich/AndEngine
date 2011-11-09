@@ -1068,6 +1068,9 @@ public class Entity implements IEntity {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
+	 */
 	protected void preDraw(final Camera pCamera) {
 
 	}
@@ -1079,6 +1082,9 @@ public class Entity implements IEntity {
 
 	}
 
+	/**
+	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
+	 */
 	protected void postDraw(final Camera pCamera) {
 
 	}

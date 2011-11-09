@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.util.debug.Debug;
 
+import android.opengl.GLES20;
+
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -46,6 +48,10 @@ public interface ITexture {
 	public void reloadToHardware() throws IOException;
 
 	public void bind();
+	/**
+	 * @param pGLActiveTexture from {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}. 
+	 */
+	public void bind(final int pGLActiveTexture);
 
 	public TextureOptions getTextureOptions();
 

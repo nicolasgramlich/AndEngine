@@ -65,6 +65,8 @@ public class Rectangle extends RectangularShape<Mesh> {
 
 		this.onUpdateVertices();
 		this.onUpdateColor();
+
+		this.setBlendingEnabled(true);
 	}
 
 	// ===========================================================

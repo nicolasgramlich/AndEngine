@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.util.GLState;
 
+import android.opengl.GLES20;
+
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -156,6 +158,12 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void bind() {
+		GLState.bindTexture(this.mTextureID);
+	}
+
+	@Override
+	public void bind(final int pGLActiveTexture) {
+		GLES20.glActiveTexture(pGLActiveTexture);
 		GLState.bindTexture(this.mTextureID);
 	}
 

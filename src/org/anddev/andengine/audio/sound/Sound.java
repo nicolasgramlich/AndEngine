@@ -1,9 +1,12 @@
 package org.anddev.andengine.audio.sound;
 
 import org.anddev.andengine.audio.BaseAudioEntity;
+import org.anddev.andengine.audio.sound.exception.SoundReleasedException;
+
+import android.media.SoundPool;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -18,7 +21,7 @@ public class Sound extends BaseAudioEntity {
 	// Fields
 	// ===========================================================
 
-	private final int mSoundID;
+	private int mSoundID;
 	private int mStreamID = 0;
 
 	private int mLoopCount = 0;
@@ -30,6 +33,7 @@ public class Sound extends BaseAudioEntity {
 
 	Sound(final SoundManager pSoundManager, final int pSoundID) {
 		super(pSoundManager);
+
 		this.mSoundID = pSoundID;
 	}
 
@@ -37,88 +41,120 @@ public class Sound extends BaseAudioEntity {
 	// Getter & Setter
 	// ===========================================================
 
-	public void setLoopCount(final int pLoopCount) {
+	public void setLoopCount(final int pLoopCount) throws SoundReleasedException {
+		this.assertNotReleased();
+
 		this.mLoopCount = pLoopCount;
 		if(this.mStreamID != 0) {
-			this.getAudioManager().getSoundPool().setLoop(this.mStreamID, pLoopCount);
+			this.getSoundPool().setLoop(this.mStreamID, pLoopCount);
 		}
 	}
 
-	public void setRate(final float pRate) {
-		this.mRate  = pRate;
+	public void setRate(final float pRate) throws SoundReleasedException {
+		this.assertNotReleased();
+
+		this.mRate = pRate;
 		if(this.mStreamID != 0) {
-			this.getAudioManager().getSoundPool().setRate(this.mStreamID, pRate);
+			this.getSoundPool().setRate(this.mStreamID, pRate);
 		}
+	}
+
+	private SoundPool getSoundPool() throws SoundReleasedException {
+		return this.getAudioManager().getSoundPool();
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
 	@Override
-	protected SoundManager getAudioManager() {
+	protected SoundManager getAudioManager() throws SoundReleasedException {
 		return (SoundManager)super.getAudioManager();
 	}
 
 	@Override
-	public void play() {
+	protected void throwOnReleased() throws SoundReleasedException {
+		throw new SoundReleasedException();
+	}
+
+	@Override
+	public void play() throws SoundReleasedException {
+		super.play();
+
 		final float masterVolume = this.getMasterVolume();
 		final float leftVolume = this.mLeftVolume * masterVolume;
 		final float rightVolume = this.mRightVolume * masterVolume;
-		this.mStreamID = this.getAudioManager().getSoundPool().play(this.mSoundID, leftVolume, rightVolume, 1, this.mLoopCount, this.mRate);
+
+		this.mStreamID = this.getSoundPool().play(this.mSoundID, leftVolume, rightVolume, 1, this.mLoopCount, this.mRate);
 	}
 
 	@Override
-	public void stop() {
+	public void stop() throws SoundReleasedException {
+		super.stop();
+
 		if(this.mStreamID != 0) {
-			this.getAudioManager().getSoundPool().stop(this.mStreamID);
+			this.getSoundPool().stop(this.mStreamID);
 		}
 	}
 
 	@Override
-	public void resume() {
+	public void resume() throws SoundReleasedException {
+		super.resume();
+
 		if(this.mStreamID != 0) {
-			this.getAudioManager().getSoundPool().resume(this.mStreamID);
+			this.getSoundPool().resume(this.mStreamID);
 		}
 	}
 
 	@Override
-	public void pause() {
+	public void pause() throws SoundReleasedException {
+		super.pause();
+
 		if(this.mStreamID != 0) {
-			this.getAudioManager().getSoundPool().pause(this.mStreamID);
+			this.getSoundPool().pause(this.mStreamID);
 		}
 	}
 
 	@Override
-	public void release() {
+	public void release() throws SoundReleasedException {
+		super.release();
 
+		this.getSoundPool().unload(this.mSoundID);
+		this.mSoundID = 0;
+
+		this.getAudioManager().remove(this);
 	}
 
 	@Override
-	public void setLooping(final boolean pLooping) {
+	public void setLooping(final boolean pLooping) throws SoundReleasedException {
+		super.setLooping(pLooping);
+
 		this.setLoopCount((pLooping) ? -1 : 0);
 	}
 
 	@Override
-	public void setVolume(final float pLeftVolume, final float pRightVolume) {
+	public void setVolume(final float pLeftVolume, final float pRightVolume) throws SoundReleasedException {
 		super.setVolume(pLeftVolume, pRightVolume);
+
 		if(this.mStreamID != 0){
 			final float masterVolume = this.getMasterVolume();
 			final float leftVolume = this.mLeftVolume * masterVolume;
 			final float rightVolume = this.mRightVolume * masterVolume;
 
-			this.getAudioManager().getSoundPool().setVolume(this.mStreamID, leftVolume, rightVolume);
+			this.getSoundPool().setVolume(this.mStreamID, leftVolume, rightVolume);
 		}
 	}
 
 	@Override
-	public void onMasterVolumeChanged(final float pMasterVolume) {
+	public void onMasterVolumeChanged(final float pMasterVolume) throws SoundReleasedException {
+		this.onMasterVolumeChanged(pMasterVolume);
+
 		this.setVolume(this.mLeftVolume, this.mRightVolume);
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	// ===========================================================
 	// Inner and Anonymous Classes

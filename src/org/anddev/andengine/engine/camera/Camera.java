@@ -10,6 +10,7 @@ import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.constants.Constants;
 import org.anddev.andengine.util.math.MathUtils;
+import org.anddev.andengine.util.transformation.Transformation;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -23,7 +24,7 @@ public class Camera implements IUpdateHandler {
 	// Constants
 	// ===========================================================
 
-	protected static final float[] VERTICES_TMP = new float[2];
+	static final float[] VERTICES_TMP = new float[2];
 
 	// ===========================================================
 	// Fields
@@ -270,6 +271,10 @@ public class Camera implements IUpdateHandler {
 
 	public boolean isRectangularShapeVisible(final RectangularShape<?> pRectangularShape) {
 		return RectangularShapeCollisionChecker.isVisible(this, pRectangularShape);
+	}
+
+	public boolean isRectangularShapeVisible(final float pX, final float pY, final float pWidth, final float pHeight, final Transformation pLocalToSceneTransformation) {
+		return RectangularShapeCollisionChecker.isVisible(this, pX, pY, pWidth, pHeight, pLocalToSceneTransformation);
 	}
 
 	public void onApplySceneMatrix() {

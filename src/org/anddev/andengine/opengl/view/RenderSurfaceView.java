@@ -139,7 +139,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pEGLConfig) {
 			Debug.d("onSurfaceCreated");
-			GLState.reset();
+			GLState.reset(this.mEngine.getEngineOptions().getRenderOptions());
 
 			// TODO Check if available and make available through EngineOptions-RenderOptions
 //			GLES20.glEnable(GLES20.GL_POLYGON_SMOOTH);
@@ -159,8 +159,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 //			GLState.enableCulling();
 //			GLES20.glFrontFace(GLES20.GL_CCW);
 //			GLES20.glCullFace(GLES20.GL_BACK);
-
-			GLState.enableExtensions(this.mEngine.getEngineOptions().getRenderOptions());
 		}
 
 		@Override

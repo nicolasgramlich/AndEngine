@@ -116,6 +116,11 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	}
 
 	@Override
+	public void bind(final int pGLActiveTexture) {
+		this.mTextureAtlas.bind(pGLActiveTexture);
+	}
+
+	@Override
 	public TextureOptions getTextureOptions() {
 		return this.mTextureAtlas.getTextureOptions();
 	}

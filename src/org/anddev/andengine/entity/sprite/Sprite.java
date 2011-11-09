@@ -135,7 +135,6 @@ public class Sprite extends RectangularShape<Mesh> {
 		super.preDraw(pCamera);
 
 		GLState.enableTextures();
-		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		this.mTextureRegion.getTexture().bind();
 
 		this.mMesh.preDraw(this.mShaderProgram);

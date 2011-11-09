@@ -142,7 +142,6 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 		}
 
 		GLState.enableTextures();
-		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		this.mTexture.bind();
 
 		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? PositionColorTextureCoordinatesShaderProgram.getInstance() : this.mShaderProgram; // TODO Add 'mFallbackShaderProgram' instead of permanent getInstance calls...

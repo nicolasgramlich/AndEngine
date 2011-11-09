@@ -115,7 +115,8 @@ public class AStarPathFinder<T> implements IPathFinder<T>, IIntBounds {
 		Node current = null;
 		while(!this.mOpenNodes.isEmpty()) {
 			/* The first Node in the open list is the one with the lowest cost. */
-			current = this.mOpenNodes.pollFirst();
+			current = this.mOpenNodes.first();
+			this.mOpenNodes.remove(current);
 			if(current.equals(toNode)) {
 				break;
 			}

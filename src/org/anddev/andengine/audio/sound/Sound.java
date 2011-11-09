@@ -22,9 +22,9 @@ public class Sound extends BaseAudioEntity {
 	// ===========================================================
 
 	private int mSoundID;
-	private int mStreamID = 0;
+	private int mStreamID;
 
-	private int mLoopCount = 0;
+	private int mLoopCount;
 	private float mRate = 1.0f;
 
 	// ===========================================================

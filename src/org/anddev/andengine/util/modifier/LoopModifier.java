@@ -123,6 +123,7 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 
 	@Override
 	public void reset() {
+		this.mFinished = false;
 		this.mLoop = 0;
 		this.mSecondsElapsed = 0;
 		this.mModifierStartedCalled = false;

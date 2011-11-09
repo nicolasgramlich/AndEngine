@@ -24,7 +24,7 @@ public class DebugTimer implements Constants {
 
 	private String mTag;
 	private String mLabel;
-	ArrayList<DebugTime> mDebugTimes = new ArrayList<DebugTime>();
+	private ArrayList<DebugTime> mDebugTimes = new ArrayList<DebugTime>();
 
 	// ===========================================================
 	// Constructors
@@ -120,7 +120,7 @@ public class DebugTimer implements Constants {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class DebugTime {
+	public static class DebugTime {
 		// ===========================================================
 		// Constants
 		// ===========================================================

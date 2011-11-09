@@ -103,6 +103,8 @@ public class Line extends Shape<Mesh> {
 
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
+
+		this.setBlendingEnabled(true);
 	}
 
 	// ===========================================================

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import android.content.Context;
 import android.os.Environment;
@@ -165,14 +166,16 @@ public class FileUtils {
 		return state.equals(Environment.MEDIA_MOUNTED) || state.equals(Environment.MEDIA_MOUNTED_READ_ONLY);
 	}
 
-	public static void copyFile(final File pIn, final File pOut) throws IOException {
-		final FileInputStream fis = new FileInputStream(pIn);
-		final FileOutputStream fos = new FileOutputStream(pOut);
+	public static void copyFile(final File pSourceFile, final File pDestinationFile) throws IOException {
+		InputStream in = null;
+		OutputStream out = null;
 		try {
-			StreamUtils.copy(fis, fos);
+			in = new FileInputStream(pSourceFile);
+			out = new FileOutputStream(pDestinationFile);
+			StreamUtils.copy(in, out);
 		} finally {
-			StreamUtils.close(fis);
-			StreamUtils.close(fos);
+			StreamUtils.close(in);
+			StreamUtils.close(out);
 		}
 	}
 

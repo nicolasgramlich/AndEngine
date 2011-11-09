@@ -137,7 +137,7 @@ public class GLMatrixStack {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class GLMatrixStackOverflowException extends AndEngineException {
+	public static class GLMatrixStackOverflowException extends AndEngineException {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -173,7 +173,7 @@ public class GLMatrixStack {
 		// ===========================================================
 	}
 
-	public class GLMatrixStackUnderflowException extends AndEngineException {
+	public static class GLMatrixStackUnderflowException extends AndEngineException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

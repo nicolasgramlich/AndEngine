@@ -79,12 +79,64 @@ public enum Direction {
 	// Getter & Setter
 	// ===========================================================
 
+	public boolean isHorizontal() {
+		return this.mDeltaY == 0;
+	}
+
+	public boolean isVertical() {
+		return this.mDeltaX == 0;
+	}
+
 	public int getDeltaX() {
 		return this.mDeltaX;
 	}
 
 	public int getDeltaY() {
 		return this.mDeltaY;
+	}
+
+	public Direction rotateLeft() {
+		switch(this) {
+			case UP:
+				return LEFT;
+			case UP_RIGHT:
+				return UP_LEFT;
+			case RIGHT:
+				return UP;
+			case DOWN_RIGHT:
+				return UP_RIGHT;
+			case DOWN:
+				return UP;
+			case DOWN_LEFT:
+				return DOWN_RIGHT;
+			case LEFT:
+				return DOWN;
+			case UP_LEFT:
+				return DOWN_LEFT;
+		}
+		throw new IllegalArgumentException();
+	}
+
+	public Direction rotateRight() {
+		switch(this) {
+			case UP:
+				return RIGHT;
+			case UP_RIGHT:
+				return DOWN_RIGHT;
+			case RIGHT:
+				return DOWN;
+			case DOWN_RIGHT:
+				return DOWN_LEFT;
+			case DOWN:
+				return LEFT;
+			case DOWN_LEFT:
+				return UP_LEFT;
+			case LEFT:
+				return UP;
+			case UP_LEFT:
+				return UP_RIGHT;
+		}
+		throw new IllegalArgumentException();
 	}
 
 	// ===========================================================

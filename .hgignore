@@ -7,3 +7,5 @@ Thumbs.db
 gdb.setup
 gdbserver
 .svn
+local.properties
+.settings

@@ -117,12 +117,14 @@ public class Sound extends BaseAudioEntity {
 
 	@Override
 	public void release() throws SoundReleasedException {
-		super.release();
+		this.assertNotReleased();
 
 		this.getSoundPool().unload(this.mSoundID);
 		this.mSoundID = 0;
 
 		this.getAudioManager().remove(this);
+
+		super.release();
 	}
 
 	@Override

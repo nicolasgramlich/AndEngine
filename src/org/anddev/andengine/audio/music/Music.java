@@ -117,12 +117,14 @@ public class Music extends BaseAudioEntity {
 
 	@Override
 	public void release() throws MusicReleasedException {
-		super.release();
+		this.assertNotReleased();
 
 		this.mMediaPlayer.release();
 		this.mMediaPlayer = null;
 
 		this.getAudioManager().remove(this);
+
+		super.release();
 	}
 
 	// ===========================================================

@@ -13,7 +13,7 @@ import android.opengl.GLSurfaceView;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:31:48 - 04.08.2011
  */
-public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser {
+public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -29,9 +29,9 @@ public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser 
 		EGL10.EGL_GREEN_SIZE, 6,
 		EGL10.EGL_BLUE_SIZE, 5,
 		EGL10.EGL_DEPTH_SIZE, 0,
-		EGL10.EGL_RENDERABLE_TYPE, MultisampleConfigChooser.EGL_GLES2_BIT,
+		EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
 		EGL10.EGL_SAMPLE_BUFFERS, 1,
-		EGL10.EGL_SAMPLES, MultisampleConfigChooser.MULTISAMPLE_COUNT,
+		EGL10.EGL_SAMPLES, ConfigChooser.MULTISAMPLE_COUNT,
 		EGL10.EGL_NONE
 	};
 
@@ -43,9 +43,9 @@ public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser 
 		EGL10.EGL_GREEN_SIZE, 6,
 		EGL10.EGL_BLUE_SIZE, 5,
 		EGL10.EGL_DEPTH_SIZE, 0,
-		EGL10.EGL_RENDERABLE_TYPE, MultisampleConfigChooser.EGL_GLES2_BIT,
-		MultisampleConfigChooser.EGL_COVERAGE_BUFFERS_NV, 1,
-		MultisampleConfigChooser.EGL_COVERAGE_SAMPLES_NV, MultisampleConfigChooser.MULTISAMPLE_COUNT,  // always 5 in practice on tegra 2
+		EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
+		ConfigChooser.EGL_COVERAGE_BUFFERS_NV, 1,
+		ConfigChooser.EGL_COVERAGE_SAMPLES_NV, ConfigChooser.MULTISAMPLE_COUNT,  // always 5 in practice on tegra 2
 		EGL10.EGL_NONE
 	};
 
@@ -54,7 +54,7 @@ public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser 
 		EGL10.EGL_GREEN_SIZE, 6,
 		EGL10.EGL_BLUE_SIZE, 5,
 		EGL10.EGL_DEPTH_SIZE, 0,
-		EGL10.EGL_RENDERABLE_TYPE, MultisampleConfigChooser.EGL_GLES2_BIT,
+		EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
 		EGL10.EGL_NONE
 	};
 
@@ -62,15 +62,26 @@ public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser 
 	// Fields
 	// ===========================================================
 
+	private final boolean mMultiSamplingRequested;
+
+	private boolean mMultiSampling;
 	private boolean mCoverageMultiSampling;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
+	public ConfigChooser(final boolean pMultiSamplingRequested) {
+		this.mMultiSamplingRequested = pMultiSamplingRequested;
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public boolean isMultiSampling() {
+		return this.mMultiSampling;
+	}
 
 	public boolean isCoverageMultiSampling() {
 		return this.mCoverageMultiSampling;
@@ -82,36 +93,30 @@ public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser 
 
 	@Override
 	public EGLConfig chooseConfig(final EGL10 pEGL, final EGLDisplay pEGLDisplay) {
-		MultisampleConfigChooser.BUFFER[0] = 0;
+		ConfigChooser.BUFFER[0] = 0;
 
-		final int[] eglConfigAttributes;
-		int eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, MultisampleConfigChooser.EGLCONFIG_ATTRIBUTES_MULTISAMPLE);
+		int eglConfigCount;
 
-		if(eglConfigCount > 0) {
-			eglConfigAttributes = MultisampleConfigChooser.EGLCONFIG_ATTRIBUTES_MULTISAMPLE;
-		} else {
-			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, MultisampleConfigChooser.EGLCONFIG_ATTRIBUTES_COVERAGEMULTISAMPLE_NVIDIA);
+		if(this.mMultiSamplingRequested) {
+			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_MULTISAMPLE);
+			if(eglConfigCount > 0) {
+				this.mMultiSampling = true;
+				return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_MULTISAMPLE, eglConfigCount);
+			}
 
+			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_COVERAGEMULTISAMPLE_NVIDIA);
 			if(eglConfigCount > 0) {
 				this.mCoverageMultiSampling = true;
-				eglConfigAttributes = MultisampleConfigChooser.EGLCONFIG_ATTRIBUTES_COVERAGEMULTISAMPLE_NVIDIA;
-			} else {
-				eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, MultisampleConfigChooser.EGLCONFIG_ATTRIBUTES_FALLBACK);
-
-				if(eglConfigCount > 0) {
-					eglConfigAttributes = MultisampleConfigChooser.EGLCONFIG_ATTRIBUTES_FALLBACK;
-				} else {
-					throw new IllegalArgumentException("No EGLConfig found!");
-				}
+				return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_COVERAGEMULTISAMPLE_NVIDIA, eglConfigCount);
 			}
 		}
 
-		final EGLConfig[] eglConfigs = new EGLConfig[eglConfigCount];
-		if(!pEGL.eglChooseConfig(pEGLDisplay, eglConfigAttributes, eglConfigs, eglConfigCount, MultisampleConfigChooser.BUFFER)) {
-			throw new IllegalArgumentException("eglChooseConfig failed!");
+		eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_FALLBACK);
+		if(eglConfigCount > 0) {
+			return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_FALLBACK, eglConfigCount);
+		} else {
+			throw new IllegalArgumentException("No EGLConfig found!");
 		}
-
-		return this.findEGLConfig(pEGL, pEGLDisplay, eglConfigs);
 	}
 
 	// ===========================================================
@@ -119,10 +124,19 @@ public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser 
 	// ===========================================================
 
 	private int getEGLConfigCount(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final int[] pEGLConfigAttributes) {
-		if(pEGL.eglChooseConfig(pEGLDisplay, pEGLConfigAttributes, null, 0, MultisampleConfigChooser.BUFFER) == false) {
+		if(pEGL.eglChooseConfig(pEGLDisplay, pEGLConfigAttributes, null, 0, ConfigChooser.BUFFER) == false) {
 			throw new IllegalArgumentException("EGLCONFIG_FALLBACK failed!");
 		}
-		return MultisampleConfigChooser.BUFFER[0];
+		return ConfigChooser.BUFFER[0];
+	}
+
+	private EGLConfig findEGLConfig(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final int[] pEGLConfigAttributes, final int pEGLConfigCount) {
+		final EGLConfig[] eglConfigs = new EGLConfig[pEGLConfigCount];
+		if(!pEGL.eglChooseConfig(pEGLDisplay, pEGLConfigAttributes, eglConfigs, pEGLConfigCount, ConfigChooser.BUFFER)) {
+			throw new IllegalArgumentException("findEGLConfig failed!");
+		}
+
+		return this.findEGLConfig(pEGL, pEGLDisplay, eglConfigs);
 	}
 
 	private EGLConfig findEGLConfig(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final EGLConfig[] pEGLConfigs) {
@@ -136,8 +150,8 @@ public class MultisampleConfigChooser implements GLSurfaceView.EGLConfigChooser 
 	}
 
 	private int getConfigAttrib(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final EGLConfig pEGLConfig, final int pAttribute, final int pDefaultValue) {
-		if(pEGL.eglGetConfigAttrib(pEGLDisplay, pEGLConfig, pAttribute, MultisampleConfigChooser.BUFFER)) {
-			return MultisampleConfigChooser.BUFFER[0];
+		if(pEGL.eglGetConfigAttrib(pEGLDisplay, pEGLConfig, pAttribute, ConfigChooser.BUFFER)) {
+			return ConfigChooser.BUFFER[0];
 		} else {
 			return pDefaultValue;
 		}

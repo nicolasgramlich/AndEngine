@@ -7,7 +7,6 @@ import org.anddev.andengine.opengl.font.IFont;
 import org.anddev.andengine.opengl.font.Letter;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
@@ -216,7 +215,6 @@ public class Text extends RectangularShape<Mesh> {
 	protected void preDraw(final Camera pCamera) {
 		super.preDraw(pCamera);
 
-		GLState.enableTextures();
 		this.mFont.getTexture().bind();
 
 		this.mMesh.preDraw(this.mShaderProgram);
@@ -230,8 +228,6 @@ public class Text extends RectangularShape<Mesh> {
 	@Override
 	protected void postDraw(final Camera pCamera) {
 		this.mMesh.postDraw(this.mShaderProgram);
-
-		GLState.disableTextures();
 
 		super.postDraw(pCamera);
 	}

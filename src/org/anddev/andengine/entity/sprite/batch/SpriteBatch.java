@@ -141,7 +141,6 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 			GLState.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 		}
 
-		GLState.enableTextures();
 		this.mTexture.bind();
 
 		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? PositionColorTextureCoordinatesShaderProgram.getInstance() : this.mShaderProgram; // TODO Add 'mFallbackShaderProgram' instead of permanent getInstance calls...
@@ -165,8 +164,6 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 		if(this.mBlendingEnabled) {
 			GLState.disableBlend();
 		}
-
-		GLState.disableTextures();
 
 		super.postDraw(pCamera);
 	}

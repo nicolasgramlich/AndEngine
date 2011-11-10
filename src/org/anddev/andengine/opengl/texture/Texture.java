@@ -117,8 +117,6 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void loadToHardware() throws IOException {
-		GLState.enableTextures();
-
 		this.mTextureID = GLState.generateTexture();
 
 		GLState.bindTexture(this.mTextureID);
@@ -137,8 +135,6 @@ public abstract class Texture implements ITexture {
 
 	@Override
 	public void unloadFromHardware() {
-		GLState.enableTextures();
-
 		GLState.deleteTexture(this.mTextureID);
 
 		this.mTextureID = -1;

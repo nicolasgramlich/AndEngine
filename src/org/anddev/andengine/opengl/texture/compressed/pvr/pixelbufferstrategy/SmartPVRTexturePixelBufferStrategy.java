@@ -8,7 +8,6 @@ import java.nio.ByteBuffer;
 import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.compressed.pvr.PVRTexture;
 import org.anddev.andengine.opengl.texture.compressed.pvr.PVRTexture.PVRTextureHeader;
-import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.StreamUtils;
 import org.anddev.andengine.util.exception.AndEngineException;
 
@@ -75,8 +74,6 @@ public class SmartPVRTexturePixelBufferStrategy implements IPVRTexturePixelBuffe
 
 			/* Send to hardware. */
 			GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D, pLevel, 0, currentStripeOffsetY, pWidth, currentStripeHeight, glFormat, glType, pixelBuffer);
-
-			GLState.checkGLError();
 
 			currentStripePixelDataOffset += currentStripePixelDataSize;
 			currentStripeOffsetY += currentStripeHeight;

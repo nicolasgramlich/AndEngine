@@ -54,7 +54,6 @@ public class GLState {
 	private static boolean sEnableScissorTest = false;
 	private static boolean sEnableBlend = false;
 	private static boolean sEnableCulling = false;
-	private static boolean sEnableTextures = false;
 
 	private static float sLineWidth = 1;
 
@@ -116,7 +115,6 @@ public class GLState {
 
 		GLState.disableBlend();
 		GLState.disableCulling();
-		GLState.disableTextures();
 
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION);
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
@@ -161,19 +159,6 @@ public class GLState {
 		if(GLState.sEnableCulling) {
 			GLState.sEnableCulling = false;
 			GLES20.glDisable(GLES20.GL_CULL_FACE);
-		}
-	}
-
-	public static void enableTextures() {
-		if(!GLState.sEnableTextures) {
-			GLState.sEnableTextures = true;
-			GLES20.glEnable(GLES20.GL_TEXTURE_2D);
-		}
-	}
-	public static void disableTextures() {
-		if(GLState.sEnableTextures) {
-			GLState.sEnableTextures = false;
-			GLES20.glDisable(GLES20.GL_TEXTURE_2D);
 		}
 	}
 
@@ -447,9 +432,9 @@ public class GLState {
 	}
 
 	public static void checkGLError() throws GLException { // TODO Use more often!
-		final int err = GLES20.glGetError();
-		if(err != GLES20.GL_NO_ERROR) {
-			throw new GLException(err);
+		final int error = GLES20.glGetError();
+		if(error != GLES20.GL_NO_ERROR) {
+			throw new GLException(error);
 		}
 	}
 

@@ -153,7 +153,6 @@ public class RenderSurfaceView extends GLSurfaceView {
 			GLState.disableDepthTest();
 
 			GLState.enableBlend();
-			GLState.enableTextures();
 
 			/* Enabling culling doesn't really make sense, because triangles are never drawn 'backwards' on purpose. */
 //			GLState.enableCulling();

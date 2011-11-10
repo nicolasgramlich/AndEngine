@@ -6,7 +6,6 @@ import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
@@ -134,7 +133,6 @@ public class Sprite extends RectangularShape<Mesh> {
 	protected void preDraw(final Camera pCamera) {
 		super.preDraw(pCamera);
 
-		GLState.enableTextures();
 		this.mTextureRegion.getTexture().bind();
 
 		this.mMesh.preDraw(this.mShaderProgram);
@@ -148,8 +146,6 @@ public class Sprite extends RectangularShape<Mesh> {
 	@Override
 	protected void postDraw(final Camera pCamera) {
 		this.mMesh.postDraw(this.mShaderProgram);
-
-		GLState.disableTextures();
 
 		super.postDraw(pCamera);
 	}

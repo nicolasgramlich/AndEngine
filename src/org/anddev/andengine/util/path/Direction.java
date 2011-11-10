@@ -139,6 +139,28 @@ public enum Direction {
 		throw new IllegalArgumentException();
 	}
 
+	public Direction opposite() {
+		switch(this) {
+			case UP:
+				return DOWN;
+			case UP_RIGHT:
+				return DOWN_LEFT;
+			case RIGHT:
+				return LEFT;
+			case DOWN_RIGHT:
+				return UP_LEFT;
+			case DOWN:
+				return UP;
+			case DOWN_LEFT:
+				return UP_RIGHT;
+			case LEFT:
+				return RIGHT;
+			case UP_LEFT:
+				return DOWN_RIGHT;
+		}
+		throw new IllegalArgumentException();
+	}
+
 	// ===========================================================
 	// Methods from SuperClass/Interfaces
 	// ===========================================================

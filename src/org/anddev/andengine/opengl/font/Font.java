@@ -6,6 +6,7 @@ import org.anddev.andengine.opengl.font.exception.FontException;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.util.GLState;
+import org.anddev.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -21,8 +22,6 @@ import android.opengl.GLUtils;
 import android.util.SparseArray;
 
 /**
- * TODO Allow different {@link PixelFormat}s that {@link PixelFormat#RGBA_8888}.
- *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
@@ -252,21 +251,33 @@ public class Font implements IFont {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
 			this.mTexture.bind();
+			final PixelFormat pixelFormat = this.mTexture.getPixelFormat();
 
 			final boolean preMultipyAlpha = this.mTexture.getTextureOptions().mPreMultipyAlpha;
 			for(int i = lettersPendingToBeDrawnToTexture.size() - 1; i >= 0; i--) {
 				final Letter letter = lettersPendingToBeDrawnToTexture.get(i);
 				final Bitmap bitmap = this.getLetterBitmap(letter.mCharacter);
 
+				final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && pixelFormat == PixelFormat.RGBA_8888;
+				if(!useDefaultAlignment) {
+					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
+				}
+
 				if(preMultipyAlpha) {
 					GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap);
 				} else {
-					GLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap, PixelFormat.RGBA_8888);
+					GLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap, pixelFormat);
+				}
+
+				/* Restore default alignment. */
+				if(!useDefaultAlignment) {
+					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 				}
 
 				bitmap.recycle();
 			}
 			lettersPendingToBeDrawnToTexture.clear();
+
 			System.gc();
 		}
 	}

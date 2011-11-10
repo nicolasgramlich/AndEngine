@@ -3,6 +3,7 @@ package org.anddev.andengine.opengl.texture.atlas.buildable;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
@@ -118,6 +119,11 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	@Override
 	public void bind(final int pGLActiveTexture) {
 		this.mTextureAtlas.bind(pGLActiveTexture);
+	}
+
+	@Override
+	public PixelFormat getPixelFormat() {
+		return this.mTextureAtlas.getPixelFormat();
 	}
 
 	@Override

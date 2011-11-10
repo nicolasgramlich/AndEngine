@@ -76,6 +76,7 @@ public abstract class Texture implements ITexture {
 		this.mUpdateOnHardwareNeeded = pUpdateOnHardwareNeeded;
 	}
 
+	@Override
 	public PixelFormat getPixelFormat() {
 		return this.mPixelFormat;
 	}

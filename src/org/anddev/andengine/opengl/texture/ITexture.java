@@ -53,6 +53,7 @@ public interface ITexture {
 	 */
 	public void bind(final int pGLActiveTexture);
 
+	public PixelFormat getPixelFormat();
 	public TextureOptions getTextureOptions();
 
 	public boolean hasTextureStateListener();

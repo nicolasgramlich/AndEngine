@@ -92,6 +92,18 @@ public class MusicFactory {
 		return music;
 	}
 
+	public static Music createMusicFromAssetFileDescriptor(final MusicManager pMusicManager, final AssetFileDescriptor pAssetFileDescriptor) throws IOException {
+		final MediaPlayer mediaPlayer = new MediaPlayer();
+
+		mediaPlayer.setDataSource(pAssetFileDescriptor.getFileDescriptor(), pAssetFileDescriptor.getStartOffset(), pAssetFileDescriptor.getLength());
+		mediaPlayer.prepare();
+
+		final Music music = new Music(pMusicManager, mediaPlayer);
+		pMusicManager.add(music);
+
+		return music;
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

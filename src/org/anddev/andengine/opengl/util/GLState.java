@@ -45,7 +45,7 @@ public class GLState {
 
 	private static int sCurrentBufferID = -1;
 	private static int sCurrentShaderProgramID = -1;
-	private static int[] sCurrentBoundTextureIDs = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	private static int[] sCurrentBoundTextureIDs = new int[GLES20.GL_TEXTURE31 - GLES20.GL_TEXTURE0];
 	private static int sCurrentFramebufferID = -1;
 	private static int sCurrentActiveTextureIndex = 0;
 

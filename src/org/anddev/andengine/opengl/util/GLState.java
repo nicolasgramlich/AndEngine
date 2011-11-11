@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.util;
 
 import java.nio.Buffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 
 import org.anddev.andengine.engine.options.RenderOptions;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
@@ -39,11 +40,14 @@ public class GLState {
 	private static String sGLExtensions;
 
 	private static int sGLMaximumVertexAttributeCount;
+	private static int sGLMaximumTextureSize;
+	private static int sGLMaximumTextureUnits;
 
-	private static int sCurrentHardwareBufferID = -1;
+	private static int sCurrentBufferID = -1;
 	private static int sCurrentShaderProgramID = -1;
-	private static int sCurrentHardwareTextureID = -1;
-	private static int sCurrentHardwareFramebufferID = -1;
+	private static int[] sCurrentBoundTextureIDs = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	private static int sCurrentFramebufferID = -1;
+	private static int sCurrentActiveTextureIndex = 0;
 
 	private static int sCurrentSourceBlendMode = -1;
 	private static int sCurrentDestinationBlendMode = -1;
@@ -56,6 +60,7 @@ public class GLState {
 	private static boolean sEnableCulling = false;
 
 	private static float sLineWidth = 1;
+
 
 	private static final GLMatrixStack sModelViewGLMatrixStack = new GLMatrixStack();
 	private static final GLMatrixStack sProjectionGLMatrixStack = new GLMatrixStack();
@@ -84,6 +89,14 @@ public class GLState {
 		return GLState.sGLMaximumVertexAttributeCount;
 	}
 
+	public static int getGLMaximumTextureUnits() {
+		return sGLMaximumTextureUnits;
+	}
+
+	public static int getGLMaximumTextureSize() {
+		return sGLMaximumTextureSize;
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -97,15 +110,18 @@ public class GLState {
 		Debug.d("VERSION: " + GLState.sGLVersion);
 		Debug.d("EXTENSIONS: " + GLState.sGLExtensions);
 
-		GLState.sGLMaximumVertexAttributeCount = getInteger(GLES20.GL_MAX_VERTEX_ATTRIBS);
+		GLState.sGLMaximumVertexAttributeCount = GLState.getInteger(GLES20.GL_MAX_VERTEX_ATTRIBS);
+		GLState.sGLMaximumTextureUnits = GLState.getInteger(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS);
+		GLState.sGLMaximumTextureSize = GLState.getInteger(GLES20.GL_MAX_TEXTURE_SIZE);
 
 		GLState.sModelViewGLMatrixStack.reset();
 		GLState.sProjectionGLMatrixStack.reset();
 
-		GLState.sCurrentHardwareBufferID = -1;
+		GLState.sCurrentBufferID = -1;
 		GLState.sCurrentShaderProgramID = -1;
-		GLState.sCurrentHardwareTextureID = -1;
-		GLState.sCurrentHardwareFramebufferID = -1;
+		Arrays.fill(GLState.sCurrentBoundTextureIDs, -1);
+		GLState.sCurrentFramebufferID = -1;
+		GLState.sCurrentActiveTextureIndex = 0;
 
 		GLState.sCurrentSourceBlendMode = -1;
 		GLState.sCurrentDestinationBlendMode = -1;
@@ -205,15 +221,15 @@ public class GLState {
 	}
 
 	public static void bindBuffer(final int pHardwareBufferID) {
-		if(GLState.sCurrentHardwareBufferID != pHardwareBufferID) {
-			GLState.sCurrentHardwareBufferID = pHardwareBufferID;
+		if(GLState.sCurrentBufferID != pHardwareBufferID) {
+			GLState.sCurrentBufferID = pHardwareBufferID;
 			GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, pHardwareBufferID);
 		}
 	}
 
 	public static void deleteBuffer(final int pHardwareBufferID) {
-		if(GLState.sCurrentHardwareBufferID == pHardwareBufferID) {
-			GLState.sCurrentHardwareBufferID = -1;
+		if(GLState.sCurrentBufferID == pHardwareBufferID) {
+			GLState.sCurrentBufferID = -1;
 		}
 		GLState.HARDWAREID_CONTAINER[0] = pHardwareBufferID;
 		GLES20.glDeleteBuffers(1, GLState.HARDWAREID_CONTAINER, 0);
@@ -244,8 +260,8 @@ public class GLState {
 	}
 
 	public static void deleteFramebuffer(final int pHardwareFramebufferID) {
-		if(GLState.sCurrentHardwareFramebufferID == pHardwareFramebufferID) {
-			GLState.sCurrentHardwareFramebufferID = -1;
+		if(GLState.sCurrentFramebufferID == pHardwareFramebufferID) {
+			GLState.sCurrentFramebufferID = -1;
 		}
 		GLState.HARDWAREID_CONTAINER[0] = pHardwareFramebufferID;
 		GLES20.glDeleteFramebuffers(1, GLState.HARDWAREID_CONTAINER, 0);
@@ -271,20 +287,38 @@ public class GLState {
 	}
 
 	/**
+	 * @return {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}
+	 */
+	public static int getActiveTexture() {
+		return GLState.sCurrentActiveTextureIndex + GLES20.GL_TEXTURE0;
+	}
+
+	/**
+	 * @param pGLActiveTexture from {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}. 
+	 */
+	public static void activeTexture(final int pGLActiveTexture) {
+		final int activeTextureIndex = pGLActiveTexture - GLES20.GL_TEXTURE0; 
+		if(pGLActiveTexture != GLState.sCurrentActiveTextureIndex) {
+			GLState.sCurrentActiveTextureIndex = activeTextureIndex;
+			GLES20.glActiveTexture(pGLActiveTexture);
+		}
+	}
+
+	/**
 	 * @see {@link GLState#forceBindTexture(GLES20, int)}
 	 * @param GLES20
 	 * @param pHardwareTextureID
 	 */
 	public static void bindTexture(final int pHardwareTextureID) {
-		if(GLState.sCurrentHardwareTextureID != pHardwareTextureID) {
-			GLState.sCurrentHardwareTextureID = pHardwareTextureID;
+		if(GLState.sCurrentBoundTextureIDs[GLState.sCurrentActiveTextureIndex] != pHardwareTextureID) {
+			GLState.sCurrentBoundTextureIDs[GLState.sCurrentActiveTextureIndex] = pHardwareTextureID;
 			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, pHardwareTextureID);
 		}
 	}
 
 	public static void deleteTexture(final int pHardwareTextureID) {
-		if(GLState.sCurrentHardwareTextureID == pHardwareTextureID) {
-			GLState.sCurrentHardwareTextureID = -1;
+		if(GLState.sCurrentBoundTextureIDs[GLState.sCurrentActiveTextureIndex] == pHardwareTextureID) {
+			GLState.sCurrentBoundTextureIDs[GLState.sCurrentActiveTextureIndex] = -1;
 		}
 		GLState.HARDWAREID_CONTAINER[0] = pHardwareTextureID;
 		GLES20.glDeleteTextures(1, GLState.HARDWAREID_CONTAINER, 0);
@@ -432,9 +466,9 @@ public class GLState {
 	}
 
 	public static void checkGLError() throws GLException { // TODO Use more often!
-		final int error = GLES20.glGetError();
-		if(error != GLES20.GL_NO_ERROR) {
-			throw new GLException(error);
+		final int glError = GLES20.glGetError();
+		if(glError != GLES20.GL_NO_ERROR) {
+			throw new GLException(glError);
 		}
 	}
 

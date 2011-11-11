@@ -184,19 +184,19 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 		return this.mRoot.remove(pItem, pBounds);
 	}
 
-	public synchronized List<T> query(final B pBounds) {
+	public synchronized ArrayList<T> query(final B pBounds) {
 		return this.query(pBounds, new ArrayList<T>());
 	}
 
-	public synchronized List<T> query(final B pBounds, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final B pBounds, final L pResult) {
 		return this.mRoot.query(pBounds, pResult);
 	}
 
-	public synchronized List<T> query(final B pBounds, final IMatcher<T> pMatcher) {
+	public synchronized ArrayList<T> query(final B pBounds, final IMatcher<T> pMatcher) {
 		return this.query(pBounds, pMatcher, new ArrayList<T>());
 	}
 
-	public synchronized List<T> query(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final B pBounds, final IMatcher<T> pMatcher, final L pResult) {
 		return this.mRoot.query(pBounds, pMatcher, pResult);
 	}
 
@@ -436,14 +436,14 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 			}
 		}
 
-		public List<T> getItemsAndItemsBelow() {
+		public ArrayList<T> getItemsAndItemsBelow() {
 			return this.getItemsAndItemsBelow(new ArrayList<T>());
 		}
 
 		/**
 		 * @return the items of this {@link QuadTreeNode} and all children (recursively).
 		 */
-		public List<T> getItemsAndItemsBelow(final List<T> pResult) {
+		public <L extends List<T>> L getItemsAndItemsBelow(final L pResult) {
 			if(this.mItems != null) {
 				pResult.addAll(this.mItems); // TODO Does addAll use an iterator internally?
 			}
@@ -464,11 +464,11 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 			return pResult;
 		}
 
-		public List<T> getItemsAndItemsBelow(final IMatcher<T> pMatcher) {
+		public ArrayList<T> getItemsAndItemsBelow(final IMatcher<T> pMatcher) {
 			return this.getItemsAndItemsBelow(pMatcher, new ArrayList<T>());
 		}
 
-		public List<T> getItemsAndItemsBelow(final IMatcher<T> pMatcher, final List<T> pResult) {
+		public <L extends List<T>> L getItemsAndItemsBelow(final IMatcher<T> pMatcher, final L pResult) {
 			if(this.mItems != null) {
 				for(final T item : this.mItems) { // TODO Check if iteration is allocation free.
 					if(pMatcher.matches(item)) {
@@ -521,11 +521,11 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 			return pResult;
 		}
 
-		public List<T> query(final B pBounds) {
+		public ArrayList<T> query(final B pBounds) {
 			return this.query(pBounds, new ArrayList<T>());
 		}
 
-		public List<T> query(final B pBounds, final List<T> pResult) {
+		public <L extends List<T>> L query(final B pBounds, final L pResult) {
 			/* Test against all items in this node. */
 			if(this.mItems != null) {
 				final int itemCount = this.mItems.size();
@@ -551,7 +551,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 			}
 		}
 
-		public List<T> query(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult) {
+		public <L extends List<T>> L query(final B pBounds, final IMatcher<T> pMatcher, final L pResult) {
 			/* Test against all items in this node. */
 			if(this.mItems != null) {
 				for(final T item : this.mItems) {
@@ -606,7 +606,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 		 * @param pChild
 		 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 		 */
-		private boolean queryChild(final B pBounds, final List<T> pResult, final QuadTreeNode pChild) {
+		private <L extends List<T>> boolean queryChild(final B pBounds, final L pResult, final QuadTreeNode pChild) {
 			if(pChild == null) {
 				return false;
 			}
@@ -632,7 +632,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 		 * @param pChild
 		 * @return <code>true</code> when the child contains pBounds, <code>false</code> otherwise.
 		 */
-		private boolean queryChild(final B pBounds, final IMatcher<T> pMatcher, final List<T> pResult, final QuadTreeNode pChild) {
+		private <L extends List<T>> boolean queryChild(final B pBounds, final IMatcher<T> pMatcher, final L pResult, final QuadTreeNode pChild) {
 			if(pChild == null) {
 				return false;
 			}

@@ -1,5 +1,6 @@
 package org.anddev.andengine.util.spatial.quadtree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.anddev.andengine.util.IMatcher;
@@ -82,42 +83,42 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 	// Methods
 	// ===========================================================
 
-	public synchronized List<T> query(final float pX, final float pY) {
+	public synchronized ArrayList<T> query(final float pX, final float pY) {
 		this.mQueryFloatBounds.set(pX, pY);
 		return this.query(this.mQueryFloatBounds);
 	}
 
-	public synchronized List<T> query(final float pX, final float pY, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final float pX, final float pY, final L pResult) {
 		this.mQueryFloatBounds.set(pX, pY);
 		return this.query(this.mQueryFloatBounds, pResult);
 	}
 
-	public synchronized List<T> query(final float pX, final float pY, final IMatcher<T> pMatcher) {
+	public synchronized ArrayList<T> query(final float pX, final float pY, final IMatcher<T> pMatcher) {
 		this.mQueryFloatBounds.set(pX, pY);
 		return this.query(this.mQueryFloatBounds, pMatcher);
 	}
 
-	public synchronized List<T> query(final float pX, final float pY, final IMatcher<T> pMatcher, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final float pX, final float pY, final IMatcher<T> pMatcher, final L pResult) {
 		this.mQueryFloatBounds.set(pX, pY);
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
 	}
 
-	public synchronized List<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax) {
+	public synchronized ArrayList<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax) {
 		this.mQueryFloatBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.query(this.mQueryFloatBounds);
 	}
 
-	public synchronized List<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final L pResult) {
 		this.mQueryFloatBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.query(this.mQueryFloatBounds, pResult);
 	}
 
-	public synchronized List<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final IMatcher<T> pMatcher) {
+	public synchronized ArrayList<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final IMatcher<T> pMatcher) {
 		this.mQueryFloatBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.query(this.mQueryFloatBounds, pMatcher);
 	}
 
-	public synchronized List<T> query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final IMatcher<T> pMatcher, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final IMatcher<T> pMatcher, final L pResult) {
 		this.mQueryFloatBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.query(this.mQueryFloatBounds, pMatcher, pResult);
 	}

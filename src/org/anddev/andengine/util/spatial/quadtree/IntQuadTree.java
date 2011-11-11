@@ -1,5 +1,6 @@
 package org.anddev.andengine.util.spatial.quadtree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.anddev.andengine.util.IMatcher;
@@ -83,42 +84,42 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 	// Methods
 	// ===========================================================
 
-	public synchronized List<T> query(final int pX, final int pY) {
+	public synchronized ArrayList<T> query(final int pX, final int pY) {
 		this.mQueryIntBounds.set(pX, pY);
 		return this.query(this.mQueryIntBounds);
 	}
 
-	public synchronized List<T> query(final int pX, final int pY, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final int pX, final int pY, final L pResult) {
 		this.mQueryIntBounds.set(pX, pY);
 		return this.query(this.mQueryIntBounds, pResult);
 	}
 
-	public synchronized List<T> query(final int pX, final int pY, final IMatcher<T> pMatcher) {
+	public synchronized ArrayList<T> query(final int pX, final int pY, final IMatcher<T> pMatcher) {
 		this.mQueryIntBounds.set(pX, pY);
 		return this.query(this.mQueryIntBounds, pMatcher);
 	}
 
-	public synchronized List<T> query(final int pX, final int pY, final IMatcher<T> pMatcher, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final int pX, final int pY, final IMatcher<T> pMatcher, final L pResult) {
 		this.mQueryIntBounds.set(pX, pY);
 		return this.query(this.mQueryIntBounds, pMatcher, pResult);
 	}
 
-	public synchronized List<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax) {
+	public synchronized ArrayList<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax) {
 		this.mQueryIntBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.query(this.mQueryIntBounds);
 	}
 
-	public synchronized List<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final L pResult) {
 		this.mQueryIntBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.query(this.mQueryIntBounds, pResult);
 	}
 
-	public synchronized List<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher) {
+	public synchronized ArrayList<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher) {
 		this.mQueryIntBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.query(this.mQueryIntBounds, pMatcher);
 	}
 
-	public synchronized List<T> query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher, final List<T> pResult) {
+	public synchronized <L extends List<T>> L query(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final IMatcher<T> pMatcher, final L pResult) {
 		this.mQueryIntBounds.set(pXMin, pYMin, pXMax, pYMax);
 		return this.query(this.mQueryIntBounds, pMatcher, pResult);
 	}

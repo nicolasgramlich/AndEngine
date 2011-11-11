@@ -134,7 +134,8 @@ public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> 
 
 	@Override
 	public void reset() {
-		super.reset();
+		super.reset();
+
 		this.mSourceBlendFunction = IShape.BLENDFUNCTION_SOURCE_DEFAULT;
 		this.mDestinationBlendFunction = IShape.BLENDFUNCTION_DESTINATION_DEFAULT;
 	}

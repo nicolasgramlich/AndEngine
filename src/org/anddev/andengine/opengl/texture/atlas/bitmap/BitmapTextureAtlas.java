@@ -10,6 +10,7 @@ import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.util.exception.NullBitmapException;
+import org.anddev.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -146,8 +147,9 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 
 		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, glInternalFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
 
-		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
+		/* Non alpha premultiplied bitmaps are loaded with ARGB_8888 and converted down manually. */
+		final Config bitmapConfig = (preMultipyAlpha) ? this.mBitmapTextureFormat.getBitmapConfig() : Config.ARGB_8888;
 
 		final ArrayList<IBitmapTextureAtlasSource> textureSources = this.mTextureAtlasSources;
 		final int textureSourceCount = textureSources.size();
@@ -156,22 +158,28 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		for(int i = 0; i < textureSourceCount; i++) {
 			final IBitmapTextureAtlasSource bitmapTextureAtlasSource = textureSources.get(i);
 			try {
+				final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(bitmapConfig);
+				if(bitmap == null) {
+					throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.getClass().toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
+				}
+
+				final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && pixelFormat == PixelFormat.RGBA_8888;
+				if(!useDefaultAlignment) {
+					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
+				}
+
 				if(preMultipyAlpha) {
-					final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(bitmapConfig);
-					if(bitmap == null) {
-						throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.getClass().toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
-					}
-
 					GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, glFormat, glType);
-
-					bitmap.recycle();
 				} else {
-					final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(Config.ARGB_8888);
-					if(bitmap == null) {
-						throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.getClass().toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
-					}
 					GLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
 				}
+
+				/* Restore default alignment. */
+				if(!useDefaultAlignment) {
+					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
+				}
+
+				bitmap.recycle();
 
 				if(textureStateListener != null) {
 					textureStateListener.onTextureAtlasSourceLoaded(this, bitmapTextureAtlasSource);

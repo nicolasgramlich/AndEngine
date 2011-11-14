@@ -153,13 +153,13 @@ public class Sprite extends RectangularShape<Mesh> {
 	@Override
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float x = 0;
 		final float y = 0;
 		final float x2 = this.mWidth;
 		final float y2 = this.mHeight;
 
-		final float[] bufferData = vertexBufferObject.getBufferData();
 		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x;
 		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y;
 
@@ -191,10 +191,10 @@ public class Sprite extends RectangularShape<Mesh> {
 	}
 
 	protected void onUpdateTextureCoordinates() {
-		final ITextureRegion textureRegion = this.mTextureRegion;
-
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
+
+		final ITextureRegion textureRegion = this.mTextureRegion;
 
 		final float u;
 		final float v;
@@ -253,6 +253,7 @@ public class Sprite extends RectangularShape<Mesh> {
 			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
 			
 		}
+
 		vertexBufferObject.setDirtyOnHardware();
 	}
 

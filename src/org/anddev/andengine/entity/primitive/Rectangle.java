@@ -114,13 +114,13 @@ public class Rectangle extends RectangularShape<Mesh> {
 	@Override
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float x = 0;
 		final float y = 0;
 		final float x2 = this.mWidth;
 		final float y2 = this.mHeight;
 
-		final float[] bufferData = vertexBufferObject.getBufferData();
 		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x;
 		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y;
 

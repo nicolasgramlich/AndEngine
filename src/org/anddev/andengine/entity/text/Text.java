@@ -239,16 +239,16 @@ public class Text extends RectangularShape<Mesh> {
 
 		final float packedColor = this.mColor.getPacked();
 
-		int index = 0;
+		int bufferDataOffset = 0;
 		for(int i = 0; i < this.mCharactersMaximum; i++) {
-			bufferData[index + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[index + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[index + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[index + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[index + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[index + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
 
-			index += Text.LETTER_SIZE;
+			bufferDataOffset += Text.LETTER_SIZE;
 		}
 
 		vertexBufferObject.setDirtyOnHardware();

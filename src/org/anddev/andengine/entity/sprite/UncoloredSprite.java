@@ -148,31 +148,16 @@ public class UncoloredSprite extends RectangularShape<Mesh> {
 		super.postDraw(pCamera);
 	}
 
-//	@Override
-//	protected void onUpdateColor() {
-//		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-//		final float[] bufferData = vertexBufferObject.getBufferData();
-//
-//		final float packedColor = this.mColor.getPacked();
-//
-//		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-//		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-//		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-//		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-//
-//		vertexBufferObject.setDirtyOnHardware();
-//	}
-
 	@Override
 	protected void onUpdateVertices() {
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float x = 0;
 		final float y = 0;
 		final float x2 = this.mWidth;
 		final float y2 = this.mHeight;
 
-		final float[] bufferData = vertexBufferObject.getBufferData();
 		bufferData[0 * UncoloredSprite.VERTEX_SIZE + UncoloredSprite.VERTEX_INDEX_X] = x;
 		bufferData[0 * UncoloredSprite.VERTEX_SIZE + UncoloredSprite.VERTEX_INDEX_Y] = y;
 
@@ -189,10 +174,10 @@ public class UncoloredSprite extends RectangularShape<Mesh> {
 	}
 
 	protected void onUpdateTextureCoordinates() {
-		final ITextureRegion textureRegion = this.mTextureRegion;
-
 		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
+
+		final ITextureRegion textureRegion = this.mTextureRegion;
 
 		final float u;
 		final float v;

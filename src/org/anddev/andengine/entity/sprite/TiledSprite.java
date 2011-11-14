@@ -98,28 +98,29 @@ public class TiledSprite extends Sprite {
 		final float y2 = this.mHeight;
 
 		int tileCount = this.getTileCount();
-		int index = 0;
+		int bufferDataOffset = 0;
 		for(int i = 0; i < tileCount; i++) {
-			bufferData[index + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x;
-			bufferData[index + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y;
+			bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x;
+			bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y;
 
-			bufferData[index + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x;
-			bufferData[index + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y2;
+			bufferData[bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x;
+			bufferData[bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y2;
 
-			bufferData[index + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x2;
-			bufferData[index + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y;
+			bufferData[bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x2;
+			bufferData[bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y;
 
-			bufferData[index + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x2;
-			bufferData[index + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y;
+			bufferData[bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x2;
+			bufferData[bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y;
 
-			bufferData[index + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x;
-			bufferData[index + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y2;
+			bufferData[bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x;
+			bufferData[bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y2;
 
-			bufferData[index + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x2;
-			bufferData[index + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y2;
+			bufferData[bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_X] = x2;
+			bufferData[bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.VERTEX_INDEX_Y] = y2;
 
-			index += TiledSprite.TILEDSPRITE_SIZE;
+			bufferDataOffset += TiledSprite.TILEDSPRITE_SIZE;
 		}
+
 		vertexBufferObject.setDirtyOnHardware();
 	}
 
@@ -131,16 +132,16 @@ public class TiledSprite extends Sprite {
 		final float packedColor = this.mColor.getPacked();
 
 		int tileCount = this.getTileCount();
-		int index = 0;
+		int bufferDataOffset = 0;
 		for(int i = 0; i < tileCount; i++) {
-			bufferData[index + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
-			bufferData[index + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
-			bufferData[index + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
-			bufferData[index + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
-			bufferData[index + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
-			bufferData[index + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
+			bufferData[bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.COLOR_INDEX] = packedColor;
 
-			index += TiledSprite.TILEDSPRITE_SIZE;
+			bufferDataOffset += TiledSprite.TILEDSPRITE_SIZE;
 		}
 
 		vertexBufferObject.setDirtyOnHardware();
@@ -154,7 +155,7 @@ public class TiledSprite extends Sprite {
 		final ITiledTextureRegion textureRegion = this.getTextureRegion();
 
 		int tileCount = this.getTileCount();
-		int index = 0;
+		int bufferDataOffset = 0;
 		for(int i = 0; i < tileCount; i++) {
 			final float u;
 			final float v;
@@ -188,45 +189,46 @@ public class TiledSprite extends Sprite {
 			}
 
 			if(textureRegion.isRotated()) {
-				bufferData[index + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
 				
-				bufferData[index + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
 				
-				bufferData[index + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
 			} else {
-				bufferData[index + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
 
-				bufferData[index + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
 				
-				bufferData[index + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
+				bufferData[bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v;
 
-				bufferData[index + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[index + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
 				
-				bufferData[index + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[index + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
+				bufferData[bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + TiledSprite.TEXTURECOORDINATES_INDEX_V] = v2;
 			}
 
-			index += TiledSprite.TILEDSPRITE_SIZE;
+			bufferDataOffset += TiledSprite.TILEDSPRITE_SIZE;
 		}
+
 		vertexBufferObject.setDirtyOnHardware();
 	}
 

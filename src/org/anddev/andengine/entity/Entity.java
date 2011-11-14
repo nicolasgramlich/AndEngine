@@ -76,8 +76,8 @@ public class Entity implements IEntity {
 	protected float mRotationCenterX = 0;
 	protected float mRotationCenterY = 0;
 
-	protected float mScaleX = 1f;
-	protected float mScaleY = 1f;
+	protected float mScaleX = 1;
+	protected float mScaleY = 1;
 
 	protected float mScaleCenterX = 0;
 	protected float mScaleCenterY = 0;
@@ -361,7 +361,7 @@ public class Entity implements IEntity {
 
 	@Override
 	public boolean isSkewed() {
-		return this.mSkewX != 1 || this.mSkewY != 1;
+		return this.mSkewX != 0 || this.mSkewY != 0;
 	}
 
 	@Override
@@ -1025,6 +1025,8 @@ public class Entity implements IEntity {
 		this.mRotation = 0;
 		this.mScaleX = 1;
 		this.mScaleY = 1;
+		this.mSkewX = 0;
+		this.mSkewY = 0;
 
 		this.mColor.reset();
 

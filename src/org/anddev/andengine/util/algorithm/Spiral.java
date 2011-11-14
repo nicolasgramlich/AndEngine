@@ -90,7 +90,7 @@ public class Spiral {
 			/* Finished current segment. */
 			this.mDirectionSegmentIndex = 0;
 
-			/* Rotate 90¼ to the right. */
+			/* Rotate 90Â° to the right. */
 			this.mDirection = this.mDirection.rotateRight();
 
 			/* When the direction changed to be horizontal, the next segment is going to be one step longer. */

@@ -24,10 +24,10 @@ public class TickerText extends Text {
 
 	private float mCharactersPerSecond;
 
-	private int mCharactersVisible = 0;
-	private float mSecondsElapsed = 0;
+	private int mCharactersVisible;
+	private float mSecondsElapsed;
 
-	private boolean mReverse = false;
+	private boolean mReverse;
 
 	private float mDuration;
 
@@ -88,7 +88,7 @@ public class TickerText extends Text {
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mCharactersVisible * Text.VERTICES_PER_LETTER);
+		this.mTextVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mCharactersVisible * Text.VERTICES_PER_LETTER);
 	}
 
 	@Override

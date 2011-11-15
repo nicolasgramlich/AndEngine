@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.shape;
 
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
  * (c) Zynga 2011
@@ -8,7 +7,7 @@ import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 19:01:16 - 07.08.2011
  */
-public interface IAreaShape<V extends IVertexBufferObject> extends IShape<V> {
+public interface IAreaShape extends IShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================

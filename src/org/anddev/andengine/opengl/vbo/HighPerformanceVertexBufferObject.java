@@ -20,17 +20,13 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 	// Fields
 	// ===========================================================
 
-	private final float[] mBufferData;
+	protected final float[] mBufferData;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public HighPerformanceVertexBufferObject(int pCapacity, DrawType pDrawType, boolean pManaged) {
-		this(pCapacity, pDrawType, pManaged, null);
-	}
-	
-	public HighPerformanceVertexBufferObject(int pCapacity, DrawType pDrawType, boolean pManaged, VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public HighPerformanceVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 
 		this.mBufferData = new float[pCapacity];
@@ -44,6 +40,10 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 		return this.mBufferData;
 	}
 
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
 	@Override
 	protected void onBufferData() {
 		// TODO On honeycomb the nio buffers are significantly faster, and below native call might not be needed!
@@ -54,10 +54,6 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 
 		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
 	}
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
 
 	// ===========================================================
 	// Methods

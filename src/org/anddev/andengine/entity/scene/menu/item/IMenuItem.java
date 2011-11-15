@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.menu.item;
 
 import org.anddev.andengine.entity.shape.IAreaShape;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -10,7 +9,7 @@ import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
  * @author Nicolas Gramlich
  * @since 13:27:16 - 07.07.2010
  */
-public interface IMenuItem<V extends IVertexBufferObject> extends IAreaShape<V> {
+public interface IMenuItem extends IAreaShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================

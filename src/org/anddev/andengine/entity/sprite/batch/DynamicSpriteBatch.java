@@ -3,7 +3,6 @@ package org.anddev.andengine.entity.sprite.batch;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 
 /**
  * (c) Zynga 2011
@@ -24,19 +23,52 @@ public abstract class DynamicSpriteBatch extends SpriteBatch {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * Uses a default {@link SpriteBatchVertexBufferObject} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
 	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity, DrawType.DYNAMIC);
 	}
 
-	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject) {
+	public DynamicSpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity) {
+		super(pX, pY, pTexture, pCapacity, DrawType.DYNAMIC);
+	}
+
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final DrawType pDrawType) {
+		super(pTexture, pCapacity, pDrawType);
+	}
+
+	public DynamicSpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final DrawType pDrawType) {
+		super(pX, pY, pTexture, pCapacity, pDrawType);
+	}
+
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final ShaderProgram pShaderProgram) {
+		super(pTexture, pCapacity, DrawType.DYNAMIC, pShaderProgram);
+	}
+
+	public DynamicSpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pTexture, pCapacity, DrawType.DYNAMIC, pShaderProgram);
+	}
+
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final ISpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject) {
 		super(pTexture, pCapacity, pSpriteBatchVertexBufferObject);
 	}
 
-	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject, final ShaderProgram pShaderProgram) {
+	public DynamicSpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final ISpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject) {
+		super(pX, pY, pTexture, pCapacity, pSpriteBatchVertexBufferObject);
+	}
+
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		super(pTexture, pCapacity, pDrawType, pShaderProgram);
+	}
+
+	public DynamicSpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pTexture, pCapacity, pDrawType, pShaderProgram);
+	}
+
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final ISpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject, final ShaderProgram pShaderProgram) {
 		super(pTexture, pCapacity, pSpriteBatchVertexBufferObject, pShaderProgram);
+	}
+
+	public DynamicSpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final ISpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pTexture, pCapacity, pSpriteBatchVertexBufferObject, pShaderProgram);
 	}
 
 	// ===========================================================

@@ -17,7 +17,7 @@ import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class Shape<V extends IVertexBufferObject> extends Entity implements IShape<V> {
+public abstract class Shape extends Entity implements IShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -32,17 +32,15 @@ public abstract class Shape<V extends IVertexBufferObject> extends Entity implem
 	protected boolean mBlendingEnabled = false;
 	protected boolean mCullingEnabled = false;
 
-	protected V mVertexBufferObject;
 	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final V pVertexBufferObject, final ShaderProgram pShaderProgram) {
+	public Shape(final float pX, final float pY, final ShaderProgram pShaderProgram) {
 		super(pX, pY);
 
-		this.mVertexBufferObject = pVertexBufferObject;
 		this.mShaderProgram = pShaderProgram;
 	}
 
@@ -74,11 +72,6 @@ public abstract class Shape<V extends IVertexBufferObject> extends Entity implem
 	@Override
 	public void setCullingEnabled(final boolean pCullingEnabled) {
 		this.mCullingEnabled = pCullingEnabled;
-	}
-
-	@Override
-	public V getVertexBufferObject() {
-		return this.mVertexBufferObject;
 	}
 
 	@Override
@@ -143,9 +136,10 @@ public abstract class Shape<V extends IVertexBufferObject> extends Entity implem
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(this.mVertexBufferObject != null) {
-			if(this.mVertexBufferObject.isManaged()) {
-				this.mVertexBufferObject.unloadFromActiveBufferObjectManager();
+		final IVertexBufferObject vertexBufferObject = this.getVertexBufferObject();
+		if(vertexBufferObject != null) {
+			if(vertexBufferObject.isManaged()) {
+				vertexBufferObject.unloadFromActiveBufferObjectManager();
 			}
 		}
 	}

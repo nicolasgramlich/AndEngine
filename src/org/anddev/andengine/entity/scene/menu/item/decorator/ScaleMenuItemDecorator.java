@@ -26,7 +26,7 @@ public class ScaleMenuItemDecorator<V extends IVertexBufferObject> extends BaseM
 	// Constructors
 	// ===========================================================
 
-	public ScaleMenuItemDecorator(final IMenuItem<V> pMenuItem, final float pSelectedScale, final float pUnselectedScale) {
+	public ScaleMenuItemDecorator(final IMenuItem pMenuItem, final float pSelectedScale, final float pUnselectedScale) {
 		super(pMenuItem);
 
 		this.mSelectedScale = pSelectedScale;
@@ -48,17 +48,17 @@ public class ScaleMenuItemDecorator<V extends IVertexBufferObject> extends BaseM
 	// ===========================================================
 
 	@Override
-	public void onMenuItemSelected(final IMenuItem<V> pMenuItem) {
+	public void onMenuItemSelected(final IMenuItem pMenuItem) {
 		this.setScale(this.mSelectedScale);
 	}
 
 	@Override
-	public void onMenuItemUnselected(final IMenuItem<V> pMenuItem) {
+	public void onMenuItemUnselected(final IMenuItem pMenuItem) {
 		this.setScale(this.mUnselectedScale);
 	}
 
 	@Override
-	public void onMenuItemReset(final IMenuItem<V> pMenuItem) {
+	public void onMenuItemReset(final IMenuItem pMenuItem) {
 		this.setScale(this.mUnselectedScale);
 	}
 

@@ -24,7 +24,7 @@ import org.anddev.andengine.util.transformation.Transformation;
  * @author Nicolas Gramlich
  * @since 15:05:44 - 18.11.2010
  */
-public abstract class BaseMenuItemDecorator<V extends IVertexBufferObject> implements IMenuItem<V> {
+public abstract class BaseMenuItemDecorator<V extends IVertexBufferObject> implements IMenuItem {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -33,13 +33,13 @@ public abstract class BaseMenuItemDecorator<V extends IVertexBufferObject> imple
 	// Fields
 	// ===========================================================
 
-	protected final IMenuItem<V> mMenuItem;
+	protected final IMenuItem mMenuItem;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseMenuItemDecorator(final IMenuItem<V> pMenuItem) {
+	public BaseMenuItemDecorator(final IMenuItem pMenuItem) {
 		this.mMenuItem = pMenuItem;
 	}
 
@@ -51,9 +51,9 @@ public abstract class BaseMenuItemDecorator<V extends IVertexBufferObject> imple
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onMenuItemSelected(final IMenuItem<V> pMenuItem);
-	protected abstract void onMenuItemUnselected(final IMenuItem<V> pMenuItem);
-	protected abstract void onMenuItemReset(final IMenuItem<V> pMenuItem);
+	protected abstract void onMenuItemSelected(final IMenuItem pMenuItem);
+	protected abstract void onMenuItemUnselected(final IMenuItem pMenuItem);
+	protected abstract void onMenuItemReset(final IMenuItem pMenuItem);
 
 	@Override
 	public int getID() {
@@ -61,7 +61,7 @@ public abstract class BaseMenuItemDecorator<V extends IVertexBufferObject> imple
 	}
 
 	@Override
-	public V getVertexBufferObject() {
+	public IVertexBufferObject getVertexBufferObject() {
 		return this.mMenuItem.getVertexBufferObject();
 	}
 
@@ -363,7 +363,7 @@ public abstract class BaseMenuItemDecorator<V extends IVertexBufferObject> imple
 	}
 	
 	@Override
-	public boolean collidesWith(final IShape<?> pOtherShape) {
+	public boolean collidesWith(final IShape pOtherShape) {
 		return this.mMenuItem.collidesWith(pOtherShape);
 	}
 

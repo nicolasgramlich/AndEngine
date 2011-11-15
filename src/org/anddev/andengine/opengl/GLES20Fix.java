@@ -4,7 +4,7 @@ package org.anddev.andengine.opengl;
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 5:44:43 PM - Aug 4, 2011
+ * @since 17:44:43 - 04.09.2011
  */
 public class GLES20Fix {
 	// ===========================================================

@@ -27,7 +27,7 @@ public class ColorMenuItemDecorator<V extends IVertexBufferObject> extends BaseM
 	// Constructors
 	// ===========================================================
 
-	public ColorMenuItemDecorator(final IMenuItem<V> pMenuItem, final Color pSelectedColor, final Color pUnselectedColor) {
+	public ColorMenuItemDecorator(final IMenuItem pMenuItem, final Color pSelectedColor, final Color pUnselectedColor) {
 		super(pMenuItem);
 
 		this.mSelectedColor = pSelectedColor;
@@ -49,17 +49,17 @@ public class ColorMenuItemDecorator<V extends IVertexBufferObject> extends BaseM
 	// ===========================================================
 
 	@Override
-	public void onMenuItemSelected(final IMenuItem<V> pMenuItem) {
+	public void onMenuItemSelected(final IMenuItem pMenuItem) {
 		pMenuItem.setColor(this.mSelectedColor);
 	}
 
 	@Override
-	public void onMenuItemUnselected(final IMenuItem<V> pMenuItem) {
+	public void onMenuItemUnselected(final IMenuItem pMenuItem) {
 		pMenuItem.setColor(this.mUnselectedColor);
 	}
 
 	@Override
-	public void onMenuItemReset(final IMenuItem<V> pMenuItem) {
+	public void onMenuItemReset(final IMenuItem pMenuItem) {
 		pMenuItem.setColor(this.mUnselectedColor);
 	}
 

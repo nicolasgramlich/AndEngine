@@ -21,17 +21,13 @@ public class LowMemoryVertexBufferObject extends VertexBufferObject {
 	// Fields
 	// ===========================================================
 
-	private final FloatBuffer mFloatBuffer;
+	protected final FloatBuffer mFloatBuffer;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public LowMemoryVertexBufferObject(int pCapacity, DrawType pDrawType, boolean pManaged) {
-		this(pCapacity, pDrawType, pManaged, null);
-	}
-	
-	public LowMemoryVertexBufferObject(int pCapacity, DrawType pDrawType, boolean pManaged, VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public LowMemoryVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 
 		this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
@@ -45,14 +41,14 @@ public class LowMemoryVertexBufferObject extends VertexBufferObject {
 		return this.mFloatBuffer;
 	}
 
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
 	@Override
 	protected void onBufferData() {
 		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
 	}
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
 
 	// ===========================================================
 	// Methods

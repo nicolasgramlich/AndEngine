@@ -7,6 +7,7 @@ import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.sprite.batch.SpriteBatch.SpriteBatchMesh;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
@@ -81,7 +82,11 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 	}
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
-		super(0, 0, pSpriteBatchMesh, PositionColorTextureCoordinatesShaderProgram.getInstance());
+		this(pTexture, pCapacity, pSpriteBatchMesh, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	}
+
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh, final ShaderProgram pShaderProgram) {
+		super(0, 0, pSpriteBatchMesh, pShaderProgram);
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
 

@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.menu.item.decorator;
 
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -10,7 +9,7 @@ import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
  * @author Nicolas Gramlich
  * @since 15:04:29 - 18.11.2010
  */
-public class ScaleMenuItemDecorator<V extends IVertexBufferObject> extends BaseMenuItemDecorator<V> {
+public class ScaleMenuItemDecorator extends BaseMenuItemDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================

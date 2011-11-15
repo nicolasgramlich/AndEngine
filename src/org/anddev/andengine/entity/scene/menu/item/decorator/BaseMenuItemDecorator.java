@@ -24,7 +24,7 @@ import org.anddev.andengine.util.transformation.Transformation;
  * @author Nicolas Gramlich
  * @since 15:05:44 - 18.11.2010
  */
-public abstract class BaseMenuItemDecorator<V extends IVertexBufferObject> implements IMenuItem {
+public abstract class BaseMenuItemDecorator implements IMenuItem {
 	// ===========================================================
 	// Constants
 	// ===========================================================

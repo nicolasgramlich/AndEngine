@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.menu.item.decorator;
 
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 import org.anddev.andengine.util.color.Color;
 
 /**
@@ -11,7 +10,7 @@ import org.anddev.andengine.util.color.Color;
  * @author Nicolas Gramlich
  * @since 14:25:35 - 07.07.2010
  */
-public class ColorMenuItemDecorator<V extends IVertexBufferObject> extends BaseMenuItemDecorator<V> {
+public class ColorMenuItemDecorator extends BaseMenuItemDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================

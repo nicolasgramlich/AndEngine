@@ -102,6 +102,11 @@ public class UncoloredSprite extends Sprite {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	protected void onUpdateColor() {
+		/* Nothing. */
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

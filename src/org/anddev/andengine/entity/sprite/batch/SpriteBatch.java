@@ -7,7 +7,6 @@ import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.sprite.batch.SpriteBatch.SpriteBatchMesh;
 import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
@@ -82,7 +81,7 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 	}
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
-		super(0, 0, pSpriteBatchMesh, null);
+		super(0, 0, pSpriteBatchMesh, PositionColorTextureCoordinatesShaderProgram.getInstance());
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
 
@@ -143,8 +142,7 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 
 		this.mTexture.bind();
 
-		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? PositionColorTextureCoordinatesShaderProgram.getInstance() : this.mShaderProgram; // TODO Add 'mFallbackShaderProgram' instead of permanent getInstance calls...
-		this.mMesh.preDraw(shaderProgram);
+		this.mMesh.preDraw(this.mShaderProgram);
 	}
 
 	@Override
@@ -158,8 +156,7 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		final ShaderProgram shaderProgram = (this.mShaderProgram == null) ? PositionColorTextureCoordinatesShaderProgram.getInstance() : this.mShaderProgram; // TODO Add 'mFallbackShaderProgram' instead of permanent getInstance calls...
-		this.mMesh.postDraw(shaderProgram);
+		this.mMesh.postDraw(this.mShaderProgram);
 
 		if(this.mBlendingEnabled) {
 			GLState.disableBlend();

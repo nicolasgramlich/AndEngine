@@ -84,13 +84,8 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	}
 
 	@Override
-	public boolean setTileIndex(final int pTileIndex) {
-		if(this.mTileIndex != pTileIndex) {
-			this.mTileIndex = pTileIndex;
-			return true;
-		} else {
-			return false;
-		}
+	public void setTileIndex(final int pTileIndex) {
+		this.mTileIndex = pTileIndex;
 	}
 
 	@Override

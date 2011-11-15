@@ -16,10 +16,7 @@ public interface ITiledTextureRegion extends ITextureRegion {
 	// ===========================================================
 
 	public int getTileIndex();
-	/**
-	 * @return <code>true</code> if the tileIndex has changed, <code>false</code> otherwise.
-	 */
-	public boolean setTileIndex(final int pTileIndex);
+	public void setTileIndex(final int pTileIndex);
 	public void nextTile();
 	public int getTileCount();
 	

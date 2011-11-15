@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
@@ -43,6 +44,13 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
 		super(pTexture, pCapacity, pSpriteBatchMesh);
 
+		/* Make children not be drawn automatically, as we handle the drawing ourself. */
+		this.setChildrenVisible(false);
+	}
+
+	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh, final ShaderProgram pShaderProgram) {
+		super(pTexture, pCapacity, pSpriteBatchMesh, pShaderProgram);
+		
 		/* Make children not be drawn automatically, as we handle the drawing ourself. */
 		this.setChildrenVisible(false);
 	}

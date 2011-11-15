@@ -1,6 +1,7 @@
 package org.anddev.andengine.entity.sprite.batch;
 
 import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
@@ -33,6 +34,10 @@ public abstract class DynamicSpriteBatch extends SpriteBatch {
 
 	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
 		super(pTexture, pCapacity, pSpriteBatchMesh);
+	}
+
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh, final ShaderProgram pShaderProgram) {
+		super(pTexture, pCapacity, pSpriteBatchMesh, pShaderProgram);
 	}
 
 	// ===========================================================

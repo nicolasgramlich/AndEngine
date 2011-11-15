@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.anddev.andengine.util.SmartList;
@@ -32,7 +32,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public SpriteGroup(final ITexture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity);
@@ -41,15 +41,15 @@ public class SpriteGroup extends DynamicSpriteBatch {
 		this.setChildrenVisible(false);
 	}
 
-	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
-		super(pTexture, pCapacity, pSpriteBatchMesh);
+	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject) {
+		super(pTexture, pCapacity, pSpriteBatchVertexBufferObject);
 
 		/* Make children not be drawn automatically, as we handle the drawing ourself. */
 		this.setChildrenVisible(false);
 	}
 
-	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh, final ShaderProgram pShaderProgram) {
-		super(pTexture, pCapacity, pSpriteBatchMesh, pShaderProgram);
+	public SpriteGroup(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject, final ShaderProgram pShaderProgram) {
+		super(pTexture, pCapacity, pSpriteBatchVertexBufferObject, pShaderProgram);
 		
 		/* Make children not be drawn automatically, as we handle the drawing ourself. */
 		this.setChildrenVisible(false);

@@ -2,12 +2,11 @@ package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -22,7 +21,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 19:22:38 - 09.03.2010
  */
-public class Sprite extends RectangularShape<HighPerformanceVertexBufferObject, HighPerformanceMesh> {
+public class Sprite extends RectangularShape<HighPerformanceVertexBufferObject> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -57,39 +56,39 @@ public class Sprite extends RectangularShape<HighPerformanceVertexBufferObject, 
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, DrawType.STATIC);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pDrawType);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion) {
 		this(pX, pY, pWidth, pHeight, pTextureRegion, DrawType.STATIC);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceMesh(Sprite.SPRITE_SIZE, pDrawType, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceVertexBufferObject(Sprite.SPRITE_SIZE, pDrawType, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final HighPerformanceMesh pMesh) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pMesh);
+	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final HighPerformanceVertexBufferObject pVertexBufferObject) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject);
 	}
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final HighPerformanceMesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pMesh, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final HighPerformanceVertexBufferObject pVertexBufferObject) {
+		super(pX, pY, pWidth, pHeight, pVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
 
 		this.mTextureRegion = pTextureRegion;
 
@@ -136,25 +135,24 @@ public class Sprite extends RectangularShape<HighPerformanceVertexBufferObject, 
 
 		this.mTextureRegion.getTexture().bind();
 
-		this.mMesh.preDraw(this.mShaderProgram);
+		this.mVertexBufferObject.bind(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(GLES20.GL_TRIANGLE_STRIP, Sprite.VERTICES_PER_SPRITE);
+		this.mVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Sprite.VERTICES_PER_SPRITE);
 	}
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		this.mMesh.postDraw(this.mShaderProgram);
+		this.mVertexBufferObject.unbind(this.mShaderProgram);
 
 		super.postDraw(pCamera);
 	}
 
 	@Override
 	protected void onUpdateVertices() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final float x = 0;
 		final float y = 0;
@@ -173,13 +171,12 @@ public class Sprite extends RectangularShape<HighPerformanceVertexBufferObject, 
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	@Override
 	protected void onUpdateColor() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
 
@@ -188,12 +185,11 @@ public class Sprite extends RectangularShape<HighPerformanceVertexBufferObject, 
 		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	protected void onUpdateTextureCoordinates() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final ITextureRegion textureRegion = this.mTextureRegion;
 
@@ -255,7 +251,7 @@ public class Sprite extends RectangularShape<HighPerformanceVertexBufferObject, 
 			
 		}
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	// ===========================================================

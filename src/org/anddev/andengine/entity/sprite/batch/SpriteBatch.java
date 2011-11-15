@@ -4,8 +4,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.entity.sprite.batch.SpriteBatch.SpriteBatchMesh;
-import org.anddev.andengine.opengl.mesh.Mesh;
+import org.anddev.andengine.entity.sprite.batch.SpriteBatch.SpriteBatchVertexBufferObject;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
@@ -13,6 +12,7 @@ import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -33,7 +33,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 11:45:48 - 14.06.2011
  */
-public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, SpriteBatchMesh> {
+public class SpriteBatch extends Shape<SpriteBatchVertexBufferObject> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -69,25 +69,25 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
 		this(pTexture, pCapacity, DrawType.STATIC);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public SpriteBatch(final ITexture pTexture, final int pCapacity, final DrawType pDrawType) {
-		this(pTexture, pCapacity, new SpriteBatchMesh(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pTexture, pCapacity, new SpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
-		this(pTexture, pCapacity, pSpriteBatchMesh, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject) {
+		this(pTexture, pCapacity, pSpriteBatchVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
 	}
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh, final ShaderProgram pShaderProgram) {
-		super(0, 0, pSpriteBatchMesh, pShaderProgram);
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject, final ShaderProgram pShaderProgram) {
+		super(0, 0, pSpriteBatchVertexBufferObject, pShaderProgram);
 		this.mTexture = pTexture;
 		this.mCapacity = pCapacity;
 
@@ -110,7 +110,7 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 
 		final int bufferDataOffset = pIndex * SpriteBatch.VERTICES_PER_SPRITE;
 
-		this.mMesh.setBufferDataOffset(bufferDataOffset);
+		this.mVertexBufferObject.setBufferDataOffset(bufferDataOffset);
 	}
 
 	// ===========================================================
@@ -118,7 +118,7 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 	// ===========================================================
 
 	@Override
-	public boolean collidesWith(IShape<?, ?> pOtherShape) {
+	public boolean collidesWith(IShape<?> pOtherShape) {
 		return false;
 	}
 
@@ -148,21 +148,21 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 
 		this.mTexture.bind();
 
-		this.mMesh.preDraw(this.mShaderProgram);
+		this.mVertexBufferObject.bind(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
 		this.begin();
 
-		this.mMesh.draw(GLES20.GL_TRIANGLES, this.mVertices);
+		this.mVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mVertices);
 
 		this.end();
 	}
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		this.mMesh.postDraw(this.mShaderProgram);
+		this.mVertexBufferObject.unbind(this.mShaderProgram);
 
 		if(this.mBlendingEnabled) {
 			GLState.disableBlend();
@@ -182,8 +182,8 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(this.mMesh.getVertexBufferObject().isManaged()) {
-			this.mMesh.getVertexBufferObject().unloadFromActiveBufferObjectManager();
+		if(this.mVertexBufferObject.isManaged()) {
+			this.mVertexBufferObject.unloadFromActiveBufferObjectManager();
 		}
 	}
 
@@ -200,125 +200,125 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float)}.
 	 */
 	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)}.
 	 */
 	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
 
 		this.mIndex++;
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)}.
 	 */
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
 		
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float, float)}.
 	 */
 	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float, float, float)}.
 	 */
 	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float, float, float, float)}.
 	 */
 	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mMesh.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.add(pTextureRegion, pX, pY, pWidth, pHeight, pRotation, pScaleX, pScaleY, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#addInner(ITextureRegion, float, float, float, float, float, float, float, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#addInner(ITextureRegion, float, float, float, float, float, float, float, float, float, float, float)}.
 	 */
 	public void draw(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.mMesh.addInner(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.addInner(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mMesh.addInner(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pRed, pGreen, pBlue, pAlpha);
+		this.mVertexBufferObject.addInner(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float)}.
 	 */
 	public void draw(final Sprite pSprite) {
 		this.draw(pSprite, pSprite.getColor().getPacked());
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
 	 */
 	public void draw(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		if(pSprite.isVisible()) {
@@ -328,9 +328,9 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			this.assertTexture(textureRegion);
 
 			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.mMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+				this.mVertexBufferObject.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
-				this.mMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+				this.mVertexBufferObject.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
 			}
 
 			this.mIndex++;
@@ -338,7 +338,7 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 	}
 
 	/**
-	 * @see {@link SpriteBatchMesh#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchMesh#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
 	 */
 	public void draw(final Sprite pSprite, final float pPackedColor) {
 		if(pSprite.isVisible()) {
@@ -348,9 +348,9 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			this.assertTexture(textureRegion);
 
 			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.mMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
+				this.mVertexBufferObject.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
 			} else {
-				this.mMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
+				this.mVertexBufferObject.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
 			}
 
 			this.mIndex++;
@@ -366,9 +366,9 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
 			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.mMesh.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+				this.mVertexBufferObject.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
-				this.mMesh.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+				this.mVertexBufferObject.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
 			}
 
 			this.mIndex++;
@@ -380,9 +380,9 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			final ITextureRegion textureRegion = pSprite.getTextureRegion();
 
 			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.mMesh.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
+				this.mVertexBufferObject.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
 			} else {
-				this.mMesh.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
+				this.mVertexBufferObject.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
 			}
 
 			this.mIndex++;
@@ -396,10 +396,10 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 	protected void onSubmit() {
 		this.mVertices = this.mIndex * SpriteBatch.VERTICES_PER_SPRITE;
 
-		this.mMesh.submit();
+		this.mVertexBufferObject.setDirtyOnHardware();
 
 		this.mIndex = 0;
-		this.mMesh.setBufferDataOffset(0);
+		this.mVertexBufferObject.setBufferDataOffset(0);
 	}
 
 	private void assertCapacity(final int pIndex) {
@@ -424,7 +424,7 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class SpriteBatchMesh extends Mesh<HighPerformanceVertexBufferObject> {
+	public static class SpriteBatchVertexBufferObject extends HighPerformanceVertexBufferObject {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -443,8 +443,8 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 		// Constructors
 		// ===========================================================
 
-		public SpriteBatchMesh(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(new HighPerformanceVertexBufferObject(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes));
+		public SpriteBatchVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -479,14 +479,14 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			final float widthHalf = pWidth * 0.5f;
 			final float heightHalf = pHeight * 0.5f;
 
-			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.setToIdentity();
 
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postRotate(pRotation);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postRotate(pRotation);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
+			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchVertexBufferObject.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
 		}
 
 		/**
@@ -502,14 +502,14 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			final float widthHalf = pWidth * 0.5f;
 			final float heightHalf = pHeight * 0.5f;
 
-			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.setToIdentity();
 
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postRotate(pRotation);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postRotate(pRotation);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pPackedColor);
+			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchVertexBufferObject.TRANSFORATION_TMP, pPackedColor);
 		}
 
 		/**
@@ -530,14 +530,14 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			final float widthHalf = pWidth * 0.5f;
 			final float heightHalf = pHeight * 0.5f;
 
-			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.setToIdentity();
 
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
+			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchVertexBufferObject.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
 		}
 
 		/**
@@ -555,14 +555,14 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			final float widthHalf = pWidth * 0.5f;
 			final float heightHalf = pHeight * 0.5f;
 
-			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.setToIdentity();
 
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pPackedColor);
+			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchVertexBufferObject.TRANSFORATION_TMP, pPackedColor);
 		}
 
 		/**
@@ -583,15 +583,15 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			final float widthHalf = pWidth * 0.5f;
 			final float heightHalf = pHeight * 0.5f;
 
-			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.setToIdentity();
 
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
-			SpriteBatchMesh.TRANSFORATION_TMP.postRotate(pRotation);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postRotate(pRotation);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
+			this.add(pTextureRegion, pWidth, pHeight, SpriteBatchVertexBufferObject.TRANSFORATION_TMP, pRed, pGreen, pBlue, pAlpha);
 		}
 
 		/**
@@ -609,15 +609,15 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			final float widthHalf = pWidth * 0.5f;
 			final float heightHalf = pHeight * 0.5f;
 
-			SpriteBatchMesh.TRANSFORATION_TMP.setToIdentity();
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.setToIdentity();
 
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
-			SpriteBatchMesh.TRANSFORATION_TMP.postRotate(pRotation);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
-			SpriteBatchMesh.TRANSFORATION_TMP.postTranslate(pX, pY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(-widthHalf, -heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postScale(pScaleX, pScaleY);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postRotate(pRotation);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
+			SpriteBatchVertexBufferObject.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchMesh.TRANSFORATION_TMP, pPackedColor);
+			this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatchVertexBufferObject.TRANSFORATION_TMP, pPackedColor);
 		}
 
 		/**
@@ -631,21 +631,21 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 		 * @param pAlpha
 		 */
 		public void add(final ITextureRegion pTextureRegion, final float pWidth, final float pHeight, final Transformation pTransformation, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-			SpriteBatchMesh.VERTICES_TMP[0] = 0;
-			SpriteBatchMesh.VERTICES_TMP[1] = 0;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[0] = 0;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[1] = 0;
 
-			SpriteBatchMesh.VERTICES_TMP[2] = 0;
-			SpriteBatchMesh.VERTICES_TMP[3] = pHeight;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[2] = 0;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[3] = pHeight;
 
-			SpriteBatchMesh.VERTICES_TMP[4] = pWidth;
-			SpriteBatchMesh.VERTICES_TMP[5] = 0;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[4] = pWidth;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[5] = 0;
 
-			SpriteBatchMesh.VERTICES_TMP[6] = pWidth;
-			SpriteBatchMesh.VERTICES_TMP[7] = pHeight;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[6] = pWidth;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[7] = pHeight;
 
-			pTransformation.transform(SpriteBatchMesh.VERTICES_TMP);
+			pTransformation.transform(SpriteBatchVertexBufferObject.VERTICES_TMP);
 
-			this.addInner(pTextureRegion, SpriteBatchMesh.VERTICES_TMP[0], SpriteBatchMesh.VERTICES_TMP[1], SpriteBatchMesh.VERTICES_TMP[2], SpriteBatchMesh.VERTICES_TMP[3],  SpriteBatchMesh.VERTICES_TMP[4], SpriteBatchMesh.VERTICES_TMP[5], SpriteBatchMesh.VERTICES_TMP[6], SpriteBatchMesh.VERTICES_TMP[7], pRed, pGreen, pBlue, pAlpha);
+			this.addInner(pTextureRegion, SpriteBatchVertexBufferObject.VERTICES_TMP[0], SpriteBatchVertexBufferObject.VERTICES_TMP[1], SpriteBatchVertexBufferObject.VERTICES_TMP[2], SpriteBatchVertexBufferObject.VERTICES_TMP[3],  SpriteBatchVertexBufferObject.VERTICES_TMP[4], SpriteBatchVertexBufferObject.VERTICES_TMP[5], SpriteBatchVertexBufferObject.VERTICES_TMP[6], SpriteBatchVertexBufferObject.VERTICES_TMP[7], pRed, pGreen, pBlue, pAlpha);
 		}
 
 		/**
@@ -656,21 +656,21 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 		 * @param pPackedColor
 		 */
 		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pWidth, final float pHeight, final Transformation pTransformation, final float pPackedColor) {
-			SpriteBatchMesh.VERTICES_TMP[0] = 0;
-			SpriteBatchMesh.VERTICES_TMP[1] = 0;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[0] = 0;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[1] = 0;
 
-			SpriteBatchMesh.VERTICES_TMP[2] = 0;
-			SpriteBatchMesh.VERTICES_TMP[3] = pHeight;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[2] = 0;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[3] = pHeight;
 
-			SpriteBatchMesh.VERTICES_TMP[4] = pWidth;
-			SpriteBatchMesh.VERTICES_TMP[5] = 0;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[4] = pWidth;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[5] = 0;
 
-			SpriteBatchMesh.VERTICES_TMP[6] = pWidth;
-			SpriteBatchMesh.VERTICES_TMP[7] = pHeight;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[6] = pWidth;
+			SpriteBatchVertexBufferObject.VERTICES_TMP[7] = pHeight;
 
-			pTransformation.transform(SpriteBatchMesh.VERTICES_TMP);
+			pTransformation.transform(SpriteBatchVertexBufferObject.VERTICES_TMP);
 
-			this.addInnerWithPackedColor(pTextureRegion, SpriteBatchMesh.VERTICES_TMP[0], SpriteBatchMesh.VERTICES_TMP[1], SpriteBatchMesh.VERTICES_TMP[2], SpriteBatchMesh.VERTICES_TMP[3],  SpriteBatchMesh.VERTICES_TMP[4], SpriteBatchMesh.VERTICES_TMP[5], SpriteBatchMesh.VERTICES_TMP[6], SpriteBatchMesh.VERTICES_TMP[7], pPackedColor);
+			this.addInnerWithPackedColor(pTextureRegion, SpriteBatchVertexBufferObject.VERTICES_TMP[0], SpriteBatchVertexBufferObject.VERTICES_TMP[1], SpriteBatchVertexBufferObject.VERTICES_TMP[2], SpriteBatchVertexBufferObject.VERTICES_TMP[3],  SpriteBatchVertexBufferObject.VERTICES_TMP[4], SpriteBatchVertexBufferObject.VERTICES_TMP[5], SpriteBatchVertexBufferObject.VERTICES_TMP[6], SpriteBatchVertexBufferObject.VERTICES_TMP[7], pPackedColor);
 		}
 
 		/**
@@ -727,7 +727,7 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 		 * +-2
 		 */
 		private void addInnerWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pPackedColor) {
-			final float[] bufferData = this.mVertexBufferObject.getBufferData();
+			final float[] bufferData = this.getBufferData();
 			final int bufferDataOffset = this.mBufferDataOffset;
 
 			final float x1 = pX1;
@@ -831,7 +831,7 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 		 * 2-4
 		 */
 		private void addInnerWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pPackedColor) {
-			final float[] bufferData = this.mVertexBufferObject.getBufferData();
+			final float[] bufferData = this.getBufferData();
 			final int bufferDataOffset = this.mBufferDataOffset;
 
 			final float x1 = pX1;
@@ -922,10 +922,6 @@ public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, Sprite
 			}
 
 			this.mBufferDataOffset += SpriteBatch.SPRITE_SIZE;
-		}
-
-		public void submit() {
-			this.getVertexBufferObject().setDirtyOnHardware();
 		}
 
 		// ===========================================================

@@ -1,10 +1,9 @@
 package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 
@@ -35,39 +34,39 @@ public class TiledSprite extends Sprite {
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion) {
 		this(pX, pY, pTiledTextureRegion, DrawType.STATIC);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
-		super(pX, pY, pTiledTextureRegion, new HighPerformanceMesh(TiledSprite.TILEDSPRITE_SIZE * pTiledTextureRegion.getTileCount(), pDrawType, true, TiledSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		super(pX, pY, pTiledTextureRegion, new HighPerformanceVertexBufferObject(TiledSprite.TILEDSPRITE_SIZE * pTiledTextureRegion.getTileCount(), pDrawType, true, TiledSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final HighPerformanceMesh pMesh) {
-		super(pX, pY, pTiledTextureRegion, pMesh);
+	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final HighPerformanceVertexBufferObject pVertexBufferObject) {
+		super(pX, pY, pTiledTextureRegion, pVertexBufferObject);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion) {
 		this(pX, pY, pWidth, pHeight, pTiledTextureRegion, DrawType.STATIC);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, new HighPerformanceMesh(TiledSprite.TILEDSPRITE_SIZE * pTiledTextureRegion.getTileCount(), pDrawType, true, TiledSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, new HighPerformanceVertexBufferObject(TiledSprite.TILEDSPRITE_SIZE * pTiledTextureRegion.getTileCount(), pDrawType, true, TiledSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final HighPerformanceMesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pMesh);
+	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final HighPerformanceVertexBufferObject pVertexBufferObject) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObject);
 	}
 
 	// ===========================================================
@@ -85,13 +84,12 @@ public class TiledSprite extends Sprite {
 	
 	@Override
 	protected void draw(Camera pCamera) {
-		this.mMesh.draw(GLES20.GL_TRIANGLES, this.getCurrentTileIndex() * VERTICES_PER_TILEDSPRITE, TiledSprite.VERTICES_PER_TILEDSPRITE);
+		this.mVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.getCurrentTileIndex() * VERTICES_PER_TILEDSPRITE, TiledSprite.VERTICES_PER_TILEDSPRITE);
 	}
 
 	@Override
 	protected void onUpdateVertices() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final float x = 0;
 		final float y = 0;
@@ -122,13 +120,12 @@ public class TiledSprite extends Sprite {
 			bufferDataOffset += TiledSprite.TILEDSPRITE_SIZE;
 		}
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	@Override
 	protected void onUpdateColor() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
 
@@ -145,13 +142,12 @@ public class TiledSprite extends Sprite {
 			bufferDataOffset += TiledSprite.TILEDSPRITE_SIZE;
 		}
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	@Override
 	protected void onUpdateTextureCoordinates() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 		
 		final ITiledTextureRegion textureRegion = this.getTextureRegion();
 
@@ -230,7 +226,7 @@ public class TiledSprite extends Sprite {
 			bufferDataOffset += TiledSprite.TILEDSPRITE_SIZE;
 		}
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	// ===========================================================

@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 
 /**
  * Unlike {@link Sprite}, the {@link DiamondSprite} class doesn't render the rectangular outline of a {@link ITextureRegion}, but cuts out a diamond.
@@ -54,8 +53,7 @@ public class DiamondSprite extends Sprite {
 
 	@Override
 	protected void onUpdateVertices() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final float x = 0;
 		final float y = 0;
@@ -77,13 +75,12 @@ public class DiamondSprite extends Sprite {
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
 		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = yCenter;
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	@Override
 	protected void onUpdateTextureCoordinates() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final ITextureRegion textureRegion = this.mTextureRegion;
 
@@ -147,7 +144,7 @@ public class DiamondSprite extends Sprite {
 			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = vCenter;
 		}
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	// ===========================================================

@@ -17,26 +17,28 @@ public interface IVertexBufferObject {
 	// Methods
 	// ===========================================================
 
-	public abstract boolean isManaged();
-	public abstract void setManaged(final boolean pManaged);
+	public boolean isManaged();
+	public void setManaged(final boolean pManaged);
 
-	public abstract int getHardwareBufferID();
+	public int getHardwareBufferID();
 
-	public abstract boolean isLoadedToHardware();
-	public abstract void loadToHardware();
-	public abstract void unloadFromHardware();
+	public boolean isLoadedToHardware();
+	public void loadToHardware();
+	public void unloadFromHardware();
 
-	public abstract boolean isDirtyOnHardware();
-	/** Mark this {@link IVertexBufferObject} dirty so it gets updated on the hardware. */
-	public abstract void setDirtyOnHardware();
+	public boolean isDirtyOnHardware();
+	public void setDirtyOnHardware();
 
-	public abstract int getCapacity();
+	public int getCapacity();
 
-	public abstract int getSize();
+	public int getSize();
 
-	public abstract void bind(final ShaderProgram pShaderProgram);
-	public abstract void unbind(final ShaderProgram pShaderProgram);
+	public void bind(final ShaderProgram pShaderProgram);
+	public void unbind(final ShaderProgram pShaderProgram);
 
-	public abstract void loadToActiveBufferObjectManager();
-	public abstract void unloadFromActiveBufferObjectManager();
+	public void loadToActiveBufferObjectManager();
+	public void unloadFromActiveBufferObjectManager();
+
+	public void draw(final int pPrimitiveType, final int pCount);
+	public void draw(final int pPrimitiveType, final int pOffset, final int pCount);
 }

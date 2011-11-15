@@ -6,12 +6,11 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.util.GLState;
 import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -27,7 +26,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 09:50:36 - 04.04.2010
  */
-public class Line extends Shape<HighPerformanceVertexBufferObject, HighPerformanceMesh> {
+public class Line extends Shape<HighPerformanceVertexBufferObject> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -61,32 +60,32 @@ public class Line extends Shape<HighPerformanceVertexBufferObject, HighPerforman
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
 		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, DrawType.STATIC);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final DrawType pDrawType) {
 		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pDrawType);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
 		this(pX1, pY1, pX2, pY2, pLineWidth, DrawType.STATIC);
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final DrawType pDrawType) {
-		this(pX1, pY1, pX2, pY2, pLineWidth, new HighPerformanceMesh(Line.LINE_SIZE, pDrawType, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX1, pY1, pX2, pY2, pLineWidth, new HighPerformanceVertexBufferObject(Line.LINE_SIZE, pDrawType, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final HighPerformanceMesh pMesh) {
-		super(pX1, pY1, pMesh, PositionColorShaderProgram.getInstance());
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final HighPerformanceVertexBufferObject pVertexBufferObject) {
+		super(pX1, pY1, pVertexBufferObject, PositionColorShaderProgram.getInstance());
 
 		this.mX2 = pX2;
 		this.mY2 = pY2;
@@ -193,38 +192,36 @@ public class Line extends Shape<HighPerformanceVertexBufferObject, HighPerforman
 
 		GLState.lineWidth(this.mLineWidth);
 
-		this.mMesh.preDraw(this.mShaderProgram);
+		this.mVertexBufferObject.bind(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(Camera pCamera) {
-		this.mMesh.draw(GLES20.GL_LINES, Line.VERTICES_PER_LINE);
+		this.mVertexBufferObject.draw(GLES20.GL_LINES, Line.VERTICES_PER_LINE);
 	}
 
 	@Override
 	protected void postDraw(Camera pCamera) {
-		this.mMesh.postDraw(this.mShaderProgram);
+		this.mVertexBufferObject.unbind(this.mShaderProgram);
 
 		super.postDraw(pCamera);
 	}
 
 	@Override
 	protected void onUpdateColor() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
 
 		bufferData[0 * Line.VERTEX_SIZE + Line.COLOR_INDEX] = packedColor;
 		bufferData[1 * Line.VERTEX_SIZE + Line.COLOR_INDEX] = packedColor;
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	@Override
 	protected void onUpdateVertices() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		bufferData[0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X] = 0;
 		bufferData[0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_Y] = 0;
@@ -232,7 +229,7 @@ public class Line extends Shape<HighPerformanceVertexBufferObject, HighPerforman
 		bufferData[1 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X] = this.mX2 - this.mX;
 		bufferData[1 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = this.mY2 - this.mY;
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	@Override
@@ -260,12 +257,12 @@ public class Line extends Shape<HighPerformanceVertexBufferObject, HighPerforman
 	}
 
 	@Override
-	public boolean collidesWith(final IShape<?, ?> pOtherShape) {
+	public boolean collidesWith(final IShape<?> pOtherShape) {
 		if(pOtherShape instanceof Line) {
 			final Line otherLine = (Line) pOtherShape;
 			return LineCollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
 		} else if(pOtherShape instanceof RectangularShape) {
-			final RectangularShape<?, ?> rectangularShape = (RectangularShape<?, ?>) pOtherShape;
+			final RectangularShape<?> rectangularShape = (RectangularShape<?>) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(rectangularShape, this);
 		} else {
 			return false;

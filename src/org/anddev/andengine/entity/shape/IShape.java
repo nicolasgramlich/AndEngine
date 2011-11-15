@@ -2,7 +2,6 @@ package org.anddev.andengine.entity.shape;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.scene.Scene.ITouchArea;
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
@@ -15,7 +14,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 13:32:52 - 07.07.2010
  */
-public interface IShape<V extends IVertexBufferObject, M extends Mesh<V>> extends IEntity, ITouchArea {
+public interface IShape<V extends IVertexBufferObject> extends IEntity, ITouchArea {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -34,13 +33,13 @@ public interface IShape<V extends IVertexBufferObject, M extends Mesh<V>> extend
 	public void setCullingEnabled(final boolean pCullingEnabled);
 
 //	public boolean isVisible(final Camera pCamera); // TODO. Could be use for automated culling.
-	public boolean collidesWith(final IShape<?, ?> pOtherShape);
+	public boolean collidesWith(final IShape<?> pOtherShape);
 
 	public boolean isBlendingEnabled();
 	public void setBlendingEnabled(final boolean pBlendingEnabled);
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction);
 
-	public M getMesh();
+	public V getVertexBufferObject();
 	public ShaderProgram getShaderProgram();
 	public void setShaderProgram(final ShaderProgram pShaderProgram);
 }

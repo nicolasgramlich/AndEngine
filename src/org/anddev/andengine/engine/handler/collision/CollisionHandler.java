@@ -23,18 +23,18 @@ public class CollisionHandler implements IUpdateHandler {
 	// ===========================================================
 
 	private final ICollisionCallback mCollisionCallback;
-	private final IShape<?, ?> mCheckShape;
-	private final ArrayList<? extends IShape<?, ?>> mTargetStaticEntities;
+	private final IShape<?> mCheckShape;
+	private final ArrayList<? extends IShape<?>> mTargetStaticEntities;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public CollisionHandler(final ICollisionCallback pCollisionCallback, final IShape<?, ?> pCheckShape, final IShape<?, ?> pTargetShape) throws IllegalArgumentException {
+	public CollisionHandler(final ICollisionCallback pCollisionCallback, final IShape<?> pCheckShape, final IShape<?> pTargetShape) throws IllegalArgumentException {
 		this(pCollisionCallback, pCheckShape, ListUtils.toList(pTargetShape));
 	}
 
-	public CollisionHandler(final ICollisionCallback pCollisionCallback, final IShape<?, ?> pCheckShape, final ArrayList<? extends IShape<?, ?>> pTargetStaticEntities) throws IllegalArgumentException {
+	public CollisionHandler(final ICollisionCallback pCollisionCallback, final IShape<?> pCheckShape, final ArrayList<? extends IShape<?>> pTargetStaticEntities) throws IllegalArgumentException {
 		if (pCollisionCallback == null) {
 			throw new IllegalArgumentException( "pCollisionCallback must not be null!");
 		}
@@ -60,8 +60,8 @@ public class CollisionHandler implements IUpdateHandler {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		final IShape<?, ?> checkShape = this.mCheckShape;
-		final ArrayList<? extends IShape<?, ?>> staticEntities = this.mTargetStaticEntities;
+		final IShape<?> checkShape = this.mCheckShape;
+		final ArrayList<? extends IShape<?>> staticEntities = this.mTargetStaticEntities;
 		final int staticEntityCount = staticEntities.size();
 
 		for(int i = 0; i < staticEntityCount; i++){

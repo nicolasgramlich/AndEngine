@@ -1,8 +1,7 @@
 package org.anddev.andengine.entity.scene.menu.item.decorator;
 
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
-import org.anddev.andengine.opengl.mesh.Mesh;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -11,7 +10,7 @@ import org.anddev.andengine.opengl.vbo.VertexBufferObject;
  * @author Nicolas Gramlich
  * @since 15:04:29 - 18.11.2010
  */
-public class ScaleMenuItemDecorator<V extends VertexBufferObject, M extends Mesh<V>> extends BaseMenuItemDecorator<V, M> {
+public class ScaleMenuItemDecorator<V extends IVertexBufferObject> extends BaseMenuItemDecorator<V> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,7 +26,7 @@ public class ScaleMenuItemDecorator<V extends VertexBufferObject, M extends Mesh
 	// Constructors
 	// ===========================================================
 
-	public ScaleMenuItemDecorator(final IMenuItem<V, M> pMenuItem, final float pSelectedScale, final float pUnselectedScale) {
+	public ScaleMenuItemDecorator(final IMenuItem<V> pMenuItem, final float pSelectedScale, final float pUnselectedScale) {
 		super(pMenuItem);
 
 		this.mSelectedScale = pSelectedScale;
@@ -49,17 +48,17 @@ public class ScaleMenuItemDecorator<V extends VertexBufferObject, M extends Mesh
 	// ===========================================================
 
 	@Override
-	public void onMenuItemSelected(final IMenuItem<V, M> pMenuItem) {
+	public void onMenuItemSelected(final IMenuItem<V> pMenuItem) {
 		this.setScale(this.mSelectedScale);
 	}
 
 	@Override
-	public void onMenuItemUnselected(final IMenuItem<V, M> pMenuItem) {
+	public void onMenuItemUnselected(final IMenuItem<V> pMenuItem) {
 		this.setScale(this.mUnselectedScale);
 	}
 
 	@Override
-	public void onMenuItemReset(final IMenuItem<V, M> pMenuItem) {
+	public void onMenuItemReset(final IMenuItem<V> pMenuItem) {
 		this.setScale(this.mUnselectedScale);
 	}
 

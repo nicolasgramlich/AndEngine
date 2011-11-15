@@ -104,7 +104,7 @@ public class ChangeableText extends Text {
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(GLES20.GL_TRIANGLES, this.mCharacterCountCurrentText * Text.VERTICES_PER_LETTER);
+		this.mVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mCharacterCountCurrentText * Text.VERTICES_PER_LETTER);
 	}
 
 	// ===========================================================

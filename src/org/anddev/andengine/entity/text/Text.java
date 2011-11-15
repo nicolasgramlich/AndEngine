@@ -4,11 +4,10 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.opengl.font.IFont;
 import org.anddev.andengine.opengl.font.Letter;
-import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -28,7 +27,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
  */
-public class Text extends RectangularShape<HighPerformanceVertexBufferObject, HighPerformanceMesh> {
+public class Text extends RectangularShape<HighPerformanceVertexBufferObject> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -74,14 +73,14 @@ public class Text extends RectangularShape<HighPerformanceVertexBufferObject, Hi
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText) {
 		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 * @param pLeading gap between lines.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading) {
@@ -89,35 +88,35 @@ public class Text extends RectangularShape<HighPerformanceVertexBufferObject, Hi
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final DrawType pDrawType) {
 		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT, pDrawType);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading, final DrawType pDrawType) {
 		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pLeading, pDrawType);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
 		this(pX, pY, pFont, pText, pHorizontalAlign, Text.LEADING_DEFAULT);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final DrawType pDrawType) {
 		this(pX, pY, pFont, pText, pHorizontalAlign, Text.LEADING_DEFAULT, pDrawType);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 * @param pLeading gap between lines.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading) {
@@ -125,7 +124,7 @@ public class Text extends RectangularShape<HighPerformanceVertexBufferObject, Hi
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 * @param pLeading gap between lines.
 	 */
 	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType) {
@@ -133,11 +132,11 @@ public class Text extends RectangularShape<HighPerformanceVertexBufferObject, Hi
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link IVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Text#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 * @param pLeading gap between lines.
 	 */
 	protected Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType, final int pCharactersMaximum) {
-		super(pX, pY, 0, 0, new HighPerformanceMesh(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), PositionColorTextureCoordinatesShaderProgram.getInstance());
+		super(pX, pY, 0, 0, new HighPerformanceVertexBufferObject(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), PositionColorTextureCoordinatesShaderProgram.getInstance());
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
@@ -218,25 +217,24 @@ public class Text extends RectangularShape<HighPerformanceVertexBufferObject, Hi
 
 		this.mFont.getTexture().bind();
 
-		this.mMesh.preDraw(this.mShaderProgram);
+		this.mVertexBufferObject.bind(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(GLES20.GL_TRIANGLES, this.mVertexCount);
+		this.mVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mVertexCount);
 	}
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		this.mMesh.postDraw(this.mShaderProgram);
+		this.mVertexBufferObject.unbind(this.mShaderProgram);
 
 		super.postDraw(pCamera);
 	}
 
 	@Override
 	protected void onUpdateColor() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
 
@@ -252,13 +250,12 @@ public class Text extends RectangularShape<HighPerformanceVertexBufferObject, Hi
 			bufferDataOffset += Text.LETTER_SIZE;
 		}
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	@Override
 	protected void onUpdateVertices() {
-		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
+		final float[] bufferData = this.mVertexBufferObject.getBufferData();
 
 		final IFont font = this.mFont;
 		final String[] lines = this.mLines;
@@ -341,7 +338,7 @@ public class Text extends RectangularShape<HighPerformanceVertexBufferObject, Hi
 			}
 		}
 
-		vertexBufferObject.setDirtyOnHardware();
+		this.mVertexBufferObject.setDirtyOnHardware();
 	}
 
 	// ===========================================================

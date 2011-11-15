@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.sprite.batch;
 
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
@@ -26,18 +25,18 @@ public abstract class DynamicSpriteBatch extends SpriteBatch {
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link SpriteBatchVertexBufferObject} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link SpriteBatch#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity) {
 		super(pTexture, pCapacity, DrawType.DYNAMIC);
 	}
 
-	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh) {
-		super(pTexture, pCapacity, pSpriteBatchMesh);
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject) {
+		super(pTexture, pCapacity, pSpriteBatchVertexBufferObject);
 	}
 
-	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchMesh pSpriteBatchMesh, final ShaderProgram pShaderProgram) {
-		super(pTexture, pCapacity, pSpriteBatchMesh, pShaderProgram);
+	public DynamicSpriteBatch(final ITexture pTexture, final int pCapacity, final SpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject, final ShaderProgram pShaderProgram) {
+		super(pTexture, pCapacity, pSpriteBatchVertexBufferObject, pShaderProgram);
 	}
 
 	// ===========================================================

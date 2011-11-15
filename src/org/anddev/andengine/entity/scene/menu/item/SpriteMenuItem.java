@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.menu.item;
 
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 
@@ -12,7 +11,7 @@ import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
  * @author Nicolas Gramlich
  * @since 20:15:20 - 01.04.2010
  */
-public class SpriteMenuItem extends Sprite implements IMenuItem<HighPerformanceVertexBufferObject, HighPerformanceMesh> {
+public class SpriteMenuItem extends Sprite implements IMenuItem<HighPerformanceVertexBufferObject> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

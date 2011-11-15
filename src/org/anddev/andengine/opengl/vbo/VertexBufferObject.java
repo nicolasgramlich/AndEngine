@@ -183,6 +183,16 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		this.mLoadedToHardware = false;
 	}
 
+	@Override
+	public void draw(final int pPrimitiveType, final int pCount) {
+		GLES20.glDrawArrays(pPrimitiveType, 0, pCount);
+	}
+
+	@Override
+	public void draw(final int pPrimitiveType, final int pOffset, final int pCount) {
+		GLES20.glDrawArrays(pPrimitiveType, pOffset, pCount);
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

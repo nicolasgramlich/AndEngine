@@ -45,12 +45,12 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	// Methods
 	// ===========================================================
 
-	public static boolean checkContains(final RectangularShape<?, ?> pRectangularShape, final float pX, final float pY) {
+	public static boolean checkContains(final RectangularShape<?> pRectangularShape, final float pX, final float pY) {
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShape, RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP);
 		return ShapeCollisionChecker.checkContains(RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP, 2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, pX, pY);
 	}
 
-	public static boolean isVisible(final Camera pCamera, final RectangularShape<?, ?> pRectangularShape) {
+	public static boolean isVisible(final Camera pCamera, final RectangularShape<?> pRectangularShape) {
 		RectangularShapeCollisionChecker.fillVertices(pCamera, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A);
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShape, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
 
@@ -71,21 +71,21 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		return ShapeCollisionChecker.checkCollision(2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A, 2 * LineCollisionChecker.LINE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
 	}
 
-	public static boolean checkCollision(final RectangularShape<?, ?> pRectangularShapeA, final RectangularShape<?, ?> pRectangularShapeB) {
+	public static boolean checkCollision(final RectangularShape<?> pRectangularShapeA, final RectangularShape<?> pRectangularShapeB) {
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShapeA, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A);
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShapeB, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
 
 		return ShapeCollisionChecker.checkCollision(2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A, 2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
 	}
 
-	public static boolean checkCollision(final RectangularShape<?, ?> pRectangularShape, final Line pLine) {
+	public static boolean checkCollision(final RectangularShape<?> pRectangularShape, final Line pLine) {
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShape, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A);
 		LineCollisionChecker.fillVertices(pLine, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
 
 		return ShapeCollisionChecker.checkCollision(2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_A, 2 * LineCollisionChecker.LINE_VERTEX_COUNT, RectangularShapeCollisionChecker.VERTICES_COLLISION_TMP_B);
 	}
 
-	public static void fillVertices(final RectangularShape<?, ?> pRectangularShape, final float[] pVertices) {
+	public static void fillVertices(final RectangularShape<?> pRectangularShape, final float[] pVertices) {
 		RectangularShapeCollisionChecker.fillVertices(0, 0, pRectangularShape.getWidth(), pRectangularShape.getHeight(), pRectangularShape.getLocalToSceneTransformation(), pVertices);
 	}
 

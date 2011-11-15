@@ -3,7 +3,6 @@ package org.anddev.andengine.entity.shape;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
@@ -18,7 +17,7 @@ import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class Shape<V extends IVertexBufferObject, M extends Mesh<V>> extends Entity implements IShape<V, M> {
+public abstract class Shape<V extends IVertexBufferObject> extends Entity implements IShape<V> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -33,17 +32,17 @@ public abstract class Shape<V extends IVertexBufferObject, M extends Mesh<V>> ex
 	protected boolean mBlendingEnabled = false;
 	protected boolean mCullingEnabled = false;
 
-	protected M mMesh;
+	protected V mVertexBufferObject;
 	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final M pMesh, final ShaderProgram pShaderProgram) {
+	public Shape(final float pX, final float pY, final V pVertexBufferObject, final ShaderProgram pShaderProgram) {
 		super(pX, pY);
 
-		this.mMesh = pMesh;
+		this.mVertexBufferObject = pVertexBufferObject;
 		this.mShaderProgram = pShaderProgram;
 	}
 
@@ -78,8 +77,8 @@ public abstract class Shape<V extends IVertexBufferObject, M extends Mesh<V>> ex
 	}
 
 	@Override
-	public M getMesh() {
-		return this.mMesh;
+	public V getVertexBufferObject() {
+		return this.mVertexBufferObject;
 	}
 
 	@Override
@@ -144,10 +143,9 @@ public abstract class Shape<V extends IVertexBufferObject, M extends Mesh<V>> ex
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(this.mMesh != null) {
-			final IVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-			if(vertexBufferObject.isManaged()) {
-				vertexBufferObject.unloadFromActiveBufferObjectManager();
+		if(this.mVertexBufferObject != null) {
+			if(this.mVertexBufferObject.isManaged()) {
+				this.mVertexBufferObject.unloadFromActiveBufferObjectManager();
 			}
 		}
 	}

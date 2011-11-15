@@ -1,6 +1,5 @@
 package org.anddev.andengine.entity.shape;
 
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
@@ -9,7 +8,7 @@ import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 19:01:16 - 07.08.2011
  */
-public interface IAreaShape<V extends IVertexBufferObject, M extends Mesh<V>> extends IShape<V, M> {
+public interface IAreaShape<V extends IVertexBufferObject> extends IShape<V> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

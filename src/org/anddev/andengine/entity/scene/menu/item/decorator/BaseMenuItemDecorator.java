@@ -10,9 +10,8 @@ import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatch
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 import org.anddev.andengine.util.color.Color;
 import org.anddev.andengine.util.transformation.Transformation;
 
@@ -25,7 +24,7 @@ import org.anddev.andengine.util.transformation.Transformation;
  * @author Nicolas Gramlich
  * @since 15:05:44 - 18.11.2010
  */
-public abstract class BaseMenuItemDecorator<V extends VertexBufferObject, M extends Mesh<V>> implements IMenuItem<V, M> {
+public abstract class BaseMenuItemDecorator<V extends IVertexBufferObject> implements IMenuItem<V> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -34,13 +33,13 @@ public abstract class BaseMenuItemDecorator<V extends VertexBufferObject, M exte
 	// Fields
 	// ===========================================================
 
-	protected final IMenuItem<V, M> mMenuItem;
+	protected final IMenuItem<V> mMenuItem;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseMenuItemDecorator(final IMenuItem<V, M> pMenuItem) {
+	public BaseMenuItemDecorator(final IMenuItem<V> pMenuItem) {
 		this.mMenuItem = pMenuItem;
 	}
 
@@ -52,9 +51,9 @@ public abstract class BaseMenuItemDecorator<V extends VertexBufferObject, M exte
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onMenuItemSelected(final IMenuItem<V, M> pMenuItem);
-	protected abstract void onMenuItemUnselected(final IMenuItem<V, M> pMenuItem);
-	protected abstract void onMenuItemReset(final IMenuItem<V, M> pMenuItem);
+	protected abstract void onMenuItemSelected(final IMenuItem<V> pMenuItem);
+	protected abstract void onMenuItemUnselected(final IMenuItem<V> pMenuItem);
+	protected abstract void onMenuItemReset(final IMenuItem<V> pMenuItem);
 
 	@Override
 	public int getID() {
@@ -62,8 +61,8 @@ public abstract class BaseMenuItemDecorator<V extends VertexBufferObject, M exte
 	}
 
 	@Override
-	public M getMesh() {
-		return this.mMenuItem.getMesh();
+	public V getVertexBufferObject() {
+		return this.mMenuItem.getVertexBufferObject();
 	}
 
 	@Override
@@ -364,7 +363,7 @@ public abstract class BaseMenuItemDecorator<V extends VertexBufferObject, M exte
 	}
 	
 	@Override
-	public boolean collidesWith(final IShape<?, ?> pOtherShape) {
+	public boolean collidesWith(final IShape<?> pOtherShape) {
 		return this.mMenuItem.collidesWith(pOtherShape);
 	}
 

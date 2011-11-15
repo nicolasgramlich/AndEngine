@@ -68,7 +68,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 	// ===========================================================
 
 	@Override
-	public void buildAnimations(final ArrayList<IMenuItem<?>> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
+	public void buildAnimations(final ArrayList<IMenuItem<?, ?>> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
 		final IEaseFunction easeFunction = this.mEaseFunction;
 		final float maximumWidth = this.getMaximumWidth(pMenuItems);
 		final float overallHeight = this.getOverallHeight(pMenuItems);
@@ -79,7 +79,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 		float offsetY = 0;
 		final int menuItemCount = pMenuItems.size();
 		for(int i = 0; i < menuItemCount; i++) {
-			final IMenuItem<?> menuItem = pMenuItems.get(i);
+			final IMenuItem<?, ?> menuItem = pMenuItems.get(i);
 
 			final float offsetX;
 			switch(this.mHorizontalAlign) {
@@ -104,7 +104,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 	}
 
 	@Override
-	public void prepareAnimations(final ArrayList<IMenuItem<?>> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
+	public void prepareAnimations(final ArrayList<IMenuItem<?, ?>> pMenuItems, final float pCameraWidth, final float pCameraHeight) {
 		final float maximumWidth = this.getMaximumWidth(pMenuItems);
 		final float overallHeight = this.getOverallHeight(pMenuItems);
 
@@ -115,7 +115,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 		float offsetY = 0;
 		final int menuItemCount = pMenuItems.size();
 		for(int i = 0; i < menuItemCount; i++) {
-			final IMenuItem<?> menuItem = pMenuItems.get(i);
+			final IMenuItem<?, ?> menuItem = pMenuItems.get(i);
 
 			menuItem.setPosition(-maximumWidth, baseY + offsetY);
 

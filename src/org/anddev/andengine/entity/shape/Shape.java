@@ -3,13 +3,13 @@ package org.anddev.andengine.entity.shape;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -18,7 +18,7 @@ import org.anddev.andengine.opengl.vbo.VertexBufferObject;
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> {
+public abstract class Shape<V extends IVertexBufferObject, M extends Mesh<V>> extends Entity implements IShape<V, M> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -33,14 +33,14 @@ public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> 
 	protected boolean mBlendingEnabled = false;
 	protected boolean mCullingEnabled = false;
 
-	protected T mMesh;
+	protected M mMesh;
 	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final T pMesh, final ShaderProgram pShaderProgram) {
+	public Shape(final float pX, final float pY, final M pMesh, final ShaderProgram pShaderProgram) {
 		super(pX, pY);
 
 		this.mMesh = pMesh;
@@ -78,7 +78,7 @@ public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> 
 	}
 
 	@Override
-	public T getMesh() {
+	public M getMesh() {
 		return this.mMesh;
 	}
 
@@ -145,7 +145,7 @@ public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> 
 		super.finalize();
 
 		if(this.mMesh != null) {
-			final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+			final IVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 			if(vertexBufferObject.isManaged()) {
 				vertexBufferObject.unloadFromActiveBufferObjectManager();
 			}

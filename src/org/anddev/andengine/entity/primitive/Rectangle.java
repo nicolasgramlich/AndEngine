@@ -2,14 +2,15 @@ package org.anddev.andengine.entity.primitive;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
 
@@ -20,7 +21,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 12:18:49 - 13.03.2010
  */
-public class Rectangle extends RectangularShape<Mesh> {
+public class Rectangle extends RectangularShape<HighPerformanceVertexBufferObject, HighPerformanceMesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -57,10 +58,10 @@ public class Rectangle extends RectangularShape<Mesh> {
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, new Mesh(Rectangle.RECTANGLE_SIZE, pDrawType, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX, pY, pWidth, pHeight, new HighPerformanceMesh(Rectangle.RECTANGLE_SIZE, pDrawType, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final HighPerformanceMesh pMesh) {
 		super(pX, pY, pWidth, pHeight, pMesh, PositionColorShaderProgram.getInstance());
 
 		this.onUpdateVertices();
@@ -98,7 +99,7 @@ public class Rectangle extends RectangularShape<Mesh> {
 
 	@Override
 	protected void onUpdateColor() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
@@ -113,7 +114,7 @@ public class Rectangle extends RectangularShape<Mesh> {
 
 	@Override
 	protected void onUpdateVertices() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float x = 0;

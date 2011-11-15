@@ -23,5 +23,5 @@ public interface ICollisionCallback {
 	 * @param pTargetShape
 	 * @return <code>true</code> to proceed, <code>false</code> to stop further collosion-checks.
 	 */
-	public boolean onCollision(final IShape<?> pCheckShape, final IShape<?> pTargetShape);
+	public boolean onCollision(final IShape<?, ?> pCheckShape, final IShape<?, ?> pTargetShape);
 }

@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.vbo;
+package org.anddev.andengine.opengl.vbo.attribute;
 
 import org.anddev.andengine.opengl.GLES20Fix;
 

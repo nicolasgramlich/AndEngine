@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.anddev.andengine.util.SmartList;
 
 /**

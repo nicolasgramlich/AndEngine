@@ -1,20 +1,17 @@
-package org.anddev.andengine.opengl;
+package org.anddev.andengine.opengl.mesh;
 
 import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 import android.opengl.GLES20;
 
 /**
- * TODO Support indexed Meshes.
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 9:11:34 PM - Aug 5, 2011
+ * @since 21:11:34 - 05.09.2011
  */
-public class Mesh {
+public abstract class Mesh<V extends IVertexBufferObject> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,21 +20,21 @@ public class Mesh {
 	// Fields
 	// ===========================================================
 
-	protected final VertexBufferObject mVertexBufferObject;
+	protected final V mVertexBufferObject;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Mesh(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		this.mVertexBufferObject = new VertexBufferObject(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+	public Mesh(final V pVertexBufferObject) {
+		this.mVertexBufferObject = pVertexBufferObject;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public VertexBufferObject getVertexBufferObject() {
+	public V getVertexBufferObject() {
 		return this.mVertexBufferObject;
 	}
 

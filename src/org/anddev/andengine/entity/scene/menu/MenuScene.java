@@ -29,13 +29,13 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<IMenuItem<?>> mMenuItems = new ArrayList<IMenuItem<?>>();
+	private final ArrayList<IMenuItem<?, ?>> mMenuItems = new ArrayList<IMenuItem<?, ?>>();
 
 	private IOnMenuItemClickListener mOnMenuItemClickListener;
 
 	private IMenuAnimator mMenuAnimator = IMenuAnimator.DEFAULT;
 
-	private IMenuItem<?> mSelectedMenuItem;
+	private IMenuItem<?, ?> mSelectedMenuItem;
 
 	// ===========================================================
 	// Constructors
@@ -76,7 +76,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 		return this.mMenuItems.size();
 	}
 
-	public void addMenuItem(final IMenuItem<?> pMenuItem) {
+	public void addMenuItem(final IMenuItem<?, ?> pMenuItem) {
 		this.mMenuItems.add(pMenuItem);
 		this.attachChild(pMenuItem);
 		this.registerTouchArea(pMenuItem);
@@ -114,7 +114,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final ITouchArea pTouchArea, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		final IMenuItem<?> menuItem = ((IMenuItem<?>)pTouchArea);
+		final IMenuItem<?, ?> menuItem = ((IMenuItem<?, ?>)pTouchArea);
 
 		switch(pSceneTouchEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
@@ -161,7 +161,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	public void reset() {
 		super.reset();
 
-		final ArrayList<IMenuItem<?>> menuItems = this.mMenuItems;
+		final ArrayList<IMenuItem<?, ?>> menuItems = this.mMenuItems;
 		for(int i = menuItems.size() - 1; i >= 0; i--) {
 			menuItems.get(i).reset();
 		}
@@ -204,6 +204,6 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 		// Methods
 		// ===========================================================
 
-		public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem<?> pMenuItem, final float pMenuItemLocalX, final float pMenuItemLocalY);
+		public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem<?, ?> pMenuItem, final float pMenuItemLocalX, final float pMenuItemLocalY);
 	}
 }

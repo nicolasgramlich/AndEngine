@@ -1,11 +1,12 @@
 package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 
 import android.opengl.GLES20;
 
@@ -44,10 +45,10 @@ public class TiledSprite extends Sprite {
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
-		super(pX, pY, pTiledTextureRegion, new Mesh(TiledSprite.TILEDSPRITE_SIZE * pTiledTextureRegion.getTileCount(), pDrawType, true, TiledSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		super(pX, pY, pTiledTextureRegion, new HighPerformanceMesh(TiledSprite.TILEDSPRITE_SIZE * pTiledTextureRegion.getTileCount(), pDrawType, true, TiledSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
+	public TiledSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final HighPerformanceMesh pMesh) {
 		super(pX, pY, pTiledTextureRegion, pMesh);
 	}
 
@@ -62,10 +63,10 @@ public class TiledSprite extends Sprite {
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, new Mesh(TiledSprite.TILEDSPRITE_SIZE * pTiledTextureRegion.getTileCount(), pDrawType, true, TiledSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, new HighPerformanceMesh(TiledSprite.TILEDSPRITE_SIZE * pTiledTextureRegion.getTileCount(), pDrawType, true, TiledSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
+	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final HighPerformanceMesh pMesh) {
 		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pMesh);
 	}
 
@@ -89,7 +90,7 @@ public class TiledSprite extends Sprite {
 
 	@Override
 	protected void onUpdateVertices() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float x = 0;
@@ -126,7 +127,7 @@ public class TiledSprite extends Sprite {
 
 	@Override
 	protected void onUpdateColor() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
@@ -149,7 +150,7 @@ public class TiledSprite extends Sprite {
 
 	@Override
 	protected void onUpdateTextureCoordinates() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 		
 		final ITiledTextureRegion textureRegion = this.getTextureRegion();

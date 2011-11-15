@@ -6,6 +6,7 @@ import java.nio.ByteOrder;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.util.BufferUtils;
 import org.anddev.andengine.opengl.util.GLState;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.anddev.andengine.util.data.DataConstants;
 import org.anddev.andengine.util.system.SystemUtils;
 
@@ -19,7 +20,7 @@ import android.os.Build;
  * @author Nicolas Gramlich
  * @since 14:22:56 - 07.04.2010
  */
-public class VertexBufferObject {
+public abstract class VertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,34 +29,23 @@ public class VertexBufferObject {
 	// Fields
 	// ===========================================================
 
-	private final int mCapacity;
-	private final float[] mBufferData;
+	protected final int mCapacity;
 
-	private final int mUsage;
+	protected final int mUsage;
 
-	private final ByteBuffer mByteBuffer;
+	protected final ByteBuffer mByteBuffer;
 
-	private int mHardwareBufferID = -1;
-	private boolean mLoadedToHardware;
-	private boolean mDirtyOnHardware = true;
-//	private boolean mBufferSubData;
+	protected int mHardwareBufferID = -1;
+	protected boolean mLoadedToHardware;
+	protected boolean mDirtyOnHardware = true;
 
-	private boolean mManaged;
+	protected boolean mManaged;
 
-	private final VertexBufferObjectAttributes mVertexBufferObjectAttributes;
+	protected final VertexBufferObjectAttributes mVertexBufferObjectAttributes;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	/**
-	 * @param pCapacity
-	 * @param pDrawType
-	 * @param pManaged when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
-	 */
-	public VertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged) {
-		this(pCapacity, pDrawType, pManaged, null);
-	}
 
 	/**
 	 * @param pCapacity
@@ -68,7 +58,6 @@ public class VertexBufferObject {
 		this.mUsage = pDrawType.getUsage();
 		this.mManaged = pManaged;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
-		this.mBufferData = new float[pCapacity];
 
 		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
 			/* Honeycomb workaround for issue 16941. */
@@ -88,44 +77,47 @@ public class VertexBufferObject {
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	public boolean isManaged() {
 		return this.mManaged;
 	}
 
+	@Override
 	public void setManaged(final boolean pManaged) {
 		this.mManaged = pManaged;
 	}
 
-	public float[] getBufferData() {
-		return this.mBufferData;
-	}
-
+	@Override
 	public int getHardwareBufferID() {
 		return this.mHardwareBufferID;
 	}
 
+	@Override
 	public boolean isLoadedToHardware() {
 		return this.mLoadedToHardware;
 	}
 
 	void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
-//		this.mBufferSubData = false;
 	}
 
+	@Override
 	public boolean isDirtyOnHardware() {
 		return this.mDirtyOnHardware;
 	}
 
 	/** Mark this {@link VertexBufferObject} dirty so it gets updated on the hardware. */
+	@Override
 	public void setDirtyOnHardware() {
 		this.mDirtyOnHardware = true;
 	}
 
+	@Override
 	public int getCapacity() {
 		return this.mCapacity;
 	}
 
+	@Override
 	public int getSize() {
 		return this.mByteBuffer.capacity();
 	}
@@ -134,10 +126,13 @@ public class VertexBufferObject {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onBufferData();
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
+	@Override
 	public void bind(final ShaderProgram pShaderProgram) {
 		final int hardwareBufferID = this.mHardwareBufferID;
 		if(hardwareBufferID == -1) {
@@ -149,53 +144,43 @@ public class VertexBufferObject {
 		if(this.mDirtyOnHardware) {
 			this.mDirtyOnHardware = false;
 
-			// TODO On honeycomb the nio buffers are significantly faster, and below native call might not be needed!
-//			this.mFloatBuffer.position(0);
-//			this.mFloatBuffer.put(this.mBufferData);
-//			this.mFloatBuffer.position(0);
-
-			BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
-
-			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
-
-//			if(this.mBufferSubData) {
-//				GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, 0, this.mByteBuffer.limit(), this.mByteBuffer);
-//			} else {
-//				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.capacity(), this.mByteBuffer, this.mUsage);
-//				this.mBufferSubData = true;
-//			}
+			this.onBufferData();
 		}
 
 		pShaderProgram.bind(this.mVertexBufferObjectAttributes);
 	}
 
+
+	@Override
 	public void unbind(final ShaderProgram pShaderProgram) {
 		pShaderProgram.unbind(this.mVertexBufferObjectAttributes);
 
 //		GLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
 	}
 
+	@Override
 	public void loadToActiveBufferObjectManager() {
 		VertexBufferObjectManager.loadBufferObject(this);
 	}
 
+	@Override
 	public void unloadFromActiveBufferObjectManager() {
 		VertexBufferObjectManager.unloadBufferObject(this);
 	}
 
+	@Override
 	public void loadToHardware() {
 		this.mHardwareBufferID = GLState.generateBuffer();
-//		this.mHardwareBufferID = GLState.generateBuffer(this.mByteBuffer.capacity(), this.mUsage);
 
 		this.mLoadedToHardware = true;
 	}
 
+	@Override
 	public void unloadFromHardware() {
 		GLState.deleteBuffer(this.mHardwareBufferID);
 
 		this.mHardwareBufferID = -1;
 		this.mLoadedToHardware = false;
-//		this.mBufferSubData = false;
 	}
 
 	// ===========================================================

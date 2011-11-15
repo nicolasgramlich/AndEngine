@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 
 /**
  * Unlike {@link Sprite}, the {@link DiamondSprite} class doesn't render the rectangular outline of a {@link ITextureRegion}, but cuts out a diamond.
@@ -54,7 +54,7 @@ public class DiamondSprite extends Sprite {
 
 	@Override
 	protected void onUpdateVertices() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float x = 0;
@@ -82,7 +82,7 @@ public class DiamondSprite extends Sprite {
 
 	@Override
 	protected void onUpdateTextureCoordinates() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final ITextureRegion textureRegion = this.mTextureRegion;

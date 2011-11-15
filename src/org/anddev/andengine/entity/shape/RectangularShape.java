@@ -3,8 +3,9 @@ package org.anddev.andengine.entity.shape;
 import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.primitive.Line;
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -13,7 +14,7 @@ import org.anddev.andengine.opengl.shader.ShaderProgram;
  * @author Nicolas Gramlich
  * @since 11:37:50 - 04.04.2010
  */
-public abstract class RectangularShape<T extends Mesh> extends Shape<T> implements IAreaShape<T> {
+public abstract class RectangularShape<V extends IVertexBufferObject, M extends Mesh<V>> extends Shape<V, M> implements IAreaShape<V, M> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -32,7 +33,7 @@ public abstract class RectangularShape<T extends Mesh> extends Shape<T> implemen
 	// Constructors
 	// ===========================================================
 
-	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final T pMesh, final ShaderProgram pShaderProgram) {
+	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final M pMesh, final ShaderProgram pShaderProgram) {
 		super(pX, pY, pMesh, pShaderProgram);
 
 		this.mBaseWidth = pWidth;
@@ -137,9 +138,9 @@ public abstract class RectangularShape<T extends Mesh> extends Shape<T> implemen
 	}
 
 	@Override
-	public boolean collidesWith(final IShape<?> pOtherShape) {
+	public boolean collidesWith(final IShape<?, ?> pOtherShape) {
 		if(pOtherShape instanceof RectangularShape) {
-			final RectangularShape<?> pOtherRectangularShape = (RectangularShape<?>) pOtherShape;
+			final RectangularShape<?, ?> pOtherRectangularShape = (RectangularShape<?, ?>) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(this, pOtherRectangularShape);
 		} else if(pOtherShape instanceof Line) {
 			final Line line = (Line) pOtherShape;

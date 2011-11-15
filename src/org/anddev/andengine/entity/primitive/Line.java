@@ -6,15 +6,16 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.RectangularShape;
 import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.constants.Constants;
 
 import android.opengl.GLES20;
@@ -26,7 +27,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 09:50:36 - 04.04.2010
  */
-public class Line extends Shape<Mesh> {
+public class Line extends Shape<HighPerformanceVertexBufferObject, HighPerformanceMesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -81,10 +82,10 @@ public class Line extends Shape<Mesh> {
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final DrawType pDrawType) {
-		this(pX1, pY1, pX2, pY2, pLineWidth, new Mesh(Line.LINE_SIZE, pDrawType, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX1, pY1, pX2, pY2, pLineWidth, new HighPerformanceMesh(Line.LINE_SIZE, pDrawType, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final Mesh pMesh) {
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final HighPerformanceMesh pMesh) {
 		super(pX1, pY1, pMesh, PositionColorShaderProgram.getInstance());
 
 		this.mX2 = pX2;
@@ -209,7 +210,7 @@ public class Line extends Shape<Mesh> {
 
 	@Override
 	protected void onUpdateColor() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
@@ -222,7 +223,7 @@ public class Line extends Shape<Mesh> {
 
 	@Override
 	protected void onUpdateVertices() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		bufferData[0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X] = 0;
@@ -259,12 +260,12 @@ public class Line extends Shape<Mesh> {
 	}
 
 	@Override
-	public boolean collidesWith(final IShape<?> pOtherShape) {
+	public boolean collidesWith(final IShape<?, ?> pOtherShape) {
 		if(pOtherShape instanceof Line) {
 			final Line otherLine = (Line) pOtherShape;
 			return LineCollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
 		} else if(pOtherShape instanceof RectangularShape) {
-			final RectangularShape<?> rectangularShape = (RectangularShape<?>) pOtherShape;
+			final RectangularShape<?, ?> rectangularShape = (RectangularShape<?, ?>) pOtherShape;
 			return RectangularShapeCollisionChecker.checkCollision(rectangularShape, this);
 		} else {
 			return false;

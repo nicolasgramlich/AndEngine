@@ -2,13 +2,21 @@ package org.anddev.andengine.entity.sprite;
 
 import java.util.Arrays;
 
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.anddev.andengine.util.constants.TimeConstants;
 import org.anddev.andengine.util.math.MathUtils;
 
+/**
+ * (c) 2010 Nicolas Gramlich
+ * (c) 2011 Zynga Inc.
+ * 
+ * @author Nicolas Gramlich
+ * @since 15:25:46 - 10.03.2010
+ */
 public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 	// Constants
@@ -52,7 +60,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		super(pX, pY, pTiledTextureRegion, pDrawType);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final HighPerformanceMesh pMesh) {
 		super(pX, pY, pTiledTextureRegion, pMesh);
 	}
 
@@ -70,7 +78,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pDrawType);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final HighPerformanceMesh pMesh) {
 		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pMesh);
 	}
 

@@ -2,16 +2,17 @@ package org.anddev.andengine.entity.text;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.font.IFont;
 import org.anddev.andengine.opengl.font.Letter;
+import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.StringUtils;
 import org.anddev.andengine.util.data.DataConstants;
@@ -27,7 +28,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
  */
-public class Text extends RectangularShape<Mesh> {
+public class Text extends RectangularShape<HighPerformanceVertexBufferObject, HighPerformanceMesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -136,7 +137,7 @@ public class Text extends RectangularShape<Mesh> {
 	 * @param pLeading gap between lines.
 	 */
 	protected Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType, final int pCharactersMaximum) {
-		super(pX, pY, 0, 0, new Mesh(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), PositionColorTextureCoordinatesShaderProgram.getInstance());
+		super(pX, pY, 0, 0, new HighPerformanceMesh(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), PositionColorTextureCoordinatesShaderProgram.getInstance());
 
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
@@ -234,7 +235,7 @@ public class Text extends RectangularShape<Mesh> {
 
 	@Override
 	protected void onUpdateColor() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float packedColor = this.mColor.getPacked();
@@ -256,7 +257,7 @@ public class Text extends RectangularShape<Mesh> {
 
 	@Override
 	protected void onUpdateVertices() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final IFont font = this.mFont;

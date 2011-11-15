@@ -2,15 +2,16 @@ package org.anddev.andengine.entity.sprite;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.HighPerformanceMesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.PositionTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
 
@@ -21,7 +22,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 19:22:38 - 09.03.2010
  */
-public class UncoloredSprite extends RectangularShape<Mesh> {
+public class UncoloredSprite extends RectangularShape<HighPerformanceVertexBufferObject, HighPerformanceMesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -78,14 +79,14 @@ public class UncoloredSprite extends RectangularShape<Mesh> {
 	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link UncoloredSprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, new Mesh(UncoloredSprite.SPRITE_SIZE, pDrawType, true, UncoloredSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceMesh(UncoloredSprite.SPRITE_SIZE, pDrawType, true, UncoloredSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final Mesh pMesh) {
+	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final HighPerformanceMesh pMesh) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pMesh);
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final Mesh pMesh) {
+	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final HighPerformanceMesh pMesh) {
 		super(pX, pY, pWidth, pHeight, pMesh, PositionTextureCoordinatesShaderProgram.getInstance());
 
 		this.mTextureRegion = pTextureRegion;
@@ -150,7 +151,7 @@ public class UncoloredSprite extends RectangularShape<Mesh> {
 
 	@Override
 	protected void onUpdateVertices() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final float x = 0;
@@ -174,7 +175,7 @@ public class UncoloredSprite extends RectangularShape<Mesh> {
 	}
 
 	protected void onUpdateTextureCoordinates() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final HighPerformanceVertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
 		final float[] bufferData = vertexBufferObject.getBufferData();
 
 		final ITextureRegion textureRegion = this.mTextureRegion;

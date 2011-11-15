@@ -5,17 +5,18 @@ import org.anddev.andengine.entity.shape.IShape;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.sprite.batch.SpriteBatch.SpriteBatchMesh;
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.mesh.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLState;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.anddev.andengine.util.color.Color;
 import org.anddev.andengine.util.transformation.Transformation;
 
@@ -32,7 +33,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 11:45:48 - 14.06.2011
  */
-public class SpriteBatch extends Shape<SpriteBatchMesh> {
+public class SpriteBatch extends Shape<HighPerformanceVertexBufferObject, SpriteBatchMesh> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -117,7 +118,7 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 	// ===========================================================
 
 	@Override
-	public boolean collidesWith(IShape<?> pOtherShape) {
+	public boolean collidesWith(IShape<?, ?> pOtherShape) {
 		return false;
 	}
 
@@ -423,7 +424,7 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class SpriteBatchMesh extends Mesh {
+	public static class SpriteBatchMesh extends Mesh<HighPerformanceVertexBufferObject> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -443,7 +444,7 @@ public class SpriteBatch extends Shape<SpriteBatchMesh> {
 		// ===========================================================
 
 		public SpriteBatchMesh(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+			super(new HighPerformanceVertexBufferObject(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes));
 		}
 
 		// ===========================================================

@@ -147,7 +147,7 @@ public class VertexBufferObjectManager {
 
 		if(vertexBufferObjectsToBeUnloadedCount > 0){
 			for(int i = vertexBufferObjectsToBeUnloadedCount - 1; i >= 0; i--){
-				final VertexBufferObject vertexBufferObjectToBeUnloaded = vertexBufferObjectsToBeUnloaded.remove(i);
+				final IVertexBufferObject vertexBufferObjectToBeUnloaded = vertexBufferObjectsToBeUnloaded.remove(i);
 				if(vertexBufferObjectToBeUnloaded.isLoadedToHardware()){
 					vertexBufferObjectToBeUnloaded.unloadFromHardware();
 				}

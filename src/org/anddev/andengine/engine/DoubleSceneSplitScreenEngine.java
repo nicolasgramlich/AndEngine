@@ -99,7 +99,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		GLState.enableScissorTest();
 
 		/* First Screen. With first camera, on the left half of the screens width. */
-		{
+		if(super.mScene != null) {
 			GLES20.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
 			GLES20.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
 
@@ -108,7 +108,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		}
 
 		/* Second Screen. With second camera, on the right half of the screens width. */
-		{
+		if(this.mSecondScene != null) {
 			GLES20.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 			GLES20.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 

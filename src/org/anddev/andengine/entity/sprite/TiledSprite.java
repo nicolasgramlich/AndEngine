@@ -257,7 +257,7 @@ public class TiledSprite extends Sprite {
 		public void onUpdateTextureCoordinates(final TiledSprite pTiledSprite) {
 			final float[] bufferData = this.mBufferData;
 
-			final ITiledTextureRegion textureRegion = pTiledSprite.getTextureRegion();
+			final ITiledTextureRegion tiledTextureRegion = pTiledSprite.getTextureRegion();
 
 			final int tileCount = pTiledSprite.getTileCount();
 			int bufferDataOffset = 0;
@@ -269,31 +269,31 @@ public class TiledSprite extends Sprite {
 
 				if(pTiledSprite.isFlippedVertical()) { // TODO Optimize with field access?
 					if(pTiledSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
-						u = textureRegion.getU2(i);
-						u2 = textureRegion.getU(i);
-						v = textureRegion.getV2(i);
-						v2 = textureRegion.getV(i);
+						u = tiledTextureRegion.getU2(i);
+						u2 = tiledTextureRegion.getU(i);
+						v = tiledTextureRegion.getV2(i);
+						v2 = tiledTextureRegion.getV(i);
 					} else {
-						u = textureRegion.getU(i);
-						u2 = textureRegion.getU2(i);
-						v = textureRegion.getV2(i);
-						v2 = textureRegion.getV(i);
+						u = tiledTextureRegion.getU(i);
+						u2 = tiledTextureRegion.getU2(i);
+						v = tiledTextureRegion.getV2(i);
+						v2 = tiledTextureRegion.getV(i);
 					}
 				} else {
 					if(pTiledSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
-						u = textureRegion.getU2(i);
-						u2 = textureRegion.getU(i);
-						v = textureRegion.getV(i);
-						v2 = textureRegion.getV2(i);
+						u = tiledTextureRegion.getU2(i);
+						u2 = tiledTextureRegion.getU(i);
+						v = tiledTextureRegion.getV(i);
+						v2 = tiledTextureRegion.getV2(i);
 					} else {
-						u = textureRegion.getU(i);
-						u2 = textureRegion.getU2(i);
-						v = textureRegion.getV(i);
-						v2 = textureRegion.getV2(i);
+						u = tiledTextureRegion.getU(i);
+						u2 = tiledTextureRegion.getU2(i);
+						v = tiledTextureRegion.getV(i);
+						v2 = tiledTextureRegion.getV2(i);
 					}
 				}
 
-				if(textureRegion.isRotated()) {
+				if(tiledTextureRegion.isRotated(i)) {
 					bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
 					bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
 

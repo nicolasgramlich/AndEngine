@@ -6,7 +6,12 @@ import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import android.opengl.GLES20;
 
 /**
- * (c) Zynga 2011
+ * Compared to a {@link LowMemoryVertexBufferObject}, the {@link HighPerformanceVertexBufferObject} uses <b><u>2x</u> the memory</b>, 
+ * at the benefit of significantly faster data buffering (<b>up to <u>5x</u> faster!</b>).
+ * 
+ * @see {@link LowMemoryVertexBufferObject} when to prefer a {@link LowMemoryVertexBufferObject} instead of a {@link HighPerformanceVertexBufferObject}
+ *
+ * <p>(c) Zynga 2011</p>
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:42:18 - 15.11.2011

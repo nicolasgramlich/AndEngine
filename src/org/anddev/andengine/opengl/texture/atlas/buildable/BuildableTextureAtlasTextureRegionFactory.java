@@ -65,7 +65,19 @@ public class BuildableTextureAtlasTextureRegionFactory {
 		pBuildableTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, new Callback<T>() {
 			@Override
 			public void onCallback(final T pCallbackValue) {
-				tiledTextureRegion.setPosition(pCallbackValue.getTexturePositionX(), pCallbackValue.getTexturePositionY());
+				final int tileWidth = pTextureAtlasSource.getWidth() / pTileColumns;
+				final int tileHeight = pTextureAtlasSource.getHeight() / pTileRows;
+				
+				for(int tileColumn = 0; tileColumn < pTileColumns; tileColumn++) {
+					for(int tileRow = 0; tileRow < pTileRows; tileRow++) {
+						final int tileIndex = tileRow * pTileColumns + tileColumn;
+
+						final int x = pCallbackValue.getTexturePositionX() + tileColumn * tileWidth;
+						final int y = pCallbackValue.getTexturePositionY() + tileRow * tileHeight;
+						
+						tiledTextureRegion.setPosition(tileIndex, x, y);
+					}
+				}
 			}
 		});
 		return tiledTextureRegion;

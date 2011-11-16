@@ -2,6 +2,7 @@ package org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.anddev.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
+import org.anddev.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -70,7 +71,7 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onDecorateBitmap(final Canvas pCanvas);
+	protected abstract void onDecorateBitmap(final Canvas pCanvas) throws Exception;
 
 	@Override
 	public int getWidth() {
@@ -87,7 +88,11 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mBitmapTextureAtlasSource.onLoadBitmap(pBitmapConfig));
 
 		final Canvas canvas = new Canvas(bitmap);
-		this.onDecorateBitmap(canvas);
+		try {
+			this.onDecorateBitmap(canvas);
+		} catch (final Exception e) {
+			Debug.e(e);
+		}
 		return bitmap;
 	}
 

@@ -45,7 +45,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected Engine mEngine;
 	private WakeLock mWakeLock;
 	protected RenderSurfaceView mRenderSurfaceView;
-	protected boolean mHasWindowFocused;
+	protected boolean mWindowFocused;
 	private boolean mPaused;
 	private boolean mGameLoaded;
 
@@ -70,7 +70,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected void onResume() {
 		super.onResume();
 
-		if(this.mPaused && this.mHasWindowFocused) {
+		if(this.mPaused && this.mWindowFocused) {
 			this.doResume();
 		}
 	}
@@ -79,16 +79,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	public void onWindowFocusChanged(final boolean pHasWindowFocus) {
 		super.onWindowFocusChanged(pHasWindowFocus);
 
-		if(pHasWindowFocus) {
-			if(this.mPaused) {
-				this.doResume();
-			}
-			this.mHasWindowFocused = true;
-		} else {
-			if(!this.mPaused) {
-				this.doPause();
-			}
-			this.mHasWindowFocused = false;
+		this.mWindowFocused = pHasWindowFocus;
+
+		if(pHasWindowFocus && this.mPaused) {
+			this.doResume();
 		}
 	}
 
@@ -126,6 +120,22 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	public Engine getEngine() {
 		return this.mEngine;
+	}
+
+	public boolean isPaused() {
+		return this.mPaused;
+	}
+
+	public boolean isRunning() {
+		return !this.mPaused;
+	}
+
+	public boolean isWindowFocused() {
+		return this.mWindowFocused;
+	}
+
+	public boolean isGameLoaded() {
+		return this.mGameLoaded;
 	}
 
 	public SoundManager getSoundManager() {

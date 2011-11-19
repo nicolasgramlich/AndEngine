@@ -3,7 +3,7 @@ package org.anddev.andengine.engine.handler;
 import org.anddev.andengine.entity.IEntity;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -18,7 +18,7 @@ public abstract class BaseEntityUpdateHandler implements IUpdateHandler {
 	// Fields
 	// ===========================================================
 
-	private final IEntity mEntity;
+	private IEntity mEntity;
 
 	// ===========================================================
 	// Constructors
@@ -31,6 +31,14 @@ public abstract class BaseEntityUpdateHandler implements IUpdateHandler {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public IEntity getEntity() {
+		return this.mEntity;
+	}
+
+	public void setEntity(final IEntity pEntity) {
+		this.mEntity = pEntity;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

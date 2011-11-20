@@ -3,13 +3,12 @@ package org.anddev.andengine.entity.shape;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.ITexture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
 import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -18,7 +17,7 @@ import org.anddev.andengine.opengl.vbo.VertexBufferObject;
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */
-public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> {
+public abstract class Shape extends Entity implements IShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -33,17 +32,15 @@ public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> 
 	protected boolean mBlendingEnabled = false;
 	protected boolean mCullingEnabled = false;
 
-	protected T mMesh;
 	protected ShaderProgram mShaderProgram;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Shape(final float pX, final float pY, final T pMesh, final ShaderProgram pShaderProgram) {
+	public Shape(final float pX, final float pY, final ShaderProgram pShaderProgram) {
 		super(pX, pY);
 
-		this.mMesh = pMesh;
 		this.mShaderProgram = pShaderProgram;
 	}
 
@@ -75,11 +72,6 @@ public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> 
 	@Override
 	public void setCullingEnabled(final boolean pCullingEnabled) {
 		this.mCullingEnabled = pCullingEnabled;
-	}
-
-	@Override
-	public T getMesh() {
-		return this.mMesh;
 	}
 
 	@Override
@@ -144,8 +136,8 @@ public abstract class Shape<T extends Mesh> extends Entity implements IShape<T> 
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(this.mMesh != null) {
-			final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
+		final IVertexBufferObject vertexBufferObject = this.getVertexBufferObject();
+		if(vertexBufferObject != null) {
 			if(vertexBufferObject.isManaged()) {
 				vertexBufferObject.unloadFromActiveBufferObjectManager();
 			}

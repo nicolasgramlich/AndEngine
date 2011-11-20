@@ -7,7 +7,7 @@ import org.anddev.andengine.util.operator.StringOperator;
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 16:52:33 PM - 10.10.2011
+ * @since 16:52:33 - 10.10.2011
  */
 public class GLVersionShaderSourceCriteria extends StringShaderSourceCriteria {
 	// ===========================================================

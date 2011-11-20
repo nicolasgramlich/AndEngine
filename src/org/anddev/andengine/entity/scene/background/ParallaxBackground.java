@@ -91,13 +91,13 @@ public class ParallaxBackground extends Background {
 		// ===========================================================
 
 		final float mParallaxFactor;
-		final IAreaShape<?> mAreaShape;
+		final IAreaShape mAreaShape;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public ParallaxEntity(final float pParallaxFactor, final IAreaShape<?> pAreaShape) {
+		public ParallaxEntity(final float pParallaxFactor, final IAreaShape pAreaShape) {
 			this.mParallaxFactor = pParallaxFactor;
 			this.mAreaShape = pAreaShape;
 		}

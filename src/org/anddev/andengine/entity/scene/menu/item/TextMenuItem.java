@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.menu.item;
 
 import org.anddev.andengine.entity.text.Text;
-import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.font.IFont;
 
 /**
@@ -11,7 +10,7 @@ import org.anddev.andengine.opengl.font.IFont;
  * @author Nicolas Gramlich
  * @since 20:15:20 - 01.04.2010
  */
-public class TextMenuItem extends Text implements IMenuItem<Mesh> {
+public class TextMenuItem extends Text implements IMenuItem {
 	// ===========================================================
 	// Constants
 	// ===========================================================

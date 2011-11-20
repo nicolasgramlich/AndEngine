@@ -38,20 +38,19 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	}
 
 	public static TiledTextureRegion create(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows, final boolean pRotated) {
-		final int tileCount = pTileColumns * pTileRows;
-
-		final ITextureRegion[] textureRegions = new ITextureRegion[tileCount];
+		final ITextureRegion[] textureRegions = new ITextureRegion[pTileColumns * pTileRows];
 
 		final int tileWidth = pWidth / pTileColumns;
 		final int tileHeight = pHeight / pTileRows;
 
-		for(int i = 0; i < tileCount; i++) {
-			final int tileColumn = i % pTileColumns;
-			final int tileRow = i / pTileColumns;
+		for(int tileColumn = 0; tileColumn < pTileColumns; tileColumn++) {
+			for(int tileRow = 0; tileRow < pTileRows; tileRow++) {
+				final int tileIndex = tileRow * pTileColumns + tileColumn;
 
-			final int x = pX + tileColumn * tileWidth;
-			final int y = pY + tileRow * tileHeight;
-			textureRegions[i] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight, pRotated);
+				final int x = pX + tileColumn * tileWidth;
+				final int y = pY + tileRow * tileHeight;
+				textureRegions[tileIndex] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight, pRotated);
+			}
 		}
 
 		return new TiledTextureRegion(pTexture, textureRegions);

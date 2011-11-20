@@ -1,13 +1,18 @@
-package org.anddev.andengine.opengl.vbo;
+package org.anddev.andengine.entity.particle.emitter;
 
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+
+import org.anddev.andengine.util.math.MathUtils;
 
 /**
- * (c) Zynga 2011
- *
- * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 14:22:06 - 15.08.2011
+ * (c) 2010 Nicolas Gramlich 
+ * (c) 2011 Zynga Inc.
+ * 
+ * @author Nicolas Gramlich
+ * @since 15:48:00 - 01.10.2010
  */
-public class VertexBufferObjectAttributes {
+public class RectangleParticleEmitter extends BaseRectangleParticleEmitter {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,16 +21,12 @@ public class VertexBufferObjectAttributes {
 	// Fields
 	// ===========================================================
 
-	private final int mStride;
-	private final VertexBufferObjectAttribute[] mVertexBufferObjectAttributes;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public VertexBufferObjectAttributes(final int pStride, final VertexBufferObjectAttribute ... pVertexBufferObjectAttributes) {
-		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
-		this.mStride = pStride;
+	public RectangleParticleEmitter(final float pCenterX, final float pCenterY, final float pWidth, final float pHeight) {
+		super(pCenterX, pCenterY, pWidth, pHeight);
 	}
 
 	// ===========================================================
@@ -36,20 +37,15 @@ public class VertexBufferObjectAttributes {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	public void getPositionOffset(final float[] pOffset) {
+		pOffset[VERTEX_INDEX_X] = this.mCenterX - this.mWidthHalf + MathUtils.RANDOM.nextFloat() * this.mWidth;
+		pOffset[VERTEX_INDEX_Y] = this.mCenterY - this.mHeightHalf + MathUtils.RANDOM.nextFloat() * this.mHeight;
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void glVertexAttribPointers() {
-		final VertexBufferObjectAttribute[] vertexBufferObjectAttributes = this.mVertexBufferObjectAttributes;
-
-		final int stride = this.mStride;
-
-		final int vertexBuggerObjectAttributeCount = vertexBufferObjectAttributes.length;
-		for(int i = 0; i < vertexBuggerObjectAttributeCount; i++) {
-			vertexBufferObjectAttributes[i].glVertexAttribPointer(stride);
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

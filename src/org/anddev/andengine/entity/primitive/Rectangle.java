@@ -1,15 +1,18 @@
 package org.anddev.andengine.entity.primitive;
 
+import java.nio.FloatBuffer;
+
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.LowMemoryVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
 
@@ -20,7 +23,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 12:18:49 - 13.03.2010
  */
-public class Rectangle extends RectangularShape<Mesh> {
+public class Rectangle extends RectangularShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -42,26 +45,30 @@ public class Rectangle extends RectangularShape<Mesh> {
 	// Fields
 	// ===========================================================
 
+	protected final IRectangleVertexBufferObject mRectangleVertexBufferObject;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
 		this(pX, pY, pWidth, pHeight, DrawType.STATIC);
 	}
 
 	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, new Mesh(Rectangle.RECTANGLE_SIZE, pDrawType, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX, pY, pWidth, pHeight, new HighPerformanceRectangleVertexBufferObject(Rectangle.RECTANGLE_SIZE, pDrawType, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final Mesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pMesh, PositionColorShaderProgram.getInstance());
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final IRectangleVertexBufferObject pRectangleVertexBufferObject) {
+		super(pX, pY, pWidth, pHeight, PositionColorShaderProgram.getInstance());
+
+		this.mRectangleVertexBufferObject = pRectangleVertexBufferObject;
 
 		this.onUpdateVertices();
 		this.onUpdateColor();
@@ -78,62 +85,37 @@ public class Rectangle extends RectangularShape<Mesh> {
 	// ===========================================================
 
 	@Override
+	public IRectangleVertexBufferObject getVertexBufferObject() {
+		return this.mRectangleVertexBufferObject;
+	}
+
+	@Override
 	protected void preDraw(final Camera pCamera) {
 		super.preDraw(pCamera);
 
-		this.mMesh.preDraw(this.mShaderProgram);
+		this.mRectangleVertexBufferObject.bind(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(GLES20.GL_TRIANGLE_STRIP, Rectangle.VERTICES_PER_RECTANGLE);
+		this.mRectangleVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Rectangle.VERTICES_PER_RECTANGLE);
 	}
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		this.mMesh.postDraw(this.mShaderProgram);
+		this.mRectangleVertexBufferObject.unbind(this.mShaderProgram);
 
 		super.postDraw(pCamera);
 	}
 
 	@Override
 	protected void onUpdateColor() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
-
-		final float packedColor = this.mColor.getPacked();
-
-		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
-		bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
-		bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
-		bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
-
-		vertexBufferObject.setDirtyOnHardware();
+		this.mRectangleVertexBufferObject.onUpdateColor(this);
 	}
 
 	@Override
 	protected void onUpdateVertices() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
-
-		final float x = 0;
-		final float y = 0;
-		final float x2 = this.mWidth;
-		final float y2 = this.mHeight;
-
-		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x;
-		bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y;
-
-		bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x;
-		bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y2;
-
-		bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x2;
-		bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y;
-
-		bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x2;
-		bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y2;
-
-		vertexBufferObject.setDirtyOnHardware();
+		this.mRectangleVertexBufferObject.onUpdateVertices(this);
 	}
 
 	// ===========================================================
@@ -143,4 +125,161 @@ public class Rectangle extends RectangularShape<Mesh> {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static interface IRectangleVertexBufferObject extends IVertexBufferObject {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void onUpdateColor(final Rectangle pRectangle);
+		public void onUpdateVertices(final Rectangle pRectangle);
+	}
+
+	public static class HighPerformanceRectangleVertexBufferObject extends HighPerformanceVertexBufferObject implements IRectangleVertexBufferObject {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public HighPerformanceRectangleVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		@Override
+		public void onUpdateColor(final Rectangle pRectangle) {
+			final float[] bufferData = this.mBufferData;
+
+			final float packedColor = pRectangle.getColor().getPacked();
+
+			bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
+			bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
+			bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
+			bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
+
+			this.setDirtyOnHardware();
+		}
+
+		@Override
+		public void onUpdateVertices(final Rectangle pRectangle) {
+			final float[] bufferData = this.mBufferData;
+
+			final float x = 0;
+			final float y = 0;
+			final float x2 = pRectangle.getWidth(); // TODO Optimize with field access?
+			final float y2 = pRectangle.getHeight(); // TODO Optimize with field access?
+
+			bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x;
+			bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y;
+
+			bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x;
+			bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y2;
+
+			bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x2;
+			bufferData[2 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y;
+
+			bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X] = x2;
+			bufferData[3 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y] = y2;
+
+			this.setDirtyOnHardware();
+		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
+
+	public static class LowMemoryRectangleVertexBufferObject extends LowMemoryVertexBufferObject implements IRectangleVertexBufferObject {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public LowMemoryRectangleVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		@Override
+		public void onUpdateColor(final Rectangle pRectangle) {
+			final FloatBuffer bufferData = this.mFloatBuffer;
+
+			final float packedColor = pRectangle.getColor().getPacked();
+
+			bufferData.put(0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
+			bufferData.put(1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
+			bufferData.put(2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
+			bufferData.put(3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
+
+			this.setDirtyOnHardware();
+		}
+
+		@Override
+		public void onUpdateVertices(final Rectangle pRectangle) {
+			final FloatBuffer bufferData = this.mFloatBuffer;
+
+			final float x = 0;
+			final float y = 0;
+			final float x2 = pRectangle.getWidth();
+			final float y2 = pRectangle.getHeight();
+
+			bufferData.put(0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X, x);
+			bufferData.put(0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y, y);
+
+			bufferData.put(1 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X, x);
+			bufferData.put(1 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y, y2);
+
+			bufferData.put(2 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X, x2);
+			bufferData.put(2 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y, y);
+
+			bufferData.put(3 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X, x2);
+			bufferData.put(3 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y, y2);
+
+			this.setDirtyOnHardware();
+		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

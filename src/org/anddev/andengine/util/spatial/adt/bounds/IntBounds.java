@@ -4,7 +4,7 @@ package org.anddev.andengine.util.spatial.adt.bounds;
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 9:45:04 PM - Oct 11, 2011
+ * @since 21:45:04 - 11.11.2011
  */
 public class IntBounds implements IIntBounds {
 	// ===========================================================

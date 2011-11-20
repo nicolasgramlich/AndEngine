@@ -1,16 +1,19 @@
 package org.anddev.andengine.entity.sprite;
 
+import java.nio.FloatBuffer;
+
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject;
+import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
+import org.anddev.andengine.opengl.vbo.LowMemoryVertexBufferObject;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttributesBuilder;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
 
@@ -21,7 +24,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 19:22:38 - 09.03.2010
  */
-public class Sprite extends RectangularShape<Mesh> {
+public class Sprite extends RectangularShape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -47,6 +50,7 @@ public class Sprite extends RectangularShape<Mesh> {
 	// ===========================================================
 
 	protected final ITextureRegion mTextureRegion;
+	protected final ISpriteVertexBufferObject mSpriteVertexBufferObject;
 
 	protected boolean mFlippedVertical;
 	protected boolean mFlippedHorizontal;
@@ -55,49 +59,68 @@ public class Sprite extends RectangularShape<Mesh> {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, DrawType.STATIC);
 	}
 
-	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
+	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, DrawType.STATIC, pShaderProgram);
+	}
+
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pDrawType);
 	}
+	
+	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pDrawType, pShaderProgram);
+	}
 
-	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
+	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pVertexBufferObject) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject);
+	}
+	
+	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pVertexBufferObject, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject, pShaderProgram);
+	}
+
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion) {
 		this(pX, pY, pWidth, pHeight, pTextureRegion, DrawType.STATIC);
 	}
+	
+	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, DrawType.STATIC, pShaderProgram);
+	}
 
-	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, new Mesh(Sprite.SPRITE_SIZE, pDrawType, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pDrawType, PositionColorTextureCoordinatesShaderProgram.getInstance());
 	}
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final Mesh pMesh) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pMesh);
+	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceSpriteVertexBufferObject(Sprite.SPRITE_SIZE, pDrawType, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
 	}
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final Mesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pMesh, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	}
 
+	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject, pShaderProgram, true);
+	}
+
+	protected Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject, final ShaderProgram pShaderProgram, final boolean pInit) {
+		super(pX, pY, pWidth, pHeight, pShaderProgram);
+		
 		this.mTextureRegion = pTextureRegion;
-
+		this.mSpriteVertexBufferObject = pSpriteVertexBufferObject;
+		
 		this.setBlendingEnabled(true);
 		this.initBlendFunction(pTextureRegion);
-
-		this.onUpdateVertices();
-		this.onUpdateColor();
-		this.onUpdateTextureCoordinates();
+		
+		if(pInit) {
+			this.onUpdateVertices();
+			this.onUpdateColor();
+			this.onUpdateTextureCoordinates();
+		}
 	}
 
 	// ===========================================================
@@ -108,9 +131,17 @@ public class Sprite extends RectangularShape<Mesh> {
 		return this.mTextureRegion;
 	}
 
+	public boolean isFlippedHorizontal() {
+		return this.mFlippedHorizontal;
+	}
+
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
 		this.mFlippedHorizontal = pFlippedHorizontal;
 		this.onUpdateTextureCoordinates();
+	}
+
+	public boolean isFlippedVertical() {
+		return this.mFlippedVertical;
 	}
 
 	public void setFlippedVertical(final boolean pFlippedVertical) {
@@ -121,6 +152,11 @@ public class Sprite extends RectangularShape<Mesh> {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public ISpriteVertexBufferObject getVertexBufferObject() {
+		return this.mSpriteVertexBufferObject;
+	}
 
 	@Override
 	public void reset() {
@@ -135,126 +171,33 @@ public class Sprite extends RectangularShape<Mesh> {
 
 		this.mTextureRegion.getTexture().bind();
 
-		this.mMesh.preDraw(this.mShaderProgram);
+		this.mSpriteVertexBufferObject.bind(this.mShaderProgram);
 	}
 
 	@Override
 	protected void draw(final Camera pCamera) {
-		this.mMesh.draw(GLES20.GL_TRIANGLE_STRIP, Sprite.VERTICES_PER_SPRITE);
+		this.mSpriteVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Sprite.VERTICES_PER_SPRITE);
 	}
 
 	@Override
 	protected void postDraw(final Camera pCamera) {
-		this.mMesh.postDraw(this.mShaderProgram);
+		this.mSpriteVertexBufferObject.unbind(this.mShaderProgram);
 
 		super.postDraw(pCamera);
 	}
 
 	@Override
 	protected void onUpdateVertices() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
-
-		final float x = 0;
-		final float y = 0;
-		final float x2 = this.mWidth;
-		final float y2 = this.mHeight;
-
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x;
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y;
-
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x;
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
-
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y;
-
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
-
-		vertexBufferObject.setDirtyOnHardware();
+		this.mSpriteVertexBufferObject.onUpdateVertices(this);
 	}
 
 	@Override
 	protected void onUpdateColor() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
-		
-		final float packedColor = this.mColor.getPacked();
-		
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
-		
-		vertexBufferObject.setDirtyOnHardware();
+		this.mSpriteVertexBufferObject.onUpdateColor(this);
 	}
 
 	protected void onUpdateTextureCoordinates() {
-		final VertexBufferObject vertexBufferObject = this.mMesh.getVertexBufferObject();
-		final float[] bufferData = vertexBufferObject.getBufferData();
-
-		final ITextureRegion textureRegion = this.mTextureRegion;
-
-		final float u;
-		final float v;
-		final float u2;
-		final float v2;
-
-		if(this.mFlippedVertical) {
-			if(this.mFlippedHorizontal) {
-				u = textureRegion.getU2();
-				u2 = textureRegion.getU();
-				v = textureRegion.getV2();
-				v2 = textureRegion.getV();
-			} else {
-				u = textureRegion.getU();
-				u2 = textureRegion.getU2();
-				v = textureRegion.getV2();
-				v2 = textureRegion.getV();
-			}
-		} else {
-			if(this.mFlippedHorizontal) {
-				u = textureRegion.getU2();
-				u2 = textureRegion.getU();
-				v = textureRegion.getV();
-				v2 = textureRegion.getV2();
-			} else {
-				u = textureRegion.getU();
-				u2 = textureRegion.getU2();
-				v = textureRegion.getV();
-				v2 = textureRegion.getV2();
-			}
-		}
-
-		if(textureRegion.isRotated()) {
-			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
-			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
-	
-			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
-			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
-	
-			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
-			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
-	
-			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
-			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
-		} else {
-			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
-			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
-			
-			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
-			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
-			
-			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
-			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
-			
-			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
-			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
-			
-		}
-
-		vertexBufferObject.setDirtyOnHardware();
+		this.mSpriteVertexBufferObject.onUpdateTextureCoordinates(this);
 	}
 
 	// ===========================================================
@@ -264,4 +207,294 @@ public class Sprite extends RectangularShape<Mesh> {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static interface ISpriteVertexBufferObject extends IVertexBufferObject {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void onUpdateColor(final Sprite pSprite);
+		public void onUpdateVertices(final Sprite pSprite);
+		public void onUpdateTextureCoordinates(final Sprite pSprite);
+	}
+
+	public static class HighPerformanceSpriteVertexBufferObject extends HighPerformanceVertexBufferObject implements ISpriteVertexBufferObject {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public HighPerformanceSpriteVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		@Override
+		public void onUpdateColor(final Sprite pSprite) {
+			final float[] bufferData = this.mBufferData;
+
+			final float packedColor = pSprite.getColor().getPacked();
+
+			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+
+			this.setDirtyOnHardware();
+		}
+
+		@Override
+		public void onUpdateVertices(final Sprite pSprite) {
+			final float[] bufferData = this.mBufferData;
+
+			final float x = 0;
+			final float y = 0;
+			final float x2 = pSprite.getWidth(); // TODO Optimize with field access?
+			final float y2 = pSprite.getHeight(); // TODO Optimize with field access?
+
+			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x;
+			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y;
+
+			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x;
+			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
+
+			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
+			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y;
+
+			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
+			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
+
+			this.setDirtyOnHardware();
+		}
+
+		@Override
+		public void onUpdateTextureCoordinates(final Sprite pSprite) {
+			final float[] bufferData = this.mBufferData;
+
+			final ITextureRegion textureRegion = pSprite.getTextureRegion(); // TODO Optimize with field access?
+
+			final float u;
+			final float v;
+			final float u2;
+			final float v2;
+
+			if(pSprite.isFlippedVertical()) { // TODO Optimize with field access?
+				if(pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
+					u = textureRegion.getU2();
+					u2 = textureRegion.getU();
+					v = textureRegion.getV2();
+					v2 = textureRegion.getV();
+				} else {
+					u = textureRegion.getU();
+					u2 = textureRegion.getU2();
+					v = textureRegion.getV2();
+					v2 = textureRegion.getV();
+				}
+			} else {
+				if(pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
+					u = textureRegion.getU2();
+					u2 = textureRegion.getU();
+					v = textureRegion.getV();
+					v2 = textureRegion.getV2();
+				} else {
+					u = textureRegion.getU();
+					u2 = textureRegion.getU2();
+					v = textureRegion.getV();
+					v2 = textureRegion.getV2();
+				}
+			}
+
+			if(textureRegion.isRotated()) {
+				bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+				bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+				bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+
+				bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+			} else {
+				bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+				bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+
+				bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+				bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+			}
+
+			this.setDirtyOnHardware();
+		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
+
+	public static class LowMemorySpriteVertexBufferObject extends LowMemoryVertexBufferObject implements ISpriteVertexBufferObject {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public LowMemorySpriteVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		@Override
+		public void onUpdateColor(final Sprite pSprite) {
+			final FloatBuffer bufferData = this.mFloatBuffer;
+
+			final float packedColor = pSprite.getColor().getPacked();
+
+			bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+			bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+			bufferData.put(2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+			bufferData.put(3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+
+			this.setDirtyOnHardware();
+		}
+
+		@Override
+		public void onUpdateVertices(final Sprite pSprite) {
+			final FloatBuffer bufferData = this.mFloatBuffer;
+
+			final float x = 0;
+			final float y = 0;
+			final float x2 = pSprite.getWidth(); // TODO Optimize with field access?
+			final float y2 = pSprite.getHeight(); // TODO Optimize with field access?
+
+			bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X, x);
+			bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y, y);
+
+			bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X, x);
+			bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y, y2);
+
+			bufferData.put(2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X, x2);
+			bufferData.put(2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y, y);
+
+			bufferData.put(3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X, x2);
+			bufferData.put(3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y, y2);
+
+			this.setDirtyOnHardware();
+		}
+
+		@Override
+		public void onUpdateTextureCoordinates(final Sprite pSprite) {
+			final FloatBuffer bufferData = this.mFloatBuffer;
+
+			final ITextureRegion textureRegion = pSprite.getTextureRegion(); // TODO Optimize with field access?
+
+			final float u;
+			final float v;
+			final float u2;
+			final float v2;
+
+			if(pSprite.isFlippedVertical()) { // TODO Optimize with field access?
+				if(pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
+					u = textureRegion.getU2();
+					u2 = textureRegion.getU();
+					v = textureRegion.getV2();
+					v2 = textureRegion.getV();
+				} else {
+					u = textureRegion.getU();
+					u2 = textureRegion.getU2();
+					v = textureRegion.getV2();
+					v2 = textureRegion.getV();
+				}
+			} else {
+				if(pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
+					u = textureRegion.getU2();
+					u2 = textureRegion.getU();
+					v = textureRegion.getV();
+					v2 = textureRegion.getV2();
+				} else {
+					u = textureRegion.getU();
+					u2 = textureRegion.getU2();
+					v = textureRegion.getV();
+					v2 = textureRegion.getV2();
+				}
+			}
+
+			if(textureRegion.isRotated()) {
+				bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u2);
+				bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, v);
+
+				bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u);
+				bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, v);
+
+				bufferData.put(2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u2);
+				bufferData.put(2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, v2);
+
+				bufferData.put(3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u);
+				bufferData.put(3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, v2);
+			} else {
+				bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u);
+				bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, v);
+
+				bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u);
+				bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, v2);
+
+				bufferData.put(2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u2);
+				bufferData.put(2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, v);
+
+				bufferData.put(3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u2);
+				bufferData.put(3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, v2);
+			}
+
+			this.setDirtyOnHardware();
+		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

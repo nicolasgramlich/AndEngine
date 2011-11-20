@@ -7,6 +7,7 @@ import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
+import org.anddev.andengine.opengl.view.RenderSurfaceView.IRendererListener;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.sensor.location.ILocationListener;
@@ -33,7 +34,7 @@ import android.widget.FrameLayout.LayoutParams;
  * @author Nicolas Gramlich
  * @since 11:27:06 - 08.03.2010
  */
-public abstract class BaseGameActivity extends BaseActivity implements IGameInterface {
+public abstract class BaseGameActivity extends BaseActivity implements IGameInterface, IRendererListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -45,7 +46,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected Engine mEngine;
 	private WakeLock mWakeLock;
 	protected RenderSurfaceView mRenderSurfaceView;
-	protected boolean mHasWindowFocused;
+	protected boolean mWindowFocused;
 	private boolean mPaused;
 	private boolean mGameLoaded;
 
@@ -70,7 +71,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected void onResume() {
 		super.onResume();
 
-		if(this.mPaused && this.mHasWindowFocused) {
+		if(this.mPaused && this.mWindowFocused) {
 			this.doResume();
 		}
 	}
@@ -79,16 +80,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	public void onWindowFocusChanged(final boolean pHasWindowFocus) {
 		super.onWindowFocusChanged(pHasWindowFocus);
 
-		if(pHasWindowFocus) {
-			if(this.mPaused) {
-				this.doResume();
-			}
-			this.mHasWindowFocused = true;
-		} else {
-			if(!this.mPaused) {
-				this.doPause();
-			}
-			this.mHasWindowFocused = false;
+		this.mWindowFocused = pHasWindowFocus;
+
+		if(pHasWindowFocus && this.mPaused) {
+			this.doResume();
 		}
 	}
 
@@ -128,6 +123,22 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		return this.mEngine;
 	}
 
+	public boolean isPaused() {
+		return this.mPaused;
+	}
+
+	public boolean isRunning() {
+		return !this.mPaused;
+	}
+
+	public boolean isWindowFocused() {
+		return this.mWindowFocused;
+	}
+
+	public boolean isGameLoaded() {
+		return this.mGameLoaded;
+	}
+
 	public SoundManager getSoundManager() {
 		return this.mEngine.getSoundManager();
 	}
@@ -148,6 +159,16 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	@Override
 	public void onPauseGame() {
 
+	}
+
+	@Override
+	public void onSurfaceCreated() {
+		Debug.d("onSurfaceCreated");
+	}
+
+	@Override
+	public void onSurfaceChanged(final int pWidth, final int pHeight) {
+		Debug.d("onSurfaceChanged: pWidth=" + pWidth + "  pHeight=" + pHeight);
 	}
 
 	// ===========================================================
@@ -188,7 +209,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this);
-		this.mRenderSurfaceView.setRenderer(this.mEngine);
+		this.mRenderSurfaceView.setRenderer(this.mEngine, this);
 
 		this.setContentView(this.mRenderSurfaceView, BaseGameActivity.createSurfaceViewLayoutParams());
 	}

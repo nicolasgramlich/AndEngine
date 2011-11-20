@@ -1,7 +1,6 @@
 package org.anddev.andengine.entity.scene.menu.item.decorator;
 
 import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
-import org.anddev.andengine.opengl.Mesh;
 import org.anddev.andengine.util.color.Color;
 
 /**
@@ -11,7 +10,7 @@ import org.anddev.andengine.util.color.Color;
  * @author Nicolas Gramlich
  * @since 14:25:35 - 07.07.2010
  */
-public class ColorMenuItemDecorator extends BaseMenuItemDecorator<Mesh> {
+public class ColorMenuItemDecorator extends BaseMenuItemDecorator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,7 +26,7 @@ public class ColorMenuItemDecorator extends BaseMenuItemDecorator<Mesh> {
 	// Constructors
 	// ===========================================================
 
-	public ColorMenuItemDecorator(final IMenuItem<Mesh> pMenuItem, final Color pSelectedColor, final Color pUnselectedColor) {
+	public ColorMenuItemDecorator(final IMenuItem pMenuItem, final Color pSelectedColor, final Color pUnselectedColor) {
 		super(pMenuItem);
 
 		this.mSelectedColor = pSelectedColor;
@@ -49,17 +48,17 @@ public class ColorMenuItemDecorator extends BaseMenuItemDecorator<Mesh> {
 	// ===========================================================
 
 	@Override
-	public void onMenuItemSelected(final IMenuItem<Mesh> pMenuItem) {
+	public void onMenuItemSelected(final IMenuItem pMenuItem) {
 		pMenuItem.setColor(this.mSelectedColor);
 	}
 
 	@Override
-	public void onMenuItemUnselected(final IMenuItem<Mesh> pMenuItem) {
+	public void onMenuItemUnselected(final IMenuItem pMenuItem) {
 		pMenuItem.setColor(this.mUnselectedColor);
 	}
 
 	@Override
-	public void onMenuItemReset(final IMenuItem<Mesh> pMenuItem) {
+	public void onMenuItemReset(final IMenuItem pMenuItem) {
 		pMenuItem.setColor(this.mUnselectedColor);
 	}
 

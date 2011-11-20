@@ -58,35 +58,37 @@ public class SingleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected void onDrawScene() {
-		final Camera firstCamera = this.getFirstCamera();
-		final Camera secondCamera = this.getSecondCamera();
-
-		final int surfaceWidth = this.mSurfaceWidth;
-		final int surfaceWidthHalf = surfaceWidth >> 1;
-
-		final int surfaceHeight = this.mSurfaceHeight;
-
-		GLState.enableScissorTest();
-
-		/* First Screen. With first camera, on the left half of the screens width. */
-		{
-			GLES20.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
-			GLES20.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
-
-			super.mScene.onDraw(firstCamera);
-			firstCamera.onDrawHUD();
+		if(super.mScene != null) {
+			final Camera firstCamera = this.getFirstCamera();
+			final Camera secondCamera = this.getSecondCamera();
+	
+			final int surfaceWidth = this.mSurfaceWidth;
+			final int surfaceWidthHalf = surfaceWidth >> 1;
+	
+			final int surfaceHeight = this.mSurfaceHeight;
+	
+			GLState.enableScissorTest();
+	
+			/* First Screen. With first camera, on the left half of the screens width. */
+			{
+				GLES20.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
+				GLES20.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
+	
+				super.mScene.onDraw(firstCamera);
+				firstCamera.onDrawHUD();
+			}
+	
+			/* Second Screen. With second camera, on the right half of the screens width. */
+			{
+				GLES20.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+				GLES20.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
+	
+				super.mScene.onDraw(secondCamera);
+				secondCamera.onDrawHUD();
+			}
+	
+			GLState.disableScissorTest();
 		}
-
-		/* Second Screen. With second camera, on the right half of the screens width. */
-		{
-			GLES20.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
-			GLES20.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
-
-			super.mScene.onDraw(secondCamera);
-			secondCamera.onDrawHUD();
-		}
-
-		GLState.disableScissorTest();
 	}
 
 	@Override

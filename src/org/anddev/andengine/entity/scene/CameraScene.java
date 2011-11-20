@@ -93,16 +93,16 @@ public class CameraScene extends Scene {
 	// Methods
 	// ===========================================================
 
-	public void centerShapeInCamera(final IAreaShape<?> pAreaShape) {
+	public void centerShapeInCamera(final IAreaShape pAreaShape) {
 		final Camera camera = this.mCamera;
 		pAreaShape.setPosition((camera.getWidth() - pAreaShape.getWidth()) * 0.5f, (camera.getHeight() - pAreaShape.getHeight()) * 0.5f);
 	}
 
-	public void centerShapeInCameraHorizontally(final IAreaShape<?> pAreaShape) {
+	public void centerShapeInCameraHorizontally(final IAreaShape pAreaShape) {
 		pAreaShape.setPosition((this.mCamera.getWidth() - pAreaShape.getWidth()) * 0.5f, pAreaShape.getY());
 	}
 
-	public void centerShapeInCameraVertically(final IAreaShape<?> pAreaShape) {
+	public void centerShapeInCameraVertically(final IAreaShape pAreaShape) {
 		pAreaShape.setPosition(pAreaShape.getX(), (this.mCamera.getHeight() - pAreaShape.getHeight()) * 0.5f);
 	}
 

@@ -50,6 +50,8 @@ public class Camera implements IUpdateHandler {
 	protected int mSurfaceWidth;
 	protected int mSurfaceHeight;
 
+	protected boolean mResizeOnSurfaceSizeChanged;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -163,6 +165,10 @@ public class Camera implements IUpdateHandler {
 		this.mChaseEntity = pChaseEntity;
 	}
 
+	public boolean isRotated() {
+		return this.mRotation != 0;
+	}
+
 	public float getRotation() {
 		return this.mRotation;
 	}
@@ -196,38 +202,26 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void setSurfaceSize(final int pSurfaceX, final int pSurfaceY, final int pSurfaceWidth, final int pSurfaceHeight) {
-		this.mSurfaceX = pSurfaceX;
-		this.mSurfaceY = pSurfaceY;
-
 		if(this.mSurfaceHeight != 0 && this.mSurfaceWidth != 0) {
 			if(this.mSurfaceWidth != pSurfaceWidth || this.mSurfaceHeight != pSurfaceHeight) {
-				final float surfaceWidthRatio = (float)pSurfaceWidth / this.mSurfaceWidth;
-				final float surfaceHeightRatio = (float)pSurfaceHeight / this.mSurfaceHeight;
-
-				final float centerX = this.getCenterX();
-				final float centerY = this.getCenterY();
-
-				final float newWidthRaw = this.getWidthRaw() * surfaceWidthRatio; 
-				final float newHeightRaw = this.getHeightRaw() * surfaceHeightRatio;
-
-				final float newWidthRawHalf = newWidthRaw * 0.5f; 
-				final float newHeightRawHalf = newHeightRaw * 0.5f;
-
-				final float xMin = centerX - newWidthRawHalf;
-				final float yMin = centerY - newHeightRawHalf;
-				final float xMax = centerX + newWidthRawHalf;
-				final float yMax = centerY + newHeightRawHalf;
-
-				this.set(xMin, yMin, xMax, yMax);
+				if(this.mResizeOnSurfaceSizeChanged) {
+					this.onSurfaceSizeChanged(pSurfaceWidth, pSurfaceHeight);
+				}
 			}
 		}
 
+		this.mSurfaceX = pSurfaceX;
+		this.mSurfaceY = pSurfaceY;
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
 	}
 
-	public boolean isRotated() {
-		return this.mRotation != 0;
+	public boolean isResizeOnSurfaceSizeChanged() {
+		return this.mResizeOnSurfaceSizeChanged;
+	}
+
+	public void setResizeOnSurfaceSizeChanged(final boolean pResizeOnSurfaceSizeChanged) {
+		this.mResizeOnSurfaceSizeChanged = pResizeOnSurfaceSizeChanged;
 	}
 
 	// ===========================================================
@@ -269,7 +263,7 @@ public class Camera implements IUpdateHandler {
 		return RectangularShapeCollisionChecker.isVisible(this, pLine);
 	}
 
-	public boolean isRectangularShapeVisible(final RectangularShape<?> pRectangularShape) {
+	public boolean isRectangularShapeVisible(final RectangularShape pRectangularShape) {
 		return RectangularShapeCollisionChecker.isVisible(this, pRectangularShape);
 	}
 
@@ -500,6 +494,27 @@ public class Camera implements IUpdateHandler {
 		final float y = yMin + pRelativeY * (yMax - yMin);
 
 		pSurfaceTouchEvent.set(x, y);
+	}
+
+	protected void onSurfaceSizeChanged(final int pSurfaceWidth, final int pSurfaceHeight) {
+		final float surfaceWidthRatio = (float)pSurfaceWidth / this.mSurfaceWidth;
+		final float surfaceHeightRatio = (float)pSurfaceHeight / this.mSurfaceHeight;
+
+		final float centerX = this.getCenterX();
+		final float centerY = this.getCenterY();
+
+		final float newWidthRaw = this.getWidthRaw() * surfaceWidthRatio; 
+		final float newHeightRaw = this.getHeightRaw() * surfaceHeightRatio;
+
+		final float newWidthRawHalf = newWidthRaw * 0.5f; 
+		final float newHeightRawHalf = newHeightRaw * 0.5f;
+
+		final float xMin = centerX - newWidthRawHalf;
+		final float yMin = centerY - newHeightRawHalf;
+		final float xMax = centerX + newWidthRawHalf;
+		final float yMax = centerY + newHeightRawHalf;
+
+		this.set(xMin, yMin, xMax, yMax);
 	}
 
 	// ===========================================================

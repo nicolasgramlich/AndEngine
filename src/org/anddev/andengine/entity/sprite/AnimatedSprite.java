@@ -2,13 +2,20 @@ package org.anddev.andengine.entity.sprite;
 
 import java.util.Arrays;
 
-import org.anddev.andengine.opengl.Mesh;
+import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
+import org.anddev.andengine.opengl.shader.ShaderProgram;
 import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.VertexBufferObjectAttribute;
 import org.anddev.andengine.util.constants.TimeConstants;
 import org.anddev.andengine.util.math.MathUtils;
 
+/**
+ * (c) 2010 Nicolas Gramlich
+ * (c) 2011 Zynga Inc.
+ * 
+ * @author Nicolas Gramlich
+ * @since 15:25:46 - 10.03.2010
+ */
 public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// ===========================================================
 	// Constants
@@ -38,40 +45,52 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
 	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion) {
 		super(pX, pY, pTiledTextureRegion, DrawType.DYNAMIC);
 	}
 
-	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pTiledTextureRegion, DrawType.DYNAMIC, pShaderProgram);
+	}
+
 	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
 		super(pX, pY, pTiledTextureRegion, pDrawType);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
-		super(pX, pY, pTiledTextureRegion, pMesh);
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pTiledTextureRegion, pDrawType, pShaderProgram);
 	}
 
-	/**
-	 * Uses a default {@link Mesh} in {@link DrawType#DYNAMIC} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject) {
+		super(pX, pY, pTiledTextureRegion, pTiledSpriteVertexBufferObject);
+	}
+
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pTiledTextureRegion, pTiledSpriteVertexBufferObject, pShaderProgram);
+	}
+
 	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion) {
 		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, DrawType.DYNAMIC);
 	}
 
-	/**
-	 * Uses a default {@link Mesh} with the {@link VertexBufferObjectAttribute}s: {@link Sprite#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, DrawType.DYNAMIC, pShaderProgram);
+	}
+
 	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
 		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pDrawType);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final Mesh pMesh) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pMesh);
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pDrawType, pShaderProgram);
+	}
+
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pTiledSpriteVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	}
+
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pTiledSpriteVertexBufferObject, pShaderProgram);
 	}
 
 	// ===========================================================

@@ -47,7 +47,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		this.setEGLContextClientVersion(2);
 	}
 
-	public void setRenderer(final Engine pEngine) {
+	public void setRenderer(final Engine pEngine, final IRendererListener pRendererListener) {
 		if (pEngine.getEngineOptions().getRenderOptions().isMultiSampling()) {
 			if(this.mConfigChooser == null) {
 				this.mConfigChooser = new ConfigChooser(true);
@@ -58,7 +58,7 @@ public class RenderSurfaceView extends GLSurfaceView {
 		}
 
 		this.setOnTouchListener(pEngine);
-		this.mRenderer = new Renderer(pEngine, this.mConfigChooser);
+		this.mRenderer = new Renderer(pEngine, this.mConfigChooser, pRendererListener);
 		this.setRenderer(this.mRenderer);
 	}
 
@@ -90,13 +90,19 @@ public class RenderSurfaceView extends GLSurfaceView {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	/**
-	 * (c) 2010 Nicolas Gramlich
-	 * (c) 2011 Zynga Inc.
-	 * 
-	 * @author Nicolas Gramlich
-	 * @since 11:45:59 - 08.03.2010
-	 */
+	public interface IRendererListener {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		public void onSurfaceCreated();
+		public void onSurfaceChanged(final int pWidth, final int pHeight);
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+	}
+
 	public static class Renderer implements GLSurfaceView.Renderer {
 		// ===========================================================
 		// Constants
@@ -109,14 +115,16 @@ public class RenderSurfaceView extends GLSurfaceView {
 		private final Engine mEngine;
 		private final ConfigChooser mConfigChooser;
 		private final boolean mMultiSampling;
+		private final IRendererListener mRendererListener;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public Renderer(final Engine pEngine, final ConfigChooser pConfigChooser) {
+		public Renderer(final Engine pEngine, final ConfigChooser pConfigChooser, final IRendererListener pRendererListener) {
 			this.mEngine = pEngine;
 			this.mConfigChooser = pConfigChooser;
+			this.mRendererListener = pRendererListener;
 			this.mMultiSampling = this.mEngine.getEngineOptions().getRenderOptions().isMultiSampling();
 		}
 
@@ -129,16 +137,10 @@ public class RenderSurfaceView extends GLSurfaceView {
 		// ===========================================================
 
 		@Override
-		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
-			Debug.d("onSurfaceChanged: pWidth=" + pWidth + "  pHeight=" + pHeight);
-			this.mEngine.setSurfaceSize(pWidth, pHeight);
-			GLES20.glViewport(0, 0, pWidth, pHeight);
-			GLState.loadProjectionGLMatrixIdentity();
-		}
-
-		@Override
 		public void onSurfaceCreated(final GL10 pGL, final EGLConfig pEGLConfig) {
-			Debug.d("onSurfaceCreated");
+			if(this.mRendererListener != null) {
+				this.mRendererListener.onSurfaceCreated();
+			}
 			GLState.reset(this.mEngine.getEngineOptions().getRenderOptions());
 
 			// TODO Check if available and make available through EngineOptions-RenderOptions
@@ -158,6 +160,16 @@ public class RenderSurfaceView extends GLSurfaceView {
 //			GLState.enableCulling();
 //			GLES20.glFrontFace(GLES20.GL_CCW);
 //			GLES20.glCullFace(GLES20.GL_BACK);
+		}
+
+		@Override
+		public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
+			if(this.mRendererListener != null) {
+				this.mRendererListener.onSurfaceChanged(pWidth, pHeight);
+			}
+			this.mEngine.setSurfaceSize(pWidth, pHeight);
+			GLES20.glViewport(0, 0, pWidth, pHeight);
+			GLState.loadProjectionGLMatrixIdentity();
 		}
 
 		@Override

@@ -7,6 +7,7 @@ import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.WakeLockOptions;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.opengl.view.RenderSurfaceView;
+import org.anddev.andengine.opengl.view.RenderSurfaceView.IRendererListener;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerSensorOptions;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.sensor.location.ILocationListener;
@@ -33,7 +34,7 @@ import android.widget.FrameLayout.LayoutParams;
  * @author Nicolas Gramlich
  * @since 11:27:06 - 08.03.2010
  */
-public abstract class BaseGameActivity extends BaseActivity implements IGameInterface {
+public abstract class BaseGameActivity extends BaseActivity implements IGameInterface, IRendererListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -160,6 +161,16 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	}
 
+	@Override
+	public void onSurfaceCreated() {
+		Debug.d("onSurfaceCreated");
+	}
+
+	@Override
+	public void onSurfaceChanged(final int pWidth, final int pHeight) {
+		Debug.d("onSurfaceChanged: pWidth=" + pWidth + "  pHeight=" + pHeight);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -198,7 +209,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this);
-		this.mRenderSurfaceView.setRenderer(this.mEngine);
+		this.mRenderSurfaceView.setRenderer(this.mEngine, this);
 
 		this.setContentView(this.mRenderSurfaceView, BaseGameActivity.createSurfaceViewLayoutParams());
 	}

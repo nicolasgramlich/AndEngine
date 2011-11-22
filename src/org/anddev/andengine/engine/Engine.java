@@ -15,7 +15,8 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.controller.ITouchController;
 import org.anddev.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
-import org.anddev.andengine.input.touch.controller.SingleTouchControler;
+import org.anddev.andengine.input.touch.controller.MultiTouchController;
+import org.anddev.andengine.input.touch.controller.SingleTouchController;
 import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.font.FontManager;
 import org.anddev.andengine.opengl.shader.ShaderProgramManager;
@@ -127,14 +128,19 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		ShaderProgramManager.onCreate();
 
 		this.mEngineOptions = pEngineOptions;
-		this.setTouchController(new SingleTouchControler());
 		this.mCamera = pEngineOptions.getCamera();
 
-		if(this.mEngineOptions.needsSound()) {
+		if(this.mEngineOptions.getTouchOptions().needsMultiTouch()) {
+			this.setTouchController(new SingleTouchController());
+		} else {
+			this.setTouchController(new MultiTouchController());
+		}
+
+		if(this.mEngineOptions.getAudioOptions().needsSound()) {
 			this.mSoundManager = new SoundManager();
 		}
 
-		if(this.mEngineOptions.needsMusic()) {
+		if(this.mEngineOptions.getAudioOptions().needsMusic()) {
 			this.mMusicManager = new MusicManager();
 		}
 

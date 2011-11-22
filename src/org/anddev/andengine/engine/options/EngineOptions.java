@@ -24,10 +24,10 @@ public class EngineOptions {
 	private final IResolutionPolicy mResolutionPolicy;
 	private final Camera mCamera;
 
+	private final TouchOptions mTouchOptions = new TouchOptions();
+	private final AudioOptions mAudioOptions = new AudioOptions();
 	private final RenderOptions mRenderOptions = new RenderOptions();
 
-	private boolean mNeedsSound;
-	private boolean mNeedsMusic;
 	private WakeLockOptions mWakeLockOptions = WakeLockOptions.SCREEN_ON;
 	private int mUpdateThreadPriority = android.os.Process.THREAD_PRIORITY_DEFAULT;
 
@@ -45,6 +45,14 @@ public class EngineOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public TouchOptions getTouchOptions() {
+		return this.mTouchOptions;
+	}
+	
+	public AudioOptions getAudioOptions() {
+		return this.mAudioOptions;
+	}
 
 	public RenderOptions getRenderOptions() {
 		return this.mRenderOptions;
@@ -75,24 +83,6 @@ public class EngineOptions {
 	 */
 	public void setUpdateThreadPriority(final int pUpdateThreadPriority) {
 		this.mUpdateThreadPriority = pUpdateThreadPriority;
-	}
-
-	public boolean needsSound() {
-		return this.mNeedsSound;
-	}
-
-	public EngineOptions setNeedsSound(final boolean pNeedsSound) {
-		this.mNeedsSound = pNeedsSound;
-		return this;
-	}
-
-	public boolean needsMusic() {
-		return this.mNeedsMusic;
-	}
-
-	public EngineOptions setNeedsMusic(final boolean pNeedsMusic) {
-		this.mNeedsMusic = pNeedsMusic;
-		return this;
 	}
 
 	public WakeLockOptions getWakeLockOptions() {

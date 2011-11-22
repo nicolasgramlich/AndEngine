@@ -1,13 +1,15 @@
-package org.anddev.andengine.engine.options;
+package org.anddev.andengine.input.touch.controller;
+
+import android.view.MotionEvent;
 
 /**
- * (c) 2010 Nicolas Gramlich
+ * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 13:01:40 - 02.07.2010
+ * @since 20:23:33 - 13.07.2010
  */
-public class RenderOptions {
+public class SingleTouchController extends BaseTouchController {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,27 +18,26 @@ public class RenderOptions {
 	// Fields
 	// ===========================================================
 
-	private boolean mMultiSampling = false;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public SingleTouchController() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isMultiSampling() {
-		return this.mMultiSampling;
-	}
-
-	public void setMultiSampling(final boolean pMultiSampling) {
-		this.mMultiSampling = pMultiSampling;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public void onHandleMotionEvent(final MotionEvent pMotionEvent) {
+		this.fireTouchEvent(pMotionEvent.getX(), pMotionEvent.getY(), pMotionEvent.getAction(), 0, pMotionEvent);
+	}
 
 	// ===========================================================
 	// Methods

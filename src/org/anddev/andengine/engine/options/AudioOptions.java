@@ -1,13 +1,12 @@
 package org.anddev.andengine.engine.options;
 
 /**
- * (c) 2010 Nicolas Gramlich
- * (c) 2011 Zynga Inc.
- * 
- * @author Nicolas Gramlich
- * @since 13:01:40 - 02.07.2010
+ * (c) Zynga 2011
+ *
+ * @author Nicolas Gramlich <ngramlich@zynga.com>
+ * @since 23:13:07 - 22.11.2011
  */
-public class RenderOptions {
+public class AudioOptions {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,7 +15,8 @@ public class RenderOptions {
 	// Fields
 	// ===========================================================
 
-	private boolean mMultiSampling = false;
+	private boolean mNeedsSound;
+	private boolean mNeedsMusic;
 
 	// ===========================================================
 	// Constructors
@@ -26,12 +26,22 @@ public class RenderOptions {
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isMultiSampling() {
-		return this.mMultiSampling;
+	public boolean needsSound() {
+		return this.mNeedsSound;
 	}
 
-	public void setMultiSampling(final boolean pMultiSampling) {
-		this.mMultiSampling = pMultiSampling;
+	public AudioOptions setNeedsSound(final boolean pNeedsSound) {
+		this.mNeedsSound = pNeedsSound;
+		return this;
+	}
+
+	public boolean needsMusic() {
+		return this.mNeedsMusic;
+	}
+
+	public AudioOptions setNeedsMusic(final boolean pNeedsMusic) {
+		this.mNeedsMusic = pNeedsMusic;
+		return this;
 	}
 
 	// ===========================================================

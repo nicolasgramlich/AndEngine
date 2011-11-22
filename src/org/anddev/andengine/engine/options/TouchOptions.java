@@ -1,15 +1,12 @@
-package org.anddev.andengine.input.touch.controller;
-
-import android.view.MotionEvent;
+package org.anddev.andengine.engine.options;
 
 /**
- * (c) 2010 Nicolas Gramlich 
- * (c) 2011 Zynga Inc.
- * 
- * @author Nicolas Gramlich
- * @since 20:23:33 - 13.07.2010
+ * (c) Zynga 2011
+ *
+ * @author Nicolas Gramlich <ngramlich@zynga.com>
+ * @since 23:18:06 - 22.11.2011
  */
-public class SingleTouchControler extends BaseTouchController {
+public class TouchOptions {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,26 +15,28 @@ public class SingleTouchControler extends BaseTouchController {
 	// Fields
 	// ===========================================================
 
+	private boolean mNeedsMultiTouch;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public SingleTouchControler() {
-
-	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	public boolean needsMultiTouch() {
+		return this.mNeedsMultiTouch;
+	}
+
+	public TouchOptions setNeedsMultiTouch(final boolean pNeedsMultiTouch) {
+		this.mNeedsMultiTouch = pNeedsMultiTouch;
+		return this;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public void onHandleMotionEvent(final MotionEvent pMotionEvent) {
-		this.fireTouchEvent(pMotionEvent.getX(), pMotionEvent.getY(), pMotionEvent.getAction(), 0, pMotionEvent);
-	}
 
 	// ===========================================================
 	// Methods

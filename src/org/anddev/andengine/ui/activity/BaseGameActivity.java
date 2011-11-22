@@ -107,10 +107,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public void onUnloadResources() {
-		if(this.mEngine.getEngineOptions().needsMusic()) {
+		if(this.mEngine.getEngineOptions().getAudioOptions().needsMusic()) {
 			this.getMusicManager().releaseAll();
 		}
-		if(this.mEngine.getEngineOptions().needsSound()) {
+		if(this.mEngine.getEngineOptions().getAudioOptions().needsSound()) {
 			this.getSoundManager().releaseAll();
 		}
 	}
@@ -239,7 +239,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			ActivityUtils.requestFullscreen(this);
 		}
 
-		if(pEngineOptions.needsMusic() || pEngineOptions.needsSound()) {
+		if(pEngineOptions.getAudioOptions().needsMusic() || pEngineOptions.getAudioOptions().needsSound()) {
 			this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		}
 

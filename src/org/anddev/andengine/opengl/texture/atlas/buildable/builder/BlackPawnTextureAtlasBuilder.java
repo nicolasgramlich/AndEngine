@@ -61,7 +61,7 @@ public class BlackPawnTextureAtlasBuilder<T extends ITextureAtlasSource, A exten
 	// ===========================================================
 
 	@Override
-	public void pack(final A pTextureAtlas, final ArrayList<TextureAtlasSourceWithWithLocationCallback<T>> pTextureAtlasSourcesWithLocationCallback) throws TextureAtlasSourcePackingException {
+	public void build(final A pTextureAtlas, final ArrayList<TextureAtlasSourceWithWithLocationCallback<T>> pTextureAtlasSourcesWithLocationCallback) throws TextureAtlasBuilderException {
 		Collections.sort(pTextureAtlasSourcesWithLocationCallback, TEXTURESOURCE_COMPARATOR);
 
 		final int rootX = 0;
@@ -79,7 +79,7 @@ public class BlackPawnTextureAtlasBuilder<T extends ITextureAtlasSource, A exten
 			final Node inserted = root.insert(textureAtlasSource, rootWidth, rootHeight, this.mTextureAtlasSourceSpacing, this.mTextureAtlasSourcePadding);
 
 			if(inserted == null) {
-				throw new TextureAtlasSourcePackingException("Could not pack: '" + textureAtlasSource.toString() + "' into: '" + pTextureAtlas.getClass().getSimpleName() + "'.");
+				throw new TextureAtlasBuilderException("Could not build: '" + textureAtlasSource.toString() + "' into: '" + pTextureAtlas.getClass().getSimpleName() + "'.");
 			}
 
 			final int textureAtlasSourceLeft = inserted.mRect.mLeft + this.mTextureAtlasBorderSpacing + this.mTextureAtlasSourcePadding;

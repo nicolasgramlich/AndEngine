@@ -8,7 +8,7 @@ import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
-import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasSourcePackingException;
+import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.util.Callback;
 
@@ -208,12 +208,12 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	/**
 	 * May draw over already added {@link ITextureAtlasSource}MAGIC_CONSTANT.
 	 *
-	 * @param pTextureAtlasSourcePackingAlgorithm the {@link ITextureAtlasBuilder} to use for packing the {@link ITextureAtlasSource} in this {@link BuildableBitmapTextureAtlas}.
+	 * @param pTextureAtlasBuilder the {@link ITextureAtlasBuilder} to use for building the {@link ITextureAtlasSource} in this {@link BuildableBitmapTextureAtlas}.
 	 * @return itself for method chaining.
-	 * @throws TextureAtlasSourcePackingException i.e. when the {@link ITextureAtlasSource}MAGIC_CONSTANT didn't fit into this {@link BuildableBitmapTextureAtlas}.
+	 * @throws TextureAtlasBuilderException i.e. when the {@link ITextureAtlasSource}MAGIC_CONSTANT didn't fit into this {@link BuildableBitmapTextureAtlas}.
 	 */
-	public BuildableTextureAtlas<S, T> build(final ITextureAtlasBuilder<S, T> pTextureAtlasSourcePackingAlgorithm) throws TextureAtlasSourcePackingException {
-		pTextureAtlasSourcePackingAlgorithm.pack(this.mTextureAtlas, this.mTextureAtlasSourcesToPlace);
+	public BuildableTextureAtlas<S, T> build(final ITextureAtlasBuilder<S, T> pTextureAtlasBuilder) throws TextureAtlasBuilderException {
+		pTextureAtlasBuilder.build(this.mTextureAtlas, this.mTextureAtlasSourcesToPlace);
 		this.mTextureAtlasSourcesToPlace.clear();
 		this.mTextureAtlas.setUpdateOnHardwareNeeded(true);
 

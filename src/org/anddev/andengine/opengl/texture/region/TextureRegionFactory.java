@@ -47,7 +47,7 @@ public class TextureRegionFactory {
 	}
 
 	public static ITextureRegion extractFromTexture(final ITexture pTexture, final boolean pRotated) {
-		return new TextureRegion(pTexture, 0, 0, pTexture.getWidth() - 1, pTexture.getHeight() - 1, pRotated);
+		return new TextureRegion(pTexture, 0, 0, pTexture.getWidth(), pTexture.getHeight(), pRotated);
 	}
 
 	public static ITextureRegion extractFromTexture(final ITexture pTexture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight, final boolean pRotated) {

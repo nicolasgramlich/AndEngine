@@ -1,4 +1,3 @@
-syntax: glob
 bin/**
 doc/**
 gen/**
@@ -7,5 +6,6 @@ Thumbs.db
 gdb.setup
 gdbserver
 .svn
+.hg
 local.properties
 .settings

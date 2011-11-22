@@ -1,5 +1,6 @@
-package org.anddev.andengine.engine;
+package org.anddev.andengine.engine.splitscreen;
 
+import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.input.touch.TouchEvent;
@@ -57,9 +58,8 @@ public class SingleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 
 	@Override
-	protected void onDrawScene() {
+	protected void onDrawScene(final Camera pFirstCamera) {
 		if(super.mScene != null) {
-			final Camera firstCamera = this.getFirstCamera();
 			final Camera secondCamera = this.getSecondCamera();
 	
 			final int surfaceWidth = this.mSurfaceWidth;
@@ -74,8 +74,8 @@ public class SingleSceneSplitScreenEngine extends Engine {
 				GLES20.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
 				GLES20.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
 	
-				super.mScene.onDraw(firstCamera);
-				firstCamera.onDrawHUD();
+				super.mScene.onDraw(pFirstCamera);
+				pFirstCamera.onDrawHUD();
 			}
 	
 			/* Second Screen. With second camera, on the right half of the screens width. */
@@ -113,8 +113,8 @@ public class SingleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected void updateUpdateHandlers(final float pSecondsElapsed) {
-		super.updateUpdateHandlers(pSecondsElapsed);
+	protected void onUpdateUpdateHandlers(final float pSecondsElapsed) {
+		super.onUpdateUpdateHandlers(pSecondsElapsed);
 		this.getSecondCamera().onUpdate(pSecondsElapsed);
 	}
 

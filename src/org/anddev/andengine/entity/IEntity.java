@@ -3,12 +3,12 @@ package org.anddev.andengine.entity;
 import java.util.Comparator;
 
 import org.anddev.andengine.engine.Engine;
+import org.anddev.andengine.engine.handler.IDrawHandler;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
 import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.IMatcher;
 import org.anddev.andengine.util.ParameterCallable;
 import org.anddev.andengine.util.color.Color;
@@ -22,7 +22,7 @@ import org.anddev.andengine.util.transformation.Transformation;
  * @author Nicolas Gramlich
  * @since 11:20:25 - 08.03.2010
  */
-public interface IEntity extends IDrawable, IUpdateHandler {
+public interface IEntity extends IDrawHandler, IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================

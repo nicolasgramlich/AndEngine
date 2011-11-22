@@ -5,6 +5,8 @@ import org.anddev.andengine.audio.music.MusicManager;
 import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.audio.sound.SoundManager;
 import org.anddev.andengine.engine.camera.Camera;
+import org.anddev.andengine.engine.handler.DrawHandlerList;
+import org.anddev.andengine.engine.handler.IDrawHandler;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
 import org.anddev.andengine.engine.handler.UpdateHandlerList;
 import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
@@ -63,7 +65,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	private static final SensorDelay SENSORDELAY_DEFAULT = SensorDelay.GAME;
-	private static final int UPDATEHANDLERS_CAPACITY_DEFAULT = 32;
+	private static final int UPDATEHANDLERS_CAPACITY_DEFAULT = 8;
+	private static final int DRAWHANDLERS_CAPACITY_DEFAULT = 4;
 
 	// ===========================================================
 	// Fields
@@ -101,7 +104,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private IOrientationListener mOrientationListener;
 	private OrientationData mOrientationData;
 
-	private final UpdateHandlerList mUpdateHandlers = new UpdateHandlerList(UPDATEHANDLERS_CAPACITY_DEFAULT);
+	private final UpdateHandlerList mUpdateHandlers = new UpdateHandlerList(Engine.UPDATEHANDLERS_CAPACITY_DEFAULT);
+	private final DrawHandlerList mDrawHandlers = new DrawHandlerList(Engine.DRAWHANDLERS_CAPACITY_DEFAULT);
 
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
@@ -230,16 +234,28 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
-	public void clearUpdateHandlers() {
-		this.mUpdateHandlers.clear();
-	}
-
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		this.mUpdateHandlers.add(pUpdateHandler);
 	}
 
 	public void unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		this.mUpdateHandlers.remove(pUpdateHandler);
+	}
+
+	public void clearUpdateHandlers() {
+		this.mUpdateHandlers.clear();
+	}
+
+	public void registerDrawHandler(final IDrawHandler pDrawHandler) {
+		this.mDrawHandlers.add(pDrawHandler);
+	}
+
+	public void unregisterDrawHandler(final IDrawHandler pDrawHandler) {
+		this.mDrawHandlers.remove(pDrawHandler);
+	}
+
+	public void clearDrawHandlers() {
+		this.mDrawHandlers.clear();
 	}
 
 	public boolean isMethodTracing() {
@@ -472,7 +488,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mLastTick += pNanosecondsElapsed;
 
 		this.mTouchController.onUpdate(pSecondsElapsed);
-		this.updateUpdateHandlers(pSecondsElapsed);
+		this.onUpdateUpdateHandlers(pSecondsElapsed);
 		this.onUpdateScene(pSecondsElapsed);
 	}
 
@@ -482,10 +498,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
-	protected void updateUpdateHandlers(final float pSecondsElapsed) {
+	protected void onUpdateUpdateHandlers(final float pSecondsElapsed) {
 		this.mUpdateThreadRunnableHandler.onUpdate(pSecondsElapsed);
 		this.mUpdateHandlers.onUpdate(pSecondsElapsed);
 		this.getCamera().onUpdate(pSecondsElapsed);
+	}
+
+	protected void onUpdateDrawHandlers(final Camera pCamera) {
+		this.mDrawHandlers.onDraw(pCamera);
 	}
 
 	public void onDrawFrame() throws InterruptedException {
@@ -497,19 +517,18 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		FontManager.updateFonts();
 		VertexBufferObjectManager.updateBufferObjects();
 
-		this.onDrawScene();
+		this.onUpdateDrawHandlers(this.mCamera);
+		this.onDrawScene(this.mCamera);
 
 		threadLocker.notifyCanUpdate();
 	}
 
-	protected void onDrawScene() {
-		final Camera camera = this.getCamera();
-
+	protected void onDrawScene(final Camera pCamera) {
 		if(this.mScene != null) {
-			this.mScene.onDraw(camera);
+			this.mScene.onDraw(pCamera);
 		}
 
-		camera.onDrawHUD();
+		pCamera.onDrawHUD();
 	}
 
 	private long getNanosecondsElapsed() {

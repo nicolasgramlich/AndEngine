@@ -1,7 +1,7 @@
 package org.anddev.andengine.entity.scene.background;
 
+import org.anddev.andengine.engine.handler.IDrawHandler;
 import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.opengl.IDrawable;
 import org.anddev.andengine.util.color.Color;
 import org.anddev.andengine.util.modifier.IModifier;
 
@@ -12,7 +12,7 @@ import org.anddev.andengine.util.modifier.IModifier;
  * @author Nicolas Gramlich
  * @since 13:47:41 - 19.07.2010
  */
-public interface IBackground extends IDrawable, IUpdateHandler {
+public interface IBackground extends IDrawHandler, IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================

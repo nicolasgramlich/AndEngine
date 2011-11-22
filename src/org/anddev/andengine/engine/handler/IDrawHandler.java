@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl;
+package org.anddev.andengine.engine.handler;
 
 import org.anddev.andengine.engine.camera.Camera;
 
@@ -10,7 +10,7 @@ import org.anddev.andengine.engine.camera.Camera;
  * @author Nicolas Gramlich
  * @since 10:50:58 - 08.08.2010
  */
-public interface IDrawable {
+public interface IDrawHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================

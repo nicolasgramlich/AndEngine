@@ -7,8 +7,8 @@ import org.anddev.andengine.opengl.texture.PixelFormat;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureBuilder;
-import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureBuilder.TextureAtlasSourcePackingException;
+import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
+import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasSourcePackingException;
 import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.anddev.andengine.util.Callback;
 
@@ -141,6 +141,15 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 		this.mTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY);
 	}
 
+	/**
+	 * Most likely this is not the method you'd want to be using, as the {@link ITextureAtlasSource} won't get built through this {@link BuildableTextureAtlas}.
+	 * @deprecated Use {@link BuildableTextureAtlas#addTextureAtlasSource(ITextureAtlasSource)} instead.
+	 */
+	@Deprecated
+	public void addTextureAtlasSource(final S pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTextureAtlasSourcePadding) {
+		this.addTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY, pTextureAtlasSourcePadding);
+	}
+
 	@Override
 	public void removeTextureAtlasSource(final S pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTextureAtlas.removeTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY);
@@ -166,17 +175,22 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	// Methods
 	// ===========================================================
 
+	@Override
+	public void addEmptyTextureAtlasSource(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
+		this.mTextureAtlas.addEmptyTextureAtlasSource(pTexturePositionX, pTexturePositionY, pWidth, pHeight);
+	}
+
 	/**
-	 * When all {@link ITextureAtlasSource}MAGIC_CONSTANT are added you have to call {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)}.
+	 * When all {@link ITextureAtlasSource}MAGIC_CONSTANT are added you have to call {@link BuildableBitmapTextureAtlas#build(ITextureAtlasBuilder)}.
 	 * @param pTextureAtlasSource to be added.
-	 * @param pTextureRegion
+	 * @param pCallback
 	 */
 	public void addTextureAtlasSource(final S pTextureAtlasSource, final Callback<S> pCallback) {
 		this.mTextureAtlasSourcesToPlace.add(new TextureAtlasSourceWithWithLocationCallback<S>(pTextureAtlasSource, pCallback));
 	}
 
 	/**
-	 * Removes a {@link ITextureAtlasSource} before {@link BuildableBitmapTextureAtlas#build(ITextureBuilder)} is called.
+	 * Removes a {@link ITextureAtlasSource} before {@link BuildableBitmapTextureAtlas#build(ITextureAtlasBuilder)} is called.
 	 * @param pBitmapTextureAtlasSource to be removed.
 	 */
 	public void removeTextureAtlasSource(final ITextureAtlasSource pTextureAtlasSource) {
@@ -194,11 +208,11 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	/**
 	 * May draw over already added {@link ITextureAtlasSource}MAGIC_CONSTANT.
 	 *
-	 * @param pTextureAtlasSourcePackingAlgorithm the {@link ITextureBuilder} to use for packing the {@link ITextureAtlasSource} in this {@link BuildableBitmapTextureAtlas}.
+	 * @param pTextureAtlasSourcePackingAlgorithm the {@link ITextureAtlasBuilder} to use for packing the {@link ITextureAtlasSource} in this {@link BuildableBitmapTextureAtlas}.
 	 * @return itself for method chaining.
 	 * @throws TextureAtlasSourcePackingException i.e. when the {@link ITextureAtlasSource}MAGIC_CONSTANT didn't fit into this {@link BuildableBitmapTextureAtlas}.
 	 */
-	public BuildableTextureAtlas<S, T> build(final ITextureBuilder<S, T> pTextureAtlasSourcePackingAlgorithm) throws TextureAtlasSourcePackingException {
+	public BuildableTextureAtlas<S, T> build(final ITextureAtlasBuilder<S, T> pTextureAtlasSourcePackingAlgorithm) throws TextureAtlasSourcePackingException {
 		pTextureAtlasSourcePackingAlgorithm.pack(this.mTextureAtlas, this.mTextureAtlasSourcesToPlace);
 		this.mTextureAtlasSourcesToPlace.clear();
 		this.mTextureAtlas.setUpdateOnHardwareNeeded(true);
@@ -235,12 +249,12 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 		// Getter & Setter
 		// ===========================================================
 
-		public Callback<T> getCallback() {
-			return this.mCallback;
-		}
-
 		public T getTextureAtlasSource() {
 			return this.mTextureAtlasSource;
+		}
+
+		public Callback<T> getCallback() {
+			return this.mCallback;
 		}
 
 		// ===========================================================

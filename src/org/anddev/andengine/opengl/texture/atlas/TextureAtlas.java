@@ -87,6 +87,33 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	}
 
 	@Override
+	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTextureAtlasSourcePadding) throws IllegalArgumentException {
+		this.addTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY);
+
+		if(pTextureAtlasSourcePadding > 0) {
+			/* Left padding. */
+			if(pTexturePositionX >= pTextureAtlasSourcePadding) {
+				this.addEmptyTextureAtlasSource(pTexturePositionX - pTextureAtlasSourcePadding, pTexturePositionY, pTextureAtlasSourcePadding, pTextureAtlasSource.getHeight());
+			}
+
+			/* Top padding. */
+			if(pTexturePositionY >= pTextureAtlasSourcePadding) {
+				this.addEmptyTextureAtlasSource(pTexturePositionX, pTexturePositionY - pTextureAtlasSourcePadding, pTextureAtlasSource.getWidth(), pTextureAtlasSourcePadding);
+			}
+
+			/* Right padding. */
+			if(pTexturePositionX + pTextureAtlasSource.getWidth() - 1 + pTextureAtlasSourcePadding <= this.getWidth()) {
+				this.addEmptyTextureAtlasSource(pTexturePositionX + pTextureAtlasSource.getWidth(), pTexturePositionY, pTextureAtlasSourcePadding, pTextureAtlasSource.getHeight());
+			}
+
+			/* Bottom padding. */
+			if(pTexturePositionY + pTextureAtlasSource.getHeight() - 1 + pTextureAtlasSourcePadding <= this.getHeight()) {
+				this.addEmptyTextureAtlasSource(pTexturePositionX, pTexturePositionY + pTextureAtlasSource.getHeight(), pTextureAtlasSource.getWidth(), pTextureAtlasSourcePadding);
+			}
+		}
+	}
+
+	@Override
 	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
 		final ArrayList<T> textureSources = this.mTextureAtlasSources;
 		for(int i = textureSources.size() - 1; i >= 0; i--) {

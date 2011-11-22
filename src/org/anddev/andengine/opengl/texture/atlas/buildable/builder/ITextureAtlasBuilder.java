@@ -13,7 +13,7 @@ import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
  * @author Nicolas Gramlich
  * @since 15:59:14 - 12.08.2010
  */
-public interface ITextureBuilder<T extends ITextureAtlasSource, A extends ITextureAtlas<T>> {
+public interface ITextureAtlasBuilder<T extends ITextureAtlasSource, A extends ITextureAtlas<T>> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

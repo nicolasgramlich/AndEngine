@@ -25,6 +25,8 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 	@Override
 	public ITextureAtlas<T> unload();
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException;
+	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTextureAtlasSourcePadding) throws IllegalArgumentException;
+	public void addEmptyTextureAtlasSource(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight);
 	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY);
 	public void clearTextureAtlasSources();
 

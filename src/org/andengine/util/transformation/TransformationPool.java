@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.transformation;
+package org.andengine.util.transformation;
 
-import org.anddev.andengine.util.pool.GenericPool;
+import org.andengine.util.pool.GenericPool;
 
 /**
  * (c) 2010 Nicolas Gramlich 

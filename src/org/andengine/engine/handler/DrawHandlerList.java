@@ -1,7 +1,7 @@
-package org.anddev.andengine.engine.handler;
+package org.andengine.engine.handler;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.util.SmartList;
+import org.andengine.engine.camera.Camera;
+import org.andengine.util.SmartList;
 
 /**
  * (c) Zynga 2011

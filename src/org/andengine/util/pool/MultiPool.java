@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.pool;
+package org.andengine.util.pool;
 
 import android.util.SparseArray;
 

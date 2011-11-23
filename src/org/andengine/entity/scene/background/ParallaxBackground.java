@@ -1,10 +1,10 @@
-package org.anddev.andengine.entity.scene.background;
+package org.andengine.entity.scene.background;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.IAreaShape;
-import org.anddev.andengine.opengl.util.GLState;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.shape.IAreaShape;
+import org.andengine.opengl.util.GLState;
 
 /**
  * (c) 2010 Nicolas Gramlich 

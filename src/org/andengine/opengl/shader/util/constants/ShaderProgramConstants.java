@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.shader.util.constants;
+package org.andengine.opengl.shader.util.constants;
 
 /**
  * (c) Zynga 2011

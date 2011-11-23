@@ -1,7 +1,7 @@
-package org.anddev.andengine.engine.handler.physics;
+package org.andengine.engine.handler.physics;
 
-import org.anddev.andengine.engine.handler.BaseEntityUpdateHandler;
-import org.anddev.andengine.entity.IEntity;
+import org.andengine.engine.handler.BaseEntityUpdateHandler;
+import org.andengine.entity.IEntity;
 
 /**
  * (c) 2010 Nicolas Gramlich 

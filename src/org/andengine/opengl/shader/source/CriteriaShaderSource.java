@@ -1,7 +1,7 @@
-package org.anddev.andengine.opengl.shader.source;
+package org.andengine.opengl.shader.source;
 
-import org.anddev.andengine.opengl.shader.exception.ShaderProgramException;
-import org.anddev.andengine.opengl.shader.source.criteria.IShaderSourceCriteria;
+import org.andengine.opengl.shader.exception.ShaderProgramException;
+import org.andengine.opengl.shader.source.criteria.IShaderSourceCriteria;
 
 /**
  * (c) Zynga 2011

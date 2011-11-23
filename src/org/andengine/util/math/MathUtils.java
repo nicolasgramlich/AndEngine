@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.math;
+package org.andengine.util.math;
 
 import java.util.Random;
 

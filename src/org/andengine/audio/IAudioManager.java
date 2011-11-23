@@ -1,4 +1,4 @@
-package org.anddev.andengine.audio;
+package org.andengine.audio;
 
 /**
  * (c) 2010 Nicolas Gramlich 

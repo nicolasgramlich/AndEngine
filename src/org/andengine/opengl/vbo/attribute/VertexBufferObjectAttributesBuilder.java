@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.vbo.attribute;
+package org.andengine.opengl.vbo.attribute;
 
-import org.anddev.andengine.util.data.DataConstants;
+import org.andengine.util.data.DataConstants;
 
 import android.opengl.GLES20;
 

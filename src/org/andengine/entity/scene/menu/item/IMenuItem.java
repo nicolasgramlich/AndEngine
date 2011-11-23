@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.scene.menu.item;
+package org.andengine.entity.scene.menu.item;
 
-import org.anddev.andengine.entity.shape.IAreaShape;
+import org.andengine.entity.shape.IAreaShape;
 
 /**
  * (c) 2010 Nicolas Gramlich 

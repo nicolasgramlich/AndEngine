@@ -1,20 +1,20 @@
-package org.anddev.andengine.entity.scene;
+package org.andengine.entity.scene;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.handler.runnable.RunnableHandler;
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
-import org.anddev.andengine.entity.scene.background.Background;
-import org.anddev.andengine.entity.scene.background.IBackground;
-import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.IMatcher;
-import org.anddev.andengine.util.SmartList;
-import org.anddev.andengine.util.constants.Constants;
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.runnable.RunnableHandler;
+import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
+import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.IBackground;
+import org.andengine.entity.shape.Shape;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.util.GLState;
+import org.andengine.util.IMatcher;
+import org.andengine.util.SmartList;
+import org.andengine.util.constants.Constants;
 
 import android.util.SparseArray;
 

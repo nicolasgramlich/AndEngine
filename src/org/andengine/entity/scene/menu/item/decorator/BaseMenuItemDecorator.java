@@ -1,19 +1,19 @@
-package org.anddev.andengine.entity.scene.menu.item.decorator;
+package org.andengine.entity.scene.menu.item.decorator;
 
 import java.util.Comparator;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.modifier.IEntityModifier;
-import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
-import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
-import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
-import org.anddev.andengine.util.color.Color;
-import org.anddev.andengine.util.transformation.Transformation;
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.IEntityModifier;
+import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
+import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.entity.shape.IShape;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.vbo.IVertexBufferObject;
+import org.andengine.util.color.Color;
+import org.andengine.util.transformation.Transformation;
 
 /**
  * I HATE THIS CLASS!

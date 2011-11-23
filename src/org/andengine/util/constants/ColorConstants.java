@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.constants;
+package org.andengine.util.constants;
 
 /**
  * (c) 2010 Nicolas Gramlich 

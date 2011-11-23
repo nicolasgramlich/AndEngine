@@ -1,4 +1,4 @@
-package org.anddev.andengine.audio;
+package org.andengine.audio;
 
 import java.util.ArrayList;
 

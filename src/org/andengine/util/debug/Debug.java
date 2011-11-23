@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.debug;
+package org.andengine.util.debug;
 
-import org.anddev.andengine.util.constants.Constants;
+import org.andengine.util.constants.Constants;
 
 import android.util.Log;
 

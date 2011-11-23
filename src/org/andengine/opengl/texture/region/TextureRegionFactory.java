@@ -1,9 +1,9 @@
-package org.anddev.andengine.opengl.texture.region;
+package org.andengine.opengl.texture.region;
 
 
-import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.atlas.ITextureAtlas;
+import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
 
 /**

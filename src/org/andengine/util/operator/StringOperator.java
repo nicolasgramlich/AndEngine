@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.operator;
+package org.andengine.util.operator;
 
 /**
  * (c) Zynga 2011

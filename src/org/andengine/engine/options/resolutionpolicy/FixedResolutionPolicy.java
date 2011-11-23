@@ -1,6 +1,6 @@
-package org.anddev.andengine.engine.options.resolutionpolicy;
+package org.andengine.engine.options.resolutionpolicy;
 
-import org.anddev.andengine.opengl.view.RenderSurfaceView;
+import org.andengine.opengl.view.RenderSurfaceView;
 
 /**
  * (c) 2010 Nicolas Gramlich 

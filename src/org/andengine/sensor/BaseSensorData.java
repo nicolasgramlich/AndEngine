@@ -1,4 +1,4 @@
-package org.anddev.andengine.sensor;
+package org.andengine.sensor;
 
 import java.util.Arrays;
 

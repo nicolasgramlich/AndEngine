@@ -1,8 +1,8 @@
-package org.anddev.andengine.opengl.texture.atlas.bitmap.source;
+package org.andengine.opengl.texture.atlas.bitmap.source;
 
 import java.io.File;
 
-import org.anddev.andengine.util.FileUtils;
+import org.andengine.util.FileUtils;
 
 import android.content.Context;
 

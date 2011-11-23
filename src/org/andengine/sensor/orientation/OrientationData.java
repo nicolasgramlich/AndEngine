@@ -1,9 +1,9 @@
-package org.anddev.andengine.sensor.orientation;
+package org.andengine.sensor.orientation;
 
 import java.util.Arrays;
 
-import org.anddev.andengine.sensor.BaseSensorData;
-import org.anddev.andengine.util.math.MathConstants;
+import org.andengine.sensor.BaseSensorData;
+import org.andengine.util.math.MathConstants;
 
 import android.hardware.SensorManager;
 import android.view.Surface;

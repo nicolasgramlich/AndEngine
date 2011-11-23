@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.pool;
+package org.andengine.util.pool;
 
 /**
  * (c) 2010 Nicolas Gramlich 

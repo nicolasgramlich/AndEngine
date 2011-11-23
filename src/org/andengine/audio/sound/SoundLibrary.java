@@ -1,6 +1,6 @@
-package org.anddev.andengine.audio.sound;
+package org.andengine.audio.sound;
 
-import org.anddev.andengine.util.Library;
+import org.andengine.util.Library;
 
 /**
  * (c) 2010 Nicolas Gramlich 

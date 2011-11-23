@@ -1,4 +1,4 @@
-package org.anddev.andengine.audio.music.exception;
+package org.andengine.audio.music.exception;
 
 /**
  * (c) Zynga 2011

@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.shader.source;
+package org.andengine.opengl.shader.source;
 
 /**
  * (c) Zynga 2011

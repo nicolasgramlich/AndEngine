@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.shader;
+package org.andengine.opengl.shader;
 
 import java.util.ArrayList;
 

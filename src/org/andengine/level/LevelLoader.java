@@ -1,4 +1,4 @@
-package org.anddev.andengine.level;
+package org.andengine.level;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -9,9 +9,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.anddev.andengine.level.util.constants.LevelConstants;
-import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.level.util.constants.LevelConstants;
+import org.andengine.util.StreamUtils;
+import org.andengine.util.debug.Debug;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

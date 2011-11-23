@@ -1,13 +1,13 @@
-package org.anddev.andengine.util.path.astar;
+package org.andengine.util.path.astar;
 
 import java.util.HashSet;
 import java.util.TreeSet;
 
-import org.anddev.andengine.util.path.ICostFunction;
-import org.anddev.andengine.util.path.IPathFinder;
-import org.anddev.andengine.util.path.IPathFinderMap;
-import org.anddev.andengine.util.path.Path;
-import org.anddev.andengine.util.spatial.adt.bounds.IIntBounds;
+import org.andengine.util.path.ICostFunction;
+import org.andengine.util.path.IPathFinder;
+import org.andengine.util.path.IPathFinderMap;
+import org.andengine.util.path.Path;
+import org.andengine.util.spatial.adt.bounds.IIntBounds;
 
 /**
  * TODO Nodes could be recycle in a pool, mXMin/mXMax/mYMin/mYMax could be variable.

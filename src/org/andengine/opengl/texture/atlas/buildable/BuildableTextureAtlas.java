@@ -1,16 +1,16 @@
-package org.anddev.andengine.opengl.texture.atlas.buildable;
+package org.andengine.opengl.texture.atlas.buildable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
-import org.anddev.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
-import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
-import org.anddev.andengine.util.Callback;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.ITextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
+import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.util.Callback;
 
 /**
  * (c) 2010 Nicolas Gramlich

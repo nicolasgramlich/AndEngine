@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.modifier.ease;
+package org.andengine.util.modifier.ease;
 
 /**
  * (c) 2010 Nicolas Gramlich

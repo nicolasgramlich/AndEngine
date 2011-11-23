@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.scene.background;
+package org.andengine.entity.scene.background;
 
-import org.anddev.andengine.entity.sprite.Sprite;
+import org.andengine.entity.sprite.Sprite;
 
 /**
  * (c) 2010 Nicolas Gramlich 

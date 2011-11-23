@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.font;
+package org.andengine.opengl.font;
 
-import org.anddev.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.ITexture;
 
 import android.graphics.Paint;
 import android.graphics.Paint.Style;

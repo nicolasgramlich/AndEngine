@@ -1,15 +1,15 @@
-package org.anddev.andengine.entity.scene.menu;
+package org.andengine.entity.scene.menu;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.scene.CameraScene;
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.Scene.IOnAreaTouchListener;
-import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
-import org.anddev.andengine.entity.scene.menu.animator.IMenuAnimator;
-import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
-import org.anddev.andengine.input.touch.TouchEvent;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.scene.CameraScene;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.Scene.IOnAreaTouchListener;
+import org.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.andengine.entity.scene.menu.animator.IMenuAnimator;
+import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
 

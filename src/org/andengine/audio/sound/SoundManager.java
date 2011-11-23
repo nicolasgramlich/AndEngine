@@ -1,6 +1,6 @@
-package org.anddev.andengine.audio.sound;
+package org.andengine.audio.sound;
 
-import org.anddev.andengine.audio.BaseAudioManager;
+import org.andengine.audio.BaseAudioManager;
 
 import android.media.AudioManager;
 import android.media.SoundPool;

@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.modifier;
+package org.andengine.util.modifier;
 
 /**
  * (c) 2010 Nicolas Gramlich 

@@ -1,8 +1,8 @@
-package org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator;
+package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.anddev.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
+import org.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

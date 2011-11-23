@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.exception;
+package org.andengine.util.exception;
 
 /**
  * (c) Zynga 2011

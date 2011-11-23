@@ -1,16 +1,16 @@
-package org.anddev.andengine.engine.camera;
+package org.andengine.engine.camera;
 
-import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
-import org.anddev.andengine.engine.camera.hud.HUD;
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.primitive.Line;
-import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.math.MathUtils;
-import org.anddev.andengine.util.transformation.Transformation;
+import org.andengine.collision.RectangularShapeCollisionChecker;
+import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.primitive.Line;
+import org.andengine.entity.shape.RectangularShape;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.util.GLState;
+import org.andengine.util.constants.Constants;
+import org.andengine.util.math.MathUtils;
+import org.andengine.util.transformation.Transformation;
 
 /**
  * (c) 2010 Nicolas Gramlich

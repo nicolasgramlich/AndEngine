@@ -1,4 +1,4 @@
-package org.anddev.andengine.audio.music;
+package org.andengine.audio.music;
 
 import java.io.File;
 import java.io.FileInputStream;

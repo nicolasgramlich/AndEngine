@@ -1,13 +1,13 @@
-package org.anddev.andengine.opengl.texture.render;
+package org.andengine.opengl.texture.render;
 
 import java.io.IOException;
 import java.nio.IntBuffer;
 
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.util.GLHelper;
-import org.anddev.andengine.opengl.util.GLState;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.util.GLHelper;
+import org.andengine.opengl.util.GLState;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.modifier.ease;
+package org.andengine.util.modifier.ease;
 
-import org.anddev.andengine.util.math.MathConstants;
+import org.andengine.util.math.MathConstants;
 
 import android.util.FloatMath;
 

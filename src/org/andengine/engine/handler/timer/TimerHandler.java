@@ -1,6 +1,6 @@
-package org.anddev.andengine.engine.handler.timer;
+package org.andengine.engine.handler.timer;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.IUpdateHandler;
 
 /**
  * (c) 2010 Nicolas Gramlich 

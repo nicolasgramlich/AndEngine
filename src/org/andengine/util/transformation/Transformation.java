@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.transformation;
+package org.andengine.util.transformation;
 
-import org.anddev.andengine.util.math.MathConstants;
+import org.andengine.util.math.MathConstants;
 
 import android.util.FloatMath;
 

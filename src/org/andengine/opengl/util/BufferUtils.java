@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.util;
+package org.andengine.opengl.util;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;

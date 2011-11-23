@@ -1,9 +1,9 @@
-package org.anddev.andengine.opengl.texture;
+package org.andengine.opengl.texture;
 
 import java.io.IOException;
 
-import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.util.debug.Debug;
 
 import android.opengl.GLES20;
 

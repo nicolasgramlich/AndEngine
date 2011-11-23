@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.particle.initializer;
+package org.andengine.entity.particle.initializer;
 
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.particle.Particle;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.entity.Entity;
+import org.andengine.entity.particle.Particle;
+import org.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 

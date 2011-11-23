@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.shader.source.criteria;
 
-import org.anddev.andengine.util.operator.IntOperator;
+import org.andengine.util.operator.IntOperator;
 
 /**
  * (c) Zynga 2011

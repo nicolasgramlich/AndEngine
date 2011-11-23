@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.sort;
+package org.andengine.util.sort;
 
 import java.util.Comparator;
 import java.util.List;

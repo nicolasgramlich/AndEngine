@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.color;
+package org.andengine.util.color;
 
 import android.graphics.Color;
 

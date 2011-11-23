@@ -1,23 +1,23 @@
-package org.anddev.andengine.entity.text;
+package org.andengine.entity.text;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.font.IFont;
-import org.anddev.andengine.opengl.font.Letter;
-import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.LowMemoryVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
-import org.anddev.andengine.util.HorizontalAlign;
-import org.anddev.andengine.util.StringUtils;
-import org.anddev.andengine.util.data.DataConstants;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.shape.RectangularShape;
+import org.andengine.opengl.font.IFont;
+import org.andengine.opengl.font.Letter;
+import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.andengine.opengl.vbo.IVertexBufferObject;
+import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
+import org.andengine.util.HorizontalAlign;
+import org.andengine.util.StringUtils;
+import org.andengine.util.data.DataConstants;
 
 import android.opengl.GLES20;
 

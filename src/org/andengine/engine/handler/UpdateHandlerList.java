@@ -1,6 +1,6 @@
-package org.anddev.andengine.engine.handler;
+package org.andengine.engine.handler;
 
-import org.anddev.andengine.util.SmartList;
+import org.andengine.util.SmartList;
 
 /**
  * (c) 2010 Nicolas Gramlich 

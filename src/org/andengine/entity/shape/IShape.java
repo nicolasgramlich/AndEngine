@@ -1,9 +1,9 @@
-package org.anddev.andengine.entity.shape;
+package org.andengine.entity.shape;
 
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.scene.Scene.ITouchArea;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.scene.Scene.ITouchArea;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.vbo.IVertexBufferObject;
 
 import android.opengl.GLES20;
 

@@ -1,11 +1,11 @@
-package org.anddev.andengine.entity.sprite;
+package org.andengine.entity.sprite;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
 /**
  * Unlike {@link Sprite}, the {@link DiamondSprite} class doesn't render the rectangular outline of a {@link ITextureRegion}, but cuts out a diamond.

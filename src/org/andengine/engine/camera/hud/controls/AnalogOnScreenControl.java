@@ -1,12 +1,12 @@
-package org.anddev.andengine.engine.camera.hud.controls;
+package org.andengine.engine.camera.hud.controls;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.input.touch.detector.ClickDetector;
-import org.anddev.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
-import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.util.constants.TimeConstants;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.engine.camera.Camera;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.input.touch.detector.ClickDetector;
+import org.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.constants.TimeConstants;
+import org.andengine.util.math.MathUtils;
 
 import android.util.FloatMath;
 

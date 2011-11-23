@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.util;
+package org.andengine.entity.util;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.IUpdateHandler;
 
 /**
  * (c) 2010 Nicolas Gramlich 

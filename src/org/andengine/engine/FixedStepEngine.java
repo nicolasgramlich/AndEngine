@@ -1,6 +1,6 @@
-package org.anddev.andengine.engine;
+package org.andengine.engine;
 
-import org.anddev.andengine.engine.options.EngineOptions;
+import org.andengine.engine.options.EngineOptions;
 
 
 /**

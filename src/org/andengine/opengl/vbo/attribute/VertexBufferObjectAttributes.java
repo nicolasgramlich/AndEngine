@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.vbo.attribute;
+package org.andengine.opengl.vbo.attribute;
 
 
 /**

@@ -1,14 +1,14 @@
-package org.anddev.andengine.opengl.texture.compressed.etc1;
+package org.andengine.opengl.texture.compressed.etc1;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.util.StreamUtils;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.util.StreamUtils;
 
 import android.opengl.ETC1;
 import android.opengl.ETC1Util;

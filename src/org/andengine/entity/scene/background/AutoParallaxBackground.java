@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity.scene.background;
+package org.andengine.entity.scene.background;
 
 
 

@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.pool;
+package org.andengine.util.pool;
 
-import org.anddev.andengine.entity.IEntity;
+import org.andengine.entity.IEntity;
 
 /**
  * (c) 2010 Nicolas Gramlich 

@@ -1,4 +1,4 @@
-package org.anddev.andengine.sensor.location;
+package org.andengine.sensor.location;
 
 /**
  * (c) 2010 Nicolas Gramlich 

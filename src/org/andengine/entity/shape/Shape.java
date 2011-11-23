@@ -1,14 +1,14 @@
-package org.anddev.andengine.entity.shape;
+package org.andengine.entity.shape;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.Entity;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
  * (c) 2010 Nicolas Gramlich

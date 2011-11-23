@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.modifier.ease;
+package org.andengine.util.modifier.ease;
 
 import android.util.FloatMath;
 

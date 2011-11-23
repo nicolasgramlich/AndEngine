@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.texture;
+package org.andengine.opengl.texture;
 
 import android.opengl.GLES20;
 

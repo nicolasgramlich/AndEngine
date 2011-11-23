@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.shader.source.criteria;
 
-import org.anddev.andengine.util.operator.StringOperator;
+import org.andengine.util.operator.StringOperator;
 
 import android.os.Build;
 

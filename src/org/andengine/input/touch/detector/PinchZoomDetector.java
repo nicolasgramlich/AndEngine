@@ -1,6 +1,6 @@
-package org.anddev.andengine.input.touch.detector;
+package org.andengine.input.touch.detector;
 
-import org.anddev.andengine.input.touch.TouchEvent;
+import org.andengine.input.touch.TouchEvent;
 
 import android.util.FloatMath;
 import android.view.MotionEvent;

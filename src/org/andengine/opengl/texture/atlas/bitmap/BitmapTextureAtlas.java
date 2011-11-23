@@ -1,17 +1,17 @@
-package org.anddev.andengine.opengl.texture.atlas.bitmap;
+package org.andengine.opengl.texture.atlas.bitmap;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.TextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.exception.NullBitmapException;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.TextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.andengine.opengl.util.GLState;
+import org.andengine.util.exception.NullBitmapException;
+import org.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

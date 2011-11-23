@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.scene.menu.animator;
+package org.andengine.entity.scene.menu.animator;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.entity.scene.menu.item.IMenuItem;
 
 /**
  * (c) 2010 Nicolas Gramlich 

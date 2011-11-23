@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.anddev.andengine.util.data.base64;
+package org.andengine.util.data.base64;
 
 import java.io.UnsupportedEncodingException;
 

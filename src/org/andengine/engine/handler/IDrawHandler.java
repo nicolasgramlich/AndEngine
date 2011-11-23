@@ -1,6 +1,6 @@
-package org.anddev.andengine.engine.handler;
+package org.andengine.engine.handler;
 
-import org.anddev.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.Camera;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.anddev.andengine.input.touch.controller;
+package org.andengine.input.touch.controller;
 
 import android.view.MotionEvent;
 

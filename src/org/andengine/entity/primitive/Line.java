@@ -1,24 +1,24 @@
-package org.anddev.andengine.entity.primitive;
+package org.andengine.entity.primitive;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.collision.LineCollisionChecker;
-import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.IShape;
-import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.opengl.shader.PositionColorShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.LowMemoryVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
-import org.anddev.andengine.util.constants.Constants;
+import org.andengine.collision.LineCollisionChecker;
+import org.andengine.collision.RectangularShapeCollisionChecker;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.shape.IShape;
+import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.shape.Shape;
+import org.andengine.opengl.shader.PositionColorShaderProgram;
+import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.andengine.opengl.vbo.IVertexBufferObject;
+import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
+import org.andengine.util.constants.Constants;
 
 import android.opengl.GLES20;
 

@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.path.astar;
+package org.andengine.util.path.astar;
 
-import org.anddev.andengine.util.path.IPathFinderMap;
+import org.andengine.util.path.IPathFinderMap;
 
 import android.util.FloatMath;
 

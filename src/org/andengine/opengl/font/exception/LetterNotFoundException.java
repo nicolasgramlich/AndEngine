@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.font.exception;
+package org.andengine.opengl.font.exception;
 
 /**
  * (c) Zynga 2011

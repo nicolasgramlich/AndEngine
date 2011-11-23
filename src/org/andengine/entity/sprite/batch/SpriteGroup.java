@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.sprite.batch;
+package org.andengine.entity.sprite.batch;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.util.SmartList;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.util.SmartList;
 
 /**
  * (c) 2010 Nicolas Gramlich

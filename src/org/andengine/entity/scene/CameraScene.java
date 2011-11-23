@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.scene;
+package org.andengine.entity.scene;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.IAreaShape;
-import org.anddev.andengine.input.touch.TouchEvent;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.shape.IAreaShape;
+import org.andengine.input.touch.TouchEvent;
 
 /**
  * (c) 2010 Nicolas Gramlich

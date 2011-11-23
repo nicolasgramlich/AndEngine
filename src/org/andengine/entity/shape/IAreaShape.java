@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity.shape;
+package org.andengine.entity.shape;
 
 
 /**

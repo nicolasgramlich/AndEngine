@@ -1,7 +1,7 @@
-package org.anddev.andengine.input.touch.controller;
+package org.andengine.input.touch.controller;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.input.touch.TouchEvent;
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
 

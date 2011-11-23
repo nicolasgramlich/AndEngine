@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl;
+package org.andengine.opengl;
 
 /**
  * (c) Zynga 2011

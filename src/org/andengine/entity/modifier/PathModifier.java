@@ -1,11 +1,11 @@
-package org.anddev.andengine.entity.modifier;
+package org.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.util.modifier.IModifier;
-import org.anddev.andengine.util.modifier.SequenceModifier;
-import org.anddev.andengine.util.modifier.SequenceModifier.ISubSequenceModifierListener;
-import org.anddev.andengine.util.modifier.ease.EaseLinear;
-import org.anddev.andengine.util.modifier.ease.IEaseFunction;
+import org.andengine.entity.IEntity;
+import org.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.SequenceModifier;
+import org.andengine.util.modifier.SequenceModifier.ISubSequenceModifierListener;
+import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 import android.util.FloatMath;
 

@@ -1,11 +1,11 @@
-package org.anddev.andengine.entity.scene.menu.animator;
+package org.andengine.entity.scene.menu.animator;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.entity.modifier.MoveModifier;
-import org.anddev.andengine.entity.scene.menu.item.IMenuItem;
-import org.anddev.andengine.util.HorizontalAlign;
-import org.anddev.andengine.util.modifier.ease.IEaseFunction;
+import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.util.HorizontalAlign;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2010 Nicolas Gramlich 

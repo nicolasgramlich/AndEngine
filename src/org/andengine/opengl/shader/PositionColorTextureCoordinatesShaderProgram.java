@@ -1,9 +1,9 @@
-package org.anddev.andengine.opengl.shader;
+package org.andengine.opengl.shader;
 
-import org.anddev.andengine.opengl.shader.exception.ShaderProgramLinkException;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.opengl.shader.exception.ShaderProgramLinkException;
+import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
 

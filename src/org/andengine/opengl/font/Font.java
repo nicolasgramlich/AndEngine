@@ -1,12 +1,12 @@
-package org.anddev.andengine.opengl.font;
+package org.andengine.opengl.font;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.font.exception.FontException;
-import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.opengl.font.exception.FontException;
+import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.util.GLState;
+import org.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

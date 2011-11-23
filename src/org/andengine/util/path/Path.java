@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.path;
+package org.andengine.util.path;
 
 
 /**

@@ -1,7 +1,7 @@
-package org.anddev.andengine.entity.particle.modifier;
+package org.andengine.entity.particle.modifier;
 
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.particle.Particle;
+import org.andengine.entity.Entity;
+import org.andengine.entity.particle.Particle;
 
 /**
  * (c) 2010 Nicolas Gramlich 

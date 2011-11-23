@@ -1,4 +1,4 @@
-package org.anddev.andengine.util;
+package org.andengine.util;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

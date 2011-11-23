@@ -1,7 +1,7 @@
-package org.anddev.andengine.opengl.util;
+package org.andengine.opengl.util;
 
-import org.anddev.andengine.util.exception.AndEngineException;
-import org.anddev.andengine.util.math.MathConstants;
+import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.math.MathConstants;
 
 import android.opengl.Matrix;
 

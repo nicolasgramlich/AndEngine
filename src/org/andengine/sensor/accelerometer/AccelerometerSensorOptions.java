@@ -1,6 +1,6 @@
-package org.anddev.andengine.sensor.accelerometer;
+package org.andengine.sensor.accelerometer;
 
-import org.anddev.andengine.sensor.SensorDelay;
+import org.andengine.sensor.SensorDelay;
 
 /**
  * (c) 2010 Nicolas Gramlich 

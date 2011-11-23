@@ -1,8 +1,8 @@
-package org.anddev.andengine.util.pool;
+package org.andengine.util.pool;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.IUpdateHandler;
 
 /**
  * (c) 2010 Nicolas Gramlich

@@ -1,8 +1,8 @@
-package org.anddev.andengine.util.modifier;
+package org.andengine.util.modifier;
 
 import java.util.Comparator;
 
-import org.anddev.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineException;
 
 
 /**

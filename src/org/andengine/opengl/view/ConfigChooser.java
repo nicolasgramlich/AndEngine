@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.view;
+package org.andengine.opengl.view;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;

@@ -1,9 +1,9 @@
-package org.anddev.andengine.entity.particle.modifier;
+package org.andengine.entity.particle.modifier;
 
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.particle.Particle;
-import org.anddev.andengine.entity.shape.RectangularShape;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.particle.Particle;
+import org.andengine.entity.shape.RectangularShape;
 
 /**
  * (c) 2010 Nicolas Gramlich 

@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.vbo.attribute;
+package org.andengine.opengl.vbo.attribute;
 
-import org.anddev.andengine.opengl.GLES20Fix;
+import org.andengine.opengl.GLES20Fix;
 
 /**
  * (c) Zynga 2011

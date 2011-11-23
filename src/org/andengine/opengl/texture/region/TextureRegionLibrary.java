@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.texture.region;
+package org.andengine.opengl.texture.region;
 
-import org.anddev.andengine.util.Library;
+import org.andengine.util.Library;
 
 /**
  * (c) 2010 Nicolas Gramlich

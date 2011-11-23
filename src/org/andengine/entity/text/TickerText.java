@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.text;
+package org.andengine.entity.text;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.font.IFont;
-import org.anddev.andengine.util.HorizontalAlign;
+import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.font.IFont;
+import org.andengine.util.HorizontalAlign;
 
 import android.opengl.GLES20;
 

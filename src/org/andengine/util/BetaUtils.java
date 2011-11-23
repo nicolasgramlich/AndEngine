@@ -1,8 +1,8 @@
-package org.anddev.andengine.util;
+package org.andengine.util;
 
 import java.util.GregorianCalendar;
 
-import org.anddev.andengine.util.constants.Constants;
+import org.andengine.util.constants.Constants;
 
 import android.R;
 import android.app.Activity;

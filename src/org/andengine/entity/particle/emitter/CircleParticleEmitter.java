@@ -1,10 +1,10 @@
-package org.anddev.andengine.entity.particle.emitter;
+package org.andengine.entity.particle.emitter;
 
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+import static org.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
-import org.anddev.andengine.util.math.MathConstants;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.util.math.MathConstants;
+import org.andengine.util.math.MathUtils;
 
 import android.util.FloatMath;
 

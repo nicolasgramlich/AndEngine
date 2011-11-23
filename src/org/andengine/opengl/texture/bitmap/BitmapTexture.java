@@ -1,15 +1,15 @@
-package org.anddev.andengine.opengl.texture.bitmap;
+package org.andengine.opengl.texture.bitmap;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.exception.NullBitmapException;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.util.GLState;
+import org.andengine.util.StreamUtils;
+import org.andengine.util.exception.NullBitmapException;
+import org.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

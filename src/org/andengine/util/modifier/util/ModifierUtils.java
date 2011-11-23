@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.modifier.util;
+package org.andengine.util.modifier.util;
 
-import org.anddev.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.IModifier;
 
 /**
  * (c) 2010 Nicolas Gramlich 

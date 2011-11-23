@@ -1,15 +1,15 @@
-package org.anddev.andengine.entity.particle;
+package org.andengine.entity.particle;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.IEntityFactory;
-import org.anddev.andengine.entity.particle.emitter.IParticleEmitter;
-import org.anddev.andengine.entity.particle.initializer.IParticleInitializer;
-import org.anddev.andengine.entity.particle.modifier.IParticleModifier;
-import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.Entity;
+import org.andengine.entity.IEntityFactory;
+import org.andengine.entity.particle.emitter.IParticleEmitter;
+import org.andengine.entity.particle.initializer.IParticleInitializer;
+import org.andengine.entity.particle.modifier.IParticleModifier;
+import org.andengine.util.constants.Constants;
+import org.andengine.util.math.MathUtils;
 
 import android.util.FloatMath;
 

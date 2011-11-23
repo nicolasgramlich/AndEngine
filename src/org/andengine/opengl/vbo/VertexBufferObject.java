@@ -1,14 +1,14 @@
-package org.anddev.andengine.opengl.vbo;
+package org.andengine.opengl.vbo;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.util.BufferUtils;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
-import org.anddev.andengine.util.data.DataConstants;
-import org.anddev.andengine.util.system.SystemUtils;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.util.BufferUtils;
+import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.util.data.DataConstants;
+import org.andengine.util.system.SystemUtils;
 
 import android.opengl.GLES20;
 import android.os.Build;

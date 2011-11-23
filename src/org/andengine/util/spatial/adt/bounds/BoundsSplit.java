@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.spatial.adt.bounds;
+package org.andengine.util.spatial.adt.bounds;
 
-import org.anddev.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineException;
 
 /**
  * (c) Zynga 2011

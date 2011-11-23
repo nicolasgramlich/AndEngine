@@ -1,6 +1,6 @@
-package org.anddev.andengine.util;
+package org.andengine.util;
 
-import org.anddev.andengine.util.constants.Constants;
+import org.andengine.util.constants.Constants;
 
 import android.content.Context;
 import android.content.SharedPreferences;

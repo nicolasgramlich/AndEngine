@@ -1,21 +1,21 @@
-package org.anddev.andengine.entity;
+package org.andengine.entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.engine.handler.UpdateHandlerList;
-import org.anddev.andengine.entity.modifier.EntityModifierList;
-import org.anddev.andengine.entity.modifier.IEntityModifier;
-import org.anddev.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.ParameterCallable;
-import org.anddev.andengine.util.SmartList;
-import org.anddev.andengine.util.color.Color;
-import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.transformation.Transformation;
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.UpdateHandlerList;
+import org.andengine.entity.modifier.EntityModifierList;
+import org.andengine.entity.modifier.IEntityModifier;
+import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
+import org.andengine.opengl.util.GLState;
+import org.andengine.util.ParameterCallable;
+import org.andengine.util.SmartList;
+import org.andengine.util.color.Color;
+import org.andengine.util.constants.Constants;
+import org.andengine.util.transformation.Transformation;
 
 
 /**
@@ -896,7 +896,7 @@ public class Entity implements IEntity {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.IEntity#convertLocalToSceneCoordinates(float, float)
+	 * @see org.andengine.entity.IEntity#convertLocalToSceneCoordinates(float, float)
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
@@ -904,7 +904,7 @@ public class Entity implements IEntity {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.IEntity#convertLocalToSceneCoordinates(float, float, float[])
+	 * @see org.andengine.entity.IEntity#convertLocalToSceneCoordinates(float, float, float[])
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY, final float[] pReuse) {
@@ -917,7 +917,7 @@ public class Entity implements IEntity {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.IEntity#convertLocalToSceneCoordinates(float[])
+	 * @see org.andengine.entity.IEntity#convertLocalToSceneCoordinates(float[])
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates) {
@@ -925,7 +925,7 @@ public class Entity implements IEntity {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.IEntity#convertLocalToSceneCoordinates(float[], float[])
+	 * @see org.andengine.entity.IEntity#convertLocalToSceneCoordinates(float[], float[])
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates, final float[] pReuse) {
@@ -938,7 +938,7 @@ public class Entity implements IEntity {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.IEntity#convertSceneToLocalCoordinates(float, float)
+	 * @see org.andengine.entity.IEntity#convertSceneToLocalCoordinates(float, float)
 	 */
 	@Override
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
@@ -946,7 +946,7 @@ public class Entity implements IEntity {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.IEntity#convertSceneToLocalCoordinates(float, float, float[])
+	 * @see org.andengine.entity.IEntity#convertSceneToLocalCoordinates(float, float, float[])
 	 */
 	@Override
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY, final float[] pReuse) {
@@ -959,7 +959,7 @@ public class Entity implements IEntity {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.IEntity#convertSceneToLocalCoordinates(float[])
+	 * @see org.andengine.entity.IEntity#convertSceneToLocalCoordinates(float[])
 	 */
 	@Override
 	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates) {
@@ -967,7 +967,7 @@ public class Entity implements IEntity {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.anddev.andengine.entity.IEntity#convertSceneToLocalCoordinates(float[], float[])
+	 * @see org.andengine.entity.IEntity#convertSceneToLocalCoordinates(float[], float[])
 	 */
 	@Override
 	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates, final float[] pReuse) {

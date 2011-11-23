@@ -1,7 +1,7 @@
-package org.anddev.andengine.collision;
+package org.andengine.collision;
 
-import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.transformation.Transformation;
+import org.andengine.util.constants.Constants;
+import org.andengine.util.transformation.Transformation;
 
 /**
  * (c) Zynga 2011

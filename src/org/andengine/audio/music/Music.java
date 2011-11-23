@@ -1,7 +1,7 @@
-package org.anddev.andengine.audio.music;
+package org.andengine.audio.music;
 
-import org.anddev.andengine.audio.BaseAudioEntity;
-import org.anddev.andengine.audio.music.exception.MusicReleasedException;
+import org.andengine.audio.BaseAudioEntity;
+import org.andengine.audio.music.exception.MusicReleasedException;
 
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;

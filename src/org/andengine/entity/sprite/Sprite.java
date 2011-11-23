@@ -1,19 +1,19 @@
-package org.anddev.andengine.entity.sprite;
+package org.andengine.entity.sprite;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.IVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.LowMemoryVertexBufferObject;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.shape.RectangularShape;
+import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
+import org.andengine.opengl.vbo.IVertexBufferObject;
+import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
 

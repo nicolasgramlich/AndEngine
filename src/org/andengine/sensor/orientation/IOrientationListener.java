@@ -1,4 +1,4 @@
-package org.anddev.andengine.sensor.orientation;
+package org.andengine.sensor.orientation;
 
 /**
  * (c) 2010 Nicolas Gramlich 

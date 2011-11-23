@@ -1,7 +1,7 @@
-package org.anddev.andengine.entity.scene.menu.item;
+package org.andengine.entity.scene.menu.item;
 
-import org.anddev.andengine.entity.text.Text;
-import org.anddev.andengine.opengl.font.IFont;
+import org.andengine.entity.text.Text;
+import org.andengine.opengl.font.IFont;
 
 /**
  * (c) 2010 Nicolas Gramlich 

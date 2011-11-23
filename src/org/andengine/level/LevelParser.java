@@ -1,9 +1,9 @@
-package org.anddev.andengine.level;
+package org.andengine.level;
 
 import java.util.HashMap;
 
-import org.anddev.andengine.level.LevelLoader.IEntityLoader;
-import org.anddev.andengine.level.util.constants.LevelConstants;
+import org.andengine.level.LevelLoader.IEntityLoader;
+import org.andengine.level.util.constants.LevelConstants;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

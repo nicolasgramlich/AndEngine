@@ -1,7 +1,7 @@
-package org.anddev.andengine.util.modifier;
+package org.andengine.util.modifier;
 
-import org.anddev.andengine.util.modifier.ease.EaseLinear;
-import org.anddev.andengine.util.modifier.ease.IEaseFunction;
+import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2010 Nicolas Gramlich 

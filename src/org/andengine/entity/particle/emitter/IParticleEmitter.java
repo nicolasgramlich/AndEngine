@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.particle.emitter;
+package org.andengine.entity.particle.emitter;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.IUpdateHandler;
 
 /**
  * (c) 2010 Nicolas Gramlich 

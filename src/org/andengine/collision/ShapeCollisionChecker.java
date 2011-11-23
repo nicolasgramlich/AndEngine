@@ -1,6 +1,6 @@
-package org.anddev.andengine.collision;
+package org.andengine.collision;
 
-import org.anddev.andengine.util.constants.Constants;
+import org.andengine.util.constants.Constants;
 
 
 /**

@@ -1,10 +1,10 @@
-package org.anddev.andengine.opengl.texture.atlas.bitmap;
+package org.andengine.opengl.texture.atlas.bitmap;
 
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.anddev.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas;
+import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 
 /**
  * (c) 2010 Nicolas Gramlich 

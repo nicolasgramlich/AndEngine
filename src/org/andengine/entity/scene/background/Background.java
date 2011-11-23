@@ -1,9 +1,9 @@
-package org.anddev.andengine.entity.scene.background;
+package org.andengine.entity.scene.background;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.util.color.Color;
-import org.anddev.andengine.util.modifier.IModifier;
-import org.anddev.andengine.util.modifier.ModifierList;
+import org.andengine.engine.camera.Camera;
+import org.andengine.util.color.Color;
+import org.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.ModifierList;
 
 import android.opengl.GLES20;
 

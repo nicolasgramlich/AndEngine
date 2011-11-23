@@ -1,13 +1,13 @@
-package org.anddev.andengine.opengl.util;
+package org.andengine.opengl.util;
 
 import java.nio.Buffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
-import org.anddev.andengine.engine.options.RenderOptions;
-import org.anddev.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.engine.options.RenderOptions;
+import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
 import android.opengl.GLES20;

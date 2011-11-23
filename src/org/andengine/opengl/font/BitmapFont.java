@@ -1,19 +1,19 @@
-package org.anddev.andengine.opengl.font;
+package org.andengine.opengl.font;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.anddev.andengine.entity.text.Text;
-import org.anddev.andengine.opengl.font.exception.FontException;
-import org.anddev.andengine.opengl.font.exception.LetterNotFoundException;
-import org.anddev.andengine.opengl.texture.ITexture;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
-import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.StringUtils;
+import org.andengine.entity.text.Text;
+import org.andengine.opengl.font.exception.FontException;
+import org.andengine.opengl.font.exception.LetterNotFoundException;
+import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.bitmap.BitmapTexture;
+import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.andengine.util.StreamUtils;
+import org.andengine.util.StringUtils;
 
 import android.content.Context;
 import android.util.SparseArray;

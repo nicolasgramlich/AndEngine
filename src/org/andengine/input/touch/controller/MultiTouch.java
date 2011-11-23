@@ -1,6 +1,6 @@
-package org.anddev.andengine.input.touch.controller;
+package org.andengine.input.touch.controller;
 
-import org.anddev.andengine.util.system.SystemUtils;
+import org.andengine.util.system.SystemUtils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

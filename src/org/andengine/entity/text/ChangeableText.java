@@ -1,11 +1,11 @@
-package org.anddev.andengine.entity.text;
+package org.andengine.entity.text;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.font.IFont;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.util.HorizontalAlign;
-import org.anddev.andengine.util.StringUtils;
+import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.font.IFont;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.util.HorizontalAlign;
+import org.andengine.util.StringUtils;
 
 import android.opengl.GLES20;
 

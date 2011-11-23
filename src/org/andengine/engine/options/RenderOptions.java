@@ -1,4 +1,4 @@
-package org.anddev.andengine.engine.options;
+package org.andengine.engine.options;
 
 /**
  * (c) 2010 Nicolas Gramlich

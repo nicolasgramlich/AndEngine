@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.spatial.adt.bounds;
+package org.andengine.util.spatial.adt.bounds;
 
 /**
  * (c) Zynga 2011

@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.shader.source.criteria;
 
 /**
  * (c) Zynga 2011

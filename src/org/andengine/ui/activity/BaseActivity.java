@@ -1,11 +1,11 @@
-package org.anddev.andengine.ui.activity;
+package org.andengine.ui.activity;
 
 import java.util.concurrent.Callable;
 
-import org.anddev.andengine.util.ActivityUtils;
-import org.anddev.andengine.util.AsyncCallable;
-import org.anddev.andengine.util.Callback;
-import org.anddev.andengine.util.progress.ProgressCallable;
+import org.andengine.util.ActivityUtils;
+import org.andengine.util.AsyncCallable;
+import org.andengine.util.Callback;
+import org.andengine.util.progress.ProgressCallable;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

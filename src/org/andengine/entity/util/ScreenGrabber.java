@@ -1,9 +1,9 @@
-package org.anddev.andengine.entity.util;
+package org.andengine.entity.util;
 
 import java.nio.IntBuffer;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.Entity;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.Entity;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

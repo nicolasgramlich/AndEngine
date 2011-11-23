@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.path;
+package org.andengine.util.path;
 
 /**
  * (c) 2010 Nicolas Gramlich 

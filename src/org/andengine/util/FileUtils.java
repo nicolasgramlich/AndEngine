@@ -1,4 +1,4 @@
-package org.anddev.andengine.util;
+package org.andengine.util;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.progress;
+package org.andengine.util.progress;
 
 
 /**

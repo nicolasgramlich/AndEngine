@@ -1,23 +1,23 @@
-package org.anddev.andengine.opengl.texture.compressed.pvr;
+package org.andengine.opengl.texture.compressed.pvr;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.GreedyPVRTexturePixelBufferStrategy;
-import org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy;
-import org.anddev.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy.IPVRTexturePixelBufferStrategyBufferManager;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.ArrayUtils;
-import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.data.ByteBufferOutputStream;
-import org.anddev.andengine.util.data.DataConstants;
-import org.anddev.andengine.util.debug.Debug;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.GreedyPVRTexturePixelBufferStrategy;
+import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy;
+import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy.IPVRTexturePixelBufferStrategyBufferManager;
+import org.andengine.opengl.util.GLState;
+import org.andengine.util.ArrayUtils;
+import org.andengine.util.StreamUtils;
+import org.andengine.util.data.ByteBufferOutputStream;
+import org.andengine.util.data.DataConstants;
+import org.andengine.util.debug.Debug;
+import org.andengine.util.math.MathUtils;
 
 import android.opengl.GLES20;
 

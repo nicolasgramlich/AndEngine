@@ -1,8 +1,8 @@
-package org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator;
+package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
-import org.anddev.andengine.util.ArrayUtils;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
+import org.andengine.util.ArrayUtils;
 
 import android.graphics.Paint.Style;
 import android.graphics.RadialGradient;

@@ -1,6 +1,6 @@
-package org.anddev.andengine.ui.activity;
+package org.andengine.ui.activity;
 
-import org.anddev.andengine.opengl.view.RenderSurfaceView;
+import org.andengine.opengl.view.RenderSurfaceView;
 
 /**
  * (c) 2010 Nicolas Gramlich 

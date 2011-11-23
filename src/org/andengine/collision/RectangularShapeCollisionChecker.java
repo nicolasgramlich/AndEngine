@@ -1,11 +1,11 @@
-package org.anddev.andengine.collision;
+package org.andengine.collision;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.primitive.Line;
-import org.anddev.andengine.entity.shape.RectangularShape;
-import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.math.MathUtils;
-import org.anddev.andengine.util.transformation.Transformation;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.primitive.Line;
+import org.andengine.entity.shape.RectangularShape;
+import org.andengine.util.constants.Constants;
+import org.andengine.util.math.MathUtils;
+import org.andengine.util.transformation.Transformation;
 
 /**
  * (c) 2010 Nicolas Gramlich

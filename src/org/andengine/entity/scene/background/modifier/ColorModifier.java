@@ -1,9 +1,9 @@
-package org.anddev.andengine.entity.scene.background.modifier;
+package org.andengine.entity.scene.background.modifier;
 
-import org.anddev.andengine.entity.scene.background.IBackground;
-import org.anddev.andengine.util.modifier.BaseTripleValueSpanModifier;
-import org.anddev.andengine.util.modifier.ease.EaseLinear;
-import org.anddev.andengine.util.modifier.ease.IEaseFunction;
+import org.andengine.entity.scene.background.IBackground;
+import org.andengine.util.modifier.BaseTripleValueSpanModifier;
+import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2010 Nicolas Gramlich 

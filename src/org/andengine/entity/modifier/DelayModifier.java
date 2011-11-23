@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.modifier;
+package org.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.IEntity;
+import org.andengine.entity.IEntity;
 
 /**
  * (c) 2010 Nicolas Gramlich 

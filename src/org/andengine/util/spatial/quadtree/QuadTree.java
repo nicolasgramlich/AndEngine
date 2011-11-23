@@ -1,18 +1,18 @@
-package org.anddev.andengine.util.spatial.quadtree;
+package org.andengine.util.spatial.quadtree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.anddev.andengine.util.IMatcher;
-import org.anddev.andengine.util.ParameterCallable;
-import org.anddev.andengine.util.debug.Debug;
-import org.anddev.andengine.util.exception.AndEngineException;
-import org.anddev.andengine.util.spatial.ISpatialItem;
-import org.anddev.andengine.util.spatial.adt.bounds.BoundsSplit;
-import org.anddev.andengine.util.spatial.adt.bounds.BoundsSplit.BoundsSplitException;
-import org.anddev.andengine.util.spatial.adt.bounds.IBounds;
+import org.andengine.util.IMatcher;
+import org.andengine.util.ParameterCallable;
+import org.andengine.util.debug.Debug;
+import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.spatial.ISpatialItem;
+import org.andengine.util.spatial.adt.bounds.BoundsSplit;
+import org.andengine.util.spatial.adt.bounds.BoundsSplit.BoundsSplitException;
+import org.andengine.util.spatial.adt.bounds.IBounds;
 
 /**
  * (c) Zynga 2011

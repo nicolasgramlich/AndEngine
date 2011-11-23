@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.util;
+package org.andengine.entity.util;
 
-import org.anddev.andengine.util.constants.TimeConstants;
+import org.andengine.util.constants.TimeConstants;
 
 
 /**

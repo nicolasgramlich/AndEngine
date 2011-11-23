@@ -1,8 +1,8 @@
-package org.anddev.andengine.util.modifier;
+package org.andengine.util.modifier;
 
 import java.util.Arrays;
 
-import org.anddev.andengine.util.modifier.IModifier.IModifierListener;
+import org.andengine.util.modifier.IModifier.IModifierListener;
 
 /**
  * (c) 2010 Nicolas Gramlich 

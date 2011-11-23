@@ -1,6 +1,6 @@
-package org.anddev.andengine.engine.handler;
+package org.andengine.engine.handler;
 
-import org.anddev.andengine.entity.IEntity;
+import org.andengine.entity.IEntity;
 
 /**
  * (c) 2010 Nicolas Gramlich

@@ -1,7 +1,7 @@
-package org.anddev.andengine.opengl.vbo;
+package org.andengine.opengl.vbo;
 
-import org.anddev.andengine.opengl.util.BufferUtils;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.opengl.util.BufferUtils;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
 

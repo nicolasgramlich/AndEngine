@@ -1,4 +1,4 @@
-package org.anddev.andengine.audio.sound;
+package org.andengine.audio.sound;
 
 import java.io.File;
 import java.io.FileDescriptor;

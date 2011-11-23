@@ -1,8 +1,8 @@
-package org.anddev.andengine.engine.camera;
+package org.andengine.engine.camera;
 
-import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.util.constants.Constants;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.util.constants.Constants;
+import org.andengine.util.math.MathUtils;
 
 
 

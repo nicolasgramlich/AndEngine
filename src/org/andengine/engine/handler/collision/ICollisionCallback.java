@@ -1,6 +1,6 @@
-package org.anddev.andengine.engine.handler.collision;
+package org.andengine.engine.handler.collision;
 
-import org.anddev.andengine.entity.shape.IShape;
+import org.andengine.entity.shape.IShape;
 
 /**
  * (c) 2010 Nicolas Gramlich 

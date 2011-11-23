@@ -1,4 +1,4 @@
-package org.anddev.andengine.util;
+package org.andengine.util;
 
 /**
  * (c) 2010 Nicolas Gramlich 

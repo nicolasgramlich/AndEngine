@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.util;
+package org.andengine.entity.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.util.ScreenGrabber.IScreenGrabberCallback;
-import org.anddev.andengine.util.StreamUtils;
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.Entity;
+import org.andengine.entity.util.ScreenGrabber.IScreenGrabberCallback;
+import org.andengine.util.StreamUtils;
+import org.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;

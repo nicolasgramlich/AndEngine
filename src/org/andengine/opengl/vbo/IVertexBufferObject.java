@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.vbo;
+package org.andengine.opengl.vbo;
 
-import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) Zynga 2011

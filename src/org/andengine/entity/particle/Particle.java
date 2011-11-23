@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.particle;
+package org.andengine.entity.particle;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.handler.physics.PhysicsHandler;
-import org.anddev.andengine.entity.Entity;
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.physics.PhysicsHandler;
+import org.andengine.entity.Entity;
 
 /**
  * (c) 2010 Nicolas Gramlich

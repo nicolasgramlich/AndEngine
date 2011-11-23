@@ -1,8 +1,8 @@
-package org.anddev.andengine.util.debug;
+package org.andengine.util.debug;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.util.constants.Constants;
+import org.andengine.util.constants.Constants;
 
 import android.os.SystemClock;
 

@@ -1,10 +1,10 @@
-package org.anddev.andengine.input.touch.detector;
+package org.andengine.input.touch.detector;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.engine.handler.timer.ITimerCallback;
-import org.anddev.andengine.engine.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.input.touch.TouchEvent;
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.scene.Scene;
+import org.andengine.input.touch.TouchEvent;
 
 import android.speech.tts.TextToSpeech.Engine;
 import android.view.MotionEvent;

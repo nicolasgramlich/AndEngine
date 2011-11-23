@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.sprite;
+package org.andengine.entity.sprite;
 
 import java.util.Arrays;
 
-import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.util.constants.TimeConstants;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.util.constants.TimeConstants;
+import org.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich

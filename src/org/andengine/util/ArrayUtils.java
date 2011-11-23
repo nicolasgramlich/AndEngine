@@ -1,6 +1,6 @@
-package org.anddev.andengine.util;
+package org.andengine.util;
 
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 

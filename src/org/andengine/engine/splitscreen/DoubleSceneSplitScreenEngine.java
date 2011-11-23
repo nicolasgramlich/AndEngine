@@ -1,11 +1,11 @@
-package org.anddev.andengine.engine.splitscreen;
+package org.andengine.engine.splitscreen;
 
-import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.options.EngineOptions;
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.util.GLState;
+import org.andengine.engine.Engine;
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.options.EngineOptions;
+import org.andengine.entity.scene.Scene;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.util.GLState;
 
 import android.opengl.GLES20;
 

@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.font.exception;
+package org.andengine.opengl.font.exception;
 
-import org.anddev.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineException;
 
 /**
  * (c) Zynga 2011

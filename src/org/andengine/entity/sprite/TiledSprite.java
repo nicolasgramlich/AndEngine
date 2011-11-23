@@ -1,13 +1,13 @@
-package org.anddev.andengine.entity.sprite;
+package org.andengine.entity.sprite;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
-import org.anddev.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.anddev.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
 

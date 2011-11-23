@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.font;
+package org.andengine.opengl.font;
 
-import org.anddev.andengine.util.Library;
+import org.andengine.util.Library;
 
 import android.util.SparseArray;
 

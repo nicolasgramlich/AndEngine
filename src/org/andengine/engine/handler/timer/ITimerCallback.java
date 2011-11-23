@@ -1,4 +1,4 @@
-package org.anddev.andengine.engine.handler.timer;
+package org.andengine.engine.handler.timer;
 
 /**
  * (c) 2010 Nicolas Gramlich 

@@ -1,6 +1,6 @@
-package org.anddev.andengine.entity.particle.initializer;
+package org.andengine.entity.particle.initializer;
 
-import org.anddev.andengine.entity.Entity;
+import org.andengine.entity.Entity;
 
 import android.hardware.SensorManager;
 

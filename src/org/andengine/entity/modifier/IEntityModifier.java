@@ -1,8 +1,8 @@
-package org.anddev.andengine.entity.modifier;
+package org.andengine.entity.modifier;
 
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.util.IMatcher;
-import org.anddev.andengine.util.modifier.IModifier;
+import org.andengine.entity.IEntity;
+import org.andengine.util.IMatcher;
+import org.andengine.util.modifier.IModifier;
 
 /**
  * (c) 2010 Nicolas Gramlich 

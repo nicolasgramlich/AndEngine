@@ -1,7 +1,7 @@
-package org.anddev.andengine.util.modifier;
+package org.andengine.util.modifier;
 
-import org.anddev.andengine.util.modifier.IModifier.IModifierListener;
-import org.anddev.andengine.util.modifier.util.ModifierUtils;
+import org.andengine.util.modifier.IModifier.IModifierListener;
+import org.andengine.util.modifier.util.ModifierUtils;
 
 
 /**

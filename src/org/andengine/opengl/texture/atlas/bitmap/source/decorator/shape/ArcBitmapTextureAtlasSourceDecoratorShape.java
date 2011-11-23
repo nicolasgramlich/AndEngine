@@ -1,6 +1,6 @@
-package org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.shape;
+package org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape;
 
-import org.anddev.andengine.opengl.texture.atlas.bitmap.source.decorator.BaseBitmapTextureAtlasSourceDecorator.TextureAtlasSourceDecoratorOptions;
+import org.andengine.opengl.texture.atlas.bitmap.source.decorator.BaseBitmapTextureAtlasSourceDecorator.TextureAtlasSourceDecoratorOptions;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

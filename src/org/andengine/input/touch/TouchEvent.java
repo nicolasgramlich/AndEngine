@@ -1,6 +1,6 @@
-package org.anddev.andengine.input.touch;
+package org.andengine.input.touch;
 
-import org.anddev.andengine.util.pool.GenericPool;
+import org.andengine.util.pool.GenericPool;
 
 import android.view.MotionEvent;
 

@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.vbo;
+package org.andengine.opengl.vbo;
 
 import java.util.ArrayList;
 import java.util.HashSet;

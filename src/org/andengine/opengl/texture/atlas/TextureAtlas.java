@@ -1,11 +1,11 @@
-package org.anddev.andengine.opengl.texture.atlas;
+package org.andengine.opengl.texture.atlas;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.opengl.texture.PixelFormat;
-import org.anddev.andengine.opengl.texture.Texture;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
 /**
  * (c) 2010 Nicolas Gramlich

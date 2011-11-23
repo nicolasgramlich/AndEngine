@@ -1,9 +1,9 @@
-package org.anddev.andengine.util.pool;
+package org.andengine.util.pool;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.util.debug.Debug;
 
 /**
  * (c) 2010 Nicolas Gramlich

@@ -1,8 +1,8 @@
-package org.anddev.andengine.opengl.vbo;
+package org.andengine.opengl.vbo;
 
 import java.nio.FloatBuffer;
 
-import org.anddev.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
 

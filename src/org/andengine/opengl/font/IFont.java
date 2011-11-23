@@ -1,7 +1,7 @@
-package org.anddev.andengine.opengl.font;
+package org.andengine.opengl.font;
 
-import org.anddev.andengine.opengl.font.exception.LetterNotFoundException;
-import org.anddev.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.font.exception.LetterNotFoundException;
+import org.andengine.opengl.texture.ITexture;
 
 /**
  * (c) Zynga 2011

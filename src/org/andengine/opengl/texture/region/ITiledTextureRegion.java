@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.texture.region;
+package org.andengine.opengl.texture.region;
 
 /**
  * (c) Zynga 2011

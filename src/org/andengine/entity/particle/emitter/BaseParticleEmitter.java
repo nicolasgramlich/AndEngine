@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity.particle.emitter;
+package org.andengine.entity.particle.emitter;
 
 /**
  * (c) 2010 Nicolas Gramlich 

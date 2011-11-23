@@ -1,7 +1,7 @@
-package org.anddev.andengine.ui;
+package org.andengine.ui;
 
-import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.entity.scene.Scene;
+import org.andengine.engine.Engine;
+import org.andengine.entity.scene.Scene;
 
 /**
  * (c) 2010 Nicolas Gramlich 

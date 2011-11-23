@@ -1,9 +1,9 @@
-package org.anddev.andengine.util.modifier;
+package org.andengine.util.modifier;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.util.SmartList;
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.util.SmartList;
 
 /**
  * (c) 2010 Nicolas Gramlich 

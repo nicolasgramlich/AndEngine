@@ -1,7 +1,7 @@
-package org.anddev.andengine.entity.util;
+package org.andengine.entity.util;
 
-import org.anddev.andengine.util.constants.TimeConstants;
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.util.constants.TimeConstants;
+import org.andengine.util.debug.Debug;
 
 /**
  * (c) 2010 Nicolas Gramlich

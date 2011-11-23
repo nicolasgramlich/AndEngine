@@ -1,6 +1,6 @@
-package org.anddev.andengine.audio.music;
+package org.andengine.audio.music;
 
-import org.anddev.andengine.audio.BaseAudioManager;
+import org.andengine.audio.BaseAudioManager;
 
 /**
  * (c) 2010 Nicolas Gramlich 

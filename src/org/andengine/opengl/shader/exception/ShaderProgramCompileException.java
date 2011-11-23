@@ -1,4 +1,4 @@
-package org.anddev.andengine.opengl.shader.exception;
+package org.andengine.opengl.shader.exception;
 /**
  * (c) Zynga 2011
  *

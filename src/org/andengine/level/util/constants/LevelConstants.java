@@ -1,4 +1,4 @@
-package org.anddev.andengine.level.util.constants;
+package org.andengine.level.util.constants;
 
 
 /**

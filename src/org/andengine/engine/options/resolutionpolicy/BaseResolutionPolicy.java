@@ -1,4 +1,4 @@
-package org.anddev.andengine.engine.options.resolutionpolicy;
+package org.andengine.engine.options.resolutionpolicy;
 
 import android.view.View.MeasureSpec;
 

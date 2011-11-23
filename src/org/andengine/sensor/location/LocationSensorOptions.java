@@ -1,6 +1,6 @@
-package org.anddev.andengine.sensor.location;
+package org.andengine.sensor.location;
 
-import org.anddev.andengine.util.constants.TimeConstants;
+import org.andengine.util.constants.TimeConstants;
 
 import android.location.Criteria;
 

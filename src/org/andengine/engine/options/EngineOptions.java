@@ -1,7 +1,7 @@
-package org.anddev.andengine.engine.options;
+package org.andengine.engine.options;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 
 /**
  * (c) 2010 Nicolas Gramlich 

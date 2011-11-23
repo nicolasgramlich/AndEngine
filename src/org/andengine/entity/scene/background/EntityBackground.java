@@ -1,7 +1,7 @@
-package org.anddev.andengine.entity.scene.background;
+package org.andengine.entity.scene.background;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.IEntity;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.IEntity;
 
 /**
  * (c) 2010 Nicolas Gramlich 

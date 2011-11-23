@@ -1,11 +1,11 @@
-package org.anddev.andengine.util;
+package org.andengine.util;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.util.debug.Debug;
 
 /**
  * (c) 2010 Nicolas Gramlich 

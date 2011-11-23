@@ -1,4 +1,4 @@
-package org.anddev.andengine.engine.camera;
+package org.andengine.engine.camera;
 
 
 /**

@@ -1,7 +1,7 @@
-package org.anddev.andengine.entity.scene.background.modifier;
+package org.andengine.entity.scene.background.modifier;
 
-import org.anddev.andengine.entity.scene.background.IBackground;
-import org.anddev.andengine.util.modifier.LoopModifier;
+import org.andengine.entity.scene.background.IBackground;
+import org.andengine.util.modifier.LoopModifier;
 
 /**
  * (c) 2010 Nicolas Gramlich 

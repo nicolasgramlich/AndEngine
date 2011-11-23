@@ -1,12 +1,12 @@
-package org.anddev.andengine.opengl.texture.atlas.buildable.builder;
+package org.andengine.opengl.texture.atlas.buildable.builder;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.anddev.andengine.opengl.texture.atlas.ITextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas.TextureAtlasSourceWithWithLocationCallback;
-import org.anddev.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.opengl.texture.atlas.ITextureAtlas;
+import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas.TextureAtlasSourceWithWithLocationCallback;
+import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
 /**
  * (c) 2010 Nicolas Gramlich 

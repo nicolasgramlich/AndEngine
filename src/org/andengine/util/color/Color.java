@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.color;
+package org.andengine.util.color;
 
 /**
  * TODO Potentially too much work is being done when packing the whole Color, when i.e. only Alpha had been changed. Solution keep the int packed color and update only relevant parts before converting it to float. This saves a couple of bit operations.

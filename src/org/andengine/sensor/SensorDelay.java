@@ -1,4 +1,4 @@
-package org.anddev.andengine.sensor;
+package org.andengine.sensor;
 
 import android.hardware.SensorManager;
 

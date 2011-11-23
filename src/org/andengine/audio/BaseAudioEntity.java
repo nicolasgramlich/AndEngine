@@ -1,6 +1,6 @@
-package org.anddev.andengine.audio;
+package org.andengine.audio;
 
-import org.anddev.andengine.audio.exception.AudioException;
+import org.andengine.audio.exception.AudioException;
 
 /**
  * (c) 2010 Nicolas Gramlich

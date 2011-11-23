@@ -1,4 +1,4 @@
-package org.anddev.andengine.util.data;
+package org.andengine.util.data;
 
 
 /**

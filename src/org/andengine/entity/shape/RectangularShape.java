@@ -1,9 +1,9 @@
-package org.anddev.andengine.entity.shape;
+package org.andengine.entity.shape;
 
-import org.anddev.andengine.collision.RectangularShapeCollisionChecker;
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.primitive.Line;
-import org.anddev.andengine.opengl.shader.ShaderProgram;
+import org.andengine.collision.RectangularShapeCollisionChecker;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.primitive.Line;
+import org.andengine.opengl.shader.ShaderProgram;
 
 /**
  * (c) 2010 Nicolas Gramlich

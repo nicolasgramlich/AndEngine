@@ -1,6 +1,6 @@
-package org.anddev.andengine.util.spatial;
+package org.andengine.util.spatial;
 
-import org.anddev.andengine.util.spatial.adt.bounds.IBounds;
+import org.andengine.util.spatial.adt.bounds.IBounds;
 
 
 /**

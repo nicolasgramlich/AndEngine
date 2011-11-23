@@ -1,4 +1,4 @@
-package org.anddev.andengine.engine.camera;
+package org.andengine.engine.camera;
 
 /**
  * (c) 2010 Nicolas Gramlich 

@@ -1,10 +1,10 @@
-package org.anddev.andengine.util.data;
+package org.andengine.util.data;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.util.debug.Debug;
 
 /**
  * (c) Zynga 2011

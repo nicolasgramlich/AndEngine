@@ -1,4 +1,4 @@
-package org.anddev.andengine.collision;
+package org.andengine.collision;
 
 /**
  * (c) 2010 Nicolas Gramlich

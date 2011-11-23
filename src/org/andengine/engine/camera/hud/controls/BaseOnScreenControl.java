@@ -1,18 +1,18 @@
-package org.anddev.andengine.engine.camera.hud.controls;
+package org.andengine.engine.camera.hud.controls;
 
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.anddev.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+import static org.andengine.util.constants.Constants.VERTEX_INDEX_X;
+import static org.andengine.util.constants.Constants.VERTEX_INDEX_Y;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.engine.camera.hud.HUD;
-import org.anddev.andengine.engine.handler.timer.ITimerCallback;
-import org.anddev.andengine.engine.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
-import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.input.touch.TouchEvent;
-import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.math.MathUtils;
 
 import android.view.MotionEvent;
 

@@ -1,4 +1,4 @@
-package org.anddev.andengine.entity;
+package org.andengine.entity;
 
 
 /**

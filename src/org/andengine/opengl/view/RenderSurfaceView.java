@@ -1,11 +1,11 @@
-package org.anddev.andengine.opengl.view;
+package org.andengine.opengl.view;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.opengl.util.GLState;
-import org.anddev.andengine.util.debug.Debug;
+import org.andengine.engine.Engine;
+import org.andengine.opengl.util.GLState;
+import org.andengine.util.debug.Debug;
 
 import android.content.Context;
 import android.opengl.GLES20;

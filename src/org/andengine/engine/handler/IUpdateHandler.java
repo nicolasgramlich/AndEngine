@@ -1,6 +1,6 @@
-package org.anddev.andengine.engine.handler;
+package org.andengine.engine.handler;
 
-import org.anddev.andengine.util.IMatcher;
+import org.andengine.util.IMatcher;
 
 /**
  * (c) 2010 Nicolas Gramlich 

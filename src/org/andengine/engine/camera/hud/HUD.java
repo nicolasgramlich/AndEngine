@@ -1,8 +1,8 @@
-package org.anddev.andengine.engine.camera.hud;
+package org.andengine.engine.camera.hud;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.entity.scene.CameraScene;
-import org.anddev.andengine.entity.scene.Scene;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.scene.CameraScene;
+import org.andengine.entity.scene.Scene;
 
 /**
  * While you can add a {@link HUD} to {@link Scene}, you should not do so.

@@ -1,8 +1,8 @@
-package org.anddev.andengine.engine.camera.hud.controls;
+package org.andengine.engine.camera.hud.controls;
 
-import org.anddev.andengine.engine.camera.Camera;
-import org.anddev.andengine.opengl.texture.region.ITextureRegion;
-import org.anddev.andengine.util.math.MathUtils;
+import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 

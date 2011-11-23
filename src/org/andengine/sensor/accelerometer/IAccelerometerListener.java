@@ -1,4 +1,4 @@
-package org.anddev.andengine.sensor.accelerometer;
+package org.andengine.sensor.accelerometer;
 
 /**
  * (c) 2010 Nicolas Gramlich 

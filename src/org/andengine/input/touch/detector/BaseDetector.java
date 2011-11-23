@@ -1,8 +1,8 @@
-package org.anddev.andengine.input.touch.detector;
+package org.andengine.input.touch.detector;
 
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
-import org.anddev.andengine.input.touch.TouchEvent;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.Scene.IOnSceneTouchListener;
+import org.andengine.input.touch.TouchEvent;
 
 /**
  * (c) 2010 Nicolas Gramlich

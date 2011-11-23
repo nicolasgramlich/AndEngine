@@ -1,14 +1,14 @@
-package org.anddev.andengine.util.spatial.quadtree;
+package org.andengine.util.spatial.quadtree;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.anddev.andengine.util.IMatcher;
-import org.anddev.andengine.util.spatial.ISpatialItem;
-import org.anddev.andengine.util.spatial.adt.bounds.BoundsSplit;
-import org.anddev.andengine.util.spatial.adt.bounds.FloatBounds;
-import org.anddev.andengine.util.spatial.adt.bounds.IFloatBounds;
-import org.anddev.andengine.util.spatial.adt.bounds.util.FloatBoundsUtils;
+import org.andengine.util.IMatcher;
+import org.andengine.util.spatial.ISpatialItem;
+import org.andengine.util.spatial.adt.bounds.BoundsSplit;
+import org.andengine.util.spatial.adt.bounds.FloatBounds;
+import org.andengine.util.spatial.adt.bounds.IFloatBounds;
+import org.andengine.util.spatial.adt.bounds.util.FloatBoundsUtils;
 
 
 /**

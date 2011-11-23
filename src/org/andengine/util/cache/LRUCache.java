@@ -1,8 +1,8 @@
-package org.anddev.andengine.util.cache;
+package org.andengine.util.cache;
 
 import java.util.HashMap;
 
-import org.anddev.andengine.util.pool.GenericPool;
+import org.andengine.util.pool.GenericPool;
 
 /**
  * (c) Zynga 2011

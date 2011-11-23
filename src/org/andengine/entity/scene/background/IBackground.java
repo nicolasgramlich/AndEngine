@@ -1,9 +1,9 @@
-package org.anddev.andengine.entity.scene.background;
+package org.andengine.entity.scene.background;
 
-import org.anddev.andengine.engine.handler.IDrawHandler;
-import org.anddev.andengine.engine.handler.IUpdateHandler;
-import org.anddev.andengine.util.color.Color;
-import org.anddev.andengine.util.modifier.IModifier;
+import org.andengine.engine.handler.IDrawHandler;
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.util.color.Color;
+import org.andengine.util.modifier.IModifier;
 
 /**
  * (c) 2010 Nicolas Gramlich 

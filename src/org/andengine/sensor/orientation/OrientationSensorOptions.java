@@ -1,6 +1,6 @@
-package org.anddev.andengine.sensor.orientation;
+package org.andengine.sensor.orientation;
 
-import org.anddev.andengine.sensor.SensorDelay;
+import org.andengine.sensor.SensorDelay;
 
 /**
  * (c) 2010 Nicolas Gramlich 

@@ -1,8 +1,8 @@
-package org.anddev.andengine.sensor.accelerometer;
+package org.andengine.sensor.accelerometer;
 
 import java.util.Arrays;
 
-import org.anddev.andengine.sensor.BaseSensorData;
+import org.andengine.sensor.BaseSensorData;
 
 import android.hardware.SensorManager;
 import android.view.Surface;

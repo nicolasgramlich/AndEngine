@@ -1,5 +1,6 @@
 package org.andengine.util.path;
 
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.

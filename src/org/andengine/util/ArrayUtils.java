@@ -1,9 +1,11 @@
 package org.andengine.util;
 
+import java.util.List;
+
 import org.andengine.util.math.MathUtils;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -37,31 +39,31 @@ public final class ArrayUtils {
 	public static final byte random(final byte[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
-	
+
 	public static final short random(final short[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
-	
+
 	public static final int random(final int[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
-	
+
 	public static final long random(final long[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
-	
+
 	public static final float random(final float[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
-	
+
 	public static final double random(final double[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
-	
+
 	public static final <T> T random(final T[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
 	}
-	
+
 	public static final void reverse(final byte[] pArray) {
 		if (pArray == null) {
 			return;
@@ -173,28 +175,147 @@ public final class ArrayUtils {
 			i++;
 		}
 	}
-	
+
 	public static final boolean equals(final byte[] pArrayA, final int pOffsetA, final byte[] pArrayB, final int pOffsetB, final int pLength) {
 		final int lastIndexA = pOffsetA + pLength;
 		if(lastIndexA > pArrayA.length) {
 			throw new ArrayIndexOutOfBoundsException(pArrayA.length);
 		}
-		
+
 		final int lastIndexB = pOffsetB + pLength;
 		if(lastIndexB > pArrayB.length) {
 			throw new ArrayIndexOutOfBoundsException(pArrayB.length);
 		}
-		
+
 		for(int a = pOffsetA, b = pOffsetB; a < lastIndexA; a++, b++) {
 			if(pArrayA[a] != pArrayB[b]) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
+	public static final byte[] toByteArray(final List<Byte> pItems) {
+		final byte[] out = new byte[pItems.size()];
+		for(int i = out.length - 1; i >= 0; i--) {
+			out[i] = pItems.get(i);
+		}
+		return out;
+	}
+
+	public static final char[] toCharArray(final List<Character> pItems) {
+		final char[] out = new char[pItems.size()];
+		for(int i = out.length - 1; i >= 0; i--) {
+			out[i] = pItems.get(i);
+		}
+		return out;
+	}
+
+	public static final short[] toShortArray(final List<Short> pItems) {
+		final short[] out = new short[pItems.size()];
+		for(int i = out.length - 1; i >= 0; i--) {
+			out[i] = pItems.get(i);
+		}
+		return out;
+	}
+
+	public static final int[] toIntArray(final List<Integer> pItems) {
+		final int[] out = new int[pItems.size()];
+		for(int i = out.length - 1; i >= 0; i--) {
+			out[i] = pItems.get(i);
+		}
+		return out;
+	}
+
+	public static final long[] toLongArray(final List<Long> pItems) {
+		final long[] out = new long[pItems.size()];
+		for(int i = out.length - 1; i >= 0; i--) {
+			out[i] = pItems.get(i);
+		}
+		return out;
+	}
+
+	public static final float[] toFloatArray(final List<Float> pItems) {
+		final float[] out = new float[pItems.size()];
+		for(int i = out.length - 1; i >= 0; i--) {
+			out[i] = pItems.get(i);
+		}
+		return out;
+	}
+
+	public static final double[] toDoubleArray(final List<Double> pItems) {
+		final double[] out = new double[pItems.size()];
+		for(int i = out.length - 1; i >= 0; i--) {
+			out[i] = pItems.get(i);
+		}
+		return out;
+	}
+
+	public static final boolean contains(final byte[] pItems, final byte pItem) {
+		for(int i = pItems.length - 1; i >= 0; i--) {
+			if(pItems[i] == pItem) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static final boolean contains(final char[] pItems, final char pItem) {
+		for(int i = pItems.length - 1; i >= 0; i--) {
+			if(pItems[i] == pItem) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static final boolean contains(final short[] pItems, final short pItem) {
+		for(int i = pItems.length - 1; i >= 0; i--) {
+			if(pItems[i] == pItem) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static final boolean contains(final int[] pItems, final int pItem) {
+		for(int i = pItems.length - 1; i >= 0; i--) {
+			if(pItems[i] == pItem) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static final boolean contains(final long[] pItems, final long pItem) {
+		for(int i = pItems.length - 1; i >= 0; i--) {
+			if(pItems[i] == pItem) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static final boolean contains(final float[] pItems, final float pItem) {
+		for(int i = pItems.length - 1; i >= 0; i--) {
+			if(pItems[i] == pItem) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static final boolean contains(final double[] pItems, final double pItem) {
+		for(int i = pItems.length - 1; i >= 0; i--) {
+			if(pItems[i] == pItem) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
 }

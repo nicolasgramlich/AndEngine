@@ -25,13 +25,13 @@ public abstract class PoolItem {
 	// Constructors
 	// ===========================================================
 
-	public Pool<? extends PoolItem> getParent() {
-		return this.mParent;
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public Pool<? extends PoolItem> getParent() {
+		return this.mParent;
+	}
 
 	public boolean isRecycled() {
 		return this.mRecycled;

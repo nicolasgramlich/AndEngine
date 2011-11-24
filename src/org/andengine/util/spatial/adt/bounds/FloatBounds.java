@@ -1,5 +1,7 @@
 package org.andengine.util.spatial.adt.bounds;
 
+import org.andengine.util.spatial.adt.bounds.util.FloatBoundsUtils;
+
 /**
  * (c) Zynga 2011
  *
@@ -34,10 +36,6 @@ public class FloatBounds implements IFloatBounds {
 
 	// ===========================================================
 	// Getter & Setter
-	// ===========================================================
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
@@ -76,6 +74,14 @@ public class FloatBounds implements IFloatBounds {
 		if(pYMin > pYMax) {
 			throw new IllegalArgumentException("pYMin: '" + pYMin + "' must be smaller or equal to pYMax: '" + pYMax + "'.");
 		}
+	}
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	public boolean contains(final float pX, final float pY) {
+		return FloatBoundsUtils.contains(this.mXMin, this.mYMin, this.mXMax, this.mYMax, pX, pY);
 	}
 
 	// ===========================================================

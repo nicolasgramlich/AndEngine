@@ -48,8 +48,16 @@ public final class IntBoundsUtils {
 		return IntBoundsUtils.contains(pIntBoundsA.getXMin(), pIntBoundsA.getYMin(), pIntBoundsA.getXMax(), pIntBoundsA.getYMax(), pIntBoundsB.getXMin(), pIntBoundsB.getYMin(), pIntBoundsB.getXMax(), pIntBoundsB.getYMax());
 	}
 	
+	public static final boolean contains(final IIntBounds pIntBounds, final int pX, final int pY) {
+		return IntBoundsUtils.contains(pIntBounds.getXMin(), pIntBounds.getYMin(), pIntBounds.getXMax(), pIntBounds.getYMax(), pX, pY);
+	}
+	
 	public static final boolean contains(final IIntBounds pIntBounds, final int pXMin, final int pYMin, final int pXMax, final int pYMax) {
 		return IntBoundsUtils.contains(pIntBounds.getXMin(), pIntBounds.getYMin(), pIntBounds.getXMax(), pIntBounds.getYMax(), pXMin, pYMin, pXMax, pYMax);
+	}
+
+	public static final boolean contains(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final int pX, final int pY) {
+		return (pXMin <= pX) && (pYMin <= pY) && (pXMax >= pX) && (pYMax >= pY);
 	}
 
 	public static final boolean contains(final int pXMinA, final int pYMinA, final int pXMaxA, final int pYMaxA, final int pXMinB, final int pYMinB, final int pXMaxB, final int pYMaxB) {

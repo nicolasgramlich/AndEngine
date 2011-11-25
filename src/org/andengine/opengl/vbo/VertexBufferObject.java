@@ -118,7 +118,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	}
 
 	@Override
-	public int getSize() {
+	public int getByteCapacity() {
 		return this.mByteBuffer.capacity();
 	}
 

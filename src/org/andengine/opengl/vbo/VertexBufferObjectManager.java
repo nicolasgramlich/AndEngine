@@ -38,13 +38,13 @@ public class VertexBufferObjectManager {
 	// Getter & Setter
 	// ===========================================================
 
-	public static synchronized int getSize() {
-		int sum = 0;
+	public static synchronized int getByteSize() {
+		int byteSize = 0;
 		final ArrayList<VertexBufferObject> loadedBufferObjects = VertexBufferObjectManager.sVertexObjectsLoaded;
 		for(int i = loadedBufferObjects.size() - 1; i >= 0; i--) {
-			sum += loadedBufferObjects.get(i).getSize();
+			byteSize += loadedBufferObjects.get(i).getByteCapacity();
 		}
-		return sum;
+		return byteSize;
 	}
 
 	// ===========================================================

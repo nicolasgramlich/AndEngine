@@ -739,9 +739,8 @@ public class SpriteBatch extends Shape {
 		// Methods
 		// ===========================================================
 
+		public int getBufferDataOffset();
 		public void setBufferDataOffset(final int pBufferDataOffset);
-
-		int getBufferDataOffset();
 
 		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pPackedColor);
 		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pPackedColor);

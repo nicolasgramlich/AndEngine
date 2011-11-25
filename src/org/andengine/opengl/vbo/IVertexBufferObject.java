@@ -30,8 +30,7 @@ public interface IVertexBufferObject {
 	public void setDirtyOnHardware();
 
 	public int getCapacity();
-
-	public int getSize();
+	public int getByteCapacity();
 
 	public void bind(final ShaderProgram pShaderProgram);
 	public void unbind(final ShaderProgram pShaderProgram);

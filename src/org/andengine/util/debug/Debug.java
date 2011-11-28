@@ -58,6 +58,94 @@ public class Debug implements Constants {
 	// Methods
 	// ===========================================================
 
+	public static void log(final DebugLevel pDebugLevel, final String pMessage) {
+		switch(pDebugLevel) {
+			case NONE:
+				return;
+			case VERBOSE:
+				Debug.v(pMessage);
+				return;
+			case INFO:
+				Debug.i(pMessage);
+				return;
+			case DEBUG:
+				Debug.d(pMessage);
+				return;
+			case WARNING:
+				Debug.w(pMessage);
+				return;
+			case ERROR:
+				Debug.e(pMessage);
+				return;
+		}
+	}
+
+	public static void log(final DebugLevel pDebugLevel, final String pMessage, final Throwable pThrowable) {
+		switch(pDebugLevel) {
+			case NONE:
+				return;
+			case VERBOSE:
+				Debug.v(pMessage, pThrowable);
+				return;
+			case INFO:
+				Debug.i(pMessage, pThrowable);
+				return;
+			case DEBUG:
+				Debug.d(pMessage, pThrowable);
+				return;
+			case WARNING:
+				Debug.w(pMessage, pThrowable);
+				return;
+			case ERROR:
+				Debug.e(pMessage, pThrowable);
+				return;
+		}
+	}
+
+	public static void log(final DebugLevel pDebugLevel, final String pTag, final String pMessage) {
+		switch(pDebugLevel) {
+			case NONE:
+				return;
+			case VERBOSE:
+				Debug.v(pTag, pMessage);
+				return;
+			case INFO:
+				Debug.i(pTag, pMessage);
+				return;
+			case DEBUG:
+				Debug.d(pTag, pMessage);
+				return;
+			case WARNING:
+				Debug.w(pTag, pMessage);
+				return;
+			case ERROR:
+				Debug.e(pTag, pMessage);
+				return;
+		}
+	}
+
+	public static void log(final DebugLevel pDebugLevel, final String pTag, final String pMessage, final Throwable pThrowable) {
+		switch(pDebugLevel) {
+			case NONE:
+				return;
+			case VERBOSE:
+				Debug.v(pTag, pMessage, pThrowable);
+				return;
+			case INFO:
+				Debug.i(pTag, pMessage, pThrowable);
+				return;
+			case DEBUG:
+				Debug.d(pTag, pMessage, pThrowable);
+				return;
+			case WARNING:
+				Debug.w(pTag, pMessage, pThrowable);
+				return;
+			case ERROR:
+				Debug.e(pTag, pMessage, pThrowable);
+				return;
+		}
+	}
+
 	public static void v(final String pMessage) {
 		Debug.v(Debug.sTag, pMessage, null);
 	}

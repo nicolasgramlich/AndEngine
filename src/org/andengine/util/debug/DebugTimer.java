@@ -1,64 +1,48 @@
 package org.andengine.util.debug;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
 
-import org.andengine.util.constants.Constants;
-
-import android.os.SystemClock;
+import org.andengine.util.debug.Debug.DebugLevel;
 
 /**
- * TODO Support custom format passed dump or constructor.
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 13:52:42 - 02.11.2011
  */
-public class DebugTimer implements Constants {
+public class DebugTimer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final String SPLIT_STRING = "  Split: ";
+	private static final int INDENT_SPACES = SPLIT_STRING.length();
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private String mTag;
-	private String mLabel;
-	private ArrayList<DebugTime> mDebugTimes = new ArrayList<DebugTime>();
+	private final Stack<DebugTime> mDebugTimes = new Stack<DebugTime>();
+	private final DebugLevel mDebugLevel;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public DebugTimer(final String pLabel) {
-		this(Constants.DEBUGTAG, pLabel);
+		this(DebugLevel.DEBUG, pLabel);
 	}
 
-	public DebugTimer(final String pTag, final String pLabel) {
-		this.mTag = pTag;
-		this.mLabel = pLabel;
-		this.split(null);
+	public DebugTimer(final DebugLevel pDebugLevel, final String pLabel) {
+		this.mDebugLevel = pDebugLevel;
+		this.init(pLabel);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public String getTag() {
-		return this.mTag;
-	}
-
-	public void setTag(final String pTag) {
-		this.mTag = pTag;
-	}
-
-	public String getLabel() {
-		return this.mLabel;
-	}
-
-	public void setLabel(final String pLabel) {
-		this.mLabel = pLabel;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -68,59 +52,57 @@ public class DebugTimer implements Constants {
 	// Methods
 	// ===========================================================
 
-	public void reset() {
-		this.mDebugTimes.clear();
-		this.split();
+	private void init(final String pLabel) {
+		final long now = System.currentTimeMillis();
+		final DebugTime debugTime = new DebugTime(now, pLabel);
+		this.mDebugTimes.add(debugTime);
 	}
 
-	public void split() {
-		this.split(null);
+	public void begin(final String pLabel) {
+		final long now = System.currentTimeMillis();
+		final DebugTime debugTime = new DebugTime(now, pLabel);
+		this.mDebugTimes.peek().begin(debugTime);
+		this.mDebugTimes.add(debugTime);
 	}
 
 	public void split(final String pLabel) {
-		final long now = SystemClock.elapsedRealtime();
-		this.mDebugTimes.add(new DebugTime(now, pLabel));
+		this.mDebugTimes.peek().split(pLabel);
+	}
+
+	public void end() {
+		final long now = System.currentTimeMillis();
+		if(this.mDebugTimes.size() == 1) {
+			throw new IllegalStateException("Cannot end the root of this " + this.getClass().getSimpleName());
+		} else {
+			this.mDebugTimes.pop().end(now);
+		}
 	}
 
 	public void dump() {
-		Debug.d(this.mTag, this.mLabel + ": begin");
-		
-		final long first = this.mDebugTimes.get(0).getTime();
-		long current = first;
-		for (int i = 1; i < this.mDebugTimes.size(); i++) {
-			current = this.mDebugTimes.get(i).getTime();
-			final String label = this.mDebugTimes.get(i).getLabel();
-			if(label != null) {
-				final long prev = this.mDebugTimes.get(i - 1).getTime();
-	
-				Debug.d(this.mTag, this.mLabel + ":\t" + (current - prev) + " ms, " + label);
-			}
-		}
-		Debug.d(this.mTag, this.mLabel + ": end, " + (current - first) + " ms");
+		this.dump(false);
 	}
-	
-	public void dump(final String pFormat) {
-		Debug.d(this.mTag, this.mLabel + ": begin");
-		
-		final long first = this.mDebugTimes.get(0).getTime();
-		long current = first;
-		for (int i = 1; i < this.mDebugTimes.size(); i++) {
-			current = this.mDebugTimes.get(i).getTime();
-			final String label = this.mDebugTimes.get(i).getLabel();
-			if(label != null) {
-				final long prev = this.mDebugTimes.get(i - 1).getTime();
-				
-				Debug.d(this.mTag, String.format(pFormat, this.mLabel, (current - prev), label));
-			}
+
+	public void dump(final boolean pClear) {
+		final long now = System.currentTimeMillis();
+		if(this.mDebugTimes.size() > 1) {
+			Debug.w(this.getClass().getSimpleName() + " not all ended!");
 		}
-		Debug.d(this.mTag, this.mLabel + ": end, " + (current - first) + " ms");
+
+		final DebugTime root = this.mDebugTimes.firstElement();
+		root.end(now);
+		root.dump(0);
+
+		if(pClear) {
+			this.mDebugTimes.clear();
+			this.init(root.mLabel);
+		}
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class DebugTime {
+	public class DebugTime {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -129,29 +111,31 @@ public class DebugTimer implements Constants {
 		// Fields
 		// ===========================================================
 
-		private final long mTime;
+		private final long mStartTime;
 		private final String mLabel;
+		private final boolean mSplit;
+
+		private long mEndTime;
+		private ArrayList<DebugTime> mChildren;
+		private DebugTime mLastSplit;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public DebugTime(final long pTime, final String pLabel) {
-			this.mTime = pTime;
+		public DebugTime(final long pStartTime, final String pLabel) {
+			this(pStartTime, pLabel, false);
+		}
+
+		protected DebugTime(final long pStartTime, final String pLabel, final boolean pSplit) {
+			this.mStartTime = pStartTime;
 			this.mLabel = pLabel;
+			this.mSplit = pSplit;
 		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
-
-		public long getTime() {
-			return this.mTime;
-		}
-
-		public String getLabel() {
-			return this.mLabel;
-		}
 
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
@@ -160,6 +144,66 @@ public class DebugTimer implements Constants {
 		// ===========================================================
 		// Methods
 		// ===========================================================
+
+		public void begin(final DebugTime pDebugTime) {
+			this.ensureChildrenAllocated();
+			this.mChildren.add(pDebugTime);
+		}
+
+		public void split(final String pLabel) {
+			final long now = System.currentTimeMillis();
+
+			final DebugTime split;
+			if(this.mLastSplit == null) {
+				split = new DebugTime(this.mStartTime, pLabel, true);
+			} else {
+				split = new DebugTime(this.mLastSplit.mEndTime, pLabel, true);
+			}
+			split.end(now);
+
+			this.ensureChildrenAllocated();
+			this.mChildren.add(split);
+
+			this.mLastSplit = split;
+		}
+
+		public void end(final long pEndTime) {
+			this.mEndTime = pEndTime;
+		}
+
+		public void dump(final int pIndent) {
+			this.dump(pIndent, "");
+		}
+
+		public void dump(final int pIndent, final String pPostfix) {
+			if(this.mSplit) {
+				final char[] indent = new char[(pIndent - 1) * INDENT_SPACES];
+				Arrays.fill(indent, ' ');
+				Debug.log(DebugTimer.this.mDebugLevel, new String(indent) + SPLIT_STRING + "'" + this.mLabel + "'" + " @( " + (this.mEndTime - this.mStartTime) + "ms )" + pPostfix);
+			} else {
+				final char[] indent = new char[pIndent * INDENT_SPACES];
+				Arrays.fill(indent, ' ');
+				if(this.mChildren == null) {
+					Debug.log(DebugTimer.this.mDebugLevel, new String(indent) + "'" + this.mLabel + "' @( " + (this.mEndTime - this.mStartTime) + "ms )" + pPostfix);
+				} else {
+					final ArrayList<DebugTime> children = this.mChildren;
+					final int childCount = children.size();
+					
+					Debug.log(DebugTimer.this.mDebugLevel, new String(indent) + "'" + this.mLabel + "' {");
+					for(int i = 0; i < childCount - 1; i++) {
+						children.get(i).dump(pIndent + 1, ",");
+					}
+					children.get(childCount - 1).dump(pIndent + 1);
+					Debug.log(DebugTimer.this.mDebugLevel, new String(indent) + "}@( " + (this.mEndTime - this.mStartTime) + "ms )" + pPostfix);
+				}
+			}
+		}
+
+		private void ensureChildrenAllocated() {
+			if(this.mChildren == null) {
+				this.mChildren = new ArrayList<DebugTime>();
+			}
+		}
 
 		// ===========================================================
 		// Inner and Anonymous Classes

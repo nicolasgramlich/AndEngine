@@ -11,7 +11,6 @@ import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
@@ -791,17 +790,6 @@ public class SpriteBatch extends Shape {
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
 
-		@Override
-		protected void onBufferData() {
-			// TODO On honeycomb the nio buffers are significantly faster, and below native call might not be needed!
-//			this.mFloatBuffer.position(0);
-//			this.mFloatBuffer.put(this.mBufferData);
-//			this.mFloatBuffer.position(0);
-			BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
-
-			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
-		}
-
 		/**
 		 * 1-3
 		 * |X|
@@ -1052,11 +1040,6 @@ public class SpriteBatch extends Shape {
 		// ===========================================================
 		// Methods for/from SuperClass/Interfaces
 		// ===========================================================
-
-		@Override
-		protected void onBufferData() {
-			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
-		}
 
 		/**
 		 * 1-3

@@ -908,10 +908,12 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY, final float[] pReuse) {
+		final Transformation localToSceneTransformation = this.getLocalToSceneTransformation();
+
 		pReuse[Constants.VERTEX_INDEX_X] = pX;
 		pReuse[Constants.VERTEX_INDEX_Y] = pY;
 
-		this.getLocalToSceneTransformation().transform(pReuse);
+		localToSceneTransformation.transform(pReuse);
 
 		return pReuse;
 	}
@@ -929,10 +931,12 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates, final float[] pReuse) {
+		final Transformation localToSceneTransformation = this.getLocalToSceneTransformation();
+
 		pReuse[Constants.VERTEX_INDEX_X] = pCoordinates[Constants.VERTEX_INDEX_X];
 		pReuse[Constants.VERTEX_INDEX_Y] = pCoordinates[Constants.VERTEX_INDEX_Y];
 
-		this.getLocalToSceneTransformation().transform(pReuse);
+		localToSceneTransformation.transform(pReuse);
 
 		return pReuse;
 	}

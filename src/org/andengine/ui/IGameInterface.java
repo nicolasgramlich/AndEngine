@@ -1,6 +1,7 @@
 package org.andengine.ui;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.options.EngineOptions;
 import org.andengine.entity.scene.Scene;
 
 /**
@@ -19,11 +20,12 @@ public interface IGameInterface {
 	// Methods
 	// ===========================================================
 
-	public Engine onLoadEngine();
-	public void onLoadResources();
-	public void onUnloadResources();
-	public Scene onLoadScene();
-	public void onLoadComplete();
+	public EngineOptions onCreateEngineOptions();
+	public Engine onCreateEngine(final EngineOptions pEngineOptions);
+	public void onCreateResources();
+	public void onDestroyResources();
+	public Scene onCreateScene();
+	public void onGameCreated();
 
 	public void onPauseGame();
 	public void onResumeGame();

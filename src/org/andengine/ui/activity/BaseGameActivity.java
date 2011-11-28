@@ -16,6 +16,7 @@ import org.andengine.sensor.orientation.IOrientationListener;
 import org.andengine.sensor.orientation.OrientationSensorOptions;
 import org.andengine.ui.IGameInterface;
 import org.andengine.util.ActivityUtils;
+import org.andengine.util.constants.Constants;
 import org.andengine.util.debug.Debug;
 
 import android.content.Context;
@@ -46,9 +47,8 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected Engine mEngine;
 	private WakeLock mWakeLock;
 	protected RenderSurfaceView mRenderSurfaceView;
-	protected boolean mWindowFocused;
-	private boolean mPaused;
-	private boolean mGameLoaded;
+	private boolean mGamePaused;
+	private boolean mGameCreated;
 
 	// ===========================================================
 	// Constructors
@@ -58,9 +58,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected void onCreate(final Bundle pSavedInstanceState) {
 		super.onCreate(pSavedInstanceState);
 
-		this.mPaused = true;
+		this.mGamePaused = true;
 
-		this.mEngine = this.onLoadEngine();
+		this.mEngine = this.onCreateEngine(this.onCreateEngineOptions());
 
 		this.applyEngineOptions(this.mEngine.getEngineOptions());
 
@@ -68,31 +68,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-
-		if(this.mPaused && this.mWindowFocused) {
-			this.doResume();
-		}
-	}
-
-	@Override
-	public void onWindowFocusChanged(final boolean pHasWindowFocus) {
-		super.onWindowFocusChanged(pHasWindowFocus);
-
-		this.mWindowFocused = pHasWindowFocus;
-
-		if(pHasWindowFocus && this.mPaused) {
-			this.doResume();
-		}
-	}
-
-	@Override
 	protected void onPause() {
 		super.onPause();
 
-		if(!this.mPaused) {
-			this.doPause();
+		if(!this.mGamePaused) {
+			this.onPauseGame();
 		}
 	}
 
@@ -100,19 +80,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected void onDestroy() {
 		super.onDestroy();
 
-		this.mEngine.onDestroy();
-
-		this.onUnloadResources();
-	}
-
-	@Override
-	public void onUnloadResources() {
-		if(this.mEngine.getEngineOptions().getAudioOptions().needsMusic()) {
-			this.getMusicManager().releaseAll();
-		}
-		if(this.mEngine.getEngineOptions().getAudioOptions().needsSound()) {
-			this.getSoundManager().releaseAll();
-		}
+		this.onDestroyGame();
 	}
 
 	// ===========================================================
@@ -123,20 +91,16 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		return this.mEngine;
 	}
 
-	public boolean isPaused() {
-		return this.mPaused;
+	public boolean isGamePaused() {
+		return this.mGamePaused;
 	}
 
-	public boolean isRunning() {
-		return !this.mPaused;
-	}
-
-	public boolean isWindowFocused() {
-		return this.mWindowFocused;
+	public boolean isGameRunning() {
+		return !this.mGamePaused;
 	}
 
 	public boolean isGameLoaded() {
-		return this.mGameLoaded;
+		return this.mGameCreated;
 	}
 
 	public SoundManager getSoundManager() {
@@ -152,55 +116,95 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// ===========================================================
 
 	@Override
-	public void onResumeGame() {
-
-	}
-
-	@Override
-	public void onPauseGame() {
-
-	}
-
-	@Override
 	public void onSurfaceCreated() {
-		Debug.d("onSurfaceCreated");
+		Debug.d("Surface created.");
+
+		if(!this.mGameCreated) {
+			this.onCreateGame();
+		} else {
+			this.onReloadResources();
+		}
+
+		this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				BaseGameActivity.this.onResumeGame();
+			}
+		});
 	}
 
 	@Override
 	public void onSurfaceChanged(final int pWidth, final int pHeight) {
-		Debug.d("onSurfaceChanged: pWidth=" + pWidth + "  pHeight=" + pHeight);
+		Debug.d("Surface changed: Width=" + pWidth + "  Height=" + pHeight);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	private void doResume() {
-		if(!this.mGameLoaded) {
-			this.onLoadResources();
-			final Scene scene = this.onLoadScene();
-			this.mEngine.onLoadComplete(scene);
-			this.onLoadComplete();
-			this.mGameLoaded = true;
-		}
-
-		this.mPaused = false;
-		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
-		this.mEngine.onResume();
-
-		this.mRenderSurfaceView.onResume();
-		this.mEngine.start();
-		this.onResumeGame();
+	public Engine onCreateEngine(final EngineOptions pEngineOptions) {
+		return new Engine(pEngineOptions);
 	}
 
-	private void doPause() {
-		this.mPaused = true;
+	protected void onCreateGame() {
+		this.onCreateResources();
+
+		Debug.d("Resources created.");
+	
+		final Scene scene = this.onCreateScene();
+		this.mEngine.onLoadComplete(scene);
+	
+		this.mGameCreated = true;
+		this.onGameCreated();
+
+		Debug.d("Game created.");
+	}
+
+	public void onResumeGame() {
+		this.mGamePaused = false;
+
+		this.acquireWakeLock();
+
+		BaseGameActivity.this.mRenderSurfaceView.onResume();
+
+		BaseGameActivity.this.mEngine.start();
+
+		Debug.d("Game resumed.");
+	}
+
+	protected void onReloadResources() {
+		this.mEngine.onReloadResources();
+
+		Debug.d("Resources reloaded.");
+	}
+
+	public void onPauseGame() {
+		this.mGamePaused = true;
 		this.releaseWakeLock();
 
-		this.mEngine.onPause();
 		this.mEngine.stop();
 		this.mRenderSurfaceView.onPause();
-		this.onPauseGame();
+
+		Debug.d("Game paused.");
+	}
+
+	protected void onDestroyGame() {
+		this.mEngine.onDestroy();
+
+		this.onDestroyResources();
+
+		Debug.d("Game destroyed.");
+	}
+
+	public void onDestroyResources() {
+		if(this.mEngine.getEngineOptions().getAudioOptions().needsMusic()) {
+			this.getMusicManager().releaseAll();
+		}
+		if(this.mEngine.getEngineOptions().getAudioOptions().needsSound()) {
+			this.getSoundManager().releaseAll();
+		}
+
+		Debug.d("Resources destroyed.");
 	}
 
 	public void runOnUpdateThread(final Runnable pRunnable) {
@@ -214,12 +218,16 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.setContentView(this.mRenderSurfaceView, BaseGameActivity.createSurfaceViewLayoutParams());
 	}
 
+	private void acquireWakeLock() {
+		this.acquireWakeLock(this.mEngine.getEngineOptions().getWakeLockOptions());
+	}
+
 	private void acquireWakeLock(final WakeLockOptions pWakeLockOptions) {
 		if(pWakeLockOptions == WakeLockOptions.SCREEN_ON) {
 			ActivityUtils.keepScreenOn(this);
 		} else {
 			final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-			this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, "AndEngine");
+			this.mWakeLock = pm.newWakeLock(pWakeLockOptions.getFlag() | PowerManager.ON_AFTER_RELEASE, Constants.DEBUGTAG);
 			try {
 				this.mWakeLock.acquire();
 			} catch (final SecurityException e) {

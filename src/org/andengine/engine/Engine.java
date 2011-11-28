@@ -438,17 +438,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mUpdateThread.interrupt();
 	}
 
-	public void onResume() {
-		// TODO GLState.reset(pGL); ?
-
+	public void onReloadResources() {
 		TextureManager.onReload();
 		FontManager.onReload();
 		ShaderProgramManager.onReload();
 		VertexBufferObjectManager.onReload();
-	}
-
-	public void onPause() {
-
 	}
 
 	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {

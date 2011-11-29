@@ -57,7 +57,7 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 
 	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this.set(pX, pY, pX + pWidth, pY + pHeight); 
+		this.set(pX, pY, pX + pWidth, pY + pHeight);
 	}
 
 	// ===========================================================
@@ -202,18 +202,11 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void setSurfaceSize(final int pSurfaceX, final int pSurfaceY, final int pSurfaceWidth, final int pSurfaceHeight) {
-		if(this.mSurfaceHeight != 0 && this.mSurfaceWidth != 0) {
-			if(this.mSurfaceWidth != pSurfaceWidth || this.mSurfaceHeight != pSurfaceHeight) {
-				if(this.mResizeOnSurfaceSizeChanged) {
-					this.onSurfaceSizeChanged(pSurfaceWidth, pSurfaceHeight);
-				}
-			}
+		if(this.mSurfaceHeight == 0 && this.mSurfaceWidth == 0) {
+			this.onSurfaceSizeInitialized(pSurfaceX, pSurfaceY, pSurfaceWidth, pSurfaceHeight);
+		} else if(this.mSurfaceWidth != pSurfaceWidth || this.mSurfaceHeight != pSurfaceHeight) {
+			this.onSurfaceSizeChanged(this.mSurfaceX, this.mSurfaceY, this.mSurfaceWidth, this.mSurfaceHeight, pSurfaceX, pSurfaceY, pSurfaceWidth, pSurfaceHeight);
 		}
-
-		this.mSurfaceX = pSurfaceX;
-		this.mSurfaceY = pSurfaceY;
-		this.mSurfaceWidth = pSurfaceWidth;
-		this.mSurfaceHeight = pSurfaceHeight;
 	}
 
 	public boolean isResizeOnSurfaceSizeChanged() {
@@ -496,25 +489,39 @@ public class Camera implements IUpdateHandler {
 		pSurfaceTouchEvent.set(x, y);
 	}
 
-	protected void onSurfaceSizeChanged(final int pSurfaceWidth, final int pSurfaceHeight) {
-		final float surfaceWidthRatio = (float)pSurfaceWidth / this.mSurfaceWidth;
-		final float surfaceHeightRatio = (float)pSurfaceHeight / this.mSurfaceHeight;
+	protected void onSurfaceSizeInitialized(final int pSurfaceX, final int pSurfaceY, final int pSurfaceWidth, final int pSurfaceHeight) {
+		this.mSurfaceX = pSurfaceX;
+		this.mSurfaceY = pSurfaceY;
+		this.mSurfaceWidth = pSurfaceWidth;
+		this.mSurfaceHeight = pSurfaceHeight;
+	}
 
-		final float centerX = this.getCenterX();
-		final float centerY = this.getCenterY();
+	protected void onSurfaceSizeChanged(final int pOldSurfaceX, final int pOldSurfaceY, final int pOldSurfaceWidth, final int pOldSurfaceHeight, final int pNewSurfaceX, final int pNewSurfaceY, final int pNewSurfaceWidth, final int pNewSurfaceHeight) {
+		if(this.mResizeOnSurfaceSizeChanged) {
+			final float surfaceWidthRatio = (float)pNewSurfaceWidth / pOldSurfaceWidth;
+			final float surfaceHeightRatio = (float)pNewSurfaceHeight / pOldSurfaceHeight;
 
-		final float newWidthRaw = this.getWidthRaw() * surfaceWidthRatio; 
-		final float newHeightRaw = this.getHeightRaw() * surfaceHeightRatio;
+			final float centerX = this.getCenterX();
+			final float centerY = this.getCenterY();
 
-		final float newWidthRawHalf = newWidthRaw * 0.5f; 
-		final float newHeightRawHalf = newHeightRaw * 0.5f;
+			final float newWidthRaw = this.getWidthRaw() * surfaceWidthRatio;
+			final float newHeightRaw = this.getHeightRaw() * surfaceHeightRatio;
 
-		final float xMin = centerX - newWidthRawHalf;
-		final float yMin = centerY - newHeightRawHalf;
-		final float xMax = centerX + newWidthRawHalf;
-		final float yMax = centerY + newHeightRawHalf;
+			final float newWidthRawHalf = newWidthRaw * 0.5f;
+			final float newHeightRawHalf = newHeightRaw * 0.5f;
 
-		this.set(xMin, yMin, xMax, yMax);
+			final float xMin = centerX - newWidthRawHalf;
+			final float yMin = centerY - newHeightRawHalf;
+			final float xMax = centerX + newWidthRawHalf;
+			final float yMax = centerY + newHeightRawHalf;
+
+			this.set(xMin, yMin, xMax, yMax);
+		}
+
+		this.mSurfaceX = pNewSurfaceX;
+		this.mSurfaceY = pNewSurfaceY;
+		this.mSurfaceWidth = pNewSurfaceWidth;
+		this.mSurfaceHeight = pNewSurfaceHeight;
 	}
 
 	// ===========================================================

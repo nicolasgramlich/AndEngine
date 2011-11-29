@@ -4,6 +4,7 @@ import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.options.EngineOptions;
+import org.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.view.RenderSurfaceView;
@@ -18,6 +19,7 @@ import org.andengine.ui.IGameInterface;
 import org.andengine.util.ActivityUtils;
 import org.andengine.util.constants.Constants;
 import org.andengine.util.debug.Debug;
+import org.andengine.util.system.SystemUtils;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -45,6 +47,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// ===========================================================
 
 	protected Engine mEngine;
+	protected EngineOptions mEngineOptions;
 	private WakeLock mWakeLock;
 	protected RenderSurfaceView mRenderSurfaceView;
 	private boolean mGamePaused;
@@ -60,9 +63,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 		this.mGamePaused = true;
 
-		this.mEngine = this.onCreateEngine(this.onCreateEngineOptions());
+		this.mEngineOptions = this.onCreateEngineOptions();
+		this.mEngine = this.onCreateEngine(this.mEngineOptions);
 
-		this.applyEngineOptions(this.mEngine.getEngineOptions());
+		this.applyEngineOptions();
 
 		this.onSetContentView();
 	}
@@ -142,6 +146,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// Methods
 	// ===========================================================
 
+	@Override
 	public Engine onCreateEngine(final EngineOptions pEngineOptions) {
 		return new Engine(pEngineOptions);
 	}
@@ -150,16 +155,17 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.onCreateResources();
 
 		Debug.d("Resources created.");
-	
+
 		final Scene scene = this.onCreateScene();
 		this.mEngine.onLoadComplete(scene);
-	
+
 		this.mGameCreated = true;
 		this.onGameCreated();
 
 		Debug.d("Game created.");
 	}
 
+	@Override
 	public void onResumeGame() {
 		this.mGamePaused = false;
 
@@ -178,6 +184,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		Debug.d("Resources reloaded.");
 	}
 
+	@Override
 	public void onPauseGame() {
 		this.mGamePaused = true;
 		this.releaseWakeLock();
@@ -196,6 +203,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		Debug.d("Game destroyed.");
 	}
 
+	@Override
 	public void onDestroyResources() {
 		if(this.mEngine.getEngineOptions().getAudioOptions().needsMusic()) {
 			this.getMusicManager().releaseAll();
@@ -242,27 +250,43 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		}
 	}
 
-	private void applyEngineOptions(final EngineOptions pEngineOptions) {
-		if(pEngineOptions.isFullscreen()) {
+	private void applyEngineOptions() {
+		if(this.mEngineOptions.isFullscreen()) {
 			ActivityUtils.requestFullscreen(this);
 		}
 
-		if(pEngineOptions.getAudioOptions().needsMusic() || pEngineOptions.getAudioOptions().needsSound()) {
+		if(this.mEngineOptions.getAudioOptions().needsMusic() || this.mEngineOptions.getAudioOptions().needsSound()) {
 			this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		}
 
-		switch(pEngineOptions.getScreenOrientation()) {
-			case LANDSCAPE:
+		switch(this.mEngineOptions.getScreenOrientation()) {
+			case LANDSCAPE_FIXED:
 				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 				break;
-			case PORTRAIT:
+			case LANDSCAPE_SENSOR:
+				if(SystemUtils.SDK_VERSION_GINGERBREAD_OR_LATER) {
+					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+				} else {
+					Debug.w(ScreenOrientation.class.getSimpleName() + "." + ScreenOrientation.LANDSCAPE_SENSOR + " is not supported on this device. Falling back to " + ScreenOrientation.class.getSimpleName() + "." + ScreenOrientation.LANDSCAPE_FIXED);
+					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				}
+				break;
+			case PORTRAIT_FIXED:
 				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				break;
+			case PORTRAIT_SENSOR:
+				if(SystemUtils.SDK_VERSION_GINGERBREAD_OR_LATER) {
+					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+				} else {
+					Debug.w(ScreenOrientation.class.getSimpleName() + "." + ScreenOrientation.PORTRAIT_SENSOR + " is not supported on this device. Falling back to " + ScreenOrientation.class.getSimpleName() + "." + ScreenOrientation.PORTRAIT_FIXED);
+					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				}
 				break;
 		}
 	}
 
 	protected static LayoutParams createSurfaceViewLayoutParams() {
-		final LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		final LayoutParams layoutParams = new LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.FILL_PARENT);
 		layoutParams.gravity = Gravity.CENTER;
 		return layoutParams;
 	}

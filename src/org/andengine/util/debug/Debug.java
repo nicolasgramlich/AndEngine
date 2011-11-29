@@ -213,7 +213,7 @@ public class Debug implements Constants {
 	}
 
 	public static void w(final String pMessage) {
-		Debug.w(pMessage, new Exception());
+		Debug.w(Debug.sTag, pMessage, null);
 	}
 
 	public static void w(final Throwable pThrowable) {
@@ -239,7 +239,7 @@ public class Debug implements Constants {
 	}
 
 	public static void e(final String pMessage) {
-		Debug.e(pMessage, new Exception());
+		Debug.e(Debug.sTag, pMessage, null);
 	}
 
 	public static void e(final Throwable pThrowable) {

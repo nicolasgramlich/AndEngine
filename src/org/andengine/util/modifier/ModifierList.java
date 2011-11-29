@@ -1,7 +1,5 @@
 package org.andengine.util.modifier;
 
-import java.util.ArrayList;
-
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.util.SmartList;
 
@@ -52,14 +50,13 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		final ArrayList<IModifier<T>> modifiers = this;
 		final int modifierCount = this.size();
 		if(modifierCount > 0) {
 			for(int i = modifierCount - 1; i >= 0; i--) {
-				final IModifier<T> modifier = modifiers.get(i);
+				final IModifier<T> modifier = this.get(i);
 				modifier.onUpdate(pSecondsElapsed, this.mTarget);
 				if(modifier.isFinished() && modifier.isRemoveWhenFinished()) {
-					modifiers.remove(i);
+					this.remove(i);
 				}
 			}
 		}
@@ -67,9 +64,8 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 
 	@Override
 	public void reset() {
-		final ArrayList<IModifier<T>> modifiers = this;
-		for(int i = modifiers.size() - 1; i >= 0; i--) {
-			modifiers.get(i).reset();
+		for(int i = this.size() - 1; i >= 0; i--) {
+			this.get(i).reset();
 		}
 	}
 

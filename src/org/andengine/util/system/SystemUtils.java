@@ -98,7 +98,8 @@ public class SystemUtils {
 	}
 
 	/**
-	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
+	 * @param pBuildVersionCodeMin taken from {@link Build.VERSION_CODES}.
+	 * @param pBuildVersionCodeMax taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersion(final int pBuildVersionCodeMin, final int pBuildVersionCodeMax) {
 		return Build.VERSION.SDK_INT >= pBuildVersionCodeMin && Build.VERSION.SDK_INT <= pBuildVersionCodeMax;

@@ -60,7 +60,9 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 
 	@Override
 	protected void onBufferData() {
+		// TODO Check if, and how mow this condition affects performance.
 		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+			// TODO Check if this is similar fast or faster than the non Honeycomb codepath.
 			this.mFloatBuffer.position(0);
 			this.mFloatBuffer.put(this.mBufferData);
 

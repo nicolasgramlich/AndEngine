@@ -112,7 +112,7 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 
 	@Override
 	protected boolean isCulled(final Camera pCamera) {
-		return false;
+		return !RectangularShapeCollisionChecker.isVisible(pCamera, this);
 	}
 
 	@Override

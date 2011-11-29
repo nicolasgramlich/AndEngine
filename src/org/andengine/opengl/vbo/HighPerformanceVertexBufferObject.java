@@ -1,7 +1,10 @@
 package org.andengine.opengl.vbo;
 
+import java.nio.FloatBuffer;
+
 import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.util.system.SystemUtils;
 
 import android.opengl.GLES20;
 
@@ -26,6 +29,7 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 	// ===========================================================
 
 	protected final float[] mBufferData;
+	protected final FloatBuffer mFloatBuffer;
 
 	// ===========================================================
 	// Constructors
@@ -35,6 +39,11 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 		super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 
 		this.mBufferData = new float[pCapacity];
+		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+			this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
+		} else {
+			this.mFloatBuffer = null;
+		}
 	}
 
 	// ===========================================================
@@ -51,13 +60,15 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 
 	@Override
 	protected void onBufferData() {
-		// TODO On honeycomb the nio buffers are significantly faster, and below native call might not be needed!
-//		this.mFloatBuffer.position(0);
-//		this.mFloatBuffer.put(this.mBufferData);
-//		this.mFloatBuffer.position(0);
-		BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
+		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+			this.mFloatBuffer.position(0);
+			this.mFloatBuffer.put(this.mBufferData);
 
-		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
+			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.capacity(), this.mByteBuffer, this.mUsage);
+		} else {
+			BufferUtils.put(this.mByteBuffer, this.mBufferData, this.mBufferData.length, 0);
+			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
+		}
 	}
 
 	// ===========================================================

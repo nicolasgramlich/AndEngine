@@ -126,7 +126,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		pVertexBufferObjectAttributes.glVertexAttribPointers();
 	}
 
-	public void unbind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) throws ShaderProgramException {
+	public void unbind() throws ShaderProgramException {
 //		GLES20.glUseProgram(0); // TODO Does this have an positive/negative impact on performance?
 	}
 

@@ -754,7 +754,6 @@ public class SpriteBatch extends Shape {
 		// Fields
 		// ===========================================================
 
-		protected final float[] mBufferData;
 		protected int mBufferDataOffset;
 
 		// ===========================================================
@@ -763,18 +762,11 @@ public class SpriteBatch extends Shape {
 
 		public HighPerformanceSpriteBatchVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
-
-			this.mBufferData = new float[pCapacity];
 		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
-
-		@Override
-		public float[] getBufferData() {
-			return this.mBufferData;
-		}
 
 		@Override
 		public int getBufferDataOffset() {
@@ -1005,7 +997,6 @@ public class SpriteBatch extends Shape {
 		// Fields
 		// ===========================================================
 
-		protected final FloatBuffer mFloatBuffer;
 		protected int mBufferDataOffset;
 
 		// ===========================================================
@@ -1014,18 +1005,11 @@ public class SpriteBatch extends Shape {
 
 		public LowMemorySpriteBatchVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
-
-			this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 		}
 
 		// ===========================================================
 		// Getter & Setter
 		// ===========================================================
-
-		@Override
-		public FloatBuffer getFloatBuffer() {
-			return this.mFloatBuffer;
-		}
 
 		@Override
 		public int getBufferDataOffset() {

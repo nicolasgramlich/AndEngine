@@ -27,11 +27,15 @@ public class SystemUtils {
 	// Constants
 	// ===========================================================
 
+	public static final boolean SDK_VERSION_ECLAIR_OR_LATER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR;
+	public static final boolean SDK_VERSION_FROYO_OR_LATER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
+	public static final boolean SDK_VERSION_GINGERBREAD_OR_LATER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
+	public static final boolean SDK_VERSION_HONEYCOMB_OR_LATER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+	public static final boolean SDK_VERSION_ICE_CREAM_SANDWICH_OR_LATER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+
 	private static final String BOGOMIPS_PATTERN = "BogoMIPS[\\s]*:[\\s]*(\\d+\\.\\d+)[\\s]*\n";
 	private static final String MEMTOTAL_PATTERN = "MemTotal[\\s]*:[\\s]*(\\d+)[\\s]*kB\n";
 	private static final String MEMFREE_PATTERN = "MemFree[\\s]*:[\\s]*(\\d+)[\\s]*kB\n";
-
-	public static final int BUILD_VERSION_SDK = Integer.parseInt(Build.VERSION.SDK);
 
 	// ===========================================================
 	// Fields
@@ -83,21 +87,21 @@ public class SystemUtils {
 	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersionOrLower(final int pBuildVersionCode) {
-		return SystemUtils.BUILD_VERSION_SDK <= pBuildVersionCode;
+		return Build.VERSION.SDK_INT <= pBuildVersionCode;
 	}
 
 	/**
 	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersionOrHigher(final int pBuildVersionCode) {
-		return SystemUtils.BUILD_VERSION_SDK >= pBuildVersionCode;
+		return Build.VERSION.SDK_INT >= pBuildVersionCode;
 	}
 
 	/**
 	 * @param pBuildVersionCode taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersion(final int pBuildVersionCodeMin, final int pBuildVersionCodeMax) {
-		return SystemUtils.BUILD_VERSION_SDK >= pBuildVersionCodeMin && SystemUtils.BUILD_VERSION_SDK <= pBuildVersionCodeMax;
+		return Build.VERSION.SDK_INT >= pBuildVersionCodeMin && Build.VERSION.SDK_INT <= pBuildVersionCodeMax;
 	}
 
 	public static float getCPUBogoMips() throws SystemUtilsException {

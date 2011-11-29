@@ -153,7 +153,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public void unbind(final ShaderProgram pShaderProgram) {
-		pShaderProgram.unbind(this.mVertexBufferObjectAttributes);
+		pShaderProgram.unbind();
 
 //		GLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
 	}

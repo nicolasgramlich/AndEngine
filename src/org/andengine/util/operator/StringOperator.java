@@ -17,10 +17,22 @@ public enum StringOperator {
 			return pStringA.equals(pStringB);
 		}
 	},
+	EQUALS_IGNORE_CASE() {
+		@Override
+		public boolean check(final String pStringA, final String pStringB) {
+			return pStringA.equalsIgnoreCase(pStringB);
+		}
+	},
 	NOT_EQUALS()  {
 		@Override
 		public boolean check(final String pStringA, final String pStringB) {
 			return !pStringA.equals(pStringB);
+		}
+	},
+	NOT_EQUALS_IGNORE_CASE()  {
+		@Override
+		public boolean check(final String pStringA, final String pStringB) {
+			return !pStringA.equalsIgnoreCase(pStringB);
 		}
 	},
 	CONTAINS() {

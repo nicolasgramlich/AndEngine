@@ -36,7 +36,7 @@ public class GLExtensionsShaderSourceCriteria extends StringShaderSourceCriteria
 
 	@Override
 	protected String getActualCriteria() {
-		return GLState.getGLExtensions();
+		return GLState.getExtensions();
 	}
 
 	// ===========================================================

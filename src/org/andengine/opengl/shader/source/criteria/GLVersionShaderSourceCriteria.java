@@ -36,7 +36,7 @@ public class GLVersionShaderSourceCriteria extends StringShaderSourceCriteria {
 
 	@Override
 	protected String getActualCriteria() {
-		return GLState.getGLVersion();
+		return GLState.getVersion();
 	}
 
 	// ===========================================================

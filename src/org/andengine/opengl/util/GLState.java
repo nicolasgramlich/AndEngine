@@ -35,13 +35,15 @@ public class GLState {
 	// Fields
 	// ===========================================================
 
-	private static String sGLVersion;
-	private static String sGLRenderer;
-	private static String sGLExtensions;
+	private static String sVersion;
+	private static String sRenderer;
+	private static String sExtensions;
 
-	private static int sGLMaximumVertexAttributeCount;
-	private static int sGLMaximumTextureSize;
-	private static int sGLMaximumTextureUnits;
+	private static int sMaximumVertexAttributeCount;
+	private static int sMaximumVertexShaderUniformVectorCount;
+	private static int sMaximumFragmentShaderUniformVectorCount;
+	private static int sMaximumTextureSize;
+	private static int sMaximumTextureUnits;
 
 	private static int sCurrentBufferID = -1;
 	private static int sCurrentShaderProgramID = -1;
@@ -73,28 +75,36 @@ public class GLState {
 	// Getter & Setter
 	// ===========================================================
 
-	public static String getGLVersion() {
-		return GLState.sGLVersion;
+	public static String getVersion() {
+		return GLState.sVersion;
 	}
 
-	public static String getGLRenderer() {
-		return GLState.sGLRenderer;
+	public static String getRenderer() {
+		return GLState.sRenderer;
 	}
 
-	public static String getGLExtensions() {
-		return GLState.sGLExtensions;
+	public static String getExtensions() {
+		return GLState.sExtensions;
 	}
 
-	public static int getGLMaximumVertexAttributeCount() {
-		return GLState.sGLMaximumVertexAttributeCount;
+	public static int getMaximumVertexAttributeCount() {
+		return GLState.sMaximumVertexAttributeCount;
 	}
 
-	public static int getGLMaximumTextureUnits() {
-		return sGLMaximumTextureUnits;
+	public static int getMaximumVertexShaderUniformVectorCount() {
+		return sMaximumVertexShaderUniformVectorCount;
 	}
 
-	public static int getGLMaximumTextureSize() {
-		return sGLMaximumTextureSize;
+	public static int getMaximumFragmentShaderUniformVectorCount() {
+		return sMaximumFragmentShaderUniformVectorCount;
+	}
+
+	public static int getMaximumTextureUnits() {
+		return sMaximumTextureUnits;
+	}
+
+	public static int getMaximumTextureSize() {
+		return sMaximumTextureSize;
 	}
 
 	// ===========================================================
@@ -102,17 +112,22 @@ public class GLState {
 	// ===========================================================
 
 	public static void reset(final RenderOptions pRenderOptions) {
-		GLState.sGLVersion = GLES20.glGetString(GLES20.GL_VERSION);
-		GLState.sGLRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
-		GLState.sGLExtensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
+		GLState.sVersion = GLES20.glGetString(GLES20.GL_VERSION);
+		GLState.sRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
+		GLState.sExtensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
 
-		Debug.d("RENDERER: " + GLState.sGLRenderer);
-		Debug.d("VERSION: " + GLState.sGLVersion);
-		Debug.d("EXTENSIONS: " + GLState.sGLExtensions);
+		GLState.sMaximumVertexAttributeCount = GLState.getInteger(GLES20.GL_MAX_VERTEX_ATTRIBS);
+		GLState.sMaximumVertexShaderUniformVectorCount = GLState.getInteger(GLES20.GL_MAX_VERTEX_UNIFORM_VECTORS);
+		GLState.sMaximumFragmentShaderUniformVectorCount = GLState.getInteger(GLES20.GL_MAX_FRAGMENT_UNIFORM_VECTORS);
+		GLState.sMaximumTextureUnits = GLState.getInteger(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS);
+		GLState.sMaximumTextureSize = GLState.getInteger(GLES20.GL_MAX_TEXTURE_SIZE);
 
-		GLState.sGLMaximumVertexAttributeCount = GLState.getInteger(GLES20.GL_MAX_VERTEX_ATTRIBS);
-		GLState.sGLMaximumTextureUnits = GLState.getInteger(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS);
-		GLState.sGLMaximumTextureSize = GLState.getInteger(GLES20.GL_MAX_TEXTURE_SIZE);
+		Debug.d("RENDERER: " + GLState.sRenderer);
+		Debug.d("MAX_VERTEX_ATTRIBS: " + GLState.sMaximumVertexAttributeCount);
+		Debug.d("MAX_VERTEX_UNIFORM_VECTORS: " + GLState.sMaximumVertexShaderUniformVectorCount);
+		Debug.d("MAX_FRAGMENT_UNIFORM_VECTORS: " + GLState.sMaximumFragmentShaderUniformVectorCount);
+		Debug.d("MAX_TEXTURE_IMAGE_UNITS: " + GLState.sMaximumTextureUnits);
+		Debug.d("MAX_TEXTURE_SIZE: " + GLState.sMaximumTextureSize);
 
 		GLState.sModelViewGLMatrixStack.reset();
 		GLState.sProjectionGLMatrixStack.reset();
@@ -461,7 +476,7 @@ public class GLState {
 		return HARDWAREID_CONTAINER[0];
 	}
 
-	public static int getGLError() {
+	public static int getError() {
 		return GLES20.glGetError();
 	}
 

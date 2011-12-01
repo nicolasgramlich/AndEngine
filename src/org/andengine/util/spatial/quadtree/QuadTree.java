@@ -832,7 +832,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 
 		public boolean remove(final T pItem, final B pBounds) throws IllegalArgumentException {
 			if(!this.contains(pBounds)) { // TODO Perform this check only for the root?
-				throw new IllegalArgumentException("pItem is out of the bounds of this " + this.getClass().getSimpleName() + ".");
+				throw new IllegalArgumentException("pItem (" + pItem.toString() + ") is out of the bounds of this " + this.getClass().getSimpleName() + ".");
 			}
 
 			/* If there are no children, try to remove from self. */

@@ -83,8 +83,16 @@ public class SmoothCamera extends ZoomCamera {
 		}
 	}
 
+	public float getMaxVelocityX() {
+		return this.mMaxVelocityX;
+	}
+
 	public void setMaxVelocityX(final float pMaxVelocityX) {
 		this.mMaxVelocityX = pMaxVelocityX;
+	}
+
+	public float getMaxVelocityY() {
+		return this.mMaxVelocityY;
 	}
 
 	public void setMaxVelocityY(final float pMaxVelocityY) {
@@ -94,6 +102,10 @@ public class SmoothCamera extends ZoomCamera {
 	public void setMaxVelocity(final float pMaxVelocityX, final float pMaxVelocityY) {
 		this.mMaxVelocityX = pMaxVelocityX;
 		this.mMaxVelocityY = pMaxVelocityY;
+	}
+
+	public float getMaxZoomFactorChange() {
+		return this.mMaxZoomFactorChange;
 	}
 
 	public void setMaxZoomFactorChange(final float pMaxZoomFactorChange) {

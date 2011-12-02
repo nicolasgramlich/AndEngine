@@ -3,6 +3,7 @@ package org.andengine.engine.camera;
 import org.andengine.collision.RectangularShapeCollisionChecker;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.UpdateHandlerList;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.shape.RectangularShape;
@@ -25,6 +26,8 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 
 	static final float[] VERTICES_TMP = new float[2];
+
+	private static final int UPDATEHANDLERS_CAPACITY_DEFAULT = 4;
 
 	// ===========================================================
 	// Fields
@@ -51,6 +54,7 @@ public class Camera implements IUpdateHandler {
 	protected int mSurfaceHeight;
 
 	protected boolean mResizeOnSurfaceSizeChanged;
+	protected UpdateHandlerList mUpdateHandlers;
 
 	// ===========================================================
 	// Constructors
@@ -223,6 +227,10 @@ public class Camera implements IUpdateHandler {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
+		if(this.mUpdateHandlers != null) {
+			this.mUpdateHandlers.onUpdate(pSecondsElapsed);
+		}
+
 		if(this.mHUD != null) {
 			this.mHUD.onUpdate(pSecondsElapsed);
 		}
@@ -487,6 +495,38 @@ public class Camera implements IUpdateHandler {
 		final float y = yMin + pRelativeY * (yMax - yMin);
 
 		pSurfaceTouchEvent.set(x, y);
+	}
+
+	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		if(this.mUpdateHandlers == null) {
+			this.allocateUpdateHandlers();
+		}
+		this.mUpdateHandlers.add(pUpdateHandler);
+	}
+
+	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		if(this.mUpdateHandlers == null) {
+			return false;
+		}
+		return this.mUpdateHandlers.remove(pUpdateHandler);
+	}
+
+	public boolean unregisterUpdateHandlers(final IUpdateHandlerMatcher pUpdateHandlerMatcher) {
+		if(this.mUpdateHandlers == null) {
+			return false;
+		}
+		return this.mUpdateHandlers.removeAll(pUpdateHandlerMatcher);
+	}
+
+	public void clearUpdateHandlers() {
+		if(this.mUpdateHandlers == null) {
+			return;
+		}
+		this.mUpdateHandlers.clear();
+	}
+
+	private void allocateUpdateHandlers() {
+		this.mUpdateHandlers = new UpdateHandlerList(Camera.UPDATEHANDLERS_CAPACITY_DEFAULT);
 	}
 
 	protected void onSurfaceSizeInitialized(final int pSurfaceX, final int pSurfaceY, final int pSurfaceWidth, final int pSurfaceHeight) {

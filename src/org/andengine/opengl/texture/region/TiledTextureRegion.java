@@ -95,6 +95,10 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		}
 	}
 
+	public ITextureRegion getTextureRegion(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex];
+	}
+
 	@Override
 	public int getTileCount() {
 		return this.mTileCount;
@@ -259,7 +263,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	public boolean isRotated(final int pTileIndex) {
 		return this.mTextureRegions[pTileIndex].isRotated();
 	}
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

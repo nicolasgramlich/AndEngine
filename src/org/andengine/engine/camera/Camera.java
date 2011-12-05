@@ -72,16 +72,32 @@ public class Camera implements IUpdateHandler {
 		return this.mXMin;
 	}
 
+	public void setXMin(final float pXMin) {
+		this.mXMin = pXMin;
+	}
+
 	public float getXMax() {
 		return this.mXMax;
+	}
+
+	public void setXMax(final float pXMax) {
+		this.mXMax = pXMax;
 	}
 
 	public float getYMin() {
 		return this.mYMin;
 	}
 
+	public void setYMin(final float pYMin) {
+		this.mYMin = pYMin;
+	}
+
 	public float getYMax() {
 		return this.mYMax;
+	}
+
+	public void setYMax(final float pYMax) {
+		this.mYMax = pYMax;
 	}
 
 	public void set(final float pXMin, final float pYMin, final float pXMax, final float pYMax) {

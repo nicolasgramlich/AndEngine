@@ -46,6 +46,18 @@ public class SmoothCamera extends ZoomCamera {
 	// Getter & Setter
 	// ===========================================================
 
+	public float getTargetCenterX() {
+		return this.mTargetCenterX;
+	}
+
+	public float getTargetCenterY() {
+		return this.mTargetCenterY;
+	}
+
+	public float getTargetZoomFactor() {
+		return this.mTargetZoomFactor;
+	}
+
 	@Override
 	public void setCenter(final float pCenterX, final float pCenterY) {
 		this.mTargetCenterX = pCenterX;

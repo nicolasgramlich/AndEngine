@@ -247,6 +247,14 @@ public final class MathUtils implements MathConstants {
 		return (int)Math.round(pX * (1 - pMix) + pY * pMix);
 	}
 
+	public static final boolean isEven(final int n) {
+		return n % 2 == 0;
+	}
+
+	public static final boolean isOdd(final int n) {
+		return n % 2 == 1;
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

@@ -24,10 +24,10 @@ public class SpriteParticleSystem extends ParticleSystem<Sprite> {
 	// Constructors
 	// ===========================================================
 
-	public SpriteParticleSystem(final IParticleEmitter pParticleEmitter, float pRateMinimum, float pRateMaximum, int pParticlesMaximum, final ITextureRegion pTextureRegion) {
+	public SpriteParticleSystem(final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final ITextureRegion pTextureRegion) {
 		super(new IEntityFactory<Sprite>() {
 			@Override
-			public Sprite create(float pX, float pY) {
+			public Sprite create(final float pX, final float pY) {
 				return new Sprite(pX, pY, pTextureRegion);
 			}
 		}, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);

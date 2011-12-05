@@ -58,10 +58,10 @@ public class ParticleSystem<T extends Entity> extends Entity {
 	// ===========================================================
 
 	@SuppressWarnings("unchecked")
-	public ParticleSystem(final IEntityFactory<T> pParticleFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
+	public ParticleSystem(final IEntityFactory<T> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
 		super(0, 0);
 
-		this.mEntityFactory = pParticleFactory;
+		this.mEntityFactory = pEntityFactory;
 		this.mParticleEmitter = pParticleEmitter;
 		this.mParticles = new Particle[pParticlesMaximum];
 		this.mRateMinimum = pRateMinimum;

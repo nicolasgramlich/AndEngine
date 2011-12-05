@@ -122,12 +122,12 @@ public class GLState {
 		GLState.sMaximumTextureUnits = GLState.getInteger(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS);
 		GLState.sMaximumTextureSize = GLState.getInteger(GLES20.GL_MAX_TEXTURE_SIZE);
 
-		Debug.d("RENDERER: " + GLState.sRenderer);
-		Debug.d("MAX_VERTEX_ATTRIBS: " + GLState.sMaximumVertexAttributeCount);
-		Debug.d("MAX_VERTEX_UNIFORM_VECTORS: " + GLState.sMaximumVertexShaderUniformVectorCount);
-		Debug.d("MAX_FRAGMENT_UNIFORM_VECTORS: " + GLState.sMaximumFragmentShaderUniformVectorCount);
-		Debug.d("MAX_TEXTURE_IMAGE_UNITS: " + GLState.sMaximumTextureUnits);
-		Debug.d("MAX_TEXTURE_SIZE: " + GLState.sMaximumTextureSize);
+		Debug.i("RENDERER: " + GLState.sRenderer);
+		Debug.i("MAX_VERTEX_ATTRIBS: " + GLState.sMaximumVertexAttributeCount);
+		Debug.i("MAX_VERTEX_UNIFORM_VECTORS: " + GLState.sMaximumVertexShaderUniformVectorCount);
+		Debug.i("MAX_FRAGMENT_UNIFORM_VECTORS: " + GLState.sMaximumFragmentShaderUniformVectorCount);
+		Debug.i("MAX_TEXTURE_IMAGE_UNITS: " + GLState.sMaximumTextureUnits);
+		Debug.i("MAX_TEXTURE_SIZE: " + GLState.sMaximumTextureSize);
 
 		GLState.sModelViewGLMatrixStack.reset();
 		GLState.sProjectionGLMatrixStack.reset();

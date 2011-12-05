@@ -22,11 +22,56 @@ public interface IGameInterface {
 
 	public EngineOptions onCreateEngineOptions();
 	public Engine onCreateEngine(final EngineOptions pEngineOptions);
-	public void onCreateResources();
-	public void onDestroyResources();
-	public Scene onCreateScene();
-	public void onGameCreated();
 
-	public void onPauseGame();
+	public void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception;
+	public void onCreateScene(final OnCreateSceneCallback pOnCreateSceneCallback) throws Exception;
+	public void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception;
+
+	public void onReloadResources() throws Exception;
+	public void onDestroyResources() throws Exception;
+
+	public void onGameCreated();
 	public void onResumeGame();
+	public void onPauseGame();
+	public void onGameDestroyed();
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+
+	public static interface OnCreateResourcesCallback {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void onCreateResourcesFinished();
+	}
+
+	public static interface OnCreateSceneCallback {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void onCreateSceneFinished(final Scene pScene);
+	}
+
+	public static interface OnPopulateSceneCallback {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void onPopulateSceneFinished();
+	}
 }

@@ -52,6 +52,8 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	protected RenderSurfaceView mRenderSurfaceView;
 	private boolean mGamePaused;
 	private boolean mGameCreated;
+	private boolean mCreateGameCalled;
+	private boolean mOnReloadResourcesScheduled;
 
 	// ===========================================================
 	// Constructors
@@ -72,8 +74,121 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
+	public Engine onCreateEngine(final EngineOptions pEngineOptions) {
+		return new Engine(pEngineOptions);
+	}
+
+	@Override
+	public synchronized void onSurfaceCreated() {
+		Debug.d("Surface created.");
+
+		/* Avoid onCreateGame() being called twice. */
+		if(this.mGameCreated) {
+			this.onReloadResources();
+		} else {
+			if(this.mCreateGameCalled) {
+				this.mOnReloadResourcesScheduled = true;
+			} else {
+				this.mCreateGameCalled = true;
+				this.onCreateGame();
+			}
+		}
+	}
+
+	@Override
+	public void onSurfaceChanged(final int pWidth, final int pHeight) {
+		Debug.d("Surface changed: Width=" + pWidth + "  Height=" + pHeight);
+	}
+
+	protected void onCreateGame() {
+		final OnPopulateSceneCallback onPopulateSceneCallback = new OnPopulateSceneCallback() {
+			@Override
+			public void onPopulateSceneFinished() {
+				BaseGameActivity.this.onGameCreated();
+
+				BaseGameActivity.this.callGameResumedOnUIThread();
+			}
+		};
+
+		final OnCreateSceneCallback onCreateSceneCallback = new OnCreateSceneCallback() {
+			@Override
+			public void onCreateSceneFinished(final Scene pScene) {
+				BaseGameActivity.this.mEngine.setScene(pScene);
+
+				try {
+					BaseGameActivity.this.onPopulateScene(pScene, onPopulateSceneCallback);
+				} catch(Throwable t) {
+					Debug.e("Exception in onPopulateScene();", t);
+				}
+			}
+		};
+
+		final OnCreateResourcesCallback onCreateResourcesCallback = new OnCreateResourcesCallback() {
+			@Override
+			public void onCreateResourcesFinished() {
+				try {
+					BaseGameActivity.this.onCreateScene(onCreateSceneCallback);
+				} catch(Throwable t) {
+					Debug.e("Exception in onCreateScene();", t);
+				}
+			}
+		};
+
+		try {
+			this.onCreateResources(onCreateResourcesCallback);
+		} catch(Throwable t) {
+			Debug.e("Exception in onCreateGame();", t);
+		}
+	}
+
+	@Override
+	public synchronized void onGameCreated() {
+		this.mGameCreated = true;
+
+		/* Since the potential asynchronous resource creation,
+		 * the surface might already be invalid
+		 * and a resource reloading might be necessary. */
+		if(this.mOnReloadResourcesScheduled) {
+			this.mOnReloadResourcesScheduled = false;
+			this.onReloadResources();
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		this.acquireWakeLock();
+		this.mRenderSurfaceView.onResume();
+	}
+
+	@Override
+	public void onResumeGame() {
+		this.mEngine.start();
+
+		this.mGamePaused = false;
+	}
+
+	@Override
+	public void onWindowFocusChanged(final boolean pHasWindowFocus) {
+		super.onWindowFocusChanged(pHasWindowFocus);
+
+		if(pHasWindowFocus && this.mGamePaused && this.mGameCreated) {
+			this.onResumeGame();
+		}
+	}
+
+	@Override
+	public void onReloadResources() {
+		this.mEngine.onReloadResources();
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
+
+		this.mRenderSurfaceView.onPause();
+		this.releaseWakeLock();
 
 		if(!this.mGamePaused) {
 			this.onPauseGame();
@@ -81,10 +196,40 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
+	public void onPauseGame() {
+		this.mGamePaused = true;
+
+		this.mEngine.stop();
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 
-		this.onDestroyGame();
+		this.mEngine.onDestroy();
+
+		try {
+			this.onDestroyResources();
+		} catch (Exception e) {
+			Debug.e("Exception in onDestroyResources()", e);
+		}
+
+		this.onGameDestroyed();
+	}
+
+	@Override
+	public void onDestroyResources() throws Exception {
+		if(this.mEngine.getEngineOptions().getAudioOptions().needsMusic()) {
+			this.getMusicManager().releaseAll();
+		}
+		if(this.mEngine.getEngineOptions().getAudioOptions().needsSound()) {
+			this.getSoundManager().releaseAll();
+		}
+	}
+
+	@Override
+	public synchronized void onGameDestroyed() {
+		this.mGameCreated = false;
 	}
 
 	// ===========================================================
@@ -119,17 +264,12 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public void onSurfaceCreated() {
-		Debug.d("Surface created.");
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
-		if(!this.mGameCreated) {
-			this.onCreateGame();
-		} else {
-			this.onReloadResources();
-		}
-
-		this.runOnUiThread(new Runnable() {
+	private void callGameResumedOnUIThread() {
+		BaseGameActivity.this.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				BaseGameActivity.this.onResumeGame();
@@ -137,93 +277,15 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		});
 	}
 
-	@Override
-	public void onSurfaceChanged(final int pWidth, final int pHeight) {
-		Debug.d("Surface changed: Width=" + pWidth + "  Height=" + pHeight);
-	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	@Override
-	public Engine onCreateEngine(final EngineOptions pEngineOptions) {
-		return new Engine(pEngineOptions);
-	}
-
-	protected void onCreateGame() {
-		this.onCreateResources();
-
-		Debug.d("Resources created.");
-
-		final Scene scene = this.onCreateScene();
-		this.mEngine.onLoadComplete(scene);
-
-		this.mGameCreated = true;
-		this.onGameCreated();
-
-		Debug.d("Game created.");
-	}
-
-	@Override
-	public void onResumeGame() {
-		this.mGamePaused = false;
-
-		this.acquireWakeLock();
-
-		BaseGameActivity.this.mRenderSurfaceView.onResume();
-
-		BaseGameActivity.this.mEngine.start();
-
-		Debug.d("Game resumed.");
-	}
-
-	protected void onReloadResources() {
-		this.mEngine.onReloadResources();
-
-		Debug.d("Resources reloaded.");
-	}
-
-	@Override
-	public void onPauseGame() {
-		this.mGamePaused = true;
-		this.releaseWakeLock();
-
-		this.mEngine.stop();
-		this.mRenderSurfaceView.onPause();
-
-		Debug.d("Game paused.");
-	}
-
-	protected void onDestroyGame() {
-		this.mEngine.onDestroy();
-
-		this.onDestroyResources();
-
-		Debug.d("Game destroyed.");
-	}
-
-	@Override
-	public void onDestroyResources() {
-		if(this.mEngine.getEngineOptions().getAudioOptions().needsMusic()) {
-			this.getMusicManager().releaseAll();
-		}
-		if(this.mEngine.getEngineOptions().getAudioOptions().needsSound()) {
-			this.getSoundManager().releaseAll();
-		}
-
-		Debug.d("Resources destroyed.");
-	}
-
-	public void runOnUpdateThread(final Runnable pRunnable) {
-		this.mEngine.runOnUpdateThread(pRunnable);
-	}
-
 	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this);
 		this.mRenderSurfaceView.setRenderer(this.mEngine, this);
 
 		this.setContentView(this.mRenderSurfaceView, BaseGameActivity.createSurfaceViewLayoutParams());
+	}
+
+	public void runOnUpdateThread(final Runnable pRunnable) {
+		this.mEngine.runOnUpdateThread(pRunnable);
 	}
 
 	private void acquireWakeLock() {

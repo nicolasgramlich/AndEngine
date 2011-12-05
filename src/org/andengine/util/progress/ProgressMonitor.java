@@ -1,7 +1,12 @@
 package org.andengine.util.progress;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.andengine.util.math.MathUtils;
+
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -16,70 +21,66 @@ public class ProgressMonitor implements IProgressListener {
 	// Fields
 	// ===========================================================
 
-	private final ProgressMonitor mParentProgressMonitor;
-	private final IProgressListener mListener;
-
-	private int mSubMonitorRangeFrom = 0;
-	private int mSubMonitorRangeTo = 100;
-
-	private int mProgress = 0;
+	private final ArrayList<IProgressListener> mProgressListeners = new ArrayList<IProgressListener>();
+	private final HashMap<ProgressMonitor, IProgressListener> mChildProgressMonitorToProgressListenerMap = new HashMap<ProgressMonitor, IProgressListener>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ProgressMonitor(final IProgressListener pListener) {
-		this.mListener = pListener;
-		this.mParentProgressMonitor = null;
+	public ProgressMonitor() {
+
 	}
 
-	public ProgressMonitor(final ProgressMonitor pParent){
-		this.mListener = null;
-		this.mParentProgressMonitor = pParent;
+	public ProgressMonitor(final IProgressListener pProgressListener) {
+		this.mProgressListeners.add(pProgressListener);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public ProgressMonitor getParentProgressMonitor() {
-		return this.mParentProgressMonitor;
-	}
-
-	public int getProgress() {
-		return this.mProgress;
-	}
-
-	public void setSubMonitorRange(final int pSubMonitorRangeFrom, final int pSubMonitorRangeTo) {
-		this.mSubMonitorRangeFrom = pSubMonitorRangeFrom;
-		this.mSubMonitorRangeTo = pSubMonitorRangeTo;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	/**
-	 * @param pProgress between 0 and 100.
-	 */
 	@Override
-	public void onProgressChanged(final int pProgress){
-		this.mProgress = pProgress;
-		if(this.mParentProgressMonitor != null) {
-			this.mParentProgressMonitor.onSubProgressChanged(pProgress);
-		} else {
-			this.mListener.onProgressChanged(pProgress);
+	public void onProgressChanged(final int pProgress) {
+		final int progressListenerCount = this.mProgressListeners.size();
+		for(int i = 0; i < progressListenerCount; i++) {
+			this.mProgressListeners.get(i).onProgressChanged(pProgress);
 		}
 	}
 
-	private void onSubProgressChanged(final int pSubProgress){
-		final int subRange = this.mSubMonitorRangeTo- this.mSubMonitorRangeFrom;
-		final int subProgressInRange = this.mSubMonitorRangeFrom + (int)(subRange * pSubProgress / 100f);
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
-		if(this.mParentProgressMonitor != null) {
-			this.mParentProgressMonitor.onSubProgressChanged(subProgressInRange);
-		}else{
-			this.mListener.onProgressChanged(subProgressInRange);
-		}
+	public void registerChildProgressMonitor(final ProgressMonitor pChildProgressMonitor, final int pChildProgressMonitorRangeFrom, final int pChildProgressMonitorRangeTo) {
+		final IProgressListener childProgressMonitorListener = new IProgressListener() {
+			@Override
+			public void onProgressChanged(final int pProgress) {
+				final int progress = MathUtils.mix(pChildProgressMonitorRangeFrom, pChildProgressMonitorRangeTo, (float)pProgress / IProgressListener.PROGRESS_MAX);
+				ProgressMonitor.this.onProgressChanged(progress);
+			}
+		};
+		pChildProgressMonitor.addProgressListener(childProgressMonitorListener);
+		this.mChildProgressMonitorToProgressListenerMap.put(pChildProgressMonitor, childProgressMonitorListener);
 	}
+
+	public void unregisterChildProgressMonitor(final ProgressMonitor pChildProgressMonitor) {
+		pChildProgressMonitor.removeProgressListener(this.mChildProgressMonitorToProgressListenerMap.get(pChildProgressMonitor));
+	}
+
+	private void addProgressListener(final IProgressListener pProgressListener) {
+		this.mProgressListeners.add(pProgressListener);
+	}
+
+	private void removeProgressListener(final IProgressListener pProgressListener) {
+		this.mProgressListeners.add(pProgressListener);
+	}
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
 }

@@ -3,6 +3,7 @@ package org.andengine.util.pool;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.andengine.BuildConfig;
 import org.andengine.util.debug.Debug;
 
 /**
@@ -131,7 +132,9 @@ public abstract class GenericPool<T> {
 				this.batchAllocatePoolItems(this.mGrowth);
 				item = this.mAvailableItems.remove(this.mAvailableItems.size() - 1);
 			}
-//			Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
+			if(BuildConfig.DEBUG) {
+				Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledItemCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
+			}
 		}
 		this.onHandleObtainItem(item);
 

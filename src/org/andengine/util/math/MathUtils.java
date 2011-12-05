@@ -218,10 +218,33 @@ public final class MathUtils implements MathConstants {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}
 
+	/**
+	 * @return the euclidean distance between the points (pX1, pY1) and (pX2, pY2).
+	 */
 	public static final float distance(final float pX1, final float pY1, final float pX2, final float pY2){
 		final float dX = pX2 - pX1;
 		final float dY = pY2 - pY1;
 		return FloatMath.sqrt((dX * dX) + (dY * dY));
+	}
+
+	/**
+	 * @param pX
+	 * @param pY
+	 * @param pMix [0...1]
+	 * @return pX * (1 - pMix) + pY * pMix
+	 */
+	public static final float mix(final float pX, final float pY, final float pMix) {
+		return pX * (1 - pMix) + pY * pMix;
+	}
+
+	/**
+	 * @param pX
+	 * @param pY
+	 * @param pMix [0...1]
+	 * @return (int)Math.round(pX * (1 - pMix) + pY * pMix)
+	 */
+	public static final int mix(final int pX, final int pY, final float pMix) {
+		return (int)Math.round(pX * (1 - pMix) + pY * pMix);
 	}
 
 	// ===========================================================

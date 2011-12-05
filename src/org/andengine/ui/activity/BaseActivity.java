@@ -47,14 +47,14 @@ public abstract class BaseActivity extends Activity {
 	 * while the {@link Callable} is being processed.
 	 * 
 	 * @param <T>
-	 * @param pTitleResID
-	 * @param pMessageResID
-	 * @param pErrorMessageResID
+	 * @param pTitleResourceID
+	 * @param pMessageResourceID
+	 * @param pErrorMessageResourceID
 	 * @param pCallable
 	 * @param pCallback
 	 */
-	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback) {
-		this.doAsync(pTitleResID, pMessageResID, pCallable, pCallback, null);
+	protected <T> void doAsync(final int pTitleResourceID, final int pMessageResourceID, final Callable<T> pCallable, final Callback<T> pCallback) {
+		this.doAsync(pTitleResourceID, pMessageResourceID, pCallable, pCallback, null);
 	}
 
 	/**
@@ -62,15 +62,15 @@ public abstract class BaseActivity extends Activity {
 	 * while the {@link Callable} is being processed.
 	 * 
 	 * @param <T>
-	 * @param pTitleResID
-	 * @param pMessageResID
-	 * @param pErrorMessageResID
+	 * @param pTitleResourceID
+	 * @param pMessageResourceID
+	 * @param pErrorMessageResourceID
 	 * @param pCallable
 	 * @param pCallback
 	 * @param pExceptionCallback
 	 */
-	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
-		ActivityUtils.doAsync(this, pTitleResID, pMessageResID, pCallable, pCallback, pExceptionCallback);
+	protected <T> void doAsync(final int pTitleResourceID, final int pMessageResourceID, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
+		ActivityUtils.doAsync(this, pTitleResourceID, pMessageResourceID, pCallable, pCallback, pExceptionCallback);
 	}
 
 	/**
@@ -78,14 +78,14 @@ public abstract class BaseActivity extends Activity {
 	 * while the {@link AsyncCallable} is being processed.
 	 * 
 	 * @param <T>
-	 * @param pTitleResID
-	 * @param pMessageResID
-	 * @param pErrorMessageResID
+	 * @param pTitleResourceID
+	 * @param pMessageResourceID
+	 * @param pErrorMessageResourceID
 	 * @param pAsyncCallable
 	 * @param pCallback
 	 */
-	protected <T> void doProgressAsync(final int pTitleResID, final ProgressCallable<T> pCallable, final Callback<T> pCallback) {
-		this.doProgressAsync(pTitleResID, pCallable, pCallback, null);
+	protected <T> void doProgressAsync(final int pTitleResourceID, final int pIconResourceID, final ProgressCallable<T> pCallable, final Callback<T> pCallback) {
+		this.doProgressAsync(pTitleResourceID, pIconResourceID, pCallable, pCallback, null);
 	}
 
 	/**
@@ -93,15 +93,15 @@ public abstract class BaseActivity extends Activity {
 	 * while the {@link AsyncCallable} is being processed.
 	 * 
 	 * @param <T>
-	 * @param pTitleResID
-	 * @param pMessageResID
-	 * @param pErrorMessageResID
+	 * @param pTitleResourceID
+	 * @param pMessageResourceID
+	 * @param pErrorMessageResourceID
 	 * @param pAsyncCallable
 	 * @param pCallback
 	 * @param pExceptionCallback
 	 */
-	protected <T> void doProgressAsync(final int pTitleResID, final ProgressCallable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
-		ActivityUtils.doProgressAsync(this, pTitleResID, pCallable, pCallback, pExceptionCallback);
+	protected <T> void doProgressAsync(final int pTitleResourceID, final int pIconResourceID, final ProgressCallable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
+		ActivityUtils.doProgressAsync(this, pTitleResourceID, pIconResourceID, pCallable, pCallback, pExceptionCallback);
 	}
 
 	/**
@@ -109,15 +109,15 @@ public abstract class BaseActivity extends Activity {
 	 * while the {@link AsyncCallable} is being processed.
 	 * 
 	 * @param <T>
-	 * @param pTitleResID
-	 * @param pMessageResID
-	 * @param pErrorMessageResID
+	 * @param pTitleResourceID
+	 * @param pMessageResourceID
+	 * @param pErrorMessageResourceID
 	 * @param pAsyncCallable
 	 * @param pCallback
 	 * @param pExceptionCallback
 	 */
-	protected <T> void doAsync(final int pTitleResID, final int pMessageResID, final AsyncCallable<T> pAsyncCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
-		ActivityUtils.doAsync(this, pTitleResID, pMessageResID, pAsyncCallable, pCallback, pExceptionCallback);
+	protected <T> void doAsync(final int pTitleResourceID, final int pMessageResourceID, final AsyncCallable<T> pAsyncCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
+		ActivityUtils.doAsync(this, pTitleResourceID, pMessageResourceID, pAsyncCallable, pCallback, pExceptionCallback);
 	}
 
 	// ===========================================================

@@ -457,10 +457,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 	}
 
-	public void onLoadComplete(final Scene pScene) {
-		this.setScene(pScene);
-	}
-
 	void onTickUpdate() throws InterruptedException {
 		if(this.mRunning) {
 			final long secondsElapsed = this.getNanosecondsElapsed();

@@ -93,9 +93,14 @@ public class DebugTimer {
 		root.dump(0);
 
 		if(pClear) {
-			this.mDebugTimes.clear();
-			this.init(root.mLabel);
+			this.clear();
 		}
+	}
+
+	public void clear() {
+		final DebugTime root = this.mDebugTimes.firstElement();
+		this.mDebugTimes.clear();
+		this.init(root.mLabel);
 	}
 
 	// ===========================================================

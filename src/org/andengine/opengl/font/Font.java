@@ -178,12 +178,16 @@ public class Font implements IFont {
 		final String characterAsString = String.valueOf(pCharacter);
 
 		this.updateTextBounds(characterAsString);
+
 		final int letterLeft = Font.TEXTBOUNDS_TMP.left;
 		final int letterTop = Font.TEXTBOUNDS_TMP.top;
 		final int letterWidth = Font.TEXTBOUNDS_TMP.width() + 2 * Font.LETTER_TEXTURE_PADDING;
 		final int letterHeight = Font.TEXTBOUNDS_TMP.height() + 2 * Font.LETTER_TEXTURE_PADDING;
 
 		final Bitmap bitmap = Bitmap.createBitmap(letterWidth, letterHeight, Config.ARGB_8888);
+		if(letterWidth == 0 || letterHeight == 0) {
+			throw new IllegalArgumentException("Character '" + pCharacter + "' cannot be drawn, because it has no extent (width='" + letterWidth + "', height='" + letterHeight + "')");
+		}
 		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */

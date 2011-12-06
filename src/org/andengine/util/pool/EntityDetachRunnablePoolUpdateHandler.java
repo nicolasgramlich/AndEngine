@@ -1,5 +1,7 @@
 package org.andengine.util.pool;
 
+import org.andengine.entity.IEntity;
+
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -52,6 +54,12 @@ public class EntityDetachRunnablePoolUpdateHandler extends RunnablePoolUpdateHan
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void scheduleDetach(final IEntity pEntity) {
+		final EntityDetachRunnablePoolItem entityDetachRunnablePoolItem = this.obtainPoolItem();
+		entityDetachRunnablePoolItem.setEntity(pEntity);
+		this.postPoolItem(entityDetachRunnablePoolItem);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

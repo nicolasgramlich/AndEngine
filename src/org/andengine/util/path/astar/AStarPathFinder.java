@@ -43,7 +43,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	public Path findPath(final IPathFinderMap<T> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction) {
 		return this.findPath(pPathFinderMap, pXMin, pYMin, pXMax, pYMax, pEntity, pFromX, pFromY, pToX, pToY, pAllowDiagonal, pAStarHeuristic, pCostFunction, Float.MAX_VALUE);
 	}
-	
+
 	@Override
 	public Path findPath(final IPathFinderMap<T> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction, final float pMaxCost) {
 		return this.findPath(pPathFinderMap, pXMin, pYMin, pXMax, pYMax, pEntity, pFromX, pFromY, pToX, pToY, pAllowDiagonal, pAStarHeuristic, pCostFunction, pMaxCost, null);
@@ -54,14 +54,13 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		if((pFromX == pToX && pFromY == pToY) || pPathFinderMap.isBlocked(pFromX, pFromY, pEntity) || pPathFinderMap.isBlocked(pToX, pToY, pEntity)) {
 			return null;
 		}
-
 		/* Drag some fields to local variables. */
 		final Node fromNode = new Node(pFromX, pFromY);
 		final Node toNode = new Node(pToX, pToY);
 
 		final HashSet<Node> visitedNodes = new HashSet<Node>();
 		final TreeSet<Node> openNodes = new TreeSet<Node>();
-		
+
 		final IAStarHeuristic<T> aStarHeuristic = pAStarHeuristic;
 		final boolean allowDiagonalMovement = pAllowDiagonal;
 
@@ -100,7 +99,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 					if(!IntBoundsUtils.contains(pXMin, pYMin, pXMax, pYMax, neighborX, neighborY) || pPathFinderMap.isBlocked(neighborX, neighborY, pEntity)) {
 						continue;
 					}
-					
+
 					final Node neighbor = new Node(neighborX, neighborY);
 
 					if(pPathFinderListener != null) {
@@ -139,7 +138,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 			tmp = tmp.mParent;
 			length++;
 		}
-		
+
 		/* Traceback path. */
 		final Path path = new Path(length);
 		int index = length - 1;

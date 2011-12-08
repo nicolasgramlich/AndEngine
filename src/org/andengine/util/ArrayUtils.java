@@ -315,6 +315,50 @@ public final class ArrayUtils {
 		return false;
 	}
 
+	/**
+	 * @param pClass the type of the returned array T[].
+	 * @param pArrays items or pArrays itself can be null.
+	 * @return <code>null</code> when pArrays is <code>null</code> or all arrays in pArrays are <code>null</code> or of length zero. Otherwise an in-order joined array of <code>T[]</code> of all not null, not zero length arrays in pArrays.  
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T[] join(final Class<T> pClass, final T[] ... pArrays) {
+		if(pArrays == null) {
+			return null;
+		}
+
+		int arrayCount = pArrays.length;
+		if(arrayCount == 0) {
+			return null;
+		} else if(arrayCount == 1) {
+			return pArrays[0];
+		}
+
+		int resultLength = 0;
+		/* Determine length of result. */
+		for(int i = pArrays.length - 1; i >= 0; i--) {
+			final T[] array = pArrays[i];
+			if(array != null && array.length > 0) {
+				resultLength += array.length;
+			}
+		}
+
+		if(resultLength == 0) {
+			return null;
+		}
+
+		/* Determine length of result. */
+		final T[] result = (T[]) java.lang.reflect.Array.newInstance(pClass.getComponentType(), resultLength);
+		int offset = 0;
+		for(int i = 0; i < arrayCount; i++) {
+			final T[] array = pArrays[i];
+			if(array != null && array.length > 0) {
+				System.arraycopy(array, 0, result, offset, array.length);
+				offset += array.length;
+			}
+		}
+		return result;
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

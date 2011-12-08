@@ -1,16 +1,16 @@
 package org.andengine.util.cache;
 
-import java.util.HashMap;
-
 import org.andengine.util.pool.GenericPool;
+
+import android.util.SparseArray;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 00:24:52 - 02.11.2011
+ * @since 12:19:22 - 08.12.2011
  */
-public class LRUCache<K, V> {
+public class IntLRUCache<V> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,19 +22,19 @@ public class LRUCache<K, V> {
 	private final int mCapacity;
 	private int mSize;
 
-	private final HashMap<K, LRUCacheValueHolder<K, V>> mMap;
-	private final LRUCacheQueue<K> mLRUCacheQueue;
+	private final SparseArray<IntLRUCacheValueHolder<V>> mSparseArray;
+	private final IntLRUCacheQueue mIntLRUCacheQueue;
 
-	private final GenericPool<LRUCacheValueHolder<K, V>> mLRUCacheValueHolderPool = new GenericPool<LRUCache.LRUCacheValueHolder<K, V>>() {
+	private final GenericPool<IntLRUCacheValueHolder<V>> mIntLRUCacheValueHolderPool = new GenericPool<IntLRUCache.IntLRUCacheValueHolder<V>>() {
 		@Override
-		protected LRUCacheValueHolder<K, V> onAllocatePoolItem() {
-			return new LRUCacheValueHolder<K, V>();
+		protected IntLRUCacheValueHolder<V> onAllocatePoolItem() {
+			return new IntLRUCacheValueHolder<V>();
 		}
 
 		@Override
-		protected void onHandleRecycleItem(final LRUCacheValueHolder<K, V> pLRUCacheValueHolder) {
-			pLRUCacheValueHolder.mLRUCacheQueueNode = null;
-			pLRUCacheValueHolder.mValue = null;
+		protected void onHandleRecycleItem(final IntLRUCacheValueHolder<V> pIntLRUCacheValueHolder) {
+			pIntLRUCacheValueHolder.mIntLRUCacheQueueNode = null;
+			pIntLRUCacheValueHolder.mValue = null;
 		}
 	};
 
@@ -42,10 +42,10 @@ public class LRUCache<K, V> {
 	// Constructors
 	// ===========================================================
 
-	public LRUCache(final int pCapacity) {
+	public IntLRUCache(final int pCapacity) {
 		this.mCapacity = pCapacity;
-		this.mMap = new HashMap<K, LRUCacheValueHolder<K, V>>();
-		this.mLRUCacheQueue = new LRUCacheQueue<K>();
+		this.mSparseArray = new SparseArray<IntLRUCacheValueHolder<V>>();
+		this.mIntLRUCacheQueue = new IntLRUCacheQueue();
 	}
 
 	// ===========================================================
@@ -68,44 +68,44 @@ public class LRUCache<K, V> {
 		return this.mSize == 0;
 	}
 
-	public V put(final K pKey, final V pValue) {
-		final LRUCacheValueHolder<K, V> existingLRUCacheValueHolder = this.mMap.get(pKey);
-		if(existingLRUCacheValueHolder != null) {
+	public V put(final int pKey, final V pValue) {
+		final IntLRUCacheValueHolder<V> existingIntLRUCacheValueHolder = this.mSparseArray.get(pKey);
+		if(existingIntLRUCacheValueHolder != null) {
 			/* Just heat up that item. */
-			this.mLRUCacheQueue.moveToTail(existingLRUCacheValueHolder.mLRUCacheQueueNode);
+			this.mIntLRUCacheQueue.moveToTail(existingIntLRUCacheValueHolder.mIntLRUCacheQueueNode);
 
-			return existingLRUCacheValueHolder.mValue;
+			return existingIntLRUCacheValueHolder.mValue;
 		}
 
 		if(this.mSize >= this.mCapacity) {
-			final K deadKey = this.mLRUCacheQueue.poll();
-			this.mMap.remove(deadKey);
+			final int deadKey = this.mIntLRUCacheQueue.poll();
+			this.mSparseArray.remove(deadKey);
 			this.mSize--;
 		}
 
-		final LRUCacheQueueNode<K> lruCacheQueueNode = this.mLRUCacheQueue.add(pKey);
+		final IntLRUCacheQueueNode IntLRUCacheQueueNode = this.mIntLRUCacheQueue.add(pKey);
 
-		final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mLRUCacheValueHolderPool.obtainPoolItem();
-//		final LRUCacheValueHolder<K, V> lruCacheValueHolder = new LRUCacheValueHolder<K, V>();
-		lruCacheValueHolder.mValue = pValue;
-		lruCacheValueHolder.mLRUCacheQueueNode = lruCacheQueueNode;
+		final IntLRUCacheValueHolder<V> IntLRUCacheValueHolder = this.mIntLRUCacheValueHolderPool.obtainPoolItem();
+//		final IntLRUCacheValueHolder<V> IntLRUCacheValueHolder = new IntLRUCacheValueHolder<V>();
+		IntLRUCacheValueHolder.mValue = pValue;
+		IntLRUCacheValueHolder.mIntLRUCacheQueueNode = IntLRUCacheQueueNode;
 
-		this.mMap.put(pKey, lruCacheValueHolder);
+		this.mSparseArray.put(pKey, IntLRUCacheValueHolder);
 
 		this.mSize++;
 
 		return null;
 	}
 
-	public V get(final K pKey) {
-		final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mMap.get(pKey);
-		if(lruCacheValueHolder == null) {
+	public V get(final int pKey) {
+		final IntLRUCacheValueHolder<V> IntLRUCacheValueHolder = this.mSparseArray.get(pKey);
+		if(IntLRUCacheValueHolder == null) {
 			return null;
 		}
 
-		this.mLRUCacheQueue.moveToTail(lruCacheValueHolder.mLRUCacheQueueNode);
+		this.mIntLRUCacheQueue.moveToTail(IntLRUCacheValueHolder.mIntLRUCacheQueueNode);
 
-		return lruCacheValueHolder.mValue;
+		return IntLRUCacheValueHolder.mValue;
 	}
 
 	// ===========================================================
@@ -116,7 +116,7 @@ public class LRUCache<K, V> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	static class LRUCacheQueueNode<K> {
+	static class IntLRUCacheQueueNode {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -125,9 +125,9 @@ public class LRUCache<K, V> {
 		// Fields
 		// ===========================================================
 
-		K mKey;
-		LRUCacheQueueNode<K> mPrevious;
-		LRUCacheQueueNode<K> mNext;
+		int mKey;
+		IntLRUCacheQueueNode mPrevious;
+		IntLRUCacheQueueNode mNext;
 
 		// ===========================================================
 		// Constructors
@@ -150,7 +150,7 @@ public class LRUCache<K, V> {
 		// ===========================================================
 	}
 
-	static class LRUCacheValueHolder<K, V> {
+	static class IntLRUCacheValueHolder<V> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -160,7 +160,7 @@ public class LRUCache<K, V> {
 		// ===========================================================
 
 		V mValue;
-		LRUCacheQueueNode<K> mLRUCacheQueueNode;
+		IntLRUCacheQueueNode mIntLRUCacheQueueNode;
 
 		// ===========================================================
 		// Constructors
@@ -183,7 +183,7 @@ public class LRUCache<K, V> {
 		// ===========================================================
 	}
 
-	static class LRUCacheQueue<K> {
+	static class IntLRUCacheQueue {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -192,20 +192,20 @@ public class LRUCache<K, V> {
 		// Fields
 		// ===========================================================
 
-		private LRUCacheQueueNode<K> mHead;
-		private LRUCacheQueueNode<K> mTail;
+		private IntLRUCacheQueueNode mHead;
+		private IntLRUCacheQueueNode mTail;
 
-		private final GenericPool<LRUCacheQueueNode<K>> mLRUCacheQueueNodePool = new GenericPool<LRUCache.LRUCacheQueueNode<K>>() {
+		private final GenericPool<IntLRUCacheQueueNode> mIntLRUCacheQueueNodePool = new GenericPool<IntLRUCache.IntLRUCacheQueueNode>() {
 			@Override
-			protected LRUCacheQueueNode<K> onAllocatePoolItem() {
-				return new LRUCacheQueueNode<K>();
+			protected IntLRUCacheQueueNode onAllocatePoolItem() {
+				return new IntLRUCacheQueueNode();
 			}
 
 			@Override
-			protected void onHandleRecycleItem(final LRUCacheQueueNode<K> pLRUCacheQueueNode) {
-				pLRUCacheQueueNode.mKey = null;
-				pLRUCacheQueueNode.mPrevious = null;
-				pLRUCacheQueueNode.mNext = null;
+			protected void onHandleRecycleItem(final IntLRUCacheQueueNode pIntLRUCacheQueueNode) {
+				pIntLRUCacheQueueNode.mKey = 0;
+				pIntLRUCacheQueueNode.mPrevious = null;
+				pIntLRUCacheQueueNode.mNext = null;
 			}
 		};
 
@@ -229,34 +229,34 @@ public class LRUCache<K, V> {
 			return this.mHead == null;
 		}
 
-		public LRUCacheQueueNode<K> add(final K pKey) {
-			final LRUCacheQueueNode<K> lruCacheQueueNode = this.mLRUCacheQueueNodePool.obtainPoolItem();
-//			final LRUCacheQueueNode<K> lruCacheQueueNode = new LRUCacheQueueNode<K>();
-			lruCacheQueueNode.mKey = pKey;
+		public IntLRUCacheQueueNode add(final int pKey) {
+			final IntLRUCacheQueueNode IntLRUCacheQueueNode = this.mIntLRUCacheQueueNodePool.obtainPoolItem();
+//			final IntLRUCacheQueueNode IntLRUCacheQueueNode = new IntLRUCacheQueueNode();
+			IntLRUCacheQueueNode.mKey = pKey;
 
-			return this.add(lruCacheQueueNode);
+			return this.add(IntLRUCacheQueueNode);
 		}
 
-		private LRUCacheQueueNode<K> add(final LRUCacheQueueNode<K> pLRUCacheQueueNode) {
+		private IntLRUCacheQueueNode add(final IntLRUCacheQueueNode pIntLRUCacheQueueNode) {
 			if(this.isEmpty()) {
-				this.mHead = pLRUCacheQueueNode;
+				this.mHead = pIntLRUCacheQueueNode;
 				this.mTail = this.mHead;
 			} else {
-				this.mTail.mNext = pLRUCacheQueueNode;
-				pLRUCacheQueueNode.mPrevious = this.mTail;
-				this.mTail = pLRUCacheQueueNode;
+				this.mTail.mNext = pIntLRUCacheQueueNode;
+				pIntLRUCacheQueueNode.mPrevious = this.mTail;
+				this.mTail = pIntLRUCacheQueueNode;
 			}
 
 			return this.mTail;
 		}
 
-		public K poll() {
+		public int poll() {
 			if(this.isEmpty()) {
-				return null;
+				throw new IllegalStateException("Cannot poll from an empty " + this.getClass().getSimpleName() + ".");
 			}
 
-			final LRUCacheQueueNode<K> head = this.mHead;
-			final K key = this.mHead.mKey;
+			final IntLRUCacheQueueNode head = this.mHead;
+			final int key = this.mHead.mKey;
 
 			/* Check if item to poll is the tail. */
 			if(this.mHead.mNext == null) {
@@ -267,18 +267,18 @@ public class LRUCache<K, V> {
 				this.mHead.mPrevious = null;
 			}
 
-			this.mLRUCacheQueueNodePool.recyclePoolItem(head);
+			this.mIntLRUCacheQueueNodePool.recyclePoolItem(head);
 			return key;
 		}
 
-		public void moveToTail(final LRUCacheQueueNode<K> pLRUCacheQueueNode) {
-			final LRUCacheQueueNode<K> next = pLRUCacheQueueNode.mNext;
+		public void moveToTail(final IntLRUCacheQueueNode pIntLRUCacheQueueNode) {
+			final IntLRUCacheQueueNode next = pIntLRUCacheQueueNode.mNext;
 
 			/* Check if the node already is the tail. */
 			if(next == null) {
 				return;
 			} else {
-				final LRUCacheQueueNode<K> previous = pLRUCacheQueueNode.mPrevious;
+				final IntLRUCacheQueueNode previous = pIntLRUCacheQueueNode.mPrevious;
 				next.mPrevious = previous;
 
 				/* Check if item to bump is the head. */
@@ -288,9 +288,9 @@ public class LRUCache<K, V> {
 					previous.mNext = next;
 				}
 
-				this.mTail.mNext = pLRUCacheQueueNode;
-				pLRUCacheQueueNode.mPrevious = this.mTail;
-				this.mTail = pLRUCacheQueueNode;
+				this.mTail.mNext = pIntLRUCacheQueueNode;
+				pIntLRUCacheQueueNode.mPrevious = this.mTail;
+				this.mTail = pIntLRUCacheQueueNode;
 			}
 		}
 

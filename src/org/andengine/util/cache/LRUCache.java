@@ -44,7 +44,7 @@ public class LRUCache<K, V> {
 
 	public LRUCache(final int pCapacity) {
 		this.mCapacity = pCapacity;
-		this.mMap = new HashMap<K, LRUCacheValueHolder<K, V>>();
+		this.mMap = new HashMap<K, LRUCacheValueHolder<K, V>>(pCapacity);
 		this.mLRUCacheQueue = new LRUCacheQueue<K>();
 	}
 
@@ -106,6 +106,16 @@ public class LRUCache<K, V> {
 		this.mLRUCacheQueue.moveToTail(lruCacheValueHolder.mLRUCacheQueueNode);
 
 		return lruCacheValueHolder.mValue;
+	}
+
+	public void clear() {
+		while(!this.mLRUCacheQueue.isEmpty()) {
+			final K key = this.mLRUCacheQueue.poll();
+			final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mMap.remove(key);
+			this.mLRUCacheValueHolderPool.recyclePoolItem(lruCacheValueHolder);
+		}
+
+		this.mSize = 0;
 	}
 
 	// ===========================================================
@@ -251,10 +261,6 @@ public class LRUCache<K, V> {
 		}
 
 		public K poll() {
-			if(this.isEmpty()) {
-				return null;
-			}
-
 			final LRUCacheQueueNode<K> head = this.mHead;
 			final K key = this.mHead.mKey;
 
@@ -290,6 +296,7 @@ public class LRUCache<K, V> {
 
 				this.mTail.mNext = pLRUCacheQueueNode;
 				pLRUCacheQueueNode.mPrevious = this.mTail;
+				pLRUCacheQueueNode.mNext = null;
 				this.mTail = pLRUCacheQueueNode;
 			}
 		}

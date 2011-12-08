@@ -44,7 +44,7 @@ public class IntLRUCache<V> {
 
 	public IntLRUCache(final int pCapacity) {
 		this.mCapacity = pCapacity;
-		this.mSparseArray = new SparseArray<IntLRUCacheValueHolder<V>>();
+		this.mSparseArray = new SparseArray<IntLRUCacheValueHolder<V>>(pCapacity);
 		this.mIntLRUCacheQueue = new IntLRUCacheQueue();
 	}
 
@@ -106,6 +106,19 @@ public class IntLRUCache<V> {
 		this.mIntLRUCacheQueue.moveToTail(IntLRUCacheValueHolder.mIntLRUCacheQueueNode);
 
 		return IntLRUCacheValueHolder.mValue;
+	}
+
+	public void clear() {
+		while(!this.mIntLRUCacheQueue.isEmpty()) {
+			final int key = this.mIntLRUCacheQueue.poll();
+			final IntLRUCacheValueHolder<V> lruCacheValueHolder = this.mSparseArray.get(key);
+			if(lruCacheValueHolder == null) {
+				throw new IllegalArgumentException();
+			}
+			this.mSparseArray.remove(key);
+			this.mIntLRUCacheValueHolderPool.recyclePoolItem(lruCacheValueHolder);
+		}
+		this.mSize = 0;
 	}
 
 	// ===========================================================
@@ -251,12 +264,11 @@ public class IntLRUCache<V> {
 		}
 
 		public int poll() {
-			if(this.isEmpty()) {
-				throw new IllegalStateException("Cannot poll from an empty " + this.getClass().getSimpleName() + ".");
-			}
-
 			final IntLRUCacheQueueNode head = this.mHead;
 			final int key = this.mHead.mKey;
+			if(key == 0) {
+				throw new IllegalStateException();
+			}
 
 			/* Check if item to poll is the tail. */
 			if(this.mHead.mNext == null) {
@@ -290,6 +302,7 @@ public class IntLRUCache<V> {
 
 				this.mTail.mNext = pIntLRUCacheQueueNode;
 				pIntLRUCacheQueueNode.mPrevious = this.mTail;
+				pIntLRUCacheQueueNode.mNext = null;
 				this.mTail = pIntLRUCacheQueueNode;
 			}
 		}

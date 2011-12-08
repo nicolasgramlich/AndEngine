@@ -10,3 +10,4 @@ gdbserver
 .hg
 local.properties
 .settings
+AndEngine.iml

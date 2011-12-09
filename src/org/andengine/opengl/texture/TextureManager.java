@@ -170,9 +170,9 @@ public class TextureManager {
 		if(TextureManager.sTexturesManaged.contains(pTexture)) {
 			/* If the Texture is loaded, unload it.
 			 * If the Texture is about to be loaded, stop it from being loaded. */
-			if(TextureManager.sTexturesLoaded.contains(pTexture)){
+			if(TextureManager.sTexturesLoaded.contains(pTexture)) {
 				TextureManager.sTexturesToBeUnloaded.add(pTexture);
-			} else if(TextureManager.sTexturesToBeLoaded.remove(pTexture)){
+			} else if(TextureManager.sTexturesToBeLoaded.remove(pTexture)) {
 				TextureManager.sTexturesManaged.remove(pTexture);
 			}
 			return true;
@@ -190,13 +190,13 @@ public class TextureManager {
 		/* First reload Textures that need to be updated. */
 		final int textursLoadedCount = texturesLoaded.size();
 
-		if(textursLoadedCount > 0){
-			for(int i = textursLoadedCount - 1; i >= 0; i--){
+		if(textursLoadedCount > 0) {
+			for(int i = textursLoadedCount - 1; i >= 0; i--) {
 				final ITexture textureToBeReloaded = texturesLoaded.get(i);
-				if(textureToBeReloaded.isUpdateOnHardwareNeeded()){
+				if(textureToBeReloaded.isUpdateOnHardwareNeeded()) {
 					try {
 						textureToBeReloaded.reloadToHardware();
-					} catch(final IOException e) {
+					} catch (final IOException e) {
 						Debug.e(e);
 					}
 				}
@@ -206,13 +206,13 @@ public class TextureManager {
 		/* Then load pending Textures. */
 		final int texturesToBeLoadedCount = texturesToBeLoaded.size();
 
-		if(texturesToBeLoadedCount > 0){
-			for(int i = texturesToBeLoadedCount - 1; i >= 0; i--){
+		if(texturesToBeLoadedCount > 0) {
+			for(int i = texturesToBeLoadedCount - 1; i >= 0; i--) {
 				final ITexture textureToBeLoaded = texturesToBeLoaded.remove(i);
-				if(!textureToBeLoaded.isLoadedToHardware()){
+				if(!textureToBeLoaded.isLoadedToHardware()) {
 					try {
 						textureToBeLoaded.loadToHardware();
-					} catch(final IOException e) {
+					} catch (final IOException e) {
 						Debug.e(e);
 					}
 				}
@@ -223,10 +223,10 @@ public class TextureManager {
 		/* Then unload pending Textures. */
 		final int texturesToBeUnloadedCount = texturesToBeUnloaded.size();
 
-		if(texturesToBeUnloadedCount > 0){
-			for(int i = texturesToBeUnloadedCount - 1; i >= 0; i--){
+		if(texturesToBeUnloadedCount > 0) {
+			for(int i = texturesToBeUnloadedCount - 1; i >= 0; i--) {
 				final ITexture textureToBeUnloaded = texturesToBeUnloaded.remove(i);
-				if(textureToBeUnloaded.isLoadedToHardware()){
+				if(textureToBeUnloaded.isLoadedToHardware()) {
 					textureToBeUnloaded.unloadFromHardware();
 				}
 				texturesLoaded.remove(textureToBeUnloaded);
@@ -235,7 +235,7 @@ public class TextureManager {
 		}
 
 		/* Finally invoke the GC if anything has changed. */
-		if(texturesToBeLoadedCount > 0 || texturesToBeUnloadedCount > 0){
+		if(texturesToBeLoadedCount > 0 || texturesToBeUnloadedCount > 0) {
 			System.gc();
 		}
 	}

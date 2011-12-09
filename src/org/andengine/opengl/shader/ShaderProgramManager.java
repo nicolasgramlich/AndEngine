@@ -2,6 +2,8 @@ package org.andengine.opengl.shader;
 
 import java.util.ArrayList;
 
+import org.andengine.util.debug.Debug;
+
 
 /**
  * (c) 2011 Zynga Inc.
@@ -61,6 +63,13 @@ public class ShaderProgramManager {
 		if(pShaderProgram == null) {
 			throw new IllegalArgumentException("pShaderProgram must not be null!");
 		}
+
+		if(pShaderProgram.isCompiled()) {
+			Debug.w("Loading a compiled " + ShaderProgram.class.getSimpleName() + ": '" + pShaderProgram.getClass().getSimpleName() + "' will be recompiled.");
+
+			pShaderProgram.setCompiled(false);
+		}
+
 		ShaderProgramManager.sShaderProgramsManaged.add(pShaderProgram);
 	}
 

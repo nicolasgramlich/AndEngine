@@ -65,7 +65,7 @@ public class ShaderProgramManager {
 		}
 
 		if(pShaderProgram.isCompiled()) {
-			Debug.w("Loading a compiled " + ShaderProgram.class.getSimpleName() + ": '" + pShaderProgram.getClass().getSimpleName() + "' will be recompiled.");
+			Debug.w("Loading an already compiled '" + ShaderProgram.class.getSimpleName() + "': '" + pShaderProgram.getClass().getSimpleName() + "'. '" + pShaderProgram.getClass().getSimpleName() + "' will be recompiled.");
 
 			pShaderProgram.setCompiled(false);
 		}

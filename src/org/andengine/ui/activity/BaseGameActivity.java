@@ -111,11 +111,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			@Override
 			public void onPopulateSceneFinished() {
 				try {
-					Debug.d(this.getClass().getSimpleName() + ".onGameCreated");
+					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onGameCreated");
 
 					BaseGameActivity.this.onGameCreated();
 				} catch(final Throwable pThrowable) {
-					Debug.e(this.getClass().getSimpleName() + ".onGameCreated failed.", pThrowable);
+					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onGameCreated failed.", pThrowable);
 				}
 
 				BaseGameActivity.this.callGameResumedOnUIThread();
@@ -128,11 +128,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 				BaseGameActivity.this.mEngine.setScene(pScene);
 
 				try {
-					Debug.d(this.getClass().getSimpleName() + ".onPopulateScene");
+					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onPopulateScene");
 
 					BaseGameActivity.this.onPopulateScene(pScene, onPopulateSceneCallback);
 				} catch(final Throwable pThrowable) {
-					Debug.e(this.getClass().getSimpleName() + ".onPopulateScene failed.", pThrowable);
+					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onPopulateScene failed.", pThrowable);
 				}
 			}
 		};
@@ -141,11 +141,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			@Override
 			public void onCreateResourcesFinished() {
 				try {
-					Debug.d(this.getClass().getSimpleName() + ".onCreateScene");
+					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onCreateScene");
 
 					BaseGameActivity.this.onCreateScene(onCreateSceneCallback);
 				} catch(final Throwable pThrowable) {
-					Debug.e(this.getClass().getSimpleName() + ".onCreateScene failed.", pThrowable);
+					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onCreateScene failed.", pThrowable);
 				}
 			}
 		};

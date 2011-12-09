@@ -56,7 +56,42 @@ public class TextureManager {
 	// ===========================================================
 
 	public static synchronized void onCreate() {
+		final HashSet<ITexture> managedTextures = TextureManager.sTexturesManaged;
+		if(!managedTextures.isEmpty()) {
+			for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
+				Debug.w("Detected a: '" + texture.getClass().getSimpleName() + "' that was loaded before '" + TextureManager.class.getSimpleName() + ".onCreate()' was called. '" + texture.getClass().getSimpleName() + "' will be reloaded.");
+				texture.setLoadedToHardware(false);
+			}
+		}
 
+		if(!TextureManager.sTexturesLoaded.isEmpty()) {
+			TextureManager.sTexturesToBeLoaded.addAll(TextureManager.sTexturesLoaded); // TODO Check if addAll uses iterator internally!
+			TextureManager.sTexturesLoaded.clear();
+		}
+
+		if(!TextureManager.sTexturesToBeUnloaded.isEmpty()) {
+			TextureManager.sTexturesManaged.removeAll(TextureManager.sTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
+			TextureManager.sTexturesToBeUnloaded.clear();
+		}
+	}
+
+	public static synchronized void onReload() {
+		final HashSet<ITexture> managedTextures = TextureManager.sTexturesManaged;
+		if(!managedTextures.isEmpty()) {
+			for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
+				texture.setLoadedToHardware(false);
+			}
+		}
+
+		if(!TextureManager.sTexturesLoaded.isEmpty()) {
+			TextureManager.sTexturesToBeLoaded.addAll(TextureManager.sTexturesLoaded); // TODO Check if addAll uses iterator internally!
+			TextureManager.sTexturesLoaded.clear();
+		}
+
+		if(!TextureManager.sTexturesToBeUnloaded.isEmpty()) {
+			TextureManager.sTexturesManaged.removeAll(TextureManager.sTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
+			TextureManager.sTexturesToBeUnloaded.clear();
+		}
 	}
 
 	public static synchronized void onDestroy() {
@@ -144,19 +179,6 @@ public class TextureManager {
 		} else {
 			return false;
 		}
-	}
-
-	public static synchronized void onReload() {
-		final HashSet<ITexture> managedTextures = TextureManager.sTexturesManaged;
-		for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
-			texture.setLoadedToHardware(false);
-		}
-
-		TextureManager.sTexturesToBeLoaded.addAll(TextureManager.sTexturesLoaded); // TODO Check if addAll uses iterator internally!
-		TextureManager.sTexturesLoaded.clear();
-
-		TextureManager.sTexturesManaged.removeAll(TextureManager.sTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
-		TextureManager.sTexturesToBeUnloaded.clear();
 	}
 
 	public static synchronized void updateTextures() {

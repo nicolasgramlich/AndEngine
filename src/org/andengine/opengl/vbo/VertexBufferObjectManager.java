@@ -67,9 +67,9 @@ public class VertexBufferObjectManager {
 			loadedBufferObjects.get(i).setLoadedToHardware(false);
 		}
 
-//		VertexBufferObjectManager.sVertexObjectsToBeLoaded.clear();
-//		VertexBufferObjectManager.sVertexObjectsLoaded.clear();
-//		VertexBufferObjectManager.sVertexObjectsManaged.clear();
+		VertexBufferObjectManager.sVertexObjectsToBeLoaded.clear();
+		VertexBufferObjectManager.sVertexObjectsLoaded.clear();
+		VertexBufferObjectManager.sVertexObjectsManaged.clear();
 	}
 
 	public static synchronized void loadBufferObject(final VertexBufferObject pBufferObject) {

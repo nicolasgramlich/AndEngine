@@ -132,7 +132,7 @@ public abstract class GenericPool<T> {
 				item = this.mAvailableItems.remove(this.mAvailableItems.size() - 1);
 			}
 //			if(BuildConfig.DEBUG) { // TODO Bring back when ADT-16 are final
-				Debug.i(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledItemCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
+				Debug.v(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledItemCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
 //			}
 		}
 		this.onHandleObtainItem(item);

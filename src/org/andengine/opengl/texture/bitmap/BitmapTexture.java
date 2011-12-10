@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
@@ -92,16 +93,15 @@ public abstract class BitmapTexture extends Texture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public BitmapTexture load() {
-		super.load();
+	public BitmapTexture load(final TextureManager pTextureManager) {
+		super.load(pTextureManager);
 
 		return this;
 	}
 
 	@Override
-	public BitmapTexture unload() {
-		super.unload();
+	public BitmapTexture unload(final TextureManager pTextureManager) {
+		super.unload(pTextureManager);
 
 		return this;
 	}
@@ -109,7 +109,7 @@ public abstract class BitmapTexture extends Texture {
 	protected abstract InputStream onGetInputStream() throws IOException;
 
 	@Override
-	protected void writeTextureToHardware() throws IOException {
+	protected void writeTextureToHardware(final GLState pGLState) throws IOException {
 		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final Bitmap bitmap = this.onGetBitmap(bitmapConfig);
 
@@ -126,7 +126,7 @@ public abstract class BitmapTexture extends Texture {
 		if(preMultipyAlpha) {
 			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 		} else {
-			GLState.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
+			pGLState.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
 		}
 
 		/* Restore default alignment. */

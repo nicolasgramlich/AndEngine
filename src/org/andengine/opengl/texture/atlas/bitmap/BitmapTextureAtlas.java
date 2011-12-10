@@ -3,6 +3,7 @@ package org.andengine.opengl.texture.atlas.bitmap;
 import java.util.ArrayList;
 
 import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.TextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
@@ -121,16 +122,15 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public BitmapTextureAtlas load() {
-		super.load();
+	public BitmapTextureAtlas load(final TextureManager pTextureManager) {
+		super.load(pTextureManager);
 
 		return this;
 	}
 
 	@Override
-	public BitmapTextureAtlas unload() {
-		super.unload();
+	public BitmapTextureAtlas unload(final TextureManager pTextureManager) {
+		super.unload(pTextureManager);
 
 		return this;
 	}
@@ -145,7 +145,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	// ===========================================================
 
 	@Override
-	protected void writeTextureToHardware() {
+	protected void writeTextureToHardware(final GLState pGLState) {
 		final PixelFormat pixelFormat = this.mBitmapTextureFormat.getPixelFormat();
 		final int glInternalFormat = pixelFormat.getGLInternalFormat();
 		final int glFormat = pixelFormat.getGLFormat();
@@ -177,7 +177,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 				if(preMultipyAlpha) {
 					GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, glFormat, glType);
 				} else {
-					GLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
+					pGLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTexturePositionX(), bitmapTextureAtlasSource.getTexturePositionY(), bitmap, this.mPixelFormat);
 				}
 
 				/* Restore default alignment. */

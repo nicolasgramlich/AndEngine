@@ -89,7 +89,7 @@ public class RenderTexture extends Texture {
 	// ===========================================================
 
 	@Override
-	protected void writeTextureToHardware() {
+	protected void writeTextureToHardware(final GLState pGLState) {
 		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, this.mPixelFormat.getGLInternalFormat(), this.mWidth, this.mHeight, 0, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), null);
 	}
 
@@ -97,11 +97,11 @@ public class RenderTexture extends Texture {
 	// Methods
 	// ===========================================================
 
-	public void init() {
-		this.savePreviousFramebufferObjectID();
+	public void init(final GLState pGLState) {
+		this.savePreviousFramebufferObjectID(pGLState);
 
 		try{
-			this.loadToHardware();
+			this.loadToHardware(pGLState);
 		} catch(final IOException e) {
 			/* Can not happen. */
 		}
@@ -110,26 +110,26 @@ public class RenderTexture extends Texture {
 //		GLState.bindTexture(0);
 
 		/* Generate FBO. */
-		this.mFramebufferObjectID = GLState.generateFramebuffer();
-		GLState.bindFramebuffer(this.mFramebufferObjectID);
+		this.mFramebufferObjectID = pGLState.generateFramebuffer();
+		pGLState.bindFramebuffer(this.mFramebufferObjectID);
 
 		/* Attach texture to FBO. */
 		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTextureID, 0);
 
-		GLState.checkFramebufferStatus();
+		pGLState.checkFramebufferStatus();
 
-		this.restorePreviousFramebufferObjectID();
+		this.restorePreviousFramebufferObjectID(pGLState);
 	}
 
-	public void begin() {
-		this.begin(false, false);
+	public void begin(final GLState pGLState) {
+		this.begin(pGLState, false, false);
 	}
 
-	public void begin(final boolean pFlipX, final boolean pFlipY) {
+	public void begin(final GLState pGLState, final boolean pFlipX, final boolean pFlipY) {
 		this.savePreviousViewport();
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
 
-		GLState.pushProjectionGLMatrix();
+		pGLState.pushProjectionGLMatrix();
 
 		final float left;
 		final float right;
@@ -149,21 +149,21 @@ public class RenderTexture extends Texture {
 			top = 0;
 			bottom = this.mHeight;
 		}
-		GLState.orthoProjectionGLMatrixf(left, right, bottom, top, -1, 1);
+		pGLState.orthoProjectionGLMatrixf(left, right, bottom, top, -1, 1);
 
-		this.savePreviousFramebufferObjectID();
-		GLState.bindFramebuffer(this.mFramebufferObjectID);
+		this.savePreviousFramebufferObjectID(pGLState);
+		pGLState.bindFramebuffer(this.mFramebufferObjectID);
 
-		GLState.pushModelViewGLMatrix();
-		GLState.loadModelViewGLMatrixIdentity();
+		pGLState.pushModelViewGLMatrix();
+		pGLState.loadModelViewGLMatrixIdentity();
 	}
 
-	public void begin(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.begin(false, false, pRed, pGreen, pBlue, pAlpha);
+	public void begin(final GLState pGLState, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.begin(pGLState, false, false, pRed, pGreen, pBlue, pAlpha);
 	}
 
-	public void begin(final boolean pFlipX, final boolean pFlipY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.begin(pFlipX, pFlipY);
+	public void begin(final GLState pGLState, final boolean pFlipX, final boolean pFlipY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.begin(pGLState, pFlipX, pFlipY);
 
 		/* Save clear color. */
 		GLES20.glGetFloatv(GLES20.GL_COLOR_CLEAR_VALUE, RenderTexture.CLEARCOLOR_CONTAINER, 0);
@@ -175,28 +175,28 @@ public class RenderTexture extends Texture {
 		GLES20.glClearColor(RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_RED_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_GREEN_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_BLUE_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_ALPHA_INDEX]);
 	}
 
-	public void end() {
-		GLState.popModelViewGLMatrix();
+	public void end(final GLState pGLState) {
+		pGLState.popModelViewGLMatrix();
 
-		this.restorePreviousFramebufferObjectID();
+		this.restorePreviousFramebufferObjectID(pGLState);
 
-		GLState.popProjectionGLMatrix();
+		pGLState.popProjectionGLMatrix();
 
 		this.resotorePreviousViewport();
 	}
 
-	public void destroy() {
-		this.unloadFromHardware();
+	public void destroy(final GLState pGLState) {
+		this.unloadFromHardware(pGLState);
 
-		GLState.deleteFramebuffer(this.mFramebufferObjectID);
+		pGLState.deleteFramebuffer(this.mFramebufferObjectID);
 	}
 
-	private void savePreviousFramebufferObjectID() {
-		this.mPreviousFramebufferObjectID = GLState.getActiveFramebuffer();
+	private void savePreviousFramebufferObjectID(final GLState pGLState) {
+		this.mPreviousFramebufferObjectID = pGLState.getActiveFramebuffer();
 	}
 
-	private void restorePreviousFramebufferObjectID() {
-		GLState.bindFramebuffer(this.mPreviousFramebufferObjectID);
+	private void restorePreviousFramebufferObjectID(final GLState pGLState) {
+		pGLState.bindFramebuffer(this.mPreviousFramebufferObjectID);
 	}
 
 	private void savePreviousViewport() {
@@ -212,32 +212,32 @@ public class RenderTexture extends Texture {
 		GLES20.glViewport(this.mPreviousViewPortX, this.mPreviousViewPortY, this.mPreviousViewPortWidth, this.mPreviousViewPortHeight);
 	}
 
-	public int[] getPixelsARGB_8888() {
-		return this.getPixelsARGB_8888(0, 0, this.mWidth, this.mHeight);
+	public int[] getPixelsARGB_8888(final GLState pGLState) {
+		return this.getPixelsARGB_8888(pGLState, 0, 0, this.mWidth, this.mHeight);
 	}
 
-	public int[] getPixelsARGB_8888(final int pX, final int pY, final int pWidth, final int pHeight) {
+	public int[] getPixelsARGB_8888(final GLState pGLState, final int pX, final int pY, final int pWidth, final int pHeight) {
 		final int[] pixelsRGBA_8888 = new int[pWidth * pHeight];
 		final IntBuffer glPixelBuffer = IntBuffer.wrap(pixelsRGBA_8888);
 		glPixelBuffer.position(0);
 
-		this.begin();
+		this.begin(pGLState);
 		GLES20.glReadPixels(pX, pY, pWidth, pHeight, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), glPixelBuffer);
-		this.end();
+		this.end(pGLState);
 
 		return GLHelper.convertRGBA_8888toARGB_8888(pixelsRGBA_8888);
 	}
 
-	public Bitmap getBitmap() {
-		return this.getBitmap(0, 0, this.mWidth, this.mHeight);
+	public Bitmap getBitmap(final GLState pGLState) {
+		return this.getBitmap(pGLState, 0, 0, this.mWidth, this.mHeight);
 	}
 
-	public Bitmap getBitmap(final int pX, final int pY, final int pWidth, final int pHeight) {
+	public Bitmap getBitmap(final GLState pGLState, final int pX, final int pY, final int pWidth, final int pHeight) {
 		if(this.mPixelFormat != PixelFormat.RGBA_8888){
 			throw new IllegalStateException("Currently only 'PixelFormat." + PixelFormat.RGBA_8888 + "' is supported to be retrieved as a Bitmap.");
 		}
 
-		return Bitmap.createBitmap(this.getPixelsARGB_8888(pX, pY, pWidth, pHeight), pWidth, pHeight, Config.ARGB_8888);
+		return Bitmap.createBitmap(this.getPixelsARGB_8888(pGLState, pX, pY, pWidth, pHeight), pWidth, pHeight, Config.ARGB_8888);
 	}
 
 	// ===========================================================

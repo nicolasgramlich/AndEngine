@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
@@ -63,16 +64,15 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public TextureAtlas<T> load() {
-		super.load();
+	public TextureAtlas<T> load(final TextureManager pTextureManager) {
+		super.load(pTextureManager);
 
 		return this;
 	}
 
 	@Override
-	public TextureAtlas<T> unload() {
-		super.unload();
+	public TextureAtlas<T> unload(final TextureManager pTextureManager) {
+		super.unload(pTextureManager);
 
 		return this;
 	}

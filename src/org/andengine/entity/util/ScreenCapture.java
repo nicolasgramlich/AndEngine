@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.util.ScreenGrabber.IScreenGrabberCallback;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
 import org.andengine.util.debug.Debug;
 
@@ -47,8 +48,8 @@ public class ScreenCapture extends Entity implements IScreenGrabberCallback {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(final Camera pCamera) {
-		this.mScreenGrabber.onManagedDraw(pCamera);
+	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
+		this.mScreenGrabber.onManagedDraw(pGLState, pCamera);
 	}
 
 	@Override

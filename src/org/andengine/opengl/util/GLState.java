@@ -29,294 +29,293 @@ public class GLState {
 
 	public static final int GL_UNPACK_ALIGNMENT_DEFAULT = 4;
 
-	private static final int[] HARDWAREID_CONTAINER = new int[1];
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private static String sVersion;
-	private static String sRenderer;
-	private static String sExtensions;
+	private final int[] mHardwareIDContainer = new int[1];
 
-	private static int sMaximumVertexAttributeCount;
-	private static int sMaximumVertexShaderUniformVectorCount;
-	private static int sMaximumFragmentShaderUniformVectorCount;
-	private static int sMaximumTextureSize;
-	private static int sMaximumTextureUnits;
+	private String mVersion;
+	private String mRenderer;
+	private String mExtensions;
 
-	private static int sCurrentBufferID = -1;
-	private static int sCurrentShaderProgramID = -1;
-	private static int[] sCurrentBoundTextureIDs = new int[GLES20.GL_TEXTURE31 - GLES20.GL_TEXTURE0];
-	private static int sCurrentFramebufferID = -1;
-	private static int sCurrentActiveTextureIndex = 0;
+	private int mMaximumVertexAttributeCount;
+	private int mMaximumVertexShaderUniformVectorCount;
+	private int mMaximumFragmentShaderUniformVectorCount;
+	private int mMaximumTextureSize;
+	private int mMaximumTextureUnits;
 
-	private static int sCurrentSourceBlendMode = -1;
-	private static int sCurrentDestinationBlendMode = -1;
+	private int mCurrentBufferID = -1;
+	private int mCurrentShaderProgramID = -1;
+	private int[] mCurrentBoundTextureIDs = new int[GLES20.GL_TEXTURE31 - GLES20.GL_TEXTURE0];
+	private int mCurrentFramebufferID = -1;
+	private int mCurrentActiveTextureIndex = 0;
 
-	private static boolean sEnableDither = true;
-	private static boolean sEnableDepthTest = true;
+	private int mCurrentSourceBlendMode = -1;
+	private int mCurrentDestinationBlendMode = -1;
 
-	private static boolean sEnableScissorTest = false;
-	private static boolean sEnableBlend = false;
-	private static boolean sEnableCulling = false;
+	private boolean mEnableDither = true;
+	private boolean mEnableDepthTest = true;
 
-	private static float sLineWidth = 1;
+	private boolean mEnableScissorTest = false;
+	private boolean mEnableBlend = false;
+	private boolean mEnableCulling = false;
 
+	private float mLineWidth = 1;
 
-	private static final GLMatrixStack sModelViewGLMatrixStack = new GLMatrixStack();
-	private static final GLMatrixStack sProjectionGLMatrixStack = new GLMatrixStack();
+	private final GLMatrixStack mModelViewGLMatrixStack = new GLMatrixStack();
+	private final GLMatrixStack mProjectionGLMatrixStack = new GLMatrixStack();
 
-	private static final float[] sModelViewGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
-	private static final float[] sProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
-	private static final float[] sModelViewProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
+	private final float[] mModelViewGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
+	private final float[] mProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
+	private final float[] mModelViewProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public static String getVersion() {
-		return GLState.sVersion;
+	public String getVersion() {
+		return this.mVersion;
 	}
 
-	public static String getRenderer() {
-		return GLState.sRenderer;
+	public String getRenderer() {
+		return this.mRenderer;
 	}
 
-	public static String getExtensions() {
-		return GLState.sExtensions;
+	public String getExtensions() {
+		return this.mExtensions;
 	}
 
-	public static int getMaximumVertexAttributeCount() {
-		return GLState.sMaximumVertexAttributeCount;
+	public int getMaximumVertexAttributeCount() {
+		return this.mMaximumVertexAttributeCount;
 	}
 
-	public static int getMaximumVertexShaderUniformVectorCount() {
-		return sMaximumVertexShaderUniformVectorCount;
+	public int getMaximumVertexShaderUniformVectorCount() {
+		return this.mMaximumVertexShaderUniformVectorCount;
 	}
 
-	public static int getMaximumFragmentShaderUniformVectorCount() {
-		return sMaximumFragmentShaderUniformVectorCount;
+	public int getMaximumFragmentShaderUniformVectorCount() {
+		return this.mMaximumFragmentShaderUniformVectorCount;
 	}
 
-	public static int getMaximumTextureUnits() {
-		return sMaximumTextureUnits;
+	public int getMaximumTextureUnits() {
+		return this.mMaximumTextureUnits;
 	}
 
-	public static int getMaximumTextureSize() {
-		return sMaximumTextureSize;
+	public int getMaximumTextureSize() {
+		return this.mMaximumTextureSize;
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	public static void reset(final RenderOptions pRenderOptions) {
-		GLState.sVersion = GLES20.glGetString(GLES20.GL_VERSION);
-		GLState.sRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
-		GLState.sExtensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
+	public void reset(final RenderOptions pRenderOptions) {
+		this.mVersion = GLES20.glGetString(GLES20.GL_VERSION);
+		this.mRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
+		this.mExtensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
 
-		GLState.sMaximumVertexAttributeCount = GLState.getInteger(GLES20.GL_MAX_VERTEX_ATTRIBS);
-		GLState.sMaximumVertexShaderUniformVectorCount = GLState.getInteger(GLES20.GL_MAX_VERTEX_UNIFORM_VECTORS);
-		GLState.sMaximumFragmentShaderUniformVectorCount = GLState.getInteger(GLES20.GL_MAX_FRAGMENT_UNIFORM_VECTORS);
-		GLState.sMaximumTextureUnits = GLState.getInteger(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS);
-		GLState.sMaximumTextureSize = GLState.getInteger(GLES20.GL_MAX_TEXTURE_SIZE);
+		this.mMaximumVertexAttributeCount = this.getInteger(GLES20.GL_MAX_VERTEX_ATTRIBS);
+		this.mMaximumVertexShaderUniformVectorCount = this.getInteger(GLES20.GL_MAX_VERTEX_UNIFORM_VECTORS);
+		this.mMaximumFragmentShaderUniformVectorCount = this.getInteger(GLES20.GL_MAX_FRAGMENT_UNIFORM_VECTORS);
+		this.mMaximumTextureUnits = this.getInteger(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS);
+		this.mMaximumTextureSize = this.getInteger(GLES20.GL_MAX_TEXTURE_SIZE);
 
-		Debug.d("VERSION: " + GLState.sVersion);
-		Debug.d("RENDERER: " + GLState.sRenderer);
-		Debug.d("EXTENSIONS: " + GLState.sExtensions);
-		Debug.d("MAX_VERTEX_ATTRIBS: " + GLState.sMaximumVertexAttributeCount);
-		Debug.d("MAX_VERTEX_UNIFORM_VECTORS: " + GLState.sMaximumVertexShaderUniformVectorCount);
-		Debug.d("MAX_FRAGMENT_UNIFORM_VECTORS: " + GLState.sMaximumFragmentShaderUniformVectorCount);
-		Debug.d("MAX_TEXTURE_IMAGE_UNITS: " + GLState.sMaximumTextureUnits);
-		Debug.d("MAX_TEXTURE_SIZE: " + GLState.sMaximumTextureSize);
+		Debug.d("VERSION: " + this.mVersion);
+		Debug.d("RENDERER: " + this.mRenderer);
+		Debug.d("EXTENSIONS: " + this.mExtensions);
+		Debug.d("MAX_VERTEX_ATTRIBS: " + this.mMaximumVertexAttributeCount);
+		Debug.d("MAX_VERTEX_UNIFORM_VECTORS: " + this.mMaximumVertexShaderUniformVectorCount);
+		Debug.d("MAX_FRAGMENT_UNIFORM_VECTORS: " + this.mMaximumFragmentShaderUniformVectorCount);
+		Debug.d("MAX_TEXTURE_IMAGE_UNITS: " + this.mMaximumTextureUnits);
+		Debug.d("MAX_TEXTURE_SIZE: " + this.mMaximumTextureSize);
 
-		GLState.sModelViewGLMatrixStack.reset();
-		GLState.sProjectionGLMatrixStack.reset();
+		this.mModelViewGLMatrixStack.reset();
+		this.mProjectionGLMatrixStack.reset();
 
-		GLState.sCurrentBufferID = -1;
-		GLState.sCurrentShaderProgramID = -1;
-		Arrays.fill(GLState.sCurrentBoundTextureIDs, -1);
-		GLState.sCurrentFramebufferID = -1;
-		GLState.sCurrentActiveTextureIndex = 0;
+		this.mCurrentBufferID = -1;
+		this.mCurrentShaderProgramID = -1;
+		Arrays.fill(this.mCurrentBoundTextureIDs, -1);
+		this.mCurrentFramebufferID = -1;
+		this.mCurrentActiveTextureIndex = 0;
 
-		GLState.sCurrentSourceBlendMode = -1;
-		GLState.sCurrentDestinationBlendMode = -1;
+		this.mCurrentSourceBlendMode = -1;
+		this.mCurrentDestinationBlendMode = -1;
 
-		GLState.enableDither();
-		GLState.enableDepthTest();
+		this.enableDither();
+		this.enableDepthTest();
 
-		GLState.disableBlend();
-		GLState.disableCulling();
+		this.disableBlend();
+		this.disableCulling();
 
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION);
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION);
 
-		GLState.sLineWidth = 1;
+		this.mLineWidth = 1;
 	}
 
-	public static void enableScissorTest() {
-		if(!GLState.sEnableScissorTest) {
-			GLState.sEnableScissorTest = true;
+	public void enableScissorTest() {
+		if(!this.mEnableScissorTest) {
+			this.mEnableScissorTest = true;
 			GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
 		}
 	}
-	public static void disableScissorTest() {
-		if(GLState.sEnableScissorTest) {
-			GLState.sEnableScissorTest = false;
+	public void disableScissorTest() {
+		if(this.mEnableScissorTest) {
+			this.mEnableScissorTest = false;
 			GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
 		}
 	}
 
-	public static void enableBlend() {
-		if(!GLState.sEnableBlend) {
-			GLState.sEnableBlend = true;
+	public void enableBlend() {
+		if(!this.mEnableBlend) {
+			this.mEnableBlend = true;
 			GLES20.glEnable(GLES20.GL_BLEND);
 		}
 	}
-	public static void disableBlend() {
-		if(GLState.sEnableBlend) {
-			GLState.sEnableBlend = false;
+	public void disableBlend() {
+		if(this.mEnableBlend) {
+			this.mEnableBlend = false;
 			GLES20.glDisable(GLES20.GL_BLEND);
 		}
 	}
 
-	public static void enableCulling() {
-		if(!GLState.sEnableCulling) {
-			GLState.sEnableCulling = true;
+	public void enableCulling() {
+		if(!this.mEnableCulling) {
+			this.mEnableCulling = true;
 			GLES20.glEnable(GLES20.GL_CULL_FACE);
 		}
 	}
-	public static void disableCulling() {
-		if(GLState.sEnableCulling) {
-			GLState.sEnableCulling = false;
+	public void disableCulling() {
+		if(this.mEnableCulling) {
+			this.mEnableCulling = false;
 			GLES20.glDisable(GLES20.GL_CULL_FACE);
 		}
 	}
 
-	public static void enableDither() {
-		if(!GLState.sEnableDither) {
-			GLState.sEnableDither = true;
+	public void enableDither() {
+		if(!this.mEnableDither) {
+			this.mEnableDither = true;
 			GLES20.glEnable(GLES20.GL_DITHER);
 		}
 	}
-	public static void disableDither() {
-		if(GLState.sEnableDither) {
-			GLState.sEnableDither = false;
+	public void disableDither() {
+		if(this.mEnableDither) {
+			this.mEnableDither = false;
 			GLES20.glDisable(GLES20.GL_DITHER);
 		}
 	}
 
-	public static void enableDepthTest() {
-		if(!GLState.sEnableDepthTest) {
-			GLState.sEnableDepthTest = true;
+	public void enableDepthTest() {
+		if(!this.mEnableDepthTest) {
+			this.mEnableDepthTest = true;
 			GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 		}
 	}
-	public static void disableDepthTest() {
-		if(GLState.sEnableDepthTest) {
-			GLState.sEnableDepthTest = false;
+	public void disableDepthTest() {
+		if(this.mEnableDepthTest) {
+			this.mEnableDepthTest = false;
 			GLES20.glDisable(GLES20.GL_DEPTH_TEST);
 		}
 	}
 
-	public static int generateBuffer() {
-		GLES20.glGenBuffers(1, GLState.HARDWAREID_CONTAINER, 0);
-		return GLState.HARDWAREID_CONTAINER[0];
+	public int generateBuffer() {
+		GLES20.glGenBuffers(1, this.mHardwareIDContainer, 0);
+		return this.mHardwareIDContainer[0];
 	}
 
-	public static int generateBuffer(final int pSize, final int pUsage) {
-		GLES20.glGenBuffers(1, GLState.HARDWAREID_CONTAINER, 0);
-		final int hardwareBufferID = GLState.HARDWAREID_CONTAINER[0];
+	public int generateBuffer(final int pSize, final int pUsage) {
+		GLES20.glGenBuffers(1, this.mHardwareIDContainer, 0);
+		final int hardwareBufferID = this.mHardwareIDContainer[0];
 
-		GLState.bindBuffer(hardwareBufferID);
+		this.bindBuffer(hardwareBufferID);
 		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, pSize, null, pUsage);
-		GLState.bindBuffer(0);
+		this.bindBuffer(0);
 
 		return hardwareBufferID;
 	}
 
-	public static void bindBuffer(final int pHardwareBufferID) {
-		if(GLState.sCurrentBufferID != pHardwareBufferID) {
-			GLState.sCurrentBufferID = pHardwareBufferID;
+	public void bindBuffer(final int pHardwareBufferID) {
+		if(this.mCurrentBufferID != pHardwareBufferID) {
+			this.mCurrentBufferID = pHardwareBufferID;
 			GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, pHardwareBufferID);
 		}
 	}
 
-	public static void deleteBuffer(final int pHardwareBufferID) {
-		if(GLState.sCurrentBufferID == pHardwareBufferID) {
-			GLState.sCurrentBufferID = -1;
+	public void deleteBuffer(final int pHardwareBufferID) {
+		if(this.mCurrentBufferID == pHardwareBufferID) {
+			this.mCurrentBufferID = -1;
 		}
-		GLState.HARDWAREID_CONTAINER[0] = pHardwareBufferID;
-		GLES20.glDeleteBuffers(1, GLState.HARDWAREID_CONTAINER, 0);
+		this.mHardwareIDContainer[0] = pHardwareBufferID;
+		GLES20.glDeleteBuffers(1, this.mHardwareIDContainer, 0);
 	}
 
-	public static int generateFramebuffer() {
-		GLES20.glGenFramebuffers(1, GLState.HARDWAREID_CONTAINER, 0);
-		return GLState.HARDWAREID_CONTAINER[0];
+	public int generateFramebuffer() {
+		GLES20.glGenFramebuffers(1, this.mHardwareIDContainer, 0);
+		return this.mHardwareIDContainer[0];
 	}
 
-	public static void bindFramebuffer(final int pFramebufferID) {
+	public void bindFramebuffer(final int pFramebufferID) {
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, pFramebufferID);
 	}
 
-	public static int getFramebufferStatus() {
+	public int getFramebufferStatus() {
 		return GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER);
 	}
 
-	public static void checkFramebufferStatus() {
-		final int status = GLState.getFramebufferStatus();
+	public void checkFramebufferStatus() {
+		final int status = this.getFramebufferStatus();
 		if(status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
 			throw new GLException(status);
 		}
 	}
 
-	public static int getActiveFramebuffer() {
-		return GLState.getInteger(GLES20.GL_FRAMEBUFFER_BINDING);
+	public int getActiveFramebuffer() {
+		return this.getInteger(GLES20.GL_FRAMEBUFFER_BINDING);
 	}
 
-	public static void deleteFramebuffer(final int pHardwareFramebufferID) {
-		if(GLState.sCurrentFramebufferID == pHardwareFramebufferID) {
-			GLState.sCurrentFramebufferID = -1;
+	public void deleteFramebuffer(final int pHardwareFramebufferID) {
+		if(this.mCurrentFramebufferID == pHardwareFramebufferID) {
+			this.mCurrentFramebufferID = -1;
 		}
-		GLState.HARDWAREID_CONTAINER[0] = pHardwareFramebufferID;
-		GLES20.glDeleteFramebuffers(1, GLState.HARDWAREID_CONTAINER, 0);
+		this.mHardwareIDContainer[0] = pHardwareFramebufferID;
+		GLES20.glDeleteFramebuffers(1, this.mHardwareIDContainer, 0);
 	}
 
-	public static void useProgram(final int pShaderProgramID) {
-		if(GLState.sCurrentShaderProgramID != pShaderProgramID) {
-			GLState.sCurrentShaderProgramID = pShaderProgramID;
+	public void useProgram(final int pShaderProgramID) {
+		if(this.mCurrentShaderProgramID != pShaderProgramID) {
+			this.mCurrentShaderProgramID = pShaderProgramID;
 			GLES20.glUseProgram(pShaderProgramID);
 		}
 	}
 
-	public static void deleteProgram(final int pShaderProgramID) {
-		if(GLState.sCurrentShaderProgramID == pShaderProgramID) {
-			GLState.sCurrentShaderProgramID = -1;
+	public void deleteProgram(final int pShaderProgramID) {
+		if(this.mCurrentShaderProgramID == pShaderProgramID) {
+			this.mCurrentShaderProgramID = -1;
 		}
 		GLES20.glDeleteProgram(pShaderProgramID);
 	}
 
-	public static int generateTexture() {
-		GLES20.glGenTextures(1, GLState.HARDWAREID_CONTAINER, 0);
-		return GLState.HARDWAREID_CONTAINER[0];
+	public int generateTexture() {
+		GLES20.glGenTextures(1, this.mHardwareIDContainer, 0);
+		return this.mHardwareIDContainer[0];
 	}
 
 	/**
 	 * @return {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}
 	 */
-	public static int getActiveTexture() {
-		return GLState.sCurrentActiveTextureIndex + GLES20.GL_TEXTURE0;
+	public int getActiveTexture() {
+		return this.mCurrentActiveTextureIndex + GLES20.GL_TEXTURE0;
 	}
 
 	/**
 	 * @param pGLActiveTexture from {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}. 
 	 */
-	public static void activeTexture(final int pGLActiveTexture) {
+	public void activeTexture(final int pGLActiveTexture) {
 		final int activeTextureIndex = pGLActiveTexture - GLES20.GL_TEXTURE0; 
-		if(pGLActiveTexture != GLState.sCurrentActiveTextureIndex) {
-			GLState.sCurrentActiveTextureIndex = activeTextureIndex;
+		if(pGLActiveTexture != this.mCurrentActiveTextureIndex) {
+			this.mCurrentActiveTextureIndex = activeTextureIndex;
 			GLES20.glActiveTexture(pGLActiveTexture);
 		}
 	}
@@ -326,126 +325,126 @@ public class GLState {
 	 * @param GLES20
 	 * @param pHardwareTextureID
 	 */
-	public static void bindTexture(final int pHardwareTextureID) {
-		if(GLState.sCurrentBoundTextureIDs[GLState.sCurrentActiveTextureIndex] != pHardwareTextureID) {
-			GLState.sCurrentBoundTextureIDs[GLState.sCurrentActiveTextureIndex] = pHardwareTextureID;
+	public void bindTexture(final int pHardwareTextureID) {
+		if(this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] != pHardwareTextureID) {
+			this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] = pHardwareTextureID;
 			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, pHardwareTextureID);
 		}
 	}
 
-	public static void deleteTexture(final int pHardwareTextureID) {
-		if(GLState.sCurrentBoundTextureIDs[GLState.sCurrentActiveTextureIndex] == pHardwareTextureID) {
-			GLState.sCurrentBoundTextureIDs[GLState.sCurrentActiveTextureIndex] = -1;
+	public void deleteTexture(final int pHardwareTextureID) {
+		if(this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] == pHardwareTextureID) {
+			this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] = -1;
 		}
-		GLState.HARDWAREID_CONTAINER[0] = pHardwareTextureID;
-		GLES20.glDeleteTextures(1, GLState.HARDWAREID_CONTAINER, 0);
+		this.mHardwareIDContainer[0] = pHardwareTextureID;
+		GLES20.glDeleteTextures(1, this.mHardwareIDContainer, 0);
 	}
 
-	public static void blendFunction(final int pSourceBlendMode, final int pDestinationBlendMode) {
-		if(GLState.sCurrentSourceBlendMode != pSourceBlendMode || GLState.sCurrentDestinationBlendMode != pDestinationBlendMode) {
-			GLState.sCurrentSourceBlendMode = pSourceBlendMode;
-			GLState.sCurrentDestinationBlendMode = pDestinationBlendMode;
+	public void blendFunction(final int pSourceBlendMode, final int pDestinationBlendMode) {
+		if(this.mCurrentSourceBlendMode != pSourceBlendMode || this.mCurrentDestinationBlendMode != pDestinationBlendMode) {
+			this.mCurrentSourceBlendMode = pSourceBlendMode;
+			this.mCurrentDestinationBlendMode = pDestinationBlendMode;
 			GLES20.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
 		}
 	}
 
-	public static void lineWidth(final float pLineWidth) {
-		if(GLState.sLineWidth  != pLineWidth) {
-			GLState.sLineWidth = pLineWidth;
+	public void lineWidth(final float pLineWidth) {
+		if(this.mLineWidth  != pLineWidth) {
+			this.mLineWidth = pLineWidth;
 			GLES20.glLineWidth(pLineWidth);
 		}
 	}
 
-	public static void pushModelViewGLMatrix() {
-		GLState.sModelViewGLMatrixStack.glPushMatrix();
+	public void pushModelViewGLMatrix() {
+		this.mModelViewGLMatrixStack.glPushMatrix();
 	}
 
-	public static void popModelViewGLMatrix() {
-		GLState.sModelViewGLMatrixStack.glPopMatrix();
+	public void popModelViewGLMatrix() {
+		this.mModelViewGLMatrixStack.glPopMatrix();
 	}
 
-	public static void loadModelViewGLMatrixIdentity() {
-		GLState.sModelViewGLMatrixStack.glLoadIdentity();
+	public void loadModelViewGLMatrixIdentity() {
+		this.mModelViewGLMatrixStack.glLoadIdentity();
 	}
 
-	public static void translateModelViewGLMatrixf(final float pX, final float pY, final float pZ) {
-		GLState.sModelViewGLMatrixStack.glTranslatef(pX, pY, pZ);
+	public void translateModelViewGLMatrixf(final float pX, final float pY, final float pZ) {
+		this.mModelViewGLMatrixStack.glTranslatef(pX, pY, pZ);
 	}
 
-	public static void rotateModelViewGLMatrixf(final float pAngle, final float pX, final float pY, final float pZ) {
-		GLState.sModelViewGLMatrixStack.glRotatef(pAngle, pX, pY, pZ);
+	public void rotateModelViewGLMatrixf(final float pAngle, final float pX, final float pY, final float pZ) {
+		this.mModelViewGLMatrixStack.glRotatef(pAngle, pX, pY, pZ);
 	}
 
-	public static void scaleModelViewGLMatrixf(final float pScaleX, final float pScaleY, final int pScaleZ) {
-		GLState.sModelViewGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
+	public void scaleModelViewGLMatrixf(final float pScaleX, final float pScaleY, final int pScaleZ) {
+		this.mModelViewGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
 	}
 
-	public static void skewModelViewGLMatrixf(final float pSkewX, final float pSkewY) {
-		GLState.sModelViewGLMatrixStack.glSkewf(pSkewX, pSkewY);
+	public void skewModelViewGLMatrixf(final float pSkewX, final float pSkewY) {
+		this.mModelViewGLMatrixStack.glSkewf(pSkewX, pSkewY);
 	}
 
-	public static void orthoModelViewGLMatrixf(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
-		GLState.sModelViewGLMatrixStack.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
+	public void orthoModelViewGLMatrixf(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
+		this.mModelViewGLMatrixStack.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}
 
-	public static void pushProjectionGLMatrix() {
-		GLState.sProjectionGLMatrixStack.glPushMatrix();
+	public void pushProjectionGLMatrix() {
+		this.mProjectionGLMatrixStack.glPushMatrix();
 	}
 
-	public static void popProjectionGLMatrix() {
-		GLState.sProjectionGLMatrixStack.glPopMatrix();
+	public void popProjectionGLMatrix() {
+		this.mProjectionGLMatrixStack.glPopMatrix();
 	}
 
-	public static void loadProjectionGLMatrixIdentity() {
-		GLState.sProjectionGLMatrixStack.glLoadIdentity();
+	public void loadProjectionGLMatrixIdentity() {
+		this.mProjectionGLMatrixStack.glLoadIdentity();
 	}
 
-	public static void translateProjectionGLMatrixf(final float pX, final float pY, final float pZ) {
-		GLState.sProjectionGLMatrixStack.glTranslatef(pX, pY, pZ);
+	public void translateProjectionGLMatrixf(final float pX, final float pY, final float pZ) {
+		this.mProjectionGLMatrixStack.glTranslatef(pX, pY, pZ);
 	}
 
-	public static void rotateProjectionGLMatrixf(final float pAngle, final float pX, final float pY, final float pZ) {
-		GLState.sProjectionGLMatrixStack.glRotatef(pAngle, pX, pY, pZ);
+	public void rotateProjectionGLMatrixf(final float pAngle, final float pX, final float pY, final float pZ) {
+		this.mProjectionGLMatrixStack.glRotatef(pAngle, pX, pY, pZ);
 	}
 
-	public static void scaleProjectionGLMatrixf(final float pScaleX, final float pScaleY, final int pScaleZ) {
-		GLState.sProjectionGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
+	public void scaleProjectionGLMatrixf(final float pScaleX, final float pScaleY, final int pScaleZ) {
+		this.mProjectionGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
 	}
 
-	public static void skewProjectionGLMatrixf(final float pSkewX, final float pSkewY) {
-		GLState.sProjectionGLMatrixStack.glSkewf(pSkewX, pSkewY);
+	public void skewProjectionGLMatrixf(final float pSkewX, final float pSkewY) {
+		this.mProjectionGLMatrixStack.glSkewf(pSkewX, pSkewY);
 	}
 
-	public static void orthoProjectionGLMatrixf(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
-		GLState.sProjectionGLMatrixStack.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
+	public void orthoProjectionGLMatrixf(final float pLeft, final float pRight, final float pBottom, final float pTop, final float pZNear, final float pZFar) {
+		this.mProjectionGLMatrixStack.glOrthof(pLeft, pRight, pBottom, pTop, pZNear, pZFar);
 	}
 
-	public static float[] getModelViewGLMatrix() {
-		GLState.sModelViewGLMatrixStack.getMatrix(GLState.sModelViewGLMatrix);
-		return GLState.sModelViewGLMatrix;
+	public float[] getModelViewGLMatrix() {
+		this.mModelViewGLMatrixStack.getMatrix(this.mModelViewGLMatrix);
+		return this.mModelViewGLMatrix;
 	}
 
-	public static float[] getProjectionGLMatrix() {
-		GLState.sProjectionGLMatrixStack.getMatrix(GLState.sProjectionGLMatrix);
-		return GLState.sProjectionGLMatrix;
+	public float[] getProjectionGLMatrix() {
+		this.mProjectionGLMatrixStack.getMatrix(this.mProjectionGLMatrix);
+		return this.mProjectionGLMatrix;
 	}
 
-	public static float[] getModelViewProjectionGLMatrix() {
-		Matrix.multiplyMM(GLState.sModelViewProjectionGLMatrix, 0, GLState.sProjectionGLMatrixStack.mMatrixStack, GLState.sProjectionGLMatrixStack.mMatrixStackOffset, GLState.sModelViewGLMatrixStack.mMatrixStack, GLState.sModelViewGLMatrixStack.mMatrixStackOffset);
-		return GLState.sModelViewProjectionGLMatrix;
+	public float[] getModelViewProjectionGLMatrix() {
+		Matrix.multiplyMM(this.mModelViewProjectionGLMatrix, 0, this.mProjectionGLMatrixStack.mMatrixStack, this.mProjectionGLMatrixStack.mMatrixStackOffset, this.mModelViewGLMatrixStack.mMatrixStack, this.mModelViewGLMatrixStack.mMatrixStackOffset);
+		return this.mModelViewProjectionGLMatrix;
 	}
 
-	public static void resetModelViewGLMatrixStack() {
-		GLState.sModelViewGLMatrixStack.reset();
+	public void resetModelViewGLMatrixStack() {
+		this.mModelViewGLMatrixStack.reset();
 	}
 
-	public static void resetProjectionGLMatrixStack() {
-		GLState.sProjectionGLMatrixStack.reset();
+	public void resetProjectionGLMatrixStack() {
+		this.mProjectionGLMatrixStack.reset();
 	}
 
-	public static void resetGLMatrixStacks() {
-		GLState.sModelViewGLMatrixStack.reset();
-		GLState.sProjectionGLMatrixStack.reset();
+	public void resetGLMatrixStacks() {
+		this.mModelViewGLMatrixStack.reset();
+		this.mProjectionGLMatrixStack.reset();
 	}
 
 	/**
@@ -455,7 +454,7 @@ public class GLState {
 	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 * @param pBorder
 	 */
-	public static void glTexImage2D(final int pTarget, final int pLevel, final Bitmap pBitmap, final int pBorder, final PixelFormat pPixelFormat) {
+	public void glTexImage2D(final int pTarget, final int pLevel, final Bitmap pBitmap, final int pBorder, final PixelFormat pPixelFormat) {
 		final Buffer pixelBuffer = GLHelper.getPixels(pBitmap, pPixelFormat, ByteOrder.BIG_ENDIAN);
 
 		GLES20.glTexImage2D(pTarget, pLevel, pPixelFormat.getGLInternalFormat(), pBitmap.getWidth(), pBitmap.getHeight(), pBorder, pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
@@ -467,15 +466,15 @@ public class GLState {
 	 * </br>
 	 * See topic: '<a href="http://groups.google.com/group/android-developers/browse_thread/thread/baa6c33e63f82fca">PNG loading that doesn't premultiply alpha?</a>'
 	 */
-	public static void glTexSubImage2D(final int pTarget, final int pLevel, final int pX, final int pY, final Bitmap pBitmap, final PixelFormat pPixelFormat) {
+	public void glTexSubImage2D(final int pTarget, final int pLevel, final int pX, final int pY, final Bitmap pBitmap, final PixelFormat pPixelFormat) {
 		final Buffer pixelBuffer = GLHelper.getPixels(pBitmap, pPixelFormat, ByteOrder.BIG_ENDIAN);
 
 		GLES20.glTexSubImage2D(pTarget, pLevel, pX, pY, pBitmap.getWidth(), pBitmap.getHeight(), pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
 	}
 
-	public static int getInteger(final int pAttribute) {
-		GLES20.glGetIntegerv(pAttribute, HARDWAREID_CONTAINER, 0);
-		return HARDWAREID_CONTAINER[0];
+	public int getInteger(final int pAttribute) {
+		GLES20.glGetIntegerv(pAttribute, this.mHardwareIDContainer, 0);
+		return this.mHardwareIDContainer[0];
 	}
 
 	public static int getError() {

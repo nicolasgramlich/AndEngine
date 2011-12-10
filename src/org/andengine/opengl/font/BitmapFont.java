@@ -9,6 +9,7 @@ import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.exception.FontException;
 import org.andengine.opengl.font.exception.LetterNotFoundException;
 import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
@@ -326,15 +327,15 @@ public class BitmapFont implements IFont {
 	}
 
 	@Override
-	public BitmapFont load() {
-		this.loadTextures();
+	public BitmapFont load(final TextureManager pTextureManager, final FontManager pFontManager) {
+		this.loadTextures(pTextureManager);
 
 		return this;
 	}
 
 	@Override
-	public BitmapFont unload() {
-		this.unloadTextures();
+	public BitmapFont unload(final TextureManager pTextureManager, final FontManager pFontManager) {
+		this.unloadTextures(pTextureManager);
 
 		return this;
 	}
@@ -381,19 +382,19 @@ public class BitmapFont implements IFont {
 	// Methods
 	// ===========================================================
 
-	public void loadTextures() {
+	public void loadTextures(final TextureManager pTextureManager) {
 		final BitmapFontPage[] bitmapFontPages = this.mBitmapFontPages;
 		final int bitmapFontPageCount = bitmapFontPages.length;
 		for(int i = 0; i < bitmapFontPageCount; i++) {
-			bitmapFontPages[i].getTexture().load();
+			bitmapFontPages[i].getTexture().load(pTextureManager);
 		}
 	}
 
-	public void unloadTextures() {
+	public void unloadTextures(final TextureManager pTextureManager) {
 		final BitmapFontPage[] bitmapFontPages = this.mBitmapFontPages;
 		final int bitmapFontPageCount = bitmapFontPages.length;
 		for(int i = 0; i < bitmapFontPageCount; i++) {
-			bitmapFontPages[i].getTexture().unload();
+			bitmapFontPages[i].getTexture().unload(pTextureManager);
 		}
 	}
 

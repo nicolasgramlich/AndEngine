@@ -8,6 +8,7 @@ import org.andengine.entity.IEntityFactory;
 import org.andengine.entity.particle.emitter.IParticleEmitter;
 import org.andengine.entity.particle.initializer.IParticleInitializer;
 import org.andengine.entity.particle.modifier.IParticleModifier;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.constants.Constants;
 import org.andengine.util.math.MathUtils;
 
@@ -104,10 +105,10 @@ public class ParticleSystem<T extends Entity> extends Entity {
 	}
 
 	@Override
-	protected void onManagedDraw(final Camera pCamera) {
+	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
 		final Particle<T>[] particles = this.mParticles;
 		for(int i = this.mParticlesAlive - 1; i >= 0; i--) {
-			particles[i].onDraw(pCamera);
+			particles[i].onDraw(pGLState, pCamera);
 		}
 	}
 

@@ -91,17 +91,17 @@ public abstract class Shape extends Entity implements IShape {
 	protected abstract void onUpdateVertices();
 
 	@Override
-	protected void preDraw(final Camera pCamera) {
+	protected void preDraw(final GLState pGLState, final Camera pCamera) {
 		if(this.mBlendingEnabled) {
-			GLState.enableBlend();
-			GLState.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+			pGLState.enableBlend();
+			pGLState.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 		}
 	}
 
 	@Override
-	protected void postDraw(final Camera pCamera) {
+	protected void postDraw(final GLState pGLState, final Camera pCamera) {
 		if(this.mBlendingEnabled) {
-			GLState.disableBlend();
+			pGLState.disableBlend();
 		}
 	}
 
@@ -118,9 +118,9 @@ public abstract class Shape extends Entity implements IShape {
 	protected abstract boolean isCulled(final Camera pCamera);
 
 	@Override
-	protected void onManagedDraw(final Camera pCamera) {
+	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
 		if(!this.mCullingEnabled || !this.isCulled(pCamera)) {
-			super.onManagedDraw(pCamera);
+			super.onManagedDraw(pGLState, pCamera);
 		}
 	}
 

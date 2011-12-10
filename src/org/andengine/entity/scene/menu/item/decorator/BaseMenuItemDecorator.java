@@ -11,6 +11,7 @@ import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.shape.IShape;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.util.color.Color;
 import org.andengine.util.transformation.Transformation;
@@ -443,8 +444,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void onDraw(final Camera pCamera) {
-		this.mMenuItem.onDraw(pCamera);
+	public void onDraw(final GLState pGLState, final Camera pCamera) {
+		this.mMenuItem.onDraw(pGLState, pCamera);
 	}
 
 	@Override

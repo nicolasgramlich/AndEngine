@@ -3,6 +3,7 @@ package org.andengine.entity.particle;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.Entity;
+import org.andengine.opengl.util.GLState;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -84,9 +85,9 @@ public class Particle<T extends Entity> {
 		}
 	}
 
-	public void onDraw(final Camera pCamera) {
+	public void onDraw(final GLState pGLState, final Camera pCamera) {
 		if(!this.mDead) {
-			this.mEntity.onDraw(pCamera);
+			this.mEntity.onDraw(pGLState, pCamera);
 		}
 	}
 

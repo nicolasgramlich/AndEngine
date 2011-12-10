@@ -69,11 +69,11 @@ public class PositionTextureCoordinatesTextureSelectShaderProgram extends Shader
 	// ===========================================================
 
 	@Override
-	protected void link() throws ShaderProgramLinkException {
+	protected void link(final GLState pGLState) throws ShaderProgramLinkException {
 		GLES20.glBindAttribLocation(this.mProgramID, ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION);
 		GLES20.glBindAttribLocation(this.mProgramID, ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES);
 
-		super.link();
+		super.link(pGLState);
 
 		PositionTextureCoordinatesTextureSelectShaderProgram.sUniformModelViewPositionMatrixLocation = this.getUniformLocation(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX);
 		PositionTextureCoordinatesTextureSelectShaderProgram.sUniformTexture0Location = this.getUniformLocation(ShaderProgramConstants.UNIFORM_TEXTURE_0);
@@ -82,21 +82,21 @@ public class PositionTextureCoordinatesTextureSelectShaderProgram extends Shader
 	}
 
 	@Override
-	public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public void bind(final GLState pGLState, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
 
-		super.bind(pVertexBufferObjectAttributes);
+		super.bind(pGLState, pVertexBufferObjectAttributes);
 
-		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesTextureSelectShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionGLMatrix(), 0);
+		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesTextureSelectShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, pGLState.getModelViewProjectionGLMatrix(), 0);
 		GLES20.glUniform1i(PositionTextureCoordinatesTextureSelectShaderProgram.sUniformTexture0Location, 0);
 		GLES20.glUniform1i(PositionTextureCoordinatesTextureSelectShaderProgram.sUniformTexture1Location, 1);
 	}
 
 	@Override
-	public void unbind() {
+	public void unbind(final GLState pGLState) {
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
 		
-		super.unbind();
+		super.unbind(pGLState);
 	}
 
 	// ===========================================================

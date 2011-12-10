@@ -88,7 +88,7 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 
 	@Override
-	protected void onDrawScene(final Camera pFirstCamera) {
+	protected void onDrawScene(final GLState pGLState, final Camera pFirstCamera) {
 		final Camera secondCamera = this.getSecondCamera();
 
 		final int surfaceWidth = this.mSurfaceWidth;
@@ -96,15 +96,15 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 
 		final int surfaceHeight = this.mSurfaceHeight;
 
-		GLState.enableScissorTest();
+		pGLState.enableScissorTest();
 
 		/* First Screen. With first camera, on the left half of the screens width. */
 		if(super.mScene != null) {
 			GLES20.glScissor(0, 0, surfaceWidthHalf, surfaceHeight);
 			GLES20.glViewport(0, 0, surfaceWidthHalf, surfaceHeight);
 
-			super.mScene.onDraw(pFirstCamera);
-			pFirstCamera.onDrawHUD();
+			super.mScene.onDraw(pGLState, pFirstCamera);
+			pFirstCamera.onDrawHUD(pGLState);
 		}
 
 		/* Second Screen. With second camera, on the right half of the screens width. */
@@ -112,11 +112,11 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 			GLES20.glScissor(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 			GLES20.glViewport(surfaceWidthHalf, 0, surfaceWidthHalf, surfaceHeight);
 
-			this.mSecondScene.onDraw(secondCamera);
-			secondCamera.onDrawHUD();
+			this.mSecondScene.onDraw(pGLState, secondCamera);
+			secondCamera.onDrawHUD(pGLState);
 		}
 
-		GLState.disableScissorTest();
+		pGLState.disableScissorTest();
 	}
 
 	@Override

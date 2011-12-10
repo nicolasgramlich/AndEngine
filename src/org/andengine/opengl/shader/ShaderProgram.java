@@ -117,42 +117,42 @@ public class ShaderProgram implements ShaderProgramConstants {
 	// Methods
 	// ===========================================================
 
-	public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) throws ShaderProgramException {
+	public void bind(final GLState pGLState, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) throws ShaderProgramException {
 		if(!this.mCompiled) {
-			this.compile();
+			this.compile(pGLState);
 		}
-		GLState.useProgram(this.mProgramID);
+		pGLState.useProgram(this.mProgramID);
 
 		pVertexBufferObjectAttributes.glVertexAttribPointers();
 	}
 
-	public void unbind() throws ShaderProgramException {
-//		GLES20.glUseProgram(0); // TODO Does this have an positive/negative impact on performance?
+	public void unbind(final GLState pGLState) throws ShaderProgramException {
+//		pGLState.useProgram(0); // TODO Does this have an positive/negative impact on performance?
 	}
 
-	public void delete() {
+	public void delete(final GLState pGLState) {
 		if(this.mCompiled) {
 			this.mCompiled = false;
-			GLState.deleteProgram(this.mProgramID);
+			pGLState.deleteProgram(this.mProgramID);
 			this.mProgramID = -1;
 		}
 	}
 
-	protected void compile() throws ShaderProgramException {
-		final int vertexShaderID = ShaderProgram.compileShader(this.mVertexShaderSource.getShaderSource(), GLES20.GL_VERTEX_SHADER);
-		final int fragmentShaderID = ShaderProgram.compileShader(this.mFragmentShaderSource.getShaderSource(), GLES20.GL_FRAGMENT_SHADER);
+	protected void compile(final GLState pGLState) throws ShaderProgramException {
+		final int vertexShaderID = ShaderProgram.compileShader(this.mVertexShaderSource.getShaderSource(pGLState), GLES20.GL_VERTEX_SHADER);
+		final int fragmentShaderID = ShaderProgram.compileShader(this.mFragmentShaderSource.getShaderSource(pGLState), GLES20.GL_FRAGMENT_SHADER);
 
 		this.mProgramID = GLES20.glCreateProgram();
 		GLES20.glAttachShader(this.mProgramID, vertexShaderID);
 		GLES20.glAttachShader(this.mProgramID, fragmentShaderID);
 
-		this.link();
+		this.link(pGLState);
 
 		GLES20.glDeleteShader(vertexShaderID);
 		GLES20.glDeleteShader(fragmentShaderID);
 	}
 
-	protected void link() throws ShaderProgramLinkException {
+	protected void link(final GLState pGLState) throws ShaderProgramLinkException {
 		GLES20.glLinkProgram(this.mProgramID);
 
 		GLES20.glGetProgramiv(this.mProgramID, GLES20.GL_LINK_STATUS, ShaderProgram.HARDWAREID_CONTAINER, 0);

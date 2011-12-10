@@ -6,6 +6,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
 import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
@@ -90,22 +91,22 @@ public class Rectangle extends RectangularShape {
 	}
 
 	@Override
-	protected void preDraw(final Camera pCamera) {
-		super.preDraw(pCamera);
+	protected void preDraw(final GLState pGLState, final Camera pCamera) {
+		super.preDraw(pGLState, pCamera);
 
-		this.mRectangleVertexBufferObject.bind(this.mShaderProgram);
+		this.mRectangleVertexBufferObject.bind(pGLState, this.mShaderProgram);
 	}
 
 	@Override
-	protected void draw(final Camera pCamera) {
+	protected void draw(final GLState pGLState, final Camera pCamera) {
 		this.mRectangleVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Rectangle.VERTICES_PER_RECTANGLE);
 	}
 
 	@Override
-	protected void postDraw(final Camera pCamera) {
-		this.mRectangleVertexBufferObject.unbind(this.mShaderProgram);
+	protected void postDraw(final GLState pGLState, final Camera pCamera) {
+		this.mRectangleVertexBufferObject.unbind(pGLState, this.mShaderProgram);
 
-		super.postDraw(pCamera);
+		super.postDraw(pGLState, pCamera);
 	}
 
 	@Override

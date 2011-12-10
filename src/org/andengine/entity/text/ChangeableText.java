@@ -3,6 +3,7 @@ package org.andengine.entity.text;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.StringUtils;
@@ -141,7 +142,7 @@ public class ChangeableText extends Text {
 	// ===========================================================
 
 	@Override
-	protected void draw(final Camera pCamera) {
+	protected void draw(final GLState pGLState, final Camera pCamera) {
 		this.mTextVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mCharacterCountCurrentText * Text.VERTICES_PER_LETTER);
 	}
 

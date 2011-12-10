@@ -9,6 +9,7 @@ import org.andengine.opengl.font.Letter;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
@@ -256,24 +257,24 @@ public class Text extends RectangularShape {
 	}
 
 	@Override
-	protected void preDraw(final Camera pCamera) {
-		super.preDraw(pCamera);
+	protected void preDraw(final GLState pGLState, final Camera pCamera) {
+		super.preDraw(pGLState, pCamera);
 
-		this.mFont.getTexture().bind();
+		this.mFont.getTexture().bind(pGLState);
 
-		this.mTextVertexBufferObject.bind(this.mShaderProgram);
+		this.mTextVertexBufferObject.bind(pGLState, this.mShaderProgram);
 	}
 
 	@Override
-	protected void draw(final Camera pCamera) {
+	protected void draw(final GLState pGLState, final Camera pCamera) {
 		this.mTextVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mVertexCount);
 	}
 
 	@Override
-	protected void postDraw(final Camera pCamera) {
-		this.mTextVertexBufferObject.unbind(this.mShaderProgram);
+	protected void postDraw(final GLState pGLState, final Camera pCamera) {
+		this.mTextVertexBufferObject.unbind(pGLState, this.mShaderProgram);
 
-		super.postDraw(pCamera);
+		super.postDraw(pGLState, pCamera);
 	}
 
 	@Override

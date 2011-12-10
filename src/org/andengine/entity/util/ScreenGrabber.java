@@ -4,6 +4,7 @@ import java.nio.IntBuffer;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
+import org.andengine.opengl.util.GLState;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -46,7 +47,7 @@ public class ScreenGrabber extends Entity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(final Camera pCamera) {
+	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
 		if(this.mScreenGrabPending) {
 			try {
 				final Bitmap screenGrab = ScreenGrabber.grab(this.mGrabX, this.mGrabY, this.mGrabWidth, this.mGrabHeight);

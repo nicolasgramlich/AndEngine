@@ -6,6 +6,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
@@ -113,7 +114,7 @@ public class TiledSprite extends Sprite {
 	}
 
 	@Override
-	protected void draw(final Camera pCamera) {
+	protected void draw(final GLState pGLState, final Camera pCamera) {
 		this.mTiledSpriteVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.getCurrentTileIndex() * TiledSprite.VERTICES_PER_TILEDSPRITE, TiledSprite.VERTICES_PER_TILEDSPRITE);
 	}
 

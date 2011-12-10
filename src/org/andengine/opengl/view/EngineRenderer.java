@@ -30,6 +30,7 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 	final ConfigChooser mConfigChooser;
 	final boolean mMultiSampling;
 	final IRendererListener mRendererListener;
+	final GLState mGLState;
 
 	// ===========================================================
 	// Constructors
@@ -39,6 +40,7 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 		this.mEngine = pEngine;
 		this.mConfigChooser = pConfigChooser;
 		this.mRendererListener = pRendererListener;
+		this.mGLState = new GLState();
 		this.mMultiSampling = this.mEngine.getEngineOptions().getRenderOptions().isMultiSampling();
 	}
 
@@ -57,7 +59,7 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 				this.mRendererListener.onSurfaceCreated();
 			}
 
-			GLState.reset(this.mEngine.getEngineOptions().getRenderOptions());
+			this.mGLState.reset(this.mEngine.getEngineOptions().getRenderOptions());
 
 			// TODO Check if available and make available through EngineOptions-RenderOptions
 //				GLES20.glEnable(GLES20.GL_POLYGON_SMOOTH);
@@ -67,13 +69,13 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 //				GLES20.glEnable(GLES20.GL_POINT_SMOOTH);
 //				GLES20.glHint(GLES20.GL_POINT_SMOOTH_HINT, GLES20.GL_NICEST);
 
-			GLState.disableDither();
-			GLState.disableDepthTest();
+			this.mGLState.disableDither();
+			this.mGLState.disableDepthTest();
 
-			GLState.enableBlend();
+			this.mGLState.enableBlend();
 
 			/* Enabling culling doesn't really make sense, because triangles are never drawn 'backwards' on purpose. */
-//				GLState.enableCulling();
+//				this.mGLState.enableCulling();
 //				GLES20.glFrontFace(GLES20.GL_CCW);
 //				GLES20.glCullFace(GLES20.GL_BACK);
 		}
@@ -81,15 +83,13 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
-		synchronized(GLState.class) {
-			if(this.mRendererListener != null) {
-				this.mRendererListener.onSurfaceChanged(pWidth, pHeight);
-			}
-
-			this.mEngine.setSurfaceSize(pWidth, pHeight);
-			GLES20.glViewport(0, 0, pWidth, pHeight);
-			GLState.loadProjectionGLMatrixIdentity();
+		if(this.mRendererListener != null) {
+			this.mRendererListener.onSurfaceChanged(pWidth, pHeight);
 		}
+
+		this.mEngine.setSurfaceSize(pWidth, pHeight);
+		GLES20.glViewport(0, 0, pWidth, pHeight);
+		this.mGLState.loadProjectionGLMatrixIdentity();
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 			}
 
 			try {
-				this.mEngine.onDrawFrame();
+				this.mEngine.onDrawFrame(this.mGLState);
 			} catch (final InterruptedException e) {
 				Debug.e("GLThread interrupted!", e);
 			}

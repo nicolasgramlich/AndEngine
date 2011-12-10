@@ -2,6 +2,8 @@ package org.andengine.opengl.font;
 
 import java.util.ArrayList;
 
+import org.andengine.opengl.util.GLState;
+
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -19,15 +21,11 @@ public class FontManager {
 	// Fields
 	// ===========================================================
 
-	private static final ArrayList<Font> sFontsManaged = new ArrayList<Font>();
+	private final ArrayList<Font> mFontsManaged = new ArrayList<Font>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	private FontManager() {
-
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -41,45 +39,57 @@ public class FontManager {
 	// Methods
 	// ===========================================================
 
-	public static void onCreate() {
+	public void onCreate() {
 
 	}
 
-	public static synchronized void onDestroy() {
-		final ArrayList<Font> managedFonts = FontManager.sFontsManaged;
+	public synchronized void onDestroy() {
+		final ArrayList<Font> managedFonts = this.mFontsManaged;
 		for(int i = managedFonts.size() - 1; i >= 0; i--) {
 			managedFonts.get(i).invalidateLetters();
 		}
 
-		FontManager.sFontsManaged.clear();
+		this.mFontsManaged.clear();
 	}
 
-	static synchronized void loadFont(final Font pFont) {
+	public synchronized void loadFont(final Font pFont) {
 		if(pFont == null) {
 			throw new IllegalArgumentException("pFont must not be null!");
 		}
-		FontManager.sFontsManaged.add(pFont);
+		this.mFontsManaged.add(pFont);
 	}
 
-	static synchronized void unloadFont(final Font pFont) {
+	public synchronized void loadFonts(final Font ...pFonts) {
+		for(int i = 0; i < pFonts.length; i++) {
+			this.loadFont(pFonts[i]);
+		}
+	}
+
+	public synchronized void unloadFont(final Font pFont) {
 		if(pFont == null) {
 			throw new IllegalArgumentException("pFont must not be null!");
 		}
-		FontManager.sFontsManaged.remove(pFont);
+		this.mFontsManaged.remove(pFont);
 	}
 
-	public static synchronized void updateFonts() {
-		final ArrayList<Font> fonts = FontManager.sFontsManaged;
+	public synchronized void unloadFonts(final Font ...pFonts) {
+		for(int i = 0; i < pFonts.length; i++) {
+			this.unloadFont(pFonts[i]);
+		}
+	}
+
+	public synchronized void updateFonts(final GLState pGLState) {
+		final ArrayList<Font> fonts = this.mFontsManaged;
 		final int fontCount = fonts.size();
 		if(fontCount > 0){
 			for(int i = fontCount - 1; i >= 0; i--){
-				fonts.get(i).update();
+				fonts.get(i).update(pGLState);
 			}
 		}
 	}
 
-	public static synchronized void onReload() {
-		final ArrayList<Font> managedFonts = FontManager.sFontsManaged;
+	public synchronized void onReload() {
+		final ArrayList<Font> managedFonts = this.mFontsManaged;
 		for(int i = managedFonts.size() - 1; i >= 0; i--) {
 			managedFonts.get(i).invalidateLetters();
 		}

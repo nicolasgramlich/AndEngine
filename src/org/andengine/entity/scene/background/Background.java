@@ -1,6 +1,7 @@
 package org.andengine.entity.scene.background;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.color.Color;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ModifierList;
@@ -118,7 +119,7 @@ public class Background implements IBackground {
 	}
 
 	@Override
-	public void onDraw(final Camera pCamera) {
+	public void onDraw(final GLState pGLState, final Camera pCamera) {
 		if(this.mColorEnabled) {
 			GLES20.glClearColor(this.mColor.getRed(), this.mColor.getGreen(), this.mColor.getBlue(), this.mColor.getAlpha());
 			GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT); // TODO See commented out code in Renderer, bc of MultiSample

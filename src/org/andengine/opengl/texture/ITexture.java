@@ -3,6 +3,7 @@ package org.andengine.opengl.texture;
 import java.io.IOException;
 
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.debug.Debug;
 
 import android.opengl.GLES20;
@@ -37,21 +38,21 @@ public interface ITexture {
 	/**
 	 * @return itself for method chaining.
 	 */
-	public ITexture load();
+	public ITexture load(final TextureManager pTextureManager);
 	/**
 	 * @return itself for method chaining.
 	 */
-	public ITexture unload();
+	public ITexture unload(final TextureManager pTextureManager);
 
-	public void loadToHardware() throws IOException;
-	public void unloadFromHardware();
-	public void reloadToHardware() throws IOException;
+	public void loadToHardware(final GLState pGLState) throws IOException;
+	public void unloadFromHardware(final GLState pGLState);
+	public void reloadToHardware(final GLState pGLState) throws IOException;
 
-	public void bind();
+	public void bind(final GLState pGLState);
 	/**
 	 * @param pGLActiveTexture from {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}. 
 	 */
-	public void bind(final int pGLActiveTexture);
+	public void bind(final GLState pGLState, final int pGLActiveTexture);
 
 	public PixelFormat getPixelFormat();
 	public TextureOptions getTextureOptions();

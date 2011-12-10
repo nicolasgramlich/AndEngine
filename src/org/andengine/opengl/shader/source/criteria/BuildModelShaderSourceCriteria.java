@@ -1,5 +1,6 @@
 package org.andengine.opengl.shader.source.criteria;
 
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.operator.StringOperator;
 
 import android.os.Build;
@@ -36,7 +37,7 @@ public class BuildModelShaderSourceCriteria extends StringShaderSourceCriteria {
 	// ===========================================================
 
 	@Override
-	protected String getActualCriteria() {
+	protected String getActualCriteria(final GLState pGLState) {
 		return Build.MODEL;
 	}
 

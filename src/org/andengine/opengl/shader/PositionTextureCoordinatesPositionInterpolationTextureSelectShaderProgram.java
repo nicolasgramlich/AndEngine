@@ -70,12 +70,12 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 	// ===========================================================
 
 	@Override
-	protected void link() throws ShaderProgramLinkException {
+	protected void link(final GLState pGLState) throws ShaderProgramLinkException {
 		GLES20.glBindAttribLocation(this.mProgramID, ShaderProgramConstants.ATTRIBUTE_POSITION_0_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION_0);
 		GLES20.glBindAttribLocation(this.mProgramID, ShaderProgramConstants.ATTRIBUTE_POSITION_1_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION_1);
 		GLES20.glBindAttribLocation(this.mProgramID, ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES);
 
-		super.link();
+		super.link(pGLState);
 
 		PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformModelViewPositionMatrixLocation = this.getUniformLocation(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX);
 		PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformTexture0Location = this.getUniformLocation(ShaderProgramConstants.UNIFORM_TEXTURE_0);
@@ -85,27 +85,27 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 	}
 
 	@Override
-	public void bind(final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public void bind(final GLState pGLState, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION);
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_0_LOCATION);
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_1_LOCATION);
 
-		super.bind(pVertexBufferObjectAttributes);
+		super.bind(pGLState, pVertexBufferObjectAttributes);
 
-		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, GLState.getModelViewProjectionGLMatrix(), 0);
+		GLES20.glUniformMatrix4fv(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, pGLState.getModelViewProjectionGLMatrix(), 0);
 		GLES20.glUniform1i(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformTexture0Location, 0);
 		GLES20.glUniform1i(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.sUniformTexture1Location, 1);
 	}
 
 	@Override
-	public void unbind() {
+	public void unbind(final GLState pGLState) {
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION);
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_0_LOCATION);
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_1_LOCATION);
 		
-		super.unbind();
+		super.unbind(pGLState);
 	}
 
 	// ===========================================================

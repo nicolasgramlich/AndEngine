@@ -199,24 +199,24 @@ public class Line extends Shape {
 	}
 
 	@Override
-	protected void preDraw(final Camera pCamera) {
-		super.preDraw(pCamera);
+	protected void preDraw(final GLState pGLState, final Camera pCamera) {
+		super.preDraw(pGLState, pCamera);
 
-		GLState.lineWidth(this.mLineWidth);
+		pGLState.lineWidth(this.mLineWidth);
 
-		this.mLineVertexBufferObject.bind(this.mShaderProgram);
+		this.mLineVertexBufferObject.bind(pGLState, this.mShaderProgram);
 	}
 
 	@Override
-	protected void draw(Camera pCamera) {
+	protected void draw(final GLState pGLState, final Camera pCamera) {
 		this.mLineVertexBufferObject.draw(GLES20.GL_LINES, Line.VERTICES_PER_LINE);
 	}
 
 	@Override
-	protected void postDraw(Camera pCamera) {
-		this.mLineVertexBufferObject.unbind(this.mShaderProgram);
+	protected void postDraw(final GLState pGLState, final Camera pCamera) {
+		this.mLineVertexBufferObject.unbind(pGLState, this.mShaderProgram);
 
-		super.postDraw(pCamera);
+		super.postDraw(pGLState, pCamera);
 	}
 
 	@Override

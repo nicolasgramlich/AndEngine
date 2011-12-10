@@ -214,40 +214,40 @@ public class Scene extends Entity {
 	// ===========================================================
 
 	@Override
-	protected void onManagedDraw(final Camera pCamera) {
+	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
 		final Scene childScene = this.mChildScene;
 
 		if(childScene == null || !this.mChildSceneModalDraw) {
 			if(this.mBackgroundEnabled) {
-				GLState.pushProjectionGLMatrix();
+				pGLState.pushProjectionGLMatrix();
 
-				pCamera.onApplySceneBackgroundMatrix();
-				GLState.loadModelViewGLMatrixIdentity();
+				pCamera.onApplySceneBackgroundMatrix(pGLState);
+				pGLState.loadModelViewGLMatrixIdentity();
 
-				this.mBackground.onDraw(pCamera);
+				this.mBackground.onDraw(pGLState, pCamera);
 
-				GLState.popProjectionGLMatrix();
+				pGLState.popProjectionGLMatrix();
 			}
 
 			{
-				GLState.pushProjectionGLMatrix();
+				pGLState.pushProjectionGLMatrix();
 
-				this.onApplyMatrix(pCamera);
-				GLState.loadModelViewGLMatrixIdentity();
+				this.onApplyMatrix(pGLState, pCamera);
+				pGLState.loadModelViewGLMatrixIdentity();
 
-				super.onManagedDraw(pCamera);
+				super.onManagedDraw(pGLState, pCamera);
 
-				GLState.popProjectionGLMatrix();
+				pGLState.popProjectionGLMatrix();
 			}
 		}
 
 		if(childScene != null) {
-			childScene.onDraw(pCamera);
+			childScene.onDraw(pGLState, pCamera);
 		}
 	}
 
-	protected void onApplyMatrix(final Camera pCamera) {
-		pCamera.onApplySceneMatrix();
+	protected void onApplyMatrix(final GLState pGLState, final Camera pCamera) {
+		pCamera.onApplySceneMatrix(pGLState);
 	}
 
 	@Override

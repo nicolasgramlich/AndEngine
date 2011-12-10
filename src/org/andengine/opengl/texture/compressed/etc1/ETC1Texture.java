@@ -8,6 +8,7 @@ import java.nio.ByteOrder;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
 
 import android.opengl.ETC1;
@@ -84,7 +85,7 @@ public abstract class ETC1Texture extends Texture {
 	protected abstract InputStream getInputStream() throws IOException;
 
 	@Override
-	protected void writeTextureToHardware() throws IOException {
+	protected void writeTextureToHardware(final GLState pGLState) throws IOException {
 		final InputStream inputStream = this.getInputStream();
 		ETC1Util.loadTexture(GLES20.GL_TEXTURE_2D, 0, 0, this.mPixelFormat.getGLFormat(), this.mPixelFormat.getGLType(), inputStream);
 	}

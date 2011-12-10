@@ -176,21 +176,21 @@ public class SpriteBatch extends Shape {
 	}
 
 	@Override
-	protected void preDraw(final Camera pCamera) {
-		super.preDraw(pCamera);
+	protected void preDraw(final GLState pGLState, final Camera pCamera) {
+		super.preDraw(pGLState, pCamera);
 
 		if(this.mBlendingEnabled) {
-			GLState.enableBlend();
-			GLState.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+			pGLState.enableBlend();
+			pGLState.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
 		}
 
-		this.mTexture.bind();
+		this.mTexture.bind(pGLState);
 
-		this.mSpriteBatchVertexBufferObject.bind(this.mShaderProgram);
+		this.mSpriteBatchVertexBufferObject.bind(pGLState, this.mShaderProgram);
 	}
 
 	@Override
-	protected void draw(final Camera pCamera) {
+	protected void draw(final GLState pGLState, final Camera pCamera) {
 		this.begin();
 
 		this.mSpriteBatchVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mVertices);
@@ -199,14 +199,14 @@ public class SpriteBatch extends Shape {
 	}
 
 	@Override
-	protected void postDraw(final Camera pCamera) {
-		this.mSpriteBatchVertexBufferObject.unbind(this.mShaderProgram);
+	protected void postDraw(final GLState pGLState, final Camera pCamera) {
+		this.mSpriteBatchVertexBufferObject.unbind(pGLState, this.mShaderProgram);
 
 		if(this.mBlendingEnabled) {
-			GLState.disableBlend();
+			pGLState.disableBlend();
 		}
 
-		super.postDraw(pCamera);
+		super.postDraw(pGLState, pCamera);
 	}
 
 	@Override

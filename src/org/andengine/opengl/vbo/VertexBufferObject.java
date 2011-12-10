@@ -133,13 +133,13 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 
 	@Override
-	public void bind(final ShaderProgram pShaderProgram) {
+	public void bind(final GLState pGLState, final ShaderProgram pShaderProgram) {
 		final int hardwareBufferID = this.mHardwareBufferID;
 		if(hardwareBufferID == -1) {
 			return;
 		}
 
-		GLState.bindBuffer(hardwareBufferID);
+		pGLState.bindBuffer(hardwareBufferID);
 
 		if(this.mDirtyOnHardware) {
 			this.mDirtyOnHardware = false;
@@ -147,15 +147,15 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 			this.onBufferData();
 		}
 
-		pShaderProgram.bind(this.mVertexBufferObjectAttributes);
+		pShaderProgram.bind(pGLState, this.mVertexBufferObjectAttributes);
 	}
 
 
 	@Override
-	public void unbind(final ShaderProgram pShaderProgram) {
-		pShaderProgram.unbind();
+	public void unbind(final GLState pGLState, final ShaderProgram pShaderProgram) {
+		pShaderProgram.unbind(pGLState);
 
-//		GLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
+//		pGLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
 	}
 
 	@Override
@@ -169,15 +169,15 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	}
 
 	@Override
-	public void loadToHardware() {
-		this.mHardwareBufferID = GLState.generateBuffer();
+	public void loadToHardware(final GLState pGLState) {
+		this.mHardwareBufferID = pGLState.generateBuffer();
 
 		this.mLoadedToHardware = true;
 	}
 
 	@Override
-	public void unloadFromHardware() {
-		GLState.deleteBuffer(this.mHardwareBufferID);
+	public void unloadFromHardware(final GLState pGLState) {
+		pGLState.deleteBuffer(this.mHardwareBufferID);
 
 		this.mHardwareBufferID = -1;
 		this.mLoadedToHardware = false;

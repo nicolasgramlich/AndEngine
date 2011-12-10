@@ -7,6 +7,9 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.entity.scene.Scene;
+import org.andengine.opengl.font.FontManager;
+import org.andengine.opengl.shader.ShaderProgramManager;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.view.IRendererListener;
 import org.andengine.opengl.view.RenderSurfaceView;
 import org.andengine.sensor.accelerometer.AccelerometerSensorOptions;
@@ -292,6 +295,18 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	public boolean isGameLoaded() {
 		return this.mGameCreated;
+	}
+
+	public TextureManager getTextureManager() {
+		return this.mEngine.getTextureManager();
+	}
+
+	public FontManager getFontManager() {
+		return this.mEngine.getFontManager();
+	}
+
+	public ShaderProgramManager getShaderProgramManager() {
+		return this.mEngine.getShaderProgramManager();
 	}
 
 	public SoundManager getSoundManager() {

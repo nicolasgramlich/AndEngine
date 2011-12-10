@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.andengine.opengl.font.exception.FontException;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.math.MathUtils;
 
@@ -116,17 +117,17 @@ public class Font implements IFont {
 	}
 
 	@Override
-	public Font load() {
-		this.mTexture.load();
-		FontManager.loadFont(this);
+	public Font load(final TextureManager pTextureManager, final FontManager pFontManager) {
+		this.mTexture.load(pTextureManager);
+		pFontManager.loadFont(this);
 
 		return this;
 	}
 
 	@Override
-	public Font unload() {
-		this.mTexture.unload();
-		FontManager.unloadFont(this);
+	public Font unload(final TextureManager pTextureManager, final FontManager pFontManager) {
+		this.mTexture.unload(pTextureManager);
+		pFontManager.unloadFont(this);
 
 		return this;
 	}
@@ -251,10 +252,10 @@ public class Font implements IFont {
 		this.mPaint.getTextBounds(pCharacterAsString, 0, 1, Font.TEXTBOUNDS_TMP);
 	}
 
-	public synchronized void update() {
+	public synchronized void update(final GLState pGLState) {
 		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
 		if(lettersPendingToBeDrawnToTexture.size() > 0) {
-			this.mTexture.bind();
+			this.mTexture.bind(pGLState);
 			final PixelFormat pixelFormat = this.mTexture.getPixelFormat();
 
 			final boolean preMultipyAlpha = this.mTexture.getTextureOptions().mPreMultipyAlpha;
@@ -270,7 +271,7 @@ public class Font implements IFont {
 				if(preMultipyAlpha) {
 					GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap);
 				} else {
-					GLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap, pixelFormat);
+					pGLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap, pixelFormat);
 				}
 
 				/* Restore default alignment. */

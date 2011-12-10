@@ -1,5 +1,7 @@
 package org.andengine.opengl.shader.source;
 
+import org.andengine.opengl.util.GLState;
+
 /**
  * (c) Zynga 2011
  *
@@ -34,7 +36,7 @@ public class StringShaderSource implements IShaderSource {
 	// ===========================================================
 	
 	@Override
-	public String getShaderSource() {
+	public String getShaderSource(final GLState pGLState) {
 		return this.mShaderSource;
 	}
 

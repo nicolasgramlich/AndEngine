@@ -48,14 +48,14 @@ public class ParallaxBackground extends Background {
 	// ===========================================================
 
 	@Override
-	public void onDraw(final Camera pCamera) {
-		super.onDraw(pCamera);
+	public void onDraw(final GLState pGLState, final Camera pCamera) {
+		super.onDraw(pGLState, pCamera);
 
 		final float parallaxValue = this.mParallaxValue;
 		final ArrayList<ParallaxEntity> parallaxEntities = this.mParallaxEntities;
 
 		for(int i = 0; i < this.mParallaxEntityCount; i++) {
-			parallaxEntities.get(i).onDraw(parallaxValue, pCamera);
+			parallaxEntities.get(i).onDraw(pGLState, pCamera, parallaxValue);
 		}
 	}
 
@@ -114,8 +114,8 @@ public class ParallaxBackground extends Background {
 		// Methods
 		// ===========================================================
 
-		public void onDraw(final float pParallaxValue, final Camera pCamera) {
-			GLState.pushModelViewGLMatrix();
+		public void onDraw(final GLState pGLState, final Camera pCamera, final float pParallaxValue) {
+			pGLState.pushModelViewGLMatrix();
 			{
 				final float cameraWidth = pCamera.getWidth();
 				final float shapeWidthScaled = this.mAreaShape.getWidthScaled();
@@ -124,17 +124,17 @@ public class ParallaxBackground extends Background {
 				while(baseOffset > 0) {
 					baseOffset -= shapeWidthScaled;
 				}
-				GLState.translateModelViewGLMatrixf(baseOffset, 0, 0);
+				pGLState.translateModelViewGLMatrixf(baseOffset, 0, 0);
 
 				float currentMaxX = baseOffset;
 				
 				do {
-					this.mAreaShape.onDraw(pCamera);
-					GLState.translateModelViewGLMatrixf(shapeWidthScaled, 0, 0);
+					this.mAreaShape.onDraw(pGLState, pCamera);
+					pGLState.translateModelViewGLMatrixf(shapeWidthScaled, 0, 0);
 					currentMaxX += shapeWidthScaled;
 				} while(currentMaxX < cameraWidth);
 			}
-			GLState.popModelViewGLMatrix();
+			pGLState.popModelViewGLMatrix();
 		}
 
 		// ===========================================================

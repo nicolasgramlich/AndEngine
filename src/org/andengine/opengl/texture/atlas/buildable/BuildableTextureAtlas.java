@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.Callback;
 
 /**
@@ -83,42 +85,42 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	}
 
 	@Override
-	public BuildableTextureAtlas<S, T> load() {
-		this.mTextureAtlas.load();
+	public BuildableTextureAtlas<S, T> load(final TextureManager pTextureManager) {
+		this.mTextureAtlas.load(pTextureManager);
 
 		return this;
 	}
 
 	@Override
-	public BuildableTextureAtlas<S, T> unload() {
-		this.mTextureAtlas.unload();
+	public BuildableTextureAtlas<S, T> unload(final TextureManager pTextureManager) {
+		this.mTextureAtlas.unload(pTextureManager);
 
 		return this;
 	}
 
 	@Override
-	public void loadToHardware() throws IOException {
-		this.mTextureAtlas.loadToHardware();
+	public void loadToHardware(final GLState pGLState) throws IOException {
+		this.mTextureAtlas.loadToHardware(pGLState);
 	}
 
 	@Override
-	public void unloadFromHardware() {
-		this.mTextureAtlas.unloadFromHardware();
+	public void unloadFromHardware(final GLState pGLState) {
+		this.mTextureAtlas.unloadFromHardware(pGLState);
 	}
 
 	@Override
-	public void reloadToHardware() throws IOException {
-		this.mTextureAtlas.reloadToHardware();
+	public void reloadToHardware(final GLState pGLState) throws IOException {
+		this.mTextureAtlas.reloadToHardware(pGLState);
 	}
 
 	@Override
-	public void bind() {
-		this.mTextureAtlas.bind();
+	public void bind(final GLState pGLState) {
+		this.mTextureAtlas.bind(pGLState);
 	}
 
 	@Override
-	public void bind(final int pGLActiveTexture) {
-		this.mTextureAtlas.bind(pGLActiveTexture);
+	public void bind(final GLState pGLState, final int pGLActiveTexture) {
+		this.mTextureAtlas.bind(pGLState, pGLActiveTexture);
 	}
 
 	@Override

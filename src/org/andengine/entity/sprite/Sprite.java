@@ -8,6 +8,7 @@ import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
@@ -166,24 +167,24 @@ public class Sprite extends RectangularShape {
 	}
 
 	@Override
-	protected void preDraw(final Camera pCamera) {
-		super.preDraw(pCamera);
+	protected void preDraw(final GLState pGLState, final Camera pCamera) {
+		super.preDraw(pGLState, pCamera);
 
-		this.mTextureRegion.getTexture().bind();
+		this.mTextureRegion.getTexture().bind(pGLState);
 
-		this.mSpriteVertexBufferObject.bind(this.mShaderProgram);
+		this.mSpriteVertexBufferObject.bind(pGLState, this.mShaderProgram);
 	}
 
 	@Override
-	protected void draw(final Camera pCamera) {
+	protected void draw(final GLState pGLState, final Camera pCamera) {
 		this.mSpriteVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Sprite.VERTICES_PER_SPRITE);
 	}
 
 	@Override
-	protected void postDraw(final Camera pCamera) {
-		this.mSpriteVertexBufferObject.unbind(this.mShaderProgram);
+	protected void postDraw(final GLState pGLState, final Camera pCamera) {
+		this.mSpriteVertexBufferObject.unbind(pGLState, this.mShaderProgram);
 
-		super.postDraw(pCamera);
+		super.postDraw(pGLState, pCamera);
 	}
 
 	@Override

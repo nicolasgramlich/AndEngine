@@ -2,6 +2,7 @@ package org.andengine.opengl.shader.source;
 
 import org.andengine.opengl.shader.exception.ShaderProgramException;
 import org.andengine.opengl.shader.source.criteria.IShaderSourceCriteria;
+import org.andengine.opengl.util.GLState;
 
 /**
  * (c) Zynga 2011
@@ -37,10 +38,10 @@ public class CriteriaShaderSource implements IShaderSource {
 	// ===========================================================
 
 	@Override
-	public String getShaderSource() {
+	public String getShaderSource(final GLState pGLState) {
 		for(int i = 0; i < this.mCriteriaShaderSourceEntries.length; i++) {
 			final CriteriaShaderSourceEntry criteriaShaderSourceEntry = this.mCriteriaShaderSourceEntries[i];
-			if(criteriaShaderSourceEntry.isMet()) {
+			if(criteriaShaderSourceEntry.isMet(pGLState)) {
 				return criteriaShaderSourceEntry.getShaderSource();
 			}
 		}
@@ -96,10 +97,10 @@ public class CriteriaShaderSource implements IShaderSource {
 		// Methods
 		// ===========================================================
 
-		public boolean isMet() {
+		public boolean isMet(final GLState pGLState) {
 			if(this.mShaderSourceCriterias != null) {
 				for(IShaderSourceCriteria shaderSourceCriteria : this.mShaderSourceCriterias) {
-					if(!shaderSourceCriteria.isMet()) {
+					if(!shaderSourceCriteria.isMet(pGLState)) {
 						return false;
 					}
 				}

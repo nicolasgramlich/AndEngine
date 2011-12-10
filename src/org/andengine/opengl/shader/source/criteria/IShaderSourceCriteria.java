@@ -1,5 +1,7 @@
 package org.andengine.opengl.shader.source.criteria;
 
+import org.andengine.opengl.util.GLState;
+
 /**
  * (c) Zynga 2011
  *
@@ -15,7 +17,7 @@ public interface IShaderSourceCriteria {
 	// Fields
 	// ===========================================================
 
-	public boolean isMet();
+	public boolean isMet(final GLState pGLState);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

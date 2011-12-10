@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.debug.Debug;
 
 import android.content.res.AssetManager;
@@ -27,21 +28,17 @@ public class TextureManager {
 	// Fields
 	// ===========================================================
 
-	private static final HashSet<ITexture> sTexturesManaged = new HashSet<ITexture>();
-	private static final HashMap<String, ITexture> sTexturesMapped = new HashMap<String, ITexture>();
+	private final HashSet<ITexture> mTexturesManaged = new HashSet<ITexture>();
+	private final HashMap<String, ITexture> mTexturesMapped = new HashMap<String, ITexture>();
 
-	private static final ArrayList<ITexture> sTexturesLoaded = new ArrayList<ITexture>();
+	private final ArrayList<ITexture> mTexturesLoaded = new ArrayList<ITexture>();
 
-	private static final ArrayList<ITexture> sTexturesToBeLoaded = new ArrayList<ITexture>();
-	private static final ArrayList<ITexture> sTexturesToBeUnloaded = new ArrayList<ITexture>();
+	private final ArrayList<ITexture> mTexturesToBeLoaded = new ArrayList<ITexture>();
+	private final ArrayList<ITexture> mTexturesToBeUnloaded = new ArrayList<ITexture>();
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	private TextureManager() {
-
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -55,106 +52,90 @@ public class TextureManager {
 	// Methods
 	// ===========================================================
 
-	public static synchronized void onCreate() {
-		final HashSet<ITexture> managedTextures = TextureManager.sTexturesManaged;
-		if(!managedTextures.isEmpty()) {
-			for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
-				Debug.w("Detected a: '" + texture.getClass().getSimpleName() + "' that was loaded before '" + TextureManager.class.getSimpleName() + ".onCreate()' was called. '" + texture.getClass().getSimpleName() + "' will be reloaded.");
-				texture.setLoadedToHardware(false);
-			}
-		}
+	public synchronized void onCreate() {
 
-		if(!TextureManager.sTexturesLoaded.isEmpty()) {
-			TextureManager.sTexturesToBeLoaded.addAll(TextureManager.sTexturesLoaded); // TODO Check if addAll uses iterator internally!
-			TextureManager.sTexturesLoaded.clear();
-		}
-
-		if(!TextureManager.sTexturesToBeUnloaded.isEmpty()) {
-			TextureManager.sTexturesManaged.removeAll(TextureManager.sTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
-			TextureManager.sTexturesToBeUnloaded.clear();
-		}
 	}
 
-	public static synchronized void onReload() {
-		final HashSet<ITexture> managedTextures = TextureManager.sTexturesManaged;
+	public synchronized void onReload() {
+		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
 		if(!managedTextures.isEmpty()) {
 			for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
 				texture.setLoadedToHardware(false);
 			}
 		}
 
-		if(!TextureManager.sTexturesLoaded.isEmpty()) {
-			TextureManager.sTexturesToBeLoaded.addAll(TextureManager.sTexturesLoaded); // TODO Check if addAll uses iterator internally!
-			TextureManager.sTexturesLoaded.clear();
+		if(!this.mTexturesLoaded.isEmpty()) {
+			this.mTexturesToBeLoaded.addAll(this.mTexturesLoaded); // TODO Check if addAll uses iterator internally!
+			this.mTexturesLoaded.clear();
 		}
 
-		if(!TextureManager.sTexturesToBeUnloaded.isEmpty()) {
-			TextureManager.sTexturesManaged.removeAll(TextureManager.sTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
-			TextureManager.sTexturesToBeUnloaded.clear();
+		if(!this.mTexturesToBeUnloaded.isEmpty()) {
+			this.mTexturesManaged.removeAll(this.mTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
+			this.mTexturesToBeUnloaded.clear();
 		}
 	}
 
-	public static synchronized void onDestroy() {
-		final HashSet<ITexture> managedTextures = TextureManager.sTexturesManaged;
+	public synchronized void onDestroy() {
+		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
 		for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
 			texture.setLoadedToHardware(false);
 		}
 
-		TextureManager.sTexturesToBeLoaded.clear();
-		TextureManager.sTexturesLoaded.clear();
-		TextureManager.sTexturesManaged.clear();
-		TextureManager.sTexturesMapped.clear();
+		this.mTexturesToBeLoaded.clear();
+		this.mTexturesLoaded.clear();
+		this.mTexturesManaged.clear();
+		this.mTexturesMapped.clear();
 	}
 
-	public static synchronized boolean hasMappedTexture(final String pID) {
+	public synchronized boolean hasMappedTexture(final String pID) {
 		if(pID == null) {
 			throw new IllegalArgumentException("pID must not be null!");
 		}
-		return TextureManager.sTexturesMapped.containsKey(pID);
+		return this.mTexturesMapped.containsKey(pID);
 	}
 
-	public static synchronized ITexture getMappedTexture(final String pID) {
+	public synchronized ITexture getMappedTexture(final String pID) {
 		if(pID == null) {
 			throw new IllegalArgumentException("pID must not be null!");
 		}
-		return TextureManager.sTexturesMapped.get(pID);
+		return this.mTexturesMapped.get(pID);
 	}
 
-	public static synchronized void addMappedTexture(final String pID, final ITexture pTexture) throws IllegalArgumentException {
+	public synchronized void addMappedTexture(final String pID, final ITexture pTexture) throws IllegalArgumentException {
 		if(pID == null) {
 			throw new IllegalArgumentException("pID must not be null!");
 		}
 		if(pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
 		}
-		if(TextureManager.sTexturesMapped.containsKey(pID)) {
+		if(this.mTexturesMapped.containsKey(pID)) {
 			throw new IllegalArgumentException("Collision for pID: '" + pID + "'.");
 		}
-		TextureManager.sTexturesMapped.put(pID, pTexture);
+		this.mTexturesMapped.put(pID, pTexture);
 	}
 
-	public static synchronized ITexture removedMappedTexture(final String pID) {
+	public synchronized ITexture removedMappedTexture(final String pID) {
 		if(pID == null) {
 			throw new IllegalArgumentException("pID must not be null!");
 		}
-		return TextureManager.sTexturesMapped.remove(pID);
+		return this.mTexturesMapped.remove(pID);
 	}
 
 	/**
 	 * @param pTexture the {@link ITexture} to be loaded before the very next frame is drawn (Or prevent it from being unloaded then).
 	 * @return <code>true</code> when the {@link ITexture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
-	static synchronized boolean loadTexture(final ITexture pTexture) {
+	public synchronized boolean loadTexture(final ITexture pTexture) {
 		if(pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
 		}
-		if(TextureManager.sTexturesManaged.contains(pTexture)) {
+		if(this.mTexturesManaged.contains(pTexture)) {
 			/* Just make sure it doesn't get deleted. */
-			TextureManager.sTexturesToBeUnloaded.remove(pTexture);
+			this.mTexturesToBeUnloaded.remove(pTexture);
 			return false;
 		} else {
-			TextureManager.sTexturesManaged.add(pTexture);
-			TextureManager.sTexturesToBeLoaded.add(pTexture);
+			this.mTexturesManaged.add(pTexture);
+			this.mTexturesToBeLoaded.add(pTexture);
 			return true;
 		}
 	}
@@ -163,17 +144,17 @@ public class TextureManager {
 	 * @param pTexture the {@link ITexture} to be unloaded before the very next frame is drawn (Or prevent it from being loaded then).
 	 * @return <code>true</code> when the {@link ITexture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
-	static synchronized boolean unloadTexture(final ITexture pTexture) {
+	public synchronized boolean unloadTexture(final ITexture pTexture) {
 		if(pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
 		}
-		if(TextureManager.sTexturesManaged.contains(pTexture)) {
+		if(this.mTexturesManaged.contains(pTexture)) {
 			/* If the Texture is loaded, unload it.
 			 * If the Texture is about to be loaded, stop it from being loaded. */
-			if(TextureManager.sTexturesLoaded.contains(pTexture)) {
-				TextureManager.sTexturesToBeUnloaded.add(pTexture);
-			} else if(TextureManager.sTexturesToBeLoaded.remove(pTexture)) {
-				TextureManager.sTexturesManaged.remove(pTexture);
+			if(this.mTexturesLoaded.contains(pTexture)) {
+				this.mTexturesToBeUnloaded.add(pTexture);
+			} else if(this.mTexturesToBeLoaded.remove(pTexture)) {
+				this.mTexturesManaged.remove(pTexture);
 			}
 			return true;
 		} else {
@@ -181,11 +162,11 @@ public class TextureManager {
 		}
 	}
 
-	public static synchronized void updateTextures() {
-		final HashSet<ITexture> texturesManaged = TextureManager.sTexturesManaged;
-		final ArrayList<ITexture> texturesLoaded = TextureManager.sTexturesLoaded;
-		final ArrayList<ITexture> texturesToBeLoaded = TextureManager.sTexturesToBeLoaded;
-		final ArrayList<ITexture> texturesToBeUnloaded = TextureManager.sTexturesToBeUnloaded;
+	public synchronized void updateTextures(final GLState pGLState) {
+		final HashSet<ITexture> texturesManaged = this.mTexturesManaged;
+		final ArrayList<ITexture> texturesLoaded = this.mTexturesLoaded;
+		final ArrayList<ITexture> texturesToBeLoaded = this.mTexturesToBeLoaded;
+		final ArrayList<ITexture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
 
 		/* First reload Textures that need to be updated. */
 		final int textursLoadedCount = texturesLoaded.size();
@@ -195,7 +176,7 @@ public class TextureManager {
 				final ITexture textureToBeReloaded = texturesLoaded.get(i);
 				if(textureToBeReloaded.isUpdateOnHardwareNeeded()) {
 					try {
-						textureToBeReloaded.reloadToHardware();
+						textureToBeReloaded.reloadToHardware(pGLState);
 					} catch (final IOException e) {
 						Debug.e(e);
 					}
@@ -211,7 +192,7 @@ public class TextureManager {
 				final ITexture textureToBeLoaded = texturesToBeLoaded.remove(i);
 				if(!textureToBeLoaded.isLoadedToHardware()) {
 					try {
-						textureToBeLoaded.loadToHardware();
+						textureToBeLoaded.loadToHardware(pGLState);
 					} catch (final IOException e) {
 						Debug.e(e);
 					}
@@ -227,7 +208,7 @@ public class TextureManager {
 			for(int i = texturesToBeUnloadedCount - 1; i >= 0; i--) {
 				final ITexture textureToBeUnloaded = texturesToBeUnloaded.remove(i);
 				if(textureToBeUnloaded.isLoadedToHardware()) {
-					textureToBeUnloaded.unloadFromHardware();
+					textureToBeUnloaded.unloadFromHardware(pGLState);
 				}
 				texturesLoaded.remove(textureToBeUnloaded);
 				texturesManaged.remove(textureToBeUnloaded);
@@ -240,13 +221,13 @@ public class TextureManager {
 		}
 	}
 
-	public static synchronized ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath) throws IOException {
-		return TextureManager.getTexture(pID, pAssetManager, pAssetPath, TextureOptions.DEFAULT);
+	public synchronized ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath) throws IOException {
+		return this.getTexture(pID, pAssetManager, pAssetPath, TextureOptions.DEFAULT);
 	}
 
-	public static synchronized ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath, final TextureOptions pTextureOptions) throws IOException {
-		if(TextureManager.hasMappedTexture(pID)) {
-			return TextureManager.getMappedTexture(pID);
+	public synchronized ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath, final TextureOptions pTextureOptions) throws IOException {
+		if(this.hasMappedTexture(pID)) {
+			return this.getMappedTexture(pID);
 		} else {
 			final ITexture texture = new BitmapTexture(pTextureOptions) {
 				@Override
@@ -254,20 +235,20 @@ public class TextureManager {
 					return pAssetManager.open(pAssetPath);
 				}
 			};
-			TextureManager.loadTexture(texture);
-			TextureManager.addMappedTexture(pID, texture);
+			this.loadTexture(texture);
+			this.addMappedTexture(pID, texture);
 
 			return texture;
 		}
 	}
 
-	public static synchronized ITexture getTexture(final String pID, final IAssetInputStreamOpener pAssetInputStreamOpener, final String pAssetPath) throws IOException {
-		return TextureManager.getTexture(pID, pAssetInputStreamOpener, pAssetPath, TextureOptions.DEFAULT);
+	public synchronized ITexture getTexture(final String pID, final IAssetInputStreamOpener pAssetInputStreamOpener, final String pAssetPath) throws IOException {
+		return this.getTexture(pID, pAssetInputStreamOpener, pAssetPath, TextureOptions.DEFAULT);
 	}
 
-	public static synchronized ITexture getTexture(final String pID, final IAssetInputStreamOpener pAssetInputStreamOpener, final String pAssetPath, final TextureOptions pTextureOptions) throws IOException {
-		if(TextureManager.hasMappedTexture(pID)) {
-			return TextureManager.getMappedTexture(pID);
+	public synchronized ITexture getTexture(final String pID, final IAssetInputStreamOpener pAssetInputStreamOpener, final String pAssetPath, final TextureOptions pTextureOptions) throws IOException {
+		if(this.hasMappedTexture(pID)) {
+			return this.getMappedTexture(pID);
 		} else {
 			final ITexture texture = new BitmapTexture(pTextureOptions) {
 				@Override
@@ -275,8 +256,8 @@ public class TextureManager {
 					return pAssetInputStreamOpener.open(pAssetPath);
 				}
 			};
-			TextureManager.loadTexture(texture);
-			TextureManager.addMappedTexture(pID, texture);
+			this.loadTexture(texture);
+			this.addMappedTexture(pID, texture);
 
 			return texture;
 		}
@@ -286,7 +267,7 @@ public class TextureManager {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface IAssetInputStreamOpener {
+	public interface IAssetInputStreamOpener {
 		// ===========================================================
 		// Constants
 		// ===========================================================

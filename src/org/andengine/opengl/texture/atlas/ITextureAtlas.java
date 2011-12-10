@@ -1,6 +1,7 @@
 package org.andengine.opengl.texture.atlas;
 
 import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.util.debug.Debug;
 
@@ -21,9 +22,10 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 	// ===========================================================
 
 	@Override
-	public ITextureAtlas<T> load();
+	public ITextureAtlas<T> load(final TextureManager pTextureManager);
 	@Override
-	public ITextureAtlas<T> unload();
+	public ITextureAtlas<T> unload(final TextureManager pTextureManager);
+
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException;
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTextureAtlasSourcePadding) throws IllegalArgumentException;
 	public void addEmptyTextureAtlasSource(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight);

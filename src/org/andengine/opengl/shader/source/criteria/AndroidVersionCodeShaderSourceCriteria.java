@@ -1,5 +1,6 @@
 package org.andengine.opengl.shader.source.criteria;
 
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.operator.IntOperator;
 
 import android.os.Build;
@@ -36,7 +37,7 @@ public class AndroidVersionCodeShaderSourceCriteria extends IntShaderSourceCrite
 	// ===========================================================
 
 	@Override
-	protected int getActualCriteria() {
+	protected int getActualCriteria(final GLState pGLState) {
 		return Build.VERSION.SDK_INT;
 	}
 

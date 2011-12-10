@@ -98,29 +98,29 @@ public abstract class Texture implements ITexture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void writeTextureToHardware() throws IOException;
+	protected abstract void writeTextureToHardware(final GLState pGLState) throws IOException;
 
 	@Override
-	public Texture load() {
-		TextureManager.loadTexture(this);
+	public Texture load(final TextureManager pTextureManager) {
+		pTextureManager.loadTexture(this);
 
 		return this;
 	}
 
 	@Override
-	public Texture unload() {
-		TextureManager.unloadTexture(this);
+	public Texture unload(final TextureManager pTextureManager) {
+		pTextureManager.unloadTexture(this);
 
 		return this;
 	}
 
 	@Override
-	public void loadToHardware() throws IOException {
-		this.mTextureID = GLState.generateTexture();
+	public void loadToHardware(final GLState pGLState) throws IOException {
+		this.mTextureID = pGLState.generateTexture();
 
-		GLState.bindTexture(this.mTextureID);
+		pGLState.bindTexture(this.mTextureID);
 
-		this.writeTextureToHardware();
+		this.writeTextureToHardware(pGLState);
 
 		this.mTextureOptions.apply();
 
@@ -133,8 +133,8 @@ public abstract class Texture implements ITexture {
 	}
 
 	@Override
-	public void unloadFromHardware() {
-		GLState.deleteTexture(this.mTextureID);
+	public void unloadFromHardware(final GLState pGLState) {
+		pGLState.deleteTexture(this.mTextureID);
 
 		this.mTextureID = -1;
 
@@ -146,20 +146,20 @@ public abstract class Texture implements ITexture {
 	}
 
 	@Override
-	public void reloadToHardware() throws IOException {
-		this.unloadFromHardware();
-		this.loadToHardware();
+	public void reloadToHardware(final GLState pGLState) throws IOException {
+		this.unloadFromHardware(pGLState);
+		this.loadToHardware(pGLState);
 	}
 
 	@Override
-	public void bind() {
-		GLState.bindTexture(this.mTextureID);
+	public void bind(final GLState pGLState) {
+		pGLState.bindTexture(this.mTextureID);
 	}
 
 	@Override
-	public void bind(final int pGLActiveTexture) {
-		GLState.activeTexture(pGLActiveTexture);
-		GLState.bindTexture(this.mTextureID);
+	public void bind(final GLState pGLState, final int pGLActiveTexture) {
+		pGLState.activeTexture(pGLActiveTexture);
+		pGLState.bindTexture(this.mTextureID);
 	}
 
 	// ===========================================================

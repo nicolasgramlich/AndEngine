@@ -22,6 +22,7 @@ import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.shader.ShaderProgramManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.sensor.SensorDelay;
 import org.andengine.sensor.accelerometer.AccelerometerData;
@@ -89,6 +90,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private ITouchController mTouchController;
 
+	private TextureManager mTextureManager = new TextureManager();
+	private FontManager mFontManager = new FontManager();
+	private ShaderProgramManager mShaderProgramManager = new ShaderProgramManager();
+
 	private SoundManager mSoundManager;
 	private MusicManager mMusicManager;
 
@@ -123,9 +128,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		MusicFactory.onCreate();
 		FontFactory.onCreate();
 		VertexBufferObjectManager.onCreate();
-		TextureManager.onCreate();
-		FontManager.onCreate();
-		ShaderProgramManager.onCreate();
+		this.mTextureManager.onCreate();
+		this.mFontManager.onCreate();
+		this.mShaderProgramManager.onCreate();
 
 		this.mEngineOptions = pEngineOptions;
 		this.mCamera = pEngineOptions.getCamera();
@@ -222,6 +227,18 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public OrientationData getOrientationData() {
 		return this.mOrientationData;
+	}
+
+	public TextureManager getTextureManager() {
+		return this.mTextureManager;
+	}
+
+	public FontManager getFontManager() {
+		return this.mFontManager;
+	}
+
+	public ShaderProgramManager getShaderProgramManager() {
+		return this.mShaderProgramManager;
 	}
 
 	public SoundManager getSoundManager() throws IllegalStateException {
@@ -430,18 +447,18 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onDestroy() {
+		this.mTextureManager.onDestroy();
+		this.mFontManager.onDestroy();
+		this.mShaderProgramManager.onDestroy();
 		VertexBufferObjectManager.onDestroy();
-		TextureManager.onDestroy();
-		FontManager.onDestroy();
-		ShaderProgramManager.onDestroy();
 
 		this.mUpdateThread.interrupt();
 	}
 
 	public void onReloadResources() {
-		TextureManager.onReload();
-		FontManager.onReload();
-		ShaderProgramManager.onReload();
+		this.mTextureManager.onReload();
+		this.mFontManager.onReload();
+		this.mShaderProgramManager.onReload();
 		VertexBufferObjectManager.onReload();
 	}
 
@@ -500,31 +517,31 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.getCamera().onUpdate(pSecondsElapsed);
 	}
 
-	protected void onUpdateDrawHandlers(final Camera pCamera) {
-		this.mDrawHandlers.onDraw(pCamera);
+	protected void onUpdateDrawHandlers(final GLState pGLState, final Camera pCamera) {
+		this.mDrawHandlers.onDraw(pGLState, pCamera);
 	}
 
-	public void onDrawFrame() throws InterruptedException {
+	public void onDrawFrame(final GLState pGLState) throws InterruptedException {
 		final State threadLocker = this.mThreadLocker;
 
 		threadLocker.waitUntilCanDraw();
 
-		TextureManager.updateTextures();
-		FontManager.updateFonts();
-		VertexBufferObjectManager.updateBufferObjects();
+		this.mTextureManager.updateTextures(pGLState);
+		this.mFontManager.updateFonts(pGLState);
+		VertexBufferObjectManager.updateBufferObjects(pGLState);
 
-		this.onUpdateDrawHandlers(this.mCamera);
-		this.onDrawScene(this.mCamera);
+		this.onUpdateDrawHandlers(pGLState, this.mCamera);
+		this.onDrawScene(pGLState, this.mCamera);
 
 		threadLocker.notifyCanUpdate();
 	}
 
-	protected void onDrawScene(final Camera pCamera) {
+	protected void onDrawScene(final GLState pGLState, final Camera pCamera) {
 		if(this.mScene != null) {
-			this.mScene.onDraw(pCamera);
+			this.mScene.onDraw(pGLState, pCamera);
 		}
 
-		pCamera.onDrawHUD();
+		pCamera.onDrawHUD(pGLState);
 	}
 
 	private long getNanosecondsElapsed() {

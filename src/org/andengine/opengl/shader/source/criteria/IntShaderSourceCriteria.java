@@ -1,5 +1,6 @@
 package org.andengine.opengl.shader.source.criteria;
 
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.operator.IntOperator;
 
 /**
@@ -37,11 +38,11 @@ public abstract class IntShaderSourceCriteria implements IShaderSourceCriteria {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract int getActualCriteria();
+	protected abstract int getActualCriteria(final GLState pGLState);
 
 	@Override
-	public boolean isMet() {
-		return this.mIntOperator.check(this.getActualCriteria(), this.mCriteria);
+	public boolean isMet(final GLState pGLState) {
+		return this.mIntOperator.check(this.getActualCriteria(pGLState), this.mCriteria);
 	}
 
 	// ===========================================================

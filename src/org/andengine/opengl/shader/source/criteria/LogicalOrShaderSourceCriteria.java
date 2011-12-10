@@ -1,5 +1,7 @@
 package org.andengine.opengl.shader.source.criteria;
 
+import org.andengine.opengl.util.GLState;
+
 /**
  * (c) Zynga 2011
  *
@@ -34,9 +36,9 @@ public class LogicalOrShaderSourceCriteria implements IShaderSourceCriteria {
 	// ===========================================================
 
 	@Override
-	public boolean isMet() {
+	public boolean isMet(final GLState pGLState) {
 		for(IShaderSourceCriteria shaderSourceCriteria : this.mShaderSourceCriterias) {
-			if(shaderSourceCriteria.isMet()) {
+			if(shaderSourceCriteria.isMet(pGLState)) {
 				return true;
 			}
 		}

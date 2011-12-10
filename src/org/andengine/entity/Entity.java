@@ -1004,9 +1004,9 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public final void onDraw(final Camera pCamera) {
+	public final void onDraw(final GLState pGLState, final Camera pCamera) {
 		if(this.mVisible) {
-			this.onManagedDraw(pCamera);
+			this.onManagedDraw(pGLState, pCamera);
 		}
 	}
 
@@ -1075,23 +1075,26 @@ public class Entity implements IEntity {
 	// ===========================================================
 
 	/**
+	 * @param pGLState the currently active {@link GLState} i.e. to apply transformations to.
 	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
 	 */
-	protected void preDraw(final Camera pCamera) {
+	protected void preDraw(final GLState pGLState, final Camera pCamera) {
 
 	}
 
 	/**
+	 * @param pGLState the currently active {@link GLState} i.e. to apply transformations to.
 	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
 	 */
-	protected void draw(final Camera pCamera) {
+	protected void draw(final GLState pGLState, final Camera pCamera) {
 
 	}
 
 	/**
+	 * @param pGLState the currently active {@link GLState} i.e. to apply transformations to.
 	 * @param pCamera the currently active {@link Camera} i.e. to be used for culling.
 	 */
-	protected void postDraw(final Camera pCamera) {
+	protected void postDraw(final GLState pGLState, final Camera pCamera) {
 
 	}
 
@@ -1107,34 +1110,34 @@ public class Entity implements IEntity {
 		this.mUpdateHandlers = new UpdateHandlerList(Entity.UPDATEHANDLERS_CAPACITY_DEFAULT);
 	}
 
-	protected void onApplyTransformations() {
+	protected void onApplyTransformations(final GLState pGLState) {
 		/* Translation. */
-		this.applyTranslation();
+		this.applyTranslation(pGLState);
 
 		/* Rotation. */
-		this.applyRotation();
+		this.applyRotation(pGLState);
 
 		/* Skew. */
-		this.applySkew();
+		this.applySkew(pGLState);
 
 		/* Scale. */
-		this.applyScale();
+		this.applyScale(pGLState);
 	}
 
-	protected void applyTranslation() {
-		GLState.translateModelViewGLMatrixf(this.mX, this.mY, 0);
+	protected void applyTranslation(final GLState pGLState) {
+		pGLState.translateModelViewGLMatrixf(this.mX, this.mY, 0);
 	}
 
-	protected void applyRotation() {
+	protected void applyRotation(final GLState pGLState) {
 		final float rotation = this.mRotation;
 
 		if(rotation != 0) {
 			final float rotationCenterX = this.mRotationCenterX;
 			final float rotationCenterY = this.mRotationCenterY;
 
-			GLState.translateModelViewGLMatrixf(rotationCenterX, rotationCenterY, 0);
-			GLState.rotateModelViewGLMatrixf(rotation, 0, 0, 1);
-			GLState.translateModelViewGLMatrixf(-rotationCenterX, -rotationCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(rotationCenterX, rotationCenterY, 0);
+			pGLState.rotateModelViewGLMatrixf(rotation, 0, 0, 1);
+			pGLState.translateModelViewGLMatrixf(-rotationCenterX, -rotationCenterY, 0);
 
 			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
 			 * In that case the last glTranslatef of the rotation and the first glTranslatef of the scale is superfluous.
@@ -1142,7 +1145,7 @@ public class Entity implements IEntity {
 		}
 	}
 
-	protected void applySkew() {
+	protected void applySkew(final GLState pGLState) {
 		final float skewX = this.mSkewX;
 		final float skewY = this.mSkewY;
 
@@ -1150,13 +1153,13 @@ public class Entity implements IEntity {
 			final float skewCenterX = this.mSkewCenterX;
 			final float skewCenterY = this.mSkewCenterY;
 
-			GLState.translateModelViewGLMatrixf(skewCenterX, skewCenterY, 0);
-			GLState.skewModelViewGLMatrixf(skewX, skewY);
-			GLState.translateModelViewGLMatrixf(-skewCenterX, -skewCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(skewCenterX, skewCenterY, 0);
+			pGLState.skewModelViewGLMatrixf(skewX, skewY);
+			pGLState.translateModelViewGLMatrixf(-skewCenterX, -skewCenterY, 0);
 		}
 	}
 
-	protected void applyScale() {
+	protected void applyScale(final GLState pGLState) {
 		final float scaleX = this.mScaleX;
 		final float scaleY = this.mScaleY;
 
@@ -1164,40 +1167,40 @@ public class Entity implements IEntity {
 			final float scaleCenterX = this.mScaleCenterX;
 			final float scaleCenterY = this.mScaleCenterY;
 
-			GLState.translateModelViewGLMatrixf(scaleCenterX, scaleCenterY, 0);
-			GLState.scaleModelViewGLMatrixf(scaleX, scaleY, 1);
-			GLState.translateModelViewGLMatrixf(-scaleCenterX, -scaleCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(scaleCenterX, scaleCenterY, 0);
+			pGLState.scaleModelViewGLMatrixf(scaleX, scaleY, 1);
+			pGLState.translateModelViewGLMatrixf(-scaleCenterX, -scaleCenterY, 0);
 		}
 	}
 
-	protected void onManagedDraw(final Camera pCamera) {
-		GLState.pushModelViewGLMatrix();
+	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
+		pGLState.pushModelViewGLMatrix();
 		{
-			this.onApplyTransformations();
+			this.onApplyTransformations(pGLState);
 
-			this.preDraw(pCamera);
-			this.draw(pCamera);
-			this.postDraw(pCamera);
+			this.preDraw(pGLState, pCamera);
+			this.draw(pGLState, pCamera);
+			this.postDraw(pGLState, pCamera);
 
-			this.onDrawChildren(pCamera);
+			this.onDrawChildren(pGLState, pCamera);
 		}
-		GLState.popModelViewGLMatrix();
+		pGLState.popModelViewGLMatrix();
 	}
 
-	protected void onDrawChildren(final Camera pCamera) {
+	protected void onDrawChildren(final GLState pGLState, final Camera pCamera) {
 		if(this.mChildren != null && this.mChildrenVisible) {
 			if(this.mChildrenSortPending) {
 				ZIndexSorter.getInstance().sort(this.mChildren);
 			}
-			this.onManagedDrawChildren(pCamera);
+			this.onManagedDrawChildren(pGLState, pCamera);
 		}
 	}
 
-	public void onManagedDrawChildren(final Camera pCamera) {
+	public void onManagedDrawChildren(final GLState pGLState, final Camera pCamera) {
 		final ArrayList<IEntity> children = this.mChildren;
 		final int childCount = children.size();
 		for(int i = 0; i < childCount; i++) {
-			children.get(i).onDraw(pCamera);
+			children.get(i).onDraw(pGLState, pCamera);
 		}
 	}
 

@@ -134,7 +134,7 @@ public abstract class PVRTexture extends Texture {
 	}
 
 	@Override
-	protected void writeTextureToHardware() throws IOException {
+	protected void writeTextureToHardware(final GLState pGLState) throws IOException {
 		final IPVRTexturePixelBufferStrategyBufferManager pvrTextureLoadStrategyManager = this.mPVRTexturePixelBufferStrategy.newPVRTexturePixelBufferStrategyManager(this);
 
 		int width = this.getWidth();

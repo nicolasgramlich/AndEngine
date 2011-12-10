@@ -69,7 +69,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		this.mByteBuffer.order(ByteOrder.nativeOrder());
 
 		if(pManaged) {
-			this.loadToActiveBufferObjectManager();
+			this.load();
 		}
 	}
 
@@ -159,12 +159,12 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	}
 
 	@Override
-	public void loadToActiveBufferObjectManager() {
+	public void load() {
 		VertexBufferObjectManager.loadBufferObject(this);
 	}
 
 	@Override
-	public void unloadFromActiveBufferObjectManager() {
+	public void unload() {
 		VertexBufferObjectManager.unloadBufferObject(this);
 	}
 

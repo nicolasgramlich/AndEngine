@@ -35,8 +35,8 @@ public interface IVertexBufferObject {
 	public void bind(final ShaderProgram pShaderProgram);
 	public void unbind(final ShaderProgram pShaderProgram);
 
-	public void loadToActiveBufferObjectManager();
-	public void unloadFromActiveBufferObjectManager();
+	public void load();
+	public void unload();
 
 	public void draw(final int pPrimitiveType, final int pCount);
 	public void draw(final int pPrimitiveType, final int pOffset, final int pCount);

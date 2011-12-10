@@ -139,7 +139,7 @@ public abstract class Shape extends Entity implements IShape {
 		final IVertexBufferObject vertexBufferObject = this.getVertexBufferObject();
 		if(vertexBufferObject != null) {
 			if(vertexBufferObject.isManaged()) {
-				vertexBufferObject.unloadFromActiveBufferObjectManager();
+				vertexBufferObject.unload();
 			}
 		}
 	}

@@ -221,7 +221,7 @@ public class SpriteBatch extends Shape {
 		super.finalize();
 
 		if(this.mSpriteBatchVertexBufferObject.isManaged()) {
-			this.mSpriteBatchVertexBufferObject.unloadFromActiveBufferObjectManager();
+			this.mSpriteBatchVertexBufferObject.unload();
 		}
 	}
 

@@ -7,8 +7,8 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.entity.scene.Scene;
+import org.andengine.opengl.view.IRendererListener;
 import org.andengine.opengl.view.RenderSurfaceView;
-import org.andengine.opengl.view.RenderSurfaceView.IRendererListener;
 import org.andengine.sensor.accelerometer.AccelerometerSensorOptions;
 import org.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.andengine.sensor.location.ILocationListener;
@@ -64,7 +64,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	protected void onCreate(final Bundle pSavedInstanceState) {
-		Debug.d(this.getClass().getSimpleName() + ".onCreate");
+		Debug.d(this.getClass().getSimpleName() + ".onCreate" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		super.onCreate(pSavedInstanceState);
 
@@ -85,7 +85,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public synchronized void onSurfaceCreated() {
-		Debug.d(this.getClass().getSimpleName() + ".onSurfaceCreated.");
+		Debug.d(this.getClass().getSimpleName() + ".onSurfaceCreated" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		if(this.mGameCreated) {
 			this.onReloadResources();
@@ -101,21 +101,21 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public void onSurfaceChanged(final int pWidth, final int pHeight) {
-		Debug.d(this.getClass().getSimpleName() + ".onSurfaceChanged(Width=" + pWidth + ",  Height=" + pHeight + ")");
+		Debug.d(this.getClass().getSimpleName() + ".onSurfaceChanged(Width=" + pWidth + ",  Height=" + pHeight + ")" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 	}
 
 	protected void onCreateGame() {
-		Debug.d(this.getClass().getSimpleName() + ".onCreateGame");
+		Debug.d(this.getClass().getSimpleName() + ".onCreateGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		final OnPopulateSceneCallback onPopulateSceneCallback = new OnPopulateSceneCallback() {
 			@Override
 			public void onPopulateSceneFinished() {
 				try {
-					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onGameCreated");
+					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onGameCreated" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 					BaseGameActivity.this.onGameCreated();
 				} catch(final Throwable pThrowable) {
-					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onGameCreated failed.", pThrowable);
+					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onGameCreated failed." + " @(Thread: '" + Thread.currentThread().getName() + "')", pThrowable);
 				}
 
 				BaseGameActivity.this.callGameResumedOnUIThread();
@@ -128,11 +128,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 				BaseGameActivity.this.mEngine.setScene(pScene);
 
 				try {
-					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onPopulateScene");
+					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onPopulateScene" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 					BaseGameActivity.this.onPopulateScene(pScene, onPopulateSceneCallback);
 				} catch(final Throwable pThrowable) {
-					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onPopulateScene failed.", pThrowable);
+					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onPopulateScene failed." + " @(Thread: '" + Thread.currentThread().getName() + "')", pThrowable);
 				}
 			}
 		};
@@ -141,21 +141,21 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			@Override
 			public void onCreateResourcesFinished() {
 				try {
-					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onCreateScene");
+					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onCreateScene" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 					BaseGameActivity.this.onCreateScene(onCreateSceneCallback);
 				} catch(final Throwable pThrowable) {
-					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onCreateScene failed.", pThrowable);
+					Debug.e(BaseGameActivity.this.getClass().getSimpleName() + ".onCreateScene failed." + " @(Thread: '" + Thread.currentThread().getName() + "')", pThrowable);
 				}
 			}
 		};
 
 		try {
-			Debug.d(this.getClass().getSimpleName() + ".onCreateResources");
+			Debug.d(this.getClass().getSimpleName() + ".onCreateResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 			this.onCreateResources(onCreateResourcesCallback);
 		} catch(final Throwable pThrowable) {
-			Debug.e(this.getClass().getSimpleName() + ".onCreateGame failed.", pThrowable);
+			Debug.e(this.getClass().getSimpleName() + ".onCreateGame failed." + " @(Thread: '" + Thread.currentThread().getName() + "')", pThrowable);
 		}
 	}
 
@@ -171,14 +171,14 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			try {
 				this.onReloadResources();
 			} catch(final Throwable pThrowable) {
-				Debug.e(this.getClass().getSimpleName() + ".onReloadResources failed.", pThrowable);
+				Debug.e(this.getClass().getSimpleName() + ".onReloadResources failed." + " @(Thread: '" + Thread.currentThread().getName() + "')", pThrowable);
 			}
 		}
 	}
 
 	@Override
 	protected void onResume() {
-		Debug.d(this.getClass().getSimpleName() + ".onResume");
+		Debug.d(this.getClass().getSimpleName() + ".onResume" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		super.onResume();
 
@@ -188,7 +188,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public void onResumeGame() {
-		Debug.d(this.getClass().getSimpleName() + ".onResumeGame");
+		Debug.d(this.getClass().getSimpleName() + ".onResumeGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		this.mEngine.start();
 
@@ -206,14 +206,14 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public void onReloadResources() {
-		Debug.d(this.getClass().getSimpleName() + ".onReloadResources");
+		Debug.d(this.getClass().getSimpleName() + ".onReloadResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		this.mEngine.onReloadResources();
 	}
 
 	@Override
 	protected void onPause() {
-		Debug.d(this.getClass().getSimpleName() + ".onPause");
+		Debug.d(this.getClass().getSimpleName() + ".onPause" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		super.onPause();
 
@@ -227,7 +227,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public void onPauseGame() {
-		Debug.d(this.getClass().getSimpleName() + ".onPauseGame");
+		Debug.d(this.getClass().getSimpleName() + ".onPauseGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		this.mGamePaused = true;
 
@@ -236,7 +236,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	protected void onDestroy() {
-		Debug.d(this.getClass().getSimpleName() + ".onDestroy");
+		Debug.d(this.getClass().getSimpleName() + ".onDestroy" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		super.onDestroy();
 
@@ -245,15 +245,18 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		try {
 			this.onDestroyResources();
 		} catch (final Throwable pThrowable) {
-			Debug.e(this.getClass().getSimpleName() + ".onDestroyResources failed.", pThrowable);
+			Debug.e(this.getClass().getSimpleName() + ".onDestroyResources failed." + " @(Thread: '" + Thread.currentThread().getName() + "')", pThrowable);
 		}
 
 		this.onGameDestroyed();
+
+		this.mEngineOptions = null;
+		this.mEngine = null;
 	}
 
 	@Override
 	public void onDestroyResources() throws Exception {
-		Debug.d(this.getClass().getSimpleName() + ".onDestroyResources");
+		Debug.d(this.getClass().getSimpleName() + ".onDestroyResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		if(this.mEngine.getEngineOptions().getAudioOptions().needsMusic()) {
 			this.getMusicManager().releaseAll();
@@ -266,7 +269,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public synchronized void onGameDestroyed() {
-		Debug.d(this.getClass().getSimpleName() + ".onGameDestroyed");
+		Debug.d(this.getClass().getSimpleName() + ".onGameDestroyed" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		this.mGameCreated = false;
 	}

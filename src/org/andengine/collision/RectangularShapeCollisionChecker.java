@@ -1,6 +1,7 @@
 package org.andengine.collision;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.util.constants.Constants;
@@ -44,6 +45,11 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static boolean checkContains(final Entity pEntity, final float pWidth, final float pHeight, final float pX, final float pY) {
+		RectangularShapeCollisionChecker.fillVertices(pEntity.getX(), pEntity.getY(), pWidth, pHeight, pEntity.getLocalToSceneTransformation(), RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP);
+		return ShapeCollisionChecker.checkContains(RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP, 2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, pX, pY);
+	}
 
 	public static boolean checkContains(final RectangularShape pRectangularShape, final float pX, final float pY) {
 		RectangularShapeCollisionChecker.fillVertices(pRectangularShape, RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP);

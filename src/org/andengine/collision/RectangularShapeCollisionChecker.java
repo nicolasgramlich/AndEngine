@@ -45,9 +45,14 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+	
+	public static boolean checkContains(final float pLocalX, final float pLocalY, final float pLocalWidth, final float pLocalHeight, final Transformation pLocalToSceneTransformation, final float pX, final float pY) {
+		RectangularShapeCollisionChecker.fillVertices(pLocalX, pLocalY, pLocalWidth, pLocalHeight, pLocalToSceneTransformation, RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP);
+		return ShapeCollisionChecker.checkContains(RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP, 2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, pX, pY);
+	}
 
-	public static boolean checkContains(final Entity pEntity, final float pWidth, final float pHeight, final float pX, final float pY) {
-		RectangularShapeCollisionChecker.fillVertices(pEntity.getX(), pEntity.getY(), pWidth, pHeight, pEntity.getLocalToSceneTransformation(), RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP);
+	public static boolean checkContains(final Entity pEntity, final float pLocalWidth, final float pLocalHeight, final float pX, final float pY) {
+		RectangularShapeCollisionChecker.fillVertices(pEntity.getX(), pEntity.getY(), pLocalWidth, pLocalHeight, pEntity.getLocalToSceneTransformation(), RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP);
 		return ShapeCollisionChecker.checkContains(RectangularShapeCollisionChecker.VERTICES_CONTAINS_TMP, 2 * RectangularShapeCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, pX, pY);
 	}
 
@@ -95,23 +100,23 @@ public class RectangularShapeCollisionChecker extends ShapeCollisionChecker {
 		RectangularShapeCollisionChecker.fillVertices(0, 0, pRectangularShape.getWidth(), pRectangularShape.getHeight(), pRectangularShape.getLocalToSceneTransformation(), pVertices);
 	}
 
-	public static void fillVertices(final float pX, final float pY, final float pWidth, final float pHeight, final Transformation pLocalToSceneTransformation, final float[] pVertices) {
-		final float left = pX;
-		final float top = pY;
-		final float right = pX + pWidth;
-		final float bottom = pY + pHeight;
+	public static void fillVertices(final float pLocalX, final float pLocalY, final float pLocalWidth, final float pLocalHeight, final Transformation pLocalToSceneTransformation, final float[] pVertices) {
+		final float localXMin = pLocalX;
+		final float localXMax = pLocalX + pLocalWidth;
+		final float localYMin = pLocalY;
+		final float localYMax = pLocalY + pLocalHeight;
 
-		pVertices[0 + Constants.VERTEX_INDEX_X] = left;
-		pVertices[0 + Constants.VERTEX_INDEX_Y] = top;
+		pVertices[0 + Constants.VERTEX_INDEX_X] = localXMin;
+		pVertices[0 + Constants.VERTEX_INDEX_Y] = localYMin;
 
-		pVertices[2 + Constants.VERTEX_INDEX_X] = right;
-		pVertices[2 + Constants.VERTEX_INDEX_Y] = top;
+		pVertices[2 + Constants.VERTEX_INDEX_X] = localXMax;
+		pVertices[2 + Constants.VERTEX_INDEX_Y] = localYMin;
 
-		pVertices[4 + Constants.VERTEX_INDEX_X] = right;
-		pVertices[4 + Constants.VERTEX_INDEX_Y] = bottom;
+		pVertices[4 + Constants.VERTEX_INDEX_X] = localXMax;
+		pVertices[4 + Constants.VERTEX_INDEX_Y] = localYMax;
 
-		pVertices[6 + Constants.VERTEX_INDEX_X] = left;
-		pVertices[6 + Constants.VERTEX_INDEX_Y] = bottom;
+		pVertices[6 + Constants.VERTEX_INDEX_X] = localXMin;
+		pVertices[6 + Constants.VERTEX_INDEX_Y] = localYMax;
 
 		pLocalToSceneTransformation.transform(pVertices);
 	}

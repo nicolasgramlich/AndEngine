@@ -67,11 +67,11 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	private boolean mMultiSampling;
 	private boolean mCoverageMultiSampling;
 
-	private int mRedBits = -1;
-	private int mGreenBits = -1;
-	private int mDepthBits = -1;
-	private int mAlphaBits = -1;
-	private int mBlueBits = -1;
+	private int mRedSize = -1;
+	private int mGreenSize = -1;
+	private int mDepthSize = -1;
+	private int mAlphaSize = -1;
+	private int mBlueSize = -1;
 
 	// ===========================================================
 	// Constructors
@@ -93,24 +93,24 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 		return this.mCoverageMultiSampling;
 	}
 
-	public int getRedBits() {
-		return this.mRedBits;
+	public int getRedSize() {
+		return this.mRedSize;
 	}
 
-	public int getGreenBits() {
-		return this.mGreenBits;
+	public int getGreenSize() {
+		return this.mGreenSize;
 	}
 
-	public int getBlueBits() {
-		return this.mBlueBits;
+	public int getBlueSize() {
+		return this.mBlueSize;
 	}
 
-	public int getAlphaBits() {
-		return this.mAlphaBits;
+	public int getAlphaSize() {
+		return this.mAlphaSize;
 	}
 
-	public int getDepthBits() {
-		return this.mDepthBits;
+	public int getDepthSize() {
+		return this.mDepthSize;
 	}
 
 	// ===========================================================
@@ -169,18 +169,18 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 		for(int i = 0; i < pEGLConfigs.length; ++i) {
 			final EGLConfig config = pEGLConfigs[i];
 			if(config != null) {
-				final int redBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_RED_SIZE, 0);
-				final int greenBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_GREEN_SIZE, 0);
-				final int blueBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_BLUE_SIZE, 0);
-				final int alphaBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_ALPHA_SIZE, 0);
-				final int depthBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_DEPTH_SIZE, 0);
+				final int redSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_RED_SIZE, 0);
+				final int greenSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_GREEN_SIZE, 0);
+				final int blueSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_BLUE_SIZE, 0);
+				final int alphaSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_ALPHA_SIZE, 0);
+				final int depthSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_DEPTH_SIZE, 0);
 
-				if(redBits == 5) {
-					this.mRedBits = redBits;
-					this.mGreenBits = greenBits;
-					this.mBlueBits = blueBits;
-					this.mAlphaBits = alphaBits;
-					this.mDepthBits = depthBits;
+				if(redSize == 5) {
+					this.mRedSize = redSize;
+					this.mGreenSize = greenSize;
+					this.mBlueSize = blueSize;
+					this.mAlphaSize = alphaSize;
+					this.mDepthSize = depthSize;
 					return config;
 				}
 			}

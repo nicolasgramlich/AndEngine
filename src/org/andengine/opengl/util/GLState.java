@@ -126,7 +126,7 @@ public class GLState {
 
 		Debug.d("VERSION: " + this.mVersion);
 		Debug.d("RENDERER: " + this.mRenderer);
-		Debug.d("EGLCONFIG: " + EGLConfig.class.getSimpleName() + "(Red=" + pConfigChooser.getRedBits() + ", Green=" + pConfigChooser.getGreenBits() + ", Blue=" + pConfigChooser.getBlueBits() + ", Alpha=" + pConfigChooser.getAlphaBits() + ", Depth=" + pConfigChooser.getDepthBits() + ")");
+		Debug.d("EGLCONFIG: " + EGLConfig.class.getSimpleName() + "(Red=" + pConfigChooser.getRedSize() + ", Green=" + pConfigChooser.getGreenSize() + ", Blue=" + pConfigChooser.getBlueSize() + ", Alpha=" + pConfigChooser.getAlphaSize() + ", Depth=" + pConfigChooser.getDepthSize() + ")");
 		Debug.d("EXTENSIONS: " + this.mExtensions);
 		Debug.d("MAX_VERTEX_ATTRIBS: " + this.mMaximumVertexAttributeCount);
 		Debug.d("MAX_VERTEX_UNIFORM_VECTORS: " + this.mMaximumVertexShaderUniformVectorCount);

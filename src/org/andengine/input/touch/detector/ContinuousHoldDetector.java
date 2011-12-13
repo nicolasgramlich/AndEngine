@@ -78,14 +78,14 @@ public class ContinuousHoldDetector extends HoldDetector implements IUpdateHandl
 		final MotionEvent motionEvent = pSceneTouchEvent.getMotionEvent();
 
 		switch(pSceneTouchEvent.getAction()) {
-			case MotionEvent.ACTION_DOWN:
+			case TouchEvent.ACTION_DOWN:
 				if(this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
 					this.prepareHold(pSceneTouchEvent);
 					return true;
 				} else {
 					return false;
 				}
-			case MotionEvent.ACTION_MOVE:
+			case TouchEvent.ACTION_MOVE:
 			{
 				if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
 					this.mHoldX = pSceneTouchEvent.getX();
@@ -97,8 +97,8 @@ public class ContinuousHoldDetector extends HoldDetector implements IUpdateHandl
 					return false;
 				}
 			}
-			case MotionEvent.ACTION_UP:
-			case MotionEvent.ACTION_CANCEL:
+			case TouchEvent.ACTION_UP:
+			case TouchEvent.ACTION_CANCEL:
 			{
 				if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
 					this.mHoldX = pSceneTouchEvent.getX();

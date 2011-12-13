@@ -2,8 +2,6 @@ package org.andengine.input.touch.detector;
 
 import org.andengine.input.touch.TouchEvent;
 
-import android.view.MotionEvent;
-
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -68,11 +66,11 @@ public class ClickDetector extends BaseDetector {
 	@Override
 	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {
 		switch(pSceneTouchEvent.getAction()) {
-			case MotionEvent.ACTION_DOWN:
+			case TouchEvent.ACTION_DOWN:
 				this.prepareClick(pSceneTouchEvent);
 				return true;
-			case MotionEvent.ACTION_UP:
-			case MotionEvent.ACTION_CANCEL:
+			case TouchEvent.ACTION_UP:
+			case TouchEvent.ACTION_CANCEL:
 			    if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
     				final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
 

@@ -2,8 +2,6 @@ package org.andengine.input.touch.detector;
 
 import org.andengine.input.touch.TouchEvent;
 
-import android.view.MotionEvent;
-
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -79,10 +77,10 @@ public class ScrollDetector extends BaseDetector {
 		final float touchY = this.getY(pSceneTouchEvent);
 
 		switch(pSceneTouchEvent.getAction()) {
-			case MotionEvent.ACTION_DOWN:
+			case TouchEvent.ACTION_DOWN:
 				this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
 				return true;
-			case MotionEvent.ACTION_MOVE:
+			case TouchEvent.ACTION_MOVE:
 				if(this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
 					this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
 					return true;
@@ -106,8 +104,8 @@ public class ScrollDetector extends BaseDetector {
 				} else {
 					return false;
 				}
-				case MotionEvent.ACTION_UP:
-				case MotionEvent.ACTION_CANCEL:
+				case TouchEvent.ACTION_UP:
+				case TouchEvent.ACTION_CANCEL:
 					if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
 						final float distanceX = touchX - this.mLastX;
 						final float distanceY = touchY - this.mLastY;

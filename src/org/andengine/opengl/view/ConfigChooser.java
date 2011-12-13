@@ -67,6 +67,12 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	private boolean mMultiSampling;
 	private boolean mCoverageMultiSampling;
 
+	private int mRedBits = -1;
+	private int mGreenBits = -1;
+	private int mDepthBits = -1;
+	private int mAlphaBits = -1;
+	private int mBlueBits = -1;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -85,6 +91,26 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 
 	public boolean isCoverageMultiSampling() {
 		return this.mCoverageMultiSampling;
+	}
+
+	public int getRedBits() {
+		return this.mRedBits;
+	}
+
+	public int getGreenBits() {
+		return this.mGreenBits;
+	}
+
+	public int getBlueBits() {
+		return this.mBlueBits;
+	}
+
+	public int getAlphaBits() {
+		return this.mAlphaBits;
+	}
+
+	public int getDepthBits() {
+		return this.mDepthBits;
 	}
 
 	// ===========================================================
@@ -142,8 +168,21 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	private EGLConfig findEGLConfig(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final EGLConfig[] pEGLConfigs) {
 		for(int i = 0; i < pEGLConfigs.length; ++i) {
 			final EGLConfig config = pEGLConfigs[i];
-			if(config != null && this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_RED_SIZE, 0) == 5) {
-				return config;
+			if(config != null) {
+				final int redBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_RED_SIZE, 0);
+				final int greenBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_GREEN_SIZE, 0);
+				final int blueBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_BLUE_SIZE, 0);
+				final int alphaBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_ALPHA_SIZE, 0);
+				final int depthBits = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_DEPTH_SIZE, 0);
+
+				if(redBits == 5) {
+					this.mRedBits = redBits;
+					this.mGreenBits = greenBits;
+					this.mBlueBits = blueBits;
+					this.mAlphaBits = alphaBits;
+					this.mDepthBits = depthBits;
+					return config;
+				}
 			}
 		}
 		throw new IllegalArgumentException("No EGLConfig found!");

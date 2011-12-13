@@ -4,9 +4,12 @@ import java.nio.Buffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
+import javax.microedition.khronos.egl.EGLConfig;
+
 import org.andengine.engine.options.RenderOptions;
 import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.view.ConfigChooser;
 import org.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
@@ -110,7 +113,7 @@ public class GLState {
 	// Methods
 	// ===========================================================
 
-	public void reset(final RenderOptions pRenderOptions) {
+	public void reset(final RenderOptions pRenderOptions, final ConfigChooser pConfigChooser, final EGLConfig pEGLConfig) {
 		this.mVersion = GLES20.glGetString(GLES20.GL_VERSION);
 		this.mRenderer = GLES20.glGetString(GLES20.GL_RENDERER);
 		this.mExtensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
@@ -123,6 +126,7 @@ public class GLState {
 
 		Debug.d("VERSION: " + this.mVersion);
 		Debug.d("RENDERER: " + this.mRenderer);
+		Debug.d("EGLCONFIG: " + EGLConfig.class.getSimpleName() + "(Red=" + pConfigChooser.getRedBits() + ", Green=" + pConfigChooser.getGreenBits() + ", Blue=" + pConfigChooser.getBlueBits() + ", Alpha=" + pConfigChooser.getAlphaBits() + ", Depth=" + pConfigChooser.getDepthBits() + ")");
 		Debug.d("EXTENSIONS: " + this.mExtensions);
 		Debug.d("MAX_VERTEX_ATTRIBS: " + this.mMaximumVertexAttributeCount);
 		Debug.d("MAX_VERTEX_UNIFORM_VECTORS: " + this.mMaximumVertexShaderUniformVectorCount);

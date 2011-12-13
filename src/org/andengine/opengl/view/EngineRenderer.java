@@ -59,15 +59,15 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 				this.mRendererListener.onSurfaceCreated();
 			}
 
-			this.mGLState.reset(this.mEngine.getEngineOptions().getRenderOptions());
+			this.mGLState.reset(this.mEngine.getEngineOptions().getRenderOptions(), this.mConfigChooser, pEGLConfig);
 
 			// TODO Check if available and make available through EngineOptions-RenderOptions
-//				GLES20.glEnable(GLES20.GL_POLYGON_SMOOTH);
-//				GLES20.glHint(GLES20.GL_POLYGON_SMOOTH_HINT, GLES20.GL_NICEST);
-//				GLES20.glEnable(GLES20.GL_LINE_SMOOTH);
-//				GLES20.glHint(GLES20.GL_LINE_SMOOTH_HINT, GLES20.GL_NICEST);
-//				GLES20.glEnable(GLES20.GL_POINT_SMOOTH);
-//				GLES20.glHint(GLES20.GL_POINT_SMOOTH_HINT, GLES20.GL_NICEST);
+//			GLES20.glEnable(GLES20.GL_POLYGON_SMOOTH);
+//			GLES20.glHint(GLES20.GL_POLYGON_SMOOTH_HINT, GLES20.GL_NICEST);
+//			GLES20.glEnable(GLES20.GL_LINE_SMOOTH);
+//			GLES20.glHint(GLES20.GL_LINE_SMOOTH_HINT, GLES20.GL_NICEST);
+//			GLES20.glEnable(GLES20.GL_POINT_SMOOTH);
+//			GLES20.glHint(GLES20.GL_POINT_SMOOTH_HINT, GLES20.GL_NICEST);
 
 			this.mGLState.disableDither();
 			this.mGLState.disableDepthTest();
@@ -75,9 +75,9 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 			this.mGLState.enableBlend();
 
 			/* Enabling culling doesn't really make sense, because triangles are never drawn 'backwards' on purpose. */
-//				this.mGLState.enableCulling();
-//				GLES20.glFrontFace(GLES20.GL_CCW);
-//				GLES20.glCullFace(GLES20.GL_BACK);
+//			this.mGLState.enableCulling();
+//			GLES20.glFrontFace(GLES20.GL_CCW);
+//			GLES20.glCullFace(GLES20.GL_BACK);
 		}
 	}
 

@@ -45,6 +45,13 @@ public class RenderSurfaceView extends GLSurfaceView {
 	// Getter & Setter
 	// ===========================================================
 
+	public ConfigChooser getConfigChooser() throws IllegalStateException {
+		if(this.mConfigChooser == null) {
+			throw new IllegalStateException(ConfigChooser.class.getSimpleName() + " not yet set.");
+		}
+		return this.mConfigChooser;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -66,14 +73,11 @@ public class RenderSurfaceView extends GLSurfaceView {
 	}
 
 	public void setRenderer(final Engine pEngine, final IRendererListener pRendererListener) {
-		if (pEngine.getEngineOptions().getRenderOptions().isMultiSampling()) {
-			if(this.mConfigChooser == null) {
-				this.mConfigChooser = new ConfigChooser(true);
-			}
-			this.setEGLConfigChooser(this.mConfigChooser);
-		} else {
-			this.setEGLConfigChooser(false);
+		if(this.mConfigChooser == null) {
+			final boolean multiSampling = pEngine.getEngineOptions().getRenderOptions().isMultiSampling();
+			this.mConfigChooser = new ConfigChooser(multiSampling);
 		}
+		this.setEGLConfigChooser(this.mConfigChooser);
 
 		this.setOnTouchListener(pEngine);
 		this.mEngineRenderer = new EngineRenderer(pEngine, this.mConfigChooser, pRendererListener);

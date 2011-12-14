@@ -18,8 +18,8 @@
  * AndEngineAugmentedRealityExtension
  * AndEngineLiveWallpaperExtension
  * AndEngineMODPlayerExtension
- * AndEngineMultiplayerExtension (Merged into the 'GLES2' branch.)
- * AndEngineMultiTouchExtension
+ * AndEngineMultiplayerExtension
+ * AndEngineMultiTouchExtension (Merged into the 'GLES2' branch.)
  * AndEnginePhysicsBox2DExtension
  * AndEngineSVGTextureRegionExtension
  * AndEngineTexturePackerExtension

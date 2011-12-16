@@ -42,6 +42,7 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 
 	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue, final IModifierListener<T> pModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pModifierListener);
+
 		this.mFromValue = pFromValue;
 		this.mValueSpan = pToValue - pFromValue;
 		this.mEaseFunction = pEaseFunction;
@@ -49,6 +50,7 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 
 	protected BaseSingleValueSpanModifier(final BaseSingleValueSpanModifier<T> pBaseSingleValueSpanModifier) {
 		super(pBaseSingleValueSpanModifier);
+
 		this.mFromValue = pBaseSingleValueSpanModifier.mFromValue;
 		this.mValueSpan = pBaseSingleValueSpanModifier.mValueSpan;
 		this.mEaseFunction = pBaseSingleValueSpanModifier.mEaseFunction;

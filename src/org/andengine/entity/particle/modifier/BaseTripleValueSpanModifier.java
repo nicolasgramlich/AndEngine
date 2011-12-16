@@ -19,10 +19,10 @@ public abstract class BaseTripleValueSpanModifier<T extends Entity> extends Base
 	// Fields
 	// ===========================================================
 
-	private final float mFromValueC;
-	private final float mToValueC;
+	private float mFromValueC;
+	private float mToValueC;
 
-	private final float mSpanValueC;
+	private float mSpanValueC;
 
 	// ===========================================================
 	// Constructors
@@ -30,6 +30,7 @@ public abstract class BaseTripleValueSpanModifier<T extends Entity> extends Base
 
 	public BaseTripleValueSpanModifier(final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final float pFromTime, final float pToTime) {
 		super(pFromValueA, pToValueA, pFromValueB, pToValueB, pFromTime, pToTime);
+
 		this.mFromValueC = pFromValueC;
 		this.mToValueC = pToValueC;
 
@@ -61,12 +62,27 @@ public abstract class BaseTripleValueSpanModifier<T extends Entity> extends Base
 		this.onSetValues(pParticle, super.calculateValue(pPercent), super.calculateValueB(pPercent), this.calculateValueC(pPercent));
 	}
 
+	@Override
+	@Deprecated
+	public void reset(float pFromValueA, float pToValueA, float pFromValueB, float pToValueB, float pFromTime, float pToTime) {
+		super.reset(pFromValueA, pToValueA, pFromValueB, pToValueB, pFromTime, pToTime);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	private final float calculateValueC(final float pPercent) {
+	protected float calculateValueC(final float pPercent) {
 		return this.mFromValueC + this.mSpanValueC * pPercent;
+	}
+
+	public void reset(final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final float pFromTime, final float pToTime) {
+		super.reset(pFromValueA, pToValueA, pFromValueB, pToValueB, pFromTime, pToTime);
+
+		this.mFromValueC = pFromValueC;
+		this.mToValueC = pToValueC;
+
+		this.mSpanValueC = this.mToValueC - this.mFromValueC;
 	}
 
 	// ===========================================================

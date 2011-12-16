@@ -19,10 +19,10 @@ public abstract class BaseDoubleValueSpanModifier<T extends Entity> extends Base
 	// Fields
 	// ===========================================================
 
-	private final float mFromValueB;
-	private final float mToValueB;
+	private float mFromValueB;
+	private float mToValueB;
 
-	private final float mSpanValueB;
+	private float mSpanValueB;
 
 	// ===========================================================
 	// Constructors
@@ -30,6 +30,7 @@ public abstract class BaseDoubleValueSpanModifier<T extends Entity> extends Base
 
 	public BaseDoubleValueSpanModifier(final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromTime, final float pToTime) {
 		super(pFromValueA, pToValueA, pFromTime, pToTime);
+
 		this.mFromValueB = pFromValueB;
 		this.mToValueB = pToValueB;
 
@@ -61,12 +62,27 @@ public abstract class BaseDoubleValueSpanModifier<T extends Entity> extends Base
 		this.onSetValues(pParticle, super.calculateValue(pPercent), this.calculateValueB(pPercent));
 	}
 
+	@Override
+	@Deprecated
+	public void reset(final float pFromValue, final float pToValue, final float pFromTime, final float pToTime) {
+		super.reset(pFromValue, pToValue, pFromTime, pToTime);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	protected final float calculateValueB(final float pPercent) {
+	protected float calculateValueB(final float pPercent) {
 		return this.mFromValueB + this.mSpanValueB * pPercent;
+	}
+
+	public void reset(final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromTime, final float pToTime) {
+		super.reset(pFromValueA, pToValueA, pFromTime, pToTime);
+
+		this.mFromValueB = pFromValueB;
+		this.mToValueB = pToValueB;
+
+		this.mSpanValueB = this.mToValueB - this.mFromValueB;
 	}
 
 	// ===========================================================

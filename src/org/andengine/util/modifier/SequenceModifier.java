@@ -48,6 +48,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 
 	public SequenceModifier(final ISubSequenceModifierListener<T> pSubSequenceModifierListener, final IModifierListener<T> pModifierListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
 		super(pModifierListener);
+
 		if (pModifiers.length == 0) {
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}

@@ -32,12 +32,14 @@ public abstract class BaseTripleValueSpanModifier<T> extends BaseDoubleValueSpan
 
 	public BaseTripleValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IModifierListener<T> pModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pModifierListener, pEaseFunction);
+
 		this.mFromValueC = pFromValueC;
 		this.mValueSpanC = pToValueC - pFromValueC;
 	}
 
 	protected BaseTripleValueSpanModifier(final BaseTripleValueSpanModifier<T> pBaseTripleValueSpanModifier) {
 		super(pBaseTripleValueSpanModifier);
+
 		this.mFromValueC = pBaseTripleValueSpanModifier.mFromValueC;
 		this.mValueSpanC = pBaseTripleValueSpanModifier.mValueSpanC;
 	}

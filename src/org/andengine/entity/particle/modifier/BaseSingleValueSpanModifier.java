@@ -19,14 +19,14 @@ public abstract class BaseSingleValueSpanModifier<T extends Entity> implements I
 	// Fields
 	// ===========================================================
 
-	private final float mFromValue;
-	private final float mToValue;
+	private float mFromValue;
+	private float mToValue;
 
-	private final float mFromTime;
-	private final float mToTime;
+	private float mFromTime;
+	private float mToTime;
 
-	private final float mDuration;
-	private final float mSpanValue;
+	private float mDuration;
+	private float mSpanValue;
 
 	// ===========================================================
 	// Constructors
@@ -67,17 +67,27 @@ public abstract class BaseSingleValueSpanModifier<T extends Entity> implements I
 		}
 	}
 
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
 	protected void onSetValueInternal(final Particle<T> pParticle, final float pPercent) {
 		this.onSetValue(pParticle, this.calculateValue(pPercent));
 	}
 
-	protected final float calculateValue(final float pPercent) {
+	protected float calculateValue(final float pPercent) {
 		return this.mFromValue + this.mSpanValue * pPercent;
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
+	public void reset(final float pFromValue, final float pToValue, final float pFromTime, final float pToTime) {
+		this.mFromValue = pFromValue;
+		this.mToValue = pToValue;
+		this.mFromTime = pFromTime;
+		this.mToTime = pToTime;
+
+		this.mSpanValue = this.mToValue - this.mFromValue;
+		this.mDuration = this.mToTime - this.mFromTime;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

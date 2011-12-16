@@ -31,12 +31,14 @@ public abstract class BaseQuadrupelValueSpanModifier<T> extends BaseTripleValueS
 
 	public BaseQuadrupelValueSpanModifier(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final float pFromValueD, final float pToValueD, final IModifierListener<T> pModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, pModifierListener, pEaseFunction);
+
 		this.mFromValueD = pFromValueD;
 		this.mValueSpanD = pToValueD - pFromValueD;
 	}
 
 	protected BaseQuadrupelValueSpanModifier(final BaseQuadrupelValueSpanModifier<T> pBaseTripleValueSpanModifier) {
 		super(pBaseTripleValueSpanModifier);
+
 		this.mFromValueD = pBaseTripleValueSpanModifier.mFromValueD;
 		this.mValueSpanD = pBaseTripleValueSpanModifier.mValueSpanD;
 	}

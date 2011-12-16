@@ -30,6 +30,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 
 	public BaseDurationModifier(final float pDuration, final IModifierListener<T> pModifierListener) {
 		super(pModifierListener);
+
 		this.mDuration = pDuration;
 	}
 

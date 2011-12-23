@@ -136,9 +136,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mCamera = pEngineOptions.getCamera();
 
 		if(this.mEngineOptions.getTouchOptions().needsMultiTouch()) {
-			this.setTouchController(new SingleTouchController());
-		} else {
 			this.setTouchController(new MultiTouchController());
+		} else {
+			this.setTouchController(new SingleTouchController());
 		}
 
 		if(this.mEngineOptions.getAudioOptions().needsSound()) {

@@ -79,6 +79,13 @@ public abstract class LegacyBaseGameActivity extends BaseGameActivity {
 		this.onUnloadResources();
 	}
 
+	@Override
+	public synchronized void onGameCreated() {
+		super.onGameCreated();
+
+		this.onLoadComplete();
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

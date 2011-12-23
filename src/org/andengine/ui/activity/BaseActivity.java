@@ -1,9 +1,8 @@
 package org.andengine.ui.activity;
 
-import java.util.concurrent.Callable;
-
 import org.andengine.util.ActivityUtils;
 import org.andengine.util.AsyncCallable;
+import org.andengine.util.Callable;
 import org.andengine.util.Callback;
 import org.andengine.util.progress.ProgressCallable;
 

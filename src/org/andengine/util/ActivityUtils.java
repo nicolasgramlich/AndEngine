@@ -1,7 +1,5 @@
 package org.andengine.util;
 
-import java.util.concurrent.Callable;
-
 import org.andengine.ui.activity.BaseActivity.CancelledException;
 import org.andengine.util.debug.Debug;
 import org.andengine.util.progress.IProgressListener;

@@ -149,8 +149,6 @@ public class Sound extends BaseAudioEntity {
 
 	@Override
 	public void onMasterVolumeChanged(final float pMasterVolume) throws SoundReleasedException {
-		this.onMasterVolumeChanged(pMasterVolume);
-
 		this.setVolume(this.mLeftVolume, this.mRightVolume);
 	}
 

@@ -56,4 +56,4 @@ public class RectangleBitmapTextureAtlasSourceDecoratorShape implements IBitmapT
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-};
+}

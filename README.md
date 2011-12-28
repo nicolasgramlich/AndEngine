@@ -23,3 +23,4 @@
  * AndEnginePhysicsBox2DExtension
  * AndEngineSVGTextureRegionExtension
  * AndEngineTexturePackerExtension
+ * AndEngineTMXTiledMapExtension (Merged into the 'GLES1' branch.)

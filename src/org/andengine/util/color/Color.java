@@ -174,6 +174,7 @@ public class Color {
 			this.mRed = pRed;
 			this.mGreen = pGreen;
 			this.mBlue = pBlue;
+			this.mAlpha = pAlpha;
 
 			this.pack();
 			return true;

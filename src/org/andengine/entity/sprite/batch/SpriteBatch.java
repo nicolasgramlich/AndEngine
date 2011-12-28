@@ -62,7 +62,7 @@ public class SpriteBatch extends Shape {
 	// Fields
 	// ===========================================================
 
-	protected final ITexture mTexture;
+	protected ITexture mTexture;
 	protected final int mCapacity;
 	protected final ISpriteBatchVertexBufferObject mSpriteBatchVertexBufferObject;
 
@@ -136,12 +136,20 @@ public class SpriteBatch extends Shape {
 		return this.mIndex;
 	}
 
+	public ITexture getTexture() {
+		return this.mTexture;
+	}
+
+	public void setTexture(final ITexture pTexture) {
+		this.mTexture = pTexture;
+	}
+
 	public void setIndex(final int pIndex) {
 		this.assertCapacity(pIndex);
 
 		this.mIndex = pIndex;
 
-		final int bufferDataOffset = pIndex * SpriteBatch.VERTICES_PER_SPRITE;
+		final int bufferDataOffset = pIndex * SpriteBatch.SPRITE_SIZE;
 
 		this.mSpriteBatchVertexBufferObject.setBufferDataOffset(bufferDataOffset);
 	}

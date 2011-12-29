@@ -442,12 +442,14 @@ public class Entity implements IEntity {
 		return this.mRotation != 0 || this.mScaleX != 1 || this.mScaleY != 1 || this.mSkewX != 0 || this.mSkewY != 0;
 	}
 
-	@Override
+	/**
+	 * Do we draw Entity's children on top or behind the Entity. Default is on top (false).
+	 * @return false by default
+	 */
 	public boolean isDrawChildrenBehindParent() {
 		return mDrawChildrenBehindParent;
 	}
 	
-	@Override
 	public void setDrawChildrenBehindParent(final boolean pDrawChildrenBehindParent) {
 		this.mDrawChildrenBehindParent = pDrawChildrenBehindParent;
 	}

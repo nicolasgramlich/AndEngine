@@ -110,13 +110,6 @@ public interface IEntity extends IDrawHandler, IUpdateHandler {
 	public void setColor(final Color pColor);
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
-
-	/**
-	 * Do we draw Entity's children on top or behind the Entity. Default is on top (false).
-	 * @return false by default
-	 */
-	public boolean isDrawChildrenBehindParent();
-	public void setDrawChildrenBehindParent(final boolean pDrawChildrenBehindParent);
 	
 	/**
 	 * @return a shared(!) float[] of length 2.

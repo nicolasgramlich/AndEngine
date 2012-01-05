@@ -169,10 +169,10 @@ public class TextureManager {
 		final ArrayList<ITexture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
 
 		/* First reload Textures that need to be updated. */
-		final int textursLoadedCount = texturesLoaded.size();
+		final int texturesLoadedCount = texturesLoaded.size();
 
-		if(textursLoadedCount > 0) {
-			for(int i = textursLoadedCount - 1; i >= 0; i--) {
+		if(texturesLoadedCount > 0) {
+			for(int i = texturesLoadedCount - 1; i >= 0; i--) {
 				final ITexture textureToBeReloaded = texturesLoaded.get(i);
 				if(textureToBeReloaded.isUpdateOnHardwareNeeded()) {
 					try {

@@ -193,6 +193,15 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		GLES20.glDrawArrays(pPrimitiveType, pOffset, pCount);
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
+			BufferUtils.freeDirect(this.mByteBuffer);
+		}
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

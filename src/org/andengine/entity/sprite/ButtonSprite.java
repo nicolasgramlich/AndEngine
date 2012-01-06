@@ -73,7 +73,7 @@ public class ButtonSprite extends TiledSprite {
 
 		switch(this.mStateCount) {
 			case 1:
-				Debug.w("No " + ITextureRegion.class.getSimpleName() + " supplied for " + State.class.getSimpleName() + "." + State.NORMAL + ".");
+				Debug.w("No " + ITextureRegion.class.getSimpleName() + " supplied for " + State.class.getSimpleName() + "." + State.PRESSED + ".");
 			case 2:
 				Debug.w("No " + ITextureRegion.class.getSimpleName() + " supplied for " + State.class.getSimpleName() + "." + State.DISABLED + ".");
 				break;

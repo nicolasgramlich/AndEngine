@@ -173,6 +173,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		}
 	}
 
+	/**
+	 * The {@link EngineLock} can be used to synchronize on, to ensure the code within the synchronized block runs mutually exclusive to the {@link UpdateThread} and the GL{@link Thread}.
+	 * When the caller already is on the {@link UpdateThread} or the GL-{@link Thread}, the {@link Runnable} is executed immediately.
+	 * @return
+	 */
 	public EngineLock getEngineLock() {
 		return this.mEngineLock;
 	}
@@ -448,6 +453,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	/**
 	 * @param pRunnable the {@link Runnable} to run mutually exclusive to the {@link UpdateThread} and the GL-{@link Thread}.
+	 * When the caller already is on the {@link UpdateThread} or the GL-{@link Thread}, the {@link Runnable} is executed immediately.
 	 * @see {@link Engine#getEngineLock()} to manually synchronize and avoid creating a {@link Runnable}.
 	 */
 	public void runSafely(final Runnable pRunnable) {

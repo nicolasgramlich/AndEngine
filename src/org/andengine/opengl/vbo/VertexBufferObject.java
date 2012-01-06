@@ -197,6 +197,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	protected void finalize() throws Throwable {
 		super.finalize();
 
+		/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
 		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
 			BufferUtils.freeDirect(this.mByteBuffer);
 		}

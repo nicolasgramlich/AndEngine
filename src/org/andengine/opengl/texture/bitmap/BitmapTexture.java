@@ -159,7 +159,7 @@ public abstract class BitmapTexture extends Texture {
 
 		RGBA_8888(Config.ARGB_8888, PixelFormat.RGBA_8888),
 		RGB_565(Config.RGB_565, PixelFormat.RGB_565),
-		RGBA_4444(Config.ARGB_4444, PixelFormat.RGBA_4444), // TODO
+		RGBA_4444(Config.ARGB_4444, PixelFormat.RGBA_4444),
 		A_8(Config.ALPHA_8, PixelFormat.A_8); // TODO
 
 		// ===========================================================

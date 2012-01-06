@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.initializer;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 
 import android.hardware.SensorManager;
 
@@ -11,7 +11,7 @@ import android.hardware.SensorManager;
  * @author Nicolas Gramlich
  * @since 12:04:00 - 15.03.2010
  */
-public class GravityInitializer<T extends Entity> extends AccelerationInitializer<T> {
+public class GravityInitializer<T extends IEntity> extends AccelerationInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

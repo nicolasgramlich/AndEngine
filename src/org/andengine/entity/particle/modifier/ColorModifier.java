@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.modifier;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 
 /**
@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 15:22:26 - 29.06.2010
  */
-public class ColorModifier<T extends Entity> extends BaseTripleValueSpanModifier<T> {
+public class ColorModifier<T extends IEntity> extends BaseTripleValueSpanModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

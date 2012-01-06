@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.initializer;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 import org.andengine.util.math.MathUtils;
 
@@ -11,7 +11,7 @@ import org.andengine.util.math.MathUtils;
  * @author Nicolas Gramlich
  * @since 15:58:29 - 04.05.2010
  */
-public abstract class BaseTripleValueInitializer<T extends Entity> extends BaseDoubleValueInitializer<T> {
+public abstract class BaseTripleValueInitializer<T extends IEntity> extends BaseDoubleValueInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

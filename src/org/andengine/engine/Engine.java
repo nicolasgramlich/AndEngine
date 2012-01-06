@@ -55,7 +55,7 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -79,7 +79,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private long mLastTick = -1;
 	private float mSecondsElapsedTotal = 0;
 
-	private final State mThreadLocker = new State();
+	private final EngineLock mEngineLock = new EngineLock();
 
 	private final UpdateThread mUpdateThread = new UpdateThread();
 
@@ -90,9 +90,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private ITouchController mTouchController;
 
-	private TextureManager mTextureManager = new TextureManager();
-	private FontManager mFontManager = new FontManager();
-	private ShaderProgramManager mShaderProgramManager = new ShaderProgramManager();
+	private final TextureManager mTextureManager = new TextureManager();
+	private final FontManager mFontManager = new FontManager();
+	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager();
 
 	private SoundManager mSoundManager;
 	private MusicManager mMusicManager;
@@ -156,7 +156,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isRunning() {
+	public synchronized boolean isRunning() {
 		return this.mRunning;
 	}
 
@@ -171,6 +171,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			this.mRunning = false;
 		}
+	}
+
+	public EngineLock getEngineLock() {
+		return this.mEngineLock;
 	}
 
 	public Scene getScene() {
@@ -194,7 +198,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void setSurfaceSize(final int pSurfaceWidth, final int pSurfaceHeight) {
-		//		Debug.w("SurfaceView size changed to (width x height): " + pSurfaceWidth + " x " + pSurfaceHeight, new Exception());
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
 		this.onUpdateCameraSurface();
@@ -389,11 +392,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent);
 			try {
-				/*
-				 * As a human cannot interact 1000x per second, we pause the
-				 * UI-Thread for a little.
-				 */
-				Thread.sleep(20); // TODO Maybe this can be removed, when TouchEvents are handled on the UpdateThread!
+				/* Because a human cannot interact 1000x per second, we pause the UI-Thread for a little. */
+				Thread.sleep(this.mEngineOptions.getTouchOptions().getTouchEventIntervalMilliseconds());
 			} catch (final InterruptedException e) {
 				Debug.e(e);
 			}
@@ -446,6 +446,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mUpdateThreadRunnableHandler.postRunnable(pRunnable);
 	}
 
+	/**
+	 * @param pRunnable the {@link Runnable} to run mutually exclusive to the {@link UpdateThread} and the GL-{@link Thread}.
+	 * @see {@link Engine#getEngineLock()} to manually synchronize and avoid creating a {@link Runnable}.
+	 */
+	public void runSafely(final Runnable pRunnable) {
+		synchronized(this.mEngineLock) {
+			pRunnable.run();
+		}
+	}
+
 	public void onDestroy() {
 		this.mTextureManager.onDestroy();
 		this.mFontManager.onDestroy();
@@ -478,24 +488,25 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			final long secondsElapsed = this.getNanosecondsElapsed();
 
-			this.onUpdate(secondsElapsed);
+			synchronized(this.mEngineLock) {
+				this.onUpdate(secondsElapsed);
 
-			this.yieldDraw();
+				this.mEngineLock.notifyCanDraw();
+				this.mEngineLock.waitUntilCanUpdate();
+			}
+
 		} else {
-			this.yieldDraw();
+			synchronized(this.mEngineLock) {
+				this.mEngineLock.notifyCanDraw();
+				this.mEngineLock.waitUntilCanUpdate();
+			}
 
 			Thread.sleep(16);
 		}
 	}
 
-	private void yieldDraw() throws InterruptedException {
-		final State threadLocker = this.mThreadLocker;
-		threadLocker.notifyCanDraw();
-		threadLocker.waitUntilCanUpdate();
-	}
-
 	public void onUpdate(final long pNanosecondsElapsed) throws InterruptedException {
-		final float pSecondsElapsed = (float)pNanosecondsElapsed * TimeConstants.SECONDS_PER_NANOSECOND;
+		final float pSecondsElapsed = pNanosecondsElapsed * TimeConstants.SECONDS_PER_NANOSECOND;
 
 		this.mSecondsElapsedTotal += pSecondsElapsed;
 		this.mLastTick += pNanosecondsElapsed;
@@ -522,18 +533,20 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onDrawFrame(final GLState pGLState) throws InterruptedException {
-		final State threadLocker = this.mThreadLocker;
+		final EngineLock engineLock = this.mEngineLock;
 
-		threadLocker.waitUntilCanDraw();
+		synchronized(engineLock) {
+			engineLock.waitUntilCanDraw();
 
-		this.mTextureManager.updateTextures(pGLState);
-		this.mFontManager.updateFonts(pGLState);
-		VertexBufferObjectManager.updateBufferObjects(pGLState);
+			this.mTextureManager.updateTextures(pGLState);
+			this.mFontManager.updateFonts(pGLState);
+			VertexBufferObjectManager.updateBufferObjects(pGLState);
 
-		this.onUpdateDrawHandlers(pGLState, this.mCamera);
-		this.onDrawScene(pGLState, this.mCamera);
+			this.onUpdateDrawHandlers(pGLState, this.mCamera);
+			this.onDrawScene(pGLState, this.mCamera);
 
-		threadLocker.notifyCanUpdate();
+			engineLock.notifyCanUpdate();
+		}
 	}
 
 	protected void onDrawScene(final GLState pGLState, final Camera pCamera) {
@@ -547,11 +560,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private long getNanosecondsElapsed() {
 		final long now = System.nanoTime();
 
-		return this.calculateNanosecondsElapsed(now, this.mLastTick);
-	}
-
-	protected long calculateNanosecondsElapsed(final long pNow, final long pLastTick) {
-		return pNow - pLastTick;
+		return now - this.mLastTick;
 	}
 
 	public boolean enableVibrator(final Context pContext) {
@@ -595,7 +604,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerometerListener, AccelerometerSensorOptions)}
 	 */
 	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerometerListener pAccelerometerListener) {
-		return this.enableAccelerometerSensor(pContext, pAccelerometerListener, new AccelerometerSensorOptions(SENSORDELAY_DEFAULT));
+		return this.enableAccelerometerSensor(pContext, pAccelerometerListener, new AccelerometerSensorOptions(Engine.SENSORDELAY_DEFAULT));
 	}
 
 	/**
@@ -638,7 +647,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 * @see {@link Engine#enableOrientationSensor(Context, IOrientationListener, OrientationSensorOptions)}
 	 */
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener) {
-		return this.enableOrientationSensor(pContext, pOrientationListener, new OrientationSensorOptions(SENSORDELAY_DEFAULT));
+		return this.enableOrientationSensor(pContext, pOrientationListener, new OrientationSensorOptions(Engine.SENSORDELAY_DEFAULT));
 	}
 
 	/**
@@ -698,9 +707,29 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	private class UpdateThread extends Thread {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
 		public UpdateThread() {
-			super("UpdateThread");
+			super(UpdateThread.class.getSimpleName());
 		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
 
 		@Override
 		public void run() {
@@ -710,43 +739,71 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 					Engine.this.onTickUpdate();
 				}
 			} catch (final InterruptedException e) {
-				Debug.d("UpdateThread interrupted. Don't worry - this Exception is most likely expected!", e);
+				Debug.d(this.getClass().getSimpleName() + " interrupted. Don't worry - this " + e.getClass().getSimpleName() + " is most likely expected!", e);
 				this.interrupt();
 			}
 		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
 	}
 
-	private static class State {
+	public static class EngineLock {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
 		boolean mDrawing = false;
 
-		public synchronized void notifyCanDraw() {
-			// Debug.d(">>> notifyCanDraw");
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		void notifyCanDraw() {
 			this.mDrawing = true;
 			this.notifyAll();
-			// Debug.d("<<< notifyCanDraw");
 		}
 
-		public synchronized void notifyCanUpdate() {
-			// Debug.d(">>> notifyCanUpdate");
+		void notifyCanUpdate() {
 			this.mDrawing = false;
 			this.notifyAll();
-			// Debug.d("<<< notifyCanUpdate");
 		}
 
-		public synchronized void waitUntilCanDraw() throws InterruptedException {
-			// Debug.d(">>> waitUntilCanDraw");
+		void waitUntilCanDraw() throws InterruptedException {
 			while(!this.mDrawing) {
 				this.wait();
 			}
-			// Debug.d("<<< waitUntilCanDraw");
 		}
 
-		public synchronized void waitUntilCanUpdate() throws InterruptedException {
-			// Debug.d(">>> waitUntilCanUpdate");
+		void waitUntilCanUpdate() throws InterruptedException {
 			while(this.mDrawing) {
 				this.wait();
 			}
-			// Debug.d("<<< waitUntilCanUpdate");
 		}
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
 	}
 }

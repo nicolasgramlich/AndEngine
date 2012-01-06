@@ -1,6 +1,7 @@
 package org.andengine.entity.particle.initializer;
 
 import org.andengine.entity.particle.Particle;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.Shape;
 
 import android.opengl.GLES20;
@@ -12,7 +13,7 @@ import android.opengl.GLES20;
  * 
  * @since 17:24:32 - 28.12.2011
  */
-public class BlendFunctionInitializer<T extends Shape> implements IParticleInitializer<T> {
+public class BlendFunctionInitializer<T extends IShape> implements IParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

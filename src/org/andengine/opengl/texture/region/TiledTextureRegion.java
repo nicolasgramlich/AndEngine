@@ -1,6 +1,7 @@
 package org.andengine.opengl.texture.region;
 
 import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.Texture;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -27,10 +28,27 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	// ===========================================================
 
 	public TiledTextureRegion(final ITexture pTexture, final ITextureRegion ... pTextureRegions) {
-		super(pTexture);
+		this(pTexture, true, pTextureRegions);
+	}
 
+	/**
+	 * @param pTexture
+	 * @param pPerformSameTextureSanityCheck checks whether all supplied {@link ITextureRegion} are on the same {@link Texture}
+	 * @param pTextureRegions
+	 */
+	public TiledTextureRegion(final ITexture pTexture, final boolean pPerformSameTextureSanityCheck, final ITextureRegion ... pTextureRegions) {
+		super(pTexture);
+		
 		this.mTextureRegions = pTextureRegions;
 		this.mTileCount = this.mTextureRegions.length;
+
+		if(pPerformSameTextureSanityCheck) {
+			for(int i = this.mTileCount - 1; i >= 0; i--) {
+				if(pTextureRegions[i].getTexture() != pTexture) {
+					throw new IllegalArgumentException("The " + ITextureRegion.class.getSimpleName() + ": '" + pTextureRegions[i].toString() + "' at index: '" + i + "' is not on the same " + ITexture.class.getSimpleName() + ": '" + pTextureRegions[i].getTexture().toString() + "' as the supplied " + ITexture.class.getSimpleName() + ": '" + pTexture.toString() + "'.");
+				}
+			}
+		}
 	}
 
 	public static TiledTextureRegion create(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
@@ -53,7 +71,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 			}
 		}
 
-		return new TiledTextureRegion(pTexture, textureRegions);
+		return new TiledTextureRegion(pTexture, false, textureRegions);
 	}
 
 	@Override
@@ -70,7 +88,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 			textureRegions[i] = this.mTextureRegions[i].deepCopy();
 		}
 
-		return new TiledTextureRegion(this.mTexture, textureRegions);
+		return new TiledTextureRegion(this.mTexture, false, textureRegions);
 	}
 
 	// ===========================================================

@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.modifier;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 import org.andengine.util.math.MathUtils;
 
@@ -11,7 +11,7 @@ import org.andengine.util.math.MathUtils;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class ExpireModifier<T extends Entity> implements IParticleModifier<T> {
+public class ExpireModifier<T extends IEntity> implements IParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

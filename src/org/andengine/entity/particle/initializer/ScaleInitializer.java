@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.initializer;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 
 
@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 10:03:29 - 19.11.2011
  */
-public class ScaleInitializer<T extends Entity> extends BaseSingleValueInitializer<T> {
+public class ScaleInitializer<T extends IEntity> extends BaseSingleValueInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

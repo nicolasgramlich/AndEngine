@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.initializer;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 import org.andengine.util.color.Color;
 
@@ -12,7 +12,7 @@ import org.andengine.util.color.Color;
  * @author Nicolas Gramlich
  * @since 10:17:42 - 29.06.2010
  */
-public class ColorInitializer<T extends Entity> extends BaseTripleValueInitializer<T> {
+public class ColorInitializer<T extends IEntity> extends BaseTripleValueInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

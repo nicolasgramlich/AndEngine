@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.initializer;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 
 /**
@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 10:17:42 - 29.06.2010
  */
-public class RotationInitializer<T extends Entity> extends BaseSingleValueInitializer<T> {
+public class RotationInitializer<T extends IEntity> extends BaseSingleValueInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

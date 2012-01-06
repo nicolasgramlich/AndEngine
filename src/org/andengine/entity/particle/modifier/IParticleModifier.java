@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.modifier;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 import org.andengine.entity.particle.initializer.IParticleInitializer;
 
@@ -11,7 +11,7 @@ import org.andengine.entity.particle.initializer.IParticleInitializer;
  * @author Nicolas Gramlich
  * @since 20:06:05 - 14.03.2010
  */
-public interface IParticleModifier<T extends Entity> extends IParticleInitializer<T> {
+public interface IParticleModifier<T extends IEntity> extends IParticleInitializer<T> {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================

@@ -158,8 +158,7 @@ public class ButtonSprite extends TiledSprite {
 		final int stateTiledTextureRegionIndex = this.mState.getTiledTextureRegionIndex();
 		if(stateTiledTextureRegionIndex >= this.mStateCount) {
 			this.setCurrentTileIndex(0);
-			Debug.w(this.getClass().getSimpleName() + " changed its " + State.class.getSimpleName() + " to " + pState.toString() + ", which doesn't have a " + ITextureRegion.class.getSimpleName()
-					+ " supplied. Applying default " + ITextureRegion.class.getSimpleName() + ".");
+			Debug.w(this.getClass().getSimpleName() + " changed its " + State.class.getSimpleName() + " to " + pState.toString() + ", which doesn't have a " + ITextureRegion.class.getSimpleName() + " supplied. Applying default " + ITextureRegion.class.getSimpleName() + ".");
 		} else {
 			this.setCurrentTileIndex(stateTiledTextureRegionIndex);
 		}
@@ -186,7 +185,9 @@ public class ButtonSprite extends TiledSprite {
 		// Elements
 		// ===========================================================
 
-		NORMAL(0), PRESSED(1), DISABLED(2);
+		NORMAL(0),
+		PRESSED(1),
+		DISABLED(2);
 
 		// ===========================================================
 		// Constants

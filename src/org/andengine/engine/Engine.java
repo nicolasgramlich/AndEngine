@@ -79,7 +79,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private long mLastTick = -1;
 	private float mSecondsElapsedTotal = 0;
 
-	private final EngineLock mEngineLock = new EngineLock();
+	private final EngineLock mEngineLock;
 
 	private final UpdateThread mUpdateThread = new UpdateThread();
 
@@ -123,6 +123,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	public Engine(final EngineOptions pEngineOptions) {
+		/* Initialize Factory and Manager classes. */
 		BitmapTextureAtlasTextureRegionFactory.reset();
 		SoundFactory.onCreate();
 		MusicFactory.onCreate();
@@ -132,23 +133,31 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mFontManager.onCreate();
 		this.mShaderProgramManager.onCreate();
 
+		/* Apply EngineOptions. */
 		this.mEngineOptions = pEngineOptions;
+		if(this.mEngineOptions.hasEngineLock()) {
+			this.mEngineLock = pEngineOptions.getEngineLock();
+		} else {
+			this.mEngineLock = new EngineLock();
+		}
 		this.mCamera = pEngineOptions.getCamera();
 
+		/* Touch. */
 		if(this.mEngineOptions.getTouchOptions().needsMultiTouch()) {
 			this.setTouchController(new MultiTouchController());
 		} else {
 			this.setTouchController(new SingleTouchController());
 		}
 
+		/* Audio. */
 		if(this.mEngineOptions.getAudioOptions().needsSound()) {
 			this.mSoundManager = new SoundManager();
 		}
-
 		if(this.mEngineOptions.getAudioOptions().needsMusic()) {
 			this.mMusicManager = new MusicManager();
 		}
 
+		/* Start the UpdateThread. */
 		this.mUpdateThread.start();
 	}
 

@@ -29,31 +29,27 @@ public class RotationAtModifier extends RotationModifier {
 	// ===========================================================
 
 	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY) {
-		super(pDuration, pFromRotation, pToRotation, EaseLinear.getInstance());
-		this.mRotationCenterX = pRotationCenterX;
-		this.mRotationCenterY = pRotationCenterY;
+		this(pDuration, pFromRotation, pToRotation, pRotationCenterX, pRotationCenterY, EaseLinear.getInstance());
 	}
 
 	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IEaseFunction pEaseFunction) {
-		super(pDuration, pFromRotation, pToRotation, pEaseFunction);
-		this.mRotationCenterX = pRotationCenterX;
-		this.mRotationCenterY = pRotationCenterY;
+		this(pDuration, pFromRotation, pToRotation, pRotationCenterX, pRotationCenterY, null, pEaseFunction);
 	}
 
 	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IEntityModifierListener pEntityModifierListener) {
-		super(pDuration, pFromRotation, pToRotation, pEntityModifierListener, EaseLinear.getInstance());
-		this.mRotationCenterX = pRotationCenterX;
-		this.mRotationCenterY = pRotationCenterY;
+		this(pDuration, pFromRotation, pToRotation, pRotationCenterX, pRotationCenterY, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
 	public RotationAtModifier(final float pDuration, final float pFromRotation, final float pToRotation, final float pRotationCenterX, final float pRotationCenterY, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromRotation, pToRotation, pEntityModifierListener, pEaseFunction);
+
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 	}
 
 	protected RotationAtModifier(final RotationAtModifier pRotationAtModifier) {
 		super(pRotationAtModifier);
+
 		this.mRotationCenterX = pRotationAtModifier.mRotationCenterX;
 		this.mRotationCenterY = pRotationAtModifier.mRotationCenterY;
 	}

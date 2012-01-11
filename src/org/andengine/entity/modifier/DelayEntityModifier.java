@@ -9,7 +9,7 @@ import org.andengine.entity.IEntity;
  * @author Nicolas Gramlich
  * @since 22:55:13 - 19.03.2010
  */
-public class DelayModifier extends DurationEntityModifier {
+public class DelayEntityModifier extends DurationEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,21 +22,21 @@ public class DelayModifier extends DurationEntityModifier {
 	// Constructors
 	// ===========================================================
 
-	public DelayModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener) {
+	public DelayEntityModifier(final float pDuration, final IEntityModifierListener pEntityModifierListener) {
 		super(pDuration, pEntityModifierListener);
 	}
 
-	public DelayModifier(final float pDuration) {
+	public DelayEntityModifier(final float pDuration) {
 		super(pDuration);
 	}
 
-	protected DelayModifier(final DelayModifier pDelayModifier) {
-		super(pDelayModifier);
+	protected DelayEntityModifier(final DelayEntityModifier pDelayEntityModifier) {
+		super(pDelayEntityModifier);
 	}
 
 	@Override
-	public DelayModifier deepCopy(){
-		return new DelayModifier(this);
+	public DelayEntityModifier deepCopy(){
+		return new DelayEntityModifier(this);
 	}
 
 	// ===========================================================

@@ -58,12 +58,14 @@ public class ScaleAtModifier extends ScaleModifier {
 
 	public ScaleAtModifier(final float pDuration, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final float pScaleCenterX, final float pScaleCenterY, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pEntityModifierListener, pEaseFunction);
+
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 	}
 
 	protected ScaleAtModifier(final ScaleAtModifier pScaleAtModifier) {
 		super(pScaleAtModifier);
+
 		this.mScaleCenterX = pScaleAtModifier.mScaleCenterX;
 		this.mScaleCenterY = pScaleAtModifier.mScaleCenterY;
 	}

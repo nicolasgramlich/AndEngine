@@ -625,6 +625,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public Transformation getLocalToParentTransformation() {
+		return this.mMenuItem.getLocalToParentTransformation();
+	}
+
+	@Override
+	public Transformation getParentToLocalTransformation() {
+		return this.mMenuItem.getParentToLocalTransformation();
+	}
+
+	@Override
 	public boolean hasParent() {
 		return this.mMenuItem.hasParent();
 	}
@@ -647,6 +657,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void setVisible(final boolean pVisible) {
 		this.mMenuItem.setVisible(pVisible);
+	}
+
+	@Override
+	public boolean isCulled(final Camera pCamera) {
+		return this.mMenuItem.isCulled(pCamera);
 	}
 
 	@Override

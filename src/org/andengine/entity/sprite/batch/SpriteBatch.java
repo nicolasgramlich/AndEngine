@@ -179,11 +179,6 @@ public class SpriteBatch extends Shape {
 	}
 
 	@Override
-	protected boolean isCulled(final Camera pCamera) {
-		return false;
-	}
-
-	@Override
 	protected void preDraw(final GLState pGLState, final Camera pCamera) {
 		super.preDraw(pGLState, pCamera);
 

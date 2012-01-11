@@ -50,6 +50,7 @@ public class Entity implements IEntity {
 	// ===========================================================
 
 	protected boolean mVisible = true;
+	protected boolean mCullingEnabled = false;
 	protected boolean mIgnoreUpdate = false;
 	protected boolean mChildrenVisible = true;
 	protected boolean mChildrenIgnoreUpdate = false;
@@ -135,6 +136,21 @@ public class Entity implements IEntity {
 	@Override
 	public void setVisible(final boolean pVisible) {
 		this.mVisible = pVisible;
+	}
+
+	@Override
+	public boolean isCullingEnabled() {
+		return this.mCullingEnabled;
+	}
+
+	@Override
+	public void setCullingEnabled(final boolean pCullingEnabled) {
+		this.mCullingEnabled = pCullingEnabled;
+	}
+
+	@Override
+	public boolean isCulled(final Camera pCamera) {
+		return false;
 	}
 
 	@Override
@@ -1005,7 +1021,7 @@ public class Entity implements IEntity {
 
 	@Override
 	public final void onDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mVisible) {
+		if(this.mVisible && !(this.mCullingEnabled && this.isCulled(pCamera))) {
 			this.onManagedDraw(pGLState, pCamera);
 		}
 	}
@@ -1020,6 +1036,7 @@ public class Entity implements IEntity {
 	@Override
 	public void reset() {
 		this.mVisible = true;
+		this.mCullingEnabled = false;
 		this.mIgnoreUpdate = false;
 		this.mChildrenVisible = true;
 		this.mChildrenIgnoreUpdate = false;

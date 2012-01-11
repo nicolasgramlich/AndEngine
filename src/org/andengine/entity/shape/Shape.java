@@ -30,7 +30,6 @@ public abstract class Shape extends Entity implements IShape {
 	protected int mDestinationBlendFunction = IShape.BLENDFUNCTION_DESTINATION_DEFAULT;
 
 	protected boolean mBlendingEnabled = false;
-	protected boolean mCullingEnabled = false;
 
 	protected ShaderProgram mShaderProgram;
 
@@ -62,16 +61,6 @@ public abstract class Shape extends Entity implements IShape {
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
-	}
-
-	@Override
-	public boolean isCullingEnabled() {
-		return this.mCullingEnabled;
-	}
-
-	@Override
-	public void setCullingEnabled(final boolean pCullingEnabled) {
-		this.mCullingEnabled = pCullingEnabled;
 	}
 
 	@Override
@@ -108,20 +97,6 @@ public abstract class Shape extends Entity implements IShape {
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		return false;
-	}
-
-	/**
-	 * Will only be performed if {@link Shape#isCullingEnabled()} is true.
-	 * @param pCamera
-	 * @return <code>true</code> when this object is visible by the {@link Camera}, <code>false</code> otherwise.
-	 */
-	protected abstract boolean isCulled(final Camera pCamera);
-
-	@Override
-	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
-		if(!this.mCullingEnabled || !this.isCulled(pCamera)) {
-			super.onManagedDraw(pGLState, pCamera);
-		}
 	}
 
 	@Override

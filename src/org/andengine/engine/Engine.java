@@ -1,5 +1,9 @@
 package org.andengine.engine;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundFactory;
@@ -138,7 +142,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mEngineOptions.hasEngineLock()) {
 			this.mEngineLock = pEngineOptions.getEngineLock();
 		} else {
-			this.mEngineLock = new EngineLock();
+			this.mEngineLock = new EngineLock(false);
 		}
 		this.mCamera = pEngineOptions.getCamera();
 
@@ -183,9 +187,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	/**
-	 * The {@link EngineLock} can be used to synchronize on, to ensure the code within the synchronized block runs mutually exclusive to the {@link UpdateThread} and the GL{@link Thread}.
-	 * When the caller already is on the {@link UpdateThread} or the GL-{@link Thread}, the {@link Runnable} is executed immediately.
-	 * @return
+	 * The {@link EngineLock} can be used to {@link EngineLock#lock()}/{@link EngineLock#unlock()} on, to ensure the code in between runs mutually exclusive to the {@link UpdateThread} and the GL{@link Thread}.
+	 * When the caller already is on the {@link UpdateThread} or the GL-{@link Thread}, that code is executed immediately.
+	 * @return the {@link EngineLock} the {@link Engine} locks on to ensure mutually exclusivity to the {@link UpdateThread} and the GL{@link Thread}.
 	 */
 	public EngineLock getEngineLock() {
 		return this.mEngineLock;
@@ -463,11 +467,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	/**
 	 * @param pRunnable the {@link Runnable} to run mutually exclusive to the {@link UpdateThread} and the GL-{@link Thread}.
 	 * When the caller already is on the {@link UpdateThread} or the GL-{@link Thread}, the {@link Runnable} is executed immediately.
-	 * @see {@link Engine#getEngineLock()} to manually synchronize and avoid creating a {@link Runnable}.
+	 * @see {@link Engine#getEngineLock()} to manually {@link EngineLock#lock()}/{@link EngineLock#unlock()} on, while avoiding creating a {@link Runnable}.
 	 */
 	public void runSafely(final Runnable pRunnable) {
-		synchronized(this.mEngineLock) {
+		this.mEngineLock.lock();
+		try {
 			pRunnable.run();
+		} finally {
+			this.mEngineLock.unlock();
 		}
 	}
 
@@ -503,17 +510,23 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			final long secondsElapsed = this.getNanosecondsElapsed();
 
-			synchronized(this.mEngineLock) {
+			this.mEngineLock.lock();
+			try {
 				this.onUpdate(secondsElapsed);
 
 				this.mEngineLock.notifyCanDraw();
 				this.mEngineLock.waitUntilCanUpdate();
+			} finally {
+				this.mEngineLock.unlock();
 			}
 
 		} else {
-			synchronized(this.mEngineLock) {
+			this.mEngineLock.lock();
+			try {
 				this.mEngineLock.notifyCanDraw();
 				this.mEngineLock.waitUntilCanUpdate();
+			} finally {
+				this.mEngineLock.unlock();
 			}
 
 			Thread.sleep(16);
@@ -550,7 +563,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public void onDrawFrame(final GLState pGLState) throws InterruptedException {
 		final EngineLock engineLock = this.mEngineLock;
 
-		synchronized(engineLock) {
+		engineLock.lock();
+		try {
 			engineLock.waitUntilCanDraw();
 
 			this.mTextureManager.updateTextures(pGLState);
@@ -561,6 +575,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			this.onDrawScene(pGLState, this.mCamera);
 
 			engineLock.notifyCanUpdate();
+		} finally {
+			engineLock.unlock();
 		}
 	}
 
@@ -768,20 +784,27 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		// ===========================================================
 	}
 
-	public static class EngineLock {
+	public static class EngineLock extends ReentrantLock {
 		// ===========================================================
 		// Constants
 		// ===========================================================
+
+		private static final long serialVersionUID = 671220941302523934L;
 
 		// ===========================================================
 		// Fields
 		// ===========================================================
 
-		boolean mDrawing = false;
+		final Condition mDrawingCondition = this.newCondition();
+		final AtomicBoolean mDrawing = new AtomicBoolean(false);
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
+
+		public EngineLock(final boolean pFair){
+			super(pFair);
+		}
 
 		// ===========================================================
 		// Getter & Setter
@@ -796,24 +819,24 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		// ===========================================================
 
 		void notifyCanDraw() {
-			this.mDrawing = true;
-			this.notifyAll();
+			this.mDrawing.set(true);
+			this.mDrawingCondition.signalAll();
 		}
 
 		void notifyCanUpdate() {
-			this.mDrawing = false;
-			this.notifyAll();
+			this.mDrawing.set(false);
+			this.mDrawingCondition.signalAll();
 		}
 
 		void waitUntilCanDraw() throws InterruptedException {
-			while(!this.mDrawing) {
-				this.wait();
+			while(!this.mDrawing.get()) {
+				this.mDrawingCondition.await();
 			}
 		}
 
 		void waitUntilCanUpdate() throws InterruptedException {
-			while(this.mDrawing) {
-				this.wait();
+			while(this.mDrawing.get()) {
+				this.mDrawingCondition.await();
 			}
 		}
 

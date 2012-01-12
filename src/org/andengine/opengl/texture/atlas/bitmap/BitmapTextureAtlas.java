@@ -160,7 +160,7 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		final ArrayList<IBitmapTextureAtlasSource> textureSources = this.mTextureAtlasSources;
 		final int textureSourceCount = textureSources.size();
 
-		final ITextureAtlasStateListener<IBitmapTextureAtlasSource> textureStateListener = this.getTextureStateListener();
+		final ITextureAtlasStateListener<IBitmapTextureAtlasSource> textureStateListener = this.getTextureAtlasStateListener();
 		for(int i = 0; i < textureSourceCount; i++) {
 			final IBitmapTextureAtlasSource bitmapTextureAtlasSource = textureSources.get(i);
 			try {

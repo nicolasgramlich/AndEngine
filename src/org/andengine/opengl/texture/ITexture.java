@@ -59,6 +59,7 @@ public interface ITexture {
 
 	public boolean hasTextureStateListener();
 	public ITextureStateListener getTextureStateListener();
+	public void setTextureStateListener(final ITextureStateListener pTextureStateListener);
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

@@ -500,7 +500,7 @@ public class Scene extends Entity {
 		// Inner and Anonymous Classes
 		// ===========================================================
 
-		public interface ITouchAreaMatcher extends IMatcher<ITouchArea> {
+		public static interface ITouchAreaMatcher extends IMatcher<ITouchArea> {
 			// ===========================================================
 			// Constants
 			// ===========================================================

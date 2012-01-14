@@ -127,6 +127,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 				} else {
 					this.setCurrentTileIndex(this.mFrames[currentFrameIndex]);
 				}
+				this.mAnimationListener.onPerformedFrameAnimation(currentFrameIndex);
 			} else {
 				this.mAnimationRunning = false;
 				if(this.mAnimationListener != null) {
@@ -292,6 +293,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		// Fields
 		// ===========================================================
 
+		public void onPerformedFrameAnimation(final int pPerformedFrame);
 		public void onAnimationEnd(final AnimatedSprite pAnimatedSprite);
 	}
 }

@@ -107,7 +107,7 @@ public class RenderTexture extends Texture {
 		}
 
 		/* The texture to render to must not be bound. */
-//		GLState.bindTexture(0);
+		pGLState.bindTexture(0);
 
 		/* Generate FBO. */
 		this.mFramebufferObjectID = pGLState.generateFramebuffer();

@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.modifier;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 
 /**
@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 15:19:46 - 29.06.2010
  */
-public abstract class BaseDoubleValueSpanModifier<T extends Entity> extends BaseSingleValueSpanModifier<T> {
+public abstract class BaseDoubleValueSpanModifier<T extends IEntity> extends BaseSingleValueSpanModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

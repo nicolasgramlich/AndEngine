@@ -54,10 +54,45 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 		return this.mHeight;
 	}
 
-	@SuppressWarnings("unchecked")
+	@Deprecated
+	@Override
+	public boolean hasTextureStateListener() {
+		return super.hasTextureStateListener();
+	}
+
+	@Override
+	public boolean hasTextureAtlasStateListener() {
+		return super.hasTextureStateListener();
+	}
+
+	/**
+	 * @see {@link ITextureAtlas#setTextureStateListener(ITextureAtlasStateListener)}
+	 */
+	@Deprecated
 	@Override
 	public ITextureAtlasStateListener<T> getTextureStateListener() {
+		return this.getTextureAtlasStateListener();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ITextureAtlasStateListener<T> getTextureAtlasStateListener() {
 		return (ITextureAtlasStateListener<T>) super.getTextureStateListener();
+	}
+
+	/**
+	 * @see {@link ITextureAtlas#setTextureStateListener(ITextureAtlasStateListener)}
+	 */
+	@SuppressWarnings("unchecked")
+	@Deprecated
+	@Override
+	public void setTextureStateListener(final ITextureStateListener pTextureStateListener) {
+		super.setTextureStateListener((ITextureAtlasStateListener<T>)pTextureStateListener);
+	}
+
+	@Override
+	public void setTextureAtlasStateListener(final ITextureAtlasStateListener<T> pTextureAtlasStateListener) {
+		super.setTextureStateListener(pTextureAtlasStateListener);
 	}
 
 	// ===========================================================

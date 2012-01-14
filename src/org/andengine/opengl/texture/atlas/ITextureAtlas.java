@@ -32,8 +32,20 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY);
 	public void clearTextureAtlasSources();
 
+	@Deprecated
+	@Override
+	public boolean hasTextureStateListener();
+	public boolean hasTextureAtlasStateListener();
+
+	@Deprecated
 	@Override
 	public ITextureAtlasStateListener<T> getTextureStateListener();
+	public ITextureAtlasStateListener<T> getTextureAtlasStateListener();
+
+	@Deprecated
+	@Override
+	public void setTextureStateListener(final ITextureStateListener pTextureStateListener);
+	public void setTextureAtlasStateListener(final ITextureAtlasStateListener<T> pTextureAtlasStateListener);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

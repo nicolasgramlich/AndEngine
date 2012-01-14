@@ -1,6 +1,5 @@
 package org.andengine.opengl.util;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 /**
@@ -42,7 +41,12 @@ public class BufferUtils {
 		return BufferUtils.jniAllocateDirect(pCapacity);
 	}
 
+	public static void freeDirect(final ByteBuffer pByteBuffer) {
+		BufferUtils.jniFreeDirect(pByteBuffer);
+	}
+
 	private native static ByteBuffer jniAllocateDirect(final int pCapacity);
+	private native static void jniFreeDirect(final ByteBuffer pByteBuffer);
 
 	/**
 	 * @param pByteBuffer must be a direct Buffer.
@@ -56,7 +60,7 @@ public class BufferUtils {
 		pByteBuffer.limit(pLength << 2);
 	}
 
-	private native static void jniPut(final Buffer pBuffer, final float[] pSource, final int pLength, final int pOffset);
+	private native static void jniPut(final ByteBuffer pByteBuffer, final float[] pSource, final int pLength, final int pOffset);
 
 	public static short getUnsignedByte(final ByteBuffer pByteBuffer) {
 		return (short) (pByteBuffer.get() & 0xFF);

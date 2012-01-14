@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.initializer;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 
 /**
@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 10:12:09 - 29.06.2010
  */
-public interface IParticleInitializer<T extends Entity> {
+public interface IParticleInitializer<T extends IEntity> {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================

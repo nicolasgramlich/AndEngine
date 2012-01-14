@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.modifier;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 
 /**
@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 10:36:18 - 29.06.2010
  */
-public class RotationModifier<T extends Entity> extends BaseSingleValueSpanModifier<T> {
+public class RotationModifier<T extends IEntity> extends BaseSingleValueSpanModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

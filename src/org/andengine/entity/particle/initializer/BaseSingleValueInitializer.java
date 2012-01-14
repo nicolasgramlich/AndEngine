@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.initializer;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 import org.andengine.util.math.MathUtils;
 
@@ -11,7 +11,7 @@ import org.andengine.util.math.MathUtils;
  * @author Nicolas Gramlich
  * @since 10:18:06 - 29.06.2010
  */
-public abstract class BaseSingleValueInitializer<T extends Entity> implements IParticleInitializer<T> {
+public abstract class BaseSingleValueInitializer<T extends IEntity> implements IParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

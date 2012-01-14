@@ -3,6 +3,7 @@ package org.andengine.entity;
 import java.util.Comparator;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IDrawHandler;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.runnable.RunnableHandler;
@@ -169,8 +170,8 @@ public interface IEntity extends IDrawHandler, IUpdateHandler {
 	public Transformation getLocalToSceneTransformation();
 	public Transformation getSceneToLocalTransformation();
 
-	//	public Transformation getLocalToParentTransformation(); // TODO Add this method.
-	//	public Transformation getParentToLocalTransformation(); // TODO Add this method.
+	public Transformation getLocalToParentTransformation();
+	public Transformation getParentToLocalTransformation();
 
 	public int getChildCount();
 
@@ -250,7 +251,17 @@ public interface IEntity extends IDrawHandler, IUpdateHandler {
 	public boolean unregisterEntityModifiers(final IEntityModifierMatcher pEntityModifierMatcher);
 	public void clearEntityModifiers();
 
-	public void setUserData(Object pUserData);
+	public boolean isCullingEnabled();
+	public void setCullingEnabled(final boolean pCullingEnabled);
+	/**
+	 * Will only be performed if {@link IEntity#isCullingEnabled()} is true.
+	 *
+	 * @param pCamera the currently active camera to perform culling checks against.
+	 * @return <code>true</code> when this object is visible by the {@link Camera}, <code>false</code> otherwise.
+	 */
+	public boolean isCulled(final Camera pCamera);
+
+	public void setUserData(final Object pUserData);
 	public Object getUserData();
 
 	public void toString(final StringBuilder pStringBuilder);

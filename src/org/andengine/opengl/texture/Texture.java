@@ -28,7 +28,7 @@ public abstract class Texture implements ITexture {
 	protected boolean mLoadedToHardware;
 	protected boolean mUpdateOnHardwareNeeded = false;
 
-	protected final ITextureStateListener mTextureStateListener;
+	protected ITextureStateListener mTextureStateListener;
 
 	// ===========================================================
 	// Constructors
@@ -87,6 +87,10 @@ public abstract class Texture implements ITexture {
 	@Override
 	public ITextureStateListener getTextureStateListener() {
 		return this.mTextureStateListener;
+	}
+
+	public void setTextureStateListener(final ITextureStateListener pTextureStateListener) {
+		this.mTextureStateListener = pTextureStateListener;
 	}
 
 	@Override

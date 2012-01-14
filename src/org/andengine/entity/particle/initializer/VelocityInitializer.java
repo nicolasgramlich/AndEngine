@@ -1,6 +1,6 @@
 package org.andengine.entity.particle.initializer;
 
-import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 
 /**
@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class VelocityInitializer<T extends Entity> extends BaseDoubleValueInitializer<T> {
+public class VelocityInitializer<T extends IEntity> extends BaseDoubleValueInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

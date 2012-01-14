@@ -1,16 +1,18 @@
-package org.andengine.entity.particle.initializer;
+package org.andengine.ui.activity;
 
-import org.andengine.entity.IEntity;
-import org.andengine.entity.particle.Particle;
+import org.andengine.entity.scene.Scene;
+import org.andengine.ui.IGameInterface;
 
 
 /**
- * (c) Zynga 2011
+ * This class exists so that the callback parameters of the methods in {@link IGameInterface} get called automatically.
+ *
+ * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 10:03:29 - 19.11.2011
+ * @since 3:11:05 PM - Jan 12, 2012
  */
-public class ScaleInitializer<T extends IEntity> extends BaseSingleValueInitializer<T> {
+public abstract class SimpleLayoutGameActivity extends LayoutGameActivity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,14 +25,6 @@ public class ScaleInitializer<T extends IEntity> extends BaseSingleValueInitiali
 	// Constructors
 	// ===========================================================
 
-	public ScaleInitializer(final float pScale) {
-		super(pScale, pScale);
-	}
-
-	public ScaleInitializer(final float pMinScale, final float pMaxScale) {
-		super(pMinScale, pMaxScale);
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -39,9 +33,26 @@ public class ScaleInitializer<T extends IEntity> extends BaseSingleValueInitiali
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onCreateResources();
+	protected abstract Scene onCreateScene();
+
 	@Override
-	protected void onInitializeParticle(final Particle<T> pParticle, final float pScale) {
-		pParticle.getEntity().setScale(pScale);
+	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception {
+		this.onCreateResources();
+
+		pOnCreateResourcesCallback.onCreateResourcesFinished();
+	}
+
+	@Override
+	public final void onCreateScene(final OnCreateSceneCallback pOnCreateSceneCallback) throws Exception {
+		final Scene scene = this.onCreateScene();
+
+		pOnCreateSceneCallback.onCreateSceneFinished(scene);
+	}
+
+	@Override
+	public final void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
+		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
 
 	// ===========================================================

@@ -163,14 +163,46 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 		this.mTextureAtlasSourcesToPlace.clear();
 	}
 
+	/**
+	 * @see {@link BuildableBitmapTextureAtlas#hasTextureAtlasStateListener()}
+	 */
+	@Deprecated
 	@Override
 	public boolean hasTextureStateListener() {
 		return this.mTextureAtlas.hasTextureStateListener();
 	}
 
 	@Override
+	public boolean hasTextureAtlasStateListener() {
+		return this.mTextureAtlas.hasTextureAtlasStateListener();
+	}
+
+	/**
+	 * @see {@link BuildableBitmapTextureAtlas#setTextureStateListener(ITextureAtlasStateListener)}
+	 */
+	@Deprecated
+	@Override
 	public ITextureAtlasStateListener<S> getTextureStateListener() {
 		return this.mTextureAtlas.getTextureStateListener();
+	}
+	
+	@Override
+	public ITextureAtlasStateListener<S> getTextureAtlasStateListener() {
+		return this.mTextureAtlas.getTextureAtlasStateListener();
+	}
+
+	/**
+	 * @see {@link BuildableBitmapTextureAtlas#setTextureStateListener(ITextureAtlasStateListener)}
+	 */
+	@Deprecated
+	@Override
+	public void setTextureStateListener(final ITextureStateListener pTextureStateListener) {
+		this.mTextureAtlas.setTextureStateListener(pTextureStateListener);
+	}
+
+	@Override
+	public void setTextureAtlasStateListener(final ITextureAtlasStateListener<S> pTextureAtlasStateListener) {
+		this.mTextureAtlas.setTextureAtlasStateListener(pTextureAtlasStateListener);
 	}
 
 	// ===========================================================

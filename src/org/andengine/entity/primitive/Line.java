@@ -194,7 +194,7 @@ public class Line extends Shape {
 	}
 
 	@Override
-	protected boolean isCulled(final Camera pCamera) {
+	public boolean isCulled(final Camera pCamera) {
 		return pCamera.isLineVisible(this);
 	}
 

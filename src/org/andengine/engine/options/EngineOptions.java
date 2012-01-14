@@ -1,10 +1,11 @@
 package org.andengine.engine.options;
 
+import org.andengine.engine.Engine.EngineLock;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -18,6 +19,8 @@ public class EngineOptions {
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private EngineLock mEngineLock;
 
 	private final boolean mFullscreen;
 	private final ScreenOrientation mScreenOrientation;
@@ -45,11 +48,23 @@ public class EngineOptions {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
+	public boolean hasEngineLock() {
+		return this.mEngineLock != null;
+	}
+
+	public EngineLock getEngineLock() {
+		return this.mEngineLock;
+	}
+
+	public void setEngineLock(final EngineLock pEngineLock) {
+		this.mEngineLock = pEngineLock;
+	}
+
 	public TouchOptions getTouchOptions() {
 		return this.mTouchOptions;
 	}
-	
+
 	public AudioOptions getAudioOptions() {
 		return this.mAudioOptions;
 	}

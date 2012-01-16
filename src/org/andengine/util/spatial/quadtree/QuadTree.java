@@ -227,6 +227,10 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 		this.mRoot.callNodes(pParameterCallable);
 	}
 
+	public synchronized void clear() {
+		this.mRoot.clear();
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
@@ -860,6 +864,30 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 				this.mItems = new ArrayList<T>(1);
 			}
 			this.mItems.add(pItem);
+		}
+
+		protected void clear() {
+			if(this.mBottomLeftChild != null) {
+				this.mBottomLeftChild.clear();
+				this.mBottomLeftChild = null;
+			}
+			if(this.mBottomRightChild != null) {
+				this.mBottomRightChild.clear();
+				this.mBottomRightChild = null;
+			}
+			if(this.mTopLeftChild != null) {
+				this.mTopLeftChild.clear();
+				this.mTopLeftChild = null;
+			}
+			if(this.mTopRightChild != null) {
+				this.mTopRightChild.clear();
+				this.mTopRightChild = null;
+			}
+
+			if(this.mItems != null) {
+				this.mItems.clear();
+				this.mItems = null;
+			}
 		}
 
 		// ===========================================================

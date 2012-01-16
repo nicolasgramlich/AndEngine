@@ -337,6 +337,10 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		// Fields
 		// ===========================================================
 
+		/**
+		 * @param pAnimatedSprite
+		 * @param pInitialLoopCount is {@link AnimatedSprite#LOOP_CONTINUOUS} when {@link AnimatedSprite} loops infinitely.
+		 */
 		public void onAnimationStarted(final AnimatedSprite pAnimatedSprite, final int pInitialLoopCount);
 		/**
 		 * @param pAnimatedSprite

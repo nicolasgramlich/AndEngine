@@ -99,12 +99,12 @@ public class Background implements IBackground {
 	// ===========================================================
 
 	@Override
-	public void addBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
+	public void registerBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
 		this.mBackgroundModifiers.add(pBackgroundModifier);
 	}
 
 	@Override
-	public boolean removeBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
+	public boolean unregisterBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
 		return this.mBackgroundModifiers.remove(pBackgroundModifier);
 	}
 

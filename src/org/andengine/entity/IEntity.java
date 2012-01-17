@@ -10,6 +10,7 @@ import org.andengine.engine.handler.runnable.RunnableHandler;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.entity.scene.Scene;
+import org.andengine.util.IDisposable;
 import org.andengine.util.IMatcher;
 import org.andengine.util.ParameterCallable;
 import org.andengine.util.color.Color;
@@ -23,7 +24,7 @@ import org.andengine.util.transformation.Transformation;
  * @author Nicolas Gramlich
  * @since 11:20:25 - 08.03.2010
  */
-public interface IEntity extends IDrawHandler, IUpdateHandler {
+public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	// ===========================================================
 	// Constants
 	// ===========================================================

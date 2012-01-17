@@ -35,8 +35,8 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 	// Constructors
 	// ===========================================================
 
-	public HighPerformanceVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+	public HighPerformanceVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 
 		this.mBufferData = new float[pCapacity];
 		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {

@@ -2,6 +2,7 @@ package org.andengine.entity.scene.menu.item;
 
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -25,8 +26,8 @@ public class AnimatedSpriteMenuItem extends AnimatedSprite implements IMenuItem 
 	// Constructors
 	// ===========================================================
 
-	public AnimatedSpriteMenuItem(final int pID, final TiledTextureRegion pTiledTextureRegion) {
-		super(0, 0, pTiledTextureRegion);
+	public AnimatedSpriteMenuItem(final int pID, final TiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(0, 0, pTiledTextureRegion, pVertexBufferObjectManager);
 		this.mID = pID;
 	}
 

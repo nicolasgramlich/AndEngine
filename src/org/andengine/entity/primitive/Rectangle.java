@@ -10,6 +10,7 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -55,15 +56,15 @@ public class Rectangle extends RectangularShape {
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight) {
-		this(pX, pY, pWidth, pHeight, DrawType.STATIC);
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pWidth, pHeight, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, new HighPerformanceRectangleVertexBufferObject(Rectangle.RECTANGLE_SIZE, pDrawType, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pWidth, pHeight, new HighPerformanceRectangleVertexBufferObject(pVertexBufferObjectManager, Rectangle.RECTANGLE_SIZE, pDrawType, true, Rectangle.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final IRectangleVertexBufferObject pRectangleVertexBufferObject) {
@@ -153,8 +154,8 @@ public class Rectangle extends RectangularShape {
 		// Constructors
 		// ===========================================================
 
-		public HighPerformanceRectangleVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public HighPerformanceRectangleVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -225,8 +226,8 @@ public class Rectangle extends RectangularShape {
 		// Constructors
 		// ===========================================================
 
-		public LowMemoryRectangleVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public LowMemoryRectangleVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================

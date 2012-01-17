@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.util.constants.TimeConstants;
 import org.andengine.util.math.MathUtils;
@@ -48,20 +49,20 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	// Constructors
 	// ===========================================================
 
-	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion) {
-		super(pX, pY, pTiledTextureRegion, DrawType.DYNAMIC);
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, DrawType.DYNAMIC);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final ShaderProgram pShaderProgram) {
-		super(pX, pY, pTiledTextureRegion, DrawType.DYNAMIC, pShaderProgram);
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, DrawType.DYNAMIC, pShaderProgram);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
-		super(pX, pY, pTiledTextureRegion, pDrawType);
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, pDrawType);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		super(pX, pY, pTiledTextureRegion, pDrawType, pShaderProgram);
+	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, pDrawType, pShaderProgram);
 	}
 
 	public AnimatedSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject) {
@@ -72,20 +73,20 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 		super(pX, pY, pTiledTextureRegion, pTiledSpriteVertexBufferObject, pShaderProgram);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, DrawType.DYNAMIC);
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObjectManager, DrawType.DYNAMIC);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ShaderProgram pShaderProgram) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, DrawType.DYNAMIC, pShaderProgram);
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObjectManager, DrawType.DYNAMIC, pShaderProgram);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pDrawType);
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObjectManager, pDrawType);
 	}
 
-	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pDrawType, pShaderProgram);
+	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObjectManager, pDrawType, pShaderProgram);
 	}
 
 	public AnimatedSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject) {

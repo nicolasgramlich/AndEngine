@@ -2,6 +2,7 @@ package org.andengine.entity.scene.menu.item;
 
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.IFont;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -25,8 +26,9 @@ public class TextMenuItem extends Text implements IMenuItem {
 	// Constructors
 	// ===========================================================
 
-	public TextMenuItem(final int pID, final IFont pFont, final String pText) {
-		super(0, 0, pFont, pText);
+	public TextMenuItem(final int pID, final IFont pFont, final String pText, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(0, 0, pFont, pText, pVertexBufferObjectManager);
+
 		this.mID = pID;
 	}
 

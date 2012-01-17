@@ -15,6 +15,7 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
@@ -73,36 +74,36 @@ public class SpriteBatch extends Shape {
 	// Constructors
 	// ===========================================================
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
-		this(pTexture, pCapacity, DrawType.STATIC);
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pTexture, pCapacity, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity) {
-		this(pX, pY, pTexture, pCapacity, DrawType.STATIC);
+	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pTexture, pCapacity, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final DrawType pDrawType) {
-		this(pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pVertexBufferObjectManager, pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final DrawType pDrawType) {
-		this(pX, pY, pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pVertexBufferObjectManager, pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final ShaderProgram pShaderProgram) {
-		this(pTexture, pCapacity, DrawType.STATIC, pShaderProgram);
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		this(pTexture, pCapacity, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTexture, pCapacity, DrawType.STATIC, pShaderProgram);
+	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pTexture, pCapacity, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pVertexBufferObjectManager, pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
 	}
 
-	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pVertexBufferObjectManager, pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
 	}
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity, final ISpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject) {
@@ -220,11 +221,11 @@ public class SpriteBatch extends Shape {
 	}
 
 	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
+	public void dispose() {
+		super.dispose();
 
-		if(this.mSpriteBatchVertexBufferObject.isManaged()) {
-			this.mSpriteBatchVertexBufferObject.unload();
+		if(this.mSpriteBatchVertexBufferObject != null && this.mSpriteBatchVertexBufferObject.isManaged()) {
+			this.mSpriteBatchVertexBufferObject.dispose();
 		}
 	}
 
@@ -763,8 +764,8 @@ public class SpriteBatch extends Shape {
 		// Constructors
 		// ===========================================================
 
-		public HighPerformanceSpriteBatchVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public HighPerformanceSpriteBatchVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -1006,8 +1007,8 @@ public class SpriteBatch extends Shape {
 		// Constructors
 		// ===========================================================
 
-		public LowMemorySpriteBatchVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public LowMemorySpriteBatchVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================

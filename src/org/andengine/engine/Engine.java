@@ -94,6 +94,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private ITouchController mTouchController;
 
+	private final VertexBufferObjectManager mVertexBufferObjectManager = new VertexBufferObjectManager();
 	private final TextureManager mTextureManager = new TextureManager();
 	private final FontManager mFontManager = new FontManager();
 	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager();
@@ -132,7 +133,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		SoundFactory.onCreate();
 		MusicFactory.onCreate();
 		FontFactory.onCreate();
-		VertexBufferObjectManager.onCreate();
+		this.mVertexBufferObjectManager.onCreate();
 		this.mTextureManager.onCreate();
 		this.mFontManager.onCreate();
 		this.mShaderProgramManager.onCreate();
@@ -248,6 +249,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public OrientationData getOrientationData() {
 		return this.mOrientationData;
+	}
+
+	public VertexBufferObjectManager getVertexBufferObjectManager() {
+		return this.mVertexBufferObjectManager;
 	}
 
 	public TextureManager getTextureManager() {
@@ -479,19 +484,19 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onDestroy() {
+		this.mVertexBufferObjectManager.onDestroy();
 		this.mTextureManager.onDestroy();
 		this.mFontManager.onDestroy();
 		this.mShaderProgramManager.onDestroy();
-		VertexBufferObjectManager.onDestroy();
 
 		this.mUpdateThread.interrupt();
 	}
 
 	public void onReloadResources() {
+		this.mVertexBufferObjectManager.onReload();
 		this.mTextureManager.onReload();
 		this.mFontManager.onReload();
 		this.mShaderProgramManager.onReload();
-		VertexBufferObjectManager.onReload();
 	}
 
 	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
@@ -567,9 +572,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		try {
 			engineLock.waitUntilCanDraw();
 
+			this.mVertexBufferObjectManager.updateBufferObjects(pGLState);
 			this.mTextureManager.updateTextures(pGLState);
 			this.mFontManager.updateFonts(pGLState);
-			VertexBufferObjectManager.updateBufferObjects(pGLState);
 
 			this.onUpdateDrawHandlers(pGLState, this.mCamera);
 			this.onDrawScene(pGLState, this.mCamera);

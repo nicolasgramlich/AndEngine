@@ -40,7 +40,9 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	protected boolean mDirtyOnHardware = true;
 
 	protected boolean mManaged;
+	protected boolean mDisposed;
 
+	protected final VertexBufferObjectManager mVertexBufferObjectManager;
 	protected final VertexBufferObjectAttributes mVertexBufferObjectAttributes;
 
 	// ===========================================================
@@ -48,12 +50,14 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 
 	/**
+	 * @param pVertexBufferObjectManager
 	 * @param pCapacity
 	 * @param pDrawType
 	 * @param pManaged when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
 	 * @param pVertexBufferObjectAttributes to be automatically enabled on the {@link ShaderProgram} used in {@link VertexBufferObject#bind(ShaderProgram)}.
 	 */
-	public VertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public VertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		this.mVertexBufferObjectManager = pVertexBufferObjectManager;
 		this.mCapacity = pCapacity;
 		this.mUsage = pDrawType.getUsage();
 		this.mManaged = pManaged;
@@ -76,6 +80,11 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	@Override
+	public VertexBufferObjectManager getVertexBufferObjectManager() {
+		return this.mVertexBufferObjectManager;
+	}
 
 	@Override
 	public boolean isManaged() {
@@ -134,12 +143,11 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public void bind(final GLState pGLState, final ShaderProgram pShaderProgram) {
-		final int hardwareBufferID = this.mHardwareBufferID;
-		if(hardwareBufferID == -1) {
+		if(!this.mLoadedToHardware) {
 			return;
 		}
 
-		pGLState.bindBuffer(hardwareBufferID);
+		pGLState.bindBuffer(this.mHardwareBufferID);
 
 		if(this.mDirtyOnHardware) {
 			this.mDirtyOnHardware = false;
@@ -160,12 +168,12 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public void load() {
-		VertexBufferObjectManager.loadBufferObject(this);
+		this.mVertexBufferObjectManager.loadBufferObject(this);
 	}
 
 	@Override
 	public void unload() {
-		VertexBufferObjectManager.unloadBufferObject(this);
+		this.mVertexBufferObjectManager.unloadBufferObject(this);
 	}
 
 	@Override
@@ -194,12 +202,21 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	}
 
 	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
+	public void dispose() {
+		this.mDisposed = true;
 
 		/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
 		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
 			BufferUtils.freeDirect(this.mByteBuffer);
+		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if(!this.mDisposed) {
+			this.dispose();
 		}
 	}
 

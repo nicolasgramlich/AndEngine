@@ -2,6 +2,7 @@ package org.andengine.entity.scene.menu.item;
 
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -25,8 +26,9 @@ public class SpriteMenuItem extends Sprite implements IMenuItem {
 	// Constructors
 	// ===========================================================
 
-	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion) {
-		super(0, 0, pTextureRegion);
+	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(0, 0, pTextureRegion, pVertexBufferObjectManager);
+
 		this.mID = pID;
 	}
 

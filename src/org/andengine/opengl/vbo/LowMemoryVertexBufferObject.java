@@ -37,8 +37,8 @@ public class LowMemoryVertexBufferObject extends VertexBufferObject {
 	// Constructors
 	// ===========================================================
 
-	public LowMemoryVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+	public LowMemoryVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 
 		this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 	}

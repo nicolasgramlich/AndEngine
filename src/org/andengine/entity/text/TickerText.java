@@ -3,6 +3,7 @@ package org.andengine.entity.text;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.HorizontalAlign;
 
 import android.opengl.GLES20;
@@ -36,8 +37,8 @@ public class TickerText extends Text {
 	// Constructors
 	// ===========================================================
 
-	public TickerText(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
-		super(pX, pY, pFont, pText, pHorizontalAlign);
+	public TickerText(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(pX, pY, pFont, pText, pHorizontalAlign, pVertexBufferObjectManager);
 
 		this.setCharactersPerSecond(pCharactersPerSecond);
 	}

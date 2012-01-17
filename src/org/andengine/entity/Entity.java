@@ -49,12 +49,13 @@ public class Entity implements IEntity {
 	// Fields
 	// ===========================================================
 
+	protected boolean mDisposed;
 	protected boolean mVisible = true;
-	protected boolean mCullingEnabled = false;
-	protected boolean mIgnoreUpdate = false;
+	protected boolean mCullingEnabled;
+	protected boolean mIgnoreUpdate;
 	protected boolean mChildrenVisible = true;
-	protected boolean mChildrenIgnoreUpdate = false;
-	protected boolean mChildrenSortPending = false;
+	protected boolean mChildrenIgnoreUpdate;
+	protected boolean mChildrenSortPending;
 
 	protected int mZIndex = 0;
 
@@ -1060,6 +1061,24 @@ public class Entity implements IEntity {
 			for(int i = entities.size() - 1; i >= 0; i--) {
 				entities.get(i).reset();
 			}
+		}
+	}
+
+	@Override
+	public void dispose() {
+		if(!this.mDisposed) {
+			this.mDisposed = true;
+		} else {
+			throw new AlreadyDisposedException();
+		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if(!this.mDisposed) {
+			this.dispose();
 		}
 	}
 

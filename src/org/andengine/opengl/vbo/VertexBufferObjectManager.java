@@ -86,6 +86,7 @@ public class VertexBufferObjectManager {
 		if(pBufferObject == null) {
 			return;
 		}
+
 		if(this.mVertexObjectsManaged.contains(pBufferObject)) {
 			if(this.mVertexObjectsLoaded.contains(pBufferObject)) {
 				this.mVertexObjectsToBeUnloaded.add(pBufferObject);

@@ -7,6 +7,7 @@ import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.util.IDisposable.AlreadyDisposedException;
 import org.andengine.util.data.DataConstants;
 import org.andengine.util.system.SystemUtils;
 
@@ -203,11 +204,17 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public void dispose() {
-		this.mDisposed = true;
+		if(!this.mDisposed) {
+			this.mDisposed = true;
 
-		/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
-		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
-			BufferUtils.freeDirect(this.mByteBuffer);
+			this.unload();
+
+			/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
+			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
+				BufferUtils.freeDirect(this.mByteBuffer);
+			}
+		} else {
+			throw new AlreadyDisposedException();
 		}
 	}
 

@@ -17,7 +17,7 @@ public interface IDisposable {
 	// Methods
 	// ===========================================================
 
-	public void dispose();
+	public void dispose() throws AlreadyDisposedException;
 
 	// ===========================================================
 	// Inner and Anonymous Classes

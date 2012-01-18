@@ -10,7 +10,7 @@ import org.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
 import java.io.InputStream;
 
 /**
- * (c) 20112 David Kovac
+ * (c) 2012 David Kovac
  *
  * @author David Kovac
  * @since 18:35:23 - 18.01.2012

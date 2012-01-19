@@ -25,7 +25,11 @@ public class SpriteParticleSystem extends ParticleSystem<Sprite> {
 	// ===========================================================
 
 	public SpriteParticleSystem(final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final ITextureRegion pTextureRegion) {
-		super(new IEntityFactory<Sprite>() {
+		this(0, 0, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum, pTextureRegion);
+	}
+
+	public SpriteParticleSystem(final float pX, final float pY, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final ITextureRegion pTextureRegion) {
+		super(pX, pY, new IEntityFactory<Sprite>() {
 			@Override
 			public Sprite create(final float pX, final float pY) {
 				return new Sprite(pX, pY, pTextureRegion);

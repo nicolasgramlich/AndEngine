@@ -2,6 +2,8 @@ package org.andengine.entity.particle.modifier;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -10,7 +12,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 20:37:27 - 04.05.2010
  */
-public class ScaleModifier<T extends IEntity> extends BaseDoubleValueSpanModifier<T> {
+public class ScaleParticleModifier<T extends IEntity> extends BaseDoubleValueSpanParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,12 +25,20 @@ public class ScaleModifier<T extends IEntity> extends BaseDoubleValueSpanModifie
 	// Constructors
 	// ===========================================================
 
-	public ScaleModifier(final float pFromScale, final float pToScale, final float pFromTime, final float pToTime) {
-		this(pFromScale, pToScale, pFromScale, pToScale, pFromTime, pToTime);
+	public ScaleParticleModifier(final float pFromTime, final float pToTime, final float pFromScale, final float pToScale) {
+		this(pFromTime, pToTime, pFromScale, pToScale, EaseLinear.getInstance());
 	}
 
-	public ScaleModifier(final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final float pFromTime, final float pToTime) {
-		super(pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pFromTime, pToTime);
+	public ScaleParticleModifier(final float pFromTime, final float pToTime, final float pFromScale, final float pToScale, final IEaseFunction pEaseFunction) {
+		this(pFromTime, pToTime, pFromScale, pToScale, pFromScale, pToScale, pEaseFunction);
+	}
+
+	public ScaleParticleModifier(final float pFromTime, final float pToTime, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY) {
+		this(pFromTime, pToTime, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, EaseLinear.getInstance());
+	}
+
+	public ScaleParticleModifier(final float pFromTime, final float pToTime, final float pFromScaleX, final float pToScaleX, final float pFromScaleY, final float pToScaleY, final IEaseFunction pEaseFunction) {
+		super(pFromTime, pToTime, pFromScaleX, pToScaleX, pFromScaleY, pToScaleY, pEaseFunction);
 	}
 
 	// ===========================================================
@@ -45,7 +55,7 @@ public class ScaleModifier<T extends IEntity> extends BaseDoubleValueSpanModifie
 	}
 
 	@Override
-	protected void onSetValues(final Particle<T> pParticle, final float pScaleX, final float pScaleY) {
+	protected void onSetValues(final Particle<T> pParticle, final float pPercentageDone, final float pScaleX, final float pScaleY) {
 		pParticle.getEntity().setScale(pScaleX, pScaleY);
 	}
 

@@ -73,15 +73,15 @@ public abstract class BaseTripleValueSpanModifier<T> extends BaseDoubleValueSpan
 		this.onSetValues(pItem, pPercentageDone, pValueA, pValueB, this.mFromValueC + pPercentageDone * this.mValueSpanC);
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
 	@Override
 	@Deprecated
 	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
 		super.reset(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB);
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC) {
 		super.reset(pDuration, pFromValueA, pToValueA, pFromValueB, pToValueB);

@@ -2,15 +2,17 @@ package org.andengine.entity.particle.modifier;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 15:22:26 - 29.06.2010
+ * @since 21:21:10 - 14.03.2010
  */
-public class ColorModifier<T extends IEntity> extends BaseTripleValueSpanModifier<T> {
+public class AlphaParticleModifier<T extends IEntity> extends BaseSingleValueSpanParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,8 +25,12 @@ public class ColorModifier<T extends IEntity> extends BaseTripleValueSpanModifie
 	// Constructors
 	// ===========================================================
 
-	public ColorModifier(final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final float pFromTime, final float pToTime) {
-		super(pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pFromTime, pToTime);
+	public AlphaParticleModifier(final float pFromTime, final float pToTime, final float pFromAlpha, final float pToAlpha) {
+		this(pFromTime, pToTime, pFromAlpha, pToAlpha, EaseLinear.getInstance());
+	}
+
+	public AlphaParticleModifier(final float pFromTime, final float pToTime, final float pFromAlpha, final float pToAlpha, final IEaseFunction pEaseFunction) {
+		super(pFromTime, pToTime, pFromAlpha, pToAlpha, pEaseFunction);
 	}
 
 	// ===========================================================
@@ -36,13 +42,13 @@ public class ColorModifier<T extends IEntity> extends BaseTripleValueSpanModifie
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValues(final Particle<T> pParticle, final float pRed, final float pGreen, final float pBlue) {
-		pParticle.getEntity().setColor(pRed, pGreen, pBlue);
+	protected void onSetInitialValue(final Particle<T> pParticle, final float pAlpha) {
+		pParticle.getEntity().setAlpha(pAlpha);
 	}
 
 	@Override
-	protected void onSetValues(final Particle<T> pParticle, final float pRed, final float pGreen, final float pBlue) {
-		pParticle.getEntity().setColor(pRed, pGreen, pBlue);
+	protected void onSetValue(final Particle<T> pParticle, final float pPercentageDone, final float pAlpha) {
+		pParticle.getEntity().setAlpha(pAlpha);
 	}
 
 	// ===========================================================

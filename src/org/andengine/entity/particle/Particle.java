@@ -17,6 +17,8 @@ public class Particle<T extends IEntity> {
 	// Constants
 	// ===========================================================
 
+	private static final int EXPIRETIME_NEVER = -1;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -24,8 +26,8 @@ public class Particle<T extends IEntity> {
 	private final PhysicsHandler mPhysicsHandler = new PhysicsHandler(null);
 
 	private float mLifeTime;
-	private float mDeathTime = -1;
-	boolean mDead;
+	private float mExpireTime = Particle.EXPIRETIME_NEVER;
+	boolean mExpired;
 
 	private T mEntity;
 
@@ -50,20 +52,20 @@ public class Particle<T extends IEntity> {
 		return this.mLifeTime;
 	}
 
-	public float getDeathTime() {
-		return this.mDeathTime;
+	public float getExpireTime() {
+		return this.mExpireTime;
 	}
 
-	public void setDeathTime(final float pDeathTime) {
-		this.mDeathTime = pDeathTime;
+	public void setExpireTime(final float pExpireTime) {
+		this.mExpireTime = pExpireTime;
 	}
 
-	public boolean isDead() {
-		return this.mDead ;
+	public boolean isExpired() {
+		return this.mExpired ;
 	}
 
-	public void setDead(final boolean pDead) {
-		this.mDead = pDead;
+	public void setExpired(final boolean pExpired) {
+		this.mExpired = pExpired;
 	}
 
 	public PhysicsHandler getPhysicsHandler() {
@@ -75,18 +77,24 @@ public class Particle<T extends IEntity> {
 	// ===========================================================
 
 	protected void onUpdate(final float pSecondsElapsed) {
-		if(!this.mDead){
-			this.mLifeTime += pSecondsElapsed;
-			this.mPhysicsHandler.onUpdate(pSecondsElapsed);
-			final float deathTime = this.mDeathTime;
-			if(deathTime != -1 && this.mLifeTime > deathTime) {
-				this.setDead(true);
+		if(!this.mExpired){
+			if(this.mExpireTime == Particle.EXPIRETIME_NEVER || this.mLifeTime + pSecondsElapsed < this.mExpireTime) {
+				/* Particle doesn't expire or didn't expire yet. */
+				this.mLifeTime += pSecondsElapsed;
+				this.mEntity.onUpdate(pSecondsElapsed);
+				this.mPhysicsHandler.onUpdate(pSecondsElapsed);
+			} else {
+				final float secondsElapsedUsed = this.mExpireTime - this.mLifeTime;
+				this.mLifeTime = this.mExpireTime;
+				this.mEntity.onUpdate(secondsElapsedUsed);
+				this.mPhysicsHandler.onUpdate(secondsElapsedUsed);
+				this.setExpired(true);
 			}
 		}
 	}
 
 	public void onDraw(final GLState pGLState, final Camera pCamera) {
-		if(!this.mDead) {
+		if(!this.mExpired) {
 			this.mEntity.onDraw(pGLState, pCamera);
 		}
 	}
@@ -98,8 +106,8 @@ public class Particle<T extends IEntity> {
 	public void reset() {
 		this.mEntity.reset();
 		this.mPhysicsHandler.reset();
-		this.mDead = false;
-		this.mDeathTime = -1;
+		this.mExpired = false;
+		this.mExpireTime = Particle.EXPIRETIME_NEVER;
 		this.mLifeTime = 0;
 	}
 

@@ -1082,7 +1082,7 @@ public class Entity implements IEntity {
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(!this.isDisposed()) {
+		if(!this.mDisposed) {
 			this.dispose();
 		}
 	}

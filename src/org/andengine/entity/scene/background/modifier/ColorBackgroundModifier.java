@@ -12,7 +12,7 @@ import org.andengine.util.modifier.ease.IEaseFunction;
  * @author Nicolas Gramlich
  * @since 14:51:03 - 03.09.2010
  */
-public class ColorModifier extends BaseTripleValueSpanModifier<IBackground> implements IBackgroundModifier {
+public class ColorBackgroundModifier extends BaseTripleValueSpanModifier<IBackground> implements IBackgroundModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -25,29 +25,29 @@ public class ColorModifier extends BaseTripleValueSpanModifier<IBackground> impl
 	// Constructors
 	// ===========================================================
 
-	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue) {
+	public ColorBackgroundModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue) {
 		this(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, null, EaseLinear.getInstance());
 	}
 
-	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IEaseFunction pEaseFunction) {
+	public ColorBackgroundModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IEaseFunction pEaseFunction) {
 		this(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, null, pEaseFunction);
 	}
 
-	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IBackgroundModifierListener pBackgroundModifierListener) {
+	public ColorBackgroundModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IBackgroundModifierListener pBackgroundModifierListener) {
 		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pBackgroundModifierListener, EaseLinear.getInstance());
 	}
 
-	public ColorModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IBackgroundModifierListener pBackgroundModifierListener, final IEaseFunction pEaseFunction) {
+	public ColorBackgroundModifier(final float pDuration, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue, final IBackgroundModifierListener pBackgroundModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, pBackgroundModifierListener, pEaseFunction);
 	}
 
-	protected ColorModifier(final ColorModifier pColorModifier) {
-		super(pColorModifier);
+	protected ColorBackgroundModifier(final ColorBackgroundModifier pColorBackgroundModifier) {
+		super(pColorBackgroundModifier);
 	}
 
 	@Override
-	public ColorModifier deepCopy(){
-		return new ColorModifier(this);
+	public ColorBackgroundModifier deepCopy(){
+		return new ColorBackgroundModifier(this);
 	}
 
 	// ===========================================================

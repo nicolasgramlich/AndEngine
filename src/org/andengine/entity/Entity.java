@@ -784,6 +784,7 @@ public class Entity implements IEntity {
 		return this.convertLocalToSceneCoordinates(0, 0);
 	}
 
+	@Override
 	public Transformation getLocalToParentTransformation() {
 		final Transformation localToParentTransformation = this.mLocalToParentTransformation;
 		if(this.mLocalToParentTransformationDirty) {
@@ -835,6 +836,7 @@ public class Entity implements IEntity {
 		return localToParentTransformation;
 	}
 
+	@Override
 	public Transformation getParentToLocalTransformation() {
 		final Transformation parentToLocalTransformation = this.mParentToLocalTransformation;
 		if(this.mParentToLocalTransformationDirty) {

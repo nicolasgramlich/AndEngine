@@ -130,6 +130,11 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public boolean isDisposed() {
+		return this.mDisposed;
+	}
+
+	@Override
 	public boolean isVisible() {
 		return this.mVisible;
 	}
@@ -1077,7 +1082,7 @@ public class Entity implements IEntity {
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(!this.mDisposed) {
+		if(!this.isDisposed()) {
 			this.dispose();
 		}
 	}

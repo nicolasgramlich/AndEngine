@@ -17,6 +17,7 @@ public interface IDisposable {
 	// Methods
 	// ===========================================================
 
+	public boolean isDisposed();
 	public void dispose() throws AlreadyDisposedException;
 
 	// ===========================================================

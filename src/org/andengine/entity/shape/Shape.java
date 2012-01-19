@@ -118,8 +118,8 @@ public abstract class Shape extends Entity implements IShape {
 		super.dispose();
 
 		final IVertexBufferObject vertexBufferObject = this.getVertexBufferObject();
-		if(vertexBufferObject != null && vertexBufferObject.isManaged()) {
-			vertexBufferObject.unload();
+		if(vertexBufferObject != null && vertexBufferObject.isManaged() && !vertexBufferObject.isDisposed()) {
+			vertexBufferObject.dispose();
 		}
 	}
 

@@ -466,6 +466,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public boolean isDisposed() {
+		return this.mMenuItem.isDisposed();
+	}
+
+	@Override
 	public void dispose() {
 		this.mMenuItem.dispose();
 	}

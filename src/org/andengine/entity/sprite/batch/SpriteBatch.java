@@ -224,7 +224,7 @@ public class SpriteBatch extends Shape {
 	public void dispose() {
 		super.dispose();
 
-		if(this.mSpriteBatchVertexBufferObject != null && this.mSpriteBatchVertexBufferObject.isManaged()) {
+		if(this.mSpriteBatchVertexBufferObject != null && this.mSpriteBatchVertexBufferObject.isManaged() && !this.mSpriteBatchVertexBufferObject.isDisposed()) {
 			this.mSpriteBatchVertexBufferObject.dispose();
 		}
 	}

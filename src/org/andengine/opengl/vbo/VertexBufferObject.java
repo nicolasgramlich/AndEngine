@@ -88,6 +88,11 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	}
 
 	@Override
+	public boolean isDisposed() {
+		return this.mDisposed;
+	}
+
+	@Override
 	public boolean isManaged() {
 		return this.mManaged;
 	}

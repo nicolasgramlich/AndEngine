@@ -8,6 +8,7 @@ import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLHelper;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.color.Color;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -121,10 +122,73 @@ public class RenderTexture extends Texture {
 		this.restorePreviousFramebufferObjectID(pGLState);
 	}
 
+	/**
+	 * @see {@link RenderTexture#end(GLState)},
+	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 */
 	public void begin(final GLState pGLState) {
 		this.begin(pGLState, false, false);
 	}
 
+	/**
+	 * @see {@link RenderTexture#end(GLState)},
+	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 *
+	 * @param pColor the {@link Color} to clear this {@link RenderTexture}.
+	 */
+	public void begin(final GLState pGLState, final Color pColor) {
+		this.begin(pGLState, pColor.getRed(), pColor.getGreen(), pColor.getBlue(), pColor.getAlpha());
+	}
+
+	/**
+	 * @see {@link RenderTexture#end(GLState)},
+	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 *
+	 * @param pRed the red portion of the color to clear this {@link RenderTexture}.
+	 * @param pGreen the green portion of the color to clear this {@link RenderTexture}.
+	 * @param pBlue the blue portion of the color to clear this {@link RenderTexture}.
+	 * @param pAlpha the alpha portion of the color to clear this {@link RenderTexture}.
+	 */
+	public void begin(final GLState pGLState, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.begin(pGLState, false, false, pRed, pGreen, pBlue, pAlpha);
+	}
+
+	/**
+	 * @see {@link RenderTexture#end(GLState)},
+	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 *
+	 * @param pColor the {@link Color} to clear this {@link RenderTexture}.
+	 */
+	public void begin(final GLState pGLState, final boolean pFlipX, final boolean pFlipY, final Color pColor) {
+		this.begin(pGLState, pFlipX, pFlipY, pColor.getRed(), pColor.getGreen(), pColor.getBlue(), pColor.getAlpha());
+	}
+
+	/**
+	 * @see {@link RenderTexture#end(GLState)},
+	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 *
+	 * @param pRed the red portion of the color to clear this {@link RenderTexture}.
+	 * @param pGreen the green portion of the color to clear this {@link RenderTexture}.
+	 * @param pBlue the blue portion of the color to clear this {@link RenderTexture}.
+	 * @param pAlpha the alpha portion of the color to clear this {@link RenderTexture}.
+	 */
+	public void begin(final GLState pGLState, final boolean pFlipX, final boolean pFlipY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.begin(pGLState, pFlipX, pFlipY);
+
+		/* Save clear color. */
+		GLES20.glGetFloatv(GLES20.GL_COLOR_CLEAR_VALUE, RenderTexture.CLEARCOLOR_CONTAINER, 0);
+
+		GLES20.glClearColor(pRed, pGreen, pBlue, pAlpha);
+		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+
+		/* Restore clear color. */
+		GLES20.glClearColor(RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_RED_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_GREEN_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_BLUE_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_ALPHA_INDEX]);
+	}
+
+	/**
+	 * @see {@link RenderTexture#end(GLState)},
+	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 */
 	public void begin(final GLState pGLState, final boolean pFlipX, final boolean pFlipY) {
 		this.savePreviousViewport();
 		GLES20.glViewport(0, 0, this.mWidth, this.mHeight);
@@ -158,24 +222,51 @@ public class RenderTexture extends Texture {
 		pGLState.loadModelViewGLMatrixIdentity();
 	}
 
-	public void begin(final GLState pGLState, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.begin(pGLState, false, false, pRed, pGreen, pBlue, pAlpha);
+	/**
+	 * @see {@link GLState#flush()}.
+	 */
+	public void flush(final GLState pGLState) {
+		pGLState.flush();
 	}
 
-	public void begin(final GLState pGLState, final boolean pFlipX, final boolean pFlipY, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.begin(pGLState, pFlipX, pFlipY);
-
-		/* Save clear color. */
-		GLES20.glGetFloatv(GLES20.GL_COLOR_CLEAR_VALUE, RenderTexture.CLEARCOLOR_CONTAINER, 0);
-
-		GLES20.glClearColor(pRed, pGreen, pBlue, pAlpha);
-		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-
-		/* Restore clear color. */
-		GLES20.glClearColor(RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_RED_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_GREEN_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_BLUE_INDEX], RenderTexture.CLEARCOLOR_CONTAINER[RenderTexture.CLEARCOLOR_CONTAINER_ALPHA_INDEX]);
+	/**
+	 * @see {@link GLState#finish()}.
+	 */
+	public void finish(final GLState pGLState) {
+		pGLState.finish();
 	}
 
+	/**
+	 * @see {@link RenderTexture#begin(GLState)},
+	 * 		{@link RenderTexture#begin(GLState, boolean, boolean)},
+	 * 		{@link RenderTexture#begin(GLState, Color)},
+	 * 		{@link RenderTexture#begin(GLState, float, float, float, float)},
+	 * 		{@link RenderTexture#begin(GLState, boolean, boolean, Color)}.
+	 * 		{@link RenderTexture#begin(GLState, boolean, boolean, float, float, float, float)}.
+	 */
 	public void end(final GLState pGLState) {
+		this.end(pGLState, false, false);
+	}
+
+	/**
+	 * @param pGLState
+	 * @param pFlush {@link GLState#flush()} has lower preference than pFinish.
+	 * @param pFinish {@link GLState#finish()} had higher preference than pFlush.
+	 * 
+	 * @see {@link RenderTexture#begin(GLState)},
+	 * 		{@link RenderTexture#begin(GLState, boolean, boolean)},
+	 * 		{@link RenderTexture#begin(GLState, Color)},
+	 * 		{@link RenderTexture#begin(GLState, float, float, float, float)},
+	 * 		{@link RenderTexture#begin(GLState, boolean, boolean, Color)}.
+	 * 		{@link RenderTexture#begin(GLState, boolean, boolean, float, float, float, float)}.
+	 */
+	public void end(final GLState pGLState, final boolean pFlush, final boolean pFinish) {
+		if(pFinish) {
+			this.finish(pGLState);
+		} else if(pFlush) {
+			this.flush(pGLState);
+		}
+
 		pGLState.popModelViewGLMatrix();
 
 		this.restorePreviousFramebufferObjectID(pGLState);

@@ -9,6 +9,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import org.andengine.engine.options.RenderOptions;
 import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.PixelFormat;
+import org.andengine.opengl.texture.render.RenderTexture;
 import org.andengine.opengl.view.ConfigChooser;
 import org.andengine.util.debug.Debug;
 
@@ -50,7 +51,7 @@ public class GLState {
 
 	private int mCurrentBufferID = -1;
 	private int mCurrentShaderProgramID = -1;
-	private int[] mCurrentBoundTextureIDs = new int[GLES20.GL_TEXTURE31 - GLES20.GL_TEXTURE0];
+	private final int[] mCurrentBoundTextureIDs = new int[GLES20.GL_TEXTURE31 - GLES20.GL_TEXTURE0];
 	private int mCurrentFramebufferID = -1;
 	private int mCurrentActiveTextureIndex = 0;
 
@@ -314,10 +315,10 @@ public class GLState {
 	}
 
 	/**
-	 * @param pGLActiveTexture from {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}. 
+	 * @param pGLActiveTexture from {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}.
 	 */
 	public void activeTexture(final int pGLActiveTexture) {
-		final int activeTextureIndex = pGLActiveTexture - GLES20.GL_TEXTURE0; 
+		final int activeTextureIndex = pGLActiveTexture - GLES20.GL_TEXTURE0;
 		if(pGLActiveTexture != this.mCurrentActiveTextureIndex) {
 			this.mCurrentActiveTextureIndex = activeTextureIndex;
 			GLES20.glActiveTexture(pGLActiveTexture);
@@ -474,6 +475,28 @@ public class GLState {
 		final Buffer pixelBuffer = GLHelper.getPixels(pBitmap, pPixelFormat, ByteOrder.BIG_ENDIAN);
 
 		GLES20.glTexSubImage2D(pTarget, pLevel, pX, pY, pBitmap.getWidth(), pBitmap.getHeight(), pPixelFormat.getGLFormat(), pPixelFormat.getGLType(), pixelBuffer);
+	}
+
+	/**
+	 * Tells the OpenGL driver to send all pending commands to the GPU immediately.
+	 *
+	 * @see {@link GLState#finish()},
+	 * 		{@link RenderTexture#end(GLState, boolean, boolean)}.
+	 */
+	public void flush() {
+		GLES20.glFlush();
+	}
+
+	/**
+	 * Tells the OpenGL driver to send all pending commands to the GPU immediately,
+	 * and then blocks until the effects of those commands have been completed on the GPU.
+	 * Since this is a costly method it should be only called when really needed.
+	 *
+	 * @see {@link GLState#flush()},
+	 * 		{@link RenderTexture#end(GLState, boolean, boolean)}.
+	 */
+	public void finish() {
+		GLES20.glFinish();
 	}
 
 	public int getInteger(final int pAttribute) {

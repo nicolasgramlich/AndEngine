@@ -1207,8 +1207,10 @@ public class Entity implements IEntity {
 				}
 
 				final int childCount = children.size();
+				int i = 0;
+
 				{ /* Draw children behind this Entity. */
-					for(int i = 0; i < childCount; i++) {
+					for(; i < childCount; i++) {
 						final IEntity child = children.get(i);
 						if(child.getZIndex() < 0) {
 							child.onDraw(pGLState, pCamera);
@@ -1224,11 +1226,8 @@ public class Entity implements IEntity {
 				this.postDraw(pGLState, pCamera);
 
 				{ /* Draw children in front of this Entity. */
-					for(int i = 0; i < childCount; i++) {
-						final IEntity child = children.get(i);
-						if(child.getZIndex() >= 0) {
-							child.onDraw(pGLState, pCamera);
-						}
+					for(; i < childCount; i++) {
+						children.get(i).onDraw(pGLState, pCamera);
 					}
 				}
 			}

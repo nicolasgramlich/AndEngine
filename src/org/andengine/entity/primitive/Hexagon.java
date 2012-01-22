@@ -32,8 +32,8 @@ public class Hexagon extends HexagonalShape {
 	public static final int COLOR_INDEX = Hexagon.VERTEX_INDEX_Y + 1;
 
 	public static final int VERTEX_SIZE = 2 + 1;
-	public static final int VERTICES_PER_Hexagon = 8;
-	public static final int Hexagon_SIZE = Hexagon.VERTEX_SIZE * Hexagon.VERTICES_PER_Hexagon;
+	public static final int VERTICES_PER_HEXAGON = 8;
+	public static final int HEXAGON_SIZE = Hexagon.VERTEX_SIZE * Hexagon.VERTICES_PER_HEXAGON;
 
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
 		.add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
@@ -53,19 +53,19 @@ public class Hexagon extends HexagonalShape {
 	/**
 	 * Uses a default {@link HighPerformanceHexagonVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Hexagon#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Hexagon(final float pX, final float pY, final float pSide, final float pWidth, final float pHeight) {
-		this(pX, pY, pSide, pWidth, pHeight, DrawType.STATIC);
+	public Hexagon(final float pX, final float pY, final float pSide) {
+		this(pX, pY, pSide, DrawType.STATIC);
 	}
 
 	/**
 	 * Uses a default {@link HighPerformanceHexagonVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Hexagon#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Hexagon(final float pX, final float pY, final float pSide, final float pWidth, final float pHeight, final DrawType pDrawType) {
-		this(pX, pY, pSide, pWidth, pHeight, new HighPerformanceHexagonVertexBufferObject(Hexagon.Hexagon_SIZE, pDrawType, true, Hexagon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public Hexagon(final float pX, final float pY, final float pSide, final DrawType pDrawType) {
+		this(pX, pY, pSide, new HighPerformanceHexagonVertexBufferObject(Hexagon.HEXAGON_SIZE, pDrawType, true, Hexagon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public Hexagon(final float pX, final float pY, final float pSide, final float pWidth, final float pHeight, final IHexagonVertexBufferObject pHexagonVertexBufferObject) {
-		super(pX, pY, pSide, pWidth, pHeight, PositionColorShaderProgram.getInstance());
+	public Hexagon(final float pX, final float pY, final float pSide, final IHexagonVertexBufferObject pHexagonVertexBufferObject) {
+		super(pX, pY, pSide, PositionColorShaderProgram.getInstance());
 
 		this.mHexagonVertexBufferObject = pHexagonVertexBufferObject;
 
@@ -97,7 +97,7 @@ public class Hexagon extends HexagonalShape {
 
 	@Override
 	protected void draw(final GLState pGLState, final Camera pCamera) {
-		this.mHexagonVertexBufferObject.draw(GLES20.GL_TRIANGLE_FAN, Hexagon.VERTICES_PER_Hexagon);
+		this.mHexagonVertexBufferObject.draw(GLES20.GL_TRIANGLE_FAN, Hexagon.VERTICES_PER_HEXAGON);
 	}
 
 	@Override
@@ -185,36 +185,39 @@ public class Hexagon extends HexagonalShape {
 		public void onUpdateVertices(final Hexagon pHexagon) {
 			final float[] bufferData = this.mBufferData;
 
-			final float h = (float)Math.sin(30 * Math.PI / 180) * pHexagon.mSide;
-			final float r = (float)Math.cos(30 * Math.PI / 180) * pHexagon.mSide;
-			final float height = pHexagon.mSide + h * 2;
+			final float side = pHexagon.mSide;
+			final float h = pHexagon.mH;
+			final float r = pHexagon.mR;
+			final float height = pHexagon.mHeight;
+			final float width = pHexagon.mWidth;
 			final float x = 0;
 			final float y = 0;
 			
+			// Origin is the left upper corner of the hexagon
 			//point 1, Middle of the hexagon
-			bufferData[0 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = x;
-			bufferData[0 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = y;
+			bufferData[0 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = r;
+			bufferData[0 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = height / 2;
 			//point 2, Top of the hexagon
-			bufferData[1 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = x;
-			bufferData[1 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = -(height / 2);
+			bufferData[1 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = r;
+			bufferData[1 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = y;
 			//point 3, UpperLeft of the hexagon
-			bufferData[2 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = -r;
-			bufferData[2 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = -(pHexagon.mSide / 2);
+			bufferData[2 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = x;
+			bufferData[2 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = h;
 			//point 4, LowerLeft of the hexagon
-			bufferData[3 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = -r;
-			bufferData[3 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = pHexagon.mSide / 2;
+			bufferData[3 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = x;
+			bufferData[3 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = side + h;
 			//point 5, Bottom of the hexagon
-			bufferData[4 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = x;
-			bufferData[4 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = height / 2;
+			bufferData[4 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = r;
+			bufferData[4 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = height;
 			//point 6, LowerRight of the hexagon
-			bufferData[5 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = r;
-			bufferData[5 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = pHexagon.mSide / 2;
+			bufferData[5 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = width;
+			bufferData[5 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = side + h;
 			//point 7, UpperRight of the hexagon
-			bufferData[6 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = r;
-			bufferData[6 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = -(pHexagon.mSide / 2);
+			bufferData[6 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = width;
+			bufferData[6 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = h;
 			//point 8, Top again of the hexagon
-			bufferData[7 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = x;
-			bufferData[7 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = -(height / 2);
+			bufferData[7 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X] = r;
+			bufferData[7 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y] = y;
 			
 			this.setDirtyOnHardware();
 		}
@@ -275,36 +278,38 @@ public class Hexagon extends HexagonalShape {
 		public void onUpdateVertices(final Hexagon pHexagon) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 			
-			final float h = (float)Math.sin(30 * Math.PI / 180) * pHexagon.mSide;
-			final float r = (float)Math.cos(30 * Math.PI / 180) * pHexagon.mSide;
-			final float height = pHexagon.mSide + h * 2;
+			final float side = pHexagon.mSide;
+			final float h = pHexagon.mH;
+			final float r = pHexagon.mR;
+			final float height = pHexagon.mHeight;
+			final float width = pHexagon.mWidth;
 			final float x = 0;
 			final float y = 0;
 			
 			//point 1, Middle of the hexagon
-			bufferData.put(0 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, x);
-			bufferData.put(0 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, y);
+			bufferData.put(0 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, r);
+			bufferData.put(0 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, height / 2);
 			//point 2, Top of the hexagon
-			bufferData.put(1 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, x);
-			bufferData.put(1 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, -(height / 2));
+			bufferData.put(1 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, r);
+			bufferData.put(1 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, y);
 			//point 7, UpperLeft of the hexagon
-			bufferData.put(2 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, -r);
-			bufferData.put(2 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, -(pHexagon.mSide / 2));
+			bufferData.put(2 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, x);
+			bufferData.put(2 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, h);
 			//point 6, LowerLeft of the hexagon
-			bufferData.put(3 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, -r);
-			bufferData.put(3 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, pHexagon.mSide / 2);
+			bufferData.put(3 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, x);
+			bufferData.put(3 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, side + h);
 			//point 5, Bottom of the hexagon
-			bufferData.put(4 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, x);
-			bufferData.put(4 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, height / 2);
+			bufferData.put(4 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, r);
+			bufferData.put(4 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, height);
 			//point 4, LowerRight of the hexagon
-			bufferData.put(5 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, r);
-			bufferData.put(5 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, pHexagon.mSide / 2);
+			bufferData.put(5 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, width);
+			bufferData.put(5 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, side + h);
 			//point 3, UpperRight of the hexagon
-			bufferData.put(6 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, r);
-			bufferData.put(6 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, -(pHexagon.mSide / 2));
+			bufferData.put(6 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, width);
+			bufferData.put(6 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, h);
 			//point 8, Top again of the hexagon
-			bufferData.put(7 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, x);
-			bufferData.put(7 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, -(height / 2));
+			bufferData.put(7 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_X, r);
+			bufferData.put(7 * Hexagon.VERTEX_SIZE + Hexagon.VERTEX_INDEX_Y, y);
 			
 			this.setDirtyOnHardware();
 		}

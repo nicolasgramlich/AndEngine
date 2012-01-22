@@ -20,8 +20,6 @@ public abstract class HexagonalShape extends Shape implements IAreaShape {
 	// ===========================================================
 
 	protected float mBaseSide;
-	protected float mBaseWidth;
-	protected float mBaseHeight;
 
 	protected float mSide;
 	protected float mWidth;
@@ -35,16 +33,16 @@ public abstract class HexagonalShape extends Shape implements IAreaShape {
 	// Constructors
 	// ===========================================================
 
-	public HexagonalShape(final float pX, final float pY, final float pBaseSide, final float pBaseWidth, final float pBaseHeight, final ShaderProgram pShaderProgram) {
+	public HexagonalShape(final float pX, final float pY, final float pBaseSide, final ShaderProgram pShaderProgram) {
 		super(pX, pY, pShaderProgram);
 
 		this.mBaseSide = pBaseSide;
-		this.mBaseWidth = pBaseWidth;
-		this.mBaseHeight = pBaseHeight;
 		
 		this.mSide = pBaseSide;
-		this.mWidth = pBaseWidth;
-		this.mHeight = pBaseHeight;
+		this.mR = calculateR(pBaseSide);
+		this.mH = calculateH(pBaseSide);
+		this.mWidth = this.mR * 2;
+		this.mHeight = this.mH * 2 + pBaseSide;
 
 		this.resetRotationCenter();
 		this.resetScaleCenter();
@@ -76,38 +74,23 @@ public abstract class HexagonalShape extends Shape implements IAreaShape {
 	public float getH() {
 		return this.mH;
 	}
-
-	@Override
-	public float getBaseWidth() {
-		return this.mBaseWidth;
-	}
-
-	@Override
-	public float getBaseHeight() {
-		return this.mBaseHeight;
-	}
 	
 	public float getBaseSide() {
 		return this.mBaseSide;
 	}
-
+	
 	@Override
-	public void setWidth(final float pWidth) {
-		this.mWidth = pWidth;
-		this.onUpdateVertices();
+	public float getBaseWidth() {
+		float baseR = calculateR(mBaseSide);
+		float baseWidth = baseR * 2;
+		return baseWidth;
 	}
 
 	@Override
-	public void setHeight(final float pHeight) {
-		this.mHeight = pHeight;
-		this.onUpdateVertices();
-	}
-
-	@Override
-	public void setSize(final float pWidth, final float pHeight) {
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
-		this.onUpdateVertices();
+	public float getBaseHeight() {
+		float baseH = calculateH(mBaseSide);
+		float baseHeight = baseH * 2 + mBaseSide;
+		return baseHeight;
 	}
 
 	@Override
@@ -120,14 +103,32 @@ public abstract class HexagonalShape extends Shape implements IAreaShape {
 		return this.getHeight() * this.mScaleY;
 	}
 
+	@Override
+	public void setHeight(float pHeight) {
+		
+	}
+
+	@Override
+	public void setWidth(float pWidth) {
+		
+	}
+
+	@Override
+	public void setSize(float pWidth, float pHeight) {
+		
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	public void setBaseSize() {
-		if(this.mWidth != this.mBaseWidth || this.mHeight != this.mBaseHeight) {
-			this.mWidth = this.mBaseWidth;
-			this.mHeight = this.mBaseHeight;
+		if(this.mSide != this.mBaseSide) {
+			this.mSide = this.mBaseSide;
+			this.mR = calculateR(this.mSide);
+			this.mH = calculateH(this.mSide);
+			this.mHeight = this.mH * 2 + this.mSide;
+			this.mWidth = this.mR * 2;
 			this.onUpdateVertices();
 		}
 	}
@@ -173,30 +174,18 @@ public abstract class HexagonalShape extends Shape implements IAreaShape {
 	// ===========================================================
 
 	public void resetRotationCenter() {
-		this.mH = calculateH(mSide);
-		this.mR = calculateR(mSide);
-		float totalWidth = mR * 2;
-		float totalHeight = mSide + mH * 2;
-		this.mRotationCenterX = totalWidth * 0.5f;
-		this.mRotationCenterY = totalHeight * 0.5f;
+		this.mRotationCenterX = mWidth * 0.5f;
+		this.mRotationCenterY = mHeight * 0.5f;
 	}
 
 	public void resetScaleCenter() {
-		this.mH = calculateH(mSide);
-		this.mR = calculateR(mSide);
-		float totalWidth = mR * 2;
-		float totalHeight = mSide + mH * 2;
-		this.mRotationCenterX = totalWidth * 0.5f;
-		this.mRotationCenterY = totalHeight * 0.5f;
+		this.mRotationCenterX = mWidth * 0.5f;
+		this.mRotationCenterY = mHeight * 0.5f;
 	}
 
 	public void resetSkewCenter() {
-		this.mH = calculateH(mSide);
-		this.mR = calculateR(mSide);
-		float totalWidth = mR * 2;
-		float totalHeight = mSide + mH * 2;
-		this.mRotationCenterX = totalWidth * 0.5f;
-		this.mRotationCenterY = totalHeight * 0.5f;
+		this.mRotationCenterX = mWidth * 0.5f;
+		this.mRotationCenterY = mHeight * 0.5f;
 	}
 
 	// ===========================================================

@@ -218,7 +218,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	public AnimatedSprite animate(final long pFrameDurationEach, final int pLoopCount, final IAnimationListener pAnimationListener) {
-		final long[] frameDurations = new long[this.getTextureRegion().getTileCount()];
+		final long[] frameDurations = new long[this.getTiledTextureRegion().getTileCount()];
 		Arrays.fill(frameDurations, pFrameDurationEach);
 		return this.animate(frameDurations, pLoopCount, pAnimationListener);
 	}
@@ -244,7 +244,7 @@ public class AnimatedSprite extends TiledSprite implements TimeConstants {
 	}
 
 	public AnimatedSprite animate(final long[] pFrameDurations, final int pLoopCount, final IAnimationListener pAnimationListener) {
-		return this.animate(pFrameDurations, 0, this.getTextureRegion().getTileCount() - 1, pLoopCount, pAnimationListener);
+		return this.animate(pFrameDurations, 0, this.getTiledTextureRegion().getTileCount() - 1, pLoopCount, pAnimationListener);
 	}
 
 	public AnimatedSprite animate(final long[] pFrameDurations, final int pFirstTileIndex, final int pLastTileIndex, final boolean pLoop) {

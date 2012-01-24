@@ -67,14 +67,14 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// ===========================================================
 
 	private Sprite loadSprite(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(pBitmapTextureAtlasSource.getWidth(), pBitmapTextureAtlasSource.getHeight(), BitmapTextureFormat.RGBA_8888, TextureOptions.REPEATING_NEAREST);
+		this.mBitmapTextureAtlas = new BitmapTextureAtlas(pBitmapTextureAtlasSource.getTextureWidth(), pBitmapTextureAtlasSource.getTextureHeight(), BitmapTextureFormat.RGBA_8888, TextureOptions.REPEATING_NEAREST);
 		final ITextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, pBitmapTextureAtlasSource, 0, 0);
 
 		final int width = Math.round(pCameraWidth / this.mScale);
 		final int height = Math.round(pCameraHeight / this.mScale);
 
-		textureRegion.setWidth(width);
-		textureRegion.setHeight(height);
+		textureRegion.setTextureWidth(width);
+		textureRegion.setTextureHeight(height);
 
 		this.mBitmapTextureAtlas.load(pTextureManager);
 

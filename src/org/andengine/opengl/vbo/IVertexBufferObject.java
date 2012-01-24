@@ -19,12 +19,12 @@ public interface IVertexBufferObject extends IDisposable {
 	// Methods
 	// ===========================================================
 
-	public boolean isManaged();
-	public void setManaged(final boolean pManaged);
+	public boolean isAutoDispose();
 
 	public int getHardwareBufferID();
 
 	public boolean isLoadedToHardware();
+	public void setLoadedToHardware(final boolean pLoadedToHardware);
 	public void loadToHardware(final GLState pGLState);
 	public void unloadFromHardware(final GLState pGLState);
 
@@ -38,8 +38,6 @@ public interface IVertexBufferObject extends IDisposable {
 	public void unbind(final GLState pGLState, final ShaderProgram pShaderProgram);
 
 	public VertexBufferObjectManager getVertexBufferObjectManager();
-	public void load();
-	public void unload();
 
 	public void draw(final int pPrimitiveType, final int pCount);
 	public void draw(final int pPrimitiveType, final int pOffset, final int pCount);

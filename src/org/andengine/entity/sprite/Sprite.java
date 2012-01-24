@@ -164,14 +164,14 @@ public class Sprite extends RectangularShape {
 	public void reset() {
 		super.reset();
 
-		this.initBlendFunction(this.mTextureRegion);
+		this.initBlendFunction(this.getTextureRegion().getTexture());
 	}
 
 	@Override
 	protected void preDraw(final GLState pGLState, final Camera pCamera) {
 		super.preDraw(pGLState, pCamera);
 
-		this.mTextureRegion.getTexture().bind(pGLState);
+		this.getTextureRegion().getTexture().bind(pGLState);
 
 		this.mSpriteVertexBufferObject.bind(pGLState, this.mShaderProgram);
 	}

@@ -22,26 +22,21 @@ public class EmptyBitmapTextureAtlasSource extends BaseTextureAtlasSource implem
 	// Fields
 	// ===========================================================
 
-	private final int mWidth;
-	private final int mHeight;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public EmptyBitmapTextureAtlasSource(final int pWidth, final int pHeight) {
-		this(0, 0, pWidth, pHeight);
+	public EmptyBitmapTextureAtlasSource(final int pTextureWidth, final int pTextureHeight) {
+		this(0, 0, pTextureWidth, pTextureHeight);
 	}
 
-	public EmptyBitmapTextureAtlasSource(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
-		super(pTexturePositionX, pTexturePositionY);
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+	public EmptyBitmapTextureAtlasSource(final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		super(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
 	}
 
 	@Override
 	public EmptyBitmapTextureAtlasSource deepCopy() {
-		return new EmptyBitmapTextureAtlasSource(this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
+		return new EmptyBitmapTextureAtlasSource(this.mTextureX, this.mTextureY, this.mTextureWidth, this.mTextureHeight);
 	}
 
 	// ===========================================================
@@ -53,23 +48,13 @@ public class EmptyBitmapTextureAtlasSource extends BaseTextureAtlasSource implem
 	// ===========================================================
 
 	@Override
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	@Override
-	public int getHeight() {
-		return this.mHeight;
-	}
-
-	@Override
 	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
-		return Bitmap.createBitmap(this.mWidth, this.mHeight, pBitmapConfig);
+		return Bitmap.createBitmap(this.mTextureWidth, this.mTextureHeight, pBitmapConfig);
 	}
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "(" + this.mWidth + " x " + this.mHeight + ")";
+		return this.getClass().getSimpleName() + "(" + this.mTextureWidth + " x " + this.mTextureHeight + ")";
 	}
 
 	// ===========================================================

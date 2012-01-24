@@ -101,9 +101,9 @@ public class RenderTexture extends Texture {
 	public void init(final GLState pGLState) {
 		this.savePreviousFramebufferObjectID(pGLState);
 
-		try{
+		try {
 			this.loadToHardware(pGLState);
-		} catch(final IOException e) {
+		} catch (final IOException e) {
 			/* Can not happen. */
 		}
 
@@ -117,6 +117,7 @@ public class RenderTexture extends Texture {
 		/* Attach texture to FBO. */
 		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTextureID, 0);
 
+		pGLState.checkError();
 		pGLState.checkFramebufferStatus();
 
 		this.restorePreviousFramebufferObjectID(pGLState);
@@ -324,7 +325,7 @@ public class RenderTexture extends Texture {
 	}
 
 	public Bitmap getBitmap(final GLState pGLState, final int pX, final int pY, final int pWidth, final int pHeight) {
-		if(this.mPixelFormat != PixelFormat.RGBA_8888){
+		if(this.mPixelFormat != PixelFormat.RGBA_8888) {
 			throw new IllegalStateException("Currently only 'PixelFormat." + PixelFormat.RGBA_8888 + "' is supported to be retrieved as a Bitmap.");
 		}
 

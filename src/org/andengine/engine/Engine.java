@@ -572,7 +572,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		try {
 			engineLock.waitUntilCanDraw();
 
-			this.mVertexBufferObjectManager.updateBufferObjects(pGLState);
+			this.mVertexBufferObjectManager.updateVertexBufferObjects(pGLState);
 			this.mTextureManager.updateTextures(pGLState);
 			this.mFontManager.updateFonts(pGLState);
 

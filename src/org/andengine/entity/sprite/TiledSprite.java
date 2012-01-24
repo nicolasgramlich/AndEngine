@@ -5,10 +5,11 @@ import java.nio.FloatBuffer;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.util.GLState;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
 import android.opengl.GLES20;
@@ -35,6 +36,8 @@ public class TiledSprite extends Sprite {
 
 	private final ITiledTextureRegion mTiledTextureRegion;
 	private final ITiledSpriteVertexBufferObject mTiledSpriteVertexBufferObject;
+
+	private int mCurrentTileIndex;
 
 	// ===========================================================
 	// Constructors
@@ -110,13 +113,17 @@ public class TiledSprite extends Sprite {
 	// ===========================================================
 
 	@Override
-	public ITiledTextureRegion getTextureRegion() {
+	public ITextureRegion getTextureRegion() {
+		return this.mTiledTextureRegion.getTextureRegion(this.mCurrentTileIndex);
+	}
+
+	public ITiledTextureRegion getTiledTextureRegion() {
 		return this.mTiledTextureRegion;
 	}
 
 	@Override
 	protected void draw(final GLState pGLState, final Camera pCamera) {
-		this.mTiledSpriteVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.getCurrentTileIndex() * TiledSprite.VERTICES_PER_TILEDSPRITE, TiledSprite.VERTICES_PER_TILEDSPRITE);
+		this.mTiledSpriteVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mCurrentTileIndex * TiledSprite.VERTICES_PER_TILEDSPRITE, TiledSprite.VERTICES_PER_TILEDSPRITE);
 	}
 
 	@Override
@@ -139,15 +146,11 @@ public class TiledSprite extends Sprite {
 	// ===========================================================
 
 	public int getCurrentTileIndex() {
-		return this.mTiledTextureRegion.getTileIndex();
+		return this.mCurrentTileIndex;
 	}
 
-	public void setCurrentTileIndex(final int pTileIndex) {
-		this.mTiledTextureRegion.setTileIndex(pTileIndex);
-	}
-
-	public void nextTile() {
-		this.mTiledTextureRegion.nextTile();
+	public void setCurrentTileIndex(final int pCurrentTileIndex) {
+		this.mCurrentTileIndex = pCurrentTileIndex;
 	}
 
 	public int getTileCount() {
@@ -259,11 +262,13 @@ public class TiledSprite extends Sprite {
 		public void onUpdateTextureCoordinates(final TiledSprite pTiledSprite) {
 			final float[] bufferData = this.mBufferData;
 
-			final ITiledTextureRegion tiledTextureRegion = pTiledSprite.getTextureRegion();
+			final ITiledTextureRegion tiledTextureRegion = pTiledSprite.getTiledTextureRegion();
 
 			final int tileCount = pTiledSprite.getTileCount();
 			int bufferDataOffset = 0;
 			for(int i = 0; i < tileCount; i++) {
+				final ITextureRegion textureRegion = tiledTextureRegion.getTextureRegion(i);
+
 				final float u;
 				final float v;
 				final float u2;
@@ -271,31 +276,31 @@ public class TiledSprite extends Sprite {
 
 				if(pTiledSprite.isFlippedVertical()) { // TODO Optimize with field access?
 					if(pTiledSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
-						u = tiledTextureRegion.getU2(i);
-						u2 = tiledTextureRegion.getU(i);
-						v = tiledTextureRegion.getV2(i);
-						v2 = tiledTextureRegion.getV(i);
+						u = textureRegion.getU2();
+						u2 = textureRegion.getU();
+						v = textureRegion.getV2();
+						v2 = textureRegion.getV();
 					} else {
-						u = tiledTextureRegion.getU(i);
-						u2 = tiledTextureRegion.getU2(i);
-						v = tiledTextureRegion.getV2(i);
-						v2 = tiledTextureRegion.getV(i);
+						u = textureRegion.getU();
+						u2 = textureRegion.getU2();
+						v = textureRegion.getV2();
+						v2 = textureRegion.getV();
 					}
 				} else {
 					if(pTiledSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
-						u = tiledTextureRegion.getU2(i);
-						u2 = tiledTextureRegion.getU(i);
-						v = tiledTextureRegion.getV(i);
-						v2 = tiledTextureRegion.getV2(i);
+						u = textureRegion.getU2();
+						u2 = textureRegion.getU();
+						v = textureRegion.getV();
+						v2 = textureRegion.getV2();
 					} else {
-						u = tiledTextureRegion.getU(i);
-						u2 = tiledTextureRegion.getU2(i);
-						v = tiledTextureRegion.getV(i);
-						v2 = tiledTextureRegion.getV2(i);
+						u = textureRegion.getU();
+						u2 = textureRegion.getU2();
+						v = textureRegion.getV();
+						v2 = textureRegion.getV2();
 					}
 				}
 
-				if(tiledTextureRegion.isRotated(i)) {
+				if(textureRegion.isRotated()) {
 					bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
 					bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
 
@@ -435,11 +440,13 @@ public class TiledSprite extends Sprite {
 		public void onUpdateTextureCoordinates(final TiledSprite pTiledSprite) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final ITiledTextureRegion textureRegion = pTiledSprite.getTextureRegion();
+			final ITiledTextureRegion tiledTextureRegion = pTiledSprite.getTiledTextureRegion();
 
 			final int tileCount = pTiledSprite.getTileCount();
 			int bufferDataOffset = 0;
 			for(int i = 0; i < tileCount; i++) {
+				final ITextureRegion textureRegion = tiledTextureRegion.getTextureRegion(i);
+
 				final float u;
 				final float v;
 				final float u2;
@@ -447,27 +454,27 @@ public class TiledSprite extends Sprite {
 
 				if(pTiledSprite.isFlippedVertical()) { // TODO Optimize with field access?
 					if(pTiledSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
-						u = textureRegion.getU2(i);
-						u2 = textureRegion.getU(i);
-						v = textureRegion.getV2(i);
-						v2 = textureRegion.getV(i);
+						u = textureRegion.getU2();
+						u2 = textureRegion.getU();
+						v = textureRegion.getV2();
+						v2 = textureRegion.getV();
 					} else {
-						u = textureRegion.getU(i);
-						u2 = textureRegion.getU2(i);
-						v = textureRegion.getV2(i);
-						v2 = textureRegion.getV(i);
+						u = textureRegion.getU();
+						u2 = textureRegion.getU2();
+						v = textureRegion.getV2();
+						v2 = textureRegion.getV();
 					}
 				} else {
 					if(pTiledSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
-						u = textureRegion.getU2(i);
-						u2 = textureRegion.getU(i);
-						v = textureRegion.getV(i);
-						v2 = textureRegion.getV2(i);
+						u = textureRegion.getU2();
+						u2 = textureRegion.getU();
+						v = textureRegion.getV();
+						v2 = textureRegion.getV2();
 					} else {
-						u = textureRegion.getU(i);
-						u2 = textureRegion.getU2(i);
-						v = textureRegion.getV(i);
-						v2 = textureRegion.getV2(i);
+						u = textureRegion.getU();
+						u2 = textureRegion.getU2();
+						v = textureRegion.getV();
+						v2 = textureRegion.getV2();
 					}
 				}
 

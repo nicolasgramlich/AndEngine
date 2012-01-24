@@ -7,7 +7,6 @@ import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
-import org.andengine.util.IDisposable.AlreadyDisposedException;
 import org.andengine.util.data.DataConstants;
 import org.andengine.util.system.SystemUtils;
 
@@ -31,16 +30,14 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 
 	protected final int mCapacity;
-
+	protected final boolean mAutoDispose;
 	protected final int mUsage;
-
 	protected final ByteBuffer mByteBuffer;
 
 	protected int mHardwareBufferID = -1;
 	protected boolean mLoadedToHardware;
 	protected boolean mDirtyOnHardware = true;
 
-	protected boolean mManaged;
 	protected boolean mDisposed;
 
 	protected final VertexBufferObjectManager mVertexBufferObjectManager;
@@ -54,14 +51,14 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	 * @param pVertexBufferObjectManager
 	 * @param pCapacity
 	 * @param pDrawType
-	 * @param pManaged when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
+	 * @param pAutoDispose when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
 	 * @param pVertexBufferObjectAttributes to be automatically enabled on the {@link ShaderProgram} used in {@link VertexBufferObject#bind(ShaderProgram)}.
 	 */
-	public VertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public VertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		this.mVertexBufferObjectManager = pVertexBufferObjectManager;
 		this.mCapacity = pCapacity;
 		this.mUsage = pDrawType.getUsage();
-		this.mManaged = pManaged;
+		this.mAutoDispose = pAutoDispose;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
 
 		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
@@ -72,10 +69,6 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 			this.mByteBuffer = ByteBuffer.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
 		}
 		this.mByteBuffer.order(ByteOrder.nativeOrder());
-
-		if(pManaged) {
-			this.load();
-		}
 	}
 
 	// ===========================================================
@@ -93,13 +86,8 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	}
 
 	@Override
-	public boolean isManaged() {
-		return this.mManaged;
-	}
-
-	@Override
-	public void setManaged(final boolean pManaged) {
-		this.mManaged = pManaged;
+	public boolean isAutoDispose() {
+		return this.mAutoDispose;
 	}
 
 	@Override
@@ -112,7 +100,8 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		return this.mLoadedToHardware;
 	}
 
-	void setLoadedToHardware(final boolean pLoadedToHardware) {
+	@Override
+	public void setLoadedToHardware(final boolean pLoadedToHardware) {
 		this.mLoadedToHardware = pLoadedToHardware;
 	}
 
@@ -150,7 +139,9 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	@Override
 	public void bind(final GLState pGLState, final ShaderProgram pShaderProgram) {
 		if(!this.mLoadedToHardware) {
-			return;
+			this.loadToHardware(pGLState);
+			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
+			this.mDirtyOnHardware = true;
 		}
 
 		pGLState.bindBuffer(this.mHardwareBufferID);
@@ -170,16 +161,6 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		pShaderProgram.unbind(pGLState);
 
 //		pGLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
-	}
-
-	@Override
-	public void load() {
-		this.mVertexBufferObjectManager.loadBufferObject(this);
-	}
-
-	@Override
-	public void unload() {
-		this.mVertexBufferObjectManager.unloadBufferObject(this);
 	}
 
 	@Override
@@ -212,7 +193,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		if(!this.mDisposed) {
 			this.mDisposed = true;
 
-			this.unload();
+			this.mVertexBufferObjectManager.onUnloadVertexBufferObject(this);
 
 			/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
 			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {

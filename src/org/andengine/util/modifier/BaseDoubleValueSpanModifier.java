@@ -100,15 +100,15 @@ public abstract class BaseDoubleValueSpanModifier<T> extends BaseSingleValueSpan
 		this.onSetValues(pItem, pPercentageDone, pValueA, this.mFromValueB + pPercentageDone * this.mValueSpanB);
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
 	@Override
 	@Deprecated
 	public void reset(final float pDuration, final float pFromValue, final float pToValue) {
 		super.reset(pDuration, pFromValue, pToValue);
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 	
 	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
 		super.reset(pDuration, pFromValueA, pToValueA);

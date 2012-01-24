@@ -12,7 +12,7 @@ import org.andengine.entity.shape.RectangularShape;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class OffCameraExpireModifier<T extends RectangularShape> implements IParticleModifier<T> {
+public class OffCameraExpireParticleModifier<T extends RectangularShape> implements IParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,7 +27,7 @@ public class OffCameraExpireModifier<T extends RectangularShape> implements IPar
 	// Constructors
 	// ===========================================================
 
-	public OffCameraExpireModifier(final Camera pCamera) {
+	public OffCameraExpireParticleModifier(final Camera pCamera) {
 		this.mCamera = pCamera;
 	}
 
@@ -51,7 +51,7 @@ public class OffCameraExpireModifier<T extends RectangularShape> implements IPar
 	@Override
 	public void onUpdateParticle(final Particle<T> pParticle) {
 		if(!this.mCamera.isRectangularShapeVisible(pParticle.getEntity())) {
-			pParticle.setDead(true);
+			pParticle.setExpired(true);
 		}
 	}
 

@@ -2,15 +2,16 @@ package org.andengine.entity.particle.modifier;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 10:36:18 - 29.06.2010
+ * @since 21:21:10 - 14.03.2010
  */
-public class RotationModifier<T extends IEntity> extends BaseSingleValueSpanModifier<T> {
+public class ExpireParticleModifier<T extends IEntity> implements IParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,30 +20,56 @@ public class RotationModifier<T extends IEntity> extends BaseSingleValueSpanModi
 	// Fields
 	// ===========================================================
 
+	private float mMinLifeTime;
+	private float mMaxLifeTime;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotationModifier(final float pFromRotation, final float pToRotation, final float pFromTime, final float pToTime) {
-		super(pFromRotation, pToRotation, pFromTime, pToTime);
+	public ExpireParticleModifier(final float pLifeTime) {
+		this(pLifeTime, pLifeTime);
+	}
+
+	public ExpireParticleModifier(final float pMinLifeTime, final float pMaxLifeTime) {
+		this.mMinLifeTime = pMinLifeTime;
+		this.mMaxLifeTime = pMaxLifeTime;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	public float getMinLifeTime() {
+		return this.mMinLifeTime;
+	}
+
+	public float getMaxLifeTime() {
+		return this.mMaxLifeTime;
+	}
+
+	public void setLifeTime(final float pLifeTime) {
+		this.mMinLifeTime = pLifeTime;
+		this.mMaxLifeTime = pLifeTime;
+	}
+
+	public void setLifeTime(final float pMinLifeTime, final float pMaxLifeTime) {
+		this.mMinLifeTime = pMinLifeTime;
+		this.mMaxLifeTime = pMaxLifeTime;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	protected void onSetInitialValue(final Particle<T> pParticle, final float pRotation) {
-		pParticle.getEntity().setRotation(pRotation);
+	public void onInitializeParticle(final Particle<T> pParticle) {
+		pParticle.setExpireTime((MathUtils.RANDOM.nextFloat() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime));
 	}
 
 	@Override
-	protected void onSetValue(final Particle<T> pParticle, final float pRotation) {
-		pParticle.getEntity().setRotation(pRotation);
+	public void onUpdateParticle(final Particle<T> pParticle) {
+
 	}
 
 	// ===========================================================

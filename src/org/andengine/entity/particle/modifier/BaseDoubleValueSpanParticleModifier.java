@@ -2,6 +2,8 @@ package org.andengine.entity.particle.modifier;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -10,7 +12,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 15:19:46 - 29.06.2010
  */
-public abstract class BaseDoubleValueSpanModifier<T extends IEntity> extends BaseSingleValueSpanModifier<T> {
+public abstract class BaseDoubleValueSpanParticleModifier<T extends IEntity> extends BaseSingleValueSpanParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,21 +22,21 @@ public abstract class BaseDoubleValueSpanModifier<T extends IEntity> extends Bas
 	// ===========================================================
 
 	private float mFromValueB;
-	private float mToValueB;
-
-	private float mSpanValueB;
+	private float mValueSpanB;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseDoubleValueSpanModifier(final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromTime, final float pToTime) {
-		super(pFromValueA, pToValueA, pFromTime, pToTime);
+	public BaseDoubleValueSpanParticleModifier(final float pFromTime, final float pToTime, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
+		this(pFromTime, pToTime, pFromValueA, pToValueA, pFromValueB, pToValueB, EaseLinear.getInstance());
+	}
+
+	public BaseDoubleValueSpanParticleModifier(final float pFromTime, final float pToTime, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final IEaseFunction pEaseFunction) {
+		super(pFromTime, pToTime, pFromValueA, pToValueA, pEaseFunction);
 
 		this.mFromValueB = pFromValueB;
-		this.mToValueB = pToValueB;
-
-		this.mSpanValueB = this.mToValueB - this.mFromValueB;
+		this.mValueSpanB = pToValueB - pFromValueB;
 	}
 
 	// ===========================================================
@@ -45,12 +47,8 @@ public abstract class BaseDoubleValueSpanModifier<T extends IEntity> extends Bas
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	@Deprecated
-	protected void onSetValue(final Particle<T> pParticle, final float pValue) { }
-
 	protected abstract void onSetInitialValues(final Particle<T> pParticle, final float pValueA, final float pValueB);
-	protected abstract void onSetValues(final Particle<T> pParticle, final float pValueA, final float pValueB);
+	protected abstract void onSetValues(final Particle<T> pParticle, final float pPercentageDone, final float pValueA, final float pValueB);
 
 	@Override
 	public void onSetInitialValue(final Particle<T> pParticle, final float pValueA) {
@@ -58,8 +56,8 @@ public abstract class BaseDoubleValueSpanModifier<T extends IEntity> extends Bas
 	}
 
 	@Override
-	protected void onSetValueInternal(final Particle<T> pParticle, final float pPercent) {
-		this.onSetValues(pParticle, super.calculateValue(pPercent), this.calculateValueB(pPercent));
+	protected void onSetValue(final Particle<T> pParticle, final float pPercentageDone, final float pValueA) {
+		this.onSetValues(pParticle, pPercentageDone, pValueA, this.mFromValueB + pPercentageDone * this.mValueSpanB);
 	}
 
 	@Override
@@ -72,17 +70,11 @@ public abstract class BaseDoubleValueSpanModifier<T extends IEntity> extends Bas
 	// Methods
 	// ===========================================================
 
-	protected float calculateValueB(final float pPercent) {
-		return this.mFromValueB + this.mSpanValueB * pPercent;
-	}
-
 	public void reset(final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromTime, final float pToTime) {
 		super.reset(pFromValueA, pToValueA, pFromTime, pToTime);
 
 		this.mFromValueB = pFromValueB;
-		this.mToValueB = pToValueB;
-
-		this.mSpanValueB = this.mToValueB - this.mFromValueB;
+		this.mValueSpanB = pToValueB - pFromValueB;
 	}
 
 	// ===========================================================

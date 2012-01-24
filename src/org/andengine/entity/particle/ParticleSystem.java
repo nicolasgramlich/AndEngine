@@ -58,13 +58,17 @@ public class ParticleSystem<T extends Entity> extends Entity {
 	// Constructors
 	// ===========================================================
 
-	@SuppressWarnings("unchecked")
 	public ParticleSystem(final IEntityFactory<T> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
-		super(0, 0);
+		this(0, 0, pEntityFactory, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
+	}
+
+	@SuppressWarnings("unchecked")
+	public ParticleSystem(final float pX, final float pY, final IEntityFactory<T> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
+		super(pX, pY);
 
 		this.mEntityFactory = pEntityFactory;
 		this.mParticleEmitter = pParticleEmitter;
-		this.mParticles = new Particle[pParticlesMaximum];
+		this.mParticles = (Particle<T>[])new Particle[pParticlesMaximum];
 		this.mRateMinimum = pRateMinimum;
 		this.mRateMaximum = pRateMaximum;
 		this.mParticlesMaximum = pParticlesMaximum;
@@ -134,7 +138,7 @@ public class ParticleSystem<T extends Entity> extends Entity {
 			}
 
 			particle.onUpdate(pSecondsElapsed);
-			if(particle.mDead){
+			if(particle.mExpired){
 				this.mParticlesAlive--;
 				final int particlesAlive = this.mParticlesAlive;
 				particles[i] = particles[particlesAlive];

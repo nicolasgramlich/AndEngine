@@ -1219,30 +1219,44 @@ public class Entity implements IEntity {
 		{
 			this.onApplyTransformations(pGLState);
 
-			this.preDraw(pGLState, pCamera);
-			this.draw(pGLState, pCamera);
-			this.postDraw(pGLState, pCamera);
+			final ArrayList<IEntity> children = this.mChildren;
+			if(children == null || !this.mChildrenVisible) {
+				/* Draw only self. */
+				this.preDraw(pGLState, pCamera);
+				this.draw(pGLState, pCamera);
+				this.postDraw(pGLState, pCamera);
+			} else {
+				if(this.mChildrenSortPending) {
+					ZIndexSorter.getInstance().sort(this.mChildren);
+				}
 
-			this.onDrawChildren(pGLState, pCamera);
+				final int childCount = children.size();
+				int i = 0;
+
+				{ /* Draw children behind this Entity. */
+					for(; i < childCount; i++) {
+						final IEntity child = children.get(i);
+						if(child.getZIndex() < 0) {
+							child.onDraw(pGLState, pCamera);
+						} else {
+							break;
+						}
+					}
+				}
+
+				/* Draw self. */
+				this.preDraw(pGLState, pCamera);
+				this.draw(pGLState, pCamera);
+				this.postDraw(pGLState, pCamera);
+
+				{ /* Draw children in front of this Entity. */
+					for(; i < childCount; i++) {
+						children.get(i).onDraw(pGLState, pCamera);
+					}
+				}
+			}
 		}
 		pGLState.popModelViewGLMatrix();
-	}
-
-	protected void onDrawChildren(final GLState pGLState, final Camera pCamera) {
-		if(this.mChildren != null && this.mChildrenVisible) {
-			if(this.mChildrenSortPending) {
-				ZIndexSorter.getInstance().sort(this.mChildren);
-			}
-			this.onManagedDrawChildren(pGLState, pCamera);
-		}
-	}
-
-	public void onManagedDrawChildren(final GLState pGLState, final Camera pCamera) {
-		final ArrayList<IEntity> children = this.mChildren;
-		final int childCount = children.size();
-		for(int i = 0; i < childCount; i++) {
-			children.get(i).onDraw(pGLState, pCamera);
-		}
 	}
 
 	protected void onManagedUpdate(final float pSecondsElapsed) {

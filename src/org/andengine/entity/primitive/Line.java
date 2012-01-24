@@ -20,6 +20,7 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.andengine.util.constants.Constants;
+import org.andengine.util.exception.MethodNotSupportedException;
 
 import android.opengl.GLES20;
 
@@ -232,26 +233,13 @@ public class Line extends Shape {
 
 	@Override
 	public float[] getSceneCenterCoordinates() {
-		return null;
-		// TODO return convertLocalToSceneCoordinates(this, (this.mX + this.mX2) * 0.5f, (this.mY + this.mY2) * 0.5f);
+		throw new MethodNotSupportedException();
 	}
 
 	@Override
 	@Deprecated
 	public boolean contains(final float pX, final float pY) {
-		return false;
-	}
-
-	@Override
-	@Deprecated
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
-		return null;
+		throw new MethodNotSupportedException();
 	}
 
 	@Override

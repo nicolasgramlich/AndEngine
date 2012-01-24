@@ -2,6 +2,8 @@ package org.andengine.entity.particle.modifier;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -10,7 +12,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 16:10:16 - 04.05.2010
  */
-public abstract class BaseSingleValueSpanModifier<T extends IEntity> implements IParticleModifier<T> {
+public abstract class BaseSingleValueSpanParticleModifier<T extends IEntity> implements IParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,27 +21,32 @@ public abstract class BaseSingleValueSpanModifier<T extends IEntity> implements 
 	// Fields
 	// ===========================================================
 
-	private float mFromValue;
-	private float mToValue;
-
 	private float mFromTime;
 	private float mToTime;
-
 	private float mDuration;
-	private float mSpanValue;
+
+	private float mFromValue;
+	private float mValueSpan;
+
+	private final IEaseFunction mEaseFunction;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseSingleValueSpanModifier(final float pFromValue, final float pToValue, final float pFromTime, final float pToTime) {
-		this.mFromValue = pFromValue;
-		this.mToValue = pToValue;
+	public BaseSingleValueSpanParticleModifier(final float pFromTime, final float pToTime, final float pFromValue, final float pToValue) {
+		this(pFromTime, pToTime, pFromValue, pToValue, EaseLinear.getInstance());
+	}
+
+	public BaseSingleValueSpanParticleModifier(final float pFromTime, final float pToTime, final float pFromValue, final float pToValue, final IEaseFunction pEaseFunction) {
 		this.mFromTime = pFromTime;
 		this.mToTime = pToTime;
+		this.mDuration = pToTime - pFromTime;
 
-		this.mSpanValue = this.mToValue - this.mFromValue;
-		this.mDuration = this.mToTime - this.mFromTime;
+		this.mFromValue = pFromValue;
+		this.mValueSpan = pToValue - pFromValue;
+
+		this.mEaseFunction = pEaseFunction;
 	}
 
 	// ===========================================================
@@ -51,7 +58,7 @@ public abstract class BaseSingleValueSpanModifier<T extends IEntity> implements 
 	// ===========================================================
 
 	protected abstract void onSetInitialValue(final Particle<T> pParticle, final float pValue);
-	protected abstract void onSetValue(final Particle<T> pParticle, final float pValue);
+	protected abstract void onSetValue(final Particle<T> pParticle, final float pPercentageDone, final float pValue);
 
 	@Override
 	public void onInitializeParticle(final Particle<T> pParticle) {
@@ -62,8 +69,8 @@ public abstract class BaseSingleValueSpanModifier<T extends IEntity> implements 
 	public void onUpdateParticle(final Particle<T> pParticle) {
 		final float lifeTime = pParticle.getLifeTime();
 		if(lifeTime > this.mFromTime && lifeTime < this.mToTime) {
-			final float percent = (lifeTime - this.mFromTime) / this.mDuration;
-			this.onSetValueInternal(pParticle, percent);
+			final float percentageDone = this.mEaseFunction.getPercentage((lifeTime - this.mFromTime), this.mDuration);
+			this.onSetValue(pParticle, percentageDone, this.mFromValue + percentageDone * this.mValueSpan);
 		}
 	}
 
@@ -71,22 +78,13 @@ public abstract class BaseSingleValueSpanModifier<T extends IEntity> implements 
 	// Methods
 	// ===========================================================
 
-	protected void onSetValueInternal(final Particle<T> pParticle, final float pPercent) {
-		this.onSetValue(pParticle, this.calculateValue(pPercent));
-	}
-
-	protected float calculateValue(final float pPercent) {
-		return this.mFromValue + this.mSpanValue * pPercent;
-	}
-
 	public void reset(final float pFromValue, final float pToValue, final float pFromTime, final float pToTime) {
 		this.mFromValue = pFromValue;
-		this.mToValue = pToValue;
 		this.mFromTime = pFromTime;
 		this.mToTime = pToTime;
 
-		this.mSpanValue = this.mToValue - this.mFromValue;
-		this.mDuration = this.mToTime - this.mFromTime;
+		this.mValueSpan = pToValue - pFromValue;
+		this.mDuration = pToTime - pFromTime;
 	}
 
 	// ===========================================================

@@ -2,6 +2,8 @@ package org.andengine.entity.particle.modifier;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -10,7 +12,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 15:19:46 - 29.06.2010
  */
-public abstract class BaseTripleValueSpanModifier<T extends IEntity> extends BaseDoubleValueSpanModifier<T> {
+public abstract class BaseTripleValueSpanParticleModifier<T extends IEntity> extends BaseDoubleValueSpanParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,21 +22,21 @@ public abstract class BaseTripleValueSpanModifier<T extends IEntity> extends Bas
 	// ===========================================================
 
 	private float mFromValueC;
-	private float mToValueC;
-
-	private float mSpanValueC;
+	private float mValueSpanC;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseTripleValueSpanModifier(final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final float pFromTime, final float pToTime) {
-		super(pFromValueA, pToValueA, pFromValueB, pToValueB, pFromTime, pToTime);
+	public BaseTripleValueSpanParticleModifier(final float pFromTime, final float pToTime, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC) {
+		this(pFromTime, pToTime, pFromValueA, pToValueA, pFromValueB, pToValueB, pFromValueC, pToValueC, EaseLinear.getInstance());
+	}
+
+	public BaseTripleValueSpanParticleModifier(final float pFromTime, final float pToTime, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final IEaseFunction pEaseFunction) {
+		super(pFromTime, pToTime, pFromValueA, pToValueA, pFromValueB, pToValueB, pEaseFunction);
 
 		this.mFromValueC = pFromValueC;
-		this.mToValueC = pToValueC;
-
-		this.mSpanValueC = this.mToValueC - this.mFromValueC;
+		this.mValueSpanC = pToValueC - pFromValueC;
 	}
 
 	// ===========================================================
@@ -46,11 +48,7 @@ public abstract class BaseTripleValueSpanModifier<T extends IEntity> extends Bas
 	// ===========================================================
 
 	protected abstract void onSetInitialValues(final Particle<T> pParticle, final float pValueA, final float pValueB, final float pValueC);
-	protected abstract void onSetValues(final Particle<T> pParticle, final float pValueA, final float pValueB, final float pValueC);
-
-	@Override
-	@Deprecated
-	protected void onSetValues(final Particle<T> pParticle, final float pValueA, final float pValueB) { }
+	protected abstract void onSetValues(final Particle<T> pParticle, final float pPercentageDone, final float pValueA, final float pValueB, final float pValueC);
 
 	@Override
 	public void onSetInitialValues(final Particle<T> pParticle, final float pValueA, final float pValueB) {
@@ -58,8 +56,8 @@ public abstract class BaseTripleValueSpanModifier<T extends IEntity> extends Bas
 	}
 
 	@Override
-	protected void onSetValueInternal(final Particle<T> pParticle, final float pPercent) {
-		this.onSetValues(pParticle, super.calculateValue(pPercent), super.calculateValueB(pPercent), this.calculateValueC(pPercent));
+	protected void onSetValues(final Particle<T> pParticle, final float pPercentageDone, final float pValueA, final float pValueB) {
+		this.onSetValues(pParticle, pPercentageDone, pValueA, pValueB, this.mFromValueC + pPercentageDone * this.mValueSpanC);
 	}
 
 	@Override
@@ -72,17 +70,11 @@ public abstract class BaseTripleValueSpanModifier<T extends IEntity> extends Bas
 	// Methods
 	// ===========================================================
 
-	protected float calculateValueC(final float pPercent) {
-		return this.mFromValueC + this.mSpanValueC * pPercent;
-	}
-
 	public void reset(final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB, final float pFromValueC, final float pToValueC, final float pFromTime, final float pToTime) {
 		super.reset(pFromValueA, pToValueA, pFromValueB, pToValueB, pFromTime, pToTime);
 
 		this.mFromValueC = pFromValueC;
-		this.mToValueC = pToValueC;
-
-		this.mSpanValueC = this.mToValueC - this.mFromValueC;
+		this.mValueSpanC = pToValueC - pFromValueC;
 	}
 
 	// ===========================================================

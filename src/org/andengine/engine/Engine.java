@@ -78,10 +78,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// Fields
 	// ===========================================================
 
-	private boolean mRunning = false;
+	private boolean mRunning;
 
-	private long mLastTick = -1;
-	private float mSecondsElapsedTotal = 0;
+	private long mLastTick;
+	private float mSecondsElapsedTotal;
 
 	private final EngineLock mEngineLock;
 
@@ -99,8 +99,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private final FontManager mFontManager = new FontManager();
 	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager();
 
-	private SoundManager mSoundManager;
-	private MusicManager mMusicManager;
+	private final SoundManager mSoundManager;
+	private final MusicManager mMusicManager;
 
 	protected Scene mScene;
 
@@ -157,9 +157,13 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		/* Audio. */
 		if(this.mEngineOptions.getAudioOptions().needsSound()) {
 			this.mSoundManager = new SoundManager();
+		} else {
+			this.mSoundManager = null;
 		}
 		if(this.mEngineOptions.getAudioOptions().needsMusic()) {
 			this.mMusicManager = new MusicManager();
+		} else {
+			this.mMusicManager = null;
 		}
 
 		/* Start the UpdateThread. */

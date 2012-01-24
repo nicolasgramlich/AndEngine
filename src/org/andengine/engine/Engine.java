@@ -120,8 +120,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
 
-	private boolean mIsMethodTracing;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -300,24 +298,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public void clearDrawHandlers() {
 		this.mDrawHandlers.clear();
-	}
-
-	public boolean isMethodTracing() {
-		return this.mIsMethodTracing;
-	}
-
-	public void startMethodTracing(final String pTraceFileName) {
-		if(!this.mIsMethodTracing) {
-			this.mIsMethodTracing = true;
-			android.os.Debug.startMethodTracing(pTraceFileName);
-		}
-	}
-
-	public void stopMethodTracing() {
-		if(this.mIsMethodTracing) {
-			android.os.Debug.stopMethodTracing();
-			this.mIsMethodTracing = false;
-		}
 	}
 
 	// ===========================================================

@@ -79,6 +79,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// ===========================================================
 
 	private boolean mRunning;
+	private boolean mDestroyed;
 
 	private long mLastTick;
 	private float mSecondsElapsedTotal;
@@ -488,12 +489,22 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onDestroy() {
+		this.mEngineLock.lock();
+		try {
+			this.mDestroyed = true;
+			try {
+				this.mUpdateThread.join();
+			} catch (InterruptedException e) {
+				this.mUpdateThread.interrupt();
+			}
+		} finally {
+			this.mEngineLock.unlock();
+		}
+
 		this.mVertexBufferObjectManager.onDestroy();
 		this.mTextureManager.onDestroy();
 		this.mFontManager.onDestroy();
 		this.mShaderProgramManager.onDestroy();
-
-		this.mUpdateThread.interrupt();
 	}
 
 	public void onReloadResources() {
@@ -523,15 +534,22 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			try {
 				this.onUpdate(secondsElapsed);
 
+				if(this.mDestroyed) {
+					throw new EngineDestroyedException();
+				}
+
 				this.mEngineLock.notifyCanDraw();
 				this.mEngineLock.waitUntilCanUpdate();
 			} finally {
 				this.mEngineLock.unlock();
 			}
-
 		} else {
 			this.mEngineLock.lock();
 			try {
+				if(this.mDestroyed) {
+					throw new EngineDestroyedException();
+				}
+
 				this.mEngineLock.notifyCanDraw();
 				this.mEngineLock.waitUntilCanUpdate();
 			} finally {
@@ -574,6 +592,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		engineLock.lock();
 		try {
+			if(this.mDestroyed) {
+				return;
+			}
 			engineLock.waitUntilCanDraw();
 
 			this.mVertexBufferObjectManager.updateVertexBufferObjects(pGLState);
@@ -783,6 +804,38 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 				this.interrupt();
 			}
 		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
+
+	public class EngineDestroyedException extends InterruptedException {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		private static final long serialVersionUID = -4691263961728972560L;
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
 
 		// ===========================================================
 		// Methods

@@ -532,6 +532,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 			this.mEngineLock.lock();
 			try {
+				if(this.mDestroyed) {
+					throw new EngineDestroyedException();
+				}
+
 				this.onUpdate(secondsElapsed);
 
 				if(this.mDestroyed) {

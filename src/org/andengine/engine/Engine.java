@@ -492,13 +492,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mEngineLock.lock();
 		try {
 			this.mDestroyed = true;
-			try {
-				this.mUpdateThread.join();
-			} catch (InterruptedException e) {
-				this.mUpdateThread.interrupt();
-			}
+			this.mEngineLock.notifyCanUpdate();
 		} finally {
 			this.mEngineLock.unlock();
+		}
+		try {
+			this.mUpdateThread.join();
+		} catch (final InterruptedException e) {
+			Debug.e("Could not join UpdateThread.", e);
+			Debug.w("Trying to manually interrupt UpdateThread.");
+			this.mUpdateThread.interrupt();
 		}
 
 		this.mVertexBufferObjectManager.onDestroy();
@@ -532,15 +535,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 			this.mEngineLock.lock();
 			try {
-				if(this.mDestroyed) {
-					throw new EngineDestroyedException();
-				}
+				this.throwOnDestroyed();
 
 				this.onUpdate(secondsElapsed);
 
-				if(this.mDestroyed) {
-					throw new EngineDestroyedException();
-				}
+				this.throwOnDestroyed();
 
 				this.mEngineLock.notifyCanDraw();
 				this.mEngineLock.waitUntilCanUpdate();
@@ -550,9 +549,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		} else {
 			this.mEngineLock.lock();
 			try {
-				if(this.mDestroyed) {
-					throw new EngineDestroyedException();
-				}
+				this.throwOnDestroyed();
 
 				this.mEngineLock.notifyCanDraw();
 				this.mEngineLock.waitUntilCanUpdate();
@@ -561,6 +558,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			}
 
 			Thread.sleep(16);
+		}
+	}
+
+	private void throwOnDestroyed() throws EngineDestroyedException {
+		if(this.mDestroyed) {
+			throw new EngineDestroyedException();
 		}
 	}
 
@@ -596,9 +599,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		engineLock.lock();
 		try {
-			if(this.mDestroyed) {
-				return;
-			}
 			engineLock.waitUntilCanDraw();
 
 			this.mVertexBufferObjectManager.updateVertexBufferObjects(pGLState);

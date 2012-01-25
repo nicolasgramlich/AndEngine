@@ -55,7 +55,8 @@ public class Entity implements IEntity {
 	protected boolean mChildrenVisible = true;
 	protected boolean mChildrenIgnoreUpdate = false;
 	protected boolean mChildrenSortPending = false;
-
+	protected boolean mDrawChildrenBehindParent = false;
+	
 	protected int mZIndex = 0;
 
 	private IEntity mParent;
@@ -457,6 +458,18 @@ public class Entity implements IEntity {
 		return this.mRotation != 0 || this.mScaleX != 1 || this.mScaleY != 1 || this.mSkewX != 0 || this.mSkewY != 0;
 	}
 
+	/**
+	 * Do we draw Entity's children on top or behind the Entity. Default is on top (false).
+	 * @return false by default
+	 */
+	public boolean isDrawChildrenBehindParent() {
+		return mDrawChildrenBehindParent;
+	}
+	
+	public void setDrawChildrenBehindParent(final boolean pDrawChildrenBehindParent) {
+		this.mDrawChildrenBehindParent = pDrawChildrenBehindParent;
+	}
+	
 	@Override
 	public float getRed() {
 		return this.mColor.getRed();
@@ -1197,11 +1210,13 @@ public class Entity implements IEntity {
 		{
 			this.onApplyTransformations(pGLState);
 
+			if (mDrawChildrenBehindParent) this.onDrawChildren(pGLState, pCamera);
+			
 			this.preDraw(pGLState, pCamera);
 			this.draw(pGLState, pCamera);
 			this.postDraw(pGLState, pCamera);
 
-			this.onDrawChildren(pGLState, pCamera);
+			if (!mDrawChildrenBehindParent) this.onDrawChildren(pGLState, pCamera);
 		}
 		pGLState.popModelViewGLMatrix();
 	}

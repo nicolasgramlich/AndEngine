@@ -111,7 +111,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler {
 	public void setColor(final Color pColor);
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
-
+	
 	/**
 	 * @return a shared(!) float[] of length 2.
 	 */

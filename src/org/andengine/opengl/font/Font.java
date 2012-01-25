@@ -175,7 +175,7 @@ public class Font implements IFont {
 		return Font.TEXTWIDTH_CONTAINER_TMP[0];
 	}
 
-	protected Bitmap getLetterBitmap(final char pCharacter) {
+	protected Bitmap getLetterBitmap(final char pCharacter) throws IllegalArgumentException {
 		final String characterAsString = String.valueOf(pCharacter);
 
 		this.updateTextBounds(characterAsString);
@@ -185,10 +185,10 @@ public class Font implements IFont {
 		final int letterWidth = Font.TEXTBOUNDS_TMP.width() + 2 * Font.LETTER_TEXTURE_PADDING;
 		final int letterHeight = Font.TEXTBOUNDS_TMP.height() + 2 * Font.LETTER_TEXTURE_PADDING;
 
-		final Bitmap bitmap = Bitmap.createBitmap(letterWidth, letterHeight, Config.ARGB_8888);
 		if(letterWidth == 0 || letterHeight == 0) {
 			throw new IllegalArgumentException("Character '" + pCharacter + "' cannot be drawn, because it has no extent (width='" + letterWidth + "', height='" + letterHeight + "')");
 		}
+		final Bitmap bitmap = Bitmap.createBitmap(letterWidth, letterHeight, Config.ARGB_8888);
 		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */

@@ -34,10 +34,8 @@ public class TiledSprite extends Sprite {
 	// Fields
 	// ===========================================================
 
-	private final ITiledTextureRegion mTiledTextureRegion;
-	private final ITiledSpriteVertexBufferObject mTiledSpriteVertexBufferObject;
-
 	private int mCurrentTileIndex;
+	private final ITiledSpriteVertexBufferObject mTiledSpriteVertexBufferObject;
 
 	// ===========================================================
 	// Constructors
@@ -88,20 +86,9 @@ public class TiledSprite extends Sprite {
 	}
 
 	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pWidth, pHeight, pTiledTextureRegion, pTiledSpriteVertexBufferObject, pShaderProgram, true);
-	}
+		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pTiledSpriteVertexBufferObject, pShaderProgram);
 
-	protected TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject, final ShaderProgram pShaderProgram, final boolean pInit) {
-		super(pX, pY, pWidth, pHeight, pTiledTextureRegion, pTiledSpriteVertexBufferObject, pShaderProgram, false);
-
-		this.mTiledTextureRegion = pTiledTextureRegion;
 		this.mTiledSpriteVertexBufferObject = pTiledSpriteVertexBufferObject;
-
-		if(pInit) {
-			this.onUpdateVertices();
-			this.onUpdateColor();
-			this.onUpdateTextureCoordinates();
-		}
 	}
 
 	// ===========================================================
@@ -114,11 +101,16 @@ public class TiledSprite extends Sprite {
 
 	@Override
 	public ITextureRegion getTextureRegion() {
-		return this.mTiledTextureRegion.getTextureRegion(this.mCurrentTileIndex);
+		return this.getTiledTextureRegion().getTextureRegion(this.mCurrentTileIndex);
 	}
 
 	public ITiledTextureRegion getTiledTextureRegion() {
-		return this.mTiledTextureRegion;
+		return (ITiledTextureRegion) this.mTextureRegion;
+	}
+
+	@Override
+	public ITiledSpriteVertexBufferObject getVertexBufferObject() {
+		return (ITiledSpriteVertexBufferObject) super.getVertexBufferObject();
 	}
 
 	@Override
@@ -128,17 +120,17 @@ public class TiledSprite extends Sprite {
 
 	@Override
 	protected void onUpdateColor() {
-		this.mTiledSpriteVertexBufferObject.onUpdateColor(this);
+		this.getVertexBufferObject().onUpdateColor(this);
 	}
 
 	@Override
 	protected void onUpdateVertices() {
-		this.mTiledSpriteVertexBufferObject.onUpdateVertices(this);
+		this.getVertexBufferObject().onUpdateVertices(this);
 	}
 
 	@Override
 	protected void onUpdateTextureCoordinates() {
-		this.mTiledSpriteVertexBufferObject.onUpdateTextureCoordinates(this);
+		this.getVertexBufferObject().onUpdateTextureCoordinates(this);
 	}
 
 	// ===========================================================
@@ -154,7 +146,7 @@ public class TiledSprite extends Sprite {
 	}
 
 	public int getTileCount() {
-		return this.mTiledTextureRegion.getTileCount();
+		return this.getTiledTextureRegion().getTileCount();
 	}
 
 	// ===========================================================

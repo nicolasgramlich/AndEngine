@@ -12,8 +12,8 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
@@ -106,10 +106,6 @@ public class Sprite extends RectangularShape {
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject, pShaderProgram, true);
-	}
-
-	protected Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject, final ShaderProgram pShaderProgram, final boolean pInit) {
 		super(pX, pY, pWidth, pHeight, pShaderProgram);
 		
 		this.mTextureRegion = pTextureRegion;
@@ -118,11 +114,9 @@ public class Sprite extends RectangularShape {
 		this.setBlendingEnabled(true);
 		this.initBlendFunction(pTextureRegion);
 		
-		if(pInit) {
-			this.onUpdateVertices();
-			this.onUpdateColor();
-			this.onUpdateTextureCoordinates();
-		}
+		this.onUpdateVertices();
+		this.onUpdateColor();
+		this.onUpdateTextureCoordinates();
 	}
 
 	// ===========================================================

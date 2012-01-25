@@ -142,7 +142,7 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	@Override
 	@Deprecated
 	public void addTextureAtlasSource(final S pTextureAtlasSource, final int pTextureX, final int pTextureY, final int pTextureAtlasSourcePadding) {
-		this.addTextureAtlasSource(pTextureAtlasSource, pTextureX, pTextureY, pTextureAtlasSourcePadding);
+		this.mTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, pTextureX, pTextureY, pTextureAtlasSourcePadding);
 	}
 
 	@Override

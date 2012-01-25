@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.andengine.util.debug.Debug;
-import org.andengine.util.debug.Debug.DebugLevel;
 
 /**
  * (c) 2010 Nicolas Gramlich

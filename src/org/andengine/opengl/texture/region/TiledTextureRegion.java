@@ -81,10 +81,6 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		final ITextureRegion[] textureRegions = new ITextureRegion[tileCount];
 
 		for(int i = 0; i < tileCount; i++) {
-			if(this.mTextureRegions[i].getTexture() != this.mTexture) {
-				throw new IllegalArgumentException("Illegal TextureRegion detected that does not match the Texture passed.");
-			}
-
 			textureRegions[i] = this.mTextureRegions[i].deepCopy();
 		}
 

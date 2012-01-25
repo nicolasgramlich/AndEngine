@@ -78,7 +78,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		if(location != null) {
 			return location.intValue();
 		} else {
-			throw new ShaderProgramException("Unexpected attribute: '" + pAttributeName + "'.");
+			throw new ShaderProgramException("Unexpected attribute: '" + pAttributeName + "'. Existing attributes: " + this.mAttributeLocations.toString());
 		}
 	}
 
@@ -96,7 +96,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		if(location != null) {
 			return location.intValue();
 		} else {
-			throw new ShaderProgramException("Unexpected uniform: '" + pUniformName + "'.");
+			throw new ShaderProgramException("Unexpected uniform: '" + pUniformName + "'. Existing uniforms: " + this.mUniformLocations.toString());
 		}
 	}
 

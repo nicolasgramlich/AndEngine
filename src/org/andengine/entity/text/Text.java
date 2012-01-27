@@ -487,17 +487,21 @@ public class Text extends RectangularShape {
 				final String line = lines.get(row);
 
 				float xBase;
-				switch(pText.getHorizontalAlign()) {
-					case RIGHT:
-						xBase = pText.getMaximumLineWidth() - lineWidths.get(row);
-						break;
-					case CENTER:
-						xBase = (pText.getMaximumLineWidth() - lineWidths.get(row)) * 0.5f;
-						break;
-					case LEFT:
-					default:
-						xBase = 0;
-				}
+//				if(pText.mTextOptions.mAutoWordWrap) {
+//					// TODO Align based on pText.mTextOptions.mAutoWordWrapWidth
+//				} else {
+					switch(pText.getHorizontalAlign()) {
+						case RIGHT:
+							xBase = pText.getMaximumLineWidth() - lineWidths.get(row);
+							break;
+						case CENTER:
+							xBase = (pText.getMaximumLineWidth() - lineWidths.get(row)) * 0.5f;
+							break;
+						case LEFT:
+						default:
+							xBase = 0;
+					}
+//				}
 
 				final float yBase = row * (lineHeight + pText.getLeading());
 
@@ -634,17 +638,22 @@ public class Text extends RectangularShape {
 				final String line = lines.get(i);
 
 				float xBase;
-				switch(pText.getHorizontalAlign()) {
-					case RIGHT:
-						xBase = pText.getMaximumLineWidth() - lineWidths.get(i);
-						break;
-					case CENTER:
-						xBase = (pText.getMaximumLineWidth() - lineWidths.get(i)) * 0.5f;
-						break;
-					case LEFT:
-					default:
-						xBase = 0;
-				}
+
+//				if(pText.mTextOptions.mAutoWordWrap) {
+//					// TODO Align based on pText.mTextOptions.mAutoWordWrapWidth
+//				} else {
+					switch(pText.getHorizontalAlign()) {
+						case RIGHT:
+							xBase = pText.getMaximumLineWidth() - lineWidths.get(i);
+							break;
+						case CENTER:
+							xBase = (pText.getMaximumLineWidth() - lineWidths.get(i)) * 0.5f;
+							break;
+						case LEFT:
+						default:
+							xBase = 0;
+					}
+//				}
 
 				final float yBase = i * (lineHeight + pText.getLeading());
 

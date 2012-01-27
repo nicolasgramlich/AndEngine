@@ -21,7 +21,6 @@ public class NullBitmapException extends AndEngineException {
 	// Constructors
 	// ===========================================================
 
-
 	public NullBitmapException() {
 
 	}

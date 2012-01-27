@@ -6,6 +6,7 @@ import org.andengine.opengl.shader.PositionTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
@@ -46,20 +47,20 @@ public class UncoloredSprite extends Sprite {
 	// Constructors
 	// ===========================================================
 
-	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, DrawType.STATIC);
+	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, DrawType.STATIC, pShaderProgram);
+	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ShaderProgram pShaderProgram, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pDrawType);
+	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, pDrawType);
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pDrawType, pShaderProgram);
+	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, pDrawType, pShaderProgram);
 	}
 
 	public UncoloredSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final IUncoloredSpriteVertexBufferObject pUncoloredSpriteVertexBufferObject) {
@@ -70,20 +71,20 @@ public class UncoloredSprite extends Sprite {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pUncoloredSpriteVertexBufferObject, pShaderProgram);
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, DrawType.STATIC);
+	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, DrawType.STATIC, pShaderProgram);
+	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceUncoloredSpriteVertexBufferObject(UncoloredSprite.SPRITE_SIZE, pDrawType, true, UncoloredSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceUncoloredSpriteVertexBufferObject(pVertexBufferObjectManager, UncoloredSprite.SPRITE_SIZE, pDrawType, true, UncoloredSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceUncoloredSpriteVertexBufferObject(UncoloredSprite.SPRITE_SIZE, pDrawType, true, UncoloredSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceUncoloredSpriteVertexBufferObject(pVertexBufferObjectManager, UncoloredSprite.SPRITE_SIZE, pDrawType, true, UncoloredSprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
 	}
 
 	public UncoloredSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final IUncoloredSpriteVertexBufferObject pUncoloredSpriteVertexBufferObject) {
@@ -138,8 +139,8 @@ public class UncoloredSprite extends Sprite {
 		// Constructors
 		// ===========================================================
 
-		public HighPerformanceUncoloredSpriteVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public HighPerformanceUncoloredSpriteVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -262,8 +263,8 @@ public class UncoloredSprite extends Sprite {
 		// Constructors
 		// ===========================================================
 
-		public LowMemoryUncoloredSpriteVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public LowMemoryUncoloredSpriteVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================

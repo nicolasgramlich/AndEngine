@@ -54,8 +54,8 @@ public class RadialGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 
 		this.mPaint.setStyle(Style.FILL);
 
-		final int width = pBitmapTextureAtlasSource.getWidth();
-		final int height = pBitmapTextureAtlasSource.getHeight();
+		final int width = pBitmapTextureAtlasSource.getTextureWidth();
+		final int height = pBitmapTextureAtlasSource.getTextureHeight();
 
 		final float centerX = width * 0.5f;
 		final float centerY = height * 0.5f;

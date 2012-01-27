@@ -9,6 +9,7 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.IVertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -73,6 +74,11 @@ public abstract class Shape extends Entity implements IShape {
 		this.mShaderProgram = pShaderProgram;
 	}
 
+	@Override
+	public VertexBufferObjectManager getVertexBufferObjectManager() {
+		return getVertexBufferObject().getVertexBufferObjectManager();
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -108,14 +114,12 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
+	public void dispose() {
+		super.dispose();
 
 		final IVertexBufferObject vertexBufferObject = this.getVertexBufferObject();
-		if(vertexBufferObject != null) {
-			if(vertexBufferObject.isManaged()) {
-				vertexBufferObject.unload();
-			}
+		if(vertexBufferObject != null && vertexBufferObject.isAutoDispose() && !vertexBufferObject.isDisposed()) {
+			vertexBufferObject.dispose();
 		}
 	}
 

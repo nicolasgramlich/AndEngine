@@ -15,6 +15,8 @@ import org.andengine.util.spatial.adt.bounds.BoundsSplit.BoundsSplitException;
 import org.andengine.util.spatial.adt.bounds.IBounds;
 
 /**
+ * TODO Make all methods non-synchronized and add a SynchronizedXZYQuadTree subclasses. 
+ *
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>

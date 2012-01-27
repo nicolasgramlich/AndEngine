@@ -270,9 +270,22 @@ public class GLState {
 	}
 
 	public void checkFramebufferStatus() {
-		final int status = this.getFramebufferStatus();
-		if(status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
-			throw new GLException(status);
+		final int framebufferStatus = this.getFramebufferStatus();
+		switch(framebufferStatus) {
+			case GLES20.GL_FRAMEBUFFER_COMPLETE:
+				return;
+			case GLES20.GL_FRAMEBUFFER_UNSUPPORTED:
+				throw new GLException(framebufferStatus, "GL_FRAMEBUFFER_UNSUPPORTED");
+			case GLES20.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+				throw new GLException(framebufferStatus, "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
+			case GLES20.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+				throw new GLException(framebufferStatus, "GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS");
+			case GLES20.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+				throw new GLException(framebufferStatus, "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
+			case 0:
+				this.checkError();
+			default:
+				throw new GLException(framebufferStatus);
 		}
 	}
 
@@ -504,18 +517,18 @@ public class GLState {
 		return this.mHardwareIDContainer[0];
 	}
 
-	public static int getError() {
+	public int getError() {
 		return GLES20.glGetError();
 	}
 
-	public static void checkGLError() throws GLException { // TODO Use more often!
-		final int glError = GLES20.glGetError();
-		if(glError != GLES20.GL_NO_ERROR) {
-			throw new GLException(glError);
+	public void checkError() throws GLException { // TODO Use more often!
+		final int error = GLES20.glGetError();
+		if(error != GLES20.GL_NO_ERROR) {
+			throw new GLException(error);
 		}
 	}
 
-	public static void clearGLError() {
+	public void clearError() {
 		GLES20.glGetError();
 	}
 

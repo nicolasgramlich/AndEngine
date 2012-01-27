@@ -78,10 +78,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	// Fields
 	// ===========================================================
 
-	private boolean mRunning = false;
+	private boolean mRunning;
+	private boolean mDestroyed;
 
-	private long mLastTick = -1;
-	private float mSecondsElapsedTotal = 0;
+	private long mLastTick;
+	private float mSecondsElapsedTotal;
 
 	private final EngineLock mEngineLock;
 
@@ -94,12 +95,13 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private ITouchController mTouchController;
 
+	private final VertexBufferObjectManager mVertexBufferObjectManager = new VertexBufferObjectManager();
 	private final TextureManager mTextureManager = new TextureManager();
 	private final FontManager mFontManager = new FontManager();
 	private final ShaderProgramManager mShaderProgramManager = new ShaderProgramManager();
 
-	private SoundManager mSoundManager;
-	private MusicManager mMusicManager;
+	private final SoundManager mSoundManager;
+	private final MusicManager mMusicManager;
 
 	protected Scene mScene;
 
@@ -130,7 +132,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		SoundFactory.onCreate();
 		MusicFactory.onCreate();
 		FontFactory.onCreate();
-		VertexBufferObjectManager.onCreate();
+		this.mVertexBufferObjectManager.onCreate();
 		this.mTextureManager.onCreate();
 		this.mFontManager.onCreate();
 		this.mShaderProgramManager.onCreate();
@@ -154,9 +156,13 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		/* Audio. */
 		if(this.mEngineOptions.getAudioOptions().needsSound()) {
 			this.mSoundManager = new SoundManager();
+		} else {
+			this.mSoundManager = null;
 		}
 		if(this.mEngineOptions.getAudioOptions().needsMusic()) {
 			this.mMusicManager = new MusicManager();
+		} else {
+			this.mMusicManager = null;
 		}
 
 		/* Start the UpdateThread. */
@@ -246,6 +252,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	public OrientationData getOrientationData() {
 		return this.mOrientationData;
+	}
+
+	public VertexBufferObjectManager getVertexBufferObjectManager() {
+		return this.mVertexBufferObjectManager;
 	}
 
 	public TextureManager getTextureManager() {
@@ -459,19 +469,32 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onDestroy() {
+		this.mEngineLock.lock();
+		try {
+			this.mDestroyed = true;
+			this.mEngineLock.notifyCanUpdate();
+		} finally {
+			this.mEngineLock.unlock();
+		}
+		try {
+			this.mUpdateThread.join();
+		} catch (final InterruptedException e) {
+			Debug.e("Could not join UpdateThread.", e);
+			Debug.w("Trying to manually interrupt UpdateThread.");
+			this.mUpdateThread.interrupt();
+		}
+
+		this.mVertexBufferObjectManager.onDestroy();
 		this.mTextureManager.onDestroy();
 		this.mFontManager.onDestroy();
 		this.mShaderProgramManager.onDestroy();
-		VertexBufferObjectManager.onDestroy();
-
-		this.mUpdateThread.interrupt();
 	}
 
 	public void onReloadResources() {
+		this.mVertexBufferObjectManager.onReload();
 		this.mTextureManager.onReload();
 		this.mFontManager.onReload();
 		this.mShaderProgramManager.onReload();
-		VertexBufferObjectManager.onReload();
 	}
 
 	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
@@ -492,17 +515,22 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 			this.mEngineLock.lock();
 			try {
+				this.throwOnDestroyed();
+
 				this.onUpdate(secondsElapsed);
+
+				this.throwOnDestroyed();
 
 				this.mEngineLock.notifyCanDraw();
 				this.mEngineLock.waitUntilCanUpdate();
 			} finally {
 				this.mEngineLock.unlock();
 			}
-
 		} else {
 			this.mEngineLock.lock();
 			try {
+				this.throwOnDestroyed();
+
 				this.mEngineLock.notifyCanDraw();
 				this.mEngineLock.waitUntilCanUpdate();
 			} finally {
@@ -510,6 +538,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			}
 
 			Thread.sleep(16);
+		}
+	}
+
+	private void throwOnDestroyed() throws EngineDestroyedException {
+		if(this.mDestroyed) {
+			throw new EngineDestroyedException();
 		}
 	}
 
@@ -547,9 +581,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		try {
 			engineLock.waitUntilCanDraw();
 
+			this.mVertexBufferObjectManager.updateVertexBufferObjects(pGLState);
 			this.mTextureManager.updateTextures(pGLState);
 			this.mFontManager.updateFonts(pGLState);
-			VertexBufferObjectManager.updateBufferObjects(pGLState);
 
 			this.onUpdateDrawHandlers(pGLState, this.mCamera);
 			this.onDrawScene(pGLState, this.mCamera);
@@ -754,6 +788,38 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 				this.interrupt();
 			}
 		}
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
+
+	public class EngineDestroyedException extends InterruptedException {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		private static final long serialVersionUID = -4691263961728972560L;
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
 
 		// ===========================================================
 		// Methods

@@ -25,11 +25,11 @@ public class BlackPawnTextureAtlasBuilder<T extends ITextureAtlasSource, A exten
 	private static final Comparator<TextureAtlasSourceWithWithLocationCallback<?>> TEXTURESOURCE_COMPARATOR = new Comparator<TextureAtlasSourceWithWithLocationCallback<?>>() {
 		@Override
 		public int compare(final TextureAtlasSourceWithWithLocationCallback<?> pTextureAtlasSourceWithWithLocationCallbackA, final TextureAtlasSourceWithWithLocationCallback<?> pTextureAtlasSourceWithWithLocationCallbackB) {
-			final int deltaWidth = pTextureAtlasSourceWithWithLocationCallbackB.getTextureAtlasSource().getWidth() - pTextureAtlasSourceWithWithLocationCallbackA.getTextureAtlasSource().getWidth();
+			final int deltaWidth = pTextureAtlasSourceWithWithLocationCallbackB.getTextureAtlasSource().getTextureWidth() - pTextureAtlasSourceWithWithLocationCallbackA.getTextureAtlasSource().getTextureWidth();
 			if(deltaWidth != 0) {
 				return deltaWidth;
 			} else {
-				return pTextureAtlasSourceWithWithLocationCallbackB.getTextureAtlasSource().getHeight() - pTextureAtlasSourceWithWithLocationCallbackA.getTextureAtlasSource().getHeight();
+				return pTextureAtlasSourceWithWithLocationCallbackB.getTextureAtlasSource().getTextureHeight() - pTextureAtlasSourceWithWithLocationCallbackA.getTextureAtlasSource().getTextureHeight();
 			}
 		}
 	};
@@ -241,8 +241,8 @@ public class BlackPawnTextureAtlasBuilder<T extends ITextureAtlasSource, A exten
 					return null;
 				}
 
-				final int textureSourceWidth = pTextureAtlasSource.getWidth() + 2 * pTextureAtlasSourcePadding;
-				final int textureSourceHeight = pTextureAtlasSource.getHeight() + 2 * pTextureAtlasSourcePadding;
+				final int textureSourceWidth = pTextureAtlasSource.getTextureWidth() + 2 * pTextureAtlasSourcePadding;
+				final int textureSourceHeight = pTextureAtlasSource.getTextureHeight() + 2 * pTextureAtlasSourcePadding;
 
 				final int rectWidth = this.mRect.getWidth();
 				final int rectHeight = this.mRect.getHeight();
@@ -309,14 +309,14 @@ public class BlackPawnTextureAtlasBuilder<T extends ITextureAtlasSource, A exten
 				this.mChildA = new Node(
 						rect.getLeft(),
 						rect.getTop(),
-						pTextureAtlasSource.getWidth() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding,
+						pTextureAtlasSource.getTextureWidth() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding,
 						rect.getHeight()
 				);
 
 				this.mChildB = new Node(
-						rect.getLeft() + (pTextureAtlasSource.getWidth() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding),
+						rect.getLeft() + (pTextureAtlasSource.getTextureWidth() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding),
 						rect.getTop(),
-						rect.getWidth() - (pTextureAtlasSource.getWidth() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding),
+						rect.getWidth() - (pTextureAtlasSource.getTextureWidth() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding),
 						rect.getHeight()
 				);
 			} else {
@@ -325,14 +325,14 @@ public class BlackPawnTextureAtlasBuilder<T extends ITextureAtlasSource, A exten
 						rect.getLeft(),
 						rect.getTop(),
 						rect.getWidth(),
-						pTextureAtlasSource.getHeight() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding
+						pTextureAtlasSource.getTextureHeight() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding
 				);
 
 				this.mChildB = new Node(
 						rect.getLeft(),
-						rect.getTop() + (pTextureAtlasSource.getHeight() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding),
+						rect.getTop() + (pTextureAtlasSource.getTextureHeight() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding),
 						rect.getWidth(),
-						rect.getHeight() - (pTextureAtlasSource.getHeight() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding)
+						rect.getHeight() - (pTextureAtlasSource.getTextureHeight() + pTextureAtlasSourceSpacing + 2 * pTextureAtlasSourcePadding)
 				);
 			}
 

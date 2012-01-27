@@ -14,6 +14,7 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -68,26 +69,26 @@ public class Line extends Shape {
 	/**
 	 * Uses a default {@link HighPerformanceLineVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2) {
-		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, DrawType.STATIC);
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
 	/**
 	 * Uses a default {@link HighPerformanceLineVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final DrawType pDrawType) {
-		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pDrawType);
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pVertexBufferObjectManager, pDrawType);
 	}
 
 	/**
 	 * Uses a default {@link HighPerformanceLineVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth) {
-		this(pX1, pY1, pX2, pY2, pLineWidth, DrawType.STATIC);
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX1, pY1, pX2, pY2, pLineWidth, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final DrawType pDrawType) {
-		this(pX1, pY1, pX2, pY2, pLineWidth, new HighPerformanceLineVertexBufferObject(Line.LINE_SIZE, pDrawType, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX1, pY1, pX2, pY2, pLineWidth, new HighPerformanceLineVertexBufferObject(pVertexBufferObjectManager, Line.LINE_SIZE, pDrawType, true, Line.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final ILineVertexBufferObject pLineVertexBufferObject) {
@@ -287,8 +288,8 @@ public class Line extends Shape {
 		// Constructors
 		// ===========================================================
 
-		public HighPerformanceLineVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public HighPerformanceLineVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -346,8 +347,8 @@ public class Line extends Shape {
 		// Constructors
 		// ===========================================================
 
-		public LowMemoryLineVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public LowMemoryLineVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================

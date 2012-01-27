@@ -1,9 +1,11 @@
 package org.andengine.entity.text;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.opengl.font.FontUtils;
 import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.font.Letter;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
@@ -14,11 +16,14 @@ import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.StringUtils;
 import org.andengine.util.data.DataConstants;
+import org.andengine.util.list.FloatArrayList;
+import org.andengine.util.list.IFloatList;
 
 import android.opengl.GLES20;
 
@@ -63,177 +68,100 @@ public class Text extends RectangularShape {
 
 	protected float mMaximumLineWidth;
 
-	protected final float mLeading;
+	protected TextOptions mTextOptions;
 	protected final int mCharactersMaximum;
+	protected int mVertexCountToDraw;
 	protected final int mVertexCount;
-	protected final HorizontalAlign mHorizontalAlign;
 
 	protected final ITextVertexBufferObject mTextVertexBufferObject;
 
 	protected String mText;
-	protected String[] mLines;
-	protected float[] mWidths;
+	protected ArrayList<String> mLines = new ArrayList<String>(1);
+	protected IFloatList mLineWidths = new FloatArrayList(1);
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText) {
-		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT);
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT, pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pFont, pText, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading) {
-		this(pX, pY, pFont, pText, pLeading, DrawType.STATIC);
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, pLeading, DrawType.STATIC, pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pFont, pText, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final DrawType pDrawType) {
-		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT, pDrawType);
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, Text.LEADING_DEFAULT, pDrawType, pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, new TextOptions(), pVertexBufferObjectManager, pDrawType);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading, final DrawType pDrawType) {
-		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pLeading, pDrawType);
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final float pLeading, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, HorizontalAlign.LEFT, pLeading, pDrawType, pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pFont, pText, new TextOptions(), pVertexBufferObjectManager, pDrawType, pShaderProgram);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, Text.LEADING_DEFAULT);
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, Text.LEADING_DEFAULT, pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final TextOptions pTextOptions, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pFont, pText, pTextOptions, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final DrawType pDrawType) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, Text.LEADING_DEFAULT, pDrawType);
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, Text.LEADING_DEFAULT, pDrawType, pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final TextOptions pTextOptions, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pFont, pText, pTextOptions, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, DrawType.STATIC);
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, DrawType.STATIC, pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final TextOptions pTextOptions, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, pTextOptions, pText.length(), pVertexBufferObjectManager, pDrawType);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, pDrawType, pText.length() - StringUtils.countOccurrences(pText, '\n'));
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, pDrawType, pText.length() - StringUtils.countOccurrences(pText, '\n'), pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final TextOptions pTextOptions, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pFont, pText, pTextOptions, pText.length(), pVertexBufferObjectManager, pDrawType, pShaderProgram);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType, final int pCharactersMaximum) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, pCharactersMaximum, new HighPerformanceTextVertexBufferObject(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
-	}
-	
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final DrawType pDrawType, final int pCharactersMaximum, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, pCharactersMaximum, new HighPerformanceTextVertexBufferObject(Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final int pCharactersMaximum, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pFont, pText, pCharactersMaximum, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final int pCharactersMaximum, final ITextVertexBufferObject pTextVertexBufferObject) {
-		this(pX, pY, pFont, pText, pHorizontalAlign, pLeading, pCharactersMaximum, pTextVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final int pCharactersMaximum, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pFont, pText, pCharactersMaximum, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public Text(final float pX, final float pY, final IFont pFont, final String pText, final HorizontalAlign pHorizontalAlign, final float pLeading, final int pCharactersMaximum, final ITextVertexBufferObject pTextVertexBufferObject, final ShaderProgram pShaderProgram) {
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final int pCharactersMaximum, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, new TextOptions(), pCharactersMaximum, pVertexBufferObjectManager, pDrawType);
+	}
+
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final int pCharactersMaximum, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pFont, pText, new TextOptions(), pCharactersMaximum, pVertexBufferObjectManager, pDrawType, pShaderProgram);
+	}
+
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final TextOptions pTextOptions, final int pCharactersMaximum, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pFont, pText, pTextOptions, pCharactersMaximum, new HighPerformanceTextVertexBufferObject(pVertexBufferObjectManager, Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	}
+
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final TextOptions pTextOptions, final int pCharactersMaximum, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pFont, pText, pTextOptions, pCharactersMaximum, new HighPerformanceTextVertexBufferObject(pVertexBufferObjectManager, Text.LETTER_SIZE * pCharactersMaximum, pDrawType, true, Text.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	}
+
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final TextOptions pTextOptions, final int pCharactersMaximum, final ITextVertexBufferObject pTextVertexBufferObject) {
+		this(pX, pY, pFont, pText, pTextOptions, pCharactersMaximum, pTextVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	}
+
+	public Text(final float pX, final float pY, final IFont pFont, final String pText, final TextOptions pTextOptions, final int pCharactersMaximum, final ITextVertexBufferObject pTextVertexBufferObject, final ShaderProgram pShaderProgram) {
 		super(pX, pY, 0, 0, pShaderProgram);
 
+		this.mFont = pFont;
+		this.mTextOptions = pTextOptions;
 		this.mCharactersMaximum = pCharactersMaximum;
 		this.mVertexCount = Text.VERTICES_PER_LETTER * this.mCharactersMaximum;
-		this.mFont = pFont;
-		this.mHorizontalAlign = pHorizontalAlign;
-		this.mLeading = pLeading;
 		this.mTextVertexBufferObject = pTextVertexBufferObject;
 
 		this.onUpdateColor();
-		this.updateText(pText);
+		this.setText(pText);
 
 		this.setBlendingEnabled(true);
 		this.initBlendFunction(this.mFont.getTexture());
 	}
 
-	protected void updateText(final String pText) {
-		this.mText = pText;
-		final IFont font = this.mFont;
-
-		this.mLines = StringUtils.split(this.mText, '\n', this.mLines);
-		final String[] lines = this.mLines;
-
-		final int lineCount = lines.length;
-		final boolean widthsReusable = this.mWidths != null && this.mWidths.length == lineCount;
-		if(!widthsReusable) {
-			this.mWidths = new float[lineCount];
-		}
-		final float[] widths = this.mWidths;
-
-		float maximumLineWidth = 0;
-
-		for (int i = lineCount - 1; i >= 0; i--) {
-			widths[i] = font.getStringWidth(lines[i]);
-			maximumLineWidth = Math.max(maximumLineWidth, widths[i]);
-		}
-		this.mMaximumLineWidth = maximumLineWidth;
-
-		super.mWidth = this.mMaximumLineWidth;
-		final float width = super.mWidth;
-		super.mBaseWidth = width;
-
-		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * this.mLeading;
-
-		final float height = super.mHeight;
-		super.mBaseHeight = height;
-
-		this.mRotationCenterX = width * 0.5f;
-		this.mRotationCenterY = height * 0.5f;
-
-		this.mScaleCenterX = this.mRotationCenterX;
-		this.mScaleCenterY = this.mRotationCenterY;
-
-		this.onUpdateVertices();
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public String getText() {
-		return this.mText;
-	}
-
-	public float[] getWidths() {
-		return this.mWidths;
-	}
-
-	public String[] getLines() {
-		return this.mLines;
-	}
-
-	public float getMaximumLineWidth() {
-		return this.mMaximumLineWidth;
-	}
-
-	public float getLeading() {
-		return this.mLeading;
-	}
 
 	public IFont getFont() {
 		return this.mFont;
@@ -243,8 +171,109 @@ public class Text extends RectangularShape {
 		return this.mCharactersMaximum;
 	}
 
+	public String getText() {
+		return this.mText;
+	}
+
+	public void setText(final String pText) {
+		this.mText = pText;
+		final IFont font = this.mFont;
+
+		this.mLines.clear();
+		this.mLineWidths.clear();
+
+		if(this.mTextOptions.mAutoWordWrap) {
+			this.mLines = FontUtils.splitLines(this.mFont, this.mText, this.mLines, this.mTextOptions.mAutoWordWrapWidth);
+		} else {
+			this.mLines = FontUtils.splitLines(this.mText, this.mLines); // TODO Add whitespace-trimming.
+		}
+
+		float maximumLineWidth = 0;
+		final int lineCount = this.mLines.size();
+		for (int i = 0; i < lineCount; i++) {
+			final float lineWidth = FontUtils.measureText(font, this.mLines.get(i));
+			maximumLineWidth = Math.max(maximumLineWidth, lineWidth);
+
+			this.mLineWidths.add(lineWidth);
+		}
+		this.mMaximumLineWidth = maximumLineWidth;
+
+		super.mWidth = this.mMaximumLineWidth;
+		super.mBaseWidth = super.mWidth;
+
+		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * this.mTextOptions.mLeading;
+
+		final float height = super.mHeight;
+		super.mBaseHeight = height;
+
+		this.mRotationCenterX = super.mWidth * 0.5f;
+		this.mRotationCenterY = height * 0.5f;
+
+		this.mScaleCenterX = this.mRotationCenterX;
+		this.mScaleCenterY = this.mRotationCenterY;
+
+		this.mVertexCountToDraw = StringUtils.countCharacters(this.mLines) * Text.VERTICES_PER_LETTER;
+		this.onUpdateVertices();
+	}
+
+	public ArrayList<String> getLines() {
+		return this.mLines;
+	}
+
+	public IFloatList getLineWidths() {
+		return this.mLineWidths;
+	}
+
+	public float getMaximumLineWidth() {
+		return this.mMaximumLineWidth;
+	}
+
+	public float getLeading() {
+		return this.mTextOptions.mLeading;
+	}
+
+	public void setLeading(final float pLeading) {
+		this.mTextOptions.mLeading = pLeading;
+
+		this.invalidateText();
+	}
+
 	public HorizontalAlign getHorizontalAlign() {
-		return this.mHorizontalAlign;
+		return this.mTextOptions.mHorizontalAlign;
+	}
+
+	public void setHorizontalAlign(final HorizontalAlign pHorizontalAlign) {
+		this.mTextOptions.mHorizontalAlign = pHorizontalAlign;
+
+		this.invalidateText();
+	}
+
+	public boolean isAutoWordWrap() {
+		return this.mTextOptions.mAutoWordWrap;
+	}
+
+	public void setAutoWordWrap(final boolean pAutoWordWrap) {
+		this.mTextOptions.mAutoWordWrap = pAutoWordWrap;
+
+		this.invalidateText();
+	}
+
+	public float getAutoWordWrapWidth() {
+		return this.mTextOptions.mAutoWordWrapWidth;
+	}
+
+	public void setAutoWordWrapWidth(final float pAutoWordWrapWidth) {
+		this.mTextOptions.mAutoWordWrapWidth = pAutoWordWrapWidth;
+
+		this.invalidateText();
+	}
+
+	public TextOptions getTextOptions() {
+		return this.mTextOptions;
+	}
+
+	public void setTextOptions(final TextOptions pTextOptions) {
+		this.mTextOptions = pTextOptions;
 	}
 
 	// ===========================================================
@@ -267,7 +296,7 @@ public class Text extends RectangularShape {
 
 	@Override
 	protected void draw(final GLState pGLState, final Camera pCamera) {
-		this.mTextVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mVertexCount);
+		this.mTextVertexBufferObject.draw(GLES20.GL_TRIANGLES, this.mVertexCountToDraw);
 	}
 
 	@Override
@@ -291,9 +320,95 @@ public class Text extends RectangularShape {
 	// Methods
 	// ===========================================================
 
+	public void invalidateText() {
+		this.setText(this.mText);
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static class TextOptions {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		/* package */ boolean mAutoWordWrap;
+		/* package */ float mAutoWordWrapWidth;
+		/* package */ float mLeading;
+		/* package */ HorizontalAlign mHorizontalAlign;
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public TextOptions() {
+			this(false, 0, Text.LEADING_DEFAULT, HorizontalAlign.LEFT);
+		}
+
+		public TextOptions(final HorizontalAlign pHorizontalAlign) {
+			this(false, 0, Text.LEADING_DEFAULT, pHorizontalAlign);
+		}
+
+		public TextOptions(final boolean pAutoWordWrap, final float pAutoWordWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign) {
+			this.mAutoWordWrap = pAutoWordWrap;
+			this.mAutoWordWrapWidth = pAutoWordWrapWidth;
+			this.mLeading = pLeading;
+			this.mHorizontalAlign = pHorizontalAlign;
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		public boolean isAutoWordWrap() {
+			return this.mAutoWordWrap;
+		}
+
+		public void setAutoWordWrap(final boolean pAutoWordWrap) {
+			this.mAutoWordWrap = pAutoWordWrap;
+		}
+
+		public float getAutoWordWrapWidth() {
+			return this.mAutoWordWrapWidth;
+		}
+
+		public void setAutoWordWrapWidth(final float pAutoWordWrapWidth) {
+			this.mAutoWordWrapWidth = pAutoWordWrapWidth;
+		}
+
+		public float getLeading() {
+			return this.mLeading;
+		}
+
+		public void setLeading(final float pLeading) {
+			this.mLeading = pLeading;
+		}
+
+		public HorizontalAlign getHorizontalAlign() {
+			return this.mHorizontalAlign;
+		}
+
+		public void setHorizontalAlign(final HorizontalAlign pHorizontalAlign) {
+			this.mHorizontalAlign = pHorizontalAlign;
+		}
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 
 	public static interface ITextVertexBufferObject extends IVertexBufferObject {
 		// ===========================================================
@@ -321,8 +436,8 @@ public class Text extends RectangularShape {
 		// Constructors
 		// ===========================================================
 
-		public HighPerformanceTextVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public HighPerformanceTextVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -361,28 +476,32 @@ public class Text extends RectangularShape {
 
 			// TODO Optimize with field access?
 			final IFont font = pText.getFont();
-			final String[] lines = pText.getLines();
+			final ArrayList<String> lines = pText.getLines();
 			final float lineHeight = font.getLineHeight();
-			final float[] widths = pText.getWidths();
+			final IFloatList lineWidths = pText.getLineWidths();
 
 			int bufferDataOffset = 0;
 
-			final int lineCount = lines.length;
+			final int lineCount = lines.size();
 			for (int row = 0; row < lineCount; row++) {
-				final String line = lines[row];
+				final String line = lines.get(row);
 
 				float xBase;
-				switch(pText.getHorizontalAlign()) {
-					case RIGHT:
-						xBase = pText.getMaximumLineWidth() - widths[row];
-						break;
-					case CENTER:
-						xBase = (pText.getMaximumLineWidth() - widths[row]) * 0.5f;
-						break;
-					case LEFT:
-					default:
-						xBase = 0;
-				}
+//				if(pText.mTextOptions.mAutoWordWrap) {
+//					// TODO Align based on pText.mTextOptions.mAutoWordWrapWidth
+//				} else {
+					switch(pText.getHorizontalAlign()) {
+						case RIGHT:
+							xBase = pText.getMaximumLineWidth() - lineWidths.get(row);
+							break;
+						case CENTER:
+							xBase = (pText.getMaximumLineWidth() - lineWidths.get(row)) * 0.5f;
+							break;
+						case LEFT:
+						default:
+							xBase = 0;
+					}
+//				}
 
 				final float yBase = row * (lineHeight + pText.getLeading());
 
@@ -438,6 +557,8 @@ public class Text extends RectangularShape {
 					xBase += letter.mAdvance;
 
 					bufferDataOffset += Text.LETTER_SIZE;
+
+					previousLetter = letter;
 				}
 			}
 
@@ -466,8 +587,8 @@ public class Text extends RectangularShape {
 		// Constructors
 		// ===========================================================
 
-		public LowMemoryTextVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public LowMemoryTextVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -495,7 +616,7 @@ public class Text extends RectangularShape {
 				bufferData.put(bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX, packedColor);
 
 				bufferDataOffset += Text.LETTER_SIZE;
-			} 
+			}
 
 			this.setDirtyOnHardware();
 		}
@@ -506,35 +627,40 @@ public class Text extends RectangularShape {
 
 			// TODO Optimize with field access?
 			final IFont font = pText.getFont();
-			final String[] lines = pText.getLines();
+			final ArrayList<String> lines = pText.getLines();
 			final float lineHeight = font.getLineHeight();
-			final float[] widths = pText.getWidths();
+			final IFloatList lineWidths = pText.getLineWidths();
 
 			int bufferDataOffset = 0;
 
-			final int lineCount = lines.length;
-			for (int row = 0; row < lineCount; row++) {
-				final String line = lines[row];
+			final int lineCount = lines.size();
+			for (int i = 0; i < lineCount; i++) {
+				final String line = lines.get(i);
 
 				float xBase;
-				switch(pText.getHorizontalAlign()) {
-					case RIGHT:
-						xBase = pText.getMaximumLineWidth() - widths[row];
-						break;
-					case CENTER:
-						xBase = (pText.getMaximumLineWidth() - widths[row]) * 0.5f;
-						break;
-					case LEFT:
-					default:
-						xBase = 0;
-				}
 
-				final float yBase = row * (lineHeight + pText.getLeading());
+//				if(pText.mTextOptions.mAutoWordWrap) {
+//					// TODO Align based on pText.mTextOptions.mAutoWordWrapWidth
+//				} else {
+					switch(pText.getHorizontalAlign()) {
+						case RIGHT:
+							xBase = pText.getMaximumLineWidth() - lineWidths.get(i);
+							break;
+						case CENTER:
+							xBase = (pText.getMaximumLineWidth() - lineWidths.get(i)) * 0.5f;
+							break;
+						case LEFT:
+						default:
+							xBase = 0;
+					}
+//				}
+
+				final float yBase = i * (lineHeight + pText.getLeading());
 
 				final int lineLength = line.length();
 				Letter previousLetter = null;
-				for(int i = 0; i < lineLength; i++) {
-					final Letter letter = font.getLetter(line.charAt(i));
+				for(int j = 0; j < lineLength; j++) {
+					final Letter letter = font.getLetter(line.charAt(j));
 					if(previousLetter != null) {
 						xBase += previousLetter.getKerning(letter.mCharacter);
 					}
@@ -583,6 +709,8 @@ public class Text extends RectangularShape {
 					xBase += letter.mAdvance;
 
 					bufferDataOffset += Text.LETTER_SIZE;
+
+					previousLetter = letter;
 				}
 			}
 

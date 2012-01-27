@@ -4,6 +4,7 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.Scene.ITouchArea;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.vbo.IVertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import android.opengl.GLES20;
 
@@ -35,6 +36,7 @@ public interface IShape extends IEntity, ITouchArea {
 	public void setBlendingEnabled(final boolean pBlendingEnabled);
 	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction);
 
+	public VertexBufferObjectManager getVertexBufferObjectManager();
 	public IVertexBufferObject getVertexBufferObject();
 	public ShaderProgram getShaderProgram();
 	public void setShaderProgram(final ShaderProgram pShaderProgram);

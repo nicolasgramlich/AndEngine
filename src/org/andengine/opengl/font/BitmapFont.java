@@ -354,30 +354,6 @@ public class BitmapFont implements IFont {
 		return letter;
 	}
 
-	@Override
-	public float getStringWidth(final String pString) {
-		final int stringLength = pString.length();
-		/* Early exits. */
-		if(stringLength == 0) {
-			return 0;
-		} else if(stringLength == 1) {
-			return this.getLetter(pString.charAt(0)).mWidth;
-		}
-
-		Letter previousLetter = null;
-		float width = 0;
-		for(int i = 0; i < stringLength - 1; i++) {
-			final Letter letter = this.getLetter(pString.charAt(i));
-			if(previousLetter != null) {
-				width += previousLetter.getKerning(letter.mCharacter);
-			}
-			previousLetter = letter;
-			width += letter.mAdvance;
-		}
-		width += this.getLetter(pString.charAt(pString.length() - 1)).mWidth;
-		return width;
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

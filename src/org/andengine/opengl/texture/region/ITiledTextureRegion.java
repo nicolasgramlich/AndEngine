@@ -15,32 +15,41 @@ public interface ITiledTextureRegion extends ITextureRegion {
 	// Methods
 	// ===========================================================
 
-	public int getTileIndex();
-	public void setTileIndex(final int pTileIndex);
+	public int getCurrentTileIndex();
+	public void setCurrentTileIndex(final int pCurrentTileIndex);
 	public void nextTile();
+	public ITextureRegion getTextureRegion(final int pTileIndex);
 	public int getTileCount();
-	
-	public int getWidth(final int pTileIndex);
-	public int getHeight(final int pTileIndex);
 
-	public void setWidth(final int pTileIndex, final int pWidth);
-	public void setHeight(final int pTileIndex, final int pHeight);
-	public void setSize(final int pTileIndex, final int pWidth, final int pHeight);
+	public float getTextureX(final int pTileIndex);
+	public float getTextureY(final int pTileIndex);
 
-	public int getX(final int pTileIndex);
-	public int getY(final int pTileIndex);
+	public void setTextureX(final int pTileIndex, final float pTextureX);
+	public void setTextureY(final int pTileIndex, final float pTextureY);
+	public void setTexturePosition(final int pTileIndex, final float pTextureX, final float pTextureY);
 
-	public void setX(final int pTileIndex, final int pX);
-	public void setY(final int pTileIndex, final int pY);
-	public void setPosition(final int pTileIndex, final int pX, final int pY);
+	/**
+	 * Note: Takes {@link ITiledTextureRegion#getScale(int)} into account!
+	 */
+	public float getWidth(final int pTileIndex);
+	/**
+	 * Note: Takes {@link ITiledTextureRegion#getScale(int)} into account!
+	 */
+	public float getHeight(final int pTileIndex);
 
-	public void set(final int pTileIndex, final int pX, final int pY, final int pWidth, final int pHeight);
+	public void setTextureWidth(final int pTileIndex, final float pWidth);
+	public void setTextureHeight(final int pTileIndex, final float pHeight);
+	public void setTextureSize(final int pTileIndex, final float pWidth, final float pHeight);
+
+	public void set(final int pTileIndex, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight);
 
 	public float getU(final int pTileIndex);
 	public float getU2(final int pTileIndex);
 	public float getV(final int pTileIndex);
 	public float getV2(final int pTileIndex);
 
+	public boolean isScaled(final int pTileIndex);
+	public float getScale(final int pTileIndex);
 	public boolean isRotated(final int pTileIndex);
 
 	@Override

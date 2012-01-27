@@ -6,6 +6,7 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
 /**
@@ -37,36 +38,36 @@ public class ButtonSprite extends TiledSprite {
 	// Constructors
 	// ===========================================================
 
-	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion) {
-		this(pX, pY, pNormalTextureRegion, (OnClickListener) null);
+	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pNormalTextureRegion, pVertexBufferObjectManager, (OnClickListener) null);
 	}
 
-	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final OnClickListener pOnClickListener) {
-		this(pX, pY, new TiledTextureRegion(pNormalTextureRegion.getTexture(), pNormalTextureRegion), pOnClickListener);
+	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final OnClickListener pOnClickListener) {
+		this(pX, pY, new TiledTextureRegion(pNormalTextureRegion.getTexture(), pNormalTextureRegion), pVertexBufferObjectManager, pOnClickListener);
 	}
 
-	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final ITextureRegion pPressedTextureRegion) {
-		this(pX, pY, pNormalTextureRegion, pPressedTextureRegion, (OnClickListener) null);
+	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final ITextureRegion pPressedTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pNormalTextureRegion, pPressedTextureRegion, pVertexBufferObjectManager, (OnClickListener) null);
 	}
 
-	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final ITextureRegion pPressedTextureRegion, final OnClickListener pOnClickListener) {
-		this(pX, pY, new TiledTextureRegion(pNormalTextureRegion.getTexture(), pNormalTextureRegion, pPressedTextureRegion), pOnClickListener);
+	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final ITextureRegion pPressedTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final OnClickListener pOnClickListener) {
+		this(pX, pY, new TiledTextureRegion(pNormalTextureRegion.getTexture(), pNormalTextureRegion, pPressedTextureRegion), pVertexBufferObjectManager, pOnClickListener);
 	}
 
-	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final ITextureRegion pPressedTextureRegion, final ITextureRegion pDisabledTextureRegion) {
-		this(pX, pY, pNormalTextureRegion, pPressedTextureRegion, pDisabledTextureRegion, (OnClickListener) null);
+	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final ITextureRegion pPressedTextureRegion, final ITextureRegion pDisabledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pNormalTextureRegion, pPressedTextureRegion, pDisabledTextureRegion, pVertexBufferObjectManager, (OnClickListener) null);
 	}
 
-	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final ITextureRegion pPressedTextureRegion, final ITextureRegion pDisabledTextureRegion, final OnClickListener pOnClickListener) {
-		this(pX, pY, new TiledTextureRegion(pNormalTextureRegion.getTexture(), pNormalTextureRegion, pPressedTextureRegion, pDisabledTextureRegion), pOnClickListener);
+	public ButtonSprite(final float pX, final float pY, final ITextureRegion pNormalTextureRegion, final ITextureRegion pPressedTextureRegion, final ITextureRegion pDisabledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final OnClickListener pOnClickListener) {
+		this(pX, pY, new TiledTextureRegion(pNormalTextureRegion.getTexture(), pNormalTextureRegion, pPressedTextureRegion, pDisabledTextureRegion), pVertexBufferObjectManager, pOnClickListener);
 	}
 
-	public ButtonSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion) {
-		this(pX, pY, pTiledTextureRegion, (OnClickListener) null);
+	public ButtonSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, (OnClickListener) null);
 	}
 
-	public ButtonSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final OnClickListener pOnClickListener) {
-		super(pX, pY, pTiledTextureRegion);
+	public ButtonSprite(final float pX, final float pY, final ITiledTextureRegion pTiledTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final OnClickListener pOnClickListener) {
+		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
 
 		this.mOnClickListener = pOnClickListener;
 		this.mStateCount = pTiledTextureRegion.getTileCount();

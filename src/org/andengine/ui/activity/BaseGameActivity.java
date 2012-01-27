@@ -10,6 +10,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.shader.ShaderProgramManager;
 import org.andengine.opengl.texture.TextureManager;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.view.IRendererListener;
 import org.andengine.opengl.view.RenderSurfaceView;
 import org.andengine.sensor.accelerometer.AccelerometerSensorOptions;
@@ -295,6 +296,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	public boolean isGameLoaded() {
 		return this.mGameCreated;
+	}
+
+	public VertexBufferObjectManager getVertexBufferObjectManager() {
+		return this.mEngine.getVertexBufferObjectManager();
 	}
 
 	public TextureManager getTextureManager() {

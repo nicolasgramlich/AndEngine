@@ -72,7 +72,7 @@ public class Font implements IFont {
 		this.mBackgroundPaint = new Paint();
 		this.mBackgroundPaint.setColor(Color.TRANSPARENT);
 		this.mBackgroundPaint.setStyle(Style.FILL);
-		
+
 		this.mPaint = new Paint();
 		this.mPaint.setTypeface(pTypeface);
 		this.mPaint.setColor(pColor);
@@ -139,21 +139,14 @@ public class Font implements IFont {
 
 	@Override
 	public synchronized Letter getLetter(final char pCharacter) throws FontException {
-		final SparseArray<Letter> managedCharacterToLetterMap = this.mManagedCharacterToLetterMap;
-		Letter letter = managedCharacterToLetterMap.get(pCharacter);
+		Letter letter = this.mManagedCharacterToLetterMap.get(pCharacter);
 		if(letter == null) {
 			letter = this.createLetter(pCharacter);
 
 			this.mLettersPendingToBeDrawnToTexture.add(letter);
-			managedCharacterToLetterMap.put(pCharacter, letter);
+			this.mManagedCharacterToLetterMap.put(pCharacter, letter);
 		}
 		return letter;
-	}
-
-	@Override
-	public float getStringWidth(final String pText) {
-		this.mPaint.getTextBounds(pText, 0, pText.length(), Font.TEXTBOUNDS_TMP);
-		return Font.TEXTBOUNDS_TMP.width();
 	}
 
 	// ===========================================================

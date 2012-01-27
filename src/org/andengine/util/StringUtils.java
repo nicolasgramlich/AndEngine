@@ -1,5 +1,7 @@
 package org.andengine.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -70,46 +72,34 @@ public final class StringUtils {
 	/**
 	 * Split a String by a Character, i.e. Split lines by using '\n'.<br/>
 	 * Same behavior as <code>String.split("" + pCharacter);</code> .
-	 * 
-	 * @param pString
-	 * @param pCharacter
-	 * @return
 	 */
-	public static final String[] split(final String pString, final char pCharacter) {
-		return StringUtils.split(pString, pCharacter, null);
+	public static final ArrayList<String> split(final String pString, final char pCharacter) {
+		return StringUtils.split(pString, pCharacter, new ArrayList<String>());
 	}
 
 	/**
 	 * Split a String by a Character, i.e. Split lines by using '\n'.<br/>
 	 * Same behavior as <code>String.split("" + pCharacter);</code> .
-	 * 
-	 * @param pString
-	 * @param pCharacter
-	 * @param pReuse tries to reuse the String[] if the length is the same as the length needed.
-	 * @return
 	 */
-	public static final String[] split(final String pString, final char pCharacter, final String[] pReuse) {
+	public static final <L extends List<String>> L split(final String pString, final char pCharacter, final L pResult) {
 		final int partCount = StringUtils.countOccurrences(pString, pCharacter) + 1;
 
-		final boolean reuseable = pReuse != null && pReuse.length == partCount;
-		final String[] out = (reuseable) ? pReuse : new String[partCount];
-
 		if(partCount == 0) {
-			out[0] = pString;
+			pResult.add(pString);
 		} else {
 			int from = 0;
 			int to;
 
 			for (int i = 0; i < partCount - 1; i++) {
 				to = pString.indexOf(pCharacter, from);
-				out[i] = pString.substring(from, to);
+				pResult.add(pString.substring(from, to));
 				from = to + 1;
 			}
 
-			out[partCount - 1] = pString.substring(from, pString.length());
+			pResult.add(pString.substring(from, pString.length()));
 		}
 
-		return out;
+		return pResult;
 	}
 
 	public static final String formatStackTrace(final StackTraceElement pStackTraceElement) {
@@ -135,6 +125,14 @@ public final class StringUtils {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static int countCharacters(final List<String> pStrings) {
+		int characters = 0;
+		for(int i = pStrings.size() - 1; i >= 0; i--) {
+			characters += pStrings.get(i).length();
+		}
+		return characters;
 	}
 
 	// ===========================================================

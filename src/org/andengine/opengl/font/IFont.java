@@ -31,7 +31,6 @@ public interface IFont {
 	public ITexture getTexture();
 
 	public float getLineHeight();
-	public float getStringWidth(final String pString);
 
 	public Letter getLetter(final char pChar) throws LetterNotFoundException;
 }

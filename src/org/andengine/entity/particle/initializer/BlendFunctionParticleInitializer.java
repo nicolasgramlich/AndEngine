@@ -13,7 +13,7 @@ import android.opengl.GLES20;
  * 
  * @since 17:24:32 - 28.12.2011
  */
-public class BlendFunctionInitializer<T extends IShape> implements IParticleInitializer<T> {
+public class BlendFunctionParticleInitializer<T extends IShape> implements IParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -32,7 +32,7 @@ public class BlendFunctionInitializer<T extends IShape> implements IParticleInit
 	/**
 	 * Blend function set for each spawned {@link Particle}. Use {@link GLES20} constants for setting functions.
 	 */
-	public BlendFunctionInitializer(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
+	public BlendFunctionParticleInitializer(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
 		this.mSourceBlendFunction = pSourceBlendFunction;
 		this.mDestinationBlendFunction = pDestinationBlendFunction;
 	}

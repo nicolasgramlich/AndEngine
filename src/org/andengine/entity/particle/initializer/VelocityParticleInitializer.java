@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class VelocityInitializer<T extends IEntity> extends BaseDoubleValueInitializer<T> {
+public class VelocityParticleInitializer<T extends IEntity> extends BaseDoubleValueParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,15 +23,15 @@ public class VelocityInitializer<T extends IEntity> extends BaseDoubleValueIniti
 	// Constructors
 	// ===========================================================
 
-	public VelocityInitializer(final float pVelocity) {
+	public VelocityParticleInitializer(final float pVelocity) {
 		this(pVelocity, pVelocity, pVelocity, pVelocity);
 	}
 
-	public VelocityInitializer(final float pVelocityX, final float pVelocityY) {
+	public VelocityParticleInitializer(final float pVelocityX, final float pVelocityY) {
 		this(pVelocityX, pVelocityX, pVelocityY, pVelocityY);
 	}
 
-	public VelocityInitializer(final float pMinVelocityX, final float pMaxVelocityX, final float pMinVelocityY, final float pMaxVelocityY) {
+	public VelocityParticleInitializer(final float pMinVelocityX, final float pMaxVelocityX, final float pMinVelocityY, final float pMaxVelocityY) {
 		super(pMinVelocityX, pMaxVelocityX, pMinVelocityY, pMaxVelocityY);
 	}
 

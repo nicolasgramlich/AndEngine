@@ -1,17 +1,17 @@
 package org.andengine.entity.particle.initializer;
 
 import org.andengine.entity.IEntity;
-
-import android.hardware.SensorManager;
+import org.andengine.entity.particle.Particle;
+import org.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 12:04:00 - 15.03.2010
+ * @since 15:58:29 - 04.05.2010
  */
-public class GravityInitializer<T extends IEntity> extends AccelerationInitializer<T> {
+public abstract class BaseDoubleValueParticleInitializer<T extends IEntity> extends BaseSingleValueParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,12 +20,17 @@ public class GravityInitializer<T extends IEntity> extends AccelerationInitializ
 	// Fields
 	// ===========================================================
 
+	protected float mMinValueB;
+	protected float mMaxValueB;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public GravityInitializer() {
-		super(0, SensorManager.GRAVITY_EARTH);
+	public BaseDoubleValueParticleInitializer(final float pMinValueA, final float pMaxValueA, final float pMinValueB, final float pMaxValueB) {
+		super(pMinValueA, pMaxValueA);
+		this.mMinValueB = pMinValueB;
+		this.mMaxValueB = pMaxValueB;
 	}
 
 	// ===========================================================
@@ -36,9 +41,24 @@ public class GravityInitializer<T extends IEntity> extends AccelerationInitializ
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onInitializeParticle(final Particle<T> pParticle, final float pValueA, final float pValueB);
+
+	@Override
+	protected final void onInitializeParticle(final Particle<T> pParticle, final float pValueA) {
+		this.onInitializeParticle(pParticle, pValueA, this.getRandomValueB());
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected float getRandomValueB() {
+		if(this.mMinValueB == this.mMaxValueB) {
+			return this.mMaxValueB;
+		} else {
+			return MathUtils.random(this.mMinValueB, this.mMaxValueB);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

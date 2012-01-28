@@ -2,16 +2,15 @@ package org.andengine.entity.particle.initializer;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
-import org.andengine.util.math.MathUtils;
+
 
 /**
- * (c) 2010 Nicolas Gramlich 
- * (c) 2011 Zynga Inc.
- * 
- * @author Nicolas Gramlich
- * @since 15:58:29 - 04.05.2010
+ * (c) Zynga 2011
+ *
+ * @author Nicolas Gramlich <ngramlich@zynga.com>
+ * @since 10:03:29 - 19.11.2011
  */
-public abstract class BaseDoubleValueInitializer<T extends IEntity> extends BaseSingleValueInitializer<T> {
+public class ScaleParticleInitializer<T extends IEntity> extends BaseSingleValueParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,17 +19,16 @@ public abstract class BaseDoubleValueInitializer<T extends IEntity> extends Base
 	// Fields
 	// ===========================================================
 
-	protected float mMinValueB;
-	protected float mMaxValueB;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseDoubleValueInitializer(final float pMinValueA, final float pMaxValueA, final float pMinValueB, final float pMaxValueB) {
-		super(pMinValueA, pMaxValueA);
-		this.mMinValueB = pMinValueB;
-		this.mMaxValueB = pMaxValueB;
+	public ScaleParticleInitializer(final float pScale) {
+		super(pScale, pScale);
+	}
+
+	public ScaleParticleInitializer(final float pMinScale, final float pMaxScale) {
+		super(pMinScale, pMaxScale);
 	}
 
 	// ===========================================================
@@ -41,24 +39,14 @@ public abstract class BaseDoubleValueInitializer<T extends IEntity> extends Base
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onInitializeParticle(final Particle<T> pParticle, final float pValueA, final float pValueB);
-
 	@Override
-	protected final void onInitializeParticle(final Particle<T> pParticle, final float pValueA) {
-		this.onInitializeParticle(pParticle, pValueA, this.getRandomValueB());
+	protected void onInitializeParticle(final Particle<T> pParticle, final float pScale) {
+		pParticle.getEntity().setScale(pScale);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	protected float getRandomValueB() {
-		if(this.mMinValueB == this.mMaxValueB) {
-			return this.mMaxValueB;
-		} else {
-			return MathUtils.random(this.mMinValueB, this.mMaxValueB);
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

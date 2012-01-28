@@ -2,15 +2,16 @@ package org.andengine.entity.particle.initializer;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 10:17:42 - 29.06.2010
+ * @since 10:18:06 - 29.06.2010
  */
-public class RotationInitializer<T extends IEntity> extends BaseSingleValueInitializer<T> {
+public abstract class BaseSingleValueParticleInitializer<T extends IEntity> implements IParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,52 +20,44 @@ public class RotationInitializer<T extends IEntity> extends BaseSingleValueIniti
 	// Fields
 	// ===========================================================
 
+	protected float mMinValue;
+	protected float mMaxValue;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public RotationInitializer(final float pRotation) {
-		this(pRotation, pRotation);
-	}
-
-	public RotationInitializer(final float pMinRotation, final float pMaxRotation) {
-		super(pMinRotation, pMaxRotation);
+	public BaseSingleValueParticleInitializer(final float pMinValue, final float pMaxValue) {
+		this.mMinValue = pMinValue;
+		this.mMaxValue = pMaxValue;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public float getMinRotation() {
-		return this.mMinValue;
-	}
-
-	public float getMaxRotation() {
-		return this.mMaxValue;
-	}
-
-	public void setRotation(final float pRotation) {
-		this.mMinValue = pRotation;
-		this.mMaxValue = pRotation;
-	}
-
-	public void setRotation(final float pMinRotation, final float pMaxRotation) {
-		this.mMinValue = pMinRotation;
-		this.mMaxValue = pMaxRotation;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onInitializeParticle(final Particle<T> pParticle, final float pValue);
+
 	@Override
-	public void onInitializeParticle(final Particle<T> pParticle, final float pRotation) {
-		pParticle.getEntity().setRotation(pRotation);
+	public final void onInitializeParticle(final Particle<T> pParticle) {
+		this.onInitializeParticle(pParticle, this.getRandomValue());
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected float getRandomValue() {
+		if(this.mMinValue == this.mMaxValue) {
+			return this.mMaxValue;
+		} else {
+			return MathUtils.random(this.mMinValue, this.mMaxValue);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

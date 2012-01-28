@@ -10,7 +10,7 @@ import org.andengine.entity.particle.Particle;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class AccelerationInitializer<T extends IEntity> extends BaseDoubleValueInitializer<T> {
+public class AccelerationParticleInitializer<T extends IEntity> extends BaseDoubleValueParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,15 +23,15 @@ public class AccelerationInitializer<T extends IEntity> extends BaseDoubleValueI
 	// Constructors
 	// ===========================================================
 
-	public AccelerationInitializer(final float pAcceleration) {
+	public AccelerationParticleInitializer(final float pAcceleration) {
 		this(pAcceleration, pAcceleration);
 	}
 
-	public AccelerationInitializer(final float pAccelerationX, final float pAccelerationY) {
+	public AccelerationParticleInitializer(final float pAccelerationX, final float pAccelerationY) {
 		this(pAccelerationX, pAccelerationX, pAccelerationY, pAccelerationY);
 	}
 
-	public AccelerationInitializer(final float pMinAccelerationX, final float pMaxAccelerationX, final float pMinAccelerationY, final float pMaxAccelerationY) {
+	public AccelerationParticleInitializer(final float pMinAccelerationX, final float pMaxAccelerationX, final float pMinAccelerationY, final float pMaxAccelerationY) {
 		super(pMinAccelerationX, pMaxAccelerationX, pMinAccelerationY, pMaxAccelerationY);
 	}
 

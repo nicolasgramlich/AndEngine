@@ -2,17 +2,16 @@ package org.andengine.entity.particle.initializer;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
-import org.andengine.util.color.Color;
-
+import org.andengine.util.math.MathUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 10:17:42 - 29.06.2010
+ * @since 15:58:29 - 04.05.2010
  */
-public class ColorInitializer<T extends IEntity> extends BaseTripleValueInitializer<T> {
+public abstract class BaseTripleValueParticleInitializer<T extends IEntity> extends BaseDoubleValueParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,24 +20,17 @@ public class ColorInitializer<T extends IEntity> extends BaseTripleValueInitiali
 	// Fields
 	// ===========================================================
 
+	protected float mMinValueC;
+	protected float mMaxValueC;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ColorInitializer(final Color pColor) {
-		super(pColor.getRed(), pColor.getRed(), pColor.getGreen(), pColor.getGreen(), pColor.getBlue(), pColor.getBlue());
-	}
-	
-	public ColorInitializer(final float pRed, final float pGreen, final float pBlue) {
-		super(pRed, pRed, pGreen, pGreen, pBlue, pBlue);
-	}
-
-	public ColorInitializer(final Color pMinColor, final Color pMaxColor) {
-		super(pMinColor.getRed(), pMaxColor.getRed(), pMinColor.getGreen(), pMaxColor.getGreen(), pMinColor.getBlue(), pMaxColor.getBlue());
-	}
-	
-	public ColorInitializer(final float pMinRed, final float pMaxRed, final float pMinGreen, final float pMaxGreen, final float pMinBlue, final float pMaxBlue) {
-		super(pMinRed, pMaxRed, pMinGreen, pMaxGreen, pMinBlue, pMaxBlue);
+	public BaseTripleValueParticleInitializer(final float pMinValueA, final float pMaxValueA, final float pMinValueB, final float pMaxValueB, final float pMinValueC, final float pMaxValueC) {
+		super(pMinValueA, pMaxValueA, pMinValueB, pMaxValueB);
+		this.mMinValueC = pMinValueC;
+		this.mMaxValueC = pMaxValueC;
 	}
 
 	// ===========================================================
@@ -49,14 +41,24 @@ public class ColorInitializer<T extends IEntity> extends BaseTripleValueInitiali
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onInitializeParticle(final Particle<T> pParticle, final float pValueA, final float pValueB, final float pValueC);
+
 	@Override
-	protected void onInitializeParticle(final Particle<T> pParticle, final float pRed, final float pGreen, final float pBlue) {
-		pParticle.getEntity().setColor(pRed, pGreen, pBlue);
+	protected final void onInitializeParticle(final Particle<T> pParticle, final float pValueA, final float pValueB) {
+		this.onInitializeParticle(pParticle, pValueA, pValueB, this.getRandomValueC());
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected float getRandomValueC() {
+		if(this.mMinValueC == this.mMaxValueC) {
+			return this.mMaxValueC;
+		} else {
+			return MathUtils.random(this.mMinValueC, this.mMaxValueC);
+		}
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

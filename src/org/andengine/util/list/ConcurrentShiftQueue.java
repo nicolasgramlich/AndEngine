@@ -127,7 +127,9 @@ public class ConcurrentShiftQueue<T> implements IQueue<T> {
 			} else {
 				/* Increase array size. */
 				final int newCapacity = (currentCapacity * 3) / 2 + 1;
-				this.mItems = Arrays.copyOf(this.mItems, newCapacity);
+				final Object newItems[] = new Object[newCapacity];
+				System.arraycopy(this.mItems, 0, newItems, 0, currentCapacity);
+				this.mItems = newItems;
 			}
 		}
 	}

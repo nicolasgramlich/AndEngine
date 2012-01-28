@@ -135,8 +135,31 @@ public class TickerText extends Text {
 
 		}
 
-		public TickerTextOptions(final boolean pAutoWordWrap, final float pAutoWordWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign) {
+		public TickerTextOptions(final float pCharactersPerSecond) {
+			this(pCharactersPerSecond, false);
+		}
+
+		public TickerTextOptions(final float pCharactersPerSecond, final boolean pReverse) {
+			this(HorizontalAlign.LEFT, pCharactersPerSecond, pReverse);
+		}
+
+		public TickerTextOptions(final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
+			this(false, 0, Text.LEADING_DEFAULT, pHorizontalAlign, pCharactersPerSecond, false);
+		}
+
+		public TickerTextOptions(final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond, final boolean pReverse) {
+			this(false, 0, Text.LEADING_DEFAULT, pHorizontalAlign, pCharactersPerSecond, pReverse);
+		}
+
+		public TickerTextOptions(final boolean pAutoWordWrap, final float pAutoWordWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
+			this(pAutoWordWrap, pAutoWordWrapWidth, pLeading, pHorizontalAlign, pCharactersPerSecond, false);
+		}
+
+		public TickerTextOptions(final boolean pAutoWordWrap, final float pAutoWordWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond, final boolean pReverse) {
 			super(pAutoWordWrap, pAutoWordWrapWidth, pLeading, pHorizontalAlign);
+
+			this.mCharactersPerSecond = pCharactersPerSecond;
+			this.mReverse = pReverse;
 		}
 
 		// ===========================================================

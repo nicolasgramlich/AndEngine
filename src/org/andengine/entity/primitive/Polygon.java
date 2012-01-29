@@ -18,6 +18,7 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 /**
  * 
@@ -451,7 +452,7 @@ public class Polygon extends PolygonShape {
 			return true;
 		}
 		
-		// triangulate a contour/polygon, places results in STL vector
+		// triangulate a contour/polygon, places results in a list
 		// as series of triangles.
 		public static ArrayList<Vector2d> process(final float[] pX, final float[] pY)
 		{
@@ -488,9 +489,15 @@ public class Polygon extends PolygonShape {
 				}
 		
 				/* three consecutive vertices in current polygon, <u,v,w> */
-				int u = v  ; if (nv <= u) u = 0;     /* previous */
-				v = u+1; if (nv <= v) v = 0;     /* new v    */
-				int w = v+1; if (nv <= w) w = 0;     /* next     */
+				int u = v  ; 
+				if (nv <= u) 
+					u = 0;     /* previous */
+				v = u+1;
+				if (nv <= v) 
+					v = 0;     /* new v    */
+				int w = v+1; 
+				if (nv <= w) 
+					w = 0;     /* next     */
 				if ( Snip(contour,u,v,w,nv,V) )
 				{
 					int a,b,c,s,t;

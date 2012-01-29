@@ -43,7 +43,7 @@ public class Polygon extends PolygonShape {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-
+	
 	protected final IPolygonVertexBufferObject mPolygonVertexBufferObject;
 	protected float[] mVertexX;
 	protected float[] mVertexY;
@@ -68,13 +68,14 @@ public class Polygon extends PolygonShape {
 		
 		mVertexX = pVertexX;
 		mVertexY = pVertexY;
+		assert( mVertexX.length == mVertexY.length );
+		
 		mVertexTriangles = Triangulate.process(pVertexX, pVertexY);
 		assert( mVertexTriangles != null );
-		assert( mVertexX.length == mVertexY.length );
 
 		this.mPolygonVertexBufferObject = new HighPerformancePolygonVertexBufferObject(pVertexBufferObjectManager, VERTEX_SIZE * mVertexTriangles.size(), pDrawType, true, Polygon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT);
-
-		this.onUpdateVertices();
+		
+		onUpdateVertices();
 		this.onUpdateColor();
 
 		this.setBlendingEnabled(true);
@@ -92,6 +93,21 @@ public class Polygon extends PolygonShape {
 	public float[] getVertexY()
 	{
 		return mVertexY;
+	}
+	
+	public void updateVertices( float[] pVertexX, float[] pVertexY )
+	{
+		mVertexX = pVertexX;
+		mVertexY = pVertexY;
+		assert( mVertexX.length == mVertexY.length );
+		
+		int oldVertexCount = mVertexTriangles.size();
+		
+		mVertexTriangles = Triangulate.process(pVertexX, pVertexY);
+		assert( mVertexTriangles != null );
+		assert( oldVertexCount >= mVertexTriangles.size() );
+		
+		onUpdateVertices();
 	}
 	
 	public ArrayList<Vector2d> getTriangles()

@@ -45,8 +45,8 @@ public class ResourceBitmapTextureAtlasSource extends BaseTextureAtlasSource imp
 		return new ResourceBitmapTextureAtlasSource(pResources, pDrawableResourceID, pTextureX, pTextureY, decodeOptions.outWidth, decodeOptions.outHeight);
 	}
 
-	public ResourceBitmapTextureAtlasSource(final Resources pResources, final int pDrawableResourceID, final int pTextureX, final int pTextureY, final int pWidth, final int pHeight) {
-		super(pTextureX, pTextureY, pWidth, pHeight);
+	public ResourceBitmapTextureAtlasSource(final Resources pResources, final int pDrawableResourceID, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		super(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
 
 		this.mResources = pResources;
 		this.mDrawableResourceID = pDrawableResourceID;

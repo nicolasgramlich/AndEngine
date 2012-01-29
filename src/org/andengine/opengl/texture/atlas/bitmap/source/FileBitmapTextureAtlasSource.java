@@ -67,8 +67,8 @@ public class FileBitmapTextureAtlasSource extends BaseTextureAtlasSource impleme
 		return FileBitmapTextureAtlasSource.create(new File(FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath)), pTextureX, pTextureY);
 	}
 
-	FileBitmapTextureAtlasSource(final File pFile, final int pTextureX, final int pTextureY, final int pWidth, final int pHeight) {
-		super(pTextureX, pTextureY, pWidth, pHeight);
+	FileBitmapTextureAtlasSource(final File pFile, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		super(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
 
 		this.mFile = pFile;
 	}

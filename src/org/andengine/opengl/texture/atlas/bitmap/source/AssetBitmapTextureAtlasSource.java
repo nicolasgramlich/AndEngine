@@ -56,8 +56,8 @@ public class AssetBitmapTextureAtlasSource extends BaseTextureAtlasSource implem
 		return new AssetBitmapTextureAtlasSource(pAssetManager, pAssetPath, pTextureX, pTextureY, decodeOptions.outWidth, decodeOptions.outHeight);
 	}
 
-	AssetBitmapTextureAtlasSource(final AssetManager pAssetManager, final String pAssetPath, final int pTextureX, final int pTextureY, final int pWidth, final int pHeight) {
-		super(pTextureX, pTextureY, pWidth, pHeight);
+	AssetBitmapTextureAtlasSource(final AssetManager pAssetManager, final String pAssetPath, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		super(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
 
 		this.mAssetManager = pAssetManager;
 		this.mAssetPath = pAssetPath;

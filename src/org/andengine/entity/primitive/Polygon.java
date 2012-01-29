@@ -18,7 +18,6 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
-import android.util.Log;
 
 /**
  * 

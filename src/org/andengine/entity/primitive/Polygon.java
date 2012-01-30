@@ -18,6 +18,7 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 /**
  * 
@@ -29,12 +30,15 @@ public class Polygon extends PolygonShape {
 	// Constants
 	// ===========================================================
 	
-	public static final int VERTEX_INDEX_X = 0;
-	public static final int VERTEX_INDEX_Y = Rectangle.VERTEX_INDEX_X + 1;
-	public static final int COLOR_INDEX = Rectangle.VERTEX_INDEX_Y + 1;
+	protected static final int VERTEX_INDEX_X = 0;
+	protected static final int VERTEX_INDEX_Y = Rectangle.VERTEX_INDEX_X + 1;
+	protected static final int COLOR_INDEX = Rectangle.VERTEX_INDEX_Y + 1;
 
-	public static final int VERTEX_SIZE = 2 + 1;
+	protected static final int VERTEX_SIZE = 2 + 1;
 
+	public static final float VERTEX_SIZE_DEFAULT_RATIO = 1.f;
+	public static final float VERTEX_SIZE_EXTRA_RATIO = 1.3f;
+	
 	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
 		.add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
 		.add(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION, ShaderProgramConstants.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
@@ -48,6 +52,7 @@ public class Polygon extends PolygonShape {
 	protected float[] mVertexX;
 	protected float[] mVertexY;
 	protected ArrayList<Vector2d> mVertexTriangles;
+	protected int mCapacity;
 
 	// ===========================================================
 	// Constructors
@@ -57,13 +62,21 @@ public class Polygon extends PolygonShape {
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager) {
-		this(pX, pY, pVertexX, pVertexY, pVertexBufferObjectManager, DrawType.STATIC);
+		this(pX, pY, pVertexX, pVertexY, VERTEX_SIZE_DEFAULT_RATIO, pVertexBufferObjectManager, DrawType.STATIC);
 	}
+	
+	/**
+	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float vertexSizeRatio, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pVertexX, pVertexY, vertexSizeRatio, pVertexBufferObjectManager, DrawType.STATIC);
+	}
+
 
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	private Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+	private Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float vertexSizeRatio, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
 		super(pX, pY, PositionColorShaderProgram.getInstance());
 		
 		mVertexX = pVertexX;
@@ -73,7 +86,8 @@ public class Polygon extends PolygonShape {
 		mVertexTriangles = Triangulate.process(pVertexX, pVertexY);
 		assert( mVertexTriangles != null );
 
-		this.mPolygonVertexBufferObject = new HighPerformancePolygonVertexBufferObject(pVertexBufferObjectManager, VERTEX_SIZE * mVertexTriangles.size(), pDrawType, true, Polygon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT);
+		mCapacity = (int) (vertexSizeRatio * VERTEX_SIZE * mVertexTriangles.size());
+		this.mPolygonVertexBufferObject = new HighPerformancePolygonVertexBufferObject(pVertexBufferObjectManager, mCapacity, pDrawType, true, Polygon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT);
 		
 		onUpdateVertices();
 		this.onUpdateColor();
@@ -95,19 +109,38 @@ public class Polygon extends PolygonShape {
 		return mVertexY;
 	}
 	
-	public void updateVertices( float[] pVertexX, float[] pVertexY )
+	/**
+	 * 
+	 * @param pVertexX
+	 * @param pVertexY
+	 * @return 	true if vertices were correctly updated
+	 * 			false otherwise
+	 */
+	public boolean updateVertices( float[] pVertexX, float[] pVertexY )
 	{
 		mVertexX = pVertexX;
 		mVertexY = pVertexY;
 		assert( mVertexX.length == mVertexY.length );
 		
-		int oldVertexCount = mVertexTriangles.size();
-		
-		mVertexTriangles = Triangulate.process(pVertexX, pVertexY);
-		assert( mVertexTriangles != null );
-		assert( oldVertexCount >= mVertexTriangles.size() );
+		ArrayList<Vector2d> vertexTriangles = Triangulate.process(pVertexX, pVertexY);
+		if( vertexTriangles == null )
+		{
+			Log.e("AndEngine", "Error: Polygon - Polygon can't be triangulated. Will not update vertices");
+			return false;
+		}
+		else if (mCapacity < vertexTriangles.size())
+		{
+			Log.e("AndEngine", "Error: Polygon - Not enough space to accomodate extra triangles");
+			return false;
+		}
+		else
+		{
+			mVertexTriangles = vertexTriangles;
+		}
 		
 		onUpdateVertices();
+		
+		return true;
 	}
 	
 	public ArrayList<Vector2d> getTriangles()

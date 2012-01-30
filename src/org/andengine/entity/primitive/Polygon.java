@@ -2,22 +2,11 @@ package org.andengine.entity.primitive;
 
 import java.util.ArrayList;
 
-import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Rectangle.HighPerformanceRectangleVertexBufferObject;
-import org.andengine.entity.shape.PolygonShape;
-import org.andengine.opengl.shader.PositionColorShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
-import org.andengine.opengl.util.GLState;
-import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
-import org.andengine.opengl.vbo.IVertexBufferObject;
-import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
-import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
-import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
-import android.opengl.GLES20;
 import android.util.Log;
 
 /**
@@ -25,48 +14,31 @@ import android.util.Log;
  * @author Rodrigo Castro
  * @since 22:10:11 - 28.01.2012
  */
-public class Polygon extends PolygonShape {
+public class Polygon extends PolygonBase {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	protected static final int VERTEX_INDEX_X = 0;
-	protected static final int VERTEX_INDEX_Y = Rectangle.VERTEX_INDEX_X + 1;
-	protected static final int COLOR_INDEX = Rectangle.VERTEX_INDEX_Y + 1;
-
-	protected static final int VERTEX_SIZE = 2 + 1;
-
-	public static final float VERTEX_SIZE_DEFAULT_RATIO = 1.f;
-	public static final float VERTEX_SIZE_EXTRA_RATIO = 1.3f;
-	
-	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION, ShaderProgramConstants.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
-		.build();
 	
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	
-	protected final IPolygonVertexBufferObject mPolygonVertexBufferObject;
 	protected float[] mVertexX;
 	protected float[] mVertexY;
-	protected ArrayList<Vector2d> mVertexTriangles;
-	protected int mCapacity;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
 	/**
-	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pVertexX, pVertexY, VERTEX_SIZE_DEFAULT_RATIO, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 	
 	/**
-	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float vertexSizeRatio, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pVertexX, pVertexY, vertexSizeRatio, pVertexBufferObjectManager, DrawType.STATIC);
@@ -76,23 +48,14 @@ public class Polygon extends PolygonShape {
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	private Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float vertexSizeRatio, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
-		super(pX, pY, PositionColorShaderProgram.getInstance());
+	public Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float vertexSizeRatio, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		super(pX, pY, Triangulate.process(pVertexX, pVertexY), vertexSizeRatio, pVertexBufferObjectManager, DrawMode.GL_TRIANGLES, pDrawType);
 		
 		mVertexX = pVertexX;
 		mVertexY = pVertexY;
 		assert( mVertexX.length == mVertexY.length );
-		
-		mVertexTriangles = Triangulate.process(pVertexX, pVertexY);
-		assert( mVertexTriangles != null );
 
-		mCapacity = (int) (vertexSizeRatio * VERTEX_SIZE * mVertexTriangles.size());
-		this.mPolygonVertexBufferObject = new HighPerformancePolygonVertexBufferObject(pVertexBufferObjectManager, mCapacity, pDrawType, true, Polygon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT);
-		
 		onUpdateVertices();
-		this.onUpdateColor();
-
-		this.setBlendingEnabled(true);
 	}
 
 	// ===========================================================
@@ -122,70 +85,18 @@ public class Polygon extends PolygonShape {
 		mVertexY = pVertexY;
 		assert( mVertexX.length == mVertexY.length );
 		
-		ArrayList<Vector2d> vertexTriangles = Triangulate.process(pVertexX, pVertexY);
-		if( vertexTriangles == null )
+		ArrayList<Vector2d> vertices = Triangulate.process(pVertexX, pVertexY);
+		if( vertices == null )
 		{
 			Log.e("AndEngine", "Error: Polygon - Polygon can't be triangulated. Will not update vertices");
 			return false;
 		}
-		else if (mCapacity < vertexTriangles.size())
-		{
-			Log.e("AndEngine", "Error: Polygon - Not enough space to accomodate extra triangles");
-			return false;
-		}
-		else
-		{
-			mVertexTriangles = vertexTriangles;
-		}
-		
-		onUpdateVertices();
-		
-		return true;
-	}
-	
-	public ArrayList<Vector2d> getTriangles()
-	{
-		return mVertexTriangles;
+		return this.updateVertices(vertices);
 	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public IPolygonVertexBufferObject getVertexBufferObject() {
-		return this.mPolygonVertexBufferObject;
-	}
-
-	@Override
-	protected void preDraw(final GLState pGLState, final Camera pCamera) {
-		super.preDraw(pGLState, pCamera);
-
-		this.mPolygonVertexBufferObject.bind(pGLState, this.mShaderProgram);
-	}
-
-	@Override
-	protected void draw(final GLState pGLState, final Camera pCamera) {
-		// TODO let the user choose the mode
-		this.mPolygonVertexBufferObject.draw(GLES20.GL_TRIANGLES, getTriangles().size());
-	}
-
-	@Override
-	protected void postDraw(final GLState pGLState, final Camera pCamera) {
-		this.mPolygonVertexBufferObject.unbind(pGLState, this.mShaderProgram);
-
-		super.postDraw(pGLState, pCamera);
-	}
-
-	@Override
-	protected void onUpdateColor() {
-		this.mPolygonVertexBufferObject.onUpdateColor(this);
-	}
-
-	@Override
-	protected void onUpdateVertices() {
-		this.mPolygonVertexBufferObject.onUpdateVertices(this);
-	}
 
 	// ===========================================================
 	// Methods
@@ -194,188 +105,6 @@ public class Polygon extends PolygonShape {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface IPolygonVertexBufferObject extends IVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public void onUpdateColor(final Polygon pPolygon);
-		public void onUpdateVertices(final Polygon pPolygon);
-	}
-
-	public static class HighPerformancePolygonVertexBufferObject extends HighPerformanceVertexBufferObject implements IPolygonVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public HighPerformancePolygonVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		@Override
-		public void onUpdateColor(final Polygon pPolygon) {
-			final float[] bufferData = this.mBufferData;
-
-			final float packedColor = pPolygon.getColor().getPacked();
-			
-			int nbVertexInTriangles = pPolygon.getTriangles().size();
-			for( int i = 0; i < nbVertexInTriangles; i++)
-			{	
-				// TODO use color per vertex
-				bufferData[i * Polygon.VERTEX_SIZE + Polygon.COLOR_INDEX] = packedColor;
-			}
-
-			this.setDirtyOnHardware();
-		}
-
-		@Override
-		public void onUpdateVertices(final Polygon pPolygon) {
-			final float[] bufferData = this.mBufferData;
-			
-			ArrayList<Vector2d> vertexTriangles = pPolygon.getTriangles();
-			int nbVertexInTriangles = vertexTriangles.size();
-			
-			for( int i = 0; i < nbVertexInTriangles; i++) 
-			{	
-				bufferData[i * Polygon.VERTEX_SIZE + Polygon.VERTEX_INDEX_X] = vertexTriangles.get(i).getX();
-				bufferData[i * Polygon.VERTEX_SIZE + Polygon.VERTEX_INDEX_Y] = vertexTriangles.get(i).getY();
-			}
-			
-			this.setDirtyOnHardware();
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
-	public static class LowMemoryPolygonVertexBufferObject extends LowMemoryVertexBufferObject implements IPolygonVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public LowMemoryPolygonVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		@Override
-		public void onUpdateColor(final Polygon pPolygon) {
-			
-			// TODO
-			this.setDirtyOnHardware();
-		}
-
-		@Override
-		public void onUpdateVertices(final Polygon pPolygon) {
-			
-			// TODO
-			this.setDirtyOnHardware();
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
-	public static class Vector2d
-	{
-		
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		private float mX;
-		private float mY;
-		
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-		
-		public Vector2d(float x, float y)
-		{
-			set(x,y);
-		};
-		
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		public float getX()
-		{
-			return mX; 
-		}
-		
-		public float getY()
-		{
-			return mY; 
-		}
-
-		public void  set(float x, float y)
-		{
-			mX = x;
-			mY = y;
-		}
-		
-		protected static Vector2d[] floatToList( float pX[], float pY[] )
-		{
-			assert( pX.length == pY.length );
-			Vector2d[] vertex = new Vector2d[pX.length];
-			for( int i = 0; i < pX.length; i++ )
-			{	
-				vertex[i] = new Vector2d(pX[i], pY[i]);
-			}
-			return vertex;
-		}
-	}
 	
 	public static class Triangulate {
 		// Original code by John W. RATCLIFF

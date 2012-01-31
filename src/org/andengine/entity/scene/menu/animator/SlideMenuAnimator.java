@@ -96,7 +96,7 @@ public class SlideMenuAnimator extends BaseMenuAnimator {
 			}
 
 			final MoveModifier moveModifier = new MoveModifier(DURATION, -maximumWidth, baseX + offsetX, baseY + offsetY, baseY + offsetY, easeFunction);
-			moveModifier.setRemoveWhenFinished(false);
+			moveModifier.setAutoUnregisterWhenFinished(false);
 			menuItem.registerEntityModifier(moveModifier);
 
 			offsetY += menuItem.getHeight() + this.mMenuItemSpacing;

@@ -76,7 +76,7 @@ public class AlphaMenuAnimator extends BaseMenuAnimator {
 		final int menuItemCount = pMenuItems.size();
 		for(int i = menuItemCount - 1; i >= 0; i--) {
 			final AlphaModifier alphaModifier = new AlphaModifier(DURATION, ALPHA_FROM, ALPHA_TO, easeFunction);
-			alphaModifier.setRemoveWhenFinished(false);
+			alphaModifier.setAutoUnregisterWhenFinished(false);
 			pMenuItems.get(i).registerEntityModifier(alphaModifier);
 		}
 	}

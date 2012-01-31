@@ -28,6 +28,7 @@ import org.andengine.util.list.IFloatList;
 import android.opengl.GLES20;
 
 /**
+ * TODO Use {@link CharSequence} instead of {@link String}.
  * TODO Try Degenerate Triangles?
  *
  * (c) 2010 Nicolas Gramlich

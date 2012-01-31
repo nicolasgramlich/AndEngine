@@ -99,7 +99,7 @@ public class FontUtils {
 
 			/* Check if this is the last character. */
 			if(pos == pEnd - 1) {
-				width += letter.mWidth;
+				width += letter.mWidth + letter.mOffsetX;
 			} else {
 				width += letter.mAdvance;
 			}
@@ -266,7 +266,7 @@ public class FontUtils {
 
 	private static float getAdvanceCorrection(final IFont pFont, final String pText, final int pIndex) {
 		final Letter lastWordLastLetter = pFont.getLetter(pText.charAt(pIndex));
-		return - lastWordLastLetter.mWidth + lastWordLastLetter.mAdvance;
+		return -(lastWordLastLetter.mOffsetX + lastWordLastLetter.mWidth) + lastWordLastLetter.mAdvance;
 	}
 
 	// ===========================================================

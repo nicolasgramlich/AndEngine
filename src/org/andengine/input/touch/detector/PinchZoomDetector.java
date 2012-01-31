@@ -3,7 +3,6 @@ package org.andengine.input.touch.detector;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.math.MathUtils;
 
-import android.util.FloatMath;
 import android.view.MotionEvent;
 
 /**

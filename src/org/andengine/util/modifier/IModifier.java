@@ -40,8 +40,8 @@ public interface IModifier<T> {
 	public void reset();
 
 	public boolean isFinished();
-	public boolean isRemoveWhenFinished();
-	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
+	public boolean isAutoUnregisterWhenFinished();
+	public void setAutoUnregisterWhenFinished(final boolean pRemoveWhenFinished);
 
 	public IModifier<T> deepCopy() throws DeepCopyNotSupportedException;
 

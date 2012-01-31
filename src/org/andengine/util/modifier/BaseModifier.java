@@ -21,7 +21,7 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	// ===========================================================
 
 	protected boolean mFinished;
-	private boolean mRemoveWhenFinished = true;
+	private boolean mAutoUnregisterWhenFinished = true;
 	private final SmartList<IModifierListener<T>> mModifierListeners = new SmartList<IModifierListener<T>>(2);
 
 	// ===========================================================
@@ -50,13 +50,13 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	}
 
 	@Override
-	public final boolean isRemoveWhenFinished() {
-		return this.mRemoveWhenFinished;
+	public final boolean isAutoUnregisterWhenFinished() {
+		return this.mAutoUnregisterWhenFinished;
 	}
 
 	@Override
-	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
-		this.mRemoveWhenFinished = pRemoveWhenFinished;
+	public final void setAutoUnregisterWhenFinished(final boolean pAutoUnregisterWhenFinished) {
+		this.mAutoUnregisterWhenFinished = pAutoUnregisterWhenFinished;
 	}
 
 	@Override

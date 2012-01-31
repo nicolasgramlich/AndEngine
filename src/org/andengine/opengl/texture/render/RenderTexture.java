@@ -117,7 +117,7 @@ public class RenderTexture extends Texture {
 		/* Attach texture to FBO. */
 		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTextureID, 0);
 
-		pGLState.checkError();
+//		pGLState.checkError();
 		pGLState.checkFramebufferStatus();
 
 		this.restorePreviousFramebufferObjectID(pGLState);

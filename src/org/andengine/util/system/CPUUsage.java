@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.andengine.util.StreamUtils;
-import org.andengine.util.StringUtils;
+import org.andengine.util.TextUtils;
 import org.andengine.util.debug.Debug;
 
 /**
@@ -61,7 +61,7 @@ public class CPUUsage {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream("/proc/stat")), StreamUtils.IO_BUFFER_SIZE);
 			final String procStatString = reader.readLine();
 
-			final String[] parts = StringUtils.SPLITPATTERN_SPACE.split(procStatString);
+			final String[] parts = TextUtils.SPLITPATTERN_SPACE.split(procStatString);
 
 			final long user = Long.parseLong(parts[2]);
 			final long nice = Long.parseLong(parts[3]);

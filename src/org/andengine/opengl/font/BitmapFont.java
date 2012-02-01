@@ -14,7 +14,7 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.andengine.util.StreamUtils;
-import org.andengine.util.StringUtils;
+import org.andengine.util.TextUtils;
 
 import android.content.Context;
 import android.util.SparseArray;
@@ -205,7 +205,7 @@ public class BitmapFont implements IFont {
 			{
 				final String common = bufferedReader.readLine();
 				if(common != null && common.startsWith(BitmapFont.TAG_COMMON)) {
-					final String[] commonAttributes = StringUtils.SPLITPATTERN_SPACE.split(common, BitmapFont.TAG_COMMON_ATTRIBUTECOUNT + 1);
+					final String[] commonAttributes = TextUtils.SPLITPATTERN_SPACE.split(common, BitmapFont.TAG_COMMON_ATTRIBUTECOUNT + 1);
 					if(commonAttributes.length - 1 != BitmapFont.TAG_COMMON_ATTRIBUTECOUNT) {
 						throw new FontException("Expected: '" + BitmapFont.TAG_COMMON_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_COMMON + " attributes, found: '" + (commonAttributes.length - 1) + "'.");
 					}
@@ -241,7 +241,7 @@ public class BitmapFont implements IFont {
 			{
 				final String chars = bufferedReader.readLine();
 				if(chars != null && chars.startsWith(BitmapFont.TAG_CHARS)) {
-					final String[] charsAttributes = StringUtils.SPLITPATTERN_SPACE.split(chars, BitmapFont.TAG_CHARS_ATTRIBUTECOUNT + 1);
+					final String[] charsAttributes = TextUtils.SPLITPATTERN_SPACE.split(chars, BitmapFont.TAG_CHARS_ATTRIBUTECOUNT + 1);
 					if(charsAttributes.length - 1 != BitmapFont.TAG_CHARS_ATTRIBUTECOUNT) {
 						throw new FontException("Expected: '" + BitmapFont.TAG_CHARS_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_CHARS + " attributes, found: '" + (charsAttributes.length - 1) + "'.");
 					}
@@ -261,7 +261,7 @@ public class BitmapFont implements IFont {
 			{
 				final String kernings = bufferedReader.readLine();
 				if(kernings != null && kernings.startsWith(BitmapFont.TAG_KERNINGS)) {
-					final String[] kerningsAttributes = StringUtils.SPLITPATTERN_SPACE.split(kernings, BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT + 1);
+					final String[] kerningsAttributes = TextUtils.SPLITPATTERN_SPACE.split(kernings, BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT + 1);
 					if(kerningsAttributes.length - 1 != BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT) {
 						throw new FontException("Expected: '" + BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_KERNINGS + " attributes, found: '" + (kerningsAttributes.length - 1) + "'.");
 					}
@@ -377,7 +377,7 @@ public class BitmapFont implements IFont {
 	private void parseCharacters(final int pCharacterCount, final BufferedReader pBufferedReader) throws IOException {
 		for(int i = pCharacterCount - 1; i >= 0; i--) {
 			final String character = pBufferedReader.readLine();
-			final String[] charAttributes = StringUtils.SPLITPATTERN_SPACES.split(character, BitmapFont.TAG_CHAR_ATTRIBUTECOUNT + 1);
+			final String[] charAttributes = TextUtils.SPLITPATTERN_SPACES.split(character, BitmapFont.TAG_CHAR_ATTRIBUTECOUNT + 1);
 			if(charAttributes.length - 1 != BitmapFont.TAG_CHAR_ATTRIBUTECOUNT) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_CHAR_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_CHAR + " attributes, found: '" + (charAttributes.length - 1) + "'.");
 			}
@@ -412,7 +412,7 @@ public class BitmapFont implements IFont {
 	private void parseKernings(final int pKerningsCount, final BufferedReader pBufferedReader) throws IOException {
 		for(int i = pKerningsCount - 1; i >= 0; i--) {
 			final String kerning = pBufferedReader.readLine();
-			final String[] charAttributes = StringUtils.SPLITPATTERN_SPACES.split(kerning, BitmapFont.TAG_KERNING_ATTRIBUTECOUNT + 1);
+			final String[] charAttributes = TextUtils.SPLITPATTERN_SPACES.split(kerning, BitmapFont.TAG_KERNING_ATTRIBUTECOUNT + 1);
 			if(charAttributes.length - 1 != BitmapFont.TAG_KERNING_ATTRIBUTECOUNT) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_KERNING_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_KERNING + " attributes, found: '" + (charAttributes.length - 1) + "'.");
 			}
@@ -520,7 +520,7 @@ public class BitmapFont implements IFont {
 				throw new FontException("pData must not be null.");
 			}
 
-			final String[] infoAttributes = StringUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_INFO_ATTRIBUTECOUNT + 1);
+			final String[] infoAttributes = TextUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_INFO_ATTRIBUTECOUNT + 1);
 
 			if(infoAttributes.length - 1 != BitmapFont.TAG_INFO_ATTRIBUTECOUNT) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_INFO_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_INFO + " attributes, found: '" + (infoAttributes.length - 1) + "'.");
@@ -540,14 +540,14 @@ public class BitmapFont implements IFont {
 			this.mAntiAliased = BitmapFont.getBooleanAttribute(infoAttributes, BitmapFont.TAG_INFO_ATTRIBUTE_ANTIALIASED_INDEX, BitmapFont.TAG_INFO_ATTRIBUTE_ANTIALIASED);
 
 			final String padding = BitmapFont.getAttribute(infoAttributes, BitmapFont.TAG_INFO_ATTRIBUTE_PADDING_INDEX, BitmapFont.TAG_INFO_ATTRIBUTE_PADDING);
-			final String[] paddings = StringUtils.SPLITPATTERN_COMMA.split(padding, 4);
+			final String[] paddings = TextUtils.SPLITPATTERN_COMMA.split(padding, 4);
 			this.mPaddingLeft = Integer.parseInt(paddings[BitmapFontInfo.PADDING_LEFT_INDEX]);
 			this.mPaddingTop = Integer.parseInt(paddings[BitmapFontInfo.PADDING_TOP_INDEX]);
 			this.mPaddingRight = Integer.parseInt(paddings[BitmapFontInfo.PADDING_RIGHT_INDEX]);
 			this.mPaddingBottom = Integer.parseInt(paddings[BitmapFontInfo.PADDING_BOTTOM_INDEX]);
 
 			final String spacing = BitmapFont.getAttribute(infoAttributes, BitmapFont.TAG_INFO_ATTRIBUTE_SPACING_INDEX, BitmapFont.TAG_INFO_ATTRIBUTE_SPACING);
-			final String[] spacings = StringUtils.SPLITPATTERN_COMMA.split(spacing, 2);
+			final String[] spacings = TextUtils.SPLITPATTERN_COMMA.split(spacing, 2);
 			this.mSpacingX = Integer.parseInt(spacings[BitmapFontInfo.SPACING_X_INDEX]);
 			this.mSpacingY = Integer.parseInt(spacings[BitmapFontInfo.SPACING_Y_INDEX]);
 		}
@@ -646,7 +646,7 @@ public class BitmapFont implements IFont {
 		// ===========================================================
 
 		public BitmapFontPage(final Context pContext, final String pAssetBasePath, final String pData) throws IOException {
-			final String[] pageAttributes = StringUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_PAGE_ATTRIBUTECOUNT + 1);
+			final String[] pageAttributes = TextUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_PAGE_ATTRIBUTECOUNT + 1);
 
 			if(pageAttributes.length - 1 != BitmapFont.TAG_PAGE_ATTRIBUTECOUNT) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_PAGE_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_PAGE + " attributes, found: '" + (pageAttributes.length - 1) + "'.");

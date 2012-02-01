@@ -1,6 +1,5 @@
 package org.andengine.util.list;
 
-import java.util.Arrays;
 
 /**
  * (c) Zynga 2012
@@ -111,7 +110,9 @@ public class FloatArrayList implements IFloatList {
 		if(currentCapacity < pCapacity) {
 			/* Increase array size. */
 			final int newCapacity = (currentCapacity * 3) / 2 + 1;
-			this.mItems = Arrays.copyOf(this.mItems, newCapacity);
+			final float newItems[] = new float[newCapacity];
+			System.arraycopy(this.mItems, 0, newItems, 0, currentCapacity);
+			this.mItems = newItems;
 		}
 	}
 

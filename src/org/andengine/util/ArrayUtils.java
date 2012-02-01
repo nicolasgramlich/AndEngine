@@ -318,7 +318,7 @@ public final class ArrayUtils {
 	/**
 	 * @param pClass the type of the returned array T[].
 	 * @param pArrays items or pArrays itself can be null.
-	 * @return <code>null</code> when pArrays is <code>null</code> or all arrays in pArrays are <code>null</code> or of length zero. Otherwise an in-order joined array of <code>T[]</code> of all not null, not zero length arrays in pArrays.  
+	 * @return <code>null</code> when pArrays is <code>null</code> or all arrays in pArrays are <code>null</code> or of length zero. Otherwise an in-order joined array of <code>T[]</code> of all not null, not zero length arrays in pArrays.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] join(final Class<T> pClass, final T[] ... pArrays) {
@@ -326,7 +326,7 @@ public final class ArrayUtils {
 			return null;
 		}
 
-		int arrayCount = pArrays.length;
+		final int arrayCount = pArrays.length;
 		if(arrayCount == 0) {
 			return null;
 		} else if(arrayCount == 1) {
@@ -337,7 +337,7 @@ public final class ArrayUtils {
 		/* Determine length of result. */
 		for(int i = pArrays.length - 1; i >= 0; i--) {
 			final T[] array = pArrays[i];
-			if(array != null && array.length > 0) {
+			if((array != null) && (array.length > 0)) {
 				resultLength += array.length;
 			}
 		}
@@ -351,12 +351,50 @@ public final class ArrayUtils {
 		int offset = 0;
 		for(int i = 0; i < arrayCount; i++) {
 			final T[] array = pArrays[i];
-			if(array != null && array.length > 0) {
+			if((array != null) && (array.length > 0)) {
 				System.arraycopy(array, 0, result, offset, array.length);
 				offset += array.length;
 			}
 		}
 		return result;
+	}
+
+	public static int idealByteArraySize(final int pSize) {
+		for (int i = 4; i < 32; i++) {
+			if (pSize <= ((1 << i) - 12)) {
+				return (1 << i) - 12;
+			}
+		}
+
+		return pSize;
+	}
+
+	public static int idealBooleanArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize);
+	}
+
+	public static int idealShortArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize << 1) >> 1;
+	}
+
+	public static int idealCharArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize << 1) >> 1;
+	}
+
+	public static int idealIntArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize << 2) >> 2;
+	}
+
+	public static int idealFloatArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize << 2) >> 2;
+	}
+
+	public static int idealObjectArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize << 2) >> 2;
+	}
+
+	public static int idealLongArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize << 3) >> 3;
 	}
 
 	// ===========================================================

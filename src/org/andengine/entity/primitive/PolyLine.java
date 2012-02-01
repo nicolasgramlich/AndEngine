@@ -1,5 +1,7 @@
 package org.andengine.entity.primitive;
 
+import java.util.ArrayList;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Rectangle.HighPerformanceRectangleVertexBufferObject;
 import org.andengine.opengl.util.GLState;
@@ -21,8 +23,6 @@ public class PolyLine extends PolygonBase {
 	// Fields
 	// ===========================================================
 	
-	protected float[] mVertexX;
-	protected float[] mVertexY;
 	private float mLineWidth;
 
 	// ===========================================================
@@ -32,21 +32,21 @@ public class PolyLine extends PolygonBase {
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public PolyLine(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager) {
+	public PolyLine(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pVertexX, pVertexY, Line.LINE_WIDTH_DEFAULT, pVertexBufferObjectManager);
 	}
 	
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public PolyLine(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager) {
+	public PolyLine(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pVertexX, pVertexY, pLineWidth, pVertexBufferObjectManager, DrawMode.GL_LINE_LOOP);
 	}
 	
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public PolyLine(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode) {
+	public PolyLine(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode) {
 		this(pX, pY, pVertexX, pVertexY, pLineWidth, pVertexBufferObjectManager, pDrawMode, DrawType.STATIC);
 	}
 
@@ -55,12 +55,20 @@ public class PolyLine extends PolygonBase {
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public PolyLine(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode, final DrawType pDrawType) {
-		super(pX, pY, buildVector2dList(pVertexX, pVertexY), PolygonBase.VERTEX_SIZE_DEFAULT_RATIO, pVertexBufferObjectManager, pDrawMode, pDrawType);
+		this(pX, pY, buildVector2dList(pVertexX, pVertexY), PolygonBase.VERTEX_SIZE_DEFAULT_RATIO, pVertexBufferObjectManager, pDrawMode, pDrawType);
 		
-		mVertexX = pVertexX;
-		mVertexY = pVertexY;
 		mLineWidth = pLineWidth;
-		assert( mVertexX.length == mVertexY.length );
+
+		onUpdateVertices();
+	}
+	
+	/**
+	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public PolyLine(final float pX, final float pY, final ArrayList<Vector2d> pVertices, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode, final DrawType pDrawType) {
+		super(pX, pY, pVertices, PolygonBase.VERTEX_SIZE_DEFAULT_RATIO, pVertexBufferObjectManager, pDrawMode, pDrawType);
+		
+		mLineWidth = pLineWidth;
 
 		onUpdateVertices();
 	}
@@ -68,16 +76,6 @@ public class PolyLine extends PolygonBase {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	public float[] getVertexX()
-	{
-		return mVertexX;
-	}
-	
-	public float[] getVertexY()
-	{
-		return mVertexY;
-	}
 	
 	public float getLineWidth()
 	{
@@ -98,9 +96,7 @@ public class PolyLine extends PolygonBase {
 	 */
 	public boolean updateVertices( float[] pVertexX, float[] pVertexY )
 	{
-		mVertexX = pVertexX;
-		mVertexY = pVertexY;
-		assert( mVertexX.length == mVertexY.length );
+		assert( pVertexX.length == pVertexY.length );
 
 		return this.updateVertices(buildVector2dList(pVertexX, pVertexY));
 	}

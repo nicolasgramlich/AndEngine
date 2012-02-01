@@ -33,14 +33,14 @@ public class Polygon extends PolygonBase {
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager) {
+	public Polygon(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pVertexX, pVertexY, VERTEX_SIZE_DEFAULT_RATIO, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 	
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Polygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float vertexSizeRatio, final VertexBufferObjectManager pVertexBufferObjectManager) {
+	public Polygon(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final float vertexSizeRatio, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pVertexX, pVertexY, vertexSizeRatio, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 

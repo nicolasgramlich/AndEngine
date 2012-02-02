@@ -7,8 +7,8 @@ import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
-import org.andengine.util.constants.TimeConstants;
 import org.andengine.util.math.MathUtils;
+import org.andengine.util.time.TimeConstants;
 
 /**
  * (c) 2010 Nicolas Gramlich

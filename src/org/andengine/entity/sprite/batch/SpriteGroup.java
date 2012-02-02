@@ -8,7 +8,7 @@ import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.SmartList;
+import org.andengine.util.adt.list.SmartList;
 
 /**
  * (c) 2010 Nicolas Gramlich

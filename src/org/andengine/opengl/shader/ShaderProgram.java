@@ -2,12 +2,12 @@ package org.andengine.opengl.shader;
 
 import java.util.HashMap;
 
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.andengine.opengl.shader.exception.ShaderProgramException;
 import org.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.andengine.opengl.shader.source.IShaderSource;
 import org.andengine.opengl.shader.source.StringShaderSource;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;

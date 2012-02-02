@@ -11,11 +11,11 @@ import org.andengine.entity.modifier.EntityModifierList;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.ParameterCallable;
-import org.andengine.util.SmartList;
+import org.andengine.util.Constants;
+import org.andengine.util.adt.list.SmartList;
+import org.andengine.util.adt.transformation.Transformation;
+import org.andengine.util.call.ParameterCallable;
 import org.andengine.util.color.Color;
-import org.andengine.util.constants.Constants;
-import org.andengine.util.transformation.Transformation;
 
 
 /**

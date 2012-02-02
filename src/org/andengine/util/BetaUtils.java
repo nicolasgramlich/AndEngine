@@ -2,7 +2,8 @@ package org.andengine.util;
 
 import java.util.GregorianCalendar;
 
-import org.andengine.util.constants.Constants;
+import org.andengine.util.preferences.SimplePreferences;
+
 
 import android.R;
 import android.app.Activity;

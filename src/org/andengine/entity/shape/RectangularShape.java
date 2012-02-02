@@ -1,9 +1,9 @@
 package org.andengine.entity.shape;
 
-import org.andengine.collision.RectangularShapeCollisionChecker;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Line;
 import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.util.algorithm.collision.RectangularShapeCollisionChecker;
 
 /**
  * (c) 2010 Nicolas Gramlich

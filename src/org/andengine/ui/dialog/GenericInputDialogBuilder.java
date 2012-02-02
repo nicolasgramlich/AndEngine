@@ -1,6 +1,6 @@
 package org.andengine.ui.dialog;
 
-import org.andengine.util.Callback;
+import org.andengine.util.call.Callback;
 import org.andengine.util.debug.Debug;
 
 import android.app.AlertDialog;

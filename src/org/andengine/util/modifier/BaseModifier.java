@@ -1,6 +1,6 @@
 package org.andengine.util.modifier;
 
-import org.andengine.util.SmartList;
+import org.andengine.util.adt.list.SmartList;
 
 
 /**

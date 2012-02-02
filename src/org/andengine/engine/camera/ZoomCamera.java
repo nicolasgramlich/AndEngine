@@ -1,7 +1,7 @@
 package org.andengine.engine.camera;
 
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.util.constants.Constants;
+import org.andengine.util.Constants;
 import org.andengine.util.math.MathUtils;
 
 

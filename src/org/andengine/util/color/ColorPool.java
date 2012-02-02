@@ -1,6 +1,6 @@
 package org.andengine.util.color;
 
-import org.andengine.util.pool.GenericPool;
+import org.andengine.util.adt.pool.GenericPool;
 
 /**
  * (c) Zynga 2011

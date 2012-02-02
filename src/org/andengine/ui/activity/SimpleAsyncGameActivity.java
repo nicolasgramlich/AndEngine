@@ -2,7 +2,7 @@ package org.andengine.ui.activity;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.util.ActivityUtils;
-import org.andengine.util.Callback;
+import org.andengine.util.call.Callback;
 import org.andengine.util.progress.IProgressListener;
 import org.andengine.util.progress.ProgressCallable;
 

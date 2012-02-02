@@ -1,7 +1,7 @@
 package org.andengine.engine.camera.hud.controls;
 
-import static org.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+import static org.andengine.util.Constants.VERTEX_INDEX_X;
+import static org.andengine.util.Constants.VERTEX_INDEX_Y;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;

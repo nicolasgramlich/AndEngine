@@ -1,6 +1,5 @@
 package org.andengine.engine.camera;
 
-import org.andengine.collision.RectangularShapeCollisionChecker;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.UpdateHandlerList;
@@ -9,9 +8,10 @@ import org.andengine.entity.primitive.Line;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.constants.Constants;
+import org.andengine.util.Constants;
+import org.andengine.util.adt.transformation.Transformation;
+import org.andengine.util.algorithm.collision.RectangularShapeCollisionChecker;
 import org.andengine.util.math.MathUtils;
-import org.andengine.util.transformation.Transformation;
 
 /**
  * (c) 2010 Nicolas Gramlich

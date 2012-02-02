@@ -1,9 +1,9 @@
 package org.andengine.ui.activity;
 
 import org.andengine.util.ActivityUtils;
-import org.andengine.util.AsyncCallable;
-import org.andengine.util.Callable;
-import org.andengine.util.Callback;
+import org.andengine.util.call.AsyncCallable;
+import org.andengine.util.call.Callable;
+import org.andengine.util.call.Callback;
 import org.andengine.util.progress.ProgressCallable;
 
 import android.app.Activity;

@@ -1,6 +1,6 @@
 package org.andengine.ui.dialog;
 
-import org.andengine.util.Callback;
+import org.andengine.util.call.Callback;
 
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;

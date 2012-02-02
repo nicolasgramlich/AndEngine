@@ -12,10 +12,10 @@ import org.andengine.entity.scene.background.IBackground;
 import org.andengine.entity.shape.Shape;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.Constants;
 import org.andengine.util.IMatcher;
-import org.andengine.util.SmartList;
+import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.color.Color;
-import org.andengine.util.constants.Constants;
 
 import android.util.SparseArray;
 

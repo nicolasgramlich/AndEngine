@@ -1,7 +1,7 @@
 package org.andengine.util.modifier;
 
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.util.SmartList;
+import org.andengine.util.adt.list.SmartList;
 
 /**
  * (c) 2010 Nicolas Gramlich 

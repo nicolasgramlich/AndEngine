@@ -2,6 +2,7 @@ package org.andengine.util;
 
 import java.util.ArrayList;
 
+import org.andengine.util.adt.array.ArrayUtils;
 import org.andengine.util.math.MathUtils;
 
 /**

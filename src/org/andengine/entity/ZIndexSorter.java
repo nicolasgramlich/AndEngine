@@ -3,7 +3,7 @@ package org.andengine.entity;
 import java.util.Comparator;
 import java.util.List;
 
-import org.andengine.util.sort.InsertionSorter;
+import org.andengine.util.algorithm.sort.InsertionSorter;
 
 /**
  * (c) Nicolas Gramlich 2010

@@ -5,7 +5,7 @@ import java.nio.FloatBuffer;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;

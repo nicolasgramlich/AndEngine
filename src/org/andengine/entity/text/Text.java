@@ -11,7 +11,7 @@ import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.font.Letter;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
@@ -22,9 +22,9 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.TextUtils;
-import org.andengine.util.data.DataConstants;
-import org.andengine.util.list.FloatArrayList;
-import org.andengine.util.list.IFloatList;
+import org.andengine.util.adt.DataConstants;
+import org.andengine.util.adt.list.FloatArrayList;
+import org.andengine.util.adt.list.IFloatList;
 
 import android.opengl.GLES20;
 

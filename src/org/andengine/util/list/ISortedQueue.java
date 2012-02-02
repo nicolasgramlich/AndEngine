@@ -4,9 +4,9 @@ package org.andengine.util.list;
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 15:00:30 - 24.01.2012
+ * @since 15:37:19 - 01.02.2012
  */
-public interface IQueue<T> {
+public interface ISortedQueue<T> extends IQueue<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -14,11 +14,4 @@ public interface IQueue<T> {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public boolean isEmpty();
-	public void enter(final T pItem);
-	public int size();
-	public T peek();
-	public T poll();
-	public void clear();
 }

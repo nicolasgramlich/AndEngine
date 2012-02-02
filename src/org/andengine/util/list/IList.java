@@ -4,9 +4,9 @@ package org.andengine.util.list;
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 15:00:30 - 24.01.2012
+ * @since 15:27:16 - 01.02.2012
  */
-public interface IQueue<T> {
+public interface IList<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,9 +16,11 @@ public interface IQueue<T> {
 	// ===========================================================
 
 	public boolean isEmpty();
-	public void enter(final T pItem);
+	public T get(final int pIndex);
+	public void add(final T pItem);
+	public void add(final int pIndex, final T pItem);
+	public boolean remove(final T pItem);
+	public boolean remove(final int pIndex);
 	public int size();
-	public T peek();
-	public T poll();
 	public void clear();
 }

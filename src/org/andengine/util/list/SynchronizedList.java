@@ -6,7 +6,7 @@ package org.andengine.util.list;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:23:50 - 01.02.2012
  */
-public class SynchronizedQueue<T> implements IQueue<T> {
+public class SynchronizedList<T> implements IList<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,14 +15,14 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	// Fields
 	// ===========================================================
 
-	private final IQueue<T> mQueue;
+	private final IList<T> mList;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SynchronizedQueue(final IQueue<T> mQueue) {
-		this.mQueue = mQueue;
+	public SynchronizedList(final IList<T> mList) {
+		this.mList = mList;
 	}
 
 	// ===========================================================
@@ -35,32 +35,42 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 
 	@Override
 	public synchronized boolean isEmpty() {
-		return this.mQueue.isEmpty();
+		return this.mList.isEmpty();
 	}
 
 	@Override
-	public synchronized void enter(final T pItem) {
-		this.mQueue.enter(pItem);
+	public synchronized T get(final int pIndex) {
+		return this.mList.get(pIndex);
+	}
+
+	@Override
+	public synchronized void add(final T pItem) {
+		this.mList.add(pItem);
+	}
+
+	@Override
+	public synchronized void add(final int pIndex, final T pItem) {
+		this.mList.add(pIndex, pItem);
+	}
+
+	@Override
+	public synchronized boolean remove(final T pItem) {
+		return this.mList.remove(pItem);
+	}
+
+	@Override
+	public synchronized boolean remove(final int pIndex) {
+		return this.mList.remove(pIndex);
 	}
 
 	@Override
 	public synchronized int size() {
-		return this.mQueue.size();
-	}
-
-	@Override
-	public synchronized T peek() {
-		return this.mQueue.peek();
-	}
-
-	@Override
-	public synchronized T poll() {
-		return this.mQueue.poll();
+		return this.mList.size();
 	}
 
 	@Override
 	public synchronized void clear() {
-		this.mQueue.clear();
+		this.mList.clear();
 	}
 
 	// ===========================================================

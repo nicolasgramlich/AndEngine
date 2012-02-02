@@ -87,7 +87,7 @@ public class ProbabilityGenerator<T> {
 		// Constructors
 		// ===========================================================
 
-		public Entry(final float pFactor, final T[] pData){
+		public Entry(final float pFactor, final T ... pData){
 			this.mFactor = pFactor;
 			this.mData = pData;
 		}

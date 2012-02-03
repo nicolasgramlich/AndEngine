@@ -356,7 +356,7 @@ public class SpriteBatch extends Shape {
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float)}.
 	 */
 	public void draw(final Sprite pSprite) {
-		this.draw(pSprite, pSprite.getColor().getPacked());
+		this.draw(pSprite, pSprite.getColor().getFloatPacked());
 	}
 
 	/**
@@ -400,7 +400,7 @@ public class SpriteBatch extends Shape {
 	}
 
 	public void drawWithoutChecks(final Sprite pSprite) {
-		this.drawWithoutChecks(pSprite, pSprite.getColor().getPacked());
+		this.drawWithoutChecks(pSprite, pSprite.getColor().getFloatPacked());
 	}
 
 	public void drawWithoutChecks(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {

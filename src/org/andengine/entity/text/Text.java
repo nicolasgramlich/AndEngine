@@ -480,7 +480,7 @@ public class Text extends RectangularShape {
 		public void onUpdateColor(final Text pText) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pText.getColor().getPacked();
+			final float packedColor = pText.getColor().getFloatPacked();
 
 			int bufferDataOffset = 0;
 			final int charactersMaximum = pText.getCharactersMaximum();
@@ -629,7 +629,7 @@ public class Text extends RectangularShape {
 		public void onUpdateColor(final Text pText) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final float packedColor = pText.getColor().getPacked();
+			final float packedColor = pText.getColor().getFloatPacked();
 
 			int bufferDataOffset = 0;
 			final int charactersMaximum = pText.getCharactersMaximum();

@@ -31,12 +31,12 @@ public class ColorPool extends GenericPool<Color> {
 
 	@Override
 	protected Color onAllocatePoolItem() {
-		return new Color(1, 1, 1, 1);
+		return new Color(Color.WHITE);
 	}
 
 	@Override
 	protected void onHandleRecycleItem(final Color pColor) {
-		pColor.setChanging(1, 1, 1, 1);
+		pColor.setChecking(Color.WHITE);
 
 		super.onHandleRecycleItem(pColor);
 	}

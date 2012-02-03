@@ -125,8 +125,8 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 
 		this.ensureCapacity();
 
-		final int tail = this.encodeToInternalIndex(this.mSize);
-		if(internalIndex == tail) {
+		final int internalTail = this.encodeToInternalIndex(this.mSize);
+		if(internalIndex == internalTail) {
 			// nothing to shift, tail is free
 		} else if(internalIndex == this.mHead) {
 			this.mHead--;
@@ -138,8 +138,8 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 				internalIndex = this.mItems.length - 1;
 			}
 		} else if((internalIndex < this.mHead) || (this.mHead == 0)) {
-			System.arraycopy(this.mItems, internalIndex, this.mItems, internalIndex + 1, tail - internalIndex);
-		} else if(internalIndex > tail) {
+			System.arraycopy(this.mItems, internalIndex, this.mItems, internalIndex + 1, internalTail - internalIndex);
+		} else if(internalIndex > internalTail) {
 			System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead - 1, pIndex);
 			this.mHead--;
 			if(this.mHead == -1) {
@@ -160,7 +160,7 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 				internalIndex = this.mItems.length - 1;
 			}
 		} else {
-			System.arraycopy(this.mItems, internalIndex, this.mItems, internalIndex + 1, tail - internalIndex);
+			System.arraycopy(this.mItems, internalIndex, this.mItems, internalIndex + 1, internalTail - internalIndex);
 		}
 		this.mItems[internalIndex] = pItem;
 		this.mSize++;
@@ -193,10 +193,10 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 		final int internalIndex = this.encodeToInternalIndex(pIndex);
 		final T removed = (T) this.mItems[internalIndex];
 
-		final int tail = this.encodeToInternalIndex(this.mSize - 1);
+		final int internalTail = this.encodeToInternalIndex(this.mSize - 1);
 
-		if(internalIndex == tail) {
-			this.mItems[tail] = null;
+		if(internalIndex == internalTail) {
+			this.mItems[internalTail] = null;
 		} else if(internalIndex == this.mHead) {
 			this.mItems[this.mHead] = null;
 			this.mHead++;
@@ -204,9 +204,9 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 				this.mHead = 0;
 			}
 		} else if(internalIndex < this.mHead) {
-			System.arraycopy(this.mItems, internalIndex + 1, this.mItems, internalIndex, tail - internalIndex);
-			this.mItems[tail] = null;
-		} else if(internalIndex > tail) {
+			System.arraycopy(this.mItems, internalIndex + 1, this.mItems, internalIndex, internalTail - internalIndex);
+			this.mItems[internalTail] = null;
+		} else if(internalIndex > internalTail) {
 			System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead + 1, pIndex);
 			this.mItems[this.mHead] = null;
 			this.mHead++;
@@ -221,8 +221,8 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 				this.mHead = 0;
 			}
 		} else {
-			System.arraycopy(this.mItems, internalIndex + 1, this.mItems, internalIndex, tail - internalIndex);
-			this.mItems[tail] = null;
+			System.arraycopy(this.mItems, internalIndex + 1, this.mItems, internalIndex, internalTail - internalIndex);
+			this.mItems[internalTail] = null;
 		}
 		this.mSize--;
 
@@ -236,7 +236,18 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 
 	@Override
 	public void clear() {
-		Arrays.fill(this.mItems, null);
+		final int tail = this.mHead + this.mSize;
+		final int capacity = this.mItems.length;
+		/* Check if items can be blacked out in one or two calls. */
+		if(tail <= capacity) {
+			Arrays.fill(this.mItems, this.mHead, tail, null);
+		} else {
+			final int headToCapacity = capacity - this.mHead;
+			/* Black out items from head to the end of the array. */
+			Arrays.fill(this.mItems, this.mHead, capacity, null);
+			/* Black out items from the beginning of the array to the tail. */
+			Arrays.fill(this.mItems, 0, this.mSize - headToCapacity, null);
+		}
 		this.mHead = 0;
 		this.mSize = 0;
 	}

@@ -1,7 +1,5 @@
 package org.andengine.entity.scene;
 
-import java.util.ArrayList;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.runnable.RunnableHandler;
 import org.andengine.entity.Entity;
@@ -9,6 +7,7 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.background.IBackground;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.Shape;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
@@ -348,7 +347,7 @@ public class Scene extends Entity {
 		final float sceneTouchEventX = pSceneTouchEvent.getX();
 		final float sceneTouchEventY = pSceneTouchEvent.getY();
 
-		final ArrayList<ITouchArea> touchAreas = this.mTouchAreas;
+		final SmartList<ITouchArea> touchAreas = this.mTouchAreas;
 		if(touchAreas != null) {
 			final int touchAreaCount = touchAreas.size();
 			if(touchAreaCount > 0) {
@@ -458,7 +457,7 @@ public class Scene extends Entity {
 		this.mTouchAreas.clear();
 	}
 
-	public ArrayList<ITouchArea> getTouchAreas() {
+	public SmartList<ITouchArea> getTouchAreas() {
 		return this.mTouchAreas;
 	}
 

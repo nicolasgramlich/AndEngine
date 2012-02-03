@@ -46,6 +46,21 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	}
 
 	@Override
+	public synchronized int indexOf(final T pItem) {
+		return this.mQueue.indexOf(pItem);
+	}
+
+	@Override
+	public synchronized T peek() {
+		return this.mQueue.peek();
+	}
+
+	@Override
+	public synchronized T poll() {
+		return this.mQueue.poll();
+	}
+
+	@Override
 	public synchronized void enter(final T pItem) {
 		this.mQueue.enter(pItem);
 	}
@@ -68,16 +83,6 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	@Override
 	public synchronized int size() {
 		return this.mQueue.size();
-	}
-
-	@Override
-	public synchronized T peek() {
-		return this.mQueue.peek();
-	}
-
-	@Override
-	public synchronized T poll() {
-		return this.mQueue.poll();
 	}
 
 	@Override

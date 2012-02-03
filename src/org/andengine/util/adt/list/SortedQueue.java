@@ -1,10 +1,5 @@
 package org.andengine.util.adt.list;
 
-import org.andengine.util.adt.list.IQueue;
-import org.andengine.util.adt.list.ISortedQueue;
-
-
-
 
 /**
  * This implementation is particular useful/efficient for enter/poll operations of elements that need to be sorted by natural order instead of the order they are queue.
@@ -52,12 +47,17 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	}
 
 	@Override
-	public T get(int pIndex) throws IndexOutOfBoundsException {
+	public T get(final int pIndex) throws IndexOutOfBoundsException {
 		return this.mQueue.get(pIndex);
 	}
 
 	@Override
-	public void enter(int pIndex, T pItem) {
+	public int indexOf(final T pItem) {
+		return this.binarySearch(pItem, false);
+	}
+
+	@Override
+	public void enter(final int pIndex, final T pItem) {
 		this.mQueue.enter(pItem);
 	}
 
@@ -87,7 +87,7 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	}
 
 	@Override
-	public T remove(int pIndex) {
+	public T remove(final int pIndex) {
 		return this.mQueue.remove(pIndex);
 	}
 
@@ -115,10 +115,6 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	// Methods
 	// ===========================================================
 
-	public int binarySearch(final T pItem) {
-		return this.binarySearch(pItem, false);
-	}
-
 	private int binarySearch(final T pItem, final boolean pReturnSequenceEndIfNoEqualItemFound) {
 		final int guess = this.binarySearch(0, this.mQueue.size(), pItem);
 		if(guess >= 0) {
@@ -128,23 +124,24 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 		}
 	}
 
-	private int binarySearch(final int pStart, int pEnd, T pItem) {
+	private int binarySearch(final int pStart, final int pEnd, final T pItem) {
 		int low = pStart;
 		int high = pEnd - 1;
 
-		while (low <= high) {
+		while(low <= high) {
 			final int mid = (low + high) >>> 1;
 			final T midVal = this.mQueue.get(mid);
 
 			final int diff = pItem.compareTo(midVal);
-			if (diff > 0)
+			if(diff > 0) {
 				low = mid + 1;
-			else if (diff < 0)
+			} else if(diff < 0) {
 				high = mid - 1;
-			else
+			} else {
 				return mid;
+			}
 		}
-		return encodeInsertionIndex(low); 
+		return SortedQueue.encodeInsertionIndex(low);
 	}
 
 	/**
@@ -160,14 +157,14 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	private int scanForEqualItem(final int pStart, final int pEnd, final int pGuess, final T pItem, final boolean pReturnSequenceEndIfNoEqualItemFound) {
 		/* Quickly move to the beginning of the sequence. */
 		int i = pGuess - 1;
-		while((i >= pStart) && (pItem.compareTo((T) this.mQueue.get(i)) == 0)) {
+		while((i >= pStart) && (pItem.compareTo(this.mQueue.get(i)) == 0)) {
 			i--;
 		}
 		i++;
 
 		/* From the beginning of the sequence, advance until the first item equals pItem or the end has been reached. */
 		while(i < pEnd) {
-			final T item = (T) this.mQueue.get(i);
+			final T item = this.mQueue.get(i);
 			if(i <= pGuess) {
 				/* Since the compartTo check has already been performed, only equals needs to be checked. */
 				if(pItem.equals(item)) {

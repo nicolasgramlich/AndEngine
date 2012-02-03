@@ -21,6 +21,7 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 	// ===========================================================
 
 	private static final int CAPACITY_INITIAL_DEFAULT = 1;
+	private static final int INDEX_INVALID = -1;
 
 	// ===========================================================
 	// Fields
@@ -62,6 +63,32 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 		this.mSize++;
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public T get(final int pIndex) throws ArrayIndexOutOfBoundsException {
+		return (T) this.mItems[this.encodeToInternalIndex(pIndex)];
+	}
+
+	@Override
+	public int indexOf(final T pItem) {
+		final int size = this.size();
+		if(pItem == null) {
+			for(int i = 0; i < size; i++) {
+				if(this.get(i) == null) {
+					return i;
+				}
+			}
+		} else {
+			for(int i = 0; i < size; i++) {
+				if(pItem.equals(this.get(i))) {
+					this.remove(i);
+					return i;
+				}
+			}
+		}
+		return CircularQueue.INDEX_INVALID;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public T peek() {
@@ -90,12 +117,6 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 			}
 			return item;
 		}
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public T get(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		return (T) this.mItems[this.encodeToInternalIndex(pIndex)];
 	}
 
 	@Override
@@ -157,23 +178,13 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 
 	@Override
 	public boolean remove(final T pItem) {
-		final int size = this.size();
-		if(pItem == null) {
-			for(int i = 0; i < size; i++) {
-				if(this.get(i) == null) {
-					this.remove(i);
-					return true;
-				}
-			}
+		final int index = this.indexOf(pItem);
+		if(index == CircularQueue.INDEX_INVALID) {
+			return false;
 		} else {
-			for(int i = 0; i < size; i++) {
-				if(pItem.equals(this.get(i))) {
-					this.remove(i);
-					return true;
-				}
-			}
+			this.remove(index);
+			return true;
 		}
-		return false;
 	}
 
 	@Override

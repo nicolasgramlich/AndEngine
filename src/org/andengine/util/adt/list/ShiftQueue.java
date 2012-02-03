@@ -23,6 +23,7 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	// ===========================================================
 
 	private static final int CAPACITY_INITIAL_DEFAULT = 1;
+	private static final int INDEX_INVALID = -1;
 
 	// ===========================================================
 	// Fields
@@ -61,6 +62,24 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	@SuppressWarnings("unchecked")
 	public T get(final int pIndex) throws ArrayIndexOutOfBoundsException {
 		return (T) this.mItems[this.mHead + pIndex];
+	}
+
+	@Override
+	public int indexOf(final T pItem) {
+		if(pItem == null) {
+			for(int i = this.mHead; i < this.mTail; i++) {
+				if(this.mItems[i] == null) {
+					return i - this.mHead;
+				}
+			}
+		} else {
+			for(int i = this.mHead; i < this.mTail; i++) {
+				if(pItem.equals(this.mItems[i])) {
+					return i - this.mHead;
+				}
+			}
+		}
+		return ShiftQueue.INDEX_INVALID;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -114,22 +133,13 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 
 	@Override
 	public boolean remove(final T pItem) {
-		if(pItem == null) {
-			for(int i = this.mHead; i < this.mTail; i++) {
-				if(this.mItems[i] == null) {
-					this.remove(i);
-					return true;
-				}
-			}
+		final int index = this.indexOf(pItem);
+		if(index == ShiftQueue.INDEX_INVALID) {
+			return false;
 		} else {
-			for(int i = this.mHead; i < this.mTail; i++) {
-				if(pItem.equals(this.mItems[i])) {
-					this.remove(i);
-					return true;
-				}
-			}
+			this.remove(index);
+			return true;
 		}
-		return false;
 	}
 
 	@Override

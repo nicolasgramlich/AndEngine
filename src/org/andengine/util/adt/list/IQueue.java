@@ -17,12 +17,13 @@ public interface IQueue<T> {
 
 	public boolean isEmpty();
 	public T get(final int pIndex) throws IndexOutOfBoundsException;
-	public void enter(final T pItem);
-	public void enter(final int pIndex, final T pItem);
-	public T remove(final int pIndex);
-	public boolean remove(final T pItem);
-	public int size();
+	public int indexOf(final T pItem);
 	public T peek();
 	public T poll();
+	public void enter(final T pItem);
+	public void enter(final int pIndex, final T pItem) throws IndexOutOfBoundsException;
+	public boolean remove(final T pItem);
+	public T remove(final int pIndex) throws IndexOutOfBoundsException;
+	public int size();
 	public void clear();
 }

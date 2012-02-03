@@ -46,6 +46,11 @@ public class SynchronizedList<T> implements IList<T> {
 	}
 
 	@Override
+	public synchronized int indexOf(final T pItem) {
+		return this.mList.indexOf(pItem);
+	}
+
+	@Override
 	public synchronized void add(final T pItem) {
 		this.mList.add(pItem);
 	}

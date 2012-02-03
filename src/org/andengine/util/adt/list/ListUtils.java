@@ -61,6 +61,12 @@ public final class ListUtils {
 		return out;
 	}
 
+	public static <T> void swap(final List<T> pItems, final int pIndexA, final int pIndexB) {
+		final T tmp = pItems.get(pIndexA);
+		pItems.set(pIndexA, pItems.get(pIndexB));
+		pItems.set(pIndexB, tmp);
+	}
+
 	public static <T> void swap(final IList<T> pItems, final int pIndexA, final int pIndexB) {
 		final T tmp = pItems.get(pIndexA);
 		pItems.set(pIndexA, pItems.get(pIndexB));

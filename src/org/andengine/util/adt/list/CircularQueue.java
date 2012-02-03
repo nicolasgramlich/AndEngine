@@ -70,6 +70,11 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 	}
 
 	@Override
+	public void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
+		this.mItems[this.encodeToInternalIndex(pIndex)] = pItem;
+	}
+
+	@Override
 	public int indexOf(final T pItem) {
 		final int size = this.size();
 		if(pItem == null) {
@@ -81,7 +86,6 @@ public class CircularQueue<T> implements IQueue<T>, IList<T> {
 		} else {
 			for(int i = 0; i < size; i++) {
 				if(pItem.equals(this.get(i))) {
-					this.remove(i);
 					return i;
 				}
 			}

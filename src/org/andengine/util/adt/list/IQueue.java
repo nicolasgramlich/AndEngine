@@ -17,6 +17,7 @@ public interface IQueue<T> {
 
 	public boolean isEmpty();
 	public T get(final int pIndex) throws IndexOutOfBoundsException;
+	public void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException;
 	public int indexOf(final T pItem);
 	public T peek();
 	public T poll();

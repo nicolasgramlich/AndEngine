@@ -41,8 +41,13 @@ public class SynchronizedList<T> implements IList<T> {
 	}
 
 	@Override
-	public synchronized T get(final int pIndex) {
+	public synchronized T get(final int pIndex) throws IndexOutOfBoundsException {
 		return this.mList.get(pIndex);
+	}
+
+	@Override
+	public synchronized void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
+		this.mList.set(pIndex, pItem);
 	}
 
 	@Override
@@ -56,7 +61,7 @@ public class SynchronizedList<T> implements IList<T> {
 	}
 
 	@Override
-	public synchronized void add(final int pIndex, final T pItem) {
+	public synchronized void add(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
 		this.mList.add(pIndex, pItem);
 	}
 
@@ -66,7 +71,7 @@ public class SynchronizedList<T> implements IList<T> {
 	}
 
 	@Override
-	public synchronized T remove(final int pIndex) {
+	public synchronized T remove(final int pIndex) throws IndexOutOfBoundsException {
 		return this.mList.remove(pIndex);
 	}
 

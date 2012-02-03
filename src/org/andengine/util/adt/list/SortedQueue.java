@@ -52,11 +52,18 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	}
 
 	@Override
+	@Deprecated
+	public void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
+		this.mQueue.set(pIndex, pItem);
+	}
+
+	@Override
 	public int indexOf(final T pItem) {
 		return this.binarySearch(pItem, false);
 	}
 
 	@Override
+	@Deprecated
 	public void enter(final int pIndex, final T pItem) {
 		this.mQueue.enter(pItem);
 	}

@@ -65,6 +65,11 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	}
 
 	@Override
+	public void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
+		this.mItems[this.mHead + pIndex] = pItem;
+	}
+
+	@Override
 	public int indexOf(final T pItem) {
 		if(pItem == null) {
 			for(int i = this.mHead; i < this.mTail; i++) {
@@ -235,21 +240,21 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	// ===========================================================
 
 	public void shift() {
-		final int size = this.mTail - this.mHead; 
+		final int size = this.mTail - this.mHead;
 		if(size == 0) {
 			this.mHead = 0;
 			this.mTail = 0;
 		} else {
 			/* Copy items to the start of the array. */
 			System.arraycopy(this.mItems, this.mHead, this.mItems, 0, size);
-		
+
 			/* Null out old item references, ensuring not to overwrite just copied ones. */
 			final int start = Math.max(size, this.mHead);
 			final int end = Math.max(start, this.mTail);
 			if(start < end) {
 				Arrays.fill(this.mItems, start, end, null);
 			}
-		
+
 			this.mHead = 0;
 			this.mTail = size;
 		}
@@ -279,7 +284,7 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 		if(this.mHead == 0) {
 			final int size = this.mTail - this.mHead;
 			final int currentCapacity = this.mItems.length;
-	
+
 			/* Check if space problem can be solved by shifting. */
 			if(size < currentCapacity) {
 				if(size == 0) {
@@ -288,7 +293,7 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 				} else {
 					/* Shift array items one position to the right. */
 					System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead + 1, size);
-				
+
 					/* Null out old item reference. */
 					this.mItems[this.mHead] = null;
 					this.mHead++;

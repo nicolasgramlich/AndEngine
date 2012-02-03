@@ -7,7 +7,7 @@ import org.andengine.util.adt.list.concurrent.SynchronizedQueue;
 import org.andengine.util.math.MathUtils;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -41,7 +41,7 @@ public final class ListUtils {
 	public static final <T> IQueue<T> synchronizedQueue(final IQueue<T> pQueue) {
 		return new SynchronizedQueue<T>(pQueue);
 	}
-	
+
 	public static final <T> T random(final List<T> pList) {
 		return pList.get(MathUtils.random(0, pList.size() - 1));
 	}
@@ -59,6 +59,12 @@ public final class ListUtils {
 			out.add(pItems[i]);
 		}
 		return out;
+	}
+
+	public static <T> void swap(final IList<T> pItems, final int pIndexA, final int pIndexB) {
+		final T tmp = pItems.get(pIndexA);
+		pItems.set(pIndexA, pItems.get(pIndexB));
+		pItems.set(pIndexB, tmp);
 	}
 
 	// ===========================================================

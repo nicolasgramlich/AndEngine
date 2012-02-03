@@ -17,6 +17,7 @@ public interface IList<T> {
 
 	public boolean isEmpty();
 	public T get(final int pIndex) throws IndexOutOfBoundsException;
+	public void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException;
 	public int indexOf(final T pItem);
 	public void add(final T pItem);
 	public void add(final int pIndex, final T pItem) throws IndexOutOfBoundsException;

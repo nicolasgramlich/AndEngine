@@ -102,7 +102,7 @@ public class FloatArrayList implements IFloatList {
 		final int currentCapacity = this.mItems.length;
 		if(currentCapacity < pCapacity) {
 			/* Increase array size. */
-			final int newCapacity = (currentCapacity * 3) / 2 + 1;
+			final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
 			final float newItems[] = new float[newCapacity];
 			System.arraycopy(this.mItems, 0, newItems, 0, currentCapacity);
 			this.mItems = newItems;

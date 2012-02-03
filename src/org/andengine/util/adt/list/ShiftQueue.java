@@ -111,14 +111,57 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 
 	@Override
 	public void enter(final T pItem) {
-		this.ensureCapacityRight();
+		this.ensureShiftableRight();
 		this.mItems[this.mTail] = pItem;
 		this.mTail++;
 	}
 
 	@Override
 	public void enter(final int pIndex, final T pItem) throws ArrayIndexOutOfBoundsException {
-		this.enterInternal(pIndex + this.mHead, pItem);
+		final int size = this.mTail - this.mHead;
+		/* Check which side to shift to is more efficient. */
+		if(pIndex < (size >> 1)) {
+			/* Shift left. */
+			this.enterShiftingLeft(pIndex, pItem);
+		} else {
+			/* Shift right. */
+			this.enterShiftingRight(pIndex, pItem, size);
+		}
+	}
+
+	private void enterShiftingRight(final int pIndex, final T pItem, final int size) {
+		this.ensureShiftableRight();
+
+		/* Check if items need to be copied. */
+		final int shiftAmount = size - pIndex;
+		if(shiftAmount == 0) {
+			/* Nothing to shift, we can insert at the tail. */
+			this.mItems[this.mTail] = pItem;
+		} else {
+			/* Shift all items to the right of pIndex one to the right, so there is a free spot at pIndex. */
+			final int internalIndex = this.mHead + pIndex;
+			System.arraycopy(this.mItems, internalIndex, this.mItems, internalIndex + 1, shiftAmount);
+			this.mItems[internalIndex] = pItem;
+		}
+
+		this.mTail++;
+	}
+
+	private void enterShiftingLeft(final int pIndex, final T pItem) {
+		this.ensureShiftableLeft();
+
+		this.mHead--;
+
+		/* Check if items need to be copied. */
+		if(pIndex == 0) {
+			/* Nothing to shift, we can insert at the head. */
+			this.mItems[this.mHead] = pItem;
+		} else {
+			/* Shift all items to the left if pIndex one to the left, so there is a free spot at pIndex. */
+			System.arraycopy(this.mItems, this.mHead + 1, this.mItems, this.mHead, pIndex);
+			final int internalIndex = this.mHead + pIndex;
+			this.mItems[internalIndex] = pItem;
+		}
 	}
 
 	@Override
@@ -191,46 +234,28 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	// Methods
 	// ===========================================================
 
-	protected void enterInternal(final int pIndex, final T pItem) throws ArrayIndexOutOfBoundsException {
-		final int size = this.mTail - this.mHead;
-		if(pIndex < (size >> 1)) {
-			/* Shift left. */
-			this.ensureCapacityLeft();
-			System.arraycopy(this.mItems, this.mHead - 1, this.mItems, this.mHead, pIndex);
-			this.mItems[(this.mHead + pIndex) - 1] = pItem;
-			this.mHead--;
+	public void shift() {
+		final int size = this.mTail - this.mHead; 
+		if(size == 0) {
+			this.mHead = 0;
+			this.mTail = 0;
 		} else {
-			/* Shift right. */
-			this.ensureCapacityRight();
-			final int absoluteIndex = this.mHead + pIndex;
-			System.arraycopy(this.mItems, absoluteIndex, this.mItems, absoluteIndex + 1, size - pIndex);
-			this.mItems[absoluteIndex] = pItem;
-			this.mTail++;
-		}
-	}
-
-	private void ensureCapacityLeft() {
-		/* Check if there is room at the head. */
-		if(this.mHead == 0) {
-			final int size = this.mTail - this.mHead;
-			final int currentCapacity = this.mItems.length;
-
-			/* Check if space problem can be solved by shifting. */
-			if(size != currentCapacity) {
-				this.shiftRightByOne();
-			} else {
-				/* Increase array capacity. */
-				final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
-				final Object newItems[] = new Object[newCapacity];
-				System.arraycopy(this.mItems, 0, newItems, 1, currentCapacity);
-				this.mItems = newItems;
-				this.mHead++;
-				this.mTail++;
+			/* Copy items to the start of the array. */
+			System.arraycopy(this.mItems, this.mHead, this.mItems, 0, size);
+		
+			/* Null out old item references, ensuring not to overwrite just copied ones. */
+			final int start = Math.max(size, this.mHead);
+			final int end = Math.max(start, this.mTail);
+			if(start < end) {
+				Arrays.fill(this.mItems, start, end, null);
 			}
+		
+			this.mHead = 0;
+			this.mTail = size;
 		}
 	}
 
-	private void ensureCapacityRight() {
+	private void ensureShiftableRight() {
 		final int currentCapacity = this.mItems.length;
 		/* Check if tail reached the end. */
 		if(this.mTail == currentCapacity) {
@@ -238,7 +263,7 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 
 			/* Check if space problem can be solved by shifting. */
 			if(size != currentCapacity) {
-				this.shiftLeft();
+				this.shift();
 			} else {
 				/* Increase array capacity. */
 				final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
@@ -249,40 +274,35 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 		}
 	}
 
-	private void shiftLeft() {
-		final int size = this.mTail - this.mHead;
-		if(size == 0) {
-			this.mHead = 0;
-			this.mTail = 0;
-		} else {
-			/* Copy items to the start of the array. */
-			System.arraycopy(this.mItems, this.mHead, this.mItems, 0, size);
-
-			/* Null out old item references, ensuring not to overwrite just copied ones. */
-			final int start = Math.max(size, this.mHead);
-			final int end = Math.max(start, this.mTail);
-			if(start < end) {
-				Arrays.fill(this.mItems, start, end, null);
+	private void ensureShiftableLeft() {
+		/* Check if there is room at the head. */
+		if(this.mHead == 0) {
+			final int size = this.mTail - this.mHead;
+			final int currentCapacity = this.mItems.length;
+	
+			/* Check if space problem can be solved by shifting. */
+			if(size < currentCapacity) {
+				if(size == 0) {
+					this.mHead = 1;
+					this.mTail = 1;
+				} else {
+					/* Shift array items one position to the right. */
+					System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead + 1, size);
+				
+					/* Null out old item reference. */
+					this.mItems[this.mHead] = null;
+					this.mHead++;
+					this.mTail++;
+				}
+			} else {
+				/* Increase array capacity. */
+				final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
+				final Object newItems[] = new Object[newCapacity];
+				System.arraycopy(this.mItems, 0, newItems, 1, currentCapacity);
+				this.mItems = newItems;
+				this.mHead++;
+				this.mTail++;
 			}
-
-			this.mHead = 0;
-			this.mTail = size;
-		}
-	}
-
-	private void shiftRightByOne() {
-		final int size = this.mTail - this.mHead;
-		if(size == 0) {
-			this.mHead = 1;
-			this.mTail = 1;
-		} else {
-			/* Shift array items one position to the right. */
-			System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead + 1, size);
-
-			/* Null out old item reference. */
-			this.mItems[this.mHead] = null;
-			this.mHead++;
-			this.mTail++;
 		}
 	}
 

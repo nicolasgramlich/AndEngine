@@ -16,11 +16,11 @@ public interface IList<T> {
 	// ===========================================================
 
 	public boolean isEmpty();
-	public T get(final int pIndex);
+	public T get(final int pIndex) throws ArrayIndexOutOfBoundsException;
 	public void add(final T pItem);
-	public void add(final int pIndex, final T pItem);
+	public void add(final int pIndex, final T pItem) throws ArrayIndexOutOfBoundsException;
 	public boolean remove(final T pItem);
-	public T remove(final int pIndex);
+	public T remove(final int pIndex) throws ArrayIndexOutOfBoundsException;
 	public int size();
 	public void clear();
 }

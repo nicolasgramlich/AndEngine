@@ -1,7 +1,5 @@
 package org.andengine.util.adt.list;
 
-
-
 /**
  * TODO This class could take some kind of AllocationStrategy object.
  *
@@ -45,6 +43,16 @@ public class FloatArrayList implements IFloatList {
 	// ===========================================================
 
 	@Override
+	public boolean isEmpty() {
+		return this.mSize == 0;
+	}
+
+	@Override
+	public float get(final int pIndex) throws ArrayIndexOutOfBoundsException {
+		return this.mItems[pIndex];
+	}
+
+	@Override
 	public void add(final float pItem) {
 		this.ensureCapacity(this.mSize + 1);
 
@@ -54,8 +62,6 @@ public class FloatArrayList implements IFloatList {
 
 	@Override
 	public void add(final int pIndex, final float pItem) throws ArrayIndexOutOfBoundsException {
-		this.rangeCheckForAdd(pIndex);
-
 		this.ensureCapacity(this.mSize + 1);
 
 		System.arraycopy(this.mItems, pIndex, this.mItems, pIndex + 1, this.mSize - pIndex);
@@ -65,16 +71,7 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
-	public float get(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		this.rangeCheck(pIndex);
-
-		return this.mItems[pIndex];
-	}
-
-	@Override
 	public float remove(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		this.rangeCheck(pIndex);
-
 		final float oldValue = this.mItems[pIndex];
 
 		final int numMoved = this.mSize - pIndex - 1;
@@ -88,6 +85,11 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
+	public int size() {
+		return this.mSize;
+	}
+
+	@Override
 	public void clear() {
 		this.mSize = 0;
 	}
@@ -95,18 +97,6 @@ public class FloatArrayList implements IFloatList {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private void rangeCheck(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		if(pIndex >= this.mSize) {
-			throw new ArrayIndexOutOfBoundsException(pIndex);
-		}
-	}
-
-	private void rangeCheckForAdd(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		if(pIndex > this.mSize || pIndex < 0) {
-			throw new ArrayIndexOutOfBoundsException(pIndex);
-		}
-	}
 
 	private void ensureCapacity(final int pCapacity) {
 		final int currentCapacity = this.mItems.length;

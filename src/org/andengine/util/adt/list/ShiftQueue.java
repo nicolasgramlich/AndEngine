@@ -2,8 +2,9 @@ package org.andengine.util.adt.list;
 
 import java.util.Arrays;
 
-
 /**
+ * TODO This class could take some kind of AllocationStrategy object.
+ *
  * This implementation is particular useful/efficient for enter/poll operations.
  * Its {@link java.util.Queue} like behavior performs better than a plain {@link java.util.ArrayList}, since it automatically shift the contents of its internal Array only when really necessary.
  * Besides sparse allocations to increase the size of the internal Array, {@link ShiftQueue} is allocation free (unlike the {@link java.util.LinkedList} family).
@@ -65,7 +66,7 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T peek() {
-		if(this.isEmpty()) {
+		if(this.mHead == this.mTail) {
 			return null;
 		} else {
 			return (T) this.mItems[this.mHead];
@@ -75,12 +76,16 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T poll() {
-		if(this.isEmpty()) {
+		if(this.mHead == this.mTail) {
 			return null;
 		} else {
 			final T item = (T) this.mItems[this.mHead];
 			this.mItems[this.mHead] = null;
 			this.mHead++;
+			if(this.mHead == this.mTail) {
+				this.mHead = 0;
+				this.mTail = 0;
+			}
 			return item;
 		}
 	}
@@ -107,37 +112,19 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 		this.enter(pIndex, pItem);
 	}
 
-	protected void enterInternal(final int pIndex, final T pItem) throws ArrayIndexOutOfBoundsException {
-		final int size = this.mTail - this.mHead;
-		if(pIndex < (size >> 1)) {
-			// shift left
-			this.ensureCapacityLeft();
-			System.arraycopy(this.mItems, this.mHead - 1, this.mItems, this.mHead, pIndex);
-			this.mItems[(this.mHead + pIndex) - 1] = pItem;
-			this.mHead--;
-		} else {
-			// shift right
-			this.ensureCapacityRight();
-			final int absoluteIndex = this.mHead + pIndex;
-			System.arraycopy(this.mItems, absoluteIndex, this.mItems, absoluteIndex + 1, size - pIndex);
-			this.mItems[absoluteIndex] = pItem;
-			this.mTail++;
-		}
-	}
-
 	@Override
 	public boolean remove(final T pItem) {
-		if (pItem == null) {
-			for (int index = this.mHead; index < this.mTail; index++) {
-				if (this.mItems[index] == null) {
-					this.remove(index);
+		if(pItem == null) {
+			for(int i = this.mHead; i < this.mTail; i++) {
+				if(this.mItems[i] == null) {
+					this.remove(i);
 					return true;
 				}
 			}
 		} else {
-			for (int index = this.mHead; index < this.mTail; index++) {
-				if (pItem.equals(this.mItems[index])) {
-					this.remove(index);
+			for(int i = this.mHead; i < this.mTail; i++) {
+				if(pItem.equals(this.mItems[i])) {
+					this.remove(i);
 					return true;
 				}
 			}
@@ -193,6 +180,24 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected void enterInternal(final int pIndex, final T pItem) throws ArrayIndexOutOfBoundsException {
+		final int size = this.mTail - this.mHead;
+		if(pIndex < (size >> 1)) {
+			/* Shift left. */
+			this.ensureCapacityLeft();
+			System.arraycopy(this.mItems, this.mHead - 1, this.mItems, this.mHead, pIndex);
+			this.mItems[(this.mHead + pIndex) - 1] = pItem;
+			this.mHead--;
+		} else {
+			/* Shift right. */
+			this.ensureCapacityRight();
+			final int absoluteIndex = this.mHead + pIndex;
+			System.arraycopy(this.mItems, absoluteIndex, this.mItems, absoluteIndex + 1, size - pIndex);
+			this.mItems[absoluteIndex] = pItem;
+			this.mTail++;
+		}
+	}
 
 	private void ensureCapacityLeft() {
 		/* Check if there is room at the head. */

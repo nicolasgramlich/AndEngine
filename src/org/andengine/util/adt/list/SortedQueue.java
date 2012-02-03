@@ -77,9 +77,9 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 			return this.mQueue.remove(pItem);
 		}
 
-		final int internalIndex = this.binarySearch(pItem, false);
-		if(internalIndex >= 0) {
-			this.mQueue.remove(internalIndex);
+		final int index = this.binarySearch(pItem, false);
+		if(index >= 0) {
+			this.mQueue.remove(index);
 			return true;
 		} else {
 			return false;

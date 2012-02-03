@@ -116,9 +116,10 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	// ===========================================================
 
 	private int binarySearch(final T pItem, final boolean pReturnSequenceEndIfNoEqualItemFound) {
-		final int guess = this.binarySearch(0, this.mQueue.size(), pItem);
+		final int size = this.mQueue.size();
+		final int guess = this.binarySearch(0, size, pItem);
 		if(guess >= 0) {
-			return this.scanForEqualItem(0, this.mQueue.size(), guess, pItem, pReturnSequenceEndIfNoEqualItemFound);
+			return this.scanForEqualItem(0, size, guess, pItem, pReturnSequenceEndIfNoEqualItemFound);
 		} else {
 			return guess;
 		}

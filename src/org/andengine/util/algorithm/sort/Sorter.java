@@ -3,6 +3,8 @@ package org.andengine.util.algorithm.sort;
 import java.util.Comparator;
 import java.util.List;
 
+import org.andengine.util.adt.list.IList;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -33,8 +35,8 @@ public abstract class Sorter<T> {
 	// ===========================================================
 
 	public abstract void sort(final T[] pArray, final int pStart, final int pEnd, final Comparator<T> pComparator);
-
 	public abstract void sort(final List<T> pList, final int pStart, final int pEnd, final Comparator<T> pComparator);
+	public abstract void sort(final IList<T> pList, final int pStart, final int pEnd, final Comparator<T> pComparator);
 
 	// ===========================================================
 	// Methods
@@ -45,6 +47,10 @@ public abstract class Sorter<T> {
 	}
 
 	public final void sort(final List<T> pList, final Comparator<T> pComparator){
+		this.sort(pList, 0, pList.size(), pComparator);
+	}
+
+	public final void sort(final IList<T> pList, final Comparator<T> pComparator){
 		this.sort(pList, 0, pList.size(), pComparator);
 	}
 

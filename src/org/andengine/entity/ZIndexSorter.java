@@ -3,6 +3,7 @@ package org.andengine.entity;
 import java.util.Comparator;
 import java.util.List;
 
+import org.andengine.util.adt.list.IList;
 import org.andengine.util.algorithm.sort.InsertionSorter;
 
 /**
@@ -70,6 +71,14 @@ public class ZIndexSorter extends InsertionSorter<IEntity> {
 	}
 
 	public void sort(final List<IEntity> pEntities, final int pStart, final int pEnd) {
+		this.sort(pEntities, pStart, pEnd, this.mZIndexComparator);
+	}
+
+	public void sort(final IList<IEntity> pEntities) {
+		this.sort(pEntities, this.mZIndexComparator);
+	}
+
+	public void sort(final IList<IEntity> pEntities, final int pStart, final int pEnd) {
 		this.sort(pEntities, pStart, pEnd, this.mZIndexComparator);
 	}
 

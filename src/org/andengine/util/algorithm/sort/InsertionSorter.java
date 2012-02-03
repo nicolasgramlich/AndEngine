@@ -3,6 +3,8 @@ package org.andengine.util.algorithm.sort;
 import java.util.Comparator;
 import java.util.List;
 
+import org.andengine.util.adt.list.IList;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -50,6 +52,22 @@ public class InsertionSorter<T> extends Sorter<T> {
 
 	@Override
 	public void sort(final List<T> pList, final int pStart, final int pEnd, final Comparator<T> pComparator) {
+		for(int i = pStart + 1; i < pEnd; i++) {
+			final T current = pList.get(i);
+			T prev = pList.get(i - 1);
+			if(pComparator.compare(current, prev) < 0) {
+				int j = i;
+				do {
+					pList.set(j--, prev);
+				} while(j > pStart && pComparator.compare(current, prev = pList.get(j - 1)) < 0);
+				pList.set(j, current);
+			}
+		}
+		return;
+	}
+
+	@Override
+	public void sort(final IList<T> pList, final int pStart, final int pEnd, final Comparator<T> pComparator) {
 		for(int i = pStart + 1; i < pEnd; i++) {
 			final T current = pList.get(i);
 			T prev = pList.get(i - 1);

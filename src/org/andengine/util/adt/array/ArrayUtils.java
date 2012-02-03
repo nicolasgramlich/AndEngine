@@ -65,13 +65,13 @@ public final class ArrayUtils {
 	}
 
 	public static final void reverse(final byte[] pArray) {
-		if (pArray == null) {
+		if(pArray == null) {
 			return;
 		}
 		int i = 0;
 		int j = pArray.length - 1;
 		byte tmp;
-		while (j > i) {
+		while(j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -81,13 +81,13 @@ public final class ArrayUtils {
 	}
 
 	public static final void reverse(final short[] pArray) {
-		if (pArray == null) {
+		if(pArray == null) {
 			return;
 		}
 		int i = 0;
 		int j = pArray.length - 1;
 		short tmp;
-		while (j > i) {
+		while(j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -97,13 +97,13 @@ public final class ArrayUtils {
 	}
 
 	public static final void reverse(final int[] pArray) {
-		if (pArray == null) {
+		if(pArray == null) {
 			return;
 		}
 		int i = 0;
 		int j = pArray.length - 1;
 		int tmp;
-		while (j > i) {
+		while(j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -113,13 +113,13 @@ public final class ArrayUtils {
 	}
 
 	public static final void reverse(final long[] pArray) {
-		if (pArray == null) {
+		if(pArray == null) {
 			return;
 		}
 		int i = 0;
 		int j = pArray.length - 1;
 		long tmp;
-		while (j > i) {
+		while(j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -129,13 +129,13 @@ public final class ArrayUtils {
 	}
 
 	public static final void reverse(final float[] pArray) {
-		if (pArray == null) {
+		if(pArray == null) {
 			return;
 		}
 		int i = 0;
 		int j = pArray.length - 1;
 		float tmp;
-		while (j > i) {
+		while(j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -145,13 +145,13 @@ public final class ArrayUtils {
 	}
 
 	public static final void reverse(final double[] pArray) {
-		if (pArray == null) {
+		if(pArray == null) {
 			return;
 		}
 		int i = 0;
 		int j = pArray.length - 1;
 		double tmp;
-		while (j > i) {
+		while(j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -161,13 +161,13 @@ public final class ArrayUtils {
 	}
 
 	public static final void reverse(final Object[] pArray) {
-		if (pArray == null) {
+		if(pArray == null) {
 			return;
 		}
 		int i = 0;
 		int j = pArray.length - 1;
 		Object tmp;
-		while (j > i) {
+		while(j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -321,7 +321,7 @@ public final class ArrayUtils {
 	 * @return <code>null</code> when pArrays is <code>null</code> or all arrays in pArrays are <code>null</code> or of length zero. Otherwise an in-order joined array of <code>T[]</code> of all not null, not zero length arrays in pArrays.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] join(final Class<T> pClass, final T[] ... pArrays) {
+	public static <T> T[] join(final Class<T> pClass, final T[]... pArrays) {
 		if(pArrays == null) {
 			return null;
 		}
@@ -360,8 +360,8 @@ public final class ArrayUtils {
 	}
 
 	public static int idealByteArraySize(final int pSize) {
-		for (int i = 4; i < 32; i++) {
-			if (pSize <= ((1 << i) - 12)) {
+		for(int i = 4; i < 32; i++) {
+			if(pSize <= ((1 << i) - 12)) {
 				return (1 << i) - 12;
 			}
 		}

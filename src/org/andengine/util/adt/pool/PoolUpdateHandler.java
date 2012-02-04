@@ -1,9 +1,9 @@
 package org.andengine.util.adt.pool;
 
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.util.adt.list.IQueue;
-import org.andengine.util.adt.list.ShiftQueue;
-import org.andengine.util.adt.list.concurrent.SynchronizedQueue;
+import org.andengine.util.adt.list.ShiftList;
+import org.andengine.util.adt.queue.IQueue;
+import org.andengine.util.adt.queue.concurrent.SynchronizedQueue;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -24,7 +24,7 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 	// ===========================================================
 
 	private final Pool<T> mPool;
-	private final IQueue<T> mScheduledPoolItemQueue = new SynchronizedQueue<T>(new ShiftQueue<T>());
+	private final IQueue<T> mScheduledPoolItemQueue = new SynchronizedQueue<T>(new ShiftList<T>());
 
 	// ===========================================================
 	// Constructors

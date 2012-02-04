@@ -1,23 +1,19 @@
 package org.andengine.util.adt.list;
 
-import java.util.ArrayList;
-
 import org.andengine.util.IMatcher;
 import org.andengine.util.call.ParameterCallable;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
  * @since 22:20:08 - 27.12.2010
  */
-public class SmartList<T> extends ArrayList<T> {
+public class SmartList<T> extends ShiftList<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final long serialVersionUID = -8335986399182700102L;
 
 	// ===========================================================
 	// Fields

@@ -1,4 +1,6 @@
-package org.andengine.util.adt.list;
+package org.andengine.util.adt.queue;
+
+import org.andengine.util.adt.list.IList;
 
 /**
  * (c) Zynga 2012
@@ -6,7 +8,7 @@ package org.andengine.util.adt.list;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:00:30 - 24.01.2012
  */
-public interface IQueue<T> {
+public interface IQueue<T> extends IList<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -15,16 +17,8 @@ public interface IQueue<T> {
 	// Methods
 	// ===========================================================
 
-	public boolean isEmpty();
-	public T get(final int pIndex) throws IndexOutOfBoundsException;
-	public void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException;
-	public int indexOf(final T pItem);
 	public T peek();
 	public T poll();
 	public void enter(final T pItem);
 	public void enter(final int pIndex, final T pItem) throws IndexOutOfBoundsException;
-	public boolean remove(final T pItem);
-	public T remove(final int pIndex) throws IndexOutOfBoundsException;
-	public int size();
-	public void clear();
 }

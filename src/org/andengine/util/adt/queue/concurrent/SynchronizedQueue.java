@@ -1,6 +1,6 @@
-package org.andengine.util.adt.list.concurrent;
+package org.andengine.util.adt.queue.concurrent;
 
-import org.andengine.util.adt.list.IQueue;
+import org.andengine.util.adt.queue.IQueue;
 
 /**
  * (c) Zynga 2012
@@ -51,8 +51,18 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	}
 
 	@Override
-	public synchronized int indexOf(final T pItem) throws IndexOutOfBoundsException {
+	public synchronized int indexOf(final T pItem) {
 		return this.mQueue.indexOf(pItem);
+	}
+
+	@Override
+	public synchronized void add(final T pItem) {
+		this.mQueue.add(pItem);
+	}
+
+	@Override
+	public synchronized void add(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
+		this.mQueue.add(pIndex, pItem);
 	}
 
 	@Override
@@ -73,6 +83,16 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	@Override
 	public synchronized void enter(final int pIndex, final T pItem) throws IndexOutOfBoundsException{
 		this.mQueue.enter(pIndex, pItem);
+	}
+
+	@Override
+	public synchronized T removeFirst() {
+		return this.mQueue.removeFirst();
+	}
+
+	@Override
+	public synchronized T removeLast() {
+		return this.mQueue.removeLast();
 	}
 
 	@Override

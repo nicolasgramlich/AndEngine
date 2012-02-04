@@ -17,7 +17,7 @@ public class SynchronizedList<T> implements IList<T> {
 	// Fields
 	// ===========================================================
 
-	private final IList<T> mList;
+	protected final IList<T> mList;
 
 	// ===========================================================
 	// Constructors
@@ -63,6 +63,16 @@ public class SynchronizedList<T> implements IList<T> {
 	@Override
 	public synchronized void add(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
 		this.mList.add(pIndex, pItem);
+	}
+
+	@Override
+	public synchronized T removeFirst() {
+		return this.mList.removeFirst();
+	}
+
+	@Override
+	public synchronized T removeLast() {
+		return this.mList.removeLast();
 	}
 
 	@Override

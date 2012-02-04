@@ -1,10 +1,11 @@
 package org.andengine.util.adt.list;
 
 
+
 /**
  * This implementation is particular useful/efficient for enter/poll operations of elements that need to be sorted by natural order instead of the order they are queue.
- * Its {@link java.util.Queue} like behavior performs better than a plain {@link java.util.ArrayList}, since it automatically shift the contents of its internal Array only when really necessary.
- * Besides sparse allocations to increase the size of the internal Array, {@link com.zynga.mobileville.path.SortedQueue} is allocation free (unlike the {@link java.util.LinkedList} family).
+ * Its {@link java.util.List} like behavior performs better than a plain {@link java.util.ArrayList}, since it automatically shift the contents of its internal Array only when really necessary.
+ * Besides sparse allocations to increase the size of the internal Array, {@link com.zynga.mobileville.path.SortedList} is allocation free (unlike the {@link java.util.LinkedList} family).
  *
  * (c) Zynga 2012
  *
@@ -12,7 +13,7 @@ package org.andengine.util.adt.list;
  * @author Greg Haynes
  * @since 15:02:40 - 24.02.2012
  */
-public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
+public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,14 +24,14 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	// Fields
 	// ===========================================================
 
-	private final IQueue<T> mQueue;
+	private final IList<T> mList;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public SortedQueue(final IQueue<T> pQueue) {
-		this.mQueue = pQueue;
+	public SortedList(final IList<T> pList) {
+		this.mList = pList;
 	}
 
 	// ===========================================================
@@ -43,18 +44,18 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 
 	@Override
 	public boolean isEmpty() {
-		return this.mQueue.isEmpty();
+		return this.mList.isEmpty();
 	}
 
 	@Override
 	public T get(final int pIndex) throws IndexOutOfBoundsException {
-		return this.mQueue.get(pIndex);
+		return this.mList.get(pIndex);
 	}
 
 	@Override
 	@Deprecated
 	public void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
-		this.mQueue.set(pIndex, pItem);
+		this.mList.set(pIndex, pItem);
 	}
 
 	@Override
@@ -64,29 +65,39 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 
 	@Override
 	@Deprecated
-	public void enter(final int pIndex, final T pItem) {
-		this.mQueue.enter(pItem);
+	public void add(final int pIndex, final T pItem) {
+		this.mList.add(pItem);
 	}
 
 	@Override
-	public void enter(final T pItem) {
+	public void add(final T pItem) {
 		final int index = this.binarySearch(pItem, true);
 		if(index < 0) {
-			this.mQueue.enter(SortedQueue.encodeInsertionIndex(index), pItem);
+			this.mList.add(SortedList.encodeInsertionIndex(index), pItem);
 		} else {
-			this.mQueue.enter(index, pItem);
+			this.mList.add(index, pItem);
 		}
+	}
+
+	@Override
+	public T removeFirst() {
+		return this.mList.removeFirst();
+	}
+
+	@Override
+	public T removeLast() {
+		return this.mList.removeLast();
 	}
 
 	@Override
 	public boolean remove(final T pItem) {
 		if(pItem == null) {
-			return this.mQueue.remove(pItem);
+			return this.mList.remove(pItem);
 		}
 
 		final int index = this.binarySearch(pItem, false);
 		if(index >= 0) {
-			this.mQueue.remove(index);
+			this.mList.remove(index);
 			return true;
 		} else {
 			return false;
@@ -95,27 +106,17 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 
 	@Override
 	public T remove(final int pIndex) {
-		return this.mQueue.remove(pIndex);
+		return this.mList.remove(pIndex);
 	}
 
 	@Override
 	public int size() {
-		return this.mQueue.size();
-	}
-
-	@Override
-	public T peek() {
-		return this.mQueue.peek();
-	}
-
-	@Override
-	public T poll() {
-		return this.mQueue.poll();
+		return this.mList.size();
 	}
 
 	@Override
 	public void clear() {
-		this.mQueue.clear();
+		this.mList.clear();
 	}
 
 	// ===========================================================
@@ -123,7 +124,7 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	// ===========================================================
 
 	private int binarySearch(final T pItem, final boolean pReturnSequenceEndIfNoEqualItemFound) {
-		final int size = this.mQueue.size();
+		final int size = this.mList.size();
 		final int guess = this.binarySearch(0, size, pItem);
 		if(guess >= 0) {
 			return this.scanForEqualItem(0, size, guess, pItem, pReturnSequenceEndIfNoEqualItemFound);
@@ -138,7 +139,7 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 
 		while(low <= high) {
 			final int mid = (low + high) >>> 1;
-			final T midVal = this.mQueue.get(mid);
+			final T midVal = this.mList.get(mid);
 
 			final int diff = pItem.compareTo(midVal);
 			if(diff > 0) {
@@ -149,7 +150,7 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 				return mid;
 			}
 		}
-		return SortedQueue.encodeInsertionIndex(low);
+		return SortedList.encodeInsertionIndex(low);
 	}
 
 	/**
@@ -165,14 +166,14 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 	private int scanForEqualItem(final int pStart, final int pEnd, final int pGuess, final T pItem, final boolean pReturnSequenceEndIfNoEqualItemFound) {
 		/* Quickly move to the beginning of the sequence. */
 		int i = pGuess - 1;
-		while((i >= pStart) && (pItem.compareTo(this.mQueue.get(i)) == 0)) {
+		while((i >= pStart) && (pItem.compareTo(this.mList.get(i)) == 0)) {
 			i--;
 		}
 		i++;
 
 		/* From the beginning of the sequence, advance until the first item equals pItem or the end has been reached. */
 		while(i < pEnd) {
-			final T item = this.mQueue.get(i);
+			final T item = this.mList.get(i);
 			if(i <= pGuess) {
 				/* Since the compartTo check has already been performed, only equals needs to be checked. */
 				if(pItem.equals(item)) {
@@ -188,7 +189,7 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 					}
 				} else {
 					/* Return the last known position. */
-					return SortedQueue.encodeInsertionIndex(i);
+					return SortedList.encodeInsertionIndex(i);
 				}
 			}
 			i++;
@@ -197,7 +198,7 @@ public class SortedQueue<T extends Comparable<T>> implements ISortedQueue<T> {
 		if(pReturnSequenceEndIfNoEqualItemFound) {
 			return i;
 		} else {
-			return SortedQueue.INDEX_INVALID;
+			return SortedList.INDEX_INVALID;
 		}
 	}
 

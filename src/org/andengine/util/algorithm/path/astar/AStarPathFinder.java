@@ -1,8 +1,8 @@
 package org.andengine.util.algorithm.path.astar;
 
-import org.andengine.util.adt.list.ShiftQueue;
-import org.andengine.util.adt.list.SortedQueue;
+import org.andengine.util.adt.list.ShiftList;
 import org.andengine.util.adt.map.LongSparseArray;
+import org.andengine.util.adt.queue.SortedQueue;
 import org.andengine.util.adt.spatial.bounds.util.IntBoundsUtils;
 import org.andengine.util.algorithm.path.ICostFunction;
 import org.andengine.util.algorithm.path.IPathFinder;
@@ -64,7 +64,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 
 		final LongSparseArray<Node> visitedNodes = new LongSparseArray<Node>();
 		final LongSparseArray<Node> openNodes = new LongSparseArray<Node>();
-		final SortedQueue<Node> sortedOpenNodes = new SortedQueue<Node>(new ShiftQueue<Node>());
+		final SortedQueue<Node> sortedOpenNodes = new SortedQueue<Node>(new ShiftList<Node>());
 
 		final boolean allowDiagonalMovement = pAllowDiagonal;
 

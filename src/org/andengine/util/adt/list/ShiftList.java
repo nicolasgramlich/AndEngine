@@ -2,12 +2,14 @@ package org.andengine.util.adt.list;
 
 import java.util.Arrays;
 
+import org.andengine.util.adt.queue.IQueue;
+
 /**
  * TODO This class could take some kind of AllocationStrategy object.
  *
  * This implementation is particular useful/efficient for enter/poll operations.
  * Its {@link java.util.Queue} like behavior performs better than a plain {@link java.util.ArrayList}, since it automatically shift the contents of its internal Array only when really necessary.
- * Besides sparse allocations to increase the size of the internal Array, {@link ShiftQueue} is allocation free (unlike the {@link java.util.LinkedList} family).
+ * Besides sparse allocations to increase the size of the internal Array, {@link ShiftList} is allocation free (unlike the {@link java.util.LinkedList} family).
  * 
  * Supports <code>null</code> items.
  *
@@ -17,7 +19,7 @@ import java.util.Arrays;
  * @author Greg Haynes
  * @since 15:02:40 - 24.02.2012
  */
-public class ShiftQueue<T> implements IQueue<T>, IList<T> {
+public class ShiftList<T> implements IQueue<T>, IList<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -37,11 +39,11 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	// Constructors
 	// ===========================================================
 
-	public ShiftQueue() {
-		this(ShiftQueue.CAPACITY_INITIAL_DEFAULT);
+	public ShiftList() {
+		this(ShiftList.CAPACITY_INITIAL_DEFAULT);
 	}
 
-	public ShiftQueue(final int pInitialCapacity) {
+	public ShiftList(final int pInitialCapacity) {
 		this.mItems = new Object[pInitialCapacity];
 	}
 
@@ -84,7 +86,7 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 				}
 			}
 		}
-		return ShiftQueue.INDEX_INVALID;
+		return ShiftList.INDEX_INVALID;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -180,9 +182,19 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 	}
 
 	@Override
+	public T removeFirst() {
+		return this.remove(0);
+	}
+	
+	@Override
+	public T removeLast() {
+		return this.remove(this.size() - 1);
+	}
+
+	@Override
 	public boolean remove(final T pItem) {
 		final int index = this.indexOf(pItem);
-		if(index == ShiftQueue.INDEX_INVALID) {
+		if(index == ShiftList.INDEX_INVALID) {
 			return false;
 		} else {
 			this.remove(index);
@@ -190,22 +202,19 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T remove(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		return this.removeInternal(pIndex + this.mHead);
-	}
-
-	@SuppressWarnings("unchecked")
-	protected T removeInternal(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		final T removed = (T) this.mItems[pIndex];
+		final int internalIndex = this.mHead + pIndex;
+		final T removed = (T) this.mItems[internalIndex];
 
 		final int size = this.mTail - this.mHead;
 
 		/* Determine which side to shift to makes more sense. */
-		final int center = (this.mHead + this.mTail) >> 1;
+		final int center = size >> 1;
 		if(pIndex < center) {
 			/* Shift right. */
-			if(pIndex > this.mHead) {
+			if(internalIndex > this.mHead) {
 				System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead + 1, pIndex);
 			}
 			this.mItems[this.mHead] = null;
@@ -214,7 +223,7 @@ public class ShiftQueue<T> implements IQueue<T>, IList<T> {
 			/* Shift left. */
 			final int shiftAmount = size - pIndex - 1;
 			if(shiftAmount > 0) {
-				System.arraycopy(this.mItems, pIndex + 1, this.mItems, pIndex, shiftAmount);
+				System.arraycopy(this.mItems, internalIndex + 1, this.mItems, internalIndex, shiftAmount);
 			}
 			this.mTail--;
 			this.mItems[this.mTail] = null;

@@ -22,6 +22,8 @@ public interface IList<T> {
 	public void add(final T pItem);
 	public void add(final int pIndex, final T pItem) throws IndexOutOfBoundsException;
 	public boolean remove(final T pItem);
+	public T removeFirst();
+	public T removeLast();
 	public T remove(final int pIndex) throws IndexOutOfBoundsException;
 	public int size();
 	public void clear();

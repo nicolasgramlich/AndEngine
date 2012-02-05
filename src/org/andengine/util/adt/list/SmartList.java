@@ -1,5 +1,7 @@
 package org.andengine.util.adt.list;
 
+import java.util.ArrayList;
+
 import org.andengine.util.IMatcher;
 import org.andengine.util.call.ParameterCallable;
 
@@ -10,10 +12,12 @@ import org.andengine.util.call.ParameterCallable;
  * @author Nicolas Gramlich
  * @since 22:20:08 - 27.12.2010
  */
-public class SmartList<T> extends ShiftList<T> {
+public class SmartList<T> extends ArrayList<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final long serialVersionUID = 8655669528273139819L;
 
 	// ===========================================================
 	// Fields
@@ -22,6 +26,7 @@ public class SmartList<T> extends ShiftList<T> {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
 
 	public SmartList() {
 

@@ -1,7 +1,5 @@
 package org.andengine.entity;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import org.andengine.engine.camera.Camera;
@@ -11,11 +9,12 @@ import org.andengine.entity.modifier.EntityModifierList;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.ParameterCallable;
-import org.andengine.util.SmartList;
+import org.andengine.util.Constants;
+import org.andengine.util.adt.list.ListUtils;
+import org.andengine.util.adt.list.SmartList;
+import org.andengine.util.adt.transformation.Transformation;
+import org.andengine.util.call.ParameterCallable;
 import org.andengine.util.color.Color;
-import org.andengine.util.constants.Constants;
-import org.andengine.util.transformation.Transformation;
 
 
 /**
@@ -512,7 +511,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
-		if(this.mColor.setChanging(pRed, pGreen, pBlue)) { // TODO Is this check worth it?
+		if(this.mColor.setChecking(pRed, pGreen, pBlue)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}
@@ -525,7 +524,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(this.mColor.setChanging(pRed, pGreen, pBlue, pAlpha)) { // TODO Is this check worth it?
+		if(this.mColor.setChecking(pRed, pGreen, pBlue, pAlpha)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}
@@ -649,7 +648,7 @@ public class Entity implements IEntity {
 	@Override
 	public boolean swapChildren(final int pIndexA, final int pIndexB) {
 		try {
-			Collections.swap(this.mChildren, pIndexA, pIndexB);
+			ListUtils.swap(this.mChildren, pIndexA, pIndexB);
 			return true;
 		} catch (final IndexOutOfBoundsException e) {
 			return false;
@@ -1064,7 +1063,7 @@ public class Entity implements IEntity {
 		}
 
 		if(this.mChildren != null) {
-			final ArrayList<IEntity> entities = this.mChildren;
+			final SmartList<IEntity> entities = this.mChildren;
 			for(int i = entities.size() - 1; i >= 0; i--) {
 				entities.get(i).reset();
 			}
@@ -1102,7 +1101,7 @@ public class Entity implements IEntity {
 
 		if(this.mChildren != null && this.mChildren.size() > 0) {
 			pStringBuilder.append(" [");
-			final ArrayList<IEntity> entities = this.mChildren;
+			final SmartList<IEntity> entities = this.mChildren;
 			for(int i = 0; i < entities.size(); i++) {
 				entities.get(i).toString(pStringBuilder);
 				if(i < entities.size() - 1) {
@@ -1221,7 +1220,7 @@ public class Entity implements IEntity {
 		{
 			this.onApplyTransformations(pGLState);
 
-			final ArrayList<IEntity> children = this.mChildren;
+			final SmartList<IEntity> children = this.mChildren;
 			if(children == null || !this.mChildrenVisible) {
 				/* Draw only self. */
 				this.preDraw(pGLState, pCamera);
@@ -1270,7 +1269,7 @@ public class Entity implements IEntity {
 		}
 
 		if(this.mChildren != null && !this.mChildrenIgnoreUpdate) {
-			final ArrayList<IEntity> entities = this.mChildren;
+			final SmartList<IEntity> entities = this.mChildren;
 			final int entityCount = entities.size();
 			for(int i = 0; i < entityCount; i++) {
 				entities.get(i).onUpdate(pSecondsElapsed);

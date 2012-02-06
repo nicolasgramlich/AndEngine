@@ -6,7 +6,7 @@ import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.util.Callback;
+import org.andengine.util.call.Callback;
 
 
 /**

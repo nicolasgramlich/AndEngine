@@ -10,8 +10,8 @@ import java.util.zip.InflaterInputStream;
 
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy;
-import org.andengine.util.ArrayUtils;
 import org.andengine.util.StreamUtils;
+import org.andengine.util.adt.array.ArrayUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich

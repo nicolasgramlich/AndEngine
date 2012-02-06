@@ -6,8 +6,8 @@ import org.andengine.input.touch.detector.ClickDetector;
 import org.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.constants.TimeConstants;
 import org.andengine.util.math.MathUtils;
+import org.andengine.util.time.TimeConstants;
 
 import android.util.FloatMath;
 

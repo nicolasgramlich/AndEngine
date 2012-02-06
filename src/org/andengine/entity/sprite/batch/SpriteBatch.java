@@ -8,7 +8,7 @@ import org.andengine.entity.shape.Shape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
@@ -19,8 +19,8 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
+import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.color.Color;
-import org.andengine.util.transformation.Transformation;
 
 import android.opengl.GLES20;
 
@@ -356,7 +356,7 @@ public class SpriteBatch extends Shape {
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float)}.
 	 */
 	public void draw(final Sprite pSprite) {
-		this.draw(pSprite, pSprite.getColor().getPacked());
+		this.draw(pSprite, pSprite.getColor().getFloatPacked());
 	}
 
 	/**
@@ -400,7 +400,7 @@ public class SpriteBatch extends Shape {
 	}
 
 	public void drawWithoutChecks(final Sprite pSprite) {
-		this.drawWithoutChecks(pSprite, pSprite.getColor().getPacked());
+		this.drawWithoutChecks(pSprite, pSprite.getColor().getFloatPacked());
 	}
 
 	public void drawWithoutChecks(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {

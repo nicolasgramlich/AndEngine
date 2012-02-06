@@ -1,7 +1,7 @@
 package org.andengine.opengl.shader.source.criteria;
 
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.operator.StringOperator;
+import org.andengine.util.adt.data.operator.StringOperator;
 
 /**
  * (c) Zynga 2011

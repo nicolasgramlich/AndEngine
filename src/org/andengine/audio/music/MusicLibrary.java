@@ -1,6 +1,6 @@
 package org.andengine.audio.music;
 
-import org.andengine.util.Library;
+import org.andengine.util.adt.map.Library;
 
 /**
  * (c) Zynga 2011

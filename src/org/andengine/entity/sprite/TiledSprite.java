@@ -196,7 +196,7 @@ public class TiledSprite extends Sprite {
 		public void onUpdateColor(final TiledSprite pTiledSprite) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pTiledSprite.getColor().getPacked();
+			final float packedColor = pTiledSprite.getColor().getFloatPacked();
 
 			final int tileCount = pTiledSprite.getTileCount();
 			int bufferDataOffset = 0;
@@ -374,7 +374,7 @@ public class TiledSprite extends Sprite {
 		public void onUpdateColor(final TiledSprite pTiledSprite) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final float packedColor = pTiledSprite.getColor().getPacked();
+			final float packedColor = pTiledSprite.getColor().getFloatPacked();
 
 			final int tileCount = pTiledSprite.getTileCount();
 			int bufferDataOffset = 0;

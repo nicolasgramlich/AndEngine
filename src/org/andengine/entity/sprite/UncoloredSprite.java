@@ -4,7 +4,7 @@ import java.nio.FloatBuffer;
 
 import org.andengine.opengl.shader.PositionTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;

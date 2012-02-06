@@ -12,10 +12,10 @@ import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.GreedyPVR
 import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy;
 import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy.IPVRTexturePixelBufferStrategyBufferManager;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.ArrayUtils;
 import org.andengine.util.StreamUtils;
-import org.andengine.util.data.ByteBufferOutputStream;
-import org.andengine.util.data.DataConstants;
+import org.andengine.util.adt.DataConstants;
+import org.andengine.util.adt.array.ArrayUtils;
+import org.andengine.util.adt.io.ByteBufferOutputStream;
 import org.andengine.util.debug.Debug;
 import org.andengine.util.math.MathUtils;
 

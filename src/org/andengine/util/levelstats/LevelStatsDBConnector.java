@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.andengine.util.Callback;
-import org.andengine.util.SimplePreferences;
 import org.andengine.util.StreamUtils;
+import org.andengine.util.call.Callback;
 import org.andengine.util.debug.Debug;
 import org.andengine.util.math.MathUtils;
+import org.andengine.util.preferences.SimplePreferences;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;

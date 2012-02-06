@@ -1,6 +1,6 @@
 package org.andengine.util.algorithm;
 
-import org.andengine.util.path.Direction;
+import org.andengine.util.algorithm.path.Direction;
 
 /**
  * (c) Zynga 2011

@@ -1,6 +1,6 @@
 package org.andengine.util;
 
-import org.andengine.util.constants.TimeConstants;
+import org.andengine.util.time.TimeConstants;
 
 /**
  * (c) 2010 Nicolas Gramlich 

@@ -7,7 +7,7 @@ import java.util.Arrays;
 import javax.microedition.khronos.egl.EGLConfig;
 
 import org.andengine.engine.options.RenderOptions;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.render.RenderTexture;
 import org.andengine.opengl.view.ConfigChooser;

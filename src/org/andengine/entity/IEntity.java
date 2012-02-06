@@ -12,9 +12,9 @@ import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.entity.scene.Scene;
 import org.andengine.util.IDisposable;
 import org.andengine.util.IMatcher;
-import org.andengine.util.ParameterCallable;
+import org.andengine.util.adt.transformation.Transformation;
+import org.andengine.util.call.ParameterCallable;
 import org.andengine.util.color.Color;
-import org.andengine.util.transformation.Transformation;
 
 
 /**

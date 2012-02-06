@@ -12,7 +12,7 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.Callback;
+import org.andengine.util.call.Callback;
 
 /**
  * (c) 2010 Nicolas Gramlich

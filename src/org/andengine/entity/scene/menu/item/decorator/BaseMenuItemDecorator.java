@@ -14,8 +14,8 @@ import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.color.Color;
-import org.andengine.util.transformation.Transformation;
 
 /**
  * I HATE THIS CLASS!

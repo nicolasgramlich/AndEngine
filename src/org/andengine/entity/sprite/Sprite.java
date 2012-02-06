@@ -6,7 +6,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
@@ -247,7 +247,7 @@ public class Sprite extends RectangularShape {
 		public void onUpdateColor(final Sprite pSprite) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pSprite.getColor().getPacked();
+			final float packedColor = pSprite.getColor().getFloatPacked();
 
 			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
 			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
@@ -385,7 +385,7 @@ public class Sprite extends RectangularShape {
 		public void onUpdateColor(final Sprite pSprite) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final float packedColor = pSprite.getColor().getPacked();
+			final float packedColor = pSprite.getColor().getFloatPacked();
 
 			bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
 			bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);

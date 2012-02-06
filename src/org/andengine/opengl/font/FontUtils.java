@@ -2,7 +2,7 @@ package org.andengine.opengl.font;
 
 import java.util.List;
 
-import org.andengine.util.StringUtils;
+import org.andengine.util.TextUtils;
 import org.andengine.util.exception.MethodNotYetImplementedException;
 
 
@@ -44,7 +44,7 @@ public class FontUtils {
 	 * @param pText
 	 * @return the width of pText.
 	 */
-	public static float measureText(final IFont pFont, final String pText) {
+	public static float measureText(final IFont pFont, final CharSequence pText) {
 		return FontUtils.measureText(pFont, pText, null);
 	}
 
@@ -55,7 +55,7 @@ public class FontUtils {
 	 * @param pEnd <code>1</code> beyond the index of the last character to measure.
 	 * @return the width of pText.
 	 */
-	public static float measureText(final IFont pFont, final String pText, final int pStart, final int pEnd) {
+	public static float measureText(final IFont pFont, final CharSequence pText, final int pStart, final int pEnd) {
 		return FontUtils.measureText(pFont, pText, pStart, pEnd, null);
 	}
 
@@ -65,7 +65,7 @@ public class FontUtils {
 	 * @param pWidths (optional) If not <code>null</code>, returns the actual width measured.
 	 * @return the width of pText.
 	 */
-	public static float measureText(final IFont pFont, final String pText, final float[] pWidths) {
+	public static float measureText(final IFont pFont, final CharSequence pText, final float[] pWidths) {
 		return FontUtils.measureText(pFont, pText, 0, pText.length(), pWidths);
 	}
 
@@ -79,12 +79,12 @@ public class FontUtils {
 	 * @param pWidths (optional) If not <code>null</code>, returns the actual width after each character.
 	 * @return the width of pText.
 	 */
-	public static float measureText(final IFont pFont, final String pText, final int pStart, final int pEnd, final float[] pWidths) {
-		final int stringLength = pEnd - pStart;
+	public static float measureText(final IFont pFont, final CharSequence pText, final int pStart, final int pEnd, final float[] pWidths) {
+		final int textLength = pEnd - pStart;
 		/* Early exits. */
 		if(pStart == pEnd) {
 			return 0;
-		} else if(stringLength == 1) {
+		} else if(textLength == 1) {
 			return pFont.getLetter(pText.charAt(pStart)).mWidth;
 		}
 
@@ -116,17 +116,17 @@ public class FontUtils {
 	 *
 	 * @param pFont
 	 * @param pText
-	 * @param pMeasureDirection If {@link MeasureDirection#FORWARDS}, starts with the first character in the string. If {@link MeasureDirection#BACKWARDS} starts with the last character in the string.
+	 * @param pMeasureDirection If {@link MeasureDirection#FORWARDS}, starts with the first character in the {@link CharSequence}. If {@link MeasureDirection#BACKWARDS} starts with the last character in the {@link CharSequence}.
 	 * @param pWidthMaximum
 	 * @param pMeasuredWidth (optional) If not <code>null</code>, returns the actual width measured. Must be an Array of size <code>1</code> or bigger.
 	 * @return the number of chars that were measured.
 	 */
-	public static int breakText(final IFont pFont, final String pText, final MeasureDirection pMeasureDirection, final float pWidthMaximum, final float[] pMeasuredWidth) {
+	public static int breakText(final IFont pFont, final CharSequence pText, final MeasureDirection pMeasureDirection, final float pWidthMaximum, final float[] pMeasuredWidth) {
 		throw new MethodNotYetImplementedException();
 	}
 
-	public static <L extends List<String>> L splitLines(final String pText, final L pResult) {
-		return StringUtils.split(pText, '\n', pResult);
+	public static <L extends List<CharSequence>> L splitLines(final CharSequence pText, final L pResult) {
+		return TextUtils.split(pText, '\n', pResult);
 	}
 
 	/**
@@ -138,9 +138,9 @@ public class FontUtils {
 	 * @param pLineWidthMaximum
 	 * @return
 	 */
-	public static <L extends List<String>> L splitLines(final IFont pFont, final String pText, final L pResult, final float pLineWidthMaximum) {
+	public static <L extends List<CharSequence>> L splitLines(final IFont pFont, final CharSequence pText, final L pResult, final float pLineWidthMaximum) {
 		/**
-		 * TODO In order to respect already existing linebreaks, {@link FontUtils#split(String, List)} could be leveraged and than this method could be called for each line. 
+		 * TODO In order to respect already existing linebreaks, {@link FontUtils#split(CharSequence, List)} could be leveraged and than this method could be called for each line. 
 		 */
 		final int textLength = pText.length();
 
@@ -183,13 +183,13 @@ public class FontUtils {
 			/* Nothing more could be read. */
 			if(wordStart == wordEnd) {
 				if(!firstWordInLine) {
-					pResult.add(pText.substring(lineStart, lineEnd));
+					pResult.add(pText.subSequence(lineStart, lineEnd));
 				}
 				break;
 			}
 
 //			/* Just for debugging. */
-//			final String word = pText.substring(wordStart, wordEnd);
+//			final CharSequence word = pText.subSequence(wordStart, wordEnd);
 
 			final float wordWidth = FontUtils.measureText(pFont, pText, wordStart, wordEnd);
 
@@ -214,7 +214,7 @@ public class FontUtils {
 
 				/* Check if the end was reached. */
 				if(wordEnd == textLength) {
-					pResult.add(pText.substring(lineStart, lineEnd));
+					pResult.add(pText.subSequence(lineStart, lineEnd));
 					/* Added the last line. */
 					break;
 				}
@@ -223,14 +223,14 @@ public class FontUtils {
 				if(firstWordInLine) {
 					/* Check for lines that are just too big. */
 					if(wordWidth >= pLineWidthMaximum) {
-						pResult.add(pText.substring(wordStart, wordEnd));
+						pResult.add(pText.subSequence(wordStart, wordEnd));
 						lineWidthRemaining = pLineWidthMaximum;
 					} else {
 						lineWidthRemaining = pLineWidthMaximum - wordWidth;
 
 						/* Check if the end was reached. */
 						if(wordEnd == textLength) {
-							pResult.add(pText.substring(wordStart, wordEnd));
+							pResult.add(pText.subSequence(wordStart, wordEnd));
 							/* Added the last line. */
 							break;
 						}
@@ -243,12 +243,12 @@ public class FontUtils {
 					lineEnd = FontUtils.UNSPECIFIED;
 				} else {
 					/* Finish the current line. */
-					pResult.add(pText.substring(lineStart, lineEnd));
+					pResult.add(pText.subSequence(lineStart, lineEnd));
 
 					/* Check if the end was reached. */
 					if(wordEnd == textLength) {
 						/* Add the last word. */
-						pResult.add(pText.substring(wordStart, wordEnd)); // TODO Does this cover all cases?
+						pResult.add(pText.subSequence(wordStart, wordEnd)); // TODO Does this cover all cases?
 						break;
 					} else {
 						/* Start a new line, carrying over the current word. */
@@ -264,7 +264,7 @@ public class FontUtils {
 		return pResult;
 	}
 
-	private static float getAdvanceCorrection(final IFont pFont, final String pText, final int pIndex) {
+	private static float getAdvanceCorrection(final IFont pFont, final CharSequence pText, final int pIndex) {
 		final Letter lastWordLastLetter = pFont.getLetter(pText.charAt(pIndex));
 		return -(lastWordLastLetter.mOffsetX + lastWordLastLetter.mWidth) + lastWordLastLetter.mAdvance;
 	}

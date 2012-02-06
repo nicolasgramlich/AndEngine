@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.shape.IShape;
-import org.andengine.util.ListUtils;
+import org.andengine.util.adt.list.ListUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich 

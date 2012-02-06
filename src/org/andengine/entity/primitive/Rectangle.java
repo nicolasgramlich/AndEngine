@@ -5,7 +5,7 @@ import java.nio.FloatBuffer;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
@@ -170,7 +170,7 @@ public class Rectangle extends RectangularShape {
 		public void onUpdateColor(final Rectangle pRectangle) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pRectangle.getColor().getPacked();
+			final float packedColor = pRectangle.getColor().getFloatPacked();
 
 			bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
 			bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
@@ -242,7 +242,7 @@ public class Rectangle extends RectangularShape {
 		public void onUpdateColor(final Rectangle pRectangle) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final float packedColor = pRectangle.getColor().getPacked();
+			final float packedColor = pRectangle.getColor().getFloatPacked();
 
 			bufferData.put(0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
 			bufferData.put(1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);

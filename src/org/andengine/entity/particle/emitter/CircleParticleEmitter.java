@@ -1,7 +1,7 @@
 package org.andengine.entity.particle.emitter;
 
-import static org.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+import static org.andengine.util.Constants.VERTEX_INDEX_X;
+import static org.andengine.util.Constants.VERTEX_INDEX_Y;
 
 import org.andengine.util.math.MathConstants;
 import org.andengine.util.math.MathUtils;

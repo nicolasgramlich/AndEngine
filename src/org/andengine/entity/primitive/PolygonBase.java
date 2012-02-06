@@ -6,7 +6,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Rectangle.HighPerformanceRectangleVertexBufferObject;
 import org.andengine.entity.shape.PolygonShape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
@@ -209,7 +209,7 @@ public abstract class PolygonBase extends PolygonShape {
 			public void onUpdateColor(final PolygonBase pPolygon) {
 				final float[] bufferData = this.mBufferData;
 
-				final float packedColor = pPolygon.getColor().getPacked();
+				final float packedColor = pPolygon.getColor().getFloatPacked();
 				
 				int nbVertexInTriangles = pPolygon.getVertices().size();
 				for( int i = 0; i < nbVertexInTriangles; i++)

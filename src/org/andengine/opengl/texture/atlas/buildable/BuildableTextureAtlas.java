@@ -70,8 +70,8 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	}
 
 	@Override
-	public void setLoadedToHardware(final boolean pLoadedToHardware) {
-		this.mTextureAtlas.setLoadedToHardware(pLoadedToHardware);
+	public void setNotLoadedToHardware() {
+		this.mTextureAtlas.setNotLoadedToHardware();
 	}
 
 	@Override

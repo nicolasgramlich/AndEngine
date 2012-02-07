@@ -36,9 +36,6 @@ public class Font implements IFont {
 
 	protected static final int LETTER_TEXTURE_PADDING = 1;
 
-	protected static final Rect TEXTBOUNDS_TMP = new Rect();
-	protected static final float[] TEXTWIDTH_CONTAINER_TMP = new float[1];
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -59,6 +56,8 @@ public class Font implements IFont {
 	protected final FontMetrics mFontMetrics;
 
 	protected final Canvas mCanvas = new Canvas();
+	protected final Rect mTextBounds = new Rect();
+	protected final float[] mTextWidthContainer = new float[1];
 
 	// ===========================================================
 	// Constructors
@@ -164,24 +163,28 @@ public class Font implements IFont {
 	}
 
 	private float getLetterAdvance(final String pCharacterAsString) {
-		this.mPaint.getTextWidths(pCharacterAsString, Font.TEXTWIDTH_CONTAINER_TMP);
-		return Font.TEXTWIDTH_CONTAINER_TMP[0];
+		this.mPaint.getTextWidths(pCharacterAsString, this.mTextWidthContainer);
+		return this.mTextWidthContainer[0];
 	}
 
-	protected Bitmap getLetterBitmap(final char pCharacter) throws IllegalArgumentException {
+	protected Bitmap getLetterBitmap(final char pCharacter) throws FontException {
 		final String characterAsString = String.valueOf(pCharacter);
 
 		this.updateTextBounds(characterAsString);
 
-		final int letterLeft = Font.TEXTBOUNDS_TMP.left;
-		final int letterTop = Font.TEXTBOUNDS_TMP.top;
-		final int letterWidth = Font.TEXTBOUNDS_TMP.width() + 2 * Font.LETTER_TEXTURE_PADDING;
-		final int letterHeight = Font.TEXTBOUNDS_TMP.height() + 2 * Font.LETTER_TEXTURE_PADDING;
+		final int letterLeft = this.mTextBounds.left;
+		final int letterTop = this.mTextBounds.top;
+		final int letterWidth = this.mTextBounds.width();
+		final int letterHeight = this.mTextBounds.height();
 
-		if(letterWidth == 0 || letterHeight == 0) {
-			throw new IllegalArgumentException("Character '" + pCharacter + "' cannot be drawn, because it has no extent (width='" + letterWidth + "', height='" + letterHeight + "')");
+		if((letterWidth <= 0) || (letterHeight <= 0)) {
+			throw new FontException("Character '" + pCharacter + "' cannot be drawn, because it has no extent (width='" + letterWidth + "', height='" + letterHeight + "').");
 		}
-		final Bitmap bitmap = Bitmap.createBitmap(letterWidth, letterHeight, Config.ARGB_8888);
+
+		final int width = letterWidth + (2 * Font.LETTER_TEXTURE_PADDING);
+		final int height = letterHeight + (2 * Font.LETTER_TEXTURE_PADDING);
+
+		final Bitmap bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */
@@ -210,18 +213,18 @@ public class Font implements IFont {
 		final float textureHeight = this.mTextureHeight;
 
 		this.updateTextBounds(characterAsString);
-		final int letterLeft = Font.TEXTBOUNDS_TMP.left;
-		final int letterTop = Font.TEXTBOUNDS_TMP.top;
-		final int letterWidth = Font.TEXTBOUNDS_TMP.width();
-		final int letterHeight = Font.TEXTBOUNDS_TMP.height();
+		final int letterLeft = this.mTextBounds.left;
+		final int letterTop = this.mTextBounds.top;
+		final int letterWidth = this.mTextBounds.width();
+		final int letterHeight = this.mTextBounds.height();
 
-		if(this.mCurrentTextureX + Font.LETTER_TEXTURE_PADDING + letterWidth >= textureWidth) {
+		if((this.mCurrentTextureX + Font.LETTER_TEXTURE_PADDING + letterWidth) >= textureWidth) {
 			this.mCurrentTextureX = 0;
-			this.mCurrentTextureY += this.mCurrentTextureYHeightMax + 2 * Font.LETTER_TEXTURE_PADDING;
+			this.mCurrentTextureY += this.mCurrentTextureYHeightMax + (2 * Font.LETTER_TEXTURE_PADDING);
 			this.mCurrentTextureYHeightMax = 0;
 		}
 
-		if(this.mCurrentTextureY + letterHeight >= textureHeight) {
+		if((this.mCurrentTextureY + letterHeight) >= textureHeight) {
 			throw new FontException("Not enough space for Letter: '" + pCharacter + "' on the Texture");
 		}
 
@@ -242,7 +245,7 @@ public class Font implements IFont {
 	}
 
 	protected void updateTextBounds(final String pCharacterAsString) {
-		this.mPaint.getTextBounds(pCharacterAsString, 0, 1, Font.TEXTBOUNDS_TMP);
+		this.mPaint.getTextBounds(pCharacterAsString, 0, 1, this.mTextBounds);
 	}
 
 	public synchronized void update(final GLState pGLState) {
@@ -256,7 +259,7 @@ public class Font implements IFont {
 				final Letter letter = lettersPendingToBeDrawnToTexture.get(i);
 				final Bitmap bitmap = this.getLetterBitmap(letter.mCharacter);
 
-				final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && pixelFormat == PixelFormat.RGBA_8888;
+				final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && (pixelFormat == PixelFormat.RGBA_8888);
 				if(!useDefaultAlignment) {
 					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 				}

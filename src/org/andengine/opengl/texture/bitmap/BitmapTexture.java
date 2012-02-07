@@ -5,7 +5,6 @@ import java.io.InputStream;
 
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
-import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
@@ -92,19 +91,6 @@ public abstract class BitmapTexture extends Texture {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	public BitmapTexture load(final TextureManager pTextureManager) {
-		super.load(pTextureManager);
-
-		return this;
-	}
-
-	@Override
-	public BitmapTexture unload(final TextureManager pTextureManager) {
-		super.unload(pTextureManager);
-
-		return this;
-	}
 
 	protected abstract InputStream onGetInputStream() throws IOException;
 

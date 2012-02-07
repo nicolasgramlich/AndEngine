@@ -85,17 +85,13 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	}
 
 	@Override
-	public BuildableTextureAtlas<S, T> load(final TextureManager pTextureManager) {
+	public void load(final TextureManager pTextureManager) {
 		this.mTextureAtlas.load(pTextureManager);
-
-		return this;
 	}
 
 	@Override
-	public BuildableTextureAtlas<S, T> unload(final TextureManager pTextureManager) {
+	public void unload(final TextureManager pTextureManager) {
 		this.mTextureAtlas.unload(pTextureManager);
-
-		return this;
 	}
 
 	@Override

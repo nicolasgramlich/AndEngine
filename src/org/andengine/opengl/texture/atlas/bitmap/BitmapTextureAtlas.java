@@ -3,7 +3,6 @@ package org.andengine.opengl.texture.atlas.bitmap;
 import java.util.ArrayList;
 
 import org.andengine.opengl.texture.PixelFormat;
-import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.TextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
@@ -121,19 +120,6 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	public BitmapTextureAtlas load(final TextureManager pTextureManager) {
-		super.load(pTextureManager);
-
-		return this;
-	}
-
-	@Override
-	public BitmapTextureAtlas unload(final TextureManager pTextureManager) {
-		super.unload(pTextureManager);
-
-		return this;
-	}
 	
 	@Override
 	public void addEmptyTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight) {

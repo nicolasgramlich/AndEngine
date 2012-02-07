@@ -38,11 +38,11 @@ public interface ITexture {
 	/**
 	 * @return itself for method chaining.
 	 */
-	public ITexture load(final TextureManager pTextureManager);
+	public void load(final TextureManager pTextureManager);
 	/**
 	 * @return itself for method chaining.
 	 */
-	public ITexture unload(final TextureManager pTextureManager);
+	public void unload(final TextureManager pTextureManager);
 
 	public void loadToHardware(final GLState pGLState) throws IOException;
 	public void unloadFromHardware(final GLState pGLState);

@@ -105,17 +105,13 @@ public abstract class Texture implements ITexture {
 	protected abstract void writeTextureToHardware(final GLState pGLState) throws IOException;
 
 	@Override
-	public Texture load(final TextureManager pTextureManager) {
+	public void load(final TextureManager pTextureManager) {
 		pTextureManager.loadTexture(this);
-
-		return this;
 	}
 
 	@Override
-	public Texture unload(final TextureManager pTextureManager) {
+	public void unload(final TextureManager pTextureManager) {
 		pTextureManager.unloadTexture(this);
-
-		return this;
 	}
 
 	@Override

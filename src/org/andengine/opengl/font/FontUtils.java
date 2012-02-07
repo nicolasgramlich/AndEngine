@@ -99,7 +99,7 @@ public class FontUtils {
 
 			/* Check if this is the last character. */
 			if(pos == pEnd - 1) {
-				width += letter.mWidth + letter.mOffsetX;
+				width += letter.mOffsetX + letter.mWidth;
 			} else {
 				width += letter.mAdvance;
 			}

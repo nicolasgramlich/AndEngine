@@ -93,6 +93,10 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 		if(this.mGameCreated) {
 			this.onReloadResources();
+
+			if(this.mGamePaused && this.mGameCreated) {
+				this.onResumeGame();
+			}
 		} else {
 			if(this.mCreateGameCalled) {
 				this.mOnReloadResourcesScheduled = true;
@@ -104,11 +108,11 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	public void onSurfaceChanged(final int pWidth, final int pHeight) {
+	public synchronized void onSurfaceChanged(final int pWidth, final int pHeight) {
 		Debug.d(this.getClass().getSimpleName() + ".onSurfaceChanged(Width=" + pWidth + ",  Height=" + pHeight + ")" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 	}
 
-	protected void onCreateGame() {
+	protected synchronized void onCreateGame() {
 		Debug.d(this.getClass().getSimpleName() + ".onCreateGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		final OnPopulateSceneCallback onPopulateSceneCallback = new OnPopulateSceneCallback() {
@@ -181,7 +185,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	protected void onResume() {
+	protected synchronized void onResume() {
 		Debug.d(this.getClass().getSimpleName() + ".onResume" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		super.onResume();
@@ -191,7 +195,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	public void onResumeGame() {
+	public synchronized void onResumeGame() {
 		Debug.d(this.getClass().getSimpleName() + ".onResumeGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		this.mEngine.start();
@@ -200,7 +204,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	public void onWindowFocusChanged(final boolean pHasWindowFocus) {
+	public synchronized void onWindowFocusChanged(final boolean pHasWindowFocus) {
 		super.onWindowFocusChanged(pHasWindowFocus);
 
 		if(pHasWindowFocus && this.mGamePaused && this.mGameCreated) {
@@ -230,7 +234,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	public void onPauseGame() {
+	public synchronized void onPauseGame() {
 		Debug.d(this.getClass().getSimpleName() + ".onPauseGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 
 		this.mGamePaused = true;

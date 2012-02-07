@@ -101,8 +101,8 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	}
 
 	@Override
-	public void setLoadedToHardware(final boolean pLoadedToHardware) {
-		this.mLoadedToHardware = pLoadedToHardware;
+	public void setNotLoadedToHardware() {
+		this.mLoadedToHardware = false;
 	}
 
 	@Override
@@ -110,7 +110,6 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		return this.mDirtyOnHardware;
 	}
 
-	/** Mark this {@link VertexBufferObject} dirty so it gets updated on the hardware. */
 	@Override
 	public void setDirtyOnHardware() {
 		this.mDirtyOnHardware = true;
@@ -136,21 +135,25 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// Methods
 	// ===========================================================
 
+    @Override
+    public void bind(final GLState pGLState) {
+        if(!this.mLoadedToHardware) {
+            this.loadToHardware(pGLState);
+            this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
+        }
+
+        pGLState.bindBuffer(this.mHardwareBufferID);
+
+        if(this.mDirtyOnHardware) {
+            this.mDirtyOnHardware = false;
+
+            this.onBufferData();
+        }
+    }
+
 	@Override
 	public void bind(final GLState pGLState, final ShaderProgram pShaderProgram) {
-		if(!this.mLoadedToHardware) {
-			this.loadToHardware(pGLState);
-			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
-			this.mDirtyOnHardware = true;
-		}
-
-		pGLState.bindBuffer(this.mHardwareBufferID);
-
-		if(this.mDirtyOnHardware) {
-			this.mDirtyOnHardware = false;
-
-			this.onBufferData();
-		}
+		this.bind(pGLState);
 
 		pShaderProgram.bind(pGLState, this.mVertexBufferObjectAttributes);
 	}
@@ -163,11 +166,10 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 //		pGLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
 	}
 
-	@Override
-	public void loadToHardware(final GLState pGLState) {
+	private void loadToHardware(final GLState pGLState) {
 		this.mHardwareBufferID = pGLState.generateBuffer();
-
 		this.mLoadedToHardware = true;
+        this.mDirtyOnHardware = true;
 	}
 
 	@Override

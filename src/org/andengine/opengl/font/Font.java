@@ -116,19 +116,15 @@ public class Font implements IFont {
 	}
 
 	@Override
-	public Font load(final TextureManager pTextureManager, final FontManager pFontManager) {
+	public void load(final TextureManager pTextureManager, final FontManager pFontManager) {
 		this.mTexture.load(pTextureManager);
 		pFontManager.loadFont(this);
-
-		return this;
 	}
 
 	@Override
-	public Font unload(final TextureManager pTextureManager, final FontManager pFontManager) {
+	public void unload(final TextureManager pTextureManager, final FontManager pFontManager) {
 		this.mTexture.unload(pTextureManager);
 		pFontManager.unloadFont(this);
-
-		return this;
 	}
 
 	@Override
@@ -178,7 +174,7 @@ public class Font implements IFont {
 		final int letterHeight = this.mTextBounds.height();
 
 		if((letterWidth <= 0) || (letterHeight <= 0)) {
-			throw new FontException("Character '" + pCharacter + "' cannot be drawn, because it has no extent (width='" + letterWidth + "', height='" + letterHeight + "').");
+			throw new FontException(this.getClass().getSimpleName() + ": Character '" + pCharacter + "'(0x" + Integer.toHexString(pCharacter) + ") cannot be drawn, because it has no valid extent (width='" + letterWidth + "', height='" + letterHeight + "').");
 		}
 
 		final int width = letterWidth + (2 * Font.LETTER_TEXTURE_PADDING);

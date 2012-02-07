@@ -327,17 +327,13 @@ public class BitmapFont implements IFont {
 	}
 
 	@Override
-	public BitmapFont load(final TextureManager pTextureManager, final FontManager pFontManager) {
+	public void load(final TextureManager pTextureManager, final FontManager pFontManager) {
 		this.loadTextures(pTextureManager);
-
-		return this;
 	}
 
 	@Override
-	public BitmapFont unload(final TextureManager pTextureManager, final FontManager pFontManager) {
+	public void unload(final TextureManager pTextureManager, final FontManager pFontManager) {
 		this.unloadTextures(pTextureManager);
-
-		return this;
 	}
 
 	@Override

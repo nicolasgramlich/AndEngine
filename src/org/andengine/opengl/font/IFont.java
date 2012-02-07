@@ -19,14 +19,8 @@ public interface IFont {
 	// Methods
 	// ===========================================================
 
-	/**
-	 * @return itself for method chaining.
-	 */
-	public IFont load(final TextureManager pTextureManager, final FontManager pFontManager);
-	/**
-	 * @return itself for method chaining.
-	 */
-	public IFont unload(final TextureManager pTextureManager, final FontManager pFontManager);
+	public void load(final TextureManager pTextureManager, final FontManager pFontManager);
+	public void unload(final TextureManager pTextureManager, final FontManager pFontManager);
 
 	public ITexture getTexture();
 

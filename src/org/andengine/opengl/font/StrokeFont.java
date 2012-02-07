@@ -1,7 +1,6 @@
 package org.andengine.opengl.font;
 
 import org.andengine.opengl.texture.ITexture;
-import org.andengine.opengl.texture.TextureManager;
 
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -60,20 +59,6 @@ public class StrokeFont extends Font {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public StrokeFont load(final TextureManager pTextureManager, final FontManager pFontManager) {
-		super.load(pTextureManager, pFontManager);
-
-		return this;
-	}
-
-	@Override
-	public StrokeFont unload(final TextureManager pTextureManager, final FontManager pFontManager) {
-		super.unload(pTextureManager, pFontManager);
-		
-		return this;
-	}
 
 	protected void updateTextBounds(final String pCharacterAsString) {
 		this.mStrokePaint.getTextBounds(pCharacterAsString, 0, 1, this.mTextBounds);

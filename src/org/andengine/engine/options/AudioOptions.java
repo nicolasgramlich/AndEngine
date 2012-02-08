@@ -1,6 +1,8 @@
 package org.andengine.engine.options;
 
-/**
+/** 
+ * TODO Add Sound->pMaxSimultaneousStreams
+ * 
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>

@@ -27,7 +27,6 @@ public class SmartList<T> extends ArrayList<T> {
 	// Constructors
 	// ===========================================================
 
-
 	public SmartList() {
 
 	}
@@ -110,7 +109,7 @@ public class SmartList<T> extends ArrayList<T> {
 		}
 	}
 
-	public T find(final IMatcher<T> pMatcher) {
+	public T find(final IMatcher<T> pMatcher) { // TODO Could be indexOf and listIndexOf
 		for(int i = this.size() - 1; i >= 0; i--) {
 			final T item = this.get(i);
 			if(pMatcher.matches(item)) {

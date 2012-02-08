@@ -120,7 +120,7 @@ public class ParticleSystem<T extends Entity> extends Entity {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		if(this.mParticlesSpawnEnabled) {
+		if(this.isParticlesSpawnEnabled()) {
 			this.spawnParticles(pSecondsElapsed);
 		}
 

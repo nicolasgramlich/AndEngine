@@ -15,8 +15,8 @@ public class AudioOptions {
 	// Fields
 	// ===========================================================
 
-	private SoundOptions mSoundOptions;
-	private MusicOptions mMusicOptions;
+	private SoundOptions mSoundOptions = new SoundOptions();
+	private MusicOptions mMusicOptions = new MusicOptions();
 
 	// ===========================================================
 	// Constructors

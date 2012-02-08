@@ -100,18 +100,17 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 					final int neighborNodeY = dY + currentNode.mY;
 					final long neighborNodeID = Node.calculateID(neighborNodeX, neighborNodeY);
 
-					if(!IntBoundsUtils.contains(pXMin, pYMin, pXMax, pYMax, neighborNodeX, neighborNodeY) || pPathFinderMap.isBlocked(neighborNodeX, neighborNodeY, pEntity)) {
-						continue;
-					}
-
-					if(visitedNodes.indexOfKey(neighborNodeID) >= 0) {
-						continue;
-					}
-
 					Node neighborNode = openNodes.get(neighborNodeID);
 					final boolean neighborNodeIsNew;
 					/* Check if neighbor exists. */
 					if(neighborNode == null) {
+						if(!IntBoundsUtils.contains(pXMin, pYMin, pXMax, pYMax, neighborNodeX, neighborNodeY) || pPathFinderMap.isBlocked(neighborNodeX, neighborNodeY, pEntity)) {
+							continue;
+						}
+
+						if(visitedNodes.indexOfKey(neighborNodeID) >= 0) {
+							continue;
+						}
 						neighborNodeIsNew = true;
 						neighborNode = new Node(neighborNodeX, neighborNodeY, pAStarHeuristic.getExpectedRestCost(pPathFinderMap, pEntity, neighborNodeX, neighborNodeY, pToX, pToY));
 					} else {

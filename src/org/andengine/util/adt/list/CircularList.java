@@ -155,11 +155,11 @@ public class CircularList<T> implements IList<T> {
 	@Override
 	public boolean remove(final T pItem) {
 		final int index = this.indexOf(pItem);
-		if(index == CircularList.INDEX_INVALID) {
-			return false;
-		} else {
+		if(index >= 0) {
 			this.remove(index);
 			return true;
+		} else {
+			return false;
 		}
 	}
 

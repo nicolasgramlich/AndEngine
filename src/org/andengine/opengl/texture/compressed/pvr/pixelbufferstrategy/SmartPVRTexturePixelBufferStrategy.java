@@ -9,7 +9,7 @@ import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.compressed.pvr.PVRTexture;
 import org.andengine.opengl.texture.compressed.pvr.PVRTexture.PVRTextureHeader;
 import org.andengine.util.StreamUtils;
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 import android.opengl.GLES20;
 
@@ -121,7 +121,7 @@ public class SmartPVRTexturePixelBufferStrategy implements IPVRTexturePixelBuffe
 		@Override
 		public ByteBuffer getPixelBuffer(final int pStart, final int pByteCount) throws IOException {
 			if(pStart < this.mInputStreamPosition) {
-				throw new AndEngineException("Cannot read data that has been read already. (pStart: '" + pStart + "', this.mInputStreamPosition: '" + this.mInputStreamPosition + "')");
+				throw new AndEngineRuntimeException("Cannot read data that has been read already. (pStart: '" + pStart + "', this.mInputStreamPosition: '" + this.mInputStreamPosition + "')");
 			}
 
 			/* Ensure data buffer is bug enough. */
@@ -137,7 +137,7 @@ public class SmartPVRTexturePixelBufferStrategy implements IPVRTexturePixelBuffe
 				this.mInputStreamPosition += skipped;
 
 				if(bytesToSkip != skipped) {
-					throw new AndEngineException("Skipped: '" + skipped + "' instead of '" + bytesToSkip + "'.");
+					throw new AndEngineRuntimeException("Skipped: '" + skipped + "' instead of '" + bytesToSkip + "'.");
 				}
 			}
 

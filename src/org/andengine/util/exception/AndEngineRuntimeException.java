@@ -4,14 +4,14 @@ package org.andengine.util.exception;
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 12:25:52 - 03.11.2011
+ * @since 02:40:26 - 07.08.2011
  */
-public class MethodNotYetImplementedException extends AndEngineRuntimeException {
+public class AndEngineRuntimeException extends RuntimeException {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static final long serialVersionUID = -4308430823868086531L;
+	public static final long serialVersionUID = -4325207483842883006L;
 
 	// ===========================================================
 	// Fields
@@ -21,19 +21,20 @@ public class MethodNotYetImplementedException extends AndEngineRuntimeException 
 	// Constructors
 	// ===========================================================
 
-	public MethodNotYetImplementedException() {
 
+	public AndEngineRuntimeException() {
+		super();
 	}
 
-	public MethodNotYetImplementedException(final String pMessage) {
+	public AndEngineRuntimeException(final String pMessage) {
 		super(pMessage);
 	}
 
-	public MethodNotYetImplementedException(final Throwable pThrowable) {
+	public AndEngineRuntimeException(final Throwable pThrowable) {
 		super(pThrowable);
 	}
 
-	public MethodNotYetImplementedException(final String pMessage, final Throwable pThrowable) {
+	public AndEngineRuntimeException(final String pMessage, final Throwable pThrowable) {
 		super(pMessage, pThrowable);
 	}
 

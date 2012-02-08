@@ -17,7 +17,7 @@ public class SoundManager extends BaseAudioManager<Sound> {
 	// Constants
 	// ===========================================================
 
-	private static final int MAX_SIMULTANEOUS_STREAMS_DEFAULT = 5;
+	public static final int MAX_SIMULTANEOUS_STREAMS_DEFAULT = 5;
 
 	// ===========================================================
 	// Fields

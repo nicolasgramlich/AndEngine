@@ -24,16 +24,18 @@ public interface IVertexBufferObject extends IDisposable {
 	public int getHardwareBufferID();
 
 	public boolean isLoadedToHardware();
-	public void setLoadedToHardware(final boolean pLoadedToHardware);
-	public void loadToHardware(final GLState pGLState);
+	/** Mark this {@link VertexBufferObject} as not not loaded to hardware, so it gets loaded to hardware before being used.. */
+	public void setNotLoadedToHardware();
 	public void unloadFromHardware(final GLState pGLState);
 
 	public boolean isDirtyOnHardware();
+	/** Mark this {@link VertexBufferObject} dirty so it gets updated on the hardware. */
 	public void setDirtyOnHardware();
 
 	public int getCapacity();
 	public int getByteCapacity();
 
+	public void bind(final GLState pGLState);
 	public void bind(final GLState pGLState, final ShaderProgram pShaderProgram);
 	public void unbind(final GLState pGLState, final ShaderProgram pShaderProgram);
 

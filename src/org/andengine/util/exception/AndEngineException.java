@@ -6,12 +6,12 @@ package org.andengine.util.exception;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 02:40:26 - 07.08.2011
  */
-public class AndEngineException extends RuntimeException {
+public class AndEngineException extends Exception {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	public static final long serialVersionUID = -4325207483842883006L;
+	private static final long serialVersionUID = 6577340337732194722L;
 
 	// ===========================================================
 	// Fields
@@ -21,13 +21,8 @@ public class AndEngineException extends RuntimeException {
 	// Constructors
 	// ===========================================================
 
-
 	public AndEngineException() {
 		super();
-	}
-
-	public AndEngineException(final String pMessage, final Throwable pThrowable) {
-		super(pMessage, pThrowable);
 	}
 
 	public AndEngineException(final String pMessage) {
@@ -36,6 +31,10 @@ public class AndEngineException extends RuntimeException {
 
 	public AndEngineException(final Throwable pThrowable) {
 		super(pThrowable);
+	}
+
+	public AndEngineException(final String pMessage, final Throwable pThrowable) {
+		super(pMessage, pThrowable);
 	}
 
 	// ===========================================================

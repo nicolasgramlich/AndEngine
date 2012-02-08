@@ -1,17 +1,17 @@
-package org.andengine.util.exception;
+package org.andengine.util.adt.queue;
+
+import org.andengine.util.adt.list.ShiftList;
 
 /**
- * (c) Zynga 2011
+ * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 12:25:52 - 03.11.2011
+ * @since 17:06:49 - 03.01.2012
  */
-public class MethodNotYetImplementedException extends AndEngineRuntimeException {
+public class ShiftQueue<T> extends ShiftList<T> implements IQueue<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	private static final long serialVersionUID = -4308430823868086531L;
 
 	// ===========================================================
 	// Fields
@@ -21,20 +21,12 @@ public class MethodNotYetImplementedException extends AndEngineRuntimeException 
 	// Constructors
 	// ===========================================================
 
-	public MethodNotYetImplementedException() {
-
+	public ShiftQueue() {
+		super();
 	}
 
-	public MethodNotYetImplementedException(final String pMessage) {
-		super(pMessage);
-	}
-
-	public MethodNotYetImplementedException(final Throwable pThrowable) {
-		super(pThrowable);
-	}
-
-	public MethodNotYetImplementedException(final String pMessage, final Throwable pThrowable) {
-		super(pMessage, pThrowable);
+	public ShiftQueue(final int pInitialCapacity) {
+		super(pInitialCapacity);
 	}
 
 	// ===========================================================
@@ -44,6 +36,34 @@ public class MethodNotYetImplementedException extends AndEngineRuntimeException 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public T peek() {
+		if(this.isEmpty()) {
+			return null;
+		} else {
+			return this.removeFirst();
+		}
+	}
+
+	@Override
+	public T poll() {
+		if(this.isEmpty()) {
+			return null;
+		} else {
+			return this.remove(0);
+		}
+	}
+
+	@Override
+	public void enter(final T pItem) {
+		this.add(pItem);
+	}
+
+	@Override
+	public void enter(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
+		this.add(pIndex, pItem);
+	}
 
 	// ===========================================================
 	// Methods

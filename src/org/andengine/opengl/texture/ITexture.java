@@ -30,7 +30,7 @@ public interface ITexture {
 	public int getHardwareTextureID();
 
 	public boolean isLoadedToHardware();
-	public void setLoadedToHardware(final boolean pLoadedToHardware);
+	public void setNotLoadedToHardware();
 
 	public boolean isUpdateOnHardwareNeeded();
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded);

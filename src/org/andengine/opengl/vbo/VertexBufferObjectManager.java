@@ -56,7 +56,7 @@ public class VertexBufferObjectManager {
 	public synchronized void onDestroy() {
 		final ArrayList<VertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
 		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
-			vertexBufferObjectsLoaded.get(i).setLoadedToHardware(false);
+			vertexBufferObjectsLoaded.get(i).setNotLoadedToHardware();
 		}
 
 		this.mVertexBufferObjectsLoaded.clear();
@@ -75,7 +75,7 @@ public class VertexBufferObjectManager {
 	public synchronized void onReload() {
 		final ArrayList<VertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
 		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
-			vertexBufferObjectsLoaded.get(i).setLoadedToHardware(false);
+			vertexBufferObjectsLoaded.get(i).setNotLoadedToHardware();
 		}
 
 		vertexBufferObjectsLoaded.clear();

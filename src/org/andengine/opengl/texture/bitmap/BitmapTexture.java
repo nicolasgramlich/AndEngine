@@ -103,8 +103,9 @@ public abstract class BitmapTexture extends Texture {
 			throw new NullBitmapException("Caused by: '" + this.toString() + "'.");
 		}
 
-		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && this.mPixelFormat == PixelFormat.RGBA_8888;
+		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && (this.mPixelFormat == PixelFormat.RGBA_8888);
 		if(!useDefaultAlignment) {
+			/* Adjust unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 		}
 
@@ -115,8 +116,8 @@ public abstract class BitmapTexture extends Texture {
 			pGLState.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
 		}
 
-		/* Restore default alignment. */
 		if(!useDefaultAlignment) {
+			/* Restore default unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 		}
 

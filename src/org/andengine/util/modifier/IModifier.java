@@ -2,7 +2,7 @@ package org.andengine.util.modifier;
 
 import java.util.Comparator;
 
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 
 /**
@@ -70,7 +70,7 @@ public interface IModifier<T> {
 		public void onModifierFinished(final IModifier<T> pModifier, final T pItem);
 	}
 
-	public static class DeepCopyNotSupportedException extends AndEngineException {
+	public static class DeepCopyNotSupportedException extends AndEngineRuntimeException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

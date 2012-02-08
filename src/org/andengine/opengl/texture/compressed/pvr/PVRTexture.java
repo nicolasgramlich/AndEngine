@@ -146,6 +146,7 @@ public abstract class PVRTexture extends Texture {
 
 		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(width) && MathUtils.isPowerOfTwo(height) && this.mPVRTextureHeader.mPVRTextureFormat == PVRTextureFormat.RGBA_8888;
 		if(!useDefaultAlignment) {
+			/* Adjust unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 		}
 
@@ -170,8 +171,8 @@ public abstract class PVRTexture extends Texture {
 			currentLevel++;
 		}
 
-		/* Restore default alignment. */
 		if(!useDefaultAlignment) {
+			/* Restore default unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 		}
 	}

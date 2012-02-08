@@ -21,8 +21,8 @@ public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implemen
 	// Constructors
 	// ===========================================================
 
-	public SortedQueue(IQueue<T> pList) {
-		super(pList);
+	public SortedQueue(final IQueue<T> pQueue) {
+		super(pQueue);
 	}
 
 	// ===========================================================

@@ -1,6 +1,6 @@
 package org.andengine.audio.sound.exception;
 
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
  * (c) Zynga 2011
@@ -8,7 +8,7 @@ import org.andengine.util.exception.AndEngineException;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:37:53 - 09.11.2011
  */
-public class SoundException extends AndEngineException {
+public class SoundException extends AndEngineRuntimeException {
 	// ===========================================================
 	// Constants
 	// ===========================================================

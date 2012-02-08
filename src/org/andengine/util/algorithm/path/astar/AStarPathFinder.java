@@ -2,7 +2,9 @@ package org.andengine.util.algorithm.path.astar;
 
 import org.andengine.util.adt.list.ShiftList;
 import org.andengine.util.adt.map.LongSparseArray;
+import org.andengine.util.adt.queue.IQueue;
 import org.andengine.util.adt.queue.SortedQueue;
+import org.andengine.util.adt.queue.UniqueQueue;
 import org.andengine.util.adt.spatial.bounds.util.IntBoundsUtils;
 import org.andengine.util.algorithm.path.ICostFunction;
 import org.andengine.util.algorithm.path.IPathFinder;
@@ -64,7 +66,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 
 		final LongSparseArray<Node> visitedNodes = new LongSparseArray<Node>();
 		final LongSparseArray<Node> openNodes = new LongSparseArray<Node>();
-		final SortedQueue<Node> sortedOpenNodes = new SortedQueue<Node>(new ShiftList<Node>());
+		final IQueue<Node> sortedOpenNodes = new UniqueQueue<Node>(new SortedQueue<Node>(new ShiftList<Node>()));
 
 		final boolean allowDiagonalMovement = pAllowDiagonal;
 
@@ -98,18 +100,17 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 					final int neighborNodeY = dY + currentNode.mY;
 					final long neighborNodeID = Node.calculateID(neighborNodeX, neighborNodeY);
 
-					if(!IntBoundsUtils.contains(pXMin, pYMin, pXMax, pYMax, neighborNodeX, neighborNodeY) || pPathFinderMap.isBlocked(neighborNodeX, neighborNodeY, pEntity)) {
-						continue;
-					}
-
-					if(visitedNodes.indexOfKey(neighborNodeID) >= 0) {
-						continue;
-					}
-
 					Node neighborNode = openNodes.get(neighborNodeID);
 					final boolean neighborNodeIsNew;
 					/* Check if neighbor exists. */
 					if(neighborNode == null) {
+						if(!IntBoundsUtils.contains(pXMin, pYMin, pXMax, pYMax, neighborNodeX, neighborNodeY) || pPathFinderMap.isBlocked(neighborNodeX, neighborNodeY, pEntity)) {
+							continue;
+						}
+
+						if(visitedNodes.indexOfKey(neighborNodeID) >= 0) {
+							continue;
+						}
 						neighborNodeIsNew = true;
 						neighborNode = new Node(neighborNodeX, neighborNodeY, pAStarHeuristic.getExpectedRestCost(pPathFinderMap, pEntity, neighborNodeX, neighborNodeY, pToX, pToY));
 					} else {

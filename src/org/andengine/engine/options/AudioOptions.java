@@ -1,6 +1,6 @@
 package org.andengine.engine.options;
 
-/**
+/** 
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
@@ -15,8 +15,8 @@ public class AudioOptions {
 	// Fields
 	// ===========================================================
 
-	private boolean mNeedsSound;
-	private boolean mNeedsMusic;
+	private SoundOptions mSoundOptions = new SoundOptions();
+	private MusicOptions mMusicOptions = new MusicOptions();
 
 	// ===========================================================
 	// Constructors
@@ -26,21 +26,29 @@ public class AudioOptions {
 	// Getter & Setter
 	// ===========================================================
 
+	public SoundOptions getSoundOptions() {
+		return this.mSoundOptions;
+	}
+
+	public MusicOptions getMusicOptions() {
+		return this.mMusicOptions;
+	}
+
 	public boolean needsSound() {
-		return this.mNeedsSound;
+		return this.mSoundOptions.needsSound();
 	}
 
 	public AudioOptions setNeedsSound(final boolean pNeedsSound) {
-		this.mNeedsSound = pNeedsSound;
+		this.mSoundOptions.setNeedsSound(pNeedsSound);
 		return this;
 	}
 
 	public boolean needsMusic() {
-		return this.mNeedsMusic;
+		return this.mMusicOptions.needsMusic();
 	}
 
 	public AudioOptions setNeedsMusic(final boolean pNeedsMusic) {
-		this.mNeedsMusic = pNeedsMusic;
+		this.mMusicOptions.setNeedsMusic(pNeedsMusic);
 		return this;
 	}
 

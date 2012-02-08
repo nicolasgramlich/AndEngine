@@ -25,6 +25,8 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// Constants
 	// ===========================================================
 
+	private static final int HARDWARE_BUFFER_ID_INVALID = -1;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -34,8 +36,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	protected final int mUsage;
 	protected final ByteBuffer mByteBuffer;
 
-	protected int mHardwareBufferID = -1;
-	protected boolean mLoadedToHardware;
+	protected int mHardwareBufferID = VertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	protected boolean mDirtyOnHardware = true;
 
 	protected boolean mDisposed;
@@ -97,12 +98,12 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public boolean isLoadedToHardware() {
-		return this.mLoadedToHardware;
+		return this.mHardwareBufferID != VertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	}
 
 	@Override
-	public void setLoadedToHardware(final boolean pLoadedToHardware) {
-		this.mLoadedToHardware = pLoadedToHardware;
+	public void setNotLoadedToHardware() {
+		this.mHardwareBufferID = VertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	}
 
 	@Override
@@ -110,7 +111,6 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		return this.mDirtyOnHardware;
 	}
 
-	/** Mark this {@link VertexBufferObject} dirty so it gets updated on the hardware. */
 	@Override
 	public void setDirtyOnHardware() {
 		this.mDirtyOnHardware = true;
@@ -136,21 +136,25 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// Methods
 	// ===========================================================
 
+    @Override
+    public void bind(final GLState pGLState) {
+        if(this.mHardwareBufferID == VertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
+            this.loadToHardware(pGLState);
+            this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
+        }
+
+        pGLState.bindBuffer(this.mHardwareBufferID);
+
+        if(this.mDirtyOnHardware) {
+            this.mDirtyOnHardware = false;
+
+            this.onBufferData();
+        }
+    }
+
 	@Override
 	public void bind(final GLState pGLState, final ShaderProgram pShaderProgram) {
-		if(!this.mLoadedToHardware) {
-			this.loadToHardware(pGLState);
-			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
-			this.mDirtyOnHardware = true;
-		}
-
-		pGLState.bindBuffer(this.mHardwareBufferID);
-
-		if(this.mDirtyOnHardware) {
-			this.mDirtyOnHardware = false;
-
-			this.onBufferData();
-		}
+		this.bind(pGLState);
 
 		pShaderProgram.bind(pGLState, this.mVertexBufferObjectAttributes);
 	}
@@ -163,19 +167,16 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 //		pGLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
 	}
 
-	@Override
-	public void loadToHardware(final GLState pGLState) {
+	private void loadToHardware(final GLState pGLState) {
 		this.mHardwareBufferID = pGLState.generateBuffer();
-
-		this.mLoadedToHardware = true;
+        this.mDirtyOnHardware = true;
 	}
 
 	@Override
 	public void unloadFromHardware(final GLState pGLState) {
 		pGLState.deleteBuffer(this.mHardwareBufferID);
 
-		this.mHardwareBufferID = -1;
-		this.mLoadedToHardware = false;
+		this.mHardwareBufferID = VertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	}
 
 	@Override

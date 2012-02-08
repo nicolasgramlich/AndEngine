@@ -1,6 +1,6 @@
 package org.andengine.util.adt.bounds;
 
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
  * (c) Zynga 2011
@@ -43,7 +43,7 @@ public enum BoundsSplit {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class BoundsSplitException extends AndEngineException {
+	public static class BoundsSplitException extends AndEngineRuntimeException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

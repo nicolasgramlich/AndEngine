@@ -38,7 +38,7 @@ public class UniqueQueue<T extends Comparable<T>> extends UniqueList<T> implemen
 		if(this.isEmpty()) {
 			return null;
 		} else {
-			return this.removeFirst();
+			return this.get(0);
 		}
 	}
 

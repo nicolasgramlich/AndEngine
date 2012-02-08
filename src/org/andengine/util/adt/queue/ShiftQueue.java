@@ -42,7 +42,7 @@ public class ShiftQueue<T> extends ShiftList<T> implements IQueue<T> {
 		if(this.isEmpty()) {
 			return null;
 		} else {
-			return this.removeFirst();
+			return this.get(0);
 		}
 	}
 

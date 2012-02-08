@@ -38,7 +38,7 @@ public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implemen
 		if(this.isEmpty()) {
 			return null;
 		} else {
-			return this.removeFirst();
+			return this.get(0);
 		}
 	}
 

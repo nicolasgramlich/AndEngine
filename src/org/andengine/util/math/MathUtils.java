@@ -228,6 +228,13 @@ public final class MathUtils implements MathConstants {
 	}
 
 	/**
+	 * @return the euclidean distance between the origin (0, 0) and (pX, pY).
+	 */
+	public static final float length(final float pX, final float pY){
+		return FloatMath.sqrt((pX * pX) + (pY * pY));
+	}
+
+	/**
 	 * @param pX
 	 * @param pY
 	 * @param pMix [0...1]
@@ -253,6 +260,14 @@ public final class MathUtils implements MathConstants {
 
 	public static final boolean isOdd(final int n) {
 		return n % 2 == 1;
+	}
+
+	public static float dot(final float pXA, final float pYA, final float pXB, final float pYB) { 
+		return pXA * pXB + pYA * pYB;
+	}
+
+	public static float cross(final float pXA, final float pYA, final float pXB, final float pYB) { 
+		return pXA * pYB - pXB * pYA;
 	}
 
 	// ===========================================================

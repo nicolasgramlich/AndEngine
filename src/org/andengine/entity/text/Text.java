@@ -21,7 +21,6 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.andengine.util.HorizontalAlign;
-import org.andengine.util.TextUtils;
 import org.andengine.util.adt.DataConstants;
 import org.andengine.util.adt.list.FloatArrayList;
 import org.andengine.util.adt.list.IFloatList;
@@ -72,6 +71,7 @@ public class Text extends RectangularShape {
 
 	protected TextOptions mTextOptions;
 	protected final int mCharactersMaximum;
+	protected int mCharactersToDraw;
 	protected int mVertexCountToDraw;
 	protected final int mVertexCount;
 
@@ -198,11 +198,6 @@ public class Text extends RectangularShape {
 			this.mLines = FontUtils.splitLines(this.mText, this.mLines); // TODO Add whitespace-trimming.
 		}
 
-		final int charactersToDraw = TextUtils.countCharacters(this.mLines, false);
-		if(charactersToDraw > this.mCharactersMaximum) {
-			throw new OutOfCharactersException("Characters: maximum: '" + this.mCharactersMaximum + "' required: '" + charactersToDraw + "'.");
-		}
-
 		final int lineCount = this.mLines.size();
 		float maximumLineWidth = 0;
 		for (int i = 0; i < lineCount; i++) {
@@ -232,7 +227,6 @@ public class Text extends RectangularShape {
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
 
-		this.mVertexCountToDraw = charactersToDraw * Text.VERTICES_PER_LETTER;
 		this.onUpdateVertices();
 	}
 
@@ -298,6 +292,14 @@ public class Text extends RectangularShape {
 
 	public void setTextOptions(final TextOptions pTextOptions) {
 		this.mTextOptions = pTextOptions;
+	}
+
+	/* package */ void setCharactersToDraw(final int pCharactersToDraw) {
+		if(pCharactersToDraw > this.mCharactersMaximum) {
+			throw new OutOfCharactersException("Characters: maximum: '" + this.mCharactersMaximum + "' required: '" + pCharactersToDraw + "'.");
+		}
+		this.mCharactersToDraw = pCharactersToDraw;
+		this.mVertexCountToDraw = pCharactersToDraw * Text.VERTICES_PER_LETTER;
 	}
 
 	// ===========================================================
@@ -510,6 +512,7 @@ public class Text extends RectangularShape {
 
 			final float lineAlignmentWidth = pText.getLineAlignmentWidth();
 
+			int charactersToDraw = 0;
 			int bufferDataOffset = 0;
 
 			final int lineCount = lines.size();
@@ -542,46 +545,47 @@ public class Text extends RectangularShape {
 					if(!letter.isWhitespace()) {
 						final float x = xBase + letter.mOffsetX;
 						final float y = yBase + letter.mOffsetY;
-	
+
 						final float y2 = y + letter.mHeight;
 						final float x2 = x + letter.mWidth;
-	
+
 						final float u = letter.mU;
 						final float v = letter.mV;
 						final float u2 = letter.mU2;
 						final float v2 = letter.mV2;
-	
+
 						bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x;
 						bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y;
 						bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 						bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
-	
+
 						bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x;
 						bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y2;
 						bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 						bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
-	
+
 						bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x2;
 						bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y2;
 						bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 						bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
-	
+
 						bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x2;
 						bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y2;
 						bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 						bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v2;
-	
+
 						bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x2;
 						bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y;
 						bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u2;
 						bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
-	
+
 						bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X] = x;
 						bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y] = y;
 						bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U] = u;
 						bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V] = v;
-	
+
 						bufferDataOffset += Text.LETTER_SIZE;
+						charactersToDraw++;
 					}
 
 					xBase += letter.mAdvance;
@@ -589,6 +593,7 @@ public class Text extends RectangularShape {
 					previousLetter = letter;
 				}
 			}
+			pText.setCharactersToDraw(charactersToDraw);
 
 			this.setDirtyOnHardware();
 		}
@@ -661,6 +666,7 @@ public class Text extends RectangularShape {
 
 			final float lineAlignmentWidth = pText.getLineAlignmentWidth();
 
+			int charactersToDraw = 0;
 			int bufferDataOffset = 0;
 
 			final int lineCount = lines.size();
@@ -694,46 +700,47 @@ public class Text extends RectangularShape {
 					if(!letter.isWhitespace()) {
 						final float x = xBase + letter.mOffsetX;
 						final float y = yBase + letter.mOffsetY;
-	
+
 						final float y2 = y + letter.mHeight;
 						final float x2 = x + letter.mWidth;
-	
+
 						final float u = letter.mU;
 						final float v = letter.mV;
 						final float u2 = letter.mU2;
 						final float v2 = letter.mV2;
-	
+
 						bufferData.put(bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X, x);
 						bufferData.put(bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y, y);
 						bufferData.put(bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U, u);
 						bufferData.put(bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V, v);
-	
+
 						bufferData.put(bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X, x);
 						bufferData.put(bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y, y2);
 						bufferData.put(bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U, u);
 						bufferData.put(bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V, v2);
-	
+
 						bufferData.put(bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X, x2);
 						bufferData.put(bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y, y2);
 						bufferData.put(bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U, u2);
 						bufferData.put(bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V, v2);
-	
+
 						bufferData.put(bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X, x2);
 						bufferData.put(bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y, y2);
 						bufferData.put(bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U, u2);
 						bufferData.put(bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V, v2);
-	
+
 						bufferData.put(bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X, x2);
 						bufferData.put(bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y, y);
 						bufferData.put(bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U, u2);
 						bufferData.put(bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V, v);
-	
+
 						bufferData.put(bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_X, x);
 						bufferData.put(bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.VERTEX_INDEX_Y, y);
 						bufferData.put(bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_U, u);
 						bufferData.put(bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.TEXTURECOORDINATES_INDEX_V, v);
-	
+
 						bufferDataOffset += Text.LETTER_SIZE;
+						charactersToDraw++;
 					}
 
 					xBase += letter.mAdvance;
@@ -741,6 +748,7 @@ public class Text extends RectangularShape {
 					previousLetter = letter;
 				}
 			}
+			pText.setCharactersToDraw(charactersToDraw);
 
 			this.setDirtyOnHardware();
 		}

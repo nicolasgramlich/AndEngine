@@ -67,7 +67,7 @@ public class TickerText extends Text {
 	public void setCharactersPerSecond(final float pCharactersPerSecond) {
 		this.mTickerTextOptions.mCharactersPerSecond = pCharactersPerSecond;
 
-		this.mDuration = this.mCharactersMaximum * pCharactersPerSecond;
+		this.mDuration = this.mCharactersToDraw * pCharactersPerSecond;
 	}
 
 	public int getCharactersVisible() {
@@ -82,12 +82,12 @@ public class TickerText extends Text {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 		if(this.mTickerTextOptions.mReverse){
-			if(this.mCharactersVisible < this.mCharactersMaximum){
+			if(this.mCharactersVisible < this.mCharactersToDraw){
 				this.mSecondsElapsed = Math.max(0, this.mSecondsElapsed - pSecondsElapsed);
 				this.mCharactersVisible = (int)(this.mSecondsElapsed * this.mTickerTextOptions.mCharactersPerSecond);
 			}
 		} else {
-			if(this.mCharactersVisible < this.mCharactersMaximum){
+			if(this.mCharactersVisible < this.mCharactersToDraw){
 				this.mSecondsElapsed = Math.min(this.mDuration, this.mSecondsElapsed + pSecondsElapsed);
 				this.mCharactersVisible = (int)(this.mSecondsElapsed * this.mTickerTextOptions.mCharactersPerSecond);
 			}

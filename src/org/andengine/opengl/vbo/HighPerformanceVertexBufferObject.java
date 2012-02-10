@@ -46,6 +46,17 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 		}
 	}
 
+	public HighPerformanceVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final float[] pBufferData, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		super(pVertexBufferObjectManager, pBufferData.length, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		this.mBufferData = pBufferData;
+		
+		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+			this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
+		} else {
+			this.mFloatBuffer = null;
+		}
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

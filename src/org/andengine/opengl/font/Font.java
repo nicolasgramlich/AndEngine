@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.andengine.opengl.font.exception.FontException;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.PixelFormat;
-import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.math.MathUtils;
 
@@ -40,6 +39,8 @@ public class Font implements IFont {
 	// Fields
 	// ===========================================================
 
+	private final FontManager mFontManager;
+
 	private final ITexture mTexture;
 	private final int mTextureWidth;
 	private final int mTextureHeight;
@@ -63,7 +64,8 @@ public class Font implements IFont {
 	// Constructors
 	// ===========================================================
 
-	public Font(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+	public Font(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+		this.mFontManager = pFontManager;
 		this.mTexture = pTexture;
 		this.mTextureWidth = pTexture.getWidth();
 		this.mTextureHeight = pTexture.getHeight();
@@ -116,15 +118,15 @@ public class Font implements IFont {
 	}
 
 	@Override
-	public void load(final TextureManager pTextureManager, final FontManager pFontManager) {
-		this.mTexture.load(pTextureManager);
-		pFontManager.loadFont(this);
+	public void load() {
+		this.mTexture.load();
+		this.mFontManager.loadFont(this);
 	}
 
 	@Override
-	public void unload(final TextureManager pTextureManager, final FontManager pFontManager) {
-		this.mTexture.unload(pTextureManager);
-		pFontManager.unloadFont(this);
+	public void unload() {
+		this.mTexture.unload();
+		this.mFontManager.unloadFont(this);
 	}
 
 	@Override

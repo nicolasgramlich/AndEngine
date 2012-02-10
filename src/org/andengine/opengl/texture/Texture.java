@@ -23,6 +23,7 @@ public abstract class Texture implements ITexture {
 	// Fields
 	// ===========================================================
 
+	protected final TextureManager mTextureManager;
 	protected final PixelFormat mPixelFormat;
 	protected final TextureOptions mTextureOptions;
 
@@ -40,7 +41,8 @@ public abstract class Texture implements ITexture {
 	 * @param pTextureOptions the (quality) settings of the Texture.
 	 * @param pTextureStateListener to be informed when this {@link Texture} is loaded, unloaded or a {@link ITextureAtlasSource} failed to load.
 	 */
-	public Texture(final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+	public Texture(final TextureManager pTextureManager, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+		this.mTextureManager = pTextureManager;
 		this.mPixelFormat = pPixelFormat;
 		this.mTextureOptions = pTextureOptions;
 		this.mTextureStateListener = pTextureStateListener;
@@ -107,13 +109,13 @@ public abstract class Texture implements ITexture {
 	protected abstract void writeTextureToHardware(final GLState pGLState) throws IOException;
 
 	@Override
-	public void load(final TextureManager pTextureManager) {
-		pTextureManager.loadTexture(this);
+	public void load() {
+		this.mTextureManager.loadTexture(this);
 	}
 
 	@Override
-	public void unload(final TextureManager pTextureManager) {
-		pTextureManager.unloadTexture(this);
+	public void unload() {
+		this.mTextureManager.unloadTexture(this);
 	}
 
 	@Override

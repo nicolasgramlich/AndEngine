@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.andengine.opengl.texture.PixelFormat;
-import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
@@ -85,13 +84,13 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	}
 
 	@Override
-	public void load(final TextureManager pTextureManager) {
-		this.mTextureAtlas.load(pTextureManager);
+	public void load() {
+		this.mTextureAtlas.load();
 	}
 
 	@Override
-	public void unload(final TextureManager pTextureManager) {
-		this.mTextureAtlas.unload(pTextureManager);
+	public void unload() {
+		this.mTextureAtlas.unload();
 	}
 
 	@Override

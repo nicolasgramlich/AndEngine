@@ -225,7 +225,7 @@ public class TextureManager {
 		if(this.hasMappedTexture(pID)) {
 			return this.getMappedTexture(pID);
 		} else {
-			final ITexture texture = new BitmapTexture(pTextureOptions) {
+			final ITexture texture = new BitmapTexture(this, pTextureOptions) {
 				@Override
 				protected InputStream onGetInputStream() throws IOException {
 					return pAssetManager.open(pAssetPath);
@@ -246,7 +246,7 @@ public class TextureManager {
 		if(this.hasMappedTexture(pID)) {
 			return this.getMappedTexture(pID);
 		} else {
-			final ITexture texture = new BitmapTexture(pTextureOptions) {
+			final ITexture texture = new BitmapTexture(this, pTextureOptions) {
 				@Override
 				protected InputStream onGetInputStream() throws IOException {
 					return pAssetInputStreamOpener.open(pAssetPath);

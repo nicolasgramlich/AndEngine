@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
@@ -40,24 +41,25 @@ public abstract class BitmapTexture extends Texture {
 	// Constructors
 	// ===========================================================
 
-	public BitmapTexture() throws IOException {
-		this(BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT, null);
+	public BitmapTexture(final TextureManager pTextureManager) throws IOException {
+		this(pTextureManager, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT, null);
 	}
 
-	public BitmapTexture(final BitmapTextureFormat pBitmapTextureFormat) throws IOException {
-		this(pBitmapTextureFormat, TextureOptions.DEFAULT, null);
+	public BitmapTexture(final TextureManager pTextureManager, final BitmapTextureFormat pBitmapTextureFormat) throws IOException {
+		this(pTextureManager, pBitmapTextureFormat, TextureOptions.DEFAULT, null);
 	}
 
-	public BitmapTexture(final TextureOptions pTextureOptions) throws IOException {
-		this(BitmapTextureFormat.RGBA_8888, pTextureOptions, null);
+	public BitmapTexture(final TextureManager pTextureManager, final TextureOptions pTextureOptions) throws IOException {
+		this(pTextureManager, BitmapTextureFormat.RGBA_8888, pTextureOptions, null);
 	}
 
-	public BitmapTexture(final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IOException {
-		this(pBitmapTextureFormat, pTextureOptions, null);
+	public BitmapTexture(final TextureManager pTextureManager, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IOException {
+		this(pTextureManager, pBitmapTextureFormat, pTextureOptions, null);
 	}
 
-	public BitmapTexture(final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
-		super(pBitmapTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
+	public BitmapTexture(final TextureManager pTextureManager ,final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
+		super(pTextureManager, pBitmapTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
+
 		this.mBitmapTextureFormat = pBitmapTextureFormat;
 
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();

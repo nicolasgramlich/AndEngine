@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
@@ -32,8 +33,8 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	// Constructors
 	// ===========================================================
 
-	public TextureAtlas(final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureAtlasStateListener<T> pTextureAtlasStateListener) {
-		super(pPixelFormat, pTextureOptions, pTextureAtlasStateListener);
+	public TextureAtlas(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureAtlasStateListener<T> pTextureAtlasStateListener) {
+		super(pTextureManager, pPixelFormat, pTextureOptions, pTextureAtlasStateListener);
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;

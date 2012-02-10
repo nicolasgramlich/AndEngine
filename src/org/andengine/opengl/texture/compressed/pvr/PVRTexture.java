@@ -7,6 +7,7 @@ import java.nio.ByteOrder;
 
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.GreedyPVRTexturePixelBufferStrategy;
 import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy;
@@ -54,36 +55,36 @@ public abstract class PVRTexture extends Texture {
 	// Constructors
 	// ===========================================================
 
-	public PVRTexture(final PVRTextureFormat pPVRTextureFormat) throws IllegalArgumentException, IOException {
-		this(pPVRTextureFormat, new GreedyPVRTexturePixelBufferStrategy(), TextureOptions.DEFAULT, null);
+	public PVRTexture(final TextureManager pTextureManager, final PVRTextureFormat pPVRTextureFormat) throws IllegalArgumentException, IOException {
+		this(pTextureManager, pPVRTextureFormat, new GreedyPVRTexturePixelBufferStrategy(), TextureOptions.DEFAULT, null);
 	}
 
-	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy) throws IllegalArgumentException, IOException {
-		this(pPVRTextureFormat, pPVRTexturePixelBufferStrategy, TextureOptions.DEFAULT, null);
+	public PVRTexture(final TextureManager pTextureManager, final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy) throws IllegalArgumentException, IOException {
+		this(pTextureManager, pPVRTextureFormat, pPVRTexturePixelBufferStrategy, TextureOptions.DEFAULT, null);
 	}
 
-	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
-		this(pPVRTextureFormat, new GreedyPVRTexturePixelBufferStrategy(), TextureOptions.DEFAULT, pTextureStateListener);
+	public PVRTexture(final TextureManager pTextureManager, final PVRTextureFormat pPVRTextureFormat, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
+		this(pTextureManager, pPVRTextureFormat, new GreedyPVRTexturePixelBufferStrategy(), TextureOptions.DEFAULT, pTextureStateListener);
 	}
 
-	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
-		this(pPVRTextureFormat, pPVRTexturePixelBufferStrategy, TextureOptions.DEFAULT, pTextureStateListener);
+	public PVRTexture(final TextureManager pTextureManager, final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
+		this(pTextureManager, pPVRTextureFormat, pPVRTexturePixelBufferStrategy, TextureOptions.DEFAULT, pTextureStateListener);
 	}
 
-	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException, IOException {
-		this(pPVRTextureFormat, new GreedyPVRTexturePixelBufferStrategy(), pTextureOptions, null);
+	public PVRTexture(final TextureManager pTextureManager, final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions) throws IllegalArgumentException, IOException {
+		this(pTextureManager, pPVRTextureFormat, new GreedyPVRTexturePixelBufferStrategy(), pTextureOptions, null);
 	}
 
-	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final TextureOptions pTextureOptions) throws IllegalArgumentException, IOException {
-		this(pPVRTextureFormat, pPVRTexturePixelBufferStrategy, pTextureOptions, null);
+	public PVRTexture(final TextureManager pTextureManager, final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final TextureOptions pTextureOptions) throws IllegalArgumentException, IOException {
+		this(pTextureManager, pPVRTextureFormat, pPVRTexturePixelBufferStrategy, pTextureOptions, null);
 	}
 
-	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
-		this(pPVRTextureFormat, new GreedyPVRTexturePixelBufferStrategy(), pTextureOptions, pTextureStateListener);
+	public PVRTexture(final TextureManager pTextureManager, final PVRTextureFormat pPVRTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
+		this(pTextureManager, pPVRTextureFormat, new GreedyPVRTexturePixelBufferStrategy(), pTextureOptions, pTextureStateListener);
 	}
 
-	public PVRTexture(final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
-		super(pPVRTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
+	public PVRTexture(final TextureManager pTextureManager, final PVRTextureFormat pPVRTextureFormat, final IPVRTexturePixelBufferStrategy pPVRTexturePixelBufferStrategy, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException, IOException {
+		super(pTextureManager, pPVRTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
 		this.mPVRTexturePixelBufferStrategy = pPVRTexturePixelBufferStrategy;
 
 		InputStream inputStream = null;

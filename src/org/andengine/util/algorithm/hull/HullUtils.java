@@ -32,10 +32,6 @@ public class HullUtils {
 	// Methods
 	// ===========================================================
 
-	public static float getVertex(final float[] pVertices, final int pVertexOffset, final int pStride, final int pVertexIndex) {
-		return pVertices[(pVertexIndex * pStride) + pVertexOffset];
-	}
-
 	public static int indexOfLowestVertex(final float[] pVertices, final int pVertexCount, final int pVertexOffsetY, final int pStride) {
 		/* Simply choose 0 as the first candidate. */
 		int lowestVertexIndex = 0;

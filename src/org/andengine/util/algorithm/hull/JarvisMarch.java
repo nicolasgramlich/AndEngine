@@ -1,5 +1,6 @@
 package org.andengine.util.algorithm.hull;
 
+import org.andengine.opengl.util.VertexUtils;
 import org.andengine.util.math.MathConstants;
 import org.andengine.util.math.MathUtils;
 
@@ -50,8 +51,8 @@ public class JarvisMarch implements IHullAlgorithm {
 	private int jarvisMarch(final float[] pVertices, final int pVertexCount, final int pVertexOffsetX, final int pVertexOffsetY, final int pStride) {
 		/* Start at the lowest (y-axis) of all vertices. */
 		final int firstHullVertexIndex = HullUtils.indexOfLowestVertex(pVertices, pVertexCount, pVertexOffsetY, pStride);
-		final float firstHullVertexX = HullUtils.getVertex(pVertices, pVertexOffsetX, pStride, firstHullVertexIndex);
-		final float firstHullVertexY = HullUtils.getVertex(pVertices, pVertexOffsetY, pStride, firstHullVertexIndex);
+		final float firstHullVertexX = VertexUtils.getVertex(pVertices, pVertexOffsetX, pStride, firstHullVertexIndex);
+		final float firstHullVertexY = VertexUtils.getVertex(pVertices, pVertexOffsetY, pStride, firstHullVertexIndex);
 
 		int hullVertexCount = 0;
 		int currentHullVertexIndex = firstHullVertexIndex;
@@ -59,8 +60,8 @@ public class JarvisMarch implements IHullAlgorithm {
 		do {
 			HullUtils.swap(pVertices, pStride, hullVertexCount, currentHullVertexIndex);
 
-			final float currentHullPointVertexX = HullUtils.getVertex(pVertices, pVertexOffsetX, pStride, hullVertexCount);
-			final float currentHullPointVertexY = HullUtils.getVertex(pVertices, pVertexOffsetY, pStride, hullVertexCount);
+			final float currentHullPointVertexX = VertexUtils.getVertex(pVertices, pVertexOffsetX, pStride, hullVertexCount);
+			final float currentHullPointVertexY = VertexUtils.getVertex(pVertices, pVertexOffsetY, pStride, hullVertexCount);
 
 			hullVertexCount++;
 
@@ -71,8 +72,8 @@ public class JarvisMarch implements IHullAlgorithm {
 
 			/* Start searching one behind the already found hull vertices. */
 			for(int j = hullVertexCount; j < pVertexCount; j++) {
-				final float possibleNextHullVertexX = HullUtils.getVertex(pVertices, pVertexOffsetX, pStride, j);
-				final float possibleNextHullVertexY = HullUtils.getVertex(pVertices, pVertexOffsetY, pStride, j);
+				final float possibleNextHullVertexX = VertexUtils.getVertex(pVertices, pVertexOffsetX, pStride, j);
+				final float possibleNextHullVertexY = VertexUtils.getVertex(pVertices, pVertexOffsetY, pStride, j);
 
 				final float dX = possibleNextHullVertexX - currentHullPointVertexX;
 				final float dY = possibleNextHullVertexY - currentHullPointVertexY;
@@ -92,7 +93,7 @@ public class JarvisMarch implements IHullAlgorithm {
 				final float dX = firstHullVertexX - currentHullPointVertexX;
 				final float dY = firstHullVertexY - currentHullPointVertexY;
 
-				float possibleNextHullVertexAngle = MathUtils.radToDeg(MathUtils.atan2(dY, dX));
+				float possibleNextHullVertexAngle = MathUtils.atan2(dY, dX);
 				if(possibleNextHullVertexAngle < 0) {
 					possibleNextHullVertexAngle += MathConstants.PI_TWICE; /* 360 degrees. */
 				}

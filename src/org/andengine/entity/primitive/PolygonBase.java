@@ -66,7 +66,7 @@ public abstract class PolygonBase extends PolygonShape {
 			mDrawMode = pDrawMode;
 			mVertices = pVertices;
 			mCapacity = (int) (vertexSizeRatio * VERTEX_SIZE * pVertices.size());
-			this.mPolygonVertexBufferObject = new HighPerformancePolygonBaseVertexBufferObject(pVertexBufferObjectManager, mCapacity, pDrawType, true, Polygon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT);
+			this.mPolygonVertexBufferObject = new HighPerformancePolygonBaseVertexBufferObject(pVertexBufferObjectManager, mCapacity, pDrawType, true, Polygon2.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT);
 			
 			onUpdateVertices();
 			this.onUpdateColor();
@@ -215,7 +215,7 @@ public abstract class PolygonBase extends PolygonShape {
 				for( int i = 0; i < nbVertexInTriangles; i++)
 				{	
 					// TODO use color per vertex
-					bufferData[i * Polygon.VERTEX_SIZE + Polygon.COLOR_INDEX] = packedColor;
+					bufferData[i * Polygon2.VERTEX_SIZE + Polygon2.COLOR_INDEX] = packedColor;
 				}
 
 				this.setDirtyOnHardware();
@@ -230,8 +230,8 @@ public abstract class PolygonBase extends PolygonShape {
 				
 				for( int i = 0; i < nbVertexInTriangles; i++) 
 				{	
-					bufferData[i * Polygon.VERTEX_SIZE + Polygon.VERTEX_INDEX_X] = vertexTriangles.get(i).getX();
-					bufferData[i * Polygon.VERTEX_SIZE + Polygon.VERTEX_INDEX_Y] = vertexTriangles.get(i).getY();
+					bufferData[i * Polygon2.VERTEX_SIZE + Polygon2.VERTEX_INDEX_X] = vertexTriangles.get(i).getX();
+					bufferData[i * Polygon2.VERTEX_SIZE + Polygon2.VERTEX_INDEX_Y] = vertexTriangles.get(i).getY();
 				}
 				
 				this.setDirtyOnHardware();

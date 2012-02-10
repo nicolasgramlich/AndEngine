@@ -141,35 +141,37 @@ public class ShapeCollisionChecker extends BaseCollisionChecker {
 		return ShapeCollisionChecker.checkContains(pVertices, pVertexCount, Constants.VERTEX_INDEX_X, Constants.VERTEX_INDEX_Y, 2, pX, pY);
 	}
 
+	/**
+	 * Works with complex polygons!
+	 *
+	 * @see http://alienryderflex.com/polygon/
+	 *
+	 * @param pVertices
+	 * @param pVertexCount the number of vertices in pVertices
+	 * @param pVertexOffsetX
+	 * @param pVertexOffsetY
+	 * @param pVertexStride
+	 * @param pX
+	 * @param pY
+	 * @return <code>true</code> when the point defined by <code>(pX, pY)</code> is inside the polygon defined by <code>pVertices</code>, <code>false</code>. If the point is exactly on the edge of the polygon, the result can be <code>true</code> or <code>false</code>. 
+	 */
 	public static boolean checkContains(final float[] pVertices, final int pVertexCount, final int pVertexOffsetX, final int pVertexOffsetY, final int pVertexStride, final float pX, final float pY) {
-		int edgeResultSum = 0;
+		boolean odd = false;
 
-		for(int i = pVertexCount - 2; i >= 0; i--) {
-			final float x1 = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, i);
-			final float y1 = VertexUtils.getVertex(pVertices, pVertexOffsetY, pVertexStride, i);
-			final float x2 = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, i + 1);
-			final float y2 = VertexUtils.getVertex(pVertices, pVertexOffsetY, pVertexStride, i + 1);
-			final int edgeResult = BaseCollisionChecker.relativeCCW(x1, y1, x2, y2, pX, pY);
-			if(edgeResult == 0) {
-				return true;
-			} else {
-				edgeResultSum += edgeResult;
+		int j = pVertexCount - 1;
+		for(int i = 0; i < pVertexCount; i++) {
+			final float vertexXI = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, i);
+			final float vertexYI = VertexUtils.getVertex(pVertices, pVertexOffsetY, pVertexStride, i);
+			final float vertexXJ = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, j);
+			final float vertexYJ = VertexUtils.getVertex(pVertices, pVertexOffsetY, pVertexStride, j);
+
+			if((((vertexYI < pY) && (vertexYJ >= pY)) || ((vertexYJ < pY) && (vertexYI >= pY))) && ((vertexXI <= pX) || (vertexXJ <= pX))) {
+				odd ^= ((vertexXI + (((pY - vertexYI) / (vertexYJ - vertexYI)) * (vertexXJ - vertexXI))) < pX);
 			}
-		}
-		/* Also check the 'around the corner of the array' line. */
-		final float x1 = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, pVertexCount - 1);
-		final float y1 = VertexUtils.getVertex(pVertices, pVertexOffsetY, pVertexStride, pVertexCount - 1);
-		final float x2 = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, 0);
-		final float y2 = VertexUtils.getVertex(pVertices, pVertexOffsetY, pVertexStride, 0);
-		final int edgeResult = BaseCollisionChecker.relativeCCW(x1, y1, x2, y2, pX, pY);
-		if(edgeResult == 0){
-			return true;
-		} else {
-			edgeResultSum += edgeResult;
+			j = i;
 		}
 
-		/* Point is not on the edge, so check if the edge is on the same side(left or right) of all edges. */
-		return (edgeResultSum == pVertexCount) || (edgeResultSum == -pVertexCount) ;
+		return odd;
 	}
 
 	// ===========================================================

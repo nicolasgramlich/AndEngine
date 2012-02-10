@@ -1,6 +1,6 @@
 package org.andengine.util.adt.queue;
 
-import org.andengine.util.adt.list.SortedList;
+import org.andengine.util.adt.list.UniqueList;
 
 /**
  * (c) Zynga 2012
@@ -8,7 +8,7 @@ import org.andengine.util.adt.list.SortedList;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:17:33 PM - 03.022012
  */
-public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implements ISortedQueue<T>{
+public class UniqueQueue<T extends Comparable<T>> extends UniqueList<T> implements IUniqueQueue<T>{
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,7 +21,7 @@ public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implemen
 	// Constructors
 	// ===========================================================
 
-	public SortedQueue(final IQueue<T> pQueue) {
+	public UniqueQueue(final IQueue<T> pQueue) {
 		super(pQueue);
 	}
 

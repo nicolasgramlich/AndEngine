@@ -5,6 +5,7 @@ import java.nio.IntBuffer;
 
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLHelper;
 import org.andengine.opengl.util.GLState;
@@ -58,12 +59,12 @@ public class RenderTexture extends Texture {
 	// Constructors
 	// ===========================================================
 
-	public RenderTexture(final int pWidth, final int pHeight) {
-		this(pWidth, pHeight, PixelFormat.RGBA_8888);
+	public RenderTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight) {
+		this(pTextureManager, pWidth, pHeight, PixelFormat.RGBA_8888);
 	}
 
-	public RenderTexture(final int pWidth, final int pHeight, final PixelFormat pPixelFormat) {
-		super(pPixelFormat, TextureOptions.NEAREST, null);
+	public RenderTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat) {
+		super(pTextureManager, pPixelFormat, TextureOptions.NEAREST, null);
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
@@ -115,7 +116,7 @@ public class RenderTexture extends Texture {
 		pGLState.bindFramebuffer(this.mFramebufferObjectID);
 
 		/* Attach texture to FBO. */
-		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mTextureID, 0);
+		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mHardwareTextureID, 0);
 
 //		pGLState.checkError();
 		pGLState.checkFramebufferStatus();

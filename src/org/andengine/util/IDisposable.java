@@ -1,6 +1,6 @@
 package org.andengine.util;
 
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
  * (c) Zynga 2012
@@ -24,7 +24,7 @@ public interface IDisposable {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class AlreadyDisposedException extends AndEngineException {
+	public class AlreadyDisposedException extends AndEngineRuntimeException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

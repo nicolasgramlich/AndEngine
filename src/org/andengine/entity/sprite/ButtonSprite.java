@@ -119,7 +119,7 @@ public class ButtonSprite extends TiledSprite {
 
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		if(!this.mEnabled) {
+		if(!this.isEnabled()) {
 			this.changeState(State.DISABLED);
 		} else if(pSceneTouchEvent.isActionDown()) {
 			this.changeState(State.PRESSED);

@@ -155,7 +155,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		/* Audio. */
 		if(this.mEngineOptions.getAudioOptions().needsSound()) {
-			this.mSoundManager = new SoundManager();
+			this.mSoundManager = new SoundManager(this.mEngineOptions.getAudioOptions().getSoundOptions().getMaxSimultaneousStreams());
 		} else {
 			this.mSoundManager = null;
 		}

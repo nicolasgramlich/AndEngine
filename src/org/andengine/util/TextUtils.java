@@ -128,9 +128,26 @@ public final class TextUtils {
 	}
 
 	public static int countCharacters(final List<CharSequence> pTexts) {
+		return TextUtils.countCharacters(pTexts, false);
+	}
+
+	public static int countCharacters(final List<CharSequence> pTexts, final boolean pIgnoreWhitespaces) {
 		int characters = 0;
-		for(int i = pTexts.size() - 1; i >= 0; i--) {
-			characters += pTexts.get(i).length();
+		if(pIgnoreWhitespaces) {
+			for(int i = pTexts.size() - 1; i >= 0; i--) {
+				final CharSequence text = pTexts.get(i);
+				for(int j = text.length() - 1; j >= 0; j--) {
+					final char character = text.charAt(j);
+					if(!Character.isWhitespace(character)) {
+						characters++;
+					}
+				}
+			}
+		} else {
+			for(int i = pTexts.size() - 1; i >= 0; i--) {
+				final CharSequence text = pTexts.get(i);
+				characters += text.length();
+			}
 		}
 		return characters;
 	}

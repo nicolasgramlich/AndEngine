@@ -1,14 +1,14 @@
 package org.andengine.util.adt.queue;
 
-import org.andengine.util.adt.list.SortedList;
+import org.andengine.util.adt.list.ShiftList;
 
 /**
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 17:17:33 PM - 03.022012
+ * @since 17:06:49 - 03.01.2012
  */
-public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implements ISortedQueue<T>{
+public class ShiftQueue<T> extends ShiftList<T> implements IQueue<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,8 +21,12 @@ public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implemen
 	// Constructors
 	// ===========================================================
 
-	public SortedQueue(final IQueue<T> pQueue) {
-		super(pQueue);
+	public ShiftQueue() {
+		super();
+	}
+
+	public ShiftQueue(final int pInitialCapacity) {
+		super(pInitialCapacity);
 	}
 
 	// ===========================================================
@@ -56,7 +60,6 @@ public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implemen
 		this.add(pItem);
 	}
 
-	@Deprecated
 	@Override
 	public void enter(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
 		this.add(pIndex, pItem);

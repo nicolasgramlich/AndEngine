@@ -41,24 +41,25 @@ public abstract class BitmapTexture extends Texture {
 	// Constructors
 	// ===========================================================
 
-	public BitmapTexture() throws IOException {
-		this(BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT, null);
+	public BitmapTexture(final TextureManager pTextureManager) throws IOException {
+		this(pTextureManager, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT, null);
 	}
 
-	public BitmapTexture(final BitmapTextureFormat pBitmapTextureFormat) throws IOException {
-		this(pBitmapTextureFormat, TextureOptions.DEFAULT, null);
+	public BitmapTexture(final TextureManager pTextureManager, final BitmapTextureFormat pBitmapTextureFormat) throws IOException {
+		this(pTextureManager, pBitmapTextureFormat, TextureOptions.DEFAULT, null);
 	}
 
-	public BitmapTexture(final TextureOptions pTextureOptions) throws IOException {
-		this(BitmapTextureFormat.RGBA_8888, pTextureOptions, null);
+	public BitmapTexture(final TextureManager pTextureManager, final TextureOptions pTextureOptions) throws IOException {
+		this(pTextureManager, BitmapTextureFormat.RGBA_8888, pTextureOptions, null);
 	}
 
-	public BitmapTexture(final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IOException {
-		this(pBitmapTextureFormat, pTextureOptions, null);
+	public BitmapTexture(final TextureManager pTextureManager, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IOException {
+		this(pTextureManager, pBitmapTextureFormat, pTextureOptions, null);
 	}
 
-	public BitmapTexture(final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
-		super(pBitmapTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
+	public BitmapTexture(final TextureManager pTextureManager ,final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
+		super(pTextureManager, pBitmapTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
+
 		this.mBitmapTextureFormat = pBitmapTextureFormat;
 
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
@@ -93,19 +94,6 @@ public abstract class BitmapTexture extends Texture {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	public BitmapTexture load(final TextureManager pTextureManager) {
-		super.load(pTextureManager);
-
-		return this;
-	}
-
-	@Override
-	public BitmapTexture unload(final TextureManager pTextureManager) {
-		super.unload(pTextureManager);
-
-		return this;
-	}
-
 	protected abstract InputStream onGetInputStream() throws IOException;
 
 	@Override
@@ -117,8 +105,9 @@ public abstract class BitmapTexture extends Texture {
 			throw new NullBitmapException("Caused by: '" + this.toString() + "'.");
 		}
 
-		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && this.mPixelFormat == PixelFormat.RGBA_8888;
+		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && (this.mPixelFormat == PixelFormat.RGBA_8888);
 		if(!useDefaultAlignment) {
+			/* Adjust unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 		}
 
@@ -129,8 +118,8 @@ public abstract class BitmapTexture extends Texture {
 			pGLState.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
 		}
 
-		/* Restore default alignment. */
 		if(!useDefaultAlignment) {
+			/* Restore default unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 		}
 

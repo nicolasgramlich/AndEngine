@@ -33,8 +33,8 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	// Constructors
 	// ===========================================================
 
-	public TextureAtlas(final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureAtlasStateListener<T> pTextureAtlasStateListener) {
-		super(pPixelFormat, pTextureOptions, pTextureAtlasStateListener);
+	public TextureAtlas(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureAtlasStateListener<T> pTextureAtlasStateListener) {
+		super(pTextureManager, pPixelFormat, pTextureOptions, pTextureAtlasStateListener);
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
@@ -98,19 +98,6 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	public TextureAtlas<T> load(final TextureManager pTextureManager) {
-		super.load(pTextureManager);
-
-		return this;
-	}
-
-	@Override
-	public TextureAtlas<T> unload(final TextureManager pTextureManager) {
-		super.unload(pTextureManager);
-
-		return this;
-	}
 
 	@Override
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY) throws IllegalArgumentException {

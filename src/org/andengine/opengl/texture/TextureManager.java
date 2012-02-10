@@ -60,7 +60,7 @@ public class TextureManager {
 		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
 		if(!managedTextures.isEmpty()) {
 			for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
-				texture.setLoadedToHardware(false);
+				texture.setNotLoadedToHardware();
 			}
 		}
 
@@ -78,7 +78,7 @@ public class TextureManager {
 	public synchronized void onDestroy() {
 		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
 		for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
-			texture.setLoadedToHardware(false);
+			texture.setNotLoadedToHardware();
 		}
 
 		this.mTexturesToBeLoaded.clear();
@@ -225,7 +225,7 @@ public class TextureManager {
 		if(this.hasMappedTexture(pID)) {
 			return this.getMappedTexture(pID);
 		} else {
-			final ITexture texture = new BitmapTexture(pTextureOptions) {
+			final ITexture texture = new BitmapTexture(this, pTextureOptions) {
 				@Override
 				protected InputStream onGetInputStream() throws IOException {
 					return pAssetManager.open(pAssetPath);
@@ -246,7 +246,7 @@ public class TextureManager {
 		if(this.hasMappedTexture(pID)) {
 			return this.getMappedTexture(pID);
 		} else {
-			final ITexture texture = new BitmapTexture(pTextureOptions) {
+			final ITexture texture = new BitmapTexture(this, pTextureOptions) {
 				@Override
 				protected InputStream onGetInputStream() throws IOException {
 					return pAssetInputStreamOpener.open(pAssetPath);

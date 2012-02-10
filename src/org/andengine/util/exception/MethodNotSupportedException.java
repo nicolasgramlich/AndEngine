@@ -6,7 +6,7 @@ package org.andengine.util.exception;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 18:13:32 - 26.12.2011
  */
-public class MethodNotSupportedException extends AndEngineException {
+public class MethodNotSupportedException extends AndEngineRuntimeException {
 	// ===========================================================
 	// Constants
 	// ===========================================================

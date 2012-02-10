@@ -19,6 +19,7 @@ public class Letter {
 	// ===========================================================
 
 	public final char mCharacter;
+	private final boolean mWhitespace;
 	public final int mTextureX;
 	public final int mTextureY;
 	public final int mWidth;
@@ -36,8 +37,20 @@ public class Letter {
 	// Constructors
 	// ===========================================================
 
-	Letter(final char pCharacter, final int pTextureX, final int pTextureY, final int pWidth, final int pHeight, final float pOffsetX, final float pOffsetY, final float pAdvance, final float pU, final float pV, final float pU2, final float pV2) {
+	/**
+	 * For invisible letters or letters without an extent (i.e. whitespaces).
+	 */
+	/* package */ Letter(final char pCharacter, final float pAdvance) {
+		this(pCharacter, true, 0, 0, 0, 0, 0, 0, pAdvance, 0, 0, 0, 0);
+	}
+
+	/* package */ Letter(final char pCharacter, final int pTextureX, final int pTextureY, final int pWidth, final int pHeight, final float pOffsetX, final float pOffsetY, final float pAdvance, final float pU, final float pV, final float pU2, final float pV2) {
+		this(pCharacter, false, pTextureX, pTextureY, pWidth, pHeight, pOffsetX, pOffsetY, pAdvance, pU, pV, pU2, pV2);
+	}
+
+	private Letter(final char pCharacter, final boolean pWhitespace, final int pTextureX, final int pTextureY, final int pWidth, final int pHeight, final float pOffsetX, final float pOffsetY, final float pAdvance, final float pU, final float pV, final float pU2, final float pV2) {
 		this.mCharacter = pCharacter;
+		this.mWhitespace = pWhitespace;
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 		this.mTextureX = pTextureX;
@@ -60,6 +73,10 @@ public class Letter {
 			return 0;
 		}
 		return mKernings.get(pCharacter, 0);
+	}
+
+	public boolean isWhitespace() {
+		return this.mWhitespace;
 	}
 
 	// ===========================================================

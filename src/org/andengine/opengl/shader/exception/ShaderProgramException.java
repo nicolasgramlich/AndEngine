@@ -1,6 +1,6 @@
 package org.andengine.opengl.shader.exception;
 
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
  * (c) Zynga 2011
@@ -8,7 +8,7 @@ import org.andengine.util.exception.AndEngineException;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 02:33:27 - 07.08.2011
  */
-public class ShaderProgramException extends AndEngineException {
+public class ShaderProgramException extends AndEngineRuntimeException {
 	// ===========================================================
 	// Constants
 	// ===========================================================

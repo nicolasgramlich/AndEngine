@@ -73,7 +73,7 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 	public void add(final T pItem) {
 		final int index = this.binarySearch(pItem, true);
 		if(index < 0) {
-			this.mList.add(SortedList.encodeInsertionIndex(index), pItem);
+			this.mList.add(ListUtils.encodeInsertionIndex(index), pItem);
 		} else {
 			this.mList.add(index, pItem);
 		}
@@ -150,7 +150,7 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 				return mid;
 			}
 		}
-		return SortedList.encodeInsertionIndex(low);
+		return ListUtils.encodeInsertionIndex(low);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 					}
 				} else {
 					/* Return the last known position. */
-					return SortedList.encodeInsertionIndex(i);
+					return ListUtils.encodeInsertionIndex(i);
 				}
 			}
 			i++;
@@ -200,10 +200,6 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 		} else {
 			return SortedList.INDEX_INVALID;
 		}
-	}
-
-	private static final int encodeInsertionIndex(final int pIndex) {
-		return (-pIndex) - 1;
 	}
 
 	// ===========================================================

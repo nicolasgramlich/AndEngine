@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.andengine.opengl.font.exception.FontException;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.PixelFormat;
-import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.math.MathUtils;
 
@@ -36,12 +35,11 @@ public class Font implements IFont {
 
 	protected static final int LETTER_TEXTURE_PADDING = 1;
 
-	protected static final Rect TEXTBOUNDS_TMP = new Rect();
-	protected static final float[] TEXTWIDTH_CONTAINER_TMP = new float[1];
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
+
+	private final FontManager mFontManager;
 
 	private final ITexture mTexture;
 	private final int mTextureWidth;
@@ -59,12 +57,15 @@ public class Font implements IFont {
 	protected final FontMetrics mFontMetrics;
 
 	protected final Canvas mCanvas = new Canvas();
+	protected final Rect mTextBounds = new Rect();
+	protected final float[] mTextWidthContainer = new float[1];
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public Font(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+	public Font(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor) {
+		this.mFontManager = pFontManager;
 		this.mTexture = pTexture;
 		this.mTextureWidth = pTexture.getWidth();
 		this.mTextureHeight = pTexture.getHeight();
@@ -117,19 +118,15 @@ public class Font implements IFont {
 	}
 
 	@Override
-	public Font load(final TextureManager pTextureManager, final FontManager pFontManager) {
-		this.mTexture.load(pTextureManager);
-		pFontManager.loadFont(this);
-
-		return this;
+	public void load() {
+		this.mTexture.load();
+		this.mFontManager.loadFont(this);
 	}
 
 	@Override
-	public Font unload(final TextureManager pTextureManager, final FontManager pFontManager) {
-		this.mTexture.unload(pTextureManager);
-		pFontManager.unloadFont(this);
-
-		return this;
+	public void unload() {
+		this.mTexture.unload();
+		this.mFontManager.unloadFont(this);
 	}
 
 	@Override
@@ -164,36 +161,33 @@ public class Font implements IFont {
 	}
 
 	private float getLetterAdvance(final String pCharacterAsString) {
-		this.mPaint.getTextWidths(pCharacterAsString, Font.TEXTWIDTH_CONTAINER_TMP);
-		return Font.TEXTWIDTH_CONTAINER_TMP[0];
+		this.mPaint.getTextWidths(pCharacterAsString, this.mTextWidthContainer);
+		return this.mTextWidthContainer[0];
 	}
 
-	protected Bitmap getLetterBitmap(final char pCharacter) throws IllegalArgumentException {
-		final String characterAsString = String.valueOf(pCharacter);
+	protected Bitmap getLetterBitmap(final Letter pLetter) throws FontException {
+		final char character = pLetter.mCharacter;
+		final String characterAsString = String.valueOf(character);
 
-		this.updateTextBounds(characterAsString);
+		final int width = pLetter.mWidth + (2 * Font.LETTER_TEXTURE_PADDING);
+		final int height = pLetter.mHeight + (2 * Font.LETTER_TEXTURE_PADDING);
 
-		final int letterLeft = Font.TEXTBOUNDS_TMP.left;
-		final int letterTop = Font.TEXTBOUNDS_TMP.top;
-		final int letterWidth = Font.TEXTBOUNDS_TMP.width() + 2 * Font.LETTER_TEXTURE_PADDING;
-		final int letterHeight = Font.TEXTBOUNDS_TMP.height() + 2 * Font.LETTER_TEXTURE_PADDING;
-
-		if(letterWidth == 0 || letterHeight == 0) {
-			throw new IllegalArgumentException("Character '" + pCharacter + "' cannot be drawn, because it has no extent (width='" + letterWidth + "', height='" + letterHeight + "')");
-		}
-		final Bitmap bitmap = Bitmap.createBitmap(letterWidth, letterHeight, Config.ARGB_8888);
+		final Bitmap bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 		this.mCanvas.setBitmap(bitmap);
 
 		/* Make background transparent. */
 		this.mCanvas.drawRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), this.mBackgroundPaint);
 
 		/* Actually draw the character. */
-		this.drawLetter(characterAsString, -letterLeft, -letterTop);
+		final float drawLetterLeft = -pLetter.mOffsetX;
+		final float drawLetterTop = -(pLetter.mOffsetY + this.getAscent());
+
+		this.drawLetter(characterAsString, drawLetterLeft, drawLetterTop);
 
 		return bitmap;
 	}
 
-	protected void drawLetter(final String pCharacterAsString, final int pLeft, final int pTop) {
+	protected void drawLetter(final String pCharacterAsString, final float pLeft, final float pTop) {
 		this.mCanvas.drawText(pCharacterAsString, pLeft + Font.LETTER_TEXTURE_PADDING, pTop + Font.LETTER_TEXTURE_PADDING, this.mPaint);
 	}
 
@@ -210,73 +204,86 @@ public class Font implements IFont {
 		final float textureHeight = this.mTextureHeight;
 
 		this.updateTextBounds(characterAsString);
-		final int letterLeft = Font.TEXTBOUNDS_TMP.left;
-		final int letterTop = Font.TEXTBOUNDS_TMP.top;
-		final int letterWidth = Font.TEXTBOUNDS_TMP.width();
-		final int letterHeight = Font.TEXTBOUNDS_TMP.height();
+		final int letterLeft = this.mTextBounds.left;
+		final int letterTop = this.mTextBounds.top;
+		final int letterWidth = this.mTextBounds.width();
+		final int letterHeight = this.mTextBounds.height();
 
-		if(this.mCurrentTextureX + Font.LETTER_TEXTURE_PADDING + letterWidth >= textureWidth) {
-			this.mCurrentTextureX = 0;
-			this.mCurrentTextureY += this.mCurrentTextureYHeightMax + 2 * Font.LETTER_TEXTURE_PADDING;
-			this.mCurrentTextureYHeightMax = 0;
-		}
-
-		if(this.mCurrentTextureY + letterHeight >= textureHeight) {
-			throw new FontException("Not enough space for Letter: '" + pCharacter + "' on the Texture");
-		}
-
-		this.mCurrentTextureYHeightMax = Math.max(letterHeight, this.mCurrentTextureYHeightMax);
-
-		this.mCurrentTextureX += Font.LETTER_TEXTURE_PADDING;
-
-		final float u = this.mCurrentTextureX / textureWidth;
-		final float v = this.mCurrentTextureY / textureHeight;
-		final float u2 = (this.mCurrentTextureX + letterWidth) / textureWidth;
-		final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight;
+		final Letter letter;
 
 		final float advance = this.getLetterAdvance(characterAsString);
-		final Letter letter = new Letter(pCharacter, this.mCurrentTextureX - Font.LETTER_TEXTURE_PADDING, this.mCurrentTextureY - Font.LETTER_TEXTURE_PADDING, letterWidth, letterHeight, letterLeft, letterTop - this.getAscent(), advance, u, v, u2, v2);
-		this.mCurrentTextureX += letterWidth + Font.LETTER_TEXTURE_PADDING;
+
+		final boolean whitespace = Character.isWhitespace(pCharacter) || (letterWidth == 0) || (letterHeight == 0);
+		if(whitespace) {
+			letter = new Letter(pCharacter, advance);
+		} else {
+			if((this.mCurrentTextureX + Font.LETTER_TEXTURE_PADDING + letterWidth) >= textureWidth) {
+				this.mCurrentTextureX = 0;
+				this.mCurrentTextureY += this.mCurrentTextureYHeightMax + (2 * Font.LETTER_TEXTURE_PADDING);
+				this.mCurrentTextureYHeightMax = 0;
+			}
+
+			if((this.mCurrentTextureY + letterHeight) >= textureHeight) {
+				throw new FontException("Not enough space for Letter: '" + pCharacter + "' on the Texture");
+			}
+
+			this.mCurrentTextureYHeightMax = Math.max(letterHeight, this.mCurrentTextureYHeightMax);
+
+			this.mCurrentTextureX += Font.LETTER_TEXTURE_PADDING;
+
+			final float u = this.mCurrentTextureX / textureWidth;
+			final float v = this.mCurrentTextureY / textureHeight;
+			final float u2 = (this.mCurrentTextureX + letterWidth) / textureWidth;
+			final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight;
+
+			letter = new Letter(pCharacter, this.mCurrentTextureX - Font.LETTER_TEXTURE_PADDING, this.mCurrentTextureY - Font.LETTER_TEXTURE_PADDING, letterWidth, letterHeight, letterLeft, letterTop - this.getAscent(), advance, u, v, u2, v2);
+			this.mCurrentTextureX += letterWidth + Font.LETTER_TEXTURE_PADDING;
+		}
 
 		return letter;
 	}
 
 	protected void updateTextBounds(final String pCharacterAsString) {
-		this.mPaint.getTextBounds(pCharacterAsString, 0, 1, Font.TEXTBOUNDS_TMP);
+		this.mPaint.getTextBounds(pCharacterAsString, 0, 1, this.mTextBounds);
 	}
 
 	public synchronized void update(final GLState pGLState) {
-		final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
-		if(lettersPendingToBeDrawnToTexture.size() > 0) {
-			this.mTexture.bind(pGLState);
-			final PixelFormat pixelFormat = this.mTexture.getPixelFormat();
+		if(this.mTexture.isLoadedToHardware()) {
+			final ArrayList<Letter> lettersPendingToBeDrawnToTexture = this.mLettersPendingToBeDrawnToTexture;
+			if(lettersPendingToBeDrawnToTexture.size() > 0) {
+				this.mTexture.bind(pGLState);
+				final PixelFormat pixelFormat = this.mTexture.getPixelFormat();
 
-			final boolean preMultipyAlpha = this.mTexture.getTextureOptions().mPreMultipyAlpha;
-			for(int i = lettersPendingToBeDrawnToTexture.size() - 1; i >= 0; i--) {
-				final Letter letter = lettersPendingToBeDrawnToTexture.get(i);
-				final Bitmap bitmap = this.getLetterBitmap(letter.mCharacter);
+				final boolean preMultipyAlpha = this.mTexture.getTextureOptions().mPreMultipyAlpha;
+				for(int i = lettersPendingToBeDrawnToTexture.size() - 1; i >= 0; i--) {
+					final Letter letter = lettersPendingToBeDrawnToTexture.get(i);
+					if(!letter.isWhitespace()) {
+						final Bitmap bitmap = this.getLetterBitmap(letter);
 
-				final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && pixelFormat == PixelFormat.RGBA_8888;
-				if(!useDefaultAlignment) {
-					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
+						final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && (pixelFormat == PixelFormat.RGBA_8888);
+						if(!useDefaultAlignment) {
+							/* Adjust unpack alignment. */
+							GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
+						}
+
+						if(preMultipyAlpha) {
+							GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap);
+						} else {
+							pGLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap, pixelFormat);
+						}
+
+						if(!useDefaultAlignment) {
+							/* Restore default unpack alignment. */
+							GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
+						}
+
+						bitmap.recycle();
+					}
 				}
+				lettersPendingToBeDrawnToTexture.clear();
 
-				if(preMultipyAlpha) {
-					GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap);
-				} else {
-					pGLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, letter.mTextureX, letter.mTextureY, bitmap, pixelFormat);
-				}
-
-				/* Restore default alignment. */
-				if(!useDefaultAlignment) {
-					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
-				}
-
-				bitmap.recycle();
+				System.gc();
 			}
-			lettersPendingToBeDrawnToTexture.clear();
-
-			System.gc();
 		}
 	}
 

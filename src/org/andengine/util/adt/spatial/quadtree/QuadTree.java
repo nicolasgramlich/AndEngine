@@ -12,7 +12,7 @@ import org.andengine.util.adt.bounds.BoundsSplit.BoundsSplitException;
 import org.andengine.util.adt.spatial.ISpatialItem;
 import org.andengine.util.call.ParameterCallable;
 import org.andengine.util.debug.Debug;
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
  * TODO Make all methods non-synchronized and add a SynchronizedXZYQuadTree subclasses. 
@@ -154,10 +154,10 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 	 * @param pItem to be freshly added.
 	 * @param pBounds to remove pItem with.
 	 */
-	public synchronized void move(final T pItem, final B pBounds) throws AndEngineException {
+	public synchronized void move(final T pItem, final B pBounds) throws AndEngineRuntimeException {
 		final boolean success = this.remove(pItem, pBounds);
 		if(!success) {
-			throw new AndEngineException("Failed to remove item: '" + pItem.toString() + " from old bounds: '" + pBounds.toString() + "'.");
+			throw new AndEngineRuntimeException("Failed to remove item: '" + pItem.toString() + " from old bounds: '" + pBounds.toString() + "'.");
 		}
 		this.add(pItem);
 	}
@@ -170,10 +170,10 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 	 * @param pNewBounds to add pItem with.
 	 */
 	@Deprecated
-	public synchronized void move(final T pItem, final B pOldBounds, final B pNewBounds) throws AndEngineException {
+	public synchronized void move(final T pItem, final B pOldBounds, final B pNewBounds) throws AndEngineRuntimeException {
 		final boolean success = this.remove(pItem, pOldBounds);
 		if(!success) {
-			throw new AndEngineException("Failed to remove item: '" + pItem.toString() + " from old bounds: '" + pOldBounds.toString() + "'.");
+			throw new AndEngineRuntimeException("Failed to remove item: '" + pItem.toString() + " from old bounds: '" + pOldBounds.toString() + "'.");
 		}
 		this.add(pItem, pNewBounds);
 	}

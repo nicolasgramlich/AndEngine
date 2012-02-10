@@ -55,7 +55,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 	public ShaderProgram(final String pVertexShaderSource, final String pFragmentShaderSource) {
 		this(new StringShaderSource(pVertexShaderSource), new StringShaderSource(pFragmentShaderSource));
 	}
-	
+
 	public ShaderProgram(final IShaderSource pVertexShaderSource, final IShaderSource pFragmentShaderSource) {
 		this.mVertexShaderSource = pVertexShaderSource;
 		this.mFragmentShaderSource = pFragmentShaderSource;
@@ -194,8 +194,8 @@ public class ShaderProgram implements ShaderProgramConstants {
 			int length = ShaderProgram.LENGTH_CONTAINER[0];
 			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
 			if(length == 0) {
-				while(length < NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
-					 length++;
+				while((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
+					length++;
 				}
 			}
 			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
@@ -205,7 +205,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 	}
 
 	/**
-	 * TODO Is this actually needed? As the locations of {@link VertexBufferObjectAttribute}s are now 'predefined'. 
+	 * TODO Is this actually needed? As the locations of {@link VertexBufferObjectAttribute}s are now 'predefined'.
 	 */
 	@Deprecated
 	private void initAttributeLocations() {
@@ -220,8 +220,8 @@ public class ShaderProgram implements ShaderProgramConstants {
 			int length = ShaderProgram.LENGTH_CONTAINER[0];
 			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
 			if(length == 0) {
-				while(length < NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
-					 length++;
+				while((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
+					length++;
 				}
 			}
 			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);

@@ -1,7 +1,6 @@
 package org.andengine.opengl.font;
 
 import org.andengine.opengl.texture.ITexture;
-import org.andengine.opengl.texture.TextureManager;
 
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -33,12 +32,12 @@ public class StrokeFont extends Font {
 	// Constructors
 	// ===========================================================
 
-	public StrokeFont(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
-		this(pTexture, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor, false);
+	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor, false);
 	}
 
-	public StrokeFont(final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor, final boolean pStrokeOnly) {
-		super(pTexture, pTypeface, pSize, pAntiAlias, pColor);
+	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor, final boolean pStrokeOnly) {
+		super(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor);
 		
 		this.mStrokeWidth = pStrokeWidth;
 
@@ -61,24 +60,10 @@ public class StrokeFont extends Font {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public StrokeFont load(final TextureManager pTextureManager, final FontManager pFontManager) {
-		super.load(pTextureManager, pFontManager);
-
-		return this;
-	}
-
-	@Override
-	public StrokeFont unload(final TextureManager pTextureManager, final FontManager pFontManager) {
-		super.unload(pTextureManager, pFontManager);
-		
-		return this;
-	}
-
 	protected void updateTextBounds(final String pCharacterAsString) {
-		this.mStrokePaint.getTextBounds(pCharacterAsString, 0, 1, Font.TEXTBOUNDS_TMP);
+		this.mStrokePaint.getTextBounds(pCharacterAsString, 0, 1, this.mTextBounds);
 		final int inset = -(int)Math.floor(this.mStrokeWidth * 0.5f);
-		Font.TEXTBOUNDS_TMP.inset(inset, inset);
+		this.mTextBounds.inset(inset, inset);
 	}
 
 	protected void drawLetter(final String pCharacterAsString, final int pLeft, final int pTop) {

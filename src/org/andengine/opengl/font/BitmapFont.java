@@ -16,7 +16,7 @@ import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.andengine.util.StreamUtils;
 import org.andengine.util.TextUtils;
 
-import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.SparseArray;
 
 /**
@@ -149,6 +149,8 @@ public class BitmapFont implements IFont {
 	// Fields
 	// ===========================================================
 
+	private final TextureManager mTextureManager;
+
 	private final BitmapTextureFormat mBitmapTextureFormat;
 	private final TextureOptions mTextureOptions;
 
@@ -168,25 +170,26 @@ public class BitmapFont implements IFont {
 	// Constructors
 	// ===========================================================
 
-	public BitmapFont(final Context pContext, final String pAssetPath) {
-		this(pContext, pAssetPath, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT);
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath) {
+		this(pTextureManager, pAssetManager, pAssetPath, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT);
 	}
 
-	public BitmapFont(final Context pContext, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat) {
-		this(pContext, pAssetPath, pBitmapTextureFormat, TextureOptions.DEFAULT);
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat) {
+		this(pTextureManager, pAssetManager, pAssetPath, pBitmapTextureFormat, TextureOptions.DEFAULT);
 	}
 
-	public BitmapFont(final Context pContext, final String pAssetPath, final TextureOptions pTextureOptions) {
-		this(pContext, pAssetPath, BitmapTextureFormat.RGBA_8888, pTextureOptions);
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final TextureOptions pTextureOptions) {
+		this(pTextureManager, pAssetManager, pAssetPath, BitmapTextureFormat.RGBA_8888, pTextureOptions);
 	}
 
-	public BitmapFont(final Context pContext, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) {
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) {
+		this.mTextureManager = pTextureManager;
 		this.mBitmapTextureFormat = pBitmapTextureFormat;
 		this.mTextureOptions = pTextureOptions;
 
 		InputStream in = null;
 		try {
-			in = pContext.getAssets().open(pAssetPath);
+			in = pAssetManager.open(pAssetPath);
 			final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in), StreamUtils.IO_BUFFER_SIZE);
 
 			final String assetBasePath;
@@ -234,7 +237,7 @@ public class BitmapFont implements IFont {
 
 			/* Pages. */
 			for(int i = 0; i < this.mBitmapFontPageCount; i++) {
-				this.mBitmapFontPages[i] = new BitmapFontPage(pContext, assetBasePath, bufferedReader.readLine());
+				this.mBitmapFontPages[i] = new BitmapFontPage(pAssetManager, assetBasePath, bufferedReader.readLine());
 			}
 
 			/* Chars. */
@@ -327,17 +330,13 @@ public class BitmapFont implements IFont {
 	}
 
 	@Override
-	public BitmapFont load(final TextureManager pTextureManager, final FontManager pFontManager) {
-		this.loadTextures(pTextureManager);
-
-		return this;
+	public void load() {
+		this.loadTextures();
 	}
 
 	@Override
-	public BitmapFont unload(final TextureManager pTextureManager, final FontManager pFontManager) {
-		this.unloadTextures(pTextureManager);
-
-		return this;
+	public void unload() {
+		this.unloadTextures();
 	}
 
 	@Override
@@ -358,19 +357,19 @@ public class BitmapFont implements IFont {
 	// Methods
 	// ===========================================================
 
-	public void loadTextures(final TextureManager pTextureManager) {
+	public void loadTextures() {
 		final BitmapFontPage[] bitmapFontPages = this.mBitmapFontPages;
 		final int bitmapFontPageCount = bitmapFontPages.length;
 		for(int i = 0; i < bitmapFontPageCount; i++) {
-			bitmapFontPages[i].getTexture().load(pTextureManager);
+			bitmapFontPages[i].getTexture().load();
 		}
 	}
 
-	public void unloadTextures(final TextureManager pTextureManager) {
+	public void unloadTextures() {
 		final BitmapFontPage[] bitmapFontPages = this.mBitmapFontPages;
 		final int bitmapFontPageCount = bitmapFontPages.length;
 		for(int i = 0; i < bitmapFontPageCount; i++) {
-			bitmapFontPages[i].getTexture().unload(pTextureManager);
+			bitmapFontPages[i].getTexture().unload();
 		}
 	}
 
@@ -645,7 +644,7 @@ public class BitmapFont implements IFont {
 		// Constructors
 		// ===========================================================
 
-		public BitmapFontPage(final Context pContext, final String pAssetBasePath, final String pData) throws IOException {
+		public BitmapFontPage(final AssetManager pAssetManager, final String pAssetBasePath, final String pData) throws IOException {
 			final String[] pageAttributes = TextUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_PAGE_ATTRIBUTECOUNT + 1);
 
 			if(pageAttributes.length - 1 != BitmapFont.TAG_PAGE_ATTRIBUTECOUNT) {
@@ -659,10 +658,10 @@ public class BitmapFont implements IFont {
 			final String file = BitmapFont.getStringAttribute(pageAttributes, BitmapFont.TAG_PAGE_ATTRIBUTE_FILE_INDEX, BitmapFont.TAG_PAGE_ATTRIBUTE_FILE);
 
 			final String assetPath = pAssetBasePath + file;
-			this.mTexture = new BitmapTexture(BitmapFont.this.mBitmapTextureFormat, BitmapFont.this.mTextureOptions) {
+			this.mTexture = new BitmapTexture(BitmapFont.this.mTextureManager, BitmapFont.this.mBitmapTextureFormat, BitmapFont.this.mTextureOptions) {
 				@Override
 				protected InputStream onGetInputStream() throws IOException {
-					return pContext.getAssets().open(assetPath);
+					return pAssetManager.open(assetPath);
 				}
 			};
 		}

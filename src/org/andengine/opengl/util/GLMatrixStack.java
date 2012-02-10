@@ -1,6 +1,6 @@
 package org.andengine.opengl.util;
 
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 import org.andengine.util.math.MathConstants;
 
 import android.opengl.Matrix;
@@ -137,7 +137,7 @@ public class GLMatrixStack {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class GLMatrixStackOverflowException extends AndEngineException {
+	public static class GLMatrixStackOverflowException extends AndEngineRuntimeException {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -173,7 +173,7 @@ public class GLMatrixStack {
 		// ===========================================================
 	}
 
-	public static class GLMatrixStackUnderflowException extends AndEngineException {
+	public static class GLMatrixStackUnderflowException extends AndEngineRuntimeException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

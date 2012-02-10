@@ -1,14 +1,14 @@
-package org.andengine.util.adt.queue;
+package org.andengine.engine.options;
 
-import org.andengine.util.adt.list.SortedList;
+import org.andengine.audio.sound.SoundManager;
 
 /**
- * (c) Zynga 2012
+ * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 17:17:33 PM - 03.022012
+ * @since 23:13:07 - 22.11.2011
  */
-public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implements ISortedQueue<T>{
+public class SoundOptions {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,50 +17,38 @@ public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implemen
 	// Fields
 	// ===========================================================
 
+	private boolean mNeedsSound;
+	private int mMaxSimultaneousStreams = SoundManager.MAX_SIMULTANEOUS_STREAMS_DEFAULT;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public SortedQueue(final IQueue<T> pQueue) {
-		super(pQueue);
-	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	public boolean needsSound() {
+		return this.mNeedsSound;
+	}
+
+	public SoundOptions setNeedsSound(final boolean pNeedsSound) {
+		this.mNeedsSound = pNeedsSound;
+		return this;
+	}
+
+	public int getMaxSimultaneousStreams() {
+		return this.mMaxSimultaneousStreams;
+	}
+
+	public SoundOptions setMaxSimultaneousStreams(final int pMaxSimultaneousStreams) {
+		this.mMaxSimultaneousStreams = pMaxSimultaneousStreams;
+		return this;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public T peek() {
-		if(this.isEmpty()) {
-			return null;
-		} else {
-			return this.get(0);
-		}
-	}
-
-	@Override
-	public T poll() {
-		if(this.isEmpty()) {
-			return null;
-		} else {
-			return this.remove(0);
-		}
-	}
-
-	@Override
-	public void enter(final T pItem) {
-		this.add(pItem);
-	}
-
-	@Deprecated
-	@Override
-	public void enter(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
-		this.add(pIndex, pItem);
-	}
 
 	// ===========================================================
 	// Methods

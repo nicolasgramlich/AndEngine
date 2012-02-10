@@ -320,6 +320,10 @@ public class GLState {
 		return this.mHardwareIDContainer[0];
 	}
 
+	public boolean isTexture(final int pHardwareTextureID) {
+		return GLES20.glIsTexture(pHardwareTextureID);
+	}
+
 	/**
 	 * @return {@link GLES20#GL_TEXTURE0} to {@link GLES20#GL_TEXTURE31}
 	 */

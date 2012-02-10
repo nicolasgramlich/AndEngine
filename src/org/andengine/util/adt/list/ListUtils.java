@@ -74,6 +74,10 @@ public final class ListUtils {
 		pItems.set(pIndexB, tmp);
 	}
 
+	public static final int encodeInsertionIndex(final int pIndex) {
+		return (-pIndex) - 1;
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

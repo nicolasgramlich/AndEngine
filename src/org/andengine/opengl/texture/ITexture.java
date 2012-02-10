@@ -30,19 +30,13 @@ public interface ITexture {
 	public int getHardwareTextureID();
 
 	public boolean isLoadedToHardware();
-	public void setLoadedToHardware(final boolean pLoadedToHardware);
+	public void setNotLoadedToHardware();
 
 	public boolean isUpdateOnHardwareNeeded();
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded);
 
-	/**
-	 * @return itself for method chaining.
-	 */
-	public ITexture load(final TextureManager pTextureManager);
-	/**
-	 * @return itself for method chaining.
-	 */
-	public ITexture unload(final TextureManager pTextureManager);
+	public void load();
+	public void unload();
 
 	public void loadToHardware(final GLState pGLState) throws IOException;
 	public void unloadFromHardware(final GLState pGLState);

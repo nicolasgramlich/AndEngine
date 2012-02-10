@@ -2,7 +2,6 @@ package org.andengine.opengl.font;
 
 import org.andengine.opengl.font.exception.LetterNotFoundException;
 import org.andengine.opengl.texture.ITexture;
-import org.andengine.opengl.texture.TextureManager;
 
 /**
  * (c) Zynga 2011
@@ -19,14 +18,8 @@ public interface IFont {
 	// Methods
 	// ===========================================================
 
-	/**
-	 * @return itself for method chaining.
-	 */
-	public IFont load(final TextureManager pTextureManager, final FontManager pFontManager);
-	/**
-	 * @return itself for method chaining.
-	 */
-	public IFont unload(final TextureManager pTextureManager, final FontManager pFontManager);
+	public void load();
+	public void unload();
 
 	public ITexture getTexture();
 

@@ -194,11 +194,11 @@ public class ShiftList<T> implements IQueue<T>, IList<T> {
 	@Override
 	public boolean remove(final T pItem) {
 		final int index = this.indexOf(pItem);
-		if(index == ShiftList.INDEX_INVALID) {
-			return false;
-		} else {
+		if(index >= 0) {
 			this.remove(index);
 			return true;
+		} else {
+			return false;
 		}
 	}
 

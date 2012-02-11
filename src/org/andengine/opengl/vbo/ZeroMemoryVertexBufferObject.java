@@ -29,7 +29,7 @@ import android.os.Build;
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @author Greg Haynes
- * @since 19:03:32 - 10,02.2012
+ * @since 19:03:32 - 10.02.2012
  */
 public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
@@ -123,7 +123,7 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onBufferData(final ByteBuffer byteBuffer);
+	protected abstract void onPopulateBufferData(final ByteBuffer byteBuffer);
 
 	@Override
 	public void bind(final GLState pGLState) {
@@ -135,26 +135,15 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 		pGLState.bindBuffer(this.mHardwareBufferID);
 
 		if(this.mDirtyOnHardware) {
-			this.mDirtyOnHardware = false;
+			final ByteBuffer byteBuffer = this.aquireByteBuffer();
 
-			final ByteBuffer byteBuffer;
-			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
-				/* Honeycomb workaround for issue 16941. */
-				byteBuffer = BufferUtils.allocateDirect(this.mCapacity * DataConstants.BYTES_PER_FLOAT);
-			} else {
-				/* Other SDK versions. */
-				byteBuffer = ByteBuffer.allocateDirect(this.mCapacity * DataConstants.BYTES_PER_FLOAT);
-			}
-			byteBuffer.order(ByteOrder.nativeOrder());
-
-			this.onBufferData(byteBuffer);
+			this.onPopulateBufferData(byteBuffer);
 
 			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, byteBuffer.limit(), byteBuffer, this.mUsage);
 
-			/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
-			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
-				BufferUtils.freeDirect(byteBuffer);
-			}
+			this.releaseByteBuffer(byteBuffer);
+
+			this.mDirtyOnHardware = false;
 		}
 	}
 
@@ -216,6 +205,26 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 	private void loadToHardware(final GLState pGLState) {
 		this.mHardwareBufferID = pGLState.generateBuffer();
 		this.mDirtyOnHardware = true;
+	}
+
+	protected ByteBuffer aquireByteBuffer() {
+		final ByteBuffer byteBuffer;
+		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
+			/* Honeycomb workaround for issue 16941. */
+			byteBuffer = BufferUtils.allocateDirect(this.mCapacity * DataConstants.BYTES_PER_FLOAT);
+		} else {
+			/* Other SDK versions. */
+			byteBuffer = ByteBuffer.allocateDirect(this.mCapacity * DataConstants.BYTES_PER_FLOAT);
+		}
+		byteBuffer.order(ByteOrder.nativeOrder());
+		return byteBuffer;
+	}
+
+	protected void releaseByteBuffer(final ByteBuffer byteBuffer) {
+		/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
+		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
+			BufferUtils.freeDirect(byteBuffer);
+		}
 	}
 
 	// ===========================================================

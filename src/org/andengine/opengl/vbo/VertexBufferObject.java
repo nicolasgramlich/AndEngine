@@ -131,21 +131,22 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	protected abstract void onBufferData();
 
-    @Override
-    public void bind(final GLState pGLState) {
-        if(this.mHardwareBufferID == IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
-            this.loadToHardware(pGLState);
-            this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
-        }
+	@Override
+	public void bind(final GLState pGLState) {
+		if(this.mHardwareBufferID == IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
+			this.loadToHardware(pGLState);
 
-        pGLState.bindBuffer(this.mHardwareBufferID);
+			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
+		}
 
-        if(this.mDirtyOnHardware) {
-            this.mDirtyOnHardware = false;
+		pGLState.bindBuffer(this.mHardwareBufferID);
 
-            this.onBufferData();
-        }
-    }
+		if(this.mDirtyOnHardware) {
+			this.onBufferData();
+
+			this.mDirtyOnHardware = false;
+		}
+	}
 
 	@Override
 	public void bind(final GLState pGLState, final ShaderProgram pShaderProgram) {
@@ -210,7 +211,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	private void loadToHardware(final GLState pGLState) {
 		this.mHardwareBufferID = pGLState.generateBuffer();
-        this.mDirtyOnHardware = true;
+		this.mDirtyOnHardware = true;
 	}
 
 	// ===========================================================

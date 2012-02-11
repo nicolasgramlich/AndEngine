@@ -1,7 +1,5 @@
 package org.andengine.entity.primitive;
 
-import java.util.ArrayList;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Rectangle.HighPerformanceRectangleVertexBufferObject;
 import org.andengine.opengl.util.GLState;

@@ -1,7 +1,5 @@
 package org.andengine.entity.primitive;
 
-import java.util.ArrayList;
-
 import org.andengine.entity.primitive.Rectangle.HighPerformanceRectangleVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;

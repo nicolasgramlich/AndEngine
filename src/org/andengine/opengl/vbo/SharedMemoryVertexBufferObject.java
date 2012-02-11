@@ -37,11 +37,21 @@ public abstract class SharedMemoryVertexBufferObject extends ZeroMemoryVertexBuf
 	private static ByteBuffer sSharedByteBuffer;
 
 	public static int getStaticByteCapacity() {
-		final ByteBuffer sharedByteBuffer = SharedMemoryVertexBufferObject.sSharedByteBuffer;
-		if(sharedByteBuffer == null) {
-			return 0;
+		final int byteCapacity;
+		try {
+			SharedMemoryVertexBufferObject.sSharedByteBufferLock.lock();
+
+			final ByteBuffer sharedByteBuffer = SharedMemoryVertexBufferObject.sSharedByteBuffer;
+			if(sharedByteBuffer == null) {
+				byteCapacity = 0;
+			} else {
+				byteCapacity = sharedByteBuffer.capacity();
+			}
+		} finally {
+			SharedMemoryVertexBufferObject.sSharedByteBufferLock.unlock();
 		}
-		return sharedByteBuffer.capacity();
+
+		return byteCapacity;
 	}
 
 	// ===========================================================
@@ -66,18 +76,22 @@ public abstract class SharedMemoryVertexBufferObject extends ZeroMemoryVertexBuf
 
 	@Override
 	public void dispose() {
-		SharedMemoryVertexBufferObject.sSharedByteBufferLock.lock();
-
-		if(SharedMemoryVertexBufferObject.sSharedByteBuffer != null) {
-			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
-				/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
-				BufferUtils.freeDirect(SharedMemoryVertexBufferObject.sSharedByteBuffer);
-			}
-
-			SharedMemoryVertexBufferObject.sSharedByteBuffer = null;
-		}
-		SharedMemoryVertexBufferObject.sSharedByteBufferLock.unlock();
 		super.dispose();
+
+		try {
+			SharedMemoryVertexBufferObject.sSharedByteBufferLock.lock();
+	
+			if(SharedMemoryVertexBufferObject.sSharedByteBuffer != null) {
+				if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
+					/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
+					BufferUtils.freeDirect(SharedMemoryVertexBufferObject.sSharedByteBuffer);
+				}
+	
+				SharedMemoryVertexBufferObject.sSharedByteBuffer = null;
+			}
+		} finally {
+			SharedMemoryVertexBufferObject.sSharedByteBufferLock.unlock();
+		}
 	}
 
 	@Override

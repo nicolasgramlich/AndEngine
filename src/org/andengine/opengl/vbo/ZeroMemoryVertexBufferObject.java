@@ -136,12 +136,13 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 
 		if(this.mDirtyOnHardware) {
 			final ByteBuffer byteBuffer = this.aquireByteBuffer();
-
-			this.onPopulateBufferData(byteBuffer);
-
-			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, byteBuffer.limit(), byteBuffer, this.mUsage);
-
-			this.releaseByteBuffer(byteBuffer);
+			try {
+				this.onPopulateBufferData(byteBuffer);
+	
+				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, byteBuffer.limit(), byteBuffer, this.mUsage);
+			} finally {
+				this.releaseByteBuffer(byteBuffer);
+			}
 
 			this.mDirtyOnHardware = false;
 		}

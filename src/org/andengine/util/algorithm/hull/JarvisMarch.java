@@ -75,16 +75,19 @@ public class JarvisMarch implements IHullAlgorithm {
 				final float possibleNextHullVertexX = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, j);
 				final float possibleNextHullVertexY = VertexUtils.getVertex(pVertices, pVertexOffsetY, pVertexStride, j);
 
-				final float dX = possibleNextHullVertexX - currentHullPointVertexX;
-				final float dY = possibleNextHullVertexY - currentHullPointVertexY;
-
-				float possibleNextHullVertexAngle = MathUtils.atan2(dY, dX);
-				if(possibleNextHullVertexAngle < 0) {
-					possibleNextHullVertexAngle += MathConstants.PI_TWICE; /* 360 degrees. */
-				}
-				if((possibleNextHullVertexAngle >= currentHullVertexAngle) && (possibleNextHullVertexAngle <= nextHullVertexAngle)) {
-					nextHullVertexIndex = j;
-					nextHullVertexAngle = possibleNextHullVertexAngle;
+				/* Ignore identical vertices. */
+				if(currentHullPointVertexX != possibleNextHullVertexX || currentHullPointVertexY != possibleNextHullVertexY) {
+					final float dX = possibleNextHullVertexX - currentHullPointVertexX;
+					final float dY = possibleNextHullVertexY - currentHullPointVertexY;
+	
+					float possibleNextHullVertexAngle = MathUtils.atan2(dY, dX);
+					if(possibleNextHullVertexAngle < 0) {
+						possibleNextHullVertexAngle += MathConstants.PI_TWICE; /* 360 degrees. */
+					}
+					if((possibleNextHullVertexAngle >= currentHullVertexAngle) && (possibleNextHullVertexAngle <= nextHullVertexAngle)) {
+						nextHullVertexIndex = j;
+						nextHullVertexAngle = possibleNextHullVertexAngle;
+					}
 				}
 			}
 

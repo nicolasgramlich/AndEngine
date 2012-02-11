@@ -166,13 +166,18 @@ public class Mesh extends Shape {
 	{
 		assert( pVertexX.length == pVertexY.length );
 		
-		float[] vertices = new float[VERTEX_SIZE * pVertexX.length];
+		float[] bufferData = new float[VERTEX_SIZE * pVertexX.length];
+		updateVertexList(pVertexX, pVertexY, bufferData);
+		return bufferData;
+	}
+	
+	protected static void updateVertexList(float[] pVertexX, float[] pVertexY, float[] pBufferData)
+	{
 		for( int i = 0; i < pVertexX.length; i++)
 		{
-			vertices[(i * Mesh.VERTEX_SIZE) + Mesh.VERTEX_INDEX_X] = pVertexX[i];
-			vertices[(i * Mesh.VERTEX_SIZE) + Mesh.VERTEX_INDEX_Y] = pVertexY[i];
+			pBufferData[(i * Mesh.VERTEX_SIZE) + Mesh.VERTEX_INDEX_X] = pVertexX[i];
+			pBufferData[(i * Mesh.VERTEX_SIZE) + Mesh.VERTEX_INDEX_Y] = pVertexY[i];
 		}
-		return vertices;
 	}
 	
 	// ===========================================================

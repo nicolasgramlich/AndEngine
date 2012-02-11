@@ -78,20 +78,6 @@ public class PolyLine extends Mesh {
 	{
 		mLineWidth = pLineWidth;
 	}
-	
-	/**
-	 * 
-	 * @param pVertexX
-	 * @param pVertexY
-	 * @return 	true if vertices were correctly updated
-	 * 			false otherwise
-	 */
-	/*public boolean updateVertices( float[] pVertexX, float[] pVertexY )
-	{
-		assert( pVertexX.length == pVertexY.length );
-
-		return this.updateVertices(buildVertexList(pVertexX, pVertexY));
-	}*/
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -108,7 +94,21 @@ public class PolyLine extends Mesh {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
+	
+	/**
+	 * 
+	 * @param pVertexX
+	 * @param pVertexY
+	 * @return 	true if vertices were correctly updated
+	 * 			false otherwise
+	 */
+	public void updateVertices( float[] pVertexX, float[] pVertexY )
+	{
+		assert( pVertexX.length == pVertexY.length );
+		updateVertexList(pVertexX, pVertexY, getBufferData());
+		onUpdateVertices();
+	}
+	
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

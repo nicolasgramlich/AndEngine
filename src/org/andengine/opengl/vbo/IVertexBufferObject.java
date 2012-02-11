@@ -28,7 +28,10 @@ public interface IVertexBufferObject extends IDisposable {
 	public int getHardwareBufferID();
 
 	public boolean isLoadedToHardware();
-	/** Mark this {@link VertexBufferObject} as not not loaded to hardware, so it gets loaded to hardware before being used.. */
+	/**
+	 * Mark this {@link VertexBufferObject} as not not loaded to hardware.
+	 * It will reload itself to hardware when it gets used again.
+	 */
 	public void setNotLoadedToHardware();
 	public void unloadFromHardware(final GLState pGLState);
 

@@ -32,13 +32,29 @@ public class VertexBufferObjectManager {
 	// Getter & Setter
 	// ===========================================================
 
-	// TODO public synchronized int getPermamentByteSize() {
-
-	public synchronized int getByteSize() {
+	public synchronized int getHeapMemoryByteSize() {
 		int byteSize = 0;
 		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
 		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
-			byteSize += vertexBufferObjectsLoaded.get(i).getByteCapacity();
+			byteSize += vertexBufferObjectsLoaded.get(i).getHeapMemoryByteSize();
+		}
+		return byteSize;
+	}
+
+	public synchronized int getNativeHeapMemoryByteSize() {
+		int byteSize = 0;
+		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
+		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
+			byteSize += vertexBufferObjectsLoaded.get(i).getNativeHeapMemoryByteSize();
+		}
+		return byteSize;
+	}
+
+	public synchronized int getGPUHeapMemoryByteSize() {
+		int byteSize = 0;
+		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
+		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
+			byteSize += vertexBufferObjectsLoaded.get(i).getGPUMemoryByteSize();
 		}
 		return byteSize;
 	}

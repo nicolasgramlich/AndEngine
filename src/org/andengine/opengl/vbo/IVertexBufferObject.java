@@ -15,6 +15,8 @@ public interface IVertexBufferObject extends IDisposable {
 	// Constants
 	// ===========================================================
 
+	public static final int HARDWARE_BUFFER_ID_INVALID = -1;
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

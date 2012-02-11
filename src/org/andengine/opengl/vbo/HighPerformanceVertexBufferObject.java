@@ -65,6 +65,16 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 		return this.mBufferData;
 	}
 
+	@Override
+	public int getHeapMemoryByteSize() {
+		return this.getByteCapacity();
+	}
+
+	@Override
+	public int getNativeHeapMemoryByteSize() {
+		return this.getByteCapacity();
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

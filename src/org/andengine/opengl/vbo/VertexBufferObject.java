@@ -128,6 +128,15 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		return this.mByteBuffer.capacity();
 	}
 
+	@Override
+	public int getGPUMemoryByteSize() {
+		if(this.isLoadedToHardware()) {
+			return this.getByteCapacity();
+		} else {
+			return 0;
+		}
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

@@ -51,6 +51,16 @@ public class LowMemoryVertexBufferObject extends VertexBufferObject {
 		return this.mFloatBuffer;
 	}
 
+	@Override
+	public int getHeapMemoryByteSize() {
+		return 0;
+	}
+
+	@Override
+	public int getNativeHeapMemoryByteSize() {
+		return this.getByteCapacity();
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

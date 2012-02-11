@@ -12,14 +12,12 @@ import org.andengine.util.system.SystemUtils;
 import android.os.Build;
 
 /**
- * The {@link SharedMemoryVertexBufferObject} class allocates a single {@link ByteBuffer} which is used by whichever {@link SharedMemoryVertexBufferObject} instance is currently buffering data,
- * at the cost of expensive data buffering (<b>up to <u>5x</u> slower!</b>).
+ * Compared to {@link ZeroMemoryVertexBufferObject}, all {@link SharedMemoryVertexBufferObject}s share a single {@link ByteBuffer} which is used by whichever {@link SharedMemoryVertexBufferObject} instance is currently buffering data,
+ * at the cost of expensive data buffering (<b>up to <u>5x</u> slower!</b>) and a little synchronization overhead.
  * <p/>
- * Usually a {@link SharedMemoryVertexBufferObject} is preferred to a {@link HighPerformanceVertexBufferObject} when the following conditions are met:
+ * Usually a {@link SharedMemoryVertexBufferObject} is preferred to a {@link ZeroMemoryVertexBufferObject} when the following conditions need to be met:
  * <ol>
- * <li>The applications is close to run out of memory.</li>
- * <li>You have very big {@link HighPerformanceVertexBufferObject} or a exteme number of small {@link HighPerformanceVertexBufferObject}s, where you can't afford to have the buffers stay in memory.</li>
- * <li>The content (color, vertices, texturecoordinates) of the {@link SharedMemoryVertexBufferObject} is changed not often, or even better: never.</li>
+ * <li>Minimum amount of runtime GarbageCollector activity.</li>
  * </ol>
  * <p/>
  * (c) Zynga 2011
@@ -86,7 +84,7 @@ public abstract class SharedMemoryVertexBufferObject extends ZeroMemoryVertexBuf
 					/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
 					BufferUtils.freeDirect(SharedMemoryVertexBufferObject.sSharedByteBuffer);
 				}
-	
+
 				SharedMemoryVertexBufferObject.sSharedByteBuffer = null;
 			}
 		} finally {

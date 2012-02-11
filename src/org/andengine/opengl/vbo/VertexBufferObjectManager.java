@@ -32,6 +32,8 @@ public class VertexBufferObjectManager {
 	// Getter & Setter
 	// ===========================================================
 
+	// TODO public synchronized int getPermamentByteSize() {
+
 	public synchronized int getByteSize() {
 		int byteSize = 0;
 		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;

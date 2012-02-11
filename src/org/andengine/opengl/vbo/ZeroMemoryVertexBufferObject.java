@@ -15,13 +15,13 @@ import android.opengl.GLES20;
 import android.os.Build;
 
 /**
- * Compared to a {@link HighPerformanceVertexBufferObject}, the {@link ZeroMemoryVertexBufferObject} uses <b><u>100%</u> less heap memory</b>,
- * at the cost of expensive data buffering (<b>up to <u>5x</u> slower!</b>) whenever the .
+ * Compared to a {@link HighPerformanceVertexBufferObject} or a {@link LowMemoryVertexBufferObject}, the {@link ZeroMemoryVertexBufferObject} uses <b><u>no</u> permanent heap memory</b>,
+ * at the cost of expensive data buffering (<b>up to <u>5x</u> slower!</b>) whenever the bufferdata needs to be updated and higher GC activity, due to the temporary {@link ByteBuffer} allocations.
  * <p/>
- * Usually a {@link ZeroMemoryVertexBufferObject} is preferred to a {@link HighPerformanceVertexBufferObject} when the following conditions are met:
+ * Usually a {@link ZeroMemoryVertexBufferObject} is preferred to a {@link HighPerformanceVertexBufferObject} or a {@link LowMemoryVertexBufferObject} when the following conditions are met:
  * <ol>
- * <li>The applications is close to run out of memory.</li>
- * <li>You have very big {@link HighPerformanceVertexBufferObject} or an extreme number of small {@link HighPerformanceVertexBufferObject}s, where you can't afford to have any of the bufferdata to remain in heap memory.</li>
+ * <li>The application is close to run out of memory.</li>
+ * <li>You have very big {@link HighPerformanceVertexBufferObject}/{@link LowMemoryVertexBufferObject} or an extreme number of small {@link HighPerformanceVertexBufferObject}/{@link LowMemoryVertexBufferObject}s, where you can't afford to have any of the bufferdata to be kept in heap memory.</li>
  * <li>The content (color, vertices, texturecoordinates) of the {@link ZeroMemoryVertexBufferObject} is changed not often, or even better: never.</li>
  * </ol>
  * <p/>
@@ -135,13 +135,17 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 		pGLState.bindBuffer(this.mHardwareBufferID);
 
 		if(this.mDirtyOnHardware) {
-			final ByteBuffer byteBuffer = this.aquireByteBuffer();
+			ByteBuffer byteBuffer = null;
 			try {
+				byteBuffer = this.aquireByteBuffer();
+
 				this.onPopulateBufferData(byteBuffer);
 	
 				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, byteBuffer.limit(), byteBuffer, this.mUsage);
 			} finally {
-				this.releaseByteBuffer(byteBuffer);
+				if(byteBuffer != null) {
+					this.releaseByteBuffer(byteBuffer);
+				}
 			}
 
 			this.mDirtyOnHardware = false;
@@ -208,14 +212,18 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 		this.mDirtyOnHardware = true;
 	}
 
+	/**
+	 * When a non <code>null</code> {@link ByteBuffer} is returned by this function, it is guaranteed that {@link ZeroMemoryVertexBufferObject#releaseByteBuffer(ByteBuffer)} is called.
+	 * @return a {@link ByteBuffer} to be passed to {@link ZeroMemoryVertexBufferObject#onPopulateBufferData(ByteBuffer)}.
+	 */
 	protected ByteBuffer aquireByteBuffer() {
 		final ByteBuffer byteBuffer;
 		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
 			/* Honeycomb workaround for issue 16941. */
-			byteBuffer = BufferUtils.allocateDirect(this.mCapacity * DataConstants.BYTES_PER_FLOAT);
+			byteBuffer = BufferUtils.allocateDirect(this.getByteCapacity());
 		} else {
 			/* Other SDK versions. */
-			byteBuffer = ByteBuffer.allocateDirect(this.mCapacity * DataConstants.BYTES_PER_FLOAT);
+			byteBuffer = ByteBuffer.allocateDirect(this.getByteCapacity());
 		}
 		byteBuffer.order(ByteOrder.nativeOrder());
 		return byteBuffer;

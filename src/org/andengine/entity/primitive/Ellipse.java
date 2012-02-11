@@ -50,7 +50,7 @@ public class Ellipse extends PolyLine {
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Ellipse(final float pX, final float pY, final float pRadiusA, final float pRadiusB, final float pLineWidth, final int pResolution, final VertexBufferObjectManager pVertexBufferObjectManager) {
-		this(pX, pY, pRadiusA, pRadiusB, pLineWidth, pResolution, pVertexBufferObjectManager, DrawMode.GL_LINE_LOOP);
+		this(pX, pY, pRadiusA, pRadiusB, pLineWidth, pResolution, pVertexBufferObjectManager, DrawMode.LINE_LOOP);
 	}
 	
 	public Ellipse(final float pX, final float pY, final float pRadiusA, final float pRadiusB, final float pLineWidth, final int pResolution, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode) {
@@ -78,10 +78,12 @@ public class Ellipse extends PolyLine {
 	 * @return 	true if vertices were correctly updated
 	 * 			false otherwise
 	 */
+	/*
 	public boolean setRadius( float pRadiusA, float pRadiusB )
 	{
 		return this.updateVertices(buildEllipseVertices(pRadiusA, pRadiusB, mResolution));
 	}
+	*/
 	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -91,9 +93,9 @@ public class Ellipse extends PolyLine {
 	// Methods
 	// ===========================================================
 
-	private static ArrayList<Vector2d> buildEllipseVertices(float pRadiusA, float pRadiusB, int pResolution) {
+	private static float[] buildEllipseVertices(float pRadiusA, float pRadiusB, int pResolution) {
 
-		ArrayList<Vector2d> vertices = new ArrayList<PolygonBase.Vector2d>(pResolution);
+		float[] vertices = new float[VERTEX_SIZE * pResolution];
 		
 		for( int i = 0; i < pResolution; i++)
 		{
@@ -101,7 +103,8 @@ public class Ellipse extends PolyLine {
 			float x = (float) ( (double)pRadiusA * Math.cos( theta ));
 			float y = (float) ( (double)pRadiusB * Math.sin( theta ));
 			
-			vertices.add(new Vector2d(x, y));
+			vertices[(i * Mesh.VERTEX_SIZE) + Mesh.VERTEX_INDEX_X] = x;
+			vertices[(i * Mesh.VERTEX_SIZE) + Mesh.VERTEX_INDEX_Y] = y;
 		}
 				
 		return vertices;

@@ -14,7 +14,7 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
  * @author Rodrigo Castro
  * @since 22:54:17 - 30.01.2012
  */
-public class PolyLine extends PolygonBase {
+public class PolyLine extends Mesh {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -40,7 +40,7 @@ public class PolyLine extends PolygonBase {
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link PolygoonBase#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public PolyLine(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager) {
-		this(pX, pY, pVertexX, pVertexY, pLineWidth, pVertexBufferObjectManager, DrawMode.GL_LINE_LOOP);
+		this(pX, pY, pVertexX, pVertexY, pLineWidth, pVertexBufferObjectManager, DrawMode.LINE_LOOP);
 	}
 	
 	/**
@@ -54,23 +54,17 @@ public class PolyLine extends PolygonBase {
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public PolyLine(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode, final DrawType pDrawType) {
-		this(pX, pY, buildVector2dList(pVertexX, pVertexY), PolygonBase.VERTEX_SIZE_DEFAULT_RATIO, pVertexBufferObjectManager, pDrawMode, pDrawType);
-		
-		mLineWidth = pLineWidth;
-
-		onUpdateVertices();
+	public PolyLine(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode, final DrawType pDrawType) {
+		this(pX, pY, buildVertexList(pVertexX, pVertexY), pLineWidth, pVertexBufferObjectManager, pDrawMode, pDrawType);
 	}
 	
 	/**
 	 * Uses a default {@link HighPerformanceRectangleVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Rectangle#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public PolyLine(final float pX, final float pY, final ArrayList<Vector2d> pVertices, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode, final DrawType pDrawType) {
-		super(pX, pY, pVertices, PolygonBase.VERTEX_SIZE_DEFAULT_RATIO, pVertexBufferObjectManager, pDrawMode, pDrawType);
+	public PolyLine(final float pX, final float pY, final float[] pBufferData, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager, DrawMode pDrawMode, final DrawType pDrawType) {
+		super(pX, pY, pBufferData, pBufferData.length / VERTEX_SIZE, pDrawMode, pVertexBufferObjectManager, pDrawType);
 		
 		mLineWidth = pLineWidth;
-
-		onUpdateVertices();
 	}
 
 	// ===========================================================
@@ -94,12 +88,12 @@ public class PolyLine extends PolygonBase {
 	 * @return 	true if vertices were correctly updated
 	 * 			false otherwise
 	 */
-	public boolean updateVertices( float[] pVertexX, float[] pVertexY )
+	/*public boolean updateVertices( float[] pVertexX, float[] pVertexY )
 	{
 		assert( pVertexX.length == pVertexY.length );
 
-		return this.updateVertices(buildVector2dList(pVertexX, pVertexY));
-	}
+		return this.updateVertices(buildVertexList(pVertexX, pVertexY));
+	}*/
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

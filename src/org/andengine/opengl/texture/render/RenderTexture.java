@@ -3,6 +3,7 @@ package org.andengine.opengl.texture.render;
 import java.io.IOException;
 import java.nio.IntBuffer;
 
+import org.andengine.opengl.exception.GLException;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureManager;
@@ -99,29 +100,33 @@ public class RenderTexture extends Texture {
 	// Methods
 	// ===========================================================
 
-	public void init(final GLState pGLState) {
+	/**
+	 * @param pGLState
+	 * @throws GLException when the 
+	 */
+	public void init(final GLState pGLState) throws GLException {
 		this.savePreviousFramebufferObjectID(pGLState);
-
 		try {
-			this.loadToHardware(pGLState);
-		} catch (final IOException e) {
-			/* Can not happen. */
+			try {
+				this.loadToHardware(pGLState);
+			} catch (final IOException e) {
+				/* Can not happen. */
+			}
+
+			/* The texture to render to must not be bound. */
+			pGLState.bindTexture(0);
+
+			/* Generate FBO. */
+			this.mFramebufferObjectID = pGLState.generateFramebuffer();
+			pGLState.bindFramebuffer(this.mFramebufferObjectID);
+
+			/* Attach texture to FBO. */
+			GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mHardwareTextureID, 0);
+
+			pGLState.checkFramebufferStatus();
+		} finally {
+			this.restorePreviousFramebufferObjectID(pGLState);
 		}
-
-		/* The texture to render to must not be bound. */
-		pGLState.bindTexture(0);
-
-		/* Generate FBO. */
-		this.mFramebufferObjectID = pGLState.generateFramebuffer();
-		pGLState.bindFramebuffer(this.mFramebufferObjectID);
-
-		/* Attach texture to FBO. */
-		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, this.mHardwareTextureID, 0);
-
-//		pGLState.checkError();
-		pGLState.checkFramebufferStatus();
-
-		this.restorePreviousFramebufferObjectID(pGLState);
 	}
 
 	/**

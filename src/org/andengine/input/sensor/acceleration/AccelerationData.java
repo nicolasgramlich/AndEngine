@@ -1,4 +1,4 @@
-package org.andengine.input.sensor.accelerometer;
+package org.andengine.input.sensor.acceleration;
 
 import java.util.Arrays;
 
@@ -14,7 +14,7 @@ import android.view.Surface;
  * @author Nicolas Gramlich
  * @since 16:50:44 - 10.03.2010
  */
-public class AccelerometerData extends BaseSensorData {
+public class AccelerationData extends BaseSensorData {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -71,7 +71,7 @@ public class AccelerometerData extends BaseSensorData {
 	// Constructors
 	// ===========================================================
 
-	public AccelerometerData(final int pDisplayOrientation) {
+	public AccelerationData(final int pDisplayOrientation) {
 		super(3, pDisplayOrientation);
 	}
 
@@ -107,7 +107,7 @@ public class AccelerometerData extends BaseSensorData {
 	public void setValues(final float[] pValues) {
 		super.setValues(pValues);
 
-		AccelerometerData.AXISSWAPS[this.mDisplayRotation].swapAxis(this.mValues);
+		AccelerationData.AXISSWAPS[this.mDisplayRotation].swapAxis(this.mValues);
 	}
 
 	// ===========================================================

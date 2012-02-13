@@ -7,8 +7,8 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.entity.scene.Scene;
-import org.andengine.input.sensor.accelerometer.AccelerometerSensorOptions;
-import org.andengine.input.sensor.accelerometer.IAccelerometerListener;
+import org.andengine.input.sensor.acceleration.AccelerationSensorOptions;
+import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.input.sensor.location.ILocationListener;
 import org.andengine.input.sensor.location.LocationSensorOptions;
 import org.andengine.input.sensor.orientation.IOrientationListener;
@@ -438,17 +438,17 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	/**
-	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerometerListener)}
+	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerationListener)}
 	 */
-	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
-		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
+	protected boolean enableAccelerometerSensor(final IAccelerationListener pAccelerationListener) {
+		return this.mEngine.enableAccelerometerSensor(this, pAccelerationListener);
 	}
 
 	/**
-	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerometerListener, AccelerometerSensorOptions)}
+	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerationListener, AccelerationSensorOptions)}
 	 */
-	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener, final AccelerometerSensorOptions pAccelerometerSensorOptions) {
-		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener, pAccelerometerSensorOptions);
+	protected boolean enableAccelerometerSensor(final IAccelerationListener pAccelerationListener, final AccelerationSensorOptions pAccelerationSensorOptions) {
+		return this.mEngine.enableAccelerometerSensor(this, pAccelerationListener, pAccelerationSensorOptions);
 	}
 
 	/**

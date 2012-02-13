@@ -16,5 +16,6 @@ public interface IOrientationListener {
 	// Methods
 	// ===========================================================
 
+	public void onOrientationAccuracyChanged(final OrientationData pOrientationData);
 	public void onOrientationChanged(final OrientationData pOrientationData);
 }

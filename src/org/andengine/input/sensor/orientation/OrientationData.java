@@ -24,7 +24,7 @@ public class OrientationData extends BaseSensorData {
 	// Fields
 	// ===========================================================
 
-	private final float[] mAccelerometerValues = new float[3];
+	private final float[] mAccelerationValues = new float[3];
 	private final float[] mMagneticFieldValues = new float[3];
 	private final float[] mRotationMatrix = new float[16];
 
@@ -66,8 +66,8 @@ public class OrientationData extends BaseSensorData {
 		super.setAccuracy(pAccuracy);
 	}
 
-	public void setAccelerometerValues(final float[] pValues) {
-		System.arraycopy(pValues, 0, this.mAccelerometerValues, 0, pValues.length);
+	public void setAccelerationValues(final float[] pValues) {
+		System.arraycopy(pValues, 0, this.mAccelerationValues, 0, pValues.length);
 		this.updateOrientation();
 	}
 
@@ -77,7 +77,7 @@ public class OrientationData extends BaseSensorData {
 	}
 
 	private void updateOrientation() {
-		SensorManager.getRotationMatrix(this.mRotationMatrix, null, this.mAccelerometerValues, this.mMagneticFieldValues);
+		SensorManager.getRotationMatrix(this.mRotationMatrix, null, this.mAccelerationValues, this.mMagneticFieldValues);
 
 		// TODO Use dont't use identical matrixes in remapCoordinateSystem, due to performance reasons.
 		switch(this.mDisplayRotation) {
@@ -103,12 +103,12 @@ public class OrientationData extends BaseSensorData {
 		}
 	}
 
-	public int getAccelerometerAccuracy() {
+	public int getAccelerationAccuracy() {
 		return this.getAccuracy();
 	}
 
-	public void setAccelerometerAccuracy(final int pAccelerometerAccuracy) {
-		super.setAccuracy(pAccelerometerAccuracy);
+	public void setAccelerationAccuracy(final int pAccelerationAccuracy) {
+		super.setAccuracy(pAccelerationAccuracy);
 	}
 
 	public int getMagneticFieldAccuracy() {

@@ -1,5 +1,7 @@
 package org.andengine.opengl.vbo;
 
+import java.nio.ByteBuffer;
+
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.IDisposable;
@@ -15,6 +17,8 @@ public interface IVertexBufferObject extends IDisposable {
 	// Constants
 	// ===========================================================
 
+	public static final int HARDWARE_BUFFER_ID_INVALID = -1;
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -24,7 +28,10 @@ public interface IVertexBufferObject extends IDisposable {
 	public int getHardwareBufferID();
 
 	public boolean isLoadedToHardware();
-	/** Mark this {@link VertexBufferObject} as not not loaded to hardware, so it gets loaded to hardware before being used.. */
+	/**
+	 * Mark this {@link VertexBufferObject} as not not loaded to hardware.
+	 * It will reload itself to hardware when it gets used again.
+	 */
 	public void setNotLoadedToHardware();
 	public void unloadFromHardware(final GLState pGLState);
 
@@ -32,8 +39,27 @@ public interface IVertexBufferObject extends IDisposable {
 	/** Mark this {@link VertexBufferObject} dirty so it gets updated on the hardware. */
 	public void setDirtyOnHardware();
 
+	/**
+	 * @return the number of <code>float</code>s that fit into this {@link IVertexBufferObject}.
+	 */
 	public int getCapacity();
+	/**
+	 * @return the number of <code>byte</code>s that fit into this {@link IVertexBufferObject}.
+	 */
 	public int getByteCapacity();
+
+	/**
+	 * @return the number of <code>byte</code>s that are allocated on the heap.
+	 */
+	public int getHeapMemoryByteSize();
+	/**
+	 * @return the number of <code>byte</code>s that are allocated on the native heap (through direct {@link ByteBuffer}s).
+	 */
+	public int getNativeHeapMemoryByteSize();
+	/**
+	 * @return the number of <code>byte</code>s that are allocated on the GPU.
+	 */
+	public int getGPUMemoryByteSize();
 
 	public void bind(final GLState pGLState);
 	public void bind(final GLState pGLState, final ShaderProgram pShaderProgram);

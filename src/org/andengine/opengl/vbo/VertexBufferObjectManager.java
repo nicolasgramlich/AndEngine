@@ -7,7 +7,7 @@ import org.andengine.opengl.util.GLState;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 17:48:46 - 08.03.2010
  */
@@ -32,11 +32,29 @@ public class VertexBufferObjectManager {
 	// Getter & Setter
 	// ===========================================================
 
-	public synchronized int getByteSize() {
+	public synchronized int getHeapMemoryByteSize() {
 		int byteSize = 0;
 		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
 		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
-			byteSize += vertexBufferObjectsLoaded.get(i).getByteCapacity();
+			byteSize += vertexBufferObjectsLoaded.get(i).getHeapMemoryByteSize();
+		}
+		return byteSize;
+	}
+
+	public synchronized int getNativeHeapMemoryByteSize() {
+		int byteSize = 0;
+		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
+		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
+			byteSize += vertexBufferObjectsLoaded.get(i).getNativeHeapMemoryByteSize();
+		}
+		return byteSize;
+	}
+
+	public synchronized int getGPUHeapMemoryByteSize() {
+		int byteSize = 0;
+		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
+		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
+			byteSize += vertexBufferObjectsLoaded.get(i).getGPUMemoryByteSize();
 		}
 		return byteSize;
 	}
@@ -59,7 +77,7 @@ public class VertexBufferObjectManager {
 			vertexBufferObjectsLoaded.get(i).setNotLoadedToHardware();
 		}
 
-		this.mVertexBufferObjectsLoaded.clear();
+		vertexBufferObjectsLoaded.clear();
 	}
 
 	public synchronized void onVertexBufferObjectLoaded(final IVertexBufferObject pVertexBufferObject) {

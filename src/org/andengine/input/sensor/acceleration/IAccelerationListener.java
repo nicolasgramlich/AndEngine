@@ -1,4 +1,4 @@
-package org.andengine.input.sensor.accelerometer;
+package org.andengine.input.sensor.acceleration;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -7,7 +7,7 @@ package org.andengine.input.sensor.accelerometer;
  * @author Nicolas Gramlich
  * @since 16:58:38 - 10.03.2010
  */
-public interface IAccelerometerListener {
+public interface IAccelerationListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,5 +16,6 @@ public interface IAccelerometerListener {
 	// Methods
 	// ===========================================================
 
-	public void onAccelerometerChanged(final AccelerometerData pAccelerometerData);
+	public void onAccelerationAccuracyChanged(final AccelerationData pAccelerationData);
+	public void onAccelerationChanged(final AccelerationData pAccelerationData);
 }

@@ -7,8 +7,8 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.entity.scene.Scene;
-import org.andengine.input.sensor.accelerometer.AccelerometerSensorOptions;
-import org.andengine.input.sensor.accelerometer.IAccelerometerListener;
+import org.andengine.input.sensor.acceleration.AccelerationSensorOptions;
+import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.input.sensor.location.ILocationListener;
 import org.andengine.input.sensor.location.LocationSensorOptions;
 import org.andengine.input.sensor.orientation.IOrientationListener;
@@ -438,24 +438,24 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	/**
-	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerometerListener)}
+	 * @see {@link Engine#enableAccelerationSensor(Context, IAccelerationListener)}
 	 */
-	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener) {
-		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener);
+	protected boolean enableAccelerationSensor(final IAccelerationListener pAccelerationListener) {
+		return this.mEngine.enableAccelerationSensor(this, pAccelerationListener);
 	}
 
 	/**
-	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerometerListener, AccelerometerSensorOptions)}
+	 * @see {@link Engine#enableAccelerationSensor(Context, IAccelerationListener, AccelerationSensorOptions)}
 	 */
-	protected boolean enableAccelerometerSensor(final IAccelerometerListener pAccelerometerListener, final AccelerometerSensorOptions pAccelerometerSensorOptions) {
-		return this.mEngine.enableAccelerometerSensor(this, pAccelerometerListener, pAccelerometerSensorOptions);
+	protected boolean enableAccelerationSensor(final IAccelerationListener pAccelerationListener, final AccelerationSensorOptions pAccelerationSensorOptions) {
+		return this.mEngine.enableAccelerationSensor(this, pAccelerationListener, pAccelerationSensorOptions);
 	}
 
 	/**
-	 * @see {@link Engine#disableAccelerometerSensor(Context)}
+	 * @see {@link Engine#disableAccelerationSensor(Context)}
 	 */
-	protected boolean disableAccelerometerSensor() {
-		return this.mEngine.disableAccelerometerSensor(this);
+	protected boolean disableAccelerationSensor() {
+		return this.mEngine.disableAccelerationSensor(this);
 	}
 
 	/**

@@ -6,6 +6,7 @@ import java.nio.ByteOrder;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.util.adt.DataConstants;
 import org.andengine.util.system.SystemUtils;
@@ -14,16 +15,23 @@ import android.opengl.GLES20;
 import android.os.Build;
 
 /**
- * TODO Extract a common base class from {@link VertexBufferObject} and {@link ZeroMemoryVertexBufferObject} (due to significant code duplication).
- * 		For naming, maybe be inspired by the java ByteBuffer naming (i.e. HeapBackedFloatArrayVertexBufferObject, StreamBufferVertexBufferObject, SharedBufferStreamVertexBufferObject).  
+ * Compared to a {@link HighPerformanceVertexBufferObject} or a {@link LowMemoryVertexBufferObject}, the {@link ZeroMemoryVertexBufferObject} uses <b><u>no</u> permanent heap memory</b>,
+ * at the cost of expensive data buffering (<b>up to <u>5x</u> slower!</b>) whenever the bufferdata needs to be updated and higher GC activity, due to the temporary {@link ByteBuffer} allocations.
+ * <p/>
+ * Usually a {@link ZeroMemoryVertexBufferObject} is preferred to a {@link HighPerformanceVertexBufferObject} or a {@link LowMemoryVertexBufferObject} when the following conditions are met:
+ * <ol>
+ * <li>The application is close to run out of memory.</li>
+ * <li>You have very big {@link HighPerformanceVertexBufferObject}/{@link LowMemoryVertexBufferObject} or an extreme number of small {@link HighPerformanceVertexBufferObject}/{@link LowMemoryVertexBufferObject}s, where you can't afford to have any of the bufferdata to be kept in heap memory.</li>
+ * <li>The content (color, vertices, texturecoordinates) of the {@link ZeroMemoryVertexBufferObject} is changed not often, or even better: never.</li>
+ * </ol>
+ * <p/>
+ * (c) Zynga 2011
  *
- * (c) 2010 Nicolas Gramlich
- * (c) 2011 Zynga Inc.
- * 
- * @author Nicolas Gramlich
- * @since 14:22:56 - 07.04.2010
+ * @author Nicolas Gramlich <ngramlich@zynga.com>
+ * @author Greg Haynes
+ * @since 19:03:32 - 10.02.2012
  */
-public abstract class VertexBufferObject implements IVertexBufferObject {
+public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -35,7 +43,6 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	protected final int mCapacity;
 	protected final boolean mAutoDispose;
 	protected final int mUsage;
-	protected final ByteBuffer mByteBuffer;
 
 	protected int mHardwareBufferID = IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	protected boolean mDirtyOnHardware = true;
@@ -49,28 +56,12 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pVertexBufferObjectManager
-	 * @param pCapacity
-	 * @param pDrawType
-	 * @param pAutoDispose when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
-	 * @param pVertexBufferObjectAttributes to be automatically enabled on the {@link ShaderProgram} used in {@link VertexBufferObject#bind(ShaderProgram)}.
-	 */
-	public VertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public ZeroMemoryVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		this.mVertexBufferObjectManager = pVertexBufferObjectManager;
 		this.mCapacity = pCapacity;
 		this.mUsage = pDrawType.getUsage();
 		this.mAutoDispose = pAutoDispose;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
-
-		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
-			/* Honeycomb workaround for issue 16941. */
-			this.mByteBuffer = BufferUtils.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
-		} else {
-			/* Other SDK versions. */
-			this.mByteBuffer = ByteBuffer.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
-		}
-		this.mByteBuffer.order(ByteOrder.nativeOrder());
 	}
 
 	// ===========================================================
@@ -125,7 +116,17 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public int getByteCapacity() {
-		return this.mByteBuffer.capacity();
+		return this.mCapacity * DataConstants.BYTES_PER_FLOAT;
+	}
+
+	@Override
+	public int getHeapMemoryByteSize() {
+		return 0;
+	}
+
+	@Override
+	public int getNativeHeapMemoryByteSize() {
+		return 0;
 	}
 
 	@Override
@@ -141,20 +142,30 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onBufferData();
+	protected abstract void onPopulateBufferData(final ByteBuffer byteBuffer);
 
 	@Override
 	public void bind(final GLState pGLState) {
 		if(this.mHardwareBufferID == IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
 			this.loadToHardware(pGLState);
-
 			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
 		}
 
 		pGLState.bindBuffer(this.mHardwareBufferID);
 
 		if(this.mDirtyOnHardware) {
-			this.onBufferData();
+			ByteBuffer byteBuffer = null;
+			try {
+				byteBuffer = this.aquireByteBuffer();
+
+				this.onPopulateBufferData(byteBuffer);
+	
+				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, byteBuffer.limit(), byteBuffer, this.mUsage);
+			} finally {
+				if(byteBuffer != null) {
+					this.releaseByteBuffer(byteBuffer);
+				}
+			}
 
 			this.mDirtyOnHardware = false;
 		}
@@ -167,12 +178,11 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		pShaderProgram.bind(pGLState, this.mVertexBufferObjectAttributes);
 	}
 
-
 	@Override
 	public void unbind(final GLState pGLState, final ShaderProgram pShaderProgram) {
 		pShaderProgram.unbind(pGLState);
 
-//		pGLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
+		// pGLState.bindBuffer(0); // TODO Does this have an positive/negative impact on performance?
 	}
 
 	@Override
@@ -198,11 +208,6 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 			this.mDisposed = true;
 
 			this.mVertexBufferObjectManager.onUnloadVertexBufferObject(this);
-
-			/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
-			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
-				BufferUtils.freeDirect(this.mByteBuffer);
-			}
 		} else {
 			throw new AlreadyDisposedException();
 		}
@@ -226,55 +231,31 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		this.mDirtyOnHardware = true;
 	}
 
+	/**
+	 * When a non <code>null</code> {@link ByteBuffer} is returned by this function, it is guaranteed that {@link ZeroMemoryVertexBufferObject#releaseByteBuffer(ByteBuffer)} is called.
+	 * @return a {@link ByteBuffer} to be passed to {@link ZeroMemoryVertexBufferObject#onPopulateBufferData(ByteBuffer)}.
+	 */
+	protected ByteBuffer aquireByteBuffer() {
+		final ByteBuffer byteBuffer;
+		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
+			/* Honeycomb workaround for issue 16941. */
+			byteBuffer = BufferUtils.allocateDirect(this.getByteCapacity());
+		} else {
+			/* Other SDK versions. */
+			byteBuffer = ByteBuffer.allocateDirect(this.getByteCapacity());
+		}
+		byteBuffer.order(ByteOrder.nativeOrder());
+		return byteBuffer;
+	}
+
+	protected void releaseByteBuffer(final ByteBuffer byteBuffer) {
+		/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
+		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
+			BufferUtils.freeDirect(byteBuffer);
+		}
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static enum DrawType {
-		// ===========================================================
-		// Elements
-		// ===========================================================
-
-		STATIC(GLES20.GL_STATIC_DRAW),
-		DYNAMIC(GLES20.GL_DYNAMIC_DRAW),
-		STREAM(GLES20.GL_STREAM_DRAW);
-
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		private final int mUsage;
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		private DrawType(final int pUsage) {
-			this.mUsage = pUsage;
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		public int getUsage() {
-			return this.mUsage;
-		}
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

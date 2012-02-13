@@ -1,4 +1,4 @@
-package org.andengine.input.sensor.accelerometer;
+package org.andengine.input.sensor.acceleration;
 
 import org.andengine.input.sensor.SensorDelay;
 
@@ -9,7 +9,7 @@ import org.andengine.input.sensor.SensorDelay;
  * @author Nicolas Gramlich
  * @since 11:10:34 - 31.10.2010
  */
-public class AccelerometerSensorOptions {
+public class AccelerationSensorOptions {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -24,7 +24,7 @@ public class AccelerometerSensorOptions {
 	// Constructors
 	// ===========================================================
 
-	public AccelerometerSensorOptions(final SensorDelay pSensorDelay) {
+	public AccelerationSensorOptions(final SensorDelay pSensorDelay) {
 		this.mSensorDelay = pSensorDelay;
 	}
 

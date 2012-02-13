@@ -438,24 +438,24 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	/**
-	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerationListener)}
+	 * @see {@link Engine#enableAccelerationSensor(Context, IAccelerationListener)}
 	 */
-	protected boolean enableAccelerometerSensor(final IAccelerationListener pAccelerationListener) {
-		return this.mEngine.enableAccelerometerSensor(this, pAccelerationListener);
+	protected boolean enableAccelerationSensor(final IAccelerationListener pAccelerationListener) {
+		return this.mEngine.enableAccelerationSensor(this, pAccelerationListener);
 	}
 
 	/**
-	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerationListener, AccelerationSensorOptions)}
+	 * @see {@link Engine#enableAccelerationSensor(Context, IAccelerationListener, AccelerationSensorOptions)}
 	 */
-	protected boolean enableAccelerometerSensor(final IAccelerationListener pAccelerationListener, final AccelerationSensorOptions pAccelerationSensorOptions) {
-		return this.mEngine.enableAccelerometerSensor(this, pAccelerationListener, pAccelerationSensorOptions);
+	protected boolean enableAccelerationSensor(final IAccelerationListener pAccelerationListener, final AccelerationSensorOptions pAccelerationSensorOptions) {
+		return this.mEngine.enableAccelerationSensor(this, pAccelerationListener, pAccelerationSensorOptions);
 	}
 
 	/**
-	 * @see {@link Engine#disableAccelerometerSensor(Context)}
+	 * @see {@link Engine#disableAccelerationSensor(Context)}
 	 */
-	protected boolean disableAccelerometerSensor() {
-		return this.mEngine.disableAccelerometerSensor(this);
+	protected boolean disableAccelerationSensor() {
+		return this.mEngine.disableAccelerationSensor(this);
 	}
 
 	/**

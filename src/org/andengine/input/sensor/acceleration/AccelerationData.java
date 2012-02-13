@@ -116,7 +116,7 @@ public class AccelerationData extends BaseSensorData {
 
 	@Override
 	public String toString() {
-		return "Accelerometer: " + Arrays.toString(this.mValues);
+		return "Acceleration: " + Arrays.toString(this.mValues);
 	}
 
 	// ===========================================================

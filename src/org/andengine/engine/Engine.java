@@ -246,7 +246,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mTouchController.setTouchEventCallback(this);
 	}
 
-	public AccelerationData getAccelerometerData() {
+	public AccelerationData getAccelerationData() {
 		return this.mAccelerationData;
 	}
 
@@ -323,7 +323,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 						this.mAccelerationData.setAccuracy(pAccuracy);
 						this.mAccelerationListener.onAccelerationAccuracyChanged(this.mAccelerationData);
 					} else if(this.mOrientationData != null) {
-						this.mOrientationData.setAccelerometerAccuracy(pAccuracy);
+						this.mOrientationData.setAccelerationAccuracy(pAccuracy);
 						this.mOrientationListener.onOrientationAccuracyChanged(this.mOrientationData);
 					}
 					break;
@@ -344,7 +344,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 						this.mAccelerationData.setValues(pEvent.values);
 						this.mAccelerationListener.onAccelerationChanged(this.mAccelerationData);
 					} else if(this.mOrientationData != null) {
-						this.mOrientationData.setAccelerometerValues(pEvent.values);
+						this.mOrientationData.setAccelerationValues(pEvent.values);
 						this.mOrientationListener.onOrientationChanged(this.mOrientationData);
 					}
 					break;
@@ -646,16 +646,16 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	/**
-	 * @see {@link Engine#enableAccelerometerSensor(Context, IAccelerationListener, AccelerationSensorOptions)}
+	 * @see {@link Engine#enableAccelerationSensor(Context, IAccelerationListener, AccelerationSensorOptions)}
 	 */
-	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerationListener pAccelerationListener) {
-		return this.enableAccelerometerSensor(pContext, pAccelerationListener, new AccelerationSensorOptions(Engine.SENSORDELAY_DEFAULT));
+	public boolean enableAccelerationSensor(final Context pContext, final IAccelerationListener pAccelerationListener) {
+		return this.enableAccelerationSensor(pContext, pAccelerationListener, new AccelerationSensorOptions(Engine.SENSORDELAY_DEFAULT));
 	}
 
 	/**
 	 * @return <code>true</code> when the sensor was successfully enabled, <code>false</code> otherwise.
 	 */
-	public boolean enableAccelerometerSensor(final Context pContext, final IAccelerationListener pAccelerationListener, final AccelerationSensorOptions pAccelerationSensorOptions) {
+	public boolean enableAccelerationSensor(final Context pContext, final IAccelerationListener pAccelerationListener, final AccelerationSensorOptions pAccelerationSensorOptions) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			this.mAccelerationListener = pAccelerationListener;
@@ -678,7 +678,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	/**
 	 * @return <code>true</code> when the sensor was successfully disabled, <code>false</code> otherwise.
 	 */
-	public boolean disableAccelerometerSensor(final Context pContext) {
+	public boolean disableAccelerationSensor(final Context pContext) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);

@@ -41,6 +41,7 @@ public class ShaderProgramManager {
 	public synchronized void onCreate() {
 		this.loadShaderProgram(PositionColorTextureCoordinatesShaderProgram.getInstance());
 		this.loadShaderProgram(PositionTextureCoordinatesShaderProgram.getInstance());
+		this.loadShaderProgram(PositionTextureCoordinatesUniformColorShaderProgram.getInstance());
 		this.loadShaderProgram(PositionColorShaderProgram.getInstance());
 		this.loadShaderProgram(PositionTextureCoordinatesTextureSelectShaderProgram.getInstance());
 		this.loadShaderProgram(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.getInstance());

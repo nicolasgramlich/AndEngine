@@ -1,6 +1,8 @@
 package org.andengine.entity;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
@@ -183,12 +185,36 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public boolean attachChild(final IEntity pEntity, final int pIndex);
 
 	public IEntity getChild(final int pIndex);
+	public IEntity getChild(final IEntityMatcher pEntityMatcher);
 	public IEntity getFirstChild();
 	public IEntity getLastChild();
 	public int getChildIndex(final IEntity pEntity);
 	public boolean setChildIndex(final IEntity pEntity, final int pIndex);
 
-	public IEntity findChild(final IEntityMatcher pEntityMatcher);
+	/**
+	 * @param pEntityMatcher
+	 * @return all children (recursively!) that match the supplied {@link IEntityMatcher}.
+	 */
+	public ArrayList<IEntity> query(final IEntityMatcher pEntityMatcher);
+	/**
+	 * @param pEntityMatcher
+	 * @param pResult the {@link List} to put the result into.
+	 * @return all children (recursively!) that match the supplied {@link IEntityMatcher}.
+	 */
+	public <L extends List<IEntity>> L query(final IEntityMatcher pEntityMatcher, final L pResult);
+	/**
+	 * @param pEntityMatcher
+	 * @return all children (recursively!) that match the supplied {@link IEntityMatcher}.
+	 * @throws ClassCastException when the supplied {@link IEntityMatcher} matched a {@link IEntity} that was not of the requested subtype.
+	 */
+	public <S extends IEntity> ArrayList<S> queryForSubclass(IEntityMatcher pEntityMatcher) throws ClassCastException;
+	/**
+	 * @param pEntityMatcher
+	 * @param pResult the {@link List} to put the result into.
+	 * @return all children (recursively!) that match the supplied {@link IEntityMatcher}.
+	 * @throws ClassCastException when the supplied {@link IEntityMatcher} matched a {@link IEntity} that was not of the requested subtype.
+	 */
+	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException;
 
 	public boolean swapChildren(final int pIndexA, final int pIndexB);
 	public boolean swapChildren(final IEntity pEntityA, final IEntity pEntityB);

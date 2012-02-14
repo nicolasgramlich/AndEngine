@@ -26,7 +26,7 @@ public class TiledSprite extends Sprite {
 	// Constants
 	// ===========================================================
 
-	public static final int VERTEX_SIZE = 2 + 2;
+	public static final int VERTEX_SIZE = Sprite.VERTEX_SIZE;
 	public static final int VERTICES_PER_TILEDSPRITE = 6;
 	public static final int TILEDSPRITE_SIZE = TiledSprite.VERTEX_SIZE * TiledSprite.VERTICES_PER_TILEDSPRITE;
 

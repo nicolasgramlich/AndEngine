@@ -4,7 +4,7 @@ import java.nio.FloatBuffer;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.RectangularShape;
-import org.andengine.opengl.shader.PositionTextureCoordinatesUniformColorShaderProgram;
+import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -33,15 +33,17 @@ public class Sprite extends RectangularShape {
 
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Sprite.VERTEX_INDEX_X + 1;
-	public static final int TEXTURECOORDINATES_INDEX_U = Sprite.VERTEX_INDEX_Y + 1;
+	public static final int COLOR_INDEX = Sprite.VERTEX_INDEX_Y + 1;
+	public static final int TEXTURECOORDINATES_INDEX_U = Sprite.COLOR_INDEX + 1;
 	public static final int TEXTURECOORDINATES_INDEX_V = Sprite.TEXTURECOORDINATES_INDEX_U + 1;
 
-	public static final int VERTEX_SIZE = 2 + 2;
+	public static final int VERTEX_SIZE = 2 + 1 + 2;
 	public static final int VERTICES_PER_SPRITE = 4;
 	public static final int SPRITE_SIZE = Sprite.VERTEX_SIZE * Sprite.VERTICES_PER_SPRITE;
 
-	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(2)
+	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
 		.add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+		.add(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION, ShaderProgramConstants.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
 		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
 		.build();
 
@@ -92,7 +94,7 @@ public class Sprite extends RectangularShape {
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, pDrawType, PositionTextureCoordinatesUniformColorShaderProgram.getInstance());
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, pDrawType, PositionColorTextureCoordinatesShaderProgram.getInstance());
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
@@ -100,7 +102,7 @@ public class Sprite extends RectangularShape {
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject, PositionTextureCoordinatesUniformColorShaderProgram.getInstance());
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
 	}
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
@@ -166,8 +168,6 @@ public class Sprite extends RectangularShape {
 		this.getTextureRegion().getTexture().bind(pGLState);
 
 		this.mSpriteVertexBufferObject.bind(pGLState, this.mShaderProgram);
-
-		GLES20.glUniform4f(PositionTextureCoordinatesUniformColorShaderProgram.sUniformColorLocation, this.mColor.getRed(), this.mColor.getGreen(), this.mColor.getBlue(), this.mColor.getAlpha());
 	}
 
 	@Override
@@ -245,7 +245,16 @@ public class Sprite extends RectangularShape {
 
 		@Override
 		public void onUpdateColor(final Sprite pSprite) {
-			/* Nothing to do, since color is applied as a uniform. */
+			final float[] bufferData = this.mBufferData;
+
+			final float packedColor = pSprite.getColor().getFloatPacked();
+
+			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+
+			this.setDirtyOnHardware();
 		}
 
 		@Override
@@ -374,7 +383,16 @@ public class Sprite extends RectangularShape {
 
 		@Override
 		public void onUpdateColor(final Sprite pSprite) {
-			/* Nothing to do, since color is applied as a uniform. */
+			final FloatBuffer bufferData = this.mFloatBuffer;
+
+			final float packedColor = pSprite.getColor().getFloatPacked();
+
+			bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+			bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+			bufferData.put(2 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+			bufferData.put(3 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+
+			this.setDirtyOnHardware();
 		}
 
 		@Override

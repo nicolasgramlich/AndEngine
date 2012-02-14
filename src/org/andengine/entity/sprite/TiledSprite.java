@@ -3,7 +3,7 @@ package org.andengine.entity.sprite;
 import java.nio.FloatBuffer;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.opengl.shader.PositionTextureCoordinatesUniformColorShaderProgram;
+import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -82,7 +82,7 @@ public class TiledSprite extends Sprite {
 	}
 
 	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject) {
-		this(pX, pY, pWidth, pHeight, pTiledTextureRegion, pTiledSpriteVertexBufferObject, PositionTextureCoordinatesUniformColorShaderProgram.getInstance());
+		this(pX, pY, pWidth, pHeight, pTiledTextureRegion, pTiledSpriteVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
 	}
 
 	public TiledSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITiledTextureRegion pTiledTextureRegion, final ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
@@ -194,7 +194,24 @@ public class TiledSprite extends Sprite {
 
 		@Override
 		public void onUpdateColor(final TiledSprite pTiledSprite) {
-			/* Nothing to do, since color is applied as a uniform. */
+			final float[] bufferData = this.mBufferData;
+
+			final float packedColor = pTiledSprite.getColor().getFloatPacked();
+
+			final int tileCount = pTiledSprite.getTileCount();
+			int bufferDataOffset = 0;
+			for(int i = 0; i < tileCount; i++) {
+				bufferData[bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
+
+				bufferDataOffset += TiledSprite.TILEDSPRITE_SIZE;
+			}
+
+			this.setDirtyOnHardware();
 		}
 
 		@Override
@@ -355,7 +372,24 @@ public class TiledSprite extends Sprite {
 
 		@Override
 		public void onUpdateColor(final TiledSprite pTiledSprite) {
-			/* Nothing to do, since color is applied as a uniform. */
+			final FloatBuffer bufferData = this.mFloatBuffer;
+
+			final float packedColor = pTiledSprite.getColor().getFloatPacked();
+
+			final int tileCount = pTiledSprite.getTileCount();
+			int bufferDataOffset = 0;
+			for(int i = 0; i < tileCount; i++) {
+				bufferData.put(bufferDataOffset + 0 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+				bufferData.put(bufferDataOffset + 1 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+				bufferData.put(bufferDataOffset + 2 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+				bufferData.put(bufferDataOffset + 3 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+				bufferData.put(bufferDataOffset + 4 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+				bufferData.put(bufferDataOffset + 5 * TiledSprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
+
+				bufferDataOffset += TiledSprite.TILEDSPRITE_SIZE;
+			}
+
+			this.setDirtyOnHardware();
 		}
 
 		@Override

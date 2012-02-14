@@ -11,7 +11,7 @@ import android.opengl.GLES20;
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 15:00:46 PM - Feb 13, 2012
+ * @since 15:00:46 - 13.02.2012
  */
 public class PositionTextureCoordinatesUniformColorShaderProgram extends ShaderProgram {
 	// ===========================================================

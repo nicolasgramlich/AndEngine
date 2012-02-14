@@ -119,6 +119,25 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 		return this.mCapacity * DataConstants.BYTES_PER_FLOAT;
 	}
 
+	@Override
+	public int getHeapMemoryByteSize() {
+		return 0;
+	}
+
+	@Override
+	public int getNativeHeapMemoryByteSize() {
+		return 0;
+	}
+
+	@Override
+	public int getGPUMemoryByteSize() {
+		if(this.isLoadedToHardware()) {
+			return this.getByteCapacity();
+		} else {
+			return 0;
+		}
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

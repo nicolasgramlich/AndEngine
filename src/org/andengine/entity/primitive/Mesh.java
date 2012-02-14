@@ -1,11 +1,15 @@
 package org.andengine.entity.primitive;
 
+import java.security.spec.MGF1ParameterSpec;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.shape.Shape;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
 import org.andengine.opengl.shader.constants.ShaderProgramConstants;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
@@ -47,10 +51,20 @@ public class Mesh extends Shape {
 	protected final IMeshVertexBufferObject mMeshVertexBufferObject;
 	private int mVertexCountToDraw;
 	private int mDrawMode;
+	protected ITextureRegion mTextureRegion;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	/**
+	 * Uses a default {@link HighPerformanceMeshVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Mesh#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Mesh(final float pX, final float pY, final float[] pBufferData, final int pVertexCount, final DrawMode pDrawMode, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pBufferData, pVertexCount, pDrawMode, pVertexBufferObjectManager, DrawType.STATIC);
+		mTextureRegion = pTextureRegion;
+		this.onUpdateTextureCoordinates();
+	}
 
 	/**
 	 * Uses a default {@link HighPerformanceMeshVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Mesh#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
@@ -100,6 +114,10 @@ public class Mesh extends Shape {
 	public void setDrawMode(final DrawMode pDrawMode) {
 		this.mDrawMode = pDrawMode.mDrawMode;
 	}
+	
+	public ITextureRegion getTextureRegion() {
+		return this.mTextureRegion;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -113,7 +131,11 @@ public class Mesh extends Shape {
 	@Override
 	protected void preDraw(final GLState pGLState, final Camera pCamera) {
 		super.preDraw(pGLState, pCamera);
-
+		
+		// Check if polygon uses a texture
+		if( mTextureRegion != null)
+			this.mTextureRegion.getTexture().bind(pGLState);
+		
 		this.mMeshVertexBufferObject.bind(pGLState, this.mShaderProgram);
 	}
 
@@ -137,6 +159,10 @@ public class Mesh extends Shape {
 	@Override
 	protected void onUpdateVertices() {
 		this.mMeshVertexBufferObject.onUpdateVertices(this);
+	}
+	
+	protected void onUpdateTextureCoordinates() {
+		this.mMeshVertexBufferObject.onUpdateTextureCoordinates(this);
 	}
 
 	@Override
@@ -196,6 +222,7 @@ public class Mesh extends Shape {
 		public float[] getBufferData();
 		public void onUpdateColor(final Mesh pMesh);
 		public void onUpdateVertices(final Mesh pMesh);
+		public void onUpdateTextureCoordinates(final Mesh pMesh);
 	}
 
 	public static class HighPerformanceMeshVertexBufferObject extends HighPerformanceVertexBufferObject implements IMeshVertexBufferObject {
@@ -243,6 +270,51 @@ public class Mesh extends Shape {
 		@Override
 		public void onUpdateVertices(final Mesh pMesh) {
 			/* Since the buffer data is managed from the caller, we just mark the buffer data as dirty. */
+
+			this.setDirtyOnHardware();
+		}
+		
+		@Override
+		public void onUpdateTextureCoordinates(final Mesh pMesh) {
+			final float[] bufferData = this.mBufferData;
+
+			final ITextureRegion textureRegion = pMesh.getTextureRegion(); // TODO Optimize with field access?
+
+			final float u;
+			final float v;
+			final float u2;
+			final float v2;
+
+			u = textureRegion.getU();
+			u2 = textureRegion.getU2();
+			v = textureRegion.getV();
+			v2 = textureRegion.getV2();
+
+			if(textureRegion.isRotated()) {
+				bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+				bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+				bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+
+				bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+			} else {
+				bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+				bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+				bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+
+				bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+				bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+				bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+			}
 
 			this.setDirtyOnHardware();
 		}

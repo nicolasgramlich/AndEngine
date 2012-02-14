@@ -26,7 +26,6 @@ public class PositionTextureCoordinatesUniformColorShaderProgram extends ShaderP
 			"attribute vec2 " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
 			"varying vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
 			"void main() {\n" +
-			"	" + ShaderProgramConstants.VARYING_COLOR + " = " + ShaderProgramConstants.ATTRIBUTE_COLOR + ";\n" +
 			"	" + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + " = " + ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES + ";\n" +
 			"	gl_Position = " + ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX + " * " + ShaderProgramConstants.ATTRIBUTE_POSITION + ";\n" +
 			"}";
@@ -80,6 +79,7 @@ public class PositionTextureCoordinatesUniformColorShaderProgram extends ShaderP
 
 		PositionTextureCoordinatesUniformColorShaderProgram.sUniformModelViewPositionMatrixLocation = this.getUniformLocation(ShaderProgramConstants.UNIFORM_MODELVIEWPROJECTIONMATRIX);
 		PositionTextureCoordinatesUniformColorShaderProgram.sUniformTexture0Location = this.getUniformLocation(ShaderProgramConstants.UNIFORM_TEXTURE_0);
+		PositionTextureCoordinatesUniformColorShaderProgram.sUniformColorLocation = this.getUniformLocation(ShaderProgramConstants.UNIFORM_COLOR);
 	}
 
 	@Override

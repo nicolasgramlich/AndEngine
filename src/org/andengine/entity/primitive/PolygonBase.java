@@ -215,7 +215,7 @@ public abstract class PolygonBase extends PolygonShape {
 				for( int i = 0; i < nbVertexInTriangles; i++)
 				{	
 					// TODO use color per vertex
-					bufferData[i * Polygon.VERTEX_SIZE + Polygon.COLOR_INDEX] = packedColor;
+					bufferData[i * VERTEX_SIZE + COLOR_INDEX] = packedColor;
 				}
 
 				this.setDirtyOnHardware();
@@ -230,8 +230,8 @@ public abstract class PolygonBase extends PolygonShape {
 				
 				for( int i = 0; i < nbVertexInTriangles; i++) 
 				{	
-					bufferData[i * Polygon.VERTEX_SIZE + Polygon.VERTEX_INDEX_X] = vertexTriangles.get(i).getX();
-					bufferData[i * Polygon.VERTEX_SIZE + Polygon.VERTEX_INDEX_Y] = vertexTriangles.get(i).getY();
+					bufferData[i * VERTEX_SIZE + VERTEX_INDEX_X] = vertexTriangles.get(i).getX();
+					bufferData[i * VERTEX_SIZE + VERTEX_INDEX_Y] = vertexTriangles.get(i).getY();
 				}
 				
 				this.setDirtyOnHardware();

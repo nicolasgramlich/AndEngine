@@ -42,24 +42,6 @@ public class TexturedPolygon extends TexturedMesh {
 	/**
 	 * Uses a default {@link HighPerformanceTexturedMeshVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Mesh#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public TexturedPolygon(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager) {
-		this(pX, pY, pVertexX, pVertexY, pVertexBufferObjectManager, DrawType.STATIC);
-	}
-	
-	/**
-	 * Uses a default {@link HighPerformanceTexturedMeshVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Mesh#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
-	public TexturedPolygon(final float pX, final float pY, final float[] pVertexX, float[] pVertexY, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
-		this(pX, pY, buildVertexList(mTriangulator.computeTriangles(buildListOfVector2(pVertexX, pVertexY))), VERTEX_SIZE_DEFAULT_RATIO, null, pVertexBufferObjectManager, pDrawType );
-		
-		assert( mVertexX.length == mVertexY.length );
-		mVertexX = pVertexX;
-		mVertexY = pVertexY;
-	}
-	
-	/**
-	 * Uses a default {@link HighPerformanceTexturedMeshVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Mesh#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
-	 */
 	public TexturedPolygon(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pVertexX, pVertexY, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
 	}

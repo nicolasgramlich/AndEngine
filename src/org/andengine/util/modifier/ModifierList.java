@@ -49,6 +49,15 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 	// ===========================================================
 
 	@Override
+	public boolean add(IModifier<T> pModifier) {
+		if(pModifier == null) {
+			throw new IllegalArgumentException("Supplied " + IModifier.class.getSimpleName() + " must not be null.");
+		} else {
+			return super.add(pModifier);
+		}
+	}
+
+	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		final int modifierCount = this.size();
 		if(modifierCount > 0) {

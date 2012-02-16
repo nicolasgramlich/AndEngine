@@ -111,7 +111,7 @@ public abstract class BitmapTexture extends Texture {
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 		}
 
-		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultipyAlpha;
+		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultiplyAlpha;
 		if(preMultipyAlpha) {
 			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 		} else {

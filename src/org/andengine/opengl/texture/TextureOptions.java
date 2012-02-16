@@ -40,7 +40,7 @@ public class TextureOptions {
 	public final int mMinFilter;
 	public final float mWrapT;
 	public final float mWrapS;
-	public final boolean mPreMultipyAlpha;
+	public final boolean mPreMultiplyAlpha;
 
 	// ===========================================================
 	// Constructors
@@ -51,7 +51,7 @@ public class TextureOptions {
 		this.mMagFilter = pMagFilter;
 		this.mWrapT = pWrapT;
 		this.mWrapS = pWrapS;
-		this.mPreMultipyAlpha = pPreMultiplyAlpha;
+		this.mPreMultiplyAlpha = pPreMultiplyAlpha;
 	}
 
 	// ===========================================================

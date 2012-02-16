@@ -65,18 +65,22 @@ public class Font implements IFont {
 	// ===========================================================
 
 	public Font(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final Color pColor) {
+		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor.getARGBPackedInt());
+	}
+
+	public Font(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColorARGBPackedInt) {
 		this.mFontManager = pFontManager;
 		this.mTexture = pTexture;
 		this.mTextureWidth = pTexture.getWidth();
 		this.mTextureHeight = pTexture.getHeight();
 
 		this.mBackgroundPaint = new Paint();
-		this.mBackgroundPaint.setColor(Color.TRANSPARENT);
+		this.mBackgroundPaint.setColor(Color.TRANSPARENT_ARGB_PACKED_INT);
 		this.mBackgroundPaint.setStyle(Style.FILL);
 
 		this.mPaint = new Paint();
 		this.mPaint.setTypeface(pTypeface);
-		this.mPaint.setColor(pColor);
+		this.mPaint.setColor(pColorARGBPackedInt);
 		this.mPaint.setTextSize(pSize);
 		this.mPaint.setAntiAlias(pAntiAlias);
 
@@ -254,7 +258,7 @@ public class Font implements IFont {
 				this.mTexture.bind(pGLState);
 				final PixelFormat pixelFormat = this.mTexture.getPixelFormat();
 
-				final boolean preMultipyAlpha = this.mTexture.getTextureOptions().mPreMultipyAlpha;
+				final boolean preMultipyAlpha = this.mTexture.getTextureOptions().mPreMultiplyAlpha;
 				for(int i = lettersPendingToBeDrawnToTexture.size() - 1; i >= 0; i--) {
 					final Letter letter = lettersPendingToBeDrawnToTexture.get(i);
 					if(!letter.isWhitespace()) {

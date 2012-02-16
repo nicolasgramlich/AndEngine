@@ -146,7 +146,7 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	protected void initBlendFunction(final TextureOptions pTextureOptions) {
-		if(pTextureOptions.mPreMultipyAlpha) {
+		if(pTextureOptions.mPreMultiplyAlpha) {
 			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
 		}
 	}

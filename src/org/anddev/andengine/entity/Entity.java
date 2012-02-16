@@ -3,6 +3,7 @@ package org.anddev.andengine.entity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -514,6 +515,48 @@ public class Entity implements IEntity {
 			return null;
 		}
 		return this.mChildren.find(pEntityMatcher);
+	}
+
+
+	@Override
+	public ArrayList<IEntity> query(final IEntityMatcher pEntityMatcher) {
+		return this.query(pEntityMatcher, new ArrayList<IEntity>());
+	}
+
+	@Override
+	public <L extends List<IEntity>> L query(final IEntityMatcher pEntityMatcher, final L pResult) {
+		final int childCount = this.getChildCount();
+		for(int i = 0; i < childCount; i++) {
+			final IEntity item = this.mChildren.get(i);
+			if(pEntityMatcher.matches(item)) {
+				pResult.add(item);
+			}
+
+			item.query(pEntityMatcher, pResult);
+		}
+
+		return pResult;
+	}
+
+	@Override
+	public <S extends IEntity> ArrayList<S> queryForSubclass(final IEntityMatcher pEntityMatcher) throws ClassCastException {
+		return this.queryForSubclass(pEntityMatcher, new ArrayList<S>());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException {
+		final int childCount = this.getChildCount();
+		for(int i = 0; i < childCount; i++) {
+			final IEntity item = this.mChildren.get(i);
+			if(pEntityMatcher.matches(item)) {
+				pResult.add((S)item);
+			}
+
+			item.queryForSubclass(pEntityMatcher, pResult);
+		}
+
+		return pResult;
 	}
 
 	@Override

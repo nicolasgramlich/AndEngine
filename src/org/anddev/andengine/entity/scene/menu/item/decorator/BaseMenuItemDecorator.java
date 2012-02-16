@@ -1,6 +1,8 @@
 package org.anddev.andengine.entity.scene.menu.item.decorator;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -433,6 +435,23 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public IEntity findChild(final IEntityMatcher pEntityMatcher) {
 		return this.mMenuItem.findChild(pEntityMatcher);
+	}
+
+	public ArrayList<IEntity> query(final IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.query(pEntityMatcher);
+	}
+
+	public <L extends List<IEntity>> L query(final IEntityMatcher pEntityMatcher, final L pResult) {
+		return this.mMenuItem.query(pEntityMatcher, pResult);
+	}
+
+	@Override
+	public <S extends IEntity> ArrayList<S> queryForSubclass(final IEntityMatcher pEntityMatcher) throws ClassCastException {
+		return this.mMenuItem.queryForSubclass(pEntityMatcher);
+	}
+
+	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException {
+		return this.mMenuItem.queryForSubclass(pEntityMatcher, pResult);
 	}
 
 	@Override

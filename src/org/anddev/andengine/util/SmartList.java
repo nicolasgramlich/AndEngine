@@ -1,6 +1,7 @@
 package org.anddev.andengine.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -114,6 +115,39 @@ public class SmartList<T> extends ArrayList<T> {
 			}
 		}
 		return null;
+	}
+
+	public ArrayList<T> query(final IMatcher<T> pMatcher) {
+		return this.query(pMatcher, new ArrayList<T>());
+	}
+
+	public <L extends List<T>> L query(final IMatcher<T> pMatcher, final L pResult) {
+		final int size = this.size();
+		for(int i = 0; i < size; i++) {
+			final T item = this.get(i);
+			if(pMatcher.matches(item)) {
+				pResult.add(item);
+			}
+		}
+
+		return pResult;
+	}
+
+	public <S extends T> ArrayList<S> queryForSubclass(final IMatcher<T> pMatcher) {
+		return this.queryForSubclass(pMatcher, new ArrayList<S>());
+	}
+
+	@SuppressWarnings("unchecked")
+	public <L extends List<S>, S extends T> L queryForSubclass(final IMatcher<T> pMatcher, final L pResult) {
+		final int size = this.size();
+		for(int i = 0; i < size; i++) {
+			final T item = this.get(i);
+			if(pMatcher.matches(item)) {
+				pResult.add((S)item);
+			}
+		}
+
+		return pResult;
 	}
 
 	public void call(final ParameterCallable<T> pParameterCallable) {

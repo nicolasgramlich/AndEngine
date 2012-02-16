@@ -356,7 +356,7 @@ public class SpriteBatch extends Shape {
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float)}.
 	 */
 	public void draw(final Sprite pSprite) {
-		this.draw(pSprite, pSprite.getColor().getFloatPacked());
+		this.draw(pSprite, pSprite.getColor().getABGRPackedFloat());
 	}
 
 	/**
@@ -400,7 +400,7 @@ public class SpriteBatch extends Shape {
 	}
 
 	public void drawWithoutChecks(final Sprite pSprite) {
-		this.drawWithoutChecks(pSprite, pSprite.getColor().getFloatPacked());
+		this.drawWithoutChecks(pSprite, pSprite.getColor().getABGRPackedFloat());
 	}
 
 	public void drawWithoutChecks(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
@@ -717,7 +717,7 @@ public class SpriteBatch extends Shape {
 	 * +-2
 	 */
 	private void addInner(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX1, pY1, pX2, pY2, Color.pack(pRed, pGreen, pBlue, pAlpha));
+		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX1, pY1, pX2, pY2, Color.packABGRFloat(pRed, pGreen, pBlue, pAlpha));
 	}
 
 	/**
@@ -726,7 +726,7 @@ public class SpriteBatch extends Shape {
 	 * 2-4
 	 */
 	private void addInner(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, Color.pack(pRed, pGreen, pBlue, pAlpha));
+		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, Color.packABGRFloat(pRed, pGreen, pBlue, pAlpha));
 	}
 
 	// ===========================================================

@@ -206,7 +206,7 @@ public class Mesh extends Shape {
 		public void onUpdateColor(final Mesh pMesh) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pMesh.getColor().getFloatPacked();
+			final float packedColor = pMesh.getColor().getABGRPackedFloat();
 
 			for(int i = 0; i < this.mVertexCount; i++) {
 				bufferData[(i * Mesh.VERTEX_SIZE) + Mesh.COLOR_INDEX] = packedColor;

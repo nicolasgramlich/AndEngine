@@ -236,6 +236,24 @@ public class Color {
 	// ===========================================================
 
 	@Override
+	public int hashCode() {
+		return this.mIntPacked;
+	}
+
+	@Override
+	public boolean equals(final Object pObject) {
+		if(this == pObject) {
+			return true;
+		} else if(pObject == null) {
+			return false;
+		} else if(this.getClass() != pObject.getClass()) {
+			return false;
+		}
+
+		return this.equals((Color) pObject);
+	}
+
+	@Override
 	public String toString() {
 		return new StringBuilder()
 			.append("[Red: ")
@@ -253,6 +271,10 @@ public class Color {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public boolean equals(final Color pColor) {
+		return this.mIntPacked == pColor.mIntPacked;
+	}
 
 	private final void packRed() {
 		this.mIntPacked = (this.mIntPacked & Color.PACKED_INT_RED_CLEAR) | ((int)(255 * this.mRed) << Color.PACKED_INT_RED_CLEAR);

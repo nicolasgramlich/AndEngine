@@ -1,0 +1,13 @@
+target/**
+bin/**
+doc/**
+gen/**
+.DS_Store
+Thumbs.db
+gdb.setup
+gdbserver
+.svn
+.hg
+local.properties
+.settings
+AndEngine.iml

@@ -448,6 +448,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 	}
 
+	protected void convertSceneToSurfaceTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
+		pCamera.convertSceneToSurfaceTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
+	}
+
 	public void onLoadComplete(final Scene pScene) {
 		this.setScene(pScene);
 	}

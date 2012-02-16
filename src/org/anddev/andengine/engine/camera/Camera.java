@@ -372,16 +372,19 @@ public class Camera implements IUpdateHandler {
 		final float relativeX;
 		final float relativeY;
 
+		final float surfaceTouchEventX = pSurfaceTouchEvent.getX();
+		final float surfaceTouchEventY = pSurfaceTouchEvent.getY();
+
 		final float rotation = this.mRotation;
 		if(rotation == 0) {
-			relativeX = pSurfaceTouchEvent.getX() / pSurfaceWidth;
-			relativeY = pSurfaceTouchEvent.getY() / pSurfaceHeight;
+			relativeX = surfaceTouchEventX / pSurfaceWidth;
+			relativeY = surfaceTouchEventY / pSurfaceHeight;
 		} else if(rotation == 180) {
-			relativeX = 1 - (pSurfaceTouchEvent.getX() / pSurfaceWidth);
-			relativeY = 1 - (pSurfaceTouchEvent.getY() / pSurfaceHeight);
+			relativeX = 1 - (surfaceTouchEventX / pSurfaceWidth);
+			relativeY = 1 - (surfaceTouchEventY / pSurfaceHeight);
 		} else {
-			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pSurfaceTouchEvent.getX();
-			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pSurfaceTouchEvent.getY();
+			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = surfaceTouchEventX;
+			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = surfaceTouchEventY;
 
 			MathUtils.rotateAroundCenter(VERTICES_TOUCH_TMP, rotation, pSurfaceWidth / 2, pSurfaceHeight / 2);
 
@@ -402,6 +405,36 @@ public class Camera implements IUpdateHandler {
 		final float y = minY + pRelativeY * (maxY - minY);
 
 		pSurfaceTouchEvent.set(x, y);
+	}
+
+	public void convertSceneToSurfaceTouchEvent(final TouchEvent pSceneTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
+		this.convertAxisAlignedSceneToSurfaceTouchEvent(pSceneTouchEvent, pSurfaceWidth, pSurfaceHeight);
+
+		final float rotation = this.mRotation;
+		if(rotation == 0) {
+			/* Nothing to do. */
+		} else if(rotation == 180) {
+			pSceneTouchEvent.set(pSurfaceWidth - pSceneTouchEvent.getX(), pSurfaceHeight - pSceneTouchEvent.getY());
+		} else {
+			VERTICES_TOUCH_TMP[VERTEX_INDEX_X] = pSceneTouchEvent.getX();
+			VERTICES_TOUCH_TMP[VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
+
+			MathUtils.revertRotateAroundCenter(VERTICES_TOUCH_TMP, rotation, pSurfaceWidth >> 1, pSurfaceHeight >> 1);
+
+			pSceneTouchEvent.set(VERTICES_TOUCH_TMP[VERTEX_INDEX_X], VERTICES_TOUCH_TMP[VERTEX_INDEX_Y]);
+		}
+	}
+
+	private void convertAxisAlignedSceneToSurfaceTouchEvent(final TouchEvent pSceneTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
+		final float minX = this.getMinX();
+		final float maxX = this.getMaxX();
+		final float minY = this.getMinY();
+		final float maxY = this.getMaxY();
+
+		final float relativeX = (pSceneTouchEvent.getX() - minX) / (maxX - minX);
+		final float relativeY = (pSceneTouchEvent.getY() - minY) / (maxY - minY);
+
+		pSceneTouchEvent.set(relativeX * pSurfaceWidth, relativeY * pSurfaceHeight);
 	}
 
 	// ===========================================================

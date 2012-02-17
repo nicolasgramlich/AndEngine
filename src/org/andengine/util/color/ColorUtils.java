@@ -12,10 +12,10 @@ public class ColorUtils {
 	// Constants
 	// ===========================================================
 
-	public static final float[] HSV_TO_COLOR = new float[3];
-	public static final int HSV_TO_COLOR_HUE_INDEX = 0;
-	public static final int HSV_TO_COLOR_SATURATION_INDEX = 1;
-	public static final int HSV_TO_COLOR_VALUE_INDEX = 2;
+	private static final float[] HSV_TO_COLOR = new float[3];
+	private static final int HSV_TO_COLOR_HUE_INDEX = 0;
+	private static final int HSV_TO_COLOR_SATURATION_INDEX = 1;
+	private static final int HSV_TO_COLOR_VALUE_INDEX = 2;
 
 	// ===========================================================
 	// Fields

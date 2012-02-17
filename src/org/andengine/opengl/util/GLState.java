@@ -430,7 +430,7 @@ public class GLState {
 		this.mProjectionGLMatrixStack.glRotatef(pAngle, pX, pY, pZ);
 	}
 
-	public void scaleProjectionGLMatrixf(final float pScaleX, final float pScaleY, final int pScaleZ) {
+	public void scaleProjectionGLMatrixf(final float pScaleX, final float pScaleY, final float pScaleZ) {
 		this.mProjectionGLMatrixStack.glScalef(pScaleX, pScaleY, pScaleZ);
 	}
 

@@ -16,20 +16,20 @@ public class Color {
 	public static final int ABGR_PACKED_BLUE_SHIFT = 16;
 	public static final int ABGR_PACKED_ALPHA_SHIFT = 24;
 
-	public static final int ABGR_PACKED_RED_CLEAR = 0X000000FF;
-	public static final int ABGR_PACKED_GREEN_CLEAR = 0X0000FF00;
-	public static final int ABGR_PACKED_BLUE_CLEAR = 0X00FF0000;
-	public static final int ABGR_PACKED_ALPHA_CLEAR = 0XFF000000;
+	public static final int ABGR_PACKED_RED_CLEAR = 0XFFFFFF00;
+	public static final int ABGR_PACKED_GREEN_CLEAR = 0XFFFF00FF;
+	public static final int ABGR_PACKED_BLUE_CLEAR = 0XFF00FFFF;
+	public static final int ABGR_PACKED_ALPHA_CLEAR = 0X00FFFFFF;
 
 	public static final int ARGB_PACKED_BLUE_SHIFT = 0;
 	public static final int ARGB_PACKED_GREEN_SHIFT = 8;
 	public static final int ARGB_PACKED_RED_SHIFT = 16;
 	public static final int ARGB_PACKED_ALPHA_SHIFT = 24;
 	
-	public static final int ARGB_PACKED_BLUE_CLEAR = 0X000000FF;
-	public static final int ARGB_PACKED_GREEN_CLEAR = 0X0000FF00;
-	public static final int ARGB_PACKED_RED_CLEAR = 0X00FF0000;
-	public static final int ARGB_PACKED_ALPHA_CLEAR = 0XFF000000;
+	public static final int ARGB_PACKED_BLUE_CLEAR = 0XFFFFFF00;
+	public static final int ARGB_PACKED_GREEN_CLEAR = 0XFFFF00FF;
+	public static final int ARGB_PACKED_RED_CLEAR = 0XFF00FFFF;
+	public static final int ARGB_PACKED_ALPHA_CLEAR = 0X00FFFFFF;
 
 	public static final Color WHITE = new Color(1, 1, 1, 1);
 	public static final Color BLACK = new Color(0, 0, 0, 1);

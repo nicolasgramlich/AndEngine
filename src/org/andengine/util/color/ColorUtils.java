@@ -17,6 +17,9 @@ public class ColorUtils {
 	private static final int HSV_TO_COLOR_SATURATION_INDEX = 1;
 	private static final int HSV_TO_COLOR_VALUE_INDEX = 2;
 
+	private static final int INT_BITS_TO_FLOAT_MASK = 0xFFFFFFFF;
+//	private static final int INT_BITS_TO_FLOAT_MASK = 0xFEFFFFFF; // To avoid producing NaN in the int->float conversion.
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -97,7 +100,7 @@ public class ColorUtils {
 
 
 	public static final float convertPackedIntToPackedFloat(final int pPackedInt) {
-		return Float.intBitsToFloat(pPackedInt & 0xFEFFFFFF);
+		return Float.intBitsToFloat(pPackedInt & ColorUtils.INT_BITS_TO_FLOAT_MASK);
 	}
 
 

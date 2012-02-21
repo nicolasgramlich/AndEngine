@@ -25,7 +25,7 @@ public class Color {
 	public static final int ARGB_PACKED_GREEN_SHIFT = 8;
 	public static final int ARGB_PACKED_RED_SHIFT = 16;
 	public static final int ARGB_PACKED_ALPHA_SHIFT = 24;
-	
+
 	public static final int ARGB_PACKED_BLUE_CLEAR = 0XFFFFFF00;
 	public static final int ARGB_PACKED_GREEN_CLEAR = 0XFFFF00FF;
 	public static final int ARGB_PACKED_RED_CLEAR = 0XFF00FFFF;

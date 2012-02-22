@@ -66,7 +66,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 
 		final LongSparseArray<Node> visitedNodes = new LongSparseArray<Node>();
 		final LongSparseArray<Node> openNodes = new LongSparseArray<Node>();
-		final IQueue<Node> sortedOpenNodes = new UniqueQueue<Node>(new SortedQueue<Node>(new ShiftList<Node>()));
+		final IQueue<Node> sortedOpenNodes = new SortedQueue<Node>(new ShiftList<Node>());
 
 		final boolean allowDiagonalMovement = pAllowDiagonal;
 

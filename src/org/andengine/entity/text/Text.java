@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.text.Text.TextOptions.AutoWrap;
 import org.andengine.entity.text.exception.OutOfCharactersException;
 import org.andengine.opengl.font.FontUtils;
 import org.andengine.opengl.font.IFont;
@@ -192,10 +193,10 @@ public class Text extends RectangularShape {
 		this.mLines.clear();
 		this.mLineWidths.clear();
 
-		if(this.mTextOptions.mAutoWordWrap) {
-			this.mLines = FontUtils.splitLines(this.mFont, this.mText, this.mLines, this.mTextOptions.mAutoWordWrapWidth);
-		} else {
+		if(this.mTextOptions.mAutoWrap == AutoWrap.NONE) {
 			this.mLines = FontUtils.splitLines(this.mText, this.mLines); // TODO Add whitespace-trimming.
+		} else {
+			this.mLines = FontUtils.splitLines(this.mFont, this.mText, this.mLines, this.mTextOptions.mAutoWrap, this.mTextOptions.mAutoWrapWidth);
 		}
 
 		final int lineCount = this.mLines.size();
@@ -208,10 +209,10 @@ public class Text extends RectangularShape {
 		}
 		this.mLineWidthMaximum = maximumLineWidth;
 
-		if(this.mTextOptions.mAutoWordWrap) {
-			this.mLineAlignmentWidth = this.mTextOptions.mAutoWordWrapWidth;
-		} else {
+		if(this.mTextOptions.mAutoWrap == AutoWrap.NONE) {
 			this.mLineAlignmentWidth = this.mLineWidthMaximum;
+		} else {
+			this.mLineAlignmentWidth = this.mTextOptions.mAutoWrapWidth;
 		}
 
 		super.mWidth = this.mLineAlignmentWidth;
@@ -266,22 +267,22 @@ public class Text extends RectangularShape {
 		this.invalidateText();
 	}
 
-	public boolean isAutoWordWrap() {
-		return this.mTextOptions.mAutoWordWrap;
+	public AutoWrap getAutoWrap() {
+		return this.mTextOptions.mAutoWrap;
 	}
 
-	public void setAutoWordWrap(final boolean pAutoWordWrap) {
-		this.mTextOptions.mAutoWordWrap = pAutoWordWrap;
+	public void setAutoWrap(final AutoWrap pAutoWrap) {
+		this.mTextOptions.mAutoWrap = pAutoWrap;
 
 		this.invalidateText();
 	}
 
-	public float getAutoWordWrapWidth() {
-		return this.mTextOptions.mAutoWordWrapWidth;
+	public float getAutoWrapWidth() {
+		return this.mTextOptions.mAutoWrapWidth;
 	}
 
-	public void setAutoWordWrapWidth(final float pAutoWordWrapWidth) {
-		this.mTextOptions.mAutoWordWrapWidth = pAutoWordWrapWidth;
+	public void setAutoWrapWidth(final float pAutoWrapWidth) {
+		this.mTextOptions.mAutoWrapWidth = pAutoWrapWidth;
 
 		this.invalidateText();
 	}
@@ -363,8 +364,8 @@ public class Text extends RectangularShape {
 		// Fields
 		// ===========================================================
 
-		/* package */ boolean mAutoWordWrap;
-		/* package */ float mAutoWordWrapWidth;
+		/* package */ AutoWrap mAutoWrap;
+		/* package */ float mAutoWrapWidth;
 		/* package */ float mLeading;
 		/* package */ HorizontalAlign mHorizontalAlign;
 
@@ -373,20 +374,20 @@ public class Text extends RectangularShape {
 		// ===========================================================
 
 		public TextOptions() {
-			this(false, 0, Text.LEADING_DEFAULT, HorizontalAlign.LEFT);
+			this(AutoWrap.NONE, 0, Text.LEADING_DEFAULT, HorizontalAlign.LEFT);
 		}
 
 		public TextOptions(final HorizontalAlign pHorizontalAlign) {
-			this(false, 0, Text.LEADING_DEFAULT, pHorizontalAlign);
+			this(AutoWrap.NONE, 0, Text.LEADING_DEFAULT, pHorizontalAlign);
 		}
 
-		public TextOptions(final boolean pAutoWordWrap, final float pAutoWordWrapWidth) {
-			this(pAutoWordWrap, pAutoWordWrapWidth, Text.LEADING_DEFAULT, HorizontalAlign.LEFT);
+		public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth) {
+			this(pAutoWrap, pAutoWrapWidth, Text.LEADING_DEFAULT, HorizontalAlign.LEFT);
 		}
 
-		public TextOptions(final boolean pAutoWordWrap, final float pAutoWordWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign) {
-			this.mAutoWordWrap = pAutoWordWrap;
-			this.mAutoWordWrapWidth = pAutoWordWrapWidth;
+		public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign) {
+			this.mAutoWrap = pAutoWrap;
+			this.mAutoWrapWidth = pAutoWrapWidth;
 			this.mLeading = pLeading;
 			this.mHorizontalAlign = pHorizontalAlign;
 		}
@@ -395,20 +396,20 @@ public class Text extends RectangularShape {
 		// Getter & Setter
 		// ===========================================================
 
-		public boolean isAutoWordWrap() {
-			return this.mAutoWordWrap;
+		public AutoWrap getAutoWrap() {
+			return this.mAutoWrap;
 		}
 
-		public void setAutoWordWrap(final boolean pAutoWordWrap) {
-			this.mAutoWordWrap = pAutoWordWrap;
+		public void setAutoWrap(final AutoWrap pAutoWrap) {
+			this.mAutoWrap = pAutoWrap;
 		}
 
-		public float getAutoWordWrapWidth() {
-			return this.mAutoWordWrapWidth;
+		public float getAutoWrapWidth() {
+			return this.mAutoWrapWidth;
 		}
 
-		public void setAutoWordWrapWidth(final float pAutoWordWrapWidth) {
-			this.mAutoWordWrapWidth = pAutoWordWrapWidth;
+		public void setAutoWrapWidth(final float pAutoWrapWidth) {
+			this.mAutoWrapWidth = pAutoWrapWidth;
 		}
 
 		public float getLeading() {
@@ -438,6 +439,44 @@ public class Text extends RectangularShape {
 		// ===========================================================
 		// Inner and Anonymous Classes
 		// ===========================================================
+
+		public static enum AutoWrap {
+			// ===========================================================
+			// Elements
+			// ===========================================================
+
+			NONE,
+			WORDS,
+			LETTERS;
+
+			// ===========================================================
+			// Constants
+			// ===========================================================
+
+			// ===========================================================
+			// Fields
+			// ===========================================================
+
+			// ===========================================================
+			// Constructors
+			// ===========================================================
+
+			// ===========================================================
+			// Getter & Setter
+			// ===========================================================
+
+			// ===========================================================
+			// Methods for/from SuperClass/Interfaces
+			// ===========================================================
+
+			// ===========================================================
+			// Methods
+			// ===========================================================
+
+			// ===========================================================
+			// Inner and Anonymous Classes
+			// ===========================================================
+		}
 	}
 
 	public static interface ITextVertexBufferObject extends IVertexBufferObject {

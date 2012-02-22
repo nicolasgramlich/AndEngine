@@ -182,11 +182,16 @@ public class FontUtils {
 
 					final float lineWidth = FontUtils.measureText(pFont, pText, lineStart, i);
 
-					if((lineWidth >= pAutoWrapWidth) || (charsAvailable && (i == textLength))) {
+					if(lineWidth >= pAutoWrapWidth) {
 						pResult.add(pText.subSequence(lineStart, lastNonWhitespace + 1));
 						lastNonWhitespace = lineStart;
+						charsAvailable = false;
 						break;
 					}
+				}
+
+				if(charsAvailable && (i == textLength)) {
+					pResult.add(pText.subSequence(lineStart, lastNonWhitespace + 1));
 				}
 			}
 		}

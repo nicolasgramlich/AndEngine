@@ -1,4 +1,4 @@
-package org.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.util.criteria;
 
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.data.operator.IntOperator;
@@ -9,7 +9,7 @@ import org.andengine.util.adt.data.operator.IntOperator;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:59:32 - 10.10.2011
  */
-public abstract class IntShaderSourceCriteria implements IShaderSourceCriteria {
+public abstract class IntGLCriteria implements IGLCriteria {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -25,7 +25,7 @@ public abstract class IntShaderSourceCriteria implements IShaderSourceCriteria {
 	// Constructors
 	// ===========================================================
 
-	public IntShaderSourceCriteria(final IntOperator pIntOperator, final int pCriteria) {
+	public IntGLCriteria(final IntOperator pIntOperator, final int pCriteria) {
 		this.mCriteria = pCriteria;
 		this.mIntOperator = pIntOperator;
 	}

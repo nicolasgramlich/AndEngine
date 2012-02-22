@@ -1,4 +1,4 @@
-package org.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.util.criteria;
 
 import org.andengine.opengl.util.GLState;
 
@@ -8,7 +8,7 @@ import org.andengine.opengl.util.GLState;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:43:34 - 10.10.2011
  */
-public interface IShaderSourceCriteria {
+public interface IGLCriteria {
 	// ===========================================================
 	// Constants
 	// ===========================================================

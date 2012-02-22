@@ -1,8 +1,8 @@
 package org.andengine.opengl.shader.source;
 
 import org.andengine.opengl.shader.exception.ShaderProgramException;
-import org.andengine.opengl.shader.source.criteria.IShaderSourceCriteria;
 import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.util.criteria.IGLCriteria;
 
 /**
  * (c) Zynga 2011
@@ -66,18 +66,18 @@ public class CriteriaShaderSource implements IShaderSource {
 		// ===========================================================
 
 		private final String mShaderSource;
-		private final IShaderSourceCriteria[] mShaderSourceCriterias;
+		private final IGLCriteria[] mGLCriterias;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 		
 		public CriteriaShaderSourceEntry(final String pShaderSource) {
-			this(pShaderSource, (IShaderSourceCriteria[]) null);
+			this(pShaderSource, (IGLCriteria[]) null);
 		}
 
-		public CriteriaShaderSourceEntry(final String pShaderSource, final IShaderSourceCriteria ... pCriterias) {
-			this.mShaderSourceCriterias = pCriterias;
+		public CriteriaShaderSourceEntry(final String pShaderSource, final IGLCriteria ... pCriterias) {
+			this.mGLCriterias = pCriterias;
 			this.mShaderSource = pShaderSource;
 		}
 
@@ -98,9 +98,9 @@ public class CriteriaShaderSource implements IShaderSource {
 		// ===========================================================
 
 		public boolean isMet(final GLState pGLState) {
-			if(this.mShaderSourceCriterias != null) {
-				for(IShaderSourceCriteria shaderSourceCriteria : this.mShaderSourceCriterias) {
-					if(!shaderSourceCriteria.isMet(pGLState)) {
+			if(this.mGLCriterias != null) {
+				for(IGLCriteria gLCriteria : this.mGLCriterias) {
+					if(!gLCriteria.isMet(pGLState)) {
 						return false;
 					}
 				}

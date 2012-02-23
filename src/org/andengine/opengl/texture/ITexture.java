@@ -35,8 +35,22 @@ public interface ITexture {
 	public boolean isUpdateOnHardwareNeeded();
 	public void setUpdateOnHardwareNeeded(final boolean pUpdateOnHardwareNeeded);
 
+	/**
+	 * @see {@link TextureManager#loadTexture(ITexture)}.
+	 */
 	public void load();
+	/**
+	 * @see {@link TextureManager#loadTexture(GLState, ITexture)}.
+	 */
+	public void load(final GLState pGLState) throws IOException;
+	/**
+	 * @see {@link TextureManager#unloadTexture(ITexture)}.
+	 */
 	public void unload();
+	/**
+	 * @see {@link TextureManager#unloadTexture(GLState, ITexture)}.
+	 */
+	public void unload(final GLState pGLState);
 
 	public void loadToHardware(final GLState pGLState) throws IOException;
 	public void unloadFromHardware(final GLState pGLState);

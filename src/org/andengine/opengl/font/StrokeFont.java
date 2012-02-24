@@ -6,6 +6,7 @@ import org.andengine.util.color.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
+import android.util.FloatMath;
 
 /**
  * TODO Re-implement with Font changes.
@@ -71,7 +72,7 @@ public class StrokeFont extends Font {
 
 	protected void updateTextBounds(final String pCharacterAsString) {
 		this.mStrokePaint.getTextBounds(pCharacterAsString, 0, 1, this.mTextBounds);
-		final int inset = -(int)Math.floor(this.mStrokeWidth * 0.5f);
+		final int inset = -(int)FloatMath.floor(this.mStrokeWidth * 0.5f);
 		this.mTextBounds.inset(inset, inset);
 	}
 

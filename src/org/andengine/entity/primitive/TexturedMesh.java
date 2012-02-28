@@ -283,7 +283,7 @@ public class TexturedMesh extends Shape {
 		public void onUpdateColor(final TexturedMesh pMesh) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pMesh.getColor().getFloatPacked();
+			final float packedColor = pMesh.getColor().getABGRPackedFloat();
 
 			for(int i = 0; i < this.mVertexCount; i++) {
 				bufferData[(i * TexturedMesh.VERTEX_SIZE) + TexturedMesh.COLOR_INDEX] = packedColor;

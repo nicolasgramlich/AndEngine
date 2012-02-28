@@ -1,4 +1,4 @@
-package org.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.util.criteria;
 
 import org.andengine.opengl.util.GLState;
 
@@ -6,9 +6,9 @@ import org.andengine.opengl.util.GLState;
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 18:10:26 - 12.10.2011
+ * @since 18:15:55 - 12.10.2011
  */
-public class LogicalOrShaderSourceCriteria implements IShaderSourceCriteria {
+public class LogicalAndGLCriteria implements IGLCriteria {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,15 +16,15 @@ public class LogicalOrShaderSourceCriteria implements IShaderSourceCriteria {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private final IShaderSourceCriteria[] mShaderSourceCriterias;
+
+	private final IGLCriteria[] mGLCriterias;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public LogicalOrShaderSourceCriteria(final IShaderSourceCriteria ... pShaderSourceCriterias) {
-		this.mShaderSourceCriterias = pShaderSourceCriterias;
+
+	public LogicalAndGLCriteria(final IGLCriteria ... pGLCriterias) {
+		this.mGLCriterias = pGLCriterias;
 	}
 
 	// ===========================================================
@@ -37,12 +37,12 @@ public class LogicalOrShaderSourceCriteria implements IShaderSourceCriteria {
 
 	@Override
 	public boolean isMet(final GLState pGLState) {
-		for(IShaderSourceCriteria shaderSourceCriteria : this.mShaderSourceCriterias) {
-			if(shaderSourceCriteria.isMet(pGLState)) {
-				return true;
+		for(final IGLCriteria gLCriteria : this.mGLCriterias) {
+			if(!gLCriteria.isMet(pGLState)) {
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	// ===========================================================

@@ -224,7 +224,7 @@ public class ParticleSystem<T extends Entity> extends Entity {
 		}
 	}
 
-	private float determineCurrentRate() {
+	protected float determineCurrentRate() {
 		if(this.mRateMinimum == this.mRateMaximum){
 			return this.mRateMinimum;
 		} else {

@@ -1,15 +1,17 @@
-package org.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.util.criteria;
 
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.data.operator.StringOperator;
+
+import android.os.Build;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 16:52:33 - 10.10.2011
+ * @since 17:25:47 - 10.10.2011
  */
-public class GLVersionShaderSourceCriteria extends StringShaderSourceCriteria {
+public class BuildModelGLCriteria extends StringGLCriteria {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,10 +24,10 @@ public class GLVersionShaderSourceCriteria extends StringShaderSourceCriteria {
 	// Constructors
 	// ===========================================================
 
-	public GLVersionShaderSourceCriteria(final StringOperator pStringOperator, final String pExpectedGLVersion) {
-		super(pStringOperator, pExpectedGLVersion);
+	public BuildModelGLCriteria(final StringOperator pStringOperator, final String pBuildModel) {
+		super(pStringOperator, pBuildModel);
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -36,7 +38,7 @@ public class GLVersionShaderSourceCriteria extends StringShaderSourceCriteria {
 
 	@Override
 	protected String getActualCriteria(final GLState pGLState) {
-		return pGLState.getVersion();
+		return Build.MODEL;
 	}
 
 	// ===========================================================

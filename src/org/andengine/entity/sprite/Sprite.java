@@ -247,7 +247,7 @@ public class Sprite extends RectangularShape {
 		public void onUpdateColor(final Sprite pSprite) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pSprite.getColor().getFloatPacked();
+			final float packedColor = pSprite.getColor().getABGRPackedFloat();
 
 			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
 			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX] = packedColor;
@@ -385,7 +385,7 @@ public class Sprite extends RectangularShape {
 		public void onUpdateColor(final Sprite pSprite) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final float packedColor = pSprite.getColor().getFloatPacked();
+			final float packedColor = pSprite.getColor().getABGRPackedFloat();
 
 			bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);
 			bufferData.put(1 * Sprite.VERTEX_SIZE + Sprite.COLOR_INDEX, packedColor);

@@ -1,17 +1,14 @@
-package org.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.util.criteria;
 
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.adt.data.operator.IntOperator;
-
-import android.os.Build;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 17:21:13 - 10.10.2011
+ * @since 18:10:26 - 12.10.2011
  */
-public class AndroidVersionCodeShaderSourceCriteria extends IntShaderSourceCriteria {
+public class LogicalOrGLCriteria implements IGLCriteria {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,14 +17,16 @@ public class AndroidVersionCodeShaderSourceCriteria extends IntShaderSourceCrite
 	// Fields
 	// ===========================================================
 
+	private final IGLCriteria[] mGLCriterias;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public AndroidVersionCodeShaderSourceCriteria(final IntOperator pIntOperator, final int pAndroidVersionCode) {
-		super(pIntOperator, pAndroidVersionCode);
+	public LogicalOrGLCriteria(final IGLCriteria ... pGLCriterias) {
+		this.mGLCriterias = pGLCriterias;
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -37,8 +36,13 @@ public class AndroidVersionCodeShaderSourceCriteria extends IntShaderSourceCrite
 	// ===========================================================
 
 	@Override
-	protected int getActualCriteria(final GLState pGLState) {
-		return Build.VERSION.SDK_INT;
+	public boolean isMet(final GLState pGLState) {
+		for(final IGLCriteria gLCriteria : this.mGLCriterias) {
+			if(gLCriteria.isMet(pGLState)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// ===========================================================

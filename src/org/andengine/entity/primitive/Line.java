@@ -304,7 +304,7 @@ public class Line extends Shape {
 		public void onUpdateColor(final Line pLine) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pLine.getColor().getFloatPacked();
+			final float packedColor = pLine.getColor().getABGRPackedFloat();
 
 			bufferData[0 * Line.VERTEX_SIZE + Line.COLOR_INDEX] = packedColor;
 			bufferData[1 * Line.VERTEX_SIZE + Line.COLOR_INDEX] = packedColor;
@@ -363,7 +363,7 @@ public class Line extends Shape {
 		public void onUpdateColor(final Line pLine) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final float packedColor = pLine.getColor().getFloatPacked();
+			final float packedColor = pLine.getColor().getABGRPackedFloat();
 
 			bufferData.put(0 * Line.VERTEX_SIZE + Line.COLOR_INDEX, packedColor);
 			bufferData.put(1 * Line.VERTEX_SIZE + Line.COLOR_INDEX, packedColor);

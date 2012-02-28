@@ -114,8 +114,18 @@ public abstract class Texture implements ITexture {
 	}
 
 	@Override
+	public void load(final GLState pGLState) throws IOException {
+		this.mTextureManager.loadTexture(pGLState, this);
+	}
+
+	@Override
 	public void unload() {
 		this.mTextureManager.unloadTexture(this);
+	}
+
+	@Override
+	public void unload(final GLState pGLState) {
+		this.mTextureManager.unloadTexture(pGLState, this);
 	}
 
 	@Override

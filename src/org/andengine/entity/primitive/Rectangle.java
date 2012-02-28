@@ -170,7 +170,7 @@ public class Rectangle extends RectangularShape {
 		public void onUpdateColor(final Rectangle pRectangle) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pRectangle.getColor().getFloatPacked();
+			final float packedColor = pRectangle.getColor().getABGRPackedFloat();
 
 			bufferData[0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
 			bufferData[1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX] = packedColor;
@@ -242,7 +242,7 @@ public class Rectangle extends RectangularShape {
 		public void onUpdateColor(final Rectangle pRectangle) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final float packedColor = pRectangle.getColor().getFloatPacked();
+			final float packedColor = pRectangle.getColor().getABGRPackedFloat();
 
 			bufferData.put(0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
 			bufferData.put(1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);

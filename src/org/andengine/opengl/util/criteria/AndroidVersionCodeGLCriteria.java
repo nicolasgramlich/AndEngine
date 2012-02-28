@@ -1,15 +1,17 @@
-package org.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.util.criteria;
 
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.adt.data.operator.StringOperator;
+import org.andengine.util.adt.data.operator.IntOperator;
+
+import android.os.Build;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 16:59:32 - 10.10.2011
+ * @since 17:21:13 - 10.10.2011
  */
-public abstract class StringShaderSourceCriteria implements IShaderSourceCriteria {
+public class AndroidVersionCodeGLCriteria extends IntGLCriteria {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -18,16 +20,12 @@ public abstract class StringShaderSourceCriteria implements IShaderSourceCriteri
 	// Fields
 	// ===========================================================
 
-	private final String mCriteria;
-	private final StringOperator mStringOperator;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public StringShaderSourceCriteria(final StringOperator pStringOperator, final String pCriteria) {
-		this.mCriteria = pCriteria;
-		this.mStringOperator = pStringOperator;
+	public AndroidVersionCodeGLCriteria(final IntOperator pIntOperator, final int pAndroidVersionCode) {
+		super(pIntOperator, pAndroidVersionCode);
 	}
 
 	// ===========================================================
@@ -38,11 +36,9 @@ public abstract class StringShaderSourceCriteria implements IShaderSourceCriteri
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract String getActualCriteria(final GLState pGLState);
-
 	@Override
-	public boolean isMet(final GLState pGLState) {
-		return this.mStringOperator.check(this.getActualCriteria(pGLState), this.mCriteria);
+	protected int getActualCriteria(final GLState pGLState) {
+		return Build.VERSION.SDK_INT;
 	}
 
 	// ===========================================================

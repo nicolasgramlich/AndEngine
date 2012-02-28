@@ -389,12 +389,16 @@ public final class ArrayUtils {
 		return ArrayUtils.idealByteArraySize(pSize << 2) >> 2;
 	}
 
-	public static int idealObjectArraySize(final int pSize) {
-		return ArrayUtils.idealByteArraySize(pSize << 2) >> 2;
+	public static int idealDoubleArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize << 3) >> 3;
 	}
 
 	public static int idealLongArraySize(final int pSize) {
 		return ArrayUtils.idealByteArraySize(pSize << 3) >> 3;
+	}
+
+	public static int idealObjectArraySize(final int pSize) {
+		return ArrayUtils.idealByteArraySize(pSize << 2) >> 2;
 	}
 
 	// ===========================================================

@@ -1,14 +1,15 @@
-package org.andengine.opengl.shader.source.criteria;
+package org.andengine.opengl.util.criteria;
 
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.data.operator.StringOperator;
 
 /**
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 18:15:55 - 12.10.2011
+ * @since 16:52:33 - 10.10.2011
  */
-public class LogicalAndShaderSourceCriteria implements IShaderSourceCriteria {
+public class GLVersionGLCriteria extends StringGLCriteria {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,15 +17,13 @@ public class LogicalAndShaderSourceCriteria implements IShaderSourceCriteria {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	private final IShaderSourceCriteria[] mShaderSourceCriterias;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
-	public LogicalAndShaderSourceCriteria(final IShaderSourceCriteria ... pShaderSourceCriterias) {
-		this.mShaderSourceCriterias = pShaderSourceCriterias;
+
+	public GLVersionGLCriteria(final StringOperator pStringOperator, final String pExpectedGLVersion) {
+		super(pStringOperator, pExpectedGLVersion);
 	}
 
 	// ===========================================================
@@ -36,13 +35,8 @@ public class LogicalAndShaderSourceCriteria implements IShaderSourceCriteria {
 	// ===========================================================
 
 	@Override
-	public boolean isMet(final GLState pGLState) {
-		for(IShaderSourceCriteria shaderSourceCriteria : this.mShaderSourceCriterias) {
-			if(!shaderSourceCriteria.isMet(pGLState)) {
-				return false;
-			}
-		}
-		return true;
+	protected String getActualCriteria(final GLState pGLState) {
+		return pGLState.getVersion();
 	}
 
 	// ===========================================================

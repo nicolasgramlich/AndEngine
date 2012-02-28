@@ -86,7 +86,7 @@ public final class MathUtils implements MathConstants {
 	}
 
 	public static final int nextPowerOfTwo(final float f) {
-		return MathUtils.nextPowerOfTwo((int)(Math.ceil(f)));
+		return MathUtils.nextPowerOfTwo((int)(FloatMath.ceil(f)));
 	}
 
 	public static final int nextPowerOfTwo(final int n) {

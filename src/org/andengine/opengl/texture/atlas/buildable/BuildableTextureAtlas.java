@@ -89,8 +89,18 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	}
 
 	@Override
+	public void load(final GLState pGLState) throws IOException {
+		this.mTextureAtlas.load(pGLState);
+	}
+
+	@Override
 	public void unload() {
 		this.mTextureAtlas.unload();
+	}
+
+	@Override
+	public void unload(final GLState pGLState) {
+		this.mTextureAtlas.unload(pGLState);
 	}
 
 	@Override

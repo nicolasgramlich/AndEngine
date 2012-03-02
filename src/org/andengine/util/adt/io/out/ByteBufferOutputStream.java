@@ -1,4 +1,4 @@
-package org.andengine.util.adt.io;
+package org.andengine.util.adt.io.out;
 
 import java.io.IOException;
 import java.io.OutputStream;

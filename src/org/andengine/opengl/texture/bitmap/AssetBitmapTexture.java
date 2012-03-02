@@ -1,11 +1,11 @@
 package org.andengine.opengl.texture.bitmap;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.andengine.opengl.texture.TextureManager;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.util.adt.io.in.AssetInputStreamOpener;
 
-import android.content.Context;
 import android.content.res.AssetManager;
 
 /**
@@ -23,22 +23,28 @@ public class AssetBitmapTexture extends BitmapTexture {
 	// Fields
 	// ===========================================================
 
-	private final AssetManager mAssetManager;
-	private final String mAssetPath;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public AssetBitmapTexture(final TextureManager pTextureManager, final Context pContext, final String pAssetPath) throws IOException {
-		this(pTextureManager, pContext.getAssets(), pAssetPath);
+	public AssetBitmapTexture(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath) throws IOException {
+		super(pTextureManager, new AssetInputStreamOpener(pAssetManager, pAssetPath));
 	}
 
-	public AssetBitmapTexture(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath) throws IOException {
-		super(pTextureManager);
+	public AssetBitmapTexture(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat) throws IOException {
+		super(pTextureManager, new AssetInputStreamOpener(pAssetManager, pAssetPath), pBitmapTextureFormat);
+	}
 
-		this.mAssetManager = pAssetManager;
-		this.mAssetPath = pAssetPath;
+	public AssetBitmapTexture(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final TextureOptions pTextureOptions) throws IOException {
+		super(pTextureManager, new AssetInputStreamOpener(pAssetManager, pAssetPath), pTextureOptions);
+	}
+
+	public AssetBitmapTexture(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IOException {
+		super(pTextureManager, new AssetInputStreamOpener(pAssetManager, pAssetPath), pBitmapTextureFormat, pTextureOptions);
+	}
+
+	public AssetBitmapTexture(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
+		super(pTextureManager, new AssetInputStreamOpener(pAssetManager, pAssetPath), pBitmapTextureFormat, pTextureOptions, pTextureStateListener);
 	}
 
 	// ===========================================================
@@ -48,11 +54,6 @@ public class AssetBitmapTexture extends BitmapTexture {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected InputStream onGetInputStream() throws IOException {
-		return this.mAssetManager.open(this.mAssetPath);
-	}
 
 	// ===========================================================
 	// Methods

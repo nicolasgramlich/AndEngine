@@ -9,6 +9,7 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
+import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.exception.NullBitmapException;
 import org.andengine.util.math.MathUtils;
 
@@ -24,7 +25,7 @@ import android.opengl.GLUtils;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:16:25 - 30.07.2011
  */
-public abstract class BitmapTexture extends Texture {
+public class BitmapTexture extends Texture {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -35,31 +36,33 @@ public abstract class BitmapTexture extends Texture {
 
 	private final int mWidth;
 	private final int mHeight;
+	private final IInputStreamOpener mInputStreamOpener;
 	private final BitmapTextureFormat mBitmapTextureFormat;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BitmapTexture(final TextureManager pTextureManager) throws IOException {
-		this(pTextureManager, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT, null);
+	public BitmapTexture(final TextureManager pTextureManager, final IInputStreamOpener pInputStreamOpener) throws IOException {
+		this(pTextureManager, pInputStreamOpener, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT, null);
 	}
 
-	public BitmapTexture(final TextureManager pTextureManager, final BitmapTextureFormat pBitmapTextureFormat) throws IOException {
-		this(pTextureManager, pBitmapTextureFormat, TextureOptions.DEFAULT, null);
+	public BitmapTexture(final TextureManager pTextureManager, final IInputStreamOpener pInputStreamOpener, final BitmapTextureFormat pBitmapTextureFormat) throws IOException {
+		this(pTextureManager, pInputStreamOpener, pBitmapTextureFormat, TextureOptions.DEFAULT, null);
 	}
 
-	public BitmapTexture(final TextureManager pTextureManager, final TextureOptions pTextureOptions) throws IOException {
-		this(pTextureManager, BitmapTextureFormat.RGBA_8888, pTextureOptions, null);
+	public BitmapTexture(final TextureManager pTextureManager, final IInputStreamOpener pInputStreamOpener, final TextureOptions pTextureOptions) throws IOException {
+		this(pTextureManager, pInputStreamOpener, BitmapTextureFormat.RGBA_8888, pTextureOptions, null);
 	}
 
-	public BitmapTexture(final TextureManager pTextureManager, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IOException {
-		this(pTextureManager, pBitmapTextureFormat, pTextureOptions, null);
+	public BitmapTexture(final TextureManager pTextureManager, final IInputStreamOpener pInputStreamOpener, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IOException {
+		this(pTextureManager, pInputStreamOpener, pBitmapTextureFormat, pTextureOptions, null);
 	}
 
-	public BitmapTexture(final TextureManager pTextureManager, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
+	public BitmapTexture(final TextureManager pTextureManager, final IInputStreamOpener pInputStreamOpener, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
 		super(pTextureManager, pBitmapTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
 
+		this.mInputStreamOpener = pInputStreamOpener;
 		this.mBitmapTextureFormat = pBitmapTextureFormat;
 
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
@@ -67,7 +70,7 @@ public abstract class BitmapTexture extends Texture {
 
 		final InputStream in = null;
 		try {
-			BitmapFactory.decodeStream(this.onGetInputStream(), null, decodeOptions);
+			BitmapFactory.decodeStream(pInputStreamOpener.open(), null, decodeOptions);
 		} finally {
 			StreamUtils.close(in);
 		}
@@ -93,8 +96,6 @@ public abstract class BitmapTexture extends Texture {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	protected abstract InputStream onGetInputStream() throws IOException;
 
 	@Override
 	protected void writeTextureToHardware(final GLState pGLState) throws IOException {
@@ -134,7 +135,7 @@ public abstract class BitmapTexture extends Texture {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inPreferredConfig = pBitmapConfig;
 
-		return BitmapFactory.decodeStream(this.onGetInputStream(), null, decodeOptions);
+		return BitmapFactory.decodeStream(this.mInputStreamOpener.open(), null, decodeOptions);
 	}
 
 	// ===========================================================

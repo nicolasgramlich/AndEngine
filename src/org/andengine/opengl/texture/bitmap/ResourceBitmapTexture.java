@@ -1,18 +1,18 @@
 package org.andengine.opengl.texture.bitmap;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.andengine.opengl.texture.TextureManager;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.util.adt.io.in.ResourceInputStreamOpener;
 
-import android.content.Context;
 import android.content.res.Resources;
 
 /**
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 10:45:48 - 02.03.2012
+ * @since 12:10:08 - 02.03.2012
  */
 public class ResourceBitmapTexture extends BitmapTexture {
 	// ===========================================================
@@ -23,22 +23,28 @@ public class ResourceBitmapTexture extends BitmapTexture {
 	// Fields
 	// ===========================================================
 
-	private final Resources mResources;
-	private final int mDrawableResourceID;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ResourceBitmapTexture(final TextureManager pTextureManager, final Context pContext, final int pDrawableResourceID) throws IOException {
-		this(pTextureManager, pContext.getResources(), pDrawableResourceID);
+	public ResourceBitmapTexture(final TextureManager pTextureManager, final Resources pResources, final int pDrawableResourceID) throws IOException {
+		super(pTextureManager, new ResourceInputStreamOpener(pResources, pDrawableResourceID));
 	}
 
-	public ResourceBitmapTexture(final TextureManager pTextureManager, final Resources pResources, final int pDrawableResourceID) throws IOException {
-		super(pTextureManager);
+	public ResourceBitmapTexture(final TextureManager pTextureManager, final Resources pResources, final int pDrawableResourceID, final BitmapTextureFormat pBitmapTextureFormat) throws IOException {
+		super(pTextureManager, new ResourceInputStreamOpener(pResources, pDrawableResourceID), pBitmapTextureFormat);
+	}
 
-		this.mResources = pResources;
-		this.mDrawableResourceID = pDrawableResourceID;
+	public ResourceBitmapTexture(final TextureManager pTextureManager, final Resources pResources, final int pDrawableResourceID, final TextureOptions pTextureOptions) throws IOException {
+		super(pTextureManager, new ResourceInputStreamOpener(pResources, pDrawableResourceID), pTextureOptions);
+	}
+
+	public ResourceBitmapTexture(final TextureManager pTextureManager, final Resources pResources, final int pDrawableResourceID, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) throws IOException {
+		super(pTextureManager, new ResourceInputStreamOpener(pResources, pDrawableResourceID), pBitmapTextureFormat, pTextureOptions);
+	}
+
+	public ResourceBitmapTexture(final TextureManager pTextureManager, final Resources pResources, final int pDrawableResourceID, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
+		super(pTextureManager, new ResourceInputStreamOpener(pResources, pDrawableResourceID), pBitmapTextureFormat, pTextureOptions, pTextureStateListener);
 	}
 
 	// ===========================================================
@@ -48,11 +54,6 @@ public class ResourceBitmapTexture extends BitmapTexture {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	protected InputStream onGetInputStream() throws IOException {
-		return this.mResources.openRawResource(this.mDrawableResourceID);
-	}
 
 	// ===========================================================
 	// Methods

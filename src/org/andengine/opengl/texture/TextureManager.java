@@ -328,7 +328,7 @@ public class TextureManager {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public interface IAssetInputStreamOpener {
+	public static interface IAssetInputStreamOpener {
 		// ===========================================================
 		// Constants
 		// ===========================================================

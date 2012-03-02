@@ -57,7 +57,7 @@ public abstract class BitmapTexture extends Texture {
 		this(pTextureManager, pBitmapTextureFormat, pTextureOptions, null);
 	}
 
-	public BitmapTexture(final TextureManager pTextureManager ,final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
+	public BitmapTexture(final TextureManager pTextureManager, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
 		super(pTextureManager, pBitmapTextureFormat.getPixelFormat(), pTextureOptions, pTextureStateListener);
 
 		this.mBitmapTextureFormat = pBitmapTextureFormat;

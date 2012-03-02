@@ -65,6 +65,15 @@ public class SystemUtils {
 		return SystemUtils.getPackageInfo(pContext).versionName;
 	}
 
+	public static String getPackageName(final Context pContext) {
+		return pContext.getPackageName();
+	}
+
+	public static String getApkFilePath(final Context pContext) throws NameNotFoundException {
+		final PackageManager packMgmr = pContext.getPackageManager();
+		return packMgmr.getApplicationInfo(SystemUtils.getPackageName(pContext), 0).sourceDir;
+	}
+
 	private static PackageInfo getPackageInfo(final Context pContext) {
 		try {
 			return pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), 0);
@@ -102,7 +111,7 @@ public class SystemUtils {
 	 * @param pBuildVersionCodeMax taken from {@link Build.VERSION_CODES}.
 	 */
 	public static boolean isAndroidVersion(final int pBuildVersionCodeMin, final int pBuildVersionCodeMax) {
-		return Build.VERSION.SDK_INT >= pBuildVersionCodeMin && Build.VERSION.SDK_INT <= pBuildVersionCodeMax;
+		return (Build.VERSION.SDK_INT >= pBuildVersionCodeMin) && (Build.VERSION.SDK_INT <= pBuildVersionCodeMax);
 	}
 
 	public static float getCPUBogoMips() throws SystemUtilsException {

@@ -852,7 +852,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		// Constructors
 		// ===========================================================
 
-		public EngineLock(final boolean pFair){
+		public EngineLock(final boolean pFair) {
 			super(pFair);
 		}
 

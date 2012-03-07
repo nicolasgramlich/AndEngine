@@ -350,8 +350,18 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.setContentView(this.mRenderSurfaceView, BaseGameActivity.createSurfaceViewLayoutParams());
 	}
 
+	/**
+	 * @see Engine#runOnUpdateThread(Runnable)
+	 */
 	public void runOnUpdateThread(final Runnable pRunnable) {
 		this.mEngine.runOnUpdateThread(pRunnable);
+	}
+
+	/**
+	 * @see Engine#runOnUpdateThread(Runnable, boolean)
+	 */
+	public void runOnUpdateThread(final Runnable pRunnable, final boolean pOnlyWhenEngineRunning) {
+		this.mEngine.runOnUpdateThread(pRunnable, pOnlyWhenEngineRunning);
 	}
 
 	private void acquireWakeLock() {

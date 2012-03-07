@@ -1,6 +1,7 @@
 package org.andengine.engine.options;
 
 import org.andengine.engine.Engine.EngineLock;
+import org.andengine.engine.Engine.UpdateThread;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 
@@ -32,6 +33,8 @@ public class EngineOptions {
 	private final RenderOptions mRenderOptions = new RenderOptions();
 
 	private WakeLockOptions mWakeLockOptions = WakeLockOptions.SCREEN_ON;
+
+	private UpdateThread mUpdateThread;
 	private int mUpdateThreadPriority = android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 	// ===========================================================
@@ -87,6 +90,18 @@ public class EngineOptions {
 
 	public Camera getCamera() {
 		return this.mCamera;
+	}
+
+	public boolean hasUpdateThread() {
+		return this.mUpdateThread != null;
+	}
+
+	public UpdateThread getUpdateThread() {
+		return this.mUpdateThread;
+	}
+
+	public void setUpdateThread(final UpdateThread pUpdateThread) {
+		this.mUpdateThread = pUpdateThread;
 	}
 
 	public int getUpdateThreadPriority() {

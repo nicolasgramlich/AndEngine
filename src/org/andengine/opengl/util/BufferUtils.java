@@ -116,7 +116,9 @@ public class BufferUtils {
 		if(BufferUtils.WORKAROUND_BYTEBUFFER_PUT_FLOATARRAY) {
 			BufferUtils.jniPut(pByteBuffer, pSource, pLength, pOffset);
 		} else {
-			pByteBuffer.put(pSource, );
+			for (int i = 0; i < pSource.length; i++) {
+				pByteBuffer.putFloat(pSource[i]);
+			}
 		}
 		pByteBuffer.position(0);
 		pByteBuffer.limit(pLength << 2);

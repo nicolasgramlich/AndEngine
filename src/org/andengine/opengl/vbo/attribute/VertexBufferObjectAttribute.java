@@ -73,7 +73,7 @@ public class VertexBufferObjectAttribute {
 	// ===========================================================
 
 	public void glVertexAttribPointer(final int pStride) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			GLES20.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
 		} else {
 			GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);

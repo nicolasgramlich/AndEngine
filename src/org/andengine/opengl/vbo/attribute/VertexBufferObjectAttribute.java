@@ -2,6 +2,9 @@ package org.andengine.opengl.vbo.attribute;
 
 import org.andengine.opengl.GLES20Fix;
 
+import android.opengl.GLES20;
+import android.os.Build;
+
 /**
  * (c) Zynga 2011
  *
@@ -70,7 +73,11 @@ public class VertexBufferObjectAttribute {
 	// ===========================================================
 
 	public void glVertexAttribPointer(final int pStride) {
-		GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			GLES20.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
+		} else {
+			GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
+		}
 	}
 
 	// ===========================================================

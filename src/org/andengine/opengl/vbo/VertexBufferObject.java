@@ -8,10 +8,8 @@ import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.util.adt.DataConstants;
-import org.andengine.util.system.SystemUtils;
 
 import android.opengl.GLES20;
-import android.os.Build;
 
 /**
  * TODO Extract a common base class from {@link VertexBufferObject} and {@link ZeroMemoryVertexBufferObject} (due to significant code duplication).
@@ -63,13 +61,8 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		this.mAutoDispose = pAutoDispose;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
 
-		if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
-			/* Honeycomb workaround for issue 16941. */
-			this.mByteBuffer = BufferUtils.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
-		} else {
-			/* Other SDK versions. */
-			this.mByteBuffer = ByteBuffer.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
-		}
+		this.mByteBuffer = BufferUtils.allocateDirectByteBuffer(pCapacity * DataConstants.BYTES_PER_FLOAT);
+
 		this.mByteBuffer.order(ByteOrder.nativeOrder());
 	}
 
@@ -199,10 +192,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 			this.mVertexBufferObjectManager.onUnloadVertexBufferObject(this);
 
-			/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
-			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
-				BufferUtils.freeDirect(this.mByteBuffer);
-			}
+			BufferUtils.freeDirectByteBuffer(this.mByteBuffer);
 		} else {
 			throw new AlreadyDisposedException();
 		}

@@ -1,21 +1,18 @@
-package org.andengine.opengl;
+package org.andengine.opengl.vbo.attribute;
 
+import org.andengine.opengl.GLES20Fix;
 
 /**
- * Note: Froyo (Android 2.2) is missing the two methods below. 
- * (c) Zynga 2011
+ * The {@link VertexBufferObjectAttributeFix} is a special 
+ * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 17:44:43 - 04.09.2011
+ * @since 12:52:33 - 08.03.2012
  */
-public class GLES20Fix {
+public class VertexBufferObjectAttributeFix extends VertexBufferObjectAttribute {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	static {
-		System.loadLibrary("andengine");
-	}
 
 	// ===========================================================
 	// Fields
@@ -25,8 +22,8 @@ public class GLES20Fix {
 	// Constructors
 	// ===========================================================
 
-	private GLES20Fix() {
-
+	public VertexBufferObjectAttributeFix(final int pLocation, final String pName, final int pSize, final int pType, final boolean pNormalized, final int pOffset) {
+		super(pLocation, pName, pSize, pType, pNormalized, pOffset);
 	}
 
 	// ===========================================================
@@ -37,12 +34,14 @@ public class GLES20Fix {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	public void glVertexAttribPointer(final int pStride) {
+		GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	native public static void glVertexAttribPointer(final int pIndex, final int pSize, final int pType, final boolean pNormalized, final int pStride, final int pOffset);
-	native public static void glDrawElements(final int pMode, final int pCount, final int pType, final int pOffset);
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -1,5 +1,7 @@
 package org.andengine.opengl;
 
+import org.andengine.util.exception.AndEngineRuntimeException;
+
 
 /**
  * Note: Froyo (Android 2.2) is missing the two methods below. 
@@ -14,7 +16,11 @@ public class GLES20Fix {
 	// ===========================================================
 
 	static {
-		System.loadLibrary("andengine");
+		try {
+			System.loadLibrary("andengine");
+		} catch (final UnsatisfiedLinkError e) {
+			throw new AndEngineRuntimeException(e);
+		}
 	}
 
 	// ===========================================================

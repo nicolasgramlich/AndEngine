@@ -7,9 +7,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
-import org.andengine.util.system.SystemUtils;
-
-import android.os.Build;
 
 /**
  * Compared to {@link ZeroMemoryVertexBufferObject}, all {@link SharedMemoryVertexBufferObject}s share a single {@link ByteBuffer} which is used by whichever {@link SharedMemoryVertexBufferObject} instance is currently buffering data,

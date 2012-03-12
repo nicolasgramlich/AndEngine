@@ -3,7 +3,6 @@ package org.andengine.opengl.util;
 import java.nio.ByteBuffer;
 
 import org.andengine.util.adt.DataConstants;
-import org.andengine.util.adt.map.Library;
 import org.andengine.util.debug.Debug;
 import org.andengine.util.system.SystemUtils;
 
@@ -83,24 +82,16 @@ public class BufferUtils {
 
 	public static ByteBuffer allocateDirectByteBuffer(final int pCapacity) {
 		if(BufferUtils.WORKAROUND_BYTEBUFFER_ALLOCATE_DIRECT) {
-			return BufferUtils.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
+			return BufferUtils.jniAllocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
 		} else {
 			return ByteBuffer.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
 		}
 	}
 
-	public static ByteBuffer allocateDirect(final int pCapacity) {
-		return BufferUtils.jniAllocateDirect(pCapacity);
-	}
-
 	public static void freeDirectByteBuffer(final ByteBuffer pByteBuffer) {
 		if(BufferUtils.WORKAROUND_BYTEBUFFER_ALLOCATE_DIRECT) {
-			BufferUtils.freeDirect(pByteBuffer);
+			BufferUtils.jniFreeDirect(pByteBuffer);
 		}
-	}
-
-	public static void freeDirect(final ByteBuffer pByteBuffer) {
-		BufferUtils.jniFreeDirect(pByteBuffer);
 	}
 
 	private native static ByteBuffer jniAllocateDirect(final int pCapacity);
@@ -116,7 +107,7 @@ public class BufferUtils {
 		if(BufferUtils.WORKAROUND_BYTEBUFFER_PUT_FLOATARRAY) {
 			BufferUtils.jniPut(pByteBuffer, pSource, pLength, pOffset);
 		} else {
-			for (int i = 0; i < pSource.length; i++) {
+			for(int i = pOffset; i < pOffset + pLength; i++) {
 				pByteBuffer.putFloat(pSource[i]);
 			}
 		}

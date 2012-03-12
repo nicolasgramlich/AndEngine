@@ -82,7 +82,7 @@ public abstract class SharedMemoryVertexBufferObject extends ZeroMemoryVertexBuf
 			if(SharedMemoryVertexBufferObject.sSharedByteBuffer != null) {
 				if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
 					/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
-					BufferUtils.freeDirect(SharedMemoryVertexBufferObject.sSharedByteBuffer);
+					BufferUtils.freeDirectByteBuffer(SharedMemoryVertexBufferObject.sSharedByteBuffer);
 				}
 
 				SharedMemoryVertexBufferObject.sSharedByteBuffer = null;
@@ -102,11 +102,11 @@ public abstract class SharedMemoryVertexBufferObject extends ZeroMemoryVertexBuf
 			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
 				/* Cleanup due to 'Honeycomb workaround for issue 16941' in constructor. */
 				if(SharedMemoryVertexBufferObject.sSharedByteBuffer != null) {
-					BufferUtils.freeDirect(SharedMemoryVertexBufferObject.sSharedByteBuffer);
+					BufferUtils.freeDirectByteBuffer(SharedMemoryVertexBufferObject.sSharedByteBuffer);
 				}
 
 				/* Honeycomb workaround for issue 16941. */
-				SharedMemoryVertexBufferObject.sSharedByteBuffer = BufferUtils.allocateDirect(byteCapacity);
+				SharedMemoryVertexBufferObject.sSharedByteBuffer = BufferUtils.allocateDirectByteBuffer(byteCapacity);
 			} else {
 				/* Other SDK versions. */
 				SharedMemoryVertexBufferObject.sSharedByteBuffer = ByteBuffer.allocateDirect(byteCapacity);

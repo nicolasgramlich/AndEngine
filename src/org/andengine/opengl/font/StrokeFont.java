@@ -76,7 +76,7 @@ public class StrokeFont extends Font {
 		this.mTextBounds.inset(inset, inset);
 	}
 
-	protected void drawLetter(final String pCharacterAsString, final int pLeft, final int pTop) {
+	protected void drawLetter(final String pCharacterAsString, final float pLeft, final float pTop) {
 		if(!this.mStrokeOnly) {
 			super.drawLetter(pCharacterAsString, pLeft, pTop);
 		}

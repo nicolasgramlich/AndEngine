@@ -50,7 +50,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	// Fields
 	// ===========================================================
 
-	protected EngineOptions mEngineOptions;
 	protected Engine mEngine;
 
 	private WakeLock mWakeLock;
@@ -74,8 +73,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 		this.mGamePaused = true;
 
-		this.mEngineOptions = this.onCreateEngineOptions();
-		this.mEngine = this.onCreateEngine(this.mEngineOptions);
+		this.mEngine = this.onCreateEngine(this.onCreateEngineOptions());
 
 		this.applyEngineOptions();
 
@@ -258,7 +256,6 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 		this.onGameDestroyed();
 
-		this.mEngineOptions = null;
 		this.mEngine = null;
 	}
 
@@ -389,15 +386,17 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	private void applyEngineOptions() {
-		if(this.mEngineOptions.isFullscreen()) {
+		final EngineOptions engineOptions = this.mEngine.getEngineOptions();
+
+		if(engineOptions.isFullscreen()) {
 			ActivityUtils.requestFullscreen(this);
 		}
 
-		if(this.mEngineOptions.getAudioOptions().needsMusic() || this.mEngineOptions.getAudioOptions().needsSound()) {
+		if(engineOptions.getAudioOptions().needsMusic() || engineOptions.getAudioOptions().needsSound()) {
 			this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		}
 
-		switch(this.mEngineOptions.getScreenOrientation()) {
+		switch(engineOptions.getScreenOrientation()) {
 			case LANDSCAPE_FIXED:
 				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 				break;

@@ -70,13 +70,15 @@ public class StrokeFont extends Font {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
 	protected void updateTextBounds(final String pCharacterAsString) {
 		this.mStrokePaint.getTextBounds(pCharacterAsString, 0, 1, this.mTextBounds);
 		final int inset = -(int)FloatMath.floor(this.mStrokeWidth * 0.5f);
 		this.mTextBounds.inset(inset, inset);
 	}
 
-	protected void drawLetter(final String pCharacterAsString, final int pLeft, final int pTop) {
+	@Override
+	protected void drawLetter(final String pCharacterAsString, final float pLeft, final float pTop) {
 		if(!this.mStrokeOnly) {
 			super.drawLetter(pCharacterAsString, pLeft, pTop);
 		}

@@ -17,7 +17,7 @@ public abstract class Texture implements ITexture {
 	// Constants
 	// ===========================================================
 
-	private static final int HARDWARE_TEXTURE_ID_INVALID = -1;
+	public static final int HARDWARE_TEXTURE_ID_INVALID = -1;
 
 	// ===========================================================
 	// Fields

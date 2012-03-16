@@ -48,11 +48,11 @@ public class RenderTexture extends Texture {
 	// Fields
 	// ===========================================================
 
-	private final PixelFormat mPixelFormat;
-	private final int mWidth;
-	private final int mHeight;
+	protected final PixelFormat mPixelFormat;
+	protected final int mWidth;
+	protected final int mHeight;
 
-	private int mFramebufferObjectID;
+	protected int mFramebufferObjectID;
 	private int mPreviousFramebufferObjectID;
 	private int mPreviousViewPortX;
 	private int mPreviousViewPortY;

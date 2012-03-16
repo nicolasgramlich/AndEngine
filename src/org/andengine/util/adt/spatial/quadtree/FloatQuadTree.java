@@ -7,6 +7,8 @@ import org.andengine.util.IMatcher;
 import org.andengine.util.adt.bounds.BoundsSplit;
 import org.andengine.util.adt.bounds.FloatBounds;
 import org.andengine.util.adt.bounds.IFloatBounds;
+import org.andengine.util.adt.bounds.IIntBounds;
+import org.andengine.util.adt.bounds.IntBounds;
 import org.andengine.util.adt.spatial.ISpatialItem;
 import org.andengine.util.adt.spatial.bounds.util.FloatBoundsUtils;
 
@@ -36,8 +38,16 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		super(pFloatBounds);
 	}
 
+	public FloatQuadTree(final float pXMin, final float pYMin, final float pXMax, final float pYMax) {
+		super(new FloatBounds(pXMin, pYMin, pXMax, pYMax));
+	}
+
 	public FloatQuadTree(final IFloatBounds pFloatBounds, final int pMaxLevel) {
 		super(pFloatBounds, pMaxLevel);
+	}
+
+	public FloatQuadTree(final float pXMin, final float pYMin, final float pXMax, final float pYMax, final int pMaxLevel) {
+		super(new FloatBounds(pXMin, pYMin, pXMax, pYMax), pMaxLevel);
 	}
 
 	@Override

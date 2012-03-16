@@ -319,15 +319,15 @@ public class RenderTexture extends Texture {
 		this.mInitialized = false;
 	}
 
-	private void savePreviousFramebufferObjectID(final GLState pGLState) {
+	protected void savePreviousFramebufferObjectID(final GLState pGLState) {
 		this.mPreviousFramebufferObjectID = pGLState.getActiveFramebuffer();
 	}
 
-	private void restorePreviousFramebufferObjectID(final GLState pGLState) {
+	protected void restorePreviousFramebufferObjectID(final GLState pGLState) {
 		pGLState.bindFramebuffer(this.mPreviousFramebufferObjectID);
 	}
 
-	private void savePreviousViewport() {
+	protected void savePreviousViewport() {
 		GLES20.glGetIntegerv(GLES20.GL_VIEWPORT, RenderTexture.VIEWPORT_CONTAINER, 0);
 
 		this.mPreviousViewPortX = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_X_INDEX];
@@ -336,7 +336,7 @@ public class RenderTexture extends Texture {
 		this.mPreviousViewPortHeight = RenderTexture.VIEWPORT_CONTAINER[RenderTexture.VIEWPORT_CONTAINER_HEIGHT_INDEX];
 	}
 
-	private void resotorePreviousViewport() {
+	protected void resotorePreviousViewport() {
 		GLES20.glViewport(this.mPreviousViewPortX, this.mPreviousViewPortY, this.mPreviousViewPortWidth, this.mPreviousViewPortHeight);
 	}
 

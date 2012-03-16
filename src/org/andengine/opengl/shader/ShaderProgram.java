@@ -11,6 +11,7 @@ import org.andengine.opengl.shader.source.StringShaderSource;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.util.debug.Debug;
 
 import android.opengl.GLES20;
 
@@ -139,14 +140,21 @@ public class ShaderProgram implements ShaderProgramConstants {
 	}
 
 	protected void compile(final GLState pGLState) throws ShaderProgramException {
-		final int vertexShaderID = ShaderProgram.compileShader(this.mVertexShaderSource.getShaderSource(pGLState), GLES20.GL_VERTEX_SHADER);
-		final int fragmentShaderID = ShaderProgram.compileShader(this.mFragmentShaderSource.getShaderSource(pGLState), GLES20.GL_FRAGMENT_SHADER);
+		final String vertexShaderSource = this.mVertexShaderSource.getShaderSource(pGLState);
+		final int vertexShaderID = ShaderProgram.compileShader(vertexShaderSource, GLES20.GL_VERTEX_SHADER);
+
+		final String fragmentShaderSource = this.mFragmentShaderSource.getShaderSource(pGLState);
+		final int fragmentShaderID = ShaderProgram.compileShader(fragmentShaderSource, GLES20.GL_FRAGMENT_SHADER);
 
 		this.mProgramID = GLES20.glCreateProgram();
 		GLES20.glAttachShader(this.mProgramID, vertexShaderID);
 		GLES20.glAttachShader(this.mProgramID, fragmentShaderID);
 
-		this.link(pGLState);
+		try {
+			this.link(pGLState);
+		} catch (final ShaderProgramLinkException e) {
+			throw new ShaderProgramLinkException("VertexShaderSource:\n##########################\n" + vertexShaderSource + "\n##########################" + "\n\nFragmentShaderSource:\n##########################\n" + fragmentShaderSource + "\n##########################", e);
+		}
 
 		GLES20.glDeleteShader(vertexShaderID);
 		GLES20.glDeleteShader(fragmentShaderID);
@@ -182,7 +190,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		return shaderID;
 	}
 
-	private void initUniformLocations() {
+	private void initUniformLocations() throws ShaderProgramLinkException {
 		this.mUniformLocations.clear();
 
 		ShaderProgram.PARAMETERS_CONTAINER[0] = 0;
@@ -200,7 +208,11 @@ public class ShaderProgram implements ShaderProgramConstants {
 			}
 			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
 			final int location = GLES20.glGetUniformLocation(this.mProgramID, name);
-			this.mUniformLocations.put(name, location);
+			if(location == ShaderProgramConstants.LOCATION_INVALID) {
+				throw new ShaderProgramLinkException("Invalid location for uniform: '" + name + "'.");
+			} else {
+				this.mUniformLocations.put(name, location);
+			}
 		}
 	}
 

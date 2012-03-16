@@ -144,7 +144,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
 		}
 
-		pGLState.bindBuffer(this.mHardwareBufferID);
+		pGLState.bindArrayBuffer(this.mHardwareBufferID);
 
 		if(this.mDirtyOnHardware) {
 			this.onBufferData();
@@ -170,7 +170,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public void unloadFromHardware(final GLState pGLState) {
-		pGLState.deleteBuffer(this.mHardwareBufferID);
+		pGLState.deleteArrayBuffer(this.mHardwareBufferID);
 
 		this.mHardwareBufferID = IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	}

@@ -23,7 +23,7 @@ public class ShaderProgramCompileException extends ShaderProgramException {
 	public ShaderProgramCompileException(final String pMessage, final String pSource) {
 		super("Reason: " + pMessage + "\nSource:\n##########################\n" + pSource + "\n##########################");
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

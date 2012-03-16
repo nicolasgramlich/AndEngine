@@ -27,7 +27,7 @@ public class ShaderProgramLinkException extends ShaderProgramException {
 	public ShaderProgramLinkException(final String pMessage, final ShaderProgramException pShaderProgramException) {
 		super(pMessage, pShaderProgramException);
 	}
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

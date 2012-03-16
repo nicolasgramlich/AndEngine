@@ -1,5 +1,6 @@
 package org.andengine.ui.activity;
 
+import org.andengine.BuildConfig;
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundManager;
 import org.andengine.engine.Engine;
@@ -67,7 +68,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	protected void onCreate(final Bundle pSavedInstanceState) {
-		Debug.d(this.getClass().getSimpleName() + ".onCreate" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onCreate" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		super.onCreate(pSavedInstanceState);
 
@@ -87,7 +90,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public synchronized void onSurfaceCreated() {
-		Debug.d(this.getClass().getSimpleName() + ".onSurfaceCreated" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onSurfaceCreated" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		if(this.mGameCreated) {
 			this.onReloadResources();
@@ -107,17 +112,23 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public synchronized void onSurfaceChanged(final int pWidth, final int pHeight) {
-		Debug.d(this.getClass().getSimpleName() + ".onSurfaceChanged(Width=" + pWidth + ",  Height=" + pHeight + ")" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onSurfaceChanged(Width=" + pWidth + ",  Height=" + pHeight + ")" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 	}
 
 	protected synchronized void onCreateGame() {
-		Debug.d(this.getClass().getSimpleName() + ".onCreateGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onCreateGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		final OnPopulateSceneCallback onPopulateSceneCallback = new OnPopulateSceneCallback() {
 			@Override
 			public void onPopulateSceneFinished() {
 				try {
-					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onGameCreated" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+					if(BuildConfig.DEBUG) {
+						Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onGameCreated" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+					}
 
 					BaseGameActivity.this.onGameCreated();
 				} catch(final Throwable pThrowable) {
@@ -134,7 +145,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 				BaseGameActivity.this.mEngine.setScene(pScene);
 
 				try {
-					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onPopulateScene" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+					if(BuildConfig.DEBUG) {
+						Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onPopulateScene" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+					}
 
 					BaseGameActivity.this.onPopulateScene(pScene, onPopulateSceneCallback);
 				} catch(final Throwable pThrowable) {
@@ -147,7 +160,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			@Override
 			public void onCreateResourcesFinished() {
 				try {
-					Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onCreateScene" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+					if(BuildConfig.DEBUG) {
+						Debug.d(BaseGameActivity.this.getClass().getSimpleName() + ".onCreateScene" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+					}
 
 					BaseGameActivity.this.onCreateScene(onCreateSceneCallback);
 				} catch(final Throwable pThrowable) {
@@ -157,7 +172,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		};
 
 		try {
-			Debug.d(this.getClass().getSimpleName() + ".onCreateResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+			if(BuildConfig.DEBUG) {
+				Debug.d(this.getClass().getSimpleName() + ".onCreateResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+			}
 
 			this.onCreateResources(onCreateResourcesCallback);
 		} catch(final Throwable pThrowable) {
@@ -184,7 +201,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	protected synchronized void onResume() {
-		Debug.d(this.getClass().getSimpleName() + ".onResume" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onResume" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		super.onResume();
 
@@ -194,7 +213,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public synchronized void onResumeGame() {
-		Debug.d(this.getClass().getSimpleName() + ".onResumeGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onResumeGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		this.mEngine.start();
 
@@ -212,14 +233,18 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public void onReloadResources() {
-		Debug.d(this.getClass().getSimpleName() + ".onReloadResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onReloadResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		this.mEngine.onReloadResources();
 	}
 
 	@Override
 	protected void onPause() {
-		Debug.d(this.getClass().getSimpleName() + ".onPause" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onPause" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		super.onPause();
 
@@ -233,7 +258,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public synchronized void onPauseGame() {
-		Debug.d(this.getClass().getSimpleName() + ".onPauseGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onPauseGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		this.mGamePaused = true;
 
@@ -242,7 +269,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	protected void onDestroy() {
-		Debug.d(this.getClass().getSimpleName() + ".onDestroy" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onDestroy" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		super.onDestroy();
 
@@ -261,7 +290,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public void onDestroyResources() throws Exception {
-		Debug.d(this.getClass().getSimpleName() + ".onDestroyResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onDestroyResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		if(this.mEngine.getEngineOptions().getAudioOptions().needsMusic()) {
 			this.getMusicManager().releaseAll();
@@ -274,7 +305,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 
 	@Override
 	public synchronized void onGameDestroyed() {
-		Debug.d(this.getClass().getSimpleName() + ".onGameDestroyed" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		if(BuildConfig.DEBUG) {
+			Debug.d(this.getClass().getSimpleName() + ".onGameDestroyed" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+		}
 
 		this.mGameCreated = false;
 	}

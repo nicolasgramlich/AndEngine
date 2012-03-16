@@ -6,6 +6,7 @@ import java.nio.IntBuffer;
 import org.andengine.opengl.exception.GLException;
 import org.andengine.opengl.exception.GLFrameBufferException;
 import org.andengine.opengl.exception.RenderTextureInitializationException;
+import org.andengine.opengl.texture.ITexture.ITextureStateListener;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureManager;
@@ -66,11 +67,23 @@ public class RenderTexture extends Texture {
 	// ===========================================================
 
 	public RenderTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight) {
-		this(pTextureManager, pWidth, pHeight, PixelFormat.RGBA_8888);
+		this(pTextureManager, pWidth, pHeight, PixelFormat.RGBA_8888, TextureOptions.NEAREST);
 	}
 
 	public RenderTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat) {
-		super(pTextureManager, pPixelFormat, TextureOptions.NEAREST, null);
+		this(pTextureManager, pWidth, pHeight, pPixelFormat, TextureOptions.NEAREST);
+	}
+
+	public RenderTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final TextureOptions pTextureOptions) {
+		this(pTextureManager, pWidth, pHeight, PixelFormat.RGBA_8888, pTextureOptions);
+	}
+
+	public RenderTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions) {
+		this(pTextureManager, pWidth, pHeight, pPixelFormat, pTextureOptions, null);
+	}
+
+	public RenderTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) {
+		super(pTextureManager, pPixelFormat, pTextureOptions, pTextureStateListener);
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;

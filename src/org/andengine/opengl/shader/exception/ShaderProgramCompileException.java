@@ -3,7 +3,7 @@ package org.andengine.opengl.shader.exception;
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 2:31:53 - 07.08.2011
+ * @since 02:31:53 - 07.08.2011
  */
 public class ShaderProgramCompileException extends ShaderProgramException {
 	// ===========================================================

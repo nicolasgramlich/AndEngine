@@ -40,6 +40,11 @@ public interface IVertexBufferObject extends IDisposable {
 	public void setDirtyOnHardware();
 
 	public boolean isSubsetDirtyOnHardware();
+	/**
+	 * Mark a subset of this {@link VertexBufferObject} dirty so it gets updated on the hardware.
+	 * @param pOffset The offset into the float buffer where the data modifications began. Measured in floats.
+	 * @param pSize The size of the data modification block. Measured in floats.
+	 */
 	public void setSubsetDirtyOnHardware(int pOffset, int pSize);
 	
 	/**

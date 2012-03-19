@@ -4,11 +4,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.util.BufferSubset;
 import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.util.adt.DataConstants;
+import org.andengine.util.adt.pool.GenericPool;
 
 import android.opengl.GLES20;
 
@@ -38,8 +41,8 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	protected int mHardwareBufferID = IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	protected boolean mDirtyOnHardware = true;
-	protected ArrayList<DirtyBufferSubset> mDirtySubsets;
-
+	protected ArrayList<BufferSubset> mDirtyBufferSubsets;
+	
 	protected boolean mDisposed;
 
 	protected final VertexBufferObjectManager mVertexBufferObjectManager;
@@ -63,7 +66,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		this.mAutoDispose = pAutoDispose;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
 
-		this.mDirtySubsets = new ArrayList<DirtyBufferSubset>();
+		this.mDirtyBufferSubsets = new ArrayList<BufferSubset>();
 
 		this.mByteBuffer = BufferUtils.allocateDirectByteBuffer(pCapacity * DataConstants.BYTES_PER_FLOAT);
 
@@ -117,12 +120,12 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public boolean isSubsetDirtyOnHardware() {
-		return (mDirtySubsets.size() > 0);
+		return (mDirtyBufferSubsets.size() > 0);
 	}
 
 	@Override
 	public void setSubsetDirtyOnHardware(int pOffset, int pSize) {
-		this.mDirtySubsets.add(new DirtyBufferSubset(pOffset, pSize));
+		this.mDirtyBufferSubsets.add(BufferSubset.obtain(pOffset, pSize));
 	}
 
 	@Override
@@ -165,15 +168,16 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 			this.onBufferData();
 
 			this.mDirtyOnHardware = false;
-			this.mDirtySubsets.clear();
-		} else if(this.mDirtySubsets.size() > 0) {
-			for(int i = 0; i < mDirtySubsets.size(); i++)
+			this.mDirtyBufferSubsets.clear();
+		} else if(this.mDirtyBufferSubsets.size() > 0) {
+			for(int i = 0; i < mDirtyBufferSubsets.size(); i++)
 			{
-				final DirtyBufferSubset sub = mDirtySubsets.get(i);
+				final BufferSubset sub = mDirtyBufferSubsets.get(i);
 				this.onBufferDataSubset(sub.getOffset(), sub.getSize());
+				sub.recycle();
 			}
 
-			this.mDirtySubsets.clear();
+			this.mDirtyBufferSubsets.clear();
 		}
 
 	}
@@ -291,25 +295,5 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		// ===========================================================
 		// Inner and Anonymous Classes
 		// ===========================================================
-	}
-
-	protected class DirtyBufferSubset
-	{
-		private final int mOffset;
-		private final int mSize;
-
-		public DirtyBufferSubset(int pOffset, int pSize)
-		{
-			this.mOffset = pOffset;
-			this.mSize = pSize;
-		}
-
-		public int getOffset() {
-			return mOffset;
-		}
-
-		public int getSize() {
-			return mSize;
-		}
 	}
 }

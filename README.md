@@ -25,6 +25,8 @@
  * AndEngineMultiplayerExtension
  * AndEngineMultiTouchExtension (Merged into the 'GLES2' branch.)
  * AndEnginePhysicsBox2DExtension
+ * AndEngineRobotiumExtension
+ * AndEngineScriptingExtension
  * AndEngineSVGTextureRegionExtension
  * AndEngineTexturePackerExtension
  * AndEngineTMXTiledMapExtension (Merged into the 'GLES1' branch.)

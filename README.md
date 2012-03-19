@@ -1,5 +1,9 @@
 # AndEngine
 
+## Building
+
+ * Currently AndEngine has to be build with 'ADT-17 Preview 4' or higher!
+
 ## Branches
 
  * GLES2: 'GLES2'

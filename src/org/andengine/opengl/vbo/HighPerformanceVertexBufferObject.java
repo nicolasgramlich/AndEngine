@@ -94,6 +94,21 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 		}
 	}
 
+	@Override
+	protected void onBufferDataSubset(int pOffset, int pLength) {
+		// TODO Check if, and how mow this condition affects performance.
+		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+			// TODO Check if this is similar fast or faster than the non Honeycomb codepath.
+			this.mFloatBuffer.position(pOffset);
+			this.mFloatBuffer.put(this.mBufferData, pOffset, pLength);
+
+			GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, pOffset * 4, pLength * 4, this.mByteBuffer);
+		} else {
+			BufferUtils.putSub(this.mByteBuffer, this.mBufferData, pLength, pOffset);
+			GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, pOffset * 4, pLength * 4, this.mByteBuffer);
+		}
+	}
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================

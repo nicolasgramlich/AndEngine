@@ -70,6 +70,11 @@ public class LowMemoryVertexBufferObject extends VertexBufferObject {
 		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
 	}
 
+	@Override
+	protected void onBufferDataSubset(int pOffset, int pLength) {
+		GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.mByteBuffer.limit(), this.mByteBuffer, this.mUsage);
+	}
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================

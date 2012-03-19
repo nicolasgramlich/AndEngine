@@ -82,9 +82,9 @@ public class BufferUtils {
 
 	public static ByteBuffer allocateDirectByteBuffer(final int pCapacity) {
 		if(BufferUtils.WORKAROUND_BYTEBUFFER_ALLOCATE_DIRECT) {
-			return BufferUtils.jniAllocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
+			return BufferUtils.jniAllocateDirect(pCapacity);
 		} else {
-			return ByteBuffer.allocateDirect(pCapacity * DataConstants.BYTES_PER_FLOAT);
+			return ByteBuffer.allocateDirect(pCapacity);
 		}
 	}
 

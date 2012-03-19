@@ -80,6 +80,10 @@ public class BufferUtils {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * @param pCapacity Capacity of the buffer in bytes
+	 * @return
+	 */
 	public static ByteBuffer allocateDirectByteBuffer(final int pCapacity) {
 		if(BufferUtils.WORKAROUND_BYTEBUFFER_ALLOCATE_DIRECT) {
 			return BufferUtils.jniAllocateDirect(pCapacity);

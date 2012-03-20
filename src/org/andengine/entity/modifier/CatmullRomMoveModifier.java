@@ -106,7 +106,7 @@ public class CatmullRomMoveModifier extends DurationEntityModifier {
 		final float pX3 = this.mCatmullRomMoveModifierConfig.mControlPointXs[p3];
 		final float pY3 = this.mCatmullRomMoveModifierConfig.mControlPointYs[p3];
 
-		/* Calculate: */
+		/* Calculate new position. */
 		final float t = (percentageDone - (p * this.mControlSegmentCountInverse)) / this.mControlSegmentCountInverse;
 		final float tt = t * t;
 		final float ttt = tt * t;

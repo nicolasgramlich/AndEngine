@@ -1,6 +1,7 @@
 package org.andengine.entity.text;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.text.exception.OutOfCharactersException;
 import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -40,7 +41,7 @@ public class TickerText extends Text {
 
 		this.mTickerTextOptions = pTickerTextOptions;
 
-		this.mDuration = this.mCharactersMaximum * this.mTickerTextOptions.mCharactersPerSecond;
+		this.mDuration = this.mCharactersToDraw * this.mTickerTextOptions.mCharactersPerSecond;
 	}
 
 	// ===========================================================
@@ -74,6 +75,15 @@ public class TickerText extends Text {
 		return this.mCharactersVisible;
 	}
 
+	@Override
+	public void setText(CharSequence pText) throws OutOfCharactersException {
+		super.setText(pText);
+
+		if(this.mTickerTextOptions != null) {
+			this.mDuration = this.mCharactersToDraw * this.mTickerTextOptions.mCharactersPerSecond;
+		}
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -81,15 +91,16 @@ public class TickerText extends Text {
 	@Override
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
-		if(this.mTickerTextOptions.mReverse){
-			if(this.mCharactersVisible < this.mCharactersToDraw){
+
+		if(this.mTickerTextOptions.mReverse) {
+			if(this.mCharactersVisible < this.mCharactersToDraw) {
 				this.mSecondsElapsed = Math.max(0, this.mSecondsElapsed - pSecondsElapsed);
-				this.mCharactersVisible = (int)(this.mSecondsElapsed * this.mTickerTextOptions.mCharactersPerSecond);
+				this.mCharactersVisible = (int) (this.mSecondsElapsed * this.mTickerTextOptions.mCharactersPerSecond);
 			}
 		} else {
-			if(this.mCharactersVisible < this.mCharactersToDraw){
+			if(this.mCharactersVisible < this.mCharactersToDraw) {
 				this.mSecondsElapsed = Math.min(this.mDuration, this.mSecondsElapsed + pSecondsElapsed);
-				this.mCharactersVisible = (int)(this.mSecondsElapsed * this.mTickerTextOptions.mCharactersPerSecond);
+				this.mCharactersVisible = (int) (this.mSecondsElapsed * this.mTickerTextOptions.mCharactersPerSecond);
 			}
 		}
 	}

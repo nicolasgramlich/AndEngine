@@ -3,6 +3,7 @@ package org.andengine.util.adt.pool;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.andengine.BuildConfig;
 import org.andengine.util.debug.Debug;
 
 /**
@@ -131,9 +132,9 @@ public abstract class GenericPool<T> {
 				this.batchAllocatePoolItems(this.mGrowth);
 				item = this.mAvailableItems.remove(this.mAvailableItems.size() - 1);
 			}
-//			if(BuildConfig.DEBUG) { // TODO Bring back when ADT-17 is released
+			if(BuildConfig.DEBUG) {
 				Debug.v(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledItemCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
-//			}
+			}
 		}
 		this.onHandleObtainItem(item);
 

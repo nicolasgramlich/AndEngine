@@ -149,7 +149,7 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
 		}
 
-		pGLState.bindBuffer(this.mHardwareBufferID);
+		pGLState.bindArrayBuffer(this.mHardwareBufferID);
 
 		if(this.mDirtyOnHardware) {
 			ByteBuffer byteBuffer = null;
@@ -185,7 +185,7 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 
 	@Override
 	public void unloadFromHardware(final GLState pGLState) {
-		pGLState.deleteBuffer(this.mHardwareBufferID);
+		pGLState.deleteArrayBuffer(this.mHardwareBufferID);
 
 		this.mHardwareBufferID = IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	}

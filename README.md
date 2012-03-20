@@ -1,5 +1,9 @@
 # AndEngine
 
+## Building
+
+ * Currently AndEngine has to be build with 'ADT-17 Preview 4' or higher!
+
 ## Branches
 
  * GLES2: 'GLES2'
@@ -21,6 +25,8 @@
  * AndEngineMultiplayerExtension
  * AndEngineMultiTouchExtension (Merged into the 'GLES2' branch.)
  * AndEnginePhysicsBox2DExtension
+ * AndEngineRobotiumExtension
+ * AndEngineScriptingExtension
  * AndEngineSVGTextureRegionExtension
  * AndEngineTexturePackerExtension
  * AndEngineTMXTiledMapExtension (Merged into the 'GLES1' branch.)

@@ -1,7 +1,6 @@
 package org.andengine.opengl.texture;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +8,7 @@ import java.util.HashSet;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.io.in.AssetInputStreamOpener;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
 
@@ -281,12 +281,7 @@ public class TextureManager {
 		if(this.hasMappedTexture(pID)) {
 			return this.getMappedTexture(pID);
 		} else {
-			final ITexture texture = new BitmapTexture(this, new IInputStreamOpener() {
-				@Override
-				public InputStream open() throws IOException {
-					return pAssetManager.open(pAssetPath);
-				}
-			}, pTextureOptions);
+			final ITexture texture = new BitmapTexture(this, new AssetInputStreamOpener(pAssetManager, pAssetPath), pTextureOptions);
 			this.loadTexture(texture);
 			this.addMappedTexture(pID, texture);
 

@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.andengine.BuildConfig;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundFactory;
@@ -816,7 +817,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 					this.mEngine.onTickUpdate();
 				}
 			} catch (final InterruptedException e) {
-				Debug.d(this.getClass().getSimpleName() + " interrupted. Don't worry - this " + e.getClass().getSimpleName() + " is most likely expected!", e);
+				if(BuildConfig.DEBUG) {
+					Debug.d(this.getClass().getSimpleName() + " interrupted. Don't worry - this " + e.getClass().getSimpleName() + " is most likely expected!", e);
+				}
 				this.interrupt();
 			}
 		}

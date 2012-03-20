@@ -17,29 +17,31 @@ public class DeviceNotSupportedException extends AndEngineException {
 	// Fields
 	// ===========================================================
 
+	private final DeviceNotSupportedCause mDeviceNotSupportedCause;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public DeviceNotSupportedException() {
+	public DeviceNotSupportedException(final DeviceNotSupportedCause pDeviceNotSupportedCause) {
 		super();
+
+		this.mDeviceNotSupportedCause = pDeviceNotSupportedCause;
 	}
 
-	public DeviceNotSupportedException(final String pMessage) {
-		super(pMessage);
-	}
-
-	public DeviceNotSupportedException(final Throwable pThrowable) {
+	public DeviceNotSupportedException(final DeviceNotSupportedCause pDeviceNotSupportedCause, final Throwable pThrowable) {
 		super(pThrowable);
-	}
 
-	public DeviceNotSupportedException(final String pMessage, final Throwable pThrowable) {
-		super(pMessage, pThrowable);
+		this.mDeviceNotSupportedCause = pDeviceNotSupportedCause;
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public DeviceNotSupportedCause getDeviceNotSupportedCause() {
+		return this.mDeviceNotSupportedCause;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -52,4 +54,41 @@ public class DeviceNotSupportedException extends AndEngineException {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static enum DeviceNotSupportedCause {
+		// ===========================================================
+		// Elements
+		// ===========================================================
+
+		CODEPATH_INCOMPLETE,
+		EGLCONFIG_NOT_FOUND;
+
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 }

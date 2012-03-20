@@ -6,6 +6,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
 
 import org.andengine.opengl.view.ConfigChooser;
 import org.andengine.util.exception.DeviceNotSupportedException;
+import org.andengine.util.exception.DeviceNotSupportedException.DeviceNotSupportedCause;
 import org.andengine.util.system.SystemUtils;
 
 import android.os.Build;
@@ -41,6 +42,15 @@ public class AndEngine {
 	// Methods
 	// ===========================================================
 
+	public static boolean isDeviceSupported() {
+		try {
+			AndEngine.checkDeviceSupported();
+			return true;
+		} catch (final DeviceNotSupportedException e) {
+			return false;
+		}
+	}
+
 	public static void checkDeviceSupported() throws DeviceNotSupportedException {
 		AndEngine.checkCodePathSupport();
 
@@ -52,7 +62,7 @@ public class AndEngine {
 			try {
 				System.loadLibrary("andengine");
 			} catch (final UnsatisfiedLinkError e) {
-				throw new DeviceNotSupportedException(e);
+				throw new DeviceNotSupportedException(DeviceNotSupportedCause.CODEPATH_INCOMPLETE, e);
 			}
 		}
 	}
@@ -77,7 +87,7 @@ public class AndEngine {
 		try {
 			configChooser.chooseConfig(egl, eglDisplay);
 		} catch (final IllegalArgumentException e) {
-			throw new DeviceNotSupportedException(e);
+			throw new DeviceNotSupportedException(DeviceNotSupportedCause.EGLCONFIG_NOT_FOUND, e);
 		}
 	}
 

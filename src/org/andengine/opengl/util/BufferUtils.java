@@ -2,7 +2,6 @@ package org.andengine.opengl.util;
 
 import java.nio.ByteBuffer;
 
-import org.andengine.util.adt.DataConstants;
 import org.andengine.util.debug.Debug;
 import org.andengine.util.system.SystemUtils;
 
@@ -38,7 +37,7 @@ public class BufferUtils {
 		}
 		NATIVE_LIB_LOADED = loadLibrarySuccess;
 
-		if(NATIVE_LIB_LOADED) {
+		if(BufferUtils.NATIVE_LIB_LOADED) {
 			if(SystemUtils.isAndroidVersion(Build.VERSION_CODES.HONEYCOMB, Build.VERSION_CODES.HONEYCOMB_MR2)) {
 				WORKAROUND_BYTEBUFFER_ALLOCATE_DIRECT = true;
 			} else {
@@ -81,7 +80,7 @@ public class BufferUtils {
 	// ===========================================================
 
 	/**
-	 * @param pCapacity Capacity of the buffer in bytes
+	 * @param pCapacity the capacity of the returned {@link ByteBuffer} in bytes.
 	 * @return
 	 */
 	public static ByteBuffer allocateDirectByteBuffer(final int pCapacity) {
@@ -111,7 +110,7 @@ public class BufferUtils {
 		if(BufferUtils.WORKAROUND_BYTEBUFFER_PUT_FLOATARRAY) {
 			BufferUtils.jniPut(pByteBuffer, pSource, pLength, pOffset);
 		} else {
-			for(int i = pOffset; i < pOffset + pLength; i++) {
+			for(int i = pOffset; i < (pOffset + pLength); i++) {
 				pByteBuffer.putFloat(pSource[i]);
 			}
 		}

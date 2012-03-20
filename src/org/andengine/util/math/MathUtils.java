@@ -210,10 +210,22 @@ public final class MathUtils implements MathConstants {
 		return pValue >= pMinValue && pValue <= pMaxValue;
 	}
 
+	/**
+	 * @param pMinValue inclusive!
+	 * @param pMaxValue inclusive!
+	 * @param pValue
+	 * @return
+	 */
 	public static final int bringToBounds(final int pMinValue, final int pMaxValue, final int pValue) {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}
 
+	/**
+	 * @param pMinValue inclusive!
+	 * @param pMaxValue inclusive!
+	 * @param pValue
+	 * @return
+	 */
 	public static final float bringToBounds(final float pMinValue, final float pMaxValue, final float pValue) {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}

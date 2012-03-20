@@ -111,11 +111,6 @@ public class CatmullRomMoveModifier extends DurationEntityModifier {
 		final float tt = t * t;
 		final float ttt = tt * t;
 
-//		final float b1 = 0.5f * ((-ttt + (2 * tt)) - t);
-//		final float b2 = 0.5f * (((3 * ttt) - (5 * tt)) + 2);
-//		final float b3 = 0.5f * ((-3 * ttt) + (4 * tt) + t);
-//		final float b4 = 0.5f * (ttt - tt);
-		
 		final float b1 = 0.5f * ((-ttt + (2 * tt)) - t);
 		final float b2 = 0.5f * (((3 * ttt) - (5 * tt)) + 2);
 		final float b3 = 0.5f * ((-3 * ttt) + (4 * tt) + t);
@@ -130,6 +125,32 @@ public class CatmullRomMoveModifier extends DurationEntityModifier {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static final float catmullRomX(final float pX0, final float pX1, final float pX2, final float pX3, final float pT) {
+		final float t = pT;
+		final float tt = t * t;
+		final float ttt = tt * t;
+
+		final float b1 = 0.5f * ((-ttt + (2 * tt)) - t);
+		final float b2 = 0.5f * (((3 * ttt) - (5 * tt)) + 2);
+		final float b3 = 0.5f * ((-3 * ttt) + (4 * tt) + t);
+		final float b4 = 0.5f * (ttt - tt);
+
+		return ((pX0 * b1) + (pX1 * b2) + (pX2 * b3) + (pX3 * b4));
+	}
+
+	public static final float catmullRomY(final float pY0, final float pY1, final float pY2, final float pY3, final float pT) {
+		final float t = pT;
+		final float tt = t * t;
+		final float ttt = tt * t;
+
+		final float b1 = 0.5f * ((-ttt + (2 * tt)) - t);
+		final float b2 = 0.5f * (((3 * ttt) - (5 * tt)) + 2);
+		final float b3 = 0.5f * ((-3 * ttt) + (4 * tt) + t);
+		final float b4 = 0.5f * (ttt - tt);
+
+		return ((pY0 * b1) + (pY1 * b2) + (pY2 * b3) + (pY3 * b4));
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

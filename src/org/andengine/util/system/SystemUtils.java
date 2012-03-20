@@ -57,6 +57,10 @@ public class SystemUtils {
 	// Methods
 	// ===========================================================
 
+	public static boolean isGoogleTV(final Context pContext) {
+		return SystemUtils.hasSystemFeature(pContext, "com.google.android.tv");
+	}
+
 	public static int getPackageVersionCode(final Context pContext) {
 		return SystemUtils.getPackageInfo(pContext).versionCode;
 	}

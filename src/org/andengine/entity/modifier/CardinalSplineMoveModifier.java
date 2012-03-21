@@ -133,7 +133,7 @@ public class CardinalSplineMoveModifier extends DurationEntityModifier {
 	// Methods
 	// ===========================================================
 
-	public static final float CardinalSplineX(final float pX0, final float pX1, final float pX2, final float pX3, final float pT, final float pTension) {
+	public static final float cardinalSplineX(final float pX0, final float pX1, final float pX2, final float pX3, final float pT, final float pTension) {
 		final float t = pT;
 		final float tt = t * t;
 		final float ttt = tt * t;
@@ -148,7 +148,7 @@ public class CardinalSplineMoveModifier extends DurationEntityModifier {
 		return ((pX0 * b1) + (pX1 * b2) + (pX2 * b3) + (pX3 * b4));
 	}
 
-	public static final float CardinalSplineY(final float pY0, final float pY1, final float pY2, final float pY3, final float pT, final float pTension) {
+	public static final float cardinalSplineY(final float pY0, final float pY1, final float pY2, final float pY3, final float pT, final float pTension) {
 		final float t = pT;
 		final float tt = t * t;
 		final float ttt = tt * t;

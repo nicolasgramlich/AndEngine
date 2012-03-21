@@ -12,7 +12,7 @@ import org.andengine.util.modifier.ease.IEaseFunction;
  * @author Nicolas Gramlich
  * @since 23:24:26 - 16.07.2011
  */
-public class CubicBezierMoveModifier extends DurationEntityModifier {
+public class CubicBezierCurveMoveModifier extends DurationEntityModifier {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -47,7 +47,7 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 	 * @param pX4 x coordinate of the end point.
 	 * @param pY4 y coordinate of the end point.
 	 */
-	public CubicBezierMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
+	public CubicBezierCurveMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4) {
 		this(pDuration, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, null, EaseLinear.getInstance());
 	}
 
@@ -63,7 +63,7 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 	 * @param pY4 y coordinate of the end point.
 	 * @param pEaseFunction
 	 */
-	public CubicBezierMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final IEaseFunction pEaseFunction) {
+	public CubicBezierCurveMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final IEaseFunction pEaseFunction) {
 		this(pDuration, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, null, pEaseFunction);
 	}
 
@@ -79,7 +79,7 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 	 * @param pY4 y coordinate of the end point.
 	 * @param pEntityModifierListener
 	 */
-	public CubicBezierMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final IEntityModifierListener pEntityModifierListener) {
+	public CubicBezierCurveMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final IEntityModifierListener pEntityModifierListener) {
 		this(pDuration, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
@@ -96,7 +96,7 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 	 * @param pEntityModifierListener
 	 * @param pEaseFunction
 	 */
-	public CubicBezierMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+	public CubicBezierCurveMoveModifier(final float pDuration, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pEntityModifierListener);
 
 		this.mX1 = pX1;
@@ -112,8 +112,8 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 	}
 
 	@Override
-	public CubicBezierMoveModifier deepCopy() {
-		return new CubicBezierMoveModifier(this.mDuration, this.mX1, this.mY1, this.mX2, this.mY2, this.mX3, this.mY3, this.mX4, this.mY4, this.mEaseFunction);
+	public CubicBezierCurveMoveModifier deepCopy() {
+		return new CubicBezierCurveMoveModifier(this.mDuration, this.mX1, this.mY1, this.mX2, this.mY2, this.mX3, this.mY3, this.mX4, this.mY4, this.mEaseFunction);
 	}
 
 	// ===========================================================
@@ -143,7 +143,7 @@ public class CubicBezierMoveModifier extends DurationEntityModifier {
 		final float utt3 = 3 * u * tt;
 
 		/*
-		 * Formula: ((1-t)^3 * p1) + (3*(t)*(1-t)^2 * p2) + (3*(t^2)*(1-t) * p3) + (t^3 * p4)
+		 * Formula: ((1-t)^3 * P1) + (3*(t)*(1-t)^2 * P2) + (3*(tt)*(1-t) * P3) + (ttt * P4)
 		 */
 		final float x = (uuu * this.mX1) + (ut3 * this.mX2) + (utt3 * this.mX3) + (ttt * this.mX4);
 		final float y = (uuu * this.mY1) + (ut3 * this.mY2) + (utt3 * this.mY3) + (ttt * this.mY4);

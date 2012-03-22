@@ -2,6 +2,7 @@ package org.andengine.entity.particle.modifier;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.entity.particle.initializer.IParticleInitializer;
 import org.andengine.util.math.MathUtils;
 
 /**
@@ -11,7 +12,7 @@ import org.andengine.util.math.MathUtils;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class ExpireParticleModifier<T extends IEntity> implements IParticleModifier<T> {
+public class ExpireParticleInitializer<T extends IEntity> implements IParticleInitializer<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,11 +28,11 @@ public class ExpireParticleModifier<T extends IEntity> implements IParticleModif
 	// Constructors
 	// ===========================================================
 
-	public ExpireParticleModifier(final float pLifeTime) {
+	public ExpireParticleInitializer(final float pLifeTime) {
 		this(pLifeTime, pLifeTime);
 	}
 
-	public ExpireParticleModifier(final float pMinLifeTime, final float pMaxLifeTime) {
+	public ExpireParticleInitializer(final float pMinLifeTime, final float pMaxLifeTime) {
 		this.mMinLifeTime = pMinLifeTime;
 		this.mMaxLifeTime = pMaxLifeTime;
 	}
@@ -65,11 +66,6 @@ public class ExpireParticleModifier<T extends IEntity> implements IParticleModif
 	@Override
 	public void onInitializeParticle(final Particle<T> pParticle) {
 		pParticle.setExpireTime((MathUtils.RANDOM.nextFloat() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime));
-	}
-
-	@Override
-	public void onUpdateParticle(final Particle<T> pParticle) {
-
 	}
 
 	// ===========================================================

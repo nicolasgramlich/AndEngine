@@ -2,7 +2,7 @@
 
 ## Building
 
- * Currently AndEngine has to be build with 'ADT-17 Preview 4' or higher!
+ * AndEngine has to be build with ADT-17 or higher!
 
 ## Branches
 

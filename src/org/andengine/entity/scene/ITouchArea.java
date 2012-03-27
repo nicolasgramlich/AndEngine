@@ -1,6 +1,5 @@
 package org.andengine.entity.scene;
 
-import org.andengine.entity.scene.menu.IOnAreaTouchListener;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.IMatcher;
 

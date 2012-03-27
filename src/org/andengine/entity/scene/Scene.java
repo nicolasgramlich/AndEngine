@@ -7,7 +7,6 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea.ITouchAreaMatcher;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.background.IBackground;
-import org.andengine.entity.scene.menu.IOnAreaTouchListener;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.Shape;
 import org.andengine.input.touch.TouchEvent;

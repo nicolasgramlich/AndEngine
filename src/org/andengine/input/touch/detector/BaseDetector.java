@@ -1,7 +1,7 @@
 package org.andengine.input.touch.detector;
 
+import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.andengine.input.touch.TouchEvent;
 
 /**

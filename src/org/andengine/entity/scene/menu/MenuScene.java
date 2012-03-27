@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.CameraScene;
+import org.andengine.entity.scene.IOnSceneTouchListener;
+import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.Scene.IOnAreaTouchListener;
-import org.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.menu.animator.IMenuAnimator;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.input.touch.TouchEvent;

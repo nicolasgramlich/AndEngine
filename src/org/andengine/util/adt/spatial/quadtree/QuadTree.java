@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.andengine.util.IMatcher;
 import org.andengine.util.adt.bounds.BoundsSplit;
-import org.andengine.util.adt.bounds.IBounds;
 import org.andengine.util.adt.bounds.BoundsSplit.BoundsSplitException;
+import org.andengine.util.adt.bounds.IBounds;
 import org.andengine.util.adt.spatial.ISpatialItem;
 import org.andengine.util.call.ParameterCallable;
 import org.andengine.util.debug.Debug;

@@ -447,7 +447,8 @@ public class Text extends RectangularShape {
 
 			NONE,
 			WORDS,
-			LETTERS;
+			LETTERS,
+			CJK;
 
 			// ===========================================================
 			// Constants

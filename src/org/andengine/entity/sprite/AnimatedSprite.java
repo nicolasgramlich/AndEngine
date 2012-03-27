@@ -17,7 +17,7 @@ import org.andengine.util.time.TimeConstants;
  * @author Nicolas Gramlich
  * @since 15:25:46 - 10.03.2010
  */
-public class AnimatedSprite extends TiledSprite implements TimeConstants {
+public class AnimatedSprite extends TiledSprite {
 	// ===========================================================
 	// Constants
 	// ===========================================================

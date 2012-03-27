@@ -3,7 +3,6 @@ package org.andengine.util.level;
 import java.util.HashMap;
 
 import org.andengine.util.level.LevelLoader.IEntityLoader;
-import org.andengine.util.level.constants.LevelConstants;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -15,7 +14,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Nicolas Gramlich
  * @since 14:35:32 - 11.10.2010
  */
-public class LevelParser extends DefaultHandler implements LevelConstants {
+public class LevelParser extends DefaultHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================

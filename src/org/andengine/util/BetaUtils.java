@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
  * @author Nicolas Gramlich
  * @since 22:43:32 - 02.11.2010
  */
-public class BetaUtils implements Constants {
+public class BetaUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================

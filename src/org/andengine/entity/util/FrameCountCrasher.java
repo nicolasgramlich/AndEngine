@@ -3,7 +3,6 @@ package org.andengine.entity.util;
 import org.andengine.BuildConfig;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.util.debug.Debug;
-import org.andengine.util.time.TimeConstants;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -12,7 +11,7 @@ import org.andengine.util.time.TimeConstants;
  * @author Nicolas Gramlich
  * @since 19:52:31 - 09.03.2010
  */
-public class FrameCountCrasher implements IUpdateHandler, TimeConstants {
+public class FrameCountCrasher implements IUpdateHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================

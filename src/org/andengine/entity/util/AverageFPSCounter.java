@@ -1,6 +1,5 @@
 package org.andengine.entity.util;
 
-import org.andengine.util.time.TimeConstants;
 
 
 /**
@@ -10,7 +9,7 @@ import org.andengine.util.time.TimeConstants;
  * @author Nicolas Gramlich
  * @since 19:52:31 - 09.03.2010
  */
-public abstract class AverageFPSCounter extends FPSCounter implements TimeConstants {
+public abstract class AverageFPSCounter extends FPSCounter {
 	// ===========================================================
 	// Constants
 	// ===========================================================

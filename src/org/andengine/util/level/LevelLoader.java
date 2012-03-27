@@ -11,7 +11,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.andengine.util.StreamUtils;
 import org.andengine.util.debug.Debug;
-import org.andengine.util.level.constants.LevelConstants;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -26,7 +25,7 @@ import android.content.Context;
  * @author Nicolas Gramlich
  * @since 14:16:19 - 11.10.2010
  */
-public class LevelLoader implements LevelConstants {
+public class LevelLoader {
 	// ===========================================================
 	// Constants
 	// ===========================================================

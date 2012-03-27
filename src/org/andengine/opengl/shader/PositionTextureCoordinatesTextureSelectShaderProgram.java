@@ -40,10 +40,10 @@ public class PositionTextureCoordinatesTextureSelectShaderProgram extends Shader
 	// Fields
 	// ===========================================================
 
-	public static int sUniformModelViewPositionMatrixLocation = ShaderProgram.LOCATION_INVALID;
-	public static int sUniformTexture0Location = ShaderProgram.LOCATION_INVALID;
-	public static int sUniformTexture1Location = ShaderProgram.LOCATION_INVALID;
-	public static int sUniformTextureSelectTexture0Location = ShaderProgram.LOCATION_INVALID;
+	public static int sUniformModelViewPositionMatrixLocation = ShaderProgramConstants.LOCATION_INVALID;
+	public static int sUniformTexture0Location = ShaderProgramConstants.LOCATION_INVALID;
+	public static int sUniformTexture1Location = ShaderProgramConstants.LOCATION_INVALID;
+	public static int sUniformTextureSelectTexture0Location = ShaderProgramConstants.LOCATION_INVALID;
 
 	// ===========================================================
 	// Constructors

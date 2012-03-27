@@ -66,7 +66,7 @@ import android.view.WindowManager;
  * @author Nicolas Gramlich
  * @since 12:21:31 - 08.03.2010
  */
-public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback, TimeConstants, LocationListener {
+public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback, LocationListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================

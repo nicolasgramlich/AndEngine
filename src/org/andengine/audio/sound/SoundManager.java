@@ -76,7 +76,7 @@ public class SoundManager extends BaseAudioManager<Sound> implements OnLoadCompl
 	@Override
 	public void releaseAll() {
 		super.releaseAll();
-		
+
 		this.mSoundPool.release();
 	}
 	

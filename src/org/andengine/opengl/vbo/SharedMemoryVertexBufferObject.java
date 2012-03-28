@@ -5,7 +5,6 @@ import java.nio.ByteOrder;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.andengine.opengl.util.BufferUtils;
-import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
 /**

@@ -2,6 +2,7 @@ package org.andengine.entity.sprite;
 
 import java.util.Arrays;
 
+import org.andengine.entity.sprite.vbo.ITiledSpriteVertexBufferObject;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;

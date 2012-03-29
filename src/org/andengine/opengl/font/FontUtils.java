@@ -2,7 +2,7 @@ package org.andengine.opengl.font;
 
 import java.util.List;
 
-import org.andengine.entity.text.Text.TextOptions.AutoWrap;
+import org.andengine.entity.text.AutoWrap;
 import org.andengine.util.TextUtils;
 import org.andengine.util.exception.MethodNotYetImplementedException;
 

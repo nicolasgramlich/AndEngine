@@ -1,5 +1,6 @@
 package org.andengine.entity.sprite.batch;
 
+import org.andengine.entity.sprite.batch.vbo.ISpriteBatchVertexBufferObject;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.vbo.DrawType;

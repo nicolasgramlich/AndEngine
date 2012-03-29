@@ -1,8 +1,8 @@
 package org.andengine.entity.primitive;
 
-import java.nio.FloatBuffer;
-
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.primitive.vbo.HighPerformanceLineVertexBufferObject;
+import org.andengine.entity.primitive.vbo.ILineVertexBufferObject;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.shape.Shape;
@@ -10,14 +10,10 @@ import org.andengine.opengl.shader.PositionColorShaderProgram;
 import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.DrawType;
-import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
-import org.andengine.opengl.vbo.IVertexBufferObject;
-import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
-import org.andengine.util.Constants;
 import org.andengine.util.algorithm.collision.LineCollisionChecker;
 import org.andengine.util.algorithm.collision.RectangularShapeCollisionChecker;
 import org.andengine.util.exception.MethodNotSupportedException;
@@ -261,135 +257,4 @@ public class Line extends Shape {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface ILineVertexBufferObject extends IVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public void onUpdateColor(final Line pLine);
-		public void onUpdateVertices(final Line pLine);
-	}
-
-	public static class HighPerformanceLineVertexBufferObject extends HighPerformanceVertexBufferObject implements ILineVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public HighPerformanceLineVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pVertexBufferObjectManager, pCapacity, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		@Override
-		public void onUpdateColor(final Line pLine) {
-			final float[] bufferData = this.mBufferData;
-
-			final float packedColor = pLine.getColor().getABGRPackedFloat();
-
-			bufferData[0 * Line.VERTEX_SIZE + Line.COLOR_INDEX] = packedColor;
-			bufferData[1 * Line.VERTEX_SIZE + Line.COLOR_INDEX] = packedColor;
-
-			this.setDirtyOnHardware();
-		}
-
-		@Override
-		public void onUpdateVertices(final Line pLine) {
-			final float[] bufferData = this.mBufferData;
-
-			bufferData[0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X] = 0;
-			bufferData[0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_Y] = 0;
-
-			bufferData[1 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X] = pLine.getX2() - pLine.getX1();
-			bufferData[1 * Line.VERTEX_SIZE + Constants.VERTEX_INDEX_Y] = pLine.getY2() - pLine.getY1();
-
-			this.setDirtyOnHardware();
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
-	public static class LowMemoryLineVertexBufferObject extends LowMemoryVertexBufferObject implements ILineVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public LowMemoryLineVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pVertexBufferObjectManager, pCapacity, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		@Override
-		public void onUpdateColor(final Line pLine) {
-			final FloatBuffer bufferData = this.mFloatBuffer;
-
-			final float packedColor = pLine.getColor().getABGRPackedFloat();
-
-			bufferData.put(0 * Line.VERTEX_SIZE + Line.COLOR_INDEX, packedColor);
-			bufferData.put(1 * Line.VERTEX_SIZE + Line.COLOR_INDEX, packedColor);
-
-			this.setDirtyOnHardware();
-		}
-
-		@Override
-		public void onUpdateVertices(final Line pLine) {
-			final FloatBuffer bufferData = this.mFloatBuffer;
-
-			bufferData.put(0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X, 0);
-			bufferData.put(0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_Y, 0);
-
-			bufferData.put(1 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X, pLine.getX2() - pLine.getX1()); // TODO Optimize with field access?
-			bufferData.put(1 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_Y, pLine.getY2() - pLine.getY1()); // TODO Optimize with field access?
-
-			this.setDirtyOnHardware();
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

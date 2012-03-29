@@ -17,6 +17,7 @@ import org.andengine.input.sensor.orientation.OrientationSensorOptions;
 import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.shader.ShaderProgramManager;
 import org.andengine.opengl.texture.TextureManager;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.view.IRendererListener;
 import org.andengine.opengl.view.RenderSurfaceView;
@@ -89,7 +90,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	public synchronized void onSurfaceCreated() {
+	public synchronized void onSurfaceCreated(final GLState pGLState) {
 		if(BuildConfig.DEBUG) {
 			Debug.d(this.getClass().getSimpleName() + ".onSurfaceCreated" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 		}
@@ -111,7 +112,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	public synchronized void onSurfaceChanged(final int pWidth, final int pHeight) {
+	public synchronized void onSurfaceChanged(final GLState pGLState, final int pWidth, final int pHeight) {
 		if(BuildConfig.DEBUG) {
 			Debug.d(this.getClass().getSimpleName() + ".onSurfaceChanged(Width=" + pWidth + ",  Height=" + pHeight + ")" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 		}

@@ -55,10 +55,6 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onSurfaceCreated(final GL10 pGL, final EGLConfig pEGLConfig) {
 		synchronized(GLState.class) {
-			if(this.mRendererListener != null) {
-				this.mRendererListener.onSurfaceCreated();
-			}
-
 			this.mGLState.reset(this.mEngine.getEngineOptions().getRenderOptions(), this.mConfigChooser, pEGLConfig);
 
 			// TODO Check if available and make available through EngineOptions-RenderOptions
@@ -78,18 +74,22 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 //			this.mGLState.enableCulling();
 //			GLES20.glFrontFace(GLES20.GL_CCW);
 //			GLES20.glCullFace(GLES20.GL_BACK);
+
+			if(this.mRendererListener != null) {
+				this.mRendererListener.onSurfaceCreated(this.mGLState);
+			}
 		}
 	}
 
 	@Override
 	public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
-		if(this.mRendererListener != null) {
-			this.mRendererListener.onSurfaceChanged(pWidth, pHeight);
-		}
-
 		this.mEngine.setSurfaceSize(pWidth, pHeight);
 		GLES20.glViewport(0, 0, pWidth, pHeight);
 		this.mGLState.loadProjectionGLMatrixIdentity();
+
+		if(this.mRendererListener != null) {
+			this.mRendererListener.onSurfaceChanged(this.mGLState, pWidth, pHeight);
+		}
 	}
 
 	@Override

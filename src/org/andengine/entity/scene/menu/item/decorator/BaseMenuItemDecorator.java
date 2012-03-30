@@ -99,6 +99,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public void setX(final float pX) {
+		this.mMenuItem.setX(pX);
+	}
+
+	@Override
+	public void setY(final float pY) {
+		this.mMenuItem.setY(pY);
+	}
+
+	@Override
 	public void setPosition(final IEntity pOtherEntity) {
 		this.mMenuItem.setPosition(pOtherEntity);
 	}

@@ -226,6 +226,22 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public void setX(final float pX) {
+		this.mX = pX;
+
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public void setY(final float pY) {
+		this.mY = pY;
+
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
 	public float getInitialX() {
 		return this.mInitialX;
 	}
@@ -244,6 +260,7 @@ public class Entity implements IEntity {
 	public void setPosition(final float pX, final float pY) {
 		this.mX = pX;
 		this.mY = pY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -252,6 +269,7 @@ public class Entity implements IEntity {
 	public void setInitialPosition() {
 		this.mX = this.mInitialX;
 		this.mY = this.mInitialY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -269,6 +287,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setRotation(final float pRotation) {
 		this.mRotation = pRotation;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -286,6 +305,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setRotationCenterX(final float pRotationCenterX) {
 		this.mRotationCenterX = pRotationCenterX;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -293,6 +313,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setRotationCenterY(final float pRotationCenterY) {
 		this.mRotationCenterY = pRotationCenterY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -301,6 +322,7 @@ public class Entity implements IEntity {
 	public void setRotationCenter(final float pRotationCenterX, final float pRotationCenterY) {
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -323,6 +345,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setScaleX(final float pScaleX) {
 		this.mScaleX = pScaleX;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -330,6 +353,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setScaleY(final float pScaleY) {
 		this.mScaleY = pScaleY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -338,6 +362,7 @@ public class Entity implements IEntity {
 	public void setScale(final float pScale) {
 		this.mScaleX = pScale;
 		this.mScaleY = pScale;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -346,6 +371,7 @@ public class Entity implements IEntity {
 	public void setScale(final float pScaleX, final float pScaleY) {
 		this.mScaleX = pScaleX;
 		this.mScaleY = pScaleY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -363,6 +389,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setScaleCenterX(final float pScaleCenterX) {
 		this.mScaleCenterX = pScaleCenterX;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -370,6 +397,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setScaleCenterY(final float pScaleCenterY) {
 		this.mScaleCenterY = pScaleCenterY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -378,6 +406,7 @@ public class Entity implements IEntity {
 	public void setScaleCenter(final float pScaleCenterX, final float pScaleCenterY) {
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -400,6 +429,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setSkewX(final float pSkewX) {
 		this.mSkewX = pSkewX;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -407,6 +437,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setSkewY(final float pSkewY) {
 		this.mSkewY = pSkewY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -415,6 +446,7 @@ public class Entity implements IEntity {
 	public void setSkew(final float pSkew) {
 		this.mSkewX = pSkew;
 		this.mSkewY = pSkew;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -423,6 +455,7 @@ public class Entity implements IEntity {
 	public void setSkew(final float pSkewX, final float pSkewY) {
 		this.mSkewX = pSkewX;
 		this.mSkewY = pSkewY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -440,6 +473,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setSkewCenterX(final float pSkewCenterX) {
 		this.mSkewCenterX = pSkewCenterX;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -447,6 +481,7 @@ public class Entity implements IEntity {
 	@Override
 	public void setSkewCenterY(final float pSkewCenterY) {
 		this.mSkewCenterY = pSkewCenterY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}
@@ -455,6 +490,7 @@ public class Entity implements IEntity {
 	public void setSkewCenter(final float pSkewCenterX, final float pSkewCenterY) {
 		this.mSkewCenterX = pSkewCenterX;
 		this.mSkewCenterY = pSkewCenterY;
+
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}

@@ -159,7 +159,33 @@ public class Line extends Shape {
 	}
 
 	/**
-	 * @deprecated Instead use {@link Line#setPosition(float, float, float, float)}.
+	 * Instead use {@link Line#setPosition(float, float, float, float)}.
+	 */
+	@Deprecated
+	@Override
+	public void setX(final float pX) {
+		final float dX = this.mX - pX;
+
+		super.setX(pX);
+
+		this.mX2 += dX;
+	}
+
+	/**
+	 * Instead use {@link Line#setPosition(float, float, float, float)}.
+	 */
+	@Deprecated
+	@Override
+	public void setY(final float pY) {
+		final float dY = this.mY - pY;
+		
+		super.setY(pY);
+		
+		this.mY2 += dY;
+	}
+
+	/**
+	 * Instead use {@link Line#setPosition(float, float, float, float)}.
 	 */
 	@Deprecated
 	@Override

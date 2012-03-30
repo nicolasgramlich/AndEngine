@@ -59,12 +59,12 @@ public class MoveYModifier extends SingleValueSpanEntityModifier {
 
 	@Override
 	protected void onSetInitialValue(final IEntity pEntity, final float pY) {
-		pEntity.setPosition(pEntity.getX(), pY);
+		pEntity.setY(pY);
 	}
 
 	@Override
 	protected void onSetValue(final IEntity pEntity, final float pPercentageDone, final float pY) {
-		pEntity.setPosition(pEntity.getX(), pY);
+		pEntity.setY(pY);
 	}
 
 	// ===========================================================

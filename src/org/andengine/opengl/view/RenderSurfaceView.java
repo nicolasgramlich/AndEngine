@@ -75,7 +75,8 @@ public class RenderSurfaceView extends GLSurfaceView {
 	public void setRenderer(final Engine pEngine, final IRendererListener pRendererListener) {
 		if(this.mConfigChooser == null) {
 			final boolean multiSampling = pEngine.getEngineOptions().getRenderOptions().isMultiSampling();
-			this.mConfigChooser = new ConfigChooser(multiSampling);
+			final boolean argb8888 = pEngine.getEngineOptions().getRenderOptions().isARGB8888();
+			this.mConfigChooser = new ConfigChooser(multiSampling, argb8888);
 		}
 		this.setEGLConfigChooser(this.mConfigChooser);
 

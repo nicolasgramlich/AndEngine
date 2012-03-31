@@ -17,7 +17,9 @@ public class RenderOptions {
 	// ===========================================================
 
 	private boolean mMultiSampling = false;
-
+	
+	private boolean mARGB8888 = false;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -26,6 +28,14 @@ public class RenderOptions {
 	// Getter & Setter
 	// ===========================================================
 
+	public boolean isARGB8888(){
+		return this.mARGB8888;
+	}
+	
+	public void setARGB8888(final boolean pARGB){
+		this.mARGB8888 = pARGB;
+	}
+	
 	public boolean isMultiSampling() {
 		return this.mMultiSampling;
 	}

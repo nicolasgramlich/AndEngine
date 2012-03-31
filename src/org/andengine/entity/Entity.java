@@ -1305,6 +1305,7 @@ public class Entity implements IEntity {
 			} else {
 				if(this.mChildrenSortPending) {
 					ZIndexSorter.getInstance().sort(this.mChildren);
+					this.mChildrenSortPending = false;
 				}
 
 				final int childCount = children.size();

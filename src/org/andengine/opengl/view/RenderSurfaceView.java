@@ -77,9 +77,19 @@ public class RenderSurfaceView extends GLSurfaceView {
 			final boolean multiSampling = pEngine.getEngineOptions().getRenderOptions().isMultiSampling();
 			final boolean argb8888 = pEngine.getEngineOptions().getRenderOptions().isARGB8888();
 			this.mConfigChooser = new ConfigChooser(multiSampling, argb8888);
+			
+			//This isn't 100% correct: before mConfigChooser.chooseConfig() is called 
+			//we don't know if RGBA_8888 was actually selected but we also need
+			//a EGL10 and EGLDisplay to call that, which won't happen until after
+			//setEGLConfigChooser and we need to call setFormat before that to 
+			//have devices like the Droid 1 and 2 not crash.
+			//Calling setFormate(RGBA_8888) when the GLConfig was RGB_565 hasn't
+			//broken anything yet
+			if(argb8888) getHolder().setFormat(android.graphics.PixelFormat.RGBA_8888);
 		}
+		
 		this.setEGLConfigChooser(this.mConfigChooser);
-
+		
 		this.setOnTouchListener(pEngine);
 		this.mEngineRenderer = new EngineRenderer(pEngine, this.mConfigChooser, pRendererListener);
 		this.setRenderer(this.mEngineRenderer);

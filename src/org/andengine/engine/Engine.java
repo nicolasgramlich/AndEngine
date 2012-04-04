@@ -29,7 +29,7 @@ import org.andengine.input.sensor.orientation.OrientationData;
 import org.andengine.input.sensor.orientation.OrientationSensorOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.controller.ITouchController;
-import org.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
+import org.andengine.input.touch.controller.ITouchEventCallback;
 import org.andengine.input.touch.controller.MultiTouchController;
 import org.andengine.input.touch.controller.SingleTouchController;
 import org.andengine.opengl.font.FontFactory;

@@ -9,7 +9,7 @@ import org.andengine.opengl.texture.ITexture;
  * @author Nicolas Gramlich
  * @since 14:29:59 - 08.03.2010
  */
-public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
+public class TextureRegion extends BaseTextureRegion {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -2,6 +2,7 @@ package org.andengine.opengl.texture.atlas;
 
 import org.andengine.BuildConfig;
 import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.util.debug.Debug;
 

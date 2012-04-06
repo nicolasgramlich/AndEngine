@@ -5,7 +5,7 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
-import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 
 /**
  * (c) 2010 Nicolas Gramlich 

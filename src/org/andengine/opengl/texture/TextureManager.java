@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.io.in.AssetInputStreamOpener;
 import org.andengine.util.adt.io.in.IInputStreamOpener;

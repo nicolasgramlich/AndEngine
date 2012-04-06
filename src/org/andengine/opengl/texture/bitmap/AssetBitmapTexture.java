@@ -2,6 +2,7 @@ package org.andengine.opengl.texture.bitmap;
 
 import java.io.IOException;
 
+import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.util.adt.io.in.AssetInputStreamOpener;

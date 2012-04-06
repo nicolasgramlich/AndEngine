@@ -2,10 +2,7 @@ package org.andengine.opengl.texture;
 
 import java.io.IOException;
 
-import org.andengine.BuildConfig;
-import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.debug.Debug;
 
 import android.opengl.GLES20;
 
@@ -73,45 +70,4 @@ public interface ITexture {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	public static interface ITextureStateListener {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public void onLoadedToHardware(final ITexture pTexture);
-		public void onUnloadedFromHardware(final ITexture pTexture);
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-
-		public static class TextureStateAdapter<T extends ITextureAtlasSource> implements ITextureStateListener {
-			@Override
-			public void onLoadedToHardware(final ITexture pTexture) { }
-
-			@Override
-			public void onUnloadedFromHardware(final ITexture pTexture) { }
-		}
-
-		public static class DebugTextureStateListener<T extends ITextureAtlasSource> implements ITextureStateListener {
-			@Override
-			public void onLoadedToHardware(final ITexture pTexture) {
-				if(BuildConfig.DEBUG) {
-					Debug.d("Texture loaded: " + pTexture.toString());
-				}
-			}
-
-			@Override
-			public void onUnloadedFromHardware(final ITexture pTexture) {
-				if(BuildConfig.DEBUG) {
-					Debug.d("Texture unloaded: " + pTexture.toString());
-				}
-			}
-		}
-	}
 }

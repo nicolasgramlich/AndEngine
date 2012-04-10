@@ -36,7 +36,7 @@ public class TimerHandler implements IUpdateHandler {
 		if(pTimerSeconds <= 0){
 			throw new IllegalStateException("pTimerSeconds must be >= 0!");
 		}
-		
+
 		this.mTimerSeconds = pTimerSeconds;
 		this.mAutoReset = pAutoReset;
 		this.mTimerCallback = pTimerCallback;

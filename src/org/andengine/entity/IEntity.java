@@ -110,6 +110,9 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public float getAlpha();
 	public Color getColor();
 
+	public void setRed(final float pRed);
+	public void setGreen(final float pGreen);
+	public void setBlue(final float pBlue);
 	public void setAlpha(final float pAlpha);
 	public void setColor(final Color pColor);
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
@@ -234,7 +237,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	 * Sorts the {@link IEntity}s based on the {@link Comparator} supplied. Sort is stable.
 	 * @param pEntityComparator
 	 */
-	public void sortChildren(final Comparator<IEntity> pEntityComparator);
+	public void sortChildren(final IEntityComparator pEntityComparator);
 
 	public boolean detachSelf();
 

@@ -1,12 +1,12 @@
 package org.andengine.entity.scene.menu.item.decorator;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.IEntityComparator;
 import org.andengine.entity.IEntityMatcher;
 import org.andengine.entity.IEntityParameterCallable;
 import org.andengine.entity.modifier.IEntityModifier;
@@ -191,6 +191,21 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public float getAlpha() {
 		return this.mMenuItem.getAlpha();
+	}
+
+	@Override
+	public void setRed(final float pRed) {
+		this.mMenuItem.setRed(pRed);
+	}
+
+	@Override
+	public void setGreen(final float pGreen) {
+		this.mMenuItem.setGreen(pGreen);
+	}
+
+	@Override
+	public void setBlue(final float pBlue) {
+		this.mMenuItem.setBlue(pBlue);
 	}
 
 	@Override
@@ -633,7 +648,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void sortChildren(final Comparator<IEntity> pEntityComparator) {
+	public void sortChildren(final IEntityComparator pEntityComparator) {
 		this.mMenuItem.sortChildren(pEntityComparator);
 	}
 

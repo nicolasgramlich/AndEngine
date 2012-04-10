@@ -1,7 +1,6 @@
 package org.andengine.entity;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import org.andengine.engine.camera.Camera;
@@ -533,6 +532,36 @@ public class Entity implements IEntity {
 	}
 
 	/**
+	 * @param pRed from <code>0.0f</code> to <code>1.0f</code>
+	 */
+	@Override
+	public void setRed(final float pRed) {
+		if(this.mColor.setRedChecking(pRed)) {
+			this.onUpdateColor();
+		}
+	}
+
+	/**
+	 * @param pGreen from <code>0.0f</code> to <code>1.0f</code>
+	 */
+	@Override
+	public void setGreen(final float pGreen) {
+		if(this.mColor.setGreenChecking(pGreen)) {
+			this.onUpdateColor();
+		}
+	}
+
+	/**
+	 * @param pBlue from <code>0.0f</code> to <code>1.0f</code>
+	 */
+	@Override
+	public void setBlue(final float pBlue) {
+		if(this.mColor.setBlueChecking(pBlue)) {
+			this.onUpdateColor();
+		}
+	}
+
+	/**
 	 * @param pAlpha from <code>0.0f</code> (transparent) to <code>1.0f</code> (opaque)
 	 */
 	@Override
@@ -749,7 +778,7 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void sortChildren(final Comparator<IEntity> pEntityComparator) {
+	public void sortChildren(final IEntityComparator pEntityComparator) {
 		if(this.mChildren == null) {
 			return;
 		}

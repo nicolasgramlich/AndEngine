@@ -2,19 +2,19 @@
 
 ## Building
 
+### Eclipse
  * AndEngine has to be build with ADT-17 or higher!
- * Building with IntelliJ IDEA
- 	* AndEngine relies on ADT to auto-generate a "BuildConfig" class. IntelliJ IDEA (as of 11.1.1) has not fully integrated with ADT-17+. In order to build AndEngine with IntelliJ IDEA, you can simply add the following class yourself in the root package (org.andengine): 
- 	
- 	```java
- 	package org.andengine;
 
-    public final class BuildConfig {
-    
+### IntelliJ IDEA
+ * AndEngine relies on ADT to auto-generate a "BuildConfig" class. IntelliJ IDEA (as of 11.1.1) has not fully integrated with ADT-17+. In order to build AndEngine with IntelliJ IDEA, you can simply add the following class yourself in the root package (org.andengine): 
+ 	
+```java
+package org.andengine;
+
+public final class BuildConfig { 
     public final static boolean DEBUG = true;
-    
-    }
-    ```
+}
+```
 
 
 ## Branches

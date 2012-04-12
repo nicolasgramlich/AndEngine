@@ -6,6 +6,7 @@ import org.andengine.opengl.font.exception.FontException;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.map.SparseArrayUtils;
 import org.andengine.util.color.Color;
 import org.andengine.util.math.MathUtils;
 
@@ -228,7 +229,7 @@ public class Font implements IFont {
 			}
 
 			if((this.mCurrentTextureY + letterHeight) >= textureHeight) {
-				throw new FontException("Not enough space for Letter: '" + pCharacter + "' on the Texture");
+				throw new FontException("Not enough space for " + Letter.class.getSimpleName() + ": '" + pCharacter + "' on the " + this.mTexture.getClass().getSimpleName() + ". Existing Letters: " + SparseArrayUtils.toString(this.mManagedCharacterToLetterMap));
 			}
 
 			this.mCurrentTextureYHeightMax = Math.max(letterHeight, this.mCurrentTextureYHeightMax);

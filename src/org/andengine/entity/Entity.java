@@ -716,12 +716,8 @@ public class Entity implements IEntity {
 
 	@Override
 	public void attachChild(final IEntity pEntity) throws IllegalStateException {
-		if(pEntity.hasParent()) {
-			final String entityName = pEntity.getClass().getSimpleName();
-			final String currentParentName = pEntity.getParent().getClass().getSimpleName();
-			final String newParentName = this.getClass().getSimpleName();
-			throw new IllegalStateException("pEntity '" + entityName +"' already has a parent '" + currentParentName + ". New parent: '" + newParentName + "'!");
-		}
+		this.assertEntityHasNoParent(pEntity);
+
 		if(this.mChildren == null) {
 			this.allocateChildren();
 		}
@@ -732,9 +728,8 @@ public class Entity implements IEntity {
 
 	@Override
 	public boolean attachChild(final IEntity pEntity, final int pIndex) throws IllegalStateException {
-		if(pEntity.hasParent()) {
-			throw new IllegalStateException("pEntity already has a parent!");
-		}
+		this.assertEntityHasNoParent(pEntity);
+
 		if (this.mChildren == null) {
 			this.allocateChildren();
 		}
@@ -1383,6 +1378,15 @@ public class Entity implements IEntity {
 			for(int i = 0; i < entityCount; i++) {
 				entities.get(i).onUpdate(pSecondsElapsed);
 			}
+		}
+	}
+
+	private void assertEntityHasNoParent(final IEntity pEntity) throws IllegalStateException {
+		if(pEntity.hasParent()) {
+			final String entityName = pEntity.getClass().getSimpleName();
+			final String currentParentName = pEntity.getParent().getClass().getSimpleName();
+			final String newParentName = this.getClass().getSimpleName();
+			throw new IllegalStateException("pEntity '" + entityName +"' already has a parent '" + currentParentName + ". New parent: '" + newParentName + "'!");
 		}
 	}
 

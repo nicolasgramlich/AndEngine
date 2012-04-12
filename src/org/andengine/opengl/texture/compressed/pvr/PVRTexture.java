@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.andengine.BuildConfig;
 import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
@@ -22,6 +23,7 @@ import org.andengine.util.debug.Debug;
 import org.andengine.util.math.MathUtils;
 
 import android.opengl.GLES20;
+import android.util.DebugUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -104,6 +106,20 @@ public abstract class PVRTexture extends Texture {
 			throw new IllegalArgumentException("Invalid PVRTextureFormat: '" + this.mPVRTextureHeader.getPVRTextureFormat() + "'.");
 		}
 
+		if(this.hasMipMaps()) {
+			switch(pTextureOptions.mMinFilter){
+				case GLES20.GL_NEAREST_MIPMAP_NEAREST:
+				case GLES20.GL_NEAREST_MIPMAP_LINEAR:
+				case GLES20.GL_LINEAR_MIPMAP_NEAREST:
+				case GLES20.GL_LINEAR_MIPMAP_LINEAR:
+					break;
+				default:
+					if(BuildConfig.DEBUG) {
+						Debug.w("This '" + this.getClass().getSimpleName() + "' contains mipmaps, but the provided '" + pTextureOptions.getClass().getSimpleName() + "' don't have MipMaps enabled on the MinFilter!");
+					}
+			}
+		}
+
 		this.mUpdateOnHardwareNeeded = true;
 	}
 
@@ -119,6 +135,10 @@ public abstract class PVRTexture extends Texture {
 	@Override
 	public int getHeight() {
 		return this.mPVRTextureHeader.getHeight();
+	}
+
+	public boolean hasMipMaps() {
+		return this.mPVRTextureHeader.getNumMipmaps() > 0;
 	}
 
 	public PVRTextureHeader getPVRTextureHeader() {

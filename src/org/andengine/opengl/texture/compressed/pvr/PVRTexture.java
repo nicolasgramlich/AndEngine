@@ -23,7 +23,6 @@ import org.andengine.util.debug.Debug;
 import org.andengine.util.math.MathUtils;
 
 import android.opengl.GLES20;
-import android.util.DebugUtils;
 
 /**
  * (c) 2010 Nicolas Gramlich

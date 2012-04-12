@@ -717,7 +717,7 @@ public class Entity implements IEntity {
 	@Override
 	public void attachChild(final IEntity pEntity) throws IllegalStateException {
 		if(pEntity.hasParent()) {
-			throw new IllegalStateException("pEntity already has a parent!");
+			throw new IllegalStateException("pEntity (" + pEntity.getClass().getName() +") already has a parent!");
 		}
 		if(this.mChildren == null) {
 			this.allocateChildren();

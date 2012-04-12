@@ -49,8 +49,15 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 	public SequenceModifier(final ISubSequenceModifierListener<T> pSubSequenceModifierListener, final IModifierListener<T> pModifierListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
 		super(pModifierListener);
 
-		if (pModifiers.length == 0) {
+		final int modifierCount = pModifiers.length;
+		if(modifierCount == 0) {
 			throw new IllegalArgumentException("pModifiers must not be empty!");
+		}
+
+		for(int i = 0; i < modifierCount; i++) {
+			if(pModifiers[i] == null) {
+				throw new IllegalArgumentException("Illegal 'null' " + IModifier.class.getSimpleName() + " detected at position: '" + i + "'!");
+			}
 		}
 
 		this.mSubSequenceModifierListener = pSubSequenceModifierListener;
@@ -68,12 +75,12 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 		final IModifier<T>[] otherModifiers = pSequenceModifier.mSubSequenceModifiers;
 		this.mSubSequenceModifiers = new IModifier[otherModifiers.length];
 
-		final IModifier<T>[] shapeModifiers = this.mSubSequenceModifiers;
-		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
-			shapeModifiers[i] = otherModifiers[i].deepCopy();
+		final IModifier<T>[] subSequenceModifiers = this.mSubSequenceModifiers;
+		for(int i = subSequenceModifiers.length - 1; i >= 0; i--) {
+			subSequenceModifiers[i] = otherModifiers[i].deepCopy();
 		}
 
-		shapeModifiers[0].addModifierListener(this);
+		subSequenceModifiers[0].addModifierListener(this);
 	}
 
 	@Override
@@ -139,9 +146,9 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 
 		this.mSubSequenceModifiers[0].addModifierListener(this);
 
-		final IModifier<T>[] shapeModifiers = this.mSubSequenceModifiers;
-		for(int i = shapeModifiers.length - 1; i >= 0; i--) {
-			shapeModifiers[i].reset();
+		final IModifier<T>[] subSequenceModifiers = this.mSubSequenceModifiers;
+		for(int i = subSequenceModifiers.length - 1; i >= 0; i--) {
+			subSequenceModifiers[i].reset();
 		}
 	}
 

@@ -146,11 +146,8 @@ public abstract class PVRTexture extends Texture {
 
 		final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / DataConstants.BITS_PER_BYTE;
 
-		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(width) && MathUtils.isPowerOfTwo(height) && this.mPVRTextureHeader.mPVRTextureFormat == PVRTextureFormat.RGBA_8888;
-		if(!useDefaultAlignment) {
-			/* Adjust unpack alignment. */
-			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
-		}
+		/* Adjust unpack alignment. */
+		GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 
 		int currentLevel = 0;
 		int currentPixelDataOffset = 0;
@@ -173,10 +170,8 @@ public abstract class PVRTexture extends Texture {
 			currentLevel++;
 		}
 
-		if(!useDefaultAlignment) {
-			/* Restore default unpack alignment. */
-			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
-		}
+		/* Restore default unpack alignment. */
+		GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 	}
 
 	// ===========================================================

@@ -58,6 +58,8 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount, final ILoopModifierListener<T> pLoopModifierListener, final IModifierListener<T> pModifierListener) {
 		super(pModifierListener);
 
+		this.assertNoNullModifier(pModifier);
+
 		this.mModifier = pModifier;
 		this.mLoopCount = pLoopCount;
 		this.mLoopModifierListener = pLoopModifierListener;

@@ -49,16 +49,11 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 	public SequenceModifier(final ISubSequenceModifierListener<T> pSubSequenceModifierListener, final IModifierListener<T> pModifierListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
 		super(pModifierListener);
 
-		final int modifierCount = pModifiers.length;
-		if(modifierCount == 0) {
+		if(pModifiers.length == 0) {
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}
 
-		for(int i = 0; i < modifierCount; i++) {
-			if(pModifiers[i] == null) {
-				throw new IllegalArgumentException("Illegal 'null' " + IModifier.class.getSimpleName() + " detected at position: '" + i + "'!");
-			}
-		}
+		this.assertNoNullModifier(pModifiers);
 
 		this.mSubSequenceModifierListener = pSubSequenceModifierListener;
 		this.mSubSequenceModifiers = pModifiers;

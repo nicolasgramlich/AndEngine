@@ -585,11 +585,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public boolean attachChild(final IEntity pEntity, final int pIndex) {
-		return this.mMenuItem.attachChild(pEntity, pIndex);
-	}
-
-	@Override
 	public IEntity getFirstChild() {
 		return this.mMenuItem.getFirstChild();
 	}
@@ -600,23 +595,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public IEntity getChild(final int pIndex) {
-		return this.mMenuItem.getChild(pIndex);
+	public IEntity getChild(final int pTag) {
+		return this.mMenuItem.getChild(pTag);
 	}
 
 	@Override
 	public IEntity getChild(IEntityMatcher pEntityMatcher) {
 		return this.mMenuItem.getChild(pEntityMatcher);
-	}
-
-	@Override
-	public int getChildIndex(final IEntity pEntity) {
-		return this.mMenuItem.getChildIndex(pEntity);
-	}
-
-	@Override
-	public boolean setChildIndex(final IEntity pEntity, final int pIndex) {
-		return this.mMenuItem.setChildIndex(pEntity, pIndex);
 	}
 
 	@Override
@@ -635,16 +620,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 
 	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException {
 		return this.mMenuItem.queryForSubclass(pEntityMatcher, pResult);
-	}
-
-	@Override
-	public boolean swapChildren(final IEntity pEntityA, final IEntity pEntityB) {
-		return this.mMenuItem.swapChildren(pEntityA, pEntityB);
-	}
-
-	@Override
-	public boolean swapChildren(final int pIndexA, final int pIndexB) {
-		return this.mMenuItem.swapChildren(pIndexA, pIndexB);
 	}
 
 	@Override
@@ -670,6 +645,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public boolean detachChild(final IEntity pEntity) {
 		return this.mMenuItem.detachChild(pEntity);
+	}
+
+	@Override
+	public IEntity detachChild(final int pTag) {
+		return this.mMenuItem.detachChild(pTag);
 	}
 
 	@Override

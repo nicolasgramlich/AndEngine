@@ -190,14 +190,11 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public void onDetached();
 
 	public void attachChild(final IEntity pEntity);
-	public boolean attachChild(final IEntity pEntity, final int pIndex);
 
-	public IEntity getChild(final int pIndex);
+	public IEntity getChild(final int pTag);
 	public IEntity getChild(final IEntityMatcher pEntityMatcher);
 	public IEntity getFirstChild();
 	public IEntity getLastChild();
-	public int getChildIndex(final IEntity pEntity);
-	public boolean setChildIndex(final IEntity pEntity, final int pIndex);
 
 	/**
 	 * @param pEntityMatcher
@@ -223,9 +220,6 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	 * @throws ClassCastException when the supplied {@link IEntityMatcher} matched a {@link IEntity} that was not of the requested subtype.
 	 */
 	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException;
-
-	public boolean swapChildren(final int pIndexA, final int pIndexB);
-	public boolean swapChildren(final IEntity pEntityA, final IEntity pEntityB);
 
 	/**
 	 * Immediately sorts the {@link IEntity}s based on their ZIndex. Sort is stable.
@@ -254,6 +248,14 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	 * Update-Thread or the GL-Thread!</b>
 	 */
 	public boolean detachChild(final IEntity pEntity);
+	/**
+	 * <b><i>WARNING:</i> This function should be called from within
+	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered
+	 * to a {@link Scene} or the {@link Engine} itself, because otherwise
+	 * it may throw an {@link IndexOutOfBoundsException} in the
+	 * Update-Thread or the GL-Thread!</b>
+	 */
+	public IEntity detachChild(final int pTag);
 	/**
 	 * <b><i>WARNING:</i> This function should be called from within
 	 * {@link RunnableHandler#postRunnable(Runnable)} which is registered

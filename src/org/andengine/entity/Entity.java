@@ -11,7 +11,6 @@ import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
-import org.andengine.util.adt.list.ListUtils;
 import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.call.ParameterCallable;
@@ -617,16 +616,25 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public IEntity getChild(final int pIndex) {
+	public IEntity getChild(final int pTag) {
 		if(this.mChildren == null) {
 			return null;
 		}
-		return this.mChildren.get(pIndex);
+		for(int i = this.mChildren.size() - 1; i >= 0; i--) {
+			final IEntity child = this.mChildren.get(i);
+			if(child.getTag() == pTag) {
+				return child;
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public IEntity getChild(final IEntityMatcher pEntityMatcher) {
-		return this.getChild(this.mChildren.indexOf(pEntityMatcher));
+		if(this.mChildren == null) {
+			return null;
+		}
+		return this.mChildren.get(pEntityMatcher);
 	}
 
 	@Override
@@ -643,28 +651,6 @@ public class Entity implements IEntity {
 			return null;
 		}
 		return this.mChildren.get(this.mChildren.size() - 1);
-	}
-
-	@Override
-	public int getChildIndex(final IEntity pEntity) {
-		if ((this.mChildren == null) || (pEntity.getParent() != this)) {
-			return -1;
-		}
-		return this.mChildren.indexOf(pEntity);
-	}
-
-	@Override
-	public boolean setChildIndex(final IEntity pEntity, final int pIndex) {
-		if ((this.mChildren == null) || (pEntity.getParent() != this)) {
-			return false;
-		}
-		try {
-			this.mChildren.remove(pEntity);
-			this.mChildren.add(pIndex, pEntity);
-			return true;
-		} catch (final IndexOutOfBoundsException e) {
-			return false;
-		}
 	}
 
 	@Override
@@ -739,38 +725,6 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public boolean attachChild(final IEntity pEntity, final int pIndex) throws IllegalStateException {
-		this.assertEntityHasNoParent(pEntity);
-
-		if (this.mChildren == null) {
-			this.allocateChildren();
-		}
-		try {
-			this.mChildren.add(pIndex, pEntity);
-			pEntity.setParent(this);
-			pEntity.onAttached();
-			return true;
-		} catch (final IndexOutOfBoundsException e) {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean swapChildren(final IEntity pEntityA, final IEntity pEntityB) {
-		return this.swapChildren(this.getChildIndex(pEntityA), this.getChildIndex(pEntityB));
-	}
-
-	@Override
-	public boolean swapChildren(final int pIndexA, final int pIndexB) {
-		try {
-			ListUtils.swap(this.mChildren, pIndexA, pIndexB);
-			return true;
-		} catch (final IndexOutOfBoundsException e) {
-			return false;
-		}
-	}
-
-	@Override
 	public void sortChildren() {
 		this.sortChildren(true);
 	}
@@ -801,6 +755,21 @@ public class Entity implements IEntity {
 			return false;
 		}
 		return this.mChildren.remove(pEntity, Entity.PARAMETERCALLABLE_DETACHCHILD);
+	}
+
+	@Override
+	public IEntity detachChild(final int pTag) {
+		if(this.mChildren == null) {
+			return null;
+		}
+		for(int i = this.mChildren.size() - 1; i >= 0; i--) {
+			if(this.mChildren.get(i).getTag() == pTag) {
+				final IEntity removed = this.mChildren.remove(i);
+				Entity.PARAMETERCALLABLE_DETACHCHILD.call(removed);
+				return removed;
+			}
+		}
+		return null;
 	}
 
 	@Override

@@ -44,6 +44,17 @@ public class SmartList<T> extends ArrayList<T> {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	public T get(final IMatcher<T> pMatcher) {
+		final int size = this.size();
+		for(int i = 0; i < size; i++) {
+			final T item = this.get(i);
+			if(pMatcher.matches(item)) {
+				return item;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * @param pItem the item to remove.
 	 * @param pParameterCallable to be called with the removed item, if it was removed.

@@ -469,6 +469,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public int getTag() {
+		return this.mMenuItem.getTag();
+	}
+
+	@Override
+	public void setTag(final int pTag) {
+		this.mMenuItem.setTag(pTag);
+	}
+
+	@Override
 	public int getZIndex() {
 		return this.mMenuItem.getZIndex();
 	}

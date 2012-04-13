@@ -29,6 +29,8 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	// Constants
 	// ===========================================================
 
+	public static final int TAG_INVALID = Integer.MIN_VALUE;
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -44,6 +46,9 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 
 	public boolean isChildrenIgnoreUpdate();
 	public void setChildrenIgnoreUpdate(boolean pChildrenIgnoreUpdate);
+
+	public int getTag();
+	public void setTag(final int pTag);
 
 	public int getZIndex();
 	public void setZIndex(final int pZIndex);

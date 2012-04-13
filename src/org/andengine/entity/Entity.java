@@ -57,6 +57,8 @@ public class Entity implements IEntity {
 	protected boolean mChildrenIgnoreUpdate;
 	protected boolean mChildrenSortPending;
 
+	protected int mTag = IEntity.TAG_INVALID;
+
 	protected int mZIndex = 0;
 
 	private IEntity mParent;
@@ -202,6 +204,16 @@ public class Entity implements IEntity {
 	@Override
 	public void setParent(final IEntity pEntity) {
 		this.mParent = pEntity;
+	}
+
+	@Override
+	public int getTag() {
+		return this.mTag;
+	}
+
+	@Override
+	public void setTag(final int pTag) {
+		this.mTag = pTag;
 	}
 
 	@Override

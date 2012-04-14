@@ -81,7 +81,7 @@ public class SoundManager extends BaseAudioManager<Sound> implements OnLoadCompl
 	}
 	
 	@Override
-	public void onLoadComplete(final SoundPool pSoundPool, final int pSoundID, final int pStatus) {
+	public synchronized void onLoadComplete(final SoundPool pSoundPool, final int pSoundID, final int pStatus) {
 		if(pStatus == SoundManager.SOUND_STATUS_OK) {
 			final Sound sound = this.mSoundMap.get(pSoundID);
 			if(sound == null) {

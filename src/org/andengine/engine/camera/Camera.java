@@ -5,12 +5,11 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.UpdateHandlerList;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Line;
-import org.andengine.entity.shape.RectangularShape;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
 import org.andengine.util.adt.transformation.Transformation;
-import org.andengine.util.algorithm.collision.RectangularShapeCollisionChecker;
+import org.andengine.util.algorithm.collision.EntityCollisionChecker;
 import org.andengine.util.math.MathUtils;
 
 /**
@@ -277,15 +276,15 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public boolean isLineVisible(final Line pLine) {
-		return RectangularShapeCollisionChecker.isVisible(this, pLine);
+		return EntityCollisionChecker.isVisible(this, pLine);
 	}
 
-	public boolean isRectangularShapeVisible(final RectangularShape pRectangularShape) {
-		return RectangularShapeCollisionChecker.isVisible(this, pRectangularShape);
+	public boolean isEntityVisible(final IEntity pEntity) {
+		return EntityCollisionChecker.isVisible(this, pEntity);
 	}
 
-	public boolean isRectangularShapeVisible(final float pX, final float pY, final float pWidth, final float pHeight, final Transformation pLocalToSceneTransformation) {
-		return RectangularShapeCollisionChecker.isVisible(this, pX, pY, pWidth, pHeight, pLocalToSceneTransformation);
+	public boolean isEntityVisible(final float pX, final float pY, final float pWidth, final float pHeight, final Transformation pLocalToSceneTransformation) {
+		return EntityCollisionChecker.isVisible(this, pX, pY, pWidth, pHeight, pLocalToSceneTransformation);
 	}
 
 	public void onApplySceneMatrix(final GLState pGLState) {

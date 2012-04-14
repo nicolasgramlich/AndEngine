@@ -3,7 +3,7 @@ package org.andengine.entity.text;
 import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.shape.Shape;
 import org.andengine.entity.text.exception.OutOfCharactersException;
 import org.andengine.entity.text.vbo.HighPerformanceTextVertexBufferObject;
 import org.andengine.entity.text.vbo.ITextVertexBufferObject;
@@ -33,7 +33,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 10:54:59 - 03.04.2010
  */
-public class Text extends RectangularShape {
+public class Text extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -147,7 +147,7 @@ public class Text extends RectangularShape {
 	}
 
 	public Text(final float pX, final float pY, final IFont pFont, final CharSequence pText, final int pCharactersMaximum, final TextOptions pTextOptions, final ITextVertexBufferObject pTextVertexBufferObject, final ShaderProgram pShaderProgram) {
-		super(pX, pY, 0, 0, pShaderProgram);
+		super(pX, pY, pShaderProgram);
 
 		this.mFont = pFont;
 		this.mTextOptions = pTextOptions;
@@ -211,16 +211,10 @@ public class Text extends RectangularShape {
 			this.mLineAlignmentWidth = this.mTextOptions.mAutoWrapWidth;
 		}
 
-		super.mWidth = this.mLineAlignmentWidth;
-		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * this.mTextOptions.mLeading;
+		final float width = this.mLineAlignmentWidth;
+		final float height = lineCount * font.getLineHeight() + (lineCount - 1) * this.mTextOptions.mLeading;
 
-		this.mRotationCenterX = super.mWidth * 0.5f;
-		this.mRotationCenterY = super.mHeight * 0.5f;
-
-		this.mScaleCenterX = this.mRotationCenterX;
-		this.mScaleCenterY = this.mRotationCenterY;
-
-		this.onUpdateVertices();
+		this.setSize(width, height);
 	}
 
 	public ArrayList<CharSequence> getLines() {

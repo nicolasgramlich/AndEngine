@@ -11,6 +11,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.runnable.RunnableHandler;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
+import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.util.IDisposable;
 import org.andengine.util.adt.transformation.Transformation;
@@ -24,12 +25,30 @@ import org.andengine.util.color.Color;
  * @author Nicolas Gramlich
  * @since 11:20:25 - 08.03.2010
  */
-public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
+public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITouchArea {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	public static final int TAG_INVALID = Integer.MIN_VALUE;
+	public static final int TAG_DEFAULT = 0;
+	public static final int ZINDEX_DEFAULT = 0;
+
+	public static final float OFFSET_CENTER_X_DEFAULT = 0.5f;
+	public static final float OFFSET_CENTER_Y_DEFAULT = 0.5f;
+
+	public static final float ROTATION_DEFAULT = 0;
+	public static final float ROTATION_CENTER_X_DEFAULT = 0.5f;
+	public static final float ROTATION_CENTER_Y_DEFAULT = 0.5f;
+
+	public static final float SCALE_X_DEFAULT = 1;
+	public static final float SCALE_Y_DEFAULT = 1;
+	public static final float SCALE_CENTER_X_DEFAULT = 0.5f;
+	public static final float SCALE_CENTER_Y_DEFAULT = 0.5f;
+
+	public static final float SKEW_X_DEFAULT = 0;
+	public static final float SKEW_Y_DEFAULT = 0;
+	public static final float SKEW_CENTER_X_DEFAULT = 0.5f;
+	public static final float SKEW_CENTER_Y_DEFAULT = 0.5f;
 
 	// ===========================================================
 	// Methods
@@ -64,6 +83,32 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 
 	public void setPosition(final IEntity pOtherEntity);
 	public void setPosition(final float pX, final float pY);
+
+	public float getWidth();
+	public float getHeight();
+
+	/**
+	 * It is very likely you do NOT want to use this method!
+	 * @return
+	 */
+	@Deprecated
+	public float getWidthScaled();
+	/**
+	 * It is very likely you do NOT want to use this method!
+	 * @return
+	 */
+	@Deprecated
+	public float getHeightScaled();
+
+	public void setHeight(final float pHeight);
+	public void setWidth(final float pWidth);
+	public void setSize(final float pWidth, final float pHeight);
+
+	public float getOffsetCenterX();
+	public float getOffsetCenterY();
+	public void setOffsetCenterX(final float pOffsetCenterX);
+	public void setOffsetCenterY(final float pOffsetCenterY);
+	public void setOffsetCenter(final float pOffsetCenterX, final float pOffsetCenterY);
 
 	public boolean isRotated();
 	public float getRotation();
@@ -103,7 +148,11 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public void setSkewCenterY(final float pSkewCenterY);
 	public void setSkewCenter(final float pSkewCenterX, final float pSkewCenterY);
 
-	public boolean isRotatedOrScaledOrSkewed();
+	public boolean isRotatedOrScaledOrSkewed(); // TODO What about the new offset?
+
+	public void setAnchorCenterX(final float pAnchorCenterX);
+	public void setAnchorCenterY(final float pAnchorCenterY);
+	public void setAnchorCenter(final float pAnchorCenterX, final float pAnchorCenterY);
 
 	public float getRed();
 	public float getGreen();
@@ -293,6 +342,8 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	 * @return <code>true</code> when this object is visible by the {@link Camera}, <code>false</code> otherwise.
 	 */
 	public boolean isCulled(final Camera pCamera);
+
+	public boolean collidesWith(final IEntity pOtherEntity);
 
 	public void setUserData(final Object pUserData);
 	public Object getUserData();

@@ -1,10 +1,9 @@
 package org.andengine.entity.primitive;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.vbo.HighPerformanceLineVertexBufferObject;
 import org.andengine.entity.primitive.vbo.ILineVertexBufferObject;
-import org.andengine.entity.shape.IShape;
-import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.shape.Shape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
 import org.andengine.opengl.shader.constants.ShaderProgramConstants;
@@ -15,7 +14,6 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.andengine.util.algorithm.collision.LineCollisionChecker;
-import org.andengine.util.algorithm.collision.RectangularShapeCollisionChecker;
 import org.andengine.util.exception.MethodNotSupportedException;
 
 import android.opengl.GLES20;
@@ -265,14 +263,12 @@ public class Line extends Shape {
 	}
 
 	@Override
-	public boolean collidesWith(final IShape pOtherShape) {
-		if(pOtherShape instanceof Line) {
-			final Line otherLine = (Line) pOtherShape;
+	public boolean collidesWith(final IEntity pOtherEntity) {
+		if(pOtherEntity instanceof Line) {
+			final Line otherLine = (Line) pOtherEntity;
 			return LineCollisionChecker.checkLineCollision(this.mX, this.mY, this.mX2, this.mY2, otherLine.mX, otherLine.mY, otherLine.mX2, otherLine.mY2);
-		} else if(pOtherShape instanceof RectangularShape) {
-			return RectangularShapeCollisionChecker.checkCollision((RectangularShape) pOtherShape, this);
 		} else {
-			return false;
+			return super.collidesWith(pOtherEntity);
 		}
 	}
 

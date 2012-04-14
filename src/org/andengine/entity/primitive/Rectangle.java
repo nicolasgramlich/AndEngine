@@ -3,7 +3,7 @@ package org.andengine.entity.primitive;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.vbo.HighPerformanceRectangleVertexBufferObject;
 import org.andengine.entity.primitive.vbo.IRectangleVertexBufferObject;
-import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.shape.Shape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
 import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
@@ -22,7 +22,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 12:18:49 - 13.03.2010
  */
-public class Rectangle extends RectangularShape {
+public class Rectangle extends Shape {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -65,11 +65,12 @@ public class Rectangle extends RectangularShape {
 	}
 
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final IRectangleVertexBufferObject pRectangleVertexBufferObject) {
-		super(pX, pY, pWidth, pHeight, PositionColorShaderProgram.getInstance());
+		super(pX, pY, PositionColorShaderProgram.getInstance());
 
 		this.mRectangleVertexBufferObject = pRectangleVertexBufferObject;
 
-		this.onUpdateVertices();
+		this.setSize(pWidth, pHeight);
+
 		this.onUpdateColor();
 
 		this.setBlendingEnabled(true);

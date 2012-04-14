@@ -2,7 +2,6 @@ package org.andengine.entity.shape;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
@@ -111,8 +110,24 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	@Override
-	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		return false;
+	public void setWidth(final float pWidth) {
+		super.setWidth(pWidth);
+
+		this.onUpdateVertices();
+	}
+
+	@Override
+	public void setHeight(final float pHeight) {
+		super.setHeight(pHeight);
+
+		this.onUpdateVertices();
+	}
+
+	@Override
+	public void setSize(final float pWidth, final float pHeight) {
+		super.setSize(pWidth, pHeight);
+
+		this.onUpdateVertices();
 	}
 
 	@Override

@@ -1,11 +1,10 @@
 package org.andengine.entity.primitive;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.vbo.DrawMode;
 import org.andengine.entity.primitive.vbo.HighPerformanceMeshVertexBufferObject;
 import org.andengine.entity.primitive.vbo.IMeshVertexBufferObject;
-import org.andengine.entity.shape.IShape;
-import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.shape.Shape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
 import org.andengine.opengl.shader.constants.ShaderProgramConstants;
@@ -140,15 +139,15 @@ public class Mesh extends Shape {
 	}
 
 	@Override
-	public boolean collidesWith(final IShape pOtherShape) {
-		if(pOtherShape instanceof Line) {
+	public boolean collidesWith(final IEntity pOtherEntity) {
+		if(pOtherEntity instanceof Mesh) {
 			// TODO
-			return false;
-		} else if(pOtherShape instanceof RectangularShape) {
+			return super.collidesWith(pOtherEntity);
+		} else if(pOtherEntity instanceof Line) {
 			// TODO
-			return false;
+			return super.collidesWith(pOtherEntity);
 		} else {
-			return false;
+			return super.collidesWith(pOtherEntity);
 		}
 	}
 

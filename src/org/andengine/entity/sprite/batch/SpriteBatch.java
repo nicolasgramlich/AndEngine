@@ -1,7 +1,7 @@
 package org.andengine.entity.sprite.batch;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.shape.IShape;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.shape.Shape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.batch.vbo.HighPerformanceSpriteBatchVertexBufferObject;
@@ -162,7 +162,7 @@ public class SpriteBatch extends Shape {
 	}
 
 	@Override
-	public boolean collidesWith(final IShape pOtherShape) {
+	public boolean collidesWith(final IEntity pOtherEntity) {
 		return false;
 	}
 

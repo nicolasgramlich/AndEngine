@@ -2,8 +2,8 @@ package org.andengine.entity.particle.modifier;
 
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
-import org.andengine.entity.shape.RectangularShape;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -12,7 +12,7 @@ import org.andengine.entity.shape.RectangularShape;
  * @author Nicolas Gramlich
  * @since 21:21:10 - 14.03.2010
  */
-public class OffCameraExpireParticleModifier<T extends RectangularShape> implements IParticleModifier<T> {
+public class OffCameraExpireParticleModifier<T extends IEntity> implements IParticleModifier<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -50,7 +50,7 @@ public class OffCameraExpireParticleModifier<T extends RectangularShape> impleme
 
 	@Override
 	public void onUpdateParticle(final Particle<T> pParticle) {
-		if(!this.mCamera.isRectangularShapeVisible(pParticle.getEntity())) {
+		if(!this.mCamera.isEntityVisible(pParticle.getEntity())) {
 			pParticle.setExpired(true);
 		}
 	}

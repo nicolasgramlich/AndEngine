@@ -21,6 +21,9 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	// Fields
 	// ===========================================================
 
+	protected float mBaseWidth;
+	protected float mBaseHeight;
+
 	protected float mWidth;
 	protected float mHeight;
 
@@ -30,6 +33,9 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 
 	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final ShaderProgram pShaderProgram) {
 		super(pX, pY, pShaderProgram);
+
+		this.mBaseWidth = pWidth;
+		this.mBaseHeight = pHeight;
 
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
@@ -51,6 +57,16 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	@Override
 	public float getHeight() {
 		return this.mHeight;
+	}
+
+	@Override
+	public float getBaseWidth() {
+		return this.mBaseWidth;
+	}
+
+	@Override
+	public float getBaseHeight() {
+		return this.mBaseHeight;
 	}
 
 	@Override
@@ -86,6 +102,14 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	public void setBaseSize() {
+		if(this.mWidth != this.mBaseWidth || this.mHeight != this.mBaseHeight) {
+			this.mWidth = this.mBaseWidth;
+			this.mHeight = this.mBaseHeight;
+			this.onUpdateVertices();
+		}
+	}
+
 	@Override
 	public boolean isCulled(final Camera pCamera) {
 		return !RectangularShapeCollisionChecker.isVisible(pCamera, this);
@@ -94,6 +118,7 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	@Override
 	public void reset() {
 		super.reset();
+		this.setBaseSize();
 
 		this.resetRotationCenter();
 		this.resetSkewCenter();

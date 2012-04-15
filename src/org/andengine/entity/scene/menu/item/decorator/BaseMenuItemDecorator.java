@@ -124,6 +124,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 	
 	@Override
+	public float getBaseWidth() {
+		return 0;
+	}
+
+	@Override
 	public float getWidthScaled() {
 		return this.mMenuItem.getWidthScaled();
 	}
@@ -133,6 +138,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 		return this.mMenuItem.getHeight();
 	}
 	
+	@Override
+	public float getBaseHeight() {
+		return this.mMenuItem.getBaseHeight();
+	}
+
 	@Override
 	public float getHeightScaled() {
 		return this.mMenuItem.getHeightScaled();
@@ -151,6 +161,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void setSize(final float pWidth, final float pHeight) {
 		this.mMenuItem.setSize(pWidth, pHeight);
+	}
+
+	@Override
+	public float getInitialX() {
+		return this.mMenuItem.getInitialX();
+	}
+
+	@Override
+	public float getInitialY() {
+		return this.mMenuItem.getInitialY();
 	}
 
 	@Override
@@ -411,6 +431,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void clearEntityModifiers() {
 		this.mMenuItem.clearEntityModifiers();
+	}
+
+	@Override
+	public void setInitialPosition() {
+		this.mMenuItem.setInitialPosition();
 	}
 
 	@Override

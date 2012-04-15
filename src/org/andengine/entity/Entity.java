@@ -71,6 +71,9 @@ public class Entity implements IEntity {
 	protected float mX;
 	protected float mY;
 
+	private final float mInitialX;
+	private final float mInitialY;
+
 	protected float mRotation = 0;
 
 	protected float mRotationCenterX = 0;
@@ -108,6 +111,9 @@ public class Entity implements IEntity {
 	}
 
 	public Entity(final float pX, final float pY) {
+		this.mInitialX = pX;
+		this.mInitialY = pY;
+
 		this.mX = pX;
 		this.mY = pY;
 	}
@@ -246,6 +252,16 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public float getInitialX() {
+		return this.mInitialX;
+	}
+
+	@Override
+	public float getInitialY() {
+		return this.mInitialY;
+	}
+
+	@Override
 	public void setPosition(final IEntity pOtherEntity) {
 		this.setPosition(pOtherEntity.getX(), pOtherEntity.getY());
 	}
@@ -254,6 +270,15 @@ public class Entity implements IEntity {
 	public void setPosition(final float pX, final float pY) {
 		this.mX = pX;
 		this.mY = pY;
+
+		this.mLocalToParentTransformationDirty = true;
+		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public void setInitialPosition() {
+		this.mX = this.mInitialX;
+		this.mY = this.mInitialY;
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -1107,6 +1132,8 @@ public class Entity implements IEntity {
 		this.mChildrenVisible = true;
 		this.mChildrenIgnoreUpdate = false;
 
+		this.mX = this.mInitialX;
+		this.mY = this.mInitialY;
 		this.mRotation = 0;
 		this.mScaleX = 1;
 		this.mScaleY = 1;

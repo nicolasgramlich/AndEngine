@@ -1,7 +1,11 @@
 package org.andengine.entity.scene.menu.item;
 
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.vbo.ITiledSpriteVertexBufferObject;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
@@ -31,6 +35,105 @@ public class AnimatedSpriteMenuItem extends AnimatedSprite implements IMenuItem 
 		this.mID = pID;
 	}
 
+	public AnimatedSpriteMenuItem(int pID, float pWidth,
+			float pHeight, ITiledTextureRegion pTiledTextureRegion,
+			ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject,
+			ShaderProgram pShaderProgram) {
+		super(0, 0, pWidth, pHeight, pTiledTextureRegion,
+				pTiledSpriteVertexBufferObject, pShaderProgram);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID, float pWidth,
+			float pHeight, ITiledTextureRegion pTiledTextureRegion,
+			ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject) {
+		super(0, 0, pWidth, pHeight, pTiledTextureRegion,
+				pTiledSpriteVertexBufferObject);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID, float pWidth,
+			float pHeight, ITiledTextureRegion pTiledTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager,
+			DrawType pDrawType, ShaderProgram pShaderProgram) {
+		super(0, 0, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObjectManager,
+				pDrawType, pShaderProgram);
+		this.mID = pID;
+	}
+
+
+	public AnimatedSpriteMenuItem(int pID, float pWidth,
+			float pHeight, ITiledTextureRegion pTiledTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager,
+			DrawType pDrawType) {
+		super(0, 0, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObjectManager,
+				pDrawType);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID, float pWidth,
+			float pHeight, ITiledTextureRegion pTiledTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager,
+			ShaderProgram pShaderProgram) {
+		super(0, 0, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObjectManager,
+				pShaderProgram);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID, float pWidth,
+			float pHeight, ITiledTextureRegion pTiledTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(0, 0, pWidth, pHeight, pTiledTextureRegion, pVertexBufferObjectManager);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID,
+			ITiledTextureRegion pTiledTextureRegion,
+			ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject,
+			ShaderProgram pShaderProgram) {
+		super(0, 0, pTiledTextureRegion, pTiledSpriteVertexBufferObject,
+				pShaderProgram);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID,
+			ITiledTextureRegion pTiledTextureRegion,
+			ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject) {
+		super(0, 0, pTiledTextureRegion, pTiledSpriteVertexBufferObject);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID,
+			ITiledTextureRegion pTiledTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager,
+			DrawType pDrawType, ShaderProgram pShaderProgram) {
+		super(0, 0, pTiledTextureRegion, pVertexBufferObjectManager, pDrawType,
+				pShaderProgram);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID,
+			ITiledTextureRegion pTiledTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager,
+			DrawType pDrawType) {
+		super(0, 0, pTiledTextureRegion, pVertexBufferObjectManager, pDrawType);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID,
+			ITiledTextureRegion pTiledTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager,
+			ShaderProgram pShaderProgram) {
+		super(0, 0, pTiledTextureRegion, pVertexBufferObjectManager, pShaderProgram);
+		this.mID = pID;
+	}
+
+	public AnimatedSpriteMenuItem(int pID,
+			ITiledTextureRegion pTiledTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(0, 0, pTiledTextureRegion, pVertexBufferObjectManager);
+		this.mID = pID;
+	}
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

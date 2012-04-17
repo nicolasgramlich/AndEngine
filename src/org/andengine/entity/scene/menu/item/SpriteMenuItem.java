@@ -8,7 +8,7 @@ import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -31,91 +31,73 @@ public class SpriteMenuItem extends Sprite implements IMenuItem {
 
 	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		super(0, 0, pTextureRegion, pVertexBufferObjectManager);
+
 		this.mID = pID;
 	}
 
-	public SpriteMenuItem(final int pID, float pWidth, float pHeight,
-			ITextureRegion pTextureRegion,
-			ISpriteVertexBufferObject pSpriteVertexBufferObject,
-			ShaderProgram pShaderProgram) {
-		super(0, 0, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject,
-				pShaderProgram);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, float pWidth, float pHeight,
-			ITextureRegion pTextureRegion,
-			ISpriteVertexBufferObject pSpriteVertexBufferObject) {
-		super(0, 0, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, float pWidth, float pHeight,
-			ITextureRegion pTextureRegion,
-			VertexBufferObjectManager pVertexBufferObjectManager,
-			DrawType pDrawType, ShaderProgram pShaderProgram) {
-		super(0, 0, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager,
-				pDrawType, pShaderProgram);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, float pWidth, float pHeight,
-			ITextureRegion pTextureRegion,
-			VertexBufferObjectManager pVertexBufferObjectManager,
-			DrawType pDrawType) {
-		super(0, 0, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager,
-				pDrawType);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, float pWidth, float pHeight,
-			ITextureRegion pTextureRegion,
-			VertexBufferObjectManager pVertexBufferObjectManager,
-			ShaderProgram pShaderProgram) {
-		super(0, 0, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager,
-				pShaderProgram);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, float pWidth, float pHeight,
-			ITextureRegion pTextureRegion,
-			VertexBufferObjectManager pVertexBufferObjectManager) {
-		super(0, 0, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, ITextureRegion pTextureRegion,
-			ISpriteVertexBufferObject pVertexBufferObject,
-			ShaderProgram pShaderProgram) {
-		super(0, 0, pTextureRegion, pVertexBufferObject, pShaderProgram);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, ITextureRegion pTextureRegion,
-			ISpriteVertexBufferObject pVertexBufferObject) {
-		super(0, 0, pTextureRegion, pVertexBufferObject);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, ITextureRegion pTextureRegion,
-			VertexBufferObjectManager pVertexBufferObjectManager,
-			DrawType pDrawType, ShaderProgram pShaderProgram) {
-		super(0, 0, pTextureRegion, pVertexBufferObjectManager, pDrawType,
-				pShaderProgram);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, ITextureRegion pTextureRegion,
-			VertexBufferObjectManager pVertexBufferObjectManager,
-			DrawType pDrawType) {
-		super(0, 0, pTextureRegion, pVertexBufferObjectManager, pDrawType);
-		this.mID = pID;
-	}
-
-	public SpriteMenuItem(final int pID, ITextureRegion pTextureRegion,
-			VertexBufferObjectManager pVertexBufferObjectManager,
-			ShaderProgram pShaderProgram) {
+	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
 		super(0, 0, pTextureRegion, pVertexBufferObjectManager, pShaderProgram);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		super(0, 0, pTextureRegion, pVertexBufferObjectManager, pDrawType);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		super(0, 0, pTextureRegion, pVertexBufferObjectManager, pDrawType, pShaderProgram);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pVertexBufferObject) {
+		super(0, 0, pTextureRegion, pVertexBufferObject);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pVertexBufferObject, final ShaderProgram pShaderProgram) {
+		super(0, 0, pTextureRegion, pVertexBufferObject, pShaderProgram);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(0, 0, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		super(0, 0, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, pShaderProgram);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		super(0, 0, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, pDrawType);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		super(0, 0, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, pDrawType, pShaderProgram);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject) {
+		super(0, 0, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject);
+
+		this.mID = pID;
+	}
+
+	public SpriteMenuItem(final int pID, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
+		super(0, 0, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject, pShaderProgram);
+
 		this.mID = pID;
 	}
 

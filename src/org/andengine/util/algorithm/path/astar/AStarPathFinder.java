@@ -4,7 +4,6 @@ import org.andengine.util.adt.list.ShiftList;
 import org.andengine.util.adt.map.LongSparseArray;
 import org.andengine.util.adt.queue.IQueue;
 import org.andengine.util.adt.queue.SortedQueue;
-import org.andengine.util.adt.queue.UniqueQueue;
 import org.andengine.util.adt.spatial.bounds.util.IntBoundsUtils;
 import org.andengine.util.algorithm.path.ICostFunction;
 import org.andengine.util.algorithm.path.IPathFinder;
@@ -186,7 +185,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	private static final class Node implements Comparable<Node> {
+	/* package */ static final class Node implements Comparable<Node> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -265,7 +264,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		// ===========================================================
 
 		public static long calculateID(final int pX, final int pY) {
-			return (((long)pX) << 32) | pY;
+			return (((long)pX) << 32) | (((long)pY) & 0xFFFFFFFFL);
 		}
 
 		public boolean equals(final Node pNode) {

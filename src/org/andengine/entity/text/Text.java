@@ -212,11 +212,7 @@ public class Text extends RectangularShape {
 		}
 
 		super.mWidth = this.mLineAlignmentWidth;
-		super.mBaseWidth = super.mWidth;
-
 		super.mHeight = lineCount * font.getLineHeight() + (lineCount - 1) * this.mTextOptions.mLeading;
-
-		super.mBaseHeight = super.mHeight;
 
 		this.mRotationCenterX = super.mWidth * 0.5f;
 		this.mRotationCenterY = super.mHeight * 0.5f;

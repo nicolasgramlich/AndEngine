@@ -62,10 +62,6 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public void setX(final float pX);
 	public void setY(final float pY);
 
-	public float getInitialX();
-	public float getInitialY();
-
-	public void setInitialPosition();
 	public void setPosition(final IEntity pOtherEntity);
 	public void setPosition(final float pX, final float pY);
 

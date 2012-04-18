@@ -15,6 +15,7 @@
   * Added SharedMemoryVertexBufferObject and ZeroMemoryVertexBufferObject.
   * Enhanced Pool class to be able to have a maximum number of items to permanently hold.
   * Fixed a bug in Entity.getSceneToLocalTransformation.
+  * Fixed Hold/Click/Scroll-Detector when MultiTouch is enabled.
 * Xi Yu
   * Added TextOptions->AutoWrap.CJK.
 

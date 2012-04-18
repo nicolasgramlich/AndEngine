@@ -65,11 +65,9 @@ public class Rectangle extends Shape {
 	}
 
 	public Rectangle(final float pX, final float pY, final float pWidth, final float pHeight, final IRectangleVertexBufferObject pRectangleVertexBufferObject) {
-		super(pX, pY, PositionColorShaderProgram.getInstance());
+		super(pX, pY, pWidth, pHeight, PositionColorShaderProgram.getInstance());
 
 		this.mRectangleVertexBufferObject = pRectangleVertexBufferObject;
-
-		this.setSize(pWidth, pHeight);
 
 		this.onUpdateColor();
 

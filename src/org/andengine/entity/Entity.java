@@ -76,34 +76,34 @@ public class Entity implements IEntity {
 
 	protected float mOffsetCenterX = IEntity.OFFSET_CENTER_X_DEFAULT;
 	protected float mOffsetCenterY = IEntity.OFFSET_CENTER_Y_DEFAULT;
-	private float mAbsoluteOffsetCenterX;
-	private float mAbsoluteOffsetCenterY;
+	protected float mLocalOffsetCenterX;
+	protected float mLocalOffsetCenterY;
 
-	private float mWidth;
-	private float mHeight;
+	protected float mWidth;
+	protected float mHeight;
 
 	protected float mRotation = IEntity.ROTATION_DEFAULT;
 
 	protected float mRotationCenterX = IEntity.ROTATION_CENTER_X_DEFAULT;
 	protected float mRotationCenterY = IEntity.ROTATION_CENTER_Y_DEFAULT;
-	private float mAbsoluteRotationCenterX;
-	private float mAbsoluteRotationCenterY;
+	protected float mLocalRotationCenterX;
+	protected float mLocalRotationCenterY;
 
 	protected float mScaleX = IEntity.SCALE_X_DEFAULT;
 	protected float mScaleY = IEntity.SCALE_Y_DEFAULT;
 
 	protected float mScaleCenterX = IEntity.SCALE_CENTER_X_DEFAULT;
 	protected float mScaleCenterY = IEntity.SCALE_CENTER_Y_DEFAULT;
-	private float mAbsoluteScaleCenterX;
-	private float mAbsoluteScaleCenterY;
+	protected float mLocalScaleCenterX;
+	protected float mLocalScaleCenterY;
 
 	protected float mSkewX = IEntity.SKEW_X_DEFAULT;
 	protected float mSkewY = IEntity.SKEW_Y_DEFAULT;
 
 	protected float mSkewCenterX = IEntity.SKEW_CENTER_X_DEFAULT;
 	protected float mSkewCenterY = IEntity.SKEW_CENTER_Y_DEFAULT;
-	private float mAbsoluteSkewCenterX;
-	private float mAbsoluteSkewCenterY;
+	protected float mLocalSkewCenterX;
+	protected float mLocalSkewCenterY;
 
 	private boolean mLocalToParentTransformationDirty = true;
 	private boolean mParentToLocalTransformationDirty = true;
@@ -125,20 +125,17 @@ public class Entity implements IEntity {
 	}
 
 	public Entity(final float pX, final float pY) {
-		this.mX = pX;
-		this.mY = pY;
-
-		this.updateAbsoluteOffsetCenter();
-		this.updateAbsoluteRotationCenter();
-		this.updateAbsoluteScaleCenter();
-		this.updateAbsoluteSkewCenter();
+		this(pX, pY, 0, 0);
 	}
 
 	public Entity(final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.mX = pX;
 		this.mY = pY;
 
-		this.setSize(pWidth, pHeight);
+		this.mWidth = pWidth;
+		this.mHeight = pHeight;
+
+		this.updateLocalCenters();
 	}
 
 	// ===========================================================
@@ -322,10 +319,7 @@ public class Entity implements IEntity {
 	public void setWidth(final float pWidth) {
 		this.mWidth = pWidth;
 
-		this.updateAbsoluteOffsetCenterX();
-		this.updateAbsoluteRotationCenterX();
-		this.updateAbsoluteScaleCenterX();
-		this.updateAbsoluteSkewCenterX();
+		this.updateLocalCentersXs();
 	}
 
 	@Override
@@ -343,10 +337,7 @@ public class Entity implements IEntity {
 	public void setHeight(final float pHeight) {
 		this.mHeight = pHeight;
 
-		this.updateAbsoluteOffsetCenterY();
-		this.updateAbsoluteRotationCenterY();
-		this.updateAbsoluteScaleCenterY();
-		this.updateAbsoluteSkewCenterY();
+		this.updateLocalCentersYs();
 	}
 
 	@Override
@@ -354,10 +345,7 @@ public class Entity implements IEntity {
 		this.mWidth = pWidth;
 		this.mHeight = pHeight;
 
-		this.updateAbsoluteOffsetCenter();
-		this.updateAbsoluteRotationCenter();
-		this.updateAbsoluteScaleCenter();
-		this.updateAbsoluteSkewCenter();
+		this.updateLocalCenters();
 	}
 
 	@Override
@@ -374,7 +362,7 @@ public class Entity implements IEntity {
 	public void setOffsetCenterX(final float pOffsetCenterX) {
 		this.mOffsetCenterX = pOffsetCenterX;
 
-		this.updateAbsoluteOffsetCenterX();
+		this.updateLocalOffsetCenterX();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -384,7 +372,7 @@ public class Entity implements IEntity {
 	public void setOffsetCenterY(final float pOffsetCenterY) {
 		this.mOffsetCenterY = pOffsetCenterY;
 
-		this.updateAbsoluteOffsetCenterY();
+		this.updateLocalOffsetCenterY();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -395,7 +383,7 @@ public class Entity implements IEntity {
 		this.mOffsetCenterX = pOffsetCenterX;
 		this.mOffsetCenterY = pOffsetCenterY;
 
-		this.updateAbsoluteOffsetCenter();
+		this.updateLocalOffsetCenter();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -433,7 +421,7 @@ public class Entity implements IEntity {
 	public void setRotationCenterX(final float pRotationCenterX) {
 		this.mRotationCenterX = pRotationCenterX;
 
-		this.updateAbsoluteRotationCenterX();
+		this.updateLocalRotationCenterX();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -443,7 +431,7 @@ public class Entity implements IEntity {
 	public void setRotationCenterY(final float pRotationCenterY) {
 		this.mRotationCenterY = pRotationCenterY;
 
-		this.updateAbsoluteRotationCenterY();
+		this.updateLocalRotationCenterY();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -454,7 +442,7 @@ public class Entity implements IEntity {
 		this.mRotationCenterX = pRotationCenterX;
 		this.mRotationCenterY = pRotationCenterY;
 
-		this.updateAbsoluteRotationCenter();
+		this.updateLocalRotationCenter();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -519,7 +507,7 @@ public class Entity implements IEntity {
 	public void setScaleCenterX(final float pScaleCenterX) {
 		this.mScaleCenterX = pScaleCenterX;
 
-		this.updateAbsoluteScaleCenterX();
+		this.updateLocalScaleCenterX();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -529,7 +517,7 @@ public class Entity implements IEntity {
 	public void setScaleCenterY(final float pScaleCenterY) {
 		this.mScaleCenterY = pScaleCenterY;
 
-		this.updateAbsoluteScaleCenterY();
+		this.updateLocalScaleCenterY();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -540,7 +528,7 @@ public class Entity implements IEntity {
 		this.mScaleCenterX = pScaleCenterX;
 		this.mScaleCenterY = pScaleCenterY;
 
-		this.updateAbsoluteScaleCenter();
+		this.updateLocalScaleCenter();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -605,7 +593,7 @@ public class Entity implements IEntity {
 	public void setSkewCenterX(final float pSkewCenterX) {
 		this.mSkewCenterX = pSkewCenterX;
 
-		this.updateAbsoluteSkewCenterX();
+		this.updateLocalSkewCenterX();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -615,7 +603,7 @@ public class Entity implements IEntity {
 	public void setSkewCenterY(final float pSkewCenterY) {
 		this.mSkewCenterY = pSkewCenterY;
 
-		this.updateAbsoluteSkewCenterY();
+		this.updateLocalSkewCenterY();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -626,7 +614,7 @@ public class Entity implements IEntity {
 		this.mSkewCenterX = pSkewCenterX;
 		this.mSkewCenterY = pSkewCenterY;
 
-		this.updateAbsoluteSkewCenter();
+		this.updateLocalSkewCenter();
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
@@ -1034,8 +1022,8 @@ public class Entity implements IEntity {
 			final float scaleX = this.mScaleX;
 			final float scaleY = this.mScaleY;
 			if((scaleX != 1) || (scaleY != 1)) {
-				final float scaleCenterX = this.mAbsoluteScaleCenterX;
-				final float scaleCenterY = this.mAbsoluteScaleCenterY;
+				final float scaleCenterX = this.mLocalScaleCenterX;
+				final float scaleCenterY = this.mLocalScaleCenterY;
 
 				/* TODO Check if it is worth to check for scaleCenterX == 0 && scaleCenterY == 0 as the two postTranslate can be saved.
 				 * The same obviously applies for all similar occurrences of this pattern in this class. */
@@ -1049,8 +1037,8 @@ public class Entity implements IEntity {
 			final float skewX = this.mSkewX;
 			final float skewY = this.mSkewY;
 			if((skewX != 0) || (skewY != 0)) {
-				final float skewCenterX = this.mAbsoluteSkewCenterX;
-				final float skewCenterY = this.mAbsoluteSkewCenterY;
+				final float skewCenterX = this.mLocalSkewCenterX;
+				final float skewCenterY = this.mLocalSkewCenterY;
 
 				localToParentTransformation.postTranslate(-skewCenterX, -skewCenterY);
 				localToParentTransformation.postSkew(skewX, skewY);
@@ -1060,8 +1048,8 @@ public class Entity implements IEntity {
 			/* Rotation. */
 			final float rotation = this.mRotation;
 			if(rotation != 0) {
-				final float rotationCenterX = this.mAbsoluteRotationCenterX;
-				final float rotationCenterY = this.mAbsoluteRotationCenterY;
+				final float rotationCenterX = this.mLocalRotationCenterX;
+				final float rotationCenterY = this.mLocalRotationCenterY;
 
 				localToParentTransformation.postTranslate(-rotationCenterX, -rotationCenterY);
 				localToParentTransformation.postRotate(rotation);
@@ -1072,7 +1060,7 @@ public class Entity implements IEntity {
 			localToParentTransformation.postTranslate(this.mX, this.mY);
 
 			/* Offset. */
-			localToParentTransformation.postTranslate(-this.mAbsoluteOffsetCenterX, -this.mAbsoluteOffsetCenterY);
+			localToParentTransformation.postTranslate(-this.mLocalOffsetCenterX, -this.mLocalOffsetCenterY);
 
 			this.mLocalToParentTransformationDirty = false;
 		}
@@ -1086,7 +1074,7 @@ public class Entity implements IEntity {
 			parentToLocalTransformation.setToIdentity();
 
 			/* Offset. */
-			parentToLocalTransformation.postTranslate(this.mAbsoluteOffsetCenterX, this.mAbsoluteOffsetCenterY);
+			parentToLocalTransformation.postTranslate(this.mLocalOffsetCenterX, this.mLocalOffsetCenterY);
 
 			/* Translation. */
 			parentToLocalTransformation.postTranslate(-this.mX, -this.mY);
@@ -1094,36 +1082,36 @@ public class Entity implements IEntity {
 			/* Rotation. */
 			final float rotation = this.mRotation;
 			if(rotation != 0) {
-				final float absoluteRotationCenterX = this.mAbsoluteRotationCenterX;
-				final float absoluteRotationCenterY = this.mAbsoluteRotationCenterY;
+				final float localRotationCenterX = this.mLocalRotationCenterX;
+				final float localRotationCenterY = this.mLocalRotationCenterY;
 
-				parentToLocalTransformation.postTranslate(-absoluteRotationCenterX, -absoluteRotationCenterY);
+				parentToLocalTransformation.postTranslate(-localRotationCenterX, -localRotationCenterY);
 				parentToLocalTransformation.postRotate(-rotation);
-				parentToLocalTransformation.postTranslate(absoluteRotationCenterX, absoluteRotationCenterY);
+				parentToLocalTransformation.postTranslate(localRotationCenterX, localRotationCenterY);
 			}
 
 			/* Skew. */
 			final float skewX = this.mSkewX;
 			final float skewY = this.mSkewY;
 			if((skewX != 0) || (skewY != 0)) {
-				final float absoluteSkewCenterX = this.mAbsoluteSkewCenterX;
-				final float absoluteSkewCenterY = this.mAbsoluteSkewCenterY;
+				final float localSkewCenterX = this.mLocalSkewCenterX;
+				final float localSkewCenterY = this.mLocalSkewCenterY;
 
-				parentToLocalTransformation.postTranslate(-absoluteSkewCenterX, -absoluteSkewCenterY);
+				parentToLocalTransformation.postTranslate(-localSkewCenterX, -localSkewCenterY);
 				parentToLocalTransformation.postSkew(-skewX, -skewY);
-				parentToLocalTransformation.postTranslate(absoluteSkewCenterX, absoluteSkewCenterY);
+				parentToLocalTransformation.postTranslate(localSkewCenterX, localSkewCenterY);
 			}
 
 			/* Scale. */
 			final float scaleX = this.mScaleX;
 			final float scaleY = this.mScaleY;
 			if((scaleX != 1) || (scaleY != 1)) {
-				final float absoluteScaleCenterX = this.mAbsoluteScaleCenterX;
-				final float absoluteScaleCenterY = this.mAbsoluteScaleCenterY;
+				final float localScaleCenterX = this.mLocalScaleCenterX;
+				final float localScaleCenterY = this.mLocalScaleCenterY;
 
-				parentToLocalTransformation.postTranslate(-absoluteScaleCenterX, -absoluteScaleCenterY);
+				parentToLocalTransformation.postTranslate(-localScaleCenterX, -localScaleCenterY);
 				parentToLocalTransformation.postScale(1 / scaleX, 1 / scaleY); // TODO Division could be replaced by a multiplication of 'scale(X/Y)Inverse'...
-				parentToLocalTransformation.postTranslate(absoluteScaleCenterX, absoluteScaleCenterY);
+				parentToLocalTransformation.postTranslate(localScaleCenterX, localScaleCenterY);
 			}
 
 			this.mParentToLocalTransformationDirty = false;
@@ -1413,7 +1401,7 @@ public class Entity implements IEntity {
 	}
 
 	protected void applyOffset(final GLState pGLState) {
-		pGLState.translateModelViewGLMatrixf(-this.mAbsoluteOffsetCenterX, -this.mAbsoluteOffsetCenterY, 0);
+		pGLState.translateModelViewGLMatrixf(-this.mLocalOffsetCenterX, -this.mLocalOffsetCenterY, 0);
 	}
 
 	protected void applyTranslation(final GLState pGLState) {
@@ -1424,12 +1412,12 @@ public class Entity implements IEntity {
 		final float rotation = this.mRotation;
 
 		if(rotation != 0) {
-			final float absoluteRotationCenterX = this.mAbsoluteRotationCenterX;
-			final float absoluteRotationCenterY = this.mAbsoluteRotationCenterY;
+			final float localRotationCenterX = this.mLocalRotationCenterX;
+			final float localRotationCenterY = this.mLocalRotationCenterY;
 
-			pGLState.translateModelViewGLMatrixf(absoluteRotationCenterX, absoluteRotationCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(localRotationCenterX, localRotationCenterY, 0);
 			pGLState.rotateModelViewGLMatrixf(rotation, 0, 0, 1);
-			pGLState.translateModelViewGLMatrixf(-absoluteRotationCenterX, -absoluteRotationCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(-localRotationCenterX, -localRotationCenterY, 0);
 
 			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.
 			 * In that case the last glTranslatef of the rotation and the first glTranslatef of the scale is superfluous.
@@ -1442,12 +1430,12 @@ public class Entity implements IEntity {
 		final float skewY = this.mSkewY;
 
 		if((skewX != 0) || (skewY != 0)) {
-			final float absoluteSkewCenterX = this.mAbsoluteSkewCenterX;
-			final float absoluteSkewCenterY = this.mAbsoluteSkewCenterY;
+			final float localSkewCenterX = this.mLocalSkewCenterX;
+			final float localSkewCenterY = this.mLocalSkewCenterY;
 
-			pGLState.translateModelViewGLMatrixf(absoluteSkewCenterX, absoluteSkewCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(localSkewCenterX, localSkewCenterY, 0);
 			pGLState.skewModelViewGLMatrixf(skewX, skewY);
-			pGLState.translateModelViewGLMatrixf(-absoluteSkewCenterX, -absoluteSkewCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(-localSkewCenterX, -localSkewCenterY, 0);
 		}
 	}
 
@@ -1456,12 +1444,12 @@ public class Entity implements IEntity {
 		final float scaleY = this.mScaleY;
 
 		if((scaleX != 1) || (scaleY != 1)) {
-			final float absoluteScaleCenterX = this.mAbsoluteScaleCenterX;
-			final float absoluteScaleCenterY = this.mAbsoluteScaleCenterY;
+			final float localScaleCenterX = this.mLocalScaleCenterX;
+			final float localScaleCenterY = this.mLocalScaleCenterY;
 
-			pGLState.translateModelViewGLMatrixf(absoluteScaleCenterX, absoluteScaleCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(localScaleCenterX, localScaleCenterY, 0);
 			pGLState.scaleModelViewGLMatrixf(scaleX, scaleY, 1);
-			pGLState.translateModelViewGLMatrixf(-absoluteScaleCenterX, -absoluteScaleCenterY, 0);
+			pGLState.translateModelViewGLMatrixf(-localScaleCenterX, -localScaleCenterY, 0);
 		}
 	}
 
@@ -1527,57 +1515,76 @@ public class Entity implements IEntity {
 			}
 		}
 	}
+
+	protected void updateLocalCenters() {
+		this.updateLocalCentersXs();
+		this.updateLocalCentersYs();
+	}
+
+	protected void updateLocalCentersXs() {
+		this.updateLocalOffsetCenterX();
+		this.updateLocalRotationCenterX();
+		this.updateLocalScaleCenterX();
+		this.updateLocalSkewCenterX();
+	}
+
+	protected void updateLocalCentersYs() {
+		this.updateLocalOffsetCenterY();
+		this.updateLocalRotationCenterY();
+		this.updateLocalScaleCenterY();
+		this.updateLocalSkewCenterY();
+	}
 	
-	private void updateAbsoluteOffsetCenter() {
-		this.updateAbsoluteOffsetCenterX();
-		this.updateAbsoluteOffsetCenterY();
+	protected void updateLocalOffsetCenter() {
+		this.updateLocalOffsetCenterX();
+		this.updateLocalOffsetCenterY();
 	}
 	
-	private void updateAbsoluteOffsetCenterX() {
-		this.mAbsoluteOffsetCenterX = this.mOffsetCenterX * this.mWidth;
+	protected void updateLocalOffsetCenterX() {
+		this.mLocalOffsetCenterX = this.mOffsetCenterX * this.mWidth;
 	}
 	
-	private void updateAbsoluteOffsetCenterY() {
-		this.mAbsoluteOffsetCenterY = this.mOffsetCenterY * this.mHeight;
+	protected void updateLocalOffsetCenterY() {
+		this.mLocalOffsetCenterY = this.mOffsetCenterY * this.mHeight;
 	}
 
-	private void updateAbsoluteRotationCenter() {
-		this.updateAbsoluteRotationCenterX();
-		this.updateAbsoluteRotationCenterY();
+	protected void updateLocalRotationCenter() {
+		this.updateLocalRotationCenterX();
+		this.updateLocalRotationCenterY();
 	}
 
-	private void updateAbsoluteRotationCenterX() {
-		this.mAbsoluteRotationCenterX = this.mRotationCenterX * this.mWidth;
+	protected void updateLocalRotationCenterX() {
+		this.mLocalRotationCenterX = this.mRotationCenterX * this.mWidth;
 	}
 
-	private void updateAbsoluteRotationCenterY() {
-		this.mAbsoluteRotationCenterY = this.mRotationCenterY * this.mHeight;
+	protected void updateLocalRotationCenterY() {
+		this.mLocalRotationCenterY = this.mRotationCenterY * this.mHeight;
 	}
 
-	private void updateAbsoluteScaleCenter() {
-		this.updateAbsoluteScaleCenterX();
-		this.updateAbsoluteScaleCenterY();
+	protected void updateLocalScaleCenter() {
+		this.updateLocalScaleCenterX();
+		this.updateLocalScaleCenterY();
 	}
 
-	private void updateAbsoluteScaleCenterX() {
-		this.mAbsoluteScaleCenterX = this.mScaleCenterX * this.mWidth;
+	protected void updateLocalScaleCenterX() {
+		this.mLocalScaleCenterX = this.mScaleCenterX * this.mWidth;
 	}
 
-	private void updateAbsoluteScaleCenterY() {
-		this.mAbsoluteScaleCenterY = this.mScaleCenterY * this.mHeight;
+	protected void updateLocalScaleCenterY() {
+		this.mLocalScaleCenterY = this.mScaleCenterY * this.mHeight;
 	}
 
-	private void updateAbsoluteSkewCenter() {
-		this.updateAbsoluteSkewCenterX();
-		this.updateAbsoluteSkewCenterY();
+	protected void updateLocalSkewCenter() {
+		this.updateLocalSkewCenterX();
+		this.updateLocalSkewCenterY();
 	}
 
-	private void updateAbsoluteSkewCenterX() {
-		this.mAbsoluteSkewCenterX = this.mSkewCenterX * this.mWidth;
+	protected void updateLocalSkewCenterX() {
+		this.mLocalSkewCenterX = this.mSkewCenterX * this.mWidth;
 	}
 
-	private void updateAbsoluteSkewCenterY() {
-		this.mAbsoluteSkewCenterY = this.mSkewCenterY * this.mHeight;
+	protected void updateLocalSkewCenterY() {
+		this.mLocalSkewCenterY = this.mSkewCenterY * this.mHeight;
 	}
 
 	public void resetRotationCenter() {

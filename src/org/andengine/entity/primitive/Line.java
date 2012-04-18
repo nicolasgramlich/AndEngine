@@ -86,10 +86,12 @@ public class Line extends Shape {
 	}
 
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final ILineVertexBufferObject pLineVertexBufferObject) {
-		super(pX1, pY1, PositionColorShaderProgram.getInstance());
+		super(pX1, pY1, pX2 - pX1, pY2 - pY1, PositionColorShaderProgram.getInstance());
 
 		this.mX2 = pX2;
 		this.mY2 = pY2;
+
+		this.setOffsetCenter(0, 0);
 
 		this.mLineWidth = pLineWidth;
 
@@ -97,15 +99,6 @@ public class Line extends Shape {
 
 		this.onUpdateVertices();
 		this.onUpdateColor();
-
-		final float centerX = (this.mX2 - this.mX) * 0.5f;
-		final float centerY = (this.mY2 - this.mY) * 0.5f;
-
-		this.mRotationCenterX = centerX;
-		this.mRotationCenterY = centerY;
-
-		this.mScaleCenterX = this.mRotationCenterX;
-		this.mScaleCenterY = this.mRotationCenterY;
 
 		this.setBlendingEnabled(true);
 	}
@@ -164,9 +157,11 @@ public class Line extends Shape {
 	public void setX(final float pX) {
 		final float dX = this.mX - pX;
 
+		this.mX2 += dX;
+
 		super.setX(pX);
 
-		this.mX2 += dX;
+		this.onUpdateVertices();
 	}
 
 	/**
@@ -176,10 +171,12 @@ public class Line extends Shape {
 	@Override
 	public void setY(final float pY) {
 		final float dY = this.mY - pY;
-		
-		super.setY(pY);
-		
+
 		this.mY2 += dY;
+
+		super.setY(pY);
+
+		this.onUpdateVertices();
 	}
 
 	/**
@@ -191,10 +188,12 @@ public class Line extends Shape {
 		final float dX = this.mX - pX;
 		final float dY = this.mY - pY;
 
-		super.setPosition(pX, pY);
-
 		this.mX2 += dX;
 		this.mY2 += dY;
+
+		super.setPosition(pX, pY);
+
+		this.onUpdateVertices();
 	}
 
 	public void setPosition(final float pX1, final float pY1, final float pX2, final float pY2) {
@@ -204,6 +203,24 @@ public class Line extends Shape {
 		super.setPosition(pX1, pY1);
 
 		this.onUpdateVertices();
+	}
+
+	@Deprecated
+	@Override
+	public void setWidth(final float pWidth) {
+		super.setWidth(pWidth);
+	}
+
+	@Deprecated
+	@Override
+	public void setHeight(final float pHeight) {
+		super.setHeight(pHeight);
+	}
+
+	@Deprecated
+	@Override
+	public void setSize(float pWidth, float pHeight) {
+		super.setSize(pWidth, pHeight);
 	}
 
 	// ===========================================================

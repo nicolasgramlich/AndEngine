@@ -19,7 +19,7 @@ import org.xml.sax.XMLReader;
 import android.content.Context;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -54,12 +54,12 @@ public class LevelLoader {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public IEntityLoader getDefaultEntityLoader() {
 		return this.mDefaultEntityLoader;
 	}
-	
-	public void setDefaultEntityLoader(IEntityLoader pDefaultEntityLoader) {
+
+	public void setDefaultEntityLoader(final IEntityLoader pDefaultEntityLoader) {
 		this.mDefaultEntityLoader = pDefaultEntityLoader;
 	}
 
@@ -67,7 +67,7 @@ public class LevelLoader {
 	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>.
 	 */
 	public void setAssetBasePath(final String pAssetBasePath) {
-		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
+		if(pAssetBasePath.endsWith("/") || (pAssetBasePath.length() == 0)) {
 			this.mAssetBasePath = pAssetBasePath;
 		} else {
 			throw new IllegalStateException("pAssetBasePath must end with '/' or be lenght zero.");

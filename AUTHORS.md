@@ -4,21 +4,21 @@
 
 ## Contributors:
 
-* Zynga
-  * Scott Kennedy
-    * Added EngineOptions->AudioOptions->SoundOptions->setMaxSimultaneousStreams.
-    * Fixed a bug where BaseGameActivity would not resume.
-    * Added ButtonSprite.
-    * Fixed anti-pattern in Sprite/TiledSprite constructors.
-    * Fixed an infinite recursion.
-  * Eric Fung
-    *
-  * Greg Haynes
-    * Added SharedMemoryVertexBufferObject and ZeroMemoryVertexBufferObject.
-    * Enhanced Pool class to be able to have a maximum number of items to permanently hold.
-    * Fixed a bug in Entity.getSceneToLocalTransformation.
-  * Xi Yu
-    * Added TextOptions->AutoWrap.CJK.
+### Zynga
+* Scott Kennedy
+  * Added EngineOptions->AudioOptions->SoundOptions->setMaxSimultaneousStreams.
+  * Fixed a bug where BaseGameActivity would not resume.
+  * Added ButtonSprite.
+  * Fixed anti-pattern in Sprite/TiledSprite constructors.
+  * Fixed an infinite recursion.
+* Greg Haynes
+  * Added SharedMemoryVertexBufferObject and ZeroMemoryVertexBufferObject.
+  * Enhanced Pool class to be able to have a maximum number of items to permanently hold.
+  * Fixed a bug in Entity.getSceneToLocalTransformation.
+* Xi Yu
+  * Added TextOptions->AutoWrap.CJK.
+
+### Others
 * Rodrigo Moraes <rodrigo.moraes@gmail.com>
   * Added optimizations and enhancements in the TMXTiledMapExtension.
 * Janne Sinivirta

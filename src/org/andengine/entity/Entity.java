@@ -1030,9 +1030,6 @@ public class Entity implements IEntity {
 		if(this.mLocalToParentTransformationDirty) {
 			localToParentTransformation.setToIdentity();
 
-			/* Offset. */
-			localToParentTransformation.postTranslate(this.mAbsoluteOffsetCenterX, this.mAbsoluteOffsetCenterY);
-
 			/* Scale. */
 			final float scaleX = this.mScaleX;
 			final float scaleY = this.mScaleY;
@@ -1074,6 +1071,9 @@ public class Entity implements IEntity {
 			/* Translation. */
 			localToParentTransformation.postTranslate(this.mX, this.mY);
 
+			/* Offset. */
+			localToParentTransformation.postTranslate(-this.mAbsoluteOffsetCenterX, -this.mAbsoluteOffsetCenterY);
+
 			this.mLocalToParentTransformationDirty = false;
 		}
 		return localToParentTransformation;
@@ -1084,6 +1084,9 @@ public class Entity implements IEntity {
 		final Transformation parentToLocalTransformation = this.mParentToLocalTransformation;
 		if(this.mParentToLocalTransformationDirty) {
 			parentToLocalTransformation.setToIdentity();
+
+			/* Offset. */
+			parentToLocalTransformation.postTranslate(this.mAbsoluteOffsetCenterX, this.mAbsoluteOffsetCenterY);
 
 			/* Translation. */
 			parentToLocalTransformation.postTranslate(-this.mX, -this.mY);
@@ -1122,9 +1125,6 @@ public class Entity implements IEntity {
 				parentToLocalTransformation.postScale(1 / scaleX, 1 / scaleY); // TODO Division could be replaced by a multiplication of 'scale(X/Y)Inverse'...
 				parentToLocalTransformation.postTranslate(absoluteScaleCenterX, absoluteScaleCenterY);
 			}
-
-			/* Offset. */
-			parentToLocalTransformation.postTranslate(-this.mAbsoluteOffsetCenterX, -this.mAbsoluteOffsetCenterY);
 
 			this.mParentToLocalTransformationDirty = false;
 		}

@@ -38,11 +38,11 @@
   * Fixed using an API Level 9 method.
 * Pawel Plewa
   * Added CubicBezierMoveModifier and QuadraticBezierMoveModifier.
-* levinovtik
+* Levi Notik <levi.notik@gmail.com>
   * Added project setup instructions for IntelliJ IDEA.
-* stevosaurus
+* Steven Jackson <stevosaurus@gmail.com>
   * Fixed wrong method signature in StrokeFont.
-* theturtleboy
+* Daniel Epstein <theturtleboy@gmail.com>
   * Added possibility to define scaleX/scaleY instead of just scale.
   * Fixed horizontal/vertical flipping of BaseTextureRegionBuffer.
 

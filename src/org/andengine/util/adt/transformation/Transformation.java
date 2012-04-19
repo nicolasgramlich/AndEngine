@@ -30,7 +30,7 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 15:47:18 - 23.12.2010
  */
-public final class Transformation {
+public class Transformation {
 	// ===========================================================
 	// Constants
 	// ===========================================================

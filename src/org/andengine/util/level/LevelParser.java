@@ -2,7 +2,8 @@ package org.andengine.util.level;
 
 import java.util.HashMap;
 
-import org.andengine.util.level.LevelLoader.IEntityLoader;
+import org.andengine.entity.IEntity;
+import org.andengine.util.adt.list.SmartList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -26,6 +27,8 @@ public class LevelParser extends DefaultHandler {
 	private final IEntityLoader mDefaultEntityLoader;
 	private final HashMap<String, IEntityLoader> mEntityLoaders;
 
+	private SmartList<IEntity> mParentEntityStack = new SmartList<IEntity>();
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -45,16 +48,31 @@ public class LevelParser extends DefaultHandler {
 
 	@Override
 	public void startElement(final String pUri, final String pLocalName, final String pQualifiedName, final Attributes pAttributes) throws SAXException {
-		final IEntityLoader entityLoader = this.mEntityLoaders.get(pLocalName);
+		final String entityName = pLocalName;
+
+		final IEntity parent = (this.mParentEntityStack.isEmpty()) ? null : this.mParentEntityStack.getLast();
+
+		final IEntityLoader entityLoader = this.mEntityLoaders.get(entityName);
+
+		final IEntity entity;
 		if(entityLoader != null) {
-			entityLoader.onLoadEntity(pLocalName, pAttributes);
+			entity = entityLoader.onLoadEntity(entityName, pAttributes);
+		} else if(this.mDefaultEntityLoader != null) {
+			entity = this.mDefaultEntityLoader.onLoadEntity(entityName, pAttributes);
 		} else {
-			if(this.mDefaultEntityLoader != null) {
-				this.mDefaultEntityLoader.onLoadEntity(pLocalName, pAttributes);
-			} else {
-				throw new IllegalArgumentException("Unexpected tag: '" + pLocalName + "'.");
-			}
+			throw new IllegalArgumentException("Unexpected tag: '" + entityName + "'.");
 		}
+
+		if(parent != null && entity != null) {
+			parent.attachChild(entity);
+		}
+
+		this.mParentEntityStack.addLast(entity);
+	}
+
+	@Override
+	public void endElement(final String pUri, final String pLocalName, final String pQualifiedName) throws SAXException {
+		this.mParentEntityStack.removeLast();
 	}
 
 	// ===========================================================

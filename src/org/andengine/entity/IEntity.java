@@ -236,8 +236,9 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 
 	public void attachChild(final IEntity pEntity);
 
-	public IEntity getChild(final int pTag);
-	public IEntity getChild(final IEntityMatcher pEntityMatcher);
+	public IEntity getChildByTag(final int pTag);
+	public IEntity getChildByMatcher(final IEntityMatcher pEntityMatcher);
+	public IEntity getChildByIndex(final int pIndex);
 	public IEntity getFirstChild();
 	public IEntity getLastChild();
 

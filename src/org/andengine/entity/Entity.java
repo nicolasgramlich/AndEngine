@@ -755,7 +755,7 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public IEntity getChild(final int pTag) {
+	public IEntity getChildByTag(final int pTag) {
 		if(this.mChildren == null) {
 			return null;
 		}
@@ -769,7 +769,15 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public IEntity getChild(final IEntityMatcher pEntityMatcher) {
+	public IEntity getChildByIndex(final int pIndex) {
+	    if(this.mChildren == null) {
+	        return null;
+	    }
+	    return this.mChildren.get(pIndex);
+	}
+
+	@Override
+	public IEntity getChildByMatcher(final IEntityMatcher pEntityMatcher) {
 		if(this.mChildren == null) {
 			return null;
 		}

@@ -1,17 +1,12 @@
 package org.andengine.util.level;
 
-import java.io.IOException;
-
-import org.andengine.entity.IEntity;
-import org.xml.sax.Attributes;
-
 /**
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 18:38:40 - 18.04.2012
+ * @since 2:21:46 PM - Apr 19, 2012
  */
-public interface IEntityLoader<T extends IEntityLoaderDataSource> {
+public interface IEntityLoaderDataSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,8 +14,4 @@ public interface IEntityLoader<T extends IEntityLoaderDataSource> {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public String[] getEntityNames();
-
-	public IEntity onLoadEntity(final String pEntityName, final Attributes pAttributes, final T pEntityLoaderDataSource) throws IOException;
 }

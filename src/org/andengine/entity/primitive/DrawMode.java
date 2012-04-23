@@ -1,4 +1,4 @@
-package org.andengine.entity.primitive.vbo;
+package org.andengine.entity.primitive;
 
 import android.opengl.GLES20;
 

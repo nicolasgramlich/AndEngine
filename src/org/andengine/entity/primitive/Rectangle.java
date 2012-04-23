@@ -69,6 +69,7 @@ public class Rectangle extends Shape {
 
 		this.mRectangleVertexBufferObject = pRectangleVertexBufferObject;
 
+		this.onUpdateVertices();
 		this.onUpdateColor();
 
 		this.setBlendingEnabled(true);

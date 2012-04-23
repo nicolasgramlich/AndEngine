@@ -96,7 +96,7 @@ public abstract class Shape extends Entity implements IShape {
 
 	@Override
 	public VertexBufferObjectManager getVertexBufferObjectManager() {
-		return getVertexBufferObject().getVertexBufferObjectManager();
+		return this.getVertexBufferObject().getVertexBufferObjectManager();
 	}
 
 	// ===========================================================
@@ -138,7 +138,7 @@ public abstract class Shape extends Entity implements IShape {
 		super.dispose();
 
 		final IVertexBufferObject vertexBufferObject = this.getVertexBufferObject();
-		if(vertexBufferObject != null && vertexBufferObject.isAutoDispose() && !vertexBufferObject.isDisposed()) {
+		if((vertexBufferObject != null) && vertexBufferObject.isAutoDispose() && !vertexBufferObject.isDisposed()) {
 			vertexBufferObject.dispose();
 		}
 	}

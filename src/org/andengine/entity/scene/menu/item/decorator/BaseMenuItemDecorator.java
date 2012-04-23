@@ -465,18 +465,18 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public int getSourceBlendFunction() {
-		return this.mMenuItem.getSourceBlendFunction();
+	public int getBlendFunctionSource() {
+		return this.mMenuItem.getBlendFunctionSource();
 	}
 
 	@Override
-	public int getDestinationBlendFunction() {
-		return this.mMenuItem.getDestinationBlendFunction();
+	public int getBlendFunctionDestination() {
+		return this.mMenuItem.getBlendFunctionDestination();
 	}
 
 	@Override
-	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
-		this.mMenuItem.setBlendFunction(pSourceBlendFunction, pDestinationBlendFunction);
+	public void setBlendFunction(final int pBlendFunctionSource, final int pBlendFunctionDestination) {
+		this.mMenuItem.setBlendFunction(pBlendFunctionSource, pBlendFunctionDestination);
 	}
 
 	@Override

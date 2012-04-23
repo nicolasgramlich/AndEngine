@@ -31,9 +31,9 @@ public interface IShape extends IEntity {
 
 	public boolean isBlendingEnabled();
 	public void setBlendingEnabled(final boolean pBlendingEnabled);
-	public int getSourceBlendFunction();
-	public int getDestinationBlendFunction();
-	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction);
+	public int getBlendFunctionSource();
+	public int getBlendFunctionDestination();
+	public void setBlendFunction(final int pBlendFunctionSource, final int pBlendFunctionDestination);
 
 	public VertexBufferObjectManager getVertexBufferObjectManager();
 	public IVertexBufferObject getVertexBufferObject();

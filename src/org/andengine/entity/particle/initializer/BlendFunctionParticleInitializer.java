@@ -22,8 +22,8 @@ public class BlendFunctionParticleInitializer<T extends IShape> implements IPart
 	// Fields
 	// ===========================================================
 
-	protected int mSourceBlendFunction;
-	protected int mDestinationBlendFunction;
+	protected int mBlendFunctionSource;
+	protected int mBlendFunctionDestination;
 
 	// ===========================================================
 	// Constructors
@@ -32,9 +32,9 @@ public class BlendFunctionParticleInitializer<T extends IShape> implements IPart
 	/**
 	 * Blend function set for each spawned {@link Particle}. Use {@link GLES20} constants for setting functions.
 	 */
-	public BlendFunctionParticleInitializer(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
-		this.mSourceBlendFunction = pSourceBlendFunction;
-		this.mDestinationBlendFunction = pDestinationBlendFunction;
+	public BlendFunctionParticleInitializer(final int pBlendFunctionSource, final int pBlendFunctionDestination) {
+		this.mBlendFunctionSource = pBlendFunctionSource;
+		this.mBlendFunctionDestination = pBlendFunctionDestination;
 	}
 
 	// ===========================================================
@@ -47,7 +47,7 @@ public class BlendFunctionParticleInitializer<T extends IShape> implements IPart
 
 	@Override
 	public void onInitializeParticle(final Particle<T> pParticle) {
-		pParticle.getEntity().setBlendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+		pParticle.getEntity().setBlendFunction(this.mBlendFunctionSource, this.mBlendFunctionDestination);
 	}
 
 	// ===========================================================

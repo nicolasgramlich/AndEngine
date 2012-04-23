@@ -2,7 +2,6 @@ package org.andengine.entity.primitive;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.primitive.vbo.DrawMode;
 import org.andengine.entity.primitive.vbo.HighPerformanceMeshVertexBufferObject;
 import org.andengine.entity.primitive.vbo.IMeshVertexBufferObject;
 import org.andengine.entity.shape.Shape;

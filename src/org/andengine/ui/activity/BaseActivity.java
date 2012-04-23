@@ -8,6 +8,7 @@ import org.andengine.util.progress.ProgressCallable;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.widget.Toast;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -40,6 +41,19 @@ public abstract class BaseActivity extends Activity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void toastOnUIThread(final CharSequence pText) {
+		this.toastOnUIThread(pText, Toast.LENGTH_LONG);
+	}
+
+	public void toastOnUIThread(final CharSequence pText, final int pDuration) {
+		this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(BaseActivity.this, pText, pDuration);
+			}
+		});
+	}
 
 	/**
 	 * Performs a task in the background, showing a {@link ProgressDialog},

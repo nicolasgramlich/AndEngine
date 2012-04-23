@@ -33,6 +33,8 @@ public interface IShape extends IEntity {
 	public void setBlendingEnabled(final boolean pBlendingEnabled);
 	public int getBlendFunctionSource();
 	public int getBlendFunctionDestination();
+	public void setBlendFunctionSource(final int pBlendFunctionSource);
+	public void setBlendFunctionDestination(final int pBlendFunctionDestination);
 	public void setBlendFunction(final int pBlendFunctionSource, final int pBlendFunctionDestination);
 
 	public VertexBufferObjectManager getVertexBufferObjectManager();

@@ -64,8 +64,18 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	@Override
+	public void setBlendFunctionSource(final int pBlendFunctionSource) {
+		this.mBlendFunctionSource = pBlendFunctionSource;
+	}
+
+	@Override
 	public int getBlendFunctionDestination() {
 		return this.mBlendFunctionDestination;
+	}
+
+	@Override
+	public void setBlendFunctionDestination(final int pBlendFunctionDestination) {
+		this.mBlendFunctionDestination = pBlendFunctionDestination;
 	}
 
 	@Override

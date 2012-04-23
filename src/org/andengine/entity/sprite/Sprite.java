@@ -69,7 +69,7 @@ public class Sprite extends RectangularShape {
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, pDrawType);
 	}
-	
+
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, pDrawType, pShaderProgram);
 	}
@@ -77,7 +77,7 @@ public class Sprite extends RectangularShape {
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pVertexBufferObject) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject);
 	}
-	
+
 	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pVertexBufferObject, final ShaderProgram pShaderProgram) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject, pShaderProgram);
 	}
@@ -85,7 +85,7 @@ public class Sprite extends RectangularShape {
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
 	}
-	
+
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
 		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
@@ -107,7 +107,7 @@ public class Sprite extends RectangularShape {
 		
 		this.mTextureRegion = pTextureRegion;
 		this.mSpriteVertexBufferObject = pSpriteVertexBufferObject;
-		
+
 		this.setBlendingEnabled(true);
 		this.initBlendFunction(pTextureRegion);
 		
@@ -129,8 +129,11 @@ public class Sprite extends RectangularShape {
 	}
 
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
-		this.mFlippedHorizontal = pFlippedHorizontal;
-		this.onUpdateTextureCoordinates();
+		if(this.mFlippedHorizontal != pFlippedHorizontal) {
+			this.mFlippedHorizontal = pFlippedHorizontal;
+
+			this.onUpdateTextureCoordinates();
+		}
 	}
 
 	public boolean isFlippedVertical() {
@@ -138,8 +141,20 @@ public class Sprite extends RectangularShape {
 	}
 
 	public void setFlippedVertical(final boolean pFlippedVertical) {
-		this.mFlippedVertical = pFlippedVertical;
-		this.onUpdateTextureCoordinates();
+		if(this.mFlippedVertical != pFlippedVertical) {
+			this.mFlippedVertical = pFlippedVertical;
+
+			this.onUpdateTextureCoordinates();
+		}
+	}
+
+	public void setFlipped(final boolean pFlippedHorizontal, final boolean pFlippedVertical) {
+		if((this.mFlippedHorizontal != pFlippedHorizontal) || (this.mFlippedVertical != pFlippedVertical)) {
+			this.mFlippedHorizontal = pFlippedHorizontal;
+			this.mFlippedVertical = pFlippedVertical;
+
+			this.onUpdateTextureCoordinates();
+		}
 	}
 
 	// ===========================================================

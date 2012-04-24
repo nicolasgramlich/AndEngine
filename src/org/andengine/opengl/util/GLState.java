@@ -61,12 +61,12 @@ public class GLState {
 	private int mCurrentSourceBlendMode = -1;
 	private int mCurrentDestinationBlendMode = -1;
 
-	private boolean mEnableDither = true;
-	private boolean mEnableDepthTest = true;
+	private boolean mDitherEnabled = true;
+	private boolean mDepthTestEnabled = true;
 
-	private boolean mEnableScissorTest = false;
-	private boolean mEnableBlend = false;
-	private boolean mEnableCulling = false;
+	private boolean mScissorTestEnabled = false;
+	private boolean mBlendEnabled = false;
+	private boolean mCullingEnabled = false;
 
 	private float mLineWidth = 1;
 
@@ -166,68 +166,193 @@ public class GLState {
 		this.mLineWidth = 1;
 	}
 
-	public void enableScissorTest() {
-		if(!this.mEnableScissorTest) {
-			this.mEnableScissorTest = true;
-			GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
-		}
+	public boolean isScissorTestEnabled() {
+		return this.mScissorTestEnabled;
 	}
-	public void disableScissorTest() {
-		if(this.mEnableScissorTest) {
-			this.mEnableScissorTest = false;
-			GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
+	/**
+	 * @return the previous state.
+	 */
+	public boolean enableScissorTest() {
+		if(this.mScissorTestEnabled) {
+			return true;
+		}
+		
+		this.mScissorTestEnabled = true;
+		GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
+		return false;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean disableScissorTest() {
+		if(!this.mScissorTestEnabled) {
+			return false;
+		}
+
+		this.mScissorTestEnabled = false;
+		GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
+		return true;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean setScissorTestEnabled(final boolean pEnabled) {
+		if(pEnabled) {
+			return this.enableScissorTest();
+		} else {
+			return this.disableScissorTest();
 		}
 	}
 
-	public void enableBlend() {
-		if(!this.mEnableBlend) {
-			this.mEnableBlend = true;
-			GLES20.glEnable(GLES20.GL_BLEND);
-		}
+	public boolean isBlendEnabled() {
+		return this.mBlendEnabled;
 	}
-	public void disableBlend() {
-		if(this.mEnableBlend) {
-			this.mEnableBlend = false;
-			GLES20.glDisable(GLES20.GL_BLEND);
+	/**
+	 * @return the previous state.
+	 */
+	public boolean enableBlend() {
+		if(this.mBlendEnabled) {
+			return true;
+		}
+
+		this.mBlendEnabled = true;
+		GLES20.glEnable(GLES20.GL_BLEND);
+		return false;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean disableBlend() {
+		if(!this.mBlendEnabled) {
+			return false;
+		}
+
+		this.mBlendEnabled = false;
+		GLES20.glDisable(GLES20.GL_BLEND);
+		return true;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean setBlendEnabled(final boolean pEnabled) {
+		if(pEnabled) {
+			return this.enableBlend();
+		} else {
+			return this.disableBlend();
 		}
 	}
 
-	public void enableCulling() {
-		if(!this.mEnableCulling) {
-			this.mEnableCulling = true;
-			GLES20.glEnable(GLES20.GL_CULL_FACE);
-		}
+	public boolean isCullingEnabled() {
+		return this.mCullingEnabled;
 	}
-	public void disableCulling() {
-		if(this.mEnableCulling) {
-			this.mEnableCulling = false;
-			GLES20.glDisable(GLES20.GL_CULL_FACE);
+	/**
+	 * @return the previous state.
+	 */
+	public boolean enableCulling() {
+		if(this.mCullingEnabled) {
+			return true;
+		}
+
+		this.mCullingEnabled = true;
+		GLES20.glEnable(GLES20.GL_CULL_FACE);
+		return false;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean disableCulling() {
+		if(!this.mCullingEnabled) {
+			return false;
+		}
+
+		this.mCullingEnabled = false;
+		GLES20.glDisable(GLES20.GL_CULL_FACE);
+		return true;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean setCullingEnabled(final boolean pEnabled) {
+		if(pEnabled) {
+			return this.enableCulling();
+		} else {
+			return this.disableCulling();
 		}
 	}
 
-	public void enableDither() {
-		if(!this.mEnableDither) {
-			this.mEnableDither = true;
-			GLES20.glEnable(GLES20.GL_DITHER);
-		}
+	public boolean isDitherEnabled() {
+		return this.mDitherEnabled;
 	}
-	public void disableDither() {
-		if(this.mEnableDither) {
-			this.mEnableDither = false;
-			GLES20.glDisable(GLES20.GL_DITHER);
+	/**
+	 * @return the previous state.
+	 */
+	public boolean enableDither() {
+		if(this.mDitherEnabled) {
+			return true;
+		}
+
+		this.mDitherEnabled = true;
+		GLES20.glEnable(GLES20.GL_DITHER);
+		return false;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean disableDither() {
+		if(!this.mDitherEnabled) {
+			return false;
+		}
+
+		this.mDitherEnabled = false;
+		GLES20.glDisable(GLES20.GL_DITHER);
+		return true;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean setDitherEnabled(final boolean pEnabled) {
+		if(pEnabled) {
+			return this.enableDither();
+		} else {
+			return this.disableDither();
 		}
 	}
 
-	public void enableDepthTest() {
-		if(!this.mEnableDepthTest) {
-			this.mEnableDepthTest = true;
-			GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-		}
+	public boolean isDepthTestEnabled() {
+		return this.mDepthTestEnabled;
 	}
-	public void disableDepthTest() {
-		if(this.mEnableDepthTest) {
-			this.mEnableDepthTest = false;
-			GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+	/**
+	 * @return the previous state.
+	 */
+	public boolean enableDepthTest() {
+		if(this.mDepthTestEnabled) {
+			return true;
+		}
+
+		this.mDepthTestEnabled = true;
+		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+		return false;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean disableDepthTest() {
+		if(!this.mDepthTestEnabled) {
+			return false;
+		}
+
+		this.mDepthTestEnabled = false;
+		GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+		return true;
+	}
+	/**
+	 * @return the previous state.
+	 */
+	public boolean setDepthTestEnabled(final boolean pEnabled) {
+		if(pEnabled) {
+			return this.enableDepthTest();
+		} else {
+			return this.disableDepthTest();
 		}
 	}
 

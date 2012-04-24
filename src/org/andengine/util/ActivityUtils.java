@@ -1,10 +1,10 @@
 package org.andengine.util;
 
-import org.andengine.ui.activity.BaseActivity.CancelledException;
 import org.andengine.util.call.AsyncCallable;
 import org.andengine.util.call.Callable;
 import org.andengine.util.call.Callback;
 import org.andengine.util.debug.Debug;
+import org.andengine.util.exception.CancelledException;
 import org.andengine.util.progress.IProgressListener;
 import org.andengine.util.progress.ProgressCallable;
 

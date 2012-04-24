@@ -8,6 +8,7 @@ import org.andengine.util.progress.ProgressCallable;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.Looper;
 import android.widget.Toast;
 
 /**
@@ -47,12 +48,16 @@ public abstract class BaseActivity extends Activity {
 	}
 
 	public void toastOnUIThread(final CharSequence pText, final int pDuration) {
-		this.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				Toast.makeText(BaseActivity.this, pText, pDuration);
-			}
-		});
+		if(Looper.getMainLooper().getThread() == Thread.currentThread()) {
+			Toast.makeText(BaseActivity.this, pText, pDuration).show();
+		} else {
+			this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(BaseActivity.this, pText, pDuration).show();
+				}
+			});
+		}
 	}
 
 	/**
@@ -136,8 +141,4 @@ public abstract class BaseActivity extends Activity {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static class CancelledException extends Exception {
-		private static final long serialVersionUID = -78123211381435596L;
-	}
 }

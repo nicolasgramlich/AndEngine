@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.util.HorizontalAlign;
+import org.andengine.util.align.HorizontalAlign;
 import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**

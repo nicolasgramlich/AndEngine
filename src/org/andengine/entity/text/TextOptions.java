@@ -1,6 +1,6 @@
 package org.andengine.entity.text;
 
-import org.andengine.util.HorizontalAlign;
+import org.andengine.util.align.HorizontalAlign;
 
 /**
  * (c) Zynga 2012

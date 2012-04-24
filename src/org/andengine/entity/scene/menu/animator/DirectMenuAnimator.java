@@ -3,7 +3,7 @@ package org.andengine.entity.scene.menu.animator;
 import java.util.ArrayList;
 
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.util.HorizontalAlign;
+import org.andengine.util.align.HorizontalAlign;
 
 /**
  * (c) 2010 Nicolas Gramlich 

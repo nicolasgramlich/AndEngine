@@ -1,20 +1,20 @@
-package org.andengine.util;
+package org.andengine.util.align;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
- * @since 15:15:23 - 24.07.2010
+ * @since 10:47:33 - 11.05.2010
  */
-public enum VerticalAlign {
+public enum HorizontalAlign {
 	// ===========================================================
 	// Elements
 	// ===========================================================
 
-	TOP,
+	LEFT,
 	CENTER,
-	BOTTOM;
+	RIGHT;
 
 	// ===========================================================
 	// Constants

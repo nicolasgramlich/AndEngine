@@ -17,10 +17,10 @@ import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
-import org.andengine.util.HorizontalAlign;
 import org.andengine.util.adt.DataConstants;
 import org.andengine.util.adt.list.FloatArrayList;
 import org.andengine.util.adt.list.IFloatList;
+import org.andengine.util.align.HorizontalAlign;
 
 import android.opengl.GLES20;
 
@@ -132,6 +132,10 @@ public class Text extends Shape {
 
 	public Text(final float pX, final float pY, final IFont pFont, final CharSequence pText, final int pCharactersMaximum, final TextOptions pTextOptions, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pFont, pText, pCharactersMaximum, pTextOptions, pVertexBufferObjectManager, DrawType.STATIC);
+	}
+
+	public Text(final float pX, final float pY, final IFont pFont, final CharSequence pText, final int pCharactersMaximum, final TextOptions pTextOptions, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pFont, pText, pCharactersMaximum, pTextOptions, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
 	public Text(final float pX, final float pY, final IFont pFont, final CharSequence pText, final int pCharactersMaximum, final TextOptions pTextOptions, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {

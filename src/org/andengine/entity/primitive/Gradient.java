@@ -49,7 +49,8 @@ public class Gradient extends Shape {
 	private final Color mToColor = new Color(Color.WHITE);
 	private float mGradientVectorX = 0;
 	private float mGradientVectorY = -1;
-	private boolean mCompressedInterpolation;
+	private boolean mGradientFitToBounds;
+	private boolean mDitherEnabled;
 
 	// ===========================================================
 	// Constructors
@@ -84,16 +85,27 @@ public class Gradient extends Shape {
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isCompressedInterpolation() {
-		return this.mCompressedInterpolation;
+	public boolean isGradientFitToBounds() {
+		return this.mGradientFitToBounds;
 	}
 
-	public void setCompressedInterpolation(final boolean pCompressedInterpolation) {
-		if(this.mCompressedInterpolation != pCompressedInterpolation) {
-			this.mCompressedInterpolation = pCompressedInterpolation;
+	/**
+	 * @param pGradientFitToBounds 
+	 */
+	public void setGradientFitToBounds(final boolean pGradientFitToBounds) {
+		if(this.mGradientFitToBounds != pGradientFitToBounds) {
+			this.mGradientFitToBounds = pGradientFitToBounds;
 
 			this.onUpdateColor();
 		}
+	}
+
+	public boolean isDitherEnabled() {
+		return this.mDitherEnabled;
+	}
+
+	public void setDitherEnabled(final boolean pDitherEnabled) {
+		this.mDitherEnabled = pDitherEnabled;
 	}
 
 	@Deprecated
@@ -420,7 +432,15 @@ public class Gradient extends Shape {
 
 	@Override
 	protected void draw(final GLState pGLState, final Camera pCamera) {
-		this.mGradientVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Gradient.VERTICES_PER_RECTANGLE);
+		if(this.mDitherEnabled) {
+			final boolean wasDitherEnabled = pGLState.enableDither();
+
+			this.mGradientVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Gradient.VERTICES_PER_RECTANGLE);
+
+			pGLState.setDitherEnabled(wasDitherEnabled);
+		} else {
+			this.mGradientVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Gradient.VERTICES_PER_RECTANGLE);
+		}
 	}
 
 	@Override

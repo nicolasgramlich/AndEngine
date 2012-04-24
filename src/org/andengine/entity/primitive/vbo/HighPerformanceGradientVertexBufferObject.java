@@ -58,8 +58,7 @@ public class HighPerformanceGradientVertexBufferObject extends HighPerformanceVe
 		final float c = MathConstants.SQRT_2;
 		final float c2 = 2 * c;
 
-		/* Compressed Interpolation mode. */
-		if(pGradient.isCompressedInterpolation()) {
+		if(pGradient.isGradientFitToBounds()) {
 			final float tmp = 1 / (Math.abs(dX) + Math.abs(dY));
 			dX *= tmp * c;
 			dY *= tmp * c;

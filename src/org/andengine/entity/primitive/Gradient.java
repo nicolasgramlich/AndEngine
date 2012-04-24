@@ -52,7 +52,7 @@ public class Gradient extends Shape {
 	private float mGradientVectorX = 0;
 	private float mGradientVectorY = -1;
 	private boolean mGradientFitToBounds;
-	private boolean mDitherEnabled;
+	private boolean mGradientDitherEnabled;
 
 	// ===========================================================
 	// Constructors
@@ -92,7 +92,8 @@ public class Gradient extends Shape {
 	}
 
 	/**
-	 * @param pGradientFitToBounds 
+	 * @param pGradientFitToBounds If <code>true</code> ensures the from and to color are always on the bounds of the {@link Gradient} entity.
+	 * 								If <code>false</code> the from and to color might exceed the bounds of the {@link Gradient} entity, depending on the angle/vector supplied.
 	 */
 	public void setGradientFitToBounds(final boolean pGradientFitToBounds) {
 		if(this.mGradientFitToBounds != pGradientFitToBounds) {
@@ -102,15 +103,15 @@ public class Gradient extends Shape {
 		}
 	}
 
-	public boolean isDitherEnabled() {
-		return this.mDitherEnabled;
+	public boolean isGradientDitherEnabled() {
+		return this.mGradientDitherEnabled;
 	}
 
 	/**
-	 * @param pDitherEnabled <code>true</code> to enable dither, <code>false</code> to use the currently active dither setting in {@link GLState}.
+	 * @param pGradientDitherEnabled <code>true</code> to enable dither, <code>false</code> to use the currently active dither setting in {@link GLState}.
 	 */
-	public void setDitherEnabled(final boolean pDitherEnabled) {
-		this.mDitherEnabled = pDitherEnabled;
+	public void setGradientDitherEnabled(final boolean pGradientDitherEnabled) {
+		this.mGradientDitherEnabled = pGradientDitherEnabled;
 	}
 
 	@Deprecated
@@ -446,7 +447,7 @@ public class Gradient extends Shape {
 
 	@Override
 	protected void draw(final GLState pGLState, final Camera pCamera) {
-		if(this.mDitherEnabled) {
+		if(this.mGradientDitherEnabled) {
 			final boolean wasDitherEnabled = pGLState.enableDither();
 
 			this.mGradientVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Gradient.VERTICES_PER_RECTANGLE);

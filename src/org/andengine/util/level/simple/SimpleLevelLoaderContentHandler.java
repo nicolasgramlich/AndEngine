@@ -25,7 +25,7 @@ public class SimpleLevelLoaderContentHandler extends LevelLoaderContentHandler<S
 	// Constructors
 	// ===========================================================
 	
-	public SimpleLevelLoaderContentHandler(IEntityLoader<SimpleLevelEntityLoaderDataSource> pDefaultEntityLoader, HashMap<String, IEntityLoader<SimpleLevelEntityLoaderDataSource>> pEntityLoaders, SimpleLevelEntityLoaderDataSource pEntityLoaderDataSource) {
+	public SimpleLevelLoaderContentHandler(final IEntityLoader<SimpleLevelEntityLoaderDataSource> pDefaultEntityLoader, final HashMap<String, IEntityLoader<SimpleLevelEntityLoaderDataSource>> pEntityLoaders, SimpleLevelEntityLoaderDataSource pEntityLoaderDataSource) {
 		super(pDefaultEntityLoader, pEntityLoaders, pEntityLoaderDataSource);
 	}
 	

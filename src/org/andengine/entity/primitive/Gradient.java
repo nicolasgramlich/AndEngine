@@ -104,6 +104,9 @@ public class Gradient extends Shape {
 		return this.mDitherEnabled;
 	}
 
+	/**
+	 * @param pDitherEnabled <code>true</code> to enable dither, <code>false</code> to use the currently active dither setting in {@link GLState}.
+	 */
 	public void setDitherEnabled(final boolean pDitherEnabled) {
 		this.mDitherEnabled = pDitherEnabled;
 	}

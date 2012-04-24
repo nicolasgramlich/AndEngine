@@ -45,10 +45,10 @@ public class LowMemoryRectangleVertexBufferObject extends LowMemoryVertexBufferO
 
 		final float packedColor = pRectangle.getColor().getABGRPackedFloat();
 
-		bufferData.put(0 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
-		bufferData.put(1 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
-		bufferData.put(2 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
-		bufferData.put(3 * Rectangle.VERTEX_SIZE + Rectangle.COLOR_INDEX, packedColor);
+		bufferData.put((0 * Rectangle.VERTEX_SIZE) + Rectangle.COLOR_INDEX, packedColor);
+		bufferData.put((1 * Rectangle.VERTEX_SIZE) + Rectangle.COLOR_INDEX, packedColor);
+		bufferData.put((2 * Rectangle.VERTEX_SIZE) + Rectangle.COLOR_INDEX, packedColor);
+		bufferData.put((3 * Rectangle.VERTEX_SIZE) + Rectangle.COLOR_INDEX, packedColor);
 
 		this.setDirtyOnHardware();
 	}
@@ -62,17 +62,17 @@ public class LowMemoryRectangleVertexBufferObject extends LowMemoryVertexBufferO
 		final float x2 = pRectangle.getWidth();
 		final float y2 = pRectangle.getHeight();
 
-		bufferData.put(0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X, x);
-		bufferData.put(0 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y, y);
+		bufferData.put((0 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, x);
+		bufferData.put((0 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, y);
 
-		bufferData.put(1 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X, x);
-		bufferData.put(1 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y, y2);
+		bufferData.put((1 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, x);
+		bufferData.put((1 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, y2);
 
-		bufferData.put(2 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X, x2);
-		bufferData.put(2 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y, y);
+		bufferData.put((2 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, x2);
+		bufferData.put((2 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, y);
 
-		bufferData.put(3 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_X, x2);
-		bufferData.put(3 * Rectangle.VERTEX_SIZE + Rectangle.VERTEX_INDEX_Y, y2);
+		bufferData.put((3 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, x2);
+		bufferData.put((3 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, y2);
 
 		this.setDirtyOnHardware();
 	}

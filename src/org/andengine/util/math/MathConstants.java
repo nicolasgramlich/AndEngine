@@ -1,5 +1,7 @@
 package org.andengine.util.math;
 
+import android.util.FloatMath;
+
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -19,6 +21,8 @@ public interface MathConstants {
 
 	public static final float DEG_TO_RAD = PI / 180.0f;
 	public static final float RAD_TO_DEG = 180.0f / PI;
+
+	public static final float SQRT_2 = FloatMath.sqrt(2);
 
 	// ===========================================================
 	// Methods

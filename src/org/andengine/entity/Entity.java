@@ -69,7 +69,7 @@ public class Entity implements IEntity {
 	private EntityModifierList mEntityModifiers;
 	private UpdateHandlerList mUpdateHandlers;
 
-	protected Color mColor = new Color(1, 1, 1, 1);
+	protected Color mColor = new Color(Color.WHITE);
 
 	protected float mX;
 	protected float mY;
@@ -686,7 +686,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setRed(final float pRed) {
-		if(this.mColor.setRedChecking(pRed)) {
+		if(this.mColor.setRedChecking(pRed)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}
@@ -696,7 +696,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setGreen(final float pGreen) {
-		if(this.mColor.setGreenChecking(pGreen)) {
+		if(this.mColor.setGreenChecking(pGreen)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}
@@ -706,7 +706,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setBlue(final float pBlue) {
-		if(this.mColor.setBlueChecking(pBlue)) {
+		if(this.mColor.setBlueChecking(pBlue)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}
@@ -716,7 +716,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setAlpha(final float pAlpha) {
-		if(this.mColor.setAlphaChecking(pAlpha)) {
+		if(this.mColor.setAlphaChecking(pAlpha)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}

@@ -45,8 +45,8 @@ public class LowMemoryLineVertexBufferObject extends LowMemoryVertexBufferObject
 
 		final float packedColor = pLine.getColor().getABGRPackedFloat();
 
-		bufferData.put(0 * Line.VERTEX_SIZE + Line.COLOR_INDEX, packedColor);
-		bufferData.put(1 * Line.VERTEX_SIZE + Line.COLOR_INDEX, packedColor);
+		bufferData.put((0 * Line.VERTEX_SIZE) + Line.COLOR_INDEX, packedColor);
+		bufferData.put((1 * Line.VERTEX_SIZE) + Line.COLOR_INDEX, packedColor);
 
 		this.setDirtyOnHardware();
 	}
@@ -55,11 +55,11 @@ public class LowMemoryLineVertexBufferObject extends LowMemoryVertexBufferObject
 	public void onUpdateVertices(final Line pLine) {
 		final FloatBuffer bufferData = this.mFloatBuffer;
 
-		bufferData.put(0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X, 0);
-		bufferData.put(0 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_Y, 0);
+		bufferData.put((0 * Line.VERTEX_SIZE) + Line.VERTEX_INDEX_X, 0);
+		bufferData.put((0 * Line.VERTEX_SIZE) + Line.VERTEX_INDEX_Y, 0);
 
-		bufferData.put(1 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_X, pLine.getX2() - pLine.getX1()); // TODO Optimize with field access?
-		bufferData.put(1 * Line.VERTEX_SIZE + Line.VERTEX_INDEX_Y, pLine.getY2() - pLine.getY1()); // TODO Optimize with field access?
+		bufferData.put((1 * Line.VERTEX_SIZE) + Line.VERTEX_INDEX_X, pLine.getX2() - pLine.getX1()); // TODO Optimize with field access?
+		bufferData.put((1 * Line.VERTEX_SIZE) + Line.VERTEX_INDEX_Y, pLine.getY2() - pLine.getY1()); // TODO Optimize with field access?
 
 		this.setDirtyOnHardware();
 	}

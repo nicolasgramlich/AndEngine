@@ -72,7 +72,7 @@ public enum Direction {
 				}
 				break;
 		}
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException("Unexpected deltaX: '" + pDeltaX + "' deltaY: '" + pDeltaY + "'.");
 	}
 
 	// ===========================================================

@@ -105,8 +105,8 @@ public class LowMemoryTextVertexBufferObject extends LowMemoryVertexBufferObject
 
 			final int lineLength = line.length();
 			Letter previousLetter = null;
-			for(int j = 0; j < lineLength; j++) {
-				final Letter letter = font.getLetter(line.charAt(j));
+			for(int i = 0; i < lineLength; i++) {
+				final Letter letter = font.getLetter(line.charAt(i));
 				if(previousLetter != null) {
 					xBase += previousLetter.getKerning(letter.mCharacter);
 				}

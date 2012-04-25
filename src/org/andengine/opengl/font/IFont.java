@@ -23,6 +23,7 @@ public interface IFont {
 
 	public ITexture getTexture();
 
+	public float getAscent();
 	public float getLineHeight();
 
 	public Letter getLetter(final char pChar) throws LetterNotFoundException;

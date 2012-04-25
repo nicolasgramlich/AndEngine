@@ -185,7 +185,7 @@ public class Font implements IFont {
 
 		/* Actually draw the character. */
 		final float drawLetterLeft = -pLetter.mOffsetX;
-		final float drawLetterTop = -(pLetter.mOffsetY + this.getAscent());
+		final float drawLetterTop = -pLetter.mOffsetY;
 
 		this.drawLetter(characterAsString, drawLetterLeft, drawLetterTop);
 
@@ -241,7 +241,7 @@ public class Font implements IFont {
 			final float u2 = (this.mCurrentTextureX + letterWidth) / textureWidth;
 			final float v2 = (this.mCurrentTextureY + letterHeight) / textureHeight;
 
-			letter = new Letter(pCharacter, this.mCurrentTextureX - Font.LETTER_TEXTURE_PADDING, this.mCurrentTextureY - Font.LETTER_TEXTURE_PADDING, letterWidth, letterHeight, letterLeft, letterTop - this.getAscent(), advance, u, v, u2, v2);
+			letter = new Letter(pCharacter, this.mCurrentTextureX - Font.LETTER_TEXTURE_PADDING, this.mCurrentTextureY - Font.LETTER_TEXTURE_PADDING, letterWidth, letterHeight, letterLeft, letterTop, advance, u, v, u2, v2);
 			this.mCurrentTextureX += letterWidth + Font.LETTER_TEXTURE_PADDING;
 		}
 

@@ -347,6 +347,11 @@ public class BitmapFont implements IFont {
 	}
 
 	@Override
+	public float getAscent() {
+		return 0;
+	}
+
+	@Override
 	public float getLineHeight() {
 		return this.mLineHeight;
 	}

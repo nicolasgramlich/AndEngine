@@ -101,22 +101,20 @@ public class HighPerformanceGradientVertexBufferObject extends HighPerformanceVe
 	public void onUpdateVertices(final Gradient pGradient) {
 		final float[] bufferData = this.mBufferData;
 
-		final float x = 0;
-		final float y = 0;
-		final float x2 = pGradient.getWidth(); // TODO Optimize with field access?
-		final float y2 = pGradient.getHeight(); // TODO Optimize with field access?
+		final float width = pGradient.getWidth(); // TODO Optimize with field access?
+		final float height = pGradient.getHeight(); // TODO Optimize with field access?
 
-		bufferData[(0 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_X] = x;
-		bufferData[(0 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_Y] = y;
+		bufferData[(0 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_X] = 0;
+		bufferData[(0 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_Y] = 0;
 
-		bufferData[(1 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_X] = x;
-		bufferData[(1 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_Y] = y2;
+		bufferData[(1 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_X] = 0;
+		bufferData[(1 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_Y] = height;
 
-		bufferData[(2 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_X] = x2;
-		bufferData[(2 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_Y] = y;
+		bufferData[(2 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_X] = width;
+		bufferData[(2 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_Y] = 0;
 
-		bufferData[(3 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_X] = x2;
-		bufferData[(3 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_Y] = y2;
+		bufferData[(3 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_X] = width;
+		bufferData[(3 * Gradient.VERTEX_SIZE) + Gradient.VERTEX_INDEX_Y] = height;
 
 		this.setDirtyOnHardware();
 	}

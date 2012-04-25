@@ -57,22 +57,20 @@ public class LowMemoryRectangleVertexBufferObject extends LowMemoryVertexBufferO
 	public void onUpdateVertices(final Rectangle pRectangle) {
 		final FloatBuffer bufferData = this.mFloatBuffer;
 
-		final float x = 0;
-		final float y = 0;
-		final float x2 = pRectangle.getWidth();
-		final float y2 = pRectangle.getHeight();
+		final float width = pRectangle.getWidth(); // TODO Optimize with field access?
+		final float height = pRectangle.getHeight(); // TODO Optimize with field access?
 
-		bufferData.put((0 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, x);
-		bufferData.put((0 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, y);
+		bufferData.put((0 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, 0);
+		bufferData.put((0 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, 0);
 
-		bufferData.put((1 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, x);
-		bufferData.put((1 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, y2);
+		bufferData.put((1 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, 0);
+		bufferData.put((1 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, height);
 
-		bufferData.put((2 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, x2);
-		bufferData.put((2 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, y);
+		bufferData.put((2 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, width);
+		bufferData.put((2 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, 0);
 
-		bufferData.put((3 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, x2);
-		bufferData.put((3 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, y2);
+		bufferData.put((3 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_X, width);
+		bufferData.put((3 * Rectangle.VERTEX_SIZE) + Rectangle.VERTEX_INDEX_Y, height);
 
 		this.setDirtyOnHardware();
 	}

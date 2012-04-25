@@ -288,7 +288,7 @@ public class Camera implements IUpdateHandler {
 	}
 
 	public void onApplySceneMatrix(final GLState pGLState) {
-		pGLState.orthoProjectionGLMatrixf(this.getXMin(), this.getXMax(), this.getYMax(), this.getYMin(), this.mZNear, this.mZFar);
+		pGLState.orthoProjectionGLMatrixf(this.getXMin(), this.getXMax(), this.getYMin(), this.getYMax(), this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
@@ -300,7 +300,7 @@ public class Camera implements IUpdateHandler {
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
 
-		pGLState.orthoProjectionGLMatrixf(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
+		pGLState.orthoProjectionGLMatrixf(0, widthRaw, 0, heightRaw, this.mZNear, this.mZFar);
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
@@ -311,7 +311,7 @@ public class Camera implements IUpdateHandler {
 	public void onApplyCameraSceneMatrix(final GLState pGLState) {
 		final float widthRaw = this.getWidthRaw();
 		final float heightRaw = this.getHeightRaw();
-		pGLState.orthoProjectionGLMatrixf(0, widthRaw, heightRaw, 0, this.mZNear, this.mZFar);
+		pGLState.orthoProjectionGLMatrixf(0, widthRaw, 0, heightRaw, this.mZNear, this.mZFar);
 
 		final float cameraSceneRotation = this.mCameraSceneRotation;
 		if(cameraSceneRotation != 0) {

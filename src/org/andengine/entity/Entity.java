@@ -1064,7 +1064,7 @@ public class Entity implements IEntity {
 				final float rotationCenterY = this.mLocalRotationCenterY;
 
 				localToParentTransformation.postTranslate(-rotationCenterX, -rotationCenterY);
-				localToParentTransformation.postRotate(rotation);
+				localToParentTransformation.postRotate(-rotation);
 				localToParentTransformation.postTranslate(rotationCenterX, rotationCenterY);
 			}
 
@@ -1102,7 +1102,7 @@ public class Entity implements IEntity {
 				final float localRotationCenterY = this.mLocalRotationCenterY;
 
 				parentToLocalTransformation.postTranslate(-localRotationCenterX, -localRotationCenterY);
-				parentToLocalTransformation.postRotate(-rotation);
+				parentToLocalTransformation.postRotate(rotation);
 				parentToLocalTransformation.postTranslate(localRotationCenterX, localRotationCenterY);
 			}
 
@@ -1440,7 +1440,7 @@ public class Entity implements IEntity {
 			final float localRotationCenterY = this.mLocalRotationCenterY;
 
 			pGLState.translateModelViewGLMatrixf(localRotationCenterX, localRotationCenterY, 0);
-			pGLState.rotateModelViewGLMatrixf(rotation, 0, 0, 1);
+			pGLState.rotateModelViewGLMatrixf(-rotation, 0, 0, 1);
 			pGLState.translateModelViewGLMatrixf(-localRotationCenterX, -localRotationCenterY, 0);
 
 			/* TODO There is a special, but very likely case when mRotationCenter and mScaleCenter are the same.

@@ -41,25 +41,23 @@ public class HighPerformanceDiamondSpriteVertexBufferObject extends HighPerforma
 	public void onUpdateVertices(final Sprite pSprite) {
 		final float[] bufferData = this.mBufferData;
 
-		final float x = 0;
-		final float y = 0;
-		final float x2 = pSprite.getWidth(); // TODO Optimize with field access?
-		final float y2 = pSprite.getHeight(); // TODO Optimize with field access?
+		final float width = pSprite.getWidth(); // TODO Optimize with field access?
+		final float height = pSprite.getHeight(); // TODO Optimize with field access?
 
-		final float xCenter = (x + x2) * 0.5f;
-		final float yCenter = (y + y2) * 0.5f;
+		final float halfWidth = width * 0.5f;
+		final float halfHeight = height * 0.5f;
 
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x;
-		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = yCenter;
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = halfWidth;
+		bufferData[0 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = 0;
 
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = xCenter;
-		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y2;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = 0;
+		bufferData[1 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = halfHeight;
 
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = xCenter;
-		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = y;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = width;
+		bufferData[2 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = halfHeight;
 
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = x2;
-		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = yCenter;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_X] = halfWidth;
+		bufferData[3 * Sprite.VERTEX_SIZE + Sprite.VERTEX_INDEX_Y] = height;
 
 		this.setDirtyOnHardware();
 	}
@@ -105,8 +103,20 @@ public class HighPerformanceDiamondSpriteVertexBufferObject extends HighPerforma
 		final float vCenter = (v + v2) * 0.5f;
 
 		if(textureRegion.isRotated()) {
+			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
+			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = vCenter;
+
+			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = uCenter;
+			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+
+			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = uCenter;
+			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
+
+			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
+			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = vCenter;
+		} else {
 			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = uCenter;
-			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
+			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
 
 			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
 			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = vCenter;
@@ -115,19 +125,7 @@ public class HighPerformanceDiamondSpriteVertexBufferObject extends HighPerforma
 			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = vCenter;
 
 			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = uCenter;
-			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
-		} else {
-			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u;
-			bufferData[0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = vCenter;
-
-			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = uCenter;
-			bufferData[1 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v2;
-
-			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = uCenter;
-			bufferData[2 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
-
-			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U] = u2;
-			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = vCenter;
+			bufferData[3 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V] = v;
 		}
 
 		this.setDirtyOnHardware();

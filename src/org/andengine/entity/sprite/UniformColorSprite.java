@@ -106,6 +106,11 @@ public class UniformColorSprite extends Sprite {
 	// ===========================================================
 
 	@Override
+	protected void onUpdateColor() {
+		/* Nothing. */
+	}
+
+	@Override
 	protected void preDraw(final GLState pGLState, final Camera pCamera) {
 		super.preDraw(pGLState, pCamera);
 

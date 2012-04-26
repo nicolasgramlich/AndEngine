@@ -17,6 +17,7 @@ public class RenderOptions {
 	// ===========================================================
 
 	private boolean mMultiSampling = false;
+	private boolean mDithering = false;
 
 	// ===========================================================
 	// Constructors
@@ -32,6 +33,14 @@ public class RenderOptions {
 
 	public void setMultiSampling(final boolean pMultiSampling) {
 		this.mMultiSampling = pMultiSampling;
+	}
+
+	public boolean isDithering() {
+		return this.mDithering;
+	}
+
+	public void setDithering(final boolean pDithering) {
+		this.mDithering = pDithering;
 	}
 
 	// ===========================================================

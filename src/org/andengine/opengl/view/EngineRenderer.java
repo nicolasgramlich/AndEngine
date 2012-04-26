@@ -65,7 +65,6 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 //			GLES20.glEnable(GLES20.GL_POINT_SMOOTH);
 //			GLES20.glHint(GLES20.GL_POINT_SMOOTH_HINT, GLES20.GL_NICEST);
 
-			this.mGLState.disableDither();
 			this.mGLState.disableDepthTest();
 
 			this.mGLState.enableBlend();

@@ -59,6 +59,17 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 		EGL10.EGL_NONE
 	};
 
+	private static final int[] EGLCONFIG_ATTRIBUTES_8888 = new int[] {
+		EGL10.EGL_RED_SIZE, 8,
+		EGL10.EGL_GREEN_SIZE, 8,
+		EGL10.EGL_BLUE_SIZE, 8,
+		EGL10.EGL_ALPHA_SIZE, 8,
+		EGL10.EGL_DEPTH_SIZE, ConfigChooser.DEPTH_SIZE,
+		EGL10.EGL_STENCIL_SIZE, ConfigChooser.STENCIL_SIZE,
+		EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
+		EGL10.EGL_NONE
+	};
+
 	private static final int[] EGLCONFIG_ATTRIBUTES_FALLBACK = new int[] {
 		EGL10.EGL_RED_SIZE, ConfigChooser.RED_SIZE,
 		EGL10.EGL_GREEN_SIZE, ConfigChooser.GREEN_SIZE,
@@ -69,16 +80,18 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 		EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
 		EGL10.EGL_NONE
 	};
-
+	
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private final boolean mMultiSamplingRequested;
-
+	private final boolean mARGBRequested;
+	
 	private boolean mMultiSampling;
 	private boolean mCoverageMultiSampling;
-
+	private boolean mARGB8888;
+	
 	private int mRedSize = -1;
 	private int mGreenSize = -1;
 	private int mBlueSize = -1;
@@ -91,13 +104,25 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	// ===========================================================
 
 	public ConfigChooser(final boolean pMultiSamplingRequested) {
-		this.mMultiSamplingRequested = pMultiSamplingRequested;
+		this(pMultiSamplingRequested, false);
 	}
-
+	
+	public ConfigChooser(final boolean pMultiSamplingRequested, final boolean pARGBRequested) {
+		//TODO currently doesn't support both multiSampling and ARGB_8888
+		//Should we set the bit sizes of EGLCONFIG_ATTRIBUTES dynamically?
+		this.mMultiSamplingRequested = false; 
+		this.mARGBRequested = pARGBRequested;
+	}
+	
+	
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
+	public boolean isARGB8888(){
+		return this.mARGB8888;
+	}
+	
 	public boolean isMultiSampling() {
 		return this.mMultiSampling;
 	}
@@ -173,6 +198,14 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 			if(eglConfigCount > 0) {
 				this.mCoverageMultiSampling = true;
 				return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_COVERAGEMULTISAMPLE_NVIDIA, eglConfigCount, pConfigChooserMatcher);
+			}
+		}
+		
+		if(this.mARGBRequested){
+			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_8888);
+			if(eglConfigCount > 0) {
+				this.mARGB8888 = true;
+				return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_8888, eglConfigCount, pConfigChooserMatcher);
 			}
 		}
 

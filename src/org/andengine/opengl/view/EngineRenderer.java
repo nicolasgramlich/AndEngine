@@ -69,7 +69,7 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 
 			this.mGLState.disableDepthTest();
 			this.mGLState.enableBlend();
-			this.mGLState.setBlendEnabled(renderOptions.isDithering());
+			this.mGLState.setDitherEnabled(renderOptions.isDithering());
 
 			/* Enabling culling doesn't really make sense, because triangles are never drawn 'backwards' on purpose. */
 //			this.mGLState.enableCulling();

@@ -1361,10 +1361,10 @@ public class Entity implements IEntity {
 
 	private void assertEntityHasNoParent(final IEntity pEntity) throws IllegalStateException {
 		if(pEntity.hasParent()) {
-			final String entityName = pEntity.getClass().getSimpleName();
-			final String currentParentName = pEntity.getParent().getClass().getSimpleName();
-			final String newParentName = this.getClass().getSimpleName();
-			throw new IllegalStateException("pEntity '" + entityName +"' already has a parent '" + currentParentName + ". New parent: '" + newParentName + "'!");
+			final String entityClassName = pEntity.getClass().getSimpleName();
+			final String currentParentClassName = pEntity.getParent().getClass().getSimpleName();
+			final String newParentClassName = this.getClass().getSimpleName();
+			throw new IllegalStateException("pEntity '" + entityClassName +"' already has a parent: '" + currentParentClassName + "'. New parent: '" + newParentClassName + "'!");
 		}
 	}
 

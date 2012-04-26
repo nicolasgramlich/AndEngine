@@ -153,7 +153,7 @@ public class GLState {
 		this.mCurrentSourceBlendMode = -1;
 		this.mCurrentDestinationBlendMode = -1;
 
-		setDitherEnabled(pRenderOptions.isDithering());
+		this.enableDither();
 		this.enableDepthTest();
 
 		this.disableBlend();

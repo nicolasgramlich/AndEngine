@@ -3,7 +3,7 @@ package org.andengine.util;
 import org.xml.sax.Attributes;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -33,6 +33,18 @@ public final class SAXUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static final boolean hasAttribute(final Attributes pAttributes, final String pAttributeName) {
+		final String value = pAttributes.getValue("", pAttributeName);
+		return value != null;
+	}
+
+	public static final void hasAttributeOrThrow(final Attributes pAttributes, final String pAttributeName) throws IllegalArgumentException {
+		final String value = pAttributes.getValue("", pAttributeName);
+		if(value == null) {
+			throw new IllegalArgumentException("No value found for attribute: '" + pAttributeName + "'");
+		}
+	}
 
 	public static final String getAttribute(final Attributes pAttributes, final String pAttributeName, final String pDefaultValue) {
 		final String value = pAttributes.getValue("", pAttributeName);

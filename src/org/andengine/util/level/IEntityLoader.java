@@ -11,7 +11,7 @@ import org.xml.sax.Attributes;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 18:38:40 - 18.04.2012
  */
-public interface IEntityLoader<T extends IEntityLoaderDataSource> {
+public interface IEntityLoader<T extends IEntityLoaderData> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,5 +22,5 @@ public interface IEntityLoader<T extends IEntityLoaderDataSource> {
 
 	public String[] getEntityNames();
 
-	public IEntity onLoadEntity(final String pEntityName, final Attributes pAttributes, final T pEntityLoaderDataSource) throws IOException;
+	public IEntity onLoadEntity(final String pEntityName, final Attributes pAttributes, final T pEntityLoaderData) throws IOException;
 }

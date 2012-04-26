@@ -23,7 +23,7 @@ import android.content.res.AssetManager;
  * @param <T>
  * @since 14:16:19 - 11.10.2010
  */
-public abstract class LevelLoader<T extends IEntityLoaderDataSource, R extends ILevelLoaderResult> {
+public abstract class LevelLoader<T extends IEntityLoaderData, R extends ILevelLoaderResult> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -34,7 +34,6 @@ public abstract class LevelLoader<T extends IEntityLoaderDataSource, R extends I
 
 	private final HashMap<String, IEntityLoader<T>> mEntityLoaders = new HashMap<String, IEntityLoader<T>>();
 	private IEntityLoader<T> mDefaultEntityLoader;
-	private T mEntityLoaderDataSource;
 
 	// ===========================================================
 	// Constructors
@@ -44,16 +43,7 @@ public abstract class LevelLoader<T extends IEntityLoaderDataSource, R extends I
 
 	}
 	
-	public LevelLoader(final T pEntityLoaderDataSource) {
-		this.mEntityLoaderDataSource = pEntityLoaderDataSource;
-	}
-
 	public LevelLoader(final IEntityLoader<T> pDefaultEntityLoader) {
-		this.mDefaultEntityLoader = pDefaultEntityLoader;
-	}
-
-	public LevelLoader(final T pEntityLoaderDataSource, final IEntityLoader<T> pDefaultEntityLoader) {
-		this.mEntityLoaderDataSource = pEntityLoaderDataSource;
 		this.mDefaultEntityLoader = pDefaultEntityLoader;
 	}
 
@@ -65,10 +55,6 @@ public abstract class LevelLoader<T extends IEntityLoaderDataSource, R extends I
 		this.mDefaultEntityLoader = pDefaultEntityLoader;
 	}
 
-	public void setEntityLoaderDataSource(final T pEntityLoaderDataSource) {
-		this.mEntityLoaderDataSource = pEntityLoaderDataSource;
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -77,7 +63,8 @@ public abstract class LevelLoader<T extends IEntityLoaderDataSource, R extends I
 	// Methods
 	// ===========================================================
 
-	protected abstract LevelLoaderContentHandler<T, R> onCreateLevelLoaderContentHandler(final HashMap<String, IEntityLoader<T>> pEntityLoaders, final IEntityLoader<T> pDefaultEntityLoader, final T pEntityLoaderDataSource);
+	protected abstract T onCreateEntityLoaderData();
+	protected abstract LevelLoaderContentHandler<T, R> onCreateLevelLoaderContentHandler(final HashMap<String, IEntityLoader<T>> pEntityLoaders, final IEntityLoader<T> pDefaultEntityLoader, final T pEntityLoaderData);
 
 	public void registerEntityLoader(final IEntityLoader<T> pEntityLoader) {
 		final String[] entityNames = pEntityLoader.getEntityNames();
@@ -92,21 +79,33 @@ public abstract class LevelLoader<T extends IEntityLoaderDataSource, R extends I
 	}
 
 	public R loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath) throws LevelLoaderException {
+		final T entityLoaderData = this.onCreateEntityLoaderData();
+
+		return this.loadLevelFromAsset(pAssetManager, pAssetPath, entityLoaderData); 
+	}
+
+	public R loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath, final T pEntityLoaderData) throws LevelLoaderException {
 		try {
-			return this.loadLevelFromStream(pAssetManager.open(pAssetPath));
+			return this.loadLevelFromStream(pAssetManager.open(pAssetPath), pEntityLoaderData);
 		} catch (final IOException e) {
 			throw new LevelLoaderException(e);
 		}
 	}
 
 	public R loadLevelFromStream(final InputStream pInputStream) throws LevelLoaderException {
+		final T entityLoaderData = this.onCreateEntityLoaderData();
+
+		return this.loadLevelFromStream(pInputStream, entityLoaderData);
+	}
+
+	public R loadLevelFromStream(final InputStream pInputStream, final T pEntityLoaderData) throws LevelLoaderException {
 		try{
 			final SAXParserFactory spf = SAXParserFactory.newInstance();
 			final SAXParser sp = spf.newSAXParser();
 
 			final XMLReader xr = sp.getXMLReader();
 
-			final LevelLoaderContentHandler<T, R> levelContentHandler = this.onCreateLevelLoaderContentHandler(this.mEntityLoaders, this.mDefaultEntityLoader, this.mEntityLoaderDataSource);
+			final LevelLoaderContentHandler<T, R> levelContentHandler = this.onCreateLevelLoaderContentHandler(this.mEntityLoaders, this.mDefaultEntityLoader, pEntityLoaderData);
 			xr.setContentHandler(levelContentHandler);
 
 			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
@@ -118,7 +117,6 @@ public abstract class LevelLoader<T extends IEntityLoaderDataSource, R extends I
 			StreamUtils.close(pInputStream);
 		}
 	}
-
 
 	// ===========================================================
 	// Inner and Anonymous Classes

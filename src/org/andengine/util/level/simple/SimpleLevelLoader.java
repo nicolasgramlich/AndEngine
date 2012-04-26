@@ -12,7 +12,7 @@ import org.andengine.util.level.LevelLoader;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 4:11:17 - 19.04.2012
  */
-public class SimpleLevelLoader extends LevelLoader<SimpleLevelEntityLoaderDataSource, SimpleLevelLoaderResult> {
+public class SimpleLevelLoader extends LevelLoader<SimpleLevelEntityLoaderData, SimpleLevelLoaderResult> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,12 +21,14 @@ public class SimpleLevelLoader extends LevelLoader<SimpleLevelEntityLoaderDataSo
 	// Fields
 	// ===========================================================
 
+	private final VertexBufferObjectManager mVertexBufferObjectManager;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public SimpleLevelLoader(final VertexBufferObjectManager pVertexBufferObjectManager) {
-		super(new SimpleLevelEntityLoaderDataSource(pVertexBufferObjectManager));
+		this.mVertexBufferObjectManager = pVertexBufferObjectManager;
 	}
 
 	// ===========================================================
@@ -38,8 +40,13 @@ public class SimpleLevelLoader extends LevelLoader<SimpleLevelEntityLoaderDataSo
 	// ===========================================================
 
 	@Override
-	protected SimpleLevelLoaderContentHandler onCreateLevelLoaderContentHandler(final HashMap<String, IEntityLoader<SimpleLevelEntityLoaderDataSource>> pEntityLoaders, final IEntityLoader<SimpleLevelEntityLoaderDataSource> pDefaultEntityLoader, final SimpleLevelEntityLoaderDataSource pEntityLoaderDataSource) {
-		return new SimpleLevelLoaderContentHandler(pDefaultEntityLoader, pEntityLoaders, pEntityLoaderDataSource);
+	protected SimpleLevelEntityLoaderData onCreateEntityLoaderData() {
+		return new SimpleLevelEntityLoaderData(this.mVertexBufferObjectManager);
+	}
+
+	@Override
+	protected SimpleLevelLoaderContentHandler onCreateLevelLoaderContentHandler(final HashMap<String, IEntityLoader<SimpleLevelEntityLoaderData>> pEntityLoaders, final IEntityLoader<SimpleLevelEntityLoaderData> pDefaultEntityLoader, final SimpleLevelEntityLoaderData pEntityLoaderData) {
+		return new SimpleLevelLoaderContentHandler(pDefaultEntityLoader, pEntityLoaders, pEntityLoaderData);
 	}
 
 	// ===========================================================

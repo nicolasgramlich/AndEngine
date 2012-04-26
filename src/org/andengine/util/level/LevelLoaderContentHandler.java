@@ -17,7 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Nicolas Gramlich
  * @since 14:35:32 - 11.10.2010
  */
-public abstract class LevelLoaderContentHandler<T extends IEntityLoaderDataSource, R extends ILevelLoaderResult> extends DefaultHandler {
+public abstract class LevelLoaderContentHandler<T extends IEntityLoaderData, R extends ILevelLoaderResult> extends DefaultHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,7 +28,7 @@ public abstract class LevelLoaderContentHandler<T extends IEntityLoaderDataSourc
 
 	private final IEntityLoader<T> mDefaultEntityLoader;
 	private final HashMap<String, IEntityLoader<T>> mEntityLoaders;
-	private final T mEntityLoaderDataSource;
+	private final T mEntityLoaderData;
 
 	private final SmartList<IEntity> mParentEntityStack = new SmartList<IEntity>();
 
@@ -38,10 +38,10 @@ public abstract class LevelLoaderContentHandler<T extends IEntityLoaderDataSourc
 	// Constructors
 	// ===========================================================
 
-	public LevelLoaderContentHandler(final IEntityLoader<T> pDefaultEntityLoader, final HashMap<String, IEntityLoader<T>> pEntityLoaders, final T pEntityLoaderDataSource) {
+	public LevelLoaderContentHandler(final IEntityLoader<T> pDefaultEntityLoader, final HashMap<String, IEntityLoader<T>> pEntityLoaders, final T pEntityLoaderData) {
 		this.mDefaultEntityLoader = pDefaultEntityLoader;
 		this.mEntityLoaders = pEntityLoaders;
-		this.mEntityLoaderDataSource = pEntityLoaderDataSource;
+		this.mEntityLoaderData = pEntityLoaderData;
 	}
 
 	// ===========================================================
@@ -71,7 +71,7 @@ public abstract class LevelLoaderContentHandler<T extends IEntityLoaderDataSourc
 
 		final IEntity entity;
 		try {
-			entity = entityLoader.onLoadEntity(entityName, pAttributes, this.mEntityLoaderDataSource);
+			entity = entityLoader.onLoadEntity(entityName, pAttributes, this.mEntityLoaderData);
 		} catch (final IOException e) {
 			throw new LevelLoaderException("Exception when loading entity: '" + entityName + "'.", e);
 		}

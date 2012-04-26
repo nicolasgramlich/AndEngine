@@ -7,7 +7,7 @@ package org.andengine.util.level;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:05:31 - 19.04.2012
  */
-public abstract class EntityLoader<T extends IEntityLoaderDataSource> implements IEntityLoader<T> {
+public abstract class EntityLoader<T extends IEntityLoaderData> implements IEntityLoader<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -12,7 +12,7 @@ import org.andengine.util.level.LevelLoaderContentHandler;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:12:23 - 19.04.2012
  */
-public class SimpleLevelLoaderContentHandler extends LevelLoaderContentHandler<SimpleLevelEntityLoaderDataSource, SimpleLevelLoaderResult> {
+public class SimpleLevelLoaderContentHandler extends LevelLoaderContentHandler<SimpleLevelEntityLoaderData, SimpleLevelLoaderResult> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -25,8 +25,8 @@ public class SimpleLevelLoaderContentHandler extends LevelLoaderContentHandler<S
 	// Constructors
 	// ===========================================================
 	
-	public SimpleLevelLoaderContentHandler(final IEntityLoader<SimpleLevelEntityLoaderDataSource> pDefaultEntityLoader, final HashMap<String, IEntityLoader<SimpleLevelEntityLoaderDataSource>> pEntityLoaders, SimpleLevelEntityLoaderDataSource pEntityLoaderDataSource) {
-		super(pDefaultEntityLoader, pEntityLoaders, pEntityLoaderDataSource);
+	public SimpleLevelLoaderContentHandler(final IEntityLoader<SimpleLevelEntityLoaderData> pDefaultEntityLoader, final HashMap<String, IEntityLoader<SimpleLevelEntityLoaderData>> pEntityLoaders, SimpleLevelEntityLoaderData pEntityLoaderData) {
+		super(pDefaultEntityLoader, pEntityLoaders, pEntityLoaderData);
 	}
 	
 	// ===========================================================

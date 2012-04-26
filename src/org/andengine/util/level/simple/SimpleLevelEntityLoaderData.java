@@ -1,7 +1,7 @@
 package org.andengine.util.level.simple;
 
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.level.IEntityLoaderDataSource;
+import org.andengine.util.level.IEntityLoaderData;
 
 /**
  * (c) Zynga 2012
@@ -9,7 +9,7 @@ import org.andengine.util.level.IEntityLoaderDataSource;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:13:09 - 19.04.2012
  */
-public class SimpleLevelEntityLoaderDataSource implements IEntityLoaderDataSource {
+public class SimpleLevelEntityLoaderData implements IEntityLoaderData {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -24,7 +24,7 @@ public class SimpleLevelEntityLoaderDataSource implements IEntityLoaderDataSourc
 	// Constructors
 	// ===========================================================
 
-	public SimpleLevelEntityLoaderDataSource(final VertexBufferObjectManager pVertexBufferObjectManager) {
+	public SimpleLevelEntityLoaderData(final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this.mVertexBufferObjectManager = pVertexBufferObjectManager;
 	}
 

@@ -60,7 +60,7 @@ public class NineSliceSprite extends Entity {
 	}
 
 	public NineSliceSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final float pInsetLeft, final float pInsetTop, final float pInsetRight, final float pInsetBottom, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
-		super(pX, pY);
+		super(pX, pY, pWidth, pHeight);
 
 		this.mTextureRegion = pTextureRegion;
 		this.mInsetLeft = pInsetLeft;
@@ -82,7 +82,7 @@ public class NineSliceSprite extends Entity {
 		this.mBottomRightTextureRegion = new TextureRegion(texture, 0, 0, 0, 0);
 
 		this.updateTextureRegions();
-		this.setSize(pWidth, pHeight);
+		this.updateVertices();
 
 		this.attachChild(this.mSpriteBatch);
 	}
@@ -90,6 +90,60 @@ public class NineSliceSprite extends Entity {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public float getInsetLeft() {
+		return this.mInsetLeft;
+	}
+
+	public void setInsetLeft(final float pInsetLeft) {
+		this.mInsetLeft = pInsetLeft;
+
+		this.updateTextureRegions();
+		this.updateVertices();
+	}
+
+	public float getInsetTop() {
+		return this.mInsetTop;
+	}
+
+	public void setInsetTop(final float pInsetTop) {
+		this.mInsetTop = pInsetTop;
+
+		this.updateTextureRegions();
+		this.updateVertices();
+	}
+
+	public float getInsetRight() {
+		return this.mInsetRight;
+	}
+
+	public void setInsetRight(final float pInsetRight) {
+		this.mInsetRight = pInsetRight;
+
+		this.updateTextureRegions();
+		this.updateVertices();
+	}
+
+	public float getInsetBottom() {
+		return this.mInsetBottom;
+	}
+
+	public void setInsetBottom(final float pInsetBottom) {
+		this.mInsetBottom = pInsetBottom;
+
+		this.updateTextureRegions();
+		this.updateVertices();
+	}
+
+	public void setInsets(final float pInsetLeft, final float pInsetTop, final float pInsetRight, final float pInsetBottom) {
+		this.mInsetLeft = pInsetLeft;
+		this.mInsetTop = pInsetTop;
+		this.mInsetRight = pInsetRight;
+		this.mInsetBottom = pInsetBottom;
+
+		this.updateTextureRegions();
+		this.updateVertices();
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

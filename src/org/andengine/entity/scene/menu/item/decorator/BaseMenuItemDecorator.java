@@ -640,8 +640,18 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public IEntity queryFirst(final IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.queryFirst(pEntityMatcher);
+	}
+
+	@Override
 	public <L extends List<IEntity>> L query(final IEntityMatcher pEntityMatcher, final L pResult) {
 		return this.mMenuItem.query(pEntityMatcher, pResult);
+	}
+
+	@Override
+	public <S extends IEntity> S queryFirstForSubclass(final IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.queryFirstForSubclass(pEntityMatcher);
 	}
 
 	@Override

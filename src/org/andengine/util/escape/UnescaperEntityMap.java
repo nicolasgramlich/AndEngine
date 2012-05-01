@@ -8,7 +8,7 @@ import org.andengine.util.adt.map.IntLookupMap;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:31:08 - 26.04.2012
  */
-public class UnescaperLookupMap extends IntLookupMap<CharSequence> {
+public class UnescaperEntityMap extends IntLookupMap<CharSequence> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,7 +19,7 @@ public class UnescaperLookupMap extends IntLookupMap<CharSequence> {
 	// Fields
 	// ===========================================================
 
-	private final CharSequence[] mLookupTable = new CharSequence[UnescaperLookupMap.LOOKUP_TABLE_SIZE];
+	private final CharSequence[] mLookupTable = new CharSequence[UnescaperEntityMap.LOOKUP_TABLE_SIZE];
 
 	// ===========================================================
 	// Constructors
@@ -39,14 +39,14 @@ public class UnescaperLookupMap extends IntLookupMap<CharSequence> {
 
 	@Override
 	public CharSequence item(final int pValue) {
-		if(pValue < UnescaperLookupMap.LOOKUP_TABLE_SIZE) {
+		if(pValue < UnescaperEntityMap.LOOKUP_TABLE_SIZE) {
 			return this.mLookupTable[pValue];
 		}
 		return super.item(pValue);
 	}
 
 	public void init() {
-		for(int i = 0; i < UnescaperLookupMap.LOOKUP_TABLE_SIZE; ++i) {
+		for(int i = 0; i < UnescaperEntityMap.LOOKUP_TABLE_SIZE; ++i) {
 			this.mLookupTable[i] = super.item(i);
 		}
 	}

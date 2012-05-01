@@ -15,7 +15,7 @@ public class XMLUnescaper {
 	// Fields
 	// ===========================================================
 
-	private static final UnescaperLookupMap sUnescaperEntityMap = new UnescaperLookupMap() {
+	private static final UnescaperEntityMap XMLUNESCAPER_ENTITYMAP = new UnescaperEntityMap() {
 		{
 			/* BASIC */
 			this.add("quot", 34); // " - double-quote
@@ -47,7 +47,7 @@ public class XMLUnescaper {
 	// ===========================================================
 
 	public static String unescape(final CharSequence pCharSequence) {
-		return Unescaper.unescape(pCharSequence, XMLUnescaper.sUnescaperEntityMap);
+		return Unescaper.unescape(pCharSequence, XMLUnescaper.XMLUNESCAPER_ENTITYMAP);
 	}
 
 	// ===========================================================

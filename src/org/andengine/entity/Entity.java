@@ -642,15 +642,39 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public IEntity queryFirst(final IEntityMatcher pEntityMatcher) {
+		return this.queryFirstForSubclass(pEntityMatcher);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <S extends IEntity> S queryFirstForSubclass(final IEntityMatcher pEntityMatcher) {
+		final int childCount = this.getChildCount();
+		for(int i = 0; i < childCount; i++) {
+			final IEntity child = this.mChildren.get(i);
+			if(pEntityMatcher.matches(child)) {
+				return (S)child;
+			}
+
+			final S childQueryFirst = child.queryFirstForSubclass(pEntityMatcher);
+			if(childQueryFirst != null) {
+				return childQueryFirst;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	public <L extends List<IEntity>> L query(final IEntityMatcher pEntityMatcher, final L pResult) {
 		final int childCount = this.getChildCount();
 		for(int i = 0; i < childCount; i++) {
-			final IEntity item = this.mChildren.get(i);
-			if(pEntityMatcher.matches(item)) {
-				pResult.add(item);
+			final IEntity child = this.mChildren.get(i);
+			if(pEntityMatcher.matches(child)) {
+				pResult.add(child);
 			}
 
-			item.query(pEntityMatcher, pResult);
+			child.query(pEntityMatcher, pResult);
 		}
 
 		return pResult;
@@ -666,12 +690,12 @@ public class Entity implements IEntity {
 	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException {
 		final int childCount = this.getChildCount();
 		for(int i = 0; i < childCount; i++) {
-			final IEntity item = this.mChildren.get(i);
-			if(pEntityMatcher.matches(item)) {
-				pResult.add((S)item);
+			final IEntity child = this.mChildren.get(i);
+			if(pEntityMatcher.matches(child)) {
+				pResult.add((S)child);
 			}
 
-			item.queryForSubclass(pEntityMatcher, pResult);
+			child.queryForSubclass(pEntityMatcher, pResult);
 		}
 
 		return pResult;

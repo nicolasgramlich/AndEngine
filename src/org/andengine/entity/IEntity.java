@@ -200,21 +200,32 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public ArrayList<IEntity> query(final IEntityMatcher pEntityMatcher);
 	/**
 	 * @param pEntityMatcher
+	 * @return the first child (recursively!) that matches the supplied {@link IEntityMatcher} or <code>null</code> if none matches..
+	 */
+	public IEntity queryFirst(final IEntityMatcher pEntityMatcher);
+	/**
+	 * @param pEntityMatcher
 	 * @param pResult the {@link List} to put the result into.
 	 * @return all children (recursively!) that match the supplied {@link IEntityMatcher}.
 	 */
 	public <L extends List<IEntity>> L query(final IEntityMatcher pEntityMatcher, final L pResult);
 	/**
 	 * @param pEntityMatcher
-	 * @return all children (recursively!) that match the supplied {@link IEntityMatcher}.
-	 * @throws ClassCastException when the supplied {@link IEntityMatcher} matched a {@link IEntity} that was not of the requested subtype.
+	 * @return the first child (recursively!) that matches the supplied {@link IEntityMatcher} or <code>null</code> if none matches..
+	 * @throws ClassCastException when the supplied {@link IEntityMatcher} matched an {@link IEntity} that was not of the requested subtype.
 	 */
-	public <S extends IEntity> ArrayList<S> queryForSubclass(IEntityMatcher pEntityMatcher) throws ClassCastException;
+	public <S extends IEntity> S queryFirstForSubclass(final IEntityMatcher pEntityMatcher);
+	/**
+	 * @param pEntityMatcher
+	 * @return all children (recursively!) that match the supplied {@link IEntityMatcher}.
+	 * @throws ClassCastException when the supplied {@link IEntityMatcher} matched an {@link IEntity} that was not of the requested subtype.
+	 */
+	public <S extends IEntity> ArrayList<S> queryForSubclass(final IEntityMatcher pEntityMatcher) throws ClassCastException;
 	/**
 	 * @param pEntityMatcher
 	 * @param pResult the {@link List} to put the result into.
 	 * @return all children (recursively!) that match the supplied {@link IEntityMatcher}.
-	 * @throws ClassCastException when the supplied {@link IEntityMatcher} matched a {@link IEntity} that was not of the requested subtype.
+	 * @throws ClassCastException when the supplied {@link IEntityMatcher} matched an {@link IEntity} that was not of the requested subtype.
 	 */
 	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException;
 

@@ -27,22 +27,26 @@ public class TextOptions {
 	// ===========================================================
 
 	public TextOptions() {
-		this(AutoWrap.NONE, 0, Text.LEADING_DEFAULT, HorizontalAlign.LEFT);
+		this(AutoWrap.NONE, 0, HorizontalAlign.LEFT, Text.LEADING_DEFAULT);
 	}
 
 	public TextOptions(final HorizontalAlign pHorizontalAlign) {
-		this(AutoWrap.NONE, 0, Text.LEADING_DEFAULT, pHorizontalAlign);
+		this(AutoWrap.NONE, 0, pHorizontalAlign, Text.LEADING_DEFAULT);
 	}
 
 	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth) {
-		this(pAutoWrap, pAutoWrapWidth, Text.LEADING_DEFAULT, HorizontalAlign.LEFT);
+		this(pAutoWrap, pAutoWrapWidth, HorizontalAlign.LEFT, Text.LEADING_DEFAULT);
 	}
 
-	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign) {
+	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final HorizontalAlign pHorizontalAlign) {
+		this(pAutoWrap, pAutoWrapWidth, pHorizontalAlign, Text.LEADING_DEFAULT);
+	}
+
+	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final HorizontalAlign pHorizontalAlign, final float pLeading) {
 		this.mAutoWrap = pAutoWrap;
 		this.mAutoWrapWidth = pAutoWrapWidth;
-		this.mLeading = pLeading;
 		this.mHorizontalAlign = pHorizontalAlign;
+		this.mLeading = pLeading;
 	}
 
 	// ===========================================================

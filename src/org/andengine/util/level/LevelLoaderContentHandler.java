@@ -71,7 +71,7 @@ public abstract class LevelLoaderContentHandler<T extends IEntityLoaderData, R e
 
 		final IEntity entity;
 		try {
-			entity = entityLoader.onLoadEntity(entityName, pAttributes, this.mEntityLoaderData);
+			entity = entityLoader.onLoadEntity(entityName, parent, pAttributes, this.mEntityLoaderData);
 		} catch (final IOException e) {
 			throw new LevelLoaderException("Exception when loading entity: '" + entityName + "'.", e);
 		}

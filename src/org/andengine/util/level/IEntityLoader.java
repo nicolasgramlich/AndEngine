@@ -22,5 +22,13 @@ public interface IEntityLoader<T extends IEntityLoaderData> {
 
 	public String[] getEntityNames();
 
-	public IEntity onLoadEntity(final String pEntityName, final Attributes pAttributes, final T pEntityLoaderData) throws IOException;
+	/**
+	 * @param pEntityName
+	 * @param pParent can be <code>null</code>, i.e. for the root {@link IEntity}.
+	 * @param pAttributes
+	 * @param pEntityLoaderData
+	 * @return
+	 * @throws IOException
+	 */
+	public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final T pEntityLoaderData) throws IOException;
 }

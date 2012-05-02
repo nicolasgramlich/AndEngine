@@ -755,6 +755,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public IEntity getRootEntity() {
+		return this.mMenuItem.getRootEntity();
+	}
+
+	@Override
 	public boolean isVisible() {
 		return this.mMenuItem.isVisible();
 	}

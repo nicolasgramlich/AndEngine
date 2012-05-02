@@ -245,6 +245,17 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public IEntity getRootEntity() {
+		IEntity rootEntity = this;
+
+		while (rootEntity.hasParent()) {
+			rootEntity = rootEntity.getParent();
+		}
+
+		return rootEntity; 
+	}
+
+	@Override
 	public int getTag() {
 		return this.mTag;
 	}

@@ -76,6 +76,8 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public IEntity getParent();
 	public void setParent(final IEntity pEntity);
 
+	public IEntity getRootEntity();
+
 	public float getX();
 	public float getY();
 	public void setX(final float pX);

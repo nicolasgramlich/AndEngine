@@ -23,7 +23,7 @@ import android.content.res.AssetManager;
  * @param <T>
  * @since 14:16:19 - 11.10.2010
  */
-public abstract class LevelLoader<T extends IEntityLoaderData, R extends ILevelLoaderResult> {
+public abstract class LevelLoader<T extends IEntityLoaderData, L extends IEntityLoaderListener, R extends ILevelLoaderResult> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -64,7 +64,7 @@ public abstract class LevelLoader<T extends IEntityLoaderData, R extends ILevelL
 	// ===========================================================
 
 	protected abstract T onCreateEntityLoaderData();
-	protected abstract LevelLoaderContentHandler<T, R> onCreateLevelLoaderContentHandler(final HashMap<String, IEntityLoader<T>> pEntityLoaders, final IEntityLoader<T> pDefaultEntityLoader, final T pEntityLoaderData);
+	protected abstract LevelLoaderContentHandler<T, L, R> onCreateLevelLoaderContentHandler(final HashMap<String, IEntityLoader<T>> pEntityLoaders, final IEntityLoader<T> pDefaultEntityLoader, final T pEntityLoaderData, final L pEntityLoaderListener);
 
 	public void registerEntityLoader(final IEntityLoader<T> pEntityLoader) {
 		final String[] entityNames = pEntityLoader.getEntityNames();
@@ -79,33 +79,45 @@ public abstract class LevelLoader<T extends IEntityLoaderData, R extends ILevelL
 	}
 
 	public R loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath) throws LevelLoaderException {
+		return this.loadLevelFromAsset(pAssetManager, pAssetPath, (L)null);
+	}
+
+	public R loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath, final L pEntityLoaderListener) throws LevelLoaderException {
 		final T entityLoaderData = this.onCreateEntityLoaderData();
 
-		return this.loadLevelFromAsset(pAssetManager, pAssetPath, entityLoaderData); 
+		return this.loadLevelFromAsset(pAssetManager, pAssetPath, entityLoaderData, pEntityLoaderListener);
 	}
 
 	public R loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath, final T pEntityLoaderData) throws LevelLoaderException {
+		return this.loadLevelFromAsset(pAssetManager, pAssetPath, pEntityLoaderData, null);
+	}
+
+	public R loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath, final T pEntityLoaderData, final L pEntityLoaderListener) throws LevelLoaderException {
 		try {
-			return this.loadLevelFromStream(pAssetManager.open(pAssetPath), pEntityLoaderData);
+			return this.loadLevelFromStream(pAssetManager.open(pAssetPath), pEntityLoaderData, pEntityLoaderListener);
 		} catch (final IOException e) {
 			throw new LevelLoaderException(e);
 		}
 	}
 
 	public R loadLevelFromStream(final InputStream pInputStream) throws LevelLoaderException {
-		final T entityLoaderData = this.onCreateEntityLoaderData();
-
-		return this.loadLevelFromStream(pInputStream, entityLoaderData);
+		return this.loadLevelFromStream(pInputStream, null);
 	}
 
-	public R loadLevelFromStream(final InputStream pInputStream, final T pEntityLoaderData) throws LevelLoaderException {
+	public R loadLevelFromStream(final InputStream pInputStream, final L pEntityLoaderListener) throws LevelLoaderException {
+		final T entityLoaderData = this.onCreateEntityLoaderData();
+		
+		return this.loadLevelFromStream(pInputStream, entityLoaderData, pEntityLoaderListener);
+	}
+
+	public R loadLevelFromStream(final InputStream pInputStream, final T pEntityLoaderData, final L pEntityLoaderListener) throws LevelLoaderException {
 		try{
 			final SAXParserFactory spf = SAXParserFactory.newInstance();
 			final SAXParser sp = spf.newSAXParser();
 
 			final XMLReader xr = sp.getXMLReader();
 
-			final LevelLoaderContentHandler<T, R> levelContentHandler = this.onCreateLevelLoaderContentHandler(this.mEntityLoaders, this.mDefaultEntityLoader, pEntityLoaderData);
+			final LevelLoaderContentHandler<T, L, R> levelContentHandler = this.onCreateLevelLoaderContentHandler(this.mEntityLoaders, this.mDefaultEntityLoader, pEntityLoaderData, pEntityLoaderListener);
 			xr.setContentHandler(levelContentHandler);
 
 			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.level.IEntityLoader;
+import org.andengine.util.level.IEntityLoaderListener;
 import org.andengine.util.level.LevelLoader;
 
 /**
@@ -12,7 +13,7 @@ import org.andengine.util.level.LevelLoader;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 4:11:17 - 19.04.2012
  */
-public class SimpleLevelLoader extends LevelLoader<SimpleLevelEntityLoaderData, SimpleLevelLoaderResult> {
+public class SimpleLevelLoader extends LevelLoader<SimpleLevelEntityLoaderData, IEntityLoaderListener, SimpleLevelLoaderResult> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -45,7 +46,7 @@ public class SimpleLevelLoader extends LevelLoader<SimpleLevelEntityLoaderData, 
 	}
 
 	@Override
-	protected SimpleLevelLoaderContentHandler onCreateLevelLoaderContentHandler(final HashMap<String, IEntityLoader<SimpleLevelEntityLoaderData>> pEntityLoaders, final IEntityLoader<SimpleLevelEntityLoaderData> pDefaultEntityLoader, final SimpleLevelEntityLoaderData pEntityLoaderData) {
+	protected SimpleLevelLoaderContentHandler onCreateLevelLoaderContentHandler(final HashMap<String, IEntityLoader<SimpleLevelEntityLoaderData>> pEntityLoaders, final IEntityLoader<SimpleLevelEntityLoaderData> pDefaultEntityLoader, final SimpleLevelEntityLoaderData pEntityLoaderData, final IEntityLoaderListener pEntityLoaderListener) {
 		return new SimpleLevelLoaderContentHandler(pDefaultEntityLoader, pEntityLoaders, pEntityLoaderData);
 	}
 

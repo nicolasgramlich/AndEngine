@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.util.level.IEntityLoader;
+import org.andengine.util.level.IEntityLoaderListener;
 import org.andengine.util.level.LevelLoaderContentHandler;
 
 /**
@@ -12,7 +13,7 @@ import org.andengine.util.level.LevelLoaderContentHandler;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:12:23 - 19.04.2012
  */
-public class SimpleLevelLoaderContentHandler extends LevelLoaderContentHandler<SimpleLevelEntityLoaderData, SimpleLevelLoaderResult> {
+public class SimpleLevelLoaderContentHandler extends LevelLoaderContentHandler<SimpleLevelEntityLoaderData, IEntityLoaderListener, SimpleLevelLoaderResult> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

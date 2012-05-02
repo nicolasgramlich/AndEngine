@@ -17,7 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Nicolas Gramlich
  * @since 14:35:32 - 11.10.2010
  */
-public abstract class LevelLoaderContentHandler<T extends IEntityLoaderData, R extends ILevelLoaderResult> extends DefaultHandler {
+public abstract class LevelLoaderContentHandler<T extends IEntityLoaderData, L extends IEntityLoaderListener, R extends ILevelLoaderResult> extends DefaultHandler {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -26,22 +26,28 @@ public abstract class LevelLoaderContentHandler<T extends IEntityLoaderData, R e
 	// Fields
 	// ===========================================================
 
-	private final IEntityLoader<T> mDefaultEntityLoader;
-	private final HashMap<String, IEntityLoader<T>> mEntityLoaders;
-	private final T mEntityLoaderData;
+	protected final IEntityLoader<T> mDefaultEntityLoader;
+	protected final HashMap<String, IEntityLoader<T>> mEntityLoaders;
+	protected final T mEntityLoaderData;
 
 	private final SmartList<IEntity> mParentEntityStack = new SmartList<IEntity>();
 
 	protected IEntity mRootEntity;
+	protected L mEntityLoaderListener;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
 	public LevelLoaderContentHandler(final IEntityLoader<T> pDefaultEntityLoader, final HashMap<String, IEntityLoader<T>> pEntityLoaders, final T pEntityLoaderData) {
+		this(pDefaultEntityLoader, pEntityLoaders, pEntityLoaderData, null);
+	}
+
+	public LevelLoaderContentHandler(final IEntityLoader<T> pDefaultEntityLoader, final HashMap<String, IEntityLoader<T>> pEntityLoaders, final T pEntityLoaderData, final L pEntityLoaderListener) {
 		this.mDefaultEntityLoader = pDefaultEntityLoader;
 		this.mEntityLoaders = pEntityLoaders;
 		this.mEntityLoaderData = pEntityLoaderData;
+		this.mEntityLoaderListener = pEntityLoaderListener;
 	}
 
 	// ===========================================================
@@ -84,6 +90,10 @@ public abstract class LevelLoaderContentHandler<T extends IEntityLoaderData, R e
 			this.mRootEntity = entity;
 		} else {
 			parent.attachChild(entity);
+		}
+
+		if(this.mEntityLoaderListener != null) {
+			this.mEntityLoaderListener.onEntityLoaded(entity, pAttributes);
 		}
 
 		this.mParentEntityStack.addLast(entity);

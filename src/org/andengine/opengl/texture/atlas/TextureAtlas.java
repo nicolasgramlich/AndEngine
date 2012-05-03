@@ -7,6 +7,7 @@ import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.source.ExtrudingBitmapTextureAtlasSource.ExtrusionDirection;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
 /**
@@ -116,22 +117,22 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 		if(pTextureAtlasSourcePadding > 0) {
 			/* Left padding. */
 			if(pTextureX >= pTextureAtlasSourcePadding) {
-				this.addEmptyTextureAtlasSource(pTextureX - pTextureAtlasSourcePadding, pTextureY, pTextureAtlasSourcePadding, pTextureAtlasSource.getTextureHeight());
+				this.addExtrudingTextureAtlasSource(pTextureX - pTextureAtlasSourcePadding, pTextureY, pTextureAtlasSourcePadding, pTextureAtlasSource.getTextureHeight(), pTextureAtlasSource, ExtrusionDirection.LEFT, pTextureAtlasSourcePadding);
 			}
 
 			/* Top padding. */
 			if(pTextureY >= pTextureAtlasSourcePadding) {
-				this.addEmptyTextureAtlasSource(pTextureX, pTextureY - pTextureAtlasSourcePadding, pTextureAtlasSource.getTextureWidth(), pTextureAtlasSourcePadding);
+				this.addExtrudingTextureAtlasSource(pTextureX, pTextureY - pTextureAtlasSourcePadding, pTextureAtlasSource.getTextureWidth(), pTextureAtlasSourcePadding, pTextureAtlasSource, ExtrusionDirection.TOP, pTextureAtlasSourcePadding);
 			}
 
 			/* Right padding. */
 			if(pTextureX + pTextureAtlasSource.getTextureWidth() - 1 + pTextureAtlasSourcePadding <= this.getWidth()) {
-				this.addEmptyTextureAtlasSource(pTextureX + pTextureAtlasSource.getTextureWidth(), pTextureY, pTextureAtlasSourcePadding, pTextureAtlasSource.getTextureHeight());
+				this.addExtrudingTextureAtlasSource(pTextureX + pTextureAtlasSource.getTextureWidth(), pTextureY, pTextureAtlasSourcePadding, pTextureAtlasSource.getTextureHeight(), pTextureAtlasSource, ExtrusionDirection.RIGHT, pTextureAtlasSourcePadding);
 			}
 
 			/* Bottom padding. */
 			if(pTextureY + pTextureAtlasSource.getTextureHeight() - 1 + pTextureAtlasSourcePadding <= this.getHeight()) {
-				this.addEmptyTextureAtlasSource(pTextureX, pTextureY + pTextureAtlasSource.getTextureHeight(), pTextureAtlasSource.getTextureWidth(), pTextureAtlasSourcePadding);
+				this.addExtrudingTextureAtlasSource(pTextureX, pTextureY + pTextureAtlasSource.getTextureHeight(), pTextureAtlasSource.getTextureWidth(), pTextureAtlasSourcePadding, pTextureAtlasSource, ExtrusionDirection.BOTTOM, pTextureAtlasSourcePadding);
 			}
 		}
 	}

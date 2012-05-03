@@ -3,6 +3,7 @@ package org.andengine.opengl.texture.atlas;
 import org.andengine.BuildConfig;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.ITextureStateListener;
+import org.andengine.opengl.texture.atlas.bitmap.source.ExtrudingBitmapTextureAtlasSource.ExtrusionDirection;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.util.debug.Debug;
 
@@ -24,7 +25,7 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY) throws IllegalArgumentException;
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY, final int pTextureAtlasSourcePadding) throws IllegalArgumentException;
-	public void addEmptyTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight);
+	public void addExtrudingTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight, final ITextureAtlasSource pExtrusionSource, final ExtrusionDirection pExtrusionDirection, final int pExtrusionSize);
 	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY);
 	public void clearTextureAtlasSources();
 

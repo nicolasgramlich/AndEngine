@@ -6,7 +6,8 @@ import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.TextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.bitmap.source.ExtrudingBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.bitmap.source.ExtrudingBitmapTextureAtlasSource.ExtrusionDirection;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
@@ -123,8 +124,8 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	// ===========================================================
 	
 	@Override
-	public void addEmptyTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight) {
-		this.addTextureAtlasSource(new EmptyBitmapTextureAtlasSource(pWidth, pHeight), pTextureX, pTextureY);
+	public void addExtrudingTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight, final ITextureAtlasSource pExtrusionSource, final ExtrusionDirection pExtrusionDirection, final int pExtrusionSize) {
+		this.addTextureAtlasSource(new ExtrudingBitmapTextureAtlasSource(pWidth, pHeight, pExtrusionSource, pExtrusionDirection, pExtrusionSize), pTextureX, pTextureY);
 	}
 
 	// ===========================================================
@@ -154,6 +155,23 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 				final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(bitmapConfig);
 				if(bitmap == null) {
 					throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.getClass().toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
+				}
+
+				/*
+				 * Handle special case of extruding edges of a Bitmap.
+				 * ExtrudingBitmapTextureAtlasSource expects to be fed with a
+				 * Bitmap before it can return correct bitmap via onLoadBitmap()
+				 */
+				if (false == (bitmapTextureAtlasSource instanceof ExtrudingBitmapTextureAtlasSource)) {
+					// There can be 4 extrusions made for a single texture region
+					for(int j = (i + 1); j <= (i + 4); j++) {
+						if ((j < textureSources.size()) && textureSources.get(j) instanceof ExtrudingBitmapTextureAtlasSource) {
+							ExtrudingBitmapTextureAtlasSource extruder = (ExtrudingBitmapTextureAtlasSource) textureSources.get(j);
+							if (extruder.getExtrusionSource() == bitmapTextureAtlasSource) { 
+								extruder.createExtrusionBitmap(bitmap);
+							}
+						}
+					}
 				}
 
 				final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && pixelFormat == PixelFormat.RGBA_8888;

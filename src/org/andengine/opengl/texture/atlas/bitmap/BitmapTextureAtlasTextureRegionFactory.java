@@ -51,6 +51,10 @@ public class BitmapTextureAtlasTextureRegionFactory {
 		}
 	}
 
+	public static String getAssetBasePath() {
+		return BitmapTextureAtlasTextureRegionFactory.sAssetBasePath;
+	}
+
 	public static void reset() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("");
 	}

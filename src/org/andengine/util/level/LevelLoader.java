@@ -76,6 +76,10 @@ public class LevelLoader {
 		}
 	}
 
+	public String getAssetBasePath() {
+		return mAssetBasePath;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

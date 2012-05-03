@@ -50,6 +50,10 @@ public class FontFactory {
 		}
 	}
 
+	public static String getAssetBasePath() {
+		return FontFactory.sAssetBasePath;
+	}
+
 	public static void onCreate() {
 		FontFactory.setAssetBasePath("");
 	}

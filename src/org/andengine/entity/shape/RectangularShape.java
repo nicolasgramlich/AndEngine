@@ -110,6 +110,10 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 		return this.convertLocalToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f);
 	}
 
+	public float[] getSceneCenterCoordinates(final float[] pReuse) {
+		return this.convertLocalToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f, pReuse);
+	}
+
 	@Override
 	public boolean collidesWith(final IShape pOtherShape) {
 		if(pOtherShape instanceof RectangularShape) {

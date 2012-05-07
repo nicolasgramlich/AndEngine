@@ -49,8 +49,9 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 	@Override
 	public void run() {
 		this.mEntity.detachSelf();
-		if (mCallback != null) {
-			mCallback.onCallback(mEntity);
+
+		if(this.mCallback != null) {
+			this.mCallback.onCallback(this.mEntity);
 		}
 	}
 

@@ -881,6 +881,11 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public float[] getSceneCenterCoordinates(final float[] pReuse) {
+		return this.convertLocalToSceneCoordinates(0, 0, pReuse);
+	}
+
+	@Override
 	public Transformation getLocalToParentTransformation() {
 		if(this.mLocalToParentTransformation == null) {
 			this.mLocalToParentTransformation = new Transformation();

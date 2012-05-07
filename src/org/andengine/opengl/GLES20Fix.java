@@ -36,7 +36,7 @@ public class GLES20Fix {
 			if(loadLibrarySuccess) {
 				WORKAROUND_MISSING_GLES20_METHODS = true;
 			} else {
-				throw new AndEngineRuntimeException();
+				throw new AndEngineRuntimeException("Inherently incompatible device detected.");
 			}
 		} else {
 			WORKAROUND_MISSING_GLES20_METHODS = false;

@@ -274,6 +274,11 @@ public class Line extends Shape {
 	}
 
 	@Override
+	public float[] getSceneCenterCoordinates(final float[] pReuse) {
+		throw new MethodNotSupportedException();
+	}
+
+	@Override
 	@Deprecated
 	public boolean contains(final float pX, final float pY) {
 		throw new MethodNotSupportedException();

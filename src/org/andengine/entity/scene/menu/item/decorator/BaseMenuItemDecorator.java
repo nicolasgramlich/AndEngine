@@ -430,6 +430,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public float[] getSceneCenterCoordinates(final float[] pReuse) {
+		return this.mMenuItem.getSceneCenterCoordinates(pReuse);
+	}
+
+	@Override
 	public boolean isCullingEnabled() {
 		return this.mMenuItem.isCullingEnabled();
 	}

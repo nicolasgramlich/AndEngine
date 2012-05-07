@@ -176,6 +176,12 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public float[] getSceneCenterCoordinates();
 
 	/**
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] getSceneCenterCoordinates(final float[] pReuse);
+
+	/**
 	 * @param pX
 	 * @param pY
 	 * @return a shared(!) float[] of length 2.

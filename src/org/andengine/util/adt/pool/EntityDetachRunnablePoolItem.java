@@ -1,6 +1,7 @@
 package org.andengine.util.adt.pool;
 
 import org.andengine.entity.IEntity;
+import org.andengine.util.call.Callback;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -19,6 +20,7 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 	// ===========================================================
 
 	protected IEntity mEntity;
+	protected Callback<IEntity> mCallback;
 
 	// ===========================================================
 	// Constructors
@@ -32,6 +34,14 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 		this.mEntity = pEntity;
 	}
 
+	/**
+	 * Sets up a callback which will get called right after detaching entity
+	 * @param pCallback gets called right after detaching entity; if null nothing will be called
+	 */
+	public void setCallback(final Callback<IEntity> pCallback) {
+		this.mCallback = pCallback;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -39,6 +49,10 @@ public class EntityDetachRunnablePoolItem extends RunnablePoolItem {
 	@Override
 	public void run() {
 		this.mEntity.detachSelf();
+
+		if(this.mCallback != null) {
+			this.mCallback.onCallback(this.mEntity);
+		}
 	}
 
 	// ===========================================================

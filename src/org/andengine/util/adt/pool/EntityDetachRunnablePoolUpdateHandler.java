@@ -1,6 +1,7 @@
 package org.andengine.util.adt.pool;
 
 import org.andengine.entity.IEntity;
+import org.andengine.util.call.Callback;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -56,8 +57,18 @@ public class EntityDetachRunnablePoolUpdateHandler extends RunnablePoolUpdateHan
 	// ===========================================================
 
 	public void scheduleDetach(final IEntity pEntity) {
+		scheduleDetach(pEntity, null);
+	}
+
+	/**
+	 * Schedules detach of given entity
+	 * @param pEntity will be safely detached
+	 * @param pCallback will be called when this entity gets detached
+	 */
+	public void scheduleDetach(final IEntity pEntity, final Callback<IEntity> pCallback) {
 		final EntityDetachRunnablePoolItem entityDetachRunnablePoolItem = this.obtainPoolItem();
 		entityDetachRunnablePoolItem.setEntity(pEntity);
+		entityDetachRunnablePoolItem.setCallback(pCallback);
 		this.postPoolItem(entityDetachRunnablePoolItem);
 	}
 

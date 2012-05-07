@@ -4,9 +4,9 @@ package org.andengine.util.adt.list;
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 11:14:45 - 27.01.2012
+ * @since 19:21:53 - 03.05.2012
  */
-public interface IFloatList {
+public interface IIntList {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -17,10 +17,10 @@ public interface IFloatList {
 
 	public boolean isEmpty();
 	public float get(final int pIndex) throws ArrayIndexOutOfBoundsException;
-	public void add(final float pItem);
-	public void add(final int pIndex, final float pItem) throws ArrayIndexOutOfBoundsException;
+	public void add(final int pItem);
+	public void add(final int pIndex, final int pItem) throws ArrayIndexOutOfBoundsException;
 	public float remove(final int pIndex) throws ArrayIndexOutOfBoundsException;
 	public int size();
 	public void clear();
-	public float[] toArray();
+	public int[] toArray();
 }

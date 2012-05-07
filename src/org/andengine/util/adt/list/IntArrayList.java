@@ -6,9 +6,9 @@ package org.andengine.util.adt.list;
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 18:07:43 - 26.01.2012
+ * @since 19:22:29 - 03.05.2012
  */
-public class FloatArrayList implements IFloatList {
+public class IntArrayList implements IIntList {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,19 +19,19 @@ public class FloatArrayList implements IFloatList {
 	// Fields
 	// ===========================================================
 
-	private float[] mItems;
+	private int[] mItems;
 	private int mSize;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FloatArrayList() {
-		this(FloatArrayList.CAPACITY_INITIAL_DEFAULT);
+	public IntArrayList() {
+		this(IntArrayList.CAPACITY_INITIAL_DEFAULT);
 	}
 
-	public FloatArrayList(final int pInitialCapacity) {
-		this.mItems = new float[pInitialCapacity];
+	public IntArrayList(final int pInitialCapacity) {
+		this.mItems = new int[pInitialCapacity];
 	}
 
 	// ===========================================================
@@ -53,7 +53,7 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
-	public void add(final float pItem) {
+	public void add(final int pItem) {
 		this.ensureCapacity(this.mSize + 1);
 
 		this.mItems[this.mSize] = pItem;
@@ -61,7 +61,7 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
-	public void add(final int pIndex, final float pItem) throws ArrayIndexOutOfBoundsException {
+	public void add(final int pIndex, final int pItem) throws ArrayIndexOutOfBoundsException {
 		this.ensureCapacity(this.mSize + 1);
 
 		System.arraycopy(this.mItems, pIndex, this.mItems, pIndex + 1, this.mSize - pIndex);
@@ -95,8 +95,8 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
-	public float[] toArray() {
-		final float[] array = new float[this.mSize];
+	public int[] toArray() {
+		final int[] array = new int[this.mSize];
 		System.arraycopy(this.mItems, 0, array, 0, this.mSize);
 		return array ;
 	}
@@ -110,7 +110,7 @@ public class FloatArrayList implements IFloatList {
 		if(currentCapacity < pCapacity) {
 			/* Increase array size. */
 			final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
-			final float newItems[] = new float[newCapacity];
+			final int newItems[] = new int[newCapacity];
 			System.arraycopy(this.mItems, 0, newItems, 0, currentCapacity);
 			this.mItems = newItems;
 		}

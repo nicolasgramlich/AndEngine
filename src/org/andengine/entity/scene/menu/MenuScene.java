@@ -181,15 +181,17 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	public void buildAnimations() {
 		this.prepareAnimations();
 
-		final float cameraWidthRaw = this.mCamera.getWidthRaw();
-		final float cameraHeightRaw = this.mCamera.getHeightRaw();
-		this.mMenuAnimator.buildAnimations(this.mMenuItems, cameraWidthRaw, cameraHeightRaw);
+		final float cameraSceneWidth = this.mCamera.getCameraSceneWidth();
+		final float cameraSceneHeight = this.mCamera.getCameraSceneHeight();
+
+		this.mMenuAnimator.buildAnimations(this.mMenuItems, cameraSceneWidth, cameraSceneHeight);
 	}
 
 	public void prepareAnimations() {
-		final float cameraWidthRaw = this.mCamera.getWidthRaw();
-		final float cameraHeightRaw = this.mCamera.getHeightRaw();
-		this.mMenuAnimator.prepareAnimations(this.mMenuItems, cameraWidthRaw, cameraHeightRaw);
+		final float cameraSceneWidth = this.mCamera.getCameraSceneWidth();
+		final float cameraSceneHeight = this.mCamera.getCameraSceneHeight();
+
+		this.mMenuAnimator.prepareAnimations(this.mMenuItems, cameraSceneWidth, cameraSceneHeight);
 	}
 
 	// ===========================================================

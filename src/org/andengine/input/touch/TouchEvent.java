@@ -77,6 +77,14 @@ public class TouchEvent {
 		return this.mY;
 	}
 
+	public void setX(final float pX) {
+		this.mX = pX;
+	}
+
+	public void setY(final float pY) {
+		this.mY = pY;
+	}
+
 	public void set(final float pX, final float pY) {
 		this.mX = pX;
 		this.mY = pY;

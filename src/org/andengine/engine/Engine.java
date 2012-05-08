@@ -172,6 +172,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			this.mUpdateThread = new UpdateThread();
 		}
 		this.mUpdateThread.setEngine(this);
+	}
+
+	public void startUpdateThread() throws IllegalThreadStateException {
 		this.mUpdateThread.start();
 	}
 

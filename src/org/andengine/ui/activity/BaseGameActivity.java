@@ -78,6 +78,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		this.mGamePaused = true;
 
 		this.mEngine = this.onCreateEngine(this.onCreateEngineOptions());
+		this.mEngine.startUpdateThread();
 
 		this.applyEngineOptions();
 

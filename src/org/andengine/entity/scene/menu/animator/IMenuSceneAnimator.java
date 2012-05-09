@@ -16,8 +16,6 @@ public interface IMenuSceneAnimator {
 	// Constants
 	// ===========================================================
 
-	public static final IMenuSceneAnimator DEFAULT = new AlphaMenuSceneAnimator();
-
 	// ===========================================================
 	// Methods
 	// ===========================================================

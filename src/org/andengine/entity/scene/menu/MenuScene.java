@@ -34,7 +34,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 
 	private IOnMenuItemClickListener mOnMenuItemClickListener;
 
-	private IMenuSceneAnimator mMenuSceneAnimator = IMenuSceneAnimator.DEFAULT;
+	private IMenuSceneAnimator mMenuSceneAnimator;
 
 	private IMenuItem mSelectedMenuItem;
 
@@ -42,21 +42,22 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	// Constructors
 	// ===========================================================
 
-	public MenuScene() {
-		this(null, null);
-	}
-
-	public MenuScene(final IOnMenuItemClickListener pOnMenuItemClickListener) {
-		this(null, pOnMenuItemClickListener);
-	}
-
 	public MenuScene(final Camera pCamera) {
-		this(pCamera, null);
+		this(pCamera, null, null);
+	}
+
+	public MenuScene(final Camera pCamera, final IMenuSceneAnimator pMenuSceneAnimator) {
+		this(pCamera, pMenuSceneAnimator, null);
 	}
 
 	public MenuScene(final Camera pCamera, final IOnMenuItemClickListener pOnMenuItemClickListener) {
+		this(pCamera, null, pOnMenuItemClickListener);
+	}
+
+	public MenuScene(final Camera pCamera, final IMenuSceneAnimator pMenuSceneAnimator, final IOnMenuItemClickListener pOnMenuItemClickListener) {
 		super(pCamera);
 
+		this.mMenuSceneAnimator = pMenuSceneAnimator;
 		this.mOnMenuItemClickListener = pOnMenuItemClickListener;
 		this.setOnSceneTouchListener(this);
 		this.setOnAreaTouchListener(this);

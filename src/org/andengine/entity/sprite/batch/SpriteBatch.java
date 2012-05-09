@@ -16,8 +16,8 @@ import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
+import org.andengine.util.adt.color.ColorUtils;
 import org.andengine.util.adt.transformation.Transformation;
-import org.andengine.util.color.ColorUtils;
 
 import android.opengl.GLES20;
 

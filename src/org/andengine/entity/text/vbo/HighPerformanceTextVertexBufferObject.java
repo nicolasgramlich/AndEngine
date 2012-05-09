@@ -9,8 +9,8 @@ import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.list.IFloatList;
-import org.andengine.util.align.HorizontalAlign;
 
 /**
  * (c) Zynga 2012

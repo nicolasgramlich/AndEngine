@@ -1,7 +1,7 @@
 package org.andengine.entity.modifier;
 
 import org.andengine.entity.IEntity;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.IEaseFunction;
 

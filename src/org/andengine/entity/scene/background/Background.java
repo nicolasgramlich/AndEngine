@@ -2,7 +2,7 @@ package org.andengine.entity.scene.background;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ModifierList;
 

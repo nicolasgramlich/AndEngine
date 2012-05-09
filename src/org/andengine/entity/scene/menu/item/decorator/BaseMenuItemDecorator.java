@@ -17,8 +17,8 @@ import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.transformation.Transformation;
-import org.andengine.util.color.Color;
 
 /**
  * I HATE THIS CLASS!
@@ -457,6 +457,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public void clearEntityModifiers() {
 		this.mMenuItem.clearEntityModifiers();
+	}
+
+	@Override
+	public void resetEntityModifiers() {
+		this.mMenuItem.resetEntityModifiers();
 	}
 
 	@Override

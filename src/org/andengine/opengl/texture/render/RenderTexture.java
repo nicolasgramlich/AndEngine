@@ -13,7 +13,7 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLHelper;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

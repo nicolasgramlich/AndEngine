@@ -1,4 +1,4 @@
-package org.andengine.util.color;
+package org.andengine.util.adt.color;
 
 /**
  * (c) Zynga 2011

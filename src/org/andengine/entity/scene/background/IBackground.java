@@ -2,7 +2,7 @@ package org.andengine.entity.scene.background;
 
 import org.andengine.engine.handler.IDrawHandler;
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
 
 /**

@@ -5,7 +5,7 @@ import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
-import org.andengine.util.color.ColorUtils;
+import org.andengine.util.adt.color.ColorUtils;
 import org.andengine.util.math.MathConstants;
 import org.andengine.util.math.MathUtils;
 

@@ -13,11 +13,11 @@ import org.andengine.entity.primitive.Line;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.algorithm.collision.EntityCollisionChecker;
 import org.andengine.util.call.ParameterCallable;
-import org.andengine.util.color.Color;
 
 
 /**
@@ -1043,6 +1043,13 @@ public class Entity implements IEntity {
 	}
 
 	@Override
+	public void resetEntityModifiers() {
+		if(this.mEntityModifiers != null) {
+			this.mEntityModifiers.reset();
+		}
+	}
+
+	@Override
 	public void clearEntityModifiers() {
 		if(this.mEntityModifiers == null) {
 			return;
@@ -1353,14 +1360,13 @@ public class Entity implements IEntity {
 
 		this.mColor.reset();
 
-		if(this.mEntityModifiers != null) {
-			this.mEntityModifiers.reset();
-		}
+		this.resetEntityModifiers();
 
 		if(this.mChildren != null) {
-			final SmartList<IEntity> entities = this.mChildren;
-			for(int i = entities.size() - 1; i >= 0; i--) {
-				entities.get(i).reset();
+			final SmartList<IEntity> children = this.mChildren;
+			for(int i = children.size() - 1; i >= 0; i--) {
+				final IEntity child = children.get(i);
+				child.reset();
 			}
 		}
 	}
@@ -1395,11 +1401,16 @@ public class Entity implements IEntity {
 		pStringBuilder.append(this.getClass().getSimpleName());
 
 		if((this.mChildren != null) && (this.mChildren.size() > 0)) {
+			final SmartList<IEntity> children = this.mChildren;
+
 			pStringBuilder.append(" [");
-			final SmartList<IEntity> entities = this.mChildren;
-			for(int i = 0; i < entities.size(); i++) {
-				entities.get(i).toString(pStringBuilder);
-				if(i < (entities.size() - 1)) {
+
+			final int childCount = children.size();
+			for(int i = 0; i < childCount; i++) {
+				final IEntity child = children.get(i);
+				child.toString(pStringBuilder);
+
+				if(i < (childCount - 1)) {
 					pStringBuilder.append(", ");
 				}
 			}
@@ -1572,10 +1583,11 @@ public class Entity implements IEntity {
 		}
 
 		if((this.mChildren != null) && !this.mChildrenIgnoreUpdate) {
-			final SmartList<IEntity> entities = this.mChildren;
-			final int entityCount = entities.size();
+			final SmartList<IEntity> children = this.mChildren;
+			final int entityCount = children.size();
 			for(int i = 0; i < entityCount; i++) {
-				entities.get(i).onUpdate(pSecondsElapsed);
+				final IEntity child = children.get(i);
+				child.onUpdate(pSecondsElapsed);
 			}
 		}
 	}

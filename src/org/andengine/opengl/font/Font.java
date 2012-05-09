@@ -6,8 +6,8 @@ import org.andengine.opengl.font.exception.FontException;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.map.SparseArrayUtils;
-import org.andengine.util.color.Color;
 import org.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;

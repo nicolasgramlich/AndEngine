@@ -1,21 +1,14 @@
-package org.andengine.util.align;
+package org.andengine.util.adt.color;
+
+import org.andengine.util.adt.pool.GenericPool;
 
 /**
- * (c) 2010 Nicolas Gramlich 
- * (c) 2011 Zynga Inc.
- * 
- * @author Nicolas Gramlich
- * @since 15:15:23 - 24.07.2010
+ * (c) Zynga 2011
+ *
+ * @author Nicolas Gramlich <ngramlich@zynga.com>
+ * @since 2:25:20 - 12.08.2011
  */
-public enum VerticalAlign {
-	// ===========================================================
-	// Elements
-	// ===========================================================
-
-	TOP,
-	CENTER,
-	BOTTOM;
-
+public class ColorPool extends GenericPool<Color> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -33,8 +26,20 @@ public enum VerticalAlign {
 	// ===========================================================
 
 	// ===========================================================
-	// Methods from SuperClass/Interfaces
+	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	protected Color onAllocatePoolItem() {
+		return new Color(Color.WHITE);
+	}
+
+	@Override
+	protected void onHandleRecycleItem(final Color pColor) {
+		pColor.setChecking(Color.WHITE);
+
+		super.onHandleRecycleItem(pColor);
+	}
 
 	// ===========================================================
 	// Methods

@@ -1,4 +1,4 @@
-package org.andengine.util.align;
+package org.andengine.util.adt.align;
 
 /**
  * (c) 2010 Nicolas Gramlich 

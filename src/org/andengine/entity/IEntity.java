@@ -14,8 +14,8 @@ import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.util.IDisposable;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.transformation.Transformation;
-import org.andengine.util.color.Color;
 
 
 /**
@@ -351,6 +351,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public void registerEntityModifier(final IEntityModifier pEntityModifier);
 	public boolean unregisterEntityModifier(final IEntityModifier pEntityModifier);
 	public boolean unregisterEntityModifiers(final IEntityModifierMatcher pEntityModifierMatcher);
+	public void resetEntityModifiers();
 	public void clearEntityModifiers();
 
 	public boolean isCullingEnabled();

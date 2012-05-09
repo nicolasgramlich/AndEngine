@@ -4,7 +4,6 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.runnable.RunnableHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.scene.ITouchArea.ITouchAreaMatcher;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.background.IBackground;
 import org.andengine.entity.shape.IShape;
@@ -12,8 +11,8 @@ import org.andengine.entity.shape.Shape;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.list.SmartList;
-import org.andengine.util.color.Color;
 
 import android.util.SparseArray;
 

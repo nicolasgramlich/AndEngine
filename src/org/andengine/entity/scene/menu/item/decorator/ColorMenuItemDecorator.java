@@ -1,7 +1,7 @@
 package org.andengine.entity.scene.menu.item.decorator;
 
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 
 /**
  * (c) 2010 Nicolas Gramlich

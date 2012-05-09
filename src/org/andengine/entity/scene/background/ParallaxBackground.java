@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.IEntity;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.debug.Debug;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -100,6 +101,15 @@ public class ParallaxBackground extends Background {
 		public ParallaxEntity(final float pParallaxFactor, final IEntity pEntity) {
 			this.mParallaxFactor = pParallaxFactor;
 			this.mEntity = pEntity;
+
+			// TODO Adjust onDraw calculations, so that these assumptions aren't necessary. 
+			if(this.mEntity.getX() != 0) {
+				Debug.w("The X position of a " + this.getClass().getSimpleName() + " is expected to be 0.");
+			}
+
+			if(this.mEntity.getOffsetCenterX() != 0) {
+				Debug.w("The OffsetCenterXposition of a " + this.getClass().getSimpleName() + " is expected to be 0.");
+			}
 		}
 
 		// ===========================================================

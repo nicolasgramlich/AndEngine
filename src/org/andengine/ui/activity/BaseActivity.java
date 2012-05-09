@@ -8,7 +8,7 @@ import org.andengine.util.progress.ProgressCallable;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.os.Looper;
+import android.os.Bundle;
 import android.widget.Toast;
 
 /**
@@ -43,18 +43,37 @@ public abstract class BaseActivity extends Activity {
 	// Methods
 	// ===========================================================
 
-	public void toastOnUIThread(final CharSequence pText) {
-		this.toastOnUIThread(pText, Toast.LENGTH_LONG);
+	public void toastOnUiThread(final CharSequence pText) {
+		this.toastOnUiThread(pText, Toast.LENGTH_SHORT);
 	}
 
-	public void toastOnUIThread(final CharSequence pText, final int pDuration) {
-		if(Looper.getMainLooper().getThread() == Thread.currentThread()) {
+	public void toastOnUiThread(final CharSequence pText, final int pDuration) {
+		if(ActivityUtils.isOnUiThread()) {
 			Toast.makeText(BaseActivity.this, pText, pDuration).show();
 		} else {
 			this.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					Toast.makeText(BaseActivity.this, pText, pDuration).show();
+				}
+			});
+		}
+	}
+
+	@Deprecated
+	public void showDialogOnUiThread(final int pDialogID) {
+		this.showDialogOnUiThread(pDialogID, null);
+	}
+
+	@Deprecated
+	public void showDialogOnUiThread(final int pDialogID, final Bundle pBundle) {
+		if(ActivityUtils.isOnUiThread()) {
+			this.showDialog(pDialogID, pBundle);
+		} else {
+			this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					BaseActivity.this.showDialog(pDialogID, pBundle);
 				}
 			});
 		}

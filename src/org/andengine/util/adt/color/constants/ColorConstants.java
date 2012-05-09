@@ -1,4 +1,4 @@
-package org.andengine.util.color.constants;
+package org.andengine.util.adt.color.constants;
 
 /**
  * (c) 2010 Nicolas Gramlich 

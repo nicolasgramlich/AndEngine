@@ -26,7 +26,7 @@ public class AccelerationData extends BaseSensorData {
 			@Override
 			public void swapAxis(final float[] pValues) {
 				final float x = -pValues[SensorManager.DATA_X];
-				final float y = pValues[SensorManager.DATA_Y];
+				final float y = -pValues[SensorManager.DATA_Y];
 				pValues[SensorManager.DATA_X] = x;
 				pValues[SensorManager.DATA_Y] = y;
 			}
@@ -36,7 +36,7 @@ public class AccelerationData extends BaseSensorData {
 			@Override
 			public void swapAxis(final float[] pValues) {
 				final float x = pValues[SensorManager.DATA_Y];
-				final float y = pValues[SensorManager.DATA_X];
+				final float y = -pValues[SensorManager.DATA_X];
 				pValues[SensorManager.DATA_X] = x;
 				pValues[SensorManager.DATA_Y] = y;
 			}
@@ -46,7 +46,7 @@ public class AccelerationData extends BaseSensorData {
 			@Override
 			public void swapAxis(final float[] pValues) {
 				final float x = pValues[SensorManager.DATA_X];
-				final float y = -pValues[SensorManager.DATA_Y];
+				final float y = pValues[SensorManager.DATA_Y];
 				pValues[SensorManager.DATA_X] = x;
 				pValues[SensorManager.DATA_Y] = y;
 			}
@@ -56,7 +56,7 @@ public class AccelerationData extends BaseSensorData {
 			@Override
 			public void swapAxis(final float[] pValues) {
 				final float x = -pValues[SensorManager.DATA_Y];
-				final float y = -pValues[SensorManager.DATA_X];
+				final float y = pValues[SensorManager.DATA_X];
 				pValues[SensorManager.DATA_X] = x;
 				pValues[SensorManager.DATA_Y] = y;
 			}

@@ -2,7 +2,7 @@ package org.andengine.entity.particle.initializer;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.andengine.util.color;
+package org.andengine.util.adt.color;
 
 /**
  * (c) 2010 Nicolas Gramlich

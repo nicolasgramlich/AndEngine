@@ -1,7 +1,7 @@
 package org.andengine.opengl.font;
 
 import org.andengine.opengl.texture.ITexture;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 
 import android.graphics.Paint;
 import android.graphics.Paint.Style;

@@ -2,7 +2,7 @@ package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 
 import android.graphics.AvoidXfermode;
 import android.graphics.AvoidXfermode.Mode;

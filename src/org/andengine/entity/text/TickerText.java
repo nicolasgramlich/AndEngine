@@ -5,7 +5,7 @@ import org.andengine.entity.text.exception.OutOfCharactersException;
 import org.andengine.opengl.font.IFont;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.align.HorizontalAlign;
+import org.andengine.util.adt.align.HorizontalAlign;
 
 import android.opengl.GLES20;
 

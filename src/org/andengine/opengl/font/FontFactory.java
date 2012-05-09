@@ -5,7 +5,7 @@ import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 
 import android.content.res.AssetManager;
 import android.graphics.Typeface;

@@ -4,6 +4,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.entity.IEntity;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.exception.MethodNotSupportedException;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -48,6 +49,31 @@ public class CameraScene extends Scene {
 
 	public void setCamera(final Camera pCamera) {
 		this.mCamera = pCamera;
+	}
+
+	@Override
+	public float getWidth() {
+		return this.mCamera.getCameraSceneWidth();
+	}
+
+	@Override
+	public float getHeight() {
+		return this.mCamera.getCameraSceneHeight();
+	}
+
+	@Override
+	public void setWidth(final float pWidth) {
+		throw new MethodNotSupportedException();
+	}
+
+	@Override
+	public void setHeight(final float pHeight) {
+		throw new MethodNotSupportedException();
+	}
+
+	@Override
+	public void setSize(final float pWidth, final float pHeight) {
+		throw new MethodNotSupportedException();
 	}
 
 	// ===========================================================
@@ -95,16 +121,15 @@ public class CameraScene extends Scene {
 	// ===========================================================
 
 	public void centerEntityInCamera(final IEntity pEntity) {
-		final Camera camera = this.mCamera;
-		pEntity.setPosition((camera.getWidth() - pEntity.getWidth()) * 0.5f, (camera.getHeight() - pEntity.getHeight()) * 0.5f);
+		pEntity.setPosition(this.mCamera.getCenterX(), this.mCamera.getCenterY());
 	}
 
 	public void centerEntityInCameraHorizontally(final IEntity pEntity) {
-		pEntity.setPosition((this.mCamera.getWidth() - pEntity.getWidth()) * 0.5f, pEntity.getY());
+		pEntity.setX(this.mCamera.getCenterX());
 	}
 
 	public void centerEntityInCameraVertically(final IEntity pEntity) {
-		pEntity.setPosition(pEntity.getX(), (this.mCamera.getHeight() - pEntity.getHeight()) * 0.5f);
+		pEntity.setY(this.mCamera.getCenterY());
 	}
 
 	// ===========================================================

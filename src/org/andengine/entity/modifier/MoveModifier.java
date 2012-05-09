@@ -24,19 +24,19 @@ public class MoveModifier extends DoubleValueSpanEntityModifier {
 	// Constructors
 	// ===========================================================
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY) {
-		this(pDuration, pFromX, pToX, pFromY, pToY, null, EaseLinear.getInstance());
+	public MoveModifier(final float pDuration, final float pFromX, final float pFromY, final float pToX, final float pToY) {
+		this(pDuration, pFromX, pFromY, pToX, pToY, null, EaseLinear.getInstance());
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEaseFunction pEaseFunction) {
-		this(pDuration, pFromX, pToX, pFromY, pToY, null, pEaseFunction);
+	public MoveModifier(final float pDuration, final float pFromX, final float pFromY, final float pToX, final float pToY, final IEaseFunction pEaseFunction) {
+		this(pDuration, pFromX, pFromY, pToX, pToY, null, pEaseFunction);
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEntityModifierListener pEntityModifierListener) {
+	public MoveModifier(final float pDuration, final float pFromX, final float pFromY, final float pToX, final float pToY, final IEntityModifierListener pEntityModifierListener) {
 		super(pDuration, pFromX, pToX, pFromY, pToY, pEntityModifierListener, EaseLinear.getInstance());
 	}
 
-	public MoveModifier(final float pDuration, final float pFromX, final float pToX, final float pFromY, final float pToY, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
+	public MoveModifier(final float pDuration, final float pFromX, final float pFromY, final float pToX, final float pToY, final IEntityModifierListener pEntityModifierListener, final IEaseFunction pEaseFunction) {
 		super(pDuration, pFromX, pToX, pFromY, pToY, pEntityModifierListener, pEaseFunction);
 	}
 

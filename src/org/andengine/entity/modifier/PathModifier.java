@@ -84,7 +84,7 @@ public class PathModifier extends EntityModifier {
 		final int modifierCount = moveModifiers.length;
 		for(int i = 0; i < modifierCount; i++) {
 			final float duration = pPath.getSegmentLength(i) / velocity;
-			moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesX[i + 1], coordinatesY[i], coordinatesY[i + 1], null, pEaseFunction);
+			moveModifiers[i] = new MoveModifier(duration, coordinatesX[i], coordinatesY[i], coordinatesX[i + 1], coordinatesY[i + 1], null, pEaseFunction);
 		}
 
 		/* Create a new SequenceModifier and register the listeners that

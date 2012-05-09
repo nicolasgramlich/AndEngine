@@ -1,4 +1,4 @@
-package org.andengine.util.algorithm.path;
+package org.andengine.util.adt.spatial;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -12,14 +12,14 @@ public enum Direction {
 	// Elements
 	// ===========================================================
 
-	UP(0, -1),
-	DOWN(0, 1),
+	UP(0, 1),
+	DOWN(0, -1),
 	LEFT(-1, 0),
 	RIGHT(1, 0),
-	UP_LEFT(-1, -1),
-	UP_RIGHT(1, -1),
-	DOWN_LEFT(-1, 1),
-	DOWN_RIGHT(1, 1);
+	UP_LEFT(-1, 1),
+	UP_RIGHT(1, 1),
+	DOWN_LEFT(-1, -1),
+	DOWN_RIGHT(1, -1);
 
 	// ===========================================================
 	// Constants
@@ -45,29 +45,29 @@ public enum Direction {
 		switch(pDeltaX) {
 			case -1:
 				switch(pDeltaY) {
-					case -1:
+					case 1:
 						return UP_LEFT;
 					case 0:
 						return LEFT;
-					case 1:
+					case -1:
 						return DOWN_LEFT;
 				}
 				break;
 			case 0:
 				switch(pDeltaY) {
-					case -1:
-						return UP;
 					case 1:
+						return UP;
+					case -1:
 						return DOWN;
 				}
 				break;
 			case 1:
 				switch(pDeltaY) {
-					case -1:
+					case 1:
 						return UP_RIGHT;
 					case 0:
 						return RIGHT;
-					case 1:
+					case -1:
 						return DOWN_RIGHT;
 				}
 				break;

@@ -26,6 +26,7 @@ public class AutoParallaxBackground extends ParallaxBackground {
 
 	public AutoParallaxBackground(final float pRed, final float pGreen, final float pBlue, final float pParallaxChangePerSecond) {
 		super(pRed, pGreen, pBlue);
+
 		this.mParallaxChangePerSecond = pParallaxChangePerSecond;
 	}
 

@@ -1,7 +1,7 @@
 package org.andengine.entity.scene.background.modifier;
 
 import org.andengine.entity.scene.background.IBackground;
-import org.andengine.util.color.Color;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.BaseTripleValueSpanModifier;
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.IEaseFunction;

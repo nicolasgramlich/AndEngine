@@ -35,6 +35,8 @@ public class GLState {
 
 	public static final int GL_UNPACK_ALIGNMENT_DEFAULT = 4;
 
+	public static final float LINE_WIDTH_DEFAULT = 1.0f;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -158,6 +160,8 @@ public class GLState {
 
 		this.disableBlend();
 		this.disableCulling();
+
+		this.lineWidth(GLState.LINE_WIDTH_DEFAULT);
 
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION);
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);

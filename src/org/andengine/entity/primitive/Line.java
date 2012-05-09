@@ -30,7 +30,7 @@ public class Line extends Shape {
 	// Constants
 	// ===========================================================
 
-	public static final float LINE_WIDTH_DEFAULT = 1.0f;
+	public static final float LINE_WIDTH_DEFAULT = GLState.LINE_WIDTH_DEFAULT;
 
 	public static final int VERTEX_INDEX_X = 0;
 	public static final int VERTEX_INDEX_Y = Line.VERTEX_INDEX_X + 1;

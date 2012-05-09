@@ -105,7 +105,7 @@ public class SlideMenuSceneAnimator extends MenuSceneAnimator {
 		final float fromX = getFromX(pMenuScene, pMenuItem, pX);
 		final float fromY = getFromY(pMenuScene, pMenuItem, pY);
 
-		super.onMenuItemPositionBuilt(pMenuScene, pIndex, pMenuItem, fromX, fromY);
+		pMenuItem.setPosition(fromX, fromY);
 
 		final MoveModifier moveModifier = new MoveModifier(SlideMenuSceneAnimator.DURATION, fromX, fromY, pX, pY, this.mEaseFunction);
 		moveModifier.setAutoUnregisterWhenFinished(false);
@@ -117,7 +117,7 @@ public class SlideMenuSceneAnimator extends MenuSceneAnimator {
 		final float fromX = getFromX(pMenuScene, pMenuItem, pX);
 		final float fromY = getFromY(pMenuScene, pMenuItem, pY);
 
-		super.onMenuItemPositionReset(pMenuScene, pIndex, pMenuItem, fromX, fromY);
+		pMenuItem.setPosition(fromX, fromY);
 
 		pMenuItem.resetEntityModifiers();
 	}

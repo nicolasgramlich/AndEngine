@@ -12,7 +12,7 @@ import org.andengine.util.adt.align.VerticalAlign;
  * @author Nicolas Gramlich
  * @since 11:17:32 - 02.04.2010
  */
-public class MenuSceneAnimator implements IMenuSceneAnimator {
+public abstract class MenuSceneAnimator implements IMenuSceneAnimator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -107,6 +107,9 @@ public class MenuSceneAnimator implements IMenuSceneAnimator {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	protected abstract void onMenuItemPositionBuilt(final MenuScene pMenuScene, final int pIndex, final IMenuItem pMenuItem, final float pX, final float pY);
+	protected abstract void onMenuItemPositionReset(final MenuScene pMenuScene, final int pIndex, final IMenuItem pMenuItem, final float pX, final float pY);
+
 	@Override
 	public void buildMenuSceneAnimations(final MenuScene pMenuScene) {
 		this.updateOverallHeight(pMenuScene);
@@ -122,10 +125,6 @@ public class MenuSceneAnimator implements IMenuSceneAnimator {
 		}
 	}
 
-	protected void onMenuItemPositionBuilt(final MenuScene pMenuScene, final int pIndex, final IMenuItem pMenuItem, final float pX, final float pY) {
-		pMenuItem.setPosition(pX, pY);
-	}
-
 	@Override
 	public void resetMenuSceneAnimations(final MenuScene pMenuScene) {
 		final int menuItemCount = pMenuScene.getMenuItemCount();
@@ -137,10 +136,6 @@ public class MenuSceneAnimator implements IMenuSceneAnimator {
 			final float y = this.getMenuItemY(pMenuScene, i);
 			this.onMenuItemPositionReset(pMenuScene, i, menuItem, x, y);
 		}
-	}
-
-	protected void onMenuItemPositionReset(final MenuScene pMenuScene, final int pIndex, final IMenuItem pMenuItem, final float pX, final float pY) {
-		pMenuItem.setPosition(pX, pY);
 	}
 
 	// ===========================================================

@@ -193,7 +193,7 @@ public class NineSliceSprite extends Entity {
 		final float baseHeight = this.mTextureRegion.getHeight();
 
 		final float centerWidth = baseWidth - this.mInsetLeft - this.mInsetRight;
-		final float centerHeight = baseWidth - this.mInsetTop- this.mInsetBottom;
+		final float centerHeight = baseHeight - this.mInsetTop - this.mInsetBottom;
 
 		/* Cache some variables. */
 		final float leftX = baseX;
@@ -225,7 +225,7 @@ public class NineSliceSprite extends Entity {
 		final float color = this.mColor.getABGRPackedFloat();
 
 		final float centerWidth = this.mWidth - this.mInsetLeft - this.mInsetRight;
-		final float centerHeight = this.mHeight - this.mInsetTop- this.mInsetBottom;
+		final float centerHeight = this.mHeight - this.mInsetTop - this.mInsetBottom;
 
 		/* Cache some variables. */
 		final float leftX = 0;

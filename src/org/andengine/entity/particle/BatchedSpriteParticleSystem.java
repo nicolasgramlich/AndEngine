@@ -9,7 +9,7 @@ import org.andengine.entity.sprite.batch.SpriteBatch;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.adt.color.ColorUtils;
+import org.andengine.util.color.ColorUtils;
 
 /**
  * (c) Zynga 2012

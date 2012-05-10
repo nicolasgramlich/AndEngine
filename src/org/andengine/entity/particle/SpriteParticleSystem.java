@@ -38,6 +38,10 @@ public class SpriteParticleSystem extends ParticleSystem<Sprite> {
 		}, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
 	}
 
+	protected SpriteParticleSystem(final float pX, final float pY, final IEntityFactory<Sprite> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
+		super(pX, pY, pEntityFactory, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

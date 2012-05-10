@@ -250,6 +250,12 @@ public class SpriteBatch extends Shape {
 		this.mIndex++;
 	}
 
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
+
+		this.mIndex++;
+	}
+
 	/**
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)}.
 	 */
@@ -262,17 +268,8 @@ public class SpriteBatch extends Shape {
 		this.mIndex++;
 	}
 
-	/**
-	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)}.
-	 */
 	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pColorABGRPackedInt) {
 		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pColorABGRPackedInt);
-
-		this.mIndex++;
-	}
-
-	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
 
 		this.mIndex++;
 	}
@@ -353,23 +350,71 @@ public class SpriteBatch extends Shape {
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float)}.
 	 */
 	public void draw(final Sprite pSprite) {
-		this.draw(pSprite, pSprite.getColor().getABGRPackedFloat());
+		this.draw(pSprite.getTextureRegion(), pSprite, pSprite.getColor().getABGRPackedFloat());
+	}
+
+	public void drawWithoutChecks(final Sprite pSprite) {
+		this.drawWithoutChecks(pSprite.getTextureRegion(), pSprite, pSprite.getColor().getABGRPackedFloat());
 	}
 
 	/**
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
 	 */
 	public void draw(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(pSprite.isVisible()) {
+		this.draw(pSprite.getTextureRegion(), pSprite, pRed, pGreen, pBlue, pAlpha);
+	}
+
+	public void drawWithoutChecks(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.drawWithoutChecks(pSprite.getTextureRegion(), pSprite, pRed, pGreen, pBlue, pAlpha);
+	}
+
+	/**
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
+	 */
+	public void draw(final Sprite pSprite, final float pColorABGRPackedInt) {
+		this.draw(pSprite.getTextureRegion(), pSprite, pColorABGRPackedInt);
+	}
+
+	public void drawWithoutChecks(final Sprite pSprite, final float pColorABGRPackedInt) {
+		this.drawWithoutChecks(pSprite.getTextureRegion(), pSprite, pColorABGRPackedInt);
+	}
+
+	/**
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float)}.
+	 */
+	public void draw(final ITextureRegion pTextureRegion, final IEntity pEntity) {
+		this.draw(pTextureRegion, pEntity, pEntity.getColor().getABGRPackedFloat());
+	}
+
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final IEntity pEntity) {
+		this.drawWithoutChecks(pTextureRegion, pEntity, pEntity.getColor().getABGRPackedFloat());
+	}
+
+	/**
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
+	 */
+	public void draw(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		if(pEntity.isVisible()) {
 			this.assertCapacity();
 
-			final ITextureRegion textureRegion = pSprite.getTextureRegion();
-			this.assertTexture(textureRegion);
+			this.assertTexture(pTextureRegion);
 
-			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+			if(pEntity.isRotatedOrScaledOrSkewed()) {
+				this.add(pTextureRegion, pEntity.getWidth(), pEntity.getHeight(), pEntity.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
-				this.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+				this.add(pTextureRegion, pEntity.getX(), pEntity.getY(), pEntity.getWidth(), pEntity.getHeight(), pRed, pGreen, pBlue, pAlpha);
+			}
+
+			this.mIndex++;
+		}
+	}
+
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		if(pEntity.isVisible()) {
+			if(pEntity.isRotatedOrScaledOrSkewed()) {
+				this.add(pTextureRegion, pEntity.getWidth(), pEntity.getHeight(), pEntity.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+			} else {
+				this.add(pTextureRegion, pEntity.getX(), pEntity.getY(), pEntity.getWidth(), pEntity.getHeight(), pRed, pGreen, pBlue, pAlpha);
 			}
 
 			this.mIndex++;
@@ -379,49 +424,28 @@ public class SpriteBatch extends Shape {
 	/**
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
 	 */
-	public void draw(final Sprite pSprite, final float pColorABGRPackedInt) {
-		if(pSprite.isVisible()) {
+	public void draw(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pColorABGRPackedInt) {
+		if(pEntity.isVisible()) {
 			this.assertCapacity();
 
-			final ITextureRegion textureRegion = pSprite.getTextureRegion();
-			this.assertTexture(textureRegion);
+			this.assertTexture(pTextureRegion);
 
-			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pColorABGRPackedInt);
+			if(pEntity.isRotatedOrScaledOrSkewed()) {
+				this.addWithPackedColor(pTextureRegion, pEntity.getWidth(), pEntity.getHeight(), pEntity.getLocalToParentTransformation(), pColorABGRPackedInt);
 			} else {
-				this.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pColorABGRPackedInt);
+				this.addWithPackedColor(pTextureRegion, pEntity.getX(), pEntity.getY(), pEntity.getWidth(), pEntity.getHeight(), pColorABGRPackedInt);
 			}
 
 			this.mIndex++;
 		}
 	}
 
-	public void drawWithoutChecks(final Sprite pSprite) {
-		this.drawWithoutChecks(pSprite, pSprite.getColor().getABGRPackedFloat());
-	}
-
-	public void drawWithoutChecks(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(pSprite.isVisible()) {
-			final ITextureRegion textureRegion = pSprite.getTextureRegion();
-
-			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pColorABGRPackedInt) {
+		if(pEntity.isVisible()) {
+			if(pEntity.isRotatedOrScaledOrSkewed()) {
+				this.addWithPackedColor(pTextureRegion, pEntity.getWidth(), pEntity.getHeight(), pEntity.getLocalToParentTransformation(), pColorABGRPackedInt);
 			} else {
-				this.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
-			}
-
-			this.mIndex++;
-		}
-	}
-
-	public void drawWithoutChecks(final Sprite pSprite, final float pColorABGRPackedInt) {
-		if(pSprite.isVisible()) {
-			final ITextureRegion textureRegion = pSprite.getTextureRegion();
-
-			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pColorABGRPackedInt);
-			} else {
-				this.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pColorABGRPackedInt);
+				this.addWithPackedColor(pTextureRegion, pEntity.getX(), pEntity.getY(), pEntity.getWidth(), pEntity.getHeight(), pColorABGRPackedInt);
 			}
 
 			this.mIndex++;

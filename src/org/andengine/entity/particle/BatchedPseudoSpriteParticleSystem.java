@@ -3,7 +3,6 @@ package org.andengine.entity.particle;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntityFactory;
-import org.andengine.entity.particle.BatchedPseudoSpriteParticleSystem.PseudoSprite;
 import org.andengine.entity.particle.emitter.IParticleEmitter;
 import org.andengine.entity.sprite.batch.SpriteBatch;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -17,7 +16,7 @@ import org.andengine.util.adt.color.ColorUtils;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:39:46 - 10.05.2012
  */
-public class BatchedPseudoSpriteParticleSystem extends BlendFunctionParticleSystem<PseudoSprite> {
+public class BatchedPseudoSpriteParticleSystem extends BlendFunctionParticleSystem<Entity> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,6 +26,7 @@ public class BatchedPseudoSpriteParticleSystem extends BlendFunctionParticleSyst
 	// ===========================================================
 
 	protected final SpriteBatch mSpriteBatch;
+	private final ITextureRegion mTextureRegion;
 
 	// ===========================================================
 	// Constructors
@@ -37,12 +37,14 @@ public class BatchedPseudoSpriteParticleSystem extends BlendFunctionParticleSyst
 	}
 
 	public BatchedPseudoSpriteParticleSystem(final float pX, final float pY, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
-		super(pX, pY, new IEntityFactory<PseudoSprite>() {
+		super(pX, pY, new IEntityFactory<Entity>() {
 			@Override
-			public PseudoSprite create(final float pX, final float pY) {
-				return new PseudoSprite(pX, pY, pTextureRegion);
+			public Entity create(final float pX, final float pY) {
+				return new Entity(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight());
 			}
 		}, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
+
+		this.mTextureRegion = pTextureRegion;
 
 		this.mSpriteBatch = new SpriteBatch(pTextureRegion.getTexture(), pParticlesMaximum, pVertexBufferObjectManager);
 	}
@@ -59,16 +61,16 @@ public class BatchedPseudoSpriteParticleSystem extends BlendFunctionParticleSyst
 	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
 		this.mSpriteBatch.setIndex(0);
 
-		final Particle<PseudoSprite>[] particles = this.mParticles;
+		final Particle<Entity>[] particles = this.mParticles;
 		for(int i = this.mParticlesAlive - 1; i >= 0; i--) {
-			final PseudoSprite pseudoSprite = particles[i].getEntity();
+			final Entity entity = particles[i].getEntity();
 
 			/* In order to support alpha changes of the sprites inside the spritebatch,
 			 * we have to 'premultiply' the RGB channels of the sprite with its alpha channel. */
-			final float alpha = pseudoSprite.getAlpha();
-			final float colorABGRPackedInt = ColorUtils.convertRGBAToABGRPackedFloat(pseudoSprite.getRed() * alpha, pseudoSprite.getGreen() * alpha, pseudoSprite.getBlue() * alpha, alpha);
+			final float alpha = entity.getAlpha();
+			final float colorABGRPackedInt = ColorUtils.convertRGBAToABGRPackedFloat(entity.getRed() * alpha, entity.getGreen() * alpha, entity.getBlue() * alpha, alpha);
 
-			this.mSpriteBatch.drawWithoutChecks(pseudoSprite.getTextureRegion(), pseudoSprite, colorABGRPackedInt);
+			this.mSpriteBatch.drawWithoutChecks(this.mTextureRegion, entity, colorABGRPackedInt);
 		}
 		this.mSpriteBatch.submit();
 
@@ -82,46 +84,4 @@ public class BatchedPseudoSpriteParticleSystem extends BlendFunctionParticleSyst
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static class PseudoSprite extends Entity {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		private final ITextureRegion mTextureRegion;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public PseudoSprite(float pX, float pY, final ITextureRegion pTextureRegion) {
-			super(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight());
-
-			this.mTextureRegion = pTextureRegion;
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		public ITextureRegion getTextureRegion() {
-			return this.mTextureRegion;
-		}
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

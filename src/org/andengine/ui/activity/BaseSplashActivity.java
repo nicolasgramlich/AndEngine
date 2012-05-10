@@ -47,8 +47,6 @@ public abstract class BaseSplashActivity extends SimpleBaseGameActivity {
 	}
 	@Override
 	protected void onCreateResources() {
-	
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		final BitmapTextureAtlas atlas = new BitmapTextureAtlas(getTextureManager(),2046,2046, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		
 		this.mLoadingScreenTextureRegion = (TextureRegion) BitmapTextureAtlasTextureRegionFactory.createFromAsset(atlas, this, onGetSplashTexturePath(), 0, 0);

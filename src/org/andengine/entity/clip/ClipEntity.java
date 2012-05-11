@@ -9,6 +9,9 @@ import org.andengine.util.math.MathUtils;
 import android.opengl.GLES20;
 
 /**
+ * A {@link ClipEntity} clips drawing of all its children in a rectangle, which is defined as the axis aligned bounding box around itself.
+ * It can be attached anywhere in the scene graph, which means that it inherits transformations from its parents, which have a direct effect on the clipping area.
+ *
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>

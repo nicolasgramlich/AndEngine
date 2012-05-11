@@ -5,7 +5,7 @@ import java.util.Random;
 import android.util.FloatMath;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -38,6 +38,102 @@ public final class MathUtils {
 	// Methods
 	// ===========================================================
 
+	public static int min(final int pA, final int pB, final int pC) {
+		return Math.min(Math.min(pA, pB), pC);
+	}
+
+	public static int min(final int pA, final int pB, final int pC, final int pD) {
+		return Math.min(Math.min(Math.min(pA, pB), pC), pD);
+	}
+
+	public static int min(final int pA, final int pB, final int pC, final int pD, final int pE) {
+		return Math.min(Math.min(Math.min(Math.min(pA, pB), pC), pD), pE);
+	}
+
+	public static long min(final long pA, final long pB, final long pC) {
+		return Math.min(Math.min(pA, pB), pC);
+	}
+
+	public static long min(final long pA, final long pB, final long pC, final long pD) {
+		return Math.min(Math.min(Math.min(pA, pB), pC), pD);
+	}
+
+	public static long min(final long pA, final long pB, final long pC, final long pD, final long pE) {
+		return Math.min(Math.min(Math.min(Math.min(pA, pB), pC), pD), pE);
+	}
+
+	public static float min(final float pA, final float pB, final float pC) {
+		return Math.min(Math.min(pA, pB), pC);
+	}
+
+	public static float min(final float pA, final float pB, final float pC, final float pD) {
+		return Math.min(Math.min(Math.min(pA, pB), pC), pD);
+	}
+
+	public static float min(final float pA, final float pB, final float pC, final float pD, final float pE) {
+		return Math.min(Math.min(Math.min(Math.min(pA, pB), pC), pD), pE);
+	}
+
+	public static double min(final double pA, final double pB, final double pC) {
+		return Math.min(Math.min(pA, pB), pC);
+	}
+
+	public static double min(final double pA, final double pB, final double pC, final double pD) {
+		return Math.min(Math.min(Math.min(pA, pB), pC), pD);
+	}
+
+	public static double min(final double pA, final double pB, final double pC, final double pD, final double pE) {
+		return Math.min(Math.min(Math.min(Math.min(pA, pB), pC), pD), pE);
+	}
+
+	public static int max(final int pA, final int pB, final int pC) {
+		return Math.max(Math.max(pA, pB), pC);
+	}
+
+	public static int max(final int pA, final int pB, final int pC, final int pD) {
+		return Math.max(Math.max(Math.max(pA, pB), pC), pD);
+	}
+
+	public static int max(final int pA, final int pB, final int pC, final int pD, final int pE) {
+		return Math.max(Math.max(Math.max(Math.max(pA, pB), pC), pD), pE);
+	}
+
+	public static long max(final long pA, final long pB, final long pC) {
+		return Math.max(Math.max(pA, pB), pC);
+	}
+
+	public static long max(final long pA, final long pB, final long pC, final long pD) {
+		return Math.max(Math.max(Math.max(pA, pB), pC), pD);
+	}
+
+	public static long max(final long pA, final long pB, final long pC, final long pD, final long pE) {
+		return Math.max(Math.max(Math.max(Math.max(pA, pB), pC), pD), pE);
+	}
+
+	public static float max(final float pA, final float pB, final float pC) {
+		return Math.max(Math.max(pA, pB), pC);
+	}
+
+	public static float max(final float pA, final float pB, final float pC, final float pD) {
+		return Math.max(Math.max(Math.max(pA, pB), pC), pD);
+	}
+
+	public static float max(final float pA, final float pB, final float pC, final float pD, final float pE) {
+		return Math.max(Math.max(Math.max(Math.max(pA, pB), pC), pD), pE);
+	}
+
+	public static double max(final double pA, final double pB, final double pC) {
+		return Math.max(Math.max(pA, pB), pC);
+	}
+
+	public static double max(final double pA, final double pB, final double pC, final double pD) {
+		return Math.max(Math.max(Math.max(pA, pB), pC), pD);
+	}
+
+	public static double max(final double pA, final double pB, final double pC, final double pD, final double pE) {
+		return Math.max(Math.max(Math.max(Math.max(pA, pB), pC), pD), pE);
+	}
+
 	public static final float atan2(final float dY, final float dX) {
 		return (float)Math.atan2(dY, dX);
 	}
@@ -61,7 +157,7 @@ public final class MathUtils {
 	}
 
 	public static final int randomSign() {
-		if(RANDOM.nextBoolean()) {
+		if(MathUtils.RANDOM.nextBoolean()) {
 			return 1;
 		} else {
 			return -1;
@@ -69,7 +165,7 @@ public final class MathUtils {
 	}
 
 	public static final float random(final float pMin, final float pMax) {
-		return pMin + RANDOM.nextFloat() * (pMax - pMin);
+		return pMin + (MathUtils.RANDOM.nextFloat() * (pMax - pMin));
 	}
 
 	/**
@@ -78,11 +174,11 @@ public final class MathUtils {
 	 * @return
 	 */
 	public static final int random(final int pMin, final int pMax) {
-		return pMin + RANDOM.nextInt(pMax - pMin + 1);
+		return pMin + MathUtils.RANDOM.nextInt((pMax - pMin) + 1);
 	}
 
 	public static final boolean isPowerOfTwo(final int n) {
-		return ((n != 0) && (n & (n - 1)) == 0);
+		return ((n != 0) && ((n & (n - 1)) == 0));
 	}
 
 	public static final int nextPowerOfTwo(final float f) {
@@ -99,7 +195,7 @@ public final class MathUtils {
 		k--;
 
 		for (int i = 1; i < 32; i <<= 1) {
-			k = k | k >> i;
+			k = k | (k >> i);
 		}
 
 		return k + 1;
@@ -132,7 +228,7 @@ public final class MathUtils {
 		pValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
-			pValues[i] = pValues[i-1] + pValues[i] * pFactor;
+			pValues[i] = pValues[i-1] + (pValues[i] * pFactor);
 		}
 	}
 
@@ -140,7 +236,7 @@ public final class MathUtils {
 		pTargetValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
-			pTargetValues[i] = pTargetValues[i-1] + pValues[i] * pFactor;
+			pTargetValues[i] = pTargetValues[i-1] + (pValues[i] * pFactor);
 		}
 	}
 
@@ -166,18 +262,18 @@ public final class MathUtils {
 			for(int i = pVertices.length - 2; i >= 0; i -= 2) {
 				final float pX = pVertices[i];
 				final float pY = pVertices[i + 1];
-				pVertices[i] = pRotationCenterX + (cosRotationInRad * (pX - pRotationCenterX) - sinRotationRad * (pY - pRotationCenterY));
-				pVertices[i + 1] = pRotationCenterY + (sinRotationRad * (pX - pRotationCenterX) + cosRotationInRad * (pY - pRotationCenterY));
+				pVertices[i] = pRotationCenterX + ((cosRotationInRad * (pX - pRotationCenterX)) - (sinRotationRad * (pY - pRotationCenterY)));
+				pVertices[i + 1] = pRotationCenterY + ((sinRotationRad * (pX - pRotationCenterX)) + (cosRotationInRad * (pY - pRotationCenterY)));
 			}
 		}
 		return pVertices;
 	}
 
 	public static float[] scaleAroundCenter(final float[] pVertices, final float pScaleX, final float pScaleY, final float pScaleCenterX, final float pScaleCenterY) {
-		if(pScaleX != 1 || pScaleY != 1) {
+		if((pScaleX != 1) || (pScaleY != 1)) {
 			for(int i = pVertices.length - 2; i >= 0; i -= 2) {
-				pVertices[i] = pScaleCenterX + (pVertices[i] - pScaleCenterX) * pScaleX;
-				pVertices[i + 1] = pScaleCenterY + (pVertices[i + 1] - pScaleCenterY) * pScaleY;
+				pVertices[i] = pScaleCenterX + ((pVertices[i] - pScaleCenterX) * pScaleX);
+				pVertices[i + 1] = pScaleCenterY + ((pVertices[i + 1] - pScaleCenterY) * pScaleY);
 			}
 		}
 
@@ -203,11 +299,11 @@ public final class MathUtils {
 	}
 
 	public static final boolean isInBounds(final int pMinValue, final int pMaxValue, final int pValue) {
-		return pValue >= pMinValue && pValue <= pMaxValue;
+		return (pValue >= pMinValue) && (pValue <= pMaxValue);
 	}
 
 	public static final boolean isInBounds(final float pMinValue, final float pMaxValue, final float pValue) {
-		return pValue >= pMinValue && pValue <= pMaxValue;
+		return (pValue >= pMinValue) && (pValue <= pMaxValue);
 	}
 
 	/**
@@ -253,7 +349,7 @@ public final class MathUtils {
 	 * @return pX * (1 - pMix) + pY * pMix
 	 */
 	public static final float mix(final float pX, final float pY, final float pMix) {
-		return pX * (1 - pMix) + pY * pMix;
+		return (pX * (1 - pMix)) + (pY * pMix);
 	}
 
 	/**
@@ -263,23 +359,23 @@ public final class MathUtils {
 	 * @return (int)Math.round(pX * (1 - pMix) + pY * pMix)
 	 */
 	public static final int mix(final int pX, final int pY, final float pMix) {
-		return (int)Math.round(pX * (1 - pMix) + pY * pMix);
+		return Math.round((pX * (1 - pMix)) + (pY * pMix));
 	}
 
 	public static final boolean isEven(final int n) {
-		return n % 2 == 0;
+		return (n % 2) == 0;
 	}
 
 	public static final boolean isOdd(final int n) {
-		return n % 2 == 1;
+		return (n % 2) == 1;
 	}
 
-	public static float dot(final float pXA, final float pYA, final float pXB, final float pYB) { 
-		return pXA * pXB + pYA * pYB;
+	public static float dot(final float pXA, final float pYA, final float pXB, final float pYB) {
+		return (pXA * pXB) + (pYA * pYB);
 	}
 
-	public static float cross(final float pXA, final float pYA, final float pXB, final float pYB) { 
-		return pXA * pYB - pXB * pYA;
+	public static float cross(final float pXA, final float pYA, final float pXB, final float pYB) {
+		return (pXA * pYB) - (pXB * pYA);
 	}
 
 	// ===========================================================

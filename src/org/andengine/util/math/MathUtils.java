@@ -38,6 +38,30 @@ public final class MathUtils {
 	// Methods
 	// ===========================================================
 
+	public static byte min(final byte pA, final byte pB, final byte pC) {
+		return (byte) Math.min(Math.min(pA, pB), pC);
+	}
+
+	public static byte min(final byte pA, final byte pB, final byte pC, final byte pD) {
+		return (byte) Math.min(Math.min(Math.min(pA, pB), pC), pD);
+	}
+
+	public static byte min(final byte pA, final byte pB, final byte pC, final byte pD, final byte pE) {
+		return (byte) Math.min(Math.min(Math.min(Math.min(pA, pB), pC), pD), pE);
+	}
+
+	public static short min(final short pA, final short pB, final short pC) {
+		return (short) Math.min(Math.min(pA, pB), pC);
+	}
+
+	public static short min(final short pA, final short pB, final short pC, final short pD) {
+		return (short) Math.min(Math.min(Math.min(pA, pB), pC), pD);
+	}
+
+	public static short min(final short pA, final short pB, final short pC, final short pD, final short pE) {
+		return (short) Math.min(Math.min(Math.min(Math.min(pA, pB), pC), pD), pE);
+	}
+
 	public static int min(final int pA, final int pB, final int pC) {
 		return Math.min(Math.min(pA, pB), pC);
 	}
@@ -84,6 +108,30 @@ public final class MathUtils {
 
 	public static double min(final double pA, final double pB, final double pC, final double pD, final double pE) {
 		return Math.min(Math.min(Math.min(Math.min(pA, pB), pC), pD), pE);
+	}
+
+	public static byte max(final byte pA, final byte pB, final byte pC) {
+		return (byte) Math.max(Math.max(pA, pB), pC);
+	}
+
+	public static byte max(final byte pA, final byte pB, final byte pC, final byte pD) {
+		return (byte) Math.max(Math.max(Math.max(pA, pB), pC), pD);
+	}
+
+	public static byte max(final byte pA, final byte pB, final byte pC, final byte pD, final byte pE) {
+		return (byte) Math.max(Math.max(Math.max(Math.max(pA, pB), pC), pD), pE);
+	}
+
+	public static short max(final short pA, final short pB, final short pC) {
+		return (short) Math.max(Math.max(pA, pB), pC);
+	}
+
+	public static short max(final short pA, final short pB, final short pC, final short pD) {
+		return (short) Math.max(Math.max(Math.max(pA, pB), pC), pD);
+	}
+
+	public static short max(final short pA, final short pB, final short pC, final short pD, final short pE) {
+		return (short) Math.max(Math.max(Math.max(Math.max(pA, pB), pC), pD), pE);
 	}
 
 	public static int max(final int pA, final int pB, final int pC) {

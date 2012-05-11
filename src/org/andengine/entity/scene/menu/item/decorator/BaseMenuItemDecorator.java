@@ -566,43 +566,43 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY) {
-		return this.mMenuItem.convertLocalToSceneCoordinates(pX, pY);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float pX, final float pY) {
+		return this.mMenuItem.convertLocalCoordinatesToSceneCoordinates(pX, pY);
 	}
 
 	@Override
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY, final float[] pReuse) {
-		return this.mMenuItem.convertLocalToSceneCoordinates(pX, pY, pReuse);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float pX, final float pY, final float[] pReuse) {
+		return this.mMenuItem.convertLocalCoordinatesToSceneCoordinates(pX, pY, pReuse);
 	}
 
 	@Override
-	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates) {
-		return this.mMenuItem.convertLocalToSceneCoordinates(pCoordinates);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float[] pCoordinates) {
+		return this.mMenuItem.convertLocalCoordinatesToSceneCoordinates(pCoordinates);
 	}
 
 	@Override
-	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates, final float[] pReuse) {
-		return this.mMenuItem.convertLocalToSceneCoordinates(pCoordinates, pReuse);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float[] pCoordinates, final float[] pReuse) {
+		return this.mMenuItem.convertLocalCoordinatesToSceneCoordinates(pCoordinates, pReuse);
 	}
 
 	@Override
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY) {
-		return this.mMenuItem.convertSceneToLocalCoordinates(pX, pY);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float pX, final float pY) {
+		return this.mMenuItem.convertSceneCoordinatesToLocalCoordinates(pX, pY);
 	}
 
 	@Override
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY, final float[] pReuse) {
-		return this.mMenuItem.convertSceneToLocalCoordinates(pX, pY, pReuse);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float pX, final float pY, final float[] pReuse) {
+		return this.mMenuItem.convertSceneCoordinatesToLocalCoordinates(pX, pY, pReuse);
 	}
 
 	@Override
-	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates) {
-		return this.mMenuItem.convertSceneToLocalCoordinates(pCoordinates);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float[] pCoordinates) {
+		return this.mMenuItem.convertSceneCoordinatesToLocalCoordinates(pCoordinates);
 	}
 
 	@Override
-	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates, final float[] pReuse) {
-		return this.mMenuItem.convertSceneToLocalCoordinates(pCoordinates, pReuse);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float[] pCoordinates, final float[] pReuse) {
+		return this.mMenuItem.convertSceneCoordinatesToLocalCoordinates(pCoordinates, pReuse);
 	}
 
 	@Override

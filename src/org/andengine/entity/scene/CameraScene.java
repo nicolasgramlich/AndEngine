@@ -85,14 +85,14 @@ public class CameraScene extends Scene {
 		if(this.mCamera == null) {
 			return false;
 		} else {
-			this.mCamera.convertSceneToCameraSceneTouchEvent(pSceneTouchEvent);
+			this.mCamera.convertSceneTouchEventToCameraSceneTouchEvent(pSceneTouchEvent);
 
 			final boolean handled = super.onSceneTouchEvent(pSceneTouchEvent);
 
 			if(handled) {
 				return true;
 			} else {
-				this.mCamera.convertCameraSceneToSceneTouchEvent(pSceneTouchEvent);
+				this.mCamera.convertCameraSceneTouchEventToSceneTouchEvent(pSceneTouchEvent);
 				return false;
 			}
 		}
@@ -102,9 +102,9 @@ public class CameraScene extends Scene {
 	protected boolean onChildSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
 		final boolean childIsCameraScene = this.mChildScene instanceof CameraScene;
 		if(childIsCameraScene) {
-			this.mCamera.convertCameraSceneToSceneTouchEvent(pSceneTouchEvent);
+			this.mCamera.convertCameraSceneTouchEventToSceneTouchEvent(pSceneTouchEvent);
 			final boolean result = super.onChildSceneTouchEvent(pSceneTouchEvent);
-			this.mCamera.convertSceneToCameraSceneTouchEvent(pSceneTouchEvent);
+			this.mCamera.convertSceneTouchEventToCameraSceneTouchEvent(pSceneTouchEvent);
 			return result;
 		} else {
 			return super.onChildSceneTouchEvent(pSceneTouchEvent);

@@ -186,50 +186,50 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	 * @param pY
 	 * @return a shared(!) float[] of length 2.
 	 */
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float pX, final float pY);
 	/**
 	 * @param pX
 	 * @param pY
 	 * @param pReuse must be of length 2.
 	 * @return <code>pReuse</code> as a convenience.
 	 */
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY, final float[] pReuse);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float pX, final float pY, final float[] pReuse);
 	/**
 	 * @param pCoordinates must be of length 2.
 	 * @return a shared(!) float[] of length 2.
 	 */
-	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float[] pCoordinates);
 	/**
 	 * @param pCoordinates must be of length 2.
 	 * @param pReuse must be of length 2.
 	 * @return <code>pReuse</code> as a convenience.
 	 */
-	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates, final float[] pReuse);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float[] pCoordinates, final float[] pReuse);
 
 	/**
 	 * @param pX
 	 * @param pY
 	 * @return a shared(!) float[] of length 2.
 	 */
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float pX, final float pY);
 	/**
 	 * @param pX
 	 * @param pY
 	 * @param pReuse must be of length 2.
 	 * @return <code>pReuse</code> as a convenience.
 	 */
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY, final float[] pReuse);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float pX, final float pY, final float[] pReuse);
 	/**
 	 * @param pCoordinates must be of length 2.
 	 * @return a shared(!) float[] of length 2.
 	 */
-	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float[] pCoordinates);
 	/**
 	 * @param pCoordinates must be of length 2.
 	 * @param pReuse must be of length 2.
 	 * @return <code>pReuse</code> as a convenience.
 	 */
-	public float[] convertSceneToLocalCoordinates(final float[] pCoordinates, final float[] pReuse);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float[] pCoordinates, final float[] pReuse);
 
 	public Transformation getLocalToSceneTransformation();
 	public Transformation getSceneToLocalTransformation();

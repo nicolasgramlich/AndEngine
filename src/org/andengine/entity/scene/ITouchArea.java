@@ -20,8 +20,8 @@ public interface ITouchArea {
 
 	public boolean contains(final float pX, final float pY);
 
-	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
-	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
+	public float[] convertSceneCoordinatesToLocalCoordinates(final float pX, final float pY);
+	public float[] convertLocalCoordinatesToSceneCoordinates(final float pX, final float pY);
 
 	/**
 	 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.

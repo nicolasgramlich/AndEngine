@@ -422,14 +422,11 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public boolean onTouchEvent(final TouchEvent pSurfaceTouchEvent) {
-		/*
-		 * Let the engine determine which scene and camera this event should be
-		 * handled by.
-		 */
+		/* Let the engine determine which scene and camera this event should be handled by. */
 		final Scene scene = this.getSceneFromSurfaceTouchEvent(pSurfaceTouchEvent);
 		final Camera camera = this.getCameraFromSurfaceTouchEvent(pSurfaceTouchEvent);
 
-		this.convertSurfaceToSceneTouchEvent(camera, pSurfaceTouchEvent);
+		this.convertSurfaceTouchEventToSceneTouchEvent(camera, pSurfaceTouchEvent);
 
 		if(this.onTouchHUD(camera, pSurfaceTouchEvent)) {
 			return true;
@@ -529,12 +526,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		return this.mScene;
 	}
 
-	protected void convertSurfaceToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
-		pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
+	protected void convertSurfaceTouchEventToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
+		pCamera.convertSurfaceTouchEventToSceneTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 	}
 
-	protected void convertSceneToSurfaceTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
-		pCamera.convertSceneToSurfaceTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
+	protected void convertSceneTouchEventToSurfaceTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
+		pCamera.convertSceneTouchEventToSurfaceTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
 	}
 
 	void onTickUpdate() throws InterruptedException {

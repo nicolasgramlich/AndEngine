@@ -101,14 +101,14 @@ public class SingleSceneSplitScreenEngine extends Engine {
 	}
 
 	@Override
-	protected void convertSurfaceToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
+	protected void convertSurfaceTouchEventToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth >> 1;
 
 		if(pCamera == this.getFirstCamera()) {
-			pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
+			pCamera.convertSurfaceTouchEventToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		} else {
 			pSurfaceTouchEvent.offset(-surfaceWidthHalf, 0);
-			pCamera.convertSurfaceToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
+			pCamera.convertSurfaceTouchEventToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		}
 	}
 

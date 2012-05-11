@@ -325,7 +325,7 @@ public class Camera implements IUpdateHandler {
 		pGLState.translateProjectionGLMatrixf(-pRotationCenterX, -pRotationCenterY, 0);
 	}
 
-	public void convertSceneToCameraSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
+	public void convertSceneTouchEventToCameraSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
 		this.unapplySceneRotation(pSceneTouchEvent);
 
 		this.applySceneToCameraSceneOffset(pSceneTouchEvent);
@@ -350,7 +350,7 @@ public class Camera implements IUpdateHandler {
 		return pSceneCoordinates;
 	}
 
-	public void convertCameraSceneToSceneTouchEvent(final TouchEvent pCameraSceneTouchEvent) {
+	public void convertCameraSceneTouchEventToSceneTouchEvent(final TouchEvent pCameraSceneTouchEvent) {
 		this.unapplyCameraSceneRotation(pCameraSceneTouchEvent);
 
 		this.unapplySceneToCameraSceneOffset(pCameraSceneTouchEvent);
@@ -476,8 +476,12 @@ public class Camera implements IUpdateHandler {
 		}
 	}
 
-	// TODO Camera already knows about its surfaceWidth, is there a need to pass it in here again?
-	public void convertSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
+
+	public void convertSurfaceTouchEventToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent) {
+		this.convertSurfaceTouchEventToSceneTouchEvent(pSurfaceTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
+	}
+
+	public void convertSurfaceTouchEventToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
 		final float relativeX;
 		final float relativeY;
 
@@ -501,10 +505,44 @@ public class Camera implements IUpdateHandler {
 			relativeY = 1 - (Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] / pSurfaceHeight);
 		}
 
-		this.convertAxisAlignedSurfaceToSceneTouchEvent(pSurfaceTouchEvent, relativeX, relativeY);
+		this.convertAxisAlignedSurfaceTouchEventToSceneTouchEvent(pSurfaceTouchEvent, relativeX, relativeY);
 	}
 
-	private void convertAxisAlignedSurfaceToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final float pRelativeX, final float pRelativeY) {
+	public float[] getSceneCoordinatesFromSurfaceCoordinates(final float pSurfaceX, final float pSurfaceY) {
+		Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pSurfaceX;
+		Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pSurfaceY;
+
+		return this.getSceneCoordinatesFromSurfaceCoordinates(Camera.VERTICES_TMP);
+	}
+
+	public float[] getSceneCoordinatesFromSurfaceCoordinates(final float[] pSurfaceCoordinates) {
+		return this.getSceneCoordinatesFromSurfaceCoordinates(pSurfaceCoordinates, this.mSurfaceWidth, this.mSurfaceHeight);
+	}
+
+	public float[] getSceneCoordinatesFromSurfaceCoordinates(final float[] pSurfaceCoordinates, final int pSurfaceWidth, final int pSurfaceHeight) {
+		final float relativeX;
+		final float relativeY;
+
+		final float rotation = this.mRotation;
+		if(rotation == 0) {
+			relativeX = pSurfaceCoordinates[Constants.VERTEX_INDEX_X] / pSurfaceWidth;
+			relativeY = 1 - (pSurfaceCoordinates[Constants.VERTEX_INDEX_Y] / pSurfaceHeight);
+		} else if(rotation == 180) {
+			relativeX = 1 - (pSurfaceCoordinates[Constants.VERTEX_INDEX_X] / pSurfaceWidth);
+			relativeY = pSurfaceCoordinates[Constants.VERTEX_INDEX_Y] / pSurfaceHeight;
+		} else {
+			MathUtils.rotateAroundCenter(pSurfaceCoordinates, rotation, pSurfaceWidth >> 1, pSurfaceHeight >> 1); // TODO Use a Transformation object instead!?!
+
+			relativeX = pSurfaceCoordinates[Constants.VERTEX_INDEX_X] / pSurfaceWidth;
+			relativeY = 1 - (pSurfaceCoordinates[Constants.VERTEX_INDEX_Y] / pSurfaceHeight);
+		}
+
+		this.convertAxisAlignedSurfaceCoordinatesToSceneCoordinates(pSurfaceCoordinates, relativeX, relativeY);
+
+		return pSurfaceCoordinates;
+	}
+
+	private void convertAxisAlignedSurfaceTouchEventToSceneTouchEvent(final TouchEvent pSurfaceTouchEvent, final float pRelativeX, final float pRelativeY) {
 		final float xMin = this.getXMin();
 		final float xMax = this.getXMax();
 		final float yMin = this.getYMin();
@@ -516,13 +554,32 @@ public class Camera implements IUpdateHandler {
 		pSurfaceTouchEvent.set(x, y);
 	}
 
-	public void convertSceneToSurfaceTouchEvent(final TouchEvent pSceneTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
+	private void convertAxisAlignedSurfaceCoordinatesToSceneCoordinates(final float[] pSurfaceCoordinates, final float pRelativeX, final float pRelativeY) {
+		final float xMin = this.getXMin();
+		final float xMax = this.getXMax();
+		final float yMin = this.getYMin();
+		final float yMax = this.getYMax();
+
+		final float x = xMin + pRelativeX * (xMax - xMin);
+		final float y = yMin + pRelativeY * (yMax - yMin);
+
+		pSurfaceCoordinates[Constants.VERTEX_INDEX_X] = x;
+		pSurfaceCoordinates[Constants.VERTEX_INDEX_Y] = y;
+	}
+
+
+	public void convertSceneTouchEventToSurfaceTouchEvent(final TouchEvent pSceneTouchEvent) {
+		this.convertSceneTouchEventToSurfaceTouchEvent(pSceneTouchEvent, this.mSurfaceWidth, this.mSurfaceHeight);
+	}
+
+	public void convertSceneTouchEventToSurfaceTouchEvent(final TouchEvent pSceneTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
 		this.convertAxisAlignedSceneToSurfaceTouchEvent(pSceneTouchEvent, pSurfaceWidth, pSurfaceHeight);
 
 		final float rotation = this.mRotation;
 		if(rotation == 0) {
-			pSceneTouchEvent.setY(pSurfaceHeight - pSceneTouchEvent.getY());
+			/* Nothing. */
 		} else if(rotation == 180) {
+			pSceneTouchEvent.setY(pSurfaceHeight - pSceneTouchEvent.getY());
 			pSceneTouchEvent.setX(pSurfaceWidth - pSceneTouchEvent.getX());
 		} else {
 			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pSceneTouchEvent.getX();
@@ -534,6 +591,37 @@ public class Camera implements IUpdateHandler {
 		}
 	}
 
+	public float[] getSurfaceCoordinatesFromSceneCoordinates(final float pSceneX, final float pSceneY) {
+		return this.getSurfaceCoordinatesFromSceneCoordinates(pSceneX, pSceneY, mSurfaceWidth, mSurfaceHeight);
+	}
+
+	public float[] getSurfaceCoordinatesFromSceneCoordinates(final float pSceneX, final float pSceneY, final int pSurfaceWidth, final int pSurfaceHeight) {
+		Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pSceneX;
+		Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pSceneY;
+
+		return this.getSurfaceCoordinatesFromSceneCoordinates(Camera.VERTICES_TMP, pSurfaceWidth, pSurfaceHeight);
+	}
+
+	public float[] getSurfaceCoordinatesFromSceneCoordinates(final float[] pSceneCoordinates) {
+		return this.getSurfaceCoordinatesFromSceneCoordinates(pSceneCoordinates, this.mSurfaceWidth, this.mSurfaceHeight);
+	}
+
+	public float[] getSurfaceCoordinatesFromSceneCoordinates(final float[] pSceneCoordinates, final int pSurfaceWidth, final int pSurfaceHeight) {
+		this.convertAxisAlignedSceneCoordinatesToSurfaceCoordinates(pSceneCoordinates, pSurfaceWidth, pSurfaceHeight);
+
+		final float rotation = this.mRotation;
+		if(rotation == 0) {
+			/* Nothing. */
+		} else if(rotation == 180) {
+			pSceneCoordinates[Constants.VERTEX_INDEX_Y] = pSurfaceHeight - pSceneCoordinates[Constants.VERTEX_INDEX_Y];
+			pSceneCoordinates[Constants.VERTEX_INDEX_X] = pSurfaceWidth - pSceneCoordinates[Constants.VERTEX_INDEX_X];
+		} else {
+			MathUtils.revertRotateAroundCenter(pSceneCoordinates, -rotation, pSurfaceWidth >> 1, pSurfaceHeight >> 1); // TODO Use a Transformation object instead!?!
+		}
+
+		return pSceneCoordinates;
+	}
+
 	private void convertAxisAlignedSceneToSurfaceTouchEvent(final TouchEvent pSceneTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
 		final float xMin = this.getXMin();
 		final float xMax = this.getXMax();
@@ -543,8 +631,25 @@ public class Camera implements IUpdateHandler {
 		final float relativeX = (pSceneTouchEvent.getX() - xMin) / (xMax - xMin);
 		final float relativeY = 1 - (pSceneTouchEvent.getY() - yMin) / (yMax - yMin);
 
-		pSceneTouchEvent.set(relativeX * pSurfaceWidth, relativeY * pSurfaceHeight);
+		final float x = relativeX * pSurfaceWidth;
+		final float y = relativeY * pSurfaceHeight;
+
+		pSceneTouchEvent.set(x, y);
 	}
+
+	private void convertAxisAlignedSceneCoordinatesToSurfaceCoordinates(final float[] pSceneCoordinates, final int pSurfaceWidth, final int pSurfaceHeight) {
+		final float xMin = this.getXMin();
+		final float xMax = this.getXMax();
+		final float yMin = this.getYMin();
+		final float yMax = this.getYMax();
+
+		final float relativeX = (pSceneCoordinates[Constants.VERTEX_INDEX_X] - xMin) / (xMax - xMin);
+		final float relativeY = 1 - (pSceneCoordinates[Constants.VERTEX_INDEX_Y] - yMin) / (yMax - yMin);
+
+		pSceneCoordinates[Constants.VERTEX_INDEX_X] = relativeX * pSurfaceWidth;
+		pSceneCoordinates[Constants.VERTEX_INDEX_Y] = relativeY * pSurfaceHeight;
+	}
+
 
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		if(this.mUpdateHandlers == null) {

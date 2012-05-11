@@ -243,11 +243,11 @@ public class RenderTexture extends Texture {
 			right = this.mWidth;
 		}
 		if(pFlipY) {
-			top = this.mHeight;
-			bottom = 0;
-		} else {
 			top = 0;
 			bottom = this.mHeight;
+		} else {
+			top = this.mHeight;
+			bottom = 0;
 		}
 		pGLState.orthoProjectionGLMatrixf(left, right, bottom, top, -1, 1);
 

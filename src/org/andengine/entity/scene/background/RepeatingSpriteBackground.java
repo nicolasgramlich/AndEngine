@@ -1,17 +1,11 @@
 package org.andengine.entity.scene.background;
 
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.TextureManager;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -26,37 +20,17 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// Fields
 	// ===========================================================
 
-	private BitmapTextureAtlas mBitmapTextureAtlas;
-	private final float mScale;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	/**
-	 * @param pCameraWidth
-	 * @param pCameraHeight
-	 * @param pTextureManager
-	 * @param pBitmapTextureAtlasSource needs to be a power of two as otherwise the <code>repeating</code> feature doesn't work.
-	 */
-	public RepeatingSpriteBackground(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
-		this(pCameraWidth, pCameraHeight, pTextureManager, pBitmapTextureAtlasSource, 1, pVertexBufferObjectManager);
-	}
-
-	public RepeatingSpriteBackground(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final float pScale, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
-		super(null);
-
-		this.mScale = pScale;
-		this.mEntity = this.loadSprite(pCameraWidth, pCameraHeight, pTextureManager, pBitmapTextureAtlasSource, pVertexBufferObjectManager);
+	public RepeatingSpriteBackground(final float pCameraWidth, final float pCameraHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
+		super(RepeatingSpriteBackground.createSprite(pCameraWidth, pCameraHeight, pTextureRegion, pVertexBufferObjectManager));
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-
-	public BitmapTextureAtlas getBitmapTextureAtlas() {
-		return this.mBitmapTextureAtlas;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -66,22 +40,15 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// Methods
 	// ===========================================================
 
-	private Sprite loadSprite(final float pCameraWidth, final float pCameraHeight, final TextureManager pTextureManager, final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(pTextureManager, pBitmapTextureAtlasSource.getTextureWidth(), pBitmapTextureAtlasSource.getTextureHeight(), BitmapTextureFormat.RGBA_8888, TextureOptions.REPEATING_NEAREST);
-		final ITextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createFromSource(this.mBitmapTextureAtlas, pBitmapTextureAtlasSource, 0, 0);
+	private static Sprite createSprite(final float pCameraWidth, final float pCameraHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
+		final float scale = pTextureRegion.getScale();
 
-		final int width = Math.round(pCameraWidth / this.mScale);
-		final int height = Math.round(pCameraHeight / this.mScale);
+		final int width = Math.round(pCameraWidth / scale);
+		final int height = Math.round(pCameraHeight / scale);
 
-		textureRegion.setTextureWidth(width);
-		textureRegion.setTextureHeight(height);
+		pTextureRegion.setTextureSize(width, height);
 
-		this.mBitmapTextureAtlas.load();
-
-		final Sprite sprite = new Sprite(0, 0, width, height, textureRegion, pVertexBufferObjectManager);
-		sprite.setScaleCenter(0, 0);
-		sprite.setScale(this.mScale);
-		return sprite;
+		return new Sprite(pCameraWidth * 0.5f, pCameraHeight * 0.5f, width * scale, height * scale, pTextureRegion, pVertexBufferObjectManager);
 	}
 
 	// ===========================================================

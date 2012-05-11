@@ -55,14 +55,11 @@ public class TextureRegion extends BaseTextureRegion {
 		this.mTextureX = pTextureX;
 		this.mTextureY = pTextureY;
 
-		if(pRotated) {
-			this.mRotated = true;
-
+		this.mRotated = pRotated;
+		if(this.mRotated) {
 			this.mTextureWidth = pTextureHeight;
 			this.mTextureHeight = pTextureWidth;
 		} else {
-			this.mRotated = false;
-
 			this.mTextureWidth = pTextureWidth;
 			this.mTextureHeight = pTextureHeight;
 		}

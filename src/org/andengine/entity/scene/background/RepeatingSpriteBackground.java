@@ -16,6 +16,8 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// Constants
 	// ===========================================================
 
+	private static final float SCALE_DEFAULT = 1;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -25,7 +27,11 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// ===========================================================
 
 	public RepeatingSpriteBackground(final float pCameraWidth, final float pCameraHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
-		super(RepeatingSpriteBackground.createSprite(pCameraWidth, pCameraHeight, pTextureRegion, pVertexBufferObjectManager));
+		this(pCameraWidth, pCameraHeight, pTextureRegion, SCALE_DEFAULT, pVertexBufferObjectManager);
+	}
+
+	public RepeatingSpriteBackground(final float pCameraWidth, final float pCameraHeight, final ITextureRegion pTextureRegion, final float pScale, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
+		super(RepeatingSpriteBackground.createSprite(pCameraWidth, pCameraHeight, pTextureRegion, pScale, pVertexBufferObjectManager));
 	}
 
 	// ===========================================================
@@ -40,15 +46,13 @@ public class RepeatingSpriteBackground extends SpriteBackground {
 	// Methods
 	// ===========================================================
 
-	private static Sprite createSprite(final float pCameraWidth, final float pCameraHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
-		final float scale = pTextureRegion.getScale();
-
-		final int width = Math.round(pCameraWidth / scale);
-		final int height = Math.round(pCameraHeight / scale);
+	private static Sprite createSprite(final float pCameraWidth, final float pCameraHeight, final ITextureRegion pTextureRegion, final float pScale, final VertexBufferObjectManager pVertexBufferObjectManager) throws IllegalArgumentException {
+		final int width = Math.round(pCameraWidth / pScale);
+		final int height = Math.round(pCameraHeight / pScale);
 
 		pTextureRegion.setTextureSize(width, height);
 
-		return new Sprite(pCameraWidth * 0.5f, pCameraHeight * 0.5f, width * scale, height * scale, pTextureRegion, pVertexBufferObjectManager);
+		return new Sprite(pCameraWidth * 0.5f, pCameraHeight * 0.5f, width * pScale, height * pScale, pTextureRegion, pVertexBufferObjectManager);
 	}
 
 	// ===========================================================

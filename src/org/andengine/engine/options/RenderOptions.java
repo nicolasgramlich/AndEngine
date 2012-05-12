@@ -16,8 +16,9 @@ public class RenderOptions {
 	// Fields
 	// ===========================================================
 
-	private boolean mMultiSampling = false;
 	private boolean mDithering = false;
+
+	private ConfigChooserOptions mConfigChooserOptions = new ConfigChooserOptions();
 
 	// ===========================================================
 	// Constructors
@@ -27,20 +28,16 @@ public class RenderOptions {
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isMultiSampling() {
-		return this.mMultiSampling;
-	}
-
-	public void setMultiSampling(final boolean pMultiSampling) {
-		this.mMultiSampling = pMultiSampling;
-	}
-
 	public boolean isDithering() {
 		return this.mDithering;
 	}
 
 	public void setDithering(final boolean pDithering) {
 		this.mDithering = pDithering;
+	}
+
+	public ConfigChooserOptions getConfigChooserOptions() {
+		return this.mConfigChooserOptions;
 	}
 
 	// ===========================================================

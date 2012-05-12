@@ -4,6 +4,7 @@ import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 
+import org.andengine.engine.options.ConfigChooserOptions;
 import org.andengine.opengl.view.ConfigChooser;
 import org.andengine.util.exception.DeviceNotSupportedException;
 import org.andengine.util.exception.DeviceNotSupportedException.DeviceNotSupportedCause;
@@ -82,7 +83,7 @@ public class AndEngine {
 		final int[] version = new int[2];
 		egl.eglInitialize(eglDisplay, version);
 
-		final ConfigChooser configChooser = new ConfigChooser(false); // TODO Doesn't correlate to possible multisampling request in EngineOptions...
+		final ConfigChooser configChooser = new ConfigChooser(new ConfigChooserOptions());
 
 		try {
 			configChooser.chooseConfig(egl, eglDisplay);

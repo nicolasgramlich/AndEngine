@@ -1,6 +1,7 @@
 package org.andengine.opengl.view;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.options.ConfigChooserOptions;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -74,8 +75,8 @@ public class RenderSurfaceView extends GLSurfaceView {
 
 	public void setRenderer(final Engine pEngine, final IRendererListener pRendererListener) {
 		if(this.mConfigChooser == null) {
-			final boolean multiSampling = pEngine.getEngineOptions().getRenderOptions().isMultiSampling();
-			this.mConfigChooser = new ConfigChooser(multiSampling);
+			final ConfigChooserOptions configChooserOptions = pEngine.getEngineOptions().getRenderOptions().getConfigChooserOptions();
+			this.mConfigChooser = new ConfigChooser(configChooserOptions);
 		}
 		this.setEGLConfigChooser(this.mConfigChooser);
 

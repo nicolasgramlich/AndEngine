@@ -42,7 +42,7 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 		this.mConfigChooser = pConfigChooser;
 		this.mRendererListener = pRendererListener;
 		this.mGLState = new GLState();
-		this.mMultiSampling = this.mEngine.getEngineOptions().getRenderOptions().isMultiSampling();
+		this.mMultiSampling = this.mEngine.getEngineOptions().getRenderOptions().getConfigChooserOptions().isRequestedMultiSampling();
 	}
 
 	// ===========================================================
@@ -96,7 +96,7 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onDrawFrame(final GL10 pGL) {
 		synchronized(GLState.class) {
-			if (this.mMultiSampling && this.mConfigChooser.isCoverageMultiSampling()) {
+			if (this.mMultiSampling && this.mConfigChooser.isActualCoverageMultiSampling()) {
 				final int GL_COVERAGE_BUFFER_BIT_NV = 0x8000;
 				GLES20.glClear(GL_COVERAGE_BUFFER_BIT_NV);
 			}

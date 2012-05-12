@@ -4,6 +4,8 @@ import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
 
+import org.andengine.engine.options.ConfigChooserOptions;
+
 import android.opengl.GLSurfaceView;
 
 /**
@@ -19,115 +21,159 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 
 	private static final int[] BUFFER = new int[1];
 
-	private static final int RED_SIZE = 5;
-	private static final int GREEN_SIZE = 6;
-	private static final int BLUE_SIZE = 5;
-	private static final int DEPTH_SIZE = 0;
-	private static final int ALPHA_SIZE = 0;
-	private static final int STENCIL_SIZE = 0;
-
 	private static final int MULTISAMPLE_COUNT = 2; // TODO Could be made variable?
 
 	private static final int EGL_GLES2_BIT = 4;
 
-	private static final int[] EGLCONFIG_ATTRIBUTES_MULTISAMPLE = {
-		EGL10.EGL_RED_SIZE, ConfigChooser.RED_SIZE,
-		EGL10.EGL_GREEN_SIZE, ConfigChooser.GREEN_SIZE,
-		EGL10.EGL_BLUE_SIZE, ConfigChooser.BLUE_SIZE,
-		EGL10.EGL_ALPHA_SIZE, ConfigChooser.ALPHA_SIZE,
-		EGL10.EGL_DEPTH_SIZE, ConfigChooser.DEPTH_SIZE,
-		EGL10.EGL_STENCIL_SIZE, ConfigChooser.STENCIL_SIZE,
-		EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
-		EGL10.EGL_SAMPLE_BUFFERS, 1,
-		EGL10.EGL_SAMPLES, ConfigChooser.MULTISAMPLE_COUNT,
-		EGL10.EGL_NONE
-	};
-
 	private static final int EGL_COVERAGE_BUFFERS_NV = 0x30E0;
 	private static final int EGL_COVERAGE_SAMPLES_NV = 0x30E1;
 
-	private static final int[] EGLCONFIG_ATTRIBUTES_COVERAGEMULTISAMPLE_NVIDIA = new int[]{
-		EGL10.EGL_RED_SIZE, ConfigChooser.RED_SIZE,
-		EGL10.EGL_GREEN_SIZE, ConfigChooser.GREEN_SIZE,
-		EGL10.EGL_BLUE_SIZE, ConfigChooser.BLUE_SIZE,
-		EGL10.EGL_ALPHA_SIZE, ConfigChooser.ALPHA_SIZE,
-		EGL10.EGL_DEPTH_SIZE, ConfigChooser.DEPTH_SIZE,
-		EGL10.EGL_STENCIL_SIZE, ConfigChooser.STENCIL_SIZE,
-		EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
-		ConfigChooser.EGL_COVERAGE_BUFFERS_NV, 1,
-		ConfigChooser.EGL_COVERAGE_SAMPLES_NV, ConfigChooser.MULTISAMPLE_COUNT,  // always 5 in practice on tegra 2
-		EGL10.EGL_NONE
-	};
+	private final int[] mMultiSampleEGLConfig;
 
-	private static final int[] EGLCONFIG_ATTRIBUTES_FALLBACK = new int[] {
-		EGL10.EGL_RED_SIZE, ConfigChooser.RED_SIZE,
-		EGL10.EGL_GREEN_SIZE, ConfigChooser.GREEN_SIZE,
-		EGL10.EGL_BLUE_SIZE, ConfigChooser.BLUE_SIZE,
-		EGL10.EGL_ALPHA_SIZE, ConfigChooser.ALPHA_SIZE,
-		EGL10.EGL_DEPTH_SIZE, ConfigChooser.DEPTH_SIZE,
-		EGL10.EGL_STENCIL_SIZE, ConfigChooser.STENCIL_SIZE,
-		EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
-		EGL10.EGL_NONE
-	};
+	private final int[] mNvidiaCoverageMultiSampleEGLConfig;
+
+	private final int[] mDefaultEGLConfig;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final boolean mMultiSamplingRequested;
+	private final boolean mRequestedMultiSampling;
 
-	private boolean mMultiSampling;
-	private boolean mCoverageMultiSampling;
+	private boolean mActualMultiSampling;
+	private boolean mActualCoverageMultiSampling;
 
-	private int mRedSize = -1;
-	private int mGreenSize = -1;
-	private int mBlueSize = -1;
-	private int mAlphaSize = -1;
-	private int mDepthSize = -1;
-	private int mStencilSize = -1;
+	private final int mRequestedRedSize;
+	private final int mRequestedGreenSize;
+	private final int mRequestedBlueSize;
+	private final int mRequestedAlphaSize;
+	private final int mRequestedDepthSize;
+	private final int mRequestedStencilSize;
+
+	private int mActualRedSize = -1;
+	private int mActualGreenSize = -1;
+	private int mActualBlueSize = -1;
+	private int mActualAlphaSize = -1;
+	private int mActualDepthSize = -1;
+	private int mActualStencilSize = -1;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ConfigChooser(final boolean pMultiSamplingRequested) {
-		this.mMultiSamplingRequested = pMultiSamplingRequested;
+	public ConfigChooser(final ConfigChooserOptions pConfigChooserOptions) {
+		this(pConfigChooserOptions.getRequestedRedSize(), pConfigChooserOptions.getRequestedGreenSize(), pConfigChooserOptions.getRequestedBlueSize(), pConfigChooserOptions.getRequestedAlphaSize(), pConfigChooserOptions.getRequestedDepthSize(), pConfigChooserOptions.getRequestedStencilSize(), pConfigChooserOptions.isRequestedMultiSampling());
+	}
+
+	public ConfigChooser(final int pRequestedRedSize, final int pRequestedGreenSize, final int pRequestedBlueSize, final int pRequestedAlphaSize, final int pRequestedDepthSize, final int pRequestedStencilSize, final boolean pRequestedMultiSampling) {
+		this.mRequestedRedSize = pRequestedRedSize;
+		this.mRequestedGreenSize = pRequestedGreenSize;
+		this.mRequestedBlueSize = pRequestedBlueSize;
+		this.mRequestedAlphaSize = pRequestedAlphaSize;
+		this.mRequestedDepthSize = pRequestedDepthSize;
+		this.mRequestedStencilSize = pRequestedStencilSize;
+		this.mRequestedMultiSampling = pRequestedMultiSampling;
+
+		this.mMultiSampleEGLConfig = new int[] {
+			EGL10.EGL_RED_SIZE, pRequestedRedSize,
+			EGL10.EGL_GREEN_SIZE, pRequestedGreenSize,
+			EGL10.EGL_BLUE_SIZE, pRequestedBlueSize,
+			EGL10.EGL_ALPHA_SIZE, pRequestedAlphaSize,
+			EGL10.EGL_DEPTH_SIZE, pRequestedDepthSize,
+			EGL10.EGL_STENCIL_SIZE, pRequestedStencilSize,
+			EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
+			EGL10.EGL_SAMPLE_BUFFERS, 1,
+			EGL10.EGL_SAMPLES, ConfigChooser.MULTISAMPLE_COUNT,
+			EGL10.EGL_NONE
+		};
+
+		this.mNvidiaCoverageMultiSampleEGLConfig = new int[] {
+			EGL10.EGL_RED_SIZE, pRequestedRedSize,
+			EGL10.EGL_GREEN_SIZE, pRequestedGreenSize,
+			EGL10.EGL_BLUE_SIZE, pRequestedBlueSize,
+			EGL10.EGL_ALPHA_SIZE, pRequestedAlphaSize,
+			EGL10.EGL_DEPTH_SIZE, pRequestedDepthSize,
+			EGL10.EGL_STENCIL_SIZE, pRequestedStencilSize,
+			EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
+			ConfigChooser.EGL_COVERAGE_BUFFERS_NV, 1,
+			ConfigChooser.EGL_COVERAGE_SAMPLES_NV, ConfigChooser.MULTISAMPLE_COUNT,
+			EGL10.EGL_NONE
+		};
+
+		this.mDefaultEGLConfig = new int[] {
+			EGL10.EGL_RED_SIZE, pRequestedRedSize,
+			EGL10.EGL_GREEN_SIZE, pRequestedGreenSize,
+			EGL10.EGL_BLUE_SIZE, pRequestedBlueSize,
+			EGL10.EGL_ALPHA_SIZE, pRequestedAlphaSize,
+			EGL10.EGL_DEPTH_SIZE, pRequestedDepthSize,
+			EGL10.EGL_STENCIL_SIZE, pRequestedStencilSize,
+			EGL10.EGL_RENDERABLE_TYPE, ConfigChooser.EGL_GLES2_BIT,
+			EGL10.EGL_NONE
+		};
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public boolean isMultiSampling() {
-		return this.mMultiSampling;
+	public boolean isRequestedMultiSampling() {
+		return this.mRequestedMultiSampling;
 	}
 
-	public boolean isCoverageMultiSampling() {
-		return this.mCoverageMultiSampling;
+	public boolean isActualMultiSampling() {
+		return this.mActualMultiSampling;
 	}
 
-	public int getRedSize() {
-		return this.mRedSize;
+	public boolean isActualCoverageMultiSampling() {
+		return this.mActualCoverageMultiSampling;
 	}
 
-	public int getGreenSize() {
-		return this.mGreenSize;
+	public int getRequestedRedSize() {
+		return this.mRequestedRedSize;
 	}
 
-	public int getBlueSize() {
-		return this.mBlueSize;
+	public int getActualRedSize() {
+		return this.mActualRedSize;
 	}
 
-	public int getAlphaSize() {
-		return this.mAlphaSize;
+	public int getRequestedGreenSize() {
+		return this.mRequestedGreenSize;
 	}
 
-	public int getDepthSize() {
-		return this.mDepthSize;
+	public int getActualGreenSize() {
+		return this.mActualGreenSize;
 	}
 
-	public int getStencilSize() {
-		return this.mStencilSize;
+	public int getRequestedSize() {
+		return this.mRequestedBlueSize;
+	}
+
+	public int getActualBlueSize() {
+		return this.mActualBlueSize;
+	}
+
+	public int getRequestedAlphaSize() {
+		return this.mRequestedAlphaSize;
+	}
+
+	public int getActualAlphaSize() {
+		return this.mActualAlphaSize;
+	}
+
+	public int getRequestedDepthSize() {
+		return this.mRequestedDepthSize;
+	}
+
+	public int getActualDepthSize() {
+		return this.mActualDepthSize;
+	}
+
+	public int getRequestedStencilSize() {
+		return this.mRequestedStencilSize;
+	}
+
+	public int getActualStencilSize() {
+		return this.mActualStencilSize;
 	}
 
 	// ===========================================================
@@ -162,23 +208,23 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 
 		int eglConfigCount;
 
-		if(this.mMultiSamplingRequested) {
-			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_MULTISAMPLE);
+		if(this.mRequestedMultiSampling) {
+			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, this.mMultiSampleEGLConfig);
 			if(eglConfigCount > 0) {
-				this.mMultiSampling = true;
-				return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_MULTISAMPLE, eglConfigCount, pConfigChooserMatcher);
+				this.mActualMultiSampling = true;
+				return this.findEGLConfig(pEGL, pEGLDisplay, this.mMultiSampleEGLConfig, eglConfigCount, pConfigChooserMatcher);
 			}
 
-			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_COVERAGEMULTISAMPLE_NVIDIA);
+			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, this.mNvidiaCoverageMultiSampleEGLConfig);
 			if(eglConfigCount > 0) {
-				this.mCoverageMultiSampling = true;
-				return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_COVERAGEMULTISAMPLE_NVIDIA, eglConfigCount, pConfigChooserMatcher);
+				this.mActualCoverageMultiSampling = true;
+				return this.findEGLConfig(pEGL, pEGLDisplay, this.mNvidiaCoverageMultiSampleEGLConfig, eglConfigCount, pConfigChooserMatcher);
 			}
 		}
 
-		eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_FALLBACK);
+		eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, this.mDefaultEGLConfig);
 		if(eglConfigCount > 0) {
-			return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_FALLBACK, eglConfigCount, pConfigChooserMatcher);
+			return this.findEGLConfig(pEGL, pEGLDisplay, this.mDefaultEGLConfig, eglConfigCount, pConfigChooserMatcher);
 		} else {
 			throw new IllegalArgumentException("No " + EGLConfig.class.getSimpleName() + " found!");
 		}
@@ -215,13 +261,13 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 				final int depthSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_DEPTH_SIZE, 0);
 				final int stencilSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_STENCIL_SIZE, 0);
 
-				if(pConfigChooserMatcher.matches(redSize, greenSize, blueSize, alphaSize, depthSize, stencilSize)) {
-					this.mRedSize = redSize;
-					this.mGreenSize = greenSize;
-					this.mBlueSize = blueSize;
-					this.mAlphaSize = alphaSize;
-					this.mDepthSize = depthSize;
-					this.mStencilSize = stencilSize;
+				if(pConfigChooserMatcher.matches(this.mRequestedRedSize, redSize, this.mRequestedGreenSize, greenSize, this.mRequestedBlueSize, blueSize, this.mRequestedAlphaSize, alphaSize, this.mRequestedDepthSize, depthSize, this.mRequestedStencilSize, stencilSize)) {
+					this.mActualRedSize = redSize;
+					this.mActualGreenSize = greenSize;
+					this.mActualBlueSize = blueSize;
+					this.mActualAlphaSize = alphaSize;
+					this.mActualDepthSize = depthSize;
+					this.mActualStencilSize = stencilSize;
 					return config;
 				}
 			}
@@ -240,80 +286,4 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public enum ConfigChooserMatcher {
-		// ===========================================================
-		// Elements
-		// ===========================================================
-
-		STRICT() {
-			@Override
-			public boolean matches(final int pRedSize, final int pGreenSize, final int pBlueSize, final int pAlphaSize, final int pDepthSize, final int pStencilSize) {
-				if(pDepthSize == ConfigChooser.DEPTH_SIZE && pStencilSize == ConfigChooser.STENCIL_SIZE) {
-					if(pRedSize == ConfigChooser.RED_SIZE && pGreenSize == ConfigChooser.GREEN_SIZE && pBlueSize == ConfigChooser.BLUE_SIZE && pAlphaSize == ConfigChooser.ALPHA_SIZE) {
-						return true;
-					}
-				}
-				return false;
-			}
-		},
-		LOOSE_STENCIL() {
-			@Override
-			public boolean matches(final int pRedSize, final int pGreenSize, final int pBlueSize, final int pAlphaSize, final int pDepthSize, final int pStencilSize) {
-				if(pDepthSize == ConfigChooser.DEPTH_SIZE && pStencilSize >= ConfigChooser.STENCIL_SIZE) {
-					if(pRedSize == ConfigChooser.RED_SIZE && pGreenSize == ConfigChooser.GREEN_SIZE && pBlueSize == ConfigChooser.BLUE_SIZE && pAlphaSize == ConfigChooser.ALPHA_SIZE) {
-						return true;
-					}
-				}
-				return false;
-			}
-		},
-		LOOSE_DEPTH_AND_STENCIL() {
-			@Override
-			public boolean matches(final int pRedSize, final int pGreenSize, final int pBlueSize, final int pAlphaSize, final int pDepthSize, final int pStencilSize) {
-				if(pDepthSize >= ConfigChooser.DEPTH_SIZE && pStencilSize >= ConfigChooser.STENCIL_SIZE) {
-					if(pRedSize == ConfigChooser.RED_SIZE && pGreenSize == ConfigChooser.GREEN_SIZE && pBlueSize == ConfigChooser.BLUE_SIZE && pAlphaSize == ConfigChooser.ALPHA_SIZE) {
-						return true;
-					}
-				}
-				return false;
-			}
-		},
-		ANY() {
-			@Override
-			public boolean matches(final int pRedSize, final int pGreenSize, final int pBlueSize, final int pAlphaSize, final int pDepthSize, final int pStencilSize) {
-				return true;
-			}
-		};
-
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		public abstract boolean matches(final int pRedSize, final int pGreenSize, final int pBlueSize, final int pAlphaSize, final int pDepthSize, final int pStencilSize);
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

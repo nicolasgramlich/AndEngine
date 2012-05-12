@@ -1,5 +1,7 @@
 package org.andengine.ui.activity;
 
+import java.io.IOException;
+
 import org.andengine.BuildConfig;
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundManager;
@@ -291,7 +293,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	}
 
 	@Override
-	public void onDestroyResources() throws Exception {
+	public void onDestroyResources() throws IOException {
 		if(BuildConfig.DEBUG) {
 			Debug.d(this.getClass().getSimpleName() + ".onDestroyResources" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 		}

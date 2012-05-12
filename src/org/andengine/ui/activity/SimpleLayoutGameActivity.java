@@ -1,5 +1,7 @@
 package org.andengine.ui.activity;
 
+import java.io.IOException;
+
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.IGameInterface;
 
@@ -37,21 +39,21 @@ public abstract class SimpleLayoutGameActivity extends LayoutGameActivity {
 	protected abstract Scene onCreateScene();
 
 	@Override
-	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception {
+	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
 		this.onCreateResources();
 
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 
 	@Override
-	public final void onCreateScene(final OnCreateSceneCallback pOnCreateSceneCallback) throws Exception {
+	public final void onCreateScene(final OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
 		final Scene scene = this.onCreateScene();
 
 		pOnCreateSceneCallback.onCreateSceneFinished(scene);
 	}
 
 	@Override
-	public final void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
+	public final void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) {
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
 

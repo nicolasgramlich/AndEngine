@@ -1,5 +1,7 @@
 package org.andengine.ui.activity;
 
+import java.io.IOException;
+
 import org.andengine.engine.Engine;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.entity.scene.Scene;
@@ -54,26 +56,26 @@ public abstract class LegacyBaseGameActivity extends BaseGameActivity {
 	}
 
 	@Override
-	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception {
+	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
 		this.onLoadResources();
 
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 
 	@Override
-	public final void onCreateScene(final OnCreateSceneCallback pOnCreateSceneCallback) throws Exception {
+	public final void onCreateScene(final OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
 		final Scene scene = this.onLoadScene();
 
 		pOnCreateSceneCallback.onCreateSceneFinished(scene);
 	}
 
 	@Override
-	public final void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
+	public final void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) throws IOException {
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
 
 	@Override
-	public final void onDestroyResources() throws Exception {
+	public final void onDestroyResources() throws IOException {
 		super.onDestroyResources();
 
 		this.onUnloadResources();

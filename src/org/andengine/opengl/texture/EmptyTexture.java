@@ -28,11 +28,35 @@ public class EmptyTexture extends Texture{
 	// Constructors
 	// ==========================================================
 
-	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions) {
-		this(pTextureManager, pWidth, pHeight, pPixelFormat, pTextureOptions, null);
+	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight) {
+		this(pTextureManager, pWidth, pHeight, (ITextureStateListener)null);
 	}
 
-	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IllegalArgumentException {
+	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final ITextureStateListener pTextureStateListener) {
+		this(pTextureManager, pWidth, pHeight, PixelFormat.RGBA_8888, pTextureStateListener);
+	}
+
+	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat) {
+		this(pTextureManager, pWidth, pHeight, pPixelFormat, (ITextureStateListener)null);
+	}
+
+	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final ITextureStateListener pTextureStateListener) {
+		this(pTextureManager, pWidth, pHeight, pPixelFormat, TextureOptions.DEFAULT, pTextureStateListener);
+	}
+
+	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final TextureOptions pTextureOptions) {
+		this(pTextureManager, pWidth, pHeight, pTextureOptions, (ITextureStateListener)null);
+	}
+
+	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) {
+		this(pTextureManager, pWidth, pHeight, PixelFormat.RGBA_8888, pTextureOptions, pTextureStateListener);
+	}
+
+	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions) {
+		this(pTextureManager, pWidth, pHeight, pPixelFormat, pTextureOptions, (ITextureStateListener)null);
+	}
+
+	public EmptyTexture(final TextureManager pTextureManager, final int pWidth, final int pHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) {
 		super(pTextureManager, pPixelFormat, pTextureOptions, pTextureStateListener);
 
 		this.mWidth = pWidth;

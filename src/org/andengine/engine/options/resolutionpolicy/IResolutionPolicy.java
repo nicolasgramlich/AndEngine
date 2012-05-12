@@ -1,6 +1,5 @@
 package org.andengine.engine.options.resolutionpolicy;
 
-import org.andengine.opengl.view.RenderSurfaceView;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -18,5 +17,21 @@ public interface IResolutionPolicy {
 	// Methods
 	// ===========================================================
 
-	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec);
+	public void onMeasure(final IResolutionPolicy.Callback pResolutionPolicyCallback, final int pWidthMeasureSpec, final int pHeightMeasureSpec);
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+
+	public static interface Callback {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		public void onResolutionChanged(final int pWidth, final int pHeight);
+	}
 }

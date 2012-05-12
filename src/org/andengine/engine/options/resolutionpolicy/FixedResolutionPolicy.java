@@ -1,6 +1,5 @@
 package org.andengine.engine.options.resolutionpolicy;
 
-import org.andengine.opengl.view.RenderSurfaceView;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -39,8 +38,8 @@ public class FixedResolutionPolicy extends BaseResolutionPolicy {
 	// ===========================================================
 
 	@Override
-	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
-		pRenderSurfaceView.setMeasuredDimensionProxy(this.mWidth, this.mHeight);
+	public void onMeasure(final IResolutionPolicy.Callback pResolutionPolicyCallback, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
+		pResolutionPolicyCallback.onResolutionChanged(this.mWidth, this.mHeight);
 	}
 
 	// ===========================================================

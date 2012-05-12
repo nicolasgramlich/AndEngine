@@ -2,6 +2,7 @@ package org.andengine.opengl.view;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.options.ConfigChooserOptions;
+import org.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -14,7 +15,7 @@ import android.util.AttributeSet;
  * @author Nicolas Gramlich
  * @since 11:57:29 - 08.03.2010
  */
-public class RenderSurfaceView extends GLSurfaceView {
+public class RenderSurfaceView extends GLSurfaceView implements IResolutionPolicy.Callback {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -65,13 +66,14 @@ public class RenderSurfaceView extends GLSurfaceView {
 		this.mEngineRenderer.mEngine.getEngineOptions().getResolutionPolicy().onMeasure(this, pWidthMeasureSpec, pHeightMeasureSpec);
 	}
 
+	@Override
+	public void onResolutionChanged(final int pWidth, final int pHeight) {
+		this.setMeasuredDimension(pWidth, pHeight);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	public void setMeasuredDimensionProxy(final int pMeasuredWidth, final int pMeasuredHeight) {
-		this.setMeasuredDimension(pMeasuredWidth, pMeasuredHeight);
-	}
 
 	public void setRenderer(final Engine pEngine, final IRendererListener pRendererListener) {
 		if(this.mConfigChooser == null) {

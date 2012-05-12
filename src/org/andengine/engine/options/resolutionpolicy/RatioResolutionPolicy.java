@@ -1,7 +1,5 @@
 package org.andengine.engine.options.resolutionpolicy;
 
-import org.andengine.opengl.view.RenderSurfaceView;
-
 import android.view.View.MeasureSpec;
 
 /**
@@ -43,7 +41,7 @@ public class RatioResolutionPolicy extends BaseResolutionPolicy {
 	// ===========================================================
 
 	@Override
-	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
+	public void onMeasure(final IResolutionPolicy.Callback pResolutionPolicyCallback, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
 		BaseResolutionPolicy.throwOnNotMeasureSpecEXACTLY(pWidthMeasureSpec, pHeightMeasureSpec);
 
 		final int specWidth = MeasureSpec.getSize(pWidthMeasureSpec);
@@ -62,7 +60,7 @@ public class RatioResolutionPolicy extends BaseResolutionPolicy {
 			measuredWidth = Math.round(measuredHeight * desiredRatio);
 		}
 
-		pRenderSurfaceView.setMeasuredDimensionProxy(measuredWidth, measuredHeight);
+		pResolutionPolicyCallback.onResolutionChanged(measuredWidth, measuredHeight);
 	}
 
 	// ===========================================================

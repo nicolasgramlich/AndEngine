@@ -1,7 +1,5 @@
 package org.andengine.engine.options.resolutionpolicy;
 
-import org.andengine.opengl.view.RenderSurfaceView;
-
 import android.view.View.MeasureSpec;
 
 /**
@@ -45,13 +43,13 @@ public class RelativeResolutionPolicy extends BaseResolutionPolicy {
 	// ===========================================================
 
 	@Override
-	public void onMeasure(final RenderSurfaceView pRenderSurfaceView, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
+	public void onMeasure(final IResolutionPolicy.Callback pResolutionPolicyCallback, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
 		BaseResolutionPolicy.throwOnNotMeasureSpecEXACTLY(pWidthMeasureSpec, pHeightMeasureSpec);
 
 		final int measuredWidth = (int)(MeasureSpec.getSize(pWidthMeasureSpec) * this.mWidthScale);
 		final int measuredHeight = (int)(MeasureSpec.getSize(pHeightMeasureSpec) * this.mHeightScale);
 
-		pRenderSurfaceView.setMeasuredDimensionProxy(measuredWidth, measuredHeight);
+		pResolutionPolicyCallback.onResolutionChanged(measuredWidth, measuredHeight);
 	}
 
 	// ===========================================================

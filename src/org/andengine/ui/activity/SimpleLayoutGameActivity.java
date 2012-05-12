@@ -35,8 +35,8 @@ public abstract class SimpleLayoutGameActivity extends LayoutGameActivity {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onCreateResources();
-	protected abstract Scene onCreateScene();
+	protected abstract void onCreateResources() throws IOException;
+	protected abstract Scene onCreateScene() throws IOException;
 
 	@Override
 	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
@@ -53,7 +53,7 @@ public abstract class SimpleLayoutGameActivity extends LayoutGameActivity {
 	}
 
 	@Override
-	public final void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) {
+	public final void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) throws IOException {
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
 

@@ -54,6 +54,14 @@ public class TextureRegionFactory {
 		return new TextureRegion(pTexture, pTextureX, pTextureY, pWidth, pHeight, pRotated);
 	}
 
+	public static TiledTextureRegion extractTiledFromTexture(final ITexture pTexture, final int pTileColumns, final int pTileRows) {
+		return TiledTextureRegion.create(pTexture, 0, 0, pTexture.getWidth(), pTexture.getHeight(), pTileColumns, pTileRows);
+	}
+
+	public static TiledTextureRegion extractTiledFromTexture(final ITexture pTexture, final int pTextureX, final int pTextureY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
+		return TiledTextureRegion.create(pTexture, pTextureX, pTextureY, pWidth, pHeight, pTileColumns, pTileRows);
+	}
+
 	public static <T extends ITextureAtlasSource> ITextureRegion createFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTextureX, final int pTextureY) {
 		return TextureRegionFactory.createFromSource(pTextureAtlas, pTextureAtlasSource, pTextureX, pTextureY, false);
 	}

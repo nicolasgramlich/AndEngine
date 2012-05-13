@@ -71,8 +71,8 @@ public class AccelerationData extends BaseSensorData {
 	// Constructors
 	// ===========================================================
 
-	public AccelerationData(final int pDisplayOrientation) {
-		super(3, pDisplayOrientation);
+	public AccelerationData() {
+		super(3);
 	}
 
 	// ===========================================================

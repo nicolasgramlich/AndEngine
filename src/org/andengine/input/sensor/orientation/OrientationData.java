@@ -34,8 +34,8 @@ public class OrientationData extends BaseSensorData {
 	// Constructors
 	// ===========================================================
 
-	public OrientationData(final int pDisplayRotation) {
-		super(3, pDisplayRotation);
+	public OrientationData() {
+		super(3);
 	}
 
 	// ===========================================================
@@ -68,11 +68,13 @@ public class OrientationData extends BaseSensorData {
 
 	public void setAccelerationValues(final float[] pValues) {
 		System.arraycopy(pValues, 0, this.mAccelerationValues, 0, pValues.length);
+
 		this.updateOrientation();
 	}
 
 	public void setMagneticFieldValues(final float[] pValues) {
 		System.arraycopy(pValues, 0, this.mMagneticFieldValues, 0, pValues.length);
+
 		this.updateOrientation();
 	}
 

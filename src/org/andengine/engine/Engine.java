@@ -107,6 +107,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private Vibrator mVibrator;
 
+	private Display mDefaultDisplay;
+
 	private ILocationListener mLocationListener;
 	private Location mLocation;
 
@@ -350,14 +352,17 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			switch(pEvent.sensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
 					if(this.mAccelerationData != null) {
+						this.mOrientationData.setDisplayRotation(this.getDisplayOrientation());
 						this.mAccelerationData.setValues(pEvent.values);
 						this.mAccelerationListener.onAccelerationChanged(this.mAccelerationData);
 					} else if(this.mOrientationData != null) {
+						this.mOrientationData.setDisplayRotation(this.getDisplayOrientation());
 						this.mOrientationData.setAccelerationValues(pEvent.values);
 						this.mOrientationListener.onOrientationChanged(this.mOrientationData);
 					}
 					break;
 				case Sensor.TYPE_MAGNETIC_FIELD:
+					this.mOrientationData.setDisplayRotation(this.getDisplayOrientation());
 					this.mOrientationData.setMagneticFieldValues(pEvent.values);
 					this.mOrientationListener.onOrientationChanged(this.mOrientationData);
 					break;
@@ -504,6 +509,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			Debug.w("Trying to manually interrupt UpdateThread.");
 			this.mUpdateThread.interrupt();
 		}
+
+		this.releaseDefaultDisplay();
 
 		this.mVertexBufferObjectManager.onDestroy();
 		this.mTextureManager.onDestroy();
@@ -685,10 +692,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			this.mAccelerationListener = pAccelerationListener;
 
+			this.initDefaultDisplay(pContext);
+
 			if(this.mAccelerationData == null) {
-				final Display display = ((WindowManager) pContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-				final int displayRotation = display.getOrientation();
-				this.mAccelerationData = new AccelerationData(displayRotation);
+				this.mAccelerationData = new AccelerationData();
 			}
 
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pAccelerationSensorOptions.getSensorDelay());
@@ -698,7 +705,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			return false;
 		}
 	}
-
 
 	/**
 	 * @return <code>true</code> when the sensor was successfully disabled, <code>false</code> otherwise.
@@ -728,10 +734,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER) && this.isSensorSupported(sensorManager, Sensor.TYPE_MAGNETIC_FIELD)) {
 			this.mOrientationListener = pOrientationListener;
 
+			this.initDefaultDisplay(pContext);
+
 			if(this.mOrientationData == null) {
-				final Display display = ((WindowManager) pContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-				final int displayRotation = display.getOrientation();
-				this.mOrientationData = new OrientationData(displayRotation);
+				this.mOrientationData = new OrientationData();
 			}
 
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pOrientationSensorOptions.getSensorDelay());
@@ -770,6 +776,25 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private void unregisterSelfAsSensorListener(final SensorManager pSensorManager, final int pType) {
 		final Sensor sensor = pSensorManager.getSensorList(pType).get(0);
 		pSensorManager.unregisterListener(this, sensor);
+	}
+
+	private void initDefaultDisplay(final Context pContext) {
+		if(this.mDefaultDisplay == null) {
+			final WindowManager windowManager = (WindowManager) pContext.getSystemService(Context.WINDOW_SERVICE);
+			this.mDefaultDisplay = windowManager.getDefaultDisplay();
+		}
+	}
+
+	private void releaseDefaultDisplay() {
+		this.mDefaultDisplay = null;
+	}
+
+	private int getDisplayOrientation() {
+		if(this.mDefaultDisplay == null) {
+			throw new IllegalStateException();
+		} else {
+			return this.mDefaultDisplay.getOrientation();
+		}
 	}
 
 	// ===========================================================

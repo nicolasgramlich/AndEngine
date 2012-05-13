@@ -26,10 +26,8 @@ public class BaseSensorData {
 	// Constructors
 	// ===========================================================
 
-	public BaseSensorData(final int pValueCount, int pDisplayRotation) {
+	public BaseSensorData(final int pValueCount) {
 		this.mValues = new float[pValueCount];
-
-		this.mDisplayRotation = pDisplayRotation;
 	}
 
 	// ===========================================================
@@ -44,12 +42,20 @@ public class BaseSensorData {
 		System.arraycopy(pValues, 0, this.mValues, 0, pValues.length);
 	}
 
+	public int getAccuracy() {
+		return this.mAccuracy;
+	}
+
 	public void setAccuracy(final int pAccuracy) {
 		this.mAccuracy = pAccuracy;
 	}
 
-	public int getAccuracy() {
-		return this.mAccuracy;
+	public int getDisplayRotation() {
+		return this.mDisplayRotation;
+	}
+
+	public void setDisplayRotation(final int pDisplayRotation) {
+		this.mDisplayRotation = pDisplayRotation;
 	}
 
 	// ===========================================================

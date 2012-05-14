@@ -1,6 +1,7 @@
 package org.andengine.entity.scene.menu;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.CameraScene;
@@ -30,7 +31,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<IMenuItem> mMenuItems = new ArrayList<IMenuItem>();
+	protected final ArrayList<IMenuItem> mMenuItems = new ArrayList<IMenuItem>();
 
 	private IOnMenuItemClickListener mOnMenuItemClickListener;
 
@@ -81,6 +82,14 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 		this.mMenuItems.add(pMenuItem);
 		this.attachChild(pMenuItem);
 		this.registerTouchArea(pMenuItem);
+	}
+
+	public void clearMenuItems() {
+		for (int i = mMenuItems.size() - 1; i >= 0; i--) {
+			IMenuItem menuitem = mMenuItems.remove(i);
+			detachChild(menuitem);
+			unregisterTouchArea(menuitem);
+		}
 	}
 
 	@Override

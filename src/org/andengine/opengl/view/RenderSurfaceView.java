@@ -79,6 +79,13 @@ public class RenderSurfaceView extends GLSurfaceView implements IResolutionPolic
 		if(this.mConfigChooser == null) {
 			final ConfigChooserOptions configChooserOptions = pEngine.getEngineOptions().getRenderOptions().getConfigChooserOptions();
 			this.mConfigChooser = new ConfigChooser(configChooserOptions);
+
+			// TODO We don't know yet if the requested color size will actually be accepted!
+			if(configChooserOptions.isRequestedRGBA8888()) {
+				this.getHolder().setFormat(android.graphics.PixelFormat.RGBA_8888);
+			} else if(configChooserOptions.isRequestedRGB565()) {
+				this.getHolder().setFormat(android.graphics.PixelFormat.RGB_565);
+			}
 		}
 		this.setEGLConfigChooser(this.mConfigChooser);
 

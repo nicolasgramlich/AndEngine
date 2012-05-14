@@ -95,6 +95,14 @@ public class ConfigChooserOptions {
 		this.mRequestedStencilSize = pRequestedStencilSize;
 	}
 
+	public boolean isRequestedRGBA8888() {
+		return (this.mRequestedRedSize == 8) && (this.mRequestedGreenSize == 8) && (this.mRequestedBlueSize == 8) && (this.mRequestedAlphaSize == 8);
+	}
+
+	public boolean isRequestedRGB565() {
+		return (this.mRequestedRedSize == 5) && (this.mRequestedGreenSize == 6) && (this.mRequestedBlueSize == 5) && (this.mRequestedAlphaSize == 0);
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

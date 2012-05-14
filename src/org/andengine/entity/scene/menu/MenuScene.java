@@ -31,7 +31,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<IMenuItem> mMenuItems = new ArrayList<IMenuItem>();
+	protected final ArrayList<IMenuItem> mMenuItems = new ArrayList<IMenuItem>();
 
 	private IOnMenuItemClickListener mOnMenuItemClickListener;
 
@@ -92,6 +92,14 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 		this.mMenuItems.add(pMenuItem);
 		this.attachChild(pMenuItem);
 		this.registerTouchArea(pMenuItem);
+	}
+
+	public void clearMenuItems() {
+		for (int i = this.mMenuItems.size() - 1; i >= 0; i--) {
+			final IMenuItem menuItem = this.mMenuItems.remove(i);
+			this.detachChild(menuItem);
+			this.unregisterTouchArea(menuItem);
+		}
 	}
 
 	@Override

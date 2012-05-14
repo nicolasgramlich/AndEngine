@@ -44,6 +44,10 @@ public class SoundFactory {
 		}
 	}
 
+	public static String getAssetBasePath() {
+		return SoundFactory.sAssetBasePath;
+	}
+
 	public static void onCreate() {
 		SoundFactory.setAssetBasePath("");
 	}

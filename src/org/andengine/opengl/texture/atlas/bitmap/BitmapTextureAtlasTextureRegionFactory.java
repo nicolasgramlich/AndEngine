@@ -1,13 +1,17 @@
 package org.andengine.opengl.texture.atlas.bitmap;
 
 
+import java.io.IOException;
+
 import org.andengine.opengl.texture.atlas.bitmap.source.AssetBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.ResourceBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -49,6 +53,10 @@ public class BitmapTextureAtlasTextureRegionFactory {
 		} else {
 			throw new IllegalArgumentException("pAssetBasePath must end with '/' or be lenght zero.");
 		}
+	}
+
+	public static String getAssetBasePath() {
+		return BitmapTextureAtlasTextureRegionFactory.sAssetBasePath;
 	}
 
 	public static void reset() {
@@ -141,6 +149,34 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	public static TiledTextureRegion createTiledFromAsset(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final AssetManager pAssetManager, final String pAssetPath, final int pTileColumns, final int pTileRows) {
 		final IBitmapTextureAtlasSource bitmapTextureAtlasSource = AssetBitmapTextureAtlasSource.create(pAssetManager, BitmapTextureAtlasTextureRegionFactory.sAssetBasePath + pAssetPath);
 		return BitmapTextureAtlasTextureRegionFactory.createTiledFromSource(pBuildableBitmapTextureAtlas, bitmapTextureAtlasSource, pTileColumns, pTileRows);
+	}
+
+	/**
+	 * Loads all files from a given assets directory (in alphabetical order) as
+	 * consecutive tiles of ITiledTextureRegion which it returns
+	 *
+	 * @param pBuildableBitmapTextureAtlas
+	 * @param pAssetManager
+	 * @param pAssetsSubdirectory to load all files from "gfx/flowers" put "flowers" here (assuming, that you've used setAssetBasePath("gfx/") on this factory)
+	 * @return
+	 */
+	public static ITiledTextureRegion createTiledFromAssetDirectory(final BuildableBitmapTextureAtlas pBuildableBitmapTextureAtlas, final AssetManager pAssetManager, final String pAssetsSubdirectory) {
+		ITextureRegion textures[];
+		String[] files;
+
+		try {
+			files = pAssetManager.list(getAssetBasePath() + pAssetsSubdirectory);
+		} catch (IOException ioex) {
+			throw new AndEngineRuntimeException("Listing assets directory failed! " + getAssetBasePath() + pAssetsSubdirectory + " does not exist?", ioex);
+		}
+		textures = new ITextureRegion[files.length];
+
+		for (int i = 0; i < files.length; i++) {
+			String file = pAssetsSubdirectory + "/" + files[i];
+			textures[i] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(pBuildableBitmapTextureAtlas, pAssetManager, file);
+		}
+
+		return new TiledTextureRegion(pBuildableBitmapTextureAtlas, textures);
 	}
 
 

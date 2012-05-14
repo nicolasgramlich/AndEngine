@@ -352,7 +352,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			switch(pEvent.sensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
 					if(this.mAccelerationData != null) {
-						this.mOrientationData.setDisplayRotation(this.getDisplayOrientation());
+						this.mAccelerationData.setDisplayRotation(this.getDisplayOrientation());
 						this.mAccelerationData.setValues(pEvent.values);
 						this.mAccelerationListener.onAccelerationChanged(this.mAccelerationData);
 					} else if(this.mOrientationData != null) {

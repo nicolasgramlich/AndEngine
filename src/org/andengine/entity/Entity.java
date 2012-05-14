@@ -1058,7 +1058,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public float[] convertLocalToSceneCoordinates(final float[] pCoordinates) {
-		return this.convertSceneToLocalCoordinates(pCoordinates, Entity.VERTICES_LOCAL_TO_SCENE_TMP);
+		return this.convertLocalToSceneCoordinates(pCoordinates, Entity.VERTICES_LOCAL_TO_SCENE_TMP);
 	}
 
 	/* (non-Javadoc)

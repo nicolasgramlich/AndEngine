@@ -62,7 +62,7 @@ public class TextureRegionFactory {
 		return TiledTextureRegion.create(pTexture, pTextureX, pTextureY, pWidth, pHeight, pTileColumns, pTileRows);
 	}
 
-	public static <T extends ITextureAtlasSource> ITextureRegion createFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTextureX, final int pTextureY) {
+	public static <T extends ITextureAtlasSource> TextureRegion createFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTextureX, final int pTextureY) {
 		return TextureRegionFactory.createFromSource(pTextureAtlas, pTextureAtlasSource, pTextureX, pTextureY, false);
 	}
 

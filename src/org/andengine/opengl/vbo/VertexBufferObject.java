@@ -48,7 +48,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 
 	/**
-	 * @param pVertexBufferObjectManager
+	 * @param pVertexBufferObjectManager (optional, if you manage reloading on your own.)
 	 * @param pCapacity
 	 * @param pDrawType
 	 * @param pAutoDispose when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
@@ -141,7 +141,9 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		if(this.mHardwareBufferID == IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
 			this.loadToHardware(pGLState);
 
-			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
+			if(this.mVertexBufferObjectManager != null) {
+				this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
+			}
 		}
 
 		pGLState.bindArrayBuffer(this.mHardwareBufferID);
@@ -190,7 +192,9 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		if(!this.mDisposed) {
 			this.mDisposed = true;
 
-			this.mVertexBufferObjectManager.onUnloadVertexBufferObject(this);
+			if(this.mVertexBufferObjectManager != null) {
+				this.mVertexBufferObjectManager.onUnloadVertexBufferObject(this);
+			}
 
 			BufferUtils.freeDirectByteBuffer(this.mByteBuffer);
 		} else {

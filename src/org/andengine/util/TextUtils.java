@@ -40,6 +40,22 @@ public final class TextUtils {
 	// Methods
 	// ===========================================================
 
+	public static final CharSequence pad(final CharSequence pText, final char pPadChar, final int pLength) {
+		final int padCount = pLength - pText.length();
+		if(padCount <= 0) {
+			return pText;
+		} else {
+			final StringBuilder sb = new StringBuilder();
+			
+			sb.append(pText);
+			for(int i = padCount - 1; i >= 0; i--) {
+				sb.append(pPadChar);
+			}
+			
+			return sb.toString();
+		}
+	}
+
 	public static final CharSequence padFront(final CharSequence pText, final char pPadChar, final int pLength) {
 		final int padCount = pLength - pText.length();
 		if(padCount <= 0) {

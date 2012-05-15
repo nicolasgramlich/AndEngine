@@ -7,13 +7,15 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 
 import org.andengine.util.StreamUtils;
-import org.andengine.util.debug.Debug;
+import org.andengine.util.adt.DataConstants;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
+import android.os.Debug;
+import android.os.Debug.MemoryInfo;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -41,6 +43,8 @@ public class SystemUtils {
 	// Fields
 	// ===========================================================
 
+	private static MemoryInfo sMemoryInfo;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -48,6 +52,17 @@ public class SystemUtils {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public static MemoryInfo getMemoryInfo() {
+		/* Lazy allocation. */
+		if(SystemUtils.sMemoryInfo == null) {
+			SystemUtils.sMemoryInfo = new MemoryInfo();
+		}
+
+		Debug.getMemoryInfo(SystemUtils.sMemoryInfo);
+
+		return SystemUtils.sMemoryInfo;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -61,11 +76,11 @@ public class SystemUtils {
 		return SystemUtils.hasSystemFeature(pContext, "com.google.android.tv");
 	}
 
-	public static int getPackageVersionCode(final Context pContext) {
+	public static int getPackageVersionCode(final Context pContext) throws SystemUtilsException {
 		return SystemUtils.getPackageInfo(pContext).versionCode;
 	}
 
-	public static String getPackageVersionName(final Context pContext) {
+	public static String getPackageVersionName(final Context pContext) throws SystemUtilsException {
 		return SystemUtils.getPackageInfo(pContext).versionName;
 	}
 
@@ -73,17 +88,20 @@ public class SystemUtils {
 		return pContext.getPackageName();
 	}
 
-	public static String getApkFilePath(final Context pContext) throws NameNotFoundException {
+	public static String getApkFilePath(final Context pContext) throws SystemUtilsException {
 		final PackageManager packMgmr = pContext.getPackageManager();
-		return packMgmr.getApplicationInfo(SystemUtils.getPackageName(pContext), 0).sourceDir;
+		try {
+			return packMgmr.getApplicationInfo(SystemUtils.getPackageName(pContext), 0).sourceDir;
+		} catch (final NameNotFoundException e) {
+			throw new SystemUtilsException(e);
+		}
 	}
 
-	private static PackageInfo getPackageInfo(final Context pContext) {
+	private static PackageInfo getPackageInfo(final Context pContext) throws SystemUtilsException {
 		try {
 			return pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), 0);
 		} catch (final NameNotFoundException e) {
-			Debug.e(e);
-			return null;
+			throw new SystemUtilsException(e);
 		}
 	}
 
@@ -136,12 +154,12 @@ public class SystemUtils {
 	 * @return in kiloBytes.
 	 * @throws SystemUtilsException
 	 */
-	public static int getMemoryTotal() throws SystemUtilsException {
+	public static long getSystemMemorySize() throws SystemUtilsException {
 		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", SystemUtils.MEMTOTAL_PATTERN, 1000);
 
 		try {
 			if(matchResult.groupCount() > 0) {
-				return Integer.parseInt(matchResult.group(1));
+				return Long.parseLong(matchResult.group(1));
 			} else {
 				throw new SystemUtilsException();
 			}
@@ -154,12 +172,12 @@ public class SystemUtils {
 	 * @return in kiloBytes.
 	 * @throws SystemUtilsException
 	 */
-	public static int getMemoryFree() throws SystemUtilsException {
+	public static long getSystemMemoryFreeSize() throws SystemUtilsException {
 		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", SystemUtils.MEMFREE_PATTERN, 1000);
 
 		try {
 			if(matchResult.groupCount() > 0) {
-				return Integer.parseInt(matchResult.group(1));
+				return Long.parseLong(matchResult.group(1));
 			} else {
 				throw new SystemUtilsException();
 			}
@@ -172,40 +190,40 @@ public class SystemUtils {
 	 * @return in kiloHertz.
 	 * @throws SystemUtilsException
 	 */
-	public static int getCPUFrequencyCurrent() throws SystemUtilsException {
-		return SystemUtils.readSystemFileAsInt("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq");
+	public static long getCPUFrequencyCurrent() throws SystemUtilsException {
+		return SystemUtils.readSystemFileAsLong("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq");
 	}
 
 	/**
 	 * @return in kiloHertz.
 	 * @throws SystemUtilsException
 	 */
-	public static int getCPUFrequencyMin() throws SystemUtilsException {
-		return SystemUtils.readSystemFileAsInt("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq");
+	public static long getCPUFrequencyMin() throws SystemUtilsException {
+		return SystemUtils.readSystemFileAsLong("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq");
 	}
 
 	/**
 	 * @return in kiloHertz.
 	 * @throws SystemUtilsException
 	 */
-	public static int getCPUFrequencyMax() throws SystemUtilsException {
-		return SystemUtils.readSystemFileAsInt("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
+	public static long getCPUFrequencyMax() throws SystemUtilsException {
+		return SystemUtils.readSystemFileAsLong("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
 	}
 
 	/**
 	 * @return in kiloHertz.
 	 * @throws SystemUtilsException
 	 */
-	public static int getCPUFrequencyMinScaling() throws SystemUtilsException {
-		return SystemUtils.readSystemFileAsInt("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq");
+	public static long getCPUFrequencyMinScaling() throws SystemUtilsException {
+		return SystemUtils.readSystemFileAsLong("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq");
 	}
 
 	/**
 	 * @return in kiloHertz.
 	 * @throws SystemUtilsException
 	 */
-	public static int getCPUFrequencyMaxScaling() throws SystemUtilsException {
-		return SystemUtils.readSystemFileAsInt("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq");
+	public static long getCPUFrequencyMaxScaling() throws SystemUtilsException {
+		return SystemUtils.readSystemFileAsLong("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq");
 	}
 
 	private static MatchResult matchSystemFile(final String pSystemFile, final String pPattern, final int pHorizon) throws SystemUtilsException {
@@ -229,14 +247,14 @@ public class SystemUtils {
 		}
 	}
 
-	private static int readSystemFileAsInt(final String pSystemFile) throws SystemUtilsException {
+	private static long readSystemFileAsLong(final String pSystemFile) throws SystemUtilsException {
 		InputStream in = null;
 		try {
 			final Process process = new ProcessBuilder(new String[] { "/system/bin/cat", pSystemFile }).start();
 
 			in = process.getInputStream();
 			final String content = StreamUtils.readFully(in);
-			return Integer.parseInt(content);
+			return Long.parseLong(content);
 		} catch (final IOException e) {
 			throw new SystemUtilsException(e);
 		} catch (final NumberFormatException e) {
@@ -244,6 +262,66 @@ public class SystemUtils {
 		} finally {
 			StreamUtils.close(in);
 		}
+	}
+
+	public static long getNativeHeapSize() {
+		return Debug.getNativeHeapSize() / DataConstants.BYTES_PER_KILOBYTE;
+	}
+
+	public static long getNativeHeapFreeSize() {
+		return Debug.getNativeHeapFreeSize() / DataConstants.BYTES_PER_KILOBYTE;
+	}
+
+	public static long getNativeHeapAllocatedSize() {
+		return Debug.getNativeHeapAllocatedSize() / DataConstants.BYTES_PER_KILOBYTE;
+	}
+
+	public static long getDalvikHeapSize() {
+		return Runtime.getRuntime().totalMemory() / DataConstants.BYTES_PER_KILOBYTE;
+	}
+
+	public static long getDalvikHeapFreeSize() {
+		return Runtime.getRuntime().freeMemory() / DataConstants.BYTES_PER_KILOBYTE;
+	}
+
+	public static long getDalvikHeapAllocatedSize() {
+		return SystemUtils.getDalvikHeapSize() - SystemUtils.getDalvikHeapFreeSize();
+	}
+
+	public static long getNativeProportionalSetSize() {
+		return SystemUtils.getMemoryInfo().nativePss;
+	}
+
+	public static long getNativePrivateDirtyPages() {
+		return SystemUtils.getMemoryInfo().nativePrivateDirty;
+	}
+
+	public static long getNativeSharedDirtyPages() {
+		return SystemUtils.getMemoryInfo().nativeSharedDirty;
+	}
+
+	public static long getDalvikProportionalSetSize() {
+		return SystemUtils.getMemoryInfo().dalvikPss;
+	}
+
+	public static long getDalvikPrivateDirtyPages() {
+		return SystemUtils.getMemoryInfo().dalvikPrivateDirty;
+	}
+
+	public static long getDalvikSharedDirtyPages() {
+		return SystemUtils.getMemoryInfo().dalvikSharedDirty;
+	}
+
+	public static long getOtherProportionalSetSize() {
+		return SystemUtils.getMemoryInfo().otherPss;
+	}
+
+	public static long getOtherPrivateDirtyPages() {
+		return SystemUtils.getMemoryInfo().otherPrivateDirty;
+	}
+
+	public static long getOtherSharedDirtyPages() {
+		return SystemUtils.getMemoryInfo().otherSharedDirty;
 	}
 
 	// ===========================================================

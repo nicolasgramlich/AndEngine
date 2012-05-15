@@ -48,7 +48,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 
 	/**
-	 * @param pVertexBufferObjectManager (optional, if you manage reloading on your own.)
+	 * @param pVertexBufferObjectManager (Optional, if you manage reloading on your own.)
 	 * @param pCapacity
 	 * @param pDrawType
 	 * @param pAutoDispose when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!

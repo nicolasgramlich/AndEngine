@@ -37,6 +37,7 @@ public class TextureManager {
 
 	private final ArrayList<ITexture> mTexturesToBeLoaded = new ArrayList<ITexture>();
 	private final ArrayList<ITexture> mTexturesToBeUnloaded = new ArrayList<ITexture>();
+
 	private TextureWarmUpVertexBufferObject mTextureWarmUpVertexBufferObject;
 
 	// ===========================================================

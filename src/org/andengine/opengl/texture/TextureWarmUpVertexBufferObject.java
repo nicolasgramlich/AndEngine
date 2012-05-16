@@ -49,24 +49,24 @@ public class TextureWarmUpVertexBufferObject extends VertexBufferObject {
 	// ===========================================================
 
 	public TextureWarmUpVertexBufferObject() {
-		super(null, VERTEXBUFFEROBJECT_SIZE, DrawType.STATIC, true, TextureWarmUpVertexBufferObject.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT);
+		super(null, TextureWarmUpVertexBufferObject.VERTEXBUFFEROBJECT_SIZE, DrawType.STATIC, true, TextureWarmUpVertexBufferObject.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT);
 
 		this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 
-		this.mFloatBuffer.put(0 * VERTEX_SIZE +  VERTEX_INDEX_X, 0);
-		this.mFloatBuffer.put(0 * VERTEX_SIZE + VERTEX_INDEX_Y, 0);
-		this.mFloatBuffer.put(0 * VERTEX_SIZE + TEXTURECOORDINATES_INDEX_U, 0);
-		this.mFloatBuffer.put(0 * VERTEX_SIZE + TEXTURECOORDINATES_INDEX_V, 0);
+		this.mFloatBuffer.put((0 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.VERTEX_INDEX_X, 0);
+		this.mFloatBuffer.put((0 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.VERTEX_INDEX_Y, 0);
+		this.mFloatBuffer.put((0 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.TEXTURECOORDINATES_INDEX_U, 0);
+		this.mFloatBuffer.put((0 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.TEXTURECOORDINATES_INDEX_V, 0);
 
-		this.mFloatBuffer.put(1 * VERTEX_SIZE + VERTEX_INDEX_X, 1);
-		this.mFloatBuffer.put(1 * VERTEX_SIZE + VERTEX_INDEX_Y, 0);
-		this.mFloatBuffer.put(1 * VERTEX_SIZE + TEXTURECOORDINATES_INDEX_U, 1);
-		this.mFloatBuffer.put(1 * VERTEX_SIZE + TEXTURECOORDINATES_INDEX_V, 0);
+		this.mFloatBuffer.put((1 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.VERTEX_INDEX_X, 1);
+		this.mFloatBuffer.put((1 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.VERTEX_INDEX_Y, 0);
+		this.mFloatBuffer.put((1 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.TEXTURECOORDINATES_INDEX_U, 1);
+		this.mFloatBuffer.put((1 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.TEXTURECOORDINATES_INDEX_V, 0);
 
-		this.mFloatBuffer.put(2 * VERTEX_SIZE + VERTEX_INDEX_X, 0);
-		this.mFloatBuffer.put(2 * VERTEX_SIZE + VERTEX_INDEX_Y, 1);
-		this.mFloatBuffer.put(2 * VERTEX_SIZE + TEXTURECOORDINATES_INDEX_U, 0);
-		this.mFloatBuffer.put(2 * VERTEX_SIZE + TEXTURECOORDINATES_INDEX_V, 1);
+		this.mFloatBuffer.put((2 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.VERTEX_INDEX_X, 0);
+		this.mFloatBuffer.put((2 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.VERTEX_INDEX_Y, 1);
+		this.mFloatBuffer.put((2 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.TEXTURECOORDINATES_INDEX_U, 0);
+		this.mFloatBuffer.put((2 * TextureWarmUpVertexBufferObject.VERTEX_SIZE) + TextureWarmUpVertexBufferObject.TEXTURECOORDINATES_INDEX_V, 1);
 	}
 
 	// ===========================================================
@@ -102,8 +102,8 @@ public class TextureWarmUpVertexBufferObject extends VertexBufferObject {
 			pGLState.resetModelViewGLMatrixStack();
 			pGLState.translateModelViewGLMatrixf(1000000, 1000000, 0);
 			pGLState.scaleModelViewGLMatrixf(0.0001f, 0.0001f, 0);
-	
-			this.draw(GLES20.GL_TRIANGLES, VERTICES_PER_VERTEXBUFFEROBJECT_SIZE);
+
+			this.draw(GLES20.GL_TRIANGLES, TextureWarmUpVertexBufferObject.VERTICES_PER_VERTEXBUFFEROBJECT_SIZE);
 		}
 		pGLState.popModelViewGLMatrix();
 

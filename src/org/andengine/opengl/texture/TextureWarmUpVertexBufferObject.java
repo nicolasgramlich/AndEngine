@@ -99,7 +99,7 @@ public class TextureWarmUpVertexBufferObject extends VertexBufferObject {
 		pGLState.pushModelViewGLMatrix();
 		{
 			/* Far far away and really small. */
-			pGLState.resetModelViewGLMatrixStack();
+			pGLState.loadModelViewGLMatrixIdentity();
 			pGLState.translateModelViewGLMatrixf(1000000, 1000000, 0);
 			pGLState.scaleModelViewGLMatrixf(0.0001f, 0.0001f, 0);
 

@@ -58,6 +58,13 @@ public class SingleSceneSplitScreenEngine extends Engine {
 	// ===========================================================
 
 	@Override
+	protected void onUpdateScene(final float pSecondsElapsed) {
+		super.onUpdateScene(pSecondsElapsed);
+
+		this.getSecondCamera().onUpdate(pSecondsElapsed);
+	}
+
+	@Override
 	protected void onDrawScene(final GLState pGLState, final Camera pFirstCamera) {
 		if(super.mScene != null) {
 			final Camera secondCamera = this.getSecondCamera();
@@ -110,12 +117,6 @@ public class SingleSceneSplitScreenEngine extends Engine {
 			pSurfaceTouchEvent.offset(-surfaceWidthHalf, 0);
 			pCamera.convertSurfaceTouchEventToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		}
-	}
-
-	@Override
-	protected void onUpdateUpdateHandlers(final float pSecondsElapsed) {
-		super.onUpdateUpdateHandlers(pSecondsElapsed);
-		this.getSecondCamera().onUpdate(pSecondsElapsed);
 	}
 
 	@Override

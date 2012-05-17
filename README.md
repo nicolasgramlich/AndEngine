@@ -47,7 +47,7 @@ public final class BuildConfig {
  * [`AndEngineScriptingExtension`][URI_AndEngineScriptingExtension]
  * [`AndEngineScriptingExtensionGenerator`][URI_AndEngineScriptingExtensionGenerator]
  * [`AndEngineSVGTextureRegionExtension`][URI_AndEngineSVGTextureRegionExtension]
- * [`AndEngineTexturePackerExtension`][URI_AndEngineTexturePackerExtension]
+ * [`AndEngineTexturePackerExtension`][URI_AndEngineTexturePackerExtension] (Merged into the 'GLES2-AnchorCenter' branch.)
  * [`AndEngineTMXTiledMapExtension`][URI_AndEngineTMXTiledMapExtension] (Merged into the 'GLES1' branch.)
 
 

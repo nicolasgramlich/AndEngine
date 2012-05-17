@@ -276,6 +276,18 @@ public class PathModifier extends EntityModifier {
 			return this;
 		}
 
+		public Path to(final int pIndex) {
+			return this.to(this.getX(pIndex), this.getY(pIndex));
+		}
+
+		private float getX(final int pIndex) {
+			return this.mXs[pIndex];
+		}
+
+		private float getY(final int pIndex) {
+			return this.mYs[pIndex];
+		}
+
 		public float[] getCoordinatesX() {
 			return this.mXs;
 		}

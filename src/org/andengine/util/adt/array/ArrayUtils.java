@@ -401,21 +401,21 @@ public final class ArrayUtils {
 		return ArrayUtils.idealByteArraySize(pSize << 2) >> 2;
 	}
 
-	public static final void arraySumInternal(final int[] pValues) {
+	public static final void sumCummulative(final int[] pValues) {
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
 			pValues[i] = pValues[i-1] + pValues[i];
 		}
 	}
 
-	public static final void arraySumInternal(final long[] pValues) {
+	public static final void sumCummulative(final long[] pValues) {
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
 			pValues[i] = pValues[i-1] + pValues[i];
 		}
 	}
 
-	public static final void arraySumInternal(final long[] pValues, final long pFactor) {
+	public static final void sumCummulative(final long[] pValues, final long pFactor) {
 		pValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
@@ -423,7 +423,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static final void sum(final long[] pValues, final long[] pTargetValues, final long pFactor) {
+	public static final void sumCummulative(final long[] pValues, final long pFactor, final long[] pTargetValues) {
 		pTargetValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for(int i = 1; i < valueCount; i++) {
@@ -431,7 +431,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static final float arraySum(final float[] pValues) {
+	public static final float sum(final float[] pValues) {
 		float sum = 0;
 		final int valueCount = pValues.length;
 		for(int i = 0; i < valueCount; i++) {
@@ -440,8 +440,8 @@ public final class ArrayUtils {
 		return sum;
 	}
 
-	public static final float arrayAverage(final float[] pValues) {
-		return ArrayUtils.arraySum(pValues) / pValues.length;
+	public static final float average(final float[] pValues) {
+		return ArrayUtils.sum(pValues) / pValues.length;
 	}
 
 	public static void multiply(final int[] pArray, final float pFactor) {

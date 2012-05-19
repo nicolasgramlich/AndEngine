@@ -268,7 +268,7 @@ public class AnimationData implements IAnimationData {
 		}
 
 		final long[] frameEndsInNanoseconds = this.mFrameEndsInNanoseconds;
-		ArrayUtils.sum(this.mFrameDurations, frameEndsInNanoseconds, TimeConstants.NANOSECONDS_PER_MILLISECOND);
+		ArrayUtils.sumCummulative(this.mFrameDurations, TimeConstants.NANOSECONDS_PER_MILLISECOND, frameEndsInNanoseconds);
 
 		final long lastFrameEnd = frameEndsInNanoseconds[this.mFrameCount - 1];
 		this.mAnimationDuration = lastFrameEnd;

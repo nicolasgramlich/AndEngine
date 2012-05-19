@@ -2,7 +2,7 @@ package org.andengine.entity.sprite;
 
 import java.util.Arrays;
 
-import org.andengine.util.math.MathUtils;
+import org.andengine.util.adt.array.ArrayUtils;
 import org.andengine.util.modifier.IModifier.DeepCopyNotSupportedException;
 import org.andengine.util.time.TimeConstants;
 
@@ -101,6 +101,10 @@ public class AnimationData implements IAnimationData {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public void setLoopCount(final int pLoopCount) {
+		this.mLoopCount = pLoopCount;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -264,7 +268,7 @@ public class AnimationData implements IAnimationData {
 		}
 
 		final long[] frameEndsInNanoseconds = this.mFrameEndsInNanoseconds;
-		MathUtils.arraySumInto(this.mFrameDurations, frameEndsInNanoseconds, TimeConstants.NANOSECONDS_PER_MILLISECOND);
+		ArrayUtils.sum(this.mFrameDurations, frameEndsInNanoseconds, TimeConstants.NANOSECONDS_PER_MILLISECOND);
 
 		final long lastFrameEnd = frameEndsInNanoseconds[this.mFrameCount - 1];
 		this.mAnimationDuration = lastFrameEnd;
@@ -273,6 +277,17 @@ public class AnimationData implements IAnimationData {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	/**
+	 * Scales the duration of this {@link AnimationData} by a given <code>pFactor</code>.
+	 *
+	 * @param pScale
+	 */
+	public void scale(final float pScale) {
+		ArrayUtils.multiply(this.mFrameDurations, pScale);
+		ArrayUtils.multiply(this.mFrameEndsInNanoseconds, pScale);
+		this.mAnimationDuration *= pScale;
+	}
 
 	private static long[] fillFrameDurations(final long pFrameDurationEach, final int pFrameCount) {
 		final long[] frameDurations = new long[pFrameCount];

@@ -401,6 +401,61 @@ public final class ArrayUtils {
 		return ArrayUtils.idealByteArraySize(pSize << 2) >> 2;
 	}
 
+	public static final void arraySumInternal(final int[] pValues) {
+		final int valueCount = pValues.length;
+		for(int i = 1; i < valueCount; i++) {
+			pValues[i] = pValues[i-1] + pValues[i];
+		}
+	}
+
+	public static final void arraySumInternal(final long[] pValues) {
+		final int valueCount = pValues.length;
+		for(int i = 1; i < valueCount; i++) {
+			pValues[i] = pValues[i-1] + pValues[i];
+		}
+	}
+
+	public static final void arraySumInternal(final long[] pValues, final long pFactor) {
+		pValues[0] = pValues[0] * pFactor;
+		final int valueCount = pValues.length;
+		for(int i = 1; i < valueCount; i++) {
+			pValues[i] = pValues[i-1] + (pValues[i] * pFactor);
+		}
+	}
+
+	public static final void sum(final long[] pValues, final long[] pTargetValues, final long pFactor) {
+		pTargetValues[0] = pValues[0] * pFactor;
+		final int valueCount = pValues.length;
+		for(int i = 1; i < valueCount; i++) {
+			pTargetValues[i] = pTargetValues[i-1] + (pValues[i] * pFactor);
+		}
+	}
+
+	public static final float arraySum(final float[] pValues) {
+		float sum = 0;
+		final int valueCount = pValues.length;
+		for(int i = 0; i < valueCount; i++) {
+			sum += pValues[i];
+		}
+		return sum;
+	}
+
+	public static final float arrayAverage(final float[] pValues) {
+		return ArrayUtils.arraySum(pValues) / pValues.length;
+	}
+
+	public static void multiply(final int[] pArray, final float pFactor) {
+		for(int i = 0; i < pArray.length; i++) {
+			pArray[i] = Math.round(pArray[i] * pFactor);
+		}
+	}
+
+	public static void multiply(final long[] pArray, final double pFactor) {
+		for(int i = 0; i < pArray.length; i++) {
+			pArray[i] = Math.round(pArray[i] * pFactor);
+		}
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

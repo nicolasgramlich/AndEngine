@@ -455,6 +455,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public int getEntityModifierCount() {
+		return this.mMenuItem.getEntityModifierCount();
+	}
+
+	@Override
 	public void clearEntityModifiers() {
 		this.mMenuItem.clearEntityModifiers();
 	}
@@ -842,6 +847,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		return this.mMenuItem.unregisterUpdateHandler(pUpdateHandler);
+	}
+
+	@Override
+	public int getUpdateHandlerCount() {
+		return this.mMenuItem.getUpdateHandlerCount();
 	}
 
 	@Override

@@ -1009,6 +1009,14 @@ public class Entity implements IEntity {
 		}
 		return this.mUpdateHandlers.removeAll(pUpdateHandlerMatcher);
 	}
+	
+	@Override
+	public int getUpdateHandlerCount() {
+		if(this.mUpdateHandlers == null) {
+			return 0;
+		}
+		return this.mUpdateHandlers.size();
+	}
 
 	@Override
 	public void clearUpdateHandlers() {
@@ -1040,6 +1048,14 @@ public class Entity implements IEntity {
 			return false;
 		}
 		return this.mEntityModifiers.removeAll(pEntityModifierMatcher);
+	}
+	
+	@Override
+	public int getEntityModifierCount() {
+		if(this.mEntityModifiers == null) {
+			return 0;
+		}
+		return this.mEntityModifiers.size();
 	}
 
 	@Override

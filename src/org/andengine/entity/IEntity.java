@@ -295,11 +295,13 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler);
 	public boolean unregisterUpdateHandlers(final IUpdateHandlerMatcher pUpdateHandlerMatcher);
+	public int getUpdateHandlerCount();
 	public void clearUpdateHandlers();
 
 	public void registerEntityModifier(final IEntityModifier pEntityModifier);
 	public boolean unregisterEntityModifier(final IEntityModifier pEntityModifier);
 	public boolean unregisterEntityModifiers(final IEntityModifierMatcher pEntityModifierMatcher);
+	public int getEntityModifierCount();
 	public void clearEntityModifiers();
 
 	public boolean isCullingEnabled();

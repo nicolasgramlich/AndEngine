@@ -60,6 +60,7 @@ public class DeviceNotSupportedException extends AndEngineException {
 		// Elements
 		// ===========================================================
 
+		GLES2_UNSUPPORTED,
 		CODEPATH_INCOMPLETE,
 		EGLCONFIG_NOT_FOUND;
 

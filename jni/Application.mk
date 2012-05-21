@@ -1,3 +1,3 @@
-# Build both ARMv5TE and ARMv7-A and x86 machine code.
-APP_ABI := armeabi armeabi-v7a x86
-APP_STL := gnustl_shared
+# Build both ARMv5TE, ARMv7-A, x86 and MIPS machine code.
+APP_ABI := armeabi armeabi-v7a x86 mips
+# APP_STL := gnustl_shared

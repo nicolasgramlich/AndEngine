@@ -66,7 +66,7 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 
 	/**
-	 * Creates a {@link Camera Camera} instance in a specified rectangle within the {@link Scene Scene}.
+	 * Creates a {@link Camera Camera} instance in a specified rectangle within the {@link org.andengine.entity.scene.Scene Scene}.
 	 * @param pX X coordinate of the upper left corner
 	 * @param pY Y coordinate of the upper left corner
 	 * @param pWidth Width of the camera
@@ -81,50 +81,68 @@ public class Camera implements IUpdateHandler {
 	// ===========================================================
 
 	/**
-	 * @return the smallest x coordinate that the {@link Camera Camera} takes up within the {@link Scene Scene}
+	 * @return the smallest x coordinate that the {@link Camera Camera} takes up within the {@link org.andengine.entity.scene.Scene Scene}
 	 */
 	public float getXMin() {
 		return this.mXMin;
 	}
 
 	/**
-	 * Set the smallest x coordinate that the {@link Camera Camera} takes up within the {@link Scene Scene}. This may change the width of the {@link Camera Camera}.
+	 * Set the smallest x coordinate that the {@link Camera Camera} takes up within the {@link org.andengine.entity.scene.Scene Scene}. This may change the width of the {@link Camera Camera}.
 	 */
 	public void setXMin(final float pXMin) {
 		this.mXMin = pXMin;
 	}
 
 	/**
-	 * @return the largest x coordinate that the {@link Camera Camera} takes up within the {@link Scene Scene}
+	 * @return the largest x coordinate that the {@link Camera Camera} takes up within the {@link org.andengine.entity.scene.Scene Scene}
 	 */
 	public float getXMax() {
 		return this.mXMax;
 	}
 
 	/**
-	 * Set the largest x coordinate that the {@link Camera Camera} takes up within the {@link Scene Scene}. This may change the width of the {@link Camera Camera}.
+	 * Set the largest x coordinate that the {@link Camera Camera} takes up within the {@link org.andengine.entity.scene.Scene Scene}. This may change the width of the {@link Camera Camera}.
 	 */
 	public void setXMax(final float pXMax) {
 		this.mXMax = pXMax;
 	}
 
-	
+	/**
+	 * @return the smallest y coordinate that the {@link Camera Camera} takes up within the {@link org.andengine.entity.scene.Scene Scene}
+	 */
 	public float getYMin() {
 		return this.mYMin;
 	}
 
+	/**
+	 * Set the smallest y coordinate that the {@link Camera Camera} takes up within the {@link org.andengine.entity.scene.Scene Scene}. This may change the height of the {@link Camera Camera}.
+	 */
 	public void setYMin(final float pYMin) {
 		this.mYMin = pYMin;
 	}
 
+	/**
+	 * @return the largest y coordinate that the {@link Camera Camera} takes up within the {@link org.andengine.entity.scene.Scene Scene}
+	 */
 	public float getYMax() {
 		return this.mYMax;
 	}
 
+	/**
+	 * Set the largest y coordinate that the {@link Camera Camera} takes up within the {@link org.andengine.entity.scene.Scene Scene}. This may change the height of the {@link Camera Camera}.
+	 */
 	public void setYMax(final float pYMax) {
 		this.mYMax = pYMax;
 	}
 
+	/**
+	 * Sets this camera's upper left and lower right corner, relative to the {@link org.andengine.entity.scene.Scene Scene}
+	 * @param pXMin Upper left x coordinate
+	 * @param pYMin Upper left y coordinate
+	 * @param pXMax Lower right x coordinate
+	 * @param pYMax Lower right y coordinate
+	 */
 	public void set(final float pXMin, final float pYMin, final float pXMax, final float pYMax) {
 		this.mXMin = pXMin;
 		this.mXMax = pXMax;
@@ -153,30 +171,53 @@ public class Camera implements IUpdateHandler {
 		this.mZFar = pFarZClippingPlane;
 	}
 
+	/**
+	 * @return the width this {@link Camera Camera} takes up in the {@link org.andengine.entity.scene.Scene Scene}
+	 */
 	public float getWidth() {
 		return this.mXMax - this.mXMin;
 	}
 
+	/**
+	 * @return the height this {@link Camera Camera} takes up in the {@link org.andengine.entity.scene.Scene Scene}
+	 */
 	public float getHeight() {
 		return this.mYMax - this.mYMin;
 	}
 
+	/**
+	 * @return the width this {@link Camera Camera} takes up in the {@link org.andengine.entity.scene.Scene Scene}
+	 */
 	public float getWidthRaw() {
 		return this.mXMax - this.mXMin;
 	}
 
+	/**
+	 * @return the height this {@link Camera Camera} takes up in the {@link org.andengine.entity.scene.Scene Scene}
+	 */
 	public float getHeightRaw() {
 		return this.mYMax - this.mYMin;
 	}
 
+	/**
+	 * @return the middlepoint x coordinate of this {@link Camera Camera} relative to the {@link org.andengine.entity.scene.Scene Scene}
+	 */
 	public float getCenterX() {
 		return (this.mXMin + this.mXMax) * 0.5f;
 	}
 
+	/**
+	 * @return the middlepoint y coordinate of this {@link Camera Camera} relative to the {@link org.andengine.entity.scene.Scene Scene}
+	 */
 	public float getCenterY() {
 		return (this.mYMin + this.mYMax) * 0.5f;
 	}
 
+	/**
+	 * Relocates this {@link Camera Camera}'s middlepoint to the coordinates given, relative to the {@link org.andengine.entity.scene.Scene Scene}
+	 * @param pCenterX x value relative to the Scene
+	 * @param pCenterY y value relative to the Scene
+	 */
 	public void setCenter(final float pCenterX, final float pCenterY) {
 		final float dX = pCenterX - this.getCenterX();
 		final float dY = pCenterY - this.getCenterY();
@@ -187,14 +228,25 @@ public class Camera implements IUpdateHandler {
 		this.mYMax += dY;
 	}
 
+	/**
+	 * Moves this {@link Camera Camera} to the right and down with the specified amount
+	 * @param pX Amount to move to the right
+	 * @param pY Amount to move down
+	 */
 	public void offsetCenter(final float pX, final float pY) {
 		this.setCenter(this.getCenterX() + pX, this.getCenterY() + pY);
 	}
 
+	/**
+	 * @return the {@link org.andengine.engine.camera.hud.HUD HUD} that this {@link Camera Camera} shows
+	 */
 	public HUD getHUD() {
 		return this.mHUD;
 	}
 
+	/**
+	 * @param pHUD the {@link org.andengine.engine.camera.hud.org.andengine.engine.camera.hud.HUD HUD} that this {@link Camera Camera} should show
+	 */
 	public void setHUD(final HUD pHUD) {
 		this.mHUD = pHUD;
 		if(pHUD != null) {
@@ -202,22 +254,38 @@ public class Camera implements IUpdateHandler {
 		}
 	}
 
+	/**
+	 * @return Whether this {@link Camera Camera} shows a {@link org.andengine.engine.camera.hud.HUD HUD}
+	 */
 	public boolean hasHUD() {
 		return this.mHUD != null;
 	}
 
+	/**
+	 * Sets the middlepoint of this {@link Camera Camera} to follow that of given instantiation of {@link org.andengine.entity.IEntity IEntity}
+	 * @param pChaseEntity The entity that this {@link Camera Camera} should follow
+	 */
 	public void setChaseEntity(final IEntity pChaseEntity) {
 		this.mChaseEntity = pChaseEntity;
 	}
 
+	/**
+	 * @return Whether this camera is rotated relative to the {@link org.andengine.entity.scene.Scene Scene} 
+	 */
 	public boolean isRotated() {
 		return this.mRotation != 0;
 	}
 
+	/**
+	 * @return Degree of rotation relative to the {@link org.andengine.entity.scene.Scene Scene} 
+	 */
 	public float getRotation() {
 		return this.mRotation;
 	}
 
+	/**
+	 * @param pRotation Degree of rotation relative to the {@link org.andengine.entity.scene.Scene Scene} 
+	 */
 	public void setRotation(final float pRotation) {
 		this.mRotation = pRotation;
 	}
@@ -376,6 +444,10 @@ public class Camera implements IUpdateHandler {
 		return pSceneCoordinates;
 	}
 
+	/**
+	 * Responds to a {@link org.andengine.input.touch.TouchEvent TouchEvent} by adjusting the camera's coordinates and rotation
+	 * @param pCameraSceneTouchEvent The {@link org.andengine.input.touch.TouchEvent TouchEvent} to which to respond
+	 */
 	public void convertCameraSceneToSceneTouchEvent(final TouchEvent pCameraSceneTouchEvent) {
 		this.unapplyCameraSceneRotation(pCameraSceneTouchEvent);
 

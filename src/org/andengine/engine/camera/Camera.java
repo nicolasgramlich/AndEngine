@@ -17,6 +17,11 @@ import org.andengine.util.math.MathUtils;
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
+ * Defines the rectangle of the scene that is drawn to the screen, as
+ * not the whole scene is visible all the time. Usually there is one Camera per
+ * {@link org.andengine.entity.scene.Scene Scene}, but not for the split screen engines ({@link org.andengine.engine.splitscreen.DoubleSceneSplitScreenEngine DoubleSceneSplitScreenEngine} and {@link org.andengine.engine.splitscreen.SingleSceneSplitScreenEngine SingleSceneSplitScreenEngine}). There are subclasses that allow
+ * {@link org.andengine.engine.camera.ZoomCamera zooming} and {@link org.andengine.engine.camera.SmoothCamera smooth position changes} of the Camera.
+ * 
  * @author Nicolas Gramlich
  * @since 10:24:18 - 25.03.2010
  */
@@ -60,6 +65,13 @@ public class Camera implements IUpdateHandler {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Creates a {@link Camera Camera} instance in a specified rectangle within the {@link Scene Scene}.
+	 * @param pX X coordinate of the upper left corner
+	 * @param pY Y coordinate of the upper left corner
+	 * @param pWidth Width of the camera
+	 * @param pHeight Height of the camera
+	 */
 	public Camera(final float pX, final float pY, final float pWidth, final float pHeight) {
 		this.set(pX, pY, pX + pWidth, pY + pHeight);
 	}
@@ -68,22 +80,35 @@ public class Camera implements IUpdateHandler {
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * @return the smallest x coordinate that the {@link Camera Camera} takes up within the {@link Scene Scene}
+	 */
 	public float getXMin() {
 		return this.mXMin;
 	}
 
+	/**
+	 * Set the smallest x coordinate that the {@link Camera Camera} takes up within the {@link Scene Scene}. This may change the width of the {@link Camera Camera}.
+	 */
 	public void setXMin(final float pXMin) {
 		this.mXMin = pXMin;
 	}
 
+	/**
+	 * @return the largest x coordinate that the {@link Camera Camera} takes up within the {@link Scene Scene}
+	 */
 	public float getXMax() {
 		return this.mXMax;
 	}
 
+	/**
+	 * Set the largest x coordinate that the {@link Camera Camera} takes up within the {@link Scene Scene}. This may change the width of the {@link Camera Camera}.
+	 */
 	public void setXMax(final float pXMax) {
 		this.mXMax = pXMax;
 	}
 
+	
 	public float getYMin() {
 		return this.mYMin;
 	}

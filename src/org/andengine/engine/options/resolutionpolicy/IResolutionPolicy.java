@@ -1,9 +1,12 @@
 package org.andengine.engine.options.resolutionpolicy;
 
+import org.andengine.engine.options.EngineOptions;
 import org.andengine.opengl.view.RenderSurfaceView;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * An implementation of the IResolutionPolicy interface is part of the {@link EngineOptions}. It tells
+ * AndEngine how to deal with the different screen-sizes of different devices. <br>
+ * (c) 2010 Nicolas Gramlich <br>
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich

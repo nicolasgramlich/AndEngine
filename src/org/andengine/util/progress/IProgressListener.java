@@ -1,8 +1,11 @@
 package org.andengine.util.progress;
 
-
 /**
- * (c) 2010 Nicolas Gramlich 
+ * Listens to changes in progress, for example in a loading screen, and runs
+ * {@link #onProgressChanged(int)}. Progress is defined as an integer between 0
+ * and 100;
+ * 
+ * (c) 2010 Nicolas Gramlich <br>
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -21,7 +24,9 @@ public interface IProgressListener {
 	// ===========================================================
 
 	/**
-	 * @param pProgress between 0 and 100.
+	 * Should be when progress has been made, for example during a loading screen.
+	 * @param pProgress
+	 *            between 0 and 100.
 	 */
 	public void onProgressChanged(final int pProgress);
 }

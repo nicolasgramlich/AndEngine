@@ -62,7 +62,12 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 
 /**
- * The heart of AndEngine: this class holds all the options and functions that make a game work. (There is always exactly one {@link Engine} for one {@link BaseGameActivity}.) <br>
+ * The heart of AndEngine. This class holds all the options and functions that
+ * make a game work. The Engine makes the game proceed in small discrete steps
+ * of time. The Engine manages to synchronize a periodic drawing and updating of
+ * the {@link Scene}, which contains all the content that your game is currently
+ * handling actively. There usually is one Scene per Engine, except for the
+ * SplitScreenEngines. <br>
  * (c) 2010 Nicolas Gramlich <br>
  * (c) 2011 Zynga Inc.
  * 
@@ -194,6 +199,10 @@ public class Engine implements SensorEventListener, OnTouchListener,
 		return this.mRunning;
 	}
 
+	/**
+	 * Start calling the {@link #onUpdate(long)} method when the engine ticks:
+	 * starts the game.
+	 */
 	public synchronized void start() {
 		if (!this.mRunning) {
 			this.mLastTick = System.nanoTime();
@@ -201,6 +210,10 @@ public class Engine implements SensorEventListener, OnTouchListener,
 		}
 	}
 
+	/**
+	 * Stops calling the {@link #onUpdate(long)} method when the engine ticks:
+	 * freezes the game.
+	 */
 	public synchronized void stop() {
 		if (this.mRunning) {
 			this.mRunning = false;
@@ -222,18 +235,33 @@ public class Engine implements SensorEventListener, OnTouchListener,
 		return this.mEngineLock;
 	}
 
+	/**
+	 * @return The {@link Scene} that is associated with this Engine
+	 */
 	public Scene getScene() {
 		return this.mScene;
 	}
 
+	/**
+	 * @param pScene
+	 *            The {@link Scene} that is associated with this Engine
+	 */
 	public void setScene(final Scene pScene) {
 		this.mScene = pScene;
 	}
 
+	/**
+	 * 
+	 * @return the {@link EngineOptions} that are associated with this Engine
+	 */
 	public EngineOptions getEngineOptions() {
 		return this.mEngineOptions;
 	}
 
+	/**
+	 * 
+	 * @return the {@link Camera} that is associated with this Engine
+	 */
 	public Camera getCamera() {
 		return this.mCamera;
 	}

@@ -5,6 +5,8 @@ import java.util.Collections;
 
 import org.andengine.BuildConfig;
 import org.andengine.entity.Entity;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.util.color.ColorPool;
 import org.andengine.util.debug.Debug;
 
 /**
@@ -12,6 +14,8 @@ import org.andengine.util.debug.Debug;
  * have a lot of bullets in your game, you should use an object pool to reuse
  * the bullet objects once they are off screen so you don't have to instantiate
  * a whole new bullet object, which is expensive.<br>
+ * 
+ * <br>
  * (c) 2010 Nicolas Gramlich<br>
  * (c) 2011 Zynga Inc.<br>
  * 
@@ -19,6 +23,8 @@ import org.andengine.util.debug.Debug;
  * @author Nicolas Gramlich
  * 
  * @since 22:19:55 - 31.08.2010
+ * @see ColorPool
+ * @see Pool
  */
 public abstract class GenericPool<T> {
 	// ===========================================================
@@ -187,8 +193,11 @@ public abstract class GenericPool<T> {
 	}
 
 	/**
-	 * Obtains more than one item from the pool and adds them to the list of available items
-	 * @param pCount The number of items to be obtained
+	 * Obtains more than one item from the pool and adds them to the list of
+	 * available items
+	 * 
+	 * @param pCount
+	 *            The number of items to be obtained
 	 * @see #onHandleAllocatePoolItem()
 	 */
 	public synchronized void batchAllocatePoolItems(final int pCount) {
@@ -207,7 +216,9 @@ public abstract class GenericPool<T> {
 
 	/**
 	 * Called when you wish to obtain an item
-	 * @return A recycled or new item, depending on if there were any recycled items available from the list
+	 * 
+	 * @return A recycled or new item, depending on if there were any recycled
+	 *         items available from the list
 	 * @see #onHandleObtainItem(Object)
 	 */
 	public synchronized T obtainPoolItem() {
@@ -239,7 +250,9 @@ public abstract class GenericPool<T> {
 
 	/**
 	 * Called when you wish to recycle an item
-	 * @param pItem The item that is about to be recycled
+	 * 
+	 * @param pItem
+	 *            The item that is about to be recycled
 	 * @see #onHandleRecycleItem(Object)
 	 */
 	public synchronized void recyclePoolItem(final T pItem) {

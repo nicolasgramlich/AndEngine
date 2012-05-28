@@ -3,7 +3,8 @@ package org.andengine.opengl.font;
 import android.util.SparseIntArray;
 
 /**
- * (c) 2010 Nicolas Gramlich
+ * A visual manifestation of a character, used for a {@link Font}<br>
+ * (c) 2010 Nicolas Gramlich<br>
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich

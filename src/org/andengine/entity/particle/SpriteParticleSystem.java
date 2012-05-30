@@ -33,7 +33,14 @@ public class SpriteParticleSystem extends ParticleSystem<Sprite> {
 		super(pX, pY, new IEntityFactory<Sprite>() {
 			@Override
 			public Sprite create(final float pX, final float pY) {
-				return new Sprite(pX, pY, pTextureRegion, pVertexBufferObjectManager);
+				return new Sprite(pX, pY, pTextureRegion, pVertexBufferObjectManager)
+                                {
+                                   @Override
+				   public void setPosition(final float pX, final float pY)
+				   {
+					super.setPosition(pX-getWidthScaled()/2, pY-getHeightScaled()/2);
+				   }
+                                };
 			}
 		}, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
 	}

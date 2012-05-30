@@ -85,7 +85,7 @@
     <target name="doc" description="Generates HTML Javadoc in the 'doc' directory.">
         <delete dir="${doc.dir}" />
         <mkdir dir="${doc.dir}" />
-        <javadoc sourcepath="${source.dir}" destdir="${doc.dir}" />
+        <javadoc sourcepath="${source.dir}" destdir="${doc.dir}" linksource="true" />
     </target>
 
 </project>

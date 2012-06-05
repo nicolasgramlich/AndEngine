@@ -2,15 +2,27 @@ package org.andengine.entity.shape;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Line;
+import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.util.algorithm.collision.RectangularShapeCollisionChecker;
 
 /**
- * (c) 2010 Nicolas Gramlich
+ * A {@link Shape} in the form of a Rectangle. <br>
+ * Known classes extending this one:
+ * <ul>
+ * <li>{@link Rectangle}
+ * <li>{@link Sprite}
+ * <li>{@link Text}
+ * </ul>
+ * (c) 2010 Nicolas Gramlich<br>
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
  * @since 11:37:50 - 04.04.2010
+ * @see Line
+ * @see Mesh
+ * @see SpriteBatch
  */
 public abstract class RectangularShape extends Shape implements IAreaShape {
 	// ===========================================================
@@ -28,7 +40,8 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 	// Constructors
 	// ===========================================================
 
-	public RectangularShape(final float pX, final float pY, final float pWidth, final float pHeight, final ShaderProgram pShaderProgram) {
+	public RectangularShape(final float pX, final float pY, final float pWidth,
+			final float pHeight, final ShaderProgram pShaderProgram) {
 		super(pX, pY, pShaderProgram);
 
 		this.mWidth = pWidth;
@@ -107,19 +120,23 @@ public abstract class RectangularShape extends Shape implements IAreaShape {
 
 	@Override
 	public float[] getSceneCenterCoordinates() {
-		return this.convertLocalToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f);
+		return this.convertLocalToSceneCoordinates(this.mWidth * 0.5f,
+				this.mHeight * 0.5f);
 	}
 
 	public float[] getSceneCenterCoordinates(final float[] pReuse) {
-		return this.convertLocalToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f, pReuse);
+		return this.convertLocalToSceneCoordinates(this.mWidth * 0.5f,
+				this.mHeight * 0.5f, pReuse);
 	}
 
 	@Override
 	public boolean collidesWith(final IShape pOtherShape) {
-		if(pOtherShape instanceof RectangularShape) {
-			return RectangularShapeCollisionChecker.checkCollision(this, (RectangularShape) pOtherShape);
-		} else if(pOtherShape instanceof Line) {
-			return RectangularShapeCollisionChecker.checkCollision(this, (Line) pOtherShape);
+		if (pOtherShape instanceof RectangularShape) {
+			return RectangularShapeCollisionChecker.checkCollision(this,
+					(RectangularShape) pOtherShape);
+		} else if (pOtherShape instanceof Line) {
+			return RectangularShapeCollisionChecker.checkCollision(this,
+					(Line) pOtherShape);
 		} else {
 			return false;
 		}

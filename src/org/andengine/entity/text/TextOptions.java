@@ -3,8 +3,10 @@ package org.andengine.entity.text;
 import org.andengine.util.HorizontalAlign;
 
 /**
- * (c) Zynga 2012
- *
+ * Options for a {@link Text} that specify how the text should {@link AutoWrap},
+ * what the leading should be and the {@link HorizontalAlign}. <br>
+ * (c) Zynga 2012<br>
+ * 
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:37:02 - 29.03.2012
  */
@@ -17,10 +19,10 @@ public class TextOptions {
 	// Fields
 	// ===========================================================
 
-	/* package */ AutoWrap mAutoWrap;
-	/* package */ float mAutoWrapWidth;
-	/* package */ float mLeading;
-	/* package */ HorizontalAlign mHorizontalAlign;
+	/* package */AutoWrap mAutoWrap;
+	/* package */float mAutoWrapWidth;
+	/* package */float mLeading;
+	/* package */HorizontalAlign mHorizontalAlign;
 
 	// ===========================================================
 	// Constructors
@@ -35,14 +37,17 @@ public class TextOptions {
 	}
 
 	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth) {
-		this(pAutoWrap, pAutoWrapWidth, HorizontalAlign.LEFT, Text.LEADING_DEFAULT);
+		this(pAutoWrap, pAutoWrapWidth, HorizontalAlign.LEFT,
+				Text.LEADING_DEFAULT);
 	}
 
-	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final HorizontalAlign pHorizontalAlign) {
+	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth,
+			final HorizontalAlign pHorizontalAlign) {
 		this(pAutoWrap, pAutoWrapWidth, pHorizontalAlign, Text.LEADING_DEFAULT);
 	}
 
-	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final HorizontalAlign pHorizontalAlign, final float pLeading) {
+	public TextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth,
+			final HorizontalAlign pHorizontalAlign, final float pLeading) {
 		this.mAutoWrap = pAutoWrap;
 		this.mAutoWrapWidth = pAutoWrapWidth;
 		this.mHorizontalAlign = pHorizontalAlign;

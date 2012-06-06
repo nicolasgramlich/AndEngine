@@ -38,6 +38,7 @@ import org.andengine.opengl.shader.ShaderProgramManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.vbo.VertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.IGameInterface;
 import org.andengine.ui.activity.BaseGameActivity;
@@ -137,6 +138,12 @@ public class Engine implements SensorEventListener, OnTouchListener,
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Initializes a new Engine object with contents set according to the given
+	 * {@link EngineOptions}
+	 * 
+	 * @param pEngineOptions settings for Engine object
+	 */
 	public Engine(final EngineOptions pEngineOptions) {
 		/* Initialize Factory and Manager classes. */
 		BitmapTextureAtlasTextureRegionFactory.reset();
@@ -187,6 +194,11 @@ public class Engine implements SensorEventListener, OnTouchListener,
 		this.mUpdateThread.setEngine(this);
 	}
 
+	/**
+	 * Starts the {@link UpdateThread}
+	 * 
+	 * @throws IllegalThreadStateException
+	 */
 	public void startUpdateThread() throws IllegalThreadStateException {
 		this.mUpdateThread.start();
 	}
@@ -195,6 +207,11 @@ public class Engine implements SensorEventListener, OnTouchListener,
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * Returns whether the Engine is currently running
+	 * 
+	 * @return Engine is running
+	 */
 	public synchronized boolean isRunning() {
 		return this.mRunning;
 	}
@@ -266,62 +283,125 @@ public class Engine implements SensorEventListener, OnTouchListener,
 		return this.mCamera;
 	}
 
+	/**
+	 * 
+	 * @return the number of seconds that has elapsed since starting this Engine
+	 */
 	public float getSecondsElapsedTotal() {
 		return this.mSecondsElapsedTotal;
 	}
 
+	/**
+	 * Sets the surface dimensions of the Engine's {@link Camera}
+	 * @param pSurfaceWidth new width
+	 * @param pSurfaceHeight new height
+	 */
 	public void setSurfaceSize(final int pSurfaceWidth, final int pSurfaceHeight) {
 		this.mSurfaceWidth = pSurfaceWidth;
 		this.mSurfaceHeight = pSurfaceHeight;
 		this.onUpdateCameraSurface();
 	}
 
+	/**
+	 * Sets the surface size of the Engine's {@link Camera} to that of the
+	 * Engine
+	 */
 	protected void onUpdateCameraSurface() {
 		this.mCamera.setSurfaceSize(0, 0, this.mSurfaceWidth,
 				this.mSurfaceHeight);
 	}
 
+	/**
+	 * Gets the Engine's surface width
+	 * @return surface width
+	 */
 	public int getSurfaceWidth() {
 		return this.mSurfaceWidth;
 	}
 
+	/**
+	 * Gets the Engine's surface height
+	 * @return surface height
+	 */
 	public int getSurfaceHeight() {
 		return this.mSurfaceHeight;
 	}
 
+	/**
+	 * Retrieves the Engine's {@link ITouchController}
+	 * @return Engine's {@link ITouchController}
+	 */
 	public ITouchController getTouchController() {
 		return this.mTouchController;
 	}
 
+	/**
+	 * Sets the Engine's {@link ITouchController} to the given
+	 * {@link ITouchController}
+	 * @param pTouchController given {@link ITouchController}
+	 */
 	public void setTouchController(final ITouchController pTouchController) {
 		this.mTouchController = pTouchController;
 		this.mTouchController.setTouchEventCallback(this);
 	}
 
+	/**
+	 * Gets the current {@link AccelerationData}
+	 * @return Engine's {@link AccelerationData}
+	 */
 	public AccelerationData getAccelerationData() {
 		return this.mAccelerationData;
 	}
 
+	/**
+	 * Gets the current {@link OrientationData}
+	 * @return Engine's {@link OrientationData}
+	 */
 	public OrientationData getOrientationData() {
 		return this.mOrientationData;
 	}
 
+	/**
+	 * Gets the Engine's {@link VertexBufferObjectManager}
+	 * @return Engine's {@link VertexBufferObjectManager}
+	 */
 	public VertexBufferObjectManager getVertexBufferObjectManager() {
 		return this.mVertexBufferObjectManager;
 	}
 
+	/**
+	 * Gets the Engine's {@link TextureManager}
+	 * @return Engine's {@link TextureManager}
+	 */
 	public TextureManager getTextureManager() {
 		return this.mTextureManager;
 	}
 
+	/**
+	 * Gets the Engine's {@link FontManager}
+	 * @return Engine's {@link FontManager}
+	 */
 	public FontManager getFontManager() {
 		return this.mFontManager;
 	}
 
+	/**
+	 * Gets the Engine's {@link ShaderProgramManager}
+	 * @return Engine's {@link ShaderProgramManager}
+	 */
 	public ShaderProgramManager getShaderProgramManager() {
 		return this.mShaderProgramManager;
 	}
 
+	/**
+	 * Gets the Engine's {@link SoundManager}.  If a {@link SoundManager} has
+	 * not been set through the {@link EngineOptions} and thus does not exist,
+	 * getSoundManager() will throw an {@link IllegalStateException}.
+	 * 
+	 * @return Engine's {@link SoundManager}
+	 * @throws IllegalStateException Engine's {@link SoundManager} is 
+	 * 								 {@code null}
+	 */
 	public SoundManager getSoundManager() throws IllegalStateException {
 		if (this.mSoundManager != null) {
 			return this.mSoundManager;
@@ -331,6 +411,15 @@ public class Engine implements SensorEventListener, OnTouchListener,
 		}
 	}
 
+	/**
+	 * Gets the Engine's {@link MusicManager}.  If a {@link MusicManager} has
+	 * not been set through the {@link EngineOptions} and thus does not exist,
+	 * getMusicManager() will throw an {@link IllegalStateException}.
+	 * 
+	 * @return Engine's {@link MusicManager}
+	 * @throws IllegalStateException Engine's {@link MusicManager} is
+	 * 								 {@code null} 
+	 */
 	public MusicManager getMusicManager() throws IllegalStateException {
 		if (this.mMusicManager != null) {
 			return this.mMusicManager;
@@ -340,26 +429,57 @@ public class Engine implements SensorEventListener, OnTouchListener,
 		}
 	}
 
+	/**
+	 * Registers a given {@link IUpdateHandler} with the Engine.  This will not
+	 * affect any other registered {@link IUpdateHandler} objects.
+	 * 
+	 * @param pUpdateHandler new {@link IUpdateHandler}
+	 */
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		this.mUpdateHandlers.add(pUpdateHandler);
 	}
 
+	/**
+	 * Unregisters a given {@link IUpdateHandler}.  If the
+	 * {@link IUpdateHandler} does not exist within the Engine, this will do
+	 * nothing.
+	 * 
+	 * @param pUpdateHandler {@link IUpdateHandler} to remove
+	 */
 	public void unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		this.mUpdateHandlers.remove(pUpdateHandler);
 	}
 
+	/**
+	 * Removes all links to {@link IUpdateHandler} objects tracked in the Engine
+	 */
 	public void clearUpdateHandlers() {
 		this.mUpdateHandlers.clear();
 	}
 
+	/**
+	 * Registers a given {@link IDrawHandler} with the Engine.  This will not
+	 * affect any other registered {@link IDrawHandler} objects
+	 * 
+	 * @param pDrawHandler new {@link IDrawHandler}
+	 */
 	public void registerDrawHandler(final IDrawHandler pDrawHandler) {
 		this.mDrawHandlers.add(pDrawHandler);
 	}
 
+	/**
+	 * Unregisters a given {@link IDrawHandler}.  If the {@link IDrawHandler}
+	 * does not exist within the Engine, this will do nothing.
+	 * 
+	 * @param pDrawHandler {@link IDrawHandler} to remove
+	 */
 	public void unregisterDrawHandler(final IDrawHandler pDrawHandler) {
 		this.mDrawHandlers.remove(pDrawHandler);
 	}
 
+	/**
+	 * Removes all links to {@link IDrawHandler} objects tracked in the Engine
+	 */
 	public void clearDrawHandlers() {
 		this.mDrawHandlers.clear();
 	}

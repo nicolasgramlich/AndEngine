@@ -137,6 +137,19 @@ public class Scene extends Entity {
 		return this.mChildScene;
 	}
 
+	/**
+	 * Traverses top through the scene's children stack to find the top-most scene
+	 * @return top Scene on the children stack
+	 * @note this Scene's instance will be returned, if scene has no child scene
+	 */
+	public Scene getTopLevelScene() {
+		Scene child = this;
+		while (child.getChildScene() != null) {
+			child = child.getChildScene();
+		}
+		return child;
+	}
+
 	public void setChildSceneModal(final Scene pChildScene) {
 		this.setChildScene(pChildScene, true, true, true);
 	}

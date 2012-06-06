@@ -460,12 +460,21 @@ public class Scene extends Entity {
 		return this.mTouchAreas;
 	}
 
-	public void back() {
+	/**
+	 * Calls {@link Scene#clearChildScene()} on this {@link Scene} and it's parent, if a scene has one.
+	 * @return instance of a {@link Scene} which just became new top-level scene
+	 */
+	public Scene back() {
 		this.clearChildScene();
 
 		if(this.mParentScene != null) {
-			this.mParentScene.clearChildScene();
+			Scene parent = this.mParentScene;
+			parent.clearChildScene();
 			this.mParentScene = null;
+
+			return parent;
+		} else {
+			return this;
 		}
 	}
 

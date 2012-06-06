@@ -138,9 +138,17 @@ public class Scene extends Entity {
 	}
 
 	/**
+	 * Returns parent scene of this scene
+	 * @return parent of this scene; null if Scene does not have a parent
+	 */
+	public Scene getParentScene() {
+		return this.mParentScene;
+	}
+
+	/**
 	 * Traverses top through the scene's children stack to find the top-most scene
 	 * @return top Scene on the children stack
-	 * @note this Scene's instance will be returned, if scene has no child scene
+	 * @note this scene's instance will be returned, if scene has no child scene
 	 */
 	public Scene getTopLevelScene() {
 		Scene child = this;

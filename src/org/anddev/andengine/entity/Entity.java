@@ -238,7 +238,7 @@ public class Entity implements IEntity {
 
 	@Override
 	public void setRotation(final float pRotation) {
-		this.mRotation = pRotation;
+		this.mRotation = pRotation % 360;
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
 	}

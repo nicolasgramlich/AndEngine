@@ -23,6 +23,7 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	protected boolean mFinished;
 	private boolean mAutoUnregisterWhenFinished = true;
 	private final SmartList<IModifierListener<T>> mModifierListeners = new SmartList<IModifierListener<T>>(2);
+	private int mTag;
 
 	// ===========================================================
 	// Constructors
@@ -39,7 +40,15 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	@Override
+	public int getTag() {
+		return this.mTag;
+	}
 
+	@Override
+	public void setTag(final int pTag) {
+		this.mTag = pTag;
+	}
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

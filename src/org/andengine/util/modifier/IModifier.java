@@ -47,6 +47,8 @@ public interface IModifier<T> {
 
 	public float getSecondsElapsed();
 	public float getDuration();
+	public void setTag(final int pTag);
+	public int getTag();
 
 	public float onUpdate(final float pSecondsElapsed, final T pItem);
 

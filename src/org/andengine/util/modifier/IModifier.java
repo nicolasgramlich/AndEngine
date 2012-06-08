@@ -47,6 +47,8 @@ public interface IModifier<T> {
 
 	public float getSecondsElapsed();
 	public float getDuration();
+	public void setUserData(final Object pUserData);
+	public Object getUserData();
 
 	public float onUpdate(final float pSecondsElapsed, final T pItem);
 

@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 
 import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
+import org.andengine.util.adt.DataConstants;
 import org.andengine.util.system.SystemUtils;
 
 import android.opengl.GLES20;
@@ -102,10 +103,10 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 			this.mFloatBuffer.position(pOffset);
 			this.mFloatBuffer.put(this.mBufferData, pOffset, pLength);
 
-			GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, pOffset * 4, pLength * 4, this.mByteBuffer);
+			GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, pOffset * DataConstants.BYTES_PER_FLOAT, pLength * DataConstants.BYTES_PER_FLOAT, this.mByteBuffer);
 		} else {
 			BufferUtils.putSub(this.mByteBuffer, this.mBufferData, pLength, pOffset);
-			GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, pOffset * 4, pLength * 4, this.mByteBuffer);
+			GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, pOffset * DataConstants.BYTES_PER_FLOAT, pLength * DataConstants.BYTES_PER_FLOAT, this.mByteBuffer);
 		}
 	}
 	

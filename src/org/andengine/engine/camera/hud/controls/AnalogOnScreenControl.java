@@ -7,7 +7,6 @@ import org.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.math.MathUtils;
-import org.andengine.util.time.TimeConstants;
 
 import android.util.FloatMath;
 
@@ -18,7 +17,7 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 00:21:55 - 11.07.2010
  */
-public class AnalogOnScreenControl extends BaseOnScreenControl implements TimeConstants, IClickDetectorListener {
+public class AnalogOnScreenControl extends BaseOnScreenControl implements IClickDetectorListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================

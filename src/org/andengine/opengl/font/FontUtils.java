@@ -2,7 +2,7 @@ package org.andengine.opengl.font;
 
 import java.util.List;
 
-import org.andengine.entity.text.Text.TextOptions.AutoWrap;
+import org.andengine.entity.text.AutoWrap;
 import org.andengine.util.TextUtils;
 import org.andengine.util.exception.MethodNotYetImplementedException;
 
@@ -148,6 +148,8 @@ public class FontUtils {
 				return FontUtils.splitLinesByLetters(pFont, pText, pResult, pAutoWrapWidth);
 			case WORDS:
 				return FontUtils.splitLinesByWords(pFont, pText, pResult, pAutoWrapWidth);
+			case CJK:
+				return FontUtils.splitLinesByCJK(pFont, pText, pResult, pAutoWrapWidth);
 			case NONE:
 			default:
 				throw new IllegalArgumentException("Unexpected " + AutoWrap.class.getSimpleName() + ": '" + pAutoWrap + "'.");
@@ -330,6 +332,71 @@ public class FontUtils {
 				}
 			}
 		}
+		return pResult;
+	}
+	
+	private static <L extends List<CharSequence>> L splitLinesByCJK(final IFont pFont, final CharSequence pText, final L pResult, final float pAutoWrapWidth) {
+		final int textLength = pText.length();
+
+		int lineStart = 0;
+		int lineEnd = 0;
+
+		/* Skip whitespaces at the beginning of the string. */
+		while((lineStart < textLength) && (pText.charAt(lineStart) == ' ')) {
+			lineStart++;
+			lineEnd++;
+		}
+		
+		int i = lineEnd;
+		while(i < textLength) {
+			lineStart = lineEnd;
+
+			{ /* Look for a sub string */
+				boolean charsAvailable = true;
+				while(i < textLength) {
+					
+					{ /* Skip whitespaces at the end of the string */
+						int j = lineEnd;
+						while ( j < textLength ) {
+							if ( pText.charAt( j ) == ' ' ) {
+								j++;
+							}
+							else {
+								break;
+							}
+						}
+						if ( j == textLength ) {
+							if ( lineStart == lineEnd ) {
+								charsAvailable = false;
+							}
+							i = textLength;
+							break;
+						}
+					}
+					
+					lineEnd++;
+
+					final float lineWidth = FontUtils.measureText(pFont, pText, lineStart, lineEnd);
+
+					if(lineWidth > pAutoWrapWidth) {
+						if ( lineStart < lineEnd - 1 ) {
+							lineEnd--;
+						}
+						
+						pResult.add(pText.subSequence(lineStart, lineEnd));
+						charsAvailable = false;
+						i = lineEnd;
+						break;
+					}
+					i = lineEnd;
+				}
+
+				if(charsAvailable) {
+					pResult.add(pText.subSequence(lineStart, lineEnd));
+				}
+			}
+		}
+
 		return pResult;
 	}
 

@@ -1,6 +1,7 @@
 package org.andengine.engine;
 
 import org.andengine.engine.options.EngineOptions;
+import org.andengine.util.time.TimeConstants;
 
 
 /**
@@ -31,7 +32,7 @@ public class FixedStepEngine extends Engine {
 
 	public FixedStepEngine(final EngineOptions pEngineOptions, final int pStepsPerSecond) {
 		super(pEngineOptions);
-		this.mStepLength = NANOSECONDS_PER_SECOND / pStepsPerSecond;
+		this.mStepLength = TimeConstants.NANOSECONDS_PER_SECOND / pStepsPerSecond;
 	}
 
 	// ===========================================================

@@ -22,4 +22,5 @@ public interface IFloatList {
 	public float remove(final int pIndex) throws ArrayIndexOutOfBoundsException;
 	public int size();
 	public void clear();
+	public float[] toArray();
 }

@@ -41,7 +41,7 @@ public class PositionColorShaderProgram extends ShaderProgram {
 	// Fields
 	// ===========================================================
 
-	public static int sUniformModelViewPositionMatrixLocation = ShaderProgram.LOCATION_INVALID;
+	public static int sUniformModelViewPositionMatrixLocation = ShaderProgramConstants.LOCATION_INVALID;
 
 	// ===========================================================
 	// Constructors

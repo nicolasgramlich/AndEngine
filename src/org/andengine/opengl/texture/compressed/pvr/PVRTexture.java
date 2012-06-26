@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.andengine.BuildConfig;
+import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureManager;
@@ -103,6 +105,20 @@ public abstract class PVRTexture extends Texture {
 			throw new IllegalArgumentException("Invalid PVRTextureFormat: '" + this.mPVRTextureHeader.getPVRTextureFormat() + "'.");
 		}
 
+		if(this.hasMipMaps()) {
+			switch(pTextureOptions.mMinFilter){
+				case GLES20.GL_NEAREST_MIPMAP_NEAREST:
+				case GLES20.GL_NEAREST_MIPMAP_LINEAR:
+				case GLES20.GL_LINEAR_MIPMAP_NEAREST:
+				case GLES20.GL_LINEAR_MIPMAP_LINEAR:
+					break;
+				default:
+					if(BuildConfig.DEBUG) {
+						Debug.w("This '" + this.getClass().getSimpleName() + "' contains mipmaps, but the provided '" + pTextureOptions.getClass().getSimpleName() + "' don't have MipMaps enabled on the MinFilter!");
+					}
+			}
+		}
+
 		this.mUpdateOnHardwareNeeded = true;
 	}
 
@@ -118,6 +134,10 @@ public abstract class PVRTexture extends Texture {
 	@Override
 	public int getHeight() {
 		return this.mPVRTextureHeader.getHeight();
+	}
+
+	public boolean hasMipMaps() {
+		return this.mPVRTextureHeader.getNumMipmaps() > 0;
 	}
 
 	public PVRTextureHeader getPVRTextureHeader() {
@@ -145,11 +165,8 @@ public abstract class PVRTexture extends Texture {
 
 		final int bytesPerPixel = this.mPVRTextureHeader.getBitsPerPixel() / DataConstants.BITS_PER_BYTE;
 
-		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(width) && MathUtils.isPowerOfTwo(height) && this.mPVRTextureHeader.mPVRTextureFormat == PVRTextureFormat.RGBA_8888;
-		if(!useDefaultAlignment) {
-			/* Adjust unpack alignment. */
-			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
-		}
+		/* Adjust unpack alignment. */
+		GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 
 		int currentLevel = 0;
 		int currentPixelDataOffset = 0;
@@ -172,10 +189,8 @@ public abstract class PVRTexture extends Texture {
 			currentLevel++;
 		}
 
-		if(!useDefaultAlignment) {
-			/* Restore default unpack alignment. */
-			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
-		}
+		/* Restore default unpack alignment. */
+		GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 	}
 
 	// ===========================================================

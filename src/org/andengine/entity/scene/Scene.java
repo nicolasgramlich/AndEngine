@@ -4,7 +4,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.runnable.RunnableHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.scene.Scene.ITouchArea.ITouchAreaMatcher;
+import org.andengine.entity.scene.ITouchArea.ITouchAreaMatcher;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.background.IBackground;
 import org.andengine.entity.shape.IShape;
@@ -12,7 +12,6 @@ import org.andengine.entity.shape.Shape;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
-import org.andengine.util.IMatcher;
 import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.color.Color;
 
@@ -473,93 +472,4 @@ public class Scene extends Entity {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface ITouchArea {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public boolean contains(final float pX, final float pY);
-
-		public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
-		public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
-
-		/**
-		 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.
-		 * @param pSceneTouchEvent
-		 * @return <code>true</code> if the event was handled (that means {@link IOnAreaTouchListener} of the {@link Scene} will not be fired!), otherwise <code>false</code>.
-		 */
-		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY);
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-
-		public static interface ITouchAreaMatcher extends IMatcher<ITouchArea> {
-			// ===========================================================
-			// Constants
-			// ===========================================================
-
-			// ===========================================================
-			// Methods
-			// ===========================================================
-		}
-	}
-
-	/**
-	 * An interface for a callback to be invoked when a {@link TouchEvent} is
-	 * dispatched to an {@link ITouchArea} area. The callback will be invoked
-	 * before the {@link TouchEvent} is passed to the {@link ITouchArea}.
-	 */
-	public static interface IOnAreaTouchListener {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		/**
-		 * Called when a {@link TouchEvent} is dispatched to an {@link ITouchArea}. This allows
-		 * listeners to get a chance to respond before the target {@link ITouchArea#onAreaTouched(TouchEvent, float, float)} is called.
-		 * 
-		 * @param pTouchArea The {@link ITouchArea} that the {@link TouchEvent} has been dispatched to.
-		 * @param pSceneTouchEvent The {@link TouchEvent} object containing full information about the event.
-		 * @param pTouchAreaLocalX the x coordinate within the area touched.
-		 * @param pTouchAreaLocalY the y coordinate within the area touched.
-		 * 
-		 * @return <code>true</code> if this {@link IOnAreaTouchListener} has consumed the {@link TouchEvent}, <code>false</code> otherwise.
-		 */
-		public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final ITouchArea pTouchArea, final float pTouchAreaLocalX, final float pTouchAreaLocalY);
-	}
-
-	/**
-	 * An interface for a callback to be invoked when a {@link TouchEvent} is
-	 * dispatched to a {@link Scene}. The callback will be invoked
-	 * after all {@link ITouchArea}s have been checked and none consumed the {@link TouchEvent}.
-	 */
-	public static interface IOnSceneTouchListener {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		/**
-		 * Called when a {@link TouchEvent} is dispatched to a {@link Scene}.
-		 * 
-		 * @param pScene The {@link Scene} that the {@link TouchEvent} has been dispatched to.
-		 * @param pSceneTouchEvent The {@link TouchEvent} object containing full information about the event.
-		 * 
-		 * @return <code>true</code> if this {@link IOnSceneTouchListener} has consumed the {@link TouchEvent}, <code>false</code> otherwise.
-		 */
-		public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent);
-	}
 }

@@ -21,7 +21,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 19:56:34 - 05.08.2011
  */
-public class ShaderProgram implements ShaderProgramConstants {
+public class ShaderProgram {
 	// ===========================================================
 	// Constants
 	// ===========================================================

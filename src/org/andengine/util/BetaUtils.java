@@ -4,7 +4,6 @@ import java.util.GregorianCalendar;
 
 import org.andengine.util.preferences.SimplePreferences;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -21,7 +20,7 @@ import android.content.SharedPreferences;
  * @author Nicolas Gramlich
  * @since 22:43:32 - 02.11.2010
  */
-public class BetaUtils implements Constants {
+public class BetaUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================

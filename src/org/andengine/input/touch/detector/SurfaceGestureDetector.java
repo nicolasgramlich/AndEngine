@@ -2,6 +2,7 @@ package org.andengine.input.touch.detector;
 
 import org.andengine.input.touch.TouchEvent;
 
+import android.content.Context;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -31,12 +32,12 @@ public abstract class SurfaceGestureDetector extends BaseDetector {
 	// Constructors
 	// ===========================================================
 
-	public SurfaceGestureDetector() {
-		this(SurfaceGestureDetector.SWIPE_MIN_DISTANCE_DEFAULT);
+	public SurfaceGestureDetector(final Context pContext) {
+		this(pContext, SurfaceGestureDetector.SWIPE_MIN_DISTANCE_DEFAULT);
 	}
 
-	public SurfaceGestureDetector(final float pSwipeMinDistance) {
-		this.mGestureDetector = new GestureDetector(new InnerOnGestureDetectorListener(pSwipeMinDistance));
+	public SurfaceGestureDetector(final Context pContext, final float pSwipeMinDistance) {
+		this.mGestureDetector = new GestureDetector(pContext, new InnerOnGestureDetectorListener(pSwipeMinDistance));
 	}
 
 	// ===========================================================
@@ -129,66 +130,6 @@ public abstract class SurfaceGestureDetector extends BaseDetector {
 				}
 			}
 
-			return false;
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
-	public static class SurfaceGestureDetectorAdapter extends SurfaceGestureDetector {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		@Override
-		protected boolean onDoubleTap() {
-			return false;
-		}
-
-		@Override
-		protected boolean onSingleTap() {
-			return false;
-		}
-
-		@Override
-		protected boolean onSwipeDown() {
-			return false;
-		}
-
-		@Override
-		protected boolean onSwipeLeft() {
-			return false;
-		}
-
-		@Override
-		protected boolean onSwipeRight() {
-			return false;
-		}
-
-		@Override
-		protected boolean onSwipeUp() {
 			return false;
 		}
 

@@ -1,6 +1,8 @@
 package org.andengine.opengl.texture.atlas;
 
+import org.andengine.BuildConfig;
 import org.andengine.opengl.texture.ITexture;
+import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.util.debug.Debug;
 
@@ -78,7 +80,9 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 		public static class DebugTextureAtlasStateListener<T extends ITextureAtlasSource> implements ITextureAtlasStateListener<T> {
 			@Override
 			public void onLoadedToHardware(final ITexture pTexture) {
-				Debug.d("Texture loaded: " + pTexture.toString());
+				if(BuildConfig.DEBUG) {
+					Debug.d("Texture loaded: " + pTexture.toString());
+				}
 			}
 
 			@Override
@@ -93,7 +97,9 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 
 			@Override
 			public void onUnloadedFromHardware(final ITexture pTexture) {
-				Debug.d("Texture unloaded: " + pTexture.toString());
+				if(BuildConfig.DEBUG) {
+					Debug.d("Texture unloaded: " + pTexture.toString());
+				}
 			}
 		}
 	}

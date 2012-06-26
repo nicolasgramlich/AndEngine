@@ -1,15 +1,15 @@
 package org.andengine.entity.primitive;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.primitive.vbo.HighPerformanceMeshVertexBufferObject;
+import org.andengine.entity.primitive.vbo.IMeshVertexBufferObject;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.shape.Shape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
 import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
-import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
-import org.andengine.opengl.vbo.IVertexBufferObject;
-import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -158,128 +158,4 @@ public class Mesh extends Shape {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface IMeshVertexBufferObject extends IVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public float[] getBufferData();
-		public void onUpdateColor(final Mesh pMesh);
-		public void onUpdateVertices(final Mesh pMesh);
-	}
-
-	public static class HighPerformanceMeshVertexBufferObject extends HighPerformanceVertexBufferObject implements IMeshVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		private final int mVertexCount;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public HighPerformanceMeshVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final float[] pBufferData, final int pVertexCount, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pVertexBufferObjectManager, pBufferData, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
-
-			this.mVertexCount = pVertexCount;
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		@Override
-		public void onUpdateColor(final Mesh pMesh) {
-			final float[] bufferData = this.mBufferData;
-
-			final float packedColor = pMesh.getColor().getABGRPackedFloat();
-
-			for(int i = 0; i < this.mVertexCount; i++) {
-				bufferData[(i * Mesh.VERTEX_SIZE) + Mesh.COLOR_INDEX] = packedColor;
-			}
-
-			this.setDirtyOnHardware();
-		}
-
-		@Override
-		public void onUpdateVertices(final Mesh pMesh) {
-			/* Since the buffer data is managed from the caller, we just mark the buffer data as dirty. */
-
-			this.setDirtyOnHardware();
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
-	public static enum DrawMode {
-		// ===========================================================
-		// Elements
-		// ===========================================================
-
-		POINTS(GLES20.GL_POINTS),
-		LINE_STRIP(GLES20.GL_LINE_STRIP),
-		LINE_LOOP(GLES20.GL_LINE_LOOP),
-		LINES(GLES20.GL_LINES),
-		TRIANGLE_STRIP(GLES20.GL_TRIANGLE_STRIP),
-		TRIANGLE_FAN(GLES20.GL_TRIANGLE_FAN),
-		TRIANGLES(GLES20.GL_TRIANGLES);
-
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		public final int mDrawMode;
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		private DrawMode(final int pDrawMode) {
-			this.mDrawMode = pDrawMode;
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		public int getDrawMode() {
-			return this.mDrawMode;
-		}
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

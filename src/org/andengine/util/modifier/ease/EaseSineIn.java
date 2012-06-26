@@ -12,7 +12,7 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
  */
-public class EaseSineIn implements IEaseFunction, MathConstants {
+public class EaseSineIn implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -56,7 +56,7 @@ public class EaseSineIn implements IEaseFunction, MathConstants {
 	// ===========================================================
 
 	public static float getValue(final float pPercentage) {
-		return -FloatMath.cos(pPercentage * PI_HALF) + 1;
+		return -FloatMath.cos(pPercentage * MathConstants.PI_HALF) + 1;
 	}
 
 	// ===========================================================

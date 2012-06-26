@@ -44,6 +44,41 @@ public class SmartList<T> extends ArrayList<T> {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	public void addFirst(final T pItem) {
+		this.add(0, pItem);
+	}
+
+	public void addLast(final T pItem) {
+		this.add(this.size(), pItem);
+	}
+
+	public T getFirst() throws IndexOutOfBoundsException {
+		return this.get(0);
+	}
+
+	public T getLast() throws IndexOutOfBoundsException {
+		return this.get(this.size() - 1);
+	}
+
+	public T get(final IMatcher<T> pMatcher) {
+		final int size = this.size();
+		for(int i = 0; i < size; i++) {
+			final T item = this.get(i);
+			if(pMatcher.matches(item)) {
+				return item;
+			}
+		}
+		return null;
+	}
+
+	public T removeFirst() throws IndexOutOfBoundsException {
+		return this.remove(0);
+	}
+
+	public T removeLast() throws IndexOutOfBoundsException {
+		return this.remove(this.size() - 1);
+	}
+
 	/**
 	 * @param pItem the item to remove.
 	 * @param pParameterCallable to be called with the removed item, if it was removed.

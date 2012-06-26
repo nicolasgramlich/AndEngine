@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.andengine.BuildConfig;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundFactory;
@@ -28,7 +29,7 @@ import org.andengine.input.sensor.orientation.OrientationData;
 import org.andengine.input.sensor.orientation.OrientationSensorOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.controller.ITouchController;
-import org.andengine.input.touch.controller.ITouchController.ITouchEventCallback;
+import org.andengine.input.touch.controller.ITouchEventCallback;
 import org.andengine.input.touch.controller.MultiTouchController;
 import org.andengine.input.touch.controller.SingleTouchController;
 import org.andengine.opengl.font.FontFactory;
@@ -65,7 +66,7 @@ import android.view.WindowManager;
  * @author Nicolas Gramlich
  * @since 12:21:31 - 08.03.2010
  */
-public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback, TimeConstants, LocationListener {
+public class Engine implements SensorEventListener, OnTouchListener, ITouchEventCallback, LocationListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -171,6 +172,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			this.mUpdateThread = new UpdateThread();
 		}
 		this.mUpdateThread.setEngine(this);
+	}
+
+	public void startUpdateThread() throws IllegalThreadStateException {
 		this.mUpdateThread.start();
 	}
 
@@ -816,7 +820,9 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 					this.mEngine.onTickUpdate();
 				}
 			} catch (final InterruptedException e) {
-				Debug.d(this.getClass().getSimpleName() + " interrupted. Don't worry - this " + e.getClass().getSimpleName() + " is most likely expected!", e);
+				if(BuildConfig.DEBUG) {
+					Debug.d(this.getClass().getSimpleName() + " interrupted. Don't worry - this " + e.getClass().getSimpleName() + " is most likely expected!", e);
+				}
 				this.interrupt();
 			}
 		}

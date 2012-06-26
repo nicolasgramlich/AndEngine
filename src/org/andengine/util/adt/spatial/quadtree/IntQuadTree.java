@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.andengine.util.IMatcher;
 import org.andengine.util.adt.bounds.BoundsSplit;
+import org.andengine.util.adt.bounds.BoundsSplit.BoundsSplitException;
 import org.andengine.util.adt.bounds.IIntBounds;
 import org.andengine.util.adt.bounds.IntBounds;
-import org.andengine.util.adt.bounds.BoundsSplit.BoundsSplitException;
 import org.andengine.util.adt.spatial.ISpatialItem;
 import org.andengine.util.adt.spatial.bounds.util.IntBoundsUtils;
 
@@ -37,8 +37,16 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		super(pIntBounds);
 	}
 
+	public IntQuadTree(final int pXMin, final int pYMin, final int pXMax, final int pYMax) {
+		super(new IntBounds(pXMin, pYMin, pXMax, pYMax));
+	}
+
 	public IntQuadTree(final IIntBounds pIntBounds, final int pMaxLevel) {
 		super(pIntBounds, pMaxLevel);
+	}
+
+	public IntQuadTree(final int pXMin, final int pYMin, final int pXMax, final int pYMax, final int pMaxLevel) {
+		super(new IntBounds(pXMin, pYMin, pXMax, pYMax), pMaxLevel);
 	}
 
 	@Override

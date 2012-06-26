@@ -4,7 +4,7 @@ import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.util.color.Color;
 
 import android.content.res.AssetManager;
@@ -48,6 +48,10 @@ public class FontFactory {
 		} else {
 			throw new IllegalStateException("pAssetBasePath must end with '/' or be lenght zero.");
 		}
+	}
+
+	public static String getAssetBasePath() {
+		return FontFactory.sAssetBasePath;
 	}
 
 	public static void onCreate() {

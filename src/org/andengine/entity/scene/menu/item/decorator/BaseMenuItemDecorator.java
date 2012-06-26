@@ -1,12 +1,14 @@
 package org.andengine.entity.scene.menu.item.decorator;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.IEntityComparator;
+import org.andengine.entity.IEntityMatcher;
+import org.andengine.entity.IEntityParameterCallable;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -97,6 +99,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public void setX(final float pX) {
+		this.mMenuItem.setX(pX);
+	}
+
+	@Override
+	public void setY(final float pY) {
+		this.mMenuItem.setY(pY);
+	}
+
+	@Override
 	public void setPosition(final IEntity pOtherEntity) {
 		this.mMenuItem.setPosition(pOtherEntity);
 	}
@@ -112,11 +124,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 	
 	@Override
-	public float getBaseWidth() {
-		return 0;
-	}
-
-	@Override
 	public float getWidthScaled() {
 		return this.mMenuItem.getWidthScaled();
 	}
@@ -126,11 +133,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 		return this.mMenuItem.getHeight();
 	}
 	
-	@Override
-	public float getBaseHeight() {
-		return this.mMenuItem.getBaseHeight();
-	}
-
 	@Override
 	public float getHeightScaled() {
 		return this.mMenuItem.getHeightScaled();
@@ -152,16 +154,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public float getInitialX() {
-		return this.mMenuItem.getInitialX();
-	}
-
-	@Override
-	public float getInitialY() {
-		return this.mMenuItem.getInitialY();
-	}
-
-	@Override
 	public float getRed() {
 		return this.mMenuItem.getRed();
 	}
@@ -179,6 +171,21 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public float getAlpha() {
 		return this.mMenuItem.getAlpha();
+	}
+
+	@Override
+	public void setRed(final float pRed) {
+		this.mMenuItem.setRed(pRed);
+	}
+
+	@Override
+	public void setGreen(final float pGreen) {
+		this.mMenuItem.setGreen(pGreen);
+	}
+
+	@Override
+	public void setBlue(final float pBlue) {
+		this.mMenuItem.setBlue(pBlue);
 	}
 
 	@Override
@@ -382,6 +389,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public float[] getSceneCenterCoordinates(final float[] pReuse) {
+		return this.mMenuItem.getSceneCenterCoordinates(pReuse);
+	}
+
+	@Override
 	public boolean isCullingEnabled() {
 		return this.mMenuItem.isCullingEnabled();
 	}
@@ -402,13 +414,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void clearEntityModifiers() {
-		this.mMenuItem.clearEntityModifiers();
+	public int getEntityModifierCount() {
+		return this.mMenuItem.getEntityModifierCount();
 	}
 
 	@Override
-	public void setInitialPosition() {
-		this.mMenuItem.setInitialPosition();
+	public void clearEntityModifiers() {
+		this.mMenuItem.clearEntityModifiers();
 	}
 
 	@Override
@@ -422,23 +434,43 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public int getSourceBlendFunction() {
-		return this.mMenuItem.getSourceBlendFunction();
+	public int getBlendFunctionSource() {
+		return this.mMenuItem.getBlendFunctionSource();
 	}
 
 	@Override
-	public int getDestinationBlendFunction() {
-		return this.mMenuItem.getDestinationBlendFunction();
+	public void setBlendFunctionSource(final int pBlendFunctionSource) {
+		this.mMenuItem.setBlendFunctionSource(pBlendFunctionSource);
 	}
 
 	@Override
-	public void setBlendFunction(final int pSourceBlendFunction, final int pDestinationBlendFunction) {
-		this.mMenuItem.setBlendFunction(pSourceBlendFunction, pDestinationBlendFunction);
+	public int getBlendFunctionDestination() {
+		return this.mMenuItem.getBlendFunctionDestination();
+	}
+
+	@Override
+	public void setBlendFunctionDestination(final int pBlendFunctionDestination) {
+		this.mMenuItem.setBlendFunctionDestination(pBlendFunctionDestination);
+	}
+
+	@Override
+	public void setBlendFunction(final int pBlendFunctionSource, final int pBlendFunctionDestination) {
+		this.mMenuItem.setBlendFunction(pBlendFunctionSource, pBlendFunctionDestination);
 	}
 
 	@Override
 	public void setCullingEnabled(final boolean pCullingEnabled) {
 		this.mMenuItem.setCullingEnabled(pCullingEnabled);
+	}
+
+	@Override
+	public int getTag() {
+		return this.mMenuItem.getTag();
+	}
+
+	@Override
+	public void setTag(final int pTag) {
+		this.mMenuItem.setTag(pTag);
 	}
 
 	@Override
@@ -548,11 +580,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public boolean attachChild(final IEntity pEntity, final int pIndex) {
-		return this.mMenuItem.attachChild(pEntity, pIndex);
-	}
-
-	@Override
 	public IEntity getFirstChild() {
 		return this.mMenuItem.getFirstChild();
 	}
@@ -563,23 +590,18 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public IEntity getChild(final int pIndex) {
-		return this.mMenuItem.getChild(pIndex);
+	public IEntity getChildByTag(final int pTag) {
+		return this.mMenuItem.getChildByTag(pTag);
 	}
 
 	@Override
-	public IEntity getChild(IEntityMatcher pEntityMatcher) {
-		return this.mMenuItem.getChild(pEntityMatcher);
+	public IEntity getChildByIndex(final int pIndex) {
+		return this.mMenuItem.getChildByIndex(pIndex);
 	}
 
 	@Override
-	public int getChildIndex(final IEntity pEntity) {
-		return this.mMenuItem.getChildIndex(pEntity);
-	}
-
-	@Override
-	public boolean setChildIndex(final IEntity pEntity, final int pIndex) {
-		return this.mMenuItem.setChildIndex(pEntity, pIndex);
+	public IEntity getChildByMatcher(IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.getChildByMatcher(pEntityMatcher);
 	}
 
 	@Override
@@ -587,8 +609,19 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 		return this.mMenuItem.query(pEntityMatcher);
 	}
 
+	@Override
+	public IEntity queryFirst(final IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.queryFirst(pEntityMatcher);
+	}
+
+	@Override
 	public <L extends List<IEntity>> L query(final IEntityMatcher pEntityMatcher, final L pResult) {
 		return this.mMenuItem.query(pEntityMatcher, pResult);
+	}
+
+	@Override
+	public <S extends IEntity> S queryFirstForSubclass(final IEntityMatcher pEntityMatcher) {
+		return this.mMenuItem.queryFirstForSubclass(pEntityMatcher);
 	}
 
 	@Override
@@ -598,16 +631,6 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 
 	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException {
 		return this.mMenuItem.queryForSubclass(pEntityMatcher, pResult);
-	}
-
-	@Override
-	public boolean swapChildren(final IEntity pEntityA, final IEntity pEntityB) {
-		return this.mMenuItem.swapChildren(pEntityA, pEntityB);
-	}
-
-	@Override
-	public boolean swapChildren(final int pIndexA, final int pIndexB) {
-		return this.mMenuItem.swapChildren(pIndexA, pIndexB);
 	}
 
 	@Override
@@ -621,7 +644,7 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public void sortChildren(final Comparator<IEntity> pEntityComparator) {
+	public void sortChildren(final IEntityComparator pEntityComparator) {
 		this.mMenuItem.sortChildren(pEntityComparator);
 	}
 
@@ -633,6 +656,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public boolean detachChild(final IEntity pEntity) {
 		return this.mMenuItem.detachChild(pEntity);
+	}
+
+	@Override
+	public IEntity detachChild(final int pTag) {
+		return this.mMenuItem.detachChild(pTag);
 	}
 
 	@Override
@@ -768,6 +796,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	@Override
 	public boolean unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		return this.mMenuItem.unregisterUpdateHandler(pUpdateHandler);
+	}
+
+	@Override
+	public int getUpdateHandlerCount() {
+		return this.mMenuItem.getUpdateHandlerCount();
 	}
 
 	@Override

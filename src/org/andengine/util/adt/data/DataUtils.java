@@ -1,6 +1,5 @@
 package org.andengine.util.adt.data;
 
-import org.andengine.util.adt.DataConstants;
 
 
 /**
@@ -10,7 +9,7 @@ import org.andengine.util.adt.DataConstants;
  * @author Nicolas Gramlich
  * @since 15:01:49 - 20.03.2011
  */
-public final class DataUtils implements DataConstants {
+public final class DataUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================

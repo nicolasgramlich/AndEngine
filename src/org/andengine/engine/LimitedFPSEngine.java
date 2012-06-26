@@ -1,6 +1,7 @@
 package org.andengine.engine;
 
 import org.andengine.engine.options.EngineOptions;
+import org.andengine.util.time.TimeConstants;
 
 /**
  * A subclass of {@link Engine} that tries to achieve a specific amount of
@@ -30,7 +31,7 @@ public class LimitedFPSEngine extends Engine {
 
 	public LimitedFPSEngine(final EngineOptions pEngineOptions, final int pFramesPerSecond) {
 		super(pEngineOptions);
-		this.mPreferredFrameLengthNanoseconds = NANOSECONDS_PER_SECOND / pFramesPerSecond;
+		this.mPreferredFrameLengthNanoseconds = TimeConstants.NANOSECONDS_PER_SECOND / pFramesPerSecond;
 	}
 
 	// ===========================================================
@@ -49,7 +50,7 @@ public class LimitedFPSEngine extends Engine {
 		if(deltaFrameLengthNanoseconds <= 0) {
 			super.onUpdate(pNanosecondsElapsed);
 		} else {
-			final int sleepTimeMilliseconds = (int) (deltaFrameLengthNanoseconds / NANOSECONDS_PER_MILLISECOND);
+			final int sleepTimeMilliseconds = (int) (deltaFrameLengthNanoseconds / TimeConstants.NANOSECONDS_PER_MILLISECOND);
 
 			Thread.sleep(sleepTimeMilliseconds);
 			super.onUpdate(pNanosecondsElapsed + deltaFrameLengthNanoseconds);

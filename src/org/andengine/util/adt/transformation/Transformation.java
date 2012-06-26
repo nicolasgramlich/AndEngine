@@ -71,11 +71,11 @@ public class Transformation {
 	// Methods
 	// ===========================================================
 
-	public void reset() {
+	public final void reset() {
 		this.setToIdentity();
 	}
 
-	public void setToIdentity() {
+	public final void setToIdentity() {
 		this.a = 1.0f;
 		this.d = 1.0f;
 
@@ -85,7 +85,7 @@ public class Transformation {
 		this.ty = 0.0f;
 	}
 
-	public void setTo(final Transformation pTransformation) {
+	public final void setTo(final Transformation pTransformation) {
 		this.a = pTransformation.a;
 		this.d = pTransformation.d;
 
@@ -95,17 +95,17 @@ public class Transformation {
 		this.ty = pTransformation.ty;
 	}
 
-	public void preTranslate(final float pX, final float pY) {
+	public final void preTranslate(final float pX, final float pY) {
 		this.tx += pX * this.a + pY * this.c;
 		this.ty += pX * this.b + pY * this.d;
 	}
 
-	public void postTranslate(final float pX, final float pY) {
+	public final void postTranslate(final float pX, final float pY) {
 		this.tx += pX;
 		this.ty += pY;
 	}
 
-	public Transformation setToTranslate(final float pX, final float pY) {
+	public final Transformation setToTranslate(final float pX, final float pY) {
 		this.a = 1.0f;
 		this.b = 0.0f;
 		this.c = 0.0f;
@@ -116,7 +116,7 @@ public class Transformation {
 		return this;
 	}
 
-	public void preRotate(final float pAngle) {
+	public final void preRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
 		final float sin = FloatMath.sin(angleRad);
@@ -133,7 +133,7 @@ public class Transformation {
 		this.d = cos * d - sin * b;
 	}
 
-	public void postRotate(final float pAngle) {
+	public final void postRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
 		final float sin = FloatMath.sin(angleRad);
@@ -154,7 +154,7 @@ public class Transformation {
 		this.ty = tx * sin + ty * cos;
 	}
 
-	public Transformation setToRotate(final float pAngle) {
+	public final Transformation setToRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
 		final float sin = FloatMath.sin(angleRad);
@@ -170,14 +170,14 @@ public class Transformation {
 		return this;
 	}
 
-	public void preScale(final float pScaleX, final float pScaleY) {
+	public final void preScale(final float pScaleX, final float pScaleY) {
 		this.a *= pScaleX;
 		this.b *= pScaleX;
 		this.c *= pScaleY;
 		this.d *= pScaleY;
 	}
 
-	public void postScale(final float pScaleX, final float pScaleY) {
+	public final void postScale(final float pScaleX, final float pScaleY) {
 		this.a = this.a * pScaleX;
 		this.b = this.b * pScaleY;
 		this.c = this.c * pScaleX;
@@ -186,7 +186,7 @@ public class Transformation {
 		this.ty = this.ty * pScaleY;
 	}
 
-	public Transformation setToScale(final float pScaleX, final float pScaleY) {
+	public final Transformation setToScale(final float pScaleX, final float pScaleY) {
 		this.a = pScaleX;
 		this.b = 0.0f;
 		this.c = 0.0f;
@@ -197,7 +197,7 @@ public class Transformation {
 		return this;
 	}
 
-	public void preSkew(final float pSkewX, final float pSkewY) {
+	public final void preSkew(final float pSkewX, final float pSkewY) {
 		final float tanX = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
 		final float tanY = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
 
@@ -216,7 +216,7 @@ public class Transformation {
 		this.ty = ty;
 	}
 
-	public void postSkew(final float pSkewX, final float pSkewY) {
+	public final void postSkew(final float pSkewX, final float pSkewY) {
 		final float tanX = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
 		final float tanY = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
 
@@ -235,7 +235,7 @@ public class Transformation {
 		this.ty = tx * tanY + ty;
 	}
 
-	public Transformation setToSkew(final float pSkewX, final float pSkewY) {
+	public final Transformation setToSkew(final float pSkewX, final float pSkewY) {
 		this.a = 1.0f;
 		this.b = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
 		this.c = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
@@ -246,7 +246,7 @@ public class Transformation {
 		return this;
 	}
 
-	public void postConcat(final Transformation pTransformation) {
+	public final void postConcat(final Transformation pTransformation) {
 		this.postConcat(pTransformation.a, pTransformation.b, pTransformation.c, pTransformation.d, pTransformation.tx, pTransformation.ty);
 	}
 
@@ -266,7 +266,7 @@ public class Transformation {
 		this.ty = tx * pB + ty * pD + pTY;
 	}
 
-	public void preConcat(final Transformation pTransformation) {
+	public final void preConcat(final Transformation pTransformation) {
 		this.preConcat(pTransformation.a, pTransformation.b, pTransformation.c, pTransformation.d, pTransformation.tx, pTransformation.ty);
 	}
 
@@ -286,7 +286,7 @@ public class Transformation {
 		this.ty = pTX * b + pTY * d + ty;
 	}
 
-	public void transform(final float[] pVertices) {
+	public final void transform(final float[] pVertices) {
 		int count = pVertices.length >> 1;
 		int i = 0;
 		int j = 0;

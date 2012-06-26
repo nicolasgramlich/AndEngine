@@ -11,7 +11,7 @@ import android.util.Log;
  * @author Nicolas Gramlich
  * @since 13:29:16 - 08.03.2010
  */
-public class Debug implements Constants {
+public class Debug {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -9,24 +9,25 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.andengine.entity.IEntity;
 import org.andengine.util.StreamUtils;
 import org.andengine.util.debug.Debug;
-import org.andengine.util.level.constants.LevelConstants;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
  * @since 14:16:19 - 11.10.2010
  */
-public class LevelLoader implements LevelConstants {
+public class LevelLoader {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -55,12 +56,12 @@ public class LevelLoader implements LevelConstants {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public IEntityLoader getDefaultEntityLoader() {
 		return this.mDefaultEntityLoader;
 	}
-	
-	public void setDefaultEntityLoader(IEntityLoader pDefaultEntityLoader) {
+
+	public void setDefaultEntityLoader(final IEntityLoader pDefaultEntityLoader) {
 		this.mDefaultEntityLoader = pDefaultEntityLoader;
 	}
 
@@ -68,11 +69,15 @@ public class LevelLoader implements LevelConstants {
 	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>.
 	 */
 	public void setAssetBasePath(final String pAssetBasePath) {
-		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
+		if(pAssetBasePath.endsWith("/") || (pAssetBasePath.length() == 0)) {
 			this.mAssetBasePath = pAssetBasePath;
 		} else {
 			throw new IllegalStateException("pAssetBasePath must end with '/' or be lenght zero.");
 		}
+	}
+
+	public String getAssetBasePath() {
+		return mAssetBasePath;
 	}
 
 	// ===========================================================
@@ -103,12 +108,12 @@ public class LevelLoader implements LevelConstants {
 		}
 	}
 
-	public void loadLevelFromAsset(final Context pContext, final String pAssetPath) throws IOException {
-		this.loadLevelFromStream(pContext.getAssets().open(this.mAssetBasePath + pAssetPath));
+	public void loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath) throws IOException {
+		this.loadLevelFromStream(pAssetManager.open(this.mAssetBasePath + pAssetPath));
 	}
 
-	public void loadLevelFromResource(final Context pContext, final int pRawResourceID) throws IOException {
-		this.loadLevelFromStream(pContext.getResources().openRawResource(pRawResourceID));
+	public void loadLevelFromResource(final Resources pResources, final int pRawResourceID) throws IOException {
+		this.loadLevelFromStream(pResources.openRawResource(pRawResourceID));
 	}
 
 	public void loadLevelFromStream(final InputStream pInputStream) throws IOException {
@@ -140,16 +145,4 @@ public class LevelLoader implements LevelConstants {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface IEntityLoader {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public void onLoadEntity(final String pEntityName, final Attributes pAttributes);
-	}
 }

@@ -1,6 +1,5 @@
 package org.andengine.util.modifier.ease;
 
-import org.andengine.util.math.MathConstants;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -10,7 +9,7 @@ import org.andengine.util.math.MathConstants;
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
  */
-public class EaseElasticInOut implements IEaseFunction, MathConstants {
+public class EaseElasticInOut implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================

@@ -44,6 +44,10 @@ public class SoundFactory {
 		}
 	}
 
+	public static String getAssetBasePath() {
+		return SoundFactory.sAssetBasePath;
+	}
+
 	public static void onCreate() {
 		SoundFactory.setAssetBasePath("");
 	}
@@ -57,24 +61,30 @@ public class SoundFactory {
 	// ===========================================================
 
 	public static Sound createSoundFromPath(final SoundManager pSoundManager, final String pPath) throws IOException {
-		final int soundID = pSoundManager.getSoundPool().load(pPath, 1);
-		final Sound sound = new Sound(pSoundManager, soundID);
-		pSoundManager.add(sound);
-		return sound;
+		synchronized(pSoundManager) {
+			final int soundID = pSoundManager.getSoundPool().load(pPath, 1);
+			final Sound sound = new Sound(pSoundManager, soundID);
+			pSoundManager.add(sound);
+			return sound;
+		}
 	}
 
 	public static Sound createSoundFromAsset(final SoundManager pSoundManager, final Context pContext, final String pAssetPath) throws IOException {
-		final int soundID = pSoundManager.getSoundPool().load(pContext.getAssets().openFd(SoundFactory.sAssetBasePath + pAssetPath), 1);
-		final Sound sound = new Sound(pSoundManager, soundID);
-		pSoundManager.add(sound);
-		return sound;
+		synchronized(pSoundManager) {
+			final int soundID = pSoundManager.getSoundPool().load(pContext.getAssets().openFd(SoundFactory.sAssetBasePath + pAssetPath), 1);
+			final Sound sound = new Sound(pSoundManager, soundID);
+			pSoundManager.add(sound);
+			return sound;
+		}
 	}
 
 	public static Sound createSoundFromResource(final SoundManager pSoundManager, final Context pContext, final int pSoundResID) {
-		final int soundID = pSoundManager.getSoundPool().load(pContext, pSoundResID, 1);
-		final Sound sound = new Sound(pSoundManager, soundID);
-		pSoundManager.add(sound);
-		return sound;
+		synchronized(pSoundManager) {
+			final int soundID = pSoundManager.getSoundPool().load(pContext, pSoundResID, 1);
+			final Sound sound = new Sound(pSoundManager, soundID);
+			pSoundManager.add(sound);
+			return sound;
+		}
 	}
 
 	public static Sound createSoundFromFile(final SoundManager pSoundManager, final File pFile) throws IOException {
@@ -82,17 +92,21 @@ public class SoundFactory {
 	}
 
 	public static Sound createSoundFromAssetFileDescriptor(final SoundManager pSoundManager, final AssetFileDescriptor pAssetFileDescriptor) {
-		final int soundID = pSoundManager.getSoundPool().load(pAssetFileDescriptor, 1);
-		final Sound sound = new Sound(pSoundManager, soundID);
-		pSoundManager.add(sound);
-		return sound;
+		synchronized(pSoundManager) {
+			final int soundID = pSoundManager.getSoundPool().load(pAssetFileDescriptor, 1);
+			final Sound sound = new Sound(pSoundManager, soundID);
+			pSoundManager.add(sound);
+			return sound;
+		}
 	}
 
 	public static Sound createSoundFromFileDescriptor(final SoundManager pSoundManager, final FileDescriptor pFileDescriptor, final long pOffset, final long pLength) throws IOException {
-		final int soundID = pSoundManager.getSoundPool().load(pFileDescriptor, pOffset, pLength, 1);
-		final Sound sound = new Sound(pSoundManager, soundID);
-		pSoundManager.add(sound);
-		return sound;
+		synchronized(pSoundManager) {
+			final int soundID = pSoundManager.getSoundPool().load(pFileDescriptor, pOffset, pLength, 1);
+			final Sound sound = new Sound(pSoundManager, soundID);
+			pSoundManager.add(sound);
+			return sound;
+		}
 	}
 
 	// ===========================================================

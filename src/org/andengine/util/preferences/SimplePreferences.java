@@ -1,8 +1,6 @@
 package org.andengine.util.preferences;
 
 
-import org.andengine.util.Constants;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -15,7 +13,7 @@ import android.preference.PreferenceManager;
  * @author Nicolas Gramlich
  * @since 18:55:12 - 02.08.2010
  */
-public class SimplePreferences implements Constants {
+public class SimplePreferences {
 	// ===========================================================
 	// Constants
 	// ===========================================================

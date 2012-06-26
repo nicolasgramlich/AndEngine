@@ -8,6 +8,8 @@ import org.andengine.util.progress.ProgressCallable;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.Looper;
+import android.widget.Toast;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -40,6 +42,23 @@ public abstract class BaseActivity extends Activity {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void toastOnUIThread(final CharSequence pText) {
+		this.toastOnUIThread(pText, Toast.LENGTH_LONG);
+	}
+
+	public void toastOnUIThread(final CharSequence pText, final int pDuration) {
+		if(Looper.getMainLooper().getThread() == Thread.currentThread()) {
+			Toast.makeText(BaseActivity.this, pText, pDuration).show();
+		} else {
+			this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(BaseActivity.this, pText, pDuration).show();
+				}
+			});
+		}
+	}
 
 	/**
 	 * Performs a task in the background, showing a {@link ProgressDialog},
@@ -122,8 +141,4 @@ public abstract class BaseActivity extends Activity {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static class CancelledException extends Exception {
-		private static final long serialVersionUID = -78123211381435596L;
-	}
 }

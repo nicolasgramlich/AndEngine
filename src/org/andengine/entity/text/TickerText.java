@@ -155,19 +155,23 @@ public class TickerText extends Text {
 		}
 
 		public TickerTextOptions(final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
-			this(AutoWrap.NONE, 0, Text.LEADING_DEFAULT, pHorizontalAlign, pCharactersPerSecond, false);
+			this(AutoWrap.NONE, 0, pHorizontalAlign, Text.LEADING_DEFAULT, pCharactersPerSecond, false);
 		}
 
 		public TickerTextOptions(final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond, final boolean pReverse) {
-			this(AutoWrap.NONE, 0, Text.LEADING_DEFAULT, pHorizontalAlign, pCharactersPerSecond, pReverse);
+			this(AutoWrap.NONE, 0, pHorizontalAlign, Text.LEADING_DEFAULT, pCharactersPerSecond, pReverse);
 		}
 
-		public TickerTextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
-			this(pAutoWrap, pAutoWrapWidth, pLeading, pHorizontalAlign, pCharactersPerSecond, false);
+		public TickerTextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond) {
+			this(pAutoWrap, pAutoWrapWidth, pHorizontalAlign, Text.LEADING_DEFAULT, pCharactersPerSecond, false);
 		}
 
-		public TickerTextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final float pLeading, final HorizontalAlign pHorizontalAlign, final float pCharactersPerSecond, final boolean pReverse) {
-			super(pAutoWrap, pAutoWrapWidth, pLeading, pHorizontalAlign);
+		public TickerTextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final HorizontalAlign pHorizontalAlign, final float pLeading, final float pCharactersPerSecond) {
+			this(pAutoWrap, pAutoWrapWidth, pHorizontalAlign, pLeading, pCharactersPerSecond, false);
+		}
+
+		public TickerTextOptions(final AutoWrap pAutoWrap, final float pAutoWrapWidth, final HorizontalAlign pHorizontalAlign, final float pLeading, final float pCharactersPerSecond, final boolean pReverse) {
+			super(pAutoWrap, pAutoWrapWidth, pHorizontalAlign, pLeading);
 
 			this.mCharactersPerSecond = pCharactersPerSecond;
 			this.mReverse = pReverse;

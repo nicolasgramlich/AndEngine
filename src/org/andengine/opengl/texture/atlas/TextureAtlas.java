@@ -2,6 +2,7 @@ package org.andengine.opengl.texture.atlas;
 
 import java.util.ArrayList;
 
+import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureManager;

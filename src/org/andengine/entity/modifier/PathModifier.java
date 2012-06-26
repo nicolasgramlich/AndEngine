@@ -213,8 +213,8 @@ public class PathModifier extends EntityModifier {
 		// Fields
 		// ===========================================================
 
-		private final float[] mCoordinatesX;
-		private final float[] mCoordinatesY;
+		private final float[] mXs;
+		private final float[] mYs;
 
 		private int mIndex;
 		private boolean mLengthChanged = false;
@@ -225,8 +225,8 @@ public class PathModifier extends EntityModifier {
 		// ===========================================================
 
 		public Path(final int pLength) {
-			this.mCoordinatesX = new float[pLength];
-			this.mCoordinatesY = new float[pLength];
+			this.mXs = new float[pLength];
+			this.mYs = new float[pLength];
 
 			this.mIndex = 0;
 			this.mLengthChanged = false;
@@ -237,8 +237,8 @@ public class PathModifier extends EntityModifier {
 				throw new IllegalArgumentException("Coordinate-Arrays must have the same length.");
 			}
 
-			this.mCoordinatesX = pCoordinatesX;
-			this.mCoordinatesY = pCoordinatesY;
+			this.mXs = pCoordinatesX;
+			this.mYs = pCoordinatesY;
 
 			this.mIndex = pCoordinatesX.length;
 			this.mLengthChanged = true;
@@ -246,11 +246,11 @@ public class PathModifier extends EntityModifier {
 
 		public Path(final Path pPath) {
 			final int size = pPath.getSize();
-			this.mCoordinatesX = new float[size];
-			this.mCoordinatesY = new float[size];
+			this.mXs = new float[size];
+			this.mYs = new float[size];
 
-			System.arraycopy(pPath.mCoordinatesX, 0, this.mCoordinatesX, 0, size);
-			System.arraycopy(pPath.mCoordinatesY, 0, this.mCoordinatesY, 0, size);
+			System.arraycopy(pPath.mXs, 0, this.mXs, 0, size);
+			System.arraycopy(pPath.mYs, 0, this.mYs, 0, size);
 
 			this.mIndex = pPath.mIndex;
 			this.mLengthChanged = pPath.mLengthChanged;
@@ -266,8 +266,8 @@ public class PathModifier extends EntityModifier {
 		// ===========================================================
 
 		public Path to(final float pX, final float pY) {
-			this.mCoordinatesX[this.mIndex] = pX;
-			this.mCoordinatesY[this.mIndex] = pY;
+			this.mXs[this.mIndex] = pX;
+			this.mYs[this.mIndex] = pY;
 
 			this.mIndex++;
 
@@ -277,15 +277,15 @@ public class PathModifier extends EntityModifier {
 		}
 
 		public float[] getCoordinatesX() {
-			return this.mCoordinatesX;
+			return this.mXs;
 		}
 
 		public float[] getCoordinatesY() {
-			return this.mCoordinatesY;
+			return this.mYs;
 		}
 
 		public int getSize() {
-			return this.mCoordinatesX.length;
+			return this.mXs.length;
 		}
 
 		public float getLength() {
@@ -296,8 +296,8 @@ public class PathModifier extends EntityModifier {
 		}
 
 		public float getSegmentLength(final int pSegmentIndex) {
-			final float[] coordinatesX = this.mCoordinatesX;
-			final float[] coordinatesY = this.mCoordinatesY;
+			final float[] coordinatesX = this.mXs;
+			final float[] coordinatesY = this.mYs;
 
 			final int nextSegmentIndex = pSegmentIndex + 1;
 

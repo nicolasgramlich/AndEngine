@@ -4,6 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.options.RenderOptions;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.debug.Debug;
 
@@ -55,11 +56,8 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onSurfaceCreated(final GL10 pGL, final EGLConfig pEGLConfig) {
 		synchronized(GLState.class) {
-			if(this.mRendererListener != null) {
-				this.mRendererListener.onSurfaceCreated();
-			}
-
-			this.mGLState.reset(this.mEngine.getEngineOptions().getRenderOptions(), this.mConfigChooser, pEGLConfig);
+			final RenderOptions renderOptions = this.mEngine.getEngineOptions().getRenderOptions();
+			this.mGLState.reset(renderOptions, this.mConfigChooser, pEGLConfig);
 
 			// TODO Check if available and make available through EngineOptions-RenderOptions
 //			GLES20.glEnable(GLES20.GL_POLYGON_SMOOTH);
@@ -69,27 +67,30 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 //			GLES20.glEnable(GLES20.GL_POINT_SMOOTH);
 //			GLES20.glHint(GLES20.GL_POINT_SMOOTH_HINT, GLES20.GL_NICEST);
 
-			this.mGLState.disableDither();
 			this.mGLState.disableDepthTest();
-
 			this.mGLState.enableBlend();
+			this.mGLState.setDitherEnabled(renderOptions.isDithering());
 
 			/* Enabling culling doesn't really make sense, because triangles are never drawn 'backwards' on purpose. */
 //			this.mGLState.enableCulling();
 //			GLES20.glFrontFace(GLES20.GL_CCW);
 //			GLES20.glCullFace(GLES20.GL_BACK);
+
+			if(this.mRendererListener != null) {
+				this.mRendererListener.onSurfaceCreated(this.mGLState);
+			}
 		}
 	}
 
 	@Override
 	public void onSurfaceChanged(final GL10 pGL, final int pWidth, final int pHeight) {
-		if(this.mRendererListener != null) {
-			this.mRendererListener.onSurfaceChanged(pWidth, pHeight);
-		}
-
 		this.mEngine.setSurfaceSize(pWidth, pHeight);
 		GLES20.glViewport(0, 0, pWidth, pHeight);
 		this.mGLState.loadProjectionGLMatrixIdentity();
+
+		if(this.mRendererListener != null) {
+			this.mRendererListener.onSurfaceChanged(this.mGLState, pWidth, pHeight);
+		}
 	}
 
 	@Override

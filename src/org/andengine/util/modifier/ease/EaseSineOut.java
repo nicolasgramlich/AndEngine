@@ -12,7 +12,7 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
  */
-public class EaseSineOut implements IEaseFunction, MathConstants {
+public class EaseSineOut implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -56,7 +56,7 @@ public class EaseSineOut implements IEaseFunction, MathConstants {
 	// ===========================================================
 
 	public static float getValue(final float pPercentage) {
-		return FloatMath.sin(pPercentage * PI_HALF);
+		return FloatMath.sin(pPercentage * MathConstants.PI_HALF);
 	}
 
 	// ===========================================================

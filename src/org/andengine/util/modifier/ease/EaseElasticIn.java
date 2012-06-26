@@ -12,7 +12,7 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 16:52:11 - 26.07.2010
  */
-public class EaseElasticIn implements IEaseFunction, MathConstants {
+public class EaseElasticIn implements IEaseFunction {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -67,7 +67,7 @@ public class EaseElasticIn implements IEaseFunction, MathConstants {
 		final float s = p / 4;
 
 		final float t = pPercentage - 1;
-		return -(float)Math.pow(2, 10 * t) * FloatMath.sin((t * pDuration - s) * PI_TWICE / p);
+		return -(float)Math.pow(2, 10 * t) * FloatMath.sin((t * pDuration - s) * MathConstants.PI_TWICE / p);
 	}
 
 	// ===========================================================

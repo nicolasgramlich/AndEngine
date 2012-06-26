@@ -11,7 +11,7 @@ import android.util.FloatMath;
  * @author Nicolas Gramlich
  * @since 20:42:15 - 17.12.2009
  */
-public final class MathUtils implements MathConstants {
+public final class MathUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -43,11 +43,11 @@ public final class MathUtils implements MathConstants {
 	}
 
 	public static final float radToDeg(final float pRad) {
-		return RAD_TO_DEG * pRad;
+		return MathConstants.RAD_TO_DEG * pRad;
 	}
 
 	public static final float degToRad(final float pDegree) {
-		return DEG_TO_RAD * pDegree;
+		return MathConstants.DEG_TO_RAD * pDegree;
 	}
 
 	public static final int signum(final int n) {
@@ -210,10 +210,22 @@ public final class MathUtils implements MathConstants {
 		return pValue >= pMinValue && pValue <= pMaxValue;
 	}
 
+	/**
+	 * @param pMinValue inclusive!
+	 * @param pMaxValue inclusive!
+	 * @param pValue
+	 * @return
+	 */
 	public static final int bringToBounds(final int pMinValue, final int pMaxValue, final int pValue) {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}
 
+	/**
+	 * @param pMinValue inclusive!
+	 * @param pMaxValue inclusive!
+	 * @param pValue
+	 * @return
+	 */
 	public static final float bringToBounds(final float pMinValue, final float pMaxValue, final float pValue) {
 		return Math.max(pMinValue, Math.min(pMaxValue, pValue));
 	}

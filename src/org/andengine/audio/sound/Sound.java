@@ -24,6 +24,8 @@ public class Sound extends BaseAudioEntity {
 	private int mSoundID;
 	private int mStreamID;
 
+	private boolean mLoaded;
+
 	private int mLoopCount;
 	private float mRate = 1.0f;
 
@@ -41,6 +43,22 @@ public class Sound extends BaseAudioEntity {
 	// Getter & Setter
 	// ===========================================================
 
+	public int getSoundID() {
+		return this.mSoundID;
+	}
+
+	public int getStreamID() {
+		return this.mStreamID;
+	}
+
+	public boolean isLoaded() {
+		return this.mLoaded;
+	}
+
+	public void setLoaded(final boolean pLoaded) {
+		this.mLoaded = pLoaded;
+	}
+
 	public void setLoopCount(final int pLoopCount) throws SoundReleasedException {
 		this.assertNotReleased();
 
@@ -48,6 +66,10 @@ public class Sound extends BaseAudioEntity {
 		if(this.mStreamID != 0) {
 			this.getSoundPool().setLoop(this.mStreamID, pLoopCount);
 		}
+	}
+
+	public float getRate() {
+		return this.mRate;
 	}
 
 	public void setRate(final float pRate) throws SoundReleasedException {
@@ -121,6 +143,7 @@ public class Sound extends BaseAudioEntity {
 
 		this.getSoundPool().unload(this.mSoundID);
 		this.mSoundID = 0;
+		this.mLoaded = false;
 
 		this.getAudioManager().remove(this);
 

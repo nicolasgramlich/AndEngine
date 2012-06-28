@@ -19,7 +19,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	// Fields
 	// ===========================================================
 
-	protected int mTileIndex;
+	protected int mCurrentTileIndex;
 	protected final int mTileCount;
 	protected final ITextureRegion[] mTextureRegions;
 
@@ -38,7 +38,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	 */
 	public TiledTextureRegion(final ITexture pTexture, final boolean pPerformSameTextureSanityCheck, final ITextureRegion ... pTextureRegions) {
 		super(pTexture);
-		
+
 		this.mTextureRegions = pTextureRegions;
 		this.mTileCount = this.mTextureRegions.length;
 
@@ -51,22 +51,22 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		}
 	}
 
-	public static TiledTextureRegion create(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows) {
-		return TiledTextureRegion.create(pTexture, pX, pY, pWidth, pHeight, pTileColumns, pTileRows, false);
+	public static TiledTextureRegion create(final ITexture pTexture, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight, final int pTileColumns, final int pTileRows) {
+		return TiledTextureRegion.create(pTexture, pTextureX, pTextureY, pTextureWidth, pTextureHeight, pTileColumns, pTileRows, false);
 	}
 
-	public static TiledTextureRegion create(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final int pTileColumns, final int pTileRows, final boolean pRotated) {
+	public static TiledTextureRegion create(final ITexture pTexture, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight, final int pTileColumns, final int pTileRows, final boolean pRotated) {
 		final ITextureRegion[] textureRegions = new ITextureRegion[pTileColumns * pTileRows];
 
-		final int tileWidth = pWidth / pTileColumns;
-		final int tileHeight = pHeight / pTileRows;
+		final int tileWidth = pTextureWidth / pTileColumns;
+		final int tileHeight = pTextureHeight / pTileRows;
 
 		for(int tileColumn = 0; tileColumn < pTileColumns; tileColumn++) {
 			for(int tileRow = 0; tileRow < pTileRows; tileRow++) {
 				final int tileIndex = tileRow * pTileColumns + tileColumn;
 
-				final int x = pX + tileColumn * tileWidth;
-				final int y = pY + tileRow * tileHeight;
+				final int x = pTextureX + tileColumn * tileWidth;
+				final int y = pTextureY + tileRow * tileHeight;
 				textureRegions[tileIndex] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight, pRotated);
 			}
 		}
@@ -81,10 +81,6 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		final ITextureRegion[] textureRegions = new ITextureRegion[tileCount];
 
 		for(int i = 0; i < tileCount; i++) {
-			if(this.mTextureRegions[i].getTexture() != this.mTexture) {
-				throw new IllegalArgumentException("Illegal TextureRegion detected that does not match the Texture passed.");
-			}
-
 			textureRegions[i] = this.mTextureRegions[i].deepCopy();
 		}
 
@@ -96,23 +92,24 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	// ===========================================================
 
 	@Override
-	public int getTileIndex() {
-		return this.mTileIndex;
+	public int getCurrentTileIndex() {
+		return this.mCurrentTileIndex;
 	}
 
 	@Override
-	public void setTileIndex(final int pTileIndex) {
-		this.mTileIndex = pTileIndex;
+	public void setCurrentTileIndex(final int pCurrentTileIndex) {
+		this.mCurrentTileIndex = pCurrentTileIndex;
 	}
 
 	@Override
 	public void nextTile() {
-		this.mTileIndex++;
-		if(this.mTileIndex >= this.mTileCount) {
-			this.mTileIndex = this.mTileIndex % this.mTileCount;
+		this.mCurrentTileIndex++;
+		if(this.mCurrentTileIndex >= this.mTileCount) {
+			this.mCurrentTileIndex = this.mCurrentTileIndex % this.mTileCount;
 		}
 	}
 
+	@Override
 	public ITextureRegion getTextureRegion(final int pTileIndex) {
 		return this.mTextureRegions[pTileIndex];
 	}
@@ -123,118 +120,118 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	}
 
 	@Override
-	public int getX() {
-		return this.mTextureRegions[this.mTileIndex].getX();
+	public float getTextureX() {
+		return this.mTextureRegions[this.mCurrentTileIndex].getTextureX();
 	}
 
 	@Override
-	public int getX(final int pTileIndex) {
-		return this.mTextureRegions[pTileIndex].getX();
+	public float getTextureX(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getTextureX();
 	}
 
 	@Override
-	public int getY() {
-		return this.mTextureRegions[this.mTileIndex].getY();
+	public float getTextureY() {
+		return this.mTextureRegions[this.mCurrentTileIndex].getTextureY();
 	}
 
 	@Override
-	public int getY(final int pTileIndex) {
-		return this.mTextureRegions[pTileIndex].getY();
+	public float getTextureY(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getTextureY();
 	}
 
 	@Override
-	public void setX(final int pX) {
-		this.mTextureRegions[this.mTileIndex].setX(pX);
+	public void setTextureX(final float pTextureX) {
+		this.mTextureRegions[this.mCurrentTileIndex].setTextureX(pTextureX);
 	}
 
 	@Override
-	public void setX(final int pTileIndex, final int pX) {
-		this.mTextureRegions[pTileIndex].setY(pX);
+	public void setTextureX(final int pTileIndex, final float pTextureX) {
+		this.mTextureRegions[pTileIndex].setTextureY(pTextureX);
 	}
 
 	@Override
-	public void setY(final int pY) {
-		this.mTextureRegions[this.mTileIndex].setY(pY);
+	public void setTextureY(final float pTextureY) {
+		this.mTextureRegions[this.mCurrentTileIndex].setTextureY(pTextureY);
 	}
 
 	@Override
-	public void setY(final int pTileIndex, final int pY) {
-		this.mTextureRegions[pTileIndex].setY(pY);
+	public void setTextureY(final int pTileIndex, final float pTextureY) {
+		this.mTextureRegions[pTileIndex].setTextureY(pTextureY);
 	}
 
 	@Override
-	public void setPosition(final int pX, final int pY) {
-		this.mTextureRegions[this.mTileIndex].setPosition(pX, pY);
+	public void setTexturePosition(final float pTextureX, final float pTextureY) {
+		this.mTextureRegions[this.mCurrentTileIndex].setTexturePosition(pTextureX, pTextureY);
 	}
 
 	@Override
-	public void setPosition(final int pTileIndex, final int pX, final int pY) {
-		this.mTextureRegions[pTileIndex].setPosition(pX, pY);
+	public void setTexturePosition(final int pTileIndex, final float pTextureX, final float pTextureY) {
+		this.mTextureRegions[pTileIndex].setTexturePosition(pTextureX, pTextureY);
 	}
 
 	@Override
-	public int getWidth() {
-		return this.mTextureRegions[this.mTileIndex].getWidth();
+	public float getWidth() {
+		return this.mTextureRegions[this.mCurrentTileIndex].getWidth();
 	}
 
 	@Override
-	public int getWidth(final int pTileIndex) {
+	public float getWidth(final int pTileIndex) {
 		return this.mTextureRegions[pTileIndex].getWidth();
 	}
 
 	@Override
-	public int getHeight() {
-		return this.mTextureRegions[this.mTileIndex].getHeight();
+	public float getHeight() {
+		return this.mTextureRegions[this.mCurrentTileIndex].getHeight();
 	}
 
 	@Override
-	public int getHeight(final int pTileIndex) {
+	public float getHeight(final int pTileIndex) {
 		return this.mTextureRegions[pTileIndex].getHeight();
 	}
 
 	@Override
-	public void setWidth(final int pWidth) {
-		this.mTextureRegions[this.mTileIndex].setWidth(pWidth);
+	public void setTextureWidth(final float pTextureWidth) {
+		this.mTextureRegions[this.mCurrentTileIndex].setTextureWidth(pTextureWidth);
 	}
 
 	@Override
-	public void setWidth(final int pTileIndex, final int pWidth) {
-		this.mTextureRegions[pTileIndex].setWidth(pWidth);
+	public void setTextureWidth(final int pTileIndex, final float pTextureWidth) {
+		this.mTextureRegions[pTileIndex].setTextureWidth(pTextureWidth);
 	}
 
 	@Override
-	public void setHeight(final int pHeight) {
-		this.mTextureRegions[this.mTileIndex].setHeight(pHeight);
+	public void setTextureHeight(final float pTextureHeight) {
+		this.mTextureRegions[this.mCurrentTileIndex].setTextureHeight(pTextureHeight);
 	}
 
 	@Override
-	public void setHeight(final int pTileIndex, final int pHeight) {
-		this.mTextureRegions[pTileIndex].setHeight(pHeight);
+	public void setTextureHeight(final int pTileIndex, final float pTextureHeight) {
+		this.mTextureRegions[pTileIndex].setTextureHeight(pTextureHeight);
 	}
 
 	@Override
-	public void setSize(final int pWidth, final int pHeight) {
-		this.mTextureRegions[this.mTileIndex].setSize(pWidth, pHeight);
+	public void setTextureSize(final float pTextureWidth, final float pTextureHeight) {
+		this.mTextureRegions[this.mCurrentTileIndex].setTextureSize(pTextureWidth, pTextureHeight);
 	}
 
 	@Override
-	public void setSize(final int pTileIndex, final int pWidth, final int pHeight) {
-		this.mTextureRegions[pTileIndex].setSize(pWidth, pHeight);
+	public void setTextureSize(final int pTileIndex, final float pTextureWidth, final float pTextureHeight) {
+		this.mTextureRegions[pTileIndex].setTextureSize(pTextureWidth, pTextureHeight);
 	}
 
 	@Override
-	public void set(final int pX, final int pY, final int pWidth, final int pHeight) {
-		this.mTextureRegions[this.mTileIndex].set(pX, pY, pWidth, pHeight);
+	public void set(final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight) {
+		this.mTextureRegions[this.mCurrentTileIndex].set(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
 	}
 
 	@Override
-	public void set(final int pTileIndex, final int pX, final int pY, final int pWidth, final int pHeight) {
-		this.mTextureRegions[pTileIndex].set(pX, pY, pWidth, pHeight);
+	public void set(final int pTileIndex, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight) {
+		this.mTextureRegions[pTileIndex].set(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
 	}
 
 	@Override
 	public float getU() {
-		return this.mTextureRegions[this.mTileIndex].getU();
+		return this.mTextureRegions[this.mCurrentTileIndex].getU();
 	}
 
 	@Override
@@ -244,7 +241,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 
 	@Override
 	public float getV() {
-		return this.mTextureRegions[this.mTileIndex].getV();
+		return this.mTextureRegions[this.mCurrentTileIndex].getV();
 	}
 
 	@Override
@@ -254,7 +251,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 
 	@Override
 	public float getU2() {
-		return this.mTextureRegions[this.mTileIndex].getU2();
+		return this.mTextureRegions[this.mCurrentTileIndex].getU2();
 	}
 
 	@Override
@@ -264,7 +261,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 
 	@Override
 	public float getV2() {
-		return this.mTextureRegions[this.mTileIndex].getV2();
+		return this.mTextureRegions[this.mCurrentTileIndex].getV2();
 	}
 
 	@Override
@@ -273,8 +270,28 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	}
 
 	@Override
+	public boolean isScaled() {
+		return this.mTextureRegions[this.mCurrentTileIndex].isScaled();
+	}
+
+	@Override
+	public boolean isScaled(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].isScaled();
+	}
+
+	@Override
+	public float getScale() {
+		return this.mTextureRegions[this.mCurrentTileIndex].getScale();
+	}
+
+	@Override
+	public float getScale(final int pTileIndex) {
+		return this.mTextureRegions[pTileIndex].getScale();
+	}
+
+	@Override
 	public boolean isRotated() {
-		return this.mTextureRegions[this.mTileIndex].isRotated();
+		return this.mTextureRegions[this.mCurrentTileIndex].isRotated();
 	}
 
 	@Override

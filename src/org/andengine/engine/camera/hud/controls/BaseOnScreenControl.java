@@ -1,17 +1,18 @@
 package org.andengine.engine.camera.hud.controls;
 
-import static org.andengine.util.constants.Constants.VERTEX_INDEX_X;
-import static org.andengine.util.constants.Constants.VERTEX_INDEX_Y;
+import static org.andengine.util.Constants.VERTEX_INDEX_X;
+import static org.andengine.util.Constants.VERTEX_INDEX_Y;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.math.MathUtils;
 
 import android.view.MotionEvent;
@@ -48,12 +49,12 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	// Constructors
 	// ===========================================================
 
-	public BaseOnScreenControl(final float pX, final float pY, final Camera pCamera, final ITextureRegion pControlBaseTextureRegion, final ITextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final IOnScreenControlListener pOnScreenControlListener) {
+	public BaseOnScreenControl(final float pX, final float pY, final Camera pCamera, final ITextureRegion pControlBaseTextureRegion, final ITextureRegion pControlKnobTextureRegion, final float pTimeBetweenUpdates, final VertexBufferObjectManager pVertexBufferObjectManager, final IOnScreenControlListener pOnScreenControlListener) {
 		this.setCamera(pCamera);
 
 		this.mOnScreenControlListener = pOnScreenControlListener;
 		/* Create the control base. */
-		this.mControlBase = new Sprite(pX, pY, pControlBaseTextureRegion) {
+		this.mControlBase = new Sprite(pX, pY, pControlBaseTextureRegion, pVertexBufferObjectManager) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				return BaseOnScreenControl.this.onHandleControlBaseTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -61,7 +62,7 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 		};
 
 		/* Create the control knob. */
-		this.mControlKnob = new Sprite(0, 0, pControlKnobTextureRegion);
+		this.mControlKnob = new Sprite(0, 0, pControlKnobTextureRegion, pVertexBufferObjectManager);
 		this.onHandleControlKnobReleased();
 
 		/* Register listeners and add objects to this HUD. */

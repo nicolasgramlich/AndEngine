@@ -51,8 +51,8 @@ public class LinearGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 
 		this.mPaint.setStyle(Style.FILL);
 
-		final int right = pBitmapTextureAtlasSource.getWidth() - 1;
-		final int bottom = pBitmapTextureAtlasSource.getHeight() - 1;
+		final int right = pBitmapTextureAtlasSource.getTextureWidth() - 1;
+		final int bottom = pBitmapTextureAtlasSource.getTextureHeight() - 1;
 
 		final float fromX = pLinearGradientDirection.getFromX(right);
 		final float fromY = pLinearGradientDirection.getFromY(bottom);

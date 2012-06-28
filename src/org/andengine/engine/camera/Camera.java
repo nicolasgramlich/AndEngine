@@ -1,6 +1,5 @@
 package org.andengine.engine.camera;
 
-import org.andengine.collision.RectangularShapeCollisionChecker;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.UpdateHandlerList;
@@ -9,9 +8,10 @@ import org.andengine.entity.primitive.Line;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.constants.Constants;
+import org.andengine.util.Constants;
+import org.andengine.util.adt.transformation.Transformation;
+import org.andengine.util.algorithm.collision.RectangularShapeCollisionChecker;
 import org.andengine.util.math.MathUtils;
-import org.andengine.util.transformation.Transformation;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -33,10 +33,10 @@ public class Camera implements IUpdateHandler {
 	// Fields
 	// ===========================================================
 
-	private float mXMin;
-	private float mXMax;
-	private float mYMin;
-	private float mYMax;
+	protected float mXMin;
+	protected float mXMax;
+	protected float mYMin;
+	protected float mYMax;
 
 	private float mZNear = -1.0f;
 	private float mZFar = 1.0f;
@@ -481,16 +481,19 @@ public class Camera implements IUpdateHandler {
 		final float relativeX;
 		final float relativeY;
 
+		final float surfaceTouchEventX = pSurfaceTouchEvent.getX();
+		final float surfaceTouchEventY = pSurfaceTouchEvent.getY();
+
 		final float rotation = this.mRotation;
 		if(rotation == 0) {
-			relativeX = pSurfaceTouchEvent.getX() / pSurfaceWidth;
-			relativeY = pSurfaceTouchEvent.getY() / pSurfaceHeight;
+			relativeX = surfaceTouchEventX / pSurfaceWidth;
+			relativeY = surfaceTouchEventY / pSurfaceHeight;
 		} else if(rotation == 180) {
-			relativeX = 1 - (pSurfaceTouchEvent.getX() / pSurfaceWidth);
-			relativeY = 1 - (pSurfaceTouchEvent.getY() / pSurfaceHeight);
+			relativeX = 1 - (surfaceTouchEventX / pSurfaceWidth);
+			relativeY = 1 - (surfaceTouchEventY / pSurfaceHeight);
 		} else {
-			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pSurfaceTouchEvent.getX();
-			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pSurfaceTouchEvent.getY();
+			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = surfaceTouchEventX;
+			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = surfaceTouchEventY;
 
 			MathUtils.rotateAroundCenter(Camera.VERTICES_TMP, rotation, pSurfaceWidth >> 1, pSurfaceHeight >> 1);
 
@@ -511,6 +514,36 @@ public class Camera implements IUpdateHandler {
 		final float y = yMin + pRelativeY * (yMax - yMin);
 
 		pSurfaceTouchEvent.set(x, y);
+	}
+
+	public void convertSceneToSurfaceTouchEvent(final TouchEvent pSceneTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
+		this.convertAxisAlignedSceneToSurfaceTouchEvent(pSceneTouchEvent, pSurfaceWidth, pSurfaceHeight);
+
+		final float rotation = this.mRotation;
+		if(rotation == 0) {
+			/* Nothing to do. */
+		} else if(rotation == 180) {
+			pSceneTouchEvent.set(pSurfaceWidth - pSceneTouchEvent.getX(), pSurfaceHeight - pSceneTouchEvent.getY());
+		} else {
+			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pSceneTouchEvent.getX();
+			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
+
+			MathUtils.revertRotateAroundCenter(Camera.VERTICES_TMP, rotation, pSurfaceWidth >> 1, pSurfaceHeight >> 1);
+
+			pSceneTouchEvent.set(Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X], Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y]);
+		}
+	}
+
+	private void convertAxisAlignedSceneToSurfaceTouchEvent(final TouchEvent pSceneTouchEvent, final int pSurfaceWidth, final int pSurfaceHeight) {
+		final float xMin = this.getXMin();
+		final float xMax = this.getXMax();
+		final float yMin = this.getYMin();
+		final float yMax = this.getYMax();
+
+		final float relativeX = (pSceneTouchEvent.getX() - xMin) / (xMax - xMin);
+		final float relativeY = (pSceneTouchEvent.getY() - yMin) / (yMax - yMin);
+
+		pSceneTouchEvent.set(relativeX * pSurfaceWidth, relativeY * pSurfaceHeight);
 	}
 
 	public void registerUpdateHandler(final IUpdateHandler pUpdateHandler) {

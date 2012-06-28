@@ -1,6 +1,6 @@
 package org.andengine.opengl.vbo.attribute;
 
-import org.andengine.opengl.GLES20Fix;
+import android.opengl.GLES20;
 
 /**
  * (c) Zynga 2011
@@ -17,12 +17,12 @@ public class VertexBufferObjectAttribute {
 	// Fields
 	// ===========================================================
 
-	private final int mLocation;
-	private final String mName;
-	private final int mSize;
-	private final int mType;
-	private final boolean mNormalized;
-	private final int mOffset;
+	/* package */ final int mLocation;
+	/* package */ final String mName;
+	/* package */ final int mSize;
+	/* package */ final int mType;
+	/* package */ final boolean mNormalized;
+	/* package */ final int mOffset;
 
 	// ===========================================================
 	// Constructors
@@ -70,7 +70,7 @@ public class VertexBufferObjectAttribute {
 	// ===========================================================
 
 	public void glVertexAttribPointer(final int pStride) {
-		GLES20Fix.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
+		GLES20.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
 	}
 
 	// ===========================================================

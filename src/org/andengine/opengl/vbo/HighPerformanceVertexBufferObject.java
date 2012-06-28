@@ -9,7 +9,7 @@ import org.andengine.util.system.SystemUtils;
 import android.opengl.GLES20;
 
 /**
- * Compared to a {@link LowMemoryVertexBufferObject}, the {@link HighPerformanceVertexBufferObject} uses <b><u>2x</u> the memory</b>, 
+ * Compared to a {@link LowMemoryVertexBufferObject}, the {@link HighPerformanceVertexBufferObject} uses <b><u>2x</u> the heap memory</b>, 
  * at the benefit of significantly faster data buffering (<b>up to <u>5x</u> faster!</b>).
  * 
  * @see {@link LowMemoryVertexBufferObject} when to prefer a {@link LowMemoryVertexBufferObject} instead of a {@link HighPerformanceVertexBufferObject}
@@ -35,10 +35,21 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 	// Constructors
 	// ===========================================================
 
-	public HighPerformanceVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-		super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+	public HighPerformanceVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		super(pVertexBufferObjectManager, pCapacity, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
 
 		this.mBufferData = new float[pCapacity];
+		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+			this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
+		} else {
+			this.mFloatBuffer = null;
+		}
+	}
+
+	public HighPerformanceVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final float[] pBufferData, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+		super(pVertexBufferObjectManager, pBufferData.length, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
+		this.mBufferData = pBufferData;
+		
 		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
 			this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 		} else {
@@ -52,6 +63,16 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 
 	public float[] getBufferData() {
 		return this.mBufferData;
+	}
+
+	@Override
+	public int getHeapMemoryByteSize() {
+		return this.getByteCapacity();
+	}
+
+	@Override
+	public int getNativeHeapMemoryByteSize() {
+		return this.getByteCapacity();
 	}
 
 	// ===========================================================

@@ -6,7 +6,7 @@ package org.andengine.util.exception;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:25:52 - 03.11.2011
  */
-public class MethodNotYetImplementedException extends AndEngineException {
+public class MethodNotYetImplementedException extends AndEngineRuntimeException {
 	// ===========================================================
 	// Constants
 	// ===========================================================

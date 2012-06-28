@@ -1,7 +1,6 @@
 package org.andengine.input.touch.controller;
 
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.input.touch.TouchEvent;
 
 import android.view.MotionEvent;
 
@@ -28,8 +27,4 @@ public interface ITouchController extends IUpdateHandler {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	static interface ITouchEventCallback {
-		public boolean onTouchEvent(final TouchEvent pTouchEvent);
-	}
 }

@@ -2,9 +2,8 @@ package org.andengine.util;
 
 import java.util.GregorianCalendar;
 
-import org.andengine.util.constants.Constants;
+import org.andengine.util.preferences.SimplePreferences;
 
-import android.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -21,7 +20,7 @@ import android.content.SharedPreferences;
  * @author Nicolas Gramlich
  * @since 22:43:32 - 02.11.2010
  */
-public class BetaUtils implements Constants {
+public class BetaUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -65,7 +64,7 @@ public class BetaUtils implements Constants {
 		if(lastuseDate.after(pExpirationDate)){
 			final Builder alertDialogBuilder = new AlertDialog.Builder(pActivity)
 			.setTitle(pTitleResourceID)
-			.setIcon(R.drawable.ic_dialog_alert)
+			.setIcon(android.R.drawable.ic_dialog_alert)
 			.setMessage(pMessageResourceID);
 
 			alertDialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener(){

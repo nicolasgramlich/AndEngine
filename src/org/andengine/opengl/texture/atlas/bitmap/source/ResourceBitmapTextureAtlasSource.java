@@ -3,7 +3,7 @@ package org.andengine.opengl.texture.atlas.bitmap.source;
 
 import org.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -24,46 +24,37 @@ public class ResourceBitmapTextureAtlasSource extends BaseTextureAtlasSource imp
 	// Fields
 	// ===========================================================
 
-	private final int mWidth;
-	private final int mHeight;
-
+	private final Resources mResources;
 	private final int mDrawableResourceID;
-	private final Context mContext;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ResourceBitmapTextureAtlasSource(final Context pContext, final int pDrawableResourceID) {
-		this(pContext, pDrawableResourceID, 0, 0);
+	public static ResourceBitmapTextureAtlasSource create(final Resources pResources, final int pDrawableResourceID) {
+		return ResourceBitmapTextureAtlasSource.create(pResources, pDrawableResourceID, 0, 0);
 	}
 
-	public ResourceBitmapTextureAtlasSource(final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY) {
-		super(pTexturePositionX, pTexturePositionY);
-		this.mContext = pContext;
-		this.mDrawableResourceID = pDrawableResourceID;
-
+	public static ResourceBitmapTextureAtlasSource create(final Resources pResources, final int pDrawableResourceID, final int pTextureX, final int pTextureY) {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inJustDecodeBounds = true;
 //		decodeOptions.inScaled = false; // TODO Check how this behaves with drawable-""/nodpi/ldpi/mdpi/hdpi folders
 
-		BitmapFactory.decodeResource(pContext.getResources(), pDrawableResourceID, decodeOptions);
+		BitmapFactory.decodeResource(pResources, pDrawableResourceID, decodeOptions);
 
-		this.mWidth = decodeOptions.outWidth;
-		this.mHeight = decodeOptions.outHeight;
+		return new ResourceBitmapTextureAtlasSource(pResources, pDrawableResourceID, pTextureX, pTextureY, decodeOptions.outWidth, decodeOptions.outHeight);
 	}
 
-	protected ResourceBitmapTextureAtlasSource(final Context pContext, final int pDrawableResourceID, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
-		super(pTexturePositionX, pTexturePositionY);
-		this.mContext = pContext;
+	public ResourceBitmapTextureAtlasSource(final Resources pResources, final int pDrawableResourceID, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		super(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
+
+		this.mResources = pResources;
 		this.mDrawableResourceID = pDrawableResourceID;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
 	}
 
 	@Override
 	public ResourceBitmapTextureAtlasSource deepCopy() {
-		return new ResourceBitmapTextureAtlasSource(this.mContext, this.mDrawableResourceID, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
+		return new ResourceBitmapTextureAtlasSource(this.mResources, this.mDrawableResourceID, this.mTextureX, this.mTextureY, this.mTextureWidth, this.mTextureHeight);
 	}
 
 	// ===========================================================
@@ -75,21 +66,11 @@ public class ResourceBitmapTextureAtlasSource extends BaseTextureAtlasSource imp
 	// ===========================================================
 
 	@Override
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	@Override
-	public int getHeight() {
-		return this.mHeight;
-	}
-
-	@Override
 	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inPreferredConfig = pBitmapConfig;
 //		decodeOptions.inScaled = false; // TODO Check how this behaves with drawable-""/nodpi/ldpi/mdpi/hdpi folders
-		return BitmapFactory.decodeResource(this.mContext.getResources(), this.mDrawableResourceID, decodeOptions);
+		return BitmapFactory.decodeResource(this.mResources, this.mDrawableResourceID, decodeOptions);
 	}
 
 	@Override

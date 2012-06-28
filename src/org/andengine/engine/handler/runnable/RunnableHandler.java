@@ -45,7 +45,7 @@ public class RunnableHandler implements IUpdateHandler {
 	}
 
 	@Override
-	public void reset() {
+	public synchronized void reset() {
 		this.mRunnables.clear();
 	}
 

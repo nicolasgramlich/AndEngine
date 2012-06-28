@@ -2,6 +2,7 @@ package org.andengine.util;
 
 import java.util.ArrayList;
 
+import org.andengine.util.adt.array.ArrayUtils;
 import org.andengine.util.math.MathUtils;
 
 /**
@@ -86,7 +87,7 @@ public class ProbabilityGenerator<T> {
 		// Constructors
 		// ===========================================================
 
-		public Entry(final float pFactor, final T[] pData){
+		public Entry(final float pFactor, final T ... pData){
 			this.mFactor = pFactor;
 			this.mData = pData;
 		}

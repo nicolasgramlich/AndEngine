@@ -2,6 +2,7 @@ package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
+import org.andengine.util.color.Color;
 
 import android.graphics.AvoidXfermode;
 import android.graphics.AvoidXfermode.Mode;
@@ -24,38 +25,55 @@ public class ColorSwapBitmapTextureAtlasSourceDecorator extends BaseShapeBitmapT
 	// Fields
 	// ===========================================================
 
-	protected final int mColorKeyColor;
+	protected final int mColorKeyColorARGBPackedInt;
 	protected final int mTolerance;
-	protected final int mColorSwapColor;
+	protected final int mColorSwapColorARGBPackedInt;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColor, final int pColorSwapColor) {
-		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor, TOLERANCE_DEFAULT, pColorSwapColor, null);
+	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final Color pColorKeyColor, final Color pColorSwapColor) {
+		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor.getARGBPackedInt(), pColorSwapColor.getARGBPackedInt());
 	}
 
-	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColor, final int pColorSwapColor, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
-		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor, TOLERANCE_DEFAULT, pColorSwapColor, pTextureAtlasSourceDecoratorOptions);
+	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColorARGBPackedInt, final int pColorSwapColorARGBPackedInt) {
+		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, TOLERANCE_DEFAULT, pColorSwapColorARGBPackedInt, null);
 	}
 
-	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColor, final int pTolerance, final int pColorSwapColor) {
-		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor, pTolerance, pColorSwapColor, null);
+	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final Color pColorKeyColor, final Color pColorSwapColor, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
+		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor.getARGBPackedInt(), pColorSwapColor.getARGBPackedInt(), pTextureAtlasSourceDecoratorOptions);
 	}
 
-	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColor, final int pTolerance, final int pColorSwapColor, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
+	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColorARGBPackedInt, final int pColorSwapColorARGBPackedInt, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
+		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, TOLERANCE_DEFAULT, pColorSwapColorARGBPackedInt, pTextureAtlasSourceDecoratorOptions);
+	}
+
+	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final Color pColorKeyColor, final int pTolerance, final Color pColorSwapColor) {
+		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor.getARGBPackedInt(), pTolerance, pColorSwapColor.getARGBPackedInt());
+	}
+
+	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColorARGBPackedInt, final int pTolerance, final int pColorSwapColorARGBPackedInt) {
+		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, pTolerance, pColorSwapColorARGBPackedInt, null);
+	}
+
+	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final Color pColorKeyColor, final int pTolerance, final Color pColorSwapColor, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
+		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor.getARGBPackedInt(), pTolerance, pColorSwapColor.getARGBPackedInt(), pTextureAtlasSourceDecoratorOptions);
+	}
+
+	public ColorSwapBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColorARGBPackedInt, final int pTolerance, final int pColorSwapColorARGBPackedInt, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
 		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pTextureAtlasSourceDecoratorOptions);
-		this.mColorKeyColor = pColorKeyColor;
+
+		this.mColorKeyColorARGBPackedInt = pColorKeyColorARGBPackedInt;
 		this.mTolerance = pTolerance;
-		this.mColorSwapColor = pColorSwapColor;
-		this.mPaint.setXfermode(new AvoidXfermode(pColorKeyColor, pTolerance, Mode.TARGET));
-		this.mPaint.setColor(pColorSwapColor);
+		this.mColorSwapColorARGBPackedInt = pColorSwapColorARGBPackedInt;
+		this.mPaint.setXfermode(new AvoidXfermode(pColorKeyColorARGBPackedInt, pTolerance, Mode.TARGET));
+		this.mPaint.setColor(pColorSwapColorARGBPackedInt);
 	}
 
 	@Override
 	public ColorSwapBitmapTextureAtlasSourceDecorator deepCopy() {
-		return new ColorSwapBitmapTextureAtlasSourceDecorator(this.mBitmapTextureAtlasSource, this.mBitmapTextureAtlasSourceDecoratorShape, this.mColorKeyColor, this.mTolerance, this.mColorSwapColor, this.mTextureAtlasSourceDecoratorOptions);
+		return new ColorSwapBitmapTextureAtlasSourceDecorator(this.mBitmapTextureAtlasSource, this.mBitmapTextureAtlasSourceDecoratorShape, this.mColorKeyColorARGBPackedInt, this.mTolerance, this.mColorSwapColorARGBPackedInt, this.mTextureAtlasSourceDecoratorOptions);
 	}
 
 	// ===========================================================

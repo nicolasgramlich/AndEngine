@@ -2,7 +2,7 @@ package org.andengine.util.modifier;
 
 import java.util.Comparator;
 
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 
 /**
@@ -40,8 +40,8 @@ public interface IModifier<T> {
 	public void reset();
 
 	public boolean isFinished();
-	public boolean isRemoveWhenFinished();
-	public void setRemoveWhenFinished(final boolean pRemoveWhenFinished);
+	public boolean isAutoUnregisterWhenFinished();
+	public void setAutoUnregisterWhenFinished(final boolean pRemoveWhenFinished);
 
 	public IModifier<T> deepCopy() throws DeepCopyNotSupportedException;
 
@@ -70,7 +70,7 @@ public interface IModifier<T> {
 		public void onModifierFinished(final IModifier<T> pModifier, final T pItem);
 	}
 
-	public static class DeepCopyNotSupportedException extends AndEngineException {
+	public static class DeepCopyNotSupportedException extends AndEngineRuntimeException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

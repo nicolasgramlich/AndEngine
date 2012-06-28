@@ -25,8 +25,6 @@ public abstract class PictureBitmapTextureAtlasSource extends BaseTextureAtlasSo
 	// ===========================================================
 
 	protected final Picture mPicture;
-	protected final int mWidth;
-	protected final int mHeight;
 
 	// ===========================================================
 	// Constructors
@@ -36,19 +34,18 @@ public abstract class PictureBitmapTextureAtlasSource extends BaseTextureAtlasSo
 		this(pPicture, 0, 0);
 	}
 	
-	public PictureBitmapTextureAtlasSource(final Picture pPicture, final int pTexturePositionX, final int pTexturePositionY) {
-		this(pPicture, pTexturePositionX, pTexturePositionY, pPicture.getWidth(), pPicture.getHeight());
+	public PictureBitmapTextureAtlasSource(final Picture pPicture, final int pTextureX, final int pTextureY) {
+		this(pPicture, pTextureX, pTextureY, pPicture.getWidth(), pPicture.getHeight());
 	}
 
-	public PictureBitmapTextureAtlasSource(final Picture pPicture, final int pTexturePositionX, final int pTexturePositionY, final float pScale) {
-		this(pPicture, pTexturePositionX, pTexturePositionY, Math.round(pPicture.getWidth() * pScale), Math.round(pPicture.getHeight() * pScale));
+	public PictureBitmapTextureAtlasSource(final Picture pPicture, final int pTextureX, final int pTextureY, final float pScale) {
+		this(pPicture, pTextureX, pTextureY, Math.round(pPicture.getWidth() * pScale), Math.round(pPicture.getHeight() * pScale));
 	}
 
-	public PictureBitmapTextureAtlasSource(final Picture pPicture, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
-		super(pTexturePositionX, pTexturePositionY);
+	public PictureBitmapTextureAtlasSource(final Picture pPicture, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		super(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
+
 		this.mPicture = pPicture;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
 	}
 
 	@Override
@@ -63,28 +60,18 @@ public abstract class PictureBitmapTextureAtlasSource extends BaseTextureAtlasSo
 	// ===========================================================
 
 	@Override
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	@Override
-	public int getHeight() {
-		return this.mHeight;
-	}
-
-	@Override
 	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
 		final Picture picture = this.mPicture;
 		if(picture == null) {
-			Debug.e("Failed loading Bitmap in PictureBitmapTextureAtlasSource.");
+			Debug.e("Failed loading Bitmap in " + this.getClass().getSimpleName() + ".");
 			return null;
 		}
 
-		final Bitmap bitmap = Bitmap.createBitmap(this.mWidth, this.mHeight, pBitmapConfig);
+		final Bitmap bitmap = Bitmap.createBitmap(this.mTextureWidth, this.mTextureHeight, pBitmapConfig);
 		final Canvas canvas = new Canvas(bitmap);
 
-		final float scaleX = (float)this.mWidth / this.mPicture.getWidth();
-		final float scaleY = (float)this.mHeight / this.mPicture.getHeight();
+		final float scaleX = (float)this.mTextureWidth / this.mPicture.getWidth();
+		final float scaleY = (float)this.mTextureHeight / this.mPicture.getHeight();
 		canvas.scale(scaleX, scaleY, 0, 0);
 
 		picture.draw(canvas);

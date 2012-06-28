@@ -1,6 +1,7 @@
 package org.andengine.engine.options;
 
 import org.andengine.engine.Engine.EngineLock;
+import org.andengine.engine.Engine.UpdateThread;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.resolutionpolicy.IResolutionPolicy;
 
@@ -32,6 +33,8 @@ public class EngineOptions {
 	private final RenderOptions mRenderOptions = new RenderOptions();
 
 	private WakeLockOptions mWakeLockOptions = WakeLockOptions.SCREEN_ON;
+
+	private UpdateThread mUpdateThread;
 	private int mUpdateThreadPriority = android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 	// ===========================================================
@@ -89,6 +92,18 @@ public class EngineOptions {
 		return this.mCamera;
 	}
 
+	public boolean hasUpdateThread() {
+		return this.mUpdateThread != null;
+	}
+
+	public UpdateThread getUpdateThread() {
+		return this.mUpdateThread;
+	}
+
+	public void setUpdateThread(final UpdateThread pUpdateThread) {
+		this.mUpdateThread = pUpdateThread;
+	}
+
 	public int getUpdateThreadPriority() {
 		return this.mUpdateThreadPriority;
 	}
@@ -120,19 +135,4 @@ public class EngineOptions {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static enum ScreenOrientation {
-		// ===========================================================
-		// Elements
-		// ===========================================================
-
-		/** The app will be fixed in its default Landscape mode. */
-		LANDSCAPE_FIXED,
-		/** The app will automatically rotate between the Landscape modes, depending on the orientation of the device. */
-		LANDSCAPE_SENSOR,
-		/** The app will be fixed in its default Portrait mode. */
-		PORTRAIT_FIXED,
-		/** The app will automatically rotate between the Portrait modes, depending on the orientation of the device. */
-		PORTRAIT_SENSOR;
-	}
 }

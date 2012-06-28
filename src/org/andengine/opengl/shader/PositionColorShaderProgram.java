@@ -1,7 +1,7 @@
 package org.andengine.opengl.shader;
 
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.shader.exception.ShaderProgramLinkException;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 
@@ -41,7 +41,7 @@ public class PositionColorShaderProgram extends ShaderProgram {
 	// Fields
 	// ===========================================================
 
-	public static int sUniformModelViewPositionMatrixLocation = ShaderProgram.LOCATION_INVALID;
+	public static int sUniformModelViewPositionMatrixLocation = ShaderProgramConstants.LOCATION_INVALID;
 
 	// ===========================================================
 	// Constructors

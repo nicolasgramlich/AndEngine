@@ -9,52 +9,65 @@ import org.andengine.opengl.texture.ITexture;
  * @author Nicolas Gramlich
  * @since 14:29:59 - 08.03.2010
  */
-public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
+public class TextureRegion extends BaseTextureRegion {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final float SCALE_DEFAULT = 1;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	protected int mX;
-	protected int mY;
-	protected int mWidth;
-	protected int mHeight;
+	protected float mTextureX;
+	protected float mTextureY;
+	protected float mTextureWidth;
+	protected float mTextureHeight;
 
 	protected float mU;
 	protected float mU2;
 	protected float mV;
 	protected float mV2;
 
+	protected final float mScale;
 	protected final boolean mRotated;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public TextureRegion(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight) {
-		this(pTexture, pX, pY, pWidth, pHeight, false);
+	public TextureRegion(final ITexture pTexture, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight) {
+		this(pTexture, pTextureX, pTextureY, pTextureWidth, pTextureHeight, false);
 	}
 
-	public TextureRegion(final ITexture pTexture, final int pX, final int pY, final int pWidth, final int pHeight, final boolean pRotated) {
+	public TextureRegion(final ITexture pTexture, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight, final boolean pRotated) {
+		this(pTexture, pTextureX, pTextureY, pTextureWidth, pTextureHeight, SCALE_DEFAULT, pRotated);
+	}
+
+	public TextureRegion(final ITexture pTexture, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight, final float pScale) {
+		this(pTexture, pTextureX, pTextureY, pTextureWidth, pTextureHeight, pScale, false);
+	}
+
+	public TextureRegion(final ITexture pTexture, final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight, final float pScale, final boolean pRotated) {
 		super(pTexture);
 
-		this.mX = pX;
-		this.mY = pY;
+		this.mTextureX = pTextureX;
+		this.mTextureY = pTextureY;
 
 		if(pRotated) {
 			this.mRotated = true;
 
-			this.mWidth = pHeight;
-			this.mHeight = pWidth;
+			this.mTextureWidth = pTextureHeight;
+			this.mTextureHeight = pTextureWidth;
 		} else {
 			this.mRotated = false;
 
-			this.mWidth = pWidth;
-			this.mHeight = pHeight;
+			this.mTextureWidth = pTextureWidth;
+			this.mTextureHeight = pTextureHeight;
 		}
+
+		this.mScale = pScale;
 
 		this.updateUV();
 	}
@@ -62,9 +75,9 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 	@Override
 	public TextureRegion deepCopy() {
 		if(this.mRotated) {
-			return new TextureRegion(this.mTexture, this.mX, this.mY, this.mHeight, this.mWidth, this.mRotated);
+			return new TextureRegion(this.mTexture, this.mTextureX, this.mTextureY, this.mTextureHeight, this.mTextureWidth, this.mScale, this.mRotated);
 		} else {
-			return new TextureRegion(this.mTexture, this.mX, this.mY, this.mWidth, this.mHeight, this.mRotated);
+			return new TextureRegion(this.mTexture, this.mTextureX, this.mTextureY, this.mTextureWidth, this.mTextureHeight, this.mScale, this.mRotated);
 		}
 	}
 
@@ -73,77 +86,84 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 	// ===========================================================
 
 	@Override
-	public int getX() {
-		return this.mX;
+	public float getTextureX() {
+		return this.mTextureX;
 	}
 
 	@Override
-	public int getY() {
-		return this.mY;
+	public float getTextureY() {
+		return this.mTextureY;
 	}
 
 	@Override
-	public void setX(final int pX) {
-		this.mX = pX;
+	public void setTextureX(final float pTextureX) {
+		this.mTextureX = pTextureX;
+
 		this.updateUV();
 	}
 
 	@Override
-	public void setY(final int pY) {
-		this.mY = pY;
+	public void setTextureY(final float pTextureY) {
+		this.mTextureY = pTextureY;
+
 		this.updateUV();
 	}
 
 	@Override
-	public void setPosition(final int pX, final int pY) {
-		this.mX = pX;
-		this.mY = pY;
+	public void setTexturePosition(final float pTextureX, final float pTextureY) {
+		this.mTextureX = pTextureX;
+		this.mTextureY = pTextureY;
+
 		this.updateUV();
 	}
 
 	@Override
-	public int getWidth() {
+	public float getWidth() {
 		if(this.mRotated) {
-			return this.mHeight;
+			return this.mTextureHeight * this.mScale;
 		} else {
-			return this.mWidth;
+			return this.mTextureWidth * this.mScale;
 		}
 	}
 
 	@Override
-	public int getHeight() {
+	public float getHeight() {
 		if(this.mRotated) {
-			return this.mWidth;
+			return this.mTextureWidth * this.mScale;
 		} else {
-			return this.mHeight;
+			return this.mTextureHeight * this.mScale;
 		}
 	}
 
 	@Override
-	public void setWidth(final int pWidth) {
-		this.mWidth = pWidth;
+	public void setTextureWidth(final float pTextureWidth) {
+		this.mTextureWidth = pTextureWidth;
+
 		this.updateUV();
 	}
 
 	@Override
-	public void setHeight(final int pHeight) {
-		this.mHeight = pHeight;
+	public void setTextureHeight(final float pTextureHeight) {
+		this.mTextureHeight = pTextureHeight;
+
 		this.updateUV();
 	}
 
 	@Override
-	public void setSize(final int pWidth, final int pHeight) {
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+	public void setTextureSize(final float pTextureWidth, final float pTextureHeight) {
+		this.mTextureWidth = pTextureWidth;
+		this.mTextureHeight = pTextureHeight;
+
 		this.updateUV();
 	}
 
 	@Override
-	public void set(final int pX, final int pY, final int pWidth, final int pHeight) {
-		this.mX = pX;
-		this.mY = pY;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
+	public void set(final float pTextureX, final float pTextureY, final float pTextureWidth, final float pTextureHeight) {
+		this.mTextureX = pTextureX;
+		this.mTextureY = pTextureY;
+		this.mTextureWidth = pTextureWidth;
+		this.mTextureHeight = pTextureHeight;
+
 		this.updateUV();
 	}
 
@@ -168,6 +188,16 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 	}
 
 	@Override
+	public boolean isScaled() {
+		return this.mScale != SCALE_DEFAULT;
+	}
+
+	@Override
+	public float getScale() {
+		return this.mScale;
+	}
+
+	@Override
 	public boolean isRotated() {
 		return this.mRotated;
 	}
@@ -182,17 +212,23 @@ public class TextureRegion extends BaseTextureRegion implements ITextureRegion {
 
 	public void updateUV() {
 		final ITexture texture = this.mTexture;
-		final int textureWidth = texture.getWidth();
-		final int textureHeight = texture.getHeight();
+		final float textureWidth = texture.getWidth();
+		final float textureHeight = texture.getHeight();
 
-		final int x = this.getX();
-		final int y = this.getY();
+		final float x = this.getTextureX();
+		final float y = this.getTextureY();
 
-		this.mU = (float) x / textureWidth;
-		this.mU2 = (float) (x + this.mWidth) / textureWidth;
+		this.mU = x / textureWidth;
+		this.mU2 = (x + this.mTextureWidth) / textureWidth;
 
-		this.mV = (float) y / textureHeight;
-		this.mV2 = (float) (y + this.mHeight) / textureHeight;
+		this.mV = y / textureHeight;
+		this.mV2 = (y + this.mTextureHeight) / textureHeight;
+
+//		this.mU = (x + 0.5f) / textureWidth;
+//		this.mU2 = (x + this.mTextureWidth - 0.5f) / textureWidth;
+//
+//		this.mV = (y + 0.5f) / textureHeight;
+//		this.mV2 = (y + this.mTextureHeight - 0.5f) / textureHeight;
 	}
 
 	// ===========================================================

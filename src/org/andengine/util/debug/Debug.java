@@ -1,6 +1,6 @@
 package org.andengine.util.debug;
 
-import org.andengine.util.constants.Constants;
+import org.andengine.util.Constants;
 
 import android.util.Log;
 
@@ -11,7 +11,7 @@ import android.util.Log;
  * @author Nicolas Gramlich
  * @since 13:29:16 - 08.03.2010
  */
-public class Debug implements Constants {
+public class Debug {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,6 +21,7 @@ public class Debug implements Constants {
 	// ===========================================================
 
 	private static String sTag = Constants.DEBUGTAG;
+	private static String sDebugUser = "";
 	private static DebugLevel sDebugLevel = DebugLevel.VERBOSE;
 
 	// ===========================================================
@@ -48,6 +49,13 @@ public class Debug implements Constants {
 			throw new IllegalArgumentException("pDebugLevel must not be null!");
 		}
 		Debug.sDebugLevel = pDebugLevel;
+	}
+
+	public static void setDebugUser(final String pDebugUser) {
+		if(pDebugUser == null) {
+			throw new IllegalArgumentException("pDebugUser must not be null!");
+		}
+		Debug.sDebugUser = pDebugUser;
 	}
 
 	// ===========================================================
@@ -168,6 +176,30 @@ public class Debug implements Constants {
 		}
 	}
 
+	public static void vUser(final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.v(pMessage);
+		}
+	}
+
+	public static void vUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.v(pMessage, pThrowable);
+		}
+	}
+
+	public static void vUser(final String pTag, final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.v(pTag, pMessage);
+		}
+	}
+
+	public static void vUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.v(pTag, pMessage, pThrowable);
+		}
+	}
+
 	public static void d(final String pMessage) {
 		Debug.d(Debug.sTag, pMessage, null);
 	}
@@ -190,16 +222,40 @@ public class Debug implements Constants {
 		}
 	}
 
+	public static void dUser(final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.d(pMessage);
+		}
+	}
+
+	public static void dUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.d(pMessage, pThrowable);
+		}
+	}
+
+	public static void dUser(final String pTag, final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.d(pTag, pMessage);
+		}
+	}
+
+	public static void dUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.d(pTag, pMessage, pThrowable);
+		}
+	}
+
 	public static void i(final String pMessage) {
 		Debug.i(Debug.sTag, pMessage, null);
 	}
 
-	public static void i(final String pTag, final String pMessage) {
-		Debug.i(pTag, pMessage, null);
-	}
-
 	public static void i(final String pMessage, final Throwable pThrowable) {
 		Debug.i(Debug.sTag, pMessage, pThrowable);
+	}
+
+	public static void i(final String pTag, final String pMessage) {
+		Debug.i(pTag, pMessage, null);
 	}
 
 	public static void i(final String pTag, final String pMessage, final Throwable pThrowable) {
@@ -212,6 +268,30 @@ public class Debug implements Constants {
 		}
 	}
 
+	public static void iUser(final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.i(pMessage);
+		}
+	}
+
+	public static void iUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.i(pMessage, pThrowable);
+		}
+	}
+
+	public static void iUser(final String pTag, final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.i(pTag, pMessage);
+		}
+	}
+
+	public static void iUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.i(pTag, pMessage, pThrowable);
+		}
+	}
+
 	public static void w(final String pMessage) {
 		Debug.w(Debug.sTag, pMessage, null);
 	}
@@ -220,12 +300,12 @@ public class Debug implements Constants {
 		Debug.w("", pThrowable);
 	}
 
-	public static void w(final String pTag, final String pMessage) {
-		Debug.w(pTag, pMessage, null);
-	}
-
 	public static void w(final String pMessage, final Throwable pThrowable) {
 		Debug.w(Debug.sTag, pMessage, pThrowable);
+	}
+
+	public static void w(final String pTag, final String pMessage) {
+		Debug.w(pTag, pMessage, null);
 	}
 
 	public static void w(final String pTag, final String pMessage, final Throwable pThrowable) {
@@ -238,6 +318,36 @@ public class Debug implements Constants {
 		}
 	}
 
+	public static void wUser(final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.w(pMessage);
+		}
+	}
+
+	public static void wUser(final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.w(pThrowable);
+		}
+	}
+
+	public static void wUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.w(pMessage, pThrowable);
+		}
+	}
+
+	public static void wUser(final String pTag, final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.w(pTag, pMessage);
+		}
+	}
+
+	public static void wUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.w(pTag, pMessage, pThrowable);
+		}
+	}
+
 	public static void e(final String pMessage) {
 		Debug.e(Debug.sTag, pMessage, null);
 	}
@@ -246,12 +356,12 @@ public class Debug implements Constants {
 		Debug.e(Debug.sTag, pThrowable);
 	}
 
-	public static void e(final String pTag, final String pMessage) {
-		Debug.e(pTag, pMessage, null);
-	}
-
 	public static void e(final String pMessage, final Throwable pThrowable) {
 		Debug.e(Debug.sTag, pMessage, pThrowable);
+	}
+
+	public static void e(final String pTag, final String pMessage) {
+		Debug.e(pTag, pMessage, null);
 	}
 
 	public static void e(final String pTag, final String pMessage, final Throwable pThrowable) {
@@ -264,21 +374,46 @@ public class Debug implements Constants {
 		}
 	}
 
+	public static void eUser(final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.e(pMessage);
+		}
+	}
+
+	public static void eUser(final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.e(pThrowable);
+		}
+	}
+
+	public static void eUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.e(pMessage, pThrowable);
+		}
+	}
+
+	public static void eUser(final String pTag, final String pMessage, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.e(pTag, pMessage);
+		}
+	}
+
+	public static void eUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
+		if(Debug.sDebugUser.equals(pDebugUser)) {
+			Debug.e(pTag, pMessage, pThrowable);
+		}
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
 
 	public static enum DebugLevel implements Comparable<DebugLevel> {
-		NONE,
-		ERROR,
-		WARNING,
-		INFO,
-		DEBUG,
-		VERBOSE;
+		NONE, ERROR, WARNING, INFO, DEBUG, VERBOSE;
 
 		public static DebugLevel ALL = DebugLevel.VERBOSE;
 
-		private boolean isSameOrLessThan(final DebugLevel pDebugLevel) {
+		public boolean isSameOrLessThan(final DebugLevel pDebugLevel) {
 			return this.compareTo(pDebugLevel) >= 0;
 		}
 	}

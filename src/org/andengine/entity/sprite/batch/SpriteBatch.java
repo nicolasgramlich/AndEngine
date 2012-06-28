@@ -1,25 +1,24 @@
 package org.andengine.entity.sprite.batch;
 
-import java.nio.FloatBuffer;
-
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.Shape;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.sprite.batch.vbo.HighPerformanceSpriteBatchVertexBufferObject;
+import org.andengine.entity.sprite.batch.vbo.ISpriteBatchVertexBufferObject;
 import org.andengine.opengl.shader.PositionColorTextureCoordinatesShaderProgram;
 import org.andengine.opengl.shader.ShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
-import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
-import org.andengine.opengl.vbo.IVertexBufferObject;
-import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
-import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.DrawType;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
-import org.andengine.util.color.Color;
-import org.andengine.util.transformation.Transformation;
+import org.andengine.util.adt.transformation.Transformation;
+import org.andengine.util.color.ColorUtils;
 
 import android.opengl.GLES20;
 
@@ -73,36 +72,36 @@ public class SpriteBatch extends Shape {
 	// Constructors
 	// ===========================================================
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity) {
-		this(pTexture, pCapacity, DrawType.STATIC);
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pTexture, pCapacity, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity) {
-		this(pX, pY, pTexture, pCapacity, DrawType.STATIC);
+	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pTexture, pCapacity, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final DrawType pDrawType) {
-		this(pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pVertexBufferObjectManager, pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final DrawType pDrawType) {
-		this(pX, pY, pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pVertexBufferObjectManager, pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final ShaderProgram pShaderProgram) {
-		this(pTexture, pCapacity, DrawType.STATIC, pShaderProgram);
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
+		this(pTexture, pCapacity, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTexture, pCapacity, DrawType.STATIC, pShaderProgram);
+	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pTexture, pCapacity, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}
 
-	public SpriteBatch(final ITexture pTexture, final int pCapacity, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	public SpriteBatch(final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pVertexBufferObjectManager, pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
 	}
 
-	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+	public SpriteBatch(final float pX, final float pY, final ITexture pTexture, final int pCapacity, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
+		this(pX, pY, pTexture, pCapacity, new HighPerformanceSpriteBatchVertexBufferObject(pVertexBufferObjectManager, pCapacity * SpriteBatch.SPRITE_SIZE, pDrawType, true, SpriteBatch.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
 	}
 
 	public SpriteBatch(final ITexture pTexture, final int pCapacity, final ISpriteBatchVertexBufferObject pSpriteBatchVertexBufferObject) {
@@ -184,7 +183,7 @@ public class SpriteBatch extends Shape {
 
 		if(this.mBlendingEnabled) {
 			pGLState.enableBlend();
-			pGLState.blendFunction(this.mSourceBlendFunction, this.mDestinationBlendFunction);
+			pGLState.blendFunction(this.mBlendFunctionSource, this.mBlendFunctionDestination);
 		}
 
 		this.mTexture.bind(pGLState);
@@ -220,11 +219,11 @@ public class SpriteBatch extends Shape {
 	}
 
 	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
+	public void dispose() {
+		super.dispose();
 
-		if(this.mSpriteBatchVertexBufferObject.isManaged()) {
-			this.mSpriteBatchVertexBufferObject.unload();
+		if(this.mSpriteBatchVertexBufferObject != null && this.mSpriteBatchVertexBufferObject.isAutoDispose() && !this.mSpriteBatchVertexBufferObject.isDisposed()) {
+			this.mSpriteBatchVertexBufferObject.dispose();
 		}
 	}
 
@@ -252,29 +251,26 @@ public class SpriteBatch extends Shape {
 		this.mIndex++;
 	}
 
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
+
+		this.mIndex++;
+	}
+
 	/**
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)}.
 	 */
-	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
+	public void draw(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pColorABGRPackedInt) {
 		this.assertCapacity();
 		this.assertTexture(pTextureRegion);
 
-		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
+		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pColorABGRPackedInt);
 
 		this.mIndex++;
 	}
 
-	/**
-	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)}.
-	 */
-	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
-		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pPackedColor);
-
-		this.mIndex++;
-	}
-
-	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pColorABGRPackedInt) {
+		this.add(pTextureRegion, pX, pY, pWidth, pHeight, pColorABGRPackedInt);
 
 		this.mIndex++;
 	}
@@ -355,23 +351,71 @@ public class SpriteBatch extends Shape {
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float)}.
 	 */
 	public void draw(final Sprite pSprite) {
-		this.draw(pSprite, pSprite.getColor().getPacked());
+		this.draw(pSprite.getTextureRegion(), pSprite, pSprite.getWidth(), pSprite.getHeight(), pSprite.getColor().getABGRPackedFloat());
+	}
+
+	public void drawWithoutChecks(final Sprite pSprite) {
+		this.drawWithoutChecks(pSprite.getTextureRegion(), pSprite, pSprite.getWidth(), pSprite.getHeight(), pSprite.getColor().getABGRPackedFloat());
 	}
 
 	/**
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
 	 */
 	public void draw(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(pSprite.isVisible()) {
+		this.draw(pSprite.getTextureRegion(), pSprite, pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+	}
+
+	public void drawWithoutChecks(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		this.drawWithoutChecks(pSprite.getTextureRegion(), pSprite, pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+	}
+
+	/**
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
+	 */
+	public void draw(final Sprite pSprite, final float pColorABGRPackedInt) {
+		this.draw(pSprite.getTextureRegion(), pSprite, pSprite.getWidth(), pSprite.getHeight(), pColorABGRPackedInt);
+	}
+
+	public void drawWithoutChecks(final Sprite pSprite, final float pColorABGRPackedInt) {
+		this.drawWithoutChecks(pSprite.getTextureRegion(), pSprite, pSprite.getWidth(), pSprite.getHeight(), pColorABGRPackedInt);
+	}
+
+	/**
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float)}.
+	 */
+	public void draw(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pWidth, final float pHeight) {
+		this.draw(pTextureRegion, pEntity, pWidth, pHeight, pEntity.getColor().getABGRPackedFloat());
+	}
+
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pWidth, final float pHeight) {
+		this.drawWithoutChecks(pTextureRegion, pEntity, pWidth, pHeight, pEntity.getColor().getABGRPackedFloat());
+	}
+
+	/**
+	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
+	 */
+	public void draw(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		if(pEntity.isVisible()) {
 			this.assertCapacity();
 
-			final ITextureRegion textureRegion = pSprite.getTextureRegion();
-			this.assertTexture(textureRegion);
+			this.assertTexture(pTextureRegion);
 
-			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+			if(pEntity.isRotatedOrScaledOrSkewed()) {
+				this.add(pTextureRegion, pWidth, pHeight, pEntity.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
 			} else {
-				this.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
+				this.add(pTextureRegion, pEntity.getX(), pEntity.getY(), pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
+			}
+
+			this.mIndex++;
+		}
+	}
+
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pWidth, final float pHeight, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+		if(pEntity.isVisible()) {
+			if(pEntity.isRotatedOrScaledOrSkewed()) {
+				this.add(pTextureRegion, pWidth, pHeight, pEntity.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+			} else {
+				this.add(pTextureRegion, pEntity.getX(), pEntity.getY(), pWidth, pHeight, pRed, pGreen, pBlue, pAlpha);
 			}
 
 			this.mIndex++;
@@ -381,49 +425,28 @@ public class SpriteBatch extends Shape {
 	/**
 	 * @see {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, float, float, float)} {@link SpriteBatchVertexBufferObject#add(ITextureRegion, float, float, Transformation, float, float, float, float)}.
 	 */
-	public void draw(final Sprite pSprite, final float pPackedColor) {
-		if(pSprite.isVisible()) {
+	public void draw(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pWidth, final float pHeight, final float pColorABGRPackedInt) {
+		if(pEntity.isVisible()) {
 			this.assertCapacity();
 
-			final ITextureRegion textureRegion = pSprite.getTextureRegion();
-			this.assertTexture(textureRegion);
+			this.assertTexture(pTextureRegion);
 
-			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
+			if(pEntity.isRotatedOrScaledOrSkewed()) {
+				this.addWithPackedColor(pTextureRegion, pWidth, pHeight, pEntity.getLocalToParentTransformation(), pColorABGRPackedInt);
 			} else {
-				this.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
+				this.addWithPackedColor(pTextureRegion, pEntity.getX(), pEntity.getY(), pWidth, pHeight, pColorABGRPackedInt);
 			}
 
 			this.mIndex++;
 		}
 	}
 
-	public void drawWithoutChecks(final Sprite pSprite) {
-		this.drawWithoutChecks(pSprite, pSprite.getColor().getPacked());
-	}
-
-	public void drawWithoutChecks(final Sprite pSprite, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(pSprite.isVisible()) {
-			final ITextureRegion textureRegion = pSprite.getTextureRegion();
-
-			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.add(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pRed, pGreen, pBlue, pAlpha);
+	public void drawWithoutChecks(final ITextureRegion pTextureRegion, final IEntity pEntity, final float pWidth, final float pHeight, final float pColorABGRPackedInt) {
+		if(pEntity.isVisible()) {
+			if(pEntity.isRotatedOrScaledOrSkewed()) {
+				this.addWithPackedColor(pTextureRegion, pWidth, pHeight, pEntity.getLocalToParentTransformation(), pColorABGRPackedInt);
 			} else {
-				this.add(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pRed, pGreen, pBlue, pAlpha);
-			}
-
-			this.mIndex++;
-		}
-	}
-
-	public void drawWithoutChecks(final Sprite pSprite, final float pPackedColor) {
-		if(pSprite.isVisible()) {
-			final ITextureRegion textureRegion = pSprite.getTextureRegion();
-
-			if(pSprite.isRotatedOrScaledOrSkewed()) {
-				this.addWithPackedColor(textureRegion, pSprite.getWidth(), pSprite.getHeight(), pSprite.getLocalToParentTransformation(), pPackedColor);
-			} else {
-				this.addWithPackedColor(textureRegion, pSprite.getX(), pSprite.getY(), pSprite.getWidth(), pSprite.getHeight(), pPackedColor);
+				this.addWithPackedColor(pTextureRegion, pEntity.getX(), pEntity.getY(), pWidth, pHeight, pColorABGRPackedInt);
 			}
 
 			this.mIndex++;
@@ -494,9 +517,9 @@ public class SpriteBatch extends Shape {
 	 * @param pWidth
 	 * @param pHeight
 	 * @param pRotation around the center (pWidth * 0.5f, pHeight * 0.5f)
-	 * @param pPackedColor
+	 * @param pColorABGRPackedInt
 	 */
-	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pPackedColor) {
+	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pColorABGRPackedInt) {
 		final float widthHalf = pWidth * 0.5f;
 		final float heightHalf = pHeight * 0.5f;
 
@@ -507,7 +530,7 @@ public class SpriteBatch extends Shape {
 		SpriteBatch.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
 		SpriteBatch.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-		this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatch.TRANSFORATION_TMP, pPackedColor);
+		this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatch.TRANSFORATION_TMP, pColorABGRPackedInt);
 	}
 
 	/**
@@ -547,9 +570,9 @@ public class SpriteBatch extends Shape {
 	 * @param pRotation around the center (pWidth * 0.5f, pHeight * 0.5f)
 	 * @param pScaleX around the center (pWidth * 0.5f, pHeight * 0.5f)
 	 * @param pScaleY around the center (pWidth * 0.5f, pHeight * 0.5f)
-	 * @param pPackedColor
+	 * @param pColorABGRPackedInt
 	 */
-	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY, final float pPackedColor) {
+	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pScaleX, final float pScaleY, final float pColorABGRPackedInt) {
 		final float widthHalf = pWidth * 0.5f;
 		final float heightHalf = pHeight * 0.5f;
 
@@ -560,7 +583,7 @@ public class SpriteBatch extends Shape {
 		SpriteBatch.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
 		SpriteBatch.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-		this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatch.TRANSFORATION_TMP, pPackedColor);
+		this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatch.TRANSFORATION_TMP, pColorABGRPackedInt);
 	}
 
 	/**
@@ -601,9 +624,9 @@ public class SpriteBatch extends Shape {
 	 * @param pRotation around the center (pWidth * 0.5f, pHeight * 0.5f)
 	 * @param pScaleX around the center (pWidth * 0.5f, pHeight * 0.5f)
 	 * @param pScaleY around the center (pWidth * 0.5f, pHeight * 0.5f)
-	 * @param pPackedColor
+	 * @param pColorABGRPackedInt
 	 */
-	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY, final float pPackedColor) {
+	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pRotation, final float pScaleX, final float pScaleY, final float pColorABGRPackedInt) {
 		final float widthHalf = pWidth * 0.5f;
 		final float heightHalf = pHeight * 0.5f;
 
@@ -615,7 +638,7 @@ public class SpriteBatch extends Shape {
 		SpriteBatch.TRANSFORATION_TMP.postTranslate(widthHalf, heightHalf);
 		SpriteBatch.TRANSFORATION_TMP.postTranslate(pX, pY);
 
-		this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatch.TRANSFORATION_TMP, pPackedColor);
+		this.addWithPackedColor(pTextureRegion, pWidth, pHeight, SpriteBatch.TRANSFORATION_TMP, pColorABGRPackedInt);
 	}
 
 	/**
@@ -651,9 +674,9 @@ public class SpriteBatch extends Shape {
 	 * @param pWidth
 	 * @param pHeight
 	 * @param pTransformation
-	 * @param pPackedColor
+	 * @param pColorABGRPackedInt
 	 */
-	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pWidth, final float pHeight, final Transformation pTransformation, final float pPackedColor) {
+	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pWidth, final float pHeight, final Transformation pTransformation, final float pColorABGRPackedInt) {
 		SpriteBatch.VERTICES_TMP[0] = 0;
 		SpriteBatch.VERTICES_TMP[1] = 0;
 
@@ -668,7 +691,7 @@ public class SpriteBatch extends Shape {
 
 		pTransformation.transform(SpriteBatch.VERTICES_TMP);
 
-		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, SpriteBatch.VERTICES_TMP[0], SpriteBatch.VERTICES_TMP[1], SpriteBatch.VERTICES_TMP[2], SpriteBatch.VERTICES_TMP[3],  SpriteBatch.VERTICES_TMP[4], SpriteBatch.VERTICES_TMP[5], SpriteBatch.VERTICES_TMP[6], SpriteBatch.VERTICES_TMP[7], pPackedColor);
+		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, SpriteBatch.VERTICES_TMP[0], SpriteBatch.VERTICES_TMP[1], SpriteBatch.VERTICES_TMP[2], SpriteBatch.VERTICES_TMP[3],  SpriteBatch.VERTICES_TMP[4], SpriteBatch.VERTICES_TMP[5], SpriteBatch.VERTICES_TMP[6], SpriteBatch.VERTICES_TMP[7], pColorABGRPackedInt);
 	}
 
 	/**
@@ -692,10 +715,10 @@ public class SpriteBatch extends Shape {
 	 * @param pY
 	 * @param pWidth
 	 * @param pHeight
-	 * @param pPackedColor
+	 * @param pColorABGRPackedInt
 	 */
-	protected void add(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
-		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX, pY, pX + pWidth, pY + pHeight, pPackedColor);
+	protected void add(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pColorABGRPackedInt) {
+		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX, pY, pX + pWidth, pY + pHeight, pColorABGRPackedInt);
 	}
 
 	/**
@@ -704,10 +727,10 @@ public class SpriteBatch extends Shape {
 	 * @param pY
 	 * @param pWidth
 	 * @param pHeight
-	 * @param pPackedColor
+	 * @param pColorABGRPackedInt
 	 */
-	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pPackedColor) {
-		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX, pY, pX + pWidth, pY + pHeight, pPackedColor);
+	protected void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX, final float pY, final float pWidth, final float pHeight, final float pColorABGRPackedInt) {
+		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX, pY, pX + pWidth, pY + pHeight, pColorABGRPackedInt);
 	}
 
 	/**
@@ -716,7 +739,7 @@ public class SpriteBatch extends Shape {
 	 * +-2
 	 */
 	private void addInner(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX1, pY1, pX2, pY2, Color.pack(pRed, pGreen, pBlue, pAlpha));
+		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX1, pY1, pX2, pY2, ColorUtils.convertRGBAToABGRPackedFloat(pRed, pGreen, pBlue, pAlpha));
 	}
 
 	/**
@@ -725,512 +748,10 @@ public class SpriteBatch extends Shape {
 	 * 2-4
 	 */
 	private void addInner(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, Color.pack(pRed, pGreen, pBlue, pAlpha));
+		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, pX1, pY1, pX2, pY2, pX3, pY3, pX4, pY4, ColorUtils.convertRGBAToABGRPackedFloat(pRed, pGreen, pBlue, pAlpha));
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
-	public static interface ISpriteBatchVertexBufferObject extends IVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		public int getBufferDataOffset();
-		public void setBufferDataOffset(final int pBufferDataOffset);
-
-		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pPackedColor);
-		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pPackedColor);
-	}
-
-	public static class HighPerformanceSpriteBatchVertexBufferObject extends HighPerformanceVertexBufferObject implements ISpriteBatchVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		protected int mBufferDataOffset;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public HighPerformanceSpriteBatchVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		@Override
-		public int getBufferDataOffset() {
-			return this.mBufferDataOffset;
-		}
-
-		@Override
-		public void setBufferDataOffset(final int pBufferDataOffset) {
-			this.mBufferDataOffset = pBufferDataOffset;
-		}
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		/**
-		 * 1-3
-		 * |X|
-		 * 2-4
-		 */
-		@Override
-		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pPackedColor) {
-			final float[] bufferData = this.getBufferData();
-			final int bufferDataOffset = this.mBufferDataOffset;
-
-			final float x1 = pX1;
-			final float y1 = pY1;
-			final float x2 = pX2;
-			final float y2 = pY2;
-			final float x3 = pX3;
-			final float y3 = pY3;
-			final float x4 = pX4;
-			final float y4 = pY4;
-			final float u = pTextureRegion.getU();
-			final float v = pTextureRegion.getV();
-			final float u2 = pTextureRegion.getU2();
-			final float v2 = pTextureRegion.getV2();
-
-			if(pTextureRegion.isRotated()) {
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x3;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y3;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x3;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y3;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x4;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y4;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-			} else {
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x3;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y3;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x3;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y3;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x4;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y4;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-			}
-
-			this.mBufferDataOffset += SpriteBatch.SPRITE_SIZE;
-		}
-
-
-		/**
-		 * 1-+
-		 * |X|
-		 * +-2
-		 */
-		@Override
-		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pPackedColor) {
-			final float[] bufferData = this.getBufferData();
-			final int bufferDataOffset = this.mBufferDataOffset;
-
-			final float x1 = pX1;
-			final float y1 = pY1;
-			final float x2 = pX2;
-			final float y2 = pY2;
-			final float u = pTextureRegion.getU();
-			final float v = pTextureRegion.getV();
-			final float u2 = pTextureRegion.getU2();
-			final float v2 = pTextureRegion.getV2();
-
-			if(pTextureRegion.isRotated()) {
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-			} else {
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v;
-
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u;
-				bufferData[bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x2;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y2;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pPackedColor;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U] = u2;
-				bufferData[bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V] = v2;
-			}
-
-			this.mBufferDataOffset += SpriteBatch.SPRITE_SIZE;
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
-
-	public static class LowMemorySpriteBatchVertexBufferObject extends LowMemoryVertexBufferObject implements ISpriteBatchVertexBufferObject {
-		// ===========================================================
-		// Constants
-		// ===========================================================
-
-		// ===========================================================
-		// Fields
-		// ===========================================================
-
-		protected int mBufferDataOffset;
-
-		// ===========================================================
-		// Constructors
-		// ===========================================================
-
-		public LowMemorySpriteBatchVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
-		}
-
-		// ===========================================================
-		// Getter & Setter
-		// ===========================================================
-
-		@Override
-		public int getBufferDataOffset() {
-			return this.mBufferDataOffset;
-		}
-
-		@Override
-		public void setBufferDataOffset(final int pBufferDataOffset) {
-			this.mBufferDataOffset = pBufferDataOffset;
-		}
-
-		// ===========================================================
-		// Methods for/from SuperClass/Interfaces
-		// ===========================================================
-
-		/**
-		 * 1-3
-		 * |X|
-		 * 2-4
-		 */
-		@Override
-		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pX3, final float pY3, final float pX4, final float pY4, final float pPackedColor) {
-			final FloatBuffer bufferData = this.getFloatBuffer();
-			final int bufferDataOffset = this.mBufferDataOffset;
-
-			final float x1 = pX1;
-			final float y1 = pY1;
-			final float x2 = pX2;
-			final float y2 = pY2;
-			final float x3 = pX3;
-			final float y3 = pY3;
-			final float x4 = pX4;
-			final float y4 = pY4;
-			final float u = pTextureRegion.getU();
-			final float v = pTextureRegion.getV();
-			final float u2 = pTextureRegion.getU2();
-			final float v2 = pTextureRegion.getV2();
-
-			if(pTextureRegion.isRotated()) {
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x1);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y1);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x3);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y3);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x3);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y3);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x4);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y4);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-			} else {
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x1);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y1);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x3);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y3);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x3);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y3);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x4);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y4);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-			}
-
-			this.mBufferDataOffset += SpriteBatch.SPRITE_SIZE;
-		}
-
-
-		/**
-		 * 1-+
-		 * |X|
-		 * +-2
-		 */
-		@Override
-		public void addWithPackedColor(final ITextureRegion pTextureRegion, final float pX1, final float pY1, final float pX2, final float pY2, final float pPackedColor) {
-			final FloatBuffer bufferData = this.getFloatBuffer();
-			final int bufferDataOffset = this.mBufferDataOffset;
-
-			final float x1 = pX1;
-			final float y1 = pY1;
-			final float x2 = pX2;
-			final float y2 = pY2;
-			final float u = pTextureRegion.getU();
-			final float v = pTextureRegion.getV();
-			final float u2 = pTextureRegion.getU2();
-			final float v2 = pTextureRegion.getV2();
-
-			if(pTextureRegion.isRotated()) {
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x1);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y1);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x1);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y1);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y1);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x1);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-			} else {
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x1);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y1);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x1);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 1 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y1);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 2 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y1);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 3 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v);
-
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x1);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u);
-				bufferData.put(bufferDataOffset + 4 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X, x2);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y, y2);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX, pPackedColor);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_U, u2);
-				bufferData.put(bufferDataOffset + 5 * SpriteBatch.VERTEX_SIZE + SpriteBatch.TEXTURECOORDINATES_INDEX_V, v2);
-			}
-
-			this.mBufferDataOffset += SpriteBatch.SPRITE_SIZE;
-		}
-
-		// ===========================================================
-		// Methods
-		// ===========================================================
-
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
-	}
 }

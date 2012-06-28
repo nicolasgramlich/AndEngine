@@ -2,7 +2,7 @@ package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
-import org.andengine.util.ArrayUtils;
+import org.andengine.util.adt.array.ArrayUtils;
 
 import android.graphics.Paint.Style;
 import android.graphics.RadialGradient;
@@ -54,8 +54,8 @@ public class RadialGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 
 		this.mPaint.setStyle(Style.FILL);
 
-		final int width = pBitmapTextureAtlasSource.getWidth();
-		final int height = pBitmapTextureAtlasSource.getHeight();
+		final int width = pBitmapTextureAtlasSource.getTextureWidth();
+		final int height = pBitmapTextureAtlasSource.getTextureHeight();
 
 		final float centerX = width * 0.5f;
 		final float centerY = height * 0.5f;

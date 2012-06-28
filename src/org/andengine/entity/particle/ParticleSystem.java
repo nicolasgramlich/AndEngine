@@ -4,55 +4,51 @@ import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.IEntityFactory;
 import org.andengine.entity.particle.emitter.IParticleEmitter;
 import org.andengine.entity.particle.initializer.IParticleInitializer;
 import org.andengine.entity.particle.modifier.IParticleModifier;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.constants.Constants;
+import org.andengine.util.Constants;
 import org.andengine.util.math.MathUtils;
 
 import android.util.FloatMath;
 
 /**
- * TODO Check if SpriteBatch can be used here to improve performance.
- * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
  */
-public class ParticleSystem<T extends Entity> extends Entity {
+public class ParticleSystem<T extends IEntity> extends Entity {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private final float[] POSITION_OFFSET = new float[2];
+	private static final float[] POSITION_OFFSET_CONTAINER = new float[2];
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final IEntityFactory<T> mEntityFactory;
-	private final IParticleEmitter mParticleEmitter;
+	protected final IEntityFactory<T> mEntityFactory;
+	protected final IParticleEmitter mParticleEmitter;
 
-	private final Particle<T>[] mParticles;
+	protected final Particle<T>[] mParticles;
 
-	private final ArrayList<IParticleInitializer<T>> mParticleInitializers = new ArrayList<IParticleInitializer<T>>();
-	private final ArrayList<IParticleModifier<T>> mParticleModifiers = new ArrayList<IParticleModifier<T>>();
+	protected final ArrayList<IParticleInitializer<T>> mParticleInitializers = new ArrayList<IParticleInitializer<T>>();
+	protected final ArrayList<IParticleModifier<T>> mParticleModifiers = new ArrayList<IParticleModifier<T>>();
 
 	private final float mRateMinimum;
 	private final float mRateMaximum;
 
 	private boolean mParticlesSpawnEnabled = true;
 
-	private final int mParticlesMaximum;
-	private int mParticlesAlive;
+	protected final int mParticlesMaximum;
+	protected int mParticlesAlive;
 	private float mParticlesDueToSpawn;
-
-	private int mParticleModifierCount;
-	private int mParticleInitializerCount;;
 
 	// ===========================================================
 	// Constructors
@@ -110,9 +106,8 @@ public class ParticleSystem<T extends Entity> extends Entity {
 
 	@Override
 	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
-		final Particle<T>[] particles = this.mParticles;
 		for(int i = this.mParticlesAlive - 1; i >= 0; i--) {
-			particles[i].onDraw(pGLState, pCamera);
+			this.mParticles[i].onDraw(pGLState, pCamera);
 		}
 	}
 
@@ -120,31 +115,41 @@ public class ParticleSystem<T extends Entity> extends Entity {
 	protected void onManagedUpdate(final float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		if(this.mParticlesSpawnEnabled) {
+		if(this.isParticlesSpawnEnabled()) {
 			this.spawnParticles(pSecondsElapsed);
 		}
 
-		final Particle<T>[] particles = this.mParticles;
-
-		final ArrayList<IParticleModifier<T>> particleModifiers = this.mParticleModifiers;
-		final int particleModifierCountMinusOne = this.mParticleModifierCount - 1;
-
+		final int particleModifierCountMinusOne = this.mParticleModifiers.size() - 1;
 		for(int i = this.mParticlesAlive - 1; i >= 0; i--) {
-			final Particle<T> particle = particles[i];
+			final Particle<T> particle = this.mParticles[i];
 
 			/* Apply all particleModifiers */
 			for(int j = particleModifierCountMinusOne; j >= 0; j--) {
-				particleModifiers.get(j).onUpdateParticle(particle);
+				this.mParticleModifiers.get(j).onUpdateParticle(particle);
 			}
 
 			particle.onUpdate(pSecondsElapsed);
 			if(particle.mExpired){
 				this.mParticlesAlive--;
-				final int particlesAlive = this.mParticlesAlive;
-				particles[i] = particles[particlesAlive];
-				particles[particlesAlive] = particle;
+
+				this.moveParticleToEnd(i);
 			}
 		}
+	}
+
+	protected void moveParticleToEnd(final int pIndex) {
+		final Particle<T> particle = this.mParticles[pIndex];
+
+		final int particlesToCopy = this.mParticlesAlive - pIndex;
+		if(particlesToCopy > 0) {
+			System.arraycopy(this.mParticles, pIndex + 1, this.mParticles, pIndex, particlesToCopy);
+		}
+		this.mParticles[this.mParticlesAlive] = particle;
+
+		/* This mode of swapping particles is faster than copying tons of array elements, 
+		 * but it doesn't respect the 'lifetime' of the particles. */
+//		particles[i] = particles[this.mParticlesAlive];
+//		particles[this.mParticlesAlive] = particle;
 	}
 
 	// ===========================================================
@@ -153,21 +158,17 @@ public class ParticleSystem<T extends Entity> extends Entity {
 
 	public void addParticleModifier(final IParticleModifier<T> pParticleModifier) {
 		this.mParticleModifiers.add(pParticleModifier);
-		this.mParticleModifierCount++;
 	}
 
 	public void removeParticleModifier(final IParticleModifier<T> pParticleModifier) {
-		this.mParticleModifierCount--;
 		this.mParticleModifiers.remove(pParticleModifier);
 	}
 
 	public void addParticleInitializer(final IParticleInitializer<T> pParticleInitializer) {
 		this.mParticleInitializers.add(pParticleInitializer);
-		this.mParticleInitializerCount++;
 	}
 
 	public void removeParticleInitializer(final IParticleInitializer<T> pParticleInitializer) {
-		this.mParticleInitializerCount--;
 		this.mParticleInitializers.remove(pParticleInitializer);
 	}
 
@@ -186,21 +187,18 @@ public class ParticleSystem<T extends Entity> extends Entity {
 	}
 
 	private void spawnParticle() {
-		final Particle<T>[] particles = this.mParticles;
-
-		final int particlesAlive = this.mParticlesAlive;
-		if(particlesAlive < this.mParticlesMaximum){
-			Particle<T> particle = particles[particlesAlive];
+		if(this.mParticlesAlive < this.mParticlesMaximum){
+			Particle<T> particle = this.mParticles[this.mParticlesAlive];
 
 			/* New particle needs to be created. */
-			this.mParticleEmitter.getPositionOffset(this.POSITION_OFFSET);
+			this.mParticleEmitter.getPositionOffset(ParticleSystem.POSITION_OFFSET_CONTAINER);
 
-			final float x = this.POSITION_OFFSET[Constants.VERTEX_INDEX_X];
-			final float y = this.POSITION_OFFSET[Constants.VERTEX_INDEX_Y];
+			final float x = ParticleSystem.POSITION_OFFSET_CONTAINER[Constants.VERTEX_INDEX_X];
+			final float y = ParticleSystem.POSITION_OFFSET_CONTAINER[Constants.VERTEX_INDEX_Y];
 
 			if(particle == null) {
 				particle = new Particle<T>();
-				particles[particlesAlive] = particle;
+				this.mParticles[this.mParticlesAlive] = particle;
 				particle.setEntity(this.mEntityFactory.create(x, y));
 			} else {
 				particle.reset();
@@ -209,14 +207,12 @@ public class ParticleSystem<T extends Entity> extends Entity {
 
 			/* Apply particle initializers. */
 			{
-				final ArrayList<IParticleInitializer<T>> particleInitializers = this.mParticleInitializers;
-				for(int i = this.mParticleInitializerCount - 1; i >= 0; i--) {
-					particleInitializers.get(i).onInitializeParticle(particle);
+				for(int i = this.mParticleInitializers.size() - 1; i >= 0; i--) {
+					this.mParticleInitializers.get(i).onInitializeParticle(particle);
 				}
 
-				final ArrayList<IParticleModifier<T>> particleModifiers = this.mParticleModifiers;
-				for(int i = this.mParticleModifierCount - 1; i >= 0; i--) {
-					particleModifiers.get(i).onInitializeParticle(particle);
+				for(int i = this.mParticleModifiers.size() - 1; i >= 0; i--) {
+					this.mParticleModifiers.get(i).onInitializeParticle(particle);
 				}
 			}
 
@@ -224,7 +220,7 @@ public class ParticleSystem<T extends Entity> extends Entity {
 		}
 	}
 
-	private float determineCurrentRate() {
+	protected float determineCurrentRate() {
 		if(this.mRateMinimum == this.mRateMaximum){
 			return this.mRateMinimum;
 		} else {

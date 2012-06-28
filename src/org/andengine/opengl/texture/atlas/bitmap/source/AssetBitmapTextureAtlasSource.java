@@ -7,7 +7,7 @@ import org.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
 import org.andengine.util.StreamUtils;
 import org.andengine.util.debug.Debug;
 
-import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -28,31 +28,24 @@ public class AssetBitmapTextureAtlasSource extends BaseTextureAtlasSource implem
 	// Fields
 	// ===========================================================
 
-	private final int mWidth;
-	private final int mHeight;
-
+	private final AssetManager mAssetManager;
 	private final String mAssetPath;
-	private final Context mContext;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public AssetBitmapTextureAtlasSource(final Context pContext, final String pAssetPath) {
-		this(pContext, pAssetPath, 0, 0);
+	public static AssetBitmapTextureAtlasSource create(final AssetManager pAssetManager, final String pAssetPath) {
+		return AssetBitmapTextureAtlasSource.create(pAssetManager, pAssetPath, 0, 0);
 	}
 
-	public AssetBitmapTextureAtlasSource(final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY) {
-		super(pTexturePositionX, pTexturePositionY);
-		this.mContext = pContext;
-		this.mAssetPath = pAssetPath;
-
+	public static AssetBitmapTextureAtlasSource create(final AssetManager pAssetManager, final String pAssetPath, final int pTextureX, final int pTextureY) {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inJustDecodeBounds = true;
 
 		InputStream in = null;
 		try {
-			in = pContext.getAssets().open(pAssetPath);
+			in = pAssetManager.open(pAssetPath);
 			BitmapFactory.decodeStream(in, null, decodeOptions);
 		} catch (final IOException e) {
 			Debug.e("Failed loading Bitmap in AssetBitmapTextureAtlasSource. AssetPath: " + pAssetPath, e);
@@ -60,21 +53,19 @@ public class AssetBitmapTextureAtlasSource extends BaseTextureAtlasSource implem
 			StreamUtils.close(in);
 		}
 
-		this.mWidth = decodeOptions.outWidth;
-		this.mHeight = decodeOptions.outHeight;
+		return new AssetBitmapTextureAtlasSource(pAssetManager, pAssetPath, pTextureX, pTextureY, decodeOptions.outWidth, decodeOptions.outHeight);
 	}
 
-	AssetBitmapTextureAtlasSource(final Context pContext, final String pAssetPath, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
-		super(pTexturePositionX, pTexturePositionY);
-		this.mContext = pContext;
+	AssetBitmapTextureAtlasSource(final AssetManager pAssetManager, final String pAssetPath, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		super(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
+
+		this.mAssetManager = pAssetManager;
 		this.mAssetPath = pAssetPath;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
 	}
 
 	@Override
 	public AssetBitmapTextureAtlasSource deepCopy() {
-		return new AssetBitmapTextureAtlasSource(this.mContext, this.mAssetPath, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
+		return new AssetBitmapTextureAtlasSource(this.mAssetManager, this.mAssetPath, this.mTextureX, this.mTextureY, this.mTextureWidth, this.mTextureHeight);
 	}
 
 	// ===========================================================
@@ -86,23 +77,13 @@ public class AssetBitmapTextureAtlasSource extends BaseTextureAtlasSource implem
 	// ===========================================================
 
 	@Override
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	@Override
-	public int getHeight() {
-		return this.mHeight;
-	}
-
-	@Override
 	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
 		InputStream in = null;
 		try {
 			final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 			decodeOptions.inPreferredConfig = pBitmapConfig;
 
-			in = this.mContext.getAssets().open(this.mAssetPath);
+			in = this.mAssetManager.open(this.mAssetPath);
 			return BitmapFactory.decodeStream(in, null, decodeOptions);
 		} catch (final IOException e) {
 			Debug.e("Failed loading Bitmap in " + this.getClass().getSimpleName() + ". AssetPath: " + this.mAssetPath, e);

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 // ===========================================================
-// org.anddev.andengine.opengl.util.BufferUtils
+// org.andengine.opengl.util.BufferUtils
 // ===========================================================
 	
 JNIEXPORT void JNICALL Java_org_andengine_opengl_util_BufferUtils_jniPut(JNIEnv *env, jclass, jobject pBuffer, jfloatArray pData, jint pLength, jint pOffset) {

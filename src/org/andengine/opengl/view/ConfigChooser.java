@@ -180,7 +180,7 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 		if(eglConfigCount > 0) {
 			return this.findEGLConfig(pEGL, pEGLDisplay, ConfigChooser.EGLCONFIG_ATTRIBUTES_FALLBACK, eglConfigCount, pConfigChooserMatcher);
 		} else {
-			throw new IllegalArgumentException("No EGLConfig found!");
+			throw new IllegalArgumentException("No " + EGLConfig.class.getSimpleName() + " found!");
 		}
 	}
 

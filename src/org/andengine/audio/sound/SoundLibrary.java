@@ -1,6 +1,6 @@
 package org.andengine.audio.sound;
 
-import org.andengine.util.Library;
+import org.andengine.util.adt.map.Library;
 
 /**
  * (c) 2010 Nicolas Gramlich 

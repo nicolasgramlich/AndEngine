@@ -12,11 +12,12 @@ import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
+import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.util.StreamUtils;
-import org.andengine.util.StringUtils;
+import org.andengine.util.TextUtils;
+import org.andengine.util.adt.io.in.AssetInputStreamOpener;
 
-import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.SparseArray;
 
 /**
@@ -149,6 +150,8 @@ public class BitmapFont implements IFont {
 	// Fields
 	// ===========================================================
 
+	private final TextureManager mTextureManager;
+
 	private final BitmapTextureFormat mBitmapTextureFormat;
 	private final TextureOptions mTextureOptions;
 
@@ -163,30 +166,37 @@ public class BitmapFont implements IFont {
 	private final int mScaleHeight;
 	private final int mBitmapFontPageCount;
 	private final boolean mPacked;
+	private final BitmapFontOptions mBitmapFontOptions;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BitmapFont(final Context pContext, final String pAssetPath) {
-		this(pContext, pAssetPath, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT);
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath) {
+		this(pTextureManager, pAssetManager, pAssetPath, BitmapTextureFormat.RGBA_8888, TextureOptions.DEFAULT, BitmapFontOptions.DEFAULT);
 	}
 
-	public BitmapFont(final Context pContext, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat) {
-		this(pContext, pAssetPath, pBitmapTextureFormat, TextureOptions.DEFAULT);
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat) {
+		this(pTextureManager, pAssetManager, pAssetPath, pBitmapTextureFormat, TextureOptions.DEFAULT, BitmapFontOptions.DEFAULT);
 	}
 
-	public BitmapFont(final Context pContext, final String pAssetPath, final TextureOptions pTextureOptions) {
-		this(pContext, pAssetPath, BitmapTextureFormat.RGBA_8888, pTextureOptions);
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final TextureOptions pTextureOptions) {
+		this(pTextureManager, pAssetManager, pAssetPath, BitmapTextureFormat.RGBA_8888, pTextureOptions, BitmapFontOptions.DEFAULT);
 	}
 
-	public BitmapFont(final Context pContext, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) {
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions) {
+		this(pTextureManager, pAssetManager, pAssetPath, pBitmapTextureFormat, pTextureOptions, BitmapFontOptions.DEFAULT);
+	}
+
+	public BitmapFont(final TextureManager pTextureManager, final AssetManager pAssetManager, final String pAssetPath, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final BitmapFontOptions pBitmapFontOptions) {
+		this.mTextureManager = pTextureManager;
 		this.mBitmapTextureFormat = pBitmapTextureFormat;
 		this.mTextureOptions = pTextureOptions;
+		this.mBitmapFontOptions = pBitmapFontOptions;
 
 		InputStream in = null;
 		try {
-			in = pContext.getAssets().open(pAssetPath);
+			in = pAssetManager.open(pAssetPath);
 			final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in), StreamUtils.IO_BUFFER_SIZE);
 
 			final String assetBasePath;
@@ -204,9 +214,9 @@ public class BitmapFont implements IFont {
 			/* Common. */
 			{
 				final String common = bufferedReader.readLine();
-				if(common != null && common.startsWith(BitmapFont.TAG_COMMON)) {
-					final String[] commonAttributes = StringUtils.SPLITPATTERN_SPACE.split(common, BitmapFont.TAG_COMMON_ATTRIBUTECOUNT + 1);
-					if(commonAttributes.length - 1 != BitmapFont.TAG_COMMON_ATTRIBUTECOUNT) {
+				if((common != null) && common.startsWith(BitmapFont.TAG_COMMON)) {
+					final String[] commonAttributes = TextUtils.SPLITPATTERN_SPACE.split(common, BitmapFont.TAG_COMMON_ATTRIBUTECOUNT + 1);
+					if((commonAttributes.length - 1) != BitmapFont.TAG_COMMON_ATTRIBUTECOUNT) {
 						throw new FontException("Expected: '" + BitmapFont.TAG_COMMON_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_COMMON + " attributes, found: '" + (commonAttributes.length - 1) + "'.");
 					}
 					if(!commonAttributes[0].equals(BitmapFont.TAG_COMMON)) {
@@ -234,15 +244,15 @@ public class BitmapFont implements IFont {
 
 			/* Pages. */
 			for(int i = 0; i < this.mBitmapFontPageCount; i++) {
-				this.mBitmapFontPages[i] = new BitmapFontPage(pContext, assetBasePath, bufferedReader.readLine());
+				this.mBitmapFontPages[i] = new BitmapFontPage(pAssetManager, assetBasePath, bufferedReader.readLine());
 			}
 
 			/* Chars. */
 			{
 				final String chars = bufferedReader.readLine();
-				if(chars != null && chars.startsWith(BitmapFont.TAG_CHARS)) {
-					final String[] charsAttributes = StringUtils.SPLITPATTERN_SPACE.split(chars, BitmapFont.TAG_CHARS_ATTRIBUTECOUNT + 1);
-					if(charsAttributes.length - 1 != BitmapFont.TAG_CHARS_ATTRIBUTECOUNT) {
+				if((chars != null) && chars.startsWith(BitmapFont.TAG_CHARS)) {
+					final String[] charsAttributes = TextUtils.SPLITPATTERN_SPACE.split(chars, BitmapFont.TAG_CHARS_ATTRIBUTECOUNT + 1);
+					if((charsAttributes.length - 1) != BitmapFont.TAG_CHARS_ATTRIBUTECOUNT) {
 						throw new FontException("Expected: '" + BitmapFont.TAG_CHARS_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_CHARS + " attributes, found: '" + (charsAttributes.length - 1) + "'.");
 					}
 					if(!charsAttributes[0].equals(BitmapFont.TAG_CHARS)) {
@@ -260,9 +270,9 @@ public class BitmapFont implements IFont {
 			/* Kernings. */
 			{
 				final String kernings = bufferedReader.readLine();
-				if(kernings != null && kernings.startsWith(BitmapFont.TAG_KERNINGS)) {
-					final String[] kerningsAttributes = StringUtils.SPLITPATTERN_SPACE.split(kernings, BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT + 1);
-					if(kerningsAttributes.length - 1 != BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT) {
+				if((kernings != null) && kernings.startsWith(BitmapFont.TAG_KERNINGS)) {
+					final String[] kerningsAttributes = TextUtils.SPLITPATTERN_SPACE.split(kernings, BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT + 1);
+					if((kerningsAttributes.length - 1) != BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT) {
 						throw new FontException("Expected: '" + BitmapFont.TAG_KERNINGS_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_KERNINGS + " attributes, found: '" + (kerningsAttributes.length - 1) + "'.");
 					}
 					if(!kerningsAttributes[0].equals(BitmapFont.TAG_KERNINGS)) {
@@ -327,17 +337,13 @@ public class BitmapFont implements IFont {
 	}
 
 	@Override
-	public BitmapFont load(final TextureManager pTextureManager, final FontManager pFontManager) {
-		this.loadTextures(pTextureManager);
-
-		return this;
+	public void load() {
+		this.loadTextures();
 	}
 
 	@Override
-	public BitmapFont unload(final TextureManager pTextureManager, final FontManager pFontManager) {
-		this.unloadTextures(pTextureManager);
-
-		return this;
+	public void unload() {
+		this.unloadTextures();
 	}
 
 	@Override
@@ -354,64 +360,40 @@ public class BitmapFont implements IFont {
 		return letter;
 	}
 
-	@Override
-	public float getStringWidth(final String pString) {
-		final int stringLength = pString.length();
-		/* Early exits. */
-		if(stringLength == 0) {
-			return 0;
-		} else if(stringLength == 1) {
-			return this.getLetter(pString.charAt(0)).mWidth;
-		}
-
-		Letter previousLetter = null;
-		float width = 0;
-		for(int i = 0; i < stringLength - 1; i++) {
-			final Letter letter = this.getLetter(pString.charAt(i));
-			if(previousLetter != null) {
-				width += previousLetter.getKerning(letter.mCharacter);
-			}
-			previousLetter = letter;
-			width += letter.mAdvance;
-		}
-		width += this.getLetter(pString.charAt(pString.length() - 1)).mWidth;
-		return width;
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	public void loadTextures(final TextureManager pTextureManager) {
+	public void loadTextures() {
 		final BitmapFontPage[] bitmapFontPages = this.mBitmapFontPages;
 		final int bitmapFontPageCount = bitmapFontPages.length;
 		for(int i = 0; i < bitmapFontPageCount; i++) {
-			bitmapFontPages[i].getTexture().load(pTextureManager);
+			bitmapFontPages[i].getTexture().load();
 		}
 	}
 
-	public void unloadTextures(final TextureManager pTextureManager) {
+	public void unloadTextures() {
 		final BitmapFontPage[] bitmapFontPages = this.mBitmapFontPages;
 		final int bitmapFontPageCount = bitmapFontPages.length;
 		for(int i = 0; i < bitmapFontPageCount; i++) {
-			bitmapFontPages[i].getTexture().unload(pTextureManager);
+			bitmapFontPages[i].getTexture().unload();
 		}
 	}
 
 	private void parseCharacters(final int pCharacterCount, final BufferedReader pBufferedReader) throws IOException {
 		for(int i = pCharacterCount - 1; i >= 0; i--) {
 			final String character = pBufferedReader.readLine();
-			final String[] charAttributes = StringUtils.SPLITPATTERN_SPACES.split(character, BitmapFont.TAG_CHAR_ATTRIBUTECOUNT + 1);
-			if(charAttributes.length - 1 != BitmapFont.TAG_CHAR_ATTRIBUTECOUNT) {
+			final String[] charAttributes = TextUtils.SPLITPATTERN_SPACES.split(character, BitmapFont.TAG_CHAR_ATTRIBUTECOUNT + 1);
+			if((charAttributes.length - 1) != BitmapFont.TAG_CHAR_ATTRIBUTECOUNT) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_CHAR_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_CHAR + " attributes, found: '" + (charAttributes.length - 1) + "'.");
 			}
 			if(!charAttributes[0].equals(BitmapFont.TAG_CHAR)) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_CHAR + "' attributes.");
 			}
 
-			final int id = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_ID_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_ID);
-			final int x = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_X_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_X);
-			final int y = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_Y_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_Y);
+			final char id = BitmapFont.getCharAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_ID_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_ID);
+			final int x = this.mBitmapFontOptions.mTextureOffsetX + BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_X_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_X);
+			final int y = this.mBitmapFontOptions.mTextureOffsetY + BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_Y_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_Y);
 			final int width = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_WIDTH_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_WIDTH);
 			final int height = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_HEIGHT_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_HEIGHT);
 			final int xOffset = BitmapFont.getIntAttribute(charAttributes, BitmapFont.TAG_CHAR_ATTRIBUTE_XOFFSET_INDEX, BitmapFont.TAG_CHAR_ATTRIBUTE_XOFFSET);
@@ -436,8 +418,8 @@ public class BitmapFont implements IFont {
 	private void parseKernings(final int pKerningsCount, final BufferedReader pBufferedReader) throws IOException {
 		for(int i = pKerningsCount - 1; i >= 0; i--) {
 			final String kerning = pBufferedReader.readLine();
-			final String[] charAttributes = StringUtils.SPLITPATTERN_SPACES.split(kerning, BitmapFont.TAG_KERNING_ATTRIBUTECOUNT + 1);
-			if(charAttributes.length - 1 != BitmapFont.TAG_KERNING_ATTRIBUTECOUNT) {
+			final String[] charAttributes = TextUtils.SPLITPATTERN_SPACES.split(kerning, BitmapFont.TAG_KERNING_ATTRIBUTECOUNT + 1);
+			if((charAttributes.length - 1) != BitmapFont.TAG_KERNING_ATTRIBUTECOUNT) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_KERNING_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_KERNING + " attributes, found: '" + (charAttributes.length - 1) + "'.");
 			}
 			if(!charAttributes[0].equals(BitmapFont.TAG_KERNING)) {
@@ -456,18 +438,22 @@ public class BitmapFont implements IFont {
 		final String data = pData[pPosition];
 		final int attributeLength = pAttribute.length();
 
-		if(!data.startsWith(pAttribute) || data.charAt(attributeLength) != '=') {
+		if(!data.startsWith(pAttribute) || (data.charAt(attributeLength) != '=')) {
 			throw new FontException("Expected '" + pAttribute + "' at position '" + pPosition + "', but found: '" + data + "'.");
 		}
 
 		return Integer.parseInt(data.substring(attributeLength + 1)) != 0;
+	}
+	
+	private static char getCharAttribute(final String[] pData, final int pPosition, final String pAttribute) {
+		return (char) BitmapFont.getIntAttribute(pData, pPosition, pAttribute);
 	}
 
 	private static int getIntAttribute(final String[] pData, final int pPosition, final String pAttribute) {
 		final String data = pData[pPosition];
 		final int attributeLength = pAttribute.length();
 
-		if(!data.startsWith(pAttribute) || data.charAt(attributeLength) != '=') {
+		if(!data.startsWith(pAttribute) || (data.charAt(attributeLength) != '=')) {
 			throw new FontException("Expected '" + pAttribute + "' at position '" + pPosition + "', but found: '" + data + "'.");
 		}
 
@@ -478,7 +464,7 @@ public class BitmapFont implements IFont {
 		final String data = pData[pPosition];
 		final int attributeLength = pAttribute.length();
 
-		if(!data.startsWith(pAttribute) || data.charAt(attributeLength) != '=') {
+		if(!data.startsWith(pAttribute) || (data.charAt(attributeLength) != '=')) {
 			throw new FontException("Expected '" + pAttribute + "' at position '" + pPosition + "', but found: '" + data + "'.");
 		}
 
@@ -499,6 +485,54 @@ public class BitmapFont implements IFont {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	public static class BitmapFontOptions {
+		// ===========================================================
+		// Constants
+		// ===========================================================
+
+		public static final BitmapFontOptions DEFAULT = new BitmapFontOptions(0, 0);
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+
+		private final int mTextureOffsetX;
+		private final int mTextureOffsetY;
+
+		// ===========================================================
+		// Constructors
+		// ===========================================================
+
+		public BitmapFontOptions(final int pTextureOffsetX, final int pTextureOffsetY) {
+			this.mTextureOffsetX = pTextureOffsetX;
+			this.mTextureOffsetY = pTextureOffsetY;
+		}
+
+		// ===========================================================
+		// Getter & Setter
+		// ===========================================================
+
+		public int getTextureOffsetX() {
+			return this.mTextureOffsetX;
+		}
+
+		public int getTextureOffsetY() {
+			return this.mTextureOffsetY;
+		}
+
+		// ===========================================================
+		// Methods for/from SuperClass/Interfaces
+		// ===========================================================
+
+		// ===========================================================
+		// Methods
+		// ===========================================================
+
+		// ===========================================================
+		// Inner and Anonymous Classes
+		// ===========================================================
+	}
 
 	public class BitmapFontInfo {
 		// ===========================================================
@@ -544,9 +578,9 @@ public class BitmapFont implements IFont {
 				throw new FontException("pData must not be null.");
 			}
 
-			final String[] infoAttributes = StringUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_INFO_ATTRIBUTECOUNT + 1);
+			final String[] infoAttributes = TextUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_INFO_ATTRIBUTECOUNT + 1);
 
-			if(infoAttributes.length - 1 != BitmapFont.TAG_INFO_ATTRIBUTECOUNT) {
+			if((infoAttributes.length - 1) != BitmapFont.TAG_INFO_ATTRIBUTECOUNT) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_INFO_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_INFO + " attributes, found: '" + (infoAttributes.length - 1) + "'.");
 			}
 			if(!infoAttributes[0].equals(BitmapFont.TAG_INFO)) {
@@ -564,14 +598,14 @@ public class BitmapFont implements IFont {
 			this.mAntiAliased = BitmapFont.getBooleanAttribute(infoAttributes, BitmapFont.TAG_INFO_ATTRIBUTE_ANTIALIASED_INDEX, BitmapFont.TAG_INFO_ATTRIBUTE_ANTIALIASED);
 
 			final String padding = BitmapFont.getAttribute(infoAttributes, BitmapFont.TAG_INFO_ATTRIBUTE_PADDING_INDEX, BitmapFont.TAG_INFO_ATTRIBUTE_PADDING);
-			final String[] paddings = StringUtils.SPLITPATTERN_COMMA.split(padding, 4);
+			final String[] paddings = TextUtils.SPLITPATTERN_COMMA.split(padding, 4);
 			this.mPaddingLeft = Integer.parseInt(paddings[BitmapFontInfo.PADDING_LEFT_INDEX]);
 			this.mPaddingTop = Integer.parseInt(paddings[BitmapFontInfo.PADDING_TOP_INDEX]);
 			this.mPaddingRight = Integer.parseInt(paddings[BitmapFontInfo.PADDING_RIGHT_INDEX]);
 			this.mPaddingBottom = Integer.parseInt(paddings[BitmapFontInfo.PADDING_BOTTOM_INDEX]);
 
 			final String spacing = BitmapFont.getAttribute(infoAttributes, BitmapFont.TAG_INFO_ATTRIBUTE_SPACING_INDEX, BitmapFont.TAG_INFO_ATTRIBUTE_SPACING);
-			final String[] spacings = StringUtils.SPLITPATTERN_COMMA.split(spacing, 2);
+			final String[] spacings = TextUtils.SPLITPATTERN_COMMA.split(spacing, 2);
 			this.mSpacingX = Integer.parseInt(spacings[BitmapFontInfo.SPACING_X_INDEX]);
 			this.mSpacingY = Integer.parseInt(spacings[BitmapFontInfo.SPACING_Y_INDEX]);
 		}
@@ -669,10 +703,10 @@ public class BitmapFont implements IFont {
 		// Constructors
 		// ===========================================================
 
-		public BitmapFontPage(final Context pContext, final String pAssetBasePath, final String pData) throws IOException {
-			final String[] pageAttributes = StringUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_PAGE_ATTRIBUTECOUNT + 1);
+		public BitmapFontPage(final AssetManager pAssetManager, final String pAssetBasePath, final String pData) throws IOException {
+			final String[] pageAttributes = TextUtils.SPLITPATTERN_SPACE.split(pData, BitmapFont.TAG_PAGE_ATTRIBUTECOUNT + 1);
 
-			if(pageAttributes.length - 1 != BitmapFont.TAG_PAGE_ATTRIBUTECOUNT) {
+			if((pageAttributes.length - 1) != BitmapFont.TAG_PAGE_ATTRIBUTECOUNT) {
 				throw new FontException("Expected: '" + BitmapFont.TAG_PAGE_ATTRIBUTECOUNT + "' " + BitmapFont.TAG_PAGE + " attributes, found: '" + (pageAttributes.length - 1) + "'.");
 			}
 			if(!pageAttributes[0].equals(BitmapFont.TAG_PAGE)) {
@@ -683,12 +717,7 @@ public class BitmapFont implements IFont {
 			final String file = BitmapFont.getStringAttribute(pageAttributes, BitmapFont.TAG_PAGE_ATTRIBUTE_FILE_INDEX, BitmapFont.TAG_PAGE_ATTRIBUTE_FILE);
 
 			final String assetPath = pAssetBasePath + file;
-			this.mTexture = new BitmapTexture(BitmapFont.this.mBitmapTextureFormat, BitmapFont.this.mTextureOptions) {
-				@Override
-				protected InputStream onGetInputStream() throws IOException {
-					return pContext.getAssets().open(assetPath);
-				}
-			};
+			this.mTexture = new BitmapTexture(BitmapFont.this.mTextureManager, new AssetInputStreamOpener(pAssetManager, assetPath), BitmapFont.this.mBitmapTextureFormat, BitmapFont.this.mTextureOptions);
 		}
 
 		// ===========================================================

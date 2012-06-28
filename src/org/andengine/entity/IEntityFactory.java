@@ -7,7 +7,7 @@ package org.andengine.entity;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:04:41 - 19.11.2011
  */
-public interface IEntityFactory<T extends Entity> {
+public interface IEntityFactory<T extends IEntity> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

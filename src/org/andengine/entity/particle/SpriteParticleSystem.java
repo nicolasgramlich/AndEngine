@@ -4,6 +4,7 @@ import org.andengine.entity.IEntityFactory;
 import org.andengine.entity.particle.emitter.IParticleEmitter;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * (c) Zynga 2011
@@ -24,17 +25,21 @@ public class SpriteParticleSystem extends ParticleSystem<Sprite> {
 	// Constructors
 	// ===========================================================
 
-	public SpriteParticleSystem(final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final ITextureRegion pTextureRegion) {
-		this(0, 0, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum, pTextureRegion);
+	public SpriteParticleSystem(final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(0, 0, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum, pTextureRegion, pVertexBufferObjectManager);
 	}
 
-	public SpriteParticleSystem(final float pX, final float pY, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final ITextureRegion pTextureRegion) {
+	public SpriteParticleSystem(final float pX, final float pY, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		super(pX, pY, new IEntityFactory<Sprite>() {
 			@Override
 			public Sprite create(final float pX, final float pY) {
-				return new Sprite(pX, pY, pTextureRegion);
+				return new Sprite(pX, pY, pTextureRegion, pVertexBufferObjectManager);
 			}
 		}, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
+	}
+
+	protected SpriteParticleSystem(final float pX, final float pY, final IEntityFactory<Sprite> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
+		super(pX, pY, pEntityFactory, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
 	}
 
 	// ===========================================================

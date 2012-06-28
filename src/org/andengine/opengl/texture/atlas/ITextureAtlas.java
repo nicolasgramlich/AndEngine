@@ -1,7 +1,8 @@
 package org.andengine.opengl.texture.atlas;
 
+import org.andengine.BuildConfig;
 import org.andengine.opengl.texture.ITexture;
-import org.andengine.opengl.texture.TextureManager;
+import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.util.debug.Debug;
 
@@ -21,15 +22,10 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 	// Methods
 	// ===========================================================
 
-	@Override
-	public ITextureAtlas<T> load(final TextureManager pTextureManager);
-	@Override
-	public ITextureAtlas<T> unload(final TextureManager pTextureManager);
-
-	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) throws IllegalArgumentException;
-	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY, final int pTextureAtlasSourcePadding) throws IllegalArgumentException;
-	public void addEmptyTextureAtlasSource(final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight);
-	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY);
+	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY) throws IllegalArgumentException;
+	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY, final int pTextureAtlasSourcePadding) throws IllegalArgumentException;
+	public void addEmptyTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight);
+	public void removeTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY);
 	public void clearTextureAtlasSources();
 
 	@Deprecated
@@ -84,7 +80,9 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 		public static class DebugTextureAtlasStateListener<T extends ITextureAtlasSource> implements ITextureAtlasStateListener<T> {
 			@Override
 			public void onLoadedToHardware(final ITexture pTexture) {
-				Debug.d("Texture loaded: " + pTexture.toString());
+				if(BuildConfig.DEBUG) {
+					Debug.d("Texture loaded: " + pTexture.toString());
+				}
 			}
 
 			@Override
@@ -99,7 +97,9 @@ public interface ITextureAtlas<T extends ITextureAtlasSource> extends ITexture {
 
 			@Override
 			public void onUnloadedFromHardware(final ITexture pTexture) {
-				Debug.d("Texture unloaded: " + pTexture.toString());
+				if(BuildConfig.DEBUG) {
+					Debug.d("Texture unloaded: " + pTexture.toString());
+				}
 			}
 		}
 	}

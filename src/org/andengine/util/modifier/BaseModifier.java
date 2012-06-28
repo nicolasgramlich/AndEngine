@@ -1,6 +1,6 @@
 package org.andengine.util.modifier;
 
-import org.andengine.util.SmartList;
+import org.andengine.util.adt.list.SmartList;
 
 
 /**
@@ -21,7 +21,7 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	// ===========================================================
 
 	protected boolean mFinished;
-	private boolean mRemoveWhenFinished = true;
+	private boolean mAutoUnregisterWhenFinished = true;
 	private final SmartList<IModifierListener<T>> mModifierListeners = new SmartList<IModifierListener<T>>(2);
 
 	// ===========================================================
@@ -50,13 +50,13 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	}
 
 	@Override
-	public final boolean isRemoveWhenFinished() {
-		return this.mRemoveWhenFinished;
+	public final boolean isAutoUnregisterWhenFinished() {
+		return this.mAutoUnregisterWhenFinished;
 	}
 
 	@Override
-	public final void setRemoveWhenFinished(final boolean pRemoveWhenFinished) {
-		this.mRemoveWhenFinished = pRemoveWhenFinished;
+	public final void setAutoUnregisterWhenFinished(final boolean pAutoUnregisterWhenFinished) {
+		this.mAutoUnregisterWhenFinished = pAutoUnregisterWhenFinished;
 	}
 
 	@Override
@@ -95,6 +95,21 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 		final int modifierListenerCount = modifierListeners.size();
 		for(int i = modifierListenerCount - 1; i >= 0; i--) {
 			modifierListeners.get(i).onModifierFinished(this, pItem);
+		}
+	}
+
+	protected final void assertNoNullModifier(final IModifier<T> pModifier) {
+		if(pModifier == null) {
+			throw new IllegalArgumentException("Illegal 'null' " + IModifier.class.getSimpleName() + " detected!");
+		}
+	}
+
+	protected final void assertNoNullModifier(final IModifier<T> ... pModifiers) {
+		final int modifierCount = pModifiers.length;
+		for(int i = 0; i < modifierCount; i++) {
+			if(pModifiers[i] == null) {
+				throw new IllegalArgumentException("Illegal 'null' " + IModifier.class.getSimpleName() + " detected at position: '" + i + "'!");
+			}
 		}
 	}
 

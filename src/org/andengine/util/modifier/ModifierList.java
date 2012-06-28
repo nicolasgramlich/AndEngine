@@ -1,7 +1,7 @@
 package org.andengine.util.modifier;
 
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.util.SmartList;
+import org.andengine.util.adt.list.SmartList;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -49,13 +49,22 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 	// ===========================================================
 
 	@Override
+	public boolean add(final IModifier<T> pModifier) {
+		if(pModifier == null) {
+			throw new IllegalArgumentException("Supplied " + IModifier.class.getSimpleName() + " must not be null.");
+		} else {
+			return super.add(pModifier);
+		}
+	}
+
+	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		final int modifierCount = this.size();
 		if(modifierCount > 0) {
 			for(int i = modifierCount - 1; i >= 0; i--) {
 				final IModifier<T> modifier = this.get(i);
 				modifier.onUpdate(pSecondsElapsed, this.mTarget);
-				if(modifier.isFinished() && modifier.isRemoveWhenFinished()) {
+				if(modifier.isFinished() && modifier.isAutoUnregisterWhenFinished()) {
 					this.remove(i);
 				}
 			}

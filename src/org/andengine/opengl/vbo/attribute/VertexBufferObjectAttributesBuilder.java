@@ -1,8 +1,11 @@
 package org.andengine.opengl.vbo.attribute;
 
-import org.andengine.util.data.DataConstants;
+import org.andengine.util.adt.DataConstants;
+import org.andengine.util.exception.AndEngineRuntimeException;
+import org.andengine.util.system.SystemUtils;
 
 import android.opengl.GLES20;
+import android.os.Build;
 
 /**
  * (c) Zynga 2011
@@ -14,6 +17,13 @@ public class VertexBufferObjectAttributesBuilder {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	/** Android issue 8931. */
+	private static final boolean WORAROUND_GLES2_GLVERTEXATTRIBPOINTER_MISSING;
+
+	static {
+		WORAROUND_GLES2_GLVERTEXATTRIBPOINTER_MISSING = SystemUtils.isAndroidVersionOrLower(Build.VERSION_CODES.FROYO);
+	}
 
 	// ===========================================================
 	// Fields
@@ -45,7 +55,11 @@ public class VertexBufferObjectAttributesBuilder {
 	// ===========================================================
 
 	public VertexBufferObjectAttributesBuilder add(final int pLocation, final String pName, final int pSize, final int pType, final boolean pNormalized) {
-		this.mVertexBufferObjectAttributes[this.mIndex] = new VertexBufferObjectAttribute(pLocation, pName, pSize, pType, pNormalized, this.mOffset);
+		if(VertexBufferObjectAttributesBuilder.WORAROUND_GLES2_GLVERTEXATTRIBPOINTER_MISSING) {
+			this.mVertexBufferObjectAttributes[this.mIndex] = new VertexBufferObjectAttributeFix(pLocation, pName, pSize, pType, pNormalized, this.mOffset);
+		} else {
+			this.mVertexBufferObjectAttributes[this.mIndex] = new VertexBufferObjectAttribute(pLocation, pName, pSize, pType, pNormalized, this.mOffset);
+		}
 
 		switch(pType) {
 			case GLES20.GL_FLOAT:
@@ -64,6 +78,10 @@ public class VertexBufferObjectAttributesBuilder {
 	}
 
 	public VertexBufferObjectAttributes build() {
+		if(this.mIndex != this.mVertexBufferObjectAttributes.length) {
+			throw new AndEngineRuntimeException("Not enough " + VertexBufferObjectAttribute.class.getSimpleName() + "s added to this " + this.getClass().getSimpleName() + ".");
+		}
+
 		return new VertexBufferObjectAttributes(this.mOffset, this.mVertexBufferObjectAttributes);
 	}
 

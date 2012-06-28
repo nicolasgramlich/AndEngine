@@ -4,7 +4,7 @@ import org.andengine.util.modifier.IModifier.IModifierListener;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -40,7 +40,7 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 	// ===========================================================
 
 	public LoopModifier(final IModifier<T> pModifier) {
-		this(pModifier, LOOP_CONTINUOUS);
+		this(pModifier, LoopModifier.LOOP_CONTINUOUS);
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount) {
@@ -58,12 +58,14 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount, final ILoopModifierListener<T> pLoopModifierListener, final IModifierListener<T> pModifierListener) {
 		super(pModifierListener);
 
+		this.assertNoNullModifier(pModifier);
+
 		this.mModifier = pModifier;
 		this.mLoopCount = pLoopCount;
 		this.mLoopModifierListener = pLoopModifierListener;
 
 		this.mLoop = 0;
-		this.mDuration = pLoopCount == LOOP_CONTINUOUS ? Float.POSITIVE_INFINITY : pModifier.getDuration() * pLoopCount; // TODO Check if POSITIVE_INFINITY works correct with i.e. SequenceModifier
+		this.mDuration = (pLoopCount == LoopModifier.LOOP_CONTINUOUS) ? Float.POSITIVE_INFINITY : pModifier.getDuration() * pLoopCount; // TODO Check if POSITIVE_INFINITY works correct with i.e. SequenceModifier
 
 		this.mModifier.addModifierListener(this);
 	}
@@ -111,7 +113,7 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 			float secondsElapsedRemaining = pSecondsElapsed;
 
 			this.mFinishedCached = false;
-			while(secondsElapsedRemaining > 0 && !this.mFinishedCached) {
+			while((secondsElapsedRemaining > 0) && !this.mFinishedCached) {
 				secondsElapsedRemaining -= this.mModifier.onUpdate(secondsElapsedRemaining, pItem);
 			}
 			this.mFinishedCached = false;
@@ -153,7 +155,7 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 			this.mLoopModifierListener.onLoopFinished(this, this.mLoop, this.mLoopCount);
 		}
 
-		if(this.mLoopCount == LOOP_CONTINUOUS) {
+		if(this.mLoopCount == LoopModifier.LOOP_CONTINUOUS) {
 			this.mSecondsElapsed = 0;
 			this.mModifier.reset();
 		} else {

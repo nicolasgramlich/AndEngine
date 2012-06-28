@@ -41,6 +41,9 @@ public class ParallelModifier<T> extends BaseModifier<T> implements IModifierLis
 		if(pModifiers.length == 0) {
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}
+
+		this.assertNoNullModifier(pModifiers);
+
 		Arrays.sort(pModifiers, MODIFIER_COMPARATOR_DURATION_DESCENDING);
 		this.mModifiers = pModifiers;
 

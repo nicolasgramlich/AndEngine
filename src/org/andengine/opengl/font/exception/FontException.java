@@ -1,6 +1,6 @@
 package org.andengine.opengl.font.exception;
 
-import org.andengine.util.exception.AndEngineException;
+import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
  * (c) Zynga 2011
@@ -8,7 +8,7 @@ import org.andengine.util.exception.AndEngineException;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:53:31 - 01.11.2011
  */
-public class FontException extends AndEngineException {
+public class FontException extends AndEngineRuntimeException {
 	// ===========================================================
 	// Constants
 	// ===========================================================

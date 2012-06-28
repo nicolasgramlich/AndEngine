@@ -1,8 +1,8 @@
 package org.andengine.input.touch.controller;
 
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.util.pool.RunnablePoolItem;
-import org.andengine.util.pool.RunnablePoolUpdateHandler;
+import org.andengine.util.adt.pool.RunnablePoolItem;
+import org.andengine.util.adt.pool.RunnablePoolUpdateHandler;
 
 import android.view.MotionEvent;
 

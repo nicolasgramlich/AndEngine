@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
+import org.andengine.util.FileUtils;
 import org.andengine.util.StreamUtils;
 import org.andengine.util.debug.Debug;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -30,23 +32,17 @@ public class FileBitmapTextureAtlasSource extends BaseTextureAtlasSource impleme
 	// Fields
 	// ===========================================================
 
-	private final int mWidth;
-	private final int mHeight;
-
 	private final File mFile;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 	
-	public FileBitmapTextureAtlasSource(final File pFile) {
-		this(pFile, 0, 0);
+	public static FileBitmapTextureAtlasSource create(final File pFile) {
+		return FileBitmapTextureAtlasSource.create(pFile, 0, 0);
 	}
 
-	public FileBitmapTextureAtlasSource(final File pFile, final int pTexturePositionX, final int pTexturePositionY) {
-		super(pTexturePositionX, pTexturePositionY);
-		this.mFile = pFile;
-
+	public static FileBitmapTextureAtlasSource create(final File pFile, final int pTextureX, final int pTextureY) {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inJustDecodeBounds = true;
 
@@ -55,25 +51,31 @@ public class FileBitmapTextureAtlasSource extends BaseTextureAtlasSource impleme
 			in = new FileInputStream(pFile);
 			BitmapFactory.decodeStream(in, null, decodeOptions);
 		} catch (final IOException e) {
-			Debug.e("Failed loading Bitmap in FileBitmapTextureAtlasSource. File: " + pFile, e);
+			Debug.e("Failed loading Bitmap in " + FileBitmapTextureAtlasSource.class.getSimpleName() + ". File: " + pFile, e);
 		} finally {
 			StreamUtils.close(in);
 		}
 
-		this.mWidth = decodeOptions.outWidth;
-		this.mHeight = decodeOptions.outHeight;
+		return new FileBitmapTextureAtlasSource(pFile, pTextureX, pTextureY, decodeOptions.outWidth, decodeOptions.outHeight);
 	}
 
-	FileBitmapTextureAtlasSource(final File pFile, final int pTexturePositionX, final int pTexturePositionY, final int pWidth, final int pHeight) {
-		super(pTexturePositionX, pTexturePositionY);
+	public static FileBitmapTextureAtlasSource createFromInternalStorage(final Context pContext, final String pFilePath, final int pTextureX, final int pTextureY) {
+		return FileBitmapTextureAtlasSource.create(new File(FileUtils.getAbsolutePathOnInternalStorage(pContext, pFilePath)), pTextureX, pTextureY);
+	}
+
+	public static FileBitmapTextureAtlasSource createFromExternalStorage(final Context pContext, final String pFilePath, final int pTextureX, final int pTextureY) {
+		return FileBitmapTextureAtlasSource.create(new File(FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath)), pTextureX, pTextureY);
+	}
+
+	FileBitmapTextureAtlasSource(final File pFile, final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		super(pTextureX, pTextureY, pTextureWidth, pTextureHeight);
+
 		this.mFile = pFile;
-		this.mWidth = pWidth;
-		this.mHeight = pHeight;
 	}
 
 	@Override
 	public FileBitmapTextureAtlasSource deepCopy() {
-		return new FileBitmapTextureAtlasSource(this.mFile, this.mTexturePositionX, this.mTexturePositionY, this.mWidth, this.mHeight);
+		return new FileBitmapTextureAtlasSource(this.mFile, this.mTextureX, this.mTextureY, this.mTextureWidth, this.mTextureHeight);
 	}
 
 	// ===========================================================
@@ -83,16 +85,6 @@ public class FileBitmapTextureAtlasSource extends BaseTextureAtlasSource impleme
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public int getWidth() {
-		return this.mWidth;
-	}
-
-	@Override
-	public int getHeight() {
-		return this.mHeight;
-	}
 
 	@Override
 	public Bitmap onLoadBitmap(final Config pBitmapConfig) {

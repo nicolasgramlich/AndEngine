@@ -71,19 +71,21 @@ public class ClickDetector extends BaseDetector {
 				return true;
 			case TouchEvent.ACTION_UP:
 			case TouchEvent.ACTION_CANCEL:
-			    if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
-    				final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
+				if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
+					boolean handled = false;
+					final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
 
-    				if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
-    					this.mDownTimeMilliseconds = Long.MIN_VALUE;
-    					this.mClickDetectorListener.onClick(this, pSceneTouchEvent.getPointerID(), pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
-    				}
+					if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
+						this.mDownTimeMilliseconds = Long.MIN_VALUE;
+						this.mClickDetectorListener.onClick(this, pSceneTouchEvent.getPointerID(), pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+						handled = true;
+					}
 
-    				this.mPointerID = TouchEvent.INVALID_POINTER_ID;
-    				return true;
-			    } else {
-			        return false;
-			    }
+					this.mPointerID = TouchEvent.INVALID_POINTER_ID;
+					return handled;
+				} else {
+					return false;
+				}
 			default:
 				return false;
 		}

@@ -5,8 +5,10 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
@@ -39,20 +41,20 @@ public abstract class ETC1Texture extends Texture {
 	// Constructors
 	// ===========================================================
 
-	public ETC1Texture() throws IOException {
-		this(TextureOptions.DEFAULT, null);
+	public ETC1Texture(final TextureManager pTextureManager) throws IOException {
+		this(pTextureManager, TextureOptions.DEFAULT, null);
 	}
 
-	public ETC1Texture(final ITextureStateListener pTextureStateListener) throws IOException {
-		this(TextureOptions.DEFAULT, pTextureStateListener);
+	public ETC1Texture(final TextureManager pTextureManager, final ITextureStateListener pTextureStateListener) throws IOException {
+		this(pTextureManager, TextureOptions.DEFAULT, pTextureStateListener);
 	}
 
-	public ETC1Texture(final TextureOptions pTextureOptions) throws IOException {
-		this(pTextureOptions, null);
+	public ETC1Texture(final TextureManager pTextureManager, final TextureOptions pTextureOptions) throws IOException {
+		this(pTextureManager, pTextureOptions, null);
 	}
 
-	public ETC1Texture(final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
-		super(PixelFormat.RGB_565, pTextureOptions, pTextureStateListener);
+	public ETC1Texture(final TextureManager pTextureManager, final TextureOptions pTextureOptions, final ITextureStateListener pTextureStateListener) throws IOException {
+		super(pTextureManager, PixelFormat.RGB_565, pTextureOptions, pTextureStateListener);
 
 		InputStream inputStream = null;
 		try {

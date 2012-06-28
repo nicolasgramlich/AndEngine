@@ -6,7 +6,7 @@ package org.andengine.util.exception;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:52:38 - 16.09.2011
  */
-public class NullBitmapException extends AndEngineException {
+public class NullBitmapException extends AndEngineRuntimeException {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,7 +20,6 @@ public class NullBitmapException extends AndEngineException {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
 
 	public NullBitmapException() {
 

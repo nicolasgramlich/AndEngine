@@ -2,7 +2,7 @@ package org.andengine.engine.handler;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.SmartList;
+import org.andengine.util.adt.list.SmartList;
 
 /**
  * (c) Zynga 2011

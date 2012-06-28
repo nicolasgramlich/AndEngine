@@ -2,12 +2,12 @@ package org.andengine.opengl.shader;
 
 import java.util.HashMap;
 
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.andengine.opengl.shader.exception.ShaderProgramException;
 import org.andengine.opengl.shader.exception.ShaderProgramLinkException;
 import org.andengine.opengl.shader.source.IShaderSource;
 import org.andengine.opengl.shader.source.StringShaderSource;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -21,7 +21,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 19:56:34 - 05.08.2011
  */
-public class ShaderProgram implements ShaderProgramConstants {
+public class ShaderProgram {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -55,7 +55,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 	public ShaderProgram(final String pVertexShaderSource, final String pFragmentShaderSource) {
 		this(new StringShaderSource(pVertexShaderSource), new StringShaderSource(pFragmentShaderSource));
 	}
-	
+
 	public ShaderProgram(final IShaderSource pVertexShaderSource, final IShaderSource pFragmentShaderSource) {
 		this.mVertexShaderSource = pVertexShaderSource;
 		this.mFragmentShaderSource = pFragmentShaderSource;
@@ -78,7 +78,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		if(location != null) {
 			return location.intValue();
 		} else {
-			throw new ShaderProgramException("Unexpected attribute: '" + pAttributeName + "'.");
+			throw new ShaderProgramException("Unexpected attribute: '" + pAttributeName + "'. Existing attributes: " + this.mAttributeLocations.toString());
 		}
 	}
 
@@ -96,7 +96,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		if(location != null) {
 			return location.intValue();
 		} else {
-			throw new ShaderProgramException("Unexpected uniform: '" + pUniformName + "'.");
+			throw new ShaderProgramException("Unexpected uniform: '" + pUniformName + "'. Existing uniforms: " + this.mUniformLocations.toString());
 		}
 	}
 
@@ -139,14 +139,21 @@ public class ShaderProgram implements ShaderProgramConstants {
 	}
 
 	protected void compile(final GLState pGLState) throws ShaderProgramException {
-		final int vertexShaderID = ShaderProgram.compileShader(this.mVertexShaderSource.getShaderSource(pGLState), GLES20.GL_VERTEX_SHADER);
-		final int fragmentShaderID = ShaderProgram.compileShader(this.mFragmentShaderSource.getShaderSource(pGLState), GLES20.GL_FRAGMENT_SHADER);
+		final String vertexShaderSource = this.mVertexShaderSource.getShaderSource(pGLState);
+		final int vertexShaderID = ShaderProgram.compileShader(vertexShaderSource, GLES20.GL_VERTEX_SHADER);
+
+		final String fragmentShaderSource = this.mFragmentShaderSource.getShaderSource(pGLState);
+		final int fragmentShaderID = ShaderProgram.compileShader(fragmentShaderSource, GLES20.GL_FRAGMENT_SHADER);
 
 		this.mProgramID = GLES20.glCreateProgram();
 		GLES20.glAttachShader(this.mProgramID, vertexShaderID);
 		GLES20.glAttachShader(this.mProgramID, fragmentShaderID);
 
-		this.link(pGLState);
+		try {
+			this.link(pGLState);
+		} catch (final ShaderProgramLinkException e) {
+			throw new ShaderProgramLinkException("VertexShaderSource:\n##########################\n" + vertexShaderSource + "\n##########################" + "\n\nFragmentShaderSource:\n##########################\n" + fragmentShaderSource + "\n##########################", e);
+		}
 
 		GLES20.glDeleteShader(vertexShaderID);
 		GLES20.glDeleteShader(fragmentShaderID);
@@ -182,7 +189,7 @@ public class ShaderProgram implements ShaderProgramConstants {
 		return shaderID;
 	}
 
-	private void initUniformLocations() {
+	private void initUniformLocations() throws ShaderProgramLinkException {
 		this.mUniformLocations.clear();
 
 		ShaderProgram.PARAMETERS_CONTAINER[0] = 0;
@@ -191,21 +198,40 @@ public class ShaderProgram implements ShaderProgramConstants {
 
 		for(int i = 0; i < numUniforms; i++) {
 			GLES20.glGetActiveUniform(this.mProgramID, i, ShaderProgram.NAME_CONTAINER_SIZE, ShaderProgram.LENGTH_CONTAINER, 0, ShaderProgram.SIZE_CONTAINER, 0, ShaderProgram.TYPE_CONTAINER, 0, ShaderProgram.NAME_CONTAINER, 0);
+
 			int length = ShaderProgram.LENGTH_CONTAINER[0];
+
 			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
 			if(length == 0) {
-				while(length < NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
-					 length++;
+				while((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
+					length++;
 				}
 			}
-			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
-			final int location = GLES20.glGetUniformLocation(this.mProgramID, name);
+
+			String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
+			int location = GLES20.glGetUniformLocation(this.mProgramID, name);
+
+			if(location == ShaderProgramConstants.LOCATION_INVALID) {
+				/* Some drivers do not report an incorrect length. Then the name is '\0' terminated. */
+				length = 0;
+				while(length < ShaderProgram.NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
+					length++;
+				}
+
+				name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
+				location = GLES20.glGetUniformLocation(this.mProgramID, name);
+
+				if(location == ShaderProgramConstants.LOCATION_INVALID) {
+					throw new ShaderProgramLinkException("Invalid location for uniform: '" + name + "'.");
+				}
+			}
+
 			this.mUniformLocations.put(name, location);
 		}
 	}
 
 	/**
-	 * TODO Is this actually needed? As the locations of {@link VertexBufferObjectAttribute}s are now 'predefined'. 
+	 * TODO Is this actually needed? As the locations of {@link VertexBufferObjectAttribute}s are now 'predefined'.
 	 */
 	@Deprecated
 	private void initAttributeLocations() {
@@ -217,15 +243,34 @@ public class ShaderProgram implements ShaderProgramConstants {
 
 		for(int i = 0; i < numAttributes; i++) {
 			GLES20.glGetActiveAttrib(this.mProgramID, i, ShaderProgram.NAME_CONTAINER_SIZE, ShaderProgram.LENGTH_CONTAINER, 0, ShaderProgram.SIZE_CONTAINER, 0, ShaderProgram.TYPE_CONTAINER, 0, ShaderProgram.NAME_CONTAINER, 0);
+
 			int length = ShaderProgram.LENGTH_CONTAINER[0];
+
 			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
 			if(length == 0) {
-				while(length < NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
-					 length++;
+				while((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
+					length++;
 				}
 			}
-			final String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
-			final int location = GLES20.glGetAttribLocation(this.mProgramID, name);
+
+			String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
+			int location = GLES20.glGetAttribLocation(this.mProgramID, name);
+
+			if(location == ShaderProgramConstants.LOCATION_INVALID) {
+				/* Some drivers do not report an incorrect length. Then the name is '\0' terminated. */
+				length = 0;
+				while(length < ShaderProgram.NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
+					length++;
+				}
+
+				name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
+				location = GLES20.glGetAttribLocation(this.mProgramID, name);
+
+				if(location == ShaderProgramConstants.LOCATION_INVALID) {
+					throw new ShaderProgramLinkException("Invalid location for attribute: '" + name + "'.");
+				}
+			}
+
 			this.mAttributeLocations.put(name, location);
 		}
 	}

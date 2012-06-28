@@ -1,9 +1,9 @@
 package org.andengine.entity.shape;
 
-import org.andengine.collision.HexagonalShapeCollisionChecker;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Line;
 import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.util.algorithm.collision.HexagonalShapeCollisionChecker;
 
 /**
  * 
@@ -77,20 +77,6 @@ public abstract class HexagonalShape extends Shape implements IAreaShape {
 	
 	public float getBaseSide() {
 		return this.mBaseSide;
-	}
-	
-	@Override
-	public float getBaseWidth() {
-		float baseR = calculateR(mBaseSide);
-		float baseWidth = baseR * 2;
-		return baseWidth;
-	}
-
-	@Override
-	public float getBaseHeight() {
-		float baseH = calculateH(mBaseSide);
-		float baseHeight = baseH * 2 + mBaseSide;
-		return baseHeight;
 	}
 
 	@Override

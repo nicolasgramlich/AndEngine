@@ -5,12 +5,13 @@ import java.nio.FloatBuffer;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.HexagonalShape;
 import org.andengine.opengl.shader.PositionColorShaderProgram;
-import org.andengine.opengl.shader.util.constants.ShaderProgramConstants;
+import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.util.GLState;
+import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.LowMemoryVertexBufferObject;
-import org.andengine.opengl.vbo.VertexBufferObject.DrawType;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttribute;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
@@ -53,15 +54,15 @@ public class Hexagon extends HexagonalShape {
 	/**
 	 * Uses a default {@link HighPerformanceHexagonVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Hexagon#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Hexagon(final float pX, final float pY, final float pSide) {
-		this(pX, pY, pSide, DrawType.STATIC);
+	public Hexagon(final float pX, final float pY, final float pSide, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pSide, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
 	/**
 	 * Uses a default {@link HighPerformanceHexagonVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Hexagon#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
-	public Hexagon(final float pX, final float pY, final float pSide, final DrawType pDrawType) {
-		this(pX, pY, pSide, new HighPerformanceHexagonVertexBufferObject(Hexagon.HEXAGON_SIZE, pDrawType, true, Hexagon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	public Hexagon(final float pX, final float pY, final float pSide, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pSide, new HighPerformanceHexagonVertexBufferObject(pVertexBufferObjectManager, Hexagon.HEXAGON_SIZE, pDrawType, true, Hexagon.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
 
 	public Hexagon(final float pX, final float pY, final float pSide, final IHexagonVertexBufferObject pHexagonVertexBufferObject) {
@@ -151,8 +152,8 @@ public class Hexagon extends HexagonalShape {
 		// Constructors
 		// ===========================================================
 
-		public HighPerformanceHexagonVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public HighPerformanceHexagonVertexBufferObject(VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -167,7 +168,7 @@ public class Hexagon extends HexagonalShape {
 		public void onUpdateColor(final Hexagon pHexagon) {
 			final float[] bufferData = this.mBufferData;
 
-			final float packedColor = pHexagon.getColor().getPacked();
+			final float packedColor = pHexagon.getColor().getABGRPackedFloat();
 
 			bufferData[0 * Hexagon.VERTEX_SIZE + Hexagon.COLOR_INDEX] = packedColor;
 			bufferData[1 * Hexagon.VERTEX_SIZE + Hexagon.COLOR_INDEX] = packedColor;
@@ -244,8 +245,8 @@ public class Hexagon extends HexagonalShape {
 		// Constructors
 		// ===========================================================
 
-		public LowMemoryHexagonVertexBufferObject(final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
-			super(pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
+		public LowMemoryHexagonVertexBufferObject(VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pManaged, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+			super(pVertexBufferObjectManager, pCapacity, pDrawType, pManaged, pVertexBufferObjectAttributes);
 		}
 
 		// ===========================================================
@@ -260,7 +261,7 @@ public class Hexagon extends HexagonalShape {
 		public void onUpdateColor(final Hexagon pHexagon) {
 			final FloatBuffer bufferData = this.mFloatBuffer;
 
-			final float packedColor = pHexagon.getColor().getPacked();
+			final float packedColor = pHexagon.getColor().getABGRPackedFloat();
 
 			bufferData.put(0 * Hexagon.VERTEX_SIZE + Hexagon.COLOR_INDEX, packedColor);
 			bufferData.put(1 * Hexagon.VERTEX_SIZE + Hexagon.COLOR_INDEX, packedColor);

@@ -1,11 +1,11 @@
-package org.andengine.collision;
+package org.andengine.util.algorithm.collision;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.shape.HexagonalShape;
-import org.andengine.util.constants.Constants;
+import org.andengine.util.Constants;
+import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.math.MathUtils;
-import org.andengine.util.transformation.Transformation;
 
 /**
  * 
@@ -55,21 +55,21 @@ public class HexagonalShapeCollisionChecker extends ShapeCollisionChecker {
 		HexagonalShapeCollisionChecker.fillVertices(pCamera, VERTICES_COLLISION_TMP_C);
 		HexagonalShapeCollisionChecker.fillVertices(pHexagonalShape, VERTICES_COLLISION_TMP_B);
 
-		return ShapeCollisionChecker.checkCollision(2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_C, 2 * HEXAGONALSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B);
+		return ShapeCollisionChecker.checkCollision(VERTICES_COLLISION_TMP_C, 2 * RECTANGULARSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B, 2 * HEXAGONALSHAPE_VERTEX_COUNT);
 	}
 
 	public static boolean checkCollision(final HexagonalShape pHexagonalShapeA, final HexagonalShape pHexagonalShapeB) {
 		HexagonalShapeCollisionChecker.fillVertices(pHexagonalShapeA, VERTICES_COLLISION_TMP_A);
 		HexagonalShapeCollisionChecker.fillVertices(pHexagonalShapeB, VERTICES_COLLISION_TMP_B);
 
-		return ShapeCollisionChecker.checkCollision(2 * HEXAGONALSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, 2 * HEXAGONALSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B);
+		return ShapeCollisionChecker.checkCollision(VERTICES_COLLISION_TMP_A, 2 * HEXAGONALSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B, 2 * HEXAGONALSHAPE_VERTEX_COUNT);
 	}
 
 	public static boolean checkCollision(final HexagonalShape pHexagonalShape, final Line pLine) {
 		HexagonalShapeCollisionChecker.fillVertices(pHexagonalShape, VERTICES_COLLISION_TMP_A);
 		LineCollisionChecker.fillVertices(pLine, VERTICES_COLLISION_TMP_B);
 
-		return ShapeCollisionChecker.checkCollision(2 * HEXAGONALSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_A, 2 * LINE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B);
+		return ShapeCollisionChecker.checkCollision(VERTICES_COLLISION_TMP_A, 2 * HEXAGONALSHAPE_VERTEX_COUNT, VERTICES_COLLISION_TMP_B, 2 * LINE_VERTEX_COUNT);
 	}
 
 	public static void fillVertices(final HexagonalShape pHexagonalShape, final float[] pVertices) {

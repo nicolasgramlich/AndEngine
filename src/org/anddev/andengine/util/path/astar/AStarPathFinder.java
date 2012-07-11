@@ -3,9 +3,9 @@ package org.anddev.andengine.util.path.astar;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.anddev.andengine.util.path.IPathFinder;
+import org.anddev.andengine.util.path.IWeightedPathFinder;
 import org.anddev.andengine.util.path.ITiledMap;
-import org.anddev.andengine.util.path.Path;
+import org.anddev.andengine.util.path.WeightedPath;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -14,7 +14,7 @@ import org.anddev.andengine.util.path.Path;
  * @author Nicolas Gramlich
  * @since 23:16:17 - 16.08.2010
  */
-public class AStarPathFinder<T> implements IPathFinder<T> {
+public class AStarPathFinder<T> implements IWeightedPathFinder<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -66,7 +66,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// ===========================================================
 
 	@Override
-	public Path findPath(final T pEntity, final int pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) {
+	public WeightedPath findPath(final T pEntity, final int pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) {
 		final ITiledMap<T> tiledMap = this.mTiledMap;
 		if(tiledMap.isTileBlocked(pEntity, pToTileColumn, pToTileRow)) {
 			return null;
@@ -159,7 +159,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		}
 
 		/* Traceback path. */
-		final Path path = new Path();
+		final WeightedPath path = new WeightedPath(toNode.mCost);
 		Node tmp = nodes[pToTileRow][pToTileColumn];
 		while(tmp != fromNode) {
 			path.prepend(tmp.mTileColumn, tmp.mTileRow);

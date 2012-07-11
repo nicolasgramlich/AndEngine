@@ -96,8 +96,8 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 
 		int currentDepth = 0;
 		while(currentDepth < maxSearchDepth && !openNodes.isEmpty()) {
-			/* The first Node in the open list is the one with the lowest cost. */
-			final Node current = openNodes.remove(0);
+			/* Get the Node with lowest cost+heuristic. */
+			final Node current = Collections.min(openNodes);
 			if(current == toNode) {
 				break;
 			}
@@ -145,10 +145,6 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 								neighbor.mExpectedRestCost = aStarHeuristic.getExpectedRestCost(tiledMap, pEntity, neighborTileColumn, neighborTileRow, pToTileColumn, pToTileRow);
 								currentDepth = Math.max(currentDepth, neighbor.setParent(current));
 								openNodes.add(neighbor);
-
-								/* Ensure always the node with the lowest cost+heuristic
-								 * will be used next, simply by sorting. */
-								Collections.sort(openNodes);
 							}
 						}
 					}

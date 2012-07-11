@@ -1080,7 +1080,7 @@ public class Entity implements IEntity {
 
 	@Override
 	public float[] getSceneCenterCoordinates(final float[] pReuse) {
-		return this.convertLocalCoordinatesToSceneCoordinates(0, 0, pReuse);
+		return this.convertLocalCoordinatesToSceneCoordinates(this.mWidth * 0.5f, this.mHeight * 0.5f, pReuse);
 	}
 
 	@Override

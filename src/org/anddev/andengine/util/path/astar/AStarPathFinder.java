@@ -1,7 +1,7 @@
 package org.anddev.andengine.util.path.astar;
 
-import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import org.anddev.andengine.util.path.IPathFinder;
 import org.anddev.andengine.util.path.ITiledMap;
@@ -24,7 +24,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Node> mVisitedNodes = new ArrayList<Node>();
+	private final TreeSet<Node> mVisitedNodes = new TreeSet<Node>();
 	private final PriorityQueue<Node> mOpenNodes = new PriorityQueue<Node>();
 
 	private final ITiledMap<T> mTiledMap;
@@ -75,7 +75,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 
 		/* Drag some fields to local variables. */
 		final PriorityQueue<Node> openNodes = this.mOpenNodes;
-		final ArrayList<Node> visitedNodes = this.mVisitedNodes;
+		final TreeSet<Node> visitedNodes = this.mVisitedNodes;
 
 		final Node[][] nodes = this.mNodes;
 		final Node fromNode = nodes[pFromTileRow][pFromTileColumn];

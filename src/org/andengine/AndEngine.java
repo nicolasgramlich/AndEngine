@@ -42,6 +42,13 @@ public class AndEngine {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * Checks if the current device supports AndEngine by checking if the device has access to: 
+	 * <ul>
+	 * <li> API level 8 (Android 2.2, Froyo)
+	 * <li> OpenGL
+	 * </ul>
+	 */
 	public static boolean isDeviceSupported() {
 		try {
 			AndEngine.checkDeviceSupported();
@@ -51,6 +58,11 @@ public class AndEngine {
 		}
 	}
 
+	/**
+	 * Check if the device supports AndEngine.
+	 * Use {@link #isDeviceSupported() isDeviceSupported()} if you only need a boolean returned. 
+	 * @throws DeviceNotSupportedException
+	 */
 	public static void checkDeviceSupported() throws DeviceNotSupportedException {
 		AndEngine.checkCodePathSupport();
 

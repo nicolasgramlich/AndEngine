@@ -3,6 +3,8 @@ package org.andengine.util.color;
 import org.andengine.util.adt.pool.GenericPool;
 
 /**
+ * An extension of {@link GenericPool} for colors: instantiates new pool items as a white {@link Color}
+ * <br>
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>

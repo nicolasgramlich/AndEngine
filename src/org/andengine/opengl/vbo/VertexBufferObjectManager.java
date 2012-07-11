@@ -3,9 +3,11 @@ package org.andengine.opengl.vbo;
 import java.util.ArrayList;
 
 import org.andengine.opengl.util.GLState;
+import org.andengine.ui.activity.BaseGameActivity;
 
 /**
- * (c) 2010 Nicolas Gramlich
+ * Helps drawing shapes. If needed, you can typically get it through {@link BaseGameActivity#getVertexBufferObjectManager()}.<br>
+ * (c) 2010 Nicolas Gramlich<br>
  * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich

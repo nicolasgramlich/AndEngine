@@ -16,6 +16,18 @@ public final class BuildConfig {
 }
 ```
 
+## Documentation
+
+### Generating Javadoc HTML within *nix
+Javadoc and Apache Ant must be properly installed and configured to generate HTML doc.
+Open up a terminal window, and browse to the root directory of AndEngine.  Building Javadocs
+can be invoked with the following:
+
+```console
+[AndEngineDoc]$ ant doc
+```
+
+build.xml will automatically place the documentation in the 'doc' folder.
 
 ## Branches
 

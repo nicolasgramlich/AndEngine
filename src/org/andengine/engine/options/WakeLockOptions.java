@@ -3,7 +3,17 @@ package org.andengine.engine.options;
 import android.os.PowerManager;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * This enum contains the following elements for options:<ul>
+ * <li><u>BRIGHT(PowerManager.FULL_WAKE_LOCK)</u>: Screen is on at full brightness. Keyboard backlight is on at full brightness. Requires <b>WAKE_LOCK</b> permission!
+ * <br>
+ * <li><u>SCREEN_BRIGHT(PowerManager.SCREEN_BRIGHT_WAKE_LOCK)</u>: 	
+ * Screen is on at full brightness. Keyboard backlight will be allowed to go off. Requires <b>WAKE_LOCK</b> permission!
+ * <br>
+ * <li><u>SCREEN_DIM(PowerManager.SCREEN_DIM_WAKE_LOCK)</u>: Screen is on but may be dimmed. Keyboard backlight will be allowed to go off. Requires <b>WAKE_LOCK</b> permission!
+ * 
+ * <li><u>SCREEN_ON(-1)</u>: Screen is on at full brightness. Does <b>not</b> require <b>WAKE_LOCK</b> permission! 
+ * <br><br>
+ * (c) 2010 Nicolas Gramlich <br>
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich

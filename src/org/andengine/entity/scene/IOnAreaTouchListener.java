@@ -4,11 +4,11 @@ import org.andengine.input.touch.TouchEvent;
 
 /**
  * An interface for a callback to be invoked when a {@link TouchEvent} is
- * dispatched to an {@link ITouchArea} area. The callback will be invoked
- * before the {@link TouchEvent} is passed to the {@link ITouchArea}.
- *
+ * dispatched to an {@link ITouchArea} area. The callback will be invoked before
+ * the {@link TouchEvent} is passed to the {@link ITouchArea}. <br>
+ * <br>
  * (c) Zynga 2012
- *
+ * 
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:01:48 PM - 27.03.2012
  */
@@ -22,15 +22,25 @@ public interface IOnAreaTouchListener {
 	// ===========================================================
 
 	/**
-	 * Called when a {@link TouchEvent} is dispatched to an {@link ITouchArea}. This allows
-	 * listeners to get a chance to respond before the target {@link ITouchArea#onAreaTouched(TouchEvent, float, float)} is called.
+	 * Called when a {@link TouchEvent} is dispatched to an {@link ITouchArea}.
+	 * This allows listeners to get a chance to respond before the target
+	 * {@link ITouchArea#onAreaTouched(TouchEvent, float, float)} is called.
 	 * 
-	 * @param pTouchArea The {@link ITouchArea} that the {@link TouchEvent} has been dispatched to.
-	 * @param pSceneTouchEvent The {@link TouchEvent} object containing full information about the event.
-	 * @param pTouchAreaLocalX the x coordinate within the area touched.
-	 * @param pTouchAreaLocalY the y coordinate within the area touched.
+	 * @param pTouchArea
+	 *            The {@link ITouchArea} that the {@link TouchEvent} has been
+	 *            dispatched to.
+	 * @param pSceneTouchEvent
+	 *            The {@link TouchEvent} object containing full information
+	 *            about the event.
+	 * @param pTouchAreaLocalX
+	 *            the x coordinate within the area touched.
+	 * @param pTouchAreaLocalY
+	 *            the y coordinate within the area touched.
 	 * 
-	 * @return <code>true</code> if this {@link IOnAreaTouchListener} has consumed the {@link TouchEvent}, <code>false</code> otherwise.
+	 * @return <code>true</code> if this {@link IOnAreaTouchListener} has
+	 *         consumed the {@link TouchEvent}, <code>false</code> otherwise.
 	 */
-	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final ITouchArea pTouchArea, final float pTouchAreaLocalX, final float pTouchAreaLocalY);
+	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+			final ITouchArea pTouchArea, final float pTouchAreaLocalX,
+			final float pTouchAreaLocalY);
 }

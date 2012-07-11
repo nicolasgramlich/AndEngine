@@ -1,7 +1,11 @@
 package org.andengine.engine.options;
 
+import org.andengine.engine.Engine;
+
 /**
- * (c) Zynga 2011
+ * Specifies whether the {@link Engine} needs multitouch and the minimum amount of time between two touch events 
+ * <br>
+ * (c) Zynga 2011<br>
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:18:06 - 22.11.2011

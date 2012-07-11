@@ -11,7 +11,8 @@ import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
 /**
- * (c) 2010 Nicolas Gramlich
+ * Utility class used to create a {@link Font} from a {@link Typeface}.
+ * (c) 2010 Nicolas Gramlich<br>
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich

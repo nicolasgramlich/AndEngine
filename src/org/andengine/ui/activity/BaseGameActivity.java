@@ -34,12 +34,50 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.Gravity;
+import android.view.SurfaceView;
 import android.widget.FrameLayout.LayoutParams;
 
 /**
- * (c) 2010 Nicolas Gramlich
- * (c) 2011 Zynga Inc.
- * 
+ * The {@link BaseGameActivity} is the root of a game, that contains an Engine and manages to create a
+ * {@link SurfaceView} the contents of the Engine will be drawn into. There is always exactly one {@link Engine} for
+ * one {@link BaseGameActivity}. You can proceed from one {@link BaseGameActivity} to another using common Android
+ * mechanisms.<br>
+ * <br>
+ * As a reminder, here is the lifecycle of a game: (obsolete: the function names are now called onCreate instead of onLoad)
+ * <ul>
+ * <li>Launch game
+ * <ol>
+ * <li>onLoadEngine()</li>
+ * <li>onResume()</li>
+ * <li>onLoadResources()</li>
+ * <li>onLoadScene()</li>
+ * <li>onLoadComplete()</li>
+ * <li>onGameResumed()</li>
+ * </ol>
+ * </li>
+ * <li>during game, go to homescreen
+ * <ol>
+ * <li>onPause()</li>
+ * </ol>
+ * </li>
+ * <li>return to game
+ * <ol>
+ * <li>onResume()</li>
+ * <li>onGameResumed()</li>
+ * </ol>
+ * <li>exit game with this.finish()
+ * <ol>
+ * <li>onPause()</li>
+ * <li>onDestroy()</li>
+ * </ol>
+ * <li>return to game after dialog.dismiss()
+ * <ol>
+ * <li>onGameResumed()</li>
+ * </ol>
+ * </ul>
+ * <br>
+ * (c) 2010 Nicolas Gramlich <br>
+ * (c) 2011 Zynga Inc. * 
  * @author Nicolas Gramlich
  * @since 11:27:06 - 08.03.2010
  */
@@ -375,6 +413,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		});
 	}
 
+	/**
+	 * Sets up a {@link RenderSurfaceView} and tying it to the {@link Engine}.
+	 */
 	protected void onSetContentView() {
 		this.mRenderSurfaceView = new RenderSurfaceView(this);
 		this.mRenderSurfaceView.setRenderer(this.mEngine, this);

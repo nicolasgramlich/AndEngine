@@ -1,7 +1,7 @@
 package org.anddev.andengine.util.path.astar;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.PriorityQueue;
 
 import org.anddev.andengine.util.path.IPathFinder;
 import org.anddev.andengine.util.path.ITiledMap;
@@ -25,7 +25,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// ===========================================================
 
 	private final ArrayList<Node> mVisitedNodes = new ArrayList<Node>();
-	private final ArrayList<Node> mOpenNodes = new ArrayList<Node>();
+	private final PriorityQueue<Node> mOpenNodes = new PriorityQueue<Node>();
 
 	private final ITiledMap<T> mTiledMap;
 	private final int mMaxSearchDepth;
@@ -74,7 +74,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		}
 
 		/* Drag some fields to local variables. */
-		final ArrayList<Node> openNodes = this.mOpenNodes;
+		final PriorityQueue<Node> openNodes = this.mOpenNodes;
 		final ArrayList<Node> visitedNodes = this.mVisitedNodes;
 
 		final Node[][] nodes = this.mNodes;
@@ -98,7 +98,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		int currentDepth = 0;
 		while(currentDepth < maxSearchDepth && !openNodes.isEmpty()) {
 			/* Get the Node with lowest cost+heuristic. */
-			final Node current = Collections.min(openNodes);
+			final Node current = openNodes.poll();
 			if(current == toNode) {
 				break;
 			}

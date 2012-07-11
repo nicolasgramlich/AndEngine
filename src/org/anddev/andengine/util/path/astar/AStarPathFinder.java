@@ -66,7 +66,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// ===========================================================
 
 	@Override
-	public Path findPath(final T pEntity, final int pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) {
+	public Path findPath(final T pEntity, final float pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) {
 		final ITiledMap<T> tiledMap = this.mTiledMap;
 		if(tiledMap.isTileBlocked(pEntity, pToTileColumn, pToTileRow)) {
 			return null;

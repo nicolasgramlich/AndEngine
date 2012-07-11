@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.anddev.andengine.util.path.IPathFinder;
 import org.anddev.andengine.util.path.ITiledMap;
+import org.anddev.andengine.util.path.NegativeStepCostException;
 import org.anddev.andengine.util.path.Path;
 
 /**
@@ -66,7 +67,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// ===========================================================
 
 	@Override
-	public Path findPath(final T pEntity, final float pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) {
+	public Path findPath(final T pEntity, final float pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) throws NegativeStepCostException {
 		final ITiledMap<T> tiledMap = this.mTiledMap;
 		if(tiledMap.isTileBlocked(pEntity, pToTileColumn, pToTileRow)) {
 			return null;
@@ -124,8 +125,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 						final float stepCost = tiledMap.getStepCost(pEntity, current.mTileColumn, current.mTileRow, neighborTileColumn, neighborTileRow);
 						
 						if(stepCost < 0) {
-							/* can not handle negative step cost! */
-							return null;
+							throw new NegativeStepCostException();
 						}
 						
 						final float neighborCost = current.mCost + stepCost;

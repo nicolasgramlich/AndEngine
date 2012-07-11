@@ -121,7 +121,14 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 					final int neighborTileRow = dY + current.mTileRow;
 
 					if(!this.isTileBlocked(pEntity, pFromTileColumn, pFromTileRow, neighborTileColumn, neighborTileRow)) {
-						final float neighborCost = current.mCost + tiledMap.getStepCost(pEntity, current.mTileColumn, current.mTileRow, neighborTileColumn, neighborTileRow);
+						final float stepCost = tiledMap.getStepCost(pEntity, current.mTileColumn, current.mTileRow, neighborTileColumn, neighborTileRow);
+						
+						if(stepCost < 0) {
+							/* can not handle negative step cost! */
+							return null;
+						}
+						
+						final float neighborCost = current.mCost + stepCost;
 						final Node neighbor = nodes[neighborTileRow][neighborTileColumn];
 						tiledMap.onTileVisitedByPathFinder(neighborTileColumn, neighborTileRow);
 

@@ -239,7 +239,18 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 			} else if (totalCost > totalCostOther) {
 				return 1;
 			} else {
-				return 0;
+				// costs are equal, use coordinates for comparison
+				if(mTileColumn != pOther.mTileColumn)
+				{
+					return (mTileColumn < pOther.mTileColumn)?-1:1;
+				}
+				else if(mTileRow == pOther.mTileRow)
+				{
+					return 0;
+				}
+				else {
+					return (mTileRow < pOther.mTileRow)?-1:1;
+				}
 			}
 		}
 

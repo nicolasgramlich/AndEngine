@@ -12,13 +12,13 @@ import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.debug.Debug;
 import org.andengine.util.StreamUtils;
 import org.andengine.util.math.MathUtils;
 
 import android.opengl.ETC1;
 import android.opengl.ETC1Util;
 import android.opengl.GLES20;
-import android.util.Log;
 
 /**
  * TODO if(!SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.FROYO)) --> Meaningful Exception!
@@ -67,7 +67,7 @@ public abstract class ETC1Texture extends Texture {
 
 			if(BuildConfig.DEBUG) {				
 				if(!(MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mWidth) && MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mHeight))) {
-					Log.w(this.getClass().getSimpleName(), "ETC1 textures with NPOT sizes can lead to crash on PowerVR GPUs - you have been warned!");
+					Debug.w("ETC1 textures with NPOT sizes can cause a crash on PowerVR GPUs!");
 				}
 			}
 		} finally {

@@ -207,7 +207,7 @@ public class FloydWarshallPathFinder<T> implements IStaticPathFinder<T> {
 		 */
 		
 		public Node mParent = null;
-		public float mCost = Float.MAX_VALUE;
+		public float mCost = Float.POSITIVE_INFINITY;
 
 		// ===========================================================
 		// Constructors
@@ -233,7 +233,7 @@ public class FloydWarshallPathFinder<T> implements IStaticPathFinder<T> {
 		public void reset()
 		{
 			mParent = null;
-			mCost = Float.MAX_VALUE;
+			mCost = Float.POSITIVE_INFINITY;
 		}
 
 		// ===========================================================

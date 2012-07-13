@@ -6,6 +6,11 @@ import org.anddev.andengine.util.path.IStaticPathFinder;
 import org.anddev.andengine.util.path.IStaticTiledMap;
 import org.anddev.andengine.util.path.WeightedPath;
 
+/**
+ * implementation of the Floyd-Warshall-algorithm for shortest paths
+ * 
+ * @author <a href="https://github.com/winniehell/">winniehell</a>
+ */
 public class FloydWarshallPathFinder<T> implements IStaticPathFinder<T> {
 
 	// ===========================================================

@@ -1,5 +1,10 @@
 package org.anddev.andengine.util.path.floyd_warshall;
 
+/**
+ * exception for detected negative cycle which can not be handled
+ * 
+ * @author <a href="https://github.com/winniehell/">winniehell</a>
+ */
 public class NegativeCycleException extends Exception {
 
 	// ===========================================================

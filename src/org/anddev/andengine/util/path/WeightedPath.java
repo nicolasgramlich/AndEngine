@@ -1,11 +1,9 @@
 package org.anddev.andengine.util.path;
 
 /**
- * (c) 2010 Nicolas Gramlich 
- * (c) 2011 Zynga Inc.
+ * {@link Path} which stores its cost
  * 
- * @author Nicolas Gramlich
- * @since 23:00:24 - 16.08.2010
+ * @author <a href="https://github.com/winniehell/">winniehell</a>
  */
 public class WeightedPath extends Path {
 	// ===========================================================

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.andengine.BuildConfig;
 import org.andengine.opengl.texture.ITextureStateListener;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.Texture;
@@ -12,10 +13,12 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
+import org.andengine.util.math.MathUtils;
 
 import android.opengl.ETC1;
 import android.opengl.ETC1Util;
 import android.opengl.GLES20;
+import android.util.Log;
 
 /**
  * TODO if(!SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.FROYO)) --> Meaningful Exception!
@@ -61,6 +64,11 @@ public abstract class ETC1Texture extends Texture {
 			inputStream = this.getInputStream();
 
 			this.mETC1TextureHeader = new ETC1TextureHeader(StreamUtils.streamToBytes(inputStream, ETC1.ETC_PKM_HEADER_SIZE));
+
+			if (BuildConfig.DEBUG &&
+					(!MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mHeight) || !MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mWidth))) {
+				Log.w(getClass().getSimpleName(), "ETC1 texturese with NPOT sizes can lead to crash on PowerVR GPUs- you have been warned!");
+			}
 		} finally {
 			StreamUtils.close(inputStream);
 		}

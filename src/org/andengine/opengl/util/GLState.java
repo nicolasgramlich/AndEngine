@@ -62,6 +62,7 @@ public class GLState {
 
 	private int mCurrentSourceBlendMode = -1;
 	private int mCurrentDestinationBlendMode = -1;
+	private int mCurrentBlendEquation = -1;
 
 	private boolean mDitherEnabled = true;
 	private boolean mDepthTestEnabled = true;
@@ -154,6 +155,7 @@ public class GLState {
 
 		this.mCurrentSourceBlendMode = -1;
 		this.mCurrentDestinationBlendMode = -1;
+		this.mCurrentBlendEquation = -1;
 
 		this.enableDither();
 		this.enableDepthTest();
@@ -528,6 +530,13 @@ public class GLState {
 			this.mCurrentSourceBlendMode = pSourceBlendMode;
 			this.mCurrentDestinationBlendMode = pDestinationBlendMode;
 			GLES20.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
+		}
+	}
+
+	public void blendEquation(final int pBlendEquation) {
+		if(this.mCurrentBlendEquation != pBlendEquation) {
+			this.mCurrentBlendEquation = pBlendEquation;
+			GLES20.glBlendEquation(pBlendEquation);
 		}
 	}
 

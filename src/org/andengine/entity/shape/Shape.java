@@ -28,6 +28,7 @@ public abstract class Shape extends Entity implements IShape {
 
 	protected int mBlendFunctionSource = IShape.BLENDFUNCTION_SOURCE_DEFAULT;
 	protected int mBlendFunctionDestination = IShape.BLENDFUNCTION_DESTINATION_DEFAULT;
+	protected int mBlendEquation = IShape.BLENDEQUATION_DEFAULT;
 
 	protected boolean mBlendingEnabled = false;
 
@@ -89,6 +90,14 @@ public abstract class Shape extends Entity implements IShape {
 		this.mBlendFunctionDestination = pBlendFunctionDestination;
 	}
 
+	public int getBlendEquation() {
+		return mBlendEquation;
+	}
+
+	public void setBlendEquation(int mBlendEquation) {
+		this.mBlendEquation = mBlendEquation;
+	}
+
 	@Override
 	public ShaderProgram getShaderProgram() {
 		return this.mShaderProgram;
@@ -115,6 +124,7 @@ public abstract class Shape extends Entity implements IShape {
 		if(this.mBlendingEnabled) {
 			pGLState.enableBlend();
 			pGLState.blendFunction(this.mBlendFunctionSource, this.mBlendFunctionDestination);
+			pGLState.blendEquation(this.mBlendEquation);
 		}
 	}
 

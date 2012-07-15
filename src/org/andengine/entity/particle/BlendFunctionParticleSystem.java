@@ -25,6 +25,7 @@ public class BlendFunctionParticleSystem<T extends IEntity> extends ParticleSyst
 	protected boolean mBlendingEnabled = true;
 	protected int mBlendFunctionSource = IShape.BLENDFUNCTION_SOURCE_DEFAULT;
 	protected int mBlendFunctionDestination = IShape.BLENDFUNCTION_DESTINATION_DEFAULT;
+	private int mBlendEquation = IShape.BLENDEQUATION_DEFAULT;
 
 	// ===========================================================
 	// Constructors
@@ -71,6 +72,14 @@ public class BlendFunctionParticleSystem<T extends IEntity> extends ParticleSyst
 		this.mBlendFunctionDestination = pBlendFunctionDestination;
 	}
 
+	public int getBlendEquation() {
+		return mBlendEquation;
+	}
+
+	public void setBlendEquation(int mBlendEquation) {
+		this.mBlendEquation = mBlendEquation;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -80,6 +89,7 @@ public class BlendFunctionParticleSystem<T extends IEntity> extends ParticleSyst
 		if(this.mBlendingEnabled) {
 			pGLState.enableBlend();
 			pGLState.blendFunction(this.mBlendFunctionSource, this.mBlendFunctionDestination);
+			pGLState.blendEquation(this.mBlendEquation);
 		}
 	}
 

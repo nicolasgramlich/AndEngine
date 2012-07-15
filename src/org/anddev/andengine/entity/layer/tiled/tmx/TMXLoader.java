@@ -38,6 +38,8 @@ public class TMXLoader {
 	private final TextureOptions mTextureOptions;
 	private final ITMXTilePropertiesListener mTMXTilePropertyListener;
 
+	private static String sAssetBasePath = "";
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -65,6 +67,17 @@ public class TMXLoader {
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>.
+	 */
+	public static void setAssetBasePath(final String pAssetBasePath) {
+		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
+			TMXLoader.sAssetBasePath = pAssetBasePath;
+		} else {
+			throw new IllegalArgumentException("pAssetBasePath must end with '/' or be lenght zero.");
+		}
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -75,9 +88,9 @@ public class TMXLoader {
 
 	public TMXTiledMap loadFromAsset(final Context pContext, final String pAssetPath) throws TMXLoadException {
 		try {
-			return this.load(pContext.getAssets().open(pAssetPath));
+			return this.load(pContext.getAssets().open(TMXLoader.sAssetBasePath + pAssetPath));
 		} catch (final IOException e) {
-			throw new TMXLoadException("Could not load TMXTiledMap from asset: " + pAssetPath, e);
+			throw new TMXLoadException("Could not load TMXTiledMap from asset: " + TMXLoader.sAssetBasePath + pAssetPath, e);
 		}
 	}
 

@@ -98,6 +98,10 @@ public class BuildableBitmapTextureAtlas extends BuildableTextureAtlas<IBitmapTe
 	// Getter & Setter
 	// ===========================================================
 
+	public BitmapTextureFormat getBitmapTextureFormat() {
+		return mTextureAtlas.getBitmapTextureFormat();
+	}
+	
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

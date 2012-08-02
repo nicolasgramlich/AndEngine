@@ -6,7 +6,7 @@ import org.andengine.util.adt.spatial.bounds.util.IntBoundsUtils;
  * (c) winniehell (2012)
  *
  * @author <a href="https://github.com/winniehell/">winniehell</a>
- * @since 2012-07-{27}  19:54
+ * @since 2012-07-27 19:54
  */
 public class PathFinderOptions {
   // ===========================================================

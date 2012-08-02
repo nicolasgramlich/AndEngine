@@ -17,14 +17,14 @@ public class SmoothCamera extends ZoomCamera {
 	// Fields
 	// ===========================================================
 
-	private float mMaxVelocityX;
-	private float mMaxVelocityY;
-	private float mMaxZoomFactorChange;
+	protected float mMaxVelocityX;
+	protected float mMaxVelocityY;
+	protected float mMaxZoomFactorChange;
 
-	private float mTargetCenterX;
-	private float mTargetCenterY;
+	protected float mTargetCenterX;
+	protected float mTargetCenterY;
 
-	private float mTargetZoomFactor;
+	protected float mTargetZoomFactor;
 
 	// ===========================================================
 	// Constructors

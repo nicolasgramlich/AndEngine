@@ -18,9 +18,8 @@ public interface IPathFinder<TEntity, TPath> {
 	// Fields
 	// ===========================================================
 
-	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction);
-	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction, final float pMaxCost);
-	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction, final float pMaxCost, final IPathFinderListener<TEntity> pPathFinderListener);
+	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final PathFinderOptions pOptions, final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction);
+	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final PathFinderOptions pOptions, final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction, final IPathFinderListener<TEntity> pPathFinderListener);
 
     // ===========================================================
     // Inner and Anonymous Classes

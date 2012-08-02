@@ -4,12 +4,7 @@ import org.andengine.util.adt.list.ShiftList;
 import org.andengine.util.adt.map.LongSparseArray;
 import org.andengine.util.adt.queue.IQueue;
 import org.andengine.util.adt.queue.SortedQueue;
-import org.andengine.util.adt.queue.UniqueQueue;
-import org.andengine.util.adt.spatial.bounds.util.IntBoundsUtils;
-import org.andengine.util.algorithm.path.ICostFunction;
-import org.andengine.util.algorithm.path.IPathFinder;
-import org.andengine.util.algorithm.path.IPathFinderMap;
-import org.andengine.util.algorithm.path.WeightedPath;
+import org.andengine.util.algorithm.path.*;
 
 /**
  * TODO Nodes could be recycle in a pool.
@@ -43,18 +38,15 @@ public class AStarPathFinder<T> implements IPathFinder<T, WeightedPath> {
 	// ===========================================================
 
 	@Override
-	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction) {
-		return this.findPath(pPathFinderMap, pXMin, pYMin, pXMax, pYMax, pEntity, pFromX, pFromY, pToX, pToY, pAllowDiagonal, pAStarHeuristic, pCostFunction, Float.MAX_VALUE);
+	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final PathFinderOptions pOptions, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction) {
+		return this.findPath(pPathFinderMap, pOptions, pEntity, pFromX, pFromY, pToX, pToY, pAStarHeuristic, pCostFunction, null);
 	}
 
 	@Override
-	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction, final float pMaxCost) {
-		return this.findPath(pPathFinderMap, pXMin, pYMin, pXMax, pYMax, pEntity, pFromX, pFromY, pToX, pToY, pAllowDiagonal, pAStarHeuristic, pCostFunction, pMaxCost, null);
-	}
-
-	@Override
-	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction, final float pMaxCost, final IPathFinderListener<T> pPathFinderListener) {
-		if(((pFromX == pToX) && (pFromY == pToY)) || pPathFinderMap.isBlocked(pFromX, pFromY, pEntity) || pPathFinderMap.isBlocked(pToX, pToY, pEntity)) {
+	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final PathFinderOptions pOptions, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction, final IPathFinderListener<T> pPathFinderListener) {
+		if(((pFromX == pToX) && (pFromY == pToY))
+		   || pPathFinderMap.isBlocked(pFromX, pFromY, pEntity)
+		   || pPathFinderMap.isBlocked(pToX, pToY, pEntity)) {
 			return null;
 		}
 
@@ -67,8 +59,6 @@ public class AStarPathFinder<T> implements IPathFinder<T, WeightedPath> {
 		final LongSparseArray<Node> visitedNodes = new LongSparseArray<Node>();
 		final LongSparseArray<Node> openNodes = new LongSparseArray<Node>();
 		final IQueue<Node> sortedOpenNodes = new SortedQueue<Node>(new ShiftList<Node>());
-
-		final boolean allowDiagonalMovement = pAllowDiagonal;
 
 		/* Initialize algorithm. */
 		openNodes.put(fromNodeID, fromNode);
@@ -92,7 +82,7 @@ public class AStarPathFinder<T> implements IPathFinder<T, WeightedPath> {
 						continue;
 					}
 
-					if(!allowDiagonalMovement && (dX != 0) && (dY != 0)) {
+					if(!pOptions.allowDiagonalMovement() && (dX != 0) && (dY != 0)) {
 						continue;
 					}
 
@@ -100,7 +90,8 @@ public class AStarPathFinder<T> implements IPathFinder<T, WeightedPath> {
 					final int neighborNodeY = dY + currentNode.mY;
 					final long neighborNodeID = Node.calculateID(neighborNodeX, neighborNodeY);
 
-					if(!IntBoundsUtils.contains(pXMin, pYMin, pXMax, pYMax, neighborNodeX, neighborNodeY) || pPathFinderMap.isBlocked(neighborNodeX, neighborNodeY, pEntity)) {
+					if(!pOptions.inBounds(neighborNodeX, neighborNodeY)
+					   || pPathFinderMap.isBlocked(neighborNodeX, neighborNodeY, pEntity)) {
 						continue;
 					}
 
@@ -121,7 +112,7 @@ public class AStarPathFinder<T> implements IPathFinder<T, WeightedPath> {
 					/* Update cost of neighbor as cost of current plus step from current to neighbor. */
 					final float costFromCurrentToNeigbor = pCostFunction.getCost(pPathFinderMap, currentNode.mX, currentNode.mY, neighborNodeX, neighborNodeY, pEntity);
 					final float neighborNodeCost = currentNode.mCost + costFromCurrentToNeigbor;
-					if(neighborNodeCost > pMaxCost) {
+					if(neighborNodeCost > pOptions.getMaxCost()) {
 						/* Too expensive -> remove if isn't a new node. */
 						if(!neighborNodeIsNew) {
 							openNodes.remove(neighborNodeID);

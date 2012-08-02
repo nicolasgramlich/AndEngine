@@ -40,7 +40,8 @@ public class AStarPathFinder<T> implements IWeightedPathFinder<T> {
 	@Override
 	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final PathFinderOptions pOptions,
 	                             final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY,
-	                             final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction) {
+	                             final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction)
+	                    throws NegativeStepCostException {
 		return this.findPath(pPathFinderMap, pOptions, pEntity, pFromX, pFromY, pToX, pToY, pAStarHeuristic, pCostFunction, null);
 	}
 
@@ -48,7 +49,8 @@ public class AStarPathFinder<T> implements IWeightedPathFinder<T> {
 	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final PathFinderOptions pOptions,
 	                             final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY,
 	                             final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction,
-	                             final IPathFinderListener<T> pPathFinderListener) {
+	                             final IPathFinderListener<T> pPathFinderListener)
+	                    throws NegativeStepCostException {
 		if(((pFromX == pToX) && (pFromY == pToY))
 		   || pPathFinderMap.isBlocked(pFromX, pFromY, pEntity)
 		   || pPathFinderMap.isBlocked(pToX, pToY, pEntity)) {
@@ -116,6 +118,11 @@ public class AStarPathFinder<T> implements IWeightedPathFinder<T> {
 
 					/* Update cost of neighbor as cost of current plus step from current to neighbor. */
 					final float costFromCurrentToNeigbor = pCostFunction.getCost(pPathFinderMap, currentNode.mX, currentNode.mY, neighborNodeX, neighborNodeY, pEntity);
+
+					if(costFromCurrentToNeigbor < 0) {
+						throw new NegativeStepCostException();
+					}
+
 					final float neighborNodeCost = currentNode.mCost + costFromCurrentToNeigbor;
 					if(neighborNodeCost > pOptions.getMaxCost()) {
 						/* Too expensive -> remove if isn't a new node. */

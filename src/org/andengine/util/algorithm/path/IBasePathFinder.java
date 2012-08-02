@@ -19,11 +19,11 @@ public interface IBasePathFinder<TEntity, TPath> {
 
 	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final PathFinderOptions pOptions,
 	                      final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY,
-	                      final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction);
+	                      final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction) throws NegativeStepCostException;
 	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final PathFinderOptions pOptions,
 	                      final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY,
 	                      final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction,
-	                      final IPathFinderListener<TEntity> pPathFinderListener);
+	                      final IPathFinderListener<TEntity> pPathFinderListener) throws NegativeStepCostException;
 
     // ===========================================================
     // Inner and Anonymous Classes

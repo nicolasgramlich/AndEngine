@@ -57,6 +57,13 @@ public abstract class BaseDoubleValueChangeModifier<T> extends BaseSingleValueCh
 	// Methods
 	// ===========================================================
 
+	public void reset(final float pDuration,
+	                  final float pValueChangeA, final float pValueChangeB) {
+		super.reset(pDuration, pValueChangeA);
+
+		this.mValueChangeBPerSecond = pValueChangeB / pDuration;
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

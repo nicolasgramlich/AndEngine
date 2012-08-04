@@ -18,7 +18,7 @@ public abstract class BaseSingleValueChangeModifier<T> extends BaseDurationModif
 	// Fields
 	// ===========================================================
 
-	private final float mValueChangePerSecond;
+	private float mValueChangePerSecond;
 
 	// ===========================================================
 	// Constructors
@@ -63,6 +63,13 @@ public abstract class BaseSingleValueChangeModifier<T> extends BaseDurationModif
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void reset(final float pDuration, final float pValueChange) {
+		super.reset();
+
+		this.mDuration = pDuration;
+		this.mValueChangePerSecond = pValueChange / pDuration;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

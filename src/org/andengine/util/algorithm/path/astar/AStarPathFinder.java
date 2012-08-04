@@ -38,19 +38,28 @@ public class AStarPathFinder<T> implements IWeightedPathFinder<T> {
 	// ===========================================================
 
 	@Override
-	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final PathFinderOptions pOptions,
-	                             final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY,
-	                             final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction)
-	                    throws NegativeStepCostException {
-		return this.findPath(pPathFinderMap, pOptions, pEntity, pFromX, pFromY, pToX, pToY, pAStarHeuristic, pCostFunction, null);
+	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap,
+	                             final PathFinderOptions pOptions,
+	                             final T pEntity,
+	                             final int pFromX, final int pFromY,
+	                             final int pToX, final int pToY,
+	                             final IAStarHeuristic<T> pAStarHeuristic,
+	                             final ICostFunction<T> pCostFunction
+	) {
+		return this.findPath(pPathFinderMap, pOptions, pEntity, pFromX, pFromY,
+		                     pToX, pToY, pAStarHeuristic, pCostFunction, null);
 	}
 
 	@Override
-	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap, final PathFinderOptions pOptions,
-	                             final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY,
-	                             final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction,
-	                             final IPathFinderListener<T> pPathFinderListener)
-	                    throws NegativeStepCostException {
+	public WeightedPath findPath(final IPathFinderMap<T> pPathFinderMap,
+	                             final PathFinderOptions pOptions,
+	                             final T pEntity,
+	                             final int pFromX, final int pFromY,
+	                             final int pToX, final int pToY,
+	                             final IAStarHeuristic<T> pAStarHeuristic,
+	                             final ICostFunction<T> pCostFunction,
+	                             final IPathFinderListener<T> pPathFinderListener
+	) {
 		if(((pFromX == pToX) && (pFromY == pToY))
 		   || pPathFinderMap.isBlocked(pFromX, pFromY, pEntity)
 		   || pPathFinderMap.isBlocked(pToX, pToY, pEntity)) {

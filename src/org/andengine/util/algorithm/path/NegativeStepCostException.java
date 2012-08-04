@@ -6,7 +6,7 @@ package org.andengine.util.algorithm.path;
  * @author <a href="https://github.com/winniehell">winniehell</a>
  * @since 2012-08-02
  */
-public class NegativeStepCostException extends Exception {
+public class NegativeStepCostException extends RuntimeException {
 	// ===========================================================
 	// Constants
 	// ===========================================================

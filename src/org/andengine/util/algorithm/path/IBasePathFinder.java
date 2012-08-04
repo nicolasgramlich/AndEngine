@@ -17,13 +17,20 @@ public interface IBasePathFinder<TEntity, TPath> {
 	// Fields
 	// ===========================================================
 
-	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final PathFinderOptions pOptions,
-	                      final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY,
-	                      final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction) throws NegativeStepCostException;
-	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap, final PathFinderOptions pOptions,
-	                      final TEntity pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY,
-	                      final IAStarHeuristic<TEntity> pAStarHeuristic, final ICostFunction<TEntity> pCostFunction,
-	                      final IPathFinderListener<TEntity> pPathFinderListener) throws NegativeStepCostException;
+	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap,
+	                      final PathFinderOptions pOptions, final TEntity pEntity,
+	                      final int pFromX, final int pFromY,
+	                      final int pToX, final int pToY,
+	                      final IAStarHeuristic<TEntity> pAStarHeuristic,
+	                      final ICostFunction<TEntity> pCostFunction);
+
+	public TPath findPath(final IPathFinderMap<TEntity> pPathFinderMap,
+	                      final PathFinderOptions pOptions, final TEntity pEntity,
+	                      final int pFromX, final int pFromY,
+	                      final int pToX, final int pToY,
+	                      final IAStarHeuristic<TEntity> pAStarHeuristic,
+	                      final ICostFunction<TEntity> pCostFunction,
+	                      final IPathFinderListener<TEntity> pPathFinderListener);
 
     // ===========================================================
     // Inner and Anonymous Classes

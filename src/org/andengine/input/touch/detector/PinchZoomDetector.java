@@ -1,7 +1,7 @@
 package org.andengine.input.touch.detector;
 
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.util.math.MathUtils;
+import org.andengine.util.metric.EuclideanMetric;
 
 import android.view.MotionEvent;
 
@@ -118,7 +118,7 @@ public class PinchZoomDetector extends BaseDetector {
 	 * Calculate the euclidian distance between the first two fingers.
 	 */
 	private static float calculatePointerDistance(final MotionEvent pMotionEvent) {
-		return MathUtils.distance(pMotionEvent.getX(0), pMotionEvent.getY(0), pMotionEvent.getX(1), pMotionEvent.getY(1));
+		return EuclideanMetric.INSTANCE.distance(pMotionEvent.getX(0), pMotionEvent.getY(0), pMotionEvent.getX(1), pMotionEvent.getY(1));
 	}
 
 	private boolean hasTwoOrMorePointers(final MotionEvent pMotionEvent) {

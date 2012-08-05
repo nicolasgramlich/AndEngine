@@ -6,13 +6,11 @@ package org.andengine.util.metric;
  * @author <a href="https://github.com/winniehell">winniehell</a>
  * @since 2012-08-05
  */
-public class ChebyshevMetric implements IMetric {
+public final class ChebyshevMetric {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	public static final ChebyshevMetric INSTANCE = new ChebyshevMetric();
 
 	// ===========================================================
 	// Fields
@@ -22,10 +20,6 @@ public class ChebyshevMetric implements IMetric {
 	// Constructors
 	// ===========================================================
 
-	protected ChebyshevMetric() {
-
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -34,19 +28,16 @@ public class ChebyshevMetric implements IMetric {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public final float distance(final float pX1, final float pX2) {
+	public static float distance(final float pX1, final float pX2) {
 		return Math.abs(pX1 - pX2);
 	}
 
-	@Override
-	public final float distance(final float pX1, final float pY1,
+	public static float distance(final float pX1, final float pY1,
 	                            final float pX2, final float pY2) {
-		return Math.max(this.distance(pX1, pX2), this.distance(pY1, pY2));
+		return Math.max(distance(pX1, pX2), distance(pY1, pY2));
 	}
 
-	@Override
-	public final float displacement(final float pX, final float pY) {
+	public static float displacement(final float pX, final float pY) {
 		return Math.max(Math.abs(pX), Math.abs(pY));
 	}
 

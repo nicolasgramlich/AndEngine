@@ -6,13 +6,11 @@ package org.andengine.util.metric;
  * @author <a href="https://github.com/winniehell">winniehell</a>
  * @since 2012-08-05
  */
-public class CosineMetric implements IMetric {
+public final class CosineMetric {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	public static final CosineMetric INSTANCE = new CosineMetric();
 
 	// ===========================================================
 	// Fields
@@ -22,10 +20,6 @@ public class CosineMetric implements IMetric {
 	// Constructors
 	// ===========================================================
 
-	protected CosineMetric() {
-
-	}
-
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -34,22 +28,22 @@ public class CosineMetric implements IMetric {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public final float distance(final float pX1, final float pX2) {
+	/** @return cosine distance between pX1 and pX2 */
+	public static float distance(final float pX1, final float pX2) {
 		return Math.abs(pX1 - pX2);
 	}
 
-	@Override
-	public final float distance(final float pX1, final float pY1,
+	/** @return cosine distance between (pX1, pY2) and (pX2, pY2) */
+	public static float distance(final float pX1, final float pY1,
 	                            final float pX2, final float pY2) {
-		float disp1 = EuclideanMetric.INSTANCE.displacement(pX1, pY1);
-		float disp2 = EuclideanMetric.INSTANCE.displacement(pX2, pY2);
+		final float d1 = EuclideanMetric.displacement(pX1, pY1);
+		final float d2 = EuclideanMetric.displacement(pX2, pY2);
 
-		return ((pX1*pX2) + (pY1*pY2))/(disp1*disp2);
+		return ((pX1*pX2) + (pY1*pY2))/(d1*d2);
 	}
 
-	@Override
-	public final float displacement(final float pX, final float pY) {
+	/** @return cosine distance between (pX1, pY2) and origin (0,0) */
+	public static float displacement(final float pX, final float pY) {
 		return Math.max(Math.abs(pX), Math.abs(pY));
 	}
 

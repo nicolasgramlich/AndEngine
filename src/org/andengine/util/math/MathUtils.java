@@ -235,14 +235,14 @@ public final class MathUtils {
 	 * @return the euclidean distance between the points (pX1, pY1) and (pX2, pY2).
 	 */
 	public static final float distance(final float pX1, final float pY1, final float pX2, final float pY2){
-		return EuclideanMetric.INSTANCE.distance(pX1, pY1, pX2, pY2);
+		return EuclideanMetric.distance(pX1, pY1, pX2, pY2);
 	}
 
 	/**
 	 * @return the euclidean distance between the origin (0, 0) and (pX, pY).
 	 */
 	public static final float length(final float pX, final float pY){
-		return EuclideanMetric.INSTANCE.displacement(pX, pY);
+		return EuclideanMetric.displacement(pX, pY);
 	}
 
 	/**

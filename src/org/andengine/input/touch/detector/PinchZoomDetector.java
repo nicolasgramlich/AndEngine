@@ -118,7 +118,7 @@ public class PinchZoomDetector extends BaseDetector {
 	 * Calculate the euclidian distance between the first two fingers.
 	 */
 	private static float calculatePointerDistance(final MotionEvent pMotionEvent) {
-		return EuclideanMetric.INSTANCE.distance(pMotionEvent.getX(0), pMotionEvent.getY(0), pMotionEvent.getX(1), pMotionEvent.getY(1));
+		return EuclideanMetric.distance(pMotionEvent.getX(0), pMotionEvent.getY(0), pMotionEvent.getX(1), pMotionEvent.getY(1));
 	}
 
 	private boolean hasTwoOrMorePointers(final MotionEvent pMotionEvent) {

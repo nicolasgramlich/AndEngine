@@ -33,7 +33,7 @@ public class EuclideanHeuristic<T> implements IAStarHeuristic<T> {
 
 	@Override
 	public float getExpectedRestCost(final IPathFinderMap<T> pPathFinderMap, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY) {
-		return EuclideanMetric.INSTANCE.distance(pFromX, pToY, pToX, pToY);
+		return EuclideanMetric.distance(pFromX, pToY, pToX, pToY);
 	}
 
 	// ===========================================================

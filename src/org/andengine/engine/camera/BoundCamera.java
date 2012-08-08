@@ -53,6 +53,10 @@ public class BoundCamera extends Camera {
 
 	public void setBoundsEnabled(final boolean pBoundsEnabled) {
 		this.mBoundsEnabled = pBoundsEnabled;
+
+		if(this.mBoundsEnabled) {
+			this.ensureInBounds();
+		}
 	}
 
 	public void setBounds(final float pBoundsXMin, final float pBoundsYMin, final float pBoundsXMax, final float pBoundsYMax) {
@@ -66,6 +70,10 @@ public class BoundCamera extends Camera {
 
 		this.mBoundsCenterX = this.mBoundsXMin + this.mBoundsWidth * 0.5f;
 		this.mBoundsCenterY = this.mBoundsYMin + this.mBoundsHeight * 0.5f;
+
+		if(this.mBoundsEnabled) {
+			this.ensureInBounds();
+		}
 	}
 
 	public float getBoundsXMin() {

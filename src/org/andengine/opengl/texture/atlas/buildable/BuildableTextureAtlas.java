@@ -30,7 +30,7 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	// Fields
 	// ===========================================================
 
-	private final T mTextureAtlas;
+	protected final T mTextureAtlas;
 	private final ArrayList<TextureAtlasSourceWithWithLocationCallback<S>> mTextureAtlasSourcesToPlace = new ArrayList<TextureAtlasSourceWithWithLocationCallback<S>>();
 
 	// ===========================================================

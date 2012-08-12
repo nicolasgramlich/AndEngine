@@ -39,12 +39,12 @@ public class Transformation {
 	// Fields
 	// ===========================================================
 
-	private float a = 1.0f; /* x scale */
-	private float b = 0.0f; /* y skew */
-	private float c = 0.0f; /* x skew */
-	private float d = 1.0f; /* y scale */
-	private float tx = 0.0f; /* x translation */
-	private float ty = 0.0f; /* y translation */
+	protected float a = 1.0f; /* x scale */
+	protected float b = 0.0f; /* y skew */
+	protected float c = 0.0f; /* x skew */
+	protected float d = 1.0f; /* y scale */
+	protected float tx = 0.0f; /* x translation */
+	protected float ty = 0.0f; /* y translation */
 
 	// ===========================================================
 	// Constructors

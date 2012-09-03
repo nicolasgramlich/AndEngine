@@ -338,7 +338,7 @@ public class AnimatedSprite extends TiledSprite {
 		this.animate(pAnimationData, null);
 	}
 
-	private void animate(final IAnimationData pAnimationData, final IAnimationListener pAnimationListener) {
+	public void animate(final IAnimationData pAnimationData, final IAnimationListener pAnimationListener) {
 		this.mAnimationData.set(pAnimationData);
 
 		this.initAnimation(pAnimationListener);

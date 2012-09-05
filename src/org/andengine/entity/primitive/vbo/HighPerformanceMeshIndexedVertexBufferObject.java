@@ -118,10 +118,6 @@ public class HighPerformanceMeshIndexedVertexBufferObject extends
 	public void setIndexDirtyOnHardware() {
 		mIndexDirtyOnHardware = true;
 	}
-	
-	public boolean getIndexDirtyOnHardware() {
-		return mIndexDirtyOnHardware;
-	}
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

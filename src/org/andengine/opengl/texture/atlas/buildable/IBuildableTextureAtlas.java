@@ -27,7 +27,7 @@ public interface IBuildableTextureAtlas<S extends ITextureAtlasSource, T extends
 	 * @deprecated Use {@link BuildableTextureAtlas#addTextureAtlasSource(ITextureAtlasSource)} instead.
 	 */
 	@Override
-    @Deprecated
+	@Deprecated
 	public void addTextureAtlasSource(final S pTextureAtlasSource, final int pTextureX, final int pTextureY);
 
 	/**
@@ -35,7 +35,7 @@ public interface IBuildableTextureAtlas<S extends ITextureAtlasSource, T extends
 	 * @deprecated Use {@link BuildableTextureAtlas#addTextureAtlasSource(ITextureAtlasSource)} instead.
 	 */
 	@Override
-    @Deprecated
+	@Deprecated
 	public void addTextureAtlasSource(final S pTextureAtlasSource, final int pTextureX, final int pTextureY, final int pTextureAtlasSourcePadding);
 
 	/**

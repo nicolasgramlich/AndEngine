@@ -293,7 +293,7 @@ public class Camera implements IUpdateHandler {
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-		    Camera.applyRotation(pGLState, this.getCenterX(), this.getCenterY(), rotation);
+			Camera.applyRotation(pGLState, this.getCenterX(), this.getCenterY(), rotation);
 		}
 	}
 
@@ -305,7 +305,7 @@ public class Camera implements IUpdateHandler {
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-		    Camera.applyRotation(pGLState, widthRaw * 0.5f, heightRaw * 0.5f, rotation);
+			Camera.applyRotation(pGLState, widthRaw * 0.5f, heightRaw * 0.5f, rotation);
 		}
 	}
 

@@ -26,6 +26,7 @@ public interface IBuildableTextureAtlas<S extends ITextureAtlasSource, T extends
 	 * Most likely this is not the method you'd want to be using, as the {@link ITextureAtlasSource} won't get built through this {@link BuildableTextureAtlas}.
 	 * @deprecated Use {@link BuildableTextureAtlas#addTextureAtlasSource(ITextureAtlasSource)} instead.
 	 */
+	@Override
 	@Deprecated
 	public void addTextureAtlasSource(final S pTextureAtlasSource, final int pTextureX, final int pTextureY);
 
@@ -33,6 +34,7 @@ public interface IBuildableTextureAtlas<S extends ITextureAtlasSource, T extends
 	 * Most likely this is not the method you'd want to be using, as the {@link ITextureAtlasSource} won't get built through this {@link BuildableTextureAtlas}.
 	 * @deprecated Use {@link BuildableTextureAtlas#addTextureAtlasSource(ITextureAtlasSource)} instead.
 	 */
+	@Override
 	@Deprecated
 	public void addTextureAtlasSource(final S pTextureAtlasSource, final int pTextureX, final int pTextureY, final int pTextureAtlasSourcePadding);
 

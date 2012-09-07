@@ -4,7 +4,6 @@ import org.andengine.util.adt.list.ShiftList;
 import org.andengine.util.adt.map.LongSparseArray;
 import org.andengine.util.adt.queue.IQueue;
 import org.andengine.util.adt.queue.SortedQueue;
-import org.andengine.util.adt.queue.UniqueQueue;
 import org.andengine.util.adt.spatial.bounds.util.IntBoundsUtils;
 import org.andengine.util.algorithm.path.ICostFunction;
 import org.andengine.util.algorithm.path.IPathFinder;

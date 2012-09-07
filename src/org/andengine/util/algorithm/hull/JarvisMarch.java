@@ -41,14 +41,14 @@ public class JarvisMarch implements IHullAlgorithm {
 
 	@Override
 	public int computeHull(final float[] pVertices, final int pVertexCount, final int pVertexOffsetX, final int pVertexOffsetY, final int pVertexStride) {
-		return this.jarvisMarch(pVertices, pVertexCount, pVertexOffsetX, pVertexOffsetY, pVertexStride);
+		return JarvisMarch.jarvisMarch(pVertices, pVertexCount, pVertexOffsetX, pVertexOffsetY, pVertexStride);
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	private int jarvisMarch(final float[] pVertices, final int pVertexCount, final int pVertexOffsetX, final int pVertexOffsetY, final int pVertexStride) {
+	private static int jarvisMarch(final float[] pVertices, final int pVertexCount, final int pVertexOffsetX, final int pVertexOffsetY, final int pVertexStride) {
 		/* Start at the lowest (y-axis) of all vertices. */
 		final int firstHullVertexIndex = HullUtils.indexOfLowestVertex(pVertices, pVertexCount, pVertexOffsetY, pVertexStride);
 		final float firstHullVertexX = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, firstHullVertexIndex);

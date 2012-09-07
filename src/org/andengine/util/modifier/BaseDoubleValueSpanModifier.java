@@ -57,11 +57,13 @@ public abstract class BaseDoubleValueSpanModifier<T> extends BaseSingleValueSpan
 	// Getter & Setter
 	// ===========================================================
 
+	@Override
 	@Deprecated
 	public float getFromValue() {
 		return super.getFromValue();
 	}
 
+	@Override
 	@Deprecated
 	public float getToValue() {
 		return super.getToValue();

@@ -42,7 +42,7 @@ public class ParallelModifier<T> extends BaseModifier<T> implements IModifierLis
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}
 
-		this.assertNoNullModifier(pModifiers);
+		BaseModifier.assertNoNullModifier(pModifiers);
 
 		Arrays.sort(pModifiers, MODIFIER_COMPARATOR_DURATION_DESCENDING);
 		this.mModifiers = pModifiers;

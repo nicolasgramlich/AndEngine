@@ -624,7 +624,8 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 		return this.mMenuItem.queryForSubclass(pEntityMatcher);
 	}
 
-	public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException {
+	@Override
+    public <L extends List<S>, S extends IEntity> L queryForSubclass(final IEntityMatcher pEntityMatcher, final L pResult) throws ClassCastException {
 		return this.mMenuItem.queryForSubclass(pEntityMatcher, pResult);
 	}
 

@@ -19,7 +19,7 @@ import org.andengine.util.adt.queue.IQueue;
  * @author Greg Haynes
  * @since 15:02:40 - 24.02.2012
  */
-public class ShiftList<T> implements IQueue<T>, IList<T> {
+public class ShiftList<T> implements IQueue<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

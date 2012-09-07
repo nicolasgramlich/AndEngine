@@ -60,7 +60,7 @@ public class SoundFactory {
 	// Methods
 	// ===========================================================
 
-	public static Sound createSoundFromPath(final SoundManager pSoundManager, final String pPath) throws IOException {
+	public static Sound createSoundFromPath(final SoundManager pSoundManager, final String pPath) {
 		synchronized(pSoundManager) {
 			final int soundID = pSoundManager.getSoundPool().load(pPath, 1);
 			final Sound sound = new Sound(pSoundManager, soundID);
@@ -87,7 +87,7 @@ public class SoundFactory {
 		}
 	}
 
-	public static Sound createSoundFromFile(final SoundManager pSoundManager, final File pFile) throws IOException {
+	public static Sound createSoundFromFile(final SoundManager pSoundManager, final File pFile) {
 		return SoundFactory.createSoundFromPath(pSoundManager, pFile.getAbsolutePath());
 	}
 
@@ -100,7 +100,7 @@ public class SoundFactory {
 		}
 	}
 
-	public static Sound createSoundFromFileDescriptor(final SoundManager pSoundManager, final FileDescriptor pFileDescriptor, final long pOffset, final long pLength) throws IOException {
+	public static Sound createSoundFromFileDescriptor(final SoundManager pSoundManager, final FileDescriptor pFileDescriptor, final long pOffset, final long pLength) {
 		synchronized(pSoundManager) {
 			final int soundID = pSoundManager.getSoundPool().load(pFileDescriptor, pOffset, pLength, 1);
 			final Sound sound = new Sound(pSoundManager, soundID);

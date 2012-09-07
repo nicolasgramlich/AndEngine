@@ -86,7 +86,7 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 
 	@Override
 	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
-		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mBitmapTextureAtlasSource.onLoadBitmap(pBitmapConfig));
+		final Bitmap bitmap = BaseBitmapTextureAtlasSourceDecorator.ensureLoadedBitmapIsMutable(this.mBitmapTextureAtlasSource.onLoadBitmap(pBitmapConfig));
 
 		final Canvas canvas = new Canvas(bitmap);
 		try {
@@ -101,7 +101,7 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 	// Methods
 	// ===========================================================
 
-	private Bitmap ensureLoadedBitmapIsMutable(final Bitmap pBitmap) {
+	private static Bitmap ensureLoadedBitmapIsMutable(final Bitmap pBitmap) {
 		if(pBitmap.isMutable()) {
 			return pBitmap;
 		} else {

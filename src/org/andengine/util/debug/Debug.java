@@ -408,7 +408,7 @@ public class Debug {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static enum DebugLevel implements Comparable<DebugLevel> {
+	public static enum DebugLevel {
 		NONE, ERROR, WARNING, INFO, DEBUG, VERBOSE;
 
 		public static DebugLevel ALL = DebugLevel.VERBOSE;

@@ -22,6 +22,9 @@ public class GLES20Fix {
 	/** Android issue 8931. */
 	private static final boolean WORKAROUND_MISSING_GLES20_METHODS;
 
+	/** Android Issue 9953. */
+	private static final boolean WORKAROUND_EMPTY_SHADER_INFO_LOG;
+
 	static {
 		boolean loadLibrarySuccess;
 		try {
@@ -40,6 +43,16 @@ public class GLES20Fix {
 			}
 		} else {
 			WORKAROUND_MISSING_GLES20_METHODS = false;
+		}
+
+		if(SystemUtils.isAndroidVersionOrLower(Build.VERSION_CODES.GINGERBREAD_MR1)) {
+			if(loadLibrarySuccess) {
+				WORKAROUND_EMPTY_SHADER_INFO_LOG = true;
+			} else {
+				WORKAROUND_EMPTY_SHADER_INFO_LOG = false;
+			}
+		} else {
+			WORKAROUND_EMPTY_SHADER_INFO_LOG = false;
 		}
 	}
 
@@ -69,6 +82,15 @@ public class GLES20Fix {
 
 	public static native void glVertexAttribPointer(final int pIndex, final int pSize, final int pType, final boolean pNormalized, final int pStride, final int pOffset);
 	public static native void glDrawElements(final int pMode, final int pCount, final int pType, final int pOffset);
+	public static native String glGetShaderInfoLog(final int pShaderID);
+
+	public static String glGetShaderInfoLogFix(final int pShaderID) {
+		if(GLES20Fix.WORKAROUND_EMPTY_SHADER_INFO_LOG) {
+			return GLES20Fix.glGetShaderInfoLog(pShaderID);
+		} else {
+			return GLES20.glGetShaderInfoLog(pShaderID);
+		}
+	}
 
 	public static void glVertexAttribPointerFix(final int pIndex, final int pSize, final int pType, final boolean pNormalized, final int pStride, final int pOffset) {
 		if(GLES20Fix.WORKAROUND_MISSING_GLES20_METHODS) {

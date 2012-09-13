@@ -2,6 +2,7 @@ package org.andengine.opengl.shader;
 
 import java.util.HashMap;
 
+import org.andengine.opengl.GLES20Fix;
 import org.andengine.opengl.shader.constants.ShaderProgramConstants;
 import org.andengine.opengl.shader.exception.ShaderProgramCompileException;
 import org.andengine.opengl.shader.exception.ShaderProgramException;
@@ -184,7 +185,7 @@ public class ShaderProgram {
 
 		GLES20.glGetShaderiv(shaderID, GLES20.GL_COMPILE_STATUS, ShaderProgram.HARDWAREID_CONTAINER, 0);
 		if(ShaderProgram.HARDWAREID_CONTAINER[0] == 0) {
-			throw new ShaderProgramCompileException(GLES20.glGetShaderInfoLog(shaderID), pSource);
+			throw new ShaderProgramCompileException(GLES20Fix.glGetShaderInfoLogFix(shaderID), pSource);
 		}
 		return shaderID;
 	}

@@ -17,19 +17,19 @@ void Java_org_andengine_opengl_GLES20Fix_glDrawElements (JNIEnv *env, jclass c, 
 JNIEXPORT jstring JNICALL Java_org_andengine_opengl_GLES20Fix_glGetShaderInfoLog(JNIEnv *env, jclass c, jint shader) {
 	int charBufferLength;
 
-	glGetShaderiv(shader , GL_INFO_LOG_LENGTH, &charBufferLength);
+	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &charBufferLength);
 	//some user reported that sometimes glGetShaderiv returns the correct value
 	//if it is the case, use that instead of the default 4096
 	if(charBufferLength == 0)
 		charBufferLength = 4096;
 
-	char* charBuffer = (char *) malloc(charBufferLength);
+	char* charBuffer = (char *) malloc(charBufferLength * sizeof(char));
 	int logLenth;
 
 	glGetShaderInfoLog(shader, charBufferLength, &logLenth, charBuffer);
 
-	char* infoLog = (char *) malloc(logLenth - 1);
-	memcpy(infoLog, charBuffer, logLenth - 1);
+	char* infoLog = (char *) malloc((logLenth - 1) * sizeof(char));
+	memcpy(infoLog, charBuffer, (logLenth - 1) * sizeof(char));
 	jstring logString = (*env) -> NewStringUTF(env, infoLog);
 
 	free(charBuffer);

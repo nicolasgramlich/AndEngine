@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <jni.h>
 #include <GLES2/gl2.h>
 
@@ -24,12 +25,11 @@ JNIEXPORT jstring JNICALL Java_org_andengine_opengl_GLES20Fix_glGetShaderInfoLog
 		charBufferLength = 4096;
 
 	char* charBuffer = (char *) malloc(charBufferLength * sizeof(char));
-	int logLenth;
 
-	glGetShaderInfoLog(shader, charBufferLength, &logLenth, charBuffer);
+	glGetShaderInfoLog(shader, charBufferLength, NULL, charBuffer);
 
-	char* infoLog = (char *) malloc((logLenth - 1) * sizeof(char));
-	memcpy(infoLog, charBuffer, (logLenth - 1) * sizeof(char));
+	char* infoLog = (char *) malloc(strlen(charBuffer) * sizeof(char));
+	strcpy(infoLog, charBuffer);
 	jstring logString = (*env) -> NewStringUTF(env, infoLog);
 
 	free(charBuffer);

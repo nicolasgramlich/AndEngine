@@ -64,9 +64,17 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		for(int tileColumn = 0; tileColumn < pTileColumns; tileColumn++) {
 			for(int tileRow = 0; tileRow < pTileRows; tileRow++) {
 				final int tileIndex = tileRow * pTileColumns + tileColumn;
-
-				final int x = pTextureX + tileColumn * tileWidth;
-				final int y = pTextureY + tileRow * tileHeight;
+				
+				final int x;
+				final int y;
+				if (pRotated) {
+					x = pTextureX + pTextureHeight - (tileRow + 1) * tileHeight;
+					y = pTextureY + tileColumn * tileWidth;
+					
+				} else {
+					x = pTextureX + tileColumn * tileWidth;
+					y = pTextureY + tileRow * tileHeight;
+				}
 				textureRegions[tileIndex] = new TextureRegion(pTexture, x, y, tileWidth, tileHeight, pRotated);
 			}
 		}

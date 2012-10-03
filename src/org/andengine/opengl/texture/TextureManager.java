@@ -30,7 +30,7 @@ public class TextureManager {
 	// Fields
 	// ===========================================================
 
-	private final HashSet<ITexture> mTexturesManaged = new HashSet<ITexture>();
+    private final HashSet<ITexture> mTexturesManaged = new HashSet<ITexture>();
 	private final HashMap<String, ITexture> mTexturesMapped = new HashMap<String, ITexture>();
 
 	private final ArrayList<ITexture> mTexturesLoaded = new ArrayList<ITexture>();
@@ -40,6 +40,9 @@ public class TextureManager {
 
 	private TextureWarmUpVertexBufferObject mTextureWarmUpVertexBufferObject;
 
+	private boolean mIncrementalMode = false;
+	private TextureManagerListener mListener = null;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -244,9 +247,14 @@ public class TextureManager {
 		}
 
 		/* Then load pending Textures. */
-		final int texturesToBeLoadedCount = texturesToBeLoaded.size();
+		int texturesToBeLoadedCount = texturesToBeLoaded.size();
 
 		if(texturesToBeLoadedCount > 0) {
+		    // Only one texture per frame
+		    if (mIncrementalMode) {
+		        texturesToBeLoadedCount = 1;
+		    }
+
 			for(int i = texturesToBeLoadedCount - 1; i >= 0; i--) {
 				final ITexture textureToBeLoaded = texturesToBeLoaded.remove(i);
 				if(!textureToBeLoaded.isLoadedToHardware()) {
@@ -275,6 +283,10 @@ public class TextureManager {
 				texturesLoaded.remove(textureToBeUnloaded);
 				texturesManaged.remove(textureToBeUnloaded);
 			}
+		}
+		
+		if (mIncrementalMode && mListener != null) {
+		    mListener.onTextureLoaded(texturesToBeLoaded.size());
 		}
 
 		/* Finally invoke the GC if anything has changed. */
@@ -324,8 +336,24 @@ public class TextureManager {
 			return texture;
 		}
 	}
+	
+	public void setIncrementalMode(boolean incrementalMode) {
+	    this.mIncrementalMode = incrementalMode;
+	}
+	
+	public void setTextureManagerListener(TextureManagerListener listener) {
+	    this.mListener = listener;
+	}
+	
+	public void clearTextureManagerListener() {
+	    setTextureManagerListener(null);
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	public interface TextureManagerListener {
+	    public void onTextureLoaded(int texturesRemaining);
+	}
 }

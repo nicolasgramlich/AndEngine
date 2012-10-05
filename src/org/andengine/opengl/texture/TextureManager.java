@@ -43,6 +43,8 @@ public class TextureManager {
 	private boolean mIncrementalMode = false;
 	private TextureManagerListener mListener = null;
 	
+	private int mMemoryUsed = 0;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -176,6 +178,8 @@ public class TextureManager {
 		} else {
 			this.mTexturesManaged.add(pTexture);
 			this.mTexturesLoaded.add(pTexture);
+			/* Just update the amount of memory used by textures */
+			updateTextureMemoryUsed();
 			return true;
 		}
 	}
@@ -292,6 +296,8 @@ public class TextureManager {
 		/* Finally invoke the GC if anything has changed. */
 		if((texturesToBeLoadedCount > 0) || (texturesToBeUnloadedCount > 0)) {
 			System.gc();
+			/* Just update the amount of memory used by textures */
+            updateTextureMemoryUsed();
 		}
 	}
 
@@ -347,6 +353,22 @@ public class TextureManager {
 	
 	public void clearTextureManagerListener() {
 	    setTextureManagerListener(null);
+	}
+	
+	private void updateTextureMemoryUsed() {
+        mMemoryUsed = 0;
+        
+        for(ITexture t : mTexturesLoaded) {
+            mMemoryUsed += (t.getWidth() * t.getHeight() * (t.getPixelFormat().getBitsPerPixel() >> 3)) >> 10;
+        }
+	}
+	
+	public int getTextureMemoryUsed() {
+	    return mMemoryUsed;
+	}
+	
+	public int getNumTextureMemoryUsed() {
+	    return mTexturesLoaded.size();
 	}
 
 	// ===========================================================

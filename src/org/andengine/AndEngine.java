@@ -12,7 +12,7 @@ import org.andengine.util.system.SystemUtils;
 import android.os.Build;
 
 /**
- * (c) Zynga 2012
+ * (c) Zynga 2012 
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:03:59 - 19.03.2012

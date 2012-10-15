@@ -289,13 +289,15 @@ public class TextureManager {
 			}
 		}
 		
-		if (mIncrementalMode && mListener != null) {
-		    mListener.onTextureLoaded(texturesToBeLoaded.size());
-		}
 
 		/* Finally invoke the GC if anything has changed. */
 		if((texturesToBeLoadedCount > 0) || (texturesToBeUnloadedCount > 0)) {
 			System.gc();
+			
+	        if (mIncrementalMode && mListener != null) {
+	            mListener.onTextureLoaded(texturesToBeLoaded.size());
+	        }
+
 			/* Just update the amount of memory used by textures */
             updateTextureMemoryUsed();
 		}

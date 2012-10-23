@@ -11,6 +11,7 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
+import org.andengine.opengl.texture.compressed.etc1.ETC1Texture;
 import org.andengine.opengl.texture.compressed.pvr.PVRCCZTexture;
 import org.andengine.opengl.texture.compressed.pvr.PVRGZTexture;
 import org.andengine.opengl.texture.compressed.pvr.PVRTexture;
@@ -63,6 +64,7 @@ public class TexturePackParser extends DefaultHandler {
 	private static final String TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_PVRGZ = "pvrgz";
 	private static final String TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_PVR = "pvr";
 	private static final String TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_BITMAP = "bitmap";
+	private static final String TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_ETC1 = "etc1";
 	private static final String TAG_TEXTURE_ATTRIBUTE_PIXELFORMAT = "pixelformat";
 
 	private static final String TAG_TEXTUREREGION = "textureregion";
@@ -204,6 +206,17 @@ public class TexturePackParser extends DefaultHandler {
 				texture = new PVRCCZTexture(this.mTextureManager, PVRTextureFormat.fromPixelFormat(pixelFormat), new SmartPVRTexturePixelBufferStrategy(DataConstants.BYTES_PER_MEGABYTE / 8), textureOptions) {
 					@Override
 					protected InputStream onGetInputStream() throws IOException {
+						return TexturePackParser.this.onGetInputStream(file);
+					}
+				};
+			} catch (final IOException e) {
+				throw new TexturePackParseException(e);
+			}
+		} else if (type	.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_ETC1)) {
+			try {
+				return new ETC1Texture(this.mTextureManager, textureOptions) {
+					@Override
+					protected InputStream getInputStream() throws IOException {
 						return TexturePackParser.this.onGetInputStream(file);
 					}
 				};

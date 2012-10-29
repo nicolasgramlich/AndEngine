@@ -115,14 +115,13 @@ public abstract class Shape extends Entity implements IShape {
 		if(this.mBlendingEnabled) {
 			pGLState.enableBlend();
 			pGLState.blendFunction(this.mBlendFunctionSource, this.mBlendFunctionDestination);
+		} else {
+			pGLState.disableBlend();
 		}
 	}
 
 	@Override
 	protected void postDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mBlendingEnabled) {
-			pGLState.disableBlend();
-		}
 	}
 
 	@Override

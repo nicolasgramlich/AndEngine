@@ -581,6 +581,31 @@ public class Entity implements IEntity {
 			this.onUpdateColor();
 		}
 	}
+	
+	/**
+	 * @param pHexValue hexadecimal value ex : <code>0x178de8</code>
+	 */
+	@Override
+	public void setColor(final int pHexValue) {
+		final float pRed = (pHexValue & 0xFF0000) >> 16;
+		final float pGreen = (pHexValue & 0xFF00) >> 8;
+		final float pBlue = (pHexValue & 0xFF);
+		
+		this.setColor(pRed, pGreen, pBlue);
+	}
+	
+	/**
+	 * @param pHexValue hexadecimal value ex : <code>0x178de8</code>
+	 * @param pAlpha from <code>0.0f</code> (transparent) to <code>1.0f</code> (opaque)
+	 */
+	@Override
+	public void setColor(final int pHexValue, final float pAlpha) {
+		final float pRed = (pHexValue & 0xFF0000) >> 16;
+		final float pGreen = (pHexValue & 0xFF00) >> 8;
+		final float pBlue = (pHexValue & 0xFF);
+		
+		this.setColor(pRed, pGreen, pBlue, pAlpha);
+	}
 
 	@Override
 	public int getChildCount() {

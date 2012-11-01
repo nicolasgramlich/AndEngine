@@ -591,7 +591,7 @@ public class Entity implements IEntity {
 		final float pGreen = (pHexValue & 0xFF00) >> 8;
 		final float pBlue = (pHexValue & 0xFF);
 		
-		this.setColor(pRed, pGreen, pBlue);
+		this.setColor(pRed/255, pGreen/255, pBlue/255);
 	}
 	
 	/**
@@ -604,7 +604,7 @@ public class Entity implements IEntity {
 		final float pGreen = (pHexValue & 0xFF00) >> 8;
 		final float pBlue = (pHexValue & 0xFF);
 		
-		this.setColor(pRed, pGreen, pBlue, pAlpha);
+		this.setColor(pRed/255, pGreen/255, pBlue/255, pAlpha);
 	}
 
 	@Override

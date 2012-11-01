@@ -16,8 +16,32 @@ import org.andengine.util.math.MathUtils;
 import android.util.FloatMath;
 
 /**
+ * 
+ * A {@code ParticleSystem} is a system responsible for spawning {@link Particle Particles}
+ * on the screen. A {@code Particle} can be any {@link IEntity}. The kind of
+ * spawned particles is controlled by the generic type of this class.
+ * <p>
+ * You can use a specific {@link IParticleEmitter} set via the constructor to control 
+ * the emitting of the particles.
+ * <p>
+ * You can add several {@link IParticleInitializer} via the 
+ * {@link #addParticleInitializer(org.andengine.entity.particle.initializer.IParticleInitializer)}
+ * method to control the initialization state of each particle.
+ * <p>
+ * You can add several {@link IParticleModifier} via the
+ * {@link #addParticleModifier(org.andengine.entity.particle.modifier.IParticleModifier)}
+ * method to control modification of particles during their lifetime.
+ * <p>
+ * A {@code ParticleSystem} will continue spawning {@code Particles} until you 
+ * call {@link #setParticlesSpawnEnabled(boolean) setParticlesSpawnEnabled(false)}.
+ * <p>
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
+ * 
+ * @see Particle
+ * @see IParticleEmitter
+ * @see IParticleInitializer
+ * @see IParticleModifier
  * 
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
@@ -54,10 +78,44 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Create a new {@link ParticleSystem} with the given parameters.
+	 * 
+	 * @param pEntityFactory Responsible for creating the {@link IEntity} 
+	 *		for each particle.
+	 * @param pParticleEmitter Responsible for calculating the emitting position of particles.
+	 * @param pRateMinimum The minimum rate (roughly particles per second) at which particles 
+	 *		should be spawned.
+	 * @param pRateMaximum The maximum rate (roughly particles per second) at which particles
+	 *		should be spawned.
+	 * @param pParticlesMaximum The maximum amount of particles, that should be spawned
+	 *		by that {@code ParticleSystem}. If there are too many particles on the screen,
+	 *		the {@code ParticleSystem} will pause spawning, till some particles has expired
+	 *		their lifespan (set by adding a {@link org.andengine.entity.particle.modifier.ExpireParticleInitializer}) 
+	 *		to the {@code ParticleSystem}.
+	 */
 	public ParticleSystem(final IEntityFactory<T> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
 		this(0, 0, pEntityFactory, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
 	}
 
+	/**
+	 * Create a new {@link ParticleSystem} with the given parameters.
+	 * 
+	 * @param pX The x-position of the {@code ParticleSystem}.
+	 * @param pY The y-position of the {@code ParticleSystem}.
+	 * @param pEntityFactory Responsible for creating the {@link IEntity} 
+	 *		for each particle.
+	 * @param pParticleEmitter Responsible for calculating the emitting position of particles.
+	 * @param pRateMinimum The minimum rate (roughly particles per second) at which particles 
+	 *		should be spawned.
+	 * @param pRateMaximum The maximum rate (roughly particles per second) at which particles
+	 *		should be spawned.
+	 * @param pParticlesMaximum The maximum amount of particles, that should be spawned
+	 *		by that {@code ParticleSystem}. If there are too many particles on the screen,
+	 *		the {@code ParticleSystem} will pause spawning, till some particles has expired
+	 *		their lifespan (set by adding a {@link ExpireParticleInitializer}) to the 
+	 *		{@code ParticleSystem}.
+	 */
 	@SuppressWarnings("unchecked")
 	public ParticleSystem(final float pX, final float pY, final IEntityFactory<T> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
 		super(pX, pY);
@@ -76,18 +134,40 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * Returns whether spawning of particles if currently enabled in this system.
+	 * 
+	 * @return Whether this system is currently allowed to spawn new particles.
+	 */
 	public boolean isParticlesSpawnEnabled() {
 		return this.mParticlesSpawnEnabled;
 	}
 
+	/**
+	 * Enables or disables the spawning of new particles by this {@link ParticleSystem}.
+	 * Use this to stop the {@code ParticleSystem} creating new particles.
+	 * 
+	 * @param pParticlesSpawnEnabled Whether the system should spawn new particles.
+	 */
 	public void setParticlesSpawnEnabled(final boolean pParticlesSpawnEnabled) {
 		this.mParticlesSpawnEnabled = pParticlesSpawnEnabled;
 	}
 
+	/**
+	 * Returns the {@link IEntityFactory} that is used to create new particles.
+	 * 
+	 * @return The {@code IEntityFactory} that is used to create new particles.
+	 */
 	public IEntityFactory<T> getParticleFactory() {
 		return this.mEntityFactory;
 	}
 
+	/**
+	 * Returns the {@link IParticleEmitter} that is used to determine the position
+	 * of new emitted particles.
+	 * 
+	 * @return The {@code IParticleEmitter} of this {@code ParticleSystem}.
+	 */
 	public IParticleEmitter getParticleEmitter() {
 		return this.mParticleEmitter;
 	}
@@ -96,6 +176,10 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	/**
+	 * Resets the {@code ParticleSystem}. This will erase all currently living 
+	 * particles of this system. 
+	 */
 	@Override
 	public void reset() {
 		super.reset();
@@ -156,22 +240,59 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * Adds an {@link IParticleModifier} to this {@code ParticleSystem}. An
+	 * {@code IParticleModifier} is responsible for changing particles during
+	 * their lifespan.
+	 * 
+	 * @param pParticleModifier The {@link IParticleModifier} to add to this system.
+	 * 	 
+	 * @see IParticleModifier
+	 */
 	public void addParticleModifier(final IParticleModifier<T> pParticleModifier) {
 		this.mParticleModifiers.add(pParticleModifier);
 	}
 
+	/**
+	 * Removes an {@link IParticleModifier} from this {@code ParticleSystem}.
+	 * 
+	 * @param pParticleModifier The {@link IParticleModifier} to remove from this system.
+	 * 
+	 * @see IParticleModifier
+	 */
 	public void removeParticleModifier(final IParticleModifier<T> pParticleModifier) {
 		this.mParticleModifiers.remove(pParticleModifier);
 	}
 
+	/**
+	 * Adds an {@link IParticleInitializer} to this {@code ParticleSystem}. An 
+	 * {@link IParticleInitializer} is responsible for setting the initial state
+	 * of a new emitted {@link Particle}.
+	 * 
+	 * @param pParticleInitializer The {@link IParticleInitializer} to add to this system.
+	 * 
+	 * @see IParticleInitializer
+	 */
 	public void addParticleInitializer(final IParticleInitializer<T> pParticleInitializer) {
 		this.mParticleInitializers.add(pParticleInitializer);
 	}
 
+	/**
+	 * Removes an {@link IParticleInitializer} to this {@code ParticleSystem}. 
+	 * 
+	 * @param pParticleInitializer The {@link IParticleInitializer} to remove from this system.
+	 * 
+	 * @see IParticleInitializer
+	 */
 	public void removeParticleInitializer(final IParticleInitializer<T> pParticleInitializer) {
 		this.mParticleInitializers.remove(pParticleInitializer);
 	}
 
+	/**
+	 * Spawns new {@link Particle Particles} depending on the passed time.
+	 *
+	 * @param pSecondsElapsed The elapsed time.
+	 */
 	private void spawnParticles(final float pSecondsElapsed) {
 		final float currentRate = this.determineCurrentRate();
 		final float newParticlesThisFrame = currentRate * pSecondsElapsed;
@@ -186,6 +307,9 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 		}
 	}
 
+	/**
+	 * Spawns a new particle.
+	 */
 	private void spawnParticle() {
 		if(this.mParticlesAlive < this.mParticlesMaximum){
 			Particle<T> particle = this.mParticles[this.mParticlesAlive];

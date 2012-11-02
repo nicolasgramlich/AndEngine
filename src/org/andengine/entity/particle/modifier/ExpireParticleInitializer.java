@@ -6,6 +6,10 @@ import org.andengine.entity.particle.initializer.IParticleInitializer;
 import org.andengine.util.math.MathUtils;
 
 /**
+ * An {@link IParticleInitializer} that thats the lifetime of a new particle
+ * within a specific range or to a specific value. Each particle will be deleted
+ * after it has expired its lifetime.
+ * <p>
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
@@ -28,10 +32,23 @@ public class ExpireParticleInitializer<T extends IEntity> implements IParticleIn
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Create a new {@code ExpireParticleInitializer} that sets a fixed lifetime
+	 * for every particle.
+	 * 
+	 * @param pLifeTime The lifetime of a particle in seconds.
+	 */
 	public ExpireParticleInitializer(final float pLifeTime) {
 		this(pLifeTime, pLifeTime);
 	}
 
+	/**
+	 * Create a new {@code ExpireParticleInitializer} that sets a random lifetime
+	 * inside a given range for each particle.
+	 * 
+	 * @param pMinLifeTime The minimum lifetime a particle should have in seconds.
+	 * @param pMaxLifeTime The maximum lifetime a particle should have in seconds.
+	 */
 	public ExpireParticleInitializer(final float pMinLifeTime, final float pMaxLifeTime) {
 		this.mMinLifeTime = pMinLifeTime;
 		this.mMaxLifeTime = pMaxLifeTime;
@@ -63,6 +80,9 @@ public class ExpireParticleInitializer<T extends IEntity> implements IParticleIn
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onInitializeParticle(final Particle<T> pParticle) {
 		pParticle.setExpireTime((MathUtils.RANDOM.nextFloat() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime));

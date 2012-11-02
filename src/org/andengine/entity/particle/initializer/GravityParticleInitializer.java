@@ -5,6 +5,8 @@ import org.andengine.entity.IEntity;
 import android.hardware.SensorManager;
 
 /**
+ * An {@link IParticleInitializer} that enables gravity for each new particle.
+ * <p>
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
@@ -24,6 +26,10 @@ public class GravityParticleInitializer<T extends IEntity> extends AccelerationP
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Create a new {@code GravityParticleInitializer} that enables gravity for
+	 * particles.
+	 */
 	public GravityParticleInitializer() {
 		super(0, SensorManager.GRAVITY_EARTH);
 	}

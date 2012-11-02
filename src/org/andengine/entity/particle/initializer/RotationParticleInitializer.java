@@ -4,6 +4,9 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
 
 /**
+ * An {@link IParticleInitializer} that initializes each particle with a specific
+ * rotation or a random rotation within a specific range.
+ * <p>
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
@@ -23,10 +26,23 @@ public class RotationParticleInitializer<T extends IEntity> extends BaseSingleVa
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Creates a new {@code RotationParticleInitializer} that sets the rotation of each
+	 * {@link Particle} to a specific value.
+	 * 
+	 * @param pAlpha The rotation value (0.0 to 360.0) for each particle.
+	 */
 	public RotationParticleInitializer(final float pRotation) {
 		this(pRotation, pRotation);
 	}
 
+	/**
+	 * Creates a new {@code RotationParticleInitializer} that sets the rotation of each
+	 * {@link Particle} to a random value within the given range.
+	 * 
+	 * @param pMinRotation The minimum rotation (0.0 to 360.0) for each particle.
+	 * @param pMaxRotation The maximum rotation (0.0 to 360.0) for each particle.
+	 */
 	public RotationParticleInitializer(final float pMinRotation, final float pMaxRotation) {
 		super(pMinRotation, pMaxRotation);
 	}
@@ -57,6 +73,9 @@ public class RotationParticleInitializer<T extends IEntity> extends BaseSingleVa
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	/**
+	 * Will be called by the engine to set the rotation of a new particle.
+	 */
 	@Override
 	public void onInitializeParticle(final Particle<T> pParticle, final float pRotation) {
 		pParticle.getEntity().setRotation(pRotation);

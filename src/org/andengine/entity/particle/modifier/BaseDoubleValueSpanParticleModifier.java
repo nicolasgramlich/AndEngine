@@ -6,6 +6,12 @@ import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
+ * An abstract {@link IParticleModifier} that can be subclassed for a modifier,
+ * that needs only two {@code float} values to be changed during particle lifetime. 
+ * This abstract class stores the start and end value and pass the interpolated 
+ * values and the percentage of the transformation done to the subclass. 
+ * The subclass only needs to apply the values to the particle.
+ * <p>
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 

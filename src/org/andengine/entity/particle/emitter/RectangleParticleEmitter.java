@@ -6,6 +6,8 @@ import static org.andengine.util.Constants.VERTEX_INDEX_Y;
 import org.andengine.util.math.MathUtils;
 
 /**
+ * An {@link IParticleEmitter} that emits new particles inside a specific rectangle.
+ * <p>
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
@@ -25,6 +27,15 @@ public class RectangleParticleEmitter extends BaseRectangleParticleEmitter {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Create a new {@code RectangleParticleEmitter} that emits new particles
+	 * inside a specific rectangle.
+	 * 
+	 * @param pCenterX The x-coordinate of the center of the rectangle.
+	 * @param pCenterY The y-coordinate of the center of the rectangle.
+	 * @param pWidth The width of the rectangle.
+	 * @param pHeight The height of the rectangle.
+	 */
 	public RectangleParticleEmitter(final float pCenterX, final float pCenterY, final float pWidth, final float pHeight) {
 		super(pCenterX, pCenterY, pWidth, pHeight);
 	}
@@ -37,6 +48,9 @@ public class RectangleParticleEmitter extends BaseRectangleParticleEmitter {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void getPositionOffset(final float[] pOffset) {
 		pOffset[VERTEX_INDEX_X] = this.mCenterX - this.mWidthHalf + MathUtils.RANDOM.nextFloat() * this.mWidth;

@@ -2,6 +2,10 @@ package org.andengine.entity.particle.emitter;
 
 
 /**
+ * An abstract {@link IParticleEmitter} that can be subclassed, if you want to
+ * add an {@code IParticleEmitter} that has a center and one or two radius. This 
+ * abstract class is used to store the center and the radiuses of your emitter.
+ * <p>
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 

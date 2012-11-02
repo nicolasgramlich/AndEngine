@@ -4,6 +4,9 @@ import static org.andengine.util.Constants.VERTEX_INDEX_X;
 import static org.andengine.util.Constants.VERTEX_INDEX_Y;
 
 /**
+ * This {@link IParticleEmitter} returns the same position for every particle
+ * to emit (so all particles are emitted at the very same point).
+ * <p>
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
@@ -23,6 +26,13 @@ public class PointParticleEmitter extends BaseParticleEmitter {
 	// Constructors
 	// ===========================================================
 
+	/**
+	 * Create a new {@code PointParticleEmitter}, that gives all emitted particles
+	 * the same starting position.
+	 * 
+	 * @param pCenterX The x-coordinate for new particles.
+	 * @param pCenterY The y-coordinate for new particles.
+	 */
 	public PointParticleEmitter(final float pCenterX, final float pCenterY) {
 		super(pCenterX, pCenterY);
 	}
@@ -35,6 +45,9 @@ public class PointParticleEmitter extends BaseParticleEmitter {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void getPositionOffset(final float[] pOffset) {
 		pOffset[VERTEX_INDEX_X] = this.mCenterX;

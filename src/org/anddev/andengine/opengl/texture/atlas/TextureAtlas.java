@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
 import org.anddev.andengine.util.MathUtils;
 
@@ -73,6 +74,33 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 		pTextureAtlasSource.setTexturePositionY(pTexturePositionY);
 		this.mTextureAtlasSources.add(pTextureAtlasSource);
 		this.mUpdateOnHardwareNeeded = true;
+	}
+
+	@Override
+	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY, final int pTextureAtlasSourcePadding) throws IllegalArgumentException {
+		this.addTextureAtlasSource(pTextureAtlasSource, pTextureX, pTextureY);
+
+		if(pTextureAtlasSourcePadding > 0) {
+			/* Left padding. */
+			if(pTextureX >= pTextureAtlasSourcePadding) {
+				this.addEmptyTextureAtlasSource(pTextureX - pTextureAtlasSourcePadding, pTextureY, pTextureAtlasSourcePadding, pTextureAtlasSource.getHeight());
+			}
+
+			/* Top padding. */
+			if(pTextureY >= pTextureAtlasSourcePadding) {
+				this.addEmptyTextureAtlasSource(pTextureX, pTextureY - pTextureAtlasSourcePadding, pTextureAtlasSource.getWidth(), pTextureAtlasSourcePadding);
+			}
+
+			/* Right padding. */
+			if(pTextureX + pTextureAtlasSource.getWidth() - 1 + pTextureAtlasSourcePadding <= this.getWidth()) {
+				this.addEmptyTextureAtlasSource(pTextureX + pTextureAtlasSource.getWidth(), pTextureY, pTextureAtlasSourcePadding, pTextureAtlasSource.getHeight());
+			}
+
+			/* Bottom padding. */
+			if(pTextureY + pTextureAtlasSource.getHeight() - 1 + pTextureAtlasSourcePadding <= this.getHeight()) {
+				this.addEmptyTextureAtlasSource(pTextureX, pTextureY + pTextureAtlasSource.getHeight(), pTextureAtlasSource.getWidth(), pTextureAtlasSourcePadding);
+			}
+		}
 	}
 
 	@Override

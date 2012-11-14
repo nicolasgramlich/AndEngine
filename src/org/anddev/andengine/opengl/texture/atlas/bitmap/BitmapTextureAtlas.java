@@ -6,6 +6,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.TextureAtlas;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.source.EmptyBitmapTextureAtlasSource;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.anddev.andengine.opengl.texture.bitmap.BitmapTexture.BitmapTextureFormat;
 import org.anddev.andengine.opengl.texture.source.ITextureAtlasSource;
@@ -136,9 +137,10 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
+	@Override
+	public void addEmptyTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight) {
+		this.addTextureAtlasSource(new EmptyBitmapTextureAtlasSource(pWidth, pHeight), pTextureX, pTextureY);
+	}
 
 	@Override
 	protected void writeTextureToHardware(final GL10 pGL) {
@@ -166,29 +168,6 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 
 					bitmap.recycle();
 				} catch (final IllegalArgumentException iae) {
-					// TODO Load some static checkerboard or so to visualize that loading the texture has failed.
-					//private Buffer createImage(final int width, final int height) {
-					//	final int stride = 3 * width;
-					//	final ByteBuffer image = ByteBuffer.allocateDirect(height * stride)
-					//			.order(ByteOrder.nativeOrder());
-					//
-					//	// Fill with a pretty "munching squares" pattern:
-					//	for (int t = 0; t < height; t++) {
-					//		final byte red = (byte) (255 - 2 * t);
-					//		final byte green = (byte) (2 * t);
-					//		final byte blue = 0;
-					//		for (int x = 0; x < width; x++) {
-					//			final int y = x ^ t;
-					//			image.position(stride * y + x * 3);
-					//			image.put(red);
-					//			image.put(green);
-					//			image.put(blue);
-					//		}
-					//	}
-					//	image.position(0);
-					//	return image;
-					//}
-
 					Debug.e("Error loading: " + bitmapTextureAtlasSource.toString(), iae);
 					if(this.getTextureStateListener() != null) {
 						this.getTextureStateListener().onTextureAtlasSourceLoadExeption(this, bitmapTextureAtlasSource, iae);
@@ -209,6 +188,10 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		final int glType = pixelFormat.getGLType();
 		pGL.glTexImage2D(GL10.GL_TEXTURE_2D, 0, glFormat, this.mWidth, this.mHeight, 0, glFormat, glType, null);
 	}
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
 
 	// ===========================================================
 	// Inner and Anonymous Classes

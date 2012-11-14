@@ -107,6 +107,12 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	public TextureOptions getTextureOptions() {
 		return this.mTextureAtlas.getTextureOptions();
 	}
+	
+	@Override
+	public void addEmptyTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight) {
+		this.mTextureAtlas.addEmptyTextureAtlasSource(pTextureX, pTextureY, pWidth, pHeight);
+	}
+
 
 	/**
 	 * Most likely this is not the method you'd want to be using, as the {@link ITextureAtlasSource} won't get packed through this.
@@ -116,6 +122,13 @@ public class BuildableTextureAtlas<T extends ITextureAtlasSource, A extends ITex
 	@Override
 	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTexturePositionX, final int pTexturePositionY) {
 		this.mTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, pTexturePositionX, pTexturePositionY);
+	}
+	
+
+	@Override
+	@Deprecated
+	public void addTextureAtlasSource(final T pTextureAtlasSource, final int pTextureX, final int pTextureY, final int pTextureAtlasSourcePadding) {
+		this.mTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, pTextureX, pTextureY, pTextureAtlasSourcePadding);
 	}
 
 	@Override

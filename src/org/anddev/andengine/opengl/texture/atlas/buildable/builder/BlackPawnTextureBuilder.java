@@ -46,6 +46,10 @@ public class BlackPawnTextureBuilder<T extends ITextureAtlasSource, A extends IT
 	// Constructors
 	// ===========================================================
 
+	public BlackPawnTextureBuilder(final int pTextureAtlasSourceSpacing) {
+		this(pTextureAtlasSourceSpacing, 0, 0);
+	}
+
 	/**
 	 * @param pTextureAtlasBorderSpacing the minimum spacing between the border of the texture and the {@link ITextureAtlasSource}s. 
 	 * @param pTextureAtlasSourceSpacing the spacing between the different {@link ITextureAtlasSource}s.

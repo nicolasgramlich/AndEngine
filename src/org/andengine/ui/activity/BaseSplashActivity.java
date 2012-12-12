@@ -56,8 +56,8 @@ public abstract class BaseSplashActivity extends SimpleBaseGameActivity {
 		scene.attachChild(backgroundSprite);
 		backgroundSprite.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		backgroundSprite.setAlpha(255);
+		float duration = this.onCreateSplashOptions().getDuration();
 		if(this.onCreateSplashOptions().getFade()){
-			float duration = this.onCreateSplashOptions().getDuration();
 			SequenceEntityModifier SplashFadeModifier = new SequenceEntityModifier(new FadeInModifier(duration / 4), new DelayModifier(duration / 2), new FadeOutModifier(duration / 4));
 			SplashFadeModifier.addModifierListener(new IModifierListener(){
 				@Override
@@ -72,6 +72,21 @@ public abstract class BaseSplashActivity extends SimpleBaseGameActivity {
 					}
 				});
 			backgroundSprite.registerEntityModifier(SplashFadeModifier);
+		}else{
+			DelayModifier delay = new DelayModifier(duration);
+			delay.addModifierListener(new IModifierListener(){
+				@Override
+				public void onModifierStarted(IModifier pModifier, Object pItem) {
+				}
+		
+				@Override
+				public void onModifierFinished(IModifier pModifier, Object pItem) {
+					Intent intent = new Intent(BaseSplashActivity.this, BaseSplashActivity.this.onCreateSplashOptions().getFollowUpActivity());
+					BaseSplashActivity.this.finish();
+					BaseSplashActivity.this.startActivity(intent);
+					}
+				});
+			backgroundSprite.registerEntityModifier(delay);
 		}
 		return scene;
 	}

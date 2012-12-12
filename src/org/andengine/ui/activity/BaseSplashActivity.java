@@ -1,10 +1,8 @@
 package org.andengine.ui.activity;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
-import org.andengine.engine.options.EngineOptions.ScreenOrientation;
+import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.FadeInModifier;
@@ -23,36 +21,33 @@ import org.andengine.util.modifier.IModifier.IModifierListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.opengl.GLES20;
-import android.view.Display;
+import android.util.DisplayMetrics;
 
 public abstract class BaseSplashActivity extends SimpleBaseGameActivity {
 	private TextureRegion mLoadingScreenTextureRegion;
-	Display d;
-	private int mWidth = 720;
-	private int mHeight = 480;
-	protected abstract ScreenOrientation getScreenOrientation();
-	protected abstract String onGetSplashTexturePath();		
-	protected abstract float onGetSplashDuration();
-	protected abstract Class<? extends Activity> getFollowUpActivity();
-	
-	@SuppressWarnings("deprecation")
+	private int mWidth;
+	private int mHeight;
+	protected abstract SplashActivityOptions onCreateSplashOptions();
+
 	public EngineOptions onCreateEngineOptions() {
-		Display display = getWindowManager().getDefaultDisplay();
-		mWidth = display.getWidth();
-		mHeight = display.getHeight();
-		return new EngineOptions(true,this.getScreenOrientation(),
-		new RatioResolutionPolicy(this.mWidth,this.mHeight),
-		new Camera(0,0,this.mWidth,this.mHeight));
-	
+		// Get screen width and height
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		mWidth = metrics.heightPixels;
+		mHeight = metrics.widthPixels;
+		return new EngineOptions(true,this.onCreateSplashOptions().getOrientation(),
+				new RatioResolutionPolicy(this.mWidth,this.mHeight),
+				new Camera(0,0,this.mWidth,this.mHeight));
 	}
 	@Override
 	protected void onCreateResources() {
+		// Create splash texture
 		final BitmapTextureAtlas atlas = new BitmapTextureAtlas(getTextureManager(),2046,2046, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		
-		this.mLoadingScreenTextureRegion = (TextureRegion) BitmapTextureAtlasTextureRegionFactory.createFromAsset(atlas, this, onGetSplashTexturePath(), 0, 0);
+		this.mLoadingScreenTextureRegion = (TextureRegion) BitmapTextureAtlasTextureRegionFactory.createFromAsset(atlas, this, this.onCreateSplashOptions().getTexturePath(), 0, 0);
 		this.mEngine.getTextureManager().loadTexture(atlas);
-	
 	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected Scene onCreateScene() {
 		final Scene scene = new Scene();
@@ -61,21 +56,53 @@ public abstract class BaseSplashActivity extends SimpleBaseGameActivity {
 		scene.attachChild(backgroundSprite);
 		backgroundSprite.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		backgroundSprite.setAlpha(255);
-		SequenceEntityModifier SplashFadeModifier = new SequenceEntityModifier(new FadeInModifier(this.onGetSplashDuration() / 4), new DelayModifier(this.onGetSplashDuration() / 2), new FadeOutModifier(this.onGetSplashDuration() / 4));
-		SplashFadeModifier.addModifierListener(new IModifierListener(){
-			@Override
-			public void onModifierStarted(IModifier pModifier, Object pItem) {
-			}
-	
-			@Override
-			public void onModifierFinished(IModifier pModifier, Object pItem) {
-				Intent intent = new Intent(BaseSplashActivity.this, BaseSplashActivity.this.getFollowUpActivity());
-				BaseSplashActivity.this.finish();
-				BaseSplashActivity.this.startActivity(intent);
+		if(this.onCreateSplashOptions().getFade()){
+			float duration = this.onCreateSplashOptions().getDuration();
+			SequenceEntityModifier SplashFadeModifier = new SequenceEntityModifier(new FadeInModifier(duration / 4), new DelayModifier(duration / 2), new FadeOutModifier(duration / 4));
+			SplashFadeModifier.addModifierListener(new IModifierListener(){
+				@Override
+				public void onModifierStarted(IModifier pModifier, Object pItem) {
 				}
-			});
-		backgroundSprite.registerEntityModifier(SplashFadeModifier);
+		
+				@Override
+				public void onModifierFinished(IModifier pModifier, Object pItem) {
+					Intent intent = new Intent(BaseSplashActivity.this, BaseSplashActivity.this.onCreateSplashOptions().getFollowUpActivity());
+					BaseSplashActivity.this.finish();
+					BaseSplashActivity.this.startActivity(intent);
+					}
+				});
+			backgroundSprite.registerEntityModifier(SplashFadeModifier);
+		}
 		return scene;
 	}
-
+	// Splash options class
+	public class SplashActivityOptions{
+		ScreenOrientation orientation;
+		String texturePath;
+		float splashDuration;
+		boolean fade;
+		Class<? extends Activity> followUpActivity;
+		public SplashActivityOptions(ScreenOrientation orientation, String splashTexturePath, float duration,boolean fade, Class<? extends Activity> followUpActivity){
+			this.orientation = orientation;
+			this.texturePath = splashTexturePath;
+			this.splashDuration = duration;
+			this.followUpActivity = followUpActivity;
+			this.fade = fade;
+		}
+		ScreenOrientation getOrientation(){
+			return this.orientation;
+		}
+		String getTexturePath(){
+			return this.texturePath;
+		}
+		float getDuration(){
+			return this.splashDuration;
+		}
+		boolean getFade(){
+			return this.fade;
+		}
+		Class<? extends Activity> getFollowUpActivity(){
+			return this.followUpActivity;
+		}
+	}
 }

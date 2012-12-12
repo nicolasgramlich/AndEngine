@@ -37,12 +37,16 @@ public class Library<T> {
 	// Getter & Setter
 	// ===========================================================
 
+	public T get(final int pID) {
+		return this.mItems.get(pID);
+	}
+
 	public void put(final int pID, final T pItem) {
-		final T existingItem = this.mItems.get(pID);
-		if(existingItem == null) {
+		final T item = this.mItems.get(pID);
+		if(item == null) {
 			this.mItems.put(pID, pItem);
 		} else {
-			throw new IllegalArgumentException("ID: '" + pID + "' is already associated with item: '" + existingItem.toString() + "'.");
+			throw new IllegalArgumentException("ID: '" + pID + "' is already associated with item: '" + item.toString() + "'.");
 		}
 	}
 
@@ -50,8 +54,8 @@ public class Library<T> {
 		this.mItems.remove(pID);
 	}
 
-	public T get(final int pID) {
-		return this.mItems.get(pID);
+	public void clear() {
+		this.mItems.clear();
 	}
 
 	// ===========================================================

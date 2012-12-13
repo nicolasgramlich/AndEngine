@@ -1,5 +1,8 @@
 package org.andengine.util.algorithm.path.astar;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 import org.andengine.util.adt.list.ShiftList;
 import org.andengine.util.adt.map.LongSparseArray;
 import org.andengine.util.adt.queue.IQueue;
@@ -185,7 +188,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	private static final class Node implements Comparable<Node> {
+	public static final class Node implements Comparable<Node> {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -264,7 +267,9 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		// ===========================================================
 
 		public static long calculateID(final int pX, final int pY) {
-			return (((long)pX) << 32) | pY;
+			final ByteBuffer byteBuffer = ByteBuffer.allocateDirect(16);
+			byteBuffer.order(ByteOrder.BIG_ENDIAN);
+			return byteBuffer.putInt(pX).putInt(pY).getLong(0);
 		}
 
 		public boolean equals(final Node pNode) {

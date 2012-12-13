@@ -150,7 +150,7 @@ public final class StreamUtils {
 			}
 		} else {
 			final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
-			final int bufferReadLimit = Math.min((int)pByteLimit, StreamUtils.IO_BUFFER_SIZE);
+			final int bufferReadLimit = Math.min(pByteLimit, StreamUtils.IO_BUFFER_SIZE);
 			long pBytesLeftToRead = pByteLimit;
 
 			int read;

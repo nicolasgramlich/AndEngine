@@ -293,7 +293,7 @@ public class Camera implements IUpdateHandler {
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			this.applyRotation(pGLState, this.getCenterX(), this.getCenterY(), rotation);
+			Camera.applyRotation(pGLState, this.getCenterX(), this.getCenterY(), rotation);
 		}
 	}
 
@@ -305,7 +305,7 @@ public class Camera implements IUpdateHandler {
 
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			this.applyRotation(pGLState, widthRaw * 0.5f, heightRaw * 0.5f, rotation);
+			Camera.applyRotation(pGLState, widthRaw * 0.5f, heightRaw * 0.5f, rotation);
 		}
 	}
 
@@ -316,11 +316,11 @@ public class Camera implements IUpdateHandler {
 
 		final float cameraSceneRotation = this.mCameraSceneRotation;
 		if(cameraSceneRotation != 0) {
-			this.applyRotation(pGLState, widthRaw * 0.5f, heightRaw * 0.5f, cameraSceneRotation);
+			Camera.applyRotation(pGLState, widthRaw * 0.5f, heightRaw * 0.5f, cameraSceneRotation);
 		}
 	}
 
-	private void applyRotation(final GLState pGLState, final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
+	private static void applyRotation(final GLState pGLState, final float pRotationCenterX, final float pRotationCenterY, final float pAngle) {
 		pGLState.translateProjectionGLMatrixf(pRotationCenterX, pRotationCenterY, 0);
 		pGLState.rotateProjectionGLMatrixf(pAngle, 0, 0, 1);
 		pGLState.translateProjectionGLMatrixf(-pRotationCenterX, -pRotationCenterY, 0);

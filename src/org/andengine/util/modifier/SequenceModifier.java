@@ -53,7 +53,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}
 
-		this.assertNoNullModifier(pModifiers);
+		BaseModifier.assertNoNullModifier(pModifiers);
 
 		this.mSubSequenceModifierListener = pSubSequenceModifierListener;
 		this.mSubSequenceModifiers = pModifiers;

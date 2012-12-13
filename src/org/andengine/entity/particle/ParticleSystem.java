@@ -64,7 +64,7 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 
 		this.mEntityFactory = pEntityFactory;
 		this.mParticleEmitter = pParticleEmitter;
-		this.mParticles = (Particle<T>[])new Particle[pParticlesMaximum];
+		this.mParticles = new Particle[pParticlesMaximum];
 		this.mRateMinimum = pRateMinimum;
 		this.mRateMaximum = pRateMaximum;
 		this.mParticlesMaximum = pParticlesMaximum;

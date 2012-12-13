@@ -17,7 +17,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.IModifier.IModifierListener;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.opengl.GLES20;

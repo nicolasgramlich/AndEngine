@@ -301,7 +301,7 @@ public class Color {
 			.append(this.mBlue)
 			.append(", Alpha: ")
 			.append(this.mAlpha)
-			.append("]")
+			.append(']')
 			.toString();
 	}
 

@@ -39,14 +39,14 @@ public final class SparseArrayUtils {
 		final StringBuilder stringBuilder = new StringBuilder();
 
 		final int size = pSparseArray.size();
-		stringBuilder.append("{");
+		stringBuilder.append('{');
 		for(int i = 0; i < size; i++) {
-			stringBuilder.append(pSparseArray.keyAt(i)).append("=").append(pSparseArray.valueAt(i));
+			stringBuilder.append(pSparseArray.keyAt(i)).append('=').append(pSparseArray.valueAt(i));
 			if(i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
-		stringBuilder.append("}");
+		stringBuilder.append('}');
 
 		return stringBuilder.toString();
 	}
@@ -55,14 +55,14 @@ public final class SparseArrayUtils {
 		final StringBuilder stringBuilder = new StringBuilder();
 
 		final int size = pSparseIntArray.size();
-		stringBuilder.append("{");
+		stringBuilder.append('{');
 		for(int i = 0; i < size; i++) {
-			stringBuilder.append(pSparseIntArray.keyAt(i)).append("=").append(pSparseIntArray.valueAt(i));
+			stringBuilder.append(pSparseIntArray.keyAt(i)).append('=').append(pSparseIntArray.valueAt(i));
 			if(i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
-		stringBuilder.append("}");
+		stringBuilder.append('}');
 
 		return stringBuilder.toString();
 	}
@@ -71,14 +71,14 @@ public final class SparseArrayUtils {
 		final StringBuilder stringBuilder = new StringBuilder();
 
 		final int size = pSparseBooleanArray.size();
-		stringBuilder.append("{");
+		stringBuilder.append('{');
 		for(int i = 0; i < size; i++) {
-			stringBuilder.append(pSparseBooleanArray.keyAt(i)).append("=").append(pSparseBooleanArray.valueAt(i));
+			stringBuilder.append(pSparseBooleanArray.keyAt(i)).append('=').append(pSparseBooleanArray.valueAt(i));
 			if(i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
-		stringBuilder.append("}");
+		stringBuilder.append('}');
 
 		return stringBuilder.toString();
 	}
@@ -87,14 +87,14 @@ public final class SparseArrayUtils {
 		final StringBuilder stringBuilder = new StringBuilder();
 
 		final int size = pLongSparseArray.size();
-		stringBuilder.append("{");
+		stringBuilder.append('{');
 		for(int i = 0; i < size; i++) {
-			stringBuilder.append(pLongSparseArray.keyAt(i)).append("=").append(pLongSparseArray.valueAt(i));
+			stringBuilder.append(pLongSparseArray.keyAt(i)).append('=').append(pLongSparseArray.valueAt(i));
 			if(i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
-		stringBuilder.append("}");
+		stringBuilder.append('}');
 
 		return stringBuilder.toString();
 	}

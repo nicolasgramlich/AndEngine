@@ -285,7 +285,7 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 				.append(this.mXMax)
 				.append(", YMax: ")
 				.append(this.mYMax)
-				.append("]");
+				.append(']');
 		}
 
 		// ===========================================================

@@ -1430,7 +1430,7 @@ public class Entity implements IEntity {
 					pStringBuilder.append(", ");
 				}
 			}
-			pStringBuilder.append("]");
+			pStringBuilder.append(']');
 		}
 	}
 

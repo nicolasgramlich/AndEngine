@@ -293,7 +293,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 				.append(this.mXMax)
 				.append(", YMax: ")
 				.append(this.mYMax)
-				.append("]");
+				.append(']');
 		}
 
 		// ===========================================================

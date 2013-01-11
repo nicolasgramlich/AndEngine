@@ -20,4 +20,3 @@ public interface IInputStreamOpener {
 
 	public InputStream open() throws IOException;
 }
-

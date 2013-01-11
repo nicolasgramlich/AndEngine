@@ -18,4 +18,3 @@ public interface IMatcher<T> {
 
 	public boolean matches(final T pObject);
 }
-

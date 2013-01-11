@@ -40,18 +40,18 @@ public interface IDisposable {
 		// ===========================================================
 
 		public AlreadyDisposedException() {
-			
+
 		}
 
-		public AlreadyDisposedException(String pMessage) {
+		public AlreadyDisposedException(final String pMessage) {
 			super(pMessage);
 		}
 
-		public AlreadyDisposedException(Throwable pThrowable) {
+		public AlreadyDisposedException(final Throwable pThrowable) {
 			super(pThrowable);
 		}
-		
-		public AlreadyDisposedException(String pMessage, Throwable pThrowable) {
+
+		public AlreadyDisposedException(final String pMessage, final Throwable pThrowable) {
 			super(pMessage, pThrowable);
 		}
 

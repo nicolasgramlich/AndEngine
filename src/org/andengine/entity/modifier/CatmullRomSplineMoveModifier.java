@@ -53,7 +53,7 @@ public class CatmullRomSplineMoveModifier extends CardinalSplineMoveModifier {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class CatmullRomMoveModifierConfig extends CardinalSplineMoveModifierConfig {
+	public static class CatmullRomMoveModifierConfig extends CardinalSplineMoveModifierConfig {
 		// ===========================================================
 		// Constants
 		// ===========================================================

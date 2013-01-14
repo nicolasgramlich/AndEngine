@@ -37,14 +37,14 @@ public final class TimeUtils implements TimeConstants {
 	public static final String formatSeconds(final int pSecondsTotal) {
 		return formatSeconds(pSecondsTotal, new StringBuilder());
 	}
-	
+
 	public static final String formatSeconds(final int pSecondsTotal, final StringBuilder pStringBuilder) {
 		final int minutes = pSecondsTotal / SECONDS_PER_MINUTE;
 		final int seconds = pSecondsTotal % SECONDS_PER_MINUTE;
-		
+
 		pStringBuilder.append(minutes);
 		pStringBuilder.append(':');
-		
+
 		if(seconds < 10) {
 			pStringBuilder.append('0');
 		}

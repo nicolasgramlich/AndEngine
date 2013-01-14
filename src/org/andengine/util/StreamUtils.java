@@ -12,6 +12,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.ByteBuffer;
 
+import org.andengine.util.debug.Debug;
+
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -189,7 +191,7 @@ public final class StreamUtils {
 			try {
 				pCloseable.close();
 			} catch (final IOException e) {
-				e.printStackTrace();
+				Debug.e("Error closing Closable", e);
 			}
 		}
 	}
@@ -197,14 +199,14 @@ public final class StreamUtils {
 	/**
 	 * Flushes and closes the specified stream.
 	 *
-	 * @param pOutputStream The stream to close.
+	 * @param pOutputStream The stream to flush and close.
 	 */
-	public static final void flushCloseStream(final OutputStream pOutputStream) {
+	public static final void flushAndCloseStream(final OutputStream pOutputStream) {
 		if(pOutputStream != null) {
 			try {
 				pOutputStream.flush();
 			} catch (final IOException e) {
-				e.printStackTrace();
+				Debug.e("Error flusing OutputStream", e);
 			} finally {
 				StreamUtils.close(pOutputStream);
 			}
@@ -216,12 +218,12 @@ public final class StreamUtils {
 	 *
 	 * @param pWriter The Writer to close.
 	 */
-	public static final void flushCloseWriter(final Writer pWriter) {
+	public static final void flushAndCloseWriter(final Writer pWriter) {
 		if(pWriter != null) {
 			try {
 				pWriter.flush();
 			} catch (final IOException e) {
-				e.printStackTrace();
+				Debug.e("Error flusing Writer", e);
 			} finally {
 				StreamUtils.close(pWriter);
 			}

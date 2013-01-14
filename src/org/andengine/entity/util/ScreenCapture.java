@@ -97,7 +97,7 @@ public class ScreenCapture extends Entity implements IScreenGrabberCallback {
 			out = new FileOutputStream(pFilePath);
 			pBitmap.compress(CompressFormat.PNG, 100, out);
 		} catch (final FileNotFoundException e) {
-			StreamUtils.flushCloseStream(out);
+			StreamUtils.flushAndCloseStream(out);
 			Debug.e("Error saving file to: " + pFilePath, e);
 			throw e;
 		}

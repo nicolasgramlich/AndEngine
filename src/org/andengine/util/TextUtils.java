@@ -46,12 +46,12 @@ public final class TextUtils {
 			return pText;
 		} else {
 			final StringBuilder sb = new StringBuilder();
-			
+
 			sb.append(pText);
 			for(int i = padCount - 1; i >= 0; i--) {
 				sb.append(pPadChar);
 			}
-			
+
 			return sb.toString();
 		}
 	}
@@ -120,15 +120,15 @@ public final class TextUtils {
 
 	public static final String formatStackTrace(final StackTraceElement pStackTraceElement) {
 		return new StringBuilder()
-		.append(pStackTraceElement.getClassName())
-		.append('.')
-		.append(pStackTraceElement.getMethodName())
-		.append('(')
-		.append(pStackTraceElement.getFileName())
-		.append(':')
-		.append(pStackTraceElement.getLineNumber())
-		.append(')')
-		.toString();
+			.append(pStackTraceElement.getClassName())
+			.append('.')
+			.append(pStackTraceElement.getMethodName())
+			.append('(')
+			.append(pStackTraceElement.getFileName())
+			.append(':')
+			.append(pStackTraceElement.getLineNumber())
+			.append(')')
+			.toString();
 	}
 
 	public static final String formatStackTrace(final StackTraceElement[] pStackTraceElements) {

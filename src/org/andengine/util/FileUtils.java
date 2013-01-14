@@ -180,26 +180,24 @@ public class FileUtils {
 	}
 
 	/**
-	 * Deletes all files and sub-directories under <code>dir</code>. Returns
-	 * true if all deletions were successful. If a deletion fails, the method
-	 * stops attempting to delete and returns false.
+	 * Recursively deletes all files and sub-directories under <code>pFileOrDirectory</code>.
 	 * 
 	 * @param pFileOrDirectory
-	 * @return
+	 * @return <code>true</code>, if all deletions were successful. <code>false</code>, if a deletion fails (the recursion is stopped then).
 	 */
-	public static boolean deleteDirectory(final File pFileOrDirectory) {
+	public static boolean delete(final File pFileOrDirectory) {
 		if(pFileOrDirectory.isDirectory()) {
 			final String[] children = pFileOrDirectory.list();
-			final int childrenCount = children.length;
-			for(int i = 0; i < childrenCount; i++) {
-				final boolean success = FileUtils.deleteDirectory(new File(pFileOrDirectory, children[i]));
+			final int childCount = children.length;
+			for(int i = 0; i < childCount; i++) {
+				final boolean success = FileUtils.delete(new File(pFileOrDirectory, children[i]));
 				if(!success) {
 					return false;
 				}
 			}
 		}
 
-		// The directory is now empty so delete it
+		/* The directory is now empty so delete it. */
 		return pFileOrDirectory.delete();
 	}
 

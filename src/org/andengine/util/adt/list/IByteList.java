@@ -1,12 +1,12 @@
 package org.andengine.util.adt.list;
 
 /**
- * (c) Zynga 2012
+ * (c) Zynga 2013
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 19:36:57 - 03.05.2012
+ * @since 13:18:45 - 19.01.2013
  */
-public interface ILongList {
+public interface IByteList {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -16,11 +16,11 @@ public interface ILongList {
 	// ===========================================================
 
 	public boolean isEmpty();
-	public long get(final int pIndex) throws ArrayIndexOutOfBoundsException;
-	public void add(final long pItem);
-	public void add(final int pIndex, final long pItem) throws ArrayIndexOutOfBoundsException;
-	public long remove(final int pIndex) throws ArrayIndexOutOfBoundsException;
+	public byte get(final int pIndex) throws ArrayIndexOutOfBoundsException;
+	public void add(final byte pItem);
+	public void add(final int pIndex, final byte pItem) throws ArrayIndexOutOfBoundsException;
+	public byte remove(final int pIndex) throws ArrayIndexOutOfBoundsException;
 	public int size();
 	public void clear();
-	public long[] toArray();
+	public byte[] toArray();
 }

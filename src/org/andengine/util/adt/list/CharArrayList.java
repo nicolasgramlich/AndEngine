@@ -3,12 +3,12 @@ package org.andengine.util.adt.list;
 /**
  * TODO This class could take some kind of AllocationStrategy object.
  *
- * (c) Zynga 2012
+ * (c) Zynga 2013
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 18:07:43 - 26.01.2012
+ * @since 13:13:55 - 19.01.2013
  */
-public class FloatArrayList implements IFloatList {
+public class CharArrayList implements ICharList {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,19 +19,19 @@ public class FloatArrayList implements IFloatList {
 	// Fields
 	// ===========================================================
 
-	private float[] mItems;
+	private char[] mItems;
 	private int mSize;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public FloatArrayList() {
-		this(FloatArrayList.CAPACITY_INITIAL_DEFAULT);
+	public CharArrayList() {
+		this(CharArrayList.CAPACITY_INITIAL_DEFAULT);
 	}
 
-	public FloatArrayList(final int pInitialCapacity) {
-		this.mItems = new float[pInitialCapacity];
+	public CharArrayList(final int pInitialCapacity) {
+		this.mItems = new char[pInitialCapacity];
 	}
 
 	// ===========================================================
@@ -48,12 +48,12 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
-	public float get(final int pIndex) throws ArrayIndexOutOfBoundsException {
+	public char get(final int pIndex) throws ArrayIndexOutOfBoundsException {
 		return this.mItems[pIndex];
 	}
 
 	@Override
-	public void add(final float pItem) {
+	public void add(final char pItem) {
 		this.ensureCapacity(this.mSize + 1);
 
 		this.mItems[this.mSize] = pItem;
@@ -61,7 +61,7 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
-	public void add(final int pIndex, final float pItem) throws ArrayIndexOutOfBoundsException {
+	public void add(final int pIndex, final char pItem) throws ArrayIndexOutOfBoundsException {
 		this.ensureCapacity(this.mSize + 1);
 
 		System.arraycopy(this.mItems, pIndex, this.mItems, pIndex + 1, this.mSize - pIndex);
@@ -71,8 +71,8 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
-	public float remove(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		final float oldValue = this.mItems[pIndex];
+	public char remove(final int pIndex) throws ArrayIndexOutOfBoundsException {
+		final char oldValue = this.mItems[pIndex];
 
 		final int numMoved = this.mSize - pIndex - 1;
 		if(numMoved > 0) {
@@ -95,8 +95,8 @@ public class FloatArrayList implements IFloatList {
 	}
 
 	@Override
-	public float[] toArray() {
-		final float[] array = new float[this.mSize];
+	public char[] toArray() {
+		final char[] array = new char[this.mSize];
 		System.arraycopy(this.mItems, 0, array, 0, this.mSize);
 		return array ;
 	}
@@ -110,7 +110,7 @@ public class FloatArrayList implements IFloatList {
 		if(currentCapacity < pCapacity) {
 			/* Increase array size. */
 			final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
-			final float[] newItems = new float[newCapacity];
+			final char[] newItems = new char[newCapacity];
 			System.arraycopy(this.mItems, 0, newItems, 0, currentCapacity);
 			this.mItems = newItems;
 		}

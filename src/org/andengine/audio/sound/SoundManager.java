@@ -72,14 +72,14 @@ public class SoundManager extends BaseAudioManager<Sound> implements OnLoadCompl
 		return removed;
 
 	}
-	
+
 	@Override
 	public void releaseAll() {
 		super.releaseAll();
 
 		this.mSoundPool.release();
 	}
-	
+
 	@Override
 	public synchronized void onLoadComplete(final SoundPool pSoundPool, final int pSoundID, final int pStatus) {
 		if(pStatus == SoundManager.SOUND_STATUS_OK) {

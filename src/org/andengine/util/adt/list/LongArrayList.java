@@ -48,7 +48,7 @@ public class LongArrayList implements ILongList {
 	}
 
 	@Override
-	public float get(final int pIndex) throws ArrayIndexOutOfBoundsException {
+	public long get(final int pIndex) throws ArrayIndexOutOfBoundsException {
 		return this.mItems[pIndex];
 	}
 
@@ -71,8 +71,8 @@ public class LongArrayList implements ILongList {
 	}
 
 	@Override
-	public float remove(final int pIndex) throws ArrayIndexOutOfBoundsException {
-		final float oldValue = this.mItems[pIndex];
+	public long remove(final int pIndex) throws ArrayIndexOutOfBoundsException {
+		final long oldValue = this.mItems[pIndex];
 
 		final int numMoved = this.mSize - pIndex - 1;
 		if(numMoved > 0) {
@@ -110,7 +110,7 @@ public class LongArrayList implements ILongList {
 		if(currentCapacity < pCapacity) {
 			/* Increase array size. */
 			final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
-			final long newItems[] = new long[newCapacity];
+			final long[] newItems = new long[newCapacity];
 			System.arraycopy(this.mItems, 0, newItems, 0, currentCapacity);
 			this.mItems = newItems;
 		}

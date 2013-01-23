@@ -181,11 +181,6 @@ public final class StreamUtils {
 		}
 	}
 
-	/**
-	 * Closes the specified stream.
-	 *
-	 * @param pCloseable The stream to close.
-	 */
 	public static final void close(final Closeable pCloseable) {
 		if(pCloseable != null) {
 			try {
@@ -196,11 +191,6 @@ public final class StreamUtils {
 		}
 	}
 
-	/**
-	 * Flushes and closes the specified stream.
-	 *
-	 * @param pOutputStream The stream to flush and close.
-	 */
 	public static final void flushAndCloseStream(final OutputStream pOutputStream) {
 		if(pOutputStream != null) {
 			try {
@@ -213,11 +203,6 @@ public final class StreamUtils {
 		}
 	}
 
-	/**
-	 * Flushes and closes the specified stream.
-	 *
-	 * @param pWriter The Writer to close.
-	 */
 	public static final void flushAndCloseWriter(final Writer pWriter) {
 		if(pWriter != null) {
 			try {

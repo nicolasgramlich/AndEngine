@@ -123,6 +123,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	protected int mSurfaceWidth = 1; // 1 to prevent accidental DIV/0
 	protected int mSurfaceHeight = 1; // 1 to prevent accidental DIV/0
+	private volatile boolean mIsLagging;
 
 	// ===========================================================
 	// Constructors
@@ -580,10 +581,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void onUpdate(final long pNanosecondsElapsed) throws InterruptedException {
-		final float pSecondsElapsed = pNanosecondsElapsed * TimeConstants.SECONDS_PER_NANOSECOND;
+		float pSecondsElapsed = pNanosecondsElapsed * TimeConstants.SECONDS_PER_NANOSECOND;
 
 		this.mSecondsElapsedTotal += pSecondsElapsed;
 		this.mLastTick += pNanosecondsElapsed;
+
+		if (this.mIsLagging) {
+			pSecondsElapsed = 16666666 * TimeConstants.SECONDS_PER_NANOSECOND;
+		}
 
 		this.mTouchController.onUpdate(pSecondsElapsed);
 		this.onUpdateUpdateHandlers(pSecondsElapsed);
@@ -613,9 +618,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		try {
 			engineLock.waitUntilCanDraw();
 
-			this.mVertexBufferObjectManager.updateVertexBufferObjects(pGLState);
-			this.mTextureManager.updateTextures(pGLState);
-			this.mFontManager.updateFonts(pGLState);
+			this.mIsLagging = false;
+			this.mIsLagging |= this.mVertexBufferObjectManager.updateVertexBufferObjects(pGLState);
+			this.mIsLagging |= this.mTextureManager.updateTextures(pGLState);
+			this.mIsLagging |= this.mFontManager.updateFonts(pGLState);
 
 			this.onUpdateDrawHandlers(pGLState, this.mCamera);
 			this.onDrawScene(pGLState, this.mCamera);

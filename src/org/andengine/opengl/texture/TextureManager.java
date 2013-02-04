@@ -39,6 +39,7 @@ public class TextureManager {
 	private final ArrayList<ITexture> mTexturesToBeUnloaded = new ArrayList<ITexture>();
 
 	private TextureWarmUpVertexBufferObject mTextureWarmUpVertexBufferObject;
+	private boolean mReloading;
 
 	// ===========================================================
 	// Constructors
@@ -61,6 +62,7 @@ public class TextureManager {
 	}
 
 	public synchronized void onReload() {
+		this.mReloading = true;
 		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
 		if(!managedTextures.isEmpty()) {
 			for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
@@ -225,7 +227,7 @@ public class TextureManager {
 		}
 	}
 
-	public synchronized void updateTextures(final GLState pGLState) {
+	public synchronized boolean updateTextures(final GLState pGLState) {
 		final HashSet<ITexture> texturesManaged = this.mTexturesManaged;
 		final ArrayList<ITexture> texturesLoaded = this.mTexturesLoaded;
 		final ArrayList<ITexture> texturesToBeLoaded = this.mTexturesToBeLoaded;
@@ -280,6 +282,13 @@ public class TextureManager {
 		/* Finally invoke the GC if anything has changed. */
 		if((texturesToBeLoadedCount > 0) || (texturesToBeUnloadedCount > 0)) {
 			System.gc();
+		}
+
+		if (this.mReloading) {
+			this.mReloading = false;
+			return true;
+		} else {
+			return false;
 		}
 	}
 

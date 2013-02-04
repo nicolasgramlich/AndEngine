@@ -24,6 +24,8 @@ public class VertexBufferObjectManager {
 
 	private final ArrayList<IVertexBufferObject> mVertexBufferObjectsToBeUnloaded = new ArrayList<IVertexBufferObject>();
 
+	private boolean mReloading;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -91,6 +93,7 @@ public class VertexBufferObjectManager {
 	}
 
 	public synchronized void onReload() {
+		this.mReloading = true;
 		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
 		for(int i = vertexBufferObjectsLoaded.size() - 1; i >= 0; i--) {
 			vertexBufferObjectsLoaded.get(i).setNotLoadedToHardware();
@@ -99,7 +102,7 @@ public class VertexBufferObjectManager {
 		vertexBufferObjectsLoaded.clear();
 	}
 
-	public synchronized void updateVertexBufferObjects(final GLState pGLState) {
+	public synchronized boolean updateVertexBufferObjects(final GLState pGLState) {
 		final ArrayList<IVertexBufferObject> vertexBufferObjectsLoaded = this.mVertexBufferObjectsLoaded;
 		final ArrayList<IVertexBufferObject> vertexBufferObjectsToBeUnloaded = this.mVertexBufferObjectsToBeUnloaded;
 
@@ -110,6 +113,13 @@ public class VertexBufferObjectManager {
 				vertexBufferObjectToBeUnloaded.unloadFromHardware(pGLState);
 			}
 			vertexBufferObjectsLoaded.remove(vertexBufferObjectToBeUnloaded);
+		}
+
+		if (this.mReloading) {
+			this.mReloading = false;
+			return true;
+		} else {
+			return false;
 		}
 	}
 

@@ -45,6 +45,11 @@ public class ResourceInputStreamOpener implements IInputStreamOpener {
 		return this.mResources.openRawResource(this.mResourceID);
 	}
 
+	@Override
+	public String toString() {
+		return "ResourceInputStreamOpener [mResources=" + (mResources == null ? "null" : mResources) + ", mResourceID=" + mResourceID + "]";
+	}
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================

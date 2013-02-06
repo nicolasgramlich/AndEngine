@@ -49,9 +49,12 @@ public interface IModifier<T> {
 	public float getDuration();
 
 	public float onUpdate(final float pSecondsElapsed, final T pItem);
+	
+	public void onUnregister(final T pItem);
 
 	public void addModifierListener(final IModifierListener<T> pModifierListener);
 	public boolean removeModifierListener(final IModifierListener<T> pModifierListener);
+	public void clearModifierListeners();
 
 	// ===========================================================
 	// Inner and Anonymous Classes

@@ -4,7 +4,7 @@ import org.andengine.util.adt.list.SmartList;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -65,6 +65,11 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 			this.mModifierListeners.add(pModifierListener);
 		}
 	}
+	
+	@Override
+	public void clearModifierListeners() {
+		this.mModifierListeners.clear();
+	}
 
 	@Override
 	public boolean removeModifierListener(final IModifierListener<T> pModifierListener) {
@@ -73,6 +78,10 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 		} else {
 			return this.mModifierListeners.remove(pModifierListener);
 		}
+	}
+	
+	@Override
+	public void onUnregister(final T pItem) {
 	}
 
 	@Override

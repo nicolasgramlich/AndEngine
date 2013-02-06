@@ -4,7 +4,7 @@ import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -22,12 +22,11 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	private float mFromValue;
 	private float mValueSpan;
 
-	protected final IEaseFunction mEaseFunction;
+	protected IEaseFunction mEaseFunction;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
 	public BaseSingleValueSpanModifier(final float pDuration, final float pFromValue, final float pToValue) {
 		this(pDuration, pFromValue, pToValue, null, EaseLinear.getInstance());
 	}
@@ -67,6 +66,11 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	public float getToValue() {
 		return this.mFromValue + this.mValueSpan;
 	}
+	
+	public IEaseFunction getEaseFunction() {
+		return mEaseFunction;
+	}
+	
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -90,13 +94,18 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void reset(final float pDuration, final float pFromValue, final float pToValue) {
+		reset(pDuration, pFromValue, pToValue, mEaseFunction);
+	}
+	
+	public void reset(final float pDuration, final float pFromValue, final float pToValue, final IEaseFunction pEaseFunction) {
 		super.reset();
 		
 		this.mDuration = pDuration;
 		this.mFromValue = pFromValue;
 		this.mValueSpan = pToValue - pFromValue;
+		this.mEaseFunction = pEaseFunction;
 	}
 
 	// ===========================================================

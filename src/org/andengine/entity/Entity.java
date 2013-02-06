@@ -1230,7 +1230,12 @@ public class Entity implements IEntity {
 			pStringBuilder.append(" [");
 			final SmartList<IEntity> entities = this.mChildren;
 			for(int i = 0; i < entities.size(); i++) {
-				entities.get(i).toString(pStringBuilder);
+				final IEntity lEntity = entities.get(i);
+				if (lEntity == null) {
+					pStringBuilder.append("null");
+				} else {
+					lEntity.toString(pStringBuilder);
+				}
 				if(i < (entities.size() - 1)) {
 					pStringBuilder.append(", ");
 				}
@@ -1372,8 +1377,7 @@ public class Entity implements IEntity {
 								break;
 							}
 						} catch (RuntimeException e) {
-							Debug.e("onManagedDraw(...) entity='" + this.getClass().getName() + "' KO during onDraw of child " + i + " (" + toString() + ")");
-							throw e;
+							throw new RuntimeException("onManagedDraw(...) entity='" + this.getClass().getName() + "' KO during onDraw of child " + i + " (" + toString() + ")", e);
 						}
 					}
 				}
@@ -1388,8 +1392,7 @@ public class Entity implements IEntity {
 						try {
 							children.get(i).onDraw(pGLState, pCamera);
 						} catch (RuntimeException e) {
-							Debug.e("onManagedDraw(...) entity='" + this.getClass().getName() + "' KO during onDraw of child " + i + " (" + toString() + ")");
-							throw e;
+							throw new RuntimeException("onManagedDraw(...) entity='" + this.getClass().getName() + "' KO during onDraw of child " + i + " (" + toString() + ")", e);
 						}
 					}
 				}
@@ -1413,8 +1416,7 @@ public class Entity implements IEntity {
 				try {
 					entities.get(i).onUpdate(pSecondsElapsed);
 				} catch (RuntimeException e) {
-					Debug.e("onManagedUpdate(...) entity='" + this.getClass().getName() + "' KO during onUpdate of child " + i + " (" + toString() + ")");
-					throw e;
+					throw new RuntimeException("onManagedUpdate(...) entity='" + this.getClass().getName() + "' KO during onUpdate of child " + i + " (" + toString() + ")", e);
 				}
 			}
 		}

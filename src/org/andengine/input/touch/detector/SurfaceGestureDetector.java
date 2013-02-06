@@ -112,24 +112,26 @@ public abstract class SurfaceGestureDetector extends BaseDetector {
 
 		@Override
 		public boolean onFling(final MotionEvent pMotionEventStart, final MotionEvent pMotionEventEnd, final float pVelocityX, final float pVelocityY) {
-			final float swipeMinDistance = this.mSwipeMinDistance;
-
-			final boolean isHorizontalFling = Math.abs(pVelocityX) > Math.abs(pVelocityY);
-
-			if(isHorizontalFling) {
-				if(pMotionEventStart.getX() - pMotionEventEnd.getX() > swipeMinDistance) {
-					return SurfaceGestureDetector.this.onSwipeLeft();
-				} else if(pMotionEventEnd.getX() - pMotionEventStart.getX() > swipeMinDistance) {
-					return SurfaceGestureDetector.this.onSwipeRight();
-				}
-			} else {
-				if(pMotionEventStart.getY() - pMotionEventEnd.getY() > swipeMinDistance) {
-					return SurfaceGestureDetector.this.onSwipeUp();
-				} else if(pMotionEventEnd.getY() - pMotionEventStart.getY() > swipeMinDistance) {
-					return SurfaceGestureDetector.this.onSwipeDown();
+			if (pMotionEventStart != null && pMotionEventEnd != null) {
+				final float swipeMinDistance = this.mSwipeMinDistance;
+	
+				final boolean isHorizontalFling = Math.abs(pVelocityX) > Math.abs(pVelocityY);
+	
+				if(isHorizontalFling) {
+					if(pMotionEventStart.getX() - pMotionEventEnd.getX() > swipeMinDistance) {
+						return SurfaceGestureDetector.this.onSwipeLeft();
+					} else if(pMotionEventEnd.getX() - pMotionEventStart.getX() > swipeMinDistance) {
+						return SurfaceGestureDetector.this.onSwipeRight();
+					}
+				} else {
+					if(pMotionEventStart.getY() - pMotionEventEnd.getY() > swipeMinDistance) {
+						return SurfaceGestureDetector.this.onSwipeUp();
+					} else if(pMotionEventEnd.getY() - pMotionEventStart.getY() > swipeMinDistance) {
+						return SurfaceGestureDetector.this.onSwipeDown();
+					}
 				}
 			}
-
+				
 			return false;
 		}
 

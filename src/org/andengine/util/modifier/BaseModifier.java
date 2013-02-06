@@ -107,13 +107,13 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 		}
 	}
 
-	protected final void assertNoNullModifier(final IModifier<T> pModifier) {
+	protected static final <T> void assertNoNullModifier(final IModifier<T> pModifier) {
 		if(pModifier == null) {
 			throw new IllegalArgumentException("Illegal 'null' " + IModifier.class.getSimpleName() + " detected!");
 		}
 	}
 
-	protected final void assertNoNullModifier(final IModifier<T> ... pModifiers) {
+	protected static final <T> void assertNoNullModifier(final IModifier<T> ... pModifiers) {
 		final int modifierCount = pModifiers.length;
 		for(int i = 0; i < modifierCount; i++) {
 			if(pModifiers[i] == null) {

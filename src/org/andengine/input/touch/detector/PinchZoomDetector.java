@@ -72,7 +72,7 @@ public class PinchZoomDetector extends BaseDetector {
 
 		switch(action) {
 			case MotionEvent.ACTION_POINTER_DOWN:
-				if(!this.mPinchZooming && this.hasTwoOrMorePointers(motionEvent))  {
+				if(!this.mPinchZooming && PinchZoomDetector.hasTwoOrMorePointers(motionEvent))  {
 					this.mInitialDistance = PinchZoomDetector.calculatePointerDistance(motionEvent);
 					this.mCurrentDistance = this.mInitialDistance;
 					if(this.mInitialDistance > PinchZoomDetector.TRIGGER_PINCHZOOM_MINIMUM_DISTANCE_DEFAULT) {
@@ -91,7 +91,7 @@ public class PinchZoomDetector extends BaseDetector {
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if(this.mPinchZooming) {
-					if (this.hasTwoOrMorePointers(motionEvent)) {
+					if (PinchZoomDetector.hasTwoOrMorePointers(motionEvent)) {
 						this.mCurrentDistance = PinchZoomDetector.calculatePointerDistance(motionEvent);
 						if(this.mCurrentDistance > PinchZoomDetector.TRIGGER_PINCHZOOM_MINIMUM_DISTANCE_DEFAULT) {
 							this.mPinchZoomDetectorListener.onPinchZoom(this, pSceneTouchEvent, this.getZoomFactor());
@@ -121,7 +121,7 @@ public class PinchZoomDetector extends BaseDetector {
 		return MathUtils.distance(pMotionEvent.getX(0), pMotionEvent.getY(0), pMotionEvent.getX(1), pMotionEvent.getY(1));
 	}
 
-	private boolean hasTwoOrMorePointers(final MotionEvent pMotionEvent) {
+	private static boolean hasTwoOrMorePointers(final MotionEvent pMotionEvent) {
 		return pMotionEvent.getPointerCount() >= 2;
 	}
 

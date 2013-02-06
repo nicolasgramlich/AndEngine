@@ -8,7 +8,7 @@ import org.andengine.util.adt.list.ShiftList;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:06:49 - 03.01.2012
  */
-public class ShiftQueue<T> extends ShiftList<T> implements IQueue<T> {
+public class ShiftQueue<T> extends ShiftList<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

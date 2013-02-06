@@ -263,7 +263,7 @@ public final class MathUtils {
 	 * @return (int)Math.round(pX * (1 - pMix) + pY * pMix)
 	 */
 	public static final int mix(final int pX, final int pY, final float pMix) {
-		return (int)Math.round(pX * (1 - pMix) + pY * pMix);
+		return Math.round(pX * (1 - pMix) + pY * pMix);
 	}
 
 	public static final boolean isEven(final int n) {

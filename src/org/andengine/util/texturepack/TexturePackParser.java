@@ -228,7 +228,7 @@ public class TexturePackParser extends DefaultHandler {
 		final int magFilter = TexturePackParser.parseMagFilter(pAttributes);
 		final int wrapT = this.parseWrapT(pAttributes);
 		final int wrapS = this.parseWrapS(pAttributes);
-		final boolean preMultiplyAlpha = this.parsePremultiplyalpha(pAttributes);
+		final boolean preMultiplyAlpha = TexturePackParser.parsePremultiplyalpha(pAttributes);
 
 		return new TextureOptions(minFilter, magFilter, wrapT, wrapS, preMultiplyAlpha);
 	}
@@ -284,7 +284,7 @@ public class TexturePackParser extends DefaultHandler {
 		}
 	}
 
-	private boolean parsePremultiplyalpha(final Attributes pAttributes) {
+	private static boolean parsePremultiplyalpha(final Attributes pAttributes) {
 		return SAXUtils.getBooleanAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTURE_ATTRIBUTE_PREMULTIPLYALPHA);
 	}
 

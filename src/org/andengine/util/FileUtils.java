@@ -135,12 +135,12 @@ public class FileUtils {
 		return new FileInputStream(absoluteFilePath);
 	}
 
-	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilePath) throws FileNotFoundException {
+	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilePath) {
 		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath);
 		return new File(absoluteFilePath).list();
 	}
 
-	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilePath, final FilenameFilter pFilenameFilter) throws FileNotFoundException {
+	public static String[] getDirectoryListOnExternalStorage(final Context pContext, final String pFilePath, final FilenameFilter pFilenameFilter) {
 		final String absoluteFilePath = FileUtils.getAbsolutePathOnExternalStorage(pContext, pFilePath);
 		return new File(absoluteFilePath).list(pFilenameFilter);
 	}

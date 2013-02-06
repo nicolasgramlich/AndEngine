@@ -19,7 +19,7 @@ package org.andengine.util.adt.map;
 import org.andengine.util.adt.array.ArrayUtils;
 
 /**
- * SparseBooleanArrays map integers to doubles.
+ * SparseDoubleArrays map integers to doubles.
  * Unlike a normal array of doubles
  * there can be gaps in the indices.  It is intended to be more efficient
  * than using a HashMap to map Integers to Booleans.

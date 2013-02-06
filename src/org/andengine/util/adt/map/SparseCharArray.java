@@ -19,7 +19,7 @@ package org.andengine.util.adt.map;
 import org.andengine.util.adt.array.ArrayUtils;
 
 /**
- * SparseBooleanArrays map integers to chars.
+ * SparseCharArrays map integers to chars.
  * Unlike a normal array of chars
  * there can be gaps in the indices.  It is intended to be more efficient
  * than using a HashMap to map Integers to Booleans.

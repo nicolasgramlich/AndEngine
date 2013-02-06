@@ -19,7 +19,7 @@ package org.andengine.util.adt.map;
 import org.andengine.util.adt.array.ArrayUtils;
 
 /**
- * SparseBooleanArrays map integers to floats.
+ * SparseFloatArrays map integers to floats.
  * Unlike a normal array of floats
  * there can be gaps in the indices.  It is intended to be more efficient
  * than using a HashMap to map Integers to Booleans.

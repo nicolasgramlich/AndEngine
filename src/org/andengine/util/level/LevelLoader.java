@@ -128,7 +128,7 @@ public class LevelLoader {
 			final LevelParser levelParser = new LevelParser(this.mDefaultEntityLoader, this.mEntityLoaders);
 			xr.setContentHandler(levelParser);
 
-			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
+			xr.parse(new InputSource(new BufferedInputStream(pInputStream, 8192)));
 
 			this.onAfterLoadLevel();
 		} catch (final SAXException se) {

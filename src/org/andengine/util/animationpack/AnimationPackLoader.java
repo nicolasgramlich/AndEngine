@@ -73,7 +73,7 @@ public class AnimationPackLoader {
 			final AnimationPackParser animationPackParser = new AnimationPackParser(this.mAssetManager, pAssetBasePath, this.mTextureManager);
 			xr.setContentHandler(animationPackParser);
 
-			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
+			xr.parse(new InputSource(new BufferedInputStream(pInputStream, 8192)));
 
 			return animationPackParser.getAnimationPack();
 		} catch (final SAXException e) {

@@ -73,7 +73,7 @@ public class TexturePackLoader {
 			final TexturePackParser texturePackParser = new TexturePackParser(this.mAssetManager, pAssetBasePath, this.mTextureManager);
 			xr.setContentHandler(texturePackParser);
 
-			xr.parse(new InputSource(new BufferedInputStream(pInputStream)));
+			xr.parse(new InputSource(new BufferedInputStream(pInputStream, 8192)));
 
 			return texturePackParser.getTexturePack();
 		} catch (final SAXException e) {

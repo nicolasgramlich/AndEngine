@@ -28,7 +28,7 @@ public class EaseCubicOut implements IEaseFunction {
 	}
 
 	public static EaseCubicOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseCubicOut();
 		}
 		return INSTANCE;

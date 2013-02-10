@@ -48,7 +48,7 @@ public class IntLookupMap<T> implements IIntLookupMap<T> {
 	@Override
 	public int value(final T pName) {
 		final Integer value = this.mItemToValueMapping.get(pName);
-		if(value == null) {
+		if (value == null) {
 			return -1;
 		} else {
 			return value.intValue();

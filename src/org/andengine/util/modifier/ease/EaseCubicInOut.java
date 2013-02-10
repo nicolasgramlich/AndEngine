@@ -28,7 +28,7 @@ public class EaseCubicInOut implements IEaseFunction {
 	}
 
 	public static EaseCubicInOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseCubicInOut();
 		}
 		return INSTANCE;
@@ -46,7 +46,7 @@ public class EaseCubicInOut implements IEaseFunction {
 	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
 		final float percentage = pSecondsElapsed / pDuration;
 
-		if(percentage < 0.5f) {
+		if (percentage < 0.5f) {
 			return 0.5f * EaseCubicIn.getValue(2 * percentage);
 		} else {
 			return 0.5f + 0.5f * EaseCubicOut.getValue(percentage * 2 - 1);

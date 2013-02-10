@@ -39,7 +39,7 @@ public class CircularQueue<T> extends CircularList<T> implements IQueue<T> {
 
 	@Override
 	public T peek() {
-		if(this.isEmpty()) {
+		if (this.isEmpty()) {
 			return null;
 		} else {
 			return this.get(0);
@@ -48,7 +48,7 @@ public class CircularQueue<T> extends CircularList<T> implements IQueue<T> {
 
 	@Override
 	public T poll() {
-		if(this.isEmpty()) {
+		if (this.isEmpty()) {
 			return null;
 		} else {
 			return this.remove(0);

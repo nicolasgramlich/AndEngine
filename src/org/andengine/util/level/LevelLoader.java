@@ -68,7 +68,7 @@ public abstract class LevelLoader<T extends IEntityLoaderData, L extends IEntity
 
 	public void registerEntityLoader(final IEntityLoader<T> pEntityLoader) {
 		final String[] entityNames = pEntityLoader.getEntityNames();
-		for(int i = 0; i < entityNames.length; i++) {
+		for (int i = 0; i < entityNames.length; i++) {
 			final String entityName = entityNames[i];
 			this.mEntityLoaders.put(entityName, pEntityLoader);
 		}

@@ -120,23 +120,23 @@ public class SmartPVRTexturePixelBufferStrategy implements IPVRTexturePixelBuffe
 
 		@Override
 		public ByteBuffer getPixelBuffer(final int pStart, final int pByteCount) throws IOException {
-			if(pStart < this.mInputStreamPosition) {
+			if (pStart < this.mInputStreamPosition) {
 				throw new AndEngineRuntimeException("Cannot read data that has been read already. (pStart: '" + pStart + "', this.mInputStreamPosition: '" + this.mInputStreamPosition + "')");
 			}
 
 			/* Ensure data buffer is bug enough. */
-			if(this.mData == null || this.mData.length < pByteCount) {
+			if (this.mData == null || this.mData.length < pByteCount) {
 				this.mData = new byte[pByteCount];
 			}
 
 			/* If needed, skip bytes up to where the data was requested. */
-			if(this.mInputStreamPosition < pStart) {
+			if (this.mInputStreamPosition < pStart) {
 				final int bytesToSkip = pStart - this.mInputStreamPosition;
 				final long skipped = this.mInputStream.skip(bytesToSkip);
 
 				this.mInputStreamPosition += skipped;
 
-				if(bytesToSkip != skipped) {
+				if (bytesToSkip != skipped) {
 					throw new AndEngineRuntimeException("Skipped: '" + skipped + "' instead of '" + bytesToSkip + "'.");
 				}
 			}

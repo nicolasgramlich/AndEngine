@@ -126,7 +126,7 @@ public class Color {
 	}
 
 	public final boolean setRedChecking(final float pRed) {
-		if(this.mRed != pRed) {
+		if (this.mRed != pRed) {
 			this.mRed = pRed;
 
 			this.packABGRRed();
@@ -142,7 +142,7 @@ public class Color {
 	}
 
 	public final boolean setGreenChecking(final float pGreen) {
-		if(this.mGreen != pGreen) {
+		if (this.mGreen != pGreen) {
 			this.mGreen = pGreen;
 
 			this.packABGRGreen();
@@ -158,7 +158,7 @@ public class Color {
 	}
 
 	public final boolean setBlueChecking(final float pBlue) {
-		if(this.mBlue != pBlue) {
+		if (this.mBlue != pBlue) {
 			this.mBlue = pBlue;
 
 			this.packABGRBlue();
@@ -174,7 +174,7 @@ public class Color {
 	}
 
 	public final boolean setAlphaChecking(final float pAlpha) {
-		if(this.mAlpha != pAlpha) {
+		if (this.mAlpha != pAlpha) {
 			this.mAlpha = pAlpha;
 
 			this.packABGRAlpha();
@@ -192,7 +192,7 @@ public class Color {
 	}
 
 	public final boolean setChecking(final float pRed, final float pGreen, final float pBlue) {
-		if((this.mRed != pRed) || (this.mGreen != pGreen) || (this.mBlue != pBlue)) {
+		if ((this.mRed != pRed) || (this.mGreen != pGreen) || (this.mBlue != pBlue)) {
 			this.mRed = pRed;
 			this.mGreen = pGreen;
 			this.mBlue = pBlue;
@@ -213,7 +213,7 @@ public class Color {
 	}
 
 	public final boolean setChecking(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if((this.mAlpha != pAlpha) || (this.mRed != pRed) || (this.mGreen != pGreen) || (this.mBlue != pBlue)) {
+		if ((this.mAlpha != pAlpha) || (this.mRed != pRed) || (this.mGreen != pGreen) || (this.mBlue != pBlue)) {
 			this.mRed = pRed;
 			this.mGreen = pGreen;
 			this.mBlue = pBlue;
@@ -236,7 +236,7 @@ public class Color {
 	}
 
 	public final boolean setChecking(final Color pColor) {
-		if(this.mABGRPackedInt != pColor.mABGRPackedInt) {
+		if (this.mABGRPackedInt != pColor.mABGRPackedInt) {
 			this.mRed = pColor.mRed;
 			this.mGreen = pColor.mGreen;
 			this.mBlue = pColor.mBlue;
@@ -279,11 +279,11 @@ public class Color {
 
 	@Override
 	public boolean equals(final Object pObject) {
-		if(this == pObject) {
+		if (this == pObject) {
 			return true;
-		} else if(pObject == null) {
+		} else if (pObject == null) {
 			return false;
-		} else if(this.getClass() != pObject.getClass()) {
+		} else if (this.getClass() != pObject.getClass()) {
 			return false;
 		}
 

@@ -195,10 +195,10 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 			this.mXMax = pXMax;
 			this.mYMax = pYMax;
 
-			if(pXMin > pXMax) {
+			if (pXMin > pXMax) {
 				throw new IllegalArgumentException("pXMin must be smaller or equal to pXMax.");
 			}
-			if(pYMin > pYMax) {
+			if (pYMin > pYMax) {
 				throw new IllegalArgumentException("pYMin must be smaller or equal to pYMax.");
 			}
 		}
@@ -295,7 +295,7 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		private float getXMin(final BoundsSplit pBoundsSplit) {
 			final float halfWidth = this.getWidth() / 2;
 
-			switch(pBoundsSplit) {
+			switch (pBoundsSplit) {
 				case TOP_LEFT:
 					return this.mXMin;
 				case TOP_RIGHT:
@@ -312,7 +312,7 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		private float getYMin(final BoundsSplit pBoundsSplit) {
 			final float halfHeight = this.getHeight() / 2;
 
-			switch(pBoundsSplit) {
+			switch (pBoundsSplit) {
 				case TOP_LEFT:
 					return this.mYMin;
 				case TOP_RIGHT:
@@ -329,7 +329,7 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		private float getXMax(final BoundsSplit pBoundsSplit) {
 			final float halfWidth = this.getWidth() / 2;
 
-			switch(pBoundsSplit) {
+			switch (pBoundsSplit) {
 				case TOP_LEFT:
 					return this.mXMin + halfWidth;
 				case TOP_RIGHT:
@@ -346,7 +346,7 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 		private float getYMax(final BoundsSplit pBoundsSplit) {
 			final float halfHeight = this.getHeight() / 2;
 
-			switch(pBoundsSplit) {
+			switch (pBoundsSplit) {
 				case TOP_LEFT:
 					return this.mYMin + halfHeight;
 				case TOP_RIGHT:

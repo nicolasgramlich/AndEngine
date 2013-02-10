@@ -28,7 +28,7 @@ public class EaseLinear implements IEaseFunction {
 	}
 
 	public static EaseLinear getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseLinear();
 		}
 		return INSTANCE;

@@ -36,10 +36,10 @@ public class InsertionSorter<T> extends Sorter<T> {
 
 	@Override
 	public void sort(final T[] pArray, final int pStart, final int pEnd, final Comparator<T> pComparator) {
-		for(int i = pStart + 1; i < pEnd; i++) {
+		for (int i = pStart + 1; i < pEnd; i++) {
 			final T current = pArray[i];
 			T prev = pArray[i - 1];
-			if(pComparator.compare(current, prev) < 0) {
+			if (pComparator.compare(current, prev) < 0) {
 				int j = i;
 				do {
 					pArray[j--] = prev;
@@ -52,10 +52,10 @@ public class InsertionSorter<T> extends Sorter<T> {
 
 	@Override
 	public void sort(final List<T> pList, final int pStart, final int pEnd, final Comparator<T> pComparator) {
-		for(int i = pStart + 1; i < pEnd; i++) {
+		for (int i = pStart + 1; i < pEnd; i++) {
 			final T current = pList.get(i);
 			T prev = pList.get(i - 1);
-			if(pComparator.compare(current, prev) < 0) {
+			if (pComparator.compare(current, prev) < 0) {
 				int j = i;
 				do {
 					pList.set(j--, prev);
@@ -68,10 +68,10 @@ public class InsertionSorter<T> extends Sorter<T> {
 
 	@Override
 	public void sort(final IList<T> pList, final int pStart, final int pEnd, final Comparator<T> pComparator) {
-		for(int i = pStart + 1; i < pEnd; i++) {
+		for (int i = pStart + 1; i < pEnd; i++) {
 			final T current = pList.get(i);
 			T prev = pList.get(i - 1);
-			if(pComparator.compare(current, prev) < 0) {
+			if (pComparator.compare(current, prev) < 0) {
 				int j = i;
 				do {
 					pList.set(j--, prev);

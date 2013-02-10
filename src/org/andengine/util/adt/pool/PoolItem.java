@@ -58,7 +58,7 @@ public abstract class PoolItem {
 	}
 
 	public void recycle() {
-		if(this.mParent == null) {
+		if (this.mParent == null) {
 			throw new IllegalStateException("Item already recycled!");
 		}
 

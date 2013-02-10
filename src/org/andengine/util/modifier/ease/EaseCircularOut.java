@@ -30,7 +30,7 @@ public class EaseCircularOut implements IEaseFunction {
 	}
 
 	public static EaseCircularOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseCircularOut();
 		}
 		return INSTANCE;

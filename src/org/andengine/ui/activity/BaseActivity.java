@@ -48,7 +48,7 @@ public abstract class BaseActivity extends Activity {
 	}
 
 	public void toastOnUiThread(final CharSequence pText, final int pDuration) {
-		if(ActivityUtils.isOnUiThread()) {
+		if (ActivityUtils.isOnUiThread()) {
 			Toast.makeText(BaseActivity.this, pText, pDuration).show();
 		} else {
 			this.runOnUiThread(new Runnable() {
@@ -67,7 +67,7 @@ public abstract class BaseActivity extends Activity {
 
 	@Deprecated
 	public void showDialogOnUiThread(final int pDialogID, final Bundle pBundle) {
-		if(ActivityUtils.isOnUiThread()) {
+		if (ActivityUtils.isOnUiThread()) {
 			this.showDialog(pDialogID, pBundle);
 		} else {
 			this.runOnUiThread(new Runnable() {

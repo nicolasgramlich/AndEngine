@@ -68,7 +68,7 @@ public abstract class BaseSingleValueSpanParticleModifier<T extends IEntity> imp
 	@Override
 	public void onUpdateParticle(final Particle<T> pParticle) {
 		final float lifeTime = pParticle.getLifeTime();
-		if(lifeTime > this.mFromTime && lifeTime < this.mToTime) {
+		if (lifeTime > this.mFromTime && lifeTime < this.mToTime) {
 			final float percentageDone = this.mEaseFunction.getPercentage((lifeTime - this.mFromTime), this.mDuration);
 			this.onSetValue(pParticle, percentageDone, this.mFromValue + percentageDone * this.mValueSpan);
 		}

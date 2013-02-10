@@ -65,7 +65,7 @@ public class UniqueList<T extends Comparable<T>> implements ISortedList<T> {
 	@Deprecated
 	public void add(final int pIndex, final T pItem) {
 		final int index = this.indexOf(pItem);
-		if(index < 0) {
+		if (index < 0) {
 			this.mList.add(pItem);
 		}
 	}
@@ -73,7 +73,7 @@ public class UniqueList<T extends Comparable<T>> implements ISortedList<T> {
 	@Override
 	public void add(final T pItem) {
 		final int index = this.indexOf(pItem);
-		if(index < 0) {
+		if (index < 0) {
 			this.mList.add(ListUtils.encodeInsertionIndex(index), pItem);
 		}
 	}

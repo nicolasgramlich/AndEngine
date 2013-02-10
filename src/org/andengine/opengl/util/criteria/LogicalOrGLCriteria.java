@@ -37,8 +37,8 @@ public class LogicalOrGLCriteria implements IGLCriteria {
 
 	@Override
 	public boolean isMet(final GLState pGLState) {
-		for(final IGLCriteria gLCriteria : this.mGLCriterias) {
-			if(gLCriteria.isMet(pGLState)) {
+		for (final IGLCriteria gLCriteria : this.mGLCriterias) {
+			if (gLCriteria.isMet(pGLState)) {
 				return true;
 			}
 		}

@@ -62,16 +62,16 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 
 	@Override
 	public final float onUpdate(final float pSecondsElapsed, final T pItem) {
-		if(this.mFinished){
+		if (this.mFinished) {
 			return 0;
 		} else {
-			if(this.mSecondsElapsed == 0) {
+			if (this.mSecondsElapsed == 0) {
 				this.onManagedInitialize(pItem);
 				this.onModifierStarted(pItem);
 			}
 
 			final float secondsElapsedUsed;
-			if(this.mSecondsElapsed + pSecondsElapsed < this.mDuration) {
+			if (this.mSecondsElapsed + pSecondsElapsed < this.mDuration) {
 				secondsElapsedUsed = pSecondsElapsed;
 			} else {
 				secondsElapsedUsed = this.mDuration - this.mSecondsElapsed;
@@ -80,7 +80,7 @@ public abstract class BaseDurationModifier<T> extends BaseModifier<T> {
 			this.mSecondsElapsed += secondsElapsedUsed;
 			this.onManagedUpdate(secondsElapsedUsed, pItem);
 
-			if(this.mDuration != -1 && this.mSecondsElapsed >= this.mDuration) {
+			if (this.mDuration != -1 && this.mSecondsElapsed >= this.mDuration) {
 				this.mSecondsElapsed = this.mDuration;
 				this.mFinished = true;
 				this.onModifierFinished(pItem);

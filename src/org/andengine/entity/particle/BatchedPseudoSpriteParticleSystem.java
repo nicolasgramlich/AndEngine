@@ -62,7 +62,7 @@ public class BatchedPseudoSpriteParticleSystem extends BlendFunctionParticleSyst
 		this.mSpriteBatch.setIndex(0);
 
 		final Particle<Entity>[] particles = this.mParticles;
-		for(int i = this.mParticlesAlive - 1; i >= 0; i--) {
+		for (int i = this.mParticlesAlive - 1; i >= 0; i--) {
 			final Entity entity = particles[i].getEntity();
 
 			/* In order to support alpha changes of the sprites inside the spritebatch,

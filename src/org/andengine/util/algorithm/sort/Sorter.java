@@ -42,15 +42,15 @@ public abstract class Sorter<T> {
 	// Methods
 	// ===========================================================
 
-	public final void sort(final T[] pArray, final Comparator<T> pComparator){
+	public final void sort(final T[] pArray, final Comparator<T> pComparator) {
 		this.sort(pArray, 0, pArray.length, pComparator);
 	}
 
-	public final void sort(final List<T> pList, final Comparator<T> pComparator){
+	public final void sort(final List<T> pList, final Comparator<T> pComparator) {
 		this.sort(pList, 0, pList.size(), pComparator);
 	}
 
-	public final void sort(final IList<T> pList, final Comparator<T> pComparator){
+	public final void sort(final IList<T> pList, final Comparator<T> pComparator) {
 		this.sort(pList, 0, pList.size(), pComparator);
 	}
 

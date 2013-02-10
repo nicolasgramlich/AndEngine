@@ -129,7 +129,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	@Override
 	@Deprecated
 	public void attachChild(final IEntity pEntity) throws IllegalArgumentException {
-		if(pEntity instanceof Sprite) {
+		if (pEntity instanceof Sprite) {
 			this.attachChild((Sprite)pEntity);
 		} else {
 			throw new IllegalArgumentException("A " + SpriteGroup.class.getSimpleName() + " can only handle children of type Sprite or subclasses of Sprite, like TiledSprite or AnimatedSprite.");
@@ -144,7 +144,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 
 	public void attachChildren(final ArrayList<? extends Sprite> pSprites) {
 		final int baseSpriteCount = pSprites.size();
-		for(int i = 0; i < baseSpriteCount; i++) {
+		for (int i = 0; i < baseSpriteCount; i++) {
 			this.attachChild(pSprites.get(i));
 		}
 	}
@@ -152,11 +152,11 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	@Override
 	protected boolean onUpdateSpriteBatch() {
 		final SmartList<IEntity> children = this.mChildren;
-		if(children == null) {
+		if (children == null) {
 			return false;
 		} else {
 			final int childCount = children.size();
-			for(int i = 0; i < childCount; i++) {
+			for (int i = 0; i < childCount; i++) {
 				this.drawWithoutChecks((Sprite)children.get(i));
 			}
 			return true;
@@ -168,7 +168,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	// ===========================================================
 
 	private void assertCapacity() {
-		if(this.getChildCount() >= this.mCapacity) {
+		if (this.getChildCount() >= this.mCapacity) {
 			throw new IllegalStateException("This " + SpriteGroup.class.getSimpleName() + " has already reached its capacity (" + this.mCapacity + ") !");
 		}
 	}

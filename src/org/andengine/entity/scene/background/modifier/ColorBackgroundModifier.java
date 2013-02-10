@@ -63,7 +63,7 @@ public class ColorBackgroundModifier extends BaseTripleValueSpanModifier<IBackgr
 	}
 
 	@Override
-	public ColorBackgroundModifier deepCopy(){
+	public ColorBackgroundModifier deepCopy() {
 		return new ColorBackgroundModifier(this);
 	}
 

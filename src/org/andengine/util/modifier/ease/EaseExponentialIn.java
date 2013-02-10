@@ -28,7 +28,7 @@ public class EaseExponentialIn implements IEaseFunction {
 	}
 
 	public static EaseExponentialIn getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseExponentialIn();
 		}
 		return INSTANCE;

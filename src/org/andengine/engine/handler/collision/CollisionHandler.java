@@ -64,10 +64,10 @@ public class CollisionHandler implements IUpdateHandler {
 		final ArrayList<? extends IShape> staticEntities = this.mTargetStaticEntities;
 		final int staticEntityCount = staticEntities.size();
 
-		for(int i = 0; i < staticEntityCount; i++){
-			if(checkShape.collidesWith(staticEntities.get(i))){
+		for (int i = 0; i < staticEntityCount; i++) {
+			if (checkShape.collidesWith(staticEntities.get(i))) {
 				final boolean proceed = this.mCollisionCallback.onCollision(checkShape, staticEntities.get(i));
-				if(!proceed) {
+				if (!proceed) {
 					return;
 				}
 			}

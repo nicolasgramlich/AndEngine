@@ -157,10 +157,10 @@ public class Mesh extends Shape {
 
 	@Override
 	public boolean collidesWith(final IEntity pOtherEntity) {
-		if(pOtherEntity instanceof Mesh) {
+		if (pOtherEntity instanceof Mesh) {
 			// TODO
 			return super.collidesWith(pOtherEntity);
-		} else if(pOtherEntity instanceof Line) {
+		} else if (pOtherEntity instanceof Line) {
 			// TODO
 			return super.collidesWith(pOtherEntity);
 		} else {

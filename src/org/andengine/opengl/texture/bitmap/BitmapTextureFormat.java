@@ -41,7 +41,7 @@ public enum BitmapTextureFormat {
 	}
 
 	public static BitmapTextureFormat fromPixelFormat(final PixelFormat pPixelFormat) {
-		switch(pPixelFormat) {
+		switch (pPixelFormat) {
 			case RGBA_8888:
 				return RGBA_8888;
 			case RGBA_4444:

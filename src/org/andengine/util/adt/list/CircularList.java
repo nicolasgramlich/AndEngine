@@ -77,15 +77,15 @@ public class CircularList<T> implements IList<T> {
 	@Override
 	public int indexOf(final T pItem) {
 		final int size = this.size();
-		if(pItem == null) {
-			for(int i = 0; i < size; i++) {
-				if(this.get(i) == null) {
+		if (pItem == null) {
+			for (int i = 0; i < size; i++) {
+				if (this.get(i) == null) {
 					return i;
 				}
 			}
 		} else {
-			for(int i = 0; i < size; i++) {
-				if(pItem.equals(this.get(i))) {
+			for (int i = 0; i < size; i++) {
+				if (pItem.equals(this.get(i))) {
 					return i;
 				}
 			}
@@ -100,37 +100,37 @@ public class CircularList<T> implements IList<T> {
 		this.ensureCapacity();
 
 		final int internalTail = this.encodeToInternalIndex(this.mSize);
-		if(internalIndex == internalTail) {
+		if (internalIndex == internalTail) {
 			// nothing to shift, tail is free
-		} else if(internalIndex == this.mHead) {
+		} else if (internalIndex == this.mHead) {
 			this.mHead--;
-			if(this.mHead == -1) {
+			if (this.mHead == -1) {
 				this.mHead = this.mItems.length - 1;
 			}
 			internalIndex--;
-			if(internalIndex == -1) {
+			if (internalIndex == -1) {
 				internalIndex = this.mItems.length - 1;
 			}
-		} else if((internalIndex < this.mHead) || (this.mHead == 0)) {
+		} else if ((internalIndex < this.mHead) || (this.mHead == 0)) {
 			System.arraycopy(this.mItems, internalIndex, this.mItems, internalIndex + 1, internalTail - internalIndex);
-		} else if(internalIndex > internalTail) {
+		} else if (internalIndex > internalTail) {
 			System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead - 1, pIndex);
 			this.mHead--;
-			if(this.mHead == -1) {
+			if (this.mHead == -1) {
 				this.mHead = this.mItems.length - 1;
 			}
 			internalIndex--;
-			if(internalIndex == -1) {
+			if (internalIndex == -1) {
 				internalIndex = this.mItems.length - 1;
 			}
-		} else if(pIndex < (this.mSize >> 1)) {
+		} else if (pIndex < (this.mSize >> 1)) {
 			System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead - 1, pIndex);
 			this.mHead--;
-			if(this.mHead == -1) {
+			if (this.mHead == -1) {
 				this.mHead = this.mItems.length - 1;
 			}
 			internalIndex--;
-			if(internalIndex == -1) {
+			if (internalIndex == -1) {
 				internalIndex = this.mItems.length - 1;
 			}
 		} else {
@@ -153,7 +153,7 @@ public class CircularList<T> implements IList<T> {
 	@Override
 	public boolean remove(final T pItem) {
 		final int index = this.indexOf(pItem);
-		if(index >= 0) {
+		if (index >= 0) {
 			this.remove(index);
 			return true;
 		} else {
@@ -169,29 +169,29 @@ public class CircularList<T> implements IList<T> {
 
 		final int internalTail = this.encodeToInternalIndex(this.mSize - 1);
 
-		if(internalIndex == internalTail) {
+		if (internalIndex == internalTail) {
 			this.mItems[internalTail] = null;
-		} else if(internalIndex == this.mHead) {
+		} else if (internalIndex == this.mHead) {
 			this.mItems[this.mHead] = null;
 			this.mHead++;
-			if(this.mHead == this.mItems.length) {
+			if (this.mHead == this.mItems.length) {
 				this.mHead = 0;
 			}
-		} else if(internalIndex < this.mHead) {
+		} else if (internalIndex < this.mHead) {
 			System.arraycopy(this.mItems, internalIndex + 1, this.mItems, internalIndex, internalTail - internalIndex);
 			this.mItems[internalTail] = null;
-		} else if(internalIndex > internalTail) {
+		} else if (internalIndex > internalTail) {
 			System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead + 1, pIndex);
 			this.mItems[this.mHead] = null;
 			this.mHead++;
-			if(this.mHead == this.mItems.length) {
+			if (this.mHead == this.mItems.length) {
 				this.mHead = 0;
 			}
-		} else if(pIndex < (this.mSize >> 1)) {
+		} else if (pIndex < (this.mSize >> 1)) {
 			System.arraycopy(this.mItems, this.mHead, this.mItems, this.mHead + 1, pIndex);
 			this.mItems[this.mHead] = null;
 			this.mHead++;
-			if(this.mHead == this.mItems.length) {
+			if (this.mHead == this.mItems.length) {
 				this.mHead = 0;
 			}
 		} else {
@@ -213,7 +213,7 @@ public class CircularList<T> implements IList<T> {
 		final int tail = this.mHead + this.mSize;
 		final int capacity = this.mItems.length;
 		/* Check if items can be blacked out in one or two calls. */
-		if(tail <= capacity) {
+		if (tail <= capacity) {
 			Arrays.fill(this.mItems, this.mHead, tail, null);
 		} else {
 			final int headToCapacity = capacity - this.mHead;
@@ -232,7 +232,7 @@ public class CircularList<T> implements IList<T> {
 
 	private void ensureCapacity() {
 		final int currentCapacity = this.mItems.length;
-		if(this.mSize == currentCapacity) {
+		if (this.mSize == currentCapacity) {
 			final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
 			final Object newItems[] = new Object[newCapacity];
 
@@ -246,7 +246,7 @@ public class CircularList<T> implements IList<T> {
 
 	private int encodeToInternalIndex(final int pIndex) {
 		int internalIndex = this.mHead + pIndex;
-		if(internalIndex >= this.mItems.length) {
+		if (internalIndex >= this.mItems.length) {
 			internalIndex -= this.mItems.length;
 		}
 		return internalIndex;

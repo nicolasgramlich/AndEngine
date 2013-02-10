@@ -141,7 +141,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		/* Apply EngineOptions. */
 		this.mEngineOptions = pEngineOptions;
-		if(this.mEngineOptions.hasEngineLock()) {
+		if (this.mEngineOptions.hasEngineLock()) {
 			this.mEngineLock = pEngineOptions.getEngineLock();
 		} else {
 			this.mEngineLock = new EngineLock(false);
@@ -149,26 +149,26 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mCamera = pEngineOptions.getCamera();
 
 		/* Touch. */
-		if(this.mEngineOptions.getTouchOptions().needsMultiTouch()) {
+		if (this.mEngineOptions.getTouchOptions().needsMultiTouch()) {
 			this.setTouchController(new MultiTouchController());
 		} else {
 			this.setTouchController(new SingleTouchController());
 		}
 
 		/* Audio. */
-		if(this.mEngineOptions.getAudioOptions().needsSound()) {
+		if (this.mEngineOptions.getAudioOptions().needsSound()) {
 			this.mSoundManager = new SoundManager(this.mEngineOptions.getAudioOptions().getSoundOptions().getMaxSimultaneousStreams());
 		} else {
 			this.mSoundManager = null;
 		}
-		if(this.mEngineOptions.getAudioOptions().needsMusic()) {
+		if (this.mEngineOptions.getAudioOptions().needsMusic()) {
 			this.mMusicManager = new MusicManager();
 		} else {
 			this.mMusicManager = null;
 		}
 
 		/* Start the UpdateThread. */
-		if(this.mEngineOptions.hasUpdateThread()) {
+		if (this.mEngineOptions.hasUpdateThread()) {
 			this.mUpdateThread = this.mEngineOptions.getUpdateThread();
 		} else {
 			this.mUpdateThread = new UpdateThread();
@@ -189,14 +189,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public synchronized void start() {
-		if(!this.mRunning) {
+		if (!this.mRunning) {
 			this.mLastTick = System.nanoTime();
 			this.mRunning = true;
 		}
 	}
 
 	public synchronized void stop() {
-		if(this.mRunning) {
+		if (this.mRunning) {
 			this.mRunning = false;
 		}
 	}
@@ -282,7 +282,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public SoundManager getSoundManager() throws IllegalStateException {
-		if(this.mSoundManager != null) {
+		if (this.mSoundManager != null) {
 			return this.mSoundManager;
 		} else {
 			throw new IllegalStateException("To enable the SoundManager, check the EngineOptions!");
@@ -290,7 +290,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public MusicManager getMusicManager() throws IllegalStateException {
-		if(this.mMusicManager != null) {
+		if (this.mMusicManager != null) {
 			return this.mMusicManager;
 		} else {
 			throw new IllegalStateException("To enable the MusicManager, check the EngineOptions!");
@@ -327,13 +327,13 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public void onAccuracyChanged(final Sensor pSensor, final int pAccuracy) {
-		if(this.mRunning) {
-			switch(pSensor.getType()) {
+		if (this.mRunning) {
+			switch (pSensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
-					if(this.mAccelerationData != null) {
+					if (this.mAccelerationData != null) {
 						this.mAccelerationData.setAccuracy(pAccuracy);
 						this.mAccelerationListener.onAccelerationAccuracyChanged(this.mAccelerationData);
-					} else if(this.mOrientationData != null) {
+					} else if (this.mOrientationData != null) {
 						this.mOrientationData.setAccelerationAccuracy(pAccuracy);
 						this.mOrientationListener.onOrientationAccuracyChanged(this.mOrientationData);
 					}
@@ -348,14 +348,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public void onSensorChanged(final SensorEvent pEvent) {
-		if(this.mRunning) {
-			switch(pEvent.sensor.getType()) {
+		if (this.mRunning) {
+			switch (pEvent.sensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
-					if(this.mAccelerationData != null) {
+					if (this.mAccelerationData != null) {
 						this.mAccelerationData.setDisplayRotation(this.getDisplayOrientation());
 						this.mAccelerationData.setValues(pEvent.values);
 						this.mAccelerationListener.onAccelerationChanged(this.mAccelerationData);
-					} else if(this.mOrientationData != null) {
+					} else if (this.mOrientationData != null) {
 						this.mOrientationData.setDisplayRotation(this.getDisplayOrientation());
 						this.mOrientationData.setAccelerationValues(pEvent.values);
 						this.mOrientationListener.onOrientationChanged(this.mOrientationData);
@@ -372,10 +372,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public void onLocationChanged(final Location pLocation) {
-		if(this.mLocation == null) {
+		if (this.mLocation == null) {
 			this.mLocation = pLocation;
 		} else {
-			if(pLocation == null) {
+			if (pLocation == null) {
 				this.mLocationListener.onLocationLost();
 			} else {
 				this.mLocation = pLocation;
@@ -396,7 +396,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public void onStatusChanged(final String pProvider, final int pStatus, final Bundle pExtras) {
-		switch(pStatus) {
+		switch (pStatus) {
 			case LocationProvider.AVAILABLE:
 				this.mLocationListener.onLocationProviderStatusChanged(LocationProviderStatus.AVAILABLE, pExtras);
 				break;
@@ -411,7 +411,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	@Override
 	public boolean onTouch(final View pView, final MotionEvent pSurfaceMotionEvent) {
-		if(this.mRunning) {
+		if (this.mRunning) {
 			this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent);
 			try {
 				/* Because a human cannot interact 1000x per second, we pause the UI-Thread for a little. */
@@ -433,7 +433,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 		this.convertSurfaceTouchEventToSceneTouchEvent(camera, pSurfaceTouchEvent);
 
-		if(this.onTouchHUD(camera, pSurfaceTouchEvent)) {
+		if (this.onTouchHUD(camera, pSurfaceTouchEvent)) {
 			return true;
 		} else {
 			/* If HUD didn't handle it, Scene may handle it. */
@@ -442,7 +442,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	protected boolean onTouchHUD(final Camera pCamera, final TouchEvent pSceneTouchEvent) {
-		if(pCamera.hasHUD()) {
+		if (pCamera.hasHUD()) {
 			return pCamera.getHUD().onSceneTouchEvent(pSceneTouchEvent);
 		} else {
 			return false;
@@ -450,7 +450,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	protected boolean onTouchScene(final Scene pScene, final TouchEvent pSceneTouchEvent) {
-		if(pScene != null) {
+		if (pScene != null) {
 			return pScene.onSceneTouchEvent(pSceneTouchEvent);
 		} else {
 			return false;
@@ -473,7 +473,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 * 								 if <code>false</code>, the execution of the {@link Runnable} will happen as soon as possible on the {@link UpdateThread}, no matter what {@link Engine#isRunning()} is.
 	 */
 	public void runOnUpdateThread(final Runnable pRunnable, final boolean pOnlyWhenEngineRunning) {
-		if(pOnlyWhenEngineRunning) {
+		if (pOnlyWhenEngineRunning) {
 			this.mUpdateThreadRunnableHandler.postRunnable(pRunnable);
 		} else {
 			this.mUpdateThread.postRunnable(pRunnable);
@@ -542,7 +542,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	void onTickUpdate() throws InterruptedException {
-		if(this.mRunning) {
+		if (this.mRunning) {
 			final long secondsElapsed = this.getNanosecondsElapsed();
 
 			this.mEngineLock.lock();
@@ -574,7 +574,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	private void throwOnDestroyed() throws EngineDestroyedException {
-		if(this.mDestroyed) {
+		if (this.mDestroyed) {
 			throw new EngineDestroyedException();
 		}
 	}
@@ -591,7 +591,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	protected void onUpdateScene(final float pSecondsElapsed) {
-		if(this.mScene != null) {
+		if (this.mScene != null) {
 			this.mScene.onUpdate(pSecondsElapsed);
 		}
 		this.getCamera().onUpdate(pSecondsElapsed);
@@ -627,7 +627,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	protected void onDrawScene(final GLState pGLState, final Camera pCamera) {
-		if(this.mScene != null) {
+		if (this.mScene != null) {
 			this.mScene.onDraw(pGLState, pCamera);
 		}
 
@@ -646,7 +646,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void vibrate(final long pMilliseconds) throws IllegalStateException {
-		if(this.mVibrator != null) {
+		if (this.mVibrator != null) {
 			this.mVibrator.vibrate(pMilliseconds);
 		} else {
 			throw new IllegalStateException("You need to enable the Vibrator before you can use it!");
@@ -654,7 +654,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void vibrate(final long[] pPattern, final int pRepeat) throws IllegalStateException {
-		if(this.mVibrator != null) {
+		if (this.mVibrator != null) {
 			this.mVibrator.vibrate(pPattern, pRepeat);
 		} else {
 			throw new IllegalStateException("You need to enable the Vibrator before you can use it!");
@@ -689,12 +689,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 */
 	public boolean enableAccelerationSensor(final Context pContext, final IAccelerationListener pAccelerationListener, final AccelerationSensorOptions pAccelerationSensorOptions) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
+		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			this.mAccelerationListener = pAccelerationListener;
 
 			this.initDefaultDisplay(pContext);
 
-			if(this.mAccelerationData == null) {
+			if (this.mAccelerationData == null) {
 				this.mAccelerationData = new AccelerationData();
 			}
 
@@ -711,7 +711,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 */
 	public boolean disableAccelerationSensor(final Context pContext) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
+		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER)) {
 			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
 			return true;
 		} else {
@@ -731,12 +731,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 */
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener, final OrientationSensorOptions pOrientationSensorOptions) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER) && this.isSensorSupported(sensorManager, Sensor.TYPE_MAGNETIC_FIELD)) {
+		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER) && this.isSensorSupported(sensorManager, Sensor.TYPE_MAGNETIC_FIELD)) {
 			this.mOrientationListener = pOrientationListener;
 
 			this.initDefaultDisplay(pContext);
 
-			if(this.mOrientationData == null) {
+			if (this.mOrientationData == null) {
 				this.mOrientationData = new OrientationData();
 			}
 
@@ -755,7 +755,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 */
 	public boolean disableOrientationSensor(final Context pContext) {
 		final SensorManager sensorManager = (SensorManager) pContext.getSystemService(Context.SENSOR_SERVICE);
-		if(this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER) && this.isSensorSupported(sensorManager, Sensor.TYPE_MAGNETIC_FIELD)) {
+		if (this.isSensorSupported(sensorManager, Sensor.TYPE_ACCELEROMETER) && this.isSensorSupported(sensorManager, Sensor.TYPE_MAGNETIC_FIELD)) {
 			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER);
 			this.unregisterSelfAsSensorListener(sensorManager, Sensor.TYPE_MAGNETIC_FIELD);
 			return true;
@@ -779,7 +779,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	private void initDefaultDisplay(final Context pContext) {
-		if(this.mDefaultDisplay == null) {
+		if (this.mDefaultDisplay == null) {
 			final WindowManager windowManager = (WindowManager) pContext.getSystemService(Context.WINDOW_SERVICE);
 			this.mDefaultDisplay = windowManager.getDefaultDisplay();
 		}
@@ -790,7 +790,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	private int getDisplayOrientation() {
-		if(this.mDefaultDisplay == null) {
+		if (this.mDefaultDisplay == null) {
 			throw new IllegalStateException();
 		} else {
 			return this.mDefaultDisplay.getOrientation();
@@ -842,7 +842,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 					this.mEngine.onTickUpdate();
 				}
 			} catch (final InterruptedException e) {
-				if(BuildConfig.DEBUG) {
+				if (BuildConfig.DEBUG) {
 					Debug.d(this.getClass().getSimpleName() + " interrupted. Don't worry - this " + e.getClass().getSimpleName() + " is most likely expected!", e);
 				}
 				this.interrupt();

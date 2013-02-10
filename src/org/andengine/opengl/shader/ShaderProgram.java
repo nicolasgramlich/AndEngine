@@ -75,7 +75,7 @@ public class ShaderProgram {
 
 	public int getAttributeLocation(final String pAttributeName) {
 		final Integer location = this.mAttributeLocations.get(pAttributeName);
-		if(location != null) {
+		if (location != null) {
 			return location.intValue();
 		} else {
 			throw new ShaderProgramException("Unexpected attribute: '" + pAttributeName + "'. Existing attributes: " + this.mAttributeLocations.toString());
@@ -84,7 +84,7 @@ public class ShaderProgram {
 
 	public int getAttributeLocationOptional(final String pAttributeName) {
 		final Integer location = this.mAttributeLocations.get(pAttributeName);
-		if(location != null) {
+		if (location != null) {
 			return location.intValue();
 		} else {
 			return ShaderProgramConstants.LOCATION_INVALID;
@@ -93,7 +93,7 @@ public class ShaderProgram {
 
 	public int getUniformLocation(final String pUniformName) {
 		final Integer location = this.mUniformLocations.get(pUniformName);
-		if(location != null) {
+		if (location != null) {
 			return location.intValue();
 		} else {
 			throw new ShaderProgramException("Unexpected uniform: '" + pUniformName + "'. Existing uniforms: " + this.mUniformLocations.toString());
@@ -102,7 +102,7 @@ public class ShaderProgram {
 
 	public int getUniformLocationOptional(final String pUniformName) {
 		final Integer location = this.mUniformLocations.get(pUniformName);
-		if(location != null) {
+		if (location != null) {
 			return location.intValue();
 		} else {
 			return ShaderProgramConstants.LOCATION_INVALID;
@@ -118,7 +118,7 @@ public class ShaderProgram {
 	// ===========================================================
 
 	public void bind(final GLState pGLState, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) throws ShaderProgramException {
-		if(!this.mCompiled) {
+		if (!this.mCompiled) {
 			this.compile(pGLState);
 		}
 		pGLState.useProgram(this.mProgramID);
@@ -131,7 +131,7 @@ public class ShaderProgram {
 	}
 
 	public void delete(final GLState pGLState) {
-		if(this.mCompiled) {
+		if (this.mCompiled) {
 			this.mCompiled = false;
 			pGLState.deleteProgram(this.mProgramID);
 			this.mProgramID = -1;
@@ -163,7 +163,7 @@ public class ShaderProgram {
 		GLES20.glLinkProgram(this.mProgramID);
 
 		GLES20.glGetProgramiv(this.mProgramID, GLES20.GL_LINK_STATUS, ShaderProgram.HARDWAREID_CONTAINER, 0);
-		if(ShaderProgram.HARDWAREID_CONTAINER[0] == 0) {
+		if (ShaderProgram.HARDWAREID_CONTAINER[0] == 0) {
 			throw new ShaderProgramLinkException(GLES20.glGetProgramInfoLog(this.mProgramID));
 		}
 
@@ -175,7 +175,7 @@ public class ShaderProgram {
 
 	private static int compileShader(final String pSource, final int pType) throws ShaderProgramException {
 		final int shaderID = GLES20.glCreateShader(pType);
-		if(shaderID == 0) {
+		if (shaderID == 0) {
 			throw new ShaderProgramException("Could not create Shader of type: '" + pType + '"');
 		}
 
@@ -183,7 +183,7 @@ public class ShaderProgram {
 		GLES20.glCompileShader(shaderID);
 
 		GLES20.glGetShaderiv(shaderID, GLES20.GL_COMPILE_STATUS, ShaderProgram.HARDWAREID_CONTAINER, 0);
-		if(ShaderProgram.HARDWAREID_CONTAINER[0] == 0) {
+		if (ShaderProgram.HARDWAREID_CONTAINER[0] == 0) {
 			throw new ShaderProgramCompileException(GLES20.glGetShaderInfoLog(shaderID), pSource);
 		}
 		return shaderID;
@@ -196,13 +196,13 @@ public class ShaderProgram {
 		GLES20.glGetProgramiv(this.mProgramID, GLES20.GL_ACTIVE_UNIFORMS, ShaderProgram.PARAMETERS_CONTAINER, 0);
 		final int numUniforms = ShaderProgram.PARAMETERS_CONTAINER[0];
 
-		for(int i = 0; i < numUniforms; i++) {
+		for (int i = 0; i < numUniforms; i++) {
 			GLES20.glGetActiveUniform(this.mProgramID, i, ShaderProgram.NAME_CONTAINER_SIZE, ShaderProgram.LENGTH_CONTAINER, 0, ShaderProgram.SIZE_CONTAINER, 0, ShaderProgram.TYPE_CONTAINER, 0, ShaderProgram.NAME_CONTAINER, 0);
 
 			int length = ShaderProgram.LENGTH_CONTAINER[0];
 
 			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
-			if(length == 0) {
+			if (length == 0) {
 				while((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
 					length++;
 				}
@@ -211,7 +211,7 @@ public class ShaderProgram {
 			String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
 			int location = GLES20.glGetUniformLocation(this.mProgramID, name);
 
-			if(location == ShaderProgramConstants.LOCATION_INVALID) {
+			if (location == ShaderProgramConstants.LOCATION_INVALID) {
 				/* Some drivers do not report an incorrect length. Then the name is '\0' terminated. */
 				length = 0;
 				while(length < ShaderProgram.NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
@@ -221,7 +221,7 @@ public class ShaderProgram {
 				name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
 				location = GLES20.glGetUniformLocation(this.mProgramID, name);
 
-				if(location == ShaderProgramConstants.LOCATION_INVALID) {
+				if (location == ShaderProgramConstants.LOCATION_INVALID) {
 					throw new ShaderProgramLinkException("Invalid location for uniform: '" + name + "'.");
 				}
 			}
@@ -241,13 +241,13 @@ public class ShaderProgram {
 		GLES20.glGetProgramiv(this.mProgramID, GLES20.GL_ACTIVE_ATTRIBUTES, ShaderProgram.PARAMETERS_CONTAINER, 0);
 		final int numAttributes = ShaderProgram.PARAMETERS_CONTAINER[0];
 
-		for(int i = 0; i < numAttributes; i++) {
+		for (int i = 0; i < numAttributes; i++) {
 			GLES20.glGetActiveAttrib(this.mProgramID, i, ShaderProgram.NAME_CONTAINER_SIZE, ShaderProgram.LENGTH_CONTAINER, 0, ShaderProgram.SIZE_CONTAINER, 0, ShaderProgram.TYPE_CONTAINER, 0, ShaderProgram.NAME_CONTAINER, 0);
 
 			int length = ShaderProgram.LENGTH_CONTAINER[0];
 
 			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
-			if(length == 0) {
+			if (length == 0) {
 				while((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
 					length++;
 				}
@@ -256,7 +256,7 @@ public class ShaderProgram {
 			String name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
 			int location = GLES20.glGetAttribLocation(this.mProgramID, name);
 
-			if(location == ShaderProgramConstants.LOCATION_INVALID) {
+			if (location == ShaderProgramConstants.LOCATION_INVALID) {
 				/* Some drivers do not report an incorrect length. Then the name is '\0' terminated. */
 				length = 0;
 				while(length < ShaderProgram.NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
@@ -266,7 +266,7 @@ public class ShaderProgram {
 				name = new String(ShaderProgram.NAME_CONTAINER, 0, length);
 				location = GLES20.glGetAttribLocation(this.mProgramID, name);
 
-				if(location == ShaderProgramConstants.LOCATION_INVALID) {
+				if (location == ShaderProgramConstants.LOCATION_INVALID) {
 					throw new ShaderProgramLinkException("Invalid location for attribute: '" + name + "'.");
 				}
 			}
@@ -281,7 +281,7 @@ public class ShaderProgram {
 
 	public void setUniformOptional(final String pUniformName, final float[] pGLMatrix) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgramConstants.LOCATION_INVALID) {
+		if (location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniformMatrix4fv(this.getUniformLocationOptional(pUniformName), 1, false, pGLMatrix, 0);
 		}
 	}
@@ -292,7 +292,7 @@ public class ShaderProgram {
 
 	public void setUniformOptional(final String pUniformName, final float pX) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgramConstants.LOCATION_INVALID) {
+		if (location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform1f(this.getUniformLocationOptional(pUniformName), pX);
 		}
 	}
@@ -303,7 +303,7 @@ public class ShaderProgram {
 
 	public void setUniformOptional(final String pUniformName, final float pX, final float pY) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgramConstants.LOCATION_INVALID) {
+		if (location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform2f(this.getUniformLocationOptional(pUniformName), pX, pY);
 		}
 	}
@@ -314,7 +314,7 @@ public class ShaderProgram {
 
 	public void setUniformOptional(final String pUniformName, final float pX, final float pY, final float pZ) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgramConstants.LOCATION_INVALID) {
+		if (location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform3f(this.getUniformLocationOptional(pUniformName), pX, pY, pZ);
 		}
 	}
@@ -325,7 +325,7 @@ public class ShaderProgram {
 
 	public void setUniformOptional(final String pUniformName, final float pX, final float pY, final float pZ, final float pW) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgramConstants.LOCATION_INVALID) {
+		if (location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform4f(this.getUniformLocationOptional(pUniformName), pX, pY, pZ, pW);
 		}
 	}
@@ -344,7 +344,7 @@ public class ShaderProgram {
 	 */
 	public void setTextureOptional(final String pUniformName, final int pTexture) {
 		final int location = this.getUniformLocationOptional(pUniformName);
-		if(location != ShaderProgramConstants.LOCATION_INVALID) {
+		if (location != ShaderProgramConstants.LOCATION_INVALID) {
 			GLES20.glUniform1i(location, pTexture);
 		}
 	}

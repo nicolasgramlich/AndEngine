@@ -112,7 +112,7 @@ public abstract class Shape extends Entity implements IShape {
 
 	@Override
 	protected void preDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mBlendingEnabled) {
+		if (this.mBlendingEnabled) {
 			pGLState.enableBlend();
 			pGLState.blendFunction(this.mBlendFunctionSource, this.mBlendFunctionDestination);
 		}
@@ -120,7 +120,7 @@ public abstract class Shape extends Entity implements IShape {
 
 	@Override
 	protected void postDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mBlendingEnabled) {
+		if (this.mBlendingEnabled) {
 			pGLState.disableBlend();
 		}
 	}
@@ -159,7 +159,7 @@ public abstract class Shape extends Entity implements IShape {
 		super.dispose();
 
 		final IVertexBufferObject vertexBufferObject = this.getVertexBufferObject();
-		if((vertexBufferObject != null) && vertexBufferObject.isAutoDispose() && !vertexBufferObject.isDisposed()) {
+		if ((vertexBufferObject != null) && vertexBufferObject.isAutoDispose() && !vertexBufferObject.isDisposed()) {
 			vertexBufferObject.dispose();
 		}
 	}
@@ -177,7 +177,7 @@ public abstract class Shape extends Entity implements IShape {
 	}
 
 	protected void initBlendFunction(final TextureOptions pTextureOptions) {
-		if(pTextureOptions.mPreMultiplyAlpha) {
+		if (pTextureOptions.mPreMultiplyAlpha) {
 			this.setBlendFunction(IShape.BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT, IShape.BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT);
 		}
 	}

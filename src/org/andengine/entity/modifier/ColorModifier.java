@@ -62,7 +62,7 @@ public class ColorModifier extends TripleValueSpanEntityModifier {
 	}
 
 	@Override
-	public ColorModifier deepCopy(){
+	public ColorModifier deepCopy() {
 		return new ColorModifier(this);
 	}
 

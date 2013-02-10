@@ -47,10 +47,10 @@ public abstract class GenericPool<T> {
 	}
 
 	public GenericPool(final int pInitialSize, final int pGrowth, final int pAvailableItemsMaximum) {
-		if(pGrowth <= 0) {
+		if (pGrowth <= 0) {
 			throw new IllegalArgumentException("pGrowth must be greater than 0!");
 		}
-		if(pAvailableItemsMaximum < 0) {
+		if (pAvailableItemsMaximum < 0) {
 			throw new IllegalArgumentException("pAvailableItemsMaximum must be at least 0!");
 		}
 
@@ -58,7 +58,7 @@ public abstract class GenericPool<T> {
 		this.mAvailableItemCountMaximum = pAvailableItemsMaximum;
 		this.mAvailableItems = new ArrayList<T>(pInitialSize);
 
-		if(pInitialSize > 0) {
+		if (pInitialSize > 0) {
 			this.batchAllocatePoolItems(pInitialSize);
 		}
 	}
@@ -111,11 +111,11 @@ public abstract class GenericPool<T> {
 		final ArrayList<T> availableItems = this.mAvailableItems;
 
 		int allocationCount = this.mAvailableItemCountMaximum - availableItems.size();
-		if(pCount < allocationCount) {
+		if (pCount < allocationCount) {
 			allocationCount = pCount;
 		}
 
-		for(int i = allocationCount - 1; i >= 0; i--) {
+		for (int i = allocationCount - 1; i >= 0; i--) {
 			availableItems.add(this.onHandleAllocatePoolItem());
 		}
 	}
@@ -123,16 +123,16 @@ public abstract class GenericPool<T> {
 	public synchronized T obtainPoolItem() {
 		final T item;
 
-		if(this.mAvailableItems.size() > 0) {
+		if (this.mAvailableItems.size() > 0) {
 			item = this.mAvailableItems.remove(this.mAvailableItems.size() - 1);
 		} else {
-			if(this.mGrowth == 1 || this.mAvailableItemCountMaximum == 0) {
+			if (this.mGrowth == 1 || this.mAvailableItemCountMaximum == 0) {
 				item = this.onHandleAllocatePoolItem();
 			} else {
 				this.batchAllocatePoolItems(this.mGrowth);
 				item = this.mAvailableItems.remove(this.mAvailableItems.size() - 1);
 			}
-			if(BuildConfig.DEBUG) {
+			if (BuildConfig.DEBUG) {
 				Debug.v(this.getClass().getName() + "<" + item.getClass().getSimpleName() +"> was exhausted, with " + this.mUnrecycledItemCount + " item not yet recycled. Allocated " + this.mGrowth + " more.");
 			}
 		}
@@ -143,19 +143,19 @@ public abstract class GenericPool<T> {
 	}
 
 	public synchronized void recyclePoolItem(final T pItem) {
-		if(pItem == null) {
+		if (pItem == null) {
 			throw new IllegalArgumentException("Cannot recycle null item!");
 		}
 
 		this.onHandleRecycleItem(pItem);
 
-		if(this.mAvailableItems.size() < this.mAvailableItemCountMaximum) {
+		if (this.mAvailableItems.size() < this.mAvailableItemCountMaximum) {
 			this.mAvailableItems.add(pItem);
 		}
 
 		this.mUnrecycledItemCount--;
 
-		if(this.mUnrecycledItemCount < 0) {
+		if (this.mUnrecycledItemCount < 0) {
 			Debug.e("More items recycled than obtained!");
 		}
 	}

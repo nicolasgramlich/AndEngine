@@ -97,23 +97,23 @@ public abstract class PVRTexture extends Texture {
 			StreamUtils.close(inputStream);
 		}
 
-		if(this.mPVRTextureHeader.getPVRTextureFormat().getPixelFormat() != pPVRTextureFormat.getPixelFormat()) {
+		if (this.mPVRTextureHeader.getPVRTextureFormat().getPixelFormat() != pPVRTextureFormat.getPixelFormat()) {
 			throw new IllegalArgumentException("Other PVRTextureFormat: '" + this.mPVRTextureHeader.getPVRTextureFormat().getPixelFormat() + "' found than expected: '" + pPVRTextureFormat.getPixelFormat() + "'.");
 		}
 
-		if(this.mPVRTextureHeader.getPVRTextureFormat().isCompressed()) { // TODO && ! GLHELPER_EXTENSION_PVRTC] ) {
+		if (this.mPVRTextureHeader.getPVRTextureFormat().isCompressed()) { // TODO && ! GLHELPER_EXTENSION_PVRTC] ) {
 			throw new IllegalArgumentException("Invalid PVRTextureFormat: '" + this.mPVRTextureHeader.getPVRTextureFormat() + "'.");
 		}
 
-		if(this.hasMipMaps()) {
-			switch(pTextureOptions.mMinFilter){
+		if (this.hasMipMaps()) {
+			switch (pTextureOptions.mMinFilter) {
 				case GLES20.GL_NEAREST_MIPMAP_NEAREST:
 				case GLES20.GL_NEAREST_MIPMAP_LINEAR:
 				case GLES20.GL_LINEAR_MIPMAP_NEAREST:
 				case GLES20.GL_LINEAR_MIPMAP_LINEAR:
 					break;
 				default:
-					if(BuildConfig.DEBUG) {
+					if (BuildConfig.DEBUG) {
 						Debug.w("This '" + this.getClass().getSimpleName() + "' contains mipmaps, but the provided '" + pTextureOptions.getClass().getSimpleName() + "' don't have MipMaps enabled on the MinFilter!");
 					}
 			}
@@ -244,7 +244,7 @@ public abstract class PVRTexture extends Texture {
 			this.mDataByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
 			/* Check magic bytes. */
-			if(!ArrayUtils.equals(pData, 11 * DataConstants.BYTES_PER_INT, PVRTextureHeader.MAGIC_IDENTIFIER, 0, PVRTextureHeader.MAGIC_IDENTIFIER.length)) {
+			if (!ArrayUtils.equals(pData, 11 * DataConstants.BYTES_PER_INT, PVRTextureHeader.MAGIC_IDENTIFIER, 0, PVRTextureHeader.MAGIC_IDENTIFIER.length)) {
 				throw new IllegalArgumentException("Invalid " + this.getClass().getSimpleName() + "!");
 			}
 
@@ -371,9 +371,9 @@ public abstract class PVRTexture extends Texture {
 		public static PVRTextureFormat fromID(final int pID) {
 			final PVRTextureFormat[] pvrTextureFormats = PVRTextureFormat.values();
 			final int pvrTextureFormatCount = pvrTextureFormats.length;
-			for(int i = 0; i < pvrTextureFormatCount; i++) {
+			for (int i = 0; i < pvrTextureFormatCount; i++) {
 				final PVRTextureFormat pvrTextureFormat = pvrTextureFormats[i];
-				if(pvrTextureFormat.mID == pID) {
+				if (pvrTextureFormat.mID == pID) {
 					return pvrTextureFormat;
 				}
 			}
@@ -381,7 +381,7 @@ public abstract class PVRTexture extends Texture {
 		}
 
 		public static PVRTextureFormat fromPixelFormat(final PixelFormat pPixelFormat) throws IllegalArgumentException {
-			switch(pPixelFormat) {
+			switch (pPixelFormat) {
 				case RGBA_8888:
 					return PVRTextureFormat.RGBA_8888;
 				case RGBA_4444:

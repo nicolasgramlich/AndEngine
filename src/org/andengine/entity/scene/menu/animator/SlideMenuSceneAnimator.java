@@ -127,7 +127,7 @@ public class SlideMenuSceneAnimator extends MenuSceneAnimator {
 	// ===========================================================
 
 	protected float getFromX(final MenuScene pMenuScene, final IMenuItem pMenuItem, final float pX) {
-		switch(this.mDirection) {
+		switch (this.mDirection) {
 			case UP:
 			case DOWN:
 				return pX;
@@ -145,7 +145,7 @@ public class SlideMenuSceneAnimator extends MenuSceneAnimator {
 	}
 
 	protected float getFromY(final MenuScene pMenuScene, final IMenuItem pMenuItem, final float pY) {
-		switch(this.mDirection) {
+		switch (this.mDirection) {
 			case DOWN_LEFT:
 			case DOWN:
 			case DOWN_RIGHT:

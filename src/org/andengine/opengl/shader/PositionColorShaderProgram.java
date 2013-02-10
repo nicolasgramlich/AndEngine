@@ -52,7 +52,7 @@ public class PositionColorShaderProgram extends ShaderProgram {
 	}
 
 	public static PositionColorShaderProgram getInstance() {
-		if(PositionColorShaderProgram.INSTANCE == null) {
+		if (PositionColorShaderProgram.INSTANCE == null) {
 			PositionColorShaderProgram.INSTANCE = new PositionColorShaderProgram();
 		}
 		return PositionColorShaderProgram.INSTANCE;

@@ -100,7 +100,7 @@ public class BoundCamera extends Camera {
 	public void setCenter(final float pCenterX, final float pCenterY) {
 		super.setCenter(pCenterX, pCenterY);
 
-		if(this.mBoundsEnabled) {
+		if (this.mBoundsEnabled) {
 			this.ensureInBounds();
 		}
 	}
@@ -111,13 +111,13 @@ public class BoundCamera extends Camera {
 
 	protected void ensureInBounds() {
 		final float centerX;
-		if(this.mBoundsWidth < this.getWidth()) {
+		if (this.mBoundsWidth < this.getWidth()) {
 			centerX = this.mBoundsCenterX;
 		} else {
 			centerX = getBoundedX(this.getCenterX()); 
 		}
 		final float centerY;
-		if(this.mBoundsHeight < this.getHeight()) {
+		if (this.mBoundsHeight < this.getHeight()) {
 			centerY = this.mBoundsCenterY;
 		} else {
 			centerY = getBoundedY(this.getCenterY()); 
@@ -132,8 +132,8 @@ public class BoundCamera extends Camera {
 		final float maxXBoundExceededAmount = this.getXMax() - this.mBoundsXMax;
 		final boolean maxXBoundExceeded = maxXBoundExceededAmount > 0;
 
-		if(minXBoundExceeded) {
-			if(maxXBoundExceeded) {
+		if (minXBoundExceeded) {
+			if (maxXBoundExceeded) {
 				/* Min and max X exceeded. */
 				return pX - maxXBoundExceededAmount + minXBoundExceededAmount;
 			} else {
@@ -141,7 +141,7 @@ public class BoundCamera extends Camera {
 				return pX + minXBoundExceededAmount;
 			}
 		} else {
-			if(maxXBoundExceeded) {
+			if (maxXBoundExceeded) {
 				/* Only max X exceeded. */
 				return pX - maxXBoundExceededAmount;
 			} else {
@@ -158,8 +158,8 @@ public class BoundCamera extends Camera {
 		final float maxYBoundExceededAmount = this.getYMax() - this.mBoundsYMax;
 		final boolean maxYBoundExceeded = maxYBoundExceededAmount > 0;
 
-		if(minYBoundExceeded) {
-			if(maxYBoundExceeded) {
+		if (minYBoundExceeded) {
+			if (maxYBoundExceeded) {
 				/* Min and max Y exceeded. */
 				return pY - maxYBoundExceededAmount + minYBoundExceededAmount;
 			} else {
@@ -167,7 +167,7 @@ public class BoundCamera extends Camera {
 				return pY + minYBoundExceededAmount;
 			}
 		} else {
-			if(maxYBoundExceeded) {
+			if (maxYBoundExceeded) {
 				/* Only max Y exceeded. */
 				return pY - maxYBoundExceededAmount;
 			} else {

@@ -31,7 +31,7 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 		this.mTarget = pTarget;
 	}
 
-	public ModifierList(final T pTarget, final int pCapacity){
+	public ModifierList(final T pTarget, final int pCapacity) {
 		super(pCapacity);
 		this.mTarget = pTarget;
 	}
@@ -50,7 +50,7 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 
 	@Override
 	public boolean add(final IModifier<T> pModifier) {
-		if(pModifier == null) {
+		if (pModifier == null) {
 			throw new IllegalArgumentException("Supplied " + IModifier.class.getSimpleName() + " must not be null.");
 		} else {
 			return super.add(pModifier);
@@ -60,11 +60,11 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		final int modifierCount = this.size();
-		if(modifierCount > 0) {
-			for(int i = modifierCount - 1; i >= 0; i--) {
+		if (modifierCount > 0) {
+			for (int i = modifierCount - 1; i >= 0; i--) {
 				final IModifier<T> modifier = this.get(i);
 				modifier.onUpdate(pSecondsElapsed, this.mTarget);
-				if(modifier.isFinished() && modifier.isAutoUnregisterWhenFinished()) {
+				if (modifier.isFinished() && modifier.isAutoUnregisterWhenFinished()) {
 					this.remove(i);
 				}
 			}
@@ -73,7 +73,7 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 
 	@Override
 	public void reset() {
-		for(int i = this.size() - 1; i >= 0; i--) {
+		for (int i = this.size() - 1; i >= 0; i--) {
 			this.get(i).reset();
 		}
 	}

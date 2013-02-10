@@ -49,7 +49,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 	public SequenceModifier(final ISubSequenceModifierListener<T> pSubSequenceModifierListener, final IModifierListener<T> pModifierListener, final IModifier<T> ... pModifiers) throws IllegalArgumentException {
 		super(pModifierListener);
 
-		if(pModifiers.length == 0) {
+		if (pModifiers.length == 0) {
 			throw new IllegalArgumentException("pModifiers must not be empty!");
 		}
 
@@ -71,7 +71,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 		this.mSubSequenceModifiers = new IModifier[otherModifiers.length];
 
 		final IModifier<T>[] subSequenceModifiers = this.mSubSequenceModifiers;
-		for(int i = subSequenceModifiers.length - 1; i >= 0; i--) {
+		for (int i = subSequenceModifiers.length - 1; i >= 0; i--) {
 			subSequenceModifiers[i] = otherModifiers[i].deepCopy();
 		}
 
@@ -111,7 +111,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 
 	@Override
 	public float onUpdate(final float pSecondsElapsed, final T pItem) {
-		if(this.mFinished){
+		if (this.mFinished) {
 			return 0;
 		} else {
 			float secondsElapsedRemaining = pSecondsElapsed;
@@ -129,7 +129,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 
 	@Override
 	public void reset() {
-		if(this.isFinished()) {
+		if (this.isFinished()) {
 			this.mSubSequenceModifiers[this.mSubSequenceModifiers.length - 1].removeModifierListener(this);
 		} else {
 			this.mSubSequenceModifiers[this.mCurrentSubSequenceModifierIndex].removeModifierListener(this);
@@ -142,32 +142,32 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 		this.mSubSequenceModifiers[0].addModifierListener(this);
 
 		final IModifier<T>[] subSequenceModifiers = this.mSubSequenceModifiers;
-		for(int i = subSequenceModifiers.length - 1; i >= 0; i--) {
+		for (int i = subSequenceModifiers.length - 1; i >= 0; i--) {
 			subSequenceModifiers[i].reset();
 		}
 	}
 
 	@Override
 	public void onModifierStarted(final IModifier<T> pModifier, final T pItem) {
-		if(this.mCurrentSubSequenceModifierIndex == 0) {
+		if (this.mCurrentSubSequenceModifierIndex == 0) {
 			this.onModifierStarted(pItem);
 		}
 
-		if(this.mSubSequenceModifierListener != null) {
+		if (this.mSubSequenceModifierListener != null) {
 			this.mSubSequenceModifierListener.onSubSequenceStarted(pModifier, pItem, this.mCurrentSubSequenceModifierIndex);
 		}
 	}
 
 	@Override
 	public void onModifierFinished(final IModifier<T> pModifier, final T pItem) {
-		if(this.mSubSequenceModifierListener != null) {
+		if (this.mSubSequenceModifierListener != null) {
 			this.mSubSequenceModifierListener.onSubSequenceFinished(pModifier, pItem, this.mCurrentSubSequenceModifierIndex);
 		}
 		pModifier.removeModifierListener(this);
 
 		this.mCurrentSubSequenceModifierIndex++;
 
-		if(this.mCurrentSubSequenceModifierIndex < this.mSubSequenceModifiers.length) {
+		if (this.mCurrentSubSequenceModifierIndex < this.mSubSequenceModifiers.length) {
 			final IModifier<T> nextSubSequenceModifier = this.mSubSequenceModifiers[this.mCurrentSubSequenceModifierIndex];
 			nextSubSequenceModifier.addModifierListener(this);
 		} else {

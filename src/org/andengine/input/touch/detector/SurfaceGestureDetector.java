@@ -116,16 +116,16 @@ public abstract class SurfaceGestureDetector extends BaseDetector {
 
 			final boolean isHorizontalFling = Math.abs(pVelocityX) > Math.abs(pVelocityY);
 
-			if(isHorizontalFling) {
-				if(pMotionEventStart.getX() - pMotionEventEnd.getX() > swipeMinDistance) {
+			if (isHorizontalFling) {
+				if (pMotionEventStart.getX() - pMotionEventEnd.getX() > swipeMinDistance) {
 					return SurfaceGestureDetector.this.onSwipeLeft();
-				} else if(pMotionEventEnd.getX() - pMotionEventStart.getX() > swipeMinDistance) {
+				} else if (pMotionEventEnd.getX() - pMotionEventStart.getX() > swipeMinDistance) {
 					return SurfaceGestureDetector.this.onSwipeRight();
 				}
 			} else {
-				if(pMotionEventStart.getY() - pMotionEventEnd.getY() > swipeMinDistance) {
+				if (pMotionEventStart.getY() - pMotionEventEnd.getY() > swipeMinDistance) {
 					return SurfaceGestureDetector.this.onSwipeUp();
-				} else if(pMotionEventEnd.getY() - pMotionEventStart.getY() > swipeMinDistance) {
+				} else if (pMotionEventEnd.getY() - pMotionEventStart.getY() > swipeMinDistance) {
 					return SurfaceGestureDetector.this.onSwipeDown();
 				}
 			}

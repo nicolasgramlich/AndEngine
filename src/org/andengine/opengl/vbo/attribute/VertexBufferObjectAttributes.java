@@ -46,7 +46,7 @@ public class VertexBufferObjectAttributes {
 		final int stride = this.mStride;
 
 		final int vertexBufferObjectAttributeCount = vertexBufferObjectAttributes.length;
-		for(int i = 0; i < vertexBufferObjectAttributeCount; i++) {
+		for (int i = 0; i < vertexBufferObjectAttributeCount; i++) {
 			vertexBufferObjectAttributes[i].glVertexAttribPointer(stride);
 		}
 	}

@@ -63,7 +63,7 @@ public class Sound extends BaseAudioEntity {
 		this.assertNotReleased();
 
 		this.mLoopCount = pLoopCount;
-		if(this.mStreamID != 0) {
+		if (this.mStreamID != 0) {
 			this.getSoundPool().setLoop(this.mStreamID, pLoopCount);
 		}
 	}
@@ -76,7 +76,7 @@ public class Sound extends BaseAudioEntity {
 		this.assertNotReleased();
 
 		this.mRate = pRate;
-		if(this.mStreamID != 0) {
+		if (this.mStreamID != 0) {
 			this.getSoundPool().setRate(this.mStreamID, pRate);
 		}
 	}
@@ -114,7 +114,7 @@ public class Sound extends BaseAudioEntity {
 	public void stop() throws SoundReleasedException {
 		super.stop();
 
-		if(this.mStreamID != 0) {
+		if (this.mStreamID != 0) {
 			this.getSoundPool().stop(this.mStreamID);
 		}
 	}
@@ -123,7 +123,7 @@ public class Sound extends BaseAudioEntity {
 	public void resume() throws SoundReleasedException {
 		super.resume();
 
-		if(this.mStreamID != 0) {
+		if (this.mStreamID != 0) {
 			this.getSoundPool().resume(this.mStreamID);
 		}
 	}
@@ -132,7 +132,7 @@ public class Sound extends BaseAudioEntity {
 	public void pause() throws SoundReleasedException {
 		super.pause();
 
-		if(this.mStreamID != 0) {
+		if (this.mStreamID != 0) {
 			this.getSoundPool().pause(this.mStreamID);
 		}
 	}
@@ -161,7 +161,7 @@ public class Sound extends BaseAudioEntity {
 	public void setVolume(final float pLeftVolume, final float pRightVolume) throws SoundReleasedException {
 		super.setVolume(pLeftVolume, pRightVolume);
 
-		if(this.mStreamID != 0){
+		if (this.mStreamID != 0) {
 			final float masterVolume = this.getMasterVolume();
 			final float leftVolume = this.mLeftVolume * masterVolume;
 			final float rightVolume = this.mRightVolume * masterVolume;

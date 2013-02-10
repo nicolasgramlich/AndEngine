@@ -62,18 +62,18 @@ public class TextureManager {
 
 	public synchronized void onReload() {
 		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
-		if(!managedTextures.isEmpty()) {
-			for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
+		if (!managedTextures.isEmpty()) {
+			for (final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
 				texture.setNotLoadedToHardware();
 			}
 		}
 
-		if(!this.mTexturesLoaded.isEmpty()) {
+		if (!this.mTexturesLoaded.isEmpty()) {
 			this.mTexturesToBeLoaded.addAll(this.mTexturesLoaded); // TODO Check if addAll uses iterator internally!
 			this.mTexturesLoaded.clear();
 		}
 
-		if(!this.mTexturesToBeUnloaded.isEmpty()) {
+		if (!this.mTexturesToBeUnloaded.isEmpty()) {
 			this.mTexturesManaged.removeAll(this.mTexturesToBeUnloaded); // TODO Check if removeAll uses iterator internally!
 			this.mTexturesToBeUnloaded.clear();
 		}
@@ -83,7 +83,7 @@ public class TextureManager {
 
 	public synchronized void onDestroy() {
 		final HashSet<ITexture> managedTextures = this.mTexturesManaged;
-		for(final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
+		for (final ITexture texture : managedTextures) { // TODO Can the use of the iterator be avoided somehow?
 			texture.setNotLoadedToHardware();
 		}
 
@@ -97,32 +97,32 @@ public class TextureManager {
 	}
 
 	public synchronized boolean hasMappedTexture(final String pID) {
-		if(pID == null) {
+		if (pID == null) {
 			throw new IllegalArgumentException("pID must not be null!");
 		}
 		return this.mTexturesMapped.containsKey(pID);
 	}
 
 	public synchronized ITexture getMappedTexture(final String pID) {
-		if(pID == null) {
+		if (pID == null) {
 			throw new IllegalArgumentException("pID must not be null!");
 		}
 		return this.mTexturesMapped.get(pID);
 	}
 
 	public synchronized void addMappedTexture(final String pID, final ITexture pTexture) throws IllegalArgumentException {
-		if(pID == null) {
+		if (pID == null) {
 			throw new IllegalArgumentException("pID must not be null!");
-		} else if(pTexture == null) {
+		} else if (pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
-		} else if(this.mTexturesMapped.containsKey(pID)) {
+		} else if (this.mTexturesMapped.containsKey(pID)) {
 			throw new IllegalArgumentException("Collision for pID: '" + pID + "'.");
 		}
 		this.mTexturesMapped.put(pID, pTexture);
 	}
 
 	public synchronized ITexture removedMappedTexture(final String pID) {
-		if(pID == null) {
+		if (pID == null) {
 			throw new IllegalArgumentException("pID must not be null!");
 		}
 		return this.mTexturesMapped.remove(pID);
@@ -133,11 +133,11 @@ public class TextureManager {
 	 * @return <code>true</code> when the {@link ITexture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
 	public synchronized boolean loadTexture(final ITexture pTexture) {
-		if(pTexture == null) {
+		if (pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
 		}
 
-		if(this.mTexturesManaged.contains(pTexture)) {
+		if (this.mTexturesManaged.contains(pTexture)) {
 			/* Just make sure it doesn't get deleted. */
 			this.mTexturesToBeUnloaded.remove(pTexture);
 			return false;
@@ -156,17 +156,17 @@ public class TextureManager {
 	 * @return <code>true</code> when the {@link ITexture} was previously not managed by this {@link TextureManager}, <code>false</code> if it was already managed.
 	 */
 	public synchronized boolean loadTexture(final GLState pGLState, final ITexture pTexture) throws IOException {
-		if(pTexture == null) {
+		if (pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
 		}
 
-		if(!pTexture.isLoadedToHardware()) {
+		if (!pTexture.isLoadedToHardware()) {
 			pTexture.loadToHardware(pGLState);
-		} else if(pTexture.isUpdateOnHardwareNeeded()) {
+		} else if (pTexture.isUpdateOnHardwareNeeded()) {
 			pTexture.reloadToHardware(pGLState);
 		}
 
-		if(this.mTexturesManaged.contains(pTexture)) {
+		if (this.mTexturesManaged.contains(pTexture)) {
 			/* Just make sure it doesn't get deleted. */
 			this.mTexturesToBeUnloaded.remove(pTexture);
 			return false;
@@ -182,16 +182,16 @@ public class TextureManager {
 	 * @return <code>true</code> when the {@link ITexture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
 	public synchronized boolean unloadTexture(final ITexture pTexture) {
-		if(pTexture == null) {
+		if (pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
 		}
 
-		if(this.mTexturesManaged.contains(pTexture)) {
+		if (this.mTexturesManaged.contains(pTexture)) {
 			/* If the Texture is loaded, unload it.
 			 * If the Texture is about to be loaded, stop it from being loaded. */
-			if(this.mTexturesLoaded.contains(pTexture)) {
+			if (this.mTexturesLoaded.contains(pTexture)) {
 				this.mTexturesToBeUnloaded.add(pTexture);
-			} else if(this.mTexturesToBeLoaded.remove(pTexture)) {
+			} else if (this.mTexturesToBeLoaded.remove(pTexture)) {
 				this.mTexturesManaged.remove(pTexture);
 			}
 			return true;
@@ -208,13 +208,13 @@ public class TextureManager {
 	 * @return <code>true</code> when the {@link ITexture} was already managed by this {@link TextureManager}, <code>false</code> if it was not managed.
 	 */
 	public synchronized boolean unloadTexture(final GLState pGLState, final ITexture pTexture) {
-		if(pTexture == null) {
+		if (pTexture == null) {
 			throw new IllegalArgumentException("pTexture must not be null!");
-		} else if(pTexture.isLoadedToHardware()) {
+		} else if (pTexture.isLoadedToHardware()) {
 			pTexture.unloadFromHardware(pGLState);
 		}
 
-		if(this.mTexturesManaged.contains(pTexture)) {
+		if (this.mTexturesManaged.contains(pTexture)) {
 			/* Just make sure it doesn't get loaded. */
 			this.mTexturesLoaded.remove(pTexture);
 			this.mTexturesToBeLoaded.remove(pTexture);
@@ -232,9 +232,9 @@ public class TextureManager {
 		final ArrayList<ITexture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
 
 		/* First reload Textures that need to be updated. */
-		for(int i = texturesLoaded.size() - 1; i >= 0; i--) {
+		for (int i = texturesLoaded.size() - 1; i >= 0; i--) {
 			final ITexture textureToBeReloaded = texturesLoaded.get(i);
-			if(textureToBeReloaded.isUpdateOnHardwareNeeded()) {
+			if (textureToBeReloaded.isUpdateOnHardwareNeeded()) {
 				try {
 					textureToBeReloaded.reloadToHardware(pGLState);
 				} catch (final IOException e) {
@@ -246,10 +246,10 @@ public class TextureManager {
 		/* Then load pending Textures. */
 		final int texturesToBeLoadedCount = texturesToBeLoaded.size();
 
-		if(texturesToBeLoadedCount > 0) {
-			for(int i = texturesToBeLoadedCount - 1; i >= 0; i--) {
+		if (texturesToBeLoadedCount > 0) {
+			for (int i = texturesToBeLoadedCount - 1; i >= 0; i--) {
 				final ITexture textureToBeLoaded = texturesToBeLoaded.remove(i);
-				if(!textureToBeLoaded.isLoadedToHardware()) {
+				if (!textureToBeLoaded.isLoadedToHardware()) {
 					try {
 						textureToBeLoaded.loadToHardware(pGLState);
 
@@ -266,10 +266,10 @@ public class TextureManager {
 		/* Then unload pending Textures. */
 		final int texturesToBeUnloadedCount = texturesToBeUnloaded.size();
 
-		if(texturesToBeUnloadedCount > 0) {
-			for(int i = texturesToBeUnloadedCount - 1; i >= 0; i--) {
+		if (texturesToBeUnloadedCount > 0) {
+			for (int i = texturesToBeUnloadedCount - 1; i >= 0; i--) {
 				final ITexture textureToBeUnloaded = texturesToBeUnloaded.remove(i);
-				if(textureToBeUnloaded.isLoadedToHardware()) {
+				if (textureToBeUnloaded.isLoadedToHardware()) {
 					textureToBeUnloaded.unloadFromHardware(pGLState);
 				}
 				texturesLoaded.remove(textureToBeUnloaded);
@@ -278,7 +278,7 @@ public class TextureManager {
 		}
 
 		/* Finally invoke the GC if anything has changed. */
-		if((texturesToBeLoadedCount > 0) || (texturesToBeUnloadedCount > 0)) {
+		if ((texturesToBeLoadedCount > 0) || (texturesToBeUnloadedCount > 0)) {
 			System.gc();
 		}
 	}
@@ -288,7 +288,7 @@ public class TextureManager {
 	}
 
 	public synchronized ITexture getTexture(final String pID, final AssetManager pAssetManager, final String pAssetPath, final TextureOptions pTextureOptions) throws IOException {
-		if(this.hasMappedTexture(pID)) {
+		if (this.hasMappedTexture(pID)) {
 			return this.getMappedTexture(pID);
 		} else {
 			final ITexture texture = new AssetBitmapTexture(this, pAssetManager, pAssetPath, pTextureOptions);
@@ -312,11 +312,11 @@ public class TextureManager {
 	}
 
 	public synchronized ITexture getTexture(final String pID, final IInputStreamOpener pInputStreamOpener, final BitmapTextureFormat pBitmapTextureFormat, final TextureOptions pTextureOptions, final boolean pLoadToHardware) throws IOException {
-		if(this.hasMappedTexture(pID)) {
+		if (this.hasMappedTexture(pID)) {
 			return this.getMappedTexture(pID);
 		} else {
 			final ITexture texture = new BitmapTexture(this, pInputStreamOpener, pBitmapTextureFormat, pTextureOptions);
-			if(pLoadToHardware) {
+			if (pLoadToHardware) {
 				this.loadTexture(texture);
 			}
 			this.addMappedTexture(pID, texture);

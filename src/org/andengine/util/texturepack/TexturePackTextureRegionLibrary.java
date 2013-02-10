@@ -71,9 +71,9 @@ public class TexturePackTextureRegionLibrary {
 	}
 
 	public TexturePackTextureRegion get(final String pSource, final boolean pStripExtension) {
-		if(pStripExtension) {
+		if (pStripExtension) {
 			final int indexOfExtension = pSource.lastIndexOf('.');
-			if(indexOfExtension == -1) {
+			if (indexOfExtension == -1) {
 				return this.get(pSource);
 			} else {
 				final String stripped = pSource.substring(0, indexOfExtension);
@@ -85,9 +85,9 @@ public class TexturePackTextureRegionLibrary {
 	}
 
 	private void throwOnCollision(final TexturePackTextureRegion pTexturePackTextureRegion) throws IllegalArgumentException {
-		if(this.mIDMapping.get(pTexturePackTextureRegion.getID()) != null) {
+		if (this.mIDMapping.get(pTexturePackTextureRegion.getID()) != null) {
 			throw new IllegalArgumentException("Collision with ID: '" + pTexturePackTextureRegion.getID() + "'.");
-		} else if(this.mSourceMapping.get(pTexturePackTextureRegion.getSource()) != null) {
+		} else if (this.mSourceMapping.get(pTexturePackTextureRegion.getSource()) != null) {
 			throw new IllegalArgumentException("Collision with Source: '" + pTexturePackTextureRegion.getSource() + "'.");
 		}
 	}

@@ -118,13 +118,13 @@ public class TexturePackParser extends DefaultHandler {
 
 	@Override
 	public void startElement(final String pUri, final String pLocalName, final String pQualifiedName, final Attributes pAttributes) throws SAXException {
-		if(pLocalName.equals(TexturePackParser.TAG_TEXTURE)) {
+		if (pLocalName.equals(TexturePackParser.TAG_TEXTURE)) {
 			this.mVersion = SAXUtils.getIntAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTURE_ATTRIBUTE_VERSION);
 			this.mTexture = this.parseTexture(pAttributes);
 			this.mTextureRegionLibrary = new TexturePackTextureRegionLibrary(10);
 
 			this.mTexturePack = new TexturePack(this.mTexture, this.mTextureRegionLibrary);
-		} else if(pLocalName.equals(TexturePackParser.TAG_TEXTUREREGION)) {
+		} else if (pLocalName.equals(TexturePackParser.TAG_TEXTUREREGION)) {
 			final int id = SAXUtils.getIntAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTUREREGION_ATTRIBUTE_ID);
 			final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTUREREGION_ATTRIBUTE_X);
 			final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTUREREGION_ATTRIBUTE_Y);
@@ -158,7 +158,7 @@ public class TexturePackParser extends DefaultHandler {
 	private ITexture parseTexture(final Attributes pAttributes) throws TexturePackParseException {
 		final String file = SAXUtils.getAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTURE_ATTRIBUTE_FILE);
 
-		if(this.mTextureManager.hasMappedTexture(file)) {
+		if (this.mTextureManager.hasMappedTexture(file)) {
 			return this.mTextureManager.getMappedTexture(file);
 		}
 
@@ -168,7 +168,7 @@ public class TexturePackParser extends DefaultHandler {
 		final TextureOptions textureOptions = this.parseTextureOptions(pAttributes);
 
 		final ITexture texture;
-		if(type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_BITMAP)) {
+		if (type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_BITMAP)) {
 			try {
 				texture = new BitmapTexture(this.mTextureManager, new IInputStreamOpener() {
 					@Override
@@ -179,7 +179,7 @@ public class TexturePackParser extends DefaultHandler {
 			} catch (final IOException e) {
 				throw new TexturePackParseException(e);
 			}
-		} else if(type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_PVR)) {
+		} else if (type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_PVR)) {
 			try {
 				texture = new PVRTexture(this.mTextureManager, PVRTextureFormat.fromPixelFormat(pixelFormat), new SmartPVRTexturePixelBufferStrategy(DataConstants.BYTES_PER_MEGABYTE / 8), textureOptions) {
 					@Override
@@ -190,7 +190,7 @@ public class TexturePackParser extends DefaultHandler {
 			} catch (final IOException e) {
 				throw new TexturePackParseException(e);
 			}
-		} else if(type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_PVRGZ)) {
+		} else if (type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_PVRGZ)) {
 			try {
 				texture = new PVRGZTexture(this.mTextureManager, PVRTextureFormat.fromPixelFormat(pixelFormat), new SmartPVRTexturePixelBufferStrategy(DataConstants.BYTES_PER_MEGABYTE / 8), textureOptions) {
 					@Override
@@ -201,7 +201,7 @@ public class TexturePackParser extends DefaultHandler {
 			} catch (final IOException e) {
 				throw new TexturePackParseException(e);
 			}
-		} else if(type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_PVRCCZ)) {
+		} else if (type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_PVRCCZ)) {
 			try {
 				texture = new PVRCCZTexture(this.mTextureManager, PVRTextureFormat.fromPixelFormat(pixelFormat), new SmartPVRTexturePixelBufferStrategy(DataConstants.BYTES_PER_MEGABYTE / 8), textureOptions) {
 					@Override
@@ -248,17 +248,17 @@ public class TexturePackParser extends DefaultHandler {
 
 	private static int parseMinFilter(final Attributes pAttributes) {
 		final String minFilter = SAXUtils.getAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER);
-		if(minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_NEAREST)) {
+		if (minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_NEAREST)) {
 			return GL10.GL_NEAREST;
-		} else if(minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_LINEAR)) {
+		} else if (minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_LINEAR)) {
 			return GL10.GL_LINEAR;
-		} else if(minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_LINEAR_MIPMAP_LINEAR)) {
+		} else if (minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_LINEAR_MIPMAP_LINEAR)) {
 			return GL10.GL_LINEAR_MIPMAP_LINEAR;
-		} else if(minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_LINEAR_MIPMAP_NEAREST)) {
+		} else if (minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_LINEAR_MIPMAP_NEAREST)) {
 			return GL10.GL_LINEAR_MIPMAP_NEAREST;
-		} else if(minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_NEAREST_MIPMAP_LINEAR)) {
+		} else if (minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_NEAREST_MIPMAP_LINEAR)) {
 			return GL10.GL_NEAREST_MIPMAP_LINEAR;
-		} else if(minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_NEAREST_MIPMAP_NEAREST)) {
+		} else if (minFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER_VALUE_NEAREST_MIPMAP_NEAREST)) {
 			return GL10.GL_NEAREST_MIPMAP_NEAREST;
 		} else {
 			throw new IllegalArgumentException("Unexpected " + TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MINFILTER + " attribute: '" + minFilter + "'.");
@@ -267,9 +267,9 @@ public class TexturePackParser extends DefaultHandler {
 
 	private static int parseMagFilter(final Attributes pAttributes) {
 		final String magFilter = SAXUtils.getAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MAGFILTER);
-		if(magFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MAGFILTER_VALUE_NEAREST)) {
+		if (magFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MAGFILTER_VALUE_NEAREST)) {
 			return GL10.GL_NEAREST;
-		} else if(magFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MAGFILTER_VALUE_LINEAR)) {
+		} else if (magFilter.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MAGFILTER_VALUE_LINEAR)) {
 			return GL10.GL_LINEAR;
 		} else {
 			throw new IllegalArgumentException("Unexpected " + TexturePackParser.TAG_TEXTURE_ATTRIBUTE_MAGFILTER + " attribute: '" + magFilter + "'.");
@@ -286,11 +286,11 @@ public class TexturePackParser extends DefaultHandler {
 
 	private int parseWrap(final Attributes pAttributes, final String pWrapAttributeName) {
 		final String wrapAttribute = SAXUtils.getAttributeOrThrow(pAttributes, pWrapAttributeName);
-		if(this.mVersion == 1 && wrapAttribute.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_WRAP_VALUE_CLAMP)) {
+		if (this.mVersion == 1 && wrapAttribute.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_WRAP_VALUE_CLAMP)) {
 			return GL10.GL_CLAMP_TO_EDGE;
-		} else if(wrapAttribute.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_WRAP_VALUE_CLAMP_TO_EDGE)) {
+		} else if (wrapAttribute.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_WRAP_VALUE_CLAMP_TO_EDGE)) {
 			return GL10.GL_CLAMP_TO_EDGE;
-		} else if(wrapAttribute.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_WRAP_VALUE_REPEAT)) {
+		} else if (wrapAttribute.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_WRAP_VALUE_REPEAT)) {
 			return GL10.GL_REPEAT;
 		} else {
 			throw new IllegalArgumentException("Unexpected " + pWrapAttributeName + " attribute: '" + wrapAttribute + "'.");

@@ -32,7 +32,7 @@ public class EaseElasticIn implements IEaseFunction {
 	}
 
 	public static EaseElasticIn getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseElasticIn();
 		}
 		return INSTANCE;
@@ -56,10 +56,10 @@ public class EaseElasticIn implements IEaseFunction {
 	// ===========================================================
 
 	public static float getValue(final float pSecondsElapsed, final float pDuration, final float pPercentage) {
-		if(pSecondsElapsed == 0) {
+		if (pSecondsElapsed == 0) {
 			return 0;
 		}
-		if(pSecondsElapsed == pDuration) {
+		if (pSecondsElapsed == pDuration) {
 			return 1;
 		}
 

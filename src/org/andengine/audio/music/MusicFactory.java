@@ -38,7 +38,7 @@ public class MusicFactory {
 	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>.
 	 */
 	public static void setAssetBasePath(final String pAssetBasePath) {
-		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
+		if (pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
 			MusicFactory.sAssetBasePath = pAssetBasePath;
 		} else {
 			throw new IllegalStateException("pAssetBasePath must end with '/' or be lenght zero.");

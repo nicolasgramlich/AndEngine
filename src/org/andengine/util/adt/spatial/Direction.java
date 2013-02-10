@@ -42,9 +42,9 @@ public enum Direction {
 	}
 
 	public static Direction fromDelta(final int pDeltaX, final int pDeltaY) {
-		switch(pDeltaX) {
+		switch (pDeltaX) {
 			case -1:
-				switch(pDeltaY) {
+				switch (pDeltaY) {
 					case 1:
 						return UP_LEFT;
 					case 0:
@@ -54,7 +54,7 @@ public enum Direction {
 				}
 				break;
 			case 0:
-				switch(pDeltaY) {
+				switch (pDeltaY) {
 					case 1:
 						return UP;
 					case -1:
@@ -62,7 +62,7 @@ public enum Direction {
 				}
 				break;
 			case 1:
-				switch(pDeltaY) {
+				switch (pDeltaY) {
 					case 1:
 						return UP_RIGHT;
 					case 0:
@@ -96,7 +96,7 @@ public enum Direction {
 	}
 
 	public Direction rotateLeft() {
-		switch(this) {
+		switch (this) {
 			case UP:
 				return LEFT;
 			case UP_RIGHT:
@@ -118,7 +118,7 @@ public enum Direction {
 	}
 
 	public Direction rotateRight() {
-		switch(this) {
+		switch (this) {
 			case UP:
 				return RIGHT;
 			case UP_RIGHT:
@@ -140,7 +140,7 @@ public enum Direction {
 	}
 
 	public Direction opposite() {
-		switch(this) {
+		switch (this) {
 			case UP:
 				return DOWN;
 			case UP_RIGHT:

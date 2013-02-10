@@ -42,13 +42,13 @@ public final class TextUtils {
 
 	public static final CharSequence pad(final CharSequence pText, final char pPadChar, final int pLength) {
 		final int padCount = pLength - pText.length();
-		if(padCount <= 0) {
+		if (padCount <= 0) {
 			return pText;
 		} else {
 			final StringBuilder sb = new StringBuilder();
 
 			sb.append(pText);
-			for(int i = padCount - 1; i >= 0; i--) {
+			for (int i = padCount - 1; i >= 0; i--) {
 				sb.append(pPadChar);
 			}
 
@@ -58,12 +58,12 @@ public final class TextUtils {
 
 	public static final CharSequence padFront(final CharSequence pText, final char pPadChar, final int pLength) {
 		final int padCount = pLength - pText.length();
-		if(padCount <= 0) {
+		if (padCount <= 0) {
 			return pText;
 		} else {
 			final StringBuilder sb = new StringBuilder();
 
-			for(int i = padCount - 1; i >= 0; i--) {
+			for (int i = padCount - 1; i >= 0; i--) {
 				sb.append(pPadChar);
 			}
 			sb.append(pText);
@@ -100,7 +100,7 @@ public final class TextUtils {
 	public static final <L extends List<CharSequence>> L split(final CharSequence pText, final char pCharacter, final L pResult) {
 		final int partCount = TextUtils.countOccurrences(pText, pCharacter) + 1;
 
-		if(partCount == 0) {
+		if (partCount == 0) {
 			pResult.add(pText);
 		} else {
 			int from = 0;
@@ -134,9 +134,9 @@ public final class TextUtils {
 	public static final String formatStackTrace(final StackTraceElement[] pStackTraceElements) {
 		final StringBuilder sb = new StringBuilder();
 		final int stackTraceElementCount = pStackTraceElements.length;
-		for(int i = 0; i < stackTraceElementCount; i++) {
+		for (int i = 0; i < stackTraceElementCount; i++) {
 			sb.append(pStackTraceElements[i]);
-			if(i < (stackTraceElementCount - 1)) {
+			if (i < (stackTraceElementCount - 1)) {
 				sb.append('\n');
 			}
 		}
@@ -149,18 +149,18 @@ public final class TextUtils {
 
 	public static int countCharacters(final List<CharSequence> pTexts, final boolean pIgnoreWhitespaces) {
 		int characters = 0;
-		if(pIgnoreWhitespaces) {
-			for(int i = pTexts.size() - 1; i >= 0; i--) {
+		if (pIgnoreWhitespaces) {
+			for (int i = pTexts.size() - 1; i >= 0; i--) {
 				final CharSequence text = pTexts.get(i);
-				for(int j = text.length() - 1; j >= 0; j--) {
+				for (int j = text.length() - 1; j >= 0; j--) {
 					final char character = text.charAt(j);
-					if(!Character.isWhitespace(character)) {
+					if (!Character.isWhitespace(character)) {
 						characters++;
 					}
 				}
 			}
 		} else {
-			for(int i = pTexts.size() - 1; i >= 0; i--) {
+			for (int i = pTexts.size() - 1; i >= 0; i--) {
 				final CharSequence text = pTexts.get(i);
 				characters += text.length();
 			}

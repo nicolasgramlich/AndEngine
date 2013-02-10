@@ -68,11 +68,11 @@ public abstract class Pool<T extends PoolItem> extends GenericPool<T> {
 
 	@Override
 	public synchronized void recyclePoolItem(final T pPoolItem) {
-		if(pPoolItem.mParent == null) {
+		if (pPoolItem.mParent == null) {
 			throw new IllegalArgumentException("PoolItem not assigned to a pool!");
-		} else if(!pPoolItem.isFromPool(this)) {
+		} else if (!pPoolItem.isFromPool(this)) {
 			throw new IllegalArgumentException("PoolItem from another pool!");
-		} else if(pPoolItem.isRecycled()) {
+		} else if (pPoolItem.isRecycled()) {
 			throw new IllegalArgumentException("PoolItem already recycled!");
 		}
 

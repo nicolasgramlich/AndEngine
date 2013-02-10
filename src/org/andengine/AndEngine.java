@@ -62,7 +62,7 @@ public class AndEngine {
 	}
 
 	private static void checkCodePathSupport() throws DeviceNotSupportedException {
-		if(SystemUtils.isAndroidVersionOrLower(Build.VERSION_CODES.FROYO)) {
+		if (SystemUtils.isAndroidVersionOrLower(Build.VERSION_CODES.FROYO)) {
 			try {
 				System.loadLibrary("andengine");
 			} catch (final UnsatisfiedLinkError e) {

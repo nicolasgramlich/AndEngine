@@ -47,7 +47,7 @@ public class HighPerformanceMeshVertexBufferObject extends HighPerformanceVertex
 
 		final float packedColor = pMesh.getColor().getABGRPackedFloat();
 
-		for(int i = 0; i < this.mVertexCount; i++) {
+		for (int i = 0; i < this.mVertexCount; i++) {
 			bufferData[(i * Mesh.VERTEX_SIZE) + Mesh.COLOR_INDEX] = packedColor;
 		}
 

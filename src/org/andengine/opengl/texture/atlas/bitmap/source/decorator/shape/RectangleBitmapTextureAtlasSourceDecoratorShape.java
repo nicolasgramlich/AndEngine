@@ -25,7 +25,7 @@ public class RectangleBitmapTextureAtlasSourceDecoratorShape implements IBitmapT
 	}
 
 	public static RectangleBitmapTextureAtlasSourceDecoratorShape getDefaultInstance() {
-		if(sDefaultInstance == null) {
+		if (sDefaultInstance == null) {
 			sDefaultInstance = new RectangleBitmapTextureAtlasSourceDecoratorShape();
 		}
 		return sDefaultInstance;

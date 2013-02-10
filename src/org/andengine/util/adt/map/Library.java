@@ -43,7 +43,7 @@ public class Library<T> {
 
 	public void put(final int pID, final T pItem) {
 		final T item = this.mItems.get(pID);
-		if(item == null) {
+		if (item == null) {
 			this.mItems.put(pID, pItem);
 		} else {
 			throw new IllegalArgumentException("ID: '" + pID + "' is already associated with item: '" + item.toString() + "'.");

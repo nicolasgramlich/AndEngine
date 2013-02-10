@@ -110,9 +110,9 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 	}
 
 	public void postPoolItem(final T pPoolItem) {
-		if(pPoolItem == null) {
+		if (pPoolItem == null) {
 			throw new IllegalArgumentException("PoolItem already recycled!");
-		} else if(!this.mPool.ownsPoolItem(pPoolItem)) {
+		} else if (!this.mPool.ownsPoolItem(pPoolItem)) {
 			throw new IllegalArgumentException("PoolItem from another pool!");
 		}
 

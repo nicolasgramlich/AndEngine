@@ -84,7 +84,7 @@ public class CardinalSplineMoveModifier extends DurationEntityModifier {
 
 		/* Calculate active control point. */
 		final int p;
-		if(percentageDone == 1) {
+		if (percentageDone == 1) {
 			p = this.mControlSegmentCount;
 		} else {
 			p = (int) (percentageDone / this.mControlSegmentCountInverse);
@@ -192,7 +192,7 @@ public class CardinalSplineMoveModifier extends DurationEntityModifier {
 		 * @param pTension [-1, 1]
 		 */
 		public CardinalSplineMoveModifierConfig(final int pControlPointCount, final float pTension) {
-			if(pControlPointCount < CardinalSplineMoveModifierConfig.CONTROLPOINT_COUNT_MINIMUM) {
+			if (pControlPointCount < CardinalSplineMoveModifierConfig.CONTROLPOINT_COUNT_MINIMUM) {
 				throw new IllegalArgumentException("A " + CardinalSplineMoveModifierConfig.class.getSimpleName() + " needs at least " + CardinalSplineMoveModifierConfig.CONTROLPOINT_COUNT_MINIMUM + " control points.");
 			}
 

@@ -28,7 +28,7 @@ public class EaseQuadIn implements IEaseFunction {
 	}
 
 	public static EaseQuadIn getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseQuadIn();
 		}
 		return INSTANCE;

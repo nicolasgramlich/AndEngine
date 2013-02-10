@@ -55,7 +55,7 @@ public class SystemUtils {
 
 	public static MemoryInfo getMemoryInfo() {
 		/* Lazy allocation. */
-		if(SystemUtils.sMemoryInfo == null) {
+		if (SystemUtils.sMemoryInfo == null) {
 			SystemUtils.sMemoryInfo = new MemoryInfo();
 		}
 
@@ -140,7 +140,7 @@ public class SystemUtils {
 		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/cpuinfo", SystemUtils.BOGOMIPS_PATTERN, 1000);
 
 		try {
-			if(matchResult.groupCount() > 0) {
+			if (matchResult.groupCount() > 0) {
 				return Float.parseFloat(matchResult.group(1));
 			} else {
 				throw new SystemUtilsException();
@@ -158,7 +158,7 @@ public class SystemUtils {
 		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", SystemUtils.MEMTOTAL_PATTERN, 1000);
 
 		try {
-			if(matchResult.groupCount() > 0) {
+			if (matchResult.groupCount() > 0) {
 				return Long.parseLong(matchResult.group(1));
 			} else {
 				throw new SystemUtilsException();
@@ -176,7 +176,7 @@ public class SystemUtils {
 		final MatchResult matchResult = SystemUtils.matchSystemFile("/proc/meminfo", SystemUtils.MEMFREE_PATTERN, 1000);
 
 		try {
-			if(matchResult.groupCount() > 0) {
+			if (matchResult.groupCount() > 0) {
 				return Long.parseLong(matchResult.group(1));
 			} else {
 				throw new SystemUtilsException();
@@ -235,7 +235,7 @@ public class SystemUtils {
 			final Scanner scanner = new Scanner(in);
 
 			final boolean matchFound = scanner.findWithinHorizon(pPattern, pHorizon) != null;
-			if(matchFound) {
+			if (matchFound) {
 				return scanner.match();
 			} else {
 				throw new SystemUtilsException();

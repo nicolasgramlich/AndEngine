@@ -41,7 +41,7 @@ public final class SAXUtils {
 
 	public static final void hasAttributeOrThrow(final Attributes pAttributes, final String pAttributeName) throws IllegalArgumentException {
 		final String value = pAttributes.getValue("", pAttributeName);
-		if(value == null) {
+		if (value == null) {
 			throw new IllegalArgumentException("No value found for attribute: '" + pAttributeName + "'");
 		}
 	}
@@ -53,7 +53,7 @@ public final class SAXUtils {
 
 	public static final String getAttributeOrThrow(final Attributes pAttributes, final String pAttributeName) {
 		final String value = pAttributes.getValue("", pAttributeName);
-		if(value != null) {
+		if (value != null) {
 			return value;
 		} else {
 			throw new IllegalArgumentException("No value found for attribute: '" + pAttributeName + "'");

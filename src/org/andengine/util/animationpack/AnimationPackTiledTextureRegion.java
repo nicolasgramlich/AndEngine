@@ -34,7 +34,7 @@ public class AnimationPackTiledTextureRegion extends TiledTextureRegion {
 		final int frameCount = pFrameDurations.length;
 
 		final int[] frames= new int[frameCount];
-		for(int i = 0; i < frameCount; i++) {
+		for (int i = 0; i < frameCount; i++) {
 			frames[i] = i;
 		}
 

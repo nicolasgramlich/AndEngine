@@ -69,7 +69,7 @@ public class Letter {
 	// ===========================================================
 
 	public int getKerning(final int pCharacter) {
-		if(this.mKernings == null) {
+		if (this.mKernings == null) {
 			return 0;
 		}
 		return this.mKernings.get(pCharacter, 0);
@@ -93,17 +93,17 @@ public class Letter {
 
 	@Override
 	public boolean equals(final Object pObject) {
-		if(this == pObject) {
+		if (this == pObject) {
 			return true;
 		}
-		if(pObject == null) {
+		if (pObject == null) {
 			return false;
 		}
-		if(this.getClass() != pObject.getClass()) {
+		if (this.getClass() != pObject.getClass()) {
 			return false;
 		}
 		final Letter other = (Letter) pObject;
-		if(this.mCharacter != other.mCharacter) {
+		if (this.mCharacter != other.mCharacter) {
 			return false;
 		}
 		return true;
@@ -136,7 +136,7 @@ public class Letter {
 	}
 
 	void addKerning(final int pCharacter, final int pKerning) {
-		if(this.mKernings == null) {
+		if (this.mKernings == null) {
 			this.mKernings = new SparseIntArray();
 		}
 		this.mKernings.put(pCharacter, pKerning);

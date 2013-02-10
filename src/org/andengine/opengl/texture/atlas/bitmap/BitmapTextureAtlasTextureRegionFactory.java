@@ -47,7 +47,7 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>.
 	 */
 	public static void setAssetBasePath(final String pAssetBasePath) {
-		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
+		if (pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
 			BitmapTextureAtlasTextureRegionFactory.sAssetBasePath = pAssetBasePath;
 		} else {
 			throw new IllegalArgumentException("pAssetBasePath must end with '/' or be lenght zero.");

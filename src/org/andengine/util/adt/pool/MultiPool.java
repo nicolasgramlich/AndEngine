@@ -42,7 +42,7 @@ public class MultiPool<T> {
 
 	public T obtainPoolItem(final int pID) {
 		final GenericPool<T> pool = this.mPools.get(pID);
-		if(pool == null) {
+		if (pool == null) {
 			return null;
 		} else {
 			return pool.obtainPoolItem();
@@ -51,7 +51,7 @@ public class MultiPool<T> {
 
 	public void recyclePoolItem(final int pID, final T pItem) {
 		final GenericPool<T> pool = this.mPools.get(pID);
-		if(pool != null) {
+		if (pool != null) {
 			pool.recyclePoolItem(pItem);
 		}
 	}

@@ -56,7 +56,7 @@ public class TextureRegion extends BaseTextureRegion {
 		this.mTextureY = pTextureY;
 
 		this.mRotated = pRotated;
-		if(this.mRotated) {
+		if (this.mRotated) {
 			this.mTextureWidth = pTextureHeight;
 			this.mTextureHeight = pTextureWidth;
 		} else {
@@ -71,7 +71,7 @@ public class TextureRegion extends BaseTextureRegion {
 
 	@Override
 	public TextureRegion deepCopy() {
-		if(this.mRotated) {
+		if (this.mRotated) {
 			return new TextureRegion(this.mTexture, this.mTextureX, this.mTextureY, this.mTextureHeight, this.mTextureWidth, this.mScale, this.mRotated);
 		} else {
 			return new TextureRegion(this.mTexture, this.mTextureX, this.mTextureY, this.mTextureWidth, this.mTextureHeight, this.mScale, this.mRotated);
@@ -116,7 +116,7 @@ public class TextureRegion extends BaseTextureRegion {
 
 	@Override
 	public float getWidth() {
-		if(this.mRotated) {
+		if (this.mRotated) {
 			return this.mTextureHeight * this.mScale;
 		} else {
 			return this.mTextureWidth * this.mScale;
@@ -125,7 +125,7 @@ public class TextureRegion extends BaseTextureRegion {
 
 	@Override
 	public float getHeight() {
-		if(this.mRotated) {
+		if (this.mRotated) {
 			return this.mTextureWidth * this.mScale;
 		} else {
 			return this.mTextureHeight * this.mScale;

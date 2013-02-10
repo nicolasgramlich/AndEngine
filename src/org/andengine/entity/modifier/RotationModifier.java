@@ -45,7 +45,7 @@ public class RotationModifier extends SingleValueSpanEntityModifier {
 	}
 
 	@Override
-	public RotationModifier deepCopy(){
+	public RotationModifier deepCopy() {
 		return new RotationModifier(this);
 	}
 

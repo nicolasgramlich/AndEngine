@@ -140,7 +140,7 @@ public abstract class Texture implements ITexture {
 
 		this.mUpdateOnHardwareNeeded = false;
 
-		if(this.mTextureStateListener != null) {
+		if (this.mTextureStateListener != null) {
 			this.mTextureStateListener.onLoadedToHardware(this);
 		}
 	}
@@ -151,7 +151,7 @@ public abstract class Texture implements ITexture {
 
 		this.mHardwareTextureID = Texture.HARDWARE_TEXTURE_ID_INVALID;
 
-		if(this.mTextureStateListener != null) {
+		if (this.mTextureStateListener != null) {
 			this.mTextureStateListener.onUnloadedFromHardware(this);
 		}
 	}

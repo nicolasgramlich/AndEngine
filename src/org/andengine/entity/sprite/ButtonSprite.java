@@ -72,7 +72,7 @@ public class ButtonSprite extends TiledSprite {
 		this.mOnClickListener = pOnClickListener;
 		this.mStateCount = pTiledTextureRegion.getTileCount();
 
-		switch(this.mStateCount) {
+		switch (this.mStateCount) {
 			case 1:
 				Debug.w("No " + ITextureRegion.class.getSimpleName() + " supplied for " + State.class.getSimpleName() + "." + State.PRESSED + ".");
 			case 2:
@@ -98,9 +98,9 @@ public class ButtonSprite extends TiledSprite {
 	public void setEnabled(final boolean pEnabled) {
 		this.mEnabled = pEnabled;
 
-		if(this.mEnabled && this.mState == State.DISABLED) {
+		if (this.mEnabled && this.mState == State.DISABLED) {
 			this.changeState(State.NORMAL);
-		} else if(!this.mEnabled) {
+		} else if (!this.mEnabled) {
 			this.changeState(State.DISABLED);
 		}
 	}
@@ -123,16 +123,16 @@ public class ButtonSprite extends TiledSprite {
 
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		if(!this.isEnabled()) {
+		if (!this.isEnabled()) {
 			this.changeState(State.DISABLED);
-		} else if(pSceneTouchEvent.isActionDown()) {
+		} else if (pSceneTouchEvent.isActionDown()) {
 			this.changeState(State.PRESSED);
-		} else if(pSceneTouchEvent.isActionCancel() || !this.contains(pSceneTouchEvent.getX(), pSceneTouchEvent.getY())) {
+		} else if (pSceneTouchEvent.isActionCancel() || !this.contains(pSceneTouchEvent.getX(), pSceneTouchEvent.getY())) {
 			this.changeState(State.NORMAL);
-		} else if(pSceneTouchEvent.isActionUp() && this.mState == State.PRESSED) {
+		} else if (pSceneTouchEvent.isActionUp() && this.mState == State.PRESSED) {
 			this.changeState(State.NORMAL);
 
-			if(this.mOnClickListener != null) {
+			if (this.mOnClickListener != null) {
 				this.mOnClickListener.onClick(this, pTouchAreaLocalX, pTouchAreaLocalY);
 			}
 		}
@@ -142,7 +142,7 @@ public class ButtonSprite extends TiledSprite {
 
 	@Override
 	public boolean contains(final float pX, final float pY) {
-		if(!this.isVisible()) {
+		if (!this.isVisible()) {
 			return false;
 		} else {
 			return super.contains(pX, pY);
@@ -154,14 +154,14 @@ public class ButtonSprite extends TiledSprite {
 	// ===========================================================
 
 	private void changeState(final State pState) {
-		if(pState == this.mState) {
+		if (pState == this.mState) {
 			return;
 		}
 
 		this.mState = pState;
 
 		final int stateTiledTextureRegionIndex = this.mState.getTiledTextureRegionIndex();
-		if(stateTiledTextureRegionIndex >= this.mStateCount) {
+		if (stateTiledTextureRegionIndex >= this.mStateCount) {
 			this.setCurrentTileIndex(0);
 			Debug.w(this.getClass().getSimpleName() + " changed its " + State.class.getSimpleName() + " to " + pState.toString() + ", which doesn't have a " + ITextureRegion.class.getSimpleName() + " supplied. Applying default " + ITextureRegion.class.getSimpleName() + ".");
 		} else {

@@ -73,7 +73,7 @@ public class HighPerformanceSpriteBatchVertexBufferObject extends HighPerformanc
 		final float u2 = pTextureRegion.getU2();
 		final float v2 = pTextureRegion.getV2();
 
-		if(pTextureRegion.isRotated()) {
+		if (pTextureRegion.isRotated()) {
 			bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
 			bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
 			bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pColorABGRPackedInt;
@@ -170,7 +170,7 @@ public class HighPerformanceSpriteBatchVertexBufferObject extends HighPerformanc
 		final float u2 = pTextureRegion.getU2();
 		final float v2 = pTextureRegion.getV2();
 
-		if(pTextureRegion.isRotated()) {
+		if (pTextureRegion.isRotated()) {
 			bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_X] = x1;
 			bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.VERTEX_INDEX_Y] = y1;
 			bufferData[bufferDataOffset + 0 * SpriteBatch.VERTEX_SIZE + SpriteBatch.COLOR_INDEX] = pColorABGRPackedInt;

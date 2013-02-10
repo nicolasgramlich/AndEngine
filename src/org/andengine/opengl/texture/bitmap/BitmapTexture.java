@@ -103,24 +103,24 @@ public class BitmapTexture extends Texture {
 		final Config bitmapConfig = this.mBitmapTextureFormat.getBitmapConfig();
 		final Bitmap bitmap = this.onGetBitmap(bitmapConfig);
 
-		if(bitmap == null) {
+		if (bitmap == null) {
 			throw new NullBitmapException("Caused by: '" + this.toString() + "'.");
 		}
 
 		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && (this.mPixelFormat == PixelFormat.RGBA_8888);
-		if(!useDefaultAlignment) {
+		if (!useDefaultAlignment) {
 			/* Adjust unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 		}
 
 		final boolean preMultipyAlpha = this.mTextureOptions.mPreMultiplyAlpha;
-		if(preMultipyAlpha) {
+		if (preMultipyAlpha) {
 			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 		} else {
 			pGLState.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0, this.mPixelFormat);
 		}
 
-		if(!useDefaultAlignment) {
+		if (!useDefaultAlignment) {
 			/* Restore default unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 		}

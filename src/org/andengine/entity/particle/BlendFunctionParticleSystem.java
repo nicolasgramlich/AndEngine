@@ -77,7 +77,7 @@ public class BlendFunctionParticleSystem<T extends IEntity> extends ParticleSyst
 
 	@Override
 	protected void preDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mBlendingEnabled) {
+		if (this.mBlendingEnabled) {
 			pGLState.enableBlend();
 			pGLState.blendFunction(this.mBlendFunctionSource, this.mBlendFunctionDestination);
 		}
@@ -85,7 +85,7 @@ public class BlendFunctionParticleSystem<T extends IEntity> extends ParticleSyst
 
 	@Override
 	protected void postDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mBlendingEnabled) {
+		if (this.mBlendingEnabled) {
 			pGLState.disableBlend();
 		}
 	}

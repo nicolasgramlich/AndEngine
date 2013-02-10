@@ -88,9 +88,9 @@ public class AnimationPackParser extends DefaultHandler {
 
 	@Override
 	public void startElement(final String pUri, final String pLocalName, final String pQualifiedName, final Attributes pAttributes) throws SAXException {
-		if(pLocalName.equals(AnimationPackParser.TAG_ANIMATIONPACK)) {
+		if (pLocalName.equals(AnimationPackParser.TAG_ANIMATIONPACK)) {
 			final int version = SAXUtils.getIntAttributeOrThrow(pAttributes, AnimationPackParser.TAG_ANIMATIONPACK_ATTRIBUTE_VERSION);
-			if(version != 1) {
+			if (version != 1) {
 				throw new AnimationPackParseException("Unexpected version: '" + version + "'.");
 			}
 
@@ -98,21 +98,21 @@ public class AnimationPackParser extends DefaultHandler {
 			this.mTexturePackLibrary = new TexturePackLibrary();
 			this.mAnimationPackTiledTextureRegionLibrary = new AnimationPackTiledTextureRegionLibrary();
 			this.mAnimationPack = new AnimationPack(this.mTexturePackLibrary, this.mAnimationPackTiledTextureRegionLibrary);
-		} else if(pLocalName.equals(AnimationPackParser.TAG_TEXTUREPACKS)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_TEXTUREPACKS)) {
 			/* Nothing. */
-		} else if(pLocalName.equals(AnimationPackParser.TAG_TEXTUREPACK)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_TEXTUREPACK)) {
 			final String texturePackName = SAXUtils.getAttributeOrThrow(pAttributes, AnimationPackParser.TAG_TEXTUREPACK_ATTRIBUTE_FILENAME);
 			final String texturePackPath = this.mAssetBasePath + texturePackName;
 
 			final TexturePack texturePack = this.mTexturePackLoader.loadFromAsset(texturePackPath, this.mAssetBasePath);
 			this.mTexturePackLibrary.put(texturePackName, texturePack);
 			texturePack.loadTexture();
-		} else if(pLocalName.equals(AnimationPackParser.TAG_ANIMATIONS)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_ANIMATIONS)) {
 			/* Nothing. */
-		} else if(pLocalName.equals(AnimationPackParser.TAG_ANIMATION)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_ANIMATION)) {
 			this.mCurrentAnimationName = SAXUtils.getAttributeOrThrow(pAttributes, AnimationPackParser.TAG_ANIMATION_ATTRIBUTE_NAME);
 			this.mCurrentAnimationLoopCount = SAXUtils.getIntAttribute(pAttributes, AnimationPackParser.TAG_ANIMATION_ATTRIBUTE_LOOPCOUNT, IAnimationData.LOOP_CONTINUOUS);
-		} else if(pLocalName.equals(AnimationPackParser.TAG_ANIMATIONFRAME)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_ANIMATIONFRAME)) {
 			final int duration = SAXUtils.getIntAttributeOrThrow(pAttributes, AnimationPackParser.TAG_ANIMATIONFRAME_ATTRIBUTE_DURATION);
 			this.mCurrentAnimationFrameDurations.add(duration);
 
@@ -126,15 +126,15 @@ public class AnimationPackParser extends DefaultHandler {
 
 	@Override
 	public void endElement(final String pUri, final String pLocalName, final String pQualifiedName) throws SAXException {
-		if(pLocalName.equals(AnimationPackParser.TAG_ANIMATIONPACK)) {
+		if (pLocalName.equals(AnimationPackParser.TAG_ANIMATIONPACK)) {
 			/* Nothing. */
-		} else if(pLocalName.equals(AnimationPackParser.TAG_TEXTUREPACKS)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_TEXTUREPACKS)) {
 			/* Nothing. */
-		} else if(pLocalName.equals(AnimationPackParser.TAG_TEXTUREPACK)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_TEXTUREPACK)) {
 			/* Nothing. */
-		} else if(pLocalName.equals(AnimationPackParser.TAG_ANIMATIONS)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_ANIMATIONS)) {
 			/* Nothing. */
-		} else if(pLocalName.equals(AnimationPackParser.TAG_ANIMATION)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_ANIMATION)) {
 			final int currentAnimationFrameFrameCount = this.mCurrentAnimationFrameDurations.size();
 			final long[] frameDurations = this.mCurrentAnimationFrameDurations.toArray();
 			final TexturePackTextureRegion[] textureRegions = new TexturePackTextureRegion[currentAnimationFrameFrameCount];
@@ -147,7 +147,7 @@ public class AnimationPackParser extends DefaultHandler {
 			this.mCurrentAnimationLoopCount = IAnimationData.LOOP_CONTINUOUS;
 			this.mCurrentAnimationFrameDurations.clear();
 			this.mCurrentAnimationFrameTexturePackTextureRegions.clear();
-		} else if(pLocalName.equals(AnimationPackParser.TAG_ANIMATIONFRAME)) {
+		} else if (pLocalName.equals(AnimationPackParser.TAG_ANIMATIONFRAME)) {
 			/* Nothing. */
 		} else {
 			throw new AnimationPackParseException("Unexpected end tag: '" + pLocalName + "'.");

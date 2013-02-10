@@ -28,7 +28,7 @@ public class EaseBounceIn implements IEaseFunction {
 	}
 
 	public static EaseBounceIn getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseBounceIn();
 		}
 		return INSTANCE;

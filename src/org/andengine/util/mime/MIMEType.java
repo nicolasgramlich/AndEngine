@@ -13,7 +13,7 @@ public enum MIMEType {
 	// ===========================================================
 
 	JPEG("image/jpeg"),
-	GIF("image/gif"),
+	Gif ("image/gif"),
 	PNG("image/png"),
 	TEXT("text/plain");
 

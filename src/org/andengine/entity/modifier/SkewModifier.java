@@ -44,7 +44,7 @@ public class SkewModifier extends DoubleValueSpanEntityModifier {
 	}
 
 	@Override
-	public SkewModifier deepCopy(){
+	public SkewModifier deepCopy() {
 		return new SkewModifier(this);
 	}
 

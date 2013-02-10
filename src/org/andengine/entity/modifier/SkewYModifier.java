@@ -44,7 +44,7 @@ public class SkewYModifier extends SingleValueSpanEntityModifier {
 	}
 
 	@Override
-	public SkewYModifier deepCopy(){
+	public SkewYModifier deepCopy() {
 		return new SkewYModifier(this);
 	}
 

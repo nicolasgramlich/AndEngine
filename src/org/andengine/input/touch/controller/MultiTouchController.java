@@ -33,7 +33,7 @@ public class MultiTouchController extends BaseTouchController {
 	@Override
 	public void onHandleMotionEvent(final MotionEvent pMotionEvent) {
 		final int action = pMotionEvent.getAction() & MotionEvent.ACTION_MASK;
-		switch(action) {
+		switch (action) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_POINTER_DOWN:
 				this.onHandleTouchAction(MotionEvent.ACTION_DOWN, pMotionEvent);
@@ -59,7 +59,7 @@ public class MultiTouchController extends BaseTouchController {
 	// ===========================================================
 
 	private void onHandleTouchMove(final MotionEvent pMotionEvent) {
-		for(int i = pMotionEvent.getPointerCount() - 1; i >= 0; i--) {
+		for (int i = pMotionEvent.getPointerCount() - 1; i >= 0; i--) {
 			final int pointerIndex = i;
 			final int pointerID = pMotionEvent.getPointerId(pointerIndex);
 			this.fireTouchEvent(pMotionEvent.getX(pointerIndex), pMotionEvent.getY(pointerIndex), MotionEvent.ACTION_MOVE, pointerID, pMotionEvent);

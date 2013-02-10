@@ -186,12 +186,12 @@ public class FileUtils {
 	 * @return <code>true</code>, if all deletions were successful. <code>false</code>, if a deletion fails (the recursion is stopped then).
 	 */
 	public static boolean delete(final File pFileOrDirectory) {
-		if(pFileOrDirectory.isDirectory()) {
+		if (pFileOrDirectory.isDirectory()) {
 			final String[] children = pFileOrDirectory.list();
 			final int childCount = children.length;
-			for(int i = 0; i < childCount; i++) {
+			for (int i = 0; i < childCount; i++) {
 				final boolean success = FileUtils.delete(new File(pFileOrDirectory, children[i]));
-				if(!success) {
+				if (!success) {
 					return false;
 				}
 			}

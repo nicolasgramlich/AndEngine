@@ -196,10 +196,10 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			this.mXMax = pXMax;
 			this.mYMax = pYMax;
 
-			if(pXMin > pXMax) {
+			if (pXMin > pXMax) {
 				throw new IllegalArgumentException("pXMin must be smaller or equal to pXMax.");
 			}
-			if(pYMin > pYMax) {
+			if (pYMin > pYMax) {
 				throw new IllegalArgumentException("pYMin must be smaller or equal to pYMax.");
 			}
 		}
@@ -245,7 +245,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			final int width = this.getWidth();
 			final int height = this.getHeight();
 
-			if(width <= 2 && height <= 2) {
+			if (width <= 2 && height <= 2) {
 				throw new BoundsSplitException();
 			}
 
@@ -304,8 +304,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			final int width = this.getWidth();
 			final int halfWidth = width / 2;
 
-			if(width <= 2) {
-				switch(pBoundsSplit) {
+			if (width <= 2) {
+				switch (pBoundsSplit) {
 					case TOP_LEFT:
 					case BOTTOM_LEFT:
 						return this.mXMin;
@@ -316,7 +316,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 				}
 			} else {
-				switch(pBoundsSplit) {
+				switch (pBoundsSplit) {
 					case TOP_LEFT:
 						return this.mXMin;
 					case TOP_RIGHT:
@@ -335,8 +335,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			final int height = this.getHeight();
 			final int halfHeight = height / 2;
 
-			if(height <= 2) {
-				switch(pBoundsSplit) {
+			if (height <= 2) {
+				switch (pBoundsSplit) {
 					case TOP_LEFT:
 					case TOP_RIGHT:
 						return  this.mYMin;
@@ -347,7 +347,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 				}
 			} else {
-				switch(pBoundsSplit) {
+				switch (pBoundsSplit) {
 					case TOP_LEFT:
 						return  this.mYMin;
 					case TOP_RIGHT:
@@ -366,8 +366,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			final int width = this.getWidth();
 			final int halfWidth = width / 2;
 
-			if(width <= 2) {
-				switch(pBoundsSplit) {
+			if (width <= 2) {
+				switch (pBoundsSplit) {
 					case TOP_LEFT:
 					case BOTTOM_LEFT:
 						return this.mXMax;
@@ -378,7 +378,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 				}
 			} else {
-				switch(pBoundsSplit) {
+				switch (pBoundsSplit) {
 					case TOP_LEFT:
 						return this.mXMin + halfWidth;
 					case TOP_RIGHT:
@@ -397,8 +397,8 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			final int height = this.getHeight();
 			final int halfHeight = height / 2;
 
-			if(height <= 2) {
-				switch(pBoundsSplit) {
+			if (height <= 2) {
+				switch (pBoundsSplit) {
 					case TOP_LEFT:
 					case TOP_RIGHT:
 						return this.mYMax;
@@ -409,7 +409,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 						throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 				}
 			} else {
-				switch(pBoundsSplit) {
+				switch (pBoundsSplit) {
 					case TOP_LEFT:
 						return this.mYMin + halfHeight;
 					case TOP_RIGHT:

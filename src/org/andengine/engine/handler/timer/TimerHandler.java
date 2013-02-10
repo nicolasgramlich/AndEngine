@@ -33,7 +33,7 @@ public class TimerHandler implements IUpdateHandler {
 	}
 
 	public TimerHandler(final float pTimerSeconds, final boolean pAutoReset, final ITimerCallback pTimerCallback) {
-		if(pTimerSeconds <= 0){
+		if (pTimerSeconds <= 0) {
 			throw new IllegalStateException("pTimerSeconds must be >= 0!");
 		}
 
@@ -80,16 +80,16 @@ public class TimerHandler implements IUpdateHandler {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		if(this.mAutoReset) {
+		if (this.mAutoReset) {
 			this.mTimerSecondsElapsed += pSecondsElapsed;
 			while(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
 				this.mTimerSecondsElapsed -= this.mTimerSeconds;
 				this.mTimerCallback.onTimePassed(this);
 			}
 		} else {
-			if(!this.mTimerCallbackTriggered) {
+			if (!this.mTimerCallbackTriggered) {
 				this.mTimerSecondsElapsed += pSecondsElapsed;
-				if(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
+				if (this.mTimerSecondsElapsed >= this.mTimerSeconds) {
 					this.mTimerCallbackTriggered = true;
 					this.mTimerCallback.onTimePassed(this);
 				}

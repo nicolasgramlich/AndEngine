@@ -70,14 +70,14 @@ public class IntLRUCache<V> {
 
 	public V put(final int pKey, final V pValue) {
 		final IntLRUCacheValueHolder<V> existingIntLRUCacheValueHolder = this.mSparseArray.get(pKey);
-		if(existingIntLRUCacheValueHolder != null) {
+		if (existingIntLRUCacheValueHolder != null) {
 			/* Just heat up that item. */
 			this.mIntLRUCacheQueue.moveToTail(existingIntLRUCacheValueHolder.mIntLRUCacheQueueNode);
 
 			return existingIntLRUCacheValueHolder.mValue;
 		}
 
-		if(this.mSize >= this.mCapacity) {
+		if (this.mSize >= this.mCapacity) {
 			final int deadKey = this.mIntLRUCacheQueue.poll();
 			this.mSparseArray.remove(deadKey);
 			this.mSize--;
@@ -99,7 +99,7 @@ public class IntLRUCache<V> {
 
 	public V get(final int pKey) {
 		final IntLRUCacheValueHolder<V> IntLRUCacheValueHolder = this.mSparseArray.get(pKey);
-		if(IntLRUCacheValueHolder == null) {
+		if (IntLRUCacheValueHolder == null) {
 			return null;
 		}
 
@@ -112,7 +112,7 @@ public class IntLRUCache<V> {
 		while(!this.mIntLRUCacheQueue.isEmpty()) {
 			final int key = this.mIntLRUCacheQueue.poll();
 			final IntLRUCacheValueHolder<V> lruCacheValueHolder = this.mSparseArray.get(key);
-			if(lruCacheValueHolder == null) {
+			if (lruCacheValueHolder == null) {
 				throw new IllegalArgumentException();
 			}
 			this.mSparseArray.remove(key);
@@ -251,7 +251,7 @@ public class IntLRUCache<V> {
 		}
 
 		private IntLRUCacheQueueNode add(final IntLRUCacheQueueNode pIntLRUCacheQueueNode) {
-			if(this.isEmpty()) {
+			if (this.isEmpty()) {
 				this.mHead = pIntLRUCacheQueueNode;
 				this.mTail = this.mHead;
 			} else {
@@ -266,12 +266,12 @@ public class IntLRUCache<V> {
 		public int poll() {
 			final IntLRUCacheQueueNode head = this.mHead;
 			final int key = this.mHead.mKey;
-			if(key == 0) {
+			if (key == 0) {
 				throw new IllegalStateException();
 			}
 
 			/* Check if item to poll is the tail. */
-			if(this.mHead.mNext == null) {
+			if (this.mHead.mNext == null) {
 				this.mHead = null;
 				this.mTail = null;
 			} else {
@@ -287,14 +287,14 @@ public class IntLRUCache<V> {
 			final IntLRUCacheQueueNode next = pIntLRUCacheQueueNode.mNext;
 
 			/* Check if the node already is the tail. */
-			if(next == null) {
+			if (next == null) {
 				return;
 			} else {
 				final IntLRUCacheQueueNode previous = pIntLRUCacheQueueNode.mPrevious;
 				next.mPrevious = previous;
 
 				/* Check if item to bump is the head. */
-				if(previous == null) {
+				if (previous == null) {
 					this.mHead = next;
 				} else {
 					previous.mNext = next;

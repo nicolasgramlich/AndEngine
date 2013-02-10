@@ -55,13 +55,13 @@ public class VertexBufferObjectAttributesBuilder {
 	// ===========================================================
 
 	public VertexBufferObjectAttributesBuilder add(final int pLocation, final String pName, final int pSize, final int pType, final boolean pNormalized) {
-		if(VertexBufferObjectAttributesBuilder.WORAROUND_GLES2_GLVERTEXATTRIBPOINTER_MISSING) {
+		if (VertexBufferObjectAttributesBuilder.WORAROUND_GLES2_GLVERTEXATTRIBPOINTER_MISSING) {
 			this.mVertexBufferObjectAttributes[this.mIndex] = new VertexBufferObjectAttributeFix(pLocation, pName, pSize, pType, pNormalized, this.mOffset);
 		} else {
 			this.mVertexBufferObjectAttributes[this.mIndex] = new VertexBufferObjectAttribute(pLocation, pName, pSize, pType, pNormalized, this.mOffset);
 		}
 
-		switch(pType) {
+		switch (pType) {
 			case GLES20.GL_FLOAT:
 				this.mOffset += pSize * DataConstants.BYTES_PER_FLOAT;
 				break;
@@ -78,7 +78,7 @@ public class VertexBufferObjectAttributesBuilder {
 	}
 
 	public VertexBufferObjectAttributes build() {
-		if(this.mIndex != this.mVertexBufferObjectAttributes.length) {
+		if (this.mIndex != this.mVertexBufferObjectAttributes.length) {
 			throw new AndEngineRuntimeException("Not enough " + VertexBufferObjectAttribute.class.getSimpleName() + "s added to this " + this.getClass().getSimpleName() + ".");
 		}
 

@@ -128,7 +128,7 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 
 	@Override
 	public int getGPUMemoryByteSize() {
-		if(this.isLoadedToHardware()) {
+		if (this.isLoadedToHardware()) {
 			return this.getByteCapacity();
 		} else {
 			return 0;
@@ -143,14 +143,14 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 
 	@Override
 	public void bind(final GLState pGLState) {
-		if(this.mHardwareBufferID == IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
+		if (this.mHardwareBufferID == IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
 			this.loadToHardware(pGLState);
 			this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
 		}
 
 		pGLState.bindArrayBuffer(this.mHardwareBufferID);
 
-		if(this.mDirtyOnHardware) {
+		if (this.mDirtyOnHardware) {
 			ByteBuffer byteBuffer = null;
 			try {
 				byteBuffer = this.aquireByteBuffer();
@@ -159,7 +159,7 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 
 				GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, byteBuffer.limit(), byteBuffer, this.mUsage);
 			} finally {
-				if(byteBuffer != null) {
+				if (byteBuffer != null) {
 					this.releaseByteBuffer(byteBuffer);
 				}
 			}
@@ -201,7 +201,7 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 
 	@Override
 	public void dispose() {
-		if(!this.mDisposed) {
+		if (!this.mDisposed) {
 			this.mDisposed = true;
 
 			this.mVertexBufferObjectManager.onUnloadVertexBufferObject(this);
@@ -214,7 +214,7 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(!this.mDisposed) {
+		if (!this.mDisposed) {
 			this.dispose();
 		}
 	}

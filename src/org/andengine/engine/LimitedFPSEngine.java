@@ -47,7 +47,7 @@ public class LimitedFPSEngine extends Engine {
 		final long preferredFrameLengthNanoseconds = this.mPreferredFrameLengthNanoseconds;
 		final long deltaFrameLengthNanoseconds = preferredFrameLengthNanoseconds - pNanosecondsElapsed;
 
-		if(deltaFrameLengthNanoseconds <= 0) {
+		if (deltaFrameLengthNanoseconds <= 0) {
 			super.onUpdate(pNanosecondsElapsed);
 		} else {
 			final int sleepTimeMilliseconds = (int) (deltaFrameLengthNanoseconds / TimeConstants.NANOSECONDS_PER_MILLISECOND);

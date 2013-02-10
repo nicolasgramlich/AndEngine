@@ -40,13 +40,13 @@ public final class SocketUtils {
 	// ===========================================================
 
 	public static final void closeSocket(final DatagramSocket pDatagramSocket) {
-		if(pDatagramSocket != null && !pDatagramSocket.isClosed()) {
+		if (pDatagramSocket != null && !pDatagramSocket.isClosed()) {
 			pDatagramSocket.close();
 		}
 	}
 
 	public static final void closeSocket(final Socket pSocket) {
-		if(pSocket != null && !pSocket.isClosed()) {
+		if (pSocket != null && !pSocket.isClosed()) {
 			try {
 				pSocket.close();
 			} catch (final IOException e) {
@@ -56,7 +56,7 @@ public final class SocketUtils {
 	}
 
 	public static final void closeSocket(final ServerSocket pServerSocket) {
-		if(pServerSocket != null && !pServerSocket.isClosed()) {
+		if (pServerSocket != null && !pServerSocket.isClosed()) {
 			try {
 				pServerSocket.close();
 			} catch (final IOException e) {

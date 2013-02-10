@@ -33,14 +33,14 @@ public class DebugTextureStateListener<T extends ITextureAtlasSource> implements
 
 	@Override
 	public void onLoadedToHardware(final ITexture pTexture) {
-		if(BuildConfig.DEBUG) {
+		if (BuildConfig.DEBUG) {
 			Debug.d("Texture loaded: " + pTexture.toString());
 		}
 	}
 
 	@Override
 	public void onUnloadedFromHardware(final ITexture pTexture) {
-		if(BuildConfig.DEBUG) {
+		if (BuildConfig.DEBUG) {
 			Debug.d("Texture unloaded: " + pTexture.toString());
 		}
 	}

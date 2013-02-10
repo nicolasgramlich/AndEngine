@@ -35,7 +35,7 @@ public class DelayModifier extends DurationEntityModifier {
 	}
 
 	@Override
-	public DelayModifier deepCopy(){
+	public DelayModifier deepCopy() {
 		return new DelayModifier(this);
 	}
 

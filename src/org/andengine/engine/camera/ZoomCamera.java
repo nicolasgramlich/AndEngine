@@ -44,7 +44,7 @@ public class ZoomCamera extends BoundCamera {
 	public void setZoomFactor(final float pZoomFactor) {
 		this.mZoomFactor = pZoomFactor;
 
-		if(this.mBoundsEnabled) {
+		if (this.mBoundsEnabled) {
 			this.ensureInBounds();
 		}
 	}
@@ -55,7 +55,7 @@ public class ZoomCamera extends BoundCamera {
 
 	@Override
 	public float getXMin() {
-		if(this.mZoomFactor == 1.0f) {
+		if (this.mZoomFactor == 1.0f) {
 			return super.getXMin();
 		} else {
 			final float centerX = this.getCenterX();
@@ -65,7 +65,7 @@ public class ZoomCamera extends BoundCamera {
 
 	@Override
 	public float getXMax() {
-		if(this.mZoomFactor == 1.0f) {
+		if (this.mZoomFactor == 1.0f) {
 			return super.getXMax();
 		} else {
 			final float centerX = this.getCenterX();
@@ -75,7 +75,7 @@ public class ZoomCamera extends BoundCamera {
 
 	@Override
 	public float getYMin() {
-		if(this.mZoomFactor == 1.0f) {
+		if (this.mZoomFactor == 1.0f) {
 			return super.getYMin();
 		} else {
 			final float centerY = this.getCenterY();
@@ -85,7 +85,7 @@ public class ZoomCamera extends BoundCamera {
 
 	@Override
 	public float getYMax() {
-		if(this.mZoomFactor == 1.0f) {
+		if (this.mZoomFactor == 1.0f) {
 			return super.getYMax();
 		} else {
 			final float centerY = this.getCenterY();
@@ -106,7 +106,7 @@ public class ZoomCamera extends BoundCamera {
 	@Override
 	protected void applySceneToCameraSceneOffset(final TouchEvent pSceneTouchEvent) {
 		final float zoomFactor = this.mZoomFactor;
-		if(zoomFactor != 1) {
+		if (zoomFactor != 1) {
 			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pSceneTouchEvent.getX();
 			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pSceneTouchEvent.getY();
 
@@ -121,7 +121,7 @@ public class ZoomCamera extends BoundCamera {
 	@Override
 	protected void applySceneToCameraSceneOffset(final float[] pSceneCoordinates) {
 		final float zoomFactor = this.mZoomFactor;
-		if(zoomFactor != 1) {
+		if (zoomFactor != 1) {
 			MathUtils.scaleAroundCenter(pSceneCoordinates, zoomFactor, zoomFactor, this.getCenterX(), this.getCenterY()); // TODO Use a Transformation object instead!?!
 		}
 
@@ -133,7 +133,7 @@ public class ZoomCamera extends BoundCamera {
 		super.unapplySceneToCameraSceneOffset(pCameraSceneTouchEvent);
 
 		final float zoomFactor = this.mZoomFactor;
-		if(zoomFactor != 1) {
+		if (zoomFactor != 1) {
 			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pCameraSceneTouchEvent.getX();
 			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
 
@@ -148,7 +148,7 @@ public class ZoomCamera extends BoundCamera {
 		super.unapplySceneToCameraSceneOffset(pCameraSceneCoordinates);
 
 		final float zoomFactor = this.mZoomFactor;
-		if(zoomFactor != 1) {
+		if (zoomFactor != 1) {
 			MathUtils.revertScaleAroundCenter(pCameraSceneCoordinates, zoomFactor, zoomFactor, this.getCenterX(), this.getCenterY()); // TODO Use a Transformation object instead!?!
 		}
 	}

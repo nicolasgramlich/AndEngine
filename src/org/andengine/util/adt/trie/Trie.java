@@ -101,7 +101,7 @@ public class Trie implements ITrie {
 		@Override
 		public void add(final CharSequence pCharSequence) {
 			final int length = pCharSequence.length();
-			if(length == 0) {
+			if (length == 0) {
 				return;
 			}
 
@@ -110,18 +110,18 @@ public class Trie implements ITrie {
 
 		@Override
 		public void add(final CharSequence pCharSequence, final int pStart, final int pEnd) {
-			if(this.mChildren == null) {
+			if (this.mChildren == null) {
 				this.mChildren = new SparseArray<Trie.TrieNode>(Trie.CHILDREN_SIZE_DEFAULT);
 			}
 			final char character = pCharSequence.charAt(pStart);
 
 			TrieNode child = this.mChildren.get(character);
-			if(child == null) {
+			if (child == null) {
 				child = new TrieNode();
 				this.mChildren.put(character, child);
 			}
 
-			if(pStart < pEnd - 1) {
+			if (pStart < pEnd - 1) {
 				child.add(pCharSequence, pStart + 1, pEnd);
 			} else {
 				child.mWordEndFlag = true;
@@ -131,7 +131,7 @@ public class Trie implements ITrie {
 		@Override
 		public boolean contains(final CharSequence pCharSequence) {
 			final int length = pCharSequence.length();
-			if(length == 0) {
+			if (length == 0) {
 				throw new IllegalArgumentException();
 			}
 			return this.contains(pCharSequence, 0, length);
@@ -139,16 +139,16 @@ public class Trie implements ITrie {
 
 		@Override
 		public boolean contains(final CharSequence pCharSequence, final int pStart, final int pEnd) {
-			if(this.mChildren == null) {
+			if (this.mChildren == null) {
 				return false;
 			}
 
 			final char character = pCharSequence.charAt(pStart);
 			final TrieNode child = this.mChildren.get(character);
-			if(child == null) {
+			if (child == null) {
 				return false;
 			} else {
-				if(pStart < pEnd - 1) {
+				if (pStart < pEnd - 1) {
 					return child.contains(pCharSequence, pStart + 1, pEnd);
 				} else {
 					return child.mWordEndFlag;

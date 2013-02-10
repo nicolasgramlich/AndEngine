@@ -40,7 +40,7 @@ public class ZIndexSorter extends InsertionSorter<IEntity> {
 	}
 
 	public static ZIndexSorter getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new ZIndexSorter();
 		}
 		return INSTANCE;

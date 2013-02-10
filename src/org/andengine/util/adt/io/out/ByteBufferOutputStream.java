@@ -67,7 +67,7 @@ public class ByteBufferOutputStream extends OutputStream {
 	// ===========================================================
 
 	private void ensureCapacity(final int pDesiredCapacity) {
-		if(pDesiredCapacity - this.mData.length > 0) {
+		if (pDesiredCapacity - this.mData.length > 0) {
 			this.grow(pDesiredCapacity);
 		}
 	}
@@ -77,11 +77,11 @@ public class ByteBufferOutputStream extends OutputStream {
 		final int grow = Math.min(this.mMaximumGrow, oldCapacity);
 		int newCapacity = oldCapacity + grow;
 
-		if(newCapacity - pDesiredCapacity < 0) {
+		if (newCapacity - pDesiredCapacity < 0) {
 			newCapacity = pDesiredCapacity;
 		}
-		if(newCapacity < 0) {
-			if(pDesiredCapacity < 0) {
+		if (newCapacity < 0) {
+			if (pDesiredCapacity < 0) {
 				throw new OutOfMemoryError();
 			} else {
 				newCapacity = Integer.MAX_VALUE;

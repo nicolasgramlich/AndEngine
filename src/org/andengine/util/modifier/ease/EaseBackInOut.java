@@ -28,7 +28,7 @@ public class EaseBackInOut implements IEaseFunction {
 	}
 
 	public static EaseBackInOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseBackInOut();
 		}
 		return INSTANCE;
@@ -46,7 +46,7 @@ public class EaseBackInOut implements IEaseFunction {
 	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
 		final float percentage = pSecondsElapsed / pDuration;
 
-		if(percentage < 0.5f) {
+		if (percentage < 0.5f) {
 			return 0.5f * EaseBackIn.getValue(2 * percentage);
 		} else {
 			return 0.5f + 0.5f * EaseBackOut.getValue(percentage * 2 - 1);

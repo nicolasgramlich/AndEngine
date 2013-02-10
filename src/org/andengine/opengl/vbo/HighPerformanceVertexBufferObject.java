@@ -39,7 +39,7 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 		super(pVertexBufferObjectManager, pCapacity, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
 
 		this.mBufferData = new float[pCapacity];
-		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+		if (SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
 			this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 		} else {
 			this.mFloatBuffer = null;
@@ -50,7 +50,7 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 		super(pVertexBufferObjectManager, pBufferData.length, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
 		this.mBufferData = pBufferData;
 
-		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+		if (SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
 			this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 		} else {
 			this.mFloatBuffer = null;
@@ -82,7 +82,7 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 	@Override
 	protected void onBufferData() {
 		// TODO Check if, and how mow this condition affects performance.
-		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
+		if (SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
 			// TODO Check if this is similar fast or faster than the non Honeycomb codepath.
 			this.mFloatBuffer.position(0);
 			this.mFloatBuffer.put(this.mBufferData);

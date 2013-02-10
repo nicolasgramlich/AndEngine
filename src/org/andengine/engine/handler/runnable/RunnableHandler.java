@@ -38,7 +38,7 @@ public class RunnableHandler implements IUpdateHandler {
 	public synchronized void onUpdate(final float pSecondsElapsed) {
 		final ArrayList<Runnable> runnables = this.mRunnables;
 		final int runnableCount = runnables.size();
-		for(int i = runnableCount - 1; i >= 0; i--) {
+		for (int i = runnableCount - 1; i >= 0; i--) {
 			runnables.get(i).run();
 		}
 		runnables.clear();

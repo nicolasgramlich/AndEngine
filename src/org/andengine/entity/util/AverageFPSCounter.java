@@ -48,7 +48,7 @@ public abstract class AverageFPSCounter extends FPSCounter {
 	public void onUpdate(final float pSecondsElapsed) {
 		super.onUpdate(pSecondsElapsed);
 
-		if(this.mSecondsElapsed > this.mAverageDuration){
+		if (this.mSecondsElapsed > this.mAverageDuration) {
 			this.onHandleAverageDurationElapsed(this.getFPS());
 
 			this.mSecondsElapsed -= this.mAverageDuration;

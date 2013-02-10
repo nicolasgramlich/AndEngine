@@ -43,7 +43,7 @@ public class UpdateHandlerList extends SmartList<IUpdateHandler> implements IUpd
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
 		final int handlerCount = this.size();
-		for(int i = handlerCount - 1; i >= 0; i--) {
+		for (int i = handlerCount - 1; i >= 0; i--) {
 			this.get(i).onUpdate(pSecondsElapsed);
 		}
 	}
@@ -51,7 +51,7 @@ public class UpdateHandlerList extends SmartList<IUpdateHandler> implements IUpd
 	@Override
 	public void reset() {
 		final int handlerCount = this.size();
-		for(int i = handlerCount - 1; i >= 0; i--) {
+		for (int i = handlerCount - 1; i >= 0; i--) {
 			this.get(i).reset();
 		}
 	}

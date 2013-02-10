@@ -55,7 +55,7 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 	}
 
 	public static PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram getInstance() {
-		if(PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.INSTANCE == null) {
+		if (PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.INSTANCE == null) {
 			PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.INSTANCE = new PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram();
 		}
 		return PositionTextureCoordinatesPositionInterpolationTextureSelectShaderProgram.INSTANCE;

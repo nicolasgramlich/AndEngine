@@ -34,10 +34,10 @@ public class ModifierUtils {
 	// Methods
 	// ===========================================================
 
-	public static float getSequenceDurationOfModifier(final IModifier<?>[] pModifiers){
+	public static float getSequenceDurationOfModifier(final IModifier<?>[] pModifiers) {
 		float duration = Float.MIN_VALUE;
 
-		for(int i = pModifiers.length - 1; i >= 0; i--) {
+		for (int i = pModifiers.length - 1; i >= 0; i--) {
 			duration += pModifiers[i].getDuration();
 		}
 

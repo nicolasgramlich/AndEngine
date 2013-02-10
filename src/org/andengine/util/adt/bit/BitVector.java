@@ -26,7 +26,7 @@ public final class BitVector {
 	// ===========================================================
 
 	private BitVector(final int pCapacity) {
-		if(pCapacity <= 0) {
+		if (pCapacity <= 0) {
 			throw new IllegalArgumentException("pCapacity must be > 0.");
 		}
 		this.mCapacity = pCapacity;
@@ -35,7 +35,7 @@ public final class BitVector {
 		final boolean perfectDataFit = pCapacity % DataConstants.BITS_PER_LONG == 0;
 
 		final int dataCapacity;
-		if(perfectDataFit) {
+		if (perfectDataFit) {
 			dataCapacity = pCapacity / DataConstants.BITS_PER_LONG;
 		} else {
 			/* Extra field for overflow bytes. */
@@ -55,7 +55,7 @@ public final class BitVector {
 		final int dataCapacity = data.length;
 		final int lastCompleteDataIndex = (perfectDataFit) ? dataCapacity - 1 : dataCapacity - 2;
 
-		for(int i = lastCompleteDataIndex; i >= 0; i--) {
+		for (int i = lastCompleteDataIndex; i >= 0; i--) {
 			final int bytesOffset = i * DataConstants.BYTES_PER_LONG;
 
 			data[i] = ((((long)pBytes[bytesOffset + 0]) << 56) & 0xFF00000000000000L)
@@ -69,14 +69,14 @@ public final class BitVector {
 		}
 
 		/* Put overflow bytes into last data field. */
-		if(!perfectDataFit) {
+		if (!perfectDataFit) {
 			long overflowData = 0;
 
 			final int overflowDataIndex = dataCapacity - 1;
 			final int overflowBytesOffset = overflowDataIndex * DataConstants.BYTES_PER_LONG;
 
 			final int overflowByteCount = pBytes.length - overflowBytesOffset;
-			switch(overflowByteCount) {
+			switch (overflowByteCount) {
 				case 7:
 					overflowData = overflowData | ((((long)pBytes[overflowBytesOffset + 6]) <<  8) & 0xFF00L);
 				case 6:
@@ -106,10 +106,10 @@ public final class BitVector {
 	}
 
 	public boolean getBit(final int pPosition) {
-		if(pPosition < 0) {
+		if (pPosition < 0) {
 			throw new IllegalArgumentException("pPosition must be >= 0.");
 		}
-		if(pPosition >= this.mCapacity) {
+		if (pPosition >= this.mCapacity) {
 			throw new IllegalArgumentException("pPosition must be < capacity.");
 		}
 
@@ -142,18 +142,18 @@ public final class BitVector {
 
 	public long getBits(final int pPosition, final int pLength) {
 		/* Sanity checks. */
-		if(pPosition < 0) {
+		if (pPosition < 0) {
 			throw new IllegalArgumentException("pPosition must be >= 0.");
 		}
-		if(pLength < 0) {
+		if (pLength < 0) {
 			throw new IllegalArgumentException("pLength must be >= 0.");
 		}
-		if(pPosition + pLength > this.mCapacity) {
+		if (pPosition + pLength > this.mCapacity) {
 			throw new IllegalArgumentException("pPosition + pLength must be <= capacity.");
 		}
 
 		/* Early exit. */
-		if(pLength == 0) {
+		if (pLength == 0) {
 			return 0L;
 		}
 
@@ -161,16 +161,16 @@ public final class BitVector {
 		final int offset = pPosition % DataConstants.BITS_PER_LONG;
 
 		final long data;
-		if(offset == 0) {
+		if (offset == 0) {
 			data = this.mData[dataIndex];
-		} else if(offset + pLength <= DataConstants.BITS_PER_LONG) {
+		} else if (offset + pLength <= DataConstants.BITS_PER_LONG) {
 			data = this.mData[dataIndex] << offset;
 		} else {
 			/* Join bits from adjacent data fields. */
 			data = (this.mData[dataIndex] << offset) | (this.mData[dataIndex + 1] >>> (DataConstants.BITS_PER_LONG - offset));
 		}
 
-		if(pLength == DataConstants.BITS_PER_LONG) {
+		if (pLength == DataConstants.BITS_PER_LONG) {
 			return data;
 		} else {
 			final int rightShift = DataConstants.BITS_PER_LONG - pLength;
@@ -188,9 +188,9 @@ public final class BitVector {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append('[');
-		for(int i = 0; i < this.mCapacity; i++) {
+		for (int i = 0; i < this.mCapacity; i++) {
 			sb.append(this.getBit(i) ? '1' : '0');
-			if(i % 8 == 7 && i < this.mCapacity -1) {
+			if (i % 8 == 7 && i < this.mCapacity -1) {
 				sb.append(' ');
 			}
 		}
@@ -204,7 +204,7 @@ public final class BitVector {
 
 	public byte[] toByteArray() {
 		final int byteArrayLength;
-		if(this.mCapacity % DataConstants.BITS_PER_BYTE == 0) {
+		if (this.mCapacity % DataConstants.BITS_PER_BYTE == 0) {
 			byteArrayLength = this.mCapacity / DataConstants.BITS_PER_BYTE;
 		} else {
 			byteArrayLength = (this.mCapacity / DataConstants.BITS_PER_BYTE) + 1;
@@ -219,7 +219,7 @@ public final class BitVector {
 		final int lastCompleteDataIndex = (perfectDataFit) ? dataCapacity - 1 : dataCapacity - 2;
 
 		int bytesOffset = lastCompleteDataIndex * DataConstants.BYTES_PER_LONG + (DataConstants.BYTES_PER_LONG - 1);
-		for(int i = lastCompleteDataIndex; i >= 0; i--) {
+		for (int i = lastCompleteDataIndex; i >= 0; i--) {
 			final long dataField = data[i];
 
 			bytes[bytesOffset--] = (byte) ((dataField >> 0) & 0xFF);
@@ -233,14 +233,14 @@ public final class BitVector {
 		}
 
 		/* Put overflow bytes into last data field. */
-		if(!perfectDataFit) {
+		if (!perfectDataFit) {
 			final int overflowDataIndex = dataCapacity - 1;
 			final long overflowDataField = data[overflowDataIndex];
 
 			final int overflowBytesOffset = overflowDataIndex * DataConstants.BYTES_PER_LONG;
 
 			final int overflowByteCount = bytes.length % DataConstants.BYTES_PER_LONG;
-			switch(overflowByteCount) {
+			switch (overflowByteCount) {
 				case 7:
 					bytes[overflowBytesOffset + 6] = (byte) ((overflowDataField >> 8) & 0xFF);
 				case 6:

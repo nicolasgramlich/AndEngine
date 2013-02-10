@@ -49,7 +49,7 @@ public class ScreenGrabber extends Entity {
 
 	@Override
 	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mScreenGrabPending) {
+		if (this.mScreenGrabPending) {
 			try {
 				final Bitmap screenGrab = ScreenGrabber.grab(this.mGrabX, this.mGrabY, this.mGrabWidth, this.mGrabHeight);
 

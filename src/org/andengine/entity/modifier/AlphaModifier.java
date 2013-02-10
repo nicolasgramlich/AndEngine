@@ -45,7 +45,7 @@ public class AlphaModifier extends SingleValueSpanEntityModifier {
 	}
 
 	@Override
-	public AlphaModifier deepCopy(){
+	public AlphaModifier deepCopy() {
 		return new AlphaModifier(this);
 	}
 

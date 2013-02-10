@@ -99,7 +99,7 @@ public class MemoryLogger implements IUpdateHandler {
 	public void onUpdate(final float pSecondsElapsed) {
 		this.mSecondsElapsed += pSecondsElapsed;
 
-		if(this.mSecondsElapsed > this.mAverageDuration){
+		if (this.mSecondsElapsed > this.mAverageDuration) {
 			this.onHandleLogDurationElapsed();
 
 			this.mSecondsElapsed -= this.mAverageDuration;
@@ -116,7 +116,7 @@ public class MemoryLogger implements IUpdateHandler {
 	// ===========================================================
 
 	protected void onHandleLogDurationElapsed() {
-		if(BuildConfig.DEBUG) {
+		if (BuildConfig.DEBUG) {
 			/* Execute GC. */
 			System.gc();
 			try {
@@ -125,7 +125,7 @@ public class MemoryLogger implements IUpdateHandler {
 				stringBuilder.append("|         Memory Stat          |    Current    |      Change     |\n");
 				stringBuilder.append("+------------------------------+---------------+-----------------+\n");
 
-				if(this.mLogSystemMemory) {
+				if (this.mLogSystemMemory) {
 					final long systemMemorySize = SystemUtils.getSystemMemorySize();
 					final long systemMemoryFreeSize = SystemUtils.getSystemMemoryFreeSize();
 
@@ -140,7 +140,7 @@ public class MemoryLogger implements IUpdateHandler {
 					stringBuilder.append("+------------------------------+---------------+-----------------+\n");
 				}
 
-				if(this.mLogDalvikHeap) {
+				if (this.mLogDalvikHeap) {
 					final long dalvikHeapSize = SystemUtils.getDalvikHeapSize();
 					final long dalvikHeapFreeSize = SystemUtils.getDalvikHeapFreeSize();
 					final long dalvikHeapAllocatedSize = SystemUtils.getDalvikHeapAllocatedSize();
@@ -159,7 +159,7 @@ public class MemoryLogger implements IUpdateHandler {
 					this.mPreviousDalvikHeapAllocatedSize = dalvikHeapAllocatedSize;
 				}
 
-				if(this.mLogDalvikMemoryInfo) {
+				if (this.mLogDalvikMemoryInfo) {
 					final long dalvikProportionalSetSize = SystemUtils.getDalvikProportionalSetSize();
 					final long dalvikPrivateDirtyPages = SystemUtils.getDalvikPrivateDirtyPages();
 					final long dalvikSharedDirtyPages = SystemUtils.getDalvikSharedDirtyPages();
@@ -178,7 +178,7 @@ public class MemoryLogger implements IUpdateHandler {
 					this.mPreviousDalvikSharedDirtyPages = dalvikSharedDirtyPages;
 				}
 
-				if(this.mLogNativeHeap) {
+				if (this.mLogNativeHeap) {
 					final long nativeHeapSize = SystemUtils.getNativeHeapSize();
 					final long nativeHeapFreeSize = SystemUtils.getNativeHeapFreeSize();
 					final long nativeHeapAllocatedSize = SystemUtils.getNativeHeapAllocatedSize();
@@ -197,7 +197,7 @@ public class MemoryLogger implements IUpdateHandler {
 					this.mPreviousNativeHeapAllocatedSize = nativeHeapAllocatedSize;
 				}
 
-				if(this.mLogNativeMemoryInfo) {
+				if (this.mLogNativeMemoryInfo) {
 					final long nativeProportionalSetSize = SystemUtils.getNativeProportionalSetSize();
 					final long nativePrivateDirtyPages = SystemUtils.getNativePrivateDirtyPages();
 					final long nativeSharedDirtyPages = SystemUtils.getNativeSharedDirtyPages();
@@ -229,7 +229,7 @@ public class MemoryLogger implements IUpdateHandler {
 	}
 
 	public static final CharSequence formatRight(final long pLong, final char pPadChar, final int pLength, final boolean pAddPositiveSign) {
-		if((pLong > 0) && pAddPositiveSign) {
+		if ((pLong > 0) && pAddPositiveSign) {
 			return TextUtils.padFront("+" + String.valueOf(pLong), pPadChar, pLength);
 		} else {
 			return TextUtils.padFront(String.valueOf(pLong), pPadChar, pLength);

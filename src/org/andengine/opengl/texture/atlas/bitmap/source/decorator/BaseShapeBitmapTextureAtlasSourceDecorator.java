@@ -45,7 +45,7 @@ public abstract class BaseShapeBitmapTextureAtlasSourceDecorator extends BaseBit
 	// ===========================================================
 
 	@Override
-	protected void onDecorateBitmap(final Canvas pCanvas){
+	protected void onDecorateBitmap(final Canvas pCanvas) {
 		this.mBitmapTextureAtlasSourceDecoratorShape.onDecorateBitmap(pCanvas, this.mPaint, (this.mTextureAtlasSourceDecoratorOptions == null) ? TextureAtlasSourceDecoratorOptions.DEFAULT : this.mTextureAtlasSourceDecoratorOptions);
 	}
 

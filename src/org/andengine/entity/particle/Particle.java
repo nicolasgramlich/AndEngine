@@ -77,8 +77,8 @@ public class Particle<T extends IEntity> {
 	// ===========================================================
 
 	protected void onUpdate(final float pSecondsElapsed) {
-		if(!this.mExpired){
-			if(this.mExpireTime == Particle.EXPIRETIME_NEVER || this.mLifeTime + pSecondsElapsed < this.mExpireTime) {
+		if (!this.mExpired) {
+			if (this.mExpireTime == Particle.EXPIRETIME_NEVER || this.mLifeTime + pSecondsElapsed < this.mExpireTime) {
 				/* Particle doesn't expire or didn't expire yet. */
 				this.mLifeTime += pSecondsElapsed;
 				this.mEntity.onUpdate(pSecondsElapsed);
@@ -94,7 +94,7 @@ public class Particle<T extends IEntity> {
 	}
 
 	public void onDraw(final GLState pGLState, final Camera pCamera) {
-		if(!this.mExpired) {
+		if (!this.mExpired) {
 			this.mEntity.onDraw(pGLState, pCamera);
 		}
 	}

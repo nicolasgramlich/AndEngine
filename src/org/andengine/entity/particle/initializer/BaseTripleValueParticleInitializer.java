@@ -53,7 +53,7 @@ public abstract class BaseTripleValueParticleInitializer<T extends IEntity> exte
 	// ===========================================================
 
 	protected float getRandomValueC() {
-		if(this.mMinValueC == this.mMaxValueC) {
+		if (this.mMinValueC == this.mMaxValueC) {
 			return this.mMaxValueC;
 		} else {
 			return MathUtils.random(this.mMinValueC, this.mMaxValueC);

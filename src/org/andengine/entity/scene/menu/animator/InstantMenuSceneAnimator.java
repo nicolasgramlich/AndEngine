@@ -25,7 +25,7 @@ public class InstantMenuSceneAnimator extends MenuSceneAnimator {
 	// Constructors
 	// ===========================================================
 
-	public InstantMenuSceneAnimator(){
+	public InstantMenuSceneAnimator() {
 		super();
 	}
 

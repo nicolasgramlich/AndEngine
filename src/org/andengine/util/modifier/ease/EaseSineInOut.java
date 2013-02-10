@@ -31,7 +31,7 @@ public class EaseSineInOut implements IEaseFunction {
 	}
 
 	public static EaseSineInOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseSineInOut();
 		}
 		return INSTANCE;

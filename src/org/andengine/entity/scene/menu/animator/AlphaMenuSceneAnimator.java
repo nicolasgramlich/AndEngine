@@ -36,7 +36,7 @@ public class AlphaMenuSceneAnimator extends MenuSceneAnimator {
 	// Constructors
 	// ===========================================================
 
-	public AlphaMenuSceneAnimator(){
+	public AlphaMenuSceneAnimator() {
 		this(AlphaMenuSceneAnimator.EASEFUNCTION_DEFAULT);
 	}
 

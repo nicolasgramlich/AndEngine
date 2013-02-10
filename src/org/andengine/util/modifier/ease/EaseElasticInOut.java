@@ -29,7 +29,7 @@ public class EaseElasticInOut implements IEaseFunction {
 	}
 
 	public static EaseElasticInOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseElasticInOut();
 		}
 		return INSTANCE;
@@ -47,7 +47,7 @@ public class EaseElasticInOut implements IEaseFunction {
 	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
 		final float percentage = pSecondsElapsed / pDuration;
 
-		if(percentage < 0.5f) {
+		if (percentage < 0.5f) {
 			return 0.5f * EaseElasticIn.getValue(2 * pSecondsElapsed, pDuration, 2 * percentage);
 		} else {
 			return 0.5f + 0.5f * EaseElasticOut.getValue(pSecondsElapsed * 2 - pDuration, pDuration, percentage * 2 - 1);

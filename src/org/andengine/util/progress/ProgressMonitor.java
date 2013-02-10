@@ -47,7 +47,7 @@ public class ProgressMonitor implements IProgressListener {
 	@Override
 	public void onProgressChanged(final int pProgress) {
 		final int progressListenerCount = this.mProgressListeners.size();
-		for(int i = 0; i < progressListenerCount; i++) {
+		for (int i = 0; i < progressListenerCount; i++) {
 			this.mProgressListeners.get(i).onProgressChanged(pProgress);
 		}
 	}

@@ -149,7 +149,7 @@ public abstract class BaseAudioEntity implements IAudioEntity {
 	// ===========================================================
 
 	protected void assertNotReleased() throws AudioException {
-		if(this.mReleased) {
+		if (this.mReleased) {
 			this.throwOnReleased();
 		}
 	}

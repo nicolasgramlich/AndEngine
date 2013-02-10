@@ -44,7 +44,7 @@ public class SkewXModifier extends SingleValueSpanEntityModifier {
 	}
 
 	@Override
-	public SkewXModifier deepCopy(){
+	public SkewXModifier deepCopy() {
 		return new SkewXModifier(this);
 	}
 

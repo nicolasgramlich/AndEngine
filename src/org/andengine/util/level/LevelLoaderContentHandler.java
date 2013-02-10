@@ -67,8 +67,8 @@ public abstract class LevelLoaderContentHandler<T extends IEntityLoaderData, L e
 		final IEntity parent = (this.mParentEntityStack.isEmpty()) ? null : this.mParentEntityStack.getLast();
 
 		IEntityLoader<T> entityLoader = this.mEntityLoaders.get(entityName);
-		if(entityLoader == null) {
-			if(this.mDefaultEntityLoader == null) {
+		if (entityLoader == null) {
+			if (this.mDefaultEntityLoader == null) {
 				throw new LevelLoaderException("Unexpected tag: '" + entityName + "'.");
 			} else {
 				entityLoader = this.mDefaultEntityLoader;
@@ -82,17 +82,17 @@ public abstract class LevelLoaderContentHandler<T extends IEntityLoaderData, L e
 			throw new LevelLoaderException("Exception when loading entity: '" + entityName + "'.", e);
 		}
 
-		if(entity == null) {
+		if (entity == null) {
 			throw new LevelLoaderException();
 		}
 
-		if(parent == null) {
+		if (parent == null) {
 			this.mRootEntity = entity;
 		} else {
 			parent.attachChild(entity);
 		}
 
-		if(this.mEntityLoaderListener != null) {
+		if (this.mEntityLoaderListener != null) {
 			this.mEntityLoaderListener.onEntityLoaded(entity, pAttributes);
 		}
 

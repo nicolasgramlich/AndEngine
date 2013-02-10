@@ -62,7 +62,7 @@ public class ClipEntity extends Entity {
 
 	@Override
 	protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mClippingEnabled) {
+		if (this.mClippingEnabled) {
 			/* Enable scissor test, while remembering previous state. */
 			final boolean wasScissorTestEnabled = pGLState.enableScissorTest();
 

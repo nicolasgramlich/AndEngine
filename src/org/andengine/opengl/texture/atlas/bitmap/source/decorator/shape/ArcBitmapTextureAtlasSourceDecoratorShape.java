@@ -50,7 +50,7 @@ public class ArcBitmapTextureAtlasSourceDecoratorShape implements IBitmapTexture
 
 	@Deprecated
 	public static ArcBitmapTextureAtlasSourceDecoratorShape getDefaultInstance() {
-		if(sDefaultInstance == null) {
+		if (sDefaultInstance == null) {
 			sDefaultInstance = new ArcBitmapTextureAtlasSourceDecoratorShape();
 		}
 		return sDefaultInstance;

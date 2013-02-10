@@ -123,7 +123,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public int getGPUMemoryByteSize() {
-		if(this.isLoadedToHardware()) {
+		if (this.isLoadedToHardware()) {
 			return this.getByteCapacity();
 		} else {
 			return 0;
@@ -138,17 +138,17 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public void bind(final GLState pGLState) {
-		if(this.mHardwareBufferID == IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
+		if (this.mHardwareBufferID == IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID) {
 			this.loadToHardware(pGLState);
 
-			if(this.mVertexBufferObjectManager != null) {
+			if (this.mVertexBufferObjectManager != null) {
 				this.mVertexBufferObjectManager.onVertexBufferObjectLoaded(this);
 			}
 		}
 
 		pGLState.bindArrayBuffer(this.mHardwareBufferID);
 
-		if(this.mDirtyOnHardware) {
+		if (this.mDirtyOnHardware) {
 			this.onBufferData();
 
 			this.mDirtyOnHardware = false;
@@ -189,10 +189,10 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	@Override
 	public void dispose() {
-		if(!this.mDisposed) {
+		if (!this.mDisposed) {
 			this.mDisposed = true;
 
-			if(this.mVertexBufferObjectManager != null) {
+			if (this.mVertexBufferObjectManager != null) {
 				this.mVertexBufferObjectManager.onUnloadVertexBufferObject(this);
 			}
 
@@ -206,7 +206,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if(!this.mDisposed) {
+		if (!this.mDisposed) {
 			this.dispose();
 		}
 	}

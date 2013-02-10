@@ -78,7 +78,7 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements IClick
 
 	@Override
 	protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {
-		if(pRelativeX * pRelativeX + pRelativeY * pRelativeY <= 0.25f) {
+		if (pRelativeX * pRelativeX + pRelativeY * pRelativeY <= 0.25f) {
 			super.onUpdateControlKnob(pRelativeX, pRelativeY);
 		} else {
 			final float angleRad = MathUtils.atan2(pRelativeY, pRelativeX);

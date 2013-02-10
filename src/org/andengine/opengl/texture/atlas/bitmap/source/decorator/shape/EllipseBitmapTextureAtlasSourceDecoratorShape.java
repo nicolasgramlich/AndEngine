@@ -35,7 +35,7 @@ public class EllipseBitmapTextureAtlasSourceDecoratorShape implements IBitmapTex
 	}
 
 	public static EllipseBitmapTextureAtlasSourceDecoratorShape getDefaultInstance() {
-		if(sDefaultInstance == null) {
+		if (sDefaultInstance == null) {
 			sDefaultInstance = new EllipseBitmapTextureAtlasSourceDecoratorShape();
 		}
 		return sDefaultInstance;

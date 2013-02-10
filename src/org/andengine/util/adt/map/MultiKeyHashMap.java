@@ -59,12 +59,12 @@ public class MultiKeyHashMap<K, V> extends HashMap<MultiKey<K>, V> {
 			for (int i = 0; i < pKeysA.length; i++) {
 				final K keyA = pKeysA[i];
 				final K keyB = pKeysB[i];
-				if(keyA == null) {
-					if(keyB != null) {
+				if (keyA == null) {
+					if (keyB != null) {
 						return false;
 					}
 				} else {
-					if(!keyA.equals(keyB)) {
+					if (!keyA.equals(keyB)) {
 						return false;
 					}
 				}

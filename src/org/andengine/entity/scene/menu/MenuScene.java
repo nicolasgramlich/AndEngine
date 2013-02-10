@@ -109,7 +109,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 
 	@Override
 	public void setChildScene(final Scene pChildScene, final boolean pModalDraw, final boolean pModalUpdate, final boolean pModalTouch) throws IllegalArgumentException {
-		if(pChildScene instanceof MenuScene) {
+		if (pChildScene instanceof MenuScene) {
 			super.setChildScene(pChildScene, pModalDraw, pModalUpdate, pModalTouch);
 		} else {
 			throw new IllegalArgumentException("A " + MenuScene.class.getSimpleName() + " accepts only " + MenuScene.class.getSimpleName() + " as a ChildScene.");
@@ -118,7 +118,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 
 	@Override
 	public void clearChildScene() {
-		if(this.getChildScene() != null) {
+		if (this.getChildScene() != null) {
 			this.getChildScene().reset();
 			super.clearChildScene();
 		}
@@ -140,17 +140,17 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final ITouchArea pTouchArea, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 		final IMenuItem menuItem = ((IMenuItem)pTouchArea);
 
-		switch(pSceneTouchEvent.getAction()) {
+		switch (pSceneTouchEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE:
-				if((this.mSelectedMenuItem != null) && (this.mSelectedMenuItem != menuItem)) {
+				if ((this.mSelectedMenuItem != null) && (this.mSelectedMenuItem != menuItem)) {
 					this.mSelectedMenuItem.onUnselected();
 				}
 				this.mSelectedMenuItem = menuItem;
 				this.mSelectedMenuItem.onSelected();
 				break;
 			case MotionEvent.ACTION_UP:
-				if(this.mOnMenuItemClickListener != null) {
+				if (this.mOnMenuItemClickListener != null) {
 					final boolean handled = this.mOnMenuItemClickListener.onMenuItemClicked(this, menuItem, pTouchAreaLocalX, pTouchAreaLocalY);
 					menuItem.onUnselected();
 					this.mSelectedMenuItem = null;
@@ -167,7 +167,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 
 	@Override
 	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
-		if(this.mSelectedMenuItem != null) {
+		if (this.mSelectedMenuItem != null) {
 			this.mSelectedMenuItem.onUnselected();
 			this.mSelectedMenuItem = null;
 		}
@@ -186,12 +186,12 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	public void back(final boolean pResetAnimations, final boolean pResetParentMenuSceneAnimations) {
 		super.back();
 
-		if(pResetAnimations) {
+		if (pResetAnimations) {
 			this.resetAnimations();
 		}
 
-		if(pResetParentMenuSceneAnimations) {
-			if((this.mParentScene != null) && (this.mParentScene instanceof MenuScene)) {
+		if (pResetParentMenuSceneAnimations) {
+			if ((this.mParentScene != null) && (this.mParentScene instanceof MenuScene)) {
 				((MenuScene)this.mParentScene).resetAnimations();
 			}
 		}

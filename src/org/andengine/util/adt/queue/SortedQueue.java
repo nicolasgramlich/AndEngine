@@ -35,7 +35,7 @@ public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implemen
 
 	@Override
 	public T peek() {
-		if(this.isEmpty()) {
+		if (this.isEmpty()) {
 			return null;
 		} else {
 			return this.get(0);
@@ -44,7 +44,7 @@ public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implemen
 
 	@Override
 	public T poll() {
-		if(this.isEmpty()) {
+		if (this.isEmpty()) {
 			return null;
 		} else {
 			return this.remove(0);

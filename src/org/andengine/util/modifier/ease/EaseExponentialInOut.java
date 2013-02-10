@@ -28,7 +28,7 @@ public class EaseExponentialInOut implements IEaseFunction {
 	}
 
 	public static EaseExponentialInOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseExponentialInOut();
 		}
 		return INSTANCE;
@@ -46,7 +46,7 @@ public class EaseExponentialInOut implements IEaseFunction {
 	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
 		final float percentage = pSecondsElapsed / pDuration;
 
-		if(percentage < 0.5f) {
+		if (percentage < 0.5f) {
 			return 0.5f * EaseExponentialIn.getValue(2 * percentage);
 		} else {
 			return 0.5f + 0.5f * EaseExponentialOut.getValue(percentage * 2 - 1);

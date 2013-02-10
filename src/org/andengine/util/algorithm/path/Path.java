@@ -79,8 +79,8 @@ public class Path {
 	public boolean contains(final int pX, final int pY) {
 		final int[] xs = this.mXs;
 		final int[] ys = this.mYs;
-		for(int i = this.getLength() - 1; i >= 0; i--) {
-			if(xs[i] == pX && ys[i] == pY) {
+		for (int i = this.getLength() - 1; i >= 0; i--) {
+			if (xs[i] == pX && ys[i] == pY) {
 				return true;
 			}
 		}
@@ -88,7 +88,7 @@ public class Path {
 	}
 
 	public Direction getDirectionToPreviousStep(final int pIndex) {
-		if(pIndex == 0) {
+		if (pIndex == 0) {
 			return null;
 		} else {
 			final int dX = this.getX(pIndex - 1) - this.getX(pIndex);
@@ -98,7 +98,7 @@ public class Path {
 	}
 
 	public Direction getDirectionToNextStep(final int pIndex) {
-		if(pIndex == this.getLength() - 1) {
+		if (pIndex == this.getLength() - 1) {
 			return null;
 		} else {
 			final int dX = this.getX(pIndex + 1) - this.getX(pIndex);

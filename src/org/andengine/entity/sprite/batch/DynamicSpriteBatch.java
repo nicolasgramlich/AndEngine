@@ -90,7 +90,7 @@ public abstract class DynamicSpriteBatch extends SpriteBatch {
 	protected void begin() {
 		super.begin();
 
-		if(this.onUpdateSpriteBatch()) {
+		if (this.onUpdateSpriteBatch()) {
 			this.submit();
 		}
 	}

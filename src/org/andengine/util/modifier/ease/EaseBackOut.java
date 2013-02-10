@@ -28,7 +28,7 @@ public class EaseBackOut implements IEaseFunction {
 	}
 
 	public static EaseBackOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseBackOut();
 		}
 		return INSTANCE;

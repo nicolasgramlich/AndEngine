@@ -45,14 +45,14 @@ public class Debug {
 	}
 
 	public static void setDebugLevel(final DebugLevel pDebugLevel) {
-		if(pDebugLevel == null) {
+		if (pDebugLevel == null) {
 			throw new IllegalArgumentException("pDebugLevel must not be null!");
 		}
 		Debug.sDebugLevel = pDebugLevel;
 	}
 
 	public static void setDebugUser(final String pDebugUser) {
-		if(pDebugUser == null) {
+		if (pDebugUser == null) {
 			throw new IllegalArgumentException("pDebugUser must not be null!");
 		}
 		Debug.sDebugUser = pDebugUser;
@@ -67,7 +67,7 @@ public class Debug {
 	// ===========================================================
 
 	public static void log(final DebugLevel pDebugLevel, final String pMessage) {
-		switch(pDebugLevel) {
+		switch (pDebugLevel) {
 			case NONE:
 				return;
 			case VERBOSE:
@@ -89,7 +89,7 @@ public class Debug {
 	}
 
 	public static void log(final DebugLevel pDebugLevel, final String pMessage, final Throwable pThrowable) {
-		switch(pDebugLevel) {
+		switch (pDebugLevel) {
 			case NONE:
 				return;
 			case VERBOSE:
@@ -111,7 +111,7 @@ public class Debug {
 	}
 
 	public static void log(final DebugLevel pDebugLevel, final String pTag, final String pMessage) {
-		switch(pDebugLevel) {
+		switch (pDebugLevel) {
 			case NONE:
 				return;
 			case VERBOSE:
@@ -133,7 +133,7 @@ public class Debug {
 	}
 
 	public static void log(final DebugLevel pDebugLevel, final String pTag, final String pMessage, final Throwable pThrowable) {
-		switch(pDebugLevel) {
+		switch (pDebugLevel) {
 			case NONE:
 				return;
 			case VERBOSE:
@@ -167,8 +167,8 @@ public class Debug {
 	}
 
 	public static void v(final String pTag, final String pMessage, final Throwable pThrowable) {
-		if(Debug.sDebugLevel.isSameOrLessThan(DebugLevel.VERBOSE)) {
-			if(pThrowable == null) {
+		if (Debug.sDebugLevel.isSameOrLessThan(DebugLevel.VERBOSE)) {
+			if (pThrowable == null) {
 				Log.v(pTag, pMessage);
 			} else {
 				Log.v(pTag, pMessage, pThrowable);
@@ -177,25 +177,25 @@ public class Debug {
 	}
 
 	public static void vUser(final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.v(pMessage);
 		}
 	}
 
 	public static void vUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.v(pMessage, pThrowable);
 		}
 	}
 
 	public static void vUser(final String pTag, final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.v(pTag, pMessage);
 		}
 	}
 
 	public static void vUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.v(pTag, pMessage, pThrowable);
 		}
 	}
@@ -213,8 +213,8 @@ public class Debug {
 	}
 
 	public static void d(final String pTag, final String pMessage, final Throwable pThrowable) {
-		if(Debug.sDebugLevel.isSameOrLessThan(DebugLevel.DEBUG)) {
-			if(pThrowable == null) {
+		if (Debug.sDebugLevel.isSameOrLessThan(DebugLevel.DEBUG)) {
+			if (pThrowable == null) {
 				Log.d(pTag, pMessage);
 			} else {
 				Log.d(pTag, pMessage, pThrowable);
@@ -223,25 +223,25 @@ public class Debug {
 	}
 
 	public static void dUser(final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.d(pMessage);
 		}
 	}
 
 	public static void dUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.d(pMessage, pThrowable);
 		}
 	}
 
 	public static void dUser(final String pTag, final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.d(pTag, pMessage);
 		}
 	}
 
 	public static void dUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.d(pTag, pMessage, pThrowable);
 		}
 	}
@@ -259,8 +259,8 @@ public class Debug {
 	}
 
 	public static void i(final String pTag, final String pMessage, final Throwable pThrowable) {
-		if(Debug.sDebugLevel.isSameOrLessThan(DebugLevel.INFO)) {
-			if(pThrowable == null) {
+		if (Debug.sDebugLevel.isSameOrLessThan(DebugLevel.INFO)) {
+			if (pThrowable == null) {
 				Log.i(pTag, pMessage);
 			} else {
 				Log.i(pTag, pMessage, pThrowable);
@@ -269,25 +269,25 @@ public class Debug {
 	}
 
 	public static void iUser(final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.i(pMessage);
 		}
 	}
 
 	public static void iUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.i(pMessage, pThrowable);
 		}
 	}
 
 	public static void iUser(final String pTag, final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.i(pTag, pMessage);
 		}
 	}
 
 	public static void iUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.i(pTag, pMessage, pThrowable);
 		}
 	}
@@ -309,8 +309,8 @@ public class Debug {
 	}
 
 	public static void w(final String pTag, final String pMessage, final Throwable pThrowable) {
-		if(Debug.sDebugLevel.isSameOrLessThan(DebugLevel.WARNING)) {
-			if(pThrowable == null) {
+		if (Debug.sDebugLevel.isSameOrLessThan(DebugLevel.WARNING)) {
+			if (pThrowable == null) {
 				Log.w(pTag, pMessage);
 			} else {
 				Log.w(pTag, pMessage, pThrowable);
@@ -319,31 +319,31 @@ public class Debug {
 	}
 
 	public static void wUser(final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.w(pMessage);
 		}
 	}
 
 	public static void wUser(final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.w(pThrowable);
 		}
 	}
 
 	public static void wUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.w(pMessage, pThrowable);
 		}
 	}
 
 	public static void wUser(final String pTag, final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.w(pTag, pMessage);
 		}
 	}
 
 	public static void wUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.w(pTag, pMessage, pThrowable);
 		}
 	}
@@ -365,8 +365,8 @@ public class Debug {
 	}
 
 	public static void e(final String pTag, final String pMessage, final Throwable pThrowable) {
-		if(Debug.sDebugLevel.isSameOrLessThan(DebugLevel.ERROR)) {
-			if(pThrowable == null) {
+		if (Debug.sDebugLevel.isSameOrLessThan(DebugLevel.ERROR)) {
+			if (pThrowable == null) {
 				Log.e(pTag, pMessage);
 			} else {
 				Log.e(pTag, pMessage, pThrowable);
@@ -375,31 +375,31 @@ public class Debug {
 	}
 
 	public static void eUser(final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.e(pMessage);
 		}
 	}
 
 	public static void eUser(final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.e(pThrowable);
 		}
 	}
 
 	public static void eUser(final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.e(pMessage, pThrowable);
 		}
 	}
 
 	public static void eUser(final String pTag, final String pMessage, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.e(pTag, pMessage);
 		}
 	}
 
 	public static void eUser(final String pTag, final String pMessage, final Throwable pThrowable, final String pDebugUser) {
-		if(Debug.sDebugUser.equals(pDebugUser)) {
+		if (Debug.sDebugUser.equals(pDebugUser)) {
 			Debug.e(pTag, pMessage, pThrowable);
 		}
 	}

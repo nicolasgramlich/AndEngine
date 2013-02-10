@@ -30,14 +30,14 @@ public class SimplePreferences {
 	// ===========================================================
 
 	public static SharedPreferences getInstance(final Context pContext) {
-		if(SimplePreferences.INSTANCE == null) {
+		if (SimplePreferences.INSTANCE == null) {
 			SimplePreferences.INSTANCE = PreferenceManager.getDefaultSharedPreferences(pContext);
 		}
 		return SimplePreferences.INSTANCE;
 	}
 
 	public static Editor getEditorInstance(final Context pContext) {
-		if(SimplePreferences.EDITORINSTANCE == null) {
+		if (SimplePreferences.EDITORINSTANCE == null) {
 			SimplePreferences.EDITORINSTANCE = SimplePreferences.getInstance(pContext).edit();
 		}
 		return SimplePreferences.EDITORINSTANCE;

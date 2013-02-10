@@ -39,9 +39,9 @@ public class CriteriaShaderSource implements IShaderSource {
 
 	@Override
 	public String getShaderSource(final GLState pGLState) {
-		for(int i = 0; i < this.mCriteriaShaderSourceEntries.length; i++) {
+		for (int i = 0; i < this.mCriteriaShaderSourceEntries.length; i++) {
 			final CriteriaShaderSourceEntry criteriaShaderSourceEntry = this.mCriteriaShaderSourceEntries[i];
-			if(criteriaShaderSourceEntry.isMet(pGLState)) {
+			if (criteriaShaderSourceEntry.isMet(pGLState)) {
 				return criteriaShaderSourceEntry.getShaderSource();
 			}
 		}
@@ -98,9 +98,9 @@ public class CriteriaShaderSource implements IShaderSource {
 		// ===========================================================
 
 		public boolean isMet(final GLState pGLState) {
-			if(this.mGLCriterias != null) {
-				for(IGLCriteria gLCriteria : this.mGLCriterias) {
-					if(!gLCriteria.isMet(pGLState)) {
+			if (this.mGLCriterias != null) {
+				for (IGLCriteria gLCriteria : this.mGLCriterias) {
+					if (!gLCriteria.isMet(pGLState)) {
 						return false;
 					}
 				}

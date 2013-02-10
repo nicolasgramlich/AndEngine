@@ -67,8 +67,8 @@ public class BuildableTextureAtlasTextureRegionFactory {
 				final int tileWidth = pTextureAtlasSource.getTextureWidth() / pTileColumns;
 				final int tileHeight = pTextureAtlasSource.getTextureHeight() / pTileRows;
 
-				for(int tileColumn = 0; tileColumn < pTileColumns; tileColumn++) {
-					for(int tileRow = 0; tileRow < pTileRows; tileRow++) {
+				for (int tileColumn = 0; tileColumn < pTileColumns; tileColumn++) {
+					for (int tileRow = 0; tileRow < pTileRows; tileRow++) {
 						final int tileIndex = tileRow * pTileColumns + tileColumn;
 
 						final int x = pCallbackValue.getTextureX() + tileColumn * tileWidth;

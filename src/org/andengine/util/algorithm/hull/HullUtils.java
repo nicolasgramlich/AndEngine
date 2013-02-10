@@ -48,7 +48,7 @@ public class HullUtils {
 			final float currentVertexY = pVertices[currentVertexOffsetY];
 
 			/* Check if the current candidate is lower and if so, assign it. */
-			if(currentVertexY < lowestVertexY) {
+			if (currentVertexY < lowestVertexY) {
 				lowestVertexIndex = currentVertexIndex;
 				lowestVertexY = currentVertexY;
 			}
@@ -62,7 +62,7 @@ public class HullUtils {
 		final int vertexOffsetA = pVertexIndexA * pVertexStride;
 		final int vertexOffsetB = pVertexIndexB * pVertexStride;
 
-		for(int i = pVertexStride - 1; i >= 0; i--) {
+		for (int i = pVertexStride - 1; i >= 0; i--) {
 			final float tmp = pVertices[vertexOffsetA + i];
 			pVertices[vertexOffsetA + i] = pVertices[vertexOffsetB + i];
 			pVertices[vertexOffsetB + i] = tmp;

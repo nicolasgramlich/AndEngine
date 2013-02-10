@@ -130,7 +130,7 @@ public class Sprite extends Shape {
 	}
 
 	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
-		if(this.mFlippedHorizontal != pFlippedHorizontal) {
+		if (this.mFlippedHorizontal != pFlippedHorizontal) {
 			this.mFlippedHorizontal = pFlippedHorizontal;
 
 			this.onUpdateTextureCoordinates();
@@ -142,7 +142,7 @@ public class Sprite extends Shape {
 	}
 
 	public void setFlippedVertical(final boolean pFlippedVertical) {
-		if(this.mFlippedVertical != pFlippedVertical) {
+		if (this.mFlippedVertical != pFlippedVertical) {
 			this.mFlippedVertical = pFlippedVertical;
 
 			this.onUpdateTextureCoordinates();
@@ -150,7 +150,7 @@ public class Sprite extends Shape {
 	}
 
 	public void setFlipped(final boolean pFlippedHorizontal, final boolean pFlippedVertical) {
-		if((this.mFlippedHorizontal != pFlippedHorizontal) || (this.mFlippedVertical != pFlippedVertical)) {
+		if ((this.mFlippedHorizontal != pFlippedHorizontal) || (this.mFlippedVertical != pFlippedVertical)) {
 			this.mFlippedHorizontal = pFlippedHorizontal;
 			this.mFlippedVertical = pFlippedVertical;
 

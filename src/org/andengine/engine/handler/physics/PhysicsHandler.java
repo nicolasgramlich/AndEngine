@@ -120,25 +120,25 @@ public class PhysicsHandler extends BaseEntityUpdateHandler {
 
 	@Override
 	protected void onUpdate(final float pSecondsElapsed, final IEntity pEntity) {
-		if(this.mEnabled) {
+		if (this.mEnabled) {
 			/* Apply linear acceleration. */
 			final float accelerationX = this.mAccelerationX;
 			final float accelerationY = this.mAccelerationY;
-			if(accelerationX != 0 || accelerationY != 0) {
+			if (accelerationX != 0 || accelerationY != 0) {
 				this.mVelocityX += accelerationX * pSecondsElapsed;
 				this.mVelocityY += accelerationY * pSecondsElapsed;
 			}
 
 			/* Apply angular velocity. */
 			final float angularVelocity = this.mAngularVelocity;
-			if(angularVelocity != 0) {
+			if (angularVelocity != 0) {
 				pEntity.setRotation(pEntity.getRotation() + angularVelocity * pSecondsElapsed);
 			}
 
 			/* Apply linear velocity. */
 			final float velocityX = this.mVelocityX;
 			final float velocityY = this.mVelocityY;
-			if(velocityX != 0 || velocityY != 0) {
+			if (velocityX != 0 || velocityY != 0) {
 				pEntity.setPosition(pEntity.getX() + velocityX * pSecondsElapsed, pEntity.getY() + velocityY * pSecondsElapsed);
 			}
 		}

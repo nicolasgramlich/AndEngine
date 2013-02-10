@@ -54,7 +54,7 @@ public class PositionTextureCoordinatesShaderProgram extends ShaderProgram {
 	}
 
 	public static PositionTextureCoordinatesShaderProgram getInstance() {
-		if(PositionTextureCoordinatesShaderProgram.INSTANCE == null) {
+		if (PositionTextureCoordinatesShaderProgram.INSTANCE == null) {
 			PositionTextureCoordinatesShaderProgram.INSTANCE = new PositionTextureCoordinatesShaderProgram();
 		}
 		return PositionTextureCoordinatesShaderProgram.INSTANCE;

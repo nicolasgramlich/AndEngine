@@ -45,7 +45,7 @@ public class MoveXModifier extends SingleValueSpanEntityModifier {
 	}
 
 	@Override
-	public MoveXModifier deepCopy(){
+	public MoveXModifier deepCopy() {
 		return new MoveXModifier(this);
 	}
 

@@ -116,7 +116,7 @@ public abstract class MenuSceneAnimator implements IMenuSceneAnimator {
 
 		final int menuItemCount = pMenuScene.getMenuItemCount();
 
-		for(int i = 0; i < menuItemCount; i++) {
+		for (int i = 0; i < menuItemCount; i++) {
 			final IMenuItem menuItem = pMenuScene.getMenuItem(i);
 
 			final float x = this.getMenuItemX(pMenuScene, i);
@@ -129,7 +129,7 @@ public abstract class MenuSceneAnimator implements IMenuSceneAnimator {
 	public void resetMenuSceneAnimations(final MenuScene pMenuScene) {
 		final int menuItemCount = pMenuScene.getMenuItemCount();
 
-		for(int i = 0; i < menuItemCount; i++) {
+		for (int i = 0; i < menuItemCount; i++) {
 			final IMenuItem menuItem = pMenuScene.getMenuItem(i);
 
 			final float x = this.getMenuItemX(pMenuScene, i);
@@ -150,7 +150,7 @@ public abstract class MenuSceneAnimator implements IMenuSceneAnimator {
 
 		/* Determine horizontal position. */
 		final float x;
-		switch(this.mHorizontalAlign) {
+		switch (this.mHorizontalAlign) {
 			case LEFT:
 				x = menuItemWidth * 0.5f;
 				break;
@@ -174,7 +174,7 @@ public abstract class MenuSceneAnimator implements IMenuSceneAnimator {
 
 		/* Prepare vertical position. */
 		float baseY;
-		switch(this.mVerticalAlign) {
+		switch (this.mVerticalAlign) {
 			case TOP:
 				baseY = menuSceneHeight;
 				break;
@@ -200,7 +200,7 @@ public abstract class MenuSceneAnimator implements IMenuSceneAnimator {
 		final int menuItemCount = pMenuScene.getMenuItemCount();
 
 		float overallHeight = 0;
-		for(int i = menuItemCount - 1; i >= 0; i--) {
+		for (int i = menuItemCount - 1; i >= 0; i--) {
 			final IMenuItem menuItem = pMenuScene.getMenuItem(i);
 			overallHeight += menuItem.getHeight();
 		}

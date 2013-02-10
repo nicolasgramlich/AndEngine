@@ -55,7 +55,7 @@ public class PinchZoomDetector extends BaseDetector {
 	 */
 	@Override
 	public void reset() {
-		if(this.mPinchZooming) {
+		if (this.mPinchZooming) {
 			this.mPinchZoomDetectorListener.onPinchZoomFinished(this, null, this.getZoomFactor());
 		}
 
@@ -70,12 +70,12 @@ public class PinchZoomDetector extends BaseDetector {
 
 		final int action = motionEvent.getAction() & MotionEvent.ACTION_MASK;
 
-		switch(action) {
+		switch (action) {
 			case MotionEvent.ACTION_POINTER_DOWN:
-				if(!this.mPinchZooming && PinchZoomDetector.hasTwoOrMorePointers(motionEvent))  {
+				if (!this.mPinchZooming && PinchZoomDetector.hasTwoOrMorePointers(motionEvent))  {
 					this.mInitialDistance = PinchZoomDetector.calculatePointerDistance(motionEvent);
 					this.mCurrentDistance = this.mInitialDistance;
-					if(this.mInitialDistance > PinchZoomDetector.TRIGGER_PINCHZOOM_MINIMUM_DISTANCE_DEFAULT) {
+					if (this.mInitialDistance > PinchZoomDetector.TRIGGER_PINCHZOOM_MINIMUM_DISTANCE_DEFAULT) {
 						this.mPinchZooming = true;
 						this.mPinchZoomDetectorListener.onPinchZoomStarted(this, pSceneTouchEvent);
 					}
@@ -84,16 +84,16 @@ public class PinchZoomDetector extends BaseDetector {
 			case MotionEvent.ACTION_CANCEL:
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_POINTER_UP:
-				if(this.mPinchZooming) {
+				if (this.mPinchZooming) {
 					this.mPinchZooming = false;
 					this.mPinchZoomDetectorListener.onPinchZoomFinished(this, pSceneTouchEvent, this.getZoomFactor());
 				}
 				break;
 			case MotionEvent.ACTION_MOVE:
-				if(this.mPinchZooming) {
+				if (this.mPinchZooming) {
 					if (PinchZoomDetector.hasTwoOrMorePointers(motionEvent)) {
 						this.mCurrentDistance = PinchZoomDetector.calculatePointerDistance(motionEvent);
-						if(this.mCurrentDistance > PinchZoomDetector.TRIGGER_PINCHZOOM_MINIMUM_DISTANCE_DEFAULT) {
+						if (this.mCurrentDistance > PinchZoomDetector.TRIGGER_PINCHZOOM_MINIMUM_DISTANCE_DEFAULT) {
 							this.mPinchZoomDetectorListener.onPinchZoom(this, pSceneTouchEvent, this.getZoomFactor());
 						}
 					} else {

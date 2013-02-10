@@ -40,7 +40,7 @@ public class ProbabilityGenerator<T> {
 	// Methods
 	// ===========================================================
 
-	public void add(final float pFactor, final T ... pElements){
+	public void add(final float pFactor, final T ... pElements) {
 		this.mProbabilitySum += pFactor;
 		this.mEntries.add(new Entry<T>(pFactor, pElements));
 	}
@@ -50,10 +50,10 @@ public class ProbabilityGenerator<T> {
 
 		final ArrayList<Entry<T>> factors = this.mEntries;
 
-		for(int i = factors.size() - 1; i >= 0; i--){
+		for (int i = factors.size() - 1; i >= 0; i--) {
 			final Entry<T> entry = factors.get(i);
 			random -= entry.mFactor;
-			if(random <= 0){
+			if (random <= 0) {
 				return entry.getReturnValue();
 			}
 		}
@@ -87,7 +87,7 @@ public class ProbabilityGenerator<T> {
 		// Constructors
 		// ===========================================================
 
-		public Entry(final float pFactor, final T ... pData){
+		public Entry(final float pFactor, final T ... pData) {
 			this.mFactor = pFactor;
 			this.mData = pData;
 		}
@@ -97,7 +97,7 @@ public class ProbabilityGenerator<T> {
 		// ===========================================================
 
 		public T getReturnValue() {
-			if(this.mData.length == 1){
+			if (this.mData.length == 1) {
 				return this.mData[0];
 			}else{
 				return ArrayUtils.random(mData);

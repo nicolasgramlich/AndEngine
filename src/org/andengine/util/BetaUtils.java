@@ -61,16 +61,16 @@ public class BetaUtils {
 		final GregorianCalendar lastuseDate = new GregorianCalendar();
 		lastuseDate.setTimeInMillis(lastuse);
 
-		if(lastuseDate.after(pExpirationDate)){
+		if (lastuseDate.after(pExpirationDate)) {
 			final Builder alertDialogBuilder = new AlertDialog.Builder(pActivity)
 			.setTitle(pTitleResourceID)
 			.setIcon(android.R.drawable.ic_dialog_alert)
 			.setMessage(pMessageResourceID);
 
-			alertDialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener(){
+			alertDialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(final DialogInterface pDialog, final int pWhich) {
-					if(pOkIntent != null) {
+					if (pOkIntent != null) {
 						pActivity.startActivity(pOkIntent);
 					}
 					pActivity.finish();
@@ -79,7 +79,7 @@ public class BetaUtils {
 			alertDialogBuilder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
 				@Override
 				public void onClick(final DialogInterface pDialog, final int pWhich) {
-					if(pCancelIntent != null) {
+					if (pCancelIntent != null) {
 						pActivity.startActivity(pCancelIntent);
 					}
 					pActivity.finish();

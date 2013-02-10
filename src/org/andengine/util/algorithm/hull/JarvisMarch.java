@@ -71,20 +71,20 @@ public class JarvisMarch implements IHullAlgorithm {
 			float nextHullVertexAngle = MathConstants.PI_TWICE; /* 360 degrees. */
 
 			/* Start searching one behind the already found hull vertices. */
-			for(int j = hullVertexCount; j < pVertexCount; j++) {
+			for (int j = hullVertexCount; j < pVertexCount; j++) {
 				final float possibleNextHullVertexX = VertexUtils.getVertex(pVertices, pVertexOffsetX, pVertexStride, j);
 				final float possibleNextHullVertexY = VertexUtils.getVertex(pVertices, pVertexOffsetY, pVertexStride, j);
 
 				/* Ignore identical vertices. */
-				if(currentHullPointVertexX != possibleNextHullVertexX || currentHullPointVertexY != possibleNextHullVertexY) {
+				if (currentHullPointVertexX != possibleNextHullVertexX || currentHullPointVertexY != possibleNextHullVertexY) {
 					final float dX = possibleNextHullVertexX - currentHullPointVertexX;
 					final float dY = possibleNextHullVertexY - currentHullPointVertexY;
 
 					float possibleNextHullVertexAngle = MathUtils.atan2(dY, dX);
-					if(possibleNextHullVertexAngle < 0) {
+					if (possibleNextHullVertexAngle < 0) {
 						possibleNextHullVertexAngle += MathConstants.PI_TWICE; /* 360 degrees. */
 					}
-					if((possibleNextHullVertexAngle >= currentHullVertexAngle) && (possibleNextHullVertexAngle <= nextHullVertexAngle)) {
+					if ((possibleNextHullVertexAngle >= currentHullVertexAngle) && (possibleNextHullVertexAngle <= nextHullVertexAngle)) {
 						nextHullVertexIndex = j;
 						nextHullVertexAngle = possibleNextHullVertexAngle;
 					}
@@ -92,15 +92,15 @@ public class JarvisMarch implements IHullAlgorithm {
 			}
 
 			/* Compare against first hull vertex. */
-			if(hullVertexCount > 1) {
+			if (hullVertexCount > 1) {
 				final float dX = firstHullVertexX - currentHullPointVertexX;
 				final float dY = firstHullVertexY - currentHullPointVertexY;
 
 				float possibleNextHullVertexAngle = MathUtils.atan2(dY, dX);
-				if(possibleNextHullVertexAngle < 0) {
+				if (possibleNextHullVertexAngle < 0) {
 					possibleNextHullVertexAngle += MathConstants.PI_TWICE; /* 360 degrees. */
 				}
-				if((possibleNextHullVertexAngle >= currentHullVertexAngle) && (possibleNextHullVertexAngle <= nextHullVertexAngle)) {
+				if ((possibleNextHullVertexAngle >= currentHullVertexAngle) && (possibleNextHullVertexAngle <= nextHullVertexAngle)) {
 					break;
 				}
 			}

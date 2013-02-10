@@ -51,7 +51,7 @@ public class HighPerformanceTextVertexBufferObject extends HighPerformanceVertex
 
 		int bufferDataOffset = 0;
 		final int charactersMaximum = pText.getCharactersMaximum();
-		for(int i = 0; i < charactersMaximum; i++) {
+		for (int i = 0; i < charactersMaximum; i++) {
 			bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
 			bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
 			bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
@@ -87,7 +87,7 @@ public class HighPerformanceTextVertexBufferObject extends HighPerformanceVertex
 			final CharSequence line = lines.get(row);
 
 			float xBase;
-			switch(horizontalAlign) {
+			switch (horizontalAlign) {
 				case RIGHT:
 					xBase = lineAlignmentWidth - lineWidths.get(row);
 					break;
@@ -103,13 +103,13 @@ public class HighPerformanceTextVertexBufferObject extends HighPerformanceVertex
 
 			final int lineLength = line.length();
 			Letter previousLetter = null;
-			for(int i = 0; i < lineLength; i++) {
+			for (int i = 0; i < lineLength; i++) {
 				final Letter letter = font.getLetter(line.charAt(i));
-				if(previousLetter != null) {
+				if (previousLetter != null) {
 					xBase += previousLetter.getKerning(letter.mCharacter);
 				}
 
-				if(!letter.isWhitespace()) {
+				if (!letter.isWhitespace()) {
 					final float x = xBase + letter.mOffsetX;
 					final float y = yBase - letter.mOffsetY;
 

@@ -53,7 +53,7 @@ public class LevelStatsDBConnector {
 
 		final SharedPreferences simplePreferences = SimplePreferences.getInstance(pContext);
 		final int playerID = simplePreferences.getInt(PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_ID, -1);
-		if(playerID != -1) {
+		if (playerID != -1) {
 			this.mPlayerID = playerID;
 		} else {
 			this.mPlayerID = MathUtils.random(1000000000, Integer.MAX_VALUE);
@@ -97,26 +97,26 @@ public class LevelStatsDBConnector {
 					final HttpResponse httpResponse = httpClient.execute(httpPost);
 
 					final int statusCode = httpResponse.getStatusLine().getStatusCode();
-					if(statusCode == HttpStatus.SC_OK) {
+					if (statusCode == HttpStatus.SC_OK) {
 						final String response = StreamUtils.readFully(httpResponse.getEntity().getContent());
 
-						if(response.equals("<success/>")) {
-							if(pCallback != null) {
+						if (response.equals("<success/>")) {
+							if (pCallback != null) {
 								pCallback.onCallback(true);
 							}
 						} else {
-							if(pCallback != null) {
+							if (pCallback != null) {
 								pCallback.onCallback(false);
 							}
 						}
 					} else {
-						if(pCallback != null) {
+						if (pCallback != null) {
 							pCallback.onCallback(false);
 						}
 					}
 				}catch(final IOException e) {
 					Debug.e(e);
-					if(pCallback != null) {
+					if (pCallback != null) {
 						pCallback.onCallback(false);
 					}
 				}

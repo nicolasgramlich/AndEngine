@@ -75,8 +75,8 @@ public class LowMemoryDiamondSpriteVertexBufferObject extends LowMemorySpriteVer
 		final float u2;
 		final float v2;
 
-		if(pSprite.isFlippedVertical()) { // TODO Optimize with field access?
-			if(pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
+		if (pSprite.isFlippedVertical()) { // TODO Optimize with field access?
+			if (pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
 				u = textureRegion.getU2();
 				u2 = textureRegion.getU();
 				v = textureRegion.getV2();
@@ -88,7 +88,7 @@ public class LowMemoryDiamondSpriteVertexBufferObject extends LowMemorySpriteVer
 				v2 = textureRegion.getV();
 			}
 		} else {
-			if(pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
+			if (pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
 				u = textureRegion.getU2();
 				u2 = textureRegion.getU();
 				v = textureRegion.getV();
@@ -104,7 +104,7 @@ public class LowMemoryDiamondSpriteVertexBufferObject extends LowMemorySpriteVer
 		final float uCenter = (u + u2) * 0.5f;
 		final float vCenter = (v + v2) * 0.5f;
 
-		if(textureRegion.isRotated()) {
+		if (textureRegion.isRotated()) {
 			bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_U, u2);
 			bufferData.put(0 * Sprite.VERTEX_SIZE + Sprite.TEXTURECOORDINATES_INDEX_V, vCenter);
 

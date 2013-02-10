@@ -28,7 +28,7 @@ public class EaseBounceOut implements IEaseFunction {
 	}
 
 	public static EaseBounceOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseBounceOut();
 		}
 		return INSTANCE;
@@ -52,12 +52,12 @@ public class EaseBounceOut implements IEaseFunction {
 	// ===========================================================
 
 	public static float getValue(final float pPercentage) {
-		if(pPercentage < (1f / 2.75f)) {
+		if (pPercentage < (1f / 2.75f)) {
 			return 7.5625f * pPercentage * pPercentage;
-		} else if(pPercentage < (2f / 2.75f)) {
+		} else if (pPercentage < (2f / 2.75f)) {
 			final float t = pPercentage - (1.5f / 2.75f);
 			return 7.5625f * t * t + 0.75f;
-		} else if(pPercentage < (2.5f / 2.75f)) {
+		} else if (pPercentage < (2.5f / 2.75f)) {
 			final float t = pPercentage - (2.25f / 2.75f);
 			return 7.5625f * t * t + 0.9375f;
 		} else {

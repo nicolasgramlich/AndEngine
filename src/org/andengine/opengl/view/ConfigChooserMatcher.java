@@ -14,8 +14,8 @@ public abstract class ConfigChooserMatcher {
 	public static final ConfigChooserMatcher STRICT = new ConfigChooserMatcher() {
 		@Override
 		public boolean matches(final int pRequestedRedSize, final int pRedSize, final int pRequestedGreenSize, final int pGreenSize, final int pRequestedBlueSize, final int pBlueSize, final int pRequestedAlphaSize, final int pAlphaSize, final int pRequestedDepthSize, final int pDepthSize, final int pRequestedStencilSize, final int pStencilSize) {
-			if(pDepthSize == pRequestedDepthSize && pStencilSize == pRequestedStencilSize) {
-				if(pRedSize == pRequestedRedSize && pGreenSize == pRequestedGreenSize && pBlueSize == pRequestedBlueSize && pAlphaSize == pRequestedAlphaSize) {
+			if (pDepthSize == pRequestedDepthSize && pStencilSize == pRequestedStencilSize) {
+				if (pRedSize == pRequestedRedSize && pGreenSize == pRequestedGreenSize && pBlueSize == pRequestedBlueSize && pAlphaSize == pRequestedAlphaSize) {
 					return true;
 				}
 			}
@@ -26,8 +26,8 @@ public abstract class ConfigChooserMatcher {
 	public static final ConfigChooserMatcher LOOSE_STENCIL = new ConfigChooserMatcher() {
 		@Override
 		public boolean matches(final int pRequestedRedSize, final int pRedSize, final int pRequestedGreenSize, final int pGreenSize, final int pRequestedBlueSize, final int pBlueSize, final int pRequestedAlphaSize, final int pAlphaSize, final int pRequestedDepthSize, final int pDepthSize, final int pRequestedStencilSize, final int pStencilSize) {
-			if(pDepthSize == pRequestedDepthSize && pStencilSize >= pRequestedStencilSize) {
-				if(pRedSize == pRequestedRedSize && pGreenSize == pRequestedGreenSize && pBlueSize == pRequestedBlueSize && pAlphaSize == pRequestedAlphaSize) {
+			if (pDepthSize == pRequestedDepthSize && pStencilSize >= pRequestedStencilSize) {
+				if (pRedSize == pRequestedRedSize && pGreenSize == pRequestedGreenSize && pBlueSize == pRequestedBlueSize && pAlphaSize == pRequestedAlphaSize) {
 					return true;
 				}
 			}
@@ -38,8 +38,8 @@ public abstract class ConfigChooserMatcher {
 	public static final ConfigChooserMatcher LOOSE_DEPTH_AND_STENCIL = new ConfigChooserMatcher() {
 		@Override
 		public boolean matches(final int pRequestedRedSize, final int pRedSize, final int pRequestedGreenSize, final int pGreenSize, final int pRequestedBlueSize, final int pBlueSize, final int pRequestedAlphaSize, final int pAlphaSize, final int pRequestedDepthSize, final int pDepthSize, final int pRequestedStencilSize, final int pStencilSize) {
-			if(pDepthSize >= pRequestedDepthSize && pStencilSize >= pRequestedStencilSize) {
-				if(pRedSize == pRequestedRedSize && pGreenSize == pRequestedGreenSize && pBlueSize == pRequestedBlueSize && pAlphaSize == pRequestedAlphaSize) {
+			if (pDepthSize >= pRequestedDepthSize && pStencilSize >= pRequestedStencilSize) {
+				if (pRedSize == pRequestedRedSize && pGreenSize == pRequestedGreenSize && pBlueSize == pRequestedBlueSize && pAlphaSize == pRequestedAlphaSize) {
 					return true;
 				}
 			}

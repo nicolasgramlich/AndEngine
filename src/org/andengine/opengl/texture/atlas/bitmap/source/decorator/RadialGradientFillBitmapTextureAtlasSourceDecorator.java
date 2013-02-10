@@ -62,7 +62,7 @@ public class RadialGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 
 		final float radius = Math.max(centerX, centerY);
 
-		switch(pRadialGradientDirection) {
+		switch (pRadialGradientDirection) {
 			case INSIDE_OUT:
 				this.mPaint.setShader(new RadialGradient(centerX, centerY, radius, pColors, pPositions, TileMode.CLAMP));
 				break;

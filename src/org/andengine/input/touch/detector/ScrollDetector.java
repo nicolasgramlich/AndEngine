@@ -61,7 +61,7 @@ public class ScrollDetector extends BaseDetector {
 
 	@Override
 	public void reset() {
-		if(this.mTriggering) {
+		if (this.mTriggering) {
 			this.mScrollDetectorListener.onScrollFinished(this, this.mPointerID, 0, 0);
 		}
 
@@ -76,21 +76,21 @@ public class ScrollDetector extends BaseDetector {
 		final float touchX = this.getX(pSceneTouchEvent);
 		final float touchY = this.getY(pSceneTouchEvent);
 
-		switch(pSceneTouchEvent.getAction()) {
+		switch (pSceneTouchEvent.getAction()) {
 			case TouchEvent.ACTION_DOWN:
 				this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
 				return true;
 			case TouchEvent.ACTION_MOVE:
-				if(this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
+				if (this.mPointerID == TouchEvent.INVALID_POINTER_ID) {
 					this.prepareScroll(pSceneTouchEvent.getPointerID(), touchX, touchY);
 					return true;
-				} else if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
+				} else if (this.mPointerID == pSceneTouchEvent.getPointerID()) {
 					final float distanceX = touchX - this.mLastX;
 					final float distanceY = touchY - this.mLastY;
 
 					final float triggerScrollMinimumDistance = this.mTriggerScrollMinimumDistance;
-					if(this.mTriggering || Math.abs(distanceX) > triggerScrollMinimumDistance || Math.abs(distanceY) > triggerScrollMinimumDistance) {
-						if(!this.mTriggering) {
+					if (this.mTriggering || Math.abs(distanceX) > triggerScrollMinimumDistance || Math.abs(distanceY) > triggerScrollMinimumDistance) {
+						if (!this.mTriggering) {
 							this.triggerOnScrollStarted(distanceX, distanceY);
 						} else {
 							this.triggerOnScroll(distanceX, distanceY);
@@ -106,11 +106,11 @@ public class ScrollDetector extends BaseDetector {
 				}
 				case TouchEvent.ACTION_UP:
 				case TouchEvent.ACTION_CANCEL:
-					if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
+					if (this.mPointerID == pSceneTouchEvent.getPointerID()) {
 						final float distanceX = touchX - this.mLastX;
 						final float distanceY = touchY - this.mLastY;
 
-						if(this.mTriggering) {
+						if (this.mTriggering) {
 							this.triggerOnScrollFinished(distanceX, distanceY);
 						}
 
@@ -134,13 +134,13 @@ public class ScrollDetector extends BaseDetector {
 	}
 
 	private void triggerOnScrollStarted(final float pDistanceX, final float pDistanceY) {
-		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+		if (this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mScrollDetectorListener.onScrollStarted(this, this.mPointerID, pDistanceX, pDistanceY);
 		}
 	}
 
 	private void triggerOnScroll(final float pDistanceX, final float pDistanceY) {
-		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+		if (this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mScrollDetectorListener.onScroll(this, this.mPointerID, pDistanceX, pDistanceY);
 		}
 	}
@@ -148,7 +148,7 @@ public class ScrollDetector extends BaseDetector {
 	private void triggerOnScrollFinished(final float pDistanceX, final float pDistanceY) {
 		this.mTriggering = false;
 
-		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
+		if (this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mScrollDetectorListener.onScrollFinished(this, this.mPointerID, pDistanceX, pDistanceY);
 		}
 	}

@@ -48,7 +48,7 @@ public class RenderSurfaceView extends GLSurfaceView implements IResolutionPolic
 	// ===========================================================
 
 	public ConfigChooser getConfigChooser() throws IllegalStateException {
-		if(this.mConfigChooser == null) {
+		if (this.mConfigChooser == null) {
 			throw new IllegalStateException(ConfigChooser.class.getSimpleName() + " not yet set.");
 		}
 		return this.mConfigChooser;
@@ -76,14 +76,14 @@ public class RenderSurfaceView extends GLSurfaceView implements IResolutionPolic
 	// ===========================================================
 
 	public void setRenderer(final Engine pEngine, final IRendererListener pRendererListener) {
-		if(this.mConfigChooser == null) {
+		if (this.mConfigChooser == null) {
 			final ConfigChooserOptions configChooserOptions = pEngine.getEngineOptions().getRenderOptions().getConfigChooserOptions();
 			this.mConfigChooser = new ConfigChooser(configChooserOptions);
 
 			// TODO We don't know yet if the requested color size will actually be accepted!
-			if(configChooserOptions.isRequestedRGBA8888()) {
+			if (configChooserOptions.isRequestedRGBA8888()) {
 				this.getHolder().setFormat(android.graphics.PixelFormat.RGBA_8888);
-			} else if(configChooserOptions.isRequestedRGB565()) {
+			} else if (configChooserOptions.isRequestedRGB565()) {
 				this.getHolder().setFormat(android.graphics.PixelFormat.RGB_565);
 			}
 		}

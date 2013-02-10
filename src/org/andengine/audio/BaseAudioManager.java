@@ -44,7 +44,7 @@ public abstract class BaseAudioManager<T extends IAudioEntity> implements IAudio
 		this.mMasterVolume = pMasterVolume;
 
 		final ArrayList<T> audioEntities = this.mAudioEntities;
-		for(int i = audioEntities.size() - 1; i >= 0; i--) {
+		for (int i = audioEntities.size() - 1; i >= 0; i--) {
 			final T audioEntity = audioEntities.get(i);
 
 			audioEntity.onMasterVolumeChanged(pMasterVolume);
@@ -64,7 +64,7 @@ public abstract class BaseAudioManager<T extends IAudioEntity> implements IAudio
 	@Override
 	public void releaseAll() {
 		final ArrayList<T> audioEntities = this.mAudioEntities;
-		for(int i = audioEntities.size() - 1; i >= 0; i--) {
+		for (int i = audioEntities.size() - 1; i >= 0; i--) {
 			final T audioEntity = audioEntities.get(i);
 
 			audioEntity.stop();

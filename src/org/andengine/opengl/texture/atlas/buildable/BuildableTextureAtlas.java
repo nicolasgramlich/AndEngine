@@ -221,9 +221,9 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	@Override
 	public void removeTextureAtlasSource(final ITextureAtlasSource pTextureAtlasSource) {
 		final ArrayList<TextureAtlasSourceWithWithLocationCallback<S>> textureSources = this.mTextureAtlasSourcesToPlace;
-		for(int i = textureSources.size() - 1; i >= 0; i--) {
+		for (int i = textureSources.size() - 1; i >= 0; i--) {
 			final TextureAtlasSourceWithWithLocationCallback<S> textureSource = textureSources.get(i);
-			if(textureSource.mTextureAtlasSource == pTextureAtlasSource) {
+			if (textureSource.mTextureAtlasSource == pTextureAtlasSource) {
 				textureSources.remove(i);
 				this.mTextureAtlas.setUpdateOnHardwareNeeded(true);
 				return;

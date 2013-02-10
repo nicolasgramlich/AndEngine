@@ -137,7 +137,7 @@ public abstract class PVRCCZTexture extends PVRTexture {
 			this.mDataByteBuffer.order(ByteOrder.BIG_ENDIAN);
 
 			/* Check magic bytes. */
-			if(!ArrayUtils.equals(pData, 0, CCZHeader.MAGIC_IDENTIFIER, 0, CCZHeader.MAGIC_IDENTIFIER.length)) {
+			if (!ArrayUtils.equals(pData, 0, CCZHeader.MAGIC_IDENTIFIER, 0, CCZHeader.MAGIC_IDENTIFIER.length)) {
 				throw new IllegalArgumentException("Invalid " + this.getClass().getSimpleName() + "!");
 			}
 
@@ -212,7 +212,7 @@ public abstract class PVRCCZTexture extends PVRTexture {
 		}
 
 		public InflaterInputStream wrap(final InputStream pInputStream) throws IOException {
-			switch(this) {
+			switch (this) {
 				case GZIP:
 					return new GZIPInputStream(pInputStream);
 				case ZLIB:
@@ -227,9 +227,9 @@ public abstract class PVRCCZTexture extends PVRTexture {
 		public static CCZCompressionFormat fromID(final short pID) {
 			final CCZCompressionFormat[] cczCompressionFormats = CCZCompressionFormat.values();
 			final int cczCompressionFormatCount = cczCompressionFormats.length;
-			for(int i = 0; i < cczCompressionFormatCount; i++) {
+			for (int i = 0; i < cczCompressionFormatCount; i++) {
 				final CCZCompressionFormat cczCompressionFormat = cczCompressionFormats[i];
-				if(cczCompressionFormat.mID == pID) {
+				if (cczCompressionFormat.mID == pID) {
 					return cczCompressionFormat;
 				}
 			}

@@ -42,9 +42,9 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		this.mTextureRegions = pTextureRegions;
 		this.mTileCount = this.mTextureRegions.length;
 
-		if(pPerformSameTextureSanityCheck) {
-			for(int i = this.mTileCount - 1; i >= 0; i--) {
-				if(pTextureRegions[i].getTexture() != pTexture) {
+		if (pPerformSameTextureSanityCheck) {
+			for (int i = this.mTileCount - 1; i >= 0; i--) {
+				if (pTextureRegions[i].getTexture() != pTexture) {
 					throw new IllegalArgumentException("The " + ITextureRegion.class.getSimpleName() + ": '" + pTextureRegions[i].toString() + "' at index: '" + i + "' is not on the same " + ITexture.class.getSimpleName() + ": '" + pTextureRegions[i].getTexture().toString() + "' as the supplied " + ITexture.class.getSimpleName() + ": '" + pTexture.toString() + "'.");
 				}
 			}
@@ -61,8 +61,8 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 		final int tileWidth = pTextureWidth / pTileColumns;
 		final int tileHeight = pTextureHeight / pTileRows;
 
-		for(int tileColumn = 0; tileColumn < pTileColumns; tileColumn++) {
-			for(int tileRow = 0; tileRow < pTileRows; tileRow++) {
+		for (int tileColumn = 0; tileColumn < pTileColumns; tileColumn++) {
+			for (int tileRow = 0; tileRow < pTileRows; tileRow++) {
 				final int tileIndex = tileRow * pTileColumns + tileColumn;
 
 				final int x = pTextureX + tileColumn * tileWidth;
@@ -80,7 +80,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 
 		final ITextureRegion[] textureRegions = new ITextureRegion[tileCount];
 
-		for(int i = 0; i < tileCount; i++) {
+		for (int i = 0; i < tileCount; i++) {
 			textureRegions[i] = this.mTextureRegions[i].deepCopy();
 		}
 
@@ -104,7 +104,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 	@Override
 	public void nextTile() {
 		this.mCurrentTileIndex++;
-		if(this.mCurrentTileIndex >= this.mTileCount) {
+		if (this.mCurrentTileIndex >= this.mTileCount) {
 			this.mCurrentTileIndex = this.mCurrentTileIndex % this.mTileCount;
 		}
 	}

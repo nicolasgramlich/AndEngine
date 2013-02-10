@@ -34,7 +34,7 @@ public class DatabaseUtils {
 	// ===========================================================
 
 	public static final void close(final Cursor pCursor) {
-		if(pCursor != null) {
+		if (pCursor != null) {
 			pCursor.close();
 		}
 	}

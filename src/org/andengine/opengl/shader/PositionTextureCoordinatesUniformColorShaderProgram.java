@@ -56,7 +56,7 @@ public class PositionTextureCoordinatesUniformColorShaderProgram extends ShaderP
 	}
 
 	public static PositionTextureCoordinatesUniformColorShaderProgram getInstance() {
-		if(PositionTextureCoordinatesUniformColorShaderProgram.INSTANCE == null) {
+		if (PositionTextureCoordinatesUniformColorShaderProgram.INSTANCE == null) {
 			PositionTextureCoordinatesUniformColorShaderProgram.INSTANCE = new PositionTextureCoordinatesUniformColorShaderProgram();
 		}
 		return PositionTextureCoordinatesUniformColorShaderProgram.INSTANCE;

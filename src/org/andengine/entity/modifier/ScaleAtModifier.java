@@ -71,7 +71,7 @@ public class ScaleAtModifier extends ScaleModifier {
 	}
 
 	@Override
-	public ScaleAtModifier deepCopy(){
+	public ScaleAtModifier deepCopy() {
 		return new ScaleAtModifier(this);
 	}
 

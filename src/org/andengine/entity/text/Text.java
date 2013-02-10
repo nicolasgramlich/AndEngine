@@ -193,7 +193,7 @@ public class Text extends Shape {
 		this.mLines.clear();
 		this.mLineWidths.clear();
 
-		if(this.mTextOptions.mAutoWrap == AutoWrap.NONE) {
+		if (this.mTextOptions.mAutoWrap == AutoWrap.NONE) {
 			this.mLines = FontUtils.splitLines(this.mText, this.mLines); // TODO Add whitespace-trimming.
 		} else {
 			this.mLines = FontUtils.splitLines(this.mFont, this.mText, this.mLines, this.mTextOptions.mAutoWrap, this.mTextOptions.mAutoWrapWidth);
@@ -209,7 +209,7 @@ public class Text extends Shape {
 		}
 		this.mLineWidthMaximum = maximumLineWidth;
 
-		if(this.mTextOptions.mAutoWrap == AutoWrap.NONE) {
+		if (this.mTextOptions.mAutoWrap == AutoWrap.NONE) {
 			this.mLineAlignmentWidth = this.mLineWidthMaximum;
 		} else {
 			this.mLineAlignmentWidth = this.mTextOptions.mAutoWrapWidth;
@@ -286,7 +286,7 @@ public class Text extends Shape {
 	}
 
 	public void setCharactersToDraw(final int pCharactersToDraw) {
-		if(pCharactersToDraw > this.mCharactersMaximum) {
+		if (pCharactersToDraw > this.mCharactersMaximum) {
 			throw new OutOfCharactersException("Characters: maximum: '" + this.mCharactersMaximum + "' required: '" + pCharactersToDraw + "'.");
 		}
 		this.mCharactersToDraw = pCharactersToDraw;

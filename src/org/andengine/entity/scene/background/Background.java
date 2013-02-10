@@ -100,7 +100,7 @@ public class Background implements IBackground {
 
 	@Override
 	public void registerBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
-		if(this.mBackgroundModifiers == null) {
+		if (this.mBackgroundModifiers == null) {
 			this.allocateBackgroundModifiers();
 		}
 		this.mBackgroundModifiers.add(pBackgroundModifier);
@@ -108,7 +108,7 @@ public class Background implements IBackground {
 
 	@Override
 	public boolean unregisterBackgroundModifier(final IModifier<IBackground> pBackgroundModifier) {
-		if(this.mBackgroundModifiers != null) {
+		if (this.mBackgroundModifiers != null) {
 			return this.mBackgroundModifiers.remove(pBackgroundModifier);
 		} else {
 			return false;
@@ -117,21 +117,21 @@ public class Background implements IBackground {
 
 	@Override
 	public void clearBackgroundModifiers() {
-		if(this.mBackgroundModifiers != null) {
+		if (this.mBackgroundModifiers != null) {
 			this.mBackgroundModifiers.clear();
 		}
 	}
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
-		if(this.mBackgroundModifiers != null) {
+		if (this.mBackgroundModifiers != null) {
 			this.mBackgroundModifiers.onUpdate(pSecondsElapsed);
 		}
 	}
 
 	@Override
 	public void onDraw(final GLState pGLState, final Camera pCamera) {
-		if(this.mColorEnabled) {
+		if (this.mColorEnabled) {
 			GLES20.glClearColor(this.mColor.getRed(), this.mColor.getGreen(), this.mColor.getBlue(), this.mColor.getAlpha());
 			GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT); // TODO Does this cause problems when multisampling?
 		}

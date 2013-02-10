@@ -52,7 +52,7 @@ public class RatioResolutionPolicy extends BaseResolutionPolicy {
 
 		int measuredWidth;
 		int measuredHeight;
-		if(realRatio < desiredRatio) {
+		if (realRatio < desiredRatio) {
 			measuredWidth = specWidth;
 			measuredHeight = Math.round(measuredWidth / desiredRatio);
 		} else {

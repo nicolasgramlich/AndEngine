@@ -32,7 +32,7 @@ public class EaseSineIn implements IEaseFunction {
 	}
 
 	public static EaseSineIn getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseSineIn();
 		}
 		return INSTANCE;

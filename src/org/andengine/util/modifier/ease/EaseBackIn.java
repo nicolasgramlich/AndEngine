@@ -30,7 +30,7 @@ public class EaseBackIn implements IEaseFunction {
 	}
 
 	public static EaseBackIn getInstance() {
-		if(null == INSTANCE) {
+		if (null == INSTANCE) {
 			INSTANCE = new EaseBackIn();
 		}
 		return INSTANCE;

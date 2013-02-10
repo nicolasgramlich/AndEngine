@@ -102,7 +102,7 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 	// ===========================================================
 
 	private Bitmap ensureLoadedBitmapIsMutable(final Bitmap pBitmap) {
-		if(pBitmap.isMutable()) {
+		if (pBitmap.isMutable()) {
 			return pBitmap;
 		} else {
 			final Bitmap mutableBitmap = pBitmap.copy(pBitmap.getConfig(), true);

@@ -45,7 +45,7 @@ public final class TimeUtils implements TimeConstants {
 		pStringBuilder.append(minutes);
 		pStringBuilder.append(':');
 
-		if(seconds < 10) {
+		if (seconds < 10) {
 			pStringBuilder.append('0');
 		}
 		pStringBuilder.append(seconds);

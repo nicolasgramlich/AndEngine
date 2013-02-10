@@ -44,7 +44,7 @@ public class DrawHandlerList extends SmartList<IDrawHandler> implements IDrawHan
 	@Override
 	public void onDraw(final GLState pGLState, final Camera pCamera) {
 		final int handlerCount = this.size();
-		for(int i = handlerCount - 1; i >= 0; i--) {
+		for (int i = handlerCount - 1; i >= 0; i--) {
 			this.get(i).onDraw(pGLState, pCamera);
 		}
 	}

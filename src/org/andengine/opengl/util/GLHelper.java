@@ -40,7 +40,7 @@ public class GLHelper {
 	public static Buffer getPixels(final Bitmap pBitmap, final PixelFormat pPixelFormat, final ByteOrder pByteOrder) {
 		final int[] pixelsARGB_8888 = GLHelper.getPixelsARGB_8888(pBitmap);
 
-		switch(pPixelFormat) {
+		switch (pPixelFormat) {
 			case RGB_565:
 				return ShortBuffer.wrap(GLHelper.convertARGB_8888toRGB_565(pixelsARGB_8888, pByteOrder)); // TODO Is ShortBuffer or IntBuffer faster?
 			case RGBA_8888:
@@ -61,8 +61,8 @@ public class GLHelper {
 	}
 
 	public static int[] convertARGB_8888toRGBA_8888(final int[] pPixelsARGB_8888, final ByteOrder pByteOrder) {
-		if(pByteOrder == ByteOrder.LITTLE_ENDIAN) {
-			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+		if (pByteOrder == ByteOrder.LITTLE_ENDIAN) {
+			for (int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
 				/* [A][R][G][B] to [A][B][G][R] */
@@ -71,7 +71,7 @@ public class GLHelper {
 				pPixelsARGB_8888[i] = (pixel & 0xFF00FF00) | ((pixel << 16) & 0x00FF0000) | ((pixel >> 16) & 0x000000FF);
 			}
 		} else {
-			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+			for (int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
 				/* [A][R][G][B] to [R][G][B][A] */
@@ -89,8 +89,8 @@ public class GLHelper {
 
 	public static short[] convertARGB_8888toRGB_565(final int[] pPixelsARGB_8888, final ByteOrder pByteOrder) {
 		final short[] pixelsRGB_565 = new short[pPixelsARGB_8888.length];
-		if(pByteOrder == ByteOrder.LITTLE_ENDIAN) {
-			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+		if (pByteOrder == ByteOrder.LITTLE_ENDIAN) {
+			for (int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
 				/* [A][R][G][B] to [GB][RG] */
@@ -101,7 +101,7 @@ public class GLHelper {
 				pixelsRGB_565[i] = (short)(((pixel >> 16) & 0x00F8) | ((pixel >> 13) & 0x07) | ((pixel << 3) & 0xE000) | ((pixel << 5) & 0x1F00));
 			}
 		} else {
-			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+			for (int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
 				/* [A][R][G][B] to [RG][GB] */
@@ -121,8 +121,8 @@ public class GLHelper {
 
 	public static short[] convertARGB_8888toRGBA_4444(final int[] pPixelsARGB_8888, final ByteOrder pByteOrder) {
 		final short[] pixelsRGBA_4444 = new short[pPixelsARGB_8888.length];
-		if(pByteOrder == ByteOrder.LITTLE_ENDIAN) {
-			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+		if (pByteOrder == ByteOrder.LITTLE_ENDIAN) {
+			for (int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
 				/* [A][R][G][B] to [BA][RG] */
@@ -133,7 +133,7 @@ public class GLHelper {
 				pixelsRGBA_4444[i] = (short)(((pixel >> 16) & 0x00F0) | ((pixel >> 12) & 0x000F) | ((pixel << 8) & 0xF000) | ((pixel >> 20) & 0x0F00));
 			}
 		} else {
-			for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+			for (int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
 				/* [A][R][G][B] to [RG][BA] */
@@ -149,7 +149,7 @@ public class GLHelper {
 
 	public static byte[] convertARGB_8888toA_8(final int[] pPixelsARGB_8888) {
 		final byte[] pixelsA_8 = new byte[pPixelsARGB_8888.length];
-		for(int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
+		for (int i = pPixelsARGB_8888.length - 1; i >= 0; i--) {
 			/* [A][R][G][B] to [A] */
 			/* From : [ A7 A6 A5 A4 A3 A2 A1 A0  |  R7 R6 R5 R4 R3 R2 R1 R0  |  G7 G6 G5 G4 G3 G2 G1 G0  |  B7 B6 B5 B4 B3 B2 B1 B0 ] */
 			/* To   :                                                                                     [ A7 A6 A5 A4 A3 A2 A1 A0 ] */
@@ -173,8 +173,8 @@ public class GLHelper {
 	}
 
 	public static int[] convertRGBA_8888toARGB_8888(final int[] pPixelsRGBA_8888, final ByteOrder pByteOrder) {
-		if(pByteOrder == ByteOrder.LITTLE_ENDIAN) {
-			for(int i = pPixelsRGBA_8888.length - 1; i >= 0; i--) {
+		if (pByteOrder == ByteOrder.LITTLE_ENDIAN) {
+			for (int i = pPixelsRGBA_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsRGBA_8888[i];
 				/* [A][B][G][R] to [A][R][G][B] */
 				/* From : [ A7 A6 A5 A4 A3 A2 A1 A0  |  B7 B6 B5 B4 B3 B2 B1 B0  |  G7 G6 G5 G4 G3 G2 G1 G0  |  R7 R6 R5 R4 R3 R2 R1 R0 ] */
@@ -182,7 +182,7 @@ public class GLHelper {
 				pPixelsRGBA_8888[i] = (pixel & 0xFF00FF00) | ((pixel << 16) & 0x00FF0000) | ((pixel >> 16) & 0x000000FF);
 			}
 		} else {
-			for(int i = pPixelsRGBA_8888.length - 1; i >= 0; i--) {
+			for (int i = pPixelsRGBA_8888.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsRGBA_8888[i];
 				/* [R][G][B][A] to [A][R][G][B] */
 				/* From : [ R7 R6 R5 R4 R3 R2 R1 R0  |  G7 G6 G5 G4 G3 G2 G1 G0  |  B7 B6 B5 B4 B3 B2 B1 B0  |  A7 A6 A5 A4 A3 A2 A1 A0 ] */
@@ -200,9 +200,9 @@ public class GLHelper {
 	public static int[] convertRGBA_8888toARGB_8888_FlippedVertical(final int[] pPixelsRGBA_8888, final int pWidth, final int pHeight, final ByteOrder pByteOrder) {
 		final int[] pixelsARGB_8888 = new int[pWidth * pHeight];
 
-		if(pByteOrder == ByteOrder.LITTLE_ENDIAN) {
-			for(int y = 0; y < pHeight; y++) {
-				for(int x = 0; x < pWidth; x++) {
+		if (pByteOrder == ByteOrder.LITTLE_ENDIAN) {
+			for (int y = 0; y < pHeight; y++) {
+				for (int x = 0; x < pWidth; x++) {
 					final int pixel = pPixelsRGBA_8888[x + (y * pWidth)];
 					/* [A][B][G][R] to [A][R][G][B] */
 					/* From : [ A7 A6 A5 A4 A3 A2 A1 A0  |  B7 B6 B5 B4 B3 B2 B1 B0  |  G7 G6 G5 G4 G3 G2 G1 G0  |  R7 R6 R5 R4 R3 R2 R1 R0 ] */
@@ -211,8 +211,8 @@ public class GLHelper {
 				}
 			}
 		} else {
-			for(int y = 0; y < pHeight; y++) {
-				for(int x = 0; x < pWidth; x++) {
+			for (int y = 0; y < pHeight; y++) {
+				for (int x = 0; x < pWidth; x++) {
 					final int pixel = pPixelsRGBA_8888[x + (y * pWidth)];
 					/* [R][G][B][A] to [A][R][G][B] */
 					/* From : [ R7 R6 R5 R4 R3 R2 R1 R0  |  G7 G6 G5 G4 G3 G2 G1 G0  |  B7 B6 B5 B4 B3 B2 B1 B0  |  A7 A6 A5 A4 A3 A2 A1 A0 ] */

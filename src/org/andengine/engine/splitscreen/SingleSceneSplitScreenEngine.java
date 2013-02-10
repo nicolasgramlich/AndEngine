@@ -66,7 +66,7 @@ public class SingleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected void onDrawScene(final GLState pGLState, final Camera pFirstCamera) {
-		if(super.mScene != null) {
+		if (super.mScene != null) {
 			final Camera secondCamera = this.getSecondCamera();
 
 			final int surfaceWidth = this.mSurfaceWidth;
@@ -100,7 +100,7 @@ public class SingleSceneSplitScreenEngine extends Engine {
 
 	@Override
 	protected Camera getCameraFromSurfaceTouchEvent(final TouchEvent pTouchEvent) {
-		if(pTouchEvent.getX() <= this.mSurfaceWidth >> 1) {
+		if (pTouchEvent.getX() <= this.mSurfaceWidth >> 1) {
 			return this.getFirstCamera();
 		} else {
 			return this.getSecondCamera();
@@ -111,7 +111,7 @@ public class SingleSceneSplitScreenEngine extends Engine {
 	protected void convertSurfaceTouchEventToSceneTouchEvent(final Camera pCamera, final TouchEvent pSurfaceTouchEvent) {
 		final int surfaceWidthHalf = this.mSurfaceWidth >> 1;
 
-		if(pCamera == this.getFirstCamera()) {
+		if (pCamera == this.getFirstCamera()) {
 			pCamera.convertSurfaceTouchEventToSceneTouchEvent(pSurfaceTouchEvent, surfaceWidthHalf, this.mSurfaceHeight);
 		} else {
 			pSurfaceTouchEvent.offset(-surfaceWidthHalf, 0);

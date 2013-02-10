@@ -208,22 +208,22 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 
 		int eglConfigCount;
 
-		if(this.mRequestedMultiSampling) {
+		if (this.mRequestedMultiSampling) {
 			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, this.mMultiSampleEGLConfig);
-			if(eglConfigCount > 0) {
+			if (eglConfigCount > 0) {
 				this.mActualMultiSampling = true;
 				return this.findEGLConfig(pEGL, pEGLDisplay, this.mMultiSampleEGLConfig, eglConfigCount, pConfigChooserMatcher);
 			}
 
 			eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, this.mNvidiaCoverageMultiSampleEGLConfig);
-			if(eglConfigCount > 0) {
+			if (eglConfigCount > 0) {
 				this.mActualCoverageMultiSampling = true;
 				return this.findEGLConfig(pEGL, pEGLDisplay, this.mNvidiaCoverageMultiSampleEGLConfig, eglConfigCount, pConfigChooserMatcher);
 			}
 		}
 
 		eglConfigCount = this.getEGLConfigCount(pEGL, pEGLDisplay, this.mDefaultEGLConfig);
-		if(eglConfigCount > 0) {
+		if (eglConfigCount > 0) {
 			return this.findEGLConfig(pEGL, pEGLDisplay, this.mDefaultEGLConfig, eglConfigCount, pConfigChooserMatcher);
 		} else {
 			throw new IllegalArgumentException("No " + EGLConfig.class.getSimpleName() + " found!");
@@ -235,7 +235,7 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	// ===========================================================
 
 	private int getEGLConfigCount(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final int[] pEGLConfigAttributes) {
-		if(pEGL.eglChooseConfig(pEGLDisplay, pEGLConfigAttributes, null, 0, ConfigChooser.BUFFER) == false) {
+		if (pEGL.eglChooseConfig(pEGLDisplay, pEGLConfigAttributes, null, 0, ConfigChooser.BUFFER) == false) {
 			throw new IllegalArgumentException("EGLCONFIG_FALLBACK failed!");
 		}
 		return ConfigChooser.BUFFER[0];
@@ -243,7 +243,7 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 
 	private EGLConfig findEGLConfig(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final int[] pEGLConfigAttributes, final int pEGLConfigCount, final ConfigChooserMatcher pConfigChooserMatcher) {
 		final EGLConfig[] eglConfigs = new EGLConfig[pEGLConfigCount];
-		if(!pEGL.eglChooseConfig(pEGLDisplay, pEGLConfigAttributes, eglConfigs, pEGLConfigCount, ConfigChooser.BUFFER)) {
+		if (!pEGL.eglChooseConfig(pEGLDisplay, pEGLConfigAttributes, eglConfigs, pEGLConfigCount, ConfigChooser.BUFFER)) {
 			throw new IllegalArgumentException("findEGLConfig failed!");
 		}
 
@@ -251,9 +251,9 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	}
 
 	private EGLConfig findEGLConfig(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final EGLConfig[] pEGLConfigs, final ConfigChooserMatcher pConfigChooserMatcher) {
-		for(int i = 0; i < pEGLConfigs.length; ++i) {
+		for (int i = 0; i < pEGLConfigs.length; ++i) {
 			final EGLConfig config = pEGLConfigs[i];
-			if(config != null) {
+			if (config != null) {
 				final int redSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_RED_SIZE, 0);
 				final int greenSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_GREEN_SIZE, 0);
 				final int blueSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_BLUE_SIZE, 0);
@@ -261,7 +261,7 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 				final int depthSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_DEPTH_SIZE, 0);
 				final int stencilSize = this.getConfigAttrib(pEGL, pEGLDisplay, config, EGL10.EGL_STENCIL_SIZE, 0);
 
-				if(pConfigChooserMatcher.matches(this.mRequestedRedSize, redSize, this.mRequestedGreenSize, greenSize, this.mRequestedBlueSize, blueSize, this.mRequestedAlphaSize, alphaSize, this.mRequestedDepthSize, depthSize, this.mRequestedStencilSize, stencilSize)) {
+				if (pConfigChooserMatcher.matches(this.mRequestedRedSize, redSize, this.mRequestedGreenSize, greenSize, this.mRequestedBlueSize, blueSize, this.mRequestedAlphaSize, alphaSize, this.mRequestedDepthSize, depthSize, this.mRequestedStencilSize, stencilSize)) {
 					this.mActualRedSize = redSize;
 					this.mActualGreenSize = greenSize;
 					this.mActualBlueSize = blueSize;
@@ -276,7 +276,7 @@ public class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	}
 
 	private int getConfigAttrib(final EGL10 pEGL, final EGLDisplay pEGLDisplay, final EGLConfig pEGLConfig, final int pAttribute, final int pDefaultValue) {
-		if(pEGL.eglGetConfigAttrib(pEGLDisplay, pEGLConfig, pAttribute, ConfigChooser.BUFFER)) {
+		if (pEGL.eglGetConfigAttrib(pEGLDisplay, pEGLConfig, pAttribute, ConfigChooser.BUFFER)) {
 			return ConfigChooser.BUFFER[0];
 		} else {
 			return pDefaultValue;

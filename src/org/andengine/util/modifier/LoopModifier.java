@@ -107,7 +107,7 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 
 	@Override
 	public float onUpdate(final float pSecondsElapsed, final T pItem) {
-		if(this.mFinished){
+		if (this.mFinished) {
 			return 0;
 		} else {
 			float secondsElapsedRemaining = pSecondsElapsed;
@@ -140,27 +140,27 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 
 	@Override
 	public void onModifierStarted(final IModifier<T> pModifier, final T pItem) {
-		if(!this.mModifierStartedCalled) {
+		if (!this.mModifierStartedCalled) {
 			this.mModifierStartedCalled = true;
 			this.onModifierStarted(pItem);
 		}
-		if(this.mLoopModifierListener != null) {
+		if (this.mLoopModifierListener != null) {
 			this.mLoopModifierListener.onLoopStarted(this, this.mLoop, this.mLoopCount);
 		}
 	}
 
 	@Override
 	public void onModifierFinished(final IModifier<T> pModifier, final T pItem) {
-		if(this.mLoopModifierListener != null) {
+		if (this.mLoopModifierListener != null) {
 			this.mLoopModifierListener.onLoopFinished(this, this.mLoop, this.mLoopCount);
 		}
 
-		if(this.mLoopCount == LoopModifier.LOOP_CONTINUOUS) {
+		if (this.mLoopCount == LoopModifier.LOOP_CONTINUOUS) {
 			this.mSecondsElapsed = 0;
 			this.mModifier.reset();
 		} else {
 			this.mLoop++;
-			if(this.mLoop >= this.mLoopCount) {
+			if (this.mLoop >= this.mLoopCount) {
 				this.mFinished = true;
 				this.mFinishedCached = true;
 				this.onModifierFinished(pItem);

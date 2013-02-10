@@ -28,7 +28,7 @@ public class EaseStrongOut implements IEaseFunction {
 	}
 
 	public static EaseStrongOut getInstance() {
-		if(INSTANCE == null) {
+		if (INSTANCE == null) {
 			INSTANCE = new EaseStrongOut();
 		}
 		return INSTANCE;

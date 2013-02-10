@@ -148,38 +148,38 @@ public class BitmapTextureAtlas extends TextureAtlas<IBitmapTextureAtlasSource> 
 		final int textureSourceCount = textureSources.size();
 
 		final ITextureAtlasStateListener<IBitmapTextureAtlasSource> textureStateListener = this.getTextureAtlasStateListener();
-		for(int i = 0; i < textureSourceCount; i++) {
+		for (int i = 0; i < textureSourceCount; i++) {
 			final IBitmapTextureAtlasSource bitmapTextureAtlasSource = textureSources.get(i);
 			try {
 				final Bitmap bitmap = bitmapTextureAtlasSource.onLoadBitmap(bitmapConfig);
-				if(bitmap == null) {
+				if (bitmap == null) {
 					throw new NullBitmapException("Caused by: " + bitmapTextureAtlasSource.getClass().toString() + " --> " + bitmapTextureAtlasSource.toString() + " returned a null Bitmap.");
 				}
 
 				final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && pixelFormat == PixelFormat.RGBA_8888;
-				if(!useDefaultAlignment) {
+				if (!useDefaultAlignment) {
 					/* Adjust unpack alignment. */
 					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 				}
 
-				if(preMultipyAlpha) {
+				if (preMultipyAlpha) {
 					GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTextureX(), bitmapTextureAtlasSource.getTextureY(), bitmap, glFormat, glType);
 				} else {
 					pGLState.glTexSubImage2D(GLES20.GL_TEXTURE_2D, 0, bitmapTextureAtlasSource.getTextureX(), bitmapTextureAtlasSource.getTextureY(), bitmap, this.mPixelFormat);
 				}
 
-				if(!useDefaultAlignment) {
+				if (!useDefaultAlignment) {
 					/* Restore default unpack alignment. */
 					GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, GLState.GL_UNPACK_ALIGNMENT_DEFAULT);
 				}
 
 				bitmap.recycle();
 
-				if(textureStateListener != null) {
+				if (textureStateListener != null) {
 					textureStateListener.onTextureAtlasSourceLoaded(this, bitmapTextureAtlasSource);
 				}
 			} catch (final NullBitmapException e) {
-				if(textureStateListener != null) {
+				if (textureStateListener != null) {
 					textureStateListener.onTextureAtlasSourceLoadExeption(this, bitmapTextureAtlasSource, e);
 				} else {
 					throw e;

@@ -75,7 +75,7 @@ public class IntArrayList implements IIntList {
 		final int oldValue = this.mItems[pIndex];
 
 		final int numMoved = this.mSize - pIndex - 1;
-		if(numMoved > 0) {
+		if (numMoved > 0) {
 			System.arraycopy(this.mItems, pIndex + 1, this.mItems, pIndex, numMoved);
 		}
 
@@ -107,7 +107,7 @@ public class IntArrayList implements IIntList {
 
 	private void ensureCapacity(final int pCapacity) {
 		final int currentCapacity = this.mItems.length;
-		if(currentCapacity < pCapacity) {
+		if (currentCapacity < pCapacity) {
 			/* Increase array size. */
 			final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
 			final int[] newItems = new int[newCapacity];

@@ -49,7 +49,7 @@ public class ShaderProgramManager {
 
 	public synchronized void onDestroy() {
 		final ArrayList<ShaderProgram> managedShaderPrograms = this.mShaderProgramsManaged;
-		for(int i = managedShaderPrograms.size() - 1; i >= 0; i--) {
+		for (int i = managedShaderPrograms.size() - 1; i >= 0; i--) {
 			managedShaderPrograms.get(i).setCompiled(false);
 		}
 
@@ -57,17 +57,17 @@ public class ShaderProgramManager {
 	}
 
 	public synchronized void loadShaderProgram(final ShaderProgram pShaderProgram) {
-		if(pShaderProgram == null) {
+		if (pShaderProgram == null) {
 			throw new IllegalArgumentException("pShaderProgram must not be null!");
 		}
 
-		if(pShaderProgram.isCompiled()) {
+		if (pShaderProgram.isCompiled()) {
 			Debug.w("Loading an already compiled " + ShaderProgram.class.getSimpleName() + ": '" + pShaderProgram.getClass().getSimpleName() + "'. '" + pShaderProgram.getClass().getSimpleName() + "' will be recompiled.");
 
 			pShaderProgram.setCompiled(false);
 		}
 
-		if(this.mShaderProgramsManaged.contains(pShaderProgram)) {
+		if (this.mShaderProgramsManaged.contains(pShaderProgram)) {
 			Debug.w("Loading an already loaded " + ShaderProgram.class.getSimpleName() + ": '" + pShaderProgram.getClass().getSimpleName() + "'.");
 		} else {
 			this.mShaderProgramsManaged.add(pShaderProgram);
@@ -75,14 +75,14 @@ public class ShaderProgramManager {
 	}
 
 	public void loadShaderPrograms(final ShaderProgram ... pShaderPrograms) {
-		for(int i = pShaderPrograms.length - 1; i >= 0; i--) {
+		for (int i = pShaderPrograms.length - 1; i >= 0; i--) {
 			this.loadShaderProgram(pShaderPrograms[i]);
 		}
 	}
 
 	public synchronized void onReload() {
 		final ArrayList<ShaderProgram> managedShaderPrograms = this.mShaderProgramsManaged;
-		for(int i = managedShaderPrograms.size() - 1; i >= 0; i--) {
+		for (int i = managedShaderPrograms.size() - 1; i >= 0; i--) {
 			managedShaderPrograms.get(i).setCompiled(false);
 		}
 	}

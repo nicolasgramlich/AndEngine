@@ -75,7 +75,7 @@ public class BooleanArrayList implements IBooleanList {
 		final boolean oldValue = this.mItems[pIndex];
 
 		final int numMoved = this.mSize - pIndex - 1;
-		if(numMoved > 0) {
+		if (numMoved > 0) {
 			System.arraycopy(this.mItems, pIndex + 1, this.mItems, pIndex, numMoved);
 		}
 
@@ -107,7 +107,7 @@ public class BooleanArrayList implements IBooleanList {
 
 	private void ensureCapacity(final int pCapacity) {
 		final int currentCapacity = this.mItems.length;
-		if(currentCapacity < pCapacity) {
+		if (currentCapacity < pCapacity) {
 			/* Increase array size. */
 			final int newCapacity = ((currentCapacity * 3) >> 1) + 1;
 			final boolean[] newItems = new boolean[newCapacity];

@@ -71,7 +71,7 @@ public class DebugTimer {
 
 	public void end() {
 		final long now = System.currentTimeMillis();
-		if(this.mDebugTimes.size() == 1) {
+		if (this.mDebugTimes.size() == 1) {
 			throw new IllegalStateException("Cannot end the root of this " + this.getClass().getSimpleName());
 		} else {
 			this.mDebugTimes.pop().end(now);
@@ -84,7 +84,7 @@ public class DebugTimer {
 
 	public void dump(final boolean pClear) {
 		final long now = System.currentTimeMillis();
-		if(this.mDebugTimes.size() > 1) {
+		if (this.mDebugTimes.size() > 1) {
 			Debug.w(this.getClass().getSimpleName() + " not all ended!");
 		}
 
@@ -92,7 +92,7 @@ public class DebugTimer {
 		root.end(now);
 		root.dump(0);
 
-		if(pClear) {
+		if (pClear) {
 			this.clear();
 		}
 	}
@@ -159,7 +159,7 @@ public class DebugTimer {
 			final long now = System.currentTimeMillis();
 
 			final DebugTime split;
-			if(this.mLastSplit == null) {
+			if (this.mLastSplit == null) {
 				split = new DebugTime(this.mStartTime, pLabel, true);
 			} else {
 				split = new DebugTime(this.mLastSplit.mEndTime, pLabel, true);
@@ -181,21 +181,21 @@ public class DebugTimer {
 		}
 
 		public void dump(final int pIndent, final String pPostfix) {
-			if(this.mSplit) {
+			if (this.mSplit) {
 				final char[] indent = new char[(pIndent - 1) * INDENT_SPACES];
 				Arrays.fill(indent, ' ');
 				Debug.log(DebugTimer.this.mDebugLevel, new String(indent) + SPLIT_STRING + "'" + this.mLabel + "'" + " @( " + (this.mEndTime - this.mStartTime) + "ms )" + pPostfix);
 			} else {
 				final char[] indent = new char[pIndent * INDENT_SPACES];
 				Arrays.fill(indent, ' ');
-				if(this.mChildren == null) {
+				if (this.mChildren == null) {
 					Debug.log(DebugTimer.this.mDebugLevel, new String(indent) + "'" + this.mLabel + "' @( " + (this.mEndTime - this.mStartTime) + "ms )" + pPostfix);
 				} else {
 					final ArrayList<DebugTime> children = this.mChildren;
 					final int childCount = children.size();
 
 					Debug.log(DebugTimer.this.mDebugLevel, new String(indent) + "'" + this.mLabel + "' {");
-					for(int i = 0; i < childCount - 1; i++) {
+					for (int i = 0; i < childCount - 1; i++) {
 						children.get(i).dump(pIndent + 1, ",");
 					}
 					children.get(childCount - 1).dump(pIndent + 1);
@@ -205,7 +205,7 @@ public class DebugTimer {
 		}
 
 		private void ensureChildrenAllocated() {
-			if(this.mChildren == null) {
+			if (this.mChildren == null) {
 				this.mChildren = new ArrayList<DebugTime>();
 			}
 		}

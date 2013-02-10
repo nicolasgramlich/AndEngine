@@ -45,10 +45,10 @@ public class MultiKey<K> {
 
 	@Override
 	public boolean equals(final Object pOther) {
-		if(pOther == this) {
+		if (pOther == this) {
 			return true;
 		}
-		if(pOther instanceof MultiKey<?>) {
+		if (pOther instanceof MultiKey<?>) {
 			final MultiKey<?> otherMultiKey = (MultiKey<?>) pOther;
 			return Arrays.equals(this.mKeys, otherMultiKey.mKeys);
 		}
@@ -57,8 +57,8 @@ public class MultiKey<K> {
 
 	public static int hash(final Object ... pKeys) {
 		int hashCode = 0;
-		for(final Object key : pKeys) {
-			if(key != null) {
+		for (final Object key : pKeys) {
+			if (key != null) {
 				hashCode ^= key.hashCode();
 			}
 		}

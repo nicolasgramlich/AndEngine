@@ -50,7 +50,7 @@ public class OffCameraExpireParticleModifier<T extends IEntity> implements IPart
 
 	@Override
 	public void onUpdateParticle(final Particle<T> pParticle) {
-		if(!this.mCamera.isEntityVisible(pParticle.getEntity())) {
+		if (!this.mCamera.isEntityVisible(pParticle.getEntity())) {
 			pParticle.setExpired(true);
 		}
 	}

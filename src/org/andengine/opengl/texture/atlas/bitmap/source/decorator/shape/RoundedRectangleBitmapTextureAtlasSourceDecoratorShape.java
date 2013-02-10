@@ -45,7 +45,7 @@ public class RoundedRectangleBitmapTextureAtlasSourceDecoratorShape implements I
 	}
 
 	public static RoundedRectangleBitmapTextureAtlasSourceDecoratorShape getDefaultInstance() {
-		if(sDefaultInstance == null) {
+		if (sDefaultInstance == null) {
 			sDefaultInstance = new RoundedRectangleBitmapTextureAtlasSourceDecoratorShape();
 		}
 		return sDefaultInstance;

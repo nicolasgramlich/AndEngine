@@ -52,7 +52,7 @@ public abstract class BaseSingleValueParticleInitializer<T extends IEntity> impl
 	// ===========================================================
 
 	protected float getRandomValue() {
-		if(this.mMinValue == this.mMaxValue) {
+		if (this.mMinValue == this.mMaxValue) {
 			return this.mMaxValue;
 		} else {
 			return MathUtils.random(this.mMinValue, this.mMaxValue);

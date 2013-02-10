@@ -29,7 +29,7 @@ public class PositionTextureCoordinatesTextureSelectShaderProgram extends Shader
 			"uniform bool " + ShaderProgramConstants.UNIFORM_TEXTURESELECT_TEXTURE_0 + ";\n" +
 			"varying mediump vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
 			"void main() {\n" +
-			"	if(" + ShaderProgramConstants.UNIFORM_TEXTURESELECT_TEXTURE_0 + ") {\n" +
+			"	if (" + ShaderProgramConstants.UNIFORM_TEXTURESELECT_TEXTURE_0 + ") {\n" +
 			"		gl_FragColor = texture2D(" + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ", " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ");\n" +
 			"	} else {\n" +
 			"		gl_FragColor = texture2D(" + ShaderProgramConstants.UNIFORM_TEXTURE_1 + ", " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ");\n" +
@@ -54,7 +54,7 @@ public class PositionTextureCoordinatesTextureSelectShaderProgram extends Shader
 	}
 
 	public static PositionTextureCoordinatesTextureSelectShaderProgram getInstance() {
-		if(PositionTextureCoordinatesTextureSelectShaderProgram.INSTANCE == null) {
+		if (PositionTextureCoordinatesTextureSelectShaderProgram.INSTANCE == null) {
 			PositionTextureCoordinatesTextureSelectShaderProgram.INSTANCE = new PositionTextureCoordinatesTextureSelectShaderProgram();
 		}
 		return PositionTextureCoordinatesTextureSelectShaderProgram.INSTANCE;

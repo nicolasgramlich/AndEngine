@@ -72,7 +72,7 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 	@Override
 	public void add(final T pItem) {
 		final int index = this.binarySearch(pItem, true);
-		if(index < 0) {
+		if (index < 0) {
 			this.mList.add(ListUtils.encodeInsertionIndex(index), pItem);
 		} else {
 			this.mList.add(index, pItem);
@@ -91,12 +91,12 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 
 	@Override
 	public boolean remove(final T pItem) {
-		if(pItem == null) {
+		if (pItem == null) {
 			return this.mList.remove(pItem);
 		}
 
 		final int index = this.binarySearch(pItem, false);
-		if(index >= 0) {
+		if (index >= 0) {
 			this.mList.remove(index);
 			return true;
 		} else {
@@ -126,7 +126,7 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 	private int binarySearch(final T pItem, final boolean pReturnSequenceEndIfNoEqualItemFound) {
 		final int size = this.mList.size();
 		final int guess = this.binarySearch(0, size, pItem);
-		if(guess >= 0) {
+		if (guess >= 0) {
 			return this.scanForEqualItem(0, size, guess, pItem, pReturnSequenceEndIfNoEqualItemFound);
 		} else {
 			return guess;
@@ -142,9 +142,9 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 			final T midVal = this.mList.get(mid);
 
 			final int diff = pItem.compareTo(midVal);
-			if(diff > 0) {
+			if (diff > 0) {
 				low = mid + 1;
-			} else if(diff < 0) {
+			} else if (diff < 0) {
 				high = mid - 1;
 			} else {
 				return mid;
@@ -174,16 +174,16 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 		/* From the beginning of the sequence, advance until the first item equals pItem or the end has been reached. */
 		while(i < pEnd) {
 			final T item = this.mList.get(i);
-			if(i <= pGuess) {
+			if (i <= pGuess) {
 				/* Since the compartTo check has already been performed, only equals needs to be checked. */
-				if(pItem.equals(item)) {
+				if (pItem.equals(item)) {
 					/* Item found. */
 					return i;
 				}
 			} else {
 				/* Check if the sequence is still ongoing. */
-				if(pItem.compareTo(item) == 0) {
-					if(pItem.equals(item)) {
+				if (pItem.compareTo(item) == 0) {
+					if (pItem.equals(item)) {
 						/* Item found. */
 						return i;
 					}
@@ -195,7 +195,7 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 			i++;
 		}
 
-		if(pReturnSequenceEndIfNoEqualItemFound) {
+		if (pReturnSequenceEndIfNoEqualItemFound) {
 			return i;
 		} else {
 			return SortedList.INDEX_INVALID;

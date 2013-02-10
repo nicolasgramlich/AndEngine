@@ -50,9 +50,9 @@ public final class SparseArrayUtils {
 
 		final int size = pSparseBooleanArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pSparseBooleanArray.keyAt(i)).append('=').append(pSparseBooleanArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -66,9 +66,9 @@ public final class SparseArrayUtils {
 
 		final int size = pSparseByteArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pSparseByteArray.keyAt(i)).append('=').append(pSparseByteArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -82,9 +82,9 @@ public final class SparseArrayUtils {
 
 		final int size = pSparseCharArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pSparseCharArray.keyAt(i)).append('=').append(pSparseCharArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -98,9 +98,9 @@ public final class SparseArrayUtils {
 
 		final int size = pSparseIntArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pSparseIntArray.keyAt(i)).append('=').append(pSparseIntArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -114,9 +114,9 @@ public final class SparseArrayUtils {
 
 		final int size = pSparseLongArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pSparseLongArray.keyAt(i)).append('=').append(pSparseLongArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -130,9 +130,9 @@ public final class SparseArrayUtils {
 
 		final int size = pSparseFloatArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pSparseFloatArray.keyAt(i)).append('=').append(pSparseFloatArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -146,9 +146,9 @@ public final class SparseArrayUtils {
 
 		final int size = pSparseDoubleArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pSparseDoubleArray.keyAt(i)).append('=').append(pSparseDoubleArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -162,9 +162,9 @@ public final class SparseArrayUtils {
 
 		final int size = pSparseArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pSparseArray.keyAt(i)).append('=').append(pSparseArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -178,9 +178,9 @@ public final class SparseArrayUtils {
 
 		final int size = pLongSparseArray.size();
 		stringBuilder.append('{');
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			stringBuilder.append(pLongSparseArray.keyAt(i)).append('=').append(pLongSparseArray.valueAt(i));
-			if(i < (size - 1)) {
+			if (i < (size - 1)) {
 				stringBuilder.append(", ");
 			}
 		}

@@ -77,8 +77,8 @@ public class HighPerformanceUniformColorSpriteVertexBufferObject extends HighPer
 		final float u2;
 		final float v2;
 
-		if(pSprite.isFlippedVertical()) { // TODO Optimize with field access?
-			if(pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
+		if (pSprite.isFlippedVertical()) { // TODO Optimize with field access?
+			if (pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
 				u = textureRegion.getU2();
 				u2 = textureRegion.getU();
 				v = textureRegion.getV2();
@@ -90,7 +90,7 @@ public class HighPerformanceUniformColorSpriteVertexBufferObject extends HighPer
 				v2 = textureRegion.getV();
 			}
 		} else {
-			if(pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
+			if (pSprite.isFlippedHorizontal()) { // TODO Optimize with field access?
 				u = textureRegion.getU2();
 				u2 = textureRegion.getU();
 				v = textureRegion.getV();
@@ -103,7 +103,7 @@ public class HighPerformanceUniformColorSpriteVertexBufferObject extends HighPer
 			}
 		}
 
-		if(textureRegion.isRotated()) {
+		if (textureRegion.isRotated()) {
 			bufferData[0 * UniformColorSprite.VERTEX_SIZE + UniformColorSprite.TEXTURECOORDINATES_INDEX_U] = u;
 			bufferData[0 * UniformColorSprite.VERTEX_SIZE + UniformColorSprite.TEXTURECOORDINATES_INDEX_V] = v;
 

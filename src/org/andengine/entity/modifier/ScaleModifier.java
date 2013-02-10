@@ -61,7 +61,7 @@ public class ScaleModifier extends DoubleValueSpanEntityModifier {
 	}
 
 	@Override
-	public ScaleModifier deepCopy(){
+	public ScaleModifier deepCopy() {
 		return new ScaleModifier(this);
 	}
 

@@ -65,25 +65,25 @@ public class ClickDetector extends BaseDetector {
 
 	@Override
 	public boolean onManagedTouchEvent(final TouchEvent pSceneTouchEvent) {
-		switch(pSceneTouchEvent.getAction()) {
+		switch (pSceneTouchEvent.getAction()) {
 			case TouchEvent.ACTION_DOWN:
 				this.prepareClick(pSceneTouchEvent);
 				return true;
 			case TouchEvent.ACTION_MOVE:
-				if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
+				if (this.mPointerID == pSceneTouchEvent.getPointerID()) {
 					final long moveTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
-					if(moveTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
+					if (moveTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
 						return true;
 					}
 				}
 				return false;
 			case TouchEvent.ACTION_UP:
 			case TouchEvent.ACTION_CANCEL:
-				if(this.mPointerID == pSceneTouchEvent.getPointerID()) {
+				if (this.mPointerID == pSceneTouchEvent.getPointerID()) {
 					final long upTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getEventTime();
 
 					boolean handled;
-					if(upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
+					if (upTimeMilliseconds - this.mDownTimeMilliseconds <= this.mTriggerClickMaximumMilliseconds) {
 						this.mDownTimeMilliseconds = Long.MIN_VALUE;
 						this.mClickDetectorListener.onClick(this, this.mPointerID, pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
 						handled = true;

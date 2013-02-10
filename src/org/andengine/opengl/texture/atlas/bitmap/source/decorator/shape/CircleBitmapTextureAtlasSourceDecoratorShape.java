@@ -32,7 +32,7 @@ public class CircleBitmapTextureAtlasSourceDecoratorShape implements IBitmapText
 	}
 
 	public static CircleBitmapTextureAtlasSourceDecoratorShape getDefaultInstance() {
-		if(sDefaultInstance == null) {
+		if (sDefaultInstance == null) {
 			sDefaultInstance = new CircleBitmapTextureAtlasSourceDecoratorShape();
 		}
 		return sDefaultInstance;

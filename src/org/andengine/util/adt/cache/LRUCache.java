@@ -70,14 +70,14 @@ public class LRUCache<K, V> {
 
 	public V put(final K pKey, final V pValue) {
 		final LRUCacheValueHolder<K, V> existingLRUCacheValueHolder = this.mMap.get(pKey);
-		if(existingLRUCacheValueHolder != null) {
+		if (existingLRUCacheValueHolder != null) {
 			/* Just heat up that item. */
 			this.mLRUCacheQueue.moveToTail(existingLRUCacheValueHolder.mLRUCacheQueueNode);
 
 			return existingLRUCacheValueHolder.mValue;
 		}
 
-		if(this.mSize >= this.mCapacity) {
+		if (this.mSize >= this.mCapacity) {
 			final K deadKey = this.mLRUCacheQueue.poll();
 			this.mMap.remove(deadKey);
 			this.mSize--;
@@ -99,7 +99,7 @@ public class LRUCache<K, V> {
 
 	public V get(final K pKey) {
 		final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mMap.get(pKey);
-		if(lruCacheValueHolder == null) {
+		if (lruCacheValueHolder == null) {
 			return null;
 		}
 
@@ -248,7 +248,7 @@ public class LRUCache<K, V> {
 		}
 
 		private LRUCacheQueueNode<K> add(final LRUCacheQueueNode<K> pLRUCacheQueueNode) {
-			if(this.isEmpty()) {
+			if (this.isEmpty()) {
 				this.mHead = pLRUCacheQueueNode;
 				this.mTail = this.mHead;
 			} else {
@@ -265,7 +265,7 @@ public class LRUCache<K, V> {
 			final K key = this.mHead.mKey;
 
 			/* Check if item to poll is the tail. */
-			if(this.mHead.mNext == null) {
+			if (this.mHead.mNext == null) {
 				this.mHead = null;
 				this.mTail = null;
 			} else {
@@ -281,14 +281,14 @@ public class LRUCache<K, V> {
 			final LRUCacheQueueNode<K> next = pLRUCacheQueueNode.mNext;
 
 			/* Check if the node already is the tail. */
-			if(next == null) {
+			if (next == null) {
 				return;
 			} else {
 				final LRUCacheQueueNode<K> previous = pLRUCacheQueueNode.mPrevious;
 				next.mPrevious = previous;
 
 				/* Check if item to bump is the head. */
-				if(previous == null) {
+				if (previous == null) {
 					this.mHead = next;
 				} else {
 					previous.mNext = next;

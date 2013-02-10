@@ -21,7 +21,7 @@ import android.opengl.ETC1Util;
 import android.opengl.GLES20;
 
 /**
- * TODO if(!SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.FROYO)) --> Meaningful Exception!
+ * TODO if (!SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.FROYO)) --> Meaningful Exception!
  *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -65,8 +65,8 @@ public abstract class ETC1Texture extends Texture {
 
 			this.mETC1TextureHeader = new ETC1TextureHeader(StreamUtils.streamToBytes(inputStream, ETC1.ETC_PKM_HEADER_SIZE));
 
-			if(BuildConfig.DEBUG) {
-				if(!(MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mWidth) && MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mHeight))) {
+			if (BuildConfig.DEBUG) {
+				if (!(MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mWidth) && MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mHeight))) {
 					Debug.w("ETC1 textures with NPOT sizes can cause a crash on PowerVR GPUs!");
 				}
 			}
@@ -128,7 +128,7 @@ public abstract class ETC1Texture extends Texture {
 		// ===========================================================
 
 		public ETC1TextureHeader(final byte[] pData) {
-			if(pData.length != ETC1.ETC_PKM_HEADER_SIZE) {
+			if (pData.length != ETC1.ETC_PKM_HEADER_SIZE) {
 				throw new IllegalArgumentException("Invalid " + this.getClass().getSimpleName() + "!");
 			}
 

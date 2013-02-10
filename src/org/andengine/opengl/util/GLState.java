@@ -130,7 +130,7 @@ public class GLState {
 		this.mMaximumTextureUnits = this.getInteger(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS);
 		this.mMaximumTextureSize = this.getInteger(GLES20.GL_MAX_TEXTURE_SIZE);
 
-		if(BuildConfig.DEBUG) {
+		if (BuildConfig.DEBUG) {
 			Debug.d("VERSION: " + this.mVersion);
 			Debug.d("RENDERER: " + this.mRenderer);
 			Debug.d("EGLCONFIG: " + EGLConfig.class.getSimpleName() + "(Red=" + pConfigChooser.getActualRedSize() + ", Green=" + pConfigChooser.getActualGreenSize() + ", Blue=" + pConfigChooser.getActualBlueSize() + ", Alpha=" + pConfigChooser.getActualAlphaSize() + ", Depth=" + pConfigChooser.getActualDepthSize() + ", Stencil=" + pConfigChooser.getActualStencilSize() + ")");
@@ -177,7 +177,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean enableScissorTest() {
-		if(this.mScissorTestEnabled) {
+		if (this.mScissorTestEnabled) {
 			return true;
 		}
 
@@ -189,7 +189,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean disableScissorTest() {
-		if(!this.mScissorTestEnabled) {
+		if (!this.mScissorTestEnabled) {
 			return false;
 		}
 
@@ -201,7 +201,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean setScissorTestEnabled(final boolean pEnabled) {
-		if(pEnabled) {
+		if (pEnabled) {
 			return this.enableScissorTest();
 		} else {
 			return this.disableScissorTest();
@@ -215,7 +215,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean enableBlend() {
-		if(this.mBlendEnabled) {
+		if (this.mBlendEnabled) {
 			return true;
 		}
 
@@ -227,7 +227,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean disableBlend() {
-		if(!this.mBlendEnabled) {
+		if (!this.mBlendEnabled) {
 			return false;
 		}
 
@@ -239,7 +239,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean setBlendEnabled(final boolean pEnabled) {
-		if(pEnabled) {
+		if (pEnabled) {
 			return this.enableBlend();
 		} else {
 			return this.disableBlend();
@@ -253,7 +253,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean enableCulling() {
-		if(this.mCullingEnabled) {
+		if (this.mCullingEnabled) {
 			return true;
 		}
 
@@ -265,7 +265,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean disableCulling() {
-		if(!this.mCullingEnabled) {
+		if (!this.mCullingEnabled) {
 			return false;
 		}
 
@@ -277,7 +277,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean setCullingEnabled(final boolean pEnabled) {
-		if(pEnabled) {
+		if (pEnabled) {
 			return this.enableCulling();
 		} else {
 			return this.disableCulling();
@@ -291,7 +291,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean enableDither() {
-		if(this.mDitherEnabled) {
+		if (this.mDitherEnabled) {
 			return true;
 		}
 
@@ -303,7 +303,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean disableDither() {
-		if(!this.mDitherEnabled) {
+		if (!this.mDitherEnabled) {
 			return false;
 		}
 
@@ -315,7 +315,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean setDitherEnabled(final boolean pEnabled) {
-		if(pEnabled) {
+		if (pEnabled) {
 			return this.enableDither();
 		} else {
 			return this.disableDither();
@@ -329,7 +329,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean enableDepthTest() {
-		if(this.mDepthTestEnabled) {
+		if (this.mDepthTestEnabled) {
 			return true;
 		}
 
@@ -341,7 +341,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean disableDepthTest() {
-		if(!this.mDepthTestEnabled) {
+		if (!this.mDepthTestEnabled) {
 			return false;
 		}
 
@@ -353,7 +353,7 @@ public class GLState {
 	 * @return the previous state.
 	 */
 	public boolean setDepthTestEnabled(final boolean pEnabled) {
-		if(pEnabled) {
+		if (pEnabled) {
 			return this.enableDepthTest();
 		} else {
 			return this.disableDepthTest();
@@ -377,14 +377,14 @@ public class GLState {
 	}
 
 	public void bindArrayBuffer(final int pHardwareBufferID) {
-		if(this.mCurrentArrayBufferID != pHardwareBufferID) {
+		if (this.mCurrentArrayBufferID != pHardwareBufferID) {
 			this.mCurrentArrayBufferID = pHardwareBufferID;
 			GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, pHardwareBufferID);
 		}
 	}
 
 	public void deleteArrayBuffer(final int pHardwareBufferID) {
-		if(this.mCurrentArrayBufferID == pHardwareBufferID) {
+		if (this.mCurrentArrayBufferID == pHardwareBufferID) {
 			this.mCurrentArrayBufferID = -1;
 		}
 		this.mHardwareIDContainer[0] = pHardwareBufferID;
@@ -403,14 +403,14 @@ public class GLState {
 	}
 
 	public void bindIndexBuffer(final int pHardwareBufferID) {
-		if(this.mCurrentIndexBufferID != pHardwareBufferID) {
+		if (this.mCurrentIndexBufferID != pHardwareBufferID) {
 			this.mCurrentIndexBufferID = pHardwareBufferID;
 			GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, pHardwareBufferID);
 		}
 	}
 
 	public void deleteIndexBuffer(final int pHardwareBufferID) {
-		if(this.mCurrentIndexBufferID == pHardwareBufferID) {
+		if (this.mCurrentIndexBufferID == pHardwareBufferID) {
 			this.mCurrentIndexBufferID = -1;
 		}
 		this.mHardwareIDContainer[0] = pHardwareBufferID;
@@ -432,7 +432,7 @@ public class GLState {
 
 	public void checkFramebufferStatus() throws GLFrameBufferException, GLException {
 		final int framebufferStatus = this.getFramebufferStatus();
-		switch(framebufferStatus) {
+		switch (framebufferStatus) {
 			case GLES20.GL_FRAMEBUFFER_COMPLETE:
 				return;
 			case GLES20.GL_FRAMEBUFFER_UNSUPPORTED:
@@ -455,7 +455,7 @@ public class GLState {
 	}
 
 	public void deleteFramebuffer(final int pHardwareFramebufferID) {
-		if(this.mCurrentFramebufferID == pHardwareFramebufferID) {
+		if (this.mCurrentFramebufferID == pHardwareFramebufferID) {
 			this.mCurrentFramebufferID = -1;
 		}
 		this.mHardwareIDContainer[0] = pHardwareFramebufferID;
@@ -463,14 +463,14 @@ public class GLState {
 	}
 
 	public void useProgram(final int pShaderProgramID) {
-		if(this.mCurrentShaderProgramID != pShaderProgramID) {
+		if (this.mCurrentShaderProgramID != pShaderProgramID) {
 			this.mCurrentShaderProgramID = pShaderProgramID;
 			GLES20.glUseProgram(pShaderProgramID);
 		}
 	}
 
 	public void deleteProgram(final int pShaderProgramID) {
-		if(this.mCurrentShaderProgramID == pShaderProgramID) {
+		if (this.mCurrentShaderProgramID == pShaderProgramID) {
 			this.mCurrentShaderProgramID = -1;
 		}
 		GLES20.glDeleteProgram(pShaderProgramID);
@@ -497,7 +497,7 @@ public class GLState {
 	 */
 	public void activeTexture(final int pGLActiveTexture) {
 		final int activeTextureIndex = pGLActiveTexture - GLES20.GL_TEXTURE0;
-		if(pGLActiveTexture != this.mCurrentActiveTextureIndex) {
+		if (pGLActiveTexture != this.mCurrentActiveTextureIndex) {
 			this.mCurrentActiveTextureIndex = activeTextureIndex;
 			GLES20.glActiveTexture(pGLActiveTexture);
 		}
@@ -509,14 +509,14 @@ public class GLState {
 	 * @param pHardwareTextureID
 	 */
 	public void bindTexture(final int pHardwareTextureID) {
-		if(this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] != pHardwareTextureID) {
+		if (this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] != pHardwareTextureID) {
 			this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] = pHardwareTextureID;
 			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, pHardwareTextureID);
 		}
 	}
 
 	public void deleteTexture(final int pHardwareTextureID) {
-		if(this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] == pHardwareTextureID) {
+		if (this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] == pHardwareTextureID) {
 			this.mCurrentBoundTextureIDs[this.mCurrentActiveTextureIndex] = -1;
 		}
 		this.mHardwareIDContainer[0] = pHardwareTextureID;
@@ -524,7 +524,7 @@ public class GLState {
 	}
 
 	public void blendFunction(final int pSourceBlendMode, final int pDestinationBlendMode) {
-		if(this.mCurrentSourceBlendMode != pSourceBlendMode || this.mCurrentDestinationBlendMode != pDestinationBlendMode) {
+		if (this.mCurrentSourceBlendMode != pSourceBlendMode || this.mCurrentDestinationBlendMode != pDestinationBlendMode) {
 			this.mCurrentSourceBlendMode = pSourceBlendMode;
 			this.mCurrentDestinationBlendMode = pDestinationBlendMode;
 			GLES20.glBlendFunc(pSourceBlendMode, pDestinationBlendMode);
@@ -532,7 +532,7 @@ public class GLState {
 	}
 
 	public void lineWidth(final float pLineWidth) {
-		if(this.mLineWidth  != pLineWidth) {
+		if (this.mLineWidth  != pLineWidth) {
 			this.mLineWidth = pLineWidth;
 			GLES20.glLineWidth(pLineWidth);
 		}
@@ -688,7 +688,7 @@ public class GLState {
 
 	public void checkError() throws GLException {
 		final int error = GLES20.glGetError();
-		if(error != GLES20.GL_NO_ERROR) {
+		if (error != GLES20.GL_NO_ERROR) {
 			throw new GLException(error);
 		}
 	}

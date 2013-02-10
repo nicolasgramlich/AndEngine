@@ -23,7 +23,7 @@ public class SurfaceGestureDetectorAdapter extends SurfaceGestureDetector {
 
 	public SurfaceGestureDetectorAdapter(final Context pContext) {
 		super(pContext);
-	}	
+	}
 
 	public SurfaceGestureDetectorAdapter(final Context pContext, final float pSwipeMinDistance) {
 		super(pContext, pSwipeMinDistance);

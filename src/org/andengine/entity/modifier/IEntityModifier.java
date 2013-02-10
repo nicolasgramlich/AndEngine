@@ -19,7 +19,7 @@ public interface IEntityModifier extends IModifier<IEntity> {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	@Override
 	public IEntityModifier deepCopy() throws DeepCopyNotSupportedException;
 
@@ -36,7 +36,7 @@ public interface IEntityModifier extends IModifier<IEntity> {
 		// Methods
 		// ===========================================================
 	}
-	
+
 	public interface IEntityModifierMatcher extends IMatcher<IModifier<IEntity>> {
 		// ===========================================================
 		// Constants

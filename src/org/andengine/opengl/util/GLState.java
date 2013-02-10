@@ -180,7 +180,7 @@ public class GLState {
 		if(this.mScissorTestEnabled) {
 			return true;
 		}
-		
+
 		this.mScissorTestEnabled = true;
 		GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
 		return false;
@@ -394,11 +394,11 @@ public class GLState {
 	public int generateIndexBuffer(final int pSize, final int pUsage) {
 		GLES20.glGenBuffers(1, this.mHardwareIDContainer, 0);
 		final int hardwareBufferID = this.mHardwareIDContainer[0];
-		
+
 		this.bindIndexBuffer(hardwareBufferID);
 		GLES20.glBufferData(GLES20.GL_ELEMENT_ARRAY_BUFFER, pSize, null, pUsage);
 		this.bindIndexBuffer(0);
-		
+
 		return hardwareBufferID;
 	}
 

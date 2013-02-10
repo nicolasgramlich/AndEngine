@@ -27,7 +27,7 @@ public abstract class BaseTextureRegion implements ITextureRegion {
 	public BaseTextureRegion(final ITexture pTexture) {
 		this.mTexture = pTexture;
 	}
-	
+
 	@Override
 	public abstract ITextureRegion deepCopy();
 

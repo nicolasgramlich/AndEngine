@@ -19,7 +19,7 @@ public class RadialGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	private static final float[] POSITIONS_DEFAULT = new float[] { 0.0f, 1.0f }; 
 
 	// ===========================================================

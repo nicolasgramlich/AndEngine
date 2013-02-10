@@ -325,10 +325,10 @@ public class FloatQuadTree<T extends ISpatialItem<IFloatBounds>> extends QuadTre
 					throw new IllegalArgumentException("Unexpected " + BoundsSplit.class.getSimpleName() + ": '" + pBoundsSplit + "'.");
 			}
 		}
-		
+
 		private float getXMax(final BoundsSplit pBoundsSplit) {
 			final float halfWidth = this.getWidth() / 2;
-			
+
 			switch(pBoundsSplit) {
 				case TOP_LEFT:
 					return this.mXMin + halfWidth;

@@ -92,7 +92,7 @@ public class PositionTextureCoordinatesShaderProgram extends ShaderProgram {
 	@Override
 	public void unbind(final GLState pGLState) {
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
-		
+
 		super.unbind(pGLState);
 	}
 

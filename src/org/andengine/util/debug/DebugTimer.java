@@ -193,7 +193,7 @@ public class DebugTimer {
 				} else {
 					final ArrayList<DebugTime> children = this.mChildren;
 					final int childCount = children.size();
-					
+
 					Debug.log(DebugTimer.this.mDebugLevel, new String(indent) + "'" + this.mLabel + "' {");
 					for(int i = 0; i < childCount - 1; i++) {
 						children.get(i).dump(pIndent + 1, ",");

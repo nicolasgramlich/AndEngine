@@ -192,33 +192,33 @@ public final class SparseArrayUtils {
 	public static final BooleanArrayList valuesToList(final SparseBooleanArray pSparseBooleanArray) {
 		final int size = pSparseBooleanArray.size();
 		final BooleanArrayList result = new BooleanArrayList(size);
-		
+
 		for (int i = 0; i < size; i++) {
 			result.add(pSparseBooleanArray.valueAt(i));
 		}
-		
+
 		return result;
 	}
 
 	public static final ByteArrayList valuesToList(final SparseByteArray pSparseByteArray) {
 		final int size = pSparseByteArray.size();
 		final ByteArrayList result = new ByteArrayList(size);
-		
+
 		for (int i = 0; i < size; i++) {
 			result.add(pSparseByteArray.valueAt(i));
 		}
-		
+
 		return result;
 	}
 
 	public static final CharArrayList valuesToList(final SparseCharArray pSparseCharArray) {
 		final int size = pSparseCharArray.size();
 		final CharArrayList result = new CharArrayList(size);
-		
+
 		for (int i = 0; i < size; i++) {
 			result.add(pSparseCharArray.valueAt(i));
 		}
-		
+
 		return result;
 	}
 

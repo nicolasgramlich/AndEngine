@@ -25,7 +25,7 @@ public class IntBounds implements IIntBounds {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public IntBounds(final int pX, final int pY) {
 		this.set(pX, pY);
 	}
@@ -42,7 +42,7 @@ public class IntBounds implements IIntBounds {
 	public int getXMin() {
 		return this.mXMin;
 	}
-	
+
 	@Override
 	public int getYMin() {
 		return this.mYMin;

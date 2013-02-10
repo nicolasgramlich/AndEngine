@@ -18,7 +18,7 @@ public interface IAnimationData {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public int[] getFrames();
 	public long[] getFrameDurations();
 	public int getLoopCount();

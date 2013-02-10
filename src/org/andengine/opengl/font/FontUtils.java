@@ -334,7 +334,7 @@ public class FontUtils {
 		}
 		return pResult;
 	}
-	
+
 	private static <L extends List<CharSequence>> L splitLinesByCJK(final IFont pFont, final CharSequence pText, final L pResult, final float pAutoWrapWidth) {
 		final int textLength = pText.length();
 
@@ -346,7 +346,7 @@ public class FontUtils {
 			lineStart++;
 			lineEnd++;
 		}
-		
+
 		int i = lineEnd;
 		while(i < textLength) {
 			lineStart = lineEnd;
@@ -354,7 +354,7 @@ public class FontUtils {
 			{ /* Look for a sub string */
 				boolean charsAvailable = true;
 				while(i < textLength) {
-					
+
 					{ /* Skip whitespaces at the end of the string */
 						int j = lineEnd;
 						while ( j < textLength ) {
@@ -373,7 +373,7 @@ public class FontUtils {
 							break;
 						}
 					}
-					
+
 					lineEnd++;
 
 					final float lineWidth = FontUtils.measureText(pFont, pText, lineStart, lineEnd);
@@ -382,7 +382,7 @@ public class FontUtils {
 						if ( lineStart < lineEnd - 1 ) {
 							lineEnd--;
 						}
-						
+
 						pResult.add(pText.subSequence(lineStart, lineEnd));
 						charsAvailable = false;
 						i = lineEnd;

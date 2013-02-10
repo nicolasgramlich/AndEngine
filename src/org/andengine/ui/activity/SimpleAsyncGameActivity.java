@@ -88,7 +88,7 @@ public abstract class SimpleAsyncGameActivity extends BaseGameActivity {
 			}
 		});
 	}
-	
+
 	@Override
 	public void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback) {
 		this.runOnUiThread(new Runnable() {
@@ -98,11 +98,11 @@ public abstract class SimpleAsyncGameActivity extends BaseGameActivity {
 					@Override
 					public Void call(final IProgressListener pProgressListener) throws Exception {
 						SimpleAsyncGameActivity.this.onPopulateSceneAsync(pScene, pProgressListener);
-						
+
 						pProgressListener.onProgressChanged(100);
-						
+
 						pOnPopulateSceneCallback.onPopulateSceneFinished();
-						
+
 						return null;
 					}
 				}, new Callback<Void>() {

@@ -74,7 +74,7 @@ public abstract class SharedMemoryVertexBufferObject extends ZeroMemoryVertexBuf
 
 		try {
 			SharedMemoryVertexBufferObject.sSharedByteBufferLock.lock();
-	
+
 			if(SharedMemoryVertexBufferObject.sSharedByteBuffer != null) {
 				BufferUtils.freeDirectByteBuffer(SharedMemoryVertexBufferObject.sSharedByteBuffer);
 

@@ -11,7 +11,7 @@ public class ShaderProgramLinkException extends ShaderProgramException {
 	// ===========================================================
 
 	private static final long serialVersionUID = 5418521931032742504L;
-	
+
 	// ===========================================================
 	// Fields
 	// ===========================================================

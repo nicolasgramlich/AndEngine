@@ -33,7 +33,7 @@ public abstract class PictureBitmapTextureAtlasSource extends BaseTextureAtlasSo
 	public PictureBitmapTextureAtlasSource(final Picture pPicture) {
 		this(pPicture, 0, 0);
 	}
-	
+
 	public PictureBitmapTextureAtlasSource(final Picture pPicture, final int pTextureX, final int pTextureY) {
 		this(pPicture, pTextureX, pTextureY, pPicture.getWidth(), pPicture.getHeight());
 	}

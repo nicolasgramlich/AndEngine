@@ -25,7 +25,7 @@ public class EmptyBitmapTextureAtlasSource extends BaseTextureAtlasSource implem
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public EmptyBitmapTextureAtlasSource(final int pTextureWidth, final int pTextureHeight) {
 		this(0, 0, pTextureWidth, pTextureHeight);
 	}

@@ -57,7 +57,7 @@ public class EllipseBitmapTextureAtlasSourceDecoratorShape implements IBitmapTex
 		final float bottom = pCanvas.getHeight() - pDecoratorOptions.getInsetBottom();
 
 		this.mRectF.set(left, top, right, bottom);
-		
+
 		pCanvas.drawOval(this.mRectF, pPaint);
 	}
 

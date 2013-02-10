@@ -42,7 +42,7 @@ public abstract class LevelLoader<T extends IEntityLoaderData, L extends IEntity
 	public LevelLoader() {
 
 	}
-	
+
 	public LevelLoader(final IEntityLoader<T> pDefaultEntityLoader) {
 		this.mDefaultEntityLoader = pDefaultEntityLoader;
 	}
@@ -106,7 +106,7 @@ public abstract class LevelLoader<T extends IEntityLoaderData, L extends IEntity
 
 	public R loadLevelFromStream(final InputStream pInputStream, final L pEntityLoaderListener) throws LevelLoaderException {
 		final T entityLoaderData = this.onCreateEntityLoaderData();
-		
+
 		return this.loadLevelFromStream(pInputStream, entityLoaderData, pEntityLoaderListener);
 	}
 

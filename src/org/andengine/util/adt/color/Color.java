@@ -60,7 +60,7 @@ public class Color {
 	public static final float BLUE_ABGR_PACKED_FLOAT = Color.BLUE.getABGRPackedFloat();
 	public static final float PINK_ABGR_PACKED_FLOAT = Color.PINK.getABGRPackedFloat();
 	public static final float TRANSPARENT_ABGR_PACKED_FLOAT = Color.TRANSPARENT.getABGRPackedFloat();
-	
+
 	public static final int WHITE_ARGB_PACKED_INT = Color.WHITE.getARGBPackedInt();
 	public static final int BLACK_ARGB_PACKED_INT = Color.BLACK.getARGBPackedInt();
 	public static final int RED_ARGB_PACKED_INT = Color.RED.getARGBPackedInt();

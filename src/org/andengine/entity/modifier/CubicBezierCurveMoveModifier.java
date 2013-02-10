@@ -126,7 +126,7 @@ public class CubicBezierCurveMoveModifier extends DurationEntityModifier {
 
 	@Override
 	protected void onManagedInitialize(final IEntity pEntity) {
-		
+
 	}
 
 	@Override

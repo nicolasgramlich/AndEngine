@@ -37,11 +37,11 @@ public class TextureStateAdapter<T extends ITextureAtlasSource> implements IText
 	public void onUnloadedFromHardware(final ITexture pTexture) {
 
 	}
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

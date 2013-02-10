@@ -160,7 +160,7 @@ public final class ActivityUtils {
 			}
 		}.execute((Void[]) null);
 	}
-	
+
 	public static final <T> void doProgressAsync(final Context pContext, final int pTitleResourceID, final int pIconResourceID, final ProgressCallable<T> pCallable, final Callback<T> pCallback) {
 		ActivityUtils.doProgressAsync(pContext, pTitleResourceID, pIconResourceID, pCallable, pCallback, null);
 	}

@@ -33,7 +33,7 @@ public class StrokeFont extends Font {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final Color pColor, final float pStrokeWidth, final Color pStrokeColor) {
 		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor.getARGBPackedInt(), pStrokeWidth, pStrokeColor.getARGBPackedInt());
 	}
@@ -48,7 +48,7 @@ public class StrokeFont extends Font {
 
 	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColorARGBPackedInt, final float pStrokeWidth, final int pStrokeColorARGBPackedInt, final boolean pStrokeOnly) {
 		super(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColorARGBPackedInt);
-		
+
 		this.mStrokeWidth = pStrokeWidth;
 
 		this.mStrokePaint = new Paint();

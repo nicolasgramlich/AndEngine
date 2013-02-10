@@ -1009,7 +1009,7 @@ public class Entity implements IEntity {
 		}
 		return this.mUpdateHandlers.removeAll(pUpdateHandlerMatcher);
 	}
-	
+
 	@Override
 	public int getUpdateHandlerCount() {
 		if(this.mUpdateHandlers == null) {
@@ -1049,7 +1049,7 @@ public class Entity implements IEntity {
 		}
 		return this.mEntityModifiers.removeAll(pEntityModifierMatcher);
 	}
-	
+
 	@Override
 	public int getEntityModifierCount() {
 		if(this.mEntityModifiers == null) {
@@ -1626,16 +1626,16 @@ public class Entity implements IEntity {
 		this.updateLocalScaleCenterY();
 		this.updateLocalSkewCenterY();
 	}
-	
+
 	protected void updateLocalOffsetCenter() {
 		this.updateLocalOffsetCenterX();
 		this.updateLocalOffsetCenterY();
 	}
-	
+
 	protected void updateLocalOffsetCenterX() {
 		this.mLocalOffsetCenterX = this.mOffsetCenterX * this.mWidth;
 	}
-	
+
 	protected void updateLocalOffsetCenterY() {
 		this.mLocalOffsetCenterY = this.mOffsetCenterY * this.mHeight;
 	}

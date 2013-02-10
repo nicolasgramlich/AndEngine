@@ -25,7 +25,7 @@ public class FloatBounds implements IFloatBounds {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public FloatBounds(final float pX, final float pY) {
 		this.set(pX, pY);
 	}
@@ -42,7 +42,7 @@ public class FloatBounds implements IFloatBounds {
 	public float getXMin() {
 		return this.mXMin;
 	}
-	
+
 	@Override
 	public float getYMin() {
 		return this.mYMin;

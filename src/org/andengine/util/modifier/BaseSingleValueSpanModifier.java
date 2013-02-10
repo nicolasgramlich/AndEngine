@@ -90,10 +90,10 @@ public abstract class BaseSingleValueSpanModifier<T> extends BaseDurationModifie
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void reset(final float pDuration, final float pFromValue, final float pToValue) {
 		super.reset();
-		
+
 		this.mDuration = pDuration;
 		this.mFromValue = pFromValue;
 		this.mValueSpan = pToValue - pFromValue;

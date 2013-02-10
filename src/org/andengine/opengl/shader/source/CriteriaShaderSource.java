@@ -71,7 +71,7 @@ public class CriteriaShaderSource implements IShaderSource {
 		// ===========================================================
 		// Constructors
 		// ===========================================================
-		
+
 		public CriteriaShaderSourceEntry(final String pShaderSource) {
 			this(pShaderSource, (IGLCriteria[]) null);
 		}

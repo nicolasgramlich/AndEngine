@@ -95,11 +95,11 @@ public class BoundCamera extends Camera {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	@Override
 	public void setCenter(final float pCenterX, final float pCenterY) {
 		super.setCenter(pCenterX, pCenterY);
-		
+
 		if(this.mBoundsEnabled) {
 			this.ensureInBounds();
 		}

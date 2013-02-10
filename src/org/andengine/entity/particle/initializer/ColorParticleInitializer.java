@@ -28,7 +28,7 @@ public class ColorParticleInitializer<T extends IEntity> extends BaseTripleValue
 	public ColorParticleInitializer(final Color pColor) {
 		super(pColor.getRed(), pColor.getRed(), pColor.getGreen(), pColor.getGreen(), pColor.getBlue(), pColor.getBlue());
 	}
-	
+
 	public ColorParticleInitializer(final float pRed, final float pGreen, final float pBlue) {
 		super(pRed, pRed, pGreen, pGreen, pBlue, pBlue);
 	}
@@ -36,7 +36,7 @@ public class ColorParticleInitializer<T extends IEntity> extends BaseTripleValue
 	public ColorParticleInitializer(final Color pMinColor, final Color pMaxColor) {
 		super(pMinColor.getRed(), pMaxColor.getRed(), pMinColor.getGreen(), pMaxColor.getGreen(), pMinColor.getBlue(), pMaxColor.getBlue());
 	}
-	
+
 	public ColorParticleInitializer(final float pMinRed, final float pMaxRed, final float pMinGreen, final float pMaxGreen, final float pMinBlue, final float pMaxBlue) {
 		super(pMinRed, pMaxRed, pMinGreen, pMaxGreen, pMinBlue, pMaxBlue);
 	}

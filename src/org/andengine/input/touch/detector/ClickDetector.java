@@ -105,7 +105,7 @@ public class ClickDetector extends BaseDetector {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	private void prepareClick(final TouchEvent pSceneTouchEvent) {
 		this.mDownTimeMilliseconds = pSceneTouchEvent.getMotionEvent().getDownTime();
 		this.mPointerID = pSceneTouchEvent.getPointerID();

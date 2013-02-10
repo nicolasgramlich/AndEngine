@@ -109,7 +109,7 @@ public abstract class BaseDoubleValueSpanModifier<T> extends BaseSingleValueSpan
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public void reset(final float pDuration, final float pFromValueA, final float pToValueA, final float pFromValueB, final float pToValueB) {
 		super.reset(pDuration, pFromValueA, pToValueA);
 

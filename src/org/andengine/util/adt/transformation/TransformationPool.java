@@ -17,7 +17,7 @@ public class TransformationPool {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private static final GenericPool<Transformation> POOL = new GenericPool<Transformation>() {
 		@Override
 		protected Transformation onAllocatePoolItem() {
@@ -36,11 +36,11 @@ public class TransformationPool {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	public static Transformation obtain() {
 		return POOL.obtainPoolItem();
 	}
-	
+
 	public static void recycle(final Transformation pTransformation) {
 		pTransformation.setToIdentity();
 		POOL.recyclePoolItem(pTransformation);

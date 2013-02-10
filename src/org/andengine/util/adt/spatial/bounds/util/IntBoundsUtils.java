@@ -33,7 +33,7 @@ public final class IntBoundsUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static final boolean intersects(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
 		return IntBoundsUtils.intersects(pIntBoundsA.getXMin(), pIntBoundsA.getYMin(), pIntBoundsA.getXMax(), pIntBoundsA.getYMax(), pIntBoundsB.getXMin(), pIntBoundsB.getYMin(), pIntBoundsB.getXMax(), pIntBoundsB.getYMax());
 	}
@@ -43,15 +43,15 @@ public final class IntBoundsUtils {
 				|| IntBoundsUtils.contains(pXMinA, pYMinA, pXMaxA, pYMaxA, pXMinB, pYMinB, pXMaxB, pYMaxB)
 				|| IntBoundsUtils.contains(pXMinB, pYMinB, pXMaxB, pYMaxB, pXMinA, pYMinA, pXMaxA, pYMaxA);
 	}
-	
+
 	public static final boolean contains(final IIntBounds pIntBoundsA, final IIntBounds pIntBoundsB) {
 		return IntBoundsUtils.contains(pIntBoundsA.getXMin(), pIntBoundsA.getYMin(), pIntBoundsA.getXMax(), pIntBoundsA.getYMax(), pIntBoundsB.getXMin(), pIntBoundsB.getYMin(), pIntBoundsB.getXMax(), pIntBoundsB.getYMax());
 	}
-	
+
 	public static final boolean contains(final IIntBounds pIntBounds, final int pX, final int pY) {
 		return IntBoundsUtils.contains(pIntBounds.getXMin(), pIntBounds.getYMin(), pIntBounds.getXMax(), pIntBounds.getYMax(), pX, pY);
 	}
-	
+
 	public static final boolean contains(final IIntBounds pIntBounds, final int pXMin, final int pYMin, final int pXMax, final int pYMax) {
 		return IntBoundsUtils.contains(pIntBounds.getXMin(), pIntBounds.getYMin(), pIntBounds.getXMax(), pIntBounds.getYMax(), pXMin, pYMin, pXMax, pYMax);
 	}

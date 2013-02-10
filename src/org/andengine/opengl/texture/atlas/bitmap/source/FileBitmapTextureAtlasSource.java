@@ -37,7 +37,7 @@ public class FileBitmapTextureAtlasSource extends BaseTextureAtlasSource impleme
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	public static FileBitmapTextureAtlasSource create(final File pFile) {
 		return FileBitmapTextureAtlasSource.create(pFile, 0, 0);
 	}

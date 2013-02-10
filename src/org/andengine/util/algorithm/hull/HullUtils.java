@@ -38,11 +38,11 @@ public class HullUtils {
 		float lowestVertexY = pVertices[pVertexOffsetY];
 
 		final int lastVertexOffset = pVertexCount * pVertexStride;
-		
+
 		/* Starting at one since, since we chose 0 as a the first candidate. */
 		int currentVertexIndex = 1; 
 		int currentVertexOffsetY = pVertexStride + pVertexOffsetY;
-		
+
 		/* Loop to the end. */
 		while(currentVertexOffsetY < lastVertexOffset) {
 			final float currentVertexY = pVertices[currentVertexOffsetY];

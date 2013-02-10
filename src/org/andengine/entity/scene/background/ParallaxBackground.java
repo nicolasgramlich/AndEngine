@@ -137,7 +137,7 @@ public class ParallaxBackground extends Background {
 				pGLState.translateModelViewGLMatrixf(baseOffset, 0, 0);
 
 				float currentMaxX = baseOffset;
-				
+
 				do {
 					this.mEntity.onDraw(pGLState, pCamera);
 					pGLState.translateModelViewGLMatrixf(entityWidthScaled, 0, 0);

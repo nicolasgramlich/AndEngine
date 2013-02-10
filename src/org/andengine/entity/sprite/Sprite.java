@@ -104,13 +104,13 @@ public class Sprite extends Shape {
 
 	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
 		super(pX, pY, pShaderProgram);
-		
+
 		this.mTextureRegion = pTextureRegion;
 		this.mSpriteVertexBufferObject = pSpriteVertexBufferObject;
 
 		this.setBlendingEnabled(true);
 		this.initBlendFunction(pTextureRegion);
-		
+
 		this.setSize(pWidth, pHeight);
 
 		this.onUpdateColor();

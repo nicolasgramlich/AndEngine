@@ -185,7 +185,7 @@ public class ShiftList<T> implements IQueue<T>, IList<T> {
 	public T removeFirst() {
 		return this.remove(0);
 	}
-	
+
 	@Override
 	public T removeLast() {
 		return this.remove(this.size() - 1);

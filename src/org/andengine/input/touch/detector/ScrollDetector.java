@@ -22,7 +22,7 @@ public class ScrollDetector extends BaseDetector {
 
 	private float mTriggerScrollMinimumDistance;
 	private final IScrollDetectorListener mScrollDetectorListener;
-	
+
 	private int mPointerID = TouchEvent.INVALID_POINTER_ID;
 
 	private boolean mTriggering;
@@ -95,7 +95,7 @@ public class ScrollDetector extends BaseDetector {
 						} else {
 							this.triggerOnScroll(distanceX, distanceY);
 						}
-						
+
 						this.mLastX = touchX;
 						this.mLastY = touchY;
 						this.mTriggering = true;
@@ -125,29 +125,29 @@ public class ScrollDetector extends BaseDetector {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	private void prepareScroll(final int pPointerID, final float pTouchX, final float pTouchY) {
 		this.mLastX = pTouchX;
 		this.mLastY = pTouchY;
 		this.mTriggering = false;
 		this.mPointerID = pPointerID;
 	}
-	
+
 	private void triggerOnScrollStarted(final float pDistanceX, final float pDistanceY) {
 		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mScrollDetectorListener.onScrollStarted(this, this.mPointerID, pDistanceX, pDistanceY);
 		}
 	}
-	
+
 	private void triggerOnScroll(final float pDistanceX, final float pDistanceY) {
 		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mScrollDetectorListener.onScroll(this, this.mPointerID, pDistanceX, pDistanceY);
 		}
 	}
-	
+
 	private void triggerOnScrollFinished(final float pDistanceX, final float pDistanceY) {
 		this.mTriggering = false;
-		
+
 		if(this.mPointerID != TouchEvent.INVALID_POINTER_ID) {
 			this.mScrollDetectorListener.onScrollFinished(this, this.mPointerID, pDistanceX, pDistanceY);
 		}

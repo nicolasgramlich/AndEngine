@@ -212,7 +212,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 		public int getXMin() {
 			return this.mXMin;
 		}
-		
+
 		@Override
 		public int getYMin() {
 			return this.mYMin;
@@ -330,11 +330,11 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 				}
 			}
 		}
-		
+
 		private int getYMin(final BoundsSplit pBoundsSplit) {
 			final int height = this.getHeight();
 			final int halfHeight = height / 2;
-			
+
 			if(height <= 2) {
 				switch(pBoundsSplit) {
 					case TOP_LEFT:

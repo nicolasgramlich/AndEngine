@@ -104,7 +104,7 @@ public class PositionTextureCoordinatesPositionInterpolationTextureSelectShaderP
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION);
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_0_LOCATION);
 		GLES20.glDisableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_POSITION_1_LOCATION);
-		
+
 		super.unbind(pGLState);
 	}
 

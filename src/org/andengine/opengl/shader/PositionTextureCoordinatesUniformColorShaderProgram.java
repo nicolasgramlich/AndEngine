@@ -33,7 +33,7 @@ public class PositionTextureCoordinatesUniformColorShaderProgram extends ShaderP
 	public static final String FRAGMENTSHADER =
 			"precision lowp float;\n" +
 			"uniform sampler2D " + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ";\n" +
-			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +	
+			"uniform vec4 " + ShaderProgramConstants.UNIFORM_COLOR + ";\n" +
 			"varying mediump vec2 " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ";\n" +
 			"void main() {\n" +
 			"	gl_FragColor = " + ShaderProgramConstants.UNIFORM_COLOR + " * texture2D(" + ShaderProgramConstants.UNIFORM_TEXTURE_0 + ", " + ShaderProgramConstants.VARYING_TEXTURECOORDINATES + ");\n" +
@@ -95,7 +95,7 @@ public class PositionTextureCoordinatesUniformColorShaderProgram extends ShaderP
 	@Override
 	public void unbind(final GLState pGLState) {
 		GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
-		
+
 		super.unbind(pGLState);
 	}
 

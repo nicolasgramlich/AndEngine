@@ -65,7 +65,7 @@ public class TimerHandler implements IUpdateHandler {
 	public float getTimerSecondsElapsed() {
 		return this.mTimerSecondsElapsed;
 	}
-	
+
 	public boolean isTimerCallbackTriggered() {
 		return this.mTimerCallbackTriggered;
 	}

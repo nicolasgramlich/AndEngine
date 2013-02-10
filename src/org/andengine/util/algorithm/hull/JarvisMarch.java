@@ -79,7 +79,7 @@ public class JarvisMarch implements IHullAlgorithm {
 				if(currentHullPointVertexX != possibleNextHullVertexX || currentHullPointVertexY != possibleNextHullVertexY) {
 					final float dX = possibleNextHullVertexX - currentHullPointVertexX;
 					final float dY = possibleNextHullVertexY - currentHullPointVertexY;
-	
+
 					float possibleNextHullVertexAngle = MathUtils.atan2(dY, dX);
 					if(possibleNextHullVertexAngle < 0) {
 						possibleNextHullVertexAngle += MathConstants.PI_TWICE; /* 360 degrees. */

@@ -65,7 +65,7 @@ public abstract class ETC1Texture extends Texture {
 
 			this.mETC1TextureHeader = new ETC1TextureHeader(StreamUtils.streamToBytes(inputStream, ETC1.ETC_PKM_HEADER_SIZE));
 
-			if(BuildConfig.DEBUG) {				
+			if(BuildConfig.DEBUG) {
 				if(!(MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mWidth) && MathUtils.isPowerOfTwo(this.mETC1TextureHeader.mHeight))) {
 					Debug.w("ETC1 textures with NPOT sizes can cause a crash on PowerVR GPUs!");
 				}

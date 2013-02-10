@@ -26,7 +26,7 @@ public class SequenceBackgroundModifier extends SequenceModifier<IBackground> im
 	public SequenceBackgroundModifier(final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
 		super(pBackgroundModifiers);
 	}
-	
+
 	public SequenceBackgroundModifier(final ISubSequenceBackgroundModifierListener pSubSequenceBackgroundModifierListener, final IBackgroundModifier... pBackgroundModifiers) throws IllegalArgumentException {
 		super(pSubSequenceBackgroundModifierListener, pBackgroundModifiers);
 	}

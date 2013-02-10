@@ -44,7 +44,7 @@ public class EntityCollisionChecker {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static boolean checkContains(final float pLocalX, final float pLocalY, final float pLocalWidth, final float pLocalHeight, final Transformation pLocalToSceneTransformation, final float pX, final float pY) {
 		EntityCollisionChecker.fillVertices(pLocalX, pLocalY, pLocalWidth, pLocalHeight, pLocalToSceneTransformation, EntityCollisionChecker.VERTICES_CONTAINS_TMP);
 		return BaseCollisionChecker.checkContains(EntityCollisionChecker.VERTICES_CONTAINS_TMP, EntityCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, pX, pY);
@@ -70,7 +70,7 @@ public class EntityCollisionChecker {
 	public static boolean isVisible(final Camera pCamera, final float pX, final float pY, final float pWidth, final float pHeight, final Transformation pLocalToSceneTransformation) {
 		EntityCollisionChecker.fillVertices(pCamera, EntityCollisionChecker.VERTICES_COLLISION_TMP_A);
 		EntityCollisionChecker.fillVertices(pX, pY, pWidth, pHeight, pLocalToSceneTransformation, EntityCollisionChecker.VERTICES_COLLISION_TMP_B);
-		
+
 		return BaseCollisionChecker.checkCollision(EntityCollisionChecker.VERTICES_COLLISION_TMP_A, EntityCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT, EntityCollisionChecker.VERTICES_COLLISION_TMP_B, EntityCollisionChecker.RECTANGULARSHAPE_VERTEX_COUNT);
 	}
 

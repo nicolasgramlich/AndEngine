@@ -49,7 +49,7 @@ public class HighPerformanceVertexBufferObject extends VertexBufferObject {
 	public HighPerformanceVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final float[] pBufferData, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		super(pVertexBufferObjectManager, pBufferData.length, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
 		this.mBufferData = pBufferData;
-		
+
 		if(SystemUtils.SDK_VERSION_HONEYCOMB_OR_LATER) {
 			this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 		} else {

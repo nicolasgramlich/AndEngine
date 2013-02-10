@@ -130,7 +130,7 @@ public class TexturePackParser extends DefaultHandler {
 			final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTUREREGION_ATTRIBUTE_Y);
 			final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTUREREGION_ATTRIBUTE_WIDTH);
 			final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, TexturePackParser.TAG_TEXTUREREGION_ATTRIBUTE_HEIGHT);
-			
+
 			final String source = SAXUtils.getAttributeOrThrow(pAttributes, TAG_TEXTUREREGION_ATTRIBUTE_SOURCE);
 
 			// TODO Not sure how trimming could be transparently supported...
@@ -150,7 +150,7 @@ public class TexturePackParser extends DefaultHandler {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	protected InputStream onGetInputStream(final String pFilename) throws IOException {
 		return this.mAssetManager.open(this.mAssetBasePath + pFilename);
 	}

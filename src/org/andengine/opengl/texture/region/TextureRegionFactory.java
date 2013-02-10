@@ -37,7 +37,7 @@ public class TextureRegionFactory {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	public static TextureRegion extractFromTexture(final ITexture pTexture) {
 		return TextureRegionFactory.extractFromTexture(pTexture, false);
 	}

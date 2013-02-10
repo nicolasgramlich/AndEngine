@@ -74,7 +74,7 @@ public abstract class TextureAtlas<T extends ITextureAtlasSource> extends Textur
 	public ITextureAtlasStateListener<T> getTextureStateListener() {
 		return this.getTextureAtlasStateListener();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public ITextureAtlasStateListener<T> getTextureAtlasStateListener() {

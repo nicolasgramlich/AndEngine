@@ -60,7 +60,7 @@ public class UniformColorSprite extends Sprite {
 	public UniformColorSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, pDrawType);
 	}
-	
+
 	public UniformColorSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, pDrawType, pShaderProgram);
 	}
@@ -68,7 +68,7 @@ public class UniformColorSprite extends Sprite {
 	public UniformColorSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final IUniformColorSpriteVertexBufferObject pVertexBufferObject) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject);
 	}
-	
+
 	public UniformColorSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final IUniformColorSpriteVertexBufferObject pVertexBufferObject, final ShaderProgram pShaderProgram) {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject, pShaderProgram);
 	}
@@ -76,7 +76,7 @@ public class UniformColorSprite extends Sprite {
 	public UniformColorSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
 	}
-	
+
 	public UniformColorSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
 		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
 	}

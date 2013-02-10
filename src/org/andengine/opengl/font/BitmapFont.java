@@ -449,7 +449,7 @@ public class BitmapFont implements IFont {
 
 		return Integer.parseInt(data.substring(attributeLength + 1)) != 0;
 	}
-	
+
 	private static char getCharAttribute(final String[] pData, final int pPosition, final String pAttribute) {
 		return (char) BitmapFont.getIntAttribute(pData, pPosition, pAttribute);
 	}

@@ -45,7 +45,7 @@ public class RectangleBitmapTextureAtlasSourceDecoratorShape implements IBitmapT
 		final float top = pDecoratorOptions.getInsetTop();
 		final float right = pCanvas.getWidth() - pDecoratorOptions.getInsetRight();
 		final float bottom = pCanvas.getHeight() - pDecoratorOptions.getInsetBottom();
-		
+
 		pCanvas.drawRect(left, top, right, bottom, pPaint);
 	}
 

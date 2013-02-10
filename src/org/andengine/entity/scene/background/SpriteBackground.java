@@ -33,11 +33,11 @@ public class SpriteBackground extends EntityBackground {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
+
 	public Sprite getSprite() {
 		return (Sprite)this.mEntity;
 	}
-	
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================

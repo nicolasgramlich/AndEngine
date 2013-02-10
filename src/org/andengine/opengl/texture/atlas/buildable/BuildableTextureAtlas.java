@@ -184,7 +184,7 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	public ITextureAtlasStateListener<S> getTextureStateListener() {
 		return this.mTextureAtlas.getTextureStateListener();
 	}
-	
+
 	@Override
 	public ITextureAtlasStateListener<S> getTextureAtlasStateListener() {
 		return this.mTextureAtlas.getTextureAtlasStateListener();

@@ -7,8 +7,6 @@ import org.andengine.util.modifier.SequenceModifier.ISubSequenceModifierListener
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.IEaseFunction;
 
-import android.util.FloatMath;
-
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
@@ -316,7 +314,7 @@ public class PathModifier extends EntityModifier {
 			final float dx = coordinatesX[pSegmentIndex] - coordinatesX[nextSegmentIndex];
 			final float dy = coordinatesY[pSegmentIndex] - coordinatesY[nextSegmentIndex];
 
-			return FloatMath.sqrt(dx * dx + dy * dy);
+			return (float)Math.sqrt(dx * dx + dy * dy);
 		}
 
 		// ===========================================================

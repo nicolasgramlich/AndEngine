@@ -2,8 +2,6 @@ package org.andengine.util.adt.transformation;
 
 import org.andengine.util.math.MathConstants;
 
-import android.util.FloatMath;
-
 
 /**
  * <p>This class is basically a java-space replacement for the native {@link android.graphics.Matrix} class.</p>
@@ -119,8 +117,8 @@ public class Transformation {
 	public final void preRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
+		final float sin = (float)Math.sin(angleRad);
+		final float cos = (float)Math.cos(angleRad);
 
 		final float a = this.a;
 		final float b = this.b;
@@ -136,8 +134,8 @@ public class Transformation {
 	public final void postRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
+		final float sin = (float)Math.sin(angleRad);
+		final float cos = (float)Math.cos(angleRad);
 
 		final float a = this.a;
 		final float b = this.b;
@@ -157,8 +155,8 @@ public class Transformation {
 	public final Transformation setToRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
+		final float sin = (float)Math.sin(angleRad);
+		final float cos = (float)Math.cos(angleRad);
 
 		this.a = cos;
 		this.b = sin;

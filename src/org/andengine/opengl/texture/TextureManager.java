@@ -231,7 +231,7 @@ public class TextureManager {
 		final ArrayList<ITexture> texturesToBeLoaded = this.mTexturesToBeLoaded;
 		final ArrayList<ITexture> texturesToBeUnloaded = this.mTexturesToBeUnloaded;
 
-		/* First reload Textures that need to be updated. */
+		/* First reCreate Textures that need to be updated. */
 		for (int i = texturesLoaded.size() - 1; i >= 0; i--) {
 			final ITexture textureToBeReloaded = texturesLoaded.get(i);
 			if (textureToBeReloaded.isUpdateOnHardwareNeeded()) {

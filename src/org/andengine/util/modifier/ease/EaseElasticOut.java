@@ -2,8 +2,6 @@ package org.andengine.util.modifier.ease;
 
 import org.andengine.util.math.MathConstants;
 
-import android.util.FloatMath;
-
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -66,7 +64,7 @@ public class EaseElasticOut implements IEaseFunction {
 		final float p = pDuration * 0.3f;
 		final float s = p / 4;
 
-		return 1 + (float)Math.pow(2, -10 * pPercentageDone) * FloatMath.sin((pPercentageDone * pDuration - s) * MathConstants.PI_TWICE / p);
+		return 1 + (float)Math.pow(2, -10 * pPercentageDone) * (float)Math.sin((pPercentageDone * pDuration - s) * MathConstants.PI_TWICE / p);
 	}
 
 	// ===========================================================

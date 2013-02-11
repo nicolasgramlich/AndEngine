@@ -2,8 +2,6 @@ package org.andengine.util.math;
 
 import java.util.Random;
 
-import android.util.FloatMath;
-
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -230,7 +228,7 @@ public final class MathUtils {
 	}
 
 	public static final int nextPowerOfTwo(final float f) {
-		return MathUtils.nextPowerOfTwo((int)(FloatMath.ceil(f)));
+		return MathUtils.nextPowerOfTwo((int)(Math.ceil(f)));
 	}
 
 	public static final int nextPowerOfTwo(final int n) {
@@ -261,8 +259,8 @@ public final class MathUtils {
 	public static float[] rotateAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
 		if (pRotation != 0) {
 			final float rotationRad = MathUtils.degToRad(pRotation);
-			final float sinRotationRad = FloatMath.sin(rotationRad);
-			final float cosRotationInRad = FloatMath.cos(rotationRad);
+			final float sinRotationRad = (float)Math.sin(rotationRad);
+			final float cosRotationInRad = (float)Math.cos(rotationRad);
 
 			for (int i = pVertices.length - 2; i >= 0; i -= 2) {
 				final float pX = pVertices[i];
@@ -337,14 +335,14 @@ public final class MathUtils {
 	public static final float distance(final float pX1, final float pY1, final float pX2, final float pY2) {
 		final float dX = pX2 - pX1;
 		final float dY = pY2 - pY1;
-		return FloatMath.sqrt((dX * dX) + (dY * dY));
+		return (float)Math.sqrt((dX * dX) + (dY * dY));
 	}
 
 	/**
 	 * @return the euclidean distance between the origin (0, 0) and (pX, pY).
 	 */
 	public static final float length(final float pX, final float pY) {
-		return FloatMath.sqrt((pX * pX) + (pY * pY));
+		return (float)Math.sqrt((pX * pX) + (pY * pY));
 	}
 
 	/**

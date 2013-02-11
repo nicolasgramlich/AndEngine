@@ -16,7 +16,6 @@ import org.andengine.util.adt.color.Color;
 import org.andengine.util.math.MathUtils;
 
 import android.opengl.GLES20;
-import android.util.FloatMath;
 
 /**
  * (c) Zynga 2012
@@ -375,7 +374,7 @@ public class Gradient extends Shape {
 	public void setGradientAngle(final float pGradientAngle) {
 		final float angleInRad = MathUtils.degToRad(pGradientAngle);
 
-		this.setGradientVector(FloatMath.cos(angleInRad), FloatMath.sin(angleInRad));
+		this.setGradientVector((float)Math.cos(angleInRad), (float)Math.sin(angleInRad));
 	}
 
 	public void setGradientColor(final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue) {

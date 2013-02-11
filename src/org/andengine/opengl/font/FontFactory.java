@@ -160,20 +160,97 @@ public class FontFactory {
 	}
 
 
+	public static StrokeFont createStroke(final FontManager pFontManager, final ITexture pTexture, final float pSize, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTexture, pSize, FontFactory.ANTIALIAS_DEFAULT, FontFactory.COLOR_DEFAULT, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final ITexture pTexture, final float pSize, final boolean pAntiAlias, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTexture, pSize, pAntiAlias, FontFactory.COLOR_DEFAULT, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final ITexture pTexture, final float pSize, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTexture, pSize, FontFactory.ANTIALIAS_DEFAULT, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final ITexture pTexture, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTexture, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, pTextureOptions, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final Typeface pTypeface, final float pSize, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pTypeface, pSize, FontFactory.ANTIALIAS_DEFAULT, FontFactory.COLOR_DEFAULT, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pTypeface, pSize, pAntiAlias, FontFactory.COLOR_DEFAULT, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final Typeface pTypeface, final float pSize, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pTypeface, pSize, FontFactory.ANTIALIAS_DEFAULT, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, pTextureOptions, pTypeface, pSize, FontFactory.ANTIALIAS_DEFAULT, FontFactory.COLOR_DEFAULT, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, pTextureOptions, pTypeface, pSize, pAntiAlias, FontFactory.COLOR_DEFAULT, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, pTextureOptions, pTypeface, pSize, FontFactory.ANTIALIAS_DEFAULT, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, PixelFormat.RGBA_8888, pTextureOptions, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, pPixelFormat, pTextureOptions, pTypeface, pSize, FontFactory.ANTIALIAS_DEFAULT, FontFactory.COLOR_DEFAULT, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, pPixelFormat, pTextureOptions, pTypeface, pSize, pAntiAlias, FontFactory.COLOR_DEFAULT, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, pPixelFormat, pTextureOptions, pTypeface, pSize, FontFactory.ANTIALIAS_DEFAULT, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStroke(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStroke(pFontManager, new EmptyTexture(pTextureManager, pTextureWidth, pTextureHeight, pPixelFormat, pTextureOptions), pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
+	}
+
 	public static StrokeFont createStroke(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
 		return new StrokeFont(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
 	}
 
-	public static StrokeFont createStroke(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor, final boolean pStrokeOnly) {
-		return new StrokeFont(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor, pStrokeOnly);
-	}
 
 	public static StrokeFont createStrokeFromAsset(final FontManager pFontManager, final ITexture pTexture, final AssetManager pAssetManager, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
 		return new StrokeFont(pFontManager, pTexture, Typeface.createFromAsset(pAssetManager, FontFactory.sAssetBasePath + pAssetPath), pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
 	}
 
-	public static StrokeFont createStrokeFromAsset(final FontManager pFontManager, final ITexture pTexture, final AssetManager pAssetManager, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor, final boolean pStrokeOnly) {
-		return new StrokeFont(pFontManager, pTexture, Typeface.createFromAsset(pAssetManager, FontFactory.sAssetBasePath + pAssetPath), pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor, pStrokeOnly);
+	public static StrokeFont createStrokeFromAsset(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final AssetManager pAssetManager, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStrokeFromAsset(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, TextureOptions.DEFAULT, pAssetManager, pAssetPath, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStrokeFromAsset(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final TextureOptions pTextureOptions, final AssetManager pAssetManager, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return FontFactory.createStrokeFromAsset(pFontManager, pTextureManager, pTextureWidth, pTextureHeight, PixelFormat.RGBA_8888, pTextureOptions, pAssetManager, pAssetPath, pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
+	}
+
+	public static StrokeFont createStrokeFromAsset(final FontManager pFontManager, final TextureManager pTextureManager, final int pTextureWidth, final int pTextureHeight, final PixelFormat pPixelFormat, final TextureOptions pTextureOptions, final AssetManager pAssetManager, final String pAssetPath, final float pSize, final boolean pAntiAlias, final int pColor, final float pStrokeWidth, final int pStrokeColor) {
+		return new StrokeFont(pFontManager, new EmptyTexture(pTextureManager, pTextureWidth, pTextureHeight, pPixelFormat, pTextureOptions), Typeface.createFromAsset(pAssetManager, FontFactory.sAssetBasePath + pAssetPath), pSize, pAntiAlias, pColor, pStrokeWidth, pStrokeColor);
 	}
 
 	// ===========================================================

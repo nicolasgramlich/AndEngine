@@ -1388,9 +1388,7 @@ public class Entity implements IEntity {
 					}
 
 					/* Draw self. */
-					this.preDraw(pGLState, pCamera);
-					this.draw(pGLState, pCamera);
-					this.postDraw(pGLState, pCamera);
+					drawSelf(pGLState, pCamera);
 
 					{ /* Draw children in front of this Entity. */
 						for(; i < childCount; i++) {

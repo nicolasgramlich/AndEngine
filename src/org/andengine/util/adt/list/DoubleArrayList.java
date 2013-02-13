@@ -98,7 +98,7 @@ public class DoubleArrayList implements IDoubleList {
 	public double[] toArray() {
 		final double[] array = new double[this.mSize];
 		System.arraycopy(this.mItems, 0, array, 0, this.mSize);
-		return array ;
+		return array;
 	}
 
 	// ===========================================================

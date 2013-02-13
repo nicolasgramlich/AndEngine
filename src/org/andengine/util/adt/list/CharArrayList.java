@@ -98,7 +98,7 @@ public class CharArrayList implements ICharList {
 	public char[] toArray() {
 		final char[] array = new char[this.mSize];
 		System.arraycopy(this.mItems, 0, array, 0, this.mSize);
-		return array ;
+		return array;
 	}
 
 	// ===========================================================

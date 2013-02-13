@@ -98,7 +98,7 @@ public class BooleanArrayList implements IBooleanList {
 	public int[] toArray() {
 		final int[] array = new int[this.mSize];
 		System.arraycopy(this.mItems, 0, array, 0, this.mSize);
-		return array ;
+		return array;
 	}
 
 	// ===========================================================

@@ -98,7 +98,7 @@ public class FloatArrayList implements IFloatList {
 	public float[] toArray() {
 		final float[] array = new float[this.mSize];
 		System.arraycopy(this.mItems, 0, array, 0, this.mSize);
-		return array ;
+		return array;
 	}
 
 	// ===========================================================

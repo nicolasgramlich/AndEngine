@@ -61,7 +61,7 @@ public class Particle<T extends IEntity> {
 	}
 
 	public boolean isExpired() {
-		return this.mExpired ;
+		return this.mExpired;
 	}
 
 	public void setExpired(final boolean pExpired) {

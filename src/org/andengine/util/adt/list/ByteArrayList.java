@@ -98,7 +98,7 @@ public class ByteArrayList implements IByteList {
 	public byte[] toArray() {
 		final byte[] array = new byte[this.mSize];
 		System.arraycopy(this.mItems, 0, array, 0, this.mSize);
-		return array ;
+		return array;
 	}
 
 	// ===========================================================

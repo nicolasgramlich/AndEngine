@@ -98,7 +98,7 @@ public class LongArrayList implements ILongList {
 	public long[] toArray() {
 		final long[] array = new long[this.mSize];
 		System.arraycopy(this.mItems, 0, array, 0, this.mSize);
-		return array ;
+		return array;
 	}
 
 	// ===========================================================

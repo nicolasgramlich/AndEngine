@@ -69,7 +69,7 @@ public abstract class BaseAudioEntity implements IAudioEntity {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void throwOnReleased() throws AudioException ;
+	protected abstract void throwOnReleased() throws AudioException;
 
 	@Override
 	public float getVolume() throws AudioException {

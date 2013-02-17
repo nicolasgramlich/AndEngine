@@ -14,6 +14,7 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
 import org.andengine.util.adt.color.Color;
+import org.andengine.util.adt.color.ColorUtils;
 import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.algorithm.collision.EntityCollisionChecker;
@@ -688,6 +689,13 @@ public class Entity implements IEntity {
 	@Override
 	public void setColor(final Color pColor) {
 		this.mColor.set(pColor);
+
+		this.onUpdateColor();
+	}
+
+	@Override
+	public void setColor(final int pARGBPackedInt) {
+		ColorUtils.convertARGBPackedIntToColor(pARGBPackedInt, this.mColor);
 
 		this.onUpdateColor();
 	}

@@ -87,6 +87,10 @@ public class Color {
 	// Constructors
 	// ===========================================================
 
+	/* package */ Color() {
+
+	}
+
 	public Color(final Color pColor) {
 		this.set(pColor);
 	}

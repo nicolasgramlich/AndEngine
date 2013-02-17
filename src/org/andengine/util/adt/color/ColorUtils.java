@@ -64,21 +64,37 @@ public class ColorUtils {
 
 
 	public static Color convertARGBPackedIntToColor(final int pARGBPackedInt) {
+		final Color color = new Color();
+
+		ColorUtils.convertARGBPackedIntToColor(pARGBPackedInt, color);
+
+		return color;
+	}
+
+	public static void convertARGBPackedIntToColor(final int pARGBPackedInt, final Color pColor) {
 		final float alpha = ColorUtils.extractAlphaFromARGBPackedInt(pARGBPackedInt);
 		final float red = ColorUtils.extractRedFromARGBPackedInt(pARGBPackedInt);
 		final float green = ColorUtils.extractGreenFromARGBPackedInt(pARGBPackedInt);
 		final float blue = ColorUtils.extractBlueFromARGBPackedInt(pARGBPackedInt);
 
-		return new Color(red, green, blue, alpha);
+		pColor.set(red, green, blue, alpha);
 	}
 
 	public static Color convertABGRPackedIntToColor(final int pABGRPackedInt) {
+		final Color color = new Color();
+
+		ColorUtils.convertABGRPackedIntToColor(pABGRPackedInt, color);
+
+		return color;
+	}
+
+	public static void convertABGRPackedIntToColor(final int pABGRPackedInt, final Color pColor) {
 		final float alpha = ColorUtils.extractAlphaFromABGRPackedInt(pABGRPackedInt);
 		final float blue = ColorUtils.extractBlueFromABGRPackedInt(pABGRPackedInt);
 		final float green = ColorUtils.extractGreenFromABGRPackedInt(pABGRPackedInt);
 		final float red = ColorUtils.extractRedFromABGRPackedInt(pABGRPackedInt);
 
-		return new Color(red, green, blue, alpha);
+		pColor.set(red, green, blue, alpha);
 	}
 
 

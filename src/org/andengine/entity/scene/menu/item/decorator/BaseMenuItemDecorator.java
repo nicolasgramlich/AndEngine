@@ -205,6 +205,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public void setColor(final int pARGBPackedInt) {
+		this.mMenuItem.setColor(pARGBPackedInt);
+	}
+
+	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
 		this.mMenuItem.setColor(pRed, pGreen, pBlue);
 	}

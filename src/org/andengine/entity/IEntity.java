@@ -167,6 +167,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public void setBlue(final float pBlue);
 	public void setAlpha(final float pAlpha);
 	public void setColor(final Color pColor);
+	public void setColor(final int pARGBPackedInt);
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 

@@ -331,7 +331,7 @@ public class Entity implements IEntity {
 	public void setWidth(final float pWidth) {
 		this.mWidth = pWidth;
 
-		this.updateLocalCentersXs();
+		this.updateLocalCenterXs();
 	}
 
 	@Override
@@ -349,7 +349,7 @@ public class Entity implements IEntity {
 	public void setHeight(final float pHeight) {
 		this.mHeight = pHeight;
 
-		this.updateLocalCentersYs();
+		this.updateLocalCenterYs();
 	}
 
 	@Override
@@ -1617,18 +1617,18 @@ public class Entity implements IEntity {
 	}
 
 	protected void updateLocalCenters() {
-		this.updateLocalCentersXs();
-		this.updateLocalCentersYs();
+		this.updateLocalCenterXs();
+		this.updateLocalCenterYs();
 	}
 
-	protected void updateLocalCentersXs() {
+	protected void updateLocalCenterXs() {
 		this.updateLocalOffsetCenterX();
 		this.updateLocalRotationCenterX();
 		this.updateLocalScaleCenterX();
 		this.updateLocalSkewCenterX();
 	}
 
-	protected void updateLocalCentersYs() {
+	protected void updateLocalCenterYs() {
 		this.updateLocalOffsetCenterY();
 		this.updateLocalRotationCenterY();
 		this.updateLocalScaleCenterY();

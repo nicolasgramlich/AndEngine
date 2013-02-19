@@ -135,6 +135,7 @@ public class BitmapTexture extends Texture {
 	protected Bitmap onGetBitmap(final Config pBitmapConfig) throws IOException {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inPreferredConfig = pBitmapConfig;
+		decodeOptions.inDither = false;
 
 		return BitmapFactory.decodeStream(this.mInputStreamOpener.open(), null, decodeOptions);
 	}

@@ -1,16 +1,24 @@
 package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
+import org.andengine.opengl.texture.atlas.bitmap.source.ColorKeyBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
 import org.andengine.util.adt.color.Color;
+
+import android.os.Build;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
  * 
+ * @deprecated On {@link Build.VERSION_CODES#JELLY_BEAN} and higher!
+ * 
+ * @see {@link ColorKeyBitmapTextureAtlasSource}
+ * 
  * @author Nicolas Gramlich
  * @since 22:16:41 - 06.08.2010
  */
+@Deprecated
 public class ColorKeyBitmapTextureAtlasSourceDecorator extends ColorSwapBitmapTextureAtlasSourceDecorator {
 	// ===========================================================
 	// Constants

@@ -1,19 +1,28 @@
 package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
+import org.andengine.opengl.texture.atlas.bitmap.source.ColorSwapBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
 import org.andengine.util.adt.color.Color;
+import org.andengine.util.debug.Debug;
+import org.andengine.util.system.SystemUtils;
 
 import android.graphics.AvoidXfermode;
 import android.graphics.AvoidXfermode.Mode;
+import android.os.Build;
 
 /**
  * (c) 2010 Nicolas Gramlich 
  * (c) 2011 Zynga Inc.
- * 
+ *
+ * @deprecated On {@link Build.VERSION_CODES#JELLY_BEAN} and higher!
+ *
+ * @see {@link ColorSwapBitmapTextureAtlasSource}
+ *
  * @author Nicolas Gramlich
  * @since 19:41:39 - 07.06.2011
  */
+@Deprecated
 public class ColorSwapBitmapTextureAtlasSourceDecorator extends BaseShapeBitmapTextureAtlasSourceDecorator {
 	// ===========================================================
 	// Constants
@@ -69,6 +78,10 @@ public class ColorSwapBitmapTextureAtlasSourceDecorator extends BaseShapeBitmapT
 		this.mColorSwapColorARGBPackedInt = pColorSwapColorARGBPackedInt;
 		this.mPaint.setXfermode(new AvoidXfermode(pColorKeyColorARGBPackedInt, pTolerance, Mode.TARGET));
 		this.mPaint.setColor(pColorSwapColorARGBPackedInt);
+
+		if (SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.JELLY_BEAN)) {
+			Debug.w("The class " + ColorSwapBitmapTextureAtlasSourceDecorator.class.getSimpleName() + " is deprecated for Android API Level: '" + Build.VERSION_CODES.JELLY_BEAN + "' and higher, since the class " + AvoidXfermode.class.getSimpleName() + " is deprecated since then.");
+		}
 	}
 
 	@Override

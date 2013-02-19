@@ -2,11 +2,15 @@ package org.andengine.opengl.texture.atlas.bitmap.source;
 
 
 import org.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
+import org.andengine.util.BitmapUtils;
+import org.andengine.util.system.SystemUtils;
 
+import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -67,10 +71,28 @@ public class ResourceBitmapTextureAtlasSource extends BaseTextureAtlasSource imp
 
 	@Override
 	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
+		return this.onLoadBitmap(pBitmapConfig, false);
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	@Override
+	public Bitmap onLoadBitmap(final Config pBitmapConfig, final boolean pMutable) {
 		final BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
 		decodeOptions.inPreferredConfig = pBitmapConfig;
+		decodeOptions.inDither = false;
 //		decodeOptions.inScaled = false; // TODO Check how this behaves with drawable-""/nodpi/ldpi/mdpi/hdpi folders
-		return BitmapFactory.decodeResource(this.mResources, this.mDrawableResourceID, decodeOptions);
+
+		if (pMutable && SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.HONEYCOMB)) {
+			decodeOptions.inMutable = pMutable;
+		}
+
+		final Bitmap bitmap = BitmapFactory.decodeResource(this.mResources, this.mDrawableResourceID, decodeOptions);
+
+		if (pMutable) {
+			return BitmapUtils.ensureBitmapIsMutable(bitmap);
+		} else {
+			return bitmap;
+		}
 	}
 
 	@Override

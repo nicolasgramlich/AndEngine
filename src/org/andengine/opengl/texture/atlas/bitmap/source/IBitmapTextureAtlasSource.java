@@ -25,4 +25,5 @@ public interface IBitmapTextureAtlasSource extends ITextureAtlasSource {
 	public IBitmapTextureAtlasSource deepCopy();
 
 	public Bitmap onLoadBitmap(final Config pBitmapConfig);
+	public Bitmap onLoadBitmap(final Config pBitmapConfig, final boolean pMutable);
 }

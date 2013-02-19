@@ -1,7 +1,7 @@
 package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
+import org.andengine.opengl.texture.atlas.bitmap.source.BaseBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.source.BaseTextureAtlasSource;
 import org.andengine.util.debug.Debug;
 
 import android.graphics.Bitmap;
@@ -10,13 +10,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 16:43:29 - 06.08.2010
  */
-public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureAtlasSource implements IBitmapTextureAtlasSource {
+public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseBitmapTextureAtlasSource {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -25,7 +25,6 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 	// Fields
 	// ===========================================================
 
-	protected final IBitmapTextureAtlasSource mBitmapTextureAtlasSource;
 	protected TextureAtlasSourceDecoratorOptions mTextureAtlasSourceDecoratorOptions;
 	protected Paint mPaint = new Paint();
 
@@ -38,9 +37,8 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 	}
 
 	public BaseBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
-		super(pBitmapTextureAtlasSource.getTextureX(), pBitmapTextureAtlasSource.getTextureY(), pBitmapTextureAtlasSource.getTextureWidth(), pBitmapTextureAtlasSource.getTextureHeight());
+		super(pBitmapTextureAtlasSource);
 
-		this.mBitmapTextureAtlasSource = pBitmapTextureAtlasSource;
 		this.mTextureAtlasSourceDecoratorOptions = (pTextureAtlasSourceDecoratorOptions == null) ? new TextureAtlasSourceDecoratorOptions() : pTextureAtlasSourceDecoratorOptions;
 		this.mPaint.setAntiAlias(this.mTextureAtlasSourceDecoratorOptions.getAntiAliasing());
 	}
@@ -75,18 +73,8 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 	protected abstract void onDecorateBitmap(final Canvas pCanvas) throws Exception;
 
 	@Override
-	public int getTextureWidth() {
-		return this.mBitmapTextureAtlasSource.getTextureWidth();
-	}
-
-	@Override
-	public int getTextureHeight() {
-		return this.mBitmapTextureAtlasSource.getTextureHeight();
-	}
-
-	@Override
 	public Bitmap onLoadBitmap(final Config pBitmapConfig) {
-		final Bitmap bitmap = this.ensureLoadedBitmapIsMutable(this.mBitmapTextureAtlasSource.onLoadBitmap(pBitmapConfig));
+		final Bitmap bitmap = this.onLoadBitmap(pBitmapConfig, true);
 
 		final Canvas canvas = new Canvas(bitmap);
 		try {
@@ -100,16 +88,6 @@ public abstract class BaseBitmapTextureAtlasSourceDecorator extends BaseTextureA
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-	private Bitmap ensureLoadedBitmapIsMutable(final Bitmap pBitmap) {
-		if (pBitmap.isMutable()) {
-			return pBitmap;
-		} else {
-			final Bitmap mutableBitmap = pBitmap.copy(pBitmap.getConfig(), true);
-			pBitmap.recycle();
-			return mutableBitmap;
-		}
-	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

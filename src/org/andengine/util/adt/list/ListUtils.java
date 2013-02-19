@@ -10,7 +10,7 @@ import org.andengine.util.math.MathUtils;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 12:43:39 - 11.03.2010
  */

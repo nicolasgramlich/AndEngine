@@ -9,9 +9,9 @@ import android.graphics.RadialGradient;
 import android.graphics.Shader.TileMode;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 19:21:24 - 05.11.2010
  */
@@ -20,7 +20,7 @@ public class RadialGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 	// Constants
 	// ===========================================================
 
-	private static final float[] POSITIONS_DEFAULT = new float[] { 0.0f, 1.0f }; 
+	private static final float[] POSITIONS_DEFAULT = new float[] { 0.0f, 1.0f };
 
 	// ===========================================================
 	// Fields

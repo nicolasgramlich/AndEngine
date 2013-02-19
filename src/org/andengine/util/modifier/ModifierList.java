@@ -4,9 +4,9 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.util.adt.list.SmartList;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 14:34:57 - 03.09.2010
  */

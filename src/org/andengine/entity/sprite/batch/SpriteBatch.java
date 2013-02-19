@@ -24,10 +24,10 @@ import android.opengl.GLES20;
 /**
  * TODO TRY DEGENERATE TRIANGLES!
  * TODO Check if there is this multiple-of-X-byte(?) alignment optimization?
- * 
+ *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:45:48 - 14.06.2011
  */

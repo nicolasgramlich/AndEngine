@@ -10,10 +10,10 @@ import org.andengine.util.math.MathUtils;
  * The Jarvis March algorithm marches around the hull,
  * like a ribbon wrapping itself around the points,
  * this algorithm also called the <i><b>gift-wrapping</b></i> algorithm.
- * 
+ *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 14:01:18 - 14.09.2010
  * @see http://www.iti.fh-flensburg.de/lang/algorithmen/geo/

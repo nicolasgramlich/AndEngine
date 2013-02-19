@@ -24,7 +24,7 @@ import org.andengine.util.call.ParameterCallable;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 12:00:48 - 08.03.2010
  */
@@ -253,7 +253,7 @@ public class Entity implements IEntity {
 			rootEntity = rootEntity.getParent();
 		}
 
-		return rootEntity; 
+		return rootEntity;
 	}
 
 	@Override

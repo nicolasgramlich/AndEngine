@@ -3,9 +3,9 @@ package org.andengine.engine.options.resolutionpolicy;
 import android.view.View.MeasureSpec;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:23:00 - 29.03.2010
  */

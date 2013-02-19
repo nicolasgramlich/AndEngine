@@ -5,9 +5,9 @@ import org.andengine.entity.particle.Particle;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 18:53:41 - 02.10.2010
  */

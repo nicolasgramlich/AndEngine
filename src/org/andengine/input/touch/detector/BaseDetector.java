@@ -7,7 +7,7 @@ import org.andengine.input.touch.TouchEvent;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:59:00 - 05.11.2010
  */

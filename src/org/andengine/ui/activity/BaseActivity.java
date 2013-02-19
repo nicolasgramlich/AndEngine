@@ -12,9 +12,9 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 18:35:28 - 29.08.2009
  */
@@ -82,7 +82,7 @@ public abstract class BaseActivity extends Activity {
 	/**
 	 * Performs a task in the background, showing a {@link ProgressDialog},
 	 * while the {@link Callable} is being processed.
-	 * 
+	 *
 	 * @param <T>
 	 * @param pTitleResourceID
 	 * @param pMessageResourceID
@@ -97,7 +97,7 @@ public abstract class BaseActivity extends Activity {
 	/**
 	 * Performs a task in the background, showing a indeterminate {@link ProgressDialog},
 	 * while the {@link Callable} is being processed.
-	 * 
+	 *
 	 * @param <T>
 	 * @param pTitleResourceID
 	 * @param pMessageResourceID
@@ -113,7 +113,7 @@ public abstract class BaseActivity extends Activity {
 	/**
 	 * Performs a task in the background, showing a {@link ProgressDialog} with an ProgressBar,
 	 * while the {@link AsyncCallable} is being processed.
-	 * 
+	 *
 	 * @param <T>
 	 * @param pTitleResourceID
 	 * @param pMessageResourceID
@@ -128,7 +128,7 @@ public abstract class BaseActivity extends Activity {
 	/**
 	 * Performs a task in the background, showing a {@link ProgressDialog} with a ProgressBar,
 	 * while the {@link AsyncCallable} is being processed.
-	 * 
+	 *
 	 * @param <T>
 	 * @param pTitleResourceID
 	 * @param pMessageResourceID
@@ -144,7 +144,7 @@ public abstract class BaseActivity extends Activity {
 	/**
 	 * Performs a task in the background, showing an indeterminate {@link ProgressDialog},
 	 * while the {@link AsyncCallable} is being processed.
-	 * 
+	 *
 	 * @param <T>
 	 * @param pTitleResourceID
 	 * @param pMessageResourceID

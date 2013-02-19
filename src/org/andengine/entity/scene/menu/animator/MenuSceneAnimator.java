@@ -8,7 +8,7 @@ import org.andengine.util.adt.align.VerticalAlign;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:17:32 - 02.04.2010
  */

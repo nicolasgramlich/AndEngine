@@ -4,9 +4,9 @@ import org.andengine.entity.IEntity;
 import org.andengine.util.modifier.LoopModifier;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 12:42:13 - 03.09.2010
  */

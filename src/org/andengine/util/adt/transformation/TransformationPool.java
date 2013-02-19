@@ -3,9 +3,9 @@ package org.andengine.util.adt.transformation;
 import org.andengine.util.adt.pool.GenericPool;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 23:07:53 - 23.02.2011
  */

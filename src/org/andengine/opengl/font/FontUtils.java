@@ -132,7 +132,7 @@ public class FontUtils {
 
 	/**
 	 * Does not respect linebreaks!
-	 * 
+	 *
 	 * @param pFont
 	 * @param pText
 	 * @param pResult

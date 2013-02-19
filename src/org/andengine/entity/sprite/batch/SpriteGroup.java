@@ -14,7 +14,7 @@ import org.andengine.util.adt.list.SmartList;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 12:10:35 - 15.06.2011
  */

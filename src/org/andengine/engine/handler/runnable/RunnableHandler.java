@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.andengine.engine.handler.IUpdateHandler;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 10:24:39 - 18.06.2010
  */

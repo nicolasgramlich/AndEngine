@@ -3,7 +3,7 @@ package org.andengine.util.adt;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 17:59:55 - 14.07.2011
  */

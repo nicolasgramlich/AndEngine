@@ -8,9 +8,9 @@ import android.opengl.GLES20;
 
 /**
  * Sets the blend function used to draw the {@link Particle} during its lifespan. Only applicable to {@link Shape}s.
- * 
+ *
  * @author janne.sinivirta
- * 
+ *
  * @since 17:24:32 - 28.12.2011
  */
 public class BlendFunctionParticleInitializer<T extends IShape> implements IParticleInitializer<T> {

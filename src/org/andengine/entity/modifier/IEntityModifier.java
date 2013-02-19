@@ -5,9 +5,9 @@ import org.andengine.util.IMatcher;
 import org.andengine.util.modifier.IModifier;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:17:50 - 19.03.2010
  */

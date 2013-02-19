@@ -6,7 +6,7 @@ import org.andengine.util.Constants;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:50:19 - 11.03.2010
  */
@@ -72,7 +72,7 @@ public class BaseCollisionChecker {
 	 * If the point is colinear with the line segment, but not between the
 	 * endpoints, then the value will be -1 if the point lies
 	 * "beyond (X1, Y1)" or 1 if the point lies "beyond (X2, Y2)".
-	 * 
+	 *
 	 * @param pX1 ,
 	 * @param pY1 the coordinates of the beginning of the specified
 	 *            line segment
@@ -170,7 +170,7 @@ public class BaseCollisionChecker {
 
 	/**
 	 * Checks line specified by <code>pVertexIndexA1</code> and <code>pVertexIndexA2</code> in <code>pVerticesA</code> against all lines in <code>pVerticesB</code>.
-	 * 
+	 *
 	 * @param pVerticesA
 	 * @param pVertexOffsetXA
 	 * @param pVertexOffsetYA

@@ -4,7 +4,7 @@ import org.andengine.entity.IEntity;
 
 /**
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 14:15:52 - 10.08.2011
  */

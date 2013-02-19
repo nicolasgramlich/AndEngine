@@ -19,7 +19,7 @@ import android.util.SparseArray;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 12:47:39 - 08.03.2010
  */
@@ -180,7 +180,7 @@ public class Scene extends Entity {
 	 * with {@link TouchEvent#ACTION_DOWN}, they will receive all subsequent {@link TouchEvent}s
 	 * that are made with the same PointerID (finger)
 	 * <b>even if the {@link TouchEvent} is outside of the actual {@link ITouchArea}</b>!
-	 * 
+	 *
 	 * @param pTouchAreaBindingOnActionDownEnabled
 	 */
 	public void setTouchAreaBindingOnActionDownEnabled(final boolean pTouchAreaBindingOnActionDownEnabled) {
@@ -198,7 +198,7 @@ public class Scene extends Entity {
 	 * with {@link TouchEvent#ACTION_MOVE}, they will receive all subsequent {@link TouchEvent}s
 	 * that are made with the same PointerID (finger)
 	 * <b>even if the {@link TouchEvent} is outside of the actual {@link ITouchArea}</b>!
-	 * 
+	 *
 	 * @param pTouchAreaBindingOnActionMoveEnabled
 	 */
 	public void setTouchAreaBindingOnActionMoveEnabled(final boolean pTouchAreaBindingOnActionMoveEnabled) {
@@ -220,7 +220,7 @@ public class Scene extends Entity {
 	 * with {@link TouchEvent#ACTION_DOWN}, it will receive all subsequent {@link TouchEvent}s
 	 * that are made with the same PointerID (finger)
 	 * <b>even if the {@link TouchEvent} is would belong to an overlaying {@link ITouchArea}</b>!
-	 * 
+	 *
 	 * @param pOnSceneTouchListenerBindingOnActionDownEnabled
 	 */
 	public void setOnSceneTouchListenerBindingOnActionDownEnabled(final boolean pOnSceneTouchListenerBindingOnActionDownEnabled) {

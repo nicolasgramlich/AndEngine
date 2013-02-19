@@ -3,9 +3,9 @@ package org.andengine.util.adt.map;
 import java.util.Arrays;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 16:54:24 - 07.11.2010
  */

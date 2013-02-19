@@ -3,9 +3,9 @@ package org.andengine.entity.scene.background;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 19:44:31 - 19.07.2010
  */

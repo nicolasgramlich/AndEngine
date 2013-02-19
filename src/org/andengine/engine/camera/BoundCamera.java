@@ -1,9 +1,9 @@
 package org.andengine.engine.camera;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:55:54 - 27.07.2010
  */
@@ -114,13 +114,13 @@ public class BoundCamera extends Camera {
 		if (this.mBoundsWidth < this.getWidth()) {
 			centerX = this.mBoundsCenterX;
 		} else {
-			centerX = getBoundedX(this.getCenterX()); 
+			centerX = getBoundedX(this.getCenterX());
 		}
 		final float centerY;
 		if (this.mBoundsHeight < this.getHeight()) {
 			centerY = this.mBoundsCenterY;
 		} else {
-			centerY = getBoundedY(this.getCenterY()); 
+			centerY = getBoundedY(this.getCenterY());
 		}
 		super.setCenter(centerX, centerY);
 	}

@@ -12,7 +12,7 @@ import android.graphics.AvoidXfermode.Mode;
 import android.os.Build;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  *
  * @deprecated On {@link Build.VERSION_CODES#JELLY_BEAN} and higher!

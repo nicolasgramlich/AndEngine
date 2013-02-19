@@ -3,9 +3,9 @@ package org.andengine.engine.options;
 import android.os.PowerManager;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 19:45:23 - 10.07.2010
  */

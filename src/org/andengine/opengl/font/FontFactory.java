@@ -13,7 +13,7 @@ import android.graphics.Typeface;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 17:17:28 - 16.06.2010
  */

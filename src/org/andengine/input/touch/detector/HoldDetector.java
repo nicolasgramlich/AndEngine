@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @author Greg Haynes
  * @since 20:49:25 - 23.08.2010

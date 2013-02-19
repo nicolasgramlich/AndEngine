@@ -18,7 +18,7 @@ import android.content.res.AssetManager;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @param <T>
  * @since 14:16:19 - 11.10.2010

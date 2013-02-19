@@ -1,9 +1,9 @@
 package org.andengine.input.sensor.location;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 10:55:57 - 31.10.2010
  */

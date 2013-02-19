@@ -15,7 +15,7 @@ import org.andengine.util.algorithm.path.Path;
  *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @author Greg Haynes
  * @since 23:16:17 - 16.08.2010

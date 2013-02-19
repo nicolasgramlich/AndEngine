@@ -3,7 +3,7 @@ package org.andengine.opengl.vbo.attribute;
 import org.andengine.opengl.GLES20Fix;
 
 /**
- * The {@link VertexBufferObjectAttributeFix} is a special 
+ * The {@link VertexBufferObjectAttributeFix} is a special
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>

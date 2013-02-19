@@ -3,9 +3,9 @@ package org.andengine.entity.scene.background;
 import org.andengine.entity.sprite.Sprite;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 14:01:43 - 19.07.2010
  */

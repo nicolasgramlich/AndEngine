@@ -5,7 +5,7 @@ import org.andengine.opengl.util.GLState;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:57:29 - 08.03.2010
  */

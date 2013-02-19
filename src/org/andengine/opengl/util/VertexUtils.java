@@ -36,7 +36,7 @@ public class VertexUtils {
 	 * @param pVertexOffset
 	 * @param pVertexStride
 	 * @param pVertexIndex
-	 * @return the value of the <code>pVertexOffset</code>-th attribute of the <code>pVertexIndex</code>-th vertex. 
+	 * @return the value of the <code>pVertexOffset</code>-th attribute of the <code>pVertexIndex</code>-th vertex.
 	 */
 	public static float getVertex(final float[] pVertices, final int pVertexOffset, final int pVertexStride, final int pVertexIndex) {
 		return pVertices[(pVertexIndex * pVertexStride) + pVertexOffset];

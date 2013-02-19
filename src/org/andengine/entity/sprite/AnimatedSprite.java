@@ -11,7 +11,7 @@ import org.andengine.util.time.TimeConstants;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:25:46 - 10.03.2010
  */
@@ -263,7 +263,7 @@ public class AnimatedSprite extends TiledSprite {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 */
@@ -273,7 +273,7 @@ public class AnimatedSprite extends TiledSprite {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pAnimationListener
@@ -286,7 +286,7 @@ public class AnimatedSprite extends TiledSprite {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoop
@@ -297,7 +297,7 @@ public class AnimatedSprite extends TiledSprite {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoop
@@ -311,7 +311,7 @@ public class AnimatedSprite extends TiledSprite {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoopCount
@@ -322,7 +322,7 @@ public class AnimatedSprite extends TiledSprite {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoopCount

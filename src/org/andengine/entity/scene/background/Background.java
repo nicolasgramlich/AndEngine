@@ -12,7 +12,7 @@ import android.opengl.GLES20;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 14:08:17 - 19.07.2010
  */

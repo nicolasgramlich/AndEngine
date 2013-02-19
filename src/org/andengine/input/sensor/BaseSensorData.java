@@ -3,9 +3,9 @@ package org.andengine.input.sensor;
 import java.util.Arrays;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 16:50:44 - 10.03.2010
  */

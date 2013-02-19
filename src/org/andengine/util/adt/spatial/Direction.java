@@ -3,7 +3,7 @@ package org.andengine.util.adt.spatial;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:19:11 - 17.08.2010
  */

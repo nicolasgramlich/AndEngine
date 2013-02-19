@@ -9,7 +9,7 @@ import org.andengine.util.exception.MethodNotSupportedException;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:35:53 - 29.03.2010
  */

@@ -5,9 +5,9 @@ import org.andengine.util.modifier.BaseDoubleValueSpanModifier;
 import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 23:29:22 - 19.03.2010
  */

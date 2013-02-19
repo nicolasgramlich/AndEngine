@@ -13,9 +13,9 @@ import android.content.Context;
 import android.os.Environment;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 13:53:33 - 20.06.2010
  */
@@ -181,7 +181,7 @@ public class FileUtils {
 
 	/**
 	 * Recursively deletes all files and sub-directories under <code>pFileOrDirectory</code>.
-	 * 
+	 *
 	 * @param pFileOrDirectory
 	 * @return <code>true</code>, if all deletions were successful. <code>false</code>, if a deletion fails (the recursion is stopped then).
 	 */

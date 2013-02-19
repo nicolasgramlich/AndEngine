@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 13:50:42 - 03.07.2010
  */

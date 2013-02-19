@@ -12,7 +12,7 @@ import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 14:22:55 - 14.07.2011
  */

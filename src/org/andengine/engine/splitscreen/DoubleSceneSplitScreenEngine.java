@@ -10,9 +10,9 @@ import org.andengine.opengl.util.GLState;
 import android.opengl.GLES20;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 22:28:34 - 27.03.2010
  */

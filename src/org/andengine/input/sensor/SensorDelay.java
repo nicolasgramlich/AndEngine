@@ -4,9 +4,9 @@ import android.hardware.SensorManager;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:14:38 - 31.10.2010
  */

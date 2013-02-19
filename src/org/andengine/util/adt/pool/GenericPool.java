@@ -9,10 +9,10 @@ import org.andengine.util.debug.Debug;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Valentin Milea
  * @author Nicolas Gramlich
- * 
+ *
  * @since 22:19:55 - 31.08.2010
  */
 public abstract class GenericPool<T> {

@@ -143,16 +143,16 @@ public class SparseLongArray implements Cloneable {
     /**
      * Given an index in the range <code>0...size()-1</code>, returns
      * the key from the <code>index</code>th key-value mapping that this
-     * SparseLongArray stores.  
+     * SparseLongArray stores.
      */
     public int keyAt(int index) {
         return mKeys[index];
     }
-    
+
     /**
      * Given an index in the range <code>0...size()-1</code>, returns
      * the value from the <code>index</code>th key-value mapping that this
-     * SparseLongArray stores.  
+     * SparseLongArray stores.
      */
     public long valueAt(int index) {
         return mValues[index];
@@ -219,7 +219,7 @@ public class SparseLongArray implements Cloneable {
         mValues[pos] = value;
         mSize = pos + 1;
     }
-    
+
     private static int binarySearch(int[] a, int start, int len, int key) {
         int high = start + len, low = start - 1, guess;
 

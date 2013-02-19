@@ -3,9 +3,9 @@ package org.andengine.engine.handler.collision;
 import org.andengine.entity.shape.IShape;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 12:05:39 - 11.03.2010
  */

@@ -5,9 +5,9 @@ import org.andengine.entity.IEntity;
 import org.andengine.opengl.util.GLState;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 18:25:10 - 21.07.2010
  */

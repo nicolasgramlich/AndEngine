@@ -7,9 +7,9 @@ import org.andengine.util.math.MathConstants;
 import org.andengine.util.math.MathUtils;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 20:18:41 - 01.10.2010
  */

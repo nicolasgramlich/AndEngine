@@ -11,7 +11,7 @@ import android.view.MotionEvent;
  * @author rkpost
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:36:26 - 11.10.2010
  */

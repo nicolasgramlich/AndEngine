@@ -5,9 +5,9 @@ import org.andengine.util.adt.pool.GenericPool;
 import android.view.MotionEvent;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 10:17:42 - 13.07.2010
  */

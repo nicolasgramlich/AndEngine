@@ -369,7 +369,7 @@ public class Gradient extends Shape {
 	}
 
 	/**
-	 * @param pGradientAngle in degrees. <code>0</code> is a 'left-to-right', <code>90</code> is 'top-to-bottom', ... 
+	 * @param pGradientAngle in degrees. <code>0</code> is a 'left-to-right', <code>90</code> is 'top-to-bottom', ...
 	 */
 	public void setGradientAngle(final float pGradientAngle) {
 		final float angleInRad = MathUtils.degToRad(pGradientAngle);

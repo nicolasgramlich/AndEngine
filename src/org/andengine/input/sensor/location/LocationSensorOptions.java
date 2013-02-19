@@ -5,9 +5,9 @@ import org.andengine.util.time.TimeConstants;
 import android.location.Criteria;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:02:12 - 31.10.2010
  */

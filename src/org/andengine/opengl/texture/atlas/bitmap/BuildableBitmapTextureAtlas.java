@@ -8,9 +8,9 @@ import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:51:46 - 12.07.2011
  */

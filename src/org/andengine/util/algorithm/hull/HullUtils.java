@@ -40,7 +40,7 @@ public class HullUtils {
 		final int lastVertexOffset = pVertexCount * pVertexStride;
 
 		/* Starting at one since, since we chose 0 as a the first candidate. */
-		int currentVertexIndex = 1; 
+		int currentVertexIndex = 1;
 		int currentVertexOffsetY = pVertexStride + pVertexOffsetY;
 
 		/* Loop to the end. */

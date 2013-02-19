@@ -23,10 +23,10 @@ public interface IOnSceneTouchListener {
 
 	/**
 	 * Called when a {@link TouchEvent} is dispatched to a {@link Scene}.
-	 * 
+	 *
 	 * @param pScene The {@link Scene} that the {@link TouchEvent} has been dispatched to.
 	 * @param pSceneTouchEvent The {@link TouchEvent} object containing full information about the event.
-	 * 
+	 *
 	 * @return <code>true</code> if this {@link IOnSceneTouchListener} has consumed the {@link TouchEvent}, <code>false</code> otherwise.
 	 */
 	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent);

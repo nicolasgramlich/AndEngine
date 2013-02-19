@@ -9,9 +9,9 @@ import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas.Textur
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @author Jim Scott (BlackPawn)
  * @since 16:03:01 - 12.08.2010
@@ -47,7 +47,7 @@ public class BlackPawnTextureAtlasBuilder<T extends ITextureAtlasSource, A exten
 	// ===========================================================
 
 	/**
-	 * @param pTextureAtlasBorderSpacing the minimum spacing between the border of the texture and the {@link ITextureAtlasSource}s. 
+	 * @param pTextureAtlasBorderSpacing the minimum spacing between the border of the texture and the {@link ITextureAtlasSource}s.
 	 * @param pTextureAtlasSourceSpacing the spacing between the different {@link ITextureAtlasSource}s.
 	 * @param pTextureAtlasSourcePadding the transparent padding around each {@link ITextureAtlasSource} (prevents texture bleeding).
 	 */

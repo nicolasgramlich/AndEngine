@@ -5,7 +5,7 @@ import org.andengine.audio.exception.AudioException;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 16:35:37 - 13.06.2010
  */

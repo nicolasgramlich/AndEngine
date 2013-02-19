@@ -8,7 +8,7 @@ import android.media.SoundPool;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 13:22:15 - 11.03.2010
  */

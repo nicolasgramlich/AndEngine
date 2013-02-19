@@ -13,7 +13,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:51:27 - 13.03.2010
  */

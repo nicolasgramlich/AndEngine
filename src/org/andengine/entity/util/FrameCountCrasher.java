@@ -5,9 +5,9 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.util.debug.Debug;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 19:52:31 - 09.03.2010
  */

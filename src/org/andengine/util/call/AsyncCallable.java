@@ -1,9 +1,9 @@
 package org.andengine.util.call;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:00:30 - 14.05.2010
  * @param <T>

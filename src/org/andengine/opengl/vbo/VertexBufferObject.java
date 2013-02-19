@@ -13,11 +13,11 @@ import android.opengl.GLES20;
 
 /**
  * TODO Extract a common base class from {@link VertexBufferObject} and {@link ZeroMemoryVertexBufferObject} (due to significant code duplication).
- * 		For naming, maybe be inspired by the java ByteBuffer naming (i.e. HeapBackedFloatArrayVertexBufferObject, StreamBufferVertexBufferObject, SharedBufferStreamVertexBufferObject).  
+ * 		For naming, maybe be inspired by the java ByteBuffer naming (i.e. HeapBackedFloatArrayVertexBufferObject, StreamBufferVertexBufferObject, SharedBufferStreamVertexBufferObject).
  *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 14:22:56 - 07.04.2010
  */

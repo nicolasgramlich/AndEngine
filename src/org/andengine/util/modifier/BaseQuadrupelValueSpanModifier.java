@@ -4,7 +4,7 @@ import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 10:58:32 - 02.08.2011
  * @param <T>

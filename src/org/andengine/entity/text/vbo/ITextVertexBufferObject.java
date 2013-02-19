@@ -4,7 +4,7 @@ import org.andengine.entity.text.Text;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
- * 
+ *
  * (c) Zynga 2012
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>

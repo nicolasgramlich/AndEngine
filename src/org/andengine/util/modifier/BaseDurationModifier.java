@@ -1,9 +1,9 @@
 package org.andengine.util.modifier;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 10:48:13 - 03.09.2010
  * @param <T>

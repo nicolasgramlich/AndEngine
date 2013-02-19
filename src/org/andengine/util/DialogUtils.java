@@ -4,9 +4,9 @@ import android.app.Dialog;
 import android.view.WindowManager;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 13:04:09 - 12.05.2011
  */

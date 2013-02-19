@@ -7,7 +7,7 @@ import android.util.Log;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 13:29:16 - 08.03.2010
  */

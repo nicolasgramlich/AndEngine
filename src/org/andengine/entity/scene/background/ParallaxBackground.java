@@ -8,9 +8,9 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.util.debug.Debug;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:36:26 - 19.07.2010
  */
@@ -102,7 +102,7 @@ public class ParallaxBackground extends Background {
 			this.mParallaxFactor = pParallaxFactor;
 			this.mEntity = pEntity;
 
-			// TODO Adjust onDraw calculations, so that these assumptions aren't necessary. 
+			// TODO Adjust onDraw calculations, so that these assumptions aren't necessary.
 			if (this.mEntity.getX() != 0) {
 				Debug.w("The X position of a " + this.getClass().getSimpleName() + " is expected to be 0.");
 			}

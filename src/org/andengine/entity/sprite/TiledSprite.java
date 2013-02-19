@@ -16,7 +16,7 @@ import android.opengl.GLES20;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 19:30:13 - 09.03.2010
  */

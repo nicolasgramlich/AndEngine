@@ -6,9 +6,9 @@ import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapT
 import android.graphics.Paint.Style;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 18:08:00 - 05.11.2010
  */

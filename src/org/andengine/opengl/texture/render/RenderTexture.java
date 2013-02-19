@@ -20,7 +20,7 @@ import android.graphics.Bitmap.Config;
 import android.opengl.GLES20;
 
 /**
- * The general workflow with a {@link RenderTexture} is: {@link RenderTexture#init(GLState)} -> {@link RenderTexture#begin(GLState)} -> {@link RenderTexture#end(GLState)} -> {@link RenderTexture#destroy(GLState)}. 
+ * The general workflow with a {@link RenderTexture} is: {@link RenderTexture#init(GLState)} -> {@link RenderTexture#begin(GLState)} -> {@link RenderTexture#end(GLState)} -> {@link RenderTexture#destroy(GLState)}.
  *
  * (c) Zynga 2011
  *
@@ -288,7 +288,7 @@ public class RenderTexture extends Texture {
 	 * @param pGLState
 	 * @param pFlush {@link GLState#flush()} has lower preference than pFinish.
 	 * @param pFinish {@link GLState#finish()} had higher preference than pFlush.
-	 * 
+	 *
 	 * @see {@link RenderTexture#begin(GLState)},
 	 * 		{@link RenderTexture#begin(GLState, boolean, boolean)},
 	 * 		{@link RenderTexture#begin(GLState, Color)},

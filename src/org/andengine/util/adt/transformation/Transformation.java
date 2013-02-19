@@ -5,9 +5,9 @@ import org.andengine.util.math.MathConstants;
 
 /**
  * <p>This class is basically a java-space replacement for the native {@link android.graphics.Matrix} class.</p>
- * 
+ *
  * <p>Math taken from <a href="http://www.senocular.com/flash/tutorials/transformmatrix/">senocular.com</a>.</p>
- * 
+ *
  * This class represents an affine transformation with the following matrix:
  * <pre> [ a , b , 0 ]
  * [ c , d , 0 ]
@@ -24,7 +24,7 @@ import org.andengine.util.math.MathConstants;
  *
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:47:18 - 23.12.2010
  */

@@ -6,9 +6,9 @@ import static org.andengine.util.Constants.VERTEX_INDEX_Y;
 import org.andengine.util.math.MathUtils;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:48:00 - 01.10.2010
  */

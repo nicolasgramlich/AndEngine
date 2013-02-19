@@ -21,7 +21,7 @@ import org.andengine.util.adt.transformation.Transformation;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:20:25 - 08.03.2010
  */
@@ -293,9 +293,9 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public void sortChildren();
 	/**
 	 * Sorts the {@link IEntity}s based on their ZIndex. Sort is stable.
-	 * In contrast to {@link IEntity#sortChildren()} this method is particularly useful to avoid multiple sorts per frame. 
+	 * In contrast to {@link IEntity#sortChildren()} this method is particularly useful to avoid multiple sorts per frame.
 	 * @param pImmediate if <code>true</code>, the sorting is executed immediately.
-	 * If <code>false</code> the sorting is executed before the next (visible) drawing of the children of this {@link IEntity}. 
+	 * If <code>false</code> the sorting is executed before the next (visible) drawing of the children of this {@link IEntity}.
 	 */
 	public void sortChildren(final boolean pImmediate);
 	/**

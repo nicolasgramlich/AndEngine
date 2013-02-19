@@ -4,9 +4,9 @@ import org.andengine.entity.IEntity;
 import org.andengine.util.call.Callback;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 00:53:22 - 28.08.2010
  */

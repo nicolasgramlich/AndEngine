@@ -10,7 +10,7 @@ import org.andengine.util.adt.queue.IQueue;
  * This implementation is particular useful/efficient for enter/poll operations.
  * Its {@link java.util.Queue} like behavior performs better than a plain {@link java.util.ArrayList}, since it automatically shift the contents of its internal Array only when really necessary.
  * Besides sparse allocations to increase the size of the internal Array, {@link ShiftList} is allocation free (unlike the {@link java.util.LinkedList} family).
- * 
+ *
  * Supports <code>null</code> items.
  *
  * (c) Zynga 2012

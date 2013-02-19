@@ -8,9 +8,9 @@ import java.net.Socket;
 import org.andengine.util.debug.Debug;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 14:42:15 - 18.09.2009
  */

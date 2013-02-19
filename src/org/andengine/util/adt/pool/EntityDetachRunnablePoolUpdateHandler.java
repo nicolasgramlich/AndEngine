@@ -6,7 +6,7 @@ import org.andengine.util.call.Callback;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 23:16:25 - 31.08.2010
  */

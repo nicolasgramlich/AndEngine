@@ -8,7 +8,7 @@ import org.andengine.ui.IGameInterface;
 
 /**
  * This class exists so that the callback parameters of the methods in {@link IGameInterface} get called automatically.
- * 
+ *
  * (c) Zynga 2011
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>

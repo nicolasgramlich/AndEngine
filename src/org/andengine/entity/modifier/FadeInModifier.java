@@ -5,9 +5,9 @@ import org.andengine.util.modifier.ease.IEaseFunction;
 
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 19:03:12 - 08.06.2010
  */

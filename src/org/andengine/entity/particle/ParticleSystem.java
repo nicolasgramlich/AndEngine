@@ -16,7 +16,7 @@ import org.andengine.util.math.MathUtils;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 19:42:27 - 14.03.2010
  */
@@ -144,7 +144,7 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 		}
 		this.mParticles[this.mParticlesAlive] = particle;
 
-		/* This mode of swapping particles is faster than copying tons of array elements, 
+		/* This mode of swapping particles is faster than copying tons of array elements,
 		 * but it doesn't respect the 'lifetime' of the particles. */
 //		particles[i] = particles[this.mParticlesAlive];
 //		particles[this.mParticlesAlive] = particle;

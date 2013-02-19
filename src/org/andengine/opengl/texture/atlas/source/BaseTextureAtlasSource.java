@@ -1,9 +1,9 @@
 package org.andengine.opengl.texture.atlas.source;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 13:55:12 - 12.07.2011
  */

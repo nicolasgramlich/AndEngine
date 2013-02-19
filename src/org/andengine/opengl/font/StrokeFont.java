@@ -10,9 +10,9 @@ import android.graphics.Typeface;
 /**
  * TODO Re-implement with Font changes.
  *
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 10:39:33 - 03.04.2010
  */

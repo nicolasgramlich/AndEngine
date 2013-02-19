@@ -17,9 +17,9 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 12:07:52 - 09.03.2010
  */

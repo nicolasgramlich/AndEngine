@@ -9,9 +9,9 @@ import android.opengl.GLES20;
  * WrapT and WrapS define how TextureCoordinates that exceed the [0,1] limit are treated.
  * I.e. {@link GLES20#GL_REPEAT} will repeat the {@link ITexture} and {@link GLES20#GL_CLAMP_TO_EDGE} will stretch the outermost pixels of the {@link ITexture}.
  *
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 13:00:09 - 05.04.2010
  */
@@ -30,7 +30,7 @@ public class TextureOptions {
 	public static final TextureOptions REPEATING_NEAREST_PREMULTIPLYALPHA = new TextureOptions(GLES20.GL_NEAREST, GLES20.GL_NEAREST, GLES20.GL_REPEAT, GLES20.GL_REPEAT, true);
 	public static final TextureOptions REPEATING_BILINEAR_PREMULTIPLYALPHA = new TextureOptions(GLES20.GL_LINEAR, GLES20.GL_LINEAR, GLES20.GL_REPEAT, GLES20.GL_REPEAT, true);
 
-	public static final TextureOptions DEFAULT = NEAREST; 
+	public static final TextureOptions DEFAULT = NEAREST;
 
 	// ===========================================================
 	// Fields

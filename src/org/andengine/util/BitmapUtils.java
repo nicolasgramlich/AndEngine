@@ -36,7 +36,7 @@ public class BitmapUtils {
 	/**
 	 * @param pBitmap
 	 *
-	 * @return a {@link Bitmap} that is {@link Bitmap#isMutable()}. If <code>pBitmap</code> is {@link Bitmap#isMutable()} then <code>pBitmap</code> is returned, otherwise a new {@link Bitmap} instance is returned that is {@link Bitmap#isMutable()} and <code>pBitmap</code> is {@link Bitmap#recycle()}d. 
+	 * @return a {@link Bitmap} that is {@link Bitmap#isMutable()}. If <code>pBitmap</code> is {@link Bitmap#isMutable()} then <code>pBitmap</code> is returned, otherwise a new {@link Bitmap} instance is returned that is {@link Bitmap#isMutable()} and <code>pBitmap</code> is {@link Bitmap#recycle()}d.
 	 */
 	public static Bitmap ensureBitmapIsMutable(final Bitmap pBitmap) {
 		if (pBitmap.isMutable()) {

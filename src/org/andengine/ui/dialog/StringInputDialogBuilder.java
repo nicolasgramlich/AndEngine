@@ -6,9 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 09:46:00 - 14.12.2009
  */

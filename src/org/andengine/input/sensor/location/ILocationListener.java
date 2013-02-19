@@ -5,9 +5,9 @@ import android.location.LocationListener;
 import android.os.Bundle;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 10:39:23 - 31.10.2010
  */

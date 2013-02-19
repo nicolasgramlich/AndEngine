@@ -4,10 +4,10 @@ package org.andengine.util.adt.pool;
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Valentin Milea
  * @author Nicolas Gramlich
- * 
+ *
  * @since 23:00:21 - 21.08.2010
  */
 public abstract class Pool<T extends PoolItem> extends GenericPool<T> {

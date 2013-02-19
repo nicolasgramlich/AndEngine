@@ -1,9 +1,9 @@
 package org.andengine.util.adt.color.constants;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 10:21:46 - 19.07.2010
  */

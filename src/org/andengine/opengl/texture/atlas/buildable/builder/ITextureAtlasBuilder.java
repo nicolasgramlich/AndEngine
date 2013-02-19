@@ -7,9 +7,9 @@ import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas.Textur
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 15:59:14 - 12.08.2010
  */

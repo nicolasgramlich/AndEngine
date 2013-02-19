@@ -51,14 +51,14 @@ public interface IAnimationData {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 */
 	public void set(final long[] pFrameDurations, final int[] pFrames);
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoop
@@ -66,7 +66,7 @@ public interface IAnimationData {
 	public void set(final long[] pFrameDurations, final int[] pFrames, final boolean pLoop);
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoopCount

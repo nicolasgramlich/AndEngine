@@ -5,9 +5,9 @@ import org.andengine.util.adt.map.Library;
 import android.util.SparseArray;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
- * 
+ *
  * @author Nicolas Gramlich
  * @since 11:52:26 - 20.08.2010
  */

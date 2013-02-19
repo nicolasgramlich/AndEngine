@@ -70,7 +70,7 @@ public class AnimationData implements IAnimationData {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoopCount
@@ -214,7 +214,7 @@ public class AnimationData implements IAnimationData {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 */
@@ -225,7 +225,7 @@ public class AnimationData implements IAnimationData {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoop
@@ -237,7 +237,7 @@ public class AnimationData implements IAnimationData {
 
 	/**
 	 * Animate specifics frames.
-	 * 
+	 *
 	 * @param pFrameDurations must have the same length as pFrames.
 	 * @param pFrames indices of the frames to animate.
 	 * @param pLoopCount

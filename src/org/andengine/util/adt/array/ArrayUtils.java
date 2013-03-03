@@ -1,5 +1,6 @@
 package org.andengine.util.adt.array;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import org.andengine.util.IMatcher;
@@ -321,8 +322,7 @@ public final class ArrayUtils {
 	 * @param pArrays items or pArrays itself can be null.
 	 * @return <code>null</code> when pArrays is <code>null</code> or all arrays in pArrays are <code>null</code> or of length zero. Otherwise an in-order joined array of <code>T[]</code> of all not null, not zero length arrays in pArrays.
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T[] join(final Class<T> pClass, final T[]... pArrays) {
+	public static <T> T[] join(final Class<T[]> pClass, final T[]... pArrays) {
 		if (pArrays == null) {
 			return null;
 		}
@@ -348,7 +348,7 @@ public final class ArrayUtils {
 		}
 
 		/* Determine length of result. */
-		final T[] result = (T[]) java.lang.reflect.Array.newInstance(pClass.getComponentType(), resultLength);
+		final T[] result = pClass.cast(Array.newInstance(pClass.getComponentType(), resultLength));
 		int offset = 0;
 		for (int i = 0; i < arrayCount; i++) {
 			final T[] array = pArrays[i];
@@ -457,8 +457,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> T[] filter(final T[] pArray, final Class<T> pClass, final IMatcher<T> pMatcher) {
+	public static <T> T[] filter(final T[] pArray, final Class<T[]> pClass, final IMatcher<T> pMatcher) {
 		final int arrayLength = pArray.length;
 
 		int filteredArrayLength = 0;
@@ -468,7 +467,7 @@ public final class ArrayUtils {
 			}
 		}
 
-		final T[] filteredArray = (T[]) java.lang.reflect.Array.newInstance(pClass.getComponentType(), filteredArrayLength);
+		final T[] filteredArray = pClass.cast(Array.newInstance(pClass.getComponentType(), filteredArrayLength));
 		int resultIndex = 0;
 		for (int i = 0; i < arrayLength; i++) {
 			if (pMatcher.matches(pArray[i])) {

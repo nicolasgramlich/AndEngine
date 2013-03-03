@@ -3,6 +3,7 @@ package org.andengine.util.adt.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.andengine.util.IMatcher;
 import org.andengine.util.adt.queue.IQueue;
 import org.andengine.util.adt.queue.concurrent.SynchronizedQueue;
 import org.andengine.util.math.MathUtils;
@@ -58,6 +59,18 @@ public final class ListUtils {
 		final int itemCount = pItems.length;
 		for (int i = 0; i < itemCount; i++) {
 			out.add(pItems[i]);
+		}
+		return out;
+	}
+
+	public static final <T> ArrayList<T> filter(final List<T> pItems, final IMatcher<T> pMatcher) {
+		final ArrayList<T> out = new ArrayList<T>();
+		final int itemCount = pItems.size();
+		for (int i = 0; i < itemCount; i++) {
+			final T item = pItems.get(i);
+			if (pMatcher.matches(item)) {
+				out.add(item);
+			}
 		}
 		return out;
 	}

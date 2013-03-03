@@ -106,9 +106,14 @@ public class SystemUtils {
 	}
 
 	public static boolean hasSystemFeature(final Context pContext, final String pFeature) {
+		final PackageManager packageManager = pContext.getPackageManager();
 		try {
-			final Method PackageManager_hasSystemFeatures = PackageManager.class.getMethod("hasSystemFeature", new Class[] { String.class });
-			return (PackageManager_hasSystemFeatures == null) ? false : (Boolean) PackageManager_hasSystemFeatures.invoke(pContext.getPackageManager(), pFeature);
+			try {
+				return packageManager.hasSystemFeature(pFeature);
+			} catch (final Throwable t) {
+				final Method PackageManager_hasSystemFeatures = PackageManager.class.getMethod("hasSystemFeature", new Class[] { String.class });
+				return (PackageManager_hasSystemFeatures == null) ? false : (Boolean) PackageManager_hasSystemFeatures.invoke(packageManager, pFeature);
+			}
 		} catch (final Throwable t) {
 			return false;
 		}

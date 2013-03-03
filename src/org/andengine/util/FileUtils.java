@@ -44,6 +44,10 @@ public class FileUtils {
 	// Methods
 	// ===========================================================
 
+	public static String[] readLines(final File pFile) throws IOException {
+		return StreamUtils.readLines(new FileInputStream(pFile));
+	}
+
 	public static void copyToExternalStorage(final Context pContext, final int pSourceResourceID, final String pFilename) throws FileNotFoundException {
 		FileUtils.copyToExternalStorage(pContext, pContext.getResources().openRawResource(pSourceResourceID), pFilename);
 	}

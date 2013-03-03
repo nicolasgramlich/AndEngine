@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 import org.andengine.util.debug.Debug;
 
@@ -49,6 +50,23 @@ public final class StreamUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static String[] readLines(final InputStream pInputStream) throws IOException {
+		return StreamUtils.readLines(new InputStreamReader(pInputStream));
+	}
+
+	public static String[] readLines(final Reader pReader) throws IOException {
+		final BufferedReader reader = new BufferedReader(pReader);
+
+		final ArrayList<String> lines = new ArrayList<String>();
+
+		String line = null;
+		while((line = reader.readLine()) != null) {
+			lines.add(line);
+		}
+
+		return lines.toArray(new String[lines.size()]);
+	}
 
 	public static final String readFully(final InputStream pInputStream) throws IOException {
 		final StringWriter writer = new StringWriter();

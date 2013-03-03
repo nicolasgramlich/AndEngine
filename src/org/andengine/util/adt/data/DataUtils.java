@@ -34,6 +34,10 @@ public final class DataUtils {
 		return pByte & 0xFF;
 	}
 
+	public static final int getBitLength(final int pNumber) {
+		return Integer.SIZE - Integer.numberOfLeadingZeros(pNumber);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

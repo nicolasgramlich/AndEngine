@@ -2,6 +2,7 @@ package org.andengine.util.adt.array;
 
 import java.util.List;
 
+import org.andengine.util.IMatcher;
 import org.andengine.util.math.MathUtils;
 
 /**
@@ -454,6 +455,29 @@ public final class ArrayUtils {
 		for (int i = 0; i < pArray.length; i++) {
 			pArray[i] = Math.round(pArray[i] * pFactor);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T[] filter(final T[] pArray, final Class<T> pClass, final IMatcher<T> pMatcher) {
+		final int arrayLength = pArray.length;
+
+		int filteredArrayLength = 0;
+		for (int i = arrayLength - 1; i >= 0; i--) {
+			if (pMatcher.matches(pArray[i])) {
+				filteredArrayLength++;
+			}
+		}
+
+		final T[] filteredArray = (T[]) java.lang.reflect.Array.newInstance(pClass.getComponentType(), filteredArrayLength);
+		int resultIndex = 0;
+		for (int i = 0; i < arrayLength; i++) {
+			if (pMatcher.matches(pArray[i])) {
+				filteredArray[resultIndex] = pArray[i];
+				resultIndex++;
+			}
+		}
+
+		return filteredArray;
 	}
 
 	// ===========================================================

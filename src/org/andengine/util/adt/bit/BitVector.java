@@ -26,15 +26,15 @@ public class BitVector {
 	public static IBitVector wrap(final byte[] pData) {
 		return new ByteBackedBitVector(pData);
 	}
-	
+
 	public static IBitVector wrap(final int pSize, final byte[] pData) {
 		return new ByteBackedBitVector(pData);
 	}
-	
+
 	public static IBitVector wrap(final long[] pData) {
 		return new LongBackedBitVector(pData);
 	}
-	
+
 	public static IBitVector wrap(final int pSize, final long[] pData) {
 		return new LongBackedBitVector(pSize, pData);
 	}

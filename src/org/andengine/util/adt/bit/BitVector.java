@@ -7,7 +7,7 @@ package org.andengine.util.adt.bit;
  * @since 18:14:12 - 02.03.2013
  * @author ngramlich
  */
-public class BitVector {
+public abstract class BitVector implements IBitVector {
 	// ===========================================================
 	// Constants
 	// ===========================================================

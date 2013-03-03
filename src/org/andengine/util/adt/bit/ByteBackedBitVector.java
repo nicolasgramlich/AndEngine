@@ -15,7 +15,7 @@ import org.andengine.util.exception.MethodNotYetImplementedException;
  * @author Nicolas Gramlich
  * @since Nov 20, 2012
  */
-public class ByteBackedBitVector extends BitVector implements IBitVector {
+public class ByteBackedBitVector extends BitVector {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -393,7 +393,7 @@ public class ByteBackedBitVector extends BitVector implements IBitVector {
 				stringBuilder.append('0');
 			}
 
-			if (((i % Byte.SIZE) == 7) && (i < (this.mSize - 1))) {
+			if (((i % Byte.SIZE) == (Byte.SIZE - 1)) && (i < (this.mSize - 1))) {
 				stringBuilder.append(',').append(' ');
 			}
 		}

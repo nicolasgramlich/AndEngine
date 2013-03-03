@@ -15,7 +15,7 @@ import org.andengine.util.exception.MethodNotYetImplementedException;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:56:32 - 30.10.2011
  */
-public class LongBackedBitVector extends BitVector implements IBitVector {
+public class LongBackedBitVector extends BitVector {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -379,7 +379,7 @@ public class LongBackedBitVector extends BitVector implements IBitVector {
 				stringBuilder.append('0');
 			}
 
-			if (((i % Byte.SIZE) == 7) && (i < (this.mSize - 1))) {
+			if (((i % Byte.SIZE) == (Long.SIZE - 1)) && (i < (this.mSize - 1))) {
 				stringBuilder.append(',').append(' ');
 			}
 		}

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.DataConstants;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -85,6 +86,13 @@ public abstract class Texture implements ITexture {
 	@Override
 	public TextureOptions getTextureOptions() {
 		return this.mTextureOptions;
+	}
+
+	@Override
+	public int getTextureMemorySize() {
+		final int pixelCount = this.getWidth() * this.getHeight();
+		final int bytesPerPixel = this.mPixelFormat.getBitsPerPixel() * DataConstants.BITS_PER_BYTE;
+		return pixelCount * bytesPerPixel / DataConstants.BYTES_PER_KILOBYTE;
 	}
 
 	@Override

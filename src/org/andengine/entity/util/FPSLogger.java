@@ -35,8 +35,6 @@ public class FPSLogger extends AverageFPSCounter {
 	}
 
 	public FPSLogger(final DebugLevel pDebugLevel) {
-		super();
-
 		this.mDebugLevel = pDebugLevel;
 	}
 
@@ -88,10 +86,11 @@ public class FPSLogger extends AverageFPSCounter {
 
 	protected void onLogFPS() {
 		if (BuildConfig.DEBUG) {
-			Debug.log(this.mDebugLevel, String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)",
-				this.mFrames / this.mSecondsElapsed,
-				this.mShortestFrame * TimeConstants.MILLISECONDS_PER_SECOND,
-				this.mLongestFrame * TimeConstants.MILLISECONDS_PER_SECOND));
+			final float framesPerSecond = this.mFrames / this.mSecondsElapsed;
+			final float shortestFrameInMilliseconds = this.mShortestFrame * TimeConstants.MILLISECONDS_PER_SECOND;
+			final float longestFrameInMilliseconds = this.mLongestFrame * TimeConstants.MILLISECONDS_PER_SECOND;
+
+			Debug.log(this.mDebugLevel, String.format("FPS: %.2f (MIN: %.0f ms | MAX: %.0f ms)", framesPerSecond, shortestFrameInMilliseconds, longestFrameInMilliseconds));
 		}
 	}
 

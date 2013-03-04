@@ -40,6 +40,8 @@ public class TextureManager {
 
 	private TextureWarmUpVertexBufferObject mTextureWarmUpVertexBufferObject;
 
+	private int mTextureMemoryUsed;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -47,6 +49,14 @@ public class TextureManager {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public int getTextureMemoryUsed() {
+		return this.mTextureMemoryUsed;
+	}
+
+	public int getTexturesLoadedCount() {
+		return this.mTexturesLoaded.size();
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -79,6 +89,8 @@ public class TextureManager {
 		}
 
 		this.mTextureWarmUpVertexBufferObject.setNotLoadedToHardware();
+
+		this.mTextureMemoryUsed = 0;
 	}
 
 	public synchronized void onDestroy() {
@@ -94,6 +106,8 @@ public class TextureManager {
 
 		this.mTextureWarmUpVertexBufferObject.dispose();
 		this.mTextureWarmUpVertexBufferObject = null;
+
+		this.mTextureMemoryUsed = 0;
 	}
 
 	public synchronized boolean hasMappedTexture(final String pID) {
@@ -253,6 +267,8 @@ public class TextureManager {
 					try {
 						textureToBeLoaded.loadToHardware(pGLState);
 
+						this.mTextureMemoryUsed += textureToBeLoaded.getTextureMemorySize();
+
 						/* Execute the warm-up to ensure the texture data is actually moved to the GPU. */
 						this.mTextureWarmUpVertexBufferObject.warmup(pGLState, textureToBeLoaded);
 					} catch (final IOException e) {
@@ -271,6 +287,8 @@ public class TextureManager {
 				final ITexture textureToBeUnloaded = texturesToBeUnloaded.remove(i);
 				if (textureToBeUnloaded.isLoadedToHardware()) {
 					textureToBeUnloaded.unloadFromHardware(pGLState);
+
+					this.mTextureMemoryUsed -= textureToBeUnloaded.getTextureMemorySize();
 				}
 				texturesLoaded.remove(textureToBeUnloaded);
 				texturesManaged.remove(textureToBeUnloaded);

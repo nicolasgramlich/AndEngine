@@ -9,7 +9,7 @@ import org.andengine.util.debug.Debug.DebugLevel;
 /**
  * (c) 2013 Nicolas Gramlich
  *
- * @author Arturo Gutiérrez
+ * @author Arturo Guti√©rrez
  * @author Nicolas Gramlich
  * @since 22:07:46 - 03.03.2013
  */

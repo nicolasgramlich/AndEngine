@@ -28,6 +28,7 @@ public class Sound extends BaseAudioEntity {
 
 	private int mLoopCount;
 	private float mRate = 1.0f;
+	private int mPriority = 1;
 
 	// ===========================================================
 	// Constructors
@@ -81,6 +82,19 @@ public class Sound extends BaseAudioEntity {
 		}
 	}
 
+	public int getPriority() {
+		return this.mPriority;
+	}
+
+	public void setPrioriyt(final int pPriority) throws SoundReleasedException {
+		this.assertNotReleased();
+
+		this.mPriority = pPriority;
+		if(this.mStreamID != 0) {
+			this.getSoundPool().setPriority(this.mStreamID, pPriority);
+		}
+	}
+
 	private SoundPool getSoundPool() throws SoundReleasedException {
 		return this.getAudioManager().getSoundPool();
 	}
@@ -107,7 +121,7 @@ public class Sound extends BaseAudioEntity {
 		final float leftVolume = this.mLeftVolume * masterVolume;
 		final float rightVolume = this.mRightVolume * masterVolume;
 
-		this.mStreamID = this.getSoundPool().play(this.mSoundID, leftVolume, rightVolume, 1, this.mLoopCount, this.mRate);
+		this.mStreamID = this.getSoundPool().play(this.mSoundID, leftVolume, rightVolume, this.mPriority, this.mLoopCount, this.mRate);
 	}
 
 	@Override

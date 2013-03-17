@@ -1,8 +1,7 @@
-package org.andengine.entity.particle.modifier;
+package org.andengine.entity.particle.initializer;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
-import org.andengine.entity.particle.initializer.IParticleInitializer;
 import org.andengine.util.math.MathUtils;
 
 /**

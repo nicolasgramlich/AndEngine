@@ -32,7 +32,7 @@ public class ScreenGrabber extends Entity {
 	private int mGrabWidth;
 	private int mGrabHeight;
 
-	private boolean mScreenGrabPending = false;
+	private boolean mScreenGrabPending;
 	private IScreenGrabberCallback mScreenGrabCallback;
 
 	// ===========================================================

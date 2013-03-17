@@ -8,7 +8,7 @@ import org.andengine.util.adt.list.SortedList;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:17:33 PM - 03.022012
  */
-public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implements ISortedQueue<T>{
+public class SortedQueue<T extends Comparable<T>> extends SortedList<T> implements ISortedQueue<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

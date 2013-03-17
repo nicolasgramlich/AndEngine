@@ -109,7 +109,7 @@ public class LRUCache<K, V> {
 	}
 
 	public void clear() {
-		while(!this.mLRUCacheQueue.isEmpty()) {
+		while (!this.mLRUCacheQueue.isEmpty()) {
 			final K key = this.mLRUCacheQueue.poll();
 			final LRUCacheValueHolder<K, V> lruCacheValueHolder = this.mMap.remove(key);
 			this.mLRUCacheValueHolderPool.recyclePoolItem(lruCacheValueHolder);

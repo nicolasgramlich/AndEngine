@@ -35,7 +35,7 @@ public class EuclideanHeuristic<T> implements IAStarHeuristic<T> {
 		final float dX = pToX - pFromX;
 		final float dY = pToY - pFromY;
 
-		return (float)Math.sqrt(dX * dX + dY * dY);
+		return (float) Math.sqrt(dX * dX + dY * dY);
 	}
 
 	// ===========================================================

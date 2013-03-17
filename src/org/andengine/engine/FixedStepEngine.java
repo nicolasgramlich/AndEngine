@@ -48,7 +48,7 @@ public class FixedStepEngine extends Engine {
 		this.mSecondsElapsedAccumulator += pNanosecondsElapsed;
 
 		final long stepLength = this.mStepLength;
-		while(this.mSecondsElapsedAccumulator >= stepLength) {
+		while (this.mSecondsElapsedAccumulator >= stepLength) {
 			super.onUpdate(stepLength);
 			this.mSecondsElapsedAccumulator -= stepLength;
 		}

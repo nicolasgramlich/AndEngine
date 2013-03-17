@@ -139,7 +139,7 @@ public abstract class BitVector implements IBitVector {
 			shiftedBits = maskedBits << shift;
 		}
 
-		final byte result = (byte)(maskedByte | shiftedBits);
+		final byte result = (byte) (maskedByte | shiftedBits);
 
 		return result;
 	}

@@ -30,11 +30,11 @@ public class BlendFunctionParticleSystem<T extends IEntity> extends ParticleSyst
 	// Constructors
 	// ===========================================================
 
-	public BlendFunctionParticleSystem(IEntityFactory<T> pEntityFactory, IParticleEmitter pParticleEmitter, float pRateMinimum, float pRateMaximum, int pParticlesMaximum) {
+	public BlendFunctionParticleSystem(final IEntityFactory<T> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
 		super(pEntityFactory, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
 	}
 
-	public BlendFunctionParticleSystem(float pX, float pY, IEntityFactory<T> pEntityFactory, IParticleEmitter pParticleEmitter, float pRateMinimum, float pRateMaximum, int pParticlesMaximum) {
+	public BlendFunctionParticleSystem(final float pX, final float pY, final IEntityFactory<T> pEntityFactory, final IParticleEmitter pParticleEmitter, final float pRateMinimum, final float pRateMaximum, final int pParticlesMaximum) {
 		super(pX, pY, pEntityFactory, pParticleEmitter, pRateMinimum, pRateMaximum, pParticlesMaximum);
 	}
 

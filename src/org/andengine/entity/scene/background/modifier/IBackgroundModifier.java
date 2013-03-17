@@ -26,7 +26,7 @@ public interface IBackgroundModifier extends IModifier<IBackground> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface IBackgroundModifierListener extends IModifierListener<IBackground>{
+	public static interface IBackgroundModifierListener extends IModifierListener<IBackground> {
 		// ===========================================================
 		// Constants
 		// ===========================================================

@@ -130,7 +130,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	@Deprecated
 	public void attachChild(final IEntity pEntity) throws IllegalArgumentException {
 		if (pEntity instanceof Sprite) {
-			this.attachChild((Sprite)pEntity);
+			this.attachChild((Sprite) pEntity);
 		} else {
 			throw new IllegalArgumentException("A " + SpriteGroup.class.getSimpleName() + " can only handle children of type Sprite or subclasses of Sprite, like TiledSprite or AnimatedSprite.");
 		}
@@ -157,7 +157,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 		} else {
 			final int childCount = children.size();
 			for (int i = 0; i < childCount; i++) {
-				this.drawWithoutChecks((Sprite)children.get(i));
+				this.drawWithoutChecks((Sprite) children.get(i));
 			}
 			return true;
 		}

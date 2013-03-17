@@ -25,6 +25,8 @@ public class ScreenCapture extends Entity implements IScreenGrabberCallback {
 	// Constants
 	// ===========================================================
 
+	private static final int PNG_QUALITY_MAXIMUM = 100;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -95,7 +97,7 @@ public class ScreenCapture extends Entity implements IScreenGrabberCallback {
 		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(pFilePath);
-			pBitmap.compress(CompressFormat.PNG, 100, out);
+			pBitmap.compress(CompressFormat.PNG, PNG_QUALITY_MAXIMUM, out);
 		} catch (final FileNotFoundException e) {
 			StreamUtils.flushAndCloseStream(out);
 			Debug.e("Error saving file to: " + pFilePath, e);

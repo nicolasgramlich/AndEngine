@@ -374,7 +374,7 @@ public class Gradient extends Shape {
 	public void setGradientAngle(final float pGradientAngle) {
 		final float angleInRad = MathUtils.degToRad(pGradientAngle);
 
-		this.setGradientVector((float)Math.cos(angleInRad), (float)Math.sin(angleInRad));
+		this.setGradientVector((float) Math.cos(angleInRad), (float) Math.sin(angleInRad));
 	}
 
 	public void setGradientColor(final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue) {

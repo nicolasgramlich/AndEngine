@@ -39,6 +39,10 @@ public final class StreamUtils {
 	// Constructors
 	// ===========================================================
 
+	private StreamUtils() {
+
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -61,7 +65,7 @@ public final class StreamUtils {
 		final ArrayList<String> lines = new ArrayList<String>();
 
 		String line = null;
-		while((line = reader.readLine()) != null) {
+		while ((line = reader.readLine()) != null) {
 			lines.add(line);
 		}
 
@@ -74,7 +78,7 @@ public final class StreamUtils {
 		try {
 			final Reader reader = new BufferedReader(new InputStreamReader(pInputStream, "UTF-8"));
 			int read;
-			while((read = reader.read(buf)) != StreamUtils.END_OF_STREAM) {
+			while ((read = reader.read(buf)) != StreamUtils.END_OF_STREAM) {
 				writer.write(buf, 0, read);
 			}
 		} finally {
@@ -115,7 +119,7 @@ public final class StreamUtils {
 		int pBytesLeftToRead = pByteLimit;
 		int readTotal = 0;
 		int read;
-		while((read = pInputStream.read(pData, pOffset + readTotal, pBytesLeftToRead)) != StreamUtils.END_OF_STREAM) {
+		while ((read = pInputStream.read(pData, pOffset + readTotal, pBytesLeftToRead)) != StreamUtils.END_OF_STREAM) {
 			readTotal += read;
 			if (pBytesLeftToRead > read) {
 				pBytesLeftToRead -= read;
@@ -137,7 +141,7 @@ public final class StreamUtils {
 		int dataOffset = 0;
 		final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
 		int read;
-		while((read = pInputStream.read(buf)) != StreamUtils.END_OF_STREAM) {
+		while ((read = pInputStream.read(buf)) != StreamUtils.END_OF_STREAM) {
 			System.arraycopy(buf, 0, pData, dataOffset, read);
 			dataOffset += read;
 		}
@@ -146,7 +150,7 @@ public final class StreamUtils {
 	public static final void copy(final InputStream pInputStream, final ByteBuffer pByteBuffer) throws IOException {
 		final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
 		int read;
-		while((read = pInputStream.read(buf)) != StreamUtils.END_OF_STREAM) {
+		while ((read = pInputStream.read(buf)) != StreamUtils.END_OF_STREAM) {
 			pByteBuffer.put(buf, 0, read);
 		}
 	}
@@ -165,16 +169,16 @@ public final class StreamUtils {
 		if (pByteLimit == StreamUtils.END_OF_STREAM) {
 			final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
 			int read;
-			while((read = pInputStream.read(buf)) != StreamUtils.END_OF_STREAM) {
+			while ((read = pInputStream.read(buf)) != StreamUtils.END_OF_STREAM) {
 				pOutputStream.write(buf, 0, read);
 			}
 		} else {
 			final byte[] buf = new byte[StreamUtils.IO_BUFFER_SIZE];
-			final int bufferReadLimit = Math.min((int)pByteLimit, StreamUtils.IO_BUFFER_SIZE);
+			final int bufferReadLimit = Math.min((int) pByteLimit, StreamUtils.IO_BUFFER_SIZE);
 			long pBytesLeftToRead = pByteLimit;
 
 			int read;
-			while((read = pInputStream.read(buf, 0, bufferReadLimit)) != StreamUtils.END_OF_STREAM) {
+			while ((read = pInputStream.read(buf, 0, bufferReadLimit)) != StreamUtils.END_OF_STREAM) {
 				if (pBytesLeftToRead > read) {
 					pOutputStream.write(buf, 0, read);
 					pBytesLeftToRead -= read;

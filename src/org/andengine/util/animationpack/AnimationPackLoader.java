@@ -65,7 +65,7 @@ public class AnimationPackLoader {
 	}
 
 	public AnimationPack load(final InputStream pInputStream, final String pAssetBasePath) throws AnimationPackParseException {
-		try{
+		try {
 			final SAXParserFactory spf = SAXParserFactory.newInstance();
 			final SAXParser sp = spf.newSAXParser();
 

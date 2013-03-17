@@ -137,7 +137,7 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 		int low = pStart;
 		int high = pEnd - 1;
 
-		while(low <= high) {
+		while (low <= high) {
 			final int mid = (low + high) >>> 1;
 			final T midVal = this.mList.get(mid);
 
@@ -166,13 +166,13 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 	private int scanForEqualItem(final int pStart, final int pEnd, final int pGuess, final T pItem, final boolean pReturnSequenceEndIfNoEqualItemFound) {
 		/* Quickly move to the beginning of the sequence. */
 		int i = pGuess - 1;
-		while((i >= pStart) && (pItem.compareTo(this.mList.get(i)) == 0)) {
+		while ((i >= pStart) && (pItem.compareTo(this.mList.get(i)) == 0)) {
 			i--;
 		}
 		i++;
 
 		/* From the beginning of the sequence, advance until the first item equals pItem or the end has been reached. */
-		while(i < pEnd) {
+		while (i < pEnd) {
 			final T item = this.mList.get(i);
 			if (i <= pGuess) {
 				/* Since the compartTo check has already been performed, only equals needs to be checked. */

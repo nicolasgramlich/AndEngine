@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
  * @author Nicolas Gramlich
  * @since 22:43:32 - 02.11.2010
  */
-public class BetaUtils {
+public final class BetaUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -34,6 +34,10 @@ public class BetaUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private BetaUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -87,7 +91,7 @@ public class BetaUtils {
 			})
 			.create().show();
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}

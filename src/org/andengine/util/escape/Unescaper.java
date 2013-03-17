@@ -10,7 +10,7 @@ import android.text.TextUtils;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:20:25 - 26.04.2012
  */
-/* package */final class Unescaper {
+public final class Unescaper {
 	// ===========================================================
 	// Constants
 	// ===========================================================

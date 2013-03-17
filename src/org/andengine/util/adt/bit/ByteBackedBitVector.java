@@ -40,7 +40,7 @@ public class ByteBackedBitVector extends BitVector {
 	}
 
 	public ByteBackedBitVector(final int pSize, final byte[] pData) throws IllegalArgumentException, NullPointerException {
-		if (pData == null){
+		if (pData == null) {
 			throw new IllegalArgumentException("pData must not be null");
 		}
 

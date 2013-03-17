@@ -228,11 +228,11 @@ public class FontUtils {
 		float lineWidthRemaining = pAutoWrapWidth;
 		boolean firstWordInLine = true;
 		int i = 0;
-		while(i < textLength) {
+		while (i < textLength) {
 			int spacesSkipped = 0;
 			/* Find next word. */
 			{ /* Skip whitespaces. */
-				while((i < textLength) && (pText.charAt(i) == ' ')) {
+				while ((i < textLength) && (pText.charAt(i) == ' ')) {
 					i++;
 					spacesSkipped++;
 				}
@@ -245,7 +245,7 @@ public class FontUtils {
 			}
 
 			{ /* Skip non-whitespaces. */
-				while((i < textLength) && (pText.charAt(i) != ' ')) {
+				while ((i < textLength) && (pText.charAt(i) != ' ')) {
 					i++;
 				}
 			}
@@ -342,31 +342,31 @@ public class FontUtils {
 		int lineEnd = 0;
 
 		/* Skip whitespaces at the beginning of the string. */
-		while((lineStart < textLength) && (pText.charAt(lineStart) == ' ')) {
+		while ((lineStart < textLength) && (pText.charAt(lineStart) == ' ')) {
 			lineStart++;
 			lineEnd++;
 		}
 
 		int i = lineEnd;
-		while(i < textLength) {
+		while (i < textLength) {
 			lineStart = lineEnd;
 
 			{ /* Look for a sub string */
 				boolean charsAvailable = true;
-				while(i < textLength) {
+				while (i < textLength) {
 
 					{ /* Skip whitespaces at the end of the string */
 						int j = lineEnd;
-						while ( j < textLength ) {
-							if ( pText.charAt( j ) == ' ' ) {
+						while (j < textLength) {
+							if (pText.charAt(j) == ' ') {
 								j++;
 							}
 							else {
 								break;
 							}
 						}
-						if ( j == textLength ) {
-							if ( lineStart == lineEnd ) {
+						if (j == textLength) {
+							if (lineStart == lineEnd) {
 								charsAvailable = false;
 							}
 							i = textLength;
@@ -379,7 +379,7 @@ public class FontUtils {
 					final float lineWidth = FontUtils.measureText(pFont, pText, lineStart, lineEnd);
 
 					if (lineWidth > pAutoWrapWidth) {
-						if ( lineStart < lineEnd - 1 ) {
+						if (lineStart < lineEnd - 1) {
 							lineEnd--;
 						}
 

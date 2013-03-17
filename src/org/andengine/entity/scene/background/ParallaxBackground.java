@@ -131,7 +131,7 @@ public class ParallaxBackground extends Background {
 				final float entityWidthScaled = this.mEntity.getWidth() * this.mEntity.getScaleX();
 				float baseOffset = (pParallaxValue * this.mParallaxFactor) % entityWidthScaled;
 
-				while(baseOffset > 0) {
+				while (baseOffset > 0) {
 					baseOffset -= entityWidthScaled;
 				}
 				pGLState.translateModelViewGLMatrixf(baseOffset, 0, 0);
@@ -142,7 +142,7 @@ public class ParallaxBackground extends Background {
 					this.mEntity.onDraw(pGLState, pCamera);
 					pGLState.translateModelViewGLMatrixf(entityWidthScaled, 0, 0);
 					currentMaxX += entityWidthScaled;
-				} while(currentMaxX < cameraWidth);
+				} while (currentMaxX < cameraWidth);
 			}
 			pGLState.popModelViewGLMatrix();
 		}

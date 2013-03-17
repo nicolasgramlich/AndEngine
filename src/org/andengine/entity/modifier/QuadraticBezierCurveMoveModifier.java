@@ -121,8 +121,8 @@ public class QuadraticBezierCurveMoveModifier extends DurationEntityModifier {
 		final float percentageDone = this.mEaseFunction.getPercentage(this.getSecondsElapsed(), this.mDuration);
 
 		final float u = 1 - percentageDone;
-		final float tt = percentageDone*percentageDone;
-		final float uu = u*u;
+		final float tt = percentageDone * percentageDone;
+		final float uu = u * u;
 
 		final float ut2 = 2 * u * percentageDone;
 

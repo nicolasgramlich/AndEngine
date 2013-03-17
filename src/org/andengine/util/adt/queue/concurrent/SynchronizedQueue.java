@@ -46,7 +46,7 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	}
 
 	@Override
-	public synchronized void set(int pIndex, T pItem) throws IndexOutOfBoundsException {
+	public synchronized void set(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
 		this.mQueue.set(pIndex, pItem);
 	}
 
@@ -81,7 +81,7 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	}
 
 	@Override
-	public synchronized void enter(final int pIndex, final T pItem) throws IndexOutOfBoundsException{
+	public synchronized void enter(final int pIndex, final T pItem) throws IndexOutOfBoundsException {
 		this.mQueue.enter(pIndex, pItem);
 	}
 
@@ -101,7 +101,7 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	}
 
 	@Override
-	public synchronized T remove(final int pIndex) throws IndexOutOfBoundsException{
+	public synchronized T remove(final int pIndex) throws IndexOutOfBoundsException {
 		return this.mQueue.remove(pIndex);
 	}
 

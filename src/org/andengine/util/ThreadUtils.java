@@ -9,7 +9,7 @@ import org.andengine.util.debug.Debug.DebugLevel;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:23:06 - 19.01.2012
  */
-public class ThreadUtils {
+public final class ThreadUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -23,6 +23,10 @@ public class ThreadUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private ThreadUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

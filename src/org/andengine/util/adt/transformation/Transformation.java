@@ -117,8 +117,8 @@ public class Transformation {
 	public final void preRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = (float)Math.sin(angleRad);
-		final float cos = (float)Math.cos(angleRad);
+		final float sin = (float) Math.sin(angleRad);
+		final float cos = (float) Math.cos(angleRad);
 
 		final float a = this.a;
 		final float b = this.b;
@@ -134,8 +134,8 @@ public class Transformation {
 	public final void postRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = (float)Math.sin(angleRad);
-		final float cos = (float)Math.cos(angleRad);
+		final float sin = (float) Math.sin(angleRad);
+		final float cos = (float) Math.cos(angleRad);
 
 		final float a = this.a;
 		final float b = this.b;
@@ -155,8 +155,8 @@ public class Transformation {
 	public final Transformation setToRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = (float)Math.sin(angleRad);
-		final float cos = (float)Math.cos(angleRad);
+		final float sin = (float) Math.sin(angleRad);
+		final float cos = (float) Math.cos(angleRad);
 
 		this.a = cos;
 		this.b = sin;
@@ -288,7 +288,7 @@ public class Transformation {
 		int count = pVertices.length >> 1;
 		int i = 0;
 		int j = 0;
-		while(--count >= 0) {
+		while (--count >= 0) {
 			final float x = pVertices[i++];
 			final float y = pVertices[i++];
 			pVertices[j++] = x * this.a + y * this.c + this.tx;

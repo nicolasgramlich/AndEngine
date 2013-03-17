@@ -24,7 +24,7 @@ import android.content.res.Resources;
  * @author Nicolas Gramlich
  * @since 18:15:14 - 09.03.2010
  */
-public class BitmapTextureAtlasTextureRegionFactory {
+public final class BitmapTextureAtlasTextureRegionFactory {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -38,6 +38,10 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private BitmapTextureAtlasTextureRegionFactory() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

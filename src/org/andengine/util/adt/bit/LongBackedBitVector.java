@@ -55,7 +55,7 @@ public class LongBackedBitVector extends BitVector {
 	}
 
 	public LongBackedBitVector(final int pSize, final long[] pData) throws IllegalArgumentException {
-		if (pData == null){
+		if (pData == null) {
 			throw new IllegalArgumentException("pData must not be null");
 		}
 

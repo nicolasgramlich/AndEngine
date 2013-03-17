@@ -38,6 +38,10 @@ public final class ActivityUtils {
 	// Constructors
 	// ===========================================================
 
+	private ActivityUtils() {
+
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -107,7 +111,7 @@ public final class ActivityUtils {
 	public static final <T> void doAsync(final Context pContext, final CharSequence pTitle, final CharSequence pMessage, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback, final boolean pCancelable) {
 		new AsyncTask<Void, Void, T>() {
 			private ProgressDialog mPD;
-			private Exception mException = null;
+			private Exception mException;
 
 			@Override
 			public void onPreExecute() {
@@ -135,7 +139,7 @@ public final class ActivityUtils {
 			}
 
 			@Override
-			public void onPostExecute(final T result) {
+			public void onPostExecute(final T pResult) {
 				try {
 					this.mPD.dismiss();
 				} catch (final Exception e) {
@@ -147,7 +151,7 @@ public final class ActivityUtils {
 				}
 
 				if (this.mException == null) {
-					pCallback.onCallback(result);
+					pCallback.onCallback(pResult);
 				} else {
 					if (pExceptionCallback == null) {
 						Debug.e("Error", this.mException);
@@ -156,7 +160,7 @@ public final class ActivityUtils {
 					}
 				}
 
-				super.onPostExecute(result);
+				super.onPostExecute(pResult);
 			}
 		}.execute((Void[]) null);
 	}
@@ -176,7 +180,7 @@ public final class ActivityUtils {
 	public static final <T> void doProgressAsync(final Context pContext, final CharSequence pTitle, final int pIconResourceID, final ProgressCallable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
 		new AsyncTask<Void, Integer, T>() {
 			private ProgressDialog mPD;
-			private Exception mException = null;
+			private Exception mException;
 
 			@Override
 			public void onPreExecute() {
@@ -205,12 +209,12 @@ public final class ActivityUtils {
 			}
 
 			@Override
-			public void onProgressUpdate(final Integer... values) {
-				this.mPD.setProgress(values[0]);
+			public void onProgressUpdate(final Integer... pValues) {
+				this.mPD.setProgress(pValues[0]);
 			}
 
 			@Override
-			public void onPostExecute(final T result) {
+			public void onPostExecute(final T pResult) {
 				try {
 					this.mPD.dismiss();
 				} catch (final Exception e) {
@@ -223,7 +227,7 @@ public final class ActivityUtils {
 				}
 
 				if (this.mException == null) {
-					pCallback.onCallback(result);
+					pCallback.onCallback(pResult);
 				} else {
 					if (pExceptionCallback == null) {
 						Debug.e("Error", this.mException);
@@ -232,7 +236,7 @@ public final class ActivityUtils {
 					}
 				}
 
-				super.onPostExecute(result);
+				super.onPostExecute(pResult);
 			}
 		}.execute((Void[]) null);
 	}
@@ -245,7 +249,7 @@ public final class ActivityUtils {
 		final ProgressDialog pd = ProgressDialog.show(pContext, pTitle, pMessage);
 		pAsyncCallable.call(new Callback<T>() {
 			@Override
-			public void onCallback(final T result) {
+			public void onCallback(final T pResult) {
 				try {
 					pd.dismiss();
 				} catch (final Exception e) {
@@ -253,7 +257,7 @@ public final class ActivityUtils {
 					/* Nothing. */
 				}
 
-				pCallback.onCallback(result);
+				pCallback.onCallback(pResult);
 			}
 		}, pExceptionCallback);
 	}

@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
  * @author Nicolas Gramlich
  * @since 18:52:32 - 18.02.2013
  */
-public class BitmapUtils {
+public final class BitmapUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,6 +20,10 @@ public class BitmapUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private BitmapUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

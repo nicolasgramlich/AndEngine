@@ -9,7 +9,7 @@ import org.andengine.util.modifier.IModifier;
  * @author Nicolas Gramlich
  * @since 11:16:36 - 03.09.2010
  */
-public class ModifierUtils {
+public final class ModifierUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,6 +21,10 @@ public class ModifierUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private ModifierUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

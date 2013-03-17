@@ -96,7 +96,7 @@ public class Dictionary {
 		this.mCharacterBitLength = this.mBitVector.getByte(Dictionary.OFFSET_CHARACTER_BITLENGTH);
 		this.mCharacterTable = new char[this.mCharacterCount];
 		for (int i = 0; i < this.mCharacterCount; i++) {
-			this.mCharacterTable[i] = (char)this.mBitVector.getShort(Dictionary.OFFSET_CHARACTERS + (i * Character.SIZE));
+			this.mCharacterTable[i] = (char) this.mBitVector.getShort(Dictionary.OFFSET_CHARACTERS + (i * Character.SIZE));
 		}
 
 		this.mEntryCount = this.mBitVector.getInt(Dictionary.OFFSET_INDEXENTRY_COUNT);
@@ -252,15 +252,15 @@ public class Dictionary {
 			/* Write meta data. */
 			bitVector.setShort(Dictionary.OFFSET_VERSION, Dictionary.VERSION);
 			bitVector.setInt(Dictionary.OFFSET_CHARACTER_COUNT, characterCount);
-			bitVector.setByte(Dictionary.OFFSET_CHARACTER_BITLENGTH, (byte)characterBitLength);
+			bitVector.setByte(Dictionary.OFFSET_CHARACTER_BITLENGTH, (byte) characterBitLength);
 			bitVector.setInt(Dictionary.OFFSET_INDEXENTRY_COUNT, entryCount);
-			bitVector.setByte(Dictionary.OFFSET_INDEXENTRY_STARTINDEX_BITLENGTH, (byte)entryStartIndexBitLength);
-			bitVector.setByte(Dictionary.OFFSET_INDEXENTRY_LENGTH_BITLENGTH, (byte)entryLengthBitLength);
+			bitVector.setByte(Dictionary.OFFSET_INDEXENTRY_STARTINDEX_BITLENGTH, (byte) entryStartIndexBitLength);
+			bitVector.setByte(Dictionary.OFFSET_INDEXENTRY_LENGTH_BITLENGTH, (byte) entryLengthBitLength);
 
 			/* Character table. */
 			for (int i = 0; i < characterCount; i++) {
 				final char character = entryDictionary.mCharacters[i];
-				final short characterBits = (short)character;
+				final short characterBits = (short) character;
 				bitVector.setShort(Dictionary.OFFSET_CHARACTERS + (i * Character.SIZE), characterBits);
 			}
 
@@ -283,7 +283,7 @@ public class Dictionary {
 			final int offsetCharacterString = offsetEntries + (entryCount * (entryStartIndexBitLength + entryLengthBitLength));
 
 			/* Character string. */
-			for(int i = 0; i < characterCountTotal; i++) {
+			for (int i = 0; i < characterCountTotal; i++) {
 				final int offsetInCharacterString = i * characterBitLength;
 				final int offsetCharacter = offsetCharacterString + offsetInCharacterString;
 
@@ -308,7 +308,7 @@ public class Dictionary {
 					+ (pCharacterBitLength * pCharacterCountTotal);
 		}
 
-		private static Entries createDictionary(final String... pStrings) {
+		private static Entries createDictionary(final String ... pStrings) {
 			final ArrayList<Entry> entries = new ArrayList<Entry>();
 			final StringBuilder stringBuilder = new StringBuilder();
 
@@ -424,7 +424,7 @@ public class Dictionary {
 				characterCount = 0;
 				for (int i = 0; i < Character.MAX_VALUE; i++) {
 					if (characterBitVector.getBit(i) == BitVector.TRUE) {
-						this.mCharacters[characterCount++] = (char)i;
+						this.mCharacters[characterCount++] = (char) i;
 					}
 				}
 			}

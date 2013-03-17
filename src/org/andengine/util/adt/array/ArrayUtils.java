@@ -26,6 +26,10 @@ public final class ArrayUtils {
 	// Constructors
 	// ===========================================================
 
+	private ArrayUtils() {
+
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -37,6 +41,10 @@ public final class ArrayUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static <T> T[] newArray(final Class<T[]> pClass, final int pLength) {
+		return pClass.cast(Array.newInstance(pClass.getComponentType(), pLength));
+	}
 
 	public static final byte random(final byte[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
@@ -73,7 +81,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		byte tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -89,7 +97,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		short tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -105,7 +113,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		int tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -121,7 +129,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		long tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -137,7 +145,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		float tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -153,7 +161,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		double tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -169,7 +177,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		Object tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -348,7 +356,7 @@ public final class ArrayUtils {
 		}
 
 		/* Determine length of result. */
-		final T[] result = pClass.cast(Array.newInstance(pClass.getComponentType(), resultLength));
+		final T[] result = ArrayUtils.newArray(pClass, resultLength);
 		int offset = 0;
 		for (int i = 0; i < arrayCount; i++) {
 			final T[] array = pArrays[i];
@@ -405,14 +413,14 @@ public final class ArrayUtils {
 	public static final void sumCummulative(final int[] pValues) {
 		final int valueCount = pValues.length;
 		for (int i = 1; i < valueCount; i++) {
-			pValues[i] = pValues[i-1] + pValues[i];
+			pValues[i] = pValues[i - 1] + pValues[i];
 		}
 	}
 
 	public static final void sumCummulative(final long[] pValues) {
 		final int valueCount = pValues.length;
 		for (int i = 1; i < valueCount; i++) {
-			pValues[i] = pValues[i-1] + pValues[i];
+			pValues[i] = pValues[i - 1] + pValues[i];
 		}
 	}
 
@@ -420,7 +428,7 @@ public final class ArrayUtils {
 		pValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for (int i = 1; i < valueCount; i++) {
-			pValues[i] = pValues[i-1] + (pValues[i] * pFactor);
+			pValues[i] = pValues[i - 1] + (pValues[i] * pFactor);
 		}
 	}
 
@@ -428,7 +436,7 @@ public final class ArrayUtils {
 		pTargetValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for (int i = 1; i < valueCount; i++) {
-			pTargetValues[i] = pTargetValues[i-1] + (pValues[i] * pFactor);
+			pTargetValues[i] = pTargetValues[i - 1] + (pValues[i] * pFactor);
 		}
 	}
 
@@ -467,7 +475,7 @@ public final class ArrayUtils {
 			}
 		}
 
-		final T[] filteredArray = pClass.cast(Array.newInstance(pClass.getComponentType(), filteredArrayLength));
+		final T[] filteredArray = ArrayUtils.newArray(pClass, filteredArrayLength);
 		int resultIndex = 0;
 		for (int i = 0; i < arrayLength; i++) {
 			if (pMatcher.matches(pArray[i])) {

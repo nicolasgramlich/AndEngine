@@ -13,7 +13,7 @@ import org.andengine.util.call.Callback;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:17:47 - 23.01.2012
  */
-public interface IBuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITextureAtlas<S>> extends ITextureAtlas<S>{
+public interface IBuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITextureAtlas<S>> extends ITextureAtlas<S> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

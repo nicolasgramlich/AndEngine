@@ -20,6 +20,8 @@ public class NineSliceSprite extends Entity {
 	// Constants
 	// ===========================================================
 
+	private static final int NINESLICESPRITE_CHILD_COUNT = 9;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -69,7 +71,7 @@ public class NineSliceSprite extends Entity {
 		this.mInsetBottom = pInsetBottom;
 
 		final ITexture texture = pTextureRegion.getTexture();
-		this.mSpriteBatch = new SpriteBatch(texture, 9, pVertexBufferObjectManager, pShaderProgram);
+		this.mSpriteBatch = new SpriteBatch(texture, NINESLICESPRITE_CHILD_COUNT, pVertexBufferObjectManager, pShaderProgram);
 
 		this.mTopLeftTextureRegion = new TextureRegion(texture, 0, 0, 0, 0);
 		this.mTopCenterTextureRegion = new TextureRegion(texture, 0, 0, 0, 0);

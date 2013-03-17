@@ -56,7 +56,7 @@ public class Music extends BaseAudioEntity {
 
 	@Override
 	protected MusicManager getAudioManager() throws MusicReleasedException {
-		return (MusicManager)super.getAudioManager();
+		return (MusicManager) super.getAudioManager();
 	}
 
 	@Override

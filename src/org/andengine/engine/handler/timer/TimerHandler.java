@@ -82,7 +82,7 @@ public class TimerHandler implements IUpdateHandler {
 	public void onUpdate(final float pSecondsElapsed) {
 		if (this.mAutoReset) {
 			this.mTimerSecondsElapsed += pSecondsElapsed;
-			while(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
+			while (this.mTimerSecondsElapsed >= this.mTimerSeconds) {
 				this.mTimerSecondsElapsed -= this.mTimerSeconds;
 				this.mTimerCallback.onTimePassed(this);
 			}

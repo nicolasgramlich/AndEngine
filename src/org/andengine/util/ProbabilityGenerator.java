@@ -99,8 +99,8 @@ public class ProbabilityGenerator<T> {
 		public T getReturnValue() {
 			if (this.mData.length == 1) {
 				return this.mData[0];
-			}else{
-				return ArrayUtils.random(mData);
+			} else {
+				return ArrayUtils.random(this.mData);
 			}
 		}
 

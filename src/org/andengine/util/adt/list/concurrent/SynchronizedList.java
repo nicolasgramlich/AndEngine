@@ -23,8 +23,8 @@ public class SynchronizedList<T> implements IList<T> {
 	// Constructors
 	// ===========================================================
 
-	public SynchronizedList(final IList<T> mList) {
-		this.mList = mList;
+	public SynchronizedList(final IList<T> pList) {
+		this.mList = pList;
 	}
 
 	// ===========================================================

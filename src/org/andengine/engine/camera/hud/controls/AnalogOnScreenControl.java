@@ -80,7 +80,7 @@ public class AnalogOnScreenControl extends BaseOnScreenControl implements IClick
 			super.onUpdateControlKnob(pRelativeX, pRelativeY);
 		} else {
 			final float angleRad = MathUtils.atan2(pRelativeY, pRelativeX);
-			super.onUpdateControlKnob((float)Math.cos(angleRad) * 0.5f, (float)Math.sin(angleRad) * 0.5f);
+			super.onUpdateControlKnob((float) Math.cos(angleRad) * 0.5f, (float) Math.sin(angleRad) * 0.5f);
 		}
 	}
 

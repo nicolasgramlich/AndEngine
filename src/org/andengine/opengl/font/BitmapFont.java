@@ -416,7 +416,7 @@ public class BitmapFont implements IFont {
 			final float u2 = (x + width) / textureWidth;
 			final float v2 = (y + height) / textureHeight;
 
-			this.mCharacterToLetterMap.put(id, new Letter((char)id, x, y, width, height, xOffset, yOffset, xAdvance, u, v, u2, v2));
+			this.mCharacterToLetterMap.put(id, new Letter((char) id, x, y, width, height, xOffset, yOffset, xAdvance, u, v, u2, v2));
 		}
 	}
 

@@ -10,7 +10,7 @@ import android.view.WindowManager;
  * @author Nicolas Gramlich
  * @since 13:04:09 - 12.05.2011
  */
-public class DialogUtils {
+public final class DialogUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,6 +22,10 @@ public class DialogUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private DialogUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

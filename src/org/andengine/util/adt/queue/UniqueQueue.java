@@ -8,7 +8,7 @@ import org.andengine.util.adt.list.UniqueList;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:17:33 PM - 03.022012
  */
-public class UniqueQueue<T extends Comparable<T>> extends UniqueList<T> implements IUniqueQueue<T>{
+public class UniqueQueue<T extends Comparable<T>> extends UniqueList<T> implements IUniqueQueue<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================

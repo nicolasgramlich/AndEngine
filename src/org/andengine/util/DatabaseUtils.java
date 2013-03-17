@@ -8,7 +8,7 @@ import android.database.Cursor;
  * @author Nicolas Gramlich
  * @since 15:30:15 - 23.01.2013
  */
-public class DatabaseUtils {
+public final class DatabaseUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -20,6 +20,10 @@ public class DatabaseUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private DatabaseUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

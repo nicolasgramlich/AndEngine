@@ -192,7 +192,7 @@ public class SmartList<T> extends ArrayList<T> {
 		for (int i = 0; i < size; i++) {
 			final T item = this.get(i);
 			if (pMatcher.matches(item)) {
-				pResult.add((S)item);
+				pResult.add((S) item);
 			}
 		}
 

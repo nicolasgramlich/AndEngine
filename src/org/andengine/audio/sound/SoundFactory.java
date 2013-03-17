@@ -14,7 +14,7 @@ import android.content.res.AssetFileDescriptor;
  * @author Nicolas Gramlich
  * @since 14:23:03 - 11.03.2010
  */
-public class SoundFactory {
+public final class SoundFactory {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,6 +28,10 @@ public class SoundFactory {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private SoundFactory() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -61,7 +65,7 @@ public class SoundFactory {
 	// ===========================================================
 
 	public static Sound createSoundFromPath(final SoundManager pSoundManager, final String pPath) throws IOException {
-		synchronized(pSoundManager) {
+		synchronized (pSoundManager) {
 			final int soundID = pSoundManager.getSoundPool().load(pPath, 1);
 			final Sound sound = new Sound(pSoundManager, soundID);
 			pSoundManager.add(sound);
@@ -70,7 +74,7 @@ public class SoundFactory {
 	}
 
 	public static Sound createSoundFromAsset(final SoundManager pSoundManager, final Context pContext, final String pAssetPath) throws IOException {
-		synchronized(pSoundManager) {
+		synchronized (pSoundManager) {
 			final int soundID = pSoundManager.getSoundPool().load(pContext.getAssets().openFd(SoundFactory.sAssetBasePath + pAssetPath), 1);
 			final Sound sound = new Sound(pSoundManager, soundID);
 			pSoundManager.add(sound);
@@ -79,7 +83,7 @@ public class SoundFactory {
 	}
 
 	public static Sound createSoundFromResource(final SoundManager pSoundManager, final Context pContext, final int pSoundResID) {
-		synchronized(pSoundManager) {
+		synchronized (pSoundManager) {
 			final int soundID = pSoundManager.getSoundPool().load(pContext, pSoundResID, 1);
 			final Sound sound = new Sound(pSoundManager, soundID);
 			pSoundManager.add(sound);
@@ -92,7 +96,7 @@ public class SoundFactory {
 	}
 
 	public static Sound createSoundFromAssetFileDescriptor(final SoundManager pSoundManager, final AssetFileDescriptor pAssetFileDescriptor) {
-		synchronized(pSoundManager) {
+		synchronized (pSoundManager) {
 			final int soundID = pSoundManager.getSoundPool().load(pAssetFileDescriptor, 1);
 			final Sound sound = new Sound(pSoundManager, soundID);
 			pSoundManager.add(sound);
@@ -101,7 +105,7 @@ public class SoundFactory {
 	}
 
 	public static Sound createSoundFromFileDescriptor(final SoundManager pSoundManager, final FileDescriptor pFileDescriptor, final long pOffset, final long pLength) throws IOException {
-		synchronized(pSoundManager) {
+		synchronized (pSoundManager) {
 			final int soundID = pSoundManager.getSoundPool().load(pFileDescriptor, pOffset, pLength, 1);
 			final Sound sound = new Sound(pSoundManager, soundID);
 			pSoundManager.add(sound);

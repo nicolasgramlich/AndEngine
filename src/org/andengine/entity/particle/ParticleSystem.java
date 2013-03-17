@@ -11,6 +11,7 @@ import org.andengine.entity.particle.initializer.IParticleInitializer;
 import org.andengine.entity.particle.modifier.IParticleModifier;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
+import org.andengine.util.adt.array.ArrayUtils;
 import org.andengine.util.math.MathUtils;
 
 /**
@@ -62,7 +63,7 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 
 		this.mEntityFactory = pEntityFactory;
 		this.mParticleEmitter = pParticleEmitter;
-		this.mParticles = (Particle<T>[])new Particle[pParticlesMaximum];
+		this.mParticles = (Particle<T>[]) new Particle[pParticlesMaximum];
 		this.mRateMinimum = pRateMinimum;
 		this.mRateMaximum = pRateMaximum;
 		this.mParticlesMaximum = pParticlesMaximum;
@@ -176,7 +177,7 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 
 		this.mParticlesDueToSpawn += newParticlesThisFrame;
 
-		final int particlesToSpawnThisFrame = Math.min(this.mParticlesMaximum - this.mParticlesAlive, (int)Math.floor(this.mParticlesDueToSpawn));
+		final int particlesToSpawnThisFrame = Math.min(this.mParticlesMaximum - this.mParticlesAlive, (int) Math.floor(this.mParticlesDueToSpawn));
 		this.mParticlesDueToSpawn -= particlesToSpawnThisFrame;
 
 		for (int i = 0; i < particlesToSpawnThisFrame; i++) {

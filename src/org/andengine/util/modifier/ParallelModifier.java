@@ -68,7 +68,7 @@ public class ParallelModifier<T> extends BaseModifier<T> implements IModifierLis
 	}
 
 	@Override
-	public ParallelModifier<T> deepCopy() throws DeepCopyNotSupportedException{
+	public ParallelModifier<T> deepCopy() throws DeepCopyNotSupportedException {
 		return new ParallelModifier<T>(this);
 	}
 
@@ -100,7 +100,7 @@ public class ParallelModifier<T> extends BaseModifier<T> implements IModifierLis
 			final IModifier<T>[] shapeModifiers = this.mModifiers;
 
 			this.mFinishedCached = false;
-			while(secondsElapsedRemaining > 0 && !this.mFinishedCached) {
+			while (secondsElapsedRemaining > 0 && !this.mFinishedCached) {
 				float secondsElapsedUsed = 0;
 				for (int i = shapeModifiers.length - 1; i >= 0; i--) {
 					secondsElapsedUsed = Math.max(secondsElapsedUsed, shapeModifiers[i].onUpdate(pSecondsElapsed, pItem));

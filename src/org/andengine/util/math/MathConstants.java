@@ -21,7 +21,7 @@ public interface MathConstants {
 	public static final float DEG_TO_RAD = PI / 180.0f;
 	public static final float RAD_TO_DEG = 180.0f / PI;
 
-	public static final float SQRT_2 = (float)Math.sqrt(2);
+	public static final float SQRT_2 = (float) Math.sqrt(2);
 
 	// ===========================================================
 	// Methods

@@ -219,7 +219,7 @@ public class Line extends Shape {
 
 	@Deprecated
 	@Override
-	public void setSize(float pWidth, float pHeight) {
+	public void setSize(final float pWidth, final float pHeight) {
 		super.setSize(pWidth, pHeight);
 	}
 

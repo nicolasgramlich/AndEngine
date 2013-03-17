@@ -79,7 +79,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 	}
 
 	@Override
-	public SequenceModifier<T> deepCopy() throws DeepCopyNotSupportedException{
+	public SequenceModifier<T> deepCopy() throws DeepCopyNotSupportedException {
 		return new SequenceModifier<T>(this);
 	}
 
@@ -116,7 +116,7 @@ public class SequenceModifier<T> extends BaseModifier<T> implements IModifierLis
 		} else {
 			float secondsElapsedRemaining = pSecondsElapsed;
 			this.mFinishedCached = false;
-			while(secondsElapsedRemaining > 0 && !this.mFinishedCached) {
+			while (secondsElapsedRemaining > 0 && !this.mFinishedCached) {
 				secondsElapsedRemaining -= this.mSubSequenceModifiers[this.mCurrentSubSequenceModifierIndex].onUpdate(secondsElapsedRemaining, pItem);
 			}
 			this.mFinishedCached = false;

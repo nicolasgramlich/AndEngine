@@ -91,7 +91,7 @@ public abstract class GenericInputDialogBuilder<T> {
 			@Override
 			public void onClick(final DialogInterface pDialog, final int pWhich) {
 				final T result;
-				try{
+				try {
 					result = GenericInputDialogBuilder.this.generateResult(etInput.getText().toString());
 				} catch (final IllegalArgumentException e) {
 					Debug.e("Error in GenericInputDialogBuilder.generateResult()", e);

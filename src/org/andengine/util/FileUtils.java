@@ -19,7 +19,7 @@ import android.os.Environment;
  * @author Nicolas Gramlich
  * @since 13:53:33 - 20.06.2010
  */
-public class FileUtils {
+public final class FileUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,6 +31,10 @@ public class FileUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private FileUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

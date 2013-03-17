@@ -7,7 +7,7 @@ package org.andengine.util.algorithm.hull;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:52:48 - 08.02.2012
  */
-public class HullUtils {
+public final class HullUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -19,6 +19,10 @@ public class HullUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private HullUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -44,7 +48,7 @@ public class HullUtils {
 		int currentVertexOffsetY = pVertexStride + pVertexOffsetY;
 
 		/* Loop to the end. */
-		while(currentVertexOffsetY < lastVertexOffset) {
+		while (currentVertexOffsetY < lastVertexOffset) {
 			final float currentVertexY = pVertices[currentVertexOffsetY];
 
 			/* Check if the current candidate is lower and if so, assign it. */

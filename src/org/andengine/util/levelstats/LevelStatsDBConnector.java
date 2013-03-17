@@ -77,7 +77,7 @@ public class LevelStatsDBConnector {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try{
+				try {
 					/* Create a new HttpClient and Post Header. */
 					final HttpClient httpClient = new DefaultHttpClient();
 					final HttpPost httpPost = new HttpPost(LevelStatsDBConnector.this.mSubmitURL);
@@ -114,7 +114,7 @@ public class LevelStatsDBConnector {
 							pCallback.onCallback(false);
 						}
 					}
-				}catch(final IOException e) {
+				} catch(final IOException e) {
 					Debug.e(e);
 					if (pCallback != null) {
 						pCallback.onCallback(false);

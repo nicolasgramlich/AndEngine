@@ -8,6 +8,7 @@ import java.util.regex.MatchResult;
 
 import org.andengine.util.StreamUtils;
 import org.andengine.util.adt.DataConstants;
+import org.andengine.util.exception.MethodNotFoundException;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -53,6 +54,14 @@ public class SystemUtils {
 	// Getter & Setter
 	// ===========================================================
 
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
 	public static MemoryInfo getMemoryInfo() {
 		/* Lazy allocation. */
 		if (SystemUtils.sMemoryInfo == null) {
@@ -64,16 +73,16 @@ public class SystemUtils {
 		return SystemUtils.sMemoryInfo;
 	}
 
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	public static boolean isGoogleTV(final Context pContext) {
+	public static boolean isGoogleTV(final Context pContext) throws SystemUtilsException {
 		return SystemUtils.hasSystemFeature(pContext, "com.google.android.tv");
+	}
+
+	public static boolean isGoogleTV(final Context pContext, final boolean pDefault) {
+		try {
+			return SystemUtils.isGoogleTV(pContext);
+		} catch (final SystemUtilsException e) {
+			return pDefault;
+		}
 	}
 
 	public static int getPackageVersionCode(final Context pContext) throws SystemUtilsException {
@@ -105,17 +114,30 @@ public class SystemUtils {
 		}
 	}
 
-	public static boolean hasSystemFeature(final Context pContext, final String pFeature) {
+	public static boolean hasSystemFeature(final Context pContext, final String pFeature) throws SystemUtilsException {
 		final PackageManager packageManager = pContext.getPackageManager();
 		try {
 			try {
 				return packageManager.hasSystemFeature(pFeature);
 			} catch (final Throwable t) {
-				final Method PackageManager_hasSystemFeatures = PackageManager.class.getMethod("hasSystemFeature", new Class[] { String.class });
-				return (PackageManager_hasSystemFeatures == null) ? false : (Boolean) PackageManager_hasSystemFeatures.invoke(packageManager, pFeature);
+				final Method PackageManager_hasSystemFeatures = PackageManager.class.getMethod("hasSystemFeature", String.class);
+				if (PackageManager_hasSystemFeatures == null) {
+					throw new SystemUtilsException(new MethodNotFoundException(PackageManager.class.getSimpleName() + ".hasSystemFeature(String)"));
+				} else {
+					final boolean result = (Boolean) PackageManager_hasSystemFeatures.invoke(packageManager, pFeature);
+					return result;
+				}
 			}
 		} catch (final Throwable t) {
-			return false;
+			throw new SystemUtilsException(t);
+		}
+	}
+
+	public static boolean hasSystemFeature(final Context pContext, final String pFeature, final boolean pDefault) {
+		try {
+			return SystemUtils.hasSystemFeature(pContext, pFeature);
+		} catch (SystemUtilsException e) {
+			return pDefault;
 		}
 	}
 

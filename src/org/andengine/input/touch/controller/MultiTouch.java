@@ -46,7 +46,7 @@ public final class MultiTouch {
 
 	public static boolean isSupported(final Context pContext) {
 		if (MultiTouch.sSupported == null) {
-			MultiTouch.sSupported = SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH);
+			MultiTouch.sSupported = SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH, false);
 		}
 
 		return MultiTouch.sSupported;
@@ -54,7 +54,7 @@ public final class MultiTouch {
 
 	public static boolean isSupportedDistinct(final Context pContext) {
 		if (MultiTouch.sSupportedDistinct == null) {
-			MultiTouch.sSupportedDistinct = SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH_DISTINCT);
+			MultiTouch.sSupportedDistinct = SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH_DISTINCT, false);
 		}
 
 		return MultiTouch.sSupportedDistinct;

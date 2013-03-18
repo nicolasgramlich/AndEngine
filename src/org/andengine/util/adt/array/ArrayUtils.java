@@ -325,6 +325,26 @@ public final class ArrayUtils {
 		return false;
 	}
 
+	public static final boolean contains(final Object[] pItems, final Object pItem) {
+		for (int i = pItems.length - 1; i >= 0; i--) {
+			final Object item = pItems[i];
+			if (pItem == null && item == null) {
+				return true;
+			} else {
+				if (item != null) {
+					if (item.equals(pItem)) {
+						return true;
+					}
+				} else {
+					if (pItem.equals(item)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * @param pClass the type of the returned array T[].
 	 * @param pArrays items or pArrays itself can be null.

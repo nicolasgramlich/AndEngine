@@ -8,6 +8,7 @@ import java.util.regex.MatchResult;
 
 import org.andengine.util.StreamUtils;
 import org.andengine.util.adt.DataConstants;
+import org.andengine.util.exception.AndEngineException;
 import org.andengine.util.exception.MethodNotFoundException;
 
 import android.content.Context;
@@ -355,7 +356,7 @@ public class SystemUtils {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class SystemUtilsException extends Exception {
+	public static class SystemUtilsException extends AndEngineException {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -363,7 +364,7 @@ public class SystemUtils {
 		private static final long serialVersionUID = -7256483361095147596L;
 
 		// ===========================================================
-		// Methods
+		// Constructors
 		// ===========================================================
 
 		public SystemUtilsException() {

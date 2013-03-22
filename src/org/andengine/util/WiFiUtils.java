@@ -10,6 +10,7 @@ import java.util.Enumeration;
 
 import org.andengine.util.adt.array.ArrayUtils;
 import org.andengine.util.debug.Debug;
+import org.andengine.util.exception.AndEngineException;
 import org.andengine.util.exception.MethodNotFoundException;
 import org.andengine.util.exception.WifiException;
 import org.andengine.util.system.SystemUtils;
@@ -375,7 +376,7 @@ public final class WifiUtils {
 		// ===========================================================
 	}
 
-	public static class WifiUtilsException extends Exception {
+	public static class WifiUtilsException extends AndEngineException {
 		// ===========================================================
 		// Constants
 		// ===========================================================
@@ -383,7 +384,7 @@ public final class WifiUtils {
 		private static final long serialVersionUID = 1108697754015225179L;
 
 		// ===========================================================
-		// Methods
+		// COnstructors
 		// ===========================================================
 
 		public WifiUtilsException() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas.TextureAtlasSourceWithWithLocationCallback;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
+import org.andengine.util.exception.AndEngineException;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -28,7 +29,7 @@ public interface ITextureAtlasBuilder<T extends ITextureAtlasSource, A extends I
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static class TextureAtlasBuilderException extends Exception {
+	public static class TextureAtlasBuilderException extends AndEngineException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

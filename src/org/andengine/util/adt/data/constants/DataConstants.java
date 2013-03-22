@@ -14,7 +14,7 @@ public interface DataConstants {
 
 	public static final int BYTES_PER_BYTE = 1;
 	public static final int BYTES_PER_SHORT = Short.SIZE / Byte.SIZE;
-	public static final int BYTES_PER_CHAR = Short.SIZE / Character.SIZE;
+	public static final int BYTES_PER_CHAR = Character.SIZE / Byte.SIZE;
 	public static final int BYTES_PER_INT = Integer.SIZE / Byte.SIZE;
 	public static final int BYTES_PER_LONG = Long.SIZE / Byte.SIZE;
 	public static final int BYTES_PER_FLOAT = Float.SIZE / Byte.SIZE;

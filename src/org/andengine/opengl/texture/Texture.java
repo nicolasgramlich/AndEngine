@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.adt.DataConstants;
+import org.andengine.util.adt.data.constants.DataConstants;
 
 /**
  * (c) 2010 Nicolas Gramlich

@@ -1,6 +1,6 @@
 package org.andengine.opengl.vbo.attribute;
 
-import org.andengine.util.adt.DataConstants;
+import org.andengine.util.adt.data.constants.DataConstants;
 import org.andengine.util.exception.AndEngineRuntimeException;
 import org.andengine.util.system.SystemUtils;
 

@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 
 import org.andengine.util.StreamUtils;
-import org.andengine.util.adt.DataConstants;
+import org.andengine.util.adt.data.constants.DataConstants;
 import org.andengine.util.exception.AndEngineException;
 import org.andengine.util.exception.MethodNotFoundException;
 

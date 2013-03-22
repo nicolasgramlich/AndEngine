@@ -1,4 +1,4 @@
-package org.andengine.util.adt;
+package org.andengine.util.adt.data.constants;
 
 /**
  * (c) 2010 Nicolas Gramlich

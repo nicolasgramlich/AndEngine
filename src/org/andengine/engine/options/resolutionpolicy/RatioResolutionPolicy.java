@@ -48,7 +48,7 @@ public class RatioResolutionPolicy extends BaseResolutionPolicy {
 		final int specHeight = MeasureSpec.getSize(pHeightMeasureSpec);
 
 		final float desiredRatio = this.mRatio;
-		final float realRatio = (float)specWidth / specHeight;
+		final float realRatio = ((float) specWidth) / specHeight;
 
 		int measuredWidth;
 		int measuredHeight;

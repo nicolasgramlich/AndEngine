@@ -35,7 +35,7 @@ public class SpriteBackground extends EntityBackground {
 	// ===========================================================
 
 	public Sprite getSprite() {
-		return (Sprite)this.mEntity;
+		return (Sprite) this.mEntity;
 	}
 
 	// ===========================================================

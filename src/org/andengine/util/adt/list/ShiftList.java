@@ -136,11 +136,11 @@ public class ShiftList<T> implements IQueue<T>, IList<T> {
 		}
 	}
 
-	private void enterShiftingRight(final int pIndex, final T pItem, final int size) {
+	private void enterShiftingRight(final int pIndex, final T pItem, final int pSize) {
 		this.ensureShiftableRight();
 
 		/* Check if items need to be copied. */
-		final int shiftAmount = size - pIndex;
+		final int shiftAmount = pSize - pIndex;
 		if (shiftAmount == 0) {
 			/* Nothing to shift, we can insert at the tail. */
 			this.mItems[this.mTail] = pItem;

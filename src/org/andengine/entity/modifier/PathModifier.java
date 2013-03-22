@@ -215,7 +215,7 @@ public class PathModifier extends EntityModifier {
 		private final float[] mYs;
 
 		private int mIndex;
-		private boolean mLengthChanged = false;
+		private boolean mLengthChanged;
 		private float mLength;
 
 		// ===========================================================
@@ -314,7 +314,7 @@ public class PathModifier extends EntityModifier {
 			final float dx = coordinatesX[pSegmentIndex] - coordinatesX[nextSegmentIndex];
 			final float dy = coordinatesY[pSegmentIndex] - coordinatesY[nextSegmentIndex];
 
-			return (float)Math.sqrt(dx * dx + dy * dy);
+			return (float) Math.sqrt(dx * dx + dy * dy);
 		}
 
 		// ===========================================================

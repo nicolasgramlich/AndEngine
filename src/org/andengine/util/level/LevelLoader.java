@@ -79,7 +79,7 @@ public abstract class LevelLoader<T extends IEntityLoaderData, L extends IEntity
 	}
 
 	public R loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath) throws LevelLoaderException {
-		return this.loadLevelFromAsset(pAssetManager, pAssetPath, (L)null);
+		return this.loadLevelFromAsset(pAssetManager, pAssetPath, (L) null);
 	}
 
 	public R loadLevelFromAsset(final AssetManager pAssetManager, final String pAssetPath, final L pEntityLoaderListener) throws LevelLoaderException {
@@ -111,7 +111,7 @@ public abstract class LevelLoader<T extends IEntityLoaderData, L extends IEntity
 	}
 
 	public R loadLevelFromStream(final InputStream pInputStream, final T pEntityLoaderData, final L pEntityLoaderListener) throws LevelLoaderException {
-		try{
+		try {
 			final SAXParserFactory spf = SAXParserFactory.newInstance();
 			final SAXParser sp = spf.newSAXParser();
 

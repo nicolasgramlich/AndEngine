@@ -65,7 +65,7 @@ public class SmartPVRTexturePixelBufferStrategy implements IPVRTexturePixelBuffe
 		/* Load stripes. */
 		int currentStripePixelDataOffset = pCurrentPixelDataOffset;
 		int currentStripeOffsetY = 0;
-		while(currentStripeOffsetY < pHeight) {
+		while (currentStripeOffsetY < pHeight) {
 			final int currentStripeHeight = Math.min(pHeight - currentStripeOffsetY, stripeHeight);
 			final int currentStripePixelDataSize = currentStripeHeight * bytesPerRow;
 

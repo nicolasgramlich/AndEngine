@@ -44,7 +44,7 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount) {
-		this(pModifier, pLoopCount, null, (IModifierListener<T>)null);
+		this(pModifier, pLoopCount, null, (IModifierListener<T>) null);
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount, final IModifierListener<T> pModifierListener) {
@@ -52,7 +52,7 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount, final ILoopModifierListener<T> pLoopModifierListener) {
-		this(pModifier, pLoopCount, pLoopModifierListener, (IModifierListener<T>)null);
+		this(pModifier, pLoopCount, pLoopModifierListener, (IModifierListener<T>) null);
 	}
 
 	public LoopModifier(final IModifier<T> pModifier, final int pLoopCount, final ILoopModifierListener<T> pLoopModifierListener, final IModifierListener<T> pModifierListener) {
@@ -113,7 +113,7 @@ public class LoopModifier<T> extends BaseModifier<T> implements IModifierListene
 			float secondsElapsedRemaining = pSecondsElapsed;
 
 			this.mFinishedCached = false;
-			while((secondsElapsedRemaining > 0) && !this.mFinishedCached) {
+			while ((secondsElapsedRemaining > 0) && !this.mFinishedCached) {
 				secondsElapsedRemaining -= this.mModifier.onUpdate(secondsElapsedRemaining, pItem);
 			}
 			this.mFinishedCached = false;

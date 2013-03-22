@@ -53,7 +53,7 @@ public class EaseCircularIn implements IEaseFunction {
 	// ===========================================================
 
 	public static float getValue(final float pPercentage) {
-		return -((float)Math.sqrt(1 - pPercentage * pPercentage) - 1.0f);
+		return -((float) Math.sqrt(1 - pPercentage * pPercentage) - 1.0f);
 	}
 
 	// ===========================================================

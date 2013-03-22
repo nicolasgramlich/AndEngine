@@ -27,7 +27,7 @@ public class Background implements IBackground {
 	// Fields
 	// ===========================================================
 
-	private ModifierList<IBackground> mBackgroundModifiers = null;
+	private ModifierList<IBackground> mBackgroundModifiers;
 
 	private final Color mColor = new Color(0, 0, 0, 1);
 	private boolean mColorEnabled = true;

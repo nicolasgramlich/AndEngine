@@ -9,7 +9,7 @@ import android.opengl.GLES20;
 /**
  * Sets the blend function used to draw the {@link Particle} during its lifespan. Only applicable to {@link Shape}s.
  *
- * @author janne.sinivirta
+ * @author Janne Sinivirta
  *
  * @since 17:24:32 - 28.12.2011
  */

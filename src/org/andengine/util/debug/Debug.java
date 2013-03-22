@@ -11,7 +11,7 @@ import android.util.Log;
  * @author Nicolas Gramlich
  * @since 13:29:16 - 08.03.2010
  */
-public class Debug {
+public final class Debug {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,6 +27,10 @@ public class Debug {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private Debug() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -411,7 +415,7 @@ public class Debug {
 	public static enum DebugLevel implements Comparable<DebugLevel> {
 		NONE, ERROR, WARNING, INFO, DEBUG, VERBOSE;
 
-		public static DebugLevel ALL = DebugLevel.VERBOSE;
+		public static final DebugLevel ALL = DebugLevel.VERBOSE;
 
 		public boolean isSameOrLessThan(final DebugLevel pDebugLevel) {
 			return this.compareTo(pDebugLevel) >= 0;

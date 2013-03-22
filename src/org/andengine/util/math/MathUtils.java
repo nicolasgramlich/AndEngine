@@ -24,6 +24,10 @@ public final class MathUtils {
 	// Constructors
 	// ===========================================================
 
+	private MathUtils() {
+
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -181,7 +185,7 @@ public final class MathUtils {
 	}
 
 	public static final float atan2(final float dY, final float dX) {
-		return (float)Math.atan2(dY, dX);
+		return (float) Math.atan2(dY, dX);
 	}
 
 	public static final float radToDeg(final float pRad) {
@@ -259,8 +263,8 @@ public final class MathUtils {
 	public static float[] rotateAroundCenter(final float[] pVertices, final float pRotation, final float pRotationCenterX, final float pRotationCenterY) {
 		if (pRotation != 0) {
 			final float rotationRad = MathUtils.degToRad(pRotation);
-			final float sinRotationRad = (float)Math.sin(rotationRad);
-			final float cosRotationInRad = (float)Math.cos(rotationRad);
+			final float sinRotationRad = (float) Math.sin(rotationRad);
+			final float cosRotationInRad = (float) Math.cos(rotationRad);
 
 			for (int i = pVertices.length - 2; i >= 0; i -= 2) {
 				final float pX = pVertices[i];
@@ -335,14 +339,14 @@ public final class MathUtils {
 	public static final float distance(final float pX1, final float pY1, final float pX2, final float pY2) {
 		final float dX = pX2 - pX1;
 		final float dY = pY2 - pY1;
-		return (float)Math.sqrt((dX * dX) + (dY * dY));
+		return (float) Math.sqrt((dX * dX) + (dY * dY));
 	}
 
 	/**
 	 * @return the euclidean distance between the origin (0, 0) and (pX, pY).
 	 */
 	public static final float length(final float pX, final float pY) {
-		return (float)Math.sqrt((pX * pX) + (pY * pY));
+		return (float) Math.sqrt((pX * pX) + (pY * pY));
 	}
 
 	/**

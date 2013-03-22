@@ -45,8 +45,8 @@ public class CircleOutlineParticleEmitter extends BaseCircleParticleEmitter {
 	@Override
 	public void getPositionOffset(final float[] pOffset) {
 		final float random = MathUtils.RANDOM.nextFloat() * MathConstants.PI * 2;
-		pOffset[VERTEX_INDEX_X] = this.mCenterX + (float)Math.cos(random) * this.mRadiusX;
-		pOffset[VERTEX_INDEX_Y] = this.mCenterY + (float)Math.sin(random) * this.mRadiusY;
+		pOffset[VERTEX_INDEX_X] = this.mCenterX + (float) Math.cos(random) * this.mRadiusX;
+		pOffset[VERTEX_INDEX_Y] = this.mCenterY + (float) Math.sin(random) * this.mRadiusY;
 	}
 
 	// ===========================================================

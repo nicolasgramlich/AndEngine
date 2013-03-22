@@ -1,7 +1,9 @@
 package org.andengine.util.adt.array;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
+import org.andengine.util.IMatcher;
 import org.andengine.util.math.MathUtils;
 
 /**
@@ -24,6 +26,10 @@ public final class ArrayUtils {
 	// Constructors
 	// ===========================================================
 
+	private ArrayUtils() {
+
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -35,6 +41,10 @@ public final class ArrayUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static <T> T[] newArray(final Class<T[]> pClass, final int pLength) {
+		return pClass.cast(Array.newInstance(pClass.getComponentType(), pLength));
+	}
 
 	public static final byte random(final byte[] pArray) {
 		return pArray[MathUtils.random(0, pArray.length - 1)];
@@ -71,7 +81,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		byte tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -87,7 +97,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		short tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -103,7 +113,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		int tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -119,7 +129,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		long tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -135,7 +145,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		float tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -151,7 +161,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		double tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -167,7 +177,7 @@ public final class ArrayUtils {
 		int i = 0;
 		int j = pArray.length - 1;
 		Object tmp;
-		while(j > i) {
+		while (j > i) {
 			tmp = pArray[j];
 			pArray[j] = pArray[i];
 			pArray[i] = tmp;
@@ -315,13 +325,32 @@ public final class ArrayUtils {
 		return false;
 	}
 
+	public static final boolean contains(final Object[] pItems, final Object pItem) {
+		for (int i = pItems.length - 1; i >= 0; i--) {
+			final Object item = pItems[i];
+			if (pItem == null && item == null) {
+				return true;
+			} else {
+				if (item != null) {
+					if (item.equals(pItem)) {
+						return true;
+					}
+				} else {
+					if (pItem.equals(item)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * @param pClass the type of the returned array T[].
 	 * @param pArrays items or pArrays itself can be null.
 	 * @return <code>null</code> when pArrays is <code>null</code> or all arrays in pArrays are <code>null</code> or of length zero. Otherwise an in-order joined array of <code>T[]</code> of all not null, not zero length arrays in pArrays.
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T[] join(final Class<T> pClass, final T[]... pArrays) {
+	public static <T> T[] join(final Class<T[]> pClass, final T[]... pArrays) {
 		if (pArrays == null) {
 			return null;
 		}
@@ -347,7 +376,7 @@ public final class ArrayUtils {
 		}
 
 		/* Determine length of result. */
-		final T[] result = (T[]) java.lang.reflect.Array.newInstance(pClass.getComponentType(), resultLength);
+		final T[] result = ArrayUtils.newArray(pClass, resultLength);
 		int offset = 0;
 		for (int i = 0; i < arrayCount; i++) {
 			final T[] array = pArrays[i];
@@ -404,14 +433,14 @@ public final class ArrayUtils {
 	public static final void sumCummulative(final int[] pValues) {
 		final int valueCount = pValues.length;
 		for (int i = 1; i < valueCount; i++) {
-			pValues[i] = pValues[i-1] + pValues[i];
+			pValues[i] = pValues[i - 1] + pValues[i];
 		}
 	}
 
 	public static final void sumCummulative(final long[] pValues) {
 		final int valueCount = pValues.length;
 		for (int i = 1; i < valueCount; i++) {
-			pValues[i] = pValues[i-1] + pValues[i];
+			pValues[i] = pValues[i - 1] + pValues[i];
 		}
 	}
 
@@ -419,7 +448,7 @@ public final class ArrayUtils {
 		pValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for (int i = 1; i < valueCount; i++) {
-			pValues[i] = pValues[i-1] + (pValues[i] * pFactor);
+			pValues[i] = pValues[i - 1] + (pValues[i] * pFactor);
 		}
 	}
 
@@ -427,7 +456,7 @@ public final class ArrayUtils {
 		pTargetValues[0] = pValues[0] * pFactor;
 		final int valueCount = pValues.length;
 		for (int i = 1; i < valueCount; i++) {
-			pTargetValues[i] = pTargetValues[i-1] + (pValues[i] * pFactor);
+			pTargetValues[i] = pTargetValues[i - 1] + (pValues[i] * pFactor);
 		}
 	}
 
@@ -454,6 +483,28 @@ public final class ArrayUtils {
 		for (int i = 0; i < pArray.length; i++) {
 			pArray[i] = Math.round(pArray[i] * pFactor);
 		}
+	}
+
+	public static <T> T[] filter(final T[] pArray, final Class<T[]> pClass, final IMatcher<T> pMatcher) {
+		final int arrayLength = pArray.length;
+
+		int filteredArrayLength = 0;
+		for (int i = arrayLength - 1; i >= 0; i--) {
+			if (pMatcher.matches(pArray[i])) {
+				filteredArrayLength++;
+			}
+		}
+
+		final T[] filteredArray = ArrayUtils.newArray(pClass, filteredArrayLength);
+		int resultIndex = 0;
+		for (int i = 0; i < arrayLength; i++) {
+			if (pMatcher.matches(pArray[i])) {
+				filteredArray[resultIndex] = pArray[i];
+				resultIndex++;
+			}
+		}
+
+		return filteredArray;
 	}
 
 	// ===========================================================

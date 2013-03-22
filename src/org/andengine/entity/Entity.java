@@ -875,7 +875,7 @@ public class Entity implements IEntity {
 		for (int i = 0; i < childCount; i++) {
 			final IEntity child = this.mChildren.get(i);
 			if (pEntityMatcher.matches(child)) {
-				pResult.add((S)child);
+				pResult.add((S) child);
 			}
 
 			child.queryForSubclass(pEntityMatcher, pResult);
@@ -1242,17 +1242,11 @@ public class Entity implements IEntity {
 		return sceneToLocalTransformation;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.andengine.entity.IEntity#convertLocalToSceneCoordinates(float, float)
-	 */
 	@Override
 	public float[] convertLocalCoordinatesToSceneCoordinates(final float pX, final float pY) {
 		return this.convertLocalCoordinatesToSceneCoordinates(pX, pY, Entity.VERTICES_LOCAL_TO_SCENE_TMP);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.andengine.entity.IEntity#convertLocalToSceneCoordinates(float, float, float[])
-	 */
 	@Override
 	public float[] convertLocalCoordinatesToSceneCoordinates(final float pX, final float pY, final float[] pReuse) {
 		final Transformation localToSceneTransformation = this.getLocalToSceneTransformation();
@@ -1265,17 +1259,11 @@ public class Entity implements IEntity {
 		return pReuse;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.andengine.entity.IEntity#convertLocalToSceneCoordinates(float[])
-	 */
 	@Override
 	public float[] convertLocalCoordinatesToSceneCoordinates(final float[] pCoordinates) {
 		return this.convertLocalCoordinatesToSceneCoordinates(pCoordinates, Entity.VERTICES_LOCAL_TO_SCENE_TMP);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.andengine.entity.IEntity#convertLocalToSceneCoordinates(float[], float[])
-	 */
 	@Override
 	public float[] convertLocalCoordinatesToSceneCoordinates(final float[] pCoordinates, final float[] pReuse) {
 		final Transformation localToSceneTransformation = this.getLocalToSceneTransformation();
@@ -1288,17 +1276,11 @@ public class Entity implements IEntity {
 		return pReuse;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.andengine.entity.IEntity#convertSceneToLocalCoordinates(float, float)
-	 */
 	@Override
 	public float[] convertSceneCoordinatesToLocalCoordinates(final float pX, final float pY) {
 		return this.convertSceneCoordinatesToLocalCoordinates(pX, pY, Entity.VERTICES_SCENE_TO_LOCAL_TMP);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.andengine.entity.IEntity#convertSceneToLocalCoordinates(float, float, float[])
-	 */
 	@Override
 	public float[] convertSceneCoordinatesToLocalCoordinates(final float pX, final float pY, final float[] pReuse) {
 		pReuse[Constants.VERTEX_INDEX_X] = pX;
@@ -1309,17 +1291,11 @@ public class Entity implements IEntity {
 		return pReuse;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.andengine.entity.IEntity#convertSceneToLocalCoordinates(float[])
-	 */
 	@Override
 	public float[] convertSceneCoordinatesToLocalCoordinates(final float[] pCoordinates) {
 		return this.convertSceneCoordinatesToLocalCoordinates(pCoordinates, Entity.VERTICES_SCENE_TO_LOCAL_TMP);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.andengine.entity.IEntity#convertSceneToLocalCoordinates(float[], float[])
-	 */
 	@Override
 	public float[] convertSceneCoordinatesToLocalCoordinates(final float[] pCoordinates, final float[] pReuse) {
 		pReuse[Constants.VERTEX_INDEX_X] = pCoordinates[Constants.VERTEX_INDEX_X];
@@ -1704,7 +1680,7 @@ public class Entity implements IEntity {
 			final String entityClassName = pEntity.getClass().getSimpleName();
 			final String currentParentClassName = pEntity.getParent().getClass().getSimpleName();
 			final String newParentClassName = this.getClass().getSimpleName();
-			throw new IllegalStateException("pEntity '" + entityClassName +"' already has a parent: '" + currentParentClassName + "'. New parent: '" + newParentClassName + "'!");
+			throw new IllegalStateException("pEntity '" + entityClassName + "' already has a parent: '" + currentParentClassName + "'. New parent: '" + newParentClassName + "'!");
 		}
 	}
 

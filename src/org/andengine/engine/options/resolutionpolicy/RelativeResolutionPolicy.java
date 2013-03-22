@@ -46,8 +46,8 @@ public class RelativeResolutionPolicy extends BaseResolutionPolicy {
 	public void onMeasure(final IResolutionPolicy.Callback pResolutionPolicyCallback, final int pWidthMeasureSpec, final int pHeightMeasureSpec) {
 		BaseResolutionPolicy.throwOnNotMeasureSpecEXACTLY(pWidthMeasureSpec, pHeightMeasureSpec);
 
-		final int measuredWidth = (int)(MeasureSpec.getSize(pWidthMeasureSpec) * this.mWidthScale);
-		final int measuredHeight = (int)(MeasureSpec.getSize(pHeightMeasureSpec) * this.mHeightScale);
+		final int measuredWidth = (int) (MeasureSpec.getSize(pWidthMeasureSpec) * this.mWidthScale);
+		final int measuredHeight = (int) (MeasureSpec.getSize(pHeightMeasureSpec) * this.mHeightScale);
 
 		pResolutionPolicyCallback.onResolutionChanged(measuredWidth, measuredHeight);
 	}

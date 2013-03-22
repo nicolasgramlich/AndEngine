@@ -140,6 +140,11 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	}
 
 	@Override
+	public int getTextureMemorySize() {
+		return this.mTextureAtlas.getTextureMemorySize();
+	}
+
+	@Override
 	@Deprecated
 	public void addTextureAtlasSource(final S pTextureAtlasSource, final int pTextureX, final int pTextureY) {
 		this.mTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, pTextureX, pTextureY);

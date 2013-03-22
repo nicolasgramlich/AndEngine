@@ -74,7 +74,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		sortedOpenNodes.enter(fromNode);
 
 		Node currentNode = null;
-		while(openNodes.size() > 0) {
+		while (openNodes.size() > 0) {
 			/* The first Node in the open list is the one with the lowest cost. */
 			currentNode = sortedOpenNodes.poll();
 			final long currentNodeID = currentNode.mID;
@@ -158,7 +158,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		/* Calculate path length. */
 		int length = 1;
 		Node tmp = currentNode;
-		while(tmp.mID != fromNodeID) {
+		while (tmp.mID != fromNodeID) {
 			tmp = tmp.mParent;
 			length++;
 		}
@@ -167,7 +167,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		final Path path = new Path(length);
 		int index = length - 1;
 		tmp = currentNode;
-		while(tmp.mID != fromNodeID) {
+		while (tmp.mID != fromNodeID) {
 			path.set(index, tmp.mX, tmp.mY);
 			tmp = tmp.mParent;
 			index--;
@@ -251,7 +251,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 			} else if (this.getClass() != pOther.getClass()) {
 				return false;
 			}
-			return this.equals((Node)pOther);
+			return this.equals((Node) pOther);
 		}
 
 		@Override
@@ -264,7 +264,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		// ===========================================================
 
 		public static long calculateID(final int pX, final int pY) {
-			return (((long)pX) << 32) | (((long)pY) & 0xFFFFFFFFL);
+			return (((long) pX) << 32) | (((long) pY) & 0xFFFFFFFFL);
 		}
 
 		public boolean equals(final Node pNode) {

@@ -19,7 +19,7 @@ import android.os.Environment;
  * @author Nicolas Gramlich
  * @since 13:53:33 - 20.06.2010
  */
-public class FileUtils {
+public final class FileUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -32,6 +32,10 @@ public class FileUtils {
 	// Constructors
 	// ===========================================================
 
+	private FileUtils() {
+
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -43,6 +47,10 @@ public class FileUtils {
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static String[] readLines(final File pFile) throws IOException {
+		return StreamUtils.readLines(new FileInputStream(pFile));
+	}
 
 	public static void copyToExternalStorage(final Context pContext, final int pSourceResourceID, final String pFilename) throws FileNotFoundException {
 		FileUtils.copyToExternalStorage(pContext, pContext.getResources().openRawResource(pSourceResourceID), pFilename);

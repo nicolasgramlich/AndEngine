@@ -1,264 +1,171 @@
 package org.andengine.util.adt.bit;
 
-import org.andengine.util.adt.DataConstants;
-
-
 /**
- * (c) Zynga 2011
+ * (c) 2013 Nicolas Gramlich
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
- * @since 15:56:32 - 30.10.2011
+ * @since 18:14:12 - 02.03.2013
+ * @author ngramlich
  */
-public final class BitVector {
+public abstract class BitVector implements IBitVector {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	public static final int TRUE = 1;
+	public static final int FALSE = 0;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private final int mCapacity;
-	private final long[] mData;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	private BitVector(final int pCapacity) {
-		if (pCapacity <= 0) {
-			throw new IllegalArgumentException("pCapacity must be > 0.");
-		}
-		this.mCapacity = pCapacity;
-
-		/* Check if bytes perfectly fit into the data fields or if there are some overflow bytes that need special treatment. */
-		final boolean perfectDataFit = pCapacity % DataConstants.BITS_PER_LONG == 0;
-
-		final int dataCapacity;
-		if (perfectDataFit) {
-			dataCapacity = pCapacity / DataConstants.BITS_PER_LONG;
-		} else {
-			/* Extra field for overflow bytes. */
-			dataCapacity = (pCapacity / DataConstants.BITS_PER_LONG) + 1;
-		}
-		this.mData = new long[dataCapacity];
+	public static IBitVector wrap(final byte[] pData) {
+		return new ByteBackedBitVector(pData);
 	}
 
-	public BitVector(final byte[] pBytes) {
-		this(pBytes.length * DataConstants.BITS_PER_BYTE);
+	public static IBitVector wrap(final int pSize, final byte[] pData) {
+		return new ByteBackedBitVector(pData);
+	}
 
-		final long[] data = this.mData;
+	public static IBitVector wrap(final long[] pData) {
+		return new LongBackedBitVector(pData);
+	}
 
-		/* Check if bytes perfectly fit into the data fields or if there are some overflow bytes that need special treatment. */
-		final boolean perfectDataFit = pBytes.length % DataConstants.BYTES_PER_LONG == 0;
-
-		final int dataCapacity = data.length;
-		final int lastCompleteDataIndex = (perfectDataFit) ? dataCapacity - 1 : dataCapacity - 2;
-
-		for (int i = lastCompleteDataIndex; i >= 0; i--) {
-			final int bytesOffset = i * DataConstants.BYTES_PER_LONG;
-
-			data[i] = ((((long)pBytes[bytesOffset + 0]) << 56) & 0xFF00000000000000L)
-					| ((((long)pBytes[bytesOffset + 1]) << 48) & 0xFF000000000000L)
-					| ((((long)pBytes[bytesOffset + 2]) << 40) & 0xFF0000000000L)
-					| ((((long)pBytes[bytesOffset + 3]) << 32) & 0xFF00000000L)
-					| ((((long)pBytes[bytesOffset + 4]) << 24) & 0xFF000000L)
-					| ((((long)pBytes[bytesOffset + 5]) << 16) & 0xFF0000L)
-					| ((((long)pBytes[bytesOffset + 6]) <<  8) & 0xFF00L)
-					| ((((long)pBytes[bytesOffset + 7]) <<  0) & 0xFFL);
-		}
-
-		/* Put overflow bytes into last data field. */
-		if (!perfectDataFit) {
-			long overflowData = 0;
-
-			final int overflowDataIndex = dataCapacity - 1;
-			final int overflowBytesOffset = overflowDataIndex * DataConstants.BYTES_PER_LONG;
-
-			final int overflowByteCount = pBytes.length - overflowBytesOffset;
-			switch (overflowByteCount) {
-				case 7:
-					overflowData = overflowData | ((((long)pBytes[overflowBytesOffset + 6]) <<  8) & 0xFF00L);
-				case 6:
-					overflowData = overflowData | ((((long)pBytes[overflowBytesOffset + 5]) << 16) & 0xFF0000L);
-				case 5:
-					overflowData = overflowData | ((((long)pBytes[overflowBytesOffset + 4]) << 24) & 0xFF000000L);
-				case 4:
-					overflowData = overflowData | ((((long)pBytes[overflowBytesOffset + 3]) << 32) & 0xFF00000000L);
-				case 3:
-					overflowData = overflowData | ((((long)pBytes[overflowBytesOffset + 2]) << 40) & 0xFF0000000000L);
-				case 2:
-					overflowData = overflowData | ((((long)pBytes[overflowBytesOffset + 1]) << 48) & 0xFF000000000000L);
-				case 1:
-					overflowData = overflowData | ((((long)pBytes[overflowBytesOffset + 0]) << 56) & 0xFF00000000000000L);
-			}
-
-			data[overflowDataIndex] = overflowData;
-		}
+	public static IBitVector wrap(final int pSize, final long[] pData) {
+		return new LongBackedBitVector(pSize, pData);
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
-	public int getCapacity() {
-		return this.mCapacity;
-	}
-
-	public boolean getBit(final int pPosition) {
-		if (pPosition < 0) {
-			throw new IllegalArgumentException("pPosition must be >= 0.");
-		}
-		if (pPosition >= this.mCapacity) {
-			throw new IllegalArgumentException("pPosition must be < capacity.");
-		}
-
-		final int dataIndex = pPosition / DataConstants.BITS_PER_LONG;
-		final int dataOffset = pPosition % DataConstants.BITS_PER_LONG;
-
-		final long dataField = this.mData[dataIndex];
-
-		final int rightShift = DataConstants.BITS_PER_LONG - dataOffset - 1;
-		final long bit = (dataField >> rightShift) & 0x01;
-
-		return bit != 0;
-	}
-
-	public byte getByte(final int pPosition) {
-		return (byte) this.getBits(pPosition, DataConstants.BITS_PER_BYTE);
-	}
-
-	public short getShort(final int pPosition) {
-		return (short) this.getBits(pPosition, DataConstants.BITS_PER_SHORT);
-	}
-
-	public int getInt(final int pPosition) {
-		return (int) this.getBits(pPosition, DataConstants.BITS_PER_INT);
-	}
-
-	public long getLong(final int pPosition) {
-		return this.getBits(pPosition, DataConstants.BITS_PER_LONG);
-	}
-
-	public long getBits(final int pPosition, final int pLength) {
-		/* Sanity checks. */
-		if (pPosition < 0) {
-			throw new IllegalArgumentException("pPosition must be >= 0.");
-		}
-		if (pLength < 0) {
-			throw new IllegalArgumentException("pLength must be >= 0.");
-		}
-		if (pPosition + pLength > this.mCapacity) {
-			throw new IllegalArgumentException("pPosition + pLength must be <= capacity.");
-		}
-
-		/* Early exit. */
-		if (pLength == 0) {
-			return 0L;
-		}
-
-		final int dataIndex = pPosition / DataConstants.BITS_PER_LONG;
-		final int offset = pPosition % DataConstants.BITS_PER_LONG;
-
-		final long data;
-		if (offset == 0) {
-			data = this.mData[dataIndex];
-		} else if (offset + pLength <= DataConstants.BITS_PER_LONG) {
-			data = this.mData[dataIndex] << offset;
-		} else {
-			/* Join bits from adjacent data fields. */
-			data = (this.mData[dataIndex] << offset) | (this.mData[dataIndex + 1] >>> (DataConstants.BITS_PER_LONG - offset));
-		}
-
-		if (pLength == DataConstants.BITS_PER_LONG) {
-			return data;
-		} else {
-			final int rightShift = DataConstants.BITS_PER_LONG - pLength;
-			final long mask = 0xFFFFFFFFFFFFFFFFL >>> rightShift;
-			final long unmaskedBits = data >> rightShift;
-			return unmaskedBits & mask;
-		}
-	}
-
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	@Override
-	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append('[');
-		for (int i = 0; i < this.mCapacity; i++) {
-			sb.append(this.getBit(i) ? '1' : '0');
-			if (i % 8 == 7 && i < this.mCapacity -1) {
-				sb.append(' ');
-			}
-		}
-		sb.append(']');
-		return sb.toString();
-	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	public byte[] toByteArray() {
-		final int byteArrayLength;
-		if (this.mCapacity % DataConstants.BITS_PER_BYTE == 0) {
-			byteArrayLength = this.mCapacity / DataConstants.BITS_PER_BYTE;
+	public static int getByteIndex(final int pIndex) {
+		return pIndex / Byte.SIZE;
+	}
+
+	public static int getLongIndex(final int pIndex) {
+		return pIndex / Long.SIZE;
+	}
+
+	public static int getIndexInByte(final int pIndex) {
+		return pIndex % Byte.SIZE;
+	}
+
+	public static int getIndexInLong(final int pIndex) {
+		return pIndex % Long.SIZE;
+	}
+
+	public static int getBitInByte(final byte pByte, final int pIndex) throws IllegalArgumentException {
+		return BitVector.getBitsInByte(pByte, pIndex, 1);
+	}
+
+	public static int getBitsInByte(final byte pByte, final int pIndex, final int pCount) throws IllegalArgumentException {
+		if ((pIndex < 0) || ((pIndex + pCount) > Byte.SIZE)) {
+			throw new IllegalArgumentException("pIndex out of bounds: " + pIndex);
+		}
+
+		if ((pCount < 0) || (pCount > Byte.SIZE)) {
+			throw new IllegalArgumentException("pBitCount out of bounds: " + pCount);
+		}
+
+		final int shift = Byte.SIZE - pIndex - pCount;
+		final int shiftedByte = ((pByte & 0xFF) >> shift);
+
+		final int mask = (0x01 << (pCount)) - 1;
+
+		final int result = shiftedByte & mask;
+
+		return result;
+	}
+
+	public static byte setBitInByte(final byte pByte, final int pIndex, final boolean pTrue) throws IllegalArgumentException {
+		if ((pIndex < 0) || (pIndex >= Byte.SIZE)) {
+			throw new IllegalArgumentException("pIndex out of bounds: " + pIndex);
+		}
+
+		if (pTrue) {
+			final int mask = (0x80 >> pIndex);
+
+			final byte result = (byte)(pByte | mask);
+
+			return result;
 		} else {
-			byteArrayLength = (this.mCapacity / DataConstants.BITS_PER_BYTE) + 1;
+			final int mask = 0xFF ^ (0x80 >> pIndex);
+
+			final byte result = (byte)(pByte & mask);
+
+			return result;
+		}
+	}
+
+	public static byte setBitsInByte(final byte pByte, final int pIndex, final byte pBits, final int pBitIndex, final int pBitCount) throws IllegalArgumentException {
+		if ((pIndex < 0) || ((pIndex + pBitCount) > Byte.SIZE)) {
+			throw new IllegalArgumentException("pIndex out of bounds: " + pIndex);
 		}
 
-		final byte[] bytes = new byte[byteArrayLength];
-		/* Check if bytes perfectly fit into the data fields or if there are some overflow bytes that need special treatment. */
-		final boolean perfectDataFit = this.mCapacity % DataConstants.BITS_PER_LONG == 0;
-
-		final long[] data = this.mData;
-		final int dataCapacity = data.length;
-		final int lastCompleteDataIndex = (perfectDataFit) ? dataCapacity - 1 : dataCapacity - 2;
-
-		int bytesOffset = lastCompleteDataIndex * DataConstants.BYTES_PER_LONG + (DataConstants.BYTES_PER_LONG - 1);
-		for (int i = lastCompleteDataIndex; i >= 0; i--) {
-			final long dataField = data[i];
-
-			bytes[bytesOffset--] = (byte) ((dataField >> 0) & 0xFF);
-			bytes[bytesOffset--] = (byte) ((dataField >> 8) & 0xFF);
-			bytes[bytesOffset--] = (byte) ((dataField >> 16) & 0xFF);
-			bytes[bytesOffset--] = (byte) ((dataField >> 24) & 0xFF);
-			bytes[bytesOffset--] = (byte) ((dataField >> 32) & 0xFF);
-			bytes[bytesOffset--] = (byte) ((dataField >> 40) & 0xFF);
-			bytes[bytesOffset--] = (byte) ((dataField >> 48) & 0xFF);
-			bytes[bytesOffset--] = (byte) ((dataField >> 56) & 0xFF);
+		if ((pBitIndex + pBitCount) > Byte.SIZE) {
+			throw new IllegalArgumentException("pBitIndex out of bounds: " + pIndex);
 		}
 
-		/* Put overflow bytes into last data field. */
-		if (!perfectDataFit) {
-			final int overflowDataIndex = dataCapacity - 1;
-			final long overflowDataField = data[overflowDataIndex];
-
-			final int overflowBytesOffset = overflowDataIndex * DataConstants.BYTES_PER_LONG;
-
-			final int overflowByteCount = bytes.length % DataConstants.BYTES_PER_LONG;
-			switch (overflowByteCount) {
-				case 7:
-					bytes[overflowBytesOffset + 6] = (byte) ((overflowDataField >> 8) & 0xFF);
-				case 6:
-					bytes[overflowBytesOffset + 5] = (byte) ((overflowDataField >> 16) & 0xFF);
-				case 5:
-					bytes[overflowBytesOffset + 4] = (byte) ((overflowDataField >> 24) & 0xFF);
-				case 4:
-					bytes[overflowBytesOffset + 3] = (byte) ((overflowDataField >> 32) & 0xFF);
-				case 3:
-					bytes[overflowBytesOffset + 2] = (byte) ((overflowDataField >> 40) & 0xFF);
-				case 2:
-					bytes[overflowBytesOffset + 1] = (byte) ((overflowDataField >> 48) & 0xFF);
-				case 1:
-					bytes[overflowBytesOffset + 0] = (byte) ((overflowDataField >> 56) & 0xFF);
-			}
+		if ((pBitCount < 0) || (pBitCount > Byte.SIZE)) {
+			throw new IllegalArgumentException("pBitCount out of bounds: " + pIndex);
 		}
 
-		return bytes;
+		final int sizeMask = (0x01 << (pBitCount)) - 1;
+
+		final int byteMask = (sizeMask << (Byte.SIZE - (pBitCount + pIndex))) ^ 0xFF;
+		final int maskedByte = (pByte & byteMask) & 0xFF;
+
+		final int bitMask = sizeMask << (Byte.SIZE - (pBitCount + pBitIndex));
+		final int maskedBits = (pBits & bitMask) & 0xFF;
+
+		final int shift = (pBitIndex - pIndex);
+		final int shiftedBits;
+		if (shift < 0) {
+			shiftedBits = maskedBits >> -shift;
+		} else {
+			shiftedBits = maskedBits << shift;
+		}
+
+		final byte result = (byte) (maskedByte | shiftedBits);
+
+		return result;
+	}
+
+	public static int calculateByteSize(final int pBitSize) {
+		if (pBitSize < 0) {
+			throw new IllegalArgumentException("pBitSize out of bounds: " + pBitSize);
+		}
+
+		if (BitVector.getIndexInByte(pBitSize) == 0) {
+			return pBitSize / Byte.SIZE;
+		} else {
+			return 1 + (pBitSize / Byte.SIZE);
+		}
+	}
+
+	public static int calculateLongSize(final int pBitSize) {
+		if (pBitSize < 0) {
+			throw new IllegalArgumentException("pBitSize out of bounds: " + pBitSize);
+		}
+
+		if (BitVector.getIndexInLong(pBitSize) == 0) {
+			return pBitSize / Byte.SIZE;
+		} else {
+			return 1 + (pBitSize / Byte.SIZE);
+		}
 	}
 
 	// ===========================================================

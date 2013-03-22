@@ -22,6 +22,10 @@ public final class DataUtils {
 	// Constructors
 	// ===========================================================
 
+	private DataUtils() {
+
+	}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -32,6 +36,10 @@ public final class DataUtils {
 
 	public static final int unsignedByteToInt(final byte pByte) {
 		return pByte & 0xFF;
+	}
+
+	public static final int getBitLength(final int pNumber) {
+		return Integer.SIZE - Integer.numberOfLeadingZeros(pNumber);
 	}
 
 	// ===========================================================

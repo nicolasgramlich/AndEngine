@@ -72,20 +72,20 @@ public class ClipEntity extends Entity {
 
 			/* Determine clipping coordinates of each corner in surface coordinates. */
 			final float[] lowerLeftSurfaceCoordinates = pCamera.getSurfaceCoordinatesFromSceneCoordinates(this.convertLocalCoordinatesToSceneCoordinates(0, 0));
-			final int lowerLeftX = (int)Math.round(lowerLeftSurfaceCoordinates[Constants.VERTEX_INDEX_X]);
-			final int lowerLeftY = surfaceHeight - (int)Math.round(lowerLeftSurfaceCoordinates[Constants.VERTEX_INDEX_Y]);
+			final int lowerLeftX = (int) Math.round(lowerLeftSurfaceCoordinates[Constants.VERTEX_INDEX_X]);
+			final int lowerLeftY = surfaceHeight - (int) Math.round(lowerLeftSurfaceCoordinates[Constants.VERTEX_INDEX_Y]);
 
 			final float[] upperLeftSurfaceCoordinates = pCamera.getSurfaceCoordinatesFromSceneCoordinates(this.convertLocalCoordinatesToSceneCoordinates(0, this.mHeight));
-			final int upperLeftX = (int)Math.round(upperLeftSurfaceCoordinates[Constants.VERTEX_INDEX_X]);
-			final int upperLeftY = surfaceHeight - (int)Math.round(upperLeftSurfaceCoordinates[Constants.VERTEX_INDEX_Y]);
+			final int upperLeftX = (int) Math.round(upperLeftSurfaceCoordinates[Constants.VERTEX_INDEX_X]);
+			final int upperLeftY = surfaceHeight - (int) Math.round(upperLeftSurfaceCoordinates[Constants.VERTEX_INDEX_Y]);
 
 			final float[] upperRightSurfaceCoordinates = pCamera.getSurfaceCoordinatesFromSceneCoordinates(this.convertLocalCoordinatesToSceneCoordinates(this.mWidth, this.mHeight));
-			final int upperRightX = (int)Math.round(upperRightSurfaceCoordinates[Constants.VERTEX_INDEX_X]);
-			final int upperRightY = surfaceHeight - (int)Math.round(upperRightSurfaceCoordinates[Constants.VERTEX_INDEX_Y]);
+			final int upperRightX = (int) Math.round(upperRightSurfaceCoordinates[Constants.VERTEX_INDEX_X]);
+			final int upperRightY = surfaceHeight - (int) Math.round(upperRightSurfaceCoordinates[Constants.VERTEX_INDEX_Y]);
 
 			final float[] lowerRightSurfaceCoordinates = pCamera.getSurfaceCoordinatesFromSceneCoordinates(this.convertLocalCoordinatesToSceneCoordinates(this.mWidth, 0));
-			final int lowerRightX = (int)Math.round(lowerRightSurfaceCoordinates[Constants.VERTEX_INDEX_X]);
-			final int lowerRightY = surfaceHeight - (int)Math.round(lowerRightSurfaceCoordinates[Constants.VERTEX_INDEX_Y]);
+			final int lowerRightX = (int) Math.round(lowerRightSurfaceCoordinates[Constants.VERTEX_INDEX_X]);
+			final int lowerRightY = surfaceHeight - (int) Math.round(lowerRightSurfaceCoordinates[Constants.VERTEX_INDEX_Y]);
 
 			/* Determine minimum and maximum x clipping coordinates. */
 			final int minClippingX = MathUtils.min(lowerLeftX, upperLeftX, upperRightX, lowerRightX);

@@ -16,7 +16,7 @@ public class RenderOptions {
 	// Fields
 	// ===========================================================
 
-	private boolean mDithering = false;
+	private boolean mDithering;
 
 	private ConfigChooserOptions mConfigChooserOptions = new ConfigChooserOptions();
 

@@ -203,7 +203,7 @@ public class ShaderProgram {
 
 			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
 			if (length == 0) {
-				while((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
+				while ((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
 					length++;
 				}
 			}
@@ -214,7 +214,7 @@ public class ShaderProgram {
 			if (location == ShaderProgramConstants.LOCATION_INVALID) {
 				/* Some drivers do not report an incorrect length. Then the name is '\0' terminated. */
 				length = 0;
-				while(length < ShaderProgram.NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
+				while (length < ShaderProgram.NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
 					length++;
 				}
 
@@ -248,7 +248,7 @@ public class ShaderProgram {
 
 			/* Some drivers do not report the actual length here, but zero. Then the name is '\0' terminated. */
 			if (length == 0) {
-				while((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
+				while ((length < ShaderProgram.NAME_CONTAINER_SIZE) && (ShaderProgram.NAME_CONTAINER[length] != '\0')) {
 					length++;
 				}
 			}
@@ -259,7 +259,7 @@ public class ShaderProgram {
 			if (location == ShaderProgramConstants.LOCATION_INVALID) {
 				/* Some drivers do not report an incorrect length. Then the name is '\0' terminated. */
 				length = 0;
-				while(length < ShaderProgram.NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
+				while (length < ShaderProgram.NAME_CONTAINER_SIZE && ShaderProgram.NAME_CONTAINER[length] != '\0') {
 					length++;
 				}
 

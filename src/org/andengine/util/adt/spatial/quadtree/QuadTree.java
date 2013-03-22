@@ -308,7 +308,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 				.append('\t')
 				.append("Level: ")
 				.append(this.mLevel)
-				.append(',' )
+				.append(',')
 				.append('\n')
 				.append(indents)
 				.append('\t')
@@ -316,7 +316,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 
 			this.appendBoundsToString(sb);
 
-			sb.append(',' )
+			sb.append(',')
 				.append('\n')
 				.append(indents)
 				.append("\tItems: ");
@@ -506,7 +506,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 				for (int i = 0; i < itemCount; i++) {
 					final T item = this.mItems.get(i);
 					if (pMatcher.matches(item)) {
-						pResult.add((S)item);
+						pResult.add((S) item);
 					}
 				}
 			}
@@ -587,7 +587,7 @@ public abstract class QuadTree<B extends IBounds, T extends ISpatialItem<B>> imp
 			if (this.mItems != null) {
 				for (final T item : this.mItems) {
 					if (this.intersects(pBounds, item.getBounds()) && pMatcher.matches(item)) {
-						pResult.add((S)item);
+						pResult.add((S) item);
 					}
 				}
 			}

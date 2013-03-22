@@ -63,6 +63,11 @@ public interface ITexture {
 	public PixelFormat getPixelFormat();
 	public TextureOptions getTextureOptions();
 
+	/**
+	 * @return in kiloBytes.
+	 */
+	public int getTextureMemorySize();
+
 	public boolean hasTextureStateListener();
 	public ITextureStateListener getTextureStateListener();
 	public void setTextureStateListener(final ITextureStateListener pTextureStateListener);

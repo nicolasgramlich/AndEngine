@@ -83,14 +83,14 @@ public class IntLRUCache<V> {
 			this.mSize--;
 		}
 
-		final IntLRUCacheQueueNode IntLRUCacheQueueNode = this.mIntLRUCacheQueue.add(pKey);
+		final IntLRUCacheQueueNode intLRUCacheQueueNode = this.mIntLRUCacheQueue.add(pKey);
 
-		final IntLRUCacheValueHolder<V> IntLRUCacheValueHolder = this.mIntLRUCacheValueHolderPool.obtainPoolItem();
-//		final IntLRUCacheValueHolder<V> IntLRUCacheValueHolder = new IntLRUCacheValueHolder<V>();
-		IntLRUCacheValueHolder.mValue = pValue;
-		IntLRUCacheValueHolder.mIntLRUCacheQueueNode = IntLRUCacheQueueNode;
+		final IntLRUCacheValueHolder<V> intLRUCacheValueHolder = this.mIntLRUCacheValueHolderPool.obtainPoolItem();
+//		final IntLRUCacheValueHolder<V> intLRUCacheValueHolder = new IntLRUCacheValueHolder<V>();
+		intLRUCacheValueHolder.mValue = pValue;
+		intLRUCacheValueHolder.mIntLRUCacheQueueNode = intLRUCacheQueueNode;
 
-		this.mSparseArray.put(pKey, IntLRUCacheValueHolder);
+		this.mSparseArray.put(pKey, intLRUCacheValueHolder);
 
 		this.mSize++;
 
@@ -98,18 +98,18 @@ public class IntLRUCache<V> {
 	}
 
 	public V get(final int pKey) {
-		final IntLRUCacheValueHolder<V> IntLRUCacheValueHolder = this.mSparseArray.get(pKey);
-		if (IntLRUCacheValueHolder == null) {
+		final IntLRUCacheValueHolder<V> intLRUCacheValueHolder = this.mSparseArray.get(pKey);
+		if (intLRUCacheValueHolder == null) {
 			return null;
 		}
 
-		this.mIntLRUCacheQueue.moveToTail(IntLRUCacheValueHolder.mIntLRUCacheQueueNode);
+		this.mIntLRUCacheQueue.moveToTail(intLRUCacheValueHolder.mIntLRUCacheQueueNode);
 
-		return IntLRUCacheValueHolder.mValue;
+		return intLRUCacheValueHolder.mValue;
 	}
 
 	public void clear() {
-		while(!this.mIntLRUCacheQueue.isEmpty()) {
+		while (!this.mIntLRUCacheQueue.isEmpty()) {
 			final int key = this.mIntLRUCacheQueue.poll();
 			final IntLRUCacheValueHolder<V> lruCacheValueHolder = this.mSparseArray.get(key);
 			if (lruCacheValueHolder == null) {
@@ -243,11 +243,11 @@ public class IntLRUCache<V> {
 		}
 
 		public IntLRUCacheQueueNode add(final int pKey) {
-			final IntLRUCacheQueueNode IntLRUCacheQueueNode = this.mIntLRUCacheQueueNodePool.obtainPoolItem();
-//			final IntLRUCacheQueueNode IntLRUCacheQueueNode = new IntLRUCacheQueueNode();
-			IntLRUCacheQueueNode.mKey = pKey;
+			final IntLRUCacheQueueNode intLRUCacheQueueNode = this.mIntLRUCacheQueueNodePool.obtainPoolItem();
+//			final IntLRUCacheQueueNode intLRUCacheQueueNode = new IntLRUCacheQueueNode();
+			intLRUCacheQueueNode.mKey = pKey;
 
-			return this.add(IntLRUCacheQueueNode);
+			return this.add(intLRUCacheQueueNode);
 		}
 
 		private IntLRUCacheQueueNode add(final IntLRUCacheQueueNode pIntLRUCacheQueueNode) {

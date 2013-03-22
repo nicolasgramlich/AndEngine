@@ -12,7 +12,7 @@ import android.content.pm.PackageManager;
  * @author Nicolas Gramlich
  * @since 16:00:38 - 14.07.2010
  */
-public class MultiTouch {
+public final class MultiTouch {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -21,12 +21,16 @@ public class MultiTouch {
 	// Fields
 	// ===========================================================
 
-	private static Boolean SUPPORTED = null;
-	private static Boolean SUPPORTED_DISTINCT = null;
+	private static Boolean sSupported;
+	private static Boolean sSupportedDistinct;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private MultiTouch() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -41,19 +45,19 @@ public class MultiTouch {
 	// ===========================================================
 
 	public static boolean isSupported(final Context pContext) {
-		if (MultiTouch.SUPPORTED == null) {
-			MultiTouch.SUPPORTED = SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH);
+		if (MultiTouch.sSupported == null) {
+			MultiTouch.sSupported = SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH, false);
 		}
 
-		return MultiTouch.SUPPORTED;
+		return MultiTouch.sSupported;
 	}
 
 	public static boolean isSupportedDistinct(final Context pContext) {
-		if (MultiTouch.SUPPORTED_DISTINCT == null) {
-			MultiTouch.SUPPORTED_DISTINCT = SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH_DISTINCT);
+		if (MultiTouch.sSupportedDistinct == null) {
+			MultiTouch.sSupportedDistinct = SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH_DISTINCT, false);
 		}
 
-		return MultiTouch.SUPPORTED_DISTINCT;
+		return MultiTouch.sSupportedDistinct;
 	}
 
 	// ===========================================================

@@ -7,7 +7,7 @@ package org.andengine.util.adt.color;
  * @author Nicolas Gramlich
  * @since 11:13:45 - 04.08.2010
  */
-public class ColorUtils {
+public final class ColorUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,6 +27,10 @@ public class ColorUtils {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private ColorUtils() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

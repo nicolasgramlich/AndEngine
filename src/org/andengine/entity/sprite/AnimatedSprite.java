@@ -127,14 +127,14 @@ public class AnimatedSprite extends TiledSprite {
 			this.mAnimationProgress += nanoSecondsElapsed;
 
 			if (loopCount == IAnimationData.LOOP_CONTINUOUS) {
-				while(this.mAnimationProgress > animationDuration ) {
+				while (this.mAnimationProgress > animationDuration) {
 					this.mAnimationProgress -= animationDuration;
 					if (this.mAnimationListener != null) {
 						this.mAnimationListener.onAnimationLoopFinished(this, this.mRemainingLoopCount, loopCount);
 					}
 				}
 			} else {
-				while(this.mAnimationProgress > animationDuration) {
+				while (this.mAnimationProgress > animationDuration) {
 					this.mAnimationProgress -= animationDuration;
 					this.mRemainingLoopCount--;
 					if (this.mRemainingLoopCount < 0) {
@@ -212,7 +212,7 @@ public class AnimatedSprite extends TiledSprite {
 	}
 
 	public void animate(final long[] pFrameDurations) {
-		this.animate(pFrameDurations, (IAnimationListener)null);
+		this.animate(pFrameDurations, (IAnimationListener) null);
 	}
 
 	public void animate(final long[] pFrameDurations, final IAnimationListener pAnimationListener) {

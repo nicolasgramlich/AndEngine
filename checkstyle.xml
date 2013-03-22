@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<!--
+    This configuration file was written by the eclipse-cs plugin configuration editor
+-->
+<!--
+    Checkstyle-Configuration: AndEngine
+    Description: none
+-->
+<module name="Checker">
+  <property name="severity" value="error"/>
+  <module name="TreeWalker">
+    <property name="tabWidth" value="4"/>
+    <module name="ConstantName"/>
+    <module name="LocalFinalVariableName"/>
+    <module name="MemberName">
+      <property name="format" value="^[m][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="ParameterName">
+      <property name="format" value="^[p][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="StaticVariableName">
+      <property name="format" value="^[s][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="RedundantImport"/>
+    <module name="UnusedImports"/>
+    <module name="AvoidStarImport"/>
+    <module name="AvoidStaticImport"/>
+    <module name="IllegalImport"/>
+    <module name="ModifierOrder"/>
+    <module name="LeftCurly">
+      <property name="maxLineLength" value="255"/>
+    </module>
+    <module name="NeedBraces"/>
+    <module name="RightCurly"/>
+    <module name="RequireThis"/>
+    <module name="SimplifyBooleanExpression"/>
+    <module name="SimplifyBooleanReturn"/>
+    <module name="SuperFinalize"/>
+    <module name="OneStatementPerLine"/>
+    <module name="ParameterAssignment"/>
+    <module name="MultipleVariableDeclarations"/>
+    <module name="MissingSwitchDefault"/>
+    <module name="MagicNumber"/>
+    <module name="IllegalType">
+      <property name="tokens" value="METHOD_DEF,PARAMETER_DEF,VARIABLE_DEF"/>
+    </module>
+    <module name="HiddenField"/>
+    <module name="FinalLocalVariable">
+      <property name="tokens" value="PARAMETER_DEF,VARIABLE_DEF"/>
+    </module>
+    <module name="ExplicitInitialization"/>
+    <module name="DefaultComesLast"/>
+    <module name="NoWhitespaceAfter"/>
+    <module name="NoWhitespaceBefore"/>
+    <module name="WhitespaceAfter"/>
+    <module name="WhitespaceAround"/>
+    <module name="ParenPad"/>
+    <module name="GenericWhitespace"/>
+    <module name="FinalClass"/>
+    <module name="VisibilityModifier">
+      <property name="packageAllowed" value="true"/>
+      <property name="protectedAllowed" value="true"/>
+    </module>
+    <module name="UpperEll"/>
+    <module name="InnerTypeLast"/>
+    <module name="HideUtilityClassConstructor"/>
+  </module>
+</module>

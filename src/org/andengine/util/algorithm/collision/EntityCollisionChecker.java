@@ -14,7 +14,7 @@ import org.andengine.util.math.MathUtils;
  * @author Nicolas Gramlich
  * @since 11:50:19 - 11.03.2010
  */
-public class EntityCollisionChecker {
+public final class EntityCollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -32,6 +32,10 @@ public class EntityCollisionChecker {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private EntityCollisionChecker() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

@@ -17,7 +17,7 @@ import android.graphics.Typeface;
  * @author Nicolas Gramlich
  * @since 17:17:28 - 16.06.2010
  */
-public class FontFactory {
+public final class FontFactory {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -34,6 +34,10 @@ public class FontFactory {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private FontFactory() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

@@ -29,7 +29,7 @@ public abstract class Shape extends Entity implements IShape {
 	protected int mBlendFunctionSource = IShape.BLENDFUNCTION_SOURCE_DEFAULT;
 	protected int mBlendFunctionDestination = IShape.BLENDFUNCTION_DESTINATION_DEFAULT;
 
-	protected boolean mBlendingEnabled = false;
+	protected boolean mBlendingEnabled;
 
 	protected ShaderProgram mShaderProgram;
 

@@ -22,7 +22,7 @@ public class ConfigChooserOptions {
 	// Fields
 	// ===========================================================
 
-	private boolean mRequestedMultiSampling = false;
+	private boolean mRequestedMultiSampling;
 
 	private int mRequestedRedSize = ConfigChooserOptions.RED_SIZE_DEFAULT;
 	private int mRequestedGreenSize = ConfigChooserOptions.GREEN_SIZE_DEFAULT;

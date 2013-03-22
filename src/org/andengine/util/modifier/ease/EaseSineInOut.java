@@ -48,7 +48,7 @@ public class EaseSineInOut implements IEaseFunction {
 	public float getPercentage(final float pSecondsElapsed, final float pDuration) {
 		final float percentage = pSecondsElapsed / pDuration;
 
-		return -0.5f * ((float)Math.cos(percentage * PI) - 1);
+		return -0.5f * ((float) Math.cos(percentage * PI) - 1);
 	}
 
 	// ===========================================================

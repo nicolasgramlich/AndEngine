@@ -45,6 +45,8 @@
 * Daniel Epstein <theturtleboy@gmail.com>
   * Added possibility to define scaleX/scaleY instead of just scale.
   * Fixed horizontal/vertical flipping of BaseTextureRegionBuffer.
+* Arturo Gutiérrez
+  * Added TextureMemoryLogger.
 
 ## Suggestions / Issue-Reports:
 * Leandro De Brasi

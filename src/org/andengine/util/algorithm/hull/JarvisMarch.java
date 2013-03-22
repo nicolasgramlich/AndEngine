@@ -107,7 +107,7 @@ public class JarvisMarch implements IHullAlgorithm {
 
 			currentHullVertexAngle = nextHullVertexAngle;
 			currentHullVertexIndex = nextHullVertexIndex;
-		} while(currentHullVertexIndex > 0);
+		} while (currentHullVertexIndex > 0);
 
 		return hullVertexCount;
 	}

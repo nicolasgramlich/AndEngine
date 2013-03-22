@@ -12,7 +12,7 @@ import org.andengine.entity.primitive.Line;
  * @author Nicolas Gramlich
  * @since 19:27:22 - 17.07.2010
  */
-public class LineCollisionChecker {
+public final class LineCollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -26,6 +26,10 @@ public class LineCollisionChecker {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private LineCollisionChecker() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

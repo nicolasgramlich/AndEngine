@@ -84,7 +84,7 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 		final Pool<T> pool = this.mPool;
 
 		T item;
-		while((item = scheduledPoolItemQueue.poll()) != null) {
+		while ((item = scheduledPoolItemQueue.poll()) != null) {
 			this.onHandlePoolItem(item);
 			pool.recyclePoolItem(item);
 		}
@@ -96,7 +96,7 @@ public abstract class PoolUpdateHandler<T extends PoolItem> implements IUpdateHa
 		final Pool<T> pool = this.mPool;
 
 		T item;
-		while((item = scheduledPoolItemQueue.poll()) != null) {
+		while ((item = scheduledPoolItemQueue.poll()) != null) {
 			pool.recyclePoolItem(item);
 		}
 	}

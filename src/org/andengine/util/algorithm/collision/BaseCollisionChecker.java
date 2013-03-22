@@ -10,7 +10,7 @@ import org.andengine.util.Constants;
  * @author Nicolas Gramlich
  * @since 11:50:19 - 11.03.2010
  */
-public class BaseCollisionChecker {
+public final class BaseCollisionChecker {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -22,6 +22,10 @@ public class BaseCollisionChecker {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private BaseCollisionChecker() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

@@ -27,7 +27,7 @@ public interface IEntityModifier extends IModifier<IEntity> {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public static interface IEntityModifierListener extends IModifierListener<IEntity>{
+	public static interface IEntityModifierListener extends IModifierListener<IEntity> {
 		// ===========================================================
 		// Constants
 		// ===========================================================

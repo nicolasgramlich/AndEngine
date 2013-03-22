@@ -15,7 +15,7 @@ import org.andengine.util.call.Callback;
  * @author Nicolas Gramlich
  * @since 16:42:08 - 12.07.2011
  */
-public class BuildableTextureAtlasTextureRegionFactory {
+public final class BuildableTextureAtlasTextureRegionFactory {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -27,6 +27,10 @@ public class BuildableTextureAtlasTextureRegionFactory {
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	private BuildableTextureAtlasTextureRegionFactory() {
+
+	}
 
 	// ===========================================================
 	// Getter & Setter

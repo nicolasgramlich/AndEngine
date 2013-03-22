@@ -33,7 +33,7 @@ public class LevelStatsDBConnector {
 	// Constants
 	// ===========================================================
 
-	private static final String PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_ID = "preferences.levelstatsdbconnector.playerid";
+	private static final String PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_KEY = "preferences.levelstatsdbconnector.playerid";
 
 	// ===========================================================
 	// Fields
@@ -52,12 +52,12 @@ public class LevelStatsDBConnector {
 		this.mSubmitURL = pSubmitURL;
 
 		final SharedPreferences simplePreferences = SimplePreferences.getInstance(pContext);
-		final int playerID = simplePreferences.getInt(PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_ID, -1);
+		final int playerID = simplePreferences.getInt(PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_KEY, -1);
 		if (playerID != -1) {
 			this.mPlayerID = playerID;
 		} else {
 			this.mPlayerID = MathUtils.random(1000000000, Integer.MAX_VALUE);
-			SimplePreferences.getEditorInstance(pContext).putInt(PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_ID, this.mPlayerID).commit();
+			SimplePreferences.getEditorInstance(pContext).putInt(PREFERENCES_LEVELSTATSDBCONNECTOR_PLAYERID_KEY, this.mPlayerID).commit();
 		}
 	}
 

@@ -139,7 +139,7 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	protected abstract void onPopulateBufferData(final ByteBuffer byteBuffer);
+	protected abstract void onPopulateBufferData(final ByteBuffer pByteBuffer);
 
 	@Override
 	public void bind(final GLState pGLState) {
@@ -238,8 +238,8 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 		return byteBuffer;
 	}
 
-	protected void releaseByteBuffer(final ByteBuffer byteBuffer) {
-		BufferUtils.freeDirectByteBuffer(byteBuffer);
+	protected void releaseByteBuffer(final ByteBuffer pByteBuffer) {
+		BufferUtils.freeDirectByteBuffer(pByteBuffer);
 	}
 
 	// ===========================================================

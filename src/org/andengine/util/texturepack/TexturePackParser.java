@@ -212,7 +212,7 @@ public class TexturePackParser extends DefaultHandler {
 			} catch (final IOException e) {
 				throw new TexturePackParseException(e);
 			}
-		} else if (type	.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_ETC1)) {
+		} else if (type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_ETC1)) {
 			try {
 				return new ETC1Texture(this.mTextureManager, textureOptions) {
 					@Override

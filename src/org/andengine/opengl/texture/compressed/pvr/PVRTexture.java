@@ -16,8 +16,8 @@ import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTextu
 import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.IPVRTexturePixelBufferStrategy.IPVRTexturePixelBufferStrategyBufferManager;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.StreamUtils;
-import org.andengine.util.adt.DataConstants;
 import org.andengine.util.adt.array.ArrayUtils;
+import org.andengine.util.adt.data.constants.DataConstants;
 import org.andengine.util.adt.io.out.ByteBufferOutputStream;
 import org.andengine.util.debug.Debug;
 import org.andengine.util.math.MathUtils;

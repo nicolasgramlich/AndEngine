@@ -1,4 +1,4 @@
-package org.andengine.util.adt;
+package org.andengine.util.adt.data.constants;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -14,6 +14,7 @@ public interface DataConstants {
 
 	public static final int BYTES_PER_BYTE = 1;
 	public static final int BYTES_PER_SHORT = Short.SIZE / Byte.SIZE;
+	public static final int BYTES_PER_CHAR = Short.SIZE / Character.SIZE;
 	public static final int BYTES_PER_INT = Integer.SIZE / Byte.SIZE;
 	public static final int BYTES_PER_LONG = Long.SIZE / Byte.SIZE;
 	public static final int BYTES_PER_FLOAT = Float.SIZE / Byte.SIZE;
@@ -33,6 +34,7 @@ public interface DataConstants {
 
 	public static final int BITS_PER_BYTE = 8;
 	public static final int BITS_PER_SHORT = BYTES_PER_SHORT * BITS_PER_BYTE;
+	public static final int BITS_PER_CHAR = BYTES_PER_CHAR * BITS_PER_BYTE;
 	public static final int BITS_PER_INT = BYTES_PER_INT * BITS_PER_BYTE;
 	public static final int BITS_PER_LONG = BYTES_PER_LONG * BITS_PER_BYTE;
 	public static final int BITS_PER_FLOAT = BYTES_PER_FLOAT * BITS_PER_BYTE;

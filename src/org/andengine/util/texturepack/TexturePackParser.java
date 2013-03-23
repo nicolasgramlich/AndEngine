@@ -18,7 +18,7 @@ import org.andengine.opengl.texture.compressed.pvr.PVRTexture;
 import org.andengine.opengl.texture.compressed.pvr.PVRTexture.PVRTextureFormat;
 import org.andengine.opengl.texture.compressed.pvr.pixelbufferstrategy.SmartPVRTexturePixelBufferStrategy;
 import org.andengine.util.SAXUtils;
-import org.andengine.util.adt.DataConstants;
+import org.andengine.util.adt.data.constants.DataConstants;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.texturepack.exception.TexturePackParseException;
 import org.xml.sax.Attributes;
@@ -212,7 +212,7 @@ public class TexturePackParser extends DefaultHandler {
 			} catch (final IOException e) {
 				throw new TexturePackParseException(e);
 			}
-		} else if (type	.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_ETC1)) {
+		} else if (type.equals(TexturePackParser.TAG_TEXTURE_ATTRIBUTE_TYPE_VALUE_ETC1)) {
 			try {
 				return new ETC1Texture(this.mTextureManager, textureOptions) {
 					@Override

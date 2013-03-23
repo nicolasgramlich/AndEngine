@@ -1,6 +1,5 @@
 package org.andengine.util.experiment.exception;
 
-import org.andengine.util.exception.AndEngineException;
 
 /**
  * (c) 2013 Nicolas Gramlich
@@ -8,7 +7,7 @@ import org.andengine.util.exception.AndEngineException;
  * @author Nicolas Gramlich
  * @since 08:25:34 - 22.03.2013
  */
-public class ExperimentTypeException extends AndEngineException {
+public class ExperimentTypeException extends ExperimentException {
 	// ===========================================================
 	// Constants
 	// ===========================================================

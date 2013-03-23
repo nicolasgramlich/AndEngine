@@ -1,18 +1,19 @@
 package org.andengine.util.experiment.exception;
 
+import org.andengine.util.exception.AndEngineException;
 
 /**
  * (c) 2013 Nicolas Gramlich
  * 
  * @author Nicolas Gramlich
- * @since 08:25:34 - 22.03.2013
+ * @since 00:45:14 - 23.03.2013
  */
-public class ExperimentNotFoundException extends ExperimentException {
+public class ExperimentException extends AndEngineException {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static final long serialVersionUID = 8872925957672647007L;
+	private static final long serialVersionUID = 8028018956559796977L;
 
 	// ===========================================================
 	// Fields
@@ -22,19 +23,19 @@ public class ExperimentNotFoundException extends ExperimentException {
 	// Constructors
 	// ===========================================================
 
-	public ExperimentNotFoundException() {
+	public ExperimentException() {
 		super();
 	}
 
-	public ExperimentNotFoundException(final String pMessage) {
+	public ExperimentException(final String pMessage) {
 		super(pMessage);
 	}
 
-	public ExperimentNotFoundException(final Throwable pThrowable) {
+	public ExperimentException(final Throwable pThrowable) {
 		super(pThrowable);
 	}
 
-	public ExperimentNotFoundException(final String pMessage, final Throwable pThrowable) {
+	public ExperimentException(final String pMessage, final Throwable pThrowable) {
 		super(pMessage, pThrowable);
 	}
 

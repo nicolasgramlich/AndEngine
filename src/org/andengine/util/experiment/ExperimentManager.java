@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.andengine.util.StreamUtils;
 import org.andengine.util.call.Callback;
 import org.andengine.util.debug.Debug;
+import org.andengine.util.experiment.exception.ExperimentException;
 import org.andengine.util.experiment.exception.ExperimentNotFoundException;
 import org.andengine.util.experiment.exception.ExperimentTypeException;
 import org.andengine.util.system.SystemUtils;
@@ -105,49 +106,146 @@ public class ExperimentManager {
 		return this.getExperimentValue(pExperimentName, Boolean.class);
 	}
 
+	public boolean getExperimentBooleanValue(final String pExperimentName, final boolean pDefaultValue) {
+		try {
+			return this.getExperimentBooleanValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
+	}
+
 	public byte getExperimentByteValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, Byte.class);
+	}
+
+	public byte getExperimentByteValue(final String pExperimentName, final byte pDefaultValue) {
+		try {
+			return this.getExperimentByteValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
 	}
 
 	public short getExperimentShortValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, Short.class);
 	}
 
+	public short getExperimentShortValue(final String pExperimentName, final short pDefaultValue) {
+		try {
+			return this.getExperimentShortValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
+	}
+
 	public char getExperimentCharacterValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, Character.class);
+	}
+
+	public char getExperimentCharacterValue(final String pExperimentName, final char pDefaultValue) {
+		try {
+			return this.getExperimentCharacterValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
 	}
 
 	public int getExperimentIntegerValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, Integer.class);
 	}
 
+	public int getExperimentIntegerValue(final String pExperimentName, final int pDefaultValue) {
+		try {
+			return this.getExperimentIntegerValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
+	}
+
 	public long getExperimentLongValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, Long.class);
+	}
+
+	public long getExperimentLongValue(final String pExperimentName, final long pDefaultValue) {
+		try {
+			return this.getExperimentLongValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
 	}
 
 	public float getExperimentFloatValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, Float.class);
 	}
 
+	public float getExperimentFloatValue(final String pExperimentName, final float pDefaultValue) {
+		try {
+			return this.getExperimentFloatValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
+	}
+
 	public double getExperimentDoubleValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, Double.class);
+	}
+
+	public double getExperimentDoubleValue(final String pExperimentName, final double pDefaultValue) {
+		try {
+			return this.getExperimentDoubleValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
 	}
 
 	public String getExperimentStringValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, String.class);
 	}
 
+	public String getExperimentStringValue(final String pExperimentName, final String pDefaultValue) {
+		try {
+			return this.getExperimentStringValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
+	}
+
 	public JSONObject getExperimentJSONObjectValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, JSONObject.class);
+	}
+
+	public JSONObject getExperimentJSONObjectValue(final String pExperimentName, final JSONObject pDefaultValue) {
+		try {
+			return this.getExperimentJSONObjectValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
 	}
 
 	public JSONArray getExperimentJSONArrayValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, JSONArray.class);
 	}
 
+	public JSONArray getExperimentJSONArrayValue(final String pExperimentName, final JSONArray pDefaultValue) {
+		try {
+			return this.getExperimentJSONArrayValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
+	}
+
 	@Deprecated
 	public Object getExperimentValue(final String pExperimentName) throws ExperimentTypeException, ExperimentNotFoundException {
 		return this.getExperimentValue(pExperimentName, Object.class);
+	}
+
+	@Deprecated
+	public Object getExperimentValue(final String pExperimentName, final Object pDefaultValue) {
+		try {
+			return this.getExperimentValue(pExperimentName);
+		} catch (final ExperimentException e) {
+			return pDefaultValue;
+		}
 	}
 
 	// ===========================================================

@@ -18,11 +18,16 @@ public final class BuildConfig {
 
 
 ## Branches
-
- * GLES2: 'GLES2'
-    * Active development. 
+ * OpenGL ES 2:
     * Support: [> 93% of all Android devices ([Apr. 2012](http://developer.android.com/resources/dashboard/platform-versions.html))
- * GLES1: 'master'
+    * Branch: [`GLES2-AnchorCenter`][URI_AndEngine_GLES2_AnchorCenter]
+      * Active development. 
+      * The leatest and greatest.
+      * More [`cocos2d`][URI_cocos2d]-ish (Coordinate-System in the lower left corner, powerful AnchorCenter system.)
+    * Branch: [`GLES2`][URI_AndEngine_GLES2]
+      * Not in active development.
+ * OpenGL ES 1: 
+    * Branch: [`master`][URI_AndEngine_master]
     * Not in active development.
     * Support: > 99.0% of all Android devices ([Apr. 2012](http://developer.android.com/resources/dashboard/platform-versions.html))
 
@@ -51,6 +56,10 @@ public final class BuildConfig {
  * [`AndEngineTMXTiledMapExtension`][URI_AndEngineTMXTiledMapExtension] (Merged into the 'GLES1' branch.)
 
 
+[URI_AndEngine_GLES2_AnchorCenter]: https://github.com/nicolasgramlich/AndEngine/tree/GLES2-AnchorCenter
+[URI_AndEngine_GLES2]: https://github.com/nicolasgramlich/AndEngine/tree/GLES2
+[URI_AndEngine_master]: https://github.com/nicolasgramlich/AndEngine/tree/master
+[URI_cocos2d]: https://github.com/cocos2d
 [URI_AndEngineExamples]: https://github.com/nicolasgramlich/AndEngineExamples
 [URI_AndEngineRobotiumExtensionExample]: https://github.com/nicolasgramlich/AndEngineRobotiumExtensionExample
 [URI_AndEngineTest]: https://github.com/nicolasgramlich/AndEngineTest

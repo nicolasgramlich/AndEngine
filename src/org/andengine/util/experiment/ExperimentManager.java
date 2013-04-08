@@ -15,10 +15,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.andengine.util.StreamUtils;
 import org.andengine.util.call.Callback;
 import org.andengine.util.debug.Debug;
-import org.andengine.util.exception.MethodNotYetImplementedException;
 import org.andengine.util.experiment.exception.ExperimentException;
 import org.andengine.util.experiment.exception.ExperimentNotFoundException;
 import org.andengine.util.experiment.exception.ExperimentTypeException;
+import org.andengine.util.preferences.SharedPreferencesCompat;
 import org.andengine.util.preferences.SimplePreferences;
 import org.andengine.util.system.SystemUtils;
 import org.andengine.util.system.SystemUtils.SystemUtilsException;
@@ -299,20 +299,29 @@ public class ExperimentManager {
 	// ===========================================================
 
 	public boolean save() {
-		return this.save(SimplePreferences.getInstance(this.mContext));
+		return this.save(true);
+	}
+
+	public boolean save(final boolean pBlocking) {
+		return this.save(SimplePreferences.getInstance(this.mContext), pBlocking);
 	}
 
 	public boolean save(final SharedPreferences pSharedPreferences) {
+		return this.save(pSharedPreferences, true);
+	}
+
+	public boolean save(final SharedPreferences pSharedPreferences, final boolean pBlocking) {
 		final Editor editor = pSharedPreferences.edit();
 
 		editor.putLong(PREFERENCES_EXPERIMENTMANAGER_EXPERIMENTS_FETCHED_TIMESTAMP_KEY, this.mExperimentsFetchedTimestamp);
 		editor.putString(PREFERENCES_EXPERIMENTMANAGER_EXPERIMENTS_DATA_KEY, this.mExperimentsData);
 
-		return editor.commit(); // TODO SharedPreferencesCompat.apply(editor); ? 
-	}
-
-	public void saveAsync(final SharedPreferences pSharedPreferences, final Callback<Boolean> pCallback) {
-		throw new MethodNotYetImplementedException();
+		if (pBlocking) {
+			return editor.commit();
+		} else {
+			SharedPreferencesCompat.apply(editor);
+			return true;
+		}
 	}
 
 	public boolean restore() {

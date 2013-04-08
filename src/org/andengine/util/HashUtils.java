@@ -36,13 +36,24 @@ public final class HashUtils {
 	// Methods
 	// ===========================================================
 
+	public static int getHashCode(final byte ... pBytes) {
+		final int prime = 31;
+		int result = 1;
+
+		for (int i = 0; i < pBytes.length; i++) {
+			result = prime * result + pBytes[i];
+		}
+
+		return result;
+	}
+
 	public static int getHashCode(final Object ... pObjects) {
 		final int prime = 31;
 		int result = 1;
 
 		for (int i = 0; i < pObjects.length; i++) {
-			final Object string = pObjects[i];
-			result = prime * result + ((string == null) ? 0 : string.hashCode());
+			final Object object = pObjects[i];
+			result = prime * result + ((object == null) ? 0 : object.hashCode());
 		}
 
 		return result;

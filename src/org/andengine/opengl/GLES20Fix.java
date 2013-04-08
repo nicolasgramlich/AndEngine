@@ -3,6 +3,7 @@ package org.andengine.opengl;
 import org.andengine.util.exception.AndEngineRuntimeException;
 import org.andengine.util.system.SystemUtils;
 
+import android.annotation.TargetApi;
 import android.opengl.GLES20;
 import android.os.Build;
 
@@ -12,12 +13,13 @@ import android.os.Build;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:44:43 - 04.09.2011
  */
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class GLES20Fix {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	private static boolean NATIVE_LIB_LOADED;
+	private static final boolean NATIVE_LIB_LOADED;
 
 	/** Android issue 8931. */
 	private static final boolean WORKAROUND_MISSING_GLES20_METHODS;

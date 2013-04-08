@@ -6,17 +6,23 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.andengine.util.StreamUtils;
 import org.andengine.util.call.Callback;
 import org.andengine.util.debug.Debug;
+import org.andengine.util.exception.MethodNotYetImplementedException;
 import org.andengine.util.experiment.exception.ExperimentException;
 import org.andengine.util.experiment.exception.ExperimentNotFoundException;
 import org.andengine.util.experiment.exception.ExperimentTypeException;
+import org.andengine.util.preferences.SimplePreferences;
 import org.andengine.util.system.SystemUtils;
 import org.andengine.util.system.SystemUtils.SystemUtilsException;
+import org.andengine.util.time.TimeConstants;
 import org.andengine.util.uuid.UUIDManager;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -31,7 +37,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 
 /**
  * (c) 2013 Nicolas Gramlich
@@ -44,6 +54,9 @@ public class ExperimentManager {
 	// Constants
 	// ===========================================================
 
+	private static final String PREFERENCES_EXPERIMENTMANAGER_EXPERIMENTS_FETCHED_TIMESTAMP_KEY = "preferences.experimentmanager.experiments.fetched.timestamp";
+	private static final String PREFERENCES_EXPERIMENTMANAGER_EXPERIMENTS_DATA_KEY = "preferences.experimentmanager.experiments.data";
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -52,11 +65,21 @@ public class ExperimentManager {
 	private final String mServerURL;
 	private final IExperimentFactory mExperimentFactory;
 
+	private final UUID mUUID;
 	private final String mPackageName;
 	private final int mPackageVersionCode;
-	private final UUID mUUID;
+	private String mSimOperatorName;
+	private String mNetworkOperatorName;
 
 	private Map<String, Experiment<?>> mExperiments;
+	private String mExperimentsData;
+
+	private long mExperimentsFetchDirtyInterval = TimeConstants.MILLISECONDS_PER_DAY;
+	private boolean mExperimentsFetching;
+	private boolean mExperimentsFetched;
+	private long mExperimentsFetchedTimestamp;
+
+	private final Lock mExperimentsFetchLock = new ReentrantLock();
 
 	// ===========================================================
 	// Constructors
@@ -71,15 +94,34 @@ public class ExperimentManager {
 		this.mServerURL = pServerURL;
 		this.mExperimentFactory = pExperimentFactory;
 
+		this.mUUID = UUIDManager.getUUID(pContext);
 		this.mPackageName = SystemUtils.getPackageName(pContext);
 		this.mPackageVersionCode = SystemUtils.getPackageVersionCode(pContext);
 
-		this.mUUID = UUIDManager.getUUID(pContext);
+		TelephonyManager manager = (TelephonyManager) pContext.getSystemService(Context.TELEPHONY_SERVICE);
+		this.mNetworkOperatorName = manager.getNetworkOperatorName();
+		this.mSimOperatorName = manager.getSimOperatorName();
 	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public boolean isFetchingExperiments() {
+		return this.mExperimentsFetching;
+	}
+
+	public boolean hasFetchedExperiments() {
+		return this.mExperimentsFetched;
+	}
+
+	public long getExperimentsFetchDirtyInterval() {
+		return this.mExperimentsFetchDirtyInterval;
+	}
+
+	public void setExperimentsFetchDirtyInterval(final long pExperimentsFetchDirtyInterval) {
+		this.mExperimentsFetchDirtyInterval = pExperimentsFetchDirtyInterval;
+	}
 
 	public Experiment<?> getExperiment(final String pExperimentName) throws ExperimentNotFoundException {
 		final Experiment<?> experiment = this.mExperiments.get(pExperimentName);
@@ -256,37 +298,137 @@ public class ExperimentManager {
 	// Methods
 	// ===========================================================
 
+	public boolean save() {
+		return this.save(SimplePreferences.getInstance(this.mContext));
+	}
+
+	public boolean save(final SharedPreferences pSharedPreferences) {
+		final Editor editor = pSharedPreferences.edit();
+
+		editor.putLong(PREFERENCES_EXPERIMENTMANAGER_EXPERIMENTS_FETCHED_TIMESTAMP_KEY, this.mExperimentsFetchedTimestamp);
+		editor.putString(PREFERENCES_EXPERIMENTMANAGER_EXPERIMENTS_DATA_KEY, this.mExperimentsData);
+
+		return editor.commit(); // TODO SharedPreferencesCompat.apply(editor); ? 
+	}
+
+	public void saveAsync(final SharedPreferences pSharedPreferences, final Callback<Boolean> pCallback) {
+		throw new MethodNotYetImplementedException();
+	}
+
+	public boolean restore() {
+		return this.restore(SimplePreferences.getInstance(this.mContext));
+	}
+
+	public boolean restore(final SharedPreferences pSharedPreferences) {
+		this.mExperimentsData = pSharedPreferences.getString(PREFERENCES_EXPERIMENTMANAGER_EXPERIMENTS_DATA_KEY, null);
+		if (this.mExperimentsData != null) {
+			try {
+				this.mExperiments = this.parseExperiments(this.mExperimentsData);
+				this.mExperimentsFetchedTimestamp = pSharedPreferences.getLong(PREFERENCES_EXPERIMENTMANAGER_EXPERIMENTS_FETCHED_TIMESTAMP_KEY, 0);
+				this.mExperimentsFetched = true;
+			} catch (final JSONException e) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public boolean fetchExperiments() throws IOException, URISyntaxException {
-		final HttpClient httpClient = new DefaultHttpClient();
+		return this.fetchExperiments(false);
+	}
 
+	public boolean fetchExperiments(final boolean pForce) throws IOException, URISyntaxException {
+		this.mExperimentsFetchLock.lock();
+		try {
+			if (this.shouldFetchExperiments(pForce)) {
+				this.mExperimentsFetching = true;
+
+				final HttpClient httpClient = new DefaultHttpClient();
+
+				final List<NameValuePair> params = this.getParameters();
+
+				final URI uri = new URI(this.mServerURL + "?" + URLEncodedUtils.format(params, "utf-8"));
+				final HttpGet httpGet = new HttpGet(uri);
+
+				final HttpResponse response = httpClient.execute(httpGet);
+
+				final int statusCode = response.getStatusLine().getStatusCode();
+				if ((statusCode >= HttpStatus.SC_OK) && (statusCode < HttpStatus.SC_MULTIPLE_CHOICES)) {
+					final String serverResponse = StreamUtils.readFully(response.getEntity().getContent());
+
+					try {
+						this.mExperiments = this.parseExperiments(serverResponse);
+						this.mExperimentsFetched = true;
+						this.mExperimentsFetchedTimestamp = System.currentTimeMillis();
+						this.mExperimentsData = serverResponse;
+					} catch (final JSONException e) {
+						Debug.e(e);
+					}
+				}
+			}
+		} finally {
+			this.mExperimentsFetching = false;
+			this.mExperimentsFetchLock.unlock();
+		}
+		return this.mExperimentsFetched;
+	}
+
+	protected List<NameValuePair> getParameters() {
 		final List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("appid", this.mPackageName));
-		params.add(new BasicNameValuePair("version", String.valueOf(this.mPackageVersionCode)));
+
 		params.add(new BasicNameValuePair("uuid", this.mUUID.toString()));
+		params.add(new BasicNameValuePair("app_id", this.mPackageName));
+		params.add(new BasicNameValuePair("app_version", String.valueOf(this.mPackageVersionCode)));
 
-		final URI uri = new URI(this.mServerURL + "?" + URLEncodedUtils.format(params, "utf-8"));
-		final HttpGet httpGet = new HttpGet(uri);
+		params.add(new BasicNameValuePair("os_version", String.valueOf(Build.VERSION.SDK_INT)));
 
-		final HttpResponse response = httpClient.execute(httpGet);
+		params.add(new BasicNameValuePair("device_manufacturer", Build.MANUFACTURER));
+		params.add(new BasicNameValuePair("device_name", Build.DEVICE));
+		params.add(new BasicNameValuePair("device_brand", Build.BRAND));
+		params.add(new BasicNameValuePair("device_product", Build.PRODUCT));
+		params.add(new BasicNameValuePair("device_model", Build.MODEL));
+		params.add(new BasicNameValuePair("device_build", Build.DISPLAY));
+		final Locale locale = Locale.getDefault();
+		params.add(new BasicNameValuePair("device_locale_country", locale.getCountry()));
+		params.add(new BasicNameValuePair("device_locale_language", locale.getLanguage()));
+		params.add(new BasicNameValuePair("device_network_operator", this.mNetworkOperatorName));
+		params.add(new BasicNameValuePair("device_sim_operator", this.mSimOperatorName));
 
-		final int statusCode = response.getStatusLine().getStatusCode();
-		if ((statusCode < HttpStatus.SC_OK) || (statusCode > HttpStatus.SC_MULTIPLE_CHOICES)) {
+		return params;
+	}
+
+	private boolean shouldFetchExperiments(final boolean pForce) {
+		if (this.mExperimentsFetching) {
 			return false;
 		} else {
-			final String serverResponse = StreamUtils.readFully(response.getEntity().getContent());
-
-			try {
-				this.mExperiments = this.parseExperiments(serverResponse);
+			if (pForce) {
 				return true;
-			} catch (final JSONException e) {
-				Debug.e(e);
-				return false;
+			} else {
+				if (this.mExperimentsFetched) {
+					final long now = System.currentTimeMillis();
+					final long experimentsFetchedDirtyTimestamp = this.mExperimentsFetchedTimestamp + this.mExperimentsFetchDirtyInterval;
+					return experimentsFetchedDirtyTimestamp > now;
+				} else {
+					return true;
+				}
 			}
 		}
 	}
 
+	public void fetchExperimentsAsync() {
+		this.fetchExperimentsAsync(false, null);
+	}
+
+	public void fetchExperimentsAsync(final boolean pForce) {
+		this.fetchExperimentsAsync(pForce, null);
+	}
+
 	public void fetchExperimentsAsync(final Callback<Boolean> pCallback) {
-		final FetchExperimentsAsyncTask fetchExperimentsAsyncTask = new FetchExperimentsAsyncTask(pCallback);
+		this.fetchExperimentsAsync(false, pCallback);
+	}
+
+	public void fetchExperimentsAsync(final boolean pForce, final Callback<Boolean> pCallback) {
+		final FetchExperimentsAsyncTask fetchExperimentsAsyncTask = new FetchExperimentsAsyncTask(pForce, pCallback);
 		fetchExperimentsAsyncTask.execute((Void[]) null);
 	}
 
@@ -318,13 +460,15 @@ public class ExperimentManager {
 		// Fields
 		// ===========================================================
 
+		private final boolean mForce;
 		private final Callback<Boolean> mCallback;
 
 		// ===========================================================
 		// Constructors
 		// ===========================================================
 
-		public FetchExperimentsAsyncTask(final Callback<Boolean> pCallback) {
+		public FetchExperimentsAsyncTask(final boolean pForce, final Callback<Boolean> pCallback) {
+			this.mForce = pForce;
 			this.mCallback = pCallback;
 		}
 
@@ -339,7 +483,7 @@ public class ExperimentManager {
 		@Override
 		protected Boolean doInBackground(final Void ... pParams) {
 			try {
-				return ExperimentManager.this.fetchExperiments();
+				return ExperimentManager.this.fetchExperiments(this.mForce);
 			} catch (final Throwable t) {
 				Debug.e(t);
 				return false;
@@ -348,7 +492,9 @@ public class ExperimentManager {
 
 		@Override
 		protected void onPostExecute(final Boolean pResult) {
-			this.mCallback.onCallback(pResult);
+			if (this.mCallback != null) {
+				this.mCallback.onCallback(pResult);
+			}
 		}
 
 		// ===========================================================

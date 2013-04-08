@@ -1,6 +1,5 @@
 package org.andengine.util.experiment.exception;
 
-
 /**
  * (c) 2013 Nicolas Gramlich
  * 

@@ -146,7 +146,7 @@ public class TiledTextureRegion extends BaseTextureRegion implements ITiledTextu
 
 	@Override
 	public void setTextureX(final int pTileIndex, final float pTextureX) {
-		this.mTextureRegions[pTileIndex].setTextureY(pTextureX);
+		this.mTextureRegions[pTileIndex].setTextureX(pTextureX);
 	}
 
 	@Override

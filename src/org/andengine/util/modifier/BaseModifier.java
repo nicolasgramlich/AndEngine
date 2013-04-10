@@ -67,12 +67,21 @@ public abstract class BaseModifier<T> implements IModifier<T> {
 	}
 
 	@Override
+	public void clearModifierListeners() {
+		this.mModifierListeners.clear();
+	}
+
+	@Override
 	public boolean removeModifierListener(final IModifierListener<T> pModifierListener) {
 		if(pModifierListener == null) {
 			return false;
 		} else {
 			return this.mModifierListeners.remove(pModifierListener);
 		}
+	}
+	
+	@Override
+	public void onUnregister(final T pItem) {
 	}
 
 	@Override

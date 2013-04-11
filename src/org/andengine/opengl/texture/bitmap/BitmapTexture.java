@@ -104,10 +104,10 @@ public class BitmapTexture extends Texture {
 		final Bitmap bitmap = this.onGetBitmap(bitmapConfig);
 
 		if(bitmap == null) {
-			throw new NullBitmapException("Caused by: '" + this.toString() + "'.");
+			throw new NullBitmapException("Caused by: '" + this.toString() + "' (mInputStreamOpener=" + mInputStreamOpener + ").");
 		}
 
-		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && (this.mPixelFormat == PixelFormat.RGBA_8888);
+		final boolean useDefaultAlignment = MathUtils.isPowerOfTwo(bitmap.getWidth()) && MathUtils.isPowerOfTwo(bitmap.getHeight()) && this.mPixelFormat == PixelFormat.RGBA_8888;
 		if(!useDefaultAlignment) {
 			/* Adjust unpack alignment. */
 			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);

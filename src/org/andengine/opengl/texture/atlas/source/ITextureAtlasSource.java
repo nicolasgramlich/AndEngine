@@ -26,6 +26,8 @@ public interface ITextureAtlasSource {
 	public int getTextureHeight();
 	public void setTextureWidth(final int pTextureWidth);
 	public void setTextureHeight(final int pTextureHeight);
+	
+	public int getSampleSize();
 
 	public ITextureAtlasSource deepCopy();
 }

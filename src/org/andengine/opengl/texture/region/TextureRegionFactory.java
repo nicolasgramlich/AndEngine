@@ -67,7 +67,7 @@ public class TextureRegionFactory {
 	}
 
 	public static <T extends ITextureAtlasSource> TextureRegion createFromSource(final ITextureAtlas<T> pTextureAtlas, final T pTextureAtlasSource, final int pTextureX, final int pTextureY, final boolean pRotated) {
-		final TextureRegion textureRegion = new TextureRegion(pTextureAtlas, pTextureX, pTextureY, pTextureAtlasSource.getTextureWidth(), pTextureAtlasSource.getTextureHeight(), pRotated);
+		final TextureRegion textureRegion = new TextureRegion(pTextureAtlas, pTextureX, pTextureY, pTextureAtlasSource.getTextureWidth(), pTextureAtlasSource.getTextureHeight(), pTextureAtlasSource.getSampleSize(), pRotated);
 		pTextureAtlas.addTextureAtlasSource(pTextureAtlasSource, pTextureX, pTextureY);
 		return textureRegion;
 	}

@@ -30,9 +30,9 @@ public class SecureSharedPreferences implements SharedPreferences {
 	// Constants
 	// ===========================================================
 
-	private static final String CIPHER_TRANSFORMATION = "AES/CBC/PKCS5Padding";
-	private static final String KEY_HASH_TRANSFORMATION = "SHA-256";
-	private static final String CHARSET = "UTF-8";
+	protected static final String CIPHER_TRANSFORMATION = "AES/CBC/PKCS5Padding";
+	protected static final String KEY_HASH_TRANSFORMATION = "SHA-256";
+	protected static final String CHARSET = "UTF-8";
 
 	// ===========================================================
 	// Fields
@@ -40,11 +40,11 @@ public class SecureSharedPreferences implements SharedPreferences {
 
 	protected final SharedPreferences mDelegate;
 
-	private final boolean mEncryptKeys;
-	private final boolean mEncryptValues;
+	protected final boolean mEncryptKeys;
+	protected final boolean mEncryptValues;
 
-	private final Cipher mEncryptCipher;
-	private final Cipher mDecryptCipher;
+	protected final Cipher mEncryptCipher;
+	protected final Cipher mDecryptCipher;
 
 	// ===========================================================
 	// Constructors

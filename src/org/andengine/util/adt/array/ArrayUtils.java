@@ -507,6 +507,19 @@ public final class ArrayUtils {
 		return filteredArray;
 	}
 
+	public static boolean isEmpty(final Object[] pRecipients) {
+		if (pRecipients == null) {
+			return true;
+		} else {
+			for (int i = pRecipients.length - 1; i >= 0; i--) {
+				if (pRecipients[i] != null) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

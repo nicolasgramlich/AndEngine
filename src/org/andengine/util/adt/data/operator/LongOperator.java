@@ -17,31 +17,31 @@ public enum LongOperator {
 			return pLongA == pLongB;
 		}
 	},
-	NOT_EQUALS()  {
+	NOT_EQUALS() {
 		@Override
 		public boolean check(final long pLongA, final long pLongB) {
 			return pLongA != pLongB;
 		}
 	},
-	LESS_THAN()  {
+	LESS_THAN() {
 		@Override
 		public boolean check(final long pLongA, final long pLongB) {
 			return pLongA < pLongB;
 		}
 	},
-	LESS_OR_EQUAL_THAN()  {
+	LESS_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final long pLongA, final long pLongB) {
 			return pLongA <= pLongB;
 		}
 	},
-	MORE_THAN()  {
+	MORE_THAN() {
 		@Override
 		public boolean check(final long pLongA, final long pLongB) {
 			return pLongA > pLongB;
 		}
 	},
-	MORE_OR_EQUAL_THAN()  {
+	MORE_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final long pLongA, final long pLongB) {
 			return pLongA >= pLongB;

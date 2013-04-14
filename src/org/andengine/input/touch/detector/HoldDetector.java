@@ -129,7 +129,7 @@ public class HoldDetector extends BaseDetector {
 							this.triggerOnHold(holdTimeMilliseconds);
 						} else {
 							final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
-							this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
+							this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
 
 							if (!this.mMaximumDistanceExceeded) {
 								if (!this.mTriggering) {
@@ -158,7 +158,7 @@ public class HoldDetector extends BaseDetector {
 							this.triggerOnHoldFinished(holdTimeMilliseconds);
 						} else {
 							final float triggerHoldMaximumDistance = this.mTriggerHoldMaximumDistance;
-							this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance  || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
+							this.mMaximumDistanceExceeded = this.mMaximumDistanceExceeded || Math.abs(this.mDownX - motionEvent.getX()) > triggerHoldMaximumDistance || Math.abs(this.mDownY - motionEvent.getY()) > triggerHoldMaximumDistance;
 
 							if (!this.mMaximumDistanceExceeded) {
 								this.triggerOnHoldFinished(holdTimeMilliseconds);

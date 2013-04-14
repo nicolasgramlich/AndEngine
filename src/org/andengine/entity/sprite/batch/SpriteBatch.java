@@ -665,7 +665,7 @@ public class SpriteBatch extends Shape {
 
 		pTransformation.transform(SpriteBatch.VERTICES_TMP);
 
-		this.addInner(pTextureRegion, SpriteBatch.VERTICES_TMP[0], SpriteBatch.VERTICES_TMP[1], SpriteBatch.VERTICES_TMP[2], SpriteBatch.VERTICES_TMP[3],  SpriteBatch.VERTICES_TMP[4], SpriteBatch.VERTICES_TMP[5], SpriteBatch.VERTICES_TMP[6], SpriteBatch.VERTICES_TMP[7], pRed, pGreen, pBlue, pAlpha);
+		this.addInner(pTextureRegion, SpriteBatch.VERTICES_TMP[0], SpriteBatch.VERTICES_TMP[1], SpriteBatch.VERTICES_TMP[2], SpriteBatch.VERTICES_TMP[3], SpriteBatch.VERTICES_TMP[4], SpriteBatch.VERTICES_TMP[5], SpriteBatch.VERTICES_TMP[6], SpriteBatch.VERTICES_TMP[7], pRed, pGreen, pBlue, pAlpha);
 	}
 
 	/**
@@ -690,7 +690,7 @@ public class SpriteBatch extends Shape {
 
 		pTransformation.transform(SpriteBatch.VERTICES_TMP);
 
-		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, SpriteBatch.VERTICES_TMP[0], SpriteBatch.VERTICES_TMP[1], SpriteBatch.VERTICES_TMP[2], SpriteBatch.VERTICES_TMP[3],  SpriteBatch.VERTICES_TMP[4], SpriteBatch.VERTICES_TMP[5], SpriteBatch.VERTICES_TMP[6], SpriteBatch.VERTICES_TMP[7], pColorABGRPackedInt);
+		this.mSpriteBatchVertexBufferObject.addWithPackedColor(pTextureRegion, SpriteBatch.VERTICES_TMP[0], SpriteBatch.VERTICES_TMP[1], SpriteBatch.VERTICES_TMP[2], SpriteBatch.VERTICES_TMP[3], SpriteBatch.VERTICES_TMP[4], SpriteBatch.VERTICES_TMP[5], SpriteBatch.VERTICES_TMP[6], SpriteBatch.VERTICES_TMP[7], pColorABGRPackedInt);
 	}
 
 	/**

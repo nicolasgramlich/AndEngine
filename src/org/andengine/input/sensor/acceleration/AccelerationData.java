@@ -100,7 +100,7 @@ public class AccelerationData extends BaseSensorData {
 	}
 
 	public void setZ(final float pZ) {
-		this.mValues[SensorManager.DATA_Z]  = pZ;
+		this.mValues[SensorManager.DATA_Z] = pZ;
 	}
 
 	@Override

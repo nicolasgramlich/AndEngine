@@ -17,31 +17,31 @@ public enum DoubleOperator {
 			return pDoubleA == pDoubleB;
 		}
 	},
-	NOT_EQUALS()  {
+	NOT_EQUALS() {
 		@Override
 		public boolean check(final double pDoubleA, final double pDoubleB) {
 			return pDoubleA != pDoubleB;
 		}
 	},
-	LESS_THAN()  {
+	LESS_THAN() {
 		@Override
 		public boolean check(final double pDoubleA, final double pDoubleB) {
 			return pDoubleA < pDoubleB;
 		}
 	},
-	LESS_OR_EQUAL_THAN()  {
+	LESS_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final double pDoubleA, final double pDoubleB) {
 			return pDoubleA <= pDoubleB;
 		}
 	},
-	MORE_THAN()  {
+	MORE_THAN() {
 		@Override
 		public boolean check(final double pDoubleA, final double pDoubleB) {
 			return pDoubleA > pDoubleB;
 		}
 	},
-	MORE_OR_EQUAL_THAN()  {
+	MORE_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final double pDoubleA, final double pDoubleB) {
 			return pDoubleA >= pDoubleB;

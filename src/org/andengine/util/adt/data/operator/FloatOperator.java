@@ -17,31 +17,31 @@ public enum FloatOperator {
 			return pFloatA == pFloatB;
 		}
 	},
-	NOT_EQUALS()  {
+	NOT_EQUALS() {
 		@Override
 		public boolean check(final float pFloatA, final float pFloatB) {
 			return pFloatA != pFloatB;
 		}
 	},
-	LESS_THAN()  {
+	LESS_THAN() {
 		@Override
 		public boolean check(final float pFloatA, final float pFloatB) {
 			return pFloatA < pFloatB;
 		}
 	},
-	LESS_OR_EQUAL_THAN()  {
+	LESS_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final float pFloatA, final float pFloatB) {
 			return pFloatA <= pFloatB;
 		}
 	},
-	MORE_THAN()  {
+	MORE_THAN() {
 		@Override
 		public boolean check(final float pFloatA, final float pFloatB) {
 			return pFloatA > pFloatB;
 		}
 	},
-	MORE_OR_EQUAL_THAN()  {
+	MORE_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final float pFloatA, final float pFloatB) {
 			return pFloatA >= pFloatB;

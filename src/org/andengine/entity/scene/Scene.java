@@ -97,7 +97,7 @@ public class Scene extends Entity {
 	}
 
 	public void setBackgroundEnabled(final boolean pEnabled) {
-		this.mBackgroundEnabled  = pEnabled;
+		this.mBackgroundEnabled = pEnabled;
 	}
 
 	public void setOnSceneTouchListener(final IOnSceneTouchListener pOnSceneTouchListener) {
@@ -356,7 +356,7 @@ public class Scene extends Entity {
 							final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
 							if (handled != null && handled) {
 								/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
-								 *  bind this ITouchArea to the PointerID. */
+								 * bind this ITouchArea to the PointerID. */
 								if ((this.mTouchAreaBindingOnActionDownEnabled && isActionDown) || (this.mTouchAreaBindingOnActionMoveEnabled && isActionMove)) {
 									this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), touchArea);
 								}
@@ -371,7 +371,7 @@ public class Scene extends Entity {
 							final Boolean handled = this.onAreaTouchEvent(pSceneTouchEvent, sceneTouchEventX, sceneTouchEventY, touchArea);
 							if (handled != null && handled) {
 								/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
-								 *  bind this ITouchArea to the PointerID. */
+								 * bind this ITouchArea to the PointerID. */
 								if ((this.mTouchAreaBindingOnActionDownEnabled && isActionDown) || (this.mTouchAreaBindingOnActionMoveEnabled && isActionMove)) {
 									this.mTouchAreaBindings.put(pSceneTouchEvent.getPointerID(), touchArea);
 								}
@@ -387,7 +387,7 @@ public class Scene extends Entity {
 			final Boolean handled = this.mOnSceneTouchListener.onSceneTouchEvent(this, pSceneTouchEvent);
 			if (handled != null && handled) {
 				/* If binding of ITouchAreas is enabled and this is an ACTION_DOWN event,
-				 *  bind the active OnSceneTouchListener to the PointerID. */
+				 * bind the active OnSceneTouchListener to the PointerID. */
 				if (this.mOnSceneTouchListenerBindingOnActionDownEnabled && isActionDown) {
 					this.mOnSceneTouchListenerBindings.put(pSceneTouchEvent.getPointerID(), this.mOnSceneTouchListener);
 				}

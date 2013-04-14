@@ -789,10 +789,10 @@ public class Entity implements IEntity {
 
 	@Override
 	public IEntity getChildByIndex(final int pIndex) {
-	    if (this.mChildren == null) {
-	        return null;
-	    }
-	    return this.mChildren.get(pIndex);
+		if (this.mChildren == null) {
+			return null;
+		}
+		return this.mChildren.get(pIndex);
 	}
 
 	@Override

@@ -17,31 +17,31 @@ public enum ShortOperator {
 			return pShortA == pShortB;
 		}
 	},
-	NOT_EQUALS()  {
+	NOT_EQUALS() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA != pShortB;
 		}
 	},
-	LESS_THAN()  {
+	LESS_THAN() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA < pShortB;
 		}
 	},
-	LESS_OR_EQUAL_THAN()  {
+	LESS_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA <= pShortB;
 		}
 	},
-	MORE_THAN()  {
+	MORE_THAN() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA > pShortB;
 		}
 	},
-	MORE_OR_EQUAL_THAN()  {
+	MORE_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA >= pShortB;

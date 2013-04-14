@@ -117,7 +117,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	@Override
 	public synchronized void onSurfaceChanged(final GLState pGLState, final int pWidth, final int pHeight) {
 		if (BuildConfig.DEBUG) {
-			Debug.d(this.getClass().getSimpleName() + ".onSurfaceChanged(Width=" + pWidth + ",  Height=" + pHeight + ")" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+			Debug.d(this.getClass().getSimpleName() + ".onSurfaceChanged(Width=" + pWidth + ", Height=" + pHeight + ")" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 		}
 	}
 

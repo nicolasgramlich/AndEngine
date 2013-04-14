@@ -22,9 +22,9 @@ public interface IPathFinder<T> {
 	public Path findPath(final IPathFinderMap<T> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction, final float pMaxCost);
 	public Path findPath(final IPathFinderMap<T> pPathFinderMap, final int pXMin, final int pYMin, final int pXMax, final int pYMax, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY, final boolean pAllowDiagonal, final IAStarHeuristic<T> pAStarHeuristic, final ICostFunction<T> pCostFunction, final float pMaxCost, final IPathFinderListener<T> pPathFinderListener);
 
-    // ===========================================================
-    // Inner and Anonymous Classes
-    // ===========================================================
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
 
 	public interface IPathFinderListener<T> {
 		// ===========================================================

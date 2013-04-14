@@ -339,7 +339,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 				switch (pBoundsSplit) {
 					case TOP_LEFT:
 					case TOP_RIGHT:
-						return  this.mYMin;
+						return this.mYMin;
 					case BOTTOM_LEFT:
 					case BOTTOM_RIGHT:
 						throw new BoundsSplitException();
@@ -349,7 +349,7 @@ public class IntQuadTree<T extends ISpatialItem<IIntBounds>> extends QuadTree<II
 			} else {
 				switch (pBoundsSplit) {
 					case TOP_LEFT:
-						return  this.mYMin;
+						return this.mYMin;
 					case TOP_RIGHT:
 						return this.mYMin;
 					case BOTTOM_LEFT:

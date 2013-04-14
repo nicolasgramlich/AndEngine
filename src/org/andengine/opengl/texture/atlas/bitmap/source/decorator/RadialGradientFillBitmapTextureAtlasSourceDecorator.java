@@ -42,7 +42,7 @@ public class RadialGradientFillBitmapTextureAtlasSourceDecorator extends BaseSha
 		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, new int[] { pFromColor, pToColor }, POSITIONS_DEFAULT, pRadialGradientDirection, pTextureAtlasSourceDecoratorOptions);
 	}
 
-	public RadialGradientFillBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape,  final int[] pColors, final float[] pPositions, final RadialGradientDirection pRadialGradientDirection) {
+	public RadialGradientFillBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int[] pColors, final float[] pPositions, final RadialGradientDirection pRadialGradientDirection) {
 		this(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColors, pPositions, pRadialGradientDirection, null);
 	}
 

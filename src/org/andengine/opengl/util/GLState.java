@@ -532,7 +532,7 @@ public class GLState {
 	}
 
 	public void lineWidth(final float pLineWidth) {
-		if (this.mLineWidth  != pLineWidth) {
+		if (this.mLineWidth != pLineWidth) {
 			this.mLineWidth = pLineWidth;
 			GLES20.glLineWidth(pLineWidth);
 		}

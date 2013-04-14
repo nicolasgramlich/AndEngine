@@ -72,7 +72,7 @@ public class PinchZoomDetector extends BaseDetector {
 
 		switch (action) {
 			case MotionEvent.ACTION_POINTER_DOWN:
-				if (!this.mPinchZooming && PinchZoomDetector.hasTwoOrMorePointers(motionEvent))  {
+				if (!this.mPinchZooming && PinchZoomDetector.hasTwoOrMorePointers(motionEvent)) {
 					this.mInitialDistance = PinchZoomDetector.calculatePointerDistance(motionEvent);
 					this.mCurrentDistance = this.mInitialDistance;
 					if (this.mInitialDistance > PinchZoomDetector.TRIGGER_PINCHZOOM_MINIMUM_DISTANCE_DEFAULT) {

@@ -13,7 +13,7 @@ import android.view.MotionEvent;
  * @author Nicolas Gramlich
  * @since 21:06:40 - 13.07.2010
  */
-public abstract class BaseTouchController implements ITouchController  {
+public abstract class BaseTouchController implements ITouchController {
 	// ===========================================================
 	// Constants
 	// ===========================================================

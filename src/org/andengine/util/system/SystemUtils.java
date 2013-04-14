@@ -12,10 +12,13 @@ import org.andengine.util.exception.AndEngineException;
 import org.andengine.util.exception.MethodNotFoundException;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Debug;
 import android.os.Debug.MemoryInfo;
 
@@ -103,17 +106,28 @@ public final class SystemUtils {
 	}
 
 	public static String getApkFilePath(final Context pContext) throws SystemUtilsException {
-		final PackageManager packMgmr = pContext.getPackageManager();
+		return SystemUtils.getApplicationInfo(pContext, 0).sourceDir;
+	}
+
+	public static ApplicationInfo getApplicationInfo(final Context pContext) throws SystemUtilsException {
+		return SystemUtils.getApplicationInfo(pContext, 0);
+	}
+
+	public static ApplicationInfo getApplicationInfo(final Context pContext, final int pFlags) throws SystemUtilsException {
 		try {
-			return packMgmr.getApplicationInfo(SystemUtils.getPackageName(pContext), 0).sourceDir;
+			return pContext.getPackageManager().getApplicationInfo(pContext.getPackageName(), pFlags);
 		} catch (final NameNotFoundException e) {
 			throw new SystemUtilsException(e);
 		}
 	}
 
-	private static PackageInfo getPackageInfo(final Context pContext) throws SystemUtilsException {
+	public static PackageInfo getPackageInfo(final Context pContext) throws SystemUtilsException {
+		return SystemUtils.getPackageInfo(pContext, 0);
+	}
+
+	public static PackageInfo getPackageInfo(final Context pContext, final int pFlags) throws SystemUtilsException {
 		try {
-			return pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), 0);
+			return pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), pFlags);
 		} catch (final NameNotFoundException e) {
 			throw new SystemUtilsException(e);
 		}
@@ -141,8 +155,42 @@ public final class SystemUtils {
 	public static boolean hasSystemFeature(final Context pContext, final String pFeature, final boolean pDefault) {
 		try {
 			return SystemUtils.hasSystemFeature(pContext, pFeature);
-		} catch (SystemUtilsException e) {
+		} catch (final SystemUtilsException e) {
 			return pDefault;
+		}
+	}
+
+	public static boolean getMetaDataBoolean(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		return bundle.getBoolean(pKey);
+	}
+
+	public static int getMetaDataInt(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		return bundle.getInt(pKey);
+	}
+
+	public static String getMetaDataFloat(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		return bundle.getString(pKey);
+	}
+
+	public static String getMetaDataString(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		return bundle.getString(pKey);
+	}
+
+	public static int getMetaDataColor(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		return Color.parseColor(bundle.getString(pKey));
+	}
+
+	public static Bundle getMetaData(final Context pContext) throws SystemUtilsException {
+		try {
+			final ApplicationInfo applicationInfo = SystemUtils.getApplicationInfo(pContext, PackageManager.GET_META_DATA);
+			return applicationInfo.metaData;
+		} catch (final Throwable t) {
+			throw new SystemUtilsException(t);
 		}
 	}
 

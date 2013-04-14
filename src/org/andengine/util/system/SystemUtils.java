@@ -170,9 +170,9 @@ public final class SystemUtils {
 		return bundle.getInt(pKey);
 	}
 
-	public static String getMetaDataFloat(final Context pContext, final String pKey) throws SystemUtilsException {
+	public static float getMetaDataFloat(final Context pContext, final String pKey) throws SystemUtilsException {
 		final Bundle bundle = SystemUtils.getMetaData(pContext);
-		return bundle.getString(pKey);
+		return bundle.getFloat(pKey);
 	}
 
 	public static String getMetaDataString(final Context pContext, final String pKey) throws SystemUtilsException {

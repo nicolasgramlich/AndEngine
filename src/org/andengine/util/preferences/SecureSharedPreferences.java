@@ -259,7 +259,7 @@ public class SecureSharedPreferences implements SharedPreferences {
 		// Fields
 		// ===========================================================
 
-		protected SharedPreferences.Editor mDelegate;
+		protected final SharedPreferences.Editor mDelegate;
 
 		// ===========================================================
 		// Constructors

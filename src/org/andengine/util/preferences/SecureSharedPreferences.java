@@ -94,51 +94,61 @@ public class SecureSharedPreferences implements SharedPreferences {
 
 	@Override
 	public boolean getBoolean(final String pKey, final boolean pDefaultValue) {
-		final String value = this.mDelegate.getString(pKey, null);
+		final String encryptedKey = this.encryptKey(pKey);
+		final String value = this.mDelegate.getString(encryptedKey, null);
 		if (value == null) {
 			return pDefaultValue;
 		} else {
-			return Boolean.parseBoolean(this.decryptValue(value));
+			final String decryptedValue = this.decryptValue(value);
+			return Boolean.parseBoolean(decryptedValue);
 		}
 	}
 
 	@Override
 	public int getInt(final String pKey, final int pDefaultValue) {
-		final String value = this.mDelegate.getString(pKey, null);
+		final String encryptedKey = this.encryptKey(pKey);
+		final String value = this.mDelegate.getString(encryptedKey, null);
 		if (value == null) {
 			return pDefaultValue;
 		} else {
-			return Integer.parseInt(this.decryptValue(value));
+			final String decryptedValue = this.decryptValue(value);
+			return Integer.parseInt(decryptedValue);
 		}
 	}
 
 	@Override
 	public long getLong(final String pKey, final long pDefaultValue) {
-		final String value = this.mDelegate.getString(pKey, null);
+		final String encryptedKey = this.encryptKey(pKey);
+		final String value = this.mDelegate.getString(encryptedKey, null);
 		if (value == null) {
 			return pDefaultValue;
 		} else {
-			return Long.parseLong(this.decryptValue(value));
+			final String decryptedValue = this.decryptValue(value);
+			return Long.parseLong(decryptedValue);
 		}
 	}
 
 	@Override
 	public float getFloat(final String pKey, final float pDefaultValue) {
-		final String value = this.mDelegate.getString(pKey, null);
+		final String encryptedKey = this.encryptKey(pKey);
+		final String value = this.mDelegate.getString(encryptedKey, null);
 		if (value == null) {
 			return pDefaultValue;
 		} else {
-			return Float.parseFloat(this.decryptValue(value));
+			final String decryptedValue = this.decryptValue(value);
+			return Float.parseFloat(decryptedValue);
 		}
 	}
 
 	@Override
 	public String getString(final String pKey, final String pDefaultValue) {
-		final String value = this.mDelegate.getString(pKey, null);
+		final String encryptedKey = this.encryptKey(pKey);
+		final String value = this.mDelegate.getString(encryptedKey, null);
 		if (value == null) {
 			return pDefaultValue;
 		} else {
-			return this.decryptValue(value);
+			final String decryptedValue = this.decryptValue(value);
+			return decryptedValue;
 		}
 	}
 

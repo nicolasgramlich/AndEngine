@@ -216,21 +216,8 @@ public final class WifiUtils {
 		}
 	}
 
-	public static boolean isWifiHotspotRunning() throws WifiException {
-		try {
-			final Enumeration<NetworkInterface> networkInterfaceEnumeration = NetworkInterface.getNetworkInterfaces();
-			while (networkInterfaceEnumeration.hasMoreElements()) {
-				final NetworkInterface networkInterface = networkInterfaceEnumeration.nextElement();
-				final String networkInterfaceName = networkInterface.getName();
-
-				if (ArrayUtils.contains(WifiUtils.HOTSPOT_NETWORKINTERFACE_NAMES, networkInterfaceName)) {
-					return true;
-				}
-			}
-			return false;
-		} catch (final SocketException e) {
-			throw new WifiException("Unexpected error!", e);
-		}
+	public static boolean isWifiHotspotRunning(final Context pContext) throws WifiUtilsException {
+		return WifiUtils.getWifiHotspotState(pContext) == WifiHotspotState.ENABLED;
 	}
 
 	/**
@@ -379,15 +366,15 @@ public final class WifiUtils {
 		public static WifiHotspotState fromWifiApState(final int pWifiApState) throws WifiException {
 			if (SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.ICE_CREAM_SANDWICH)) {
 				switch (pWifiApState) {
-					case 0:
+					case 10:
 						return DISABLING;
-					case 1:
+					case 11:
 						return DISABLED;
-					case 2:
+					case 12:
 						return ENABLING;
-					case 3:
+					case 13:
 						return ENABLED;
-					case 4:
+					case 14:
 						return FAILED;
 					default:
 						throw new WifiException("TODO...");

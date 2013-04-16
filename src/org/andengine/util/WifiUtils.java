@@ -160,6 +160,21 @@ public final class WifiUtils {
 		}
 	}
 
+	public static WifiConfiguration getWifiHotspotConfiguration(final Context pContext) throws WifiUtilsException {
+		final WifiManager wifiManager = WifiUtils.getWifiManager(pContext);
+
+		try {
+			final Method WifiManager_getWifiApState = wifiManager.getClass().getMethod("getWifiApConfiguration");
+			if (WifiManager_getWifiApState == null) {
+				throw new WifiUtilsException(new MethodNotFoundException(WifiManager.class.getSimpleName() + ".getWifiApConfiguration()"));
+			} else {
+				return (WifiConfiguration)WifiManager_getWifiApState.invoke(wifiManager);
+			}
+		} catch (final Throwable t) {
+			throw new WifiUtilsException(t);
+		}
+	}
+
 	public static WifiHotspotState getWifiHotspotState(final Context pContext) throws WifiUtilsException {
 		final WifiManager wifiManager = WifiUtils.getWifiManager(pContext);
 

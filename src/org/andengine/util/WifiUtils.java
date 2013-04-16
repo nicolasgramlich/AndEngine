@@ -78,6 +78,25 @@ public final class WifiUtils {
 		return WifiUtils.getWifiManager(pContext).getConnectionInfo().getSSID();
 	}
 
+	public static String getWifiSSID(final Context pContext, final boolean pStripQuotes) {
+		final String wifiSSID = WifiUtils.getWifiSSID(pContext);
+
+		if (pStripQuotes) {
+			final int wifiSSIDLength = wifiSSID.length();
+			if (wifiSSIDLength >= 2) {
+				if (wifiSSID.charAt(0) == '\"' && wifiSSID.charAt(wifiSSIDLength - 1) == '\"') {
+					return wifiSSID.substring(1, wifiSSIDLength - 1);
+				} else {
+					return wifiSSID;
+				}
+			} else {
+				return wifiSSID;
+			}
+		} else {
+			return wifiSSID;
+		}
+	}
+
 	public static byte[] getWifiIPv4AddressRaw(final Context pContext) {
 		return IPUtils.ipv4AddressToIPAddress(WifiUtils.getWifiManager(pContext).getConnectionInfo().getIpAddress());
 	}

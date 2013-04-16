@@ -82,16 +82,7 @@ public final class WifiUtils {
 		final String wifiSSID = WifiUtils.getWifiSSID(pContext);
 
 		if (pStripQuotes) {
-			final int wifiSSIDLength = wifiSSID.length();
-			if (wifiSSIDLength >= 2) {
-				if (wifiSSID.charAt(0) == '\"' && wifiSSID.charAt(wifiSSIDLength - 1) == '\"') {
-					return wifiSSID.substring(1, wifiSSIDLength - 1);
-				} else {
-					return wifiSSID;
-				}
-			} else {
-				return wifiSSID;
-			}
+			return WifiUtils.stripQuotes(wifiSSID);
 		} else {
 			return wifiSSID;
 		}
@@ -191,6 +182,20 @@ public final class WifiUtils {
 			}
 		} catch (final Throwable t) {
 			throw new WifiUtilsException(t);
+		}
+	}
+
+	public static String getWifiHotspotSSID(final Context pContext) throws WifiUtilsException {
+		return WifiUtils.getWifiHotspotConfiguration(pContext).SSID;
+	}
+
+	public static String getWifiHotspotSSID(final Context pContext, final boolean pStripQuotes) throws WifiUtilsException {
+		final String wifiHotspotSSID = WifiUtils.getWifiHotspotSSID(pContext);
+
+		if (pStripQuotes) {
+			return WifiUtils.stripQuotes(wifiHotspotSSID);
+		} else {
+			return wifiHotspotSSID;
 		}
 	}
 
@@ -318,7 +323,6 @@ public final class WifiUtils {
 		}
 	}
 
-
 	public static byte[] getBroadcastIPAddressRaw(final Context pContext) throws WifiException {
 		final WifiManager wifiManager = WifiUtils.getWifiManager(pContext);
 		final DhcpInfo dhcp = wifiManager.getDhcpInfo();
@@ -330,6 +334,19 @@ public final class WifiUtils {
 			broadcastIP[k] = (byte) ((broadcast >> (k * 8)) & 0xFF);
 		}
 		return broadcastIP;
+	}
+
+	private static String stripQuotes(final String pString) {
+		final int stringLength = pString.length();
+		if (stringLength >= 2) {
+			if (pString.charAt(0) == '\"' && pString.charAt(stringLength - 1) == '\"') {
+				return pString.substring(1, stringLength - 1);
+			} else {
+				return pString;
+			}
+		} else {
+			return pString;
+		}
 	}
 
 	// ===========================================================

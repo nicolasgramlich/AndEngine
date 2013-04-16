@@ -226,13 +226,14 @@ public final class WifiUtils {
 	 */
 	public static byte[] getWifiHotspotIPAddressRaw() throws WifiException {
 		try {
+			byte[] ipv6Address = null;
+
 			final Enumeration<NetworkInterface> networkInterfaceEnumeration = NetworkInterface.getNetworkInterfaces();
 			while (networkInterfaceEnumeration.hasMoreElements()) {
 				final NetworkInterface networkInterface = networkInterfaceEnumeration.nextElement();
 				final String networkInterfaceName = networkInterface.getName();
 
 				if (ArrayUtils.contains(WifiUtils.HOTSPOT_NETWORKINTERFACE_NAMES, networkInterfaceName)) {
-					byte[] ipv6Address = null;
 					final Enumeration<InetAddress> inetAddressEnumeration = networkInterface.getInetAddresses();
 					while (inetAddressEnumeration.hasMoreElements()) {
 						final byte[] ipAddress = inetAddressEnumeration.nextElement().getAddress();
@@ -242,14 +243,14 @@ public final class WifiUtils {
 							ipv6Address = ipAddress;
 						}
 					}
-					if (ipv6Address != null) {
-						return ipv6Address;
-					} else {
-						throw new WifiException("No IP bound to '" + Arrays.toString(WifiUtils.HOTSPOT_NETWORKINTERFACE_NAMES) + "'!");
-					}
 				}
 			}
-			throw new WifiException("No NetworInterface '" + Arrays.toString(WifiUtils.HOTSPOT_NETWORKINTERFACE_NAMES) + "' found!");
+
+			if (ipv6Address != null) {
+				return ipv6Address;
+			} else {
+				throw new WifiException("No IP bound to '" + Arrays.toString(WifiUtils.HOTSPOT_NETWORKINTERFACE_NAMES) + "'!");
+			}
 		} catch (final SocketException e) {
 			throw new WifiException("Unexpected error!", e);
 		}
@@ -265,6 +266,45 @@ public final class WifiUtils {
 
 	public static boolean isWifiHotspotIPAddressValid() throws WifiException { // TODO!
 		return !WifiUtils.IP_DEFAULT.equals(WifiUtils.getWifiHotspotIPAddress());
+	}
+
+	public static byte[] getEmulatorIPAddressRaw() throws WifiException {
+		try {
+			byte[] ipv6Address = null;
+
+			final Enumeration<NetworkInterface> networkInterfaceEnumeration = NetworkInterface.getNetworkInterfaces();
+			while (networkInterfaceEnumeration.hasMoreElements()) {
+				final NetworkInterface networkInterface = networkInterfaceEnumeration.nextElement();
+				final Enumeration<InetAddress> inetAddressEnumeration = networkInterface.getInetAddresses();
+				while (inetAddressEnumeration.hasMoreElements()) {
+					final InetAddress inetAddress = inetAddressEnumeration.nextElement();
+					if (!inetAddress.isLoopbackAddress()) {
+						final byte[] ipAddress = inetAddress.getAddress();
+						if (ipAddress.length == 4) { // TODO Constant!
+							return ipAddress;
+						} else {
+							ipv6Address = ipAddress;
+						}
+					}
+				}
+			}
+
+			if (ipv6Address != null) {
+				return ipv6Address;
+			} else {
+				throw new WifiException("No IP found that is not bound to localhost!");
+			}
+		} catch (final SocketException e) {
+			throw new WifiException("Unexpected error!", e);
+		}
+	}
+
+	public static String getEmulatorIPAddress() throws WifiException {
+		try {
+			return IPUtils.ipAddressToString(WifiUtils.getEmulatorIPAddressRaw());
+		} catch (final UnknownHostException e) {
+			throw new WifiException("Unexpected error!", e);
+		}
 	}
 
 

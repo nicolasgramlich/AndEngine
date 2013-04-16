@@ -70,6 +70,20 @@ public final class SystemUtils {
 	// Methods
 	// ===========================================================
 
+	public static boolean isEmulator() {
+		if (Build.PRODUCT != null && Build.PRODUCT.equals("google_sdk")) {
+			return true;
+		} else if (Build.MODEL != null && Build.MODEL.equals("google_sdk")) {
+			return true;
+		} else if (Build.BRAND != null && Build.BRAND.startsWith("generic")){
+			return true;
+		} else if (Build.DEVICE != null && Build.DEVICE.startsWith("generic")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public static MemoryInfo getMemoryInfo() {
 		/* Lazy allocation. */
 		if (SystemUtils.sMemoryInfo == null) {

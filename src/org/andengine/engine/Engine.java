@@ -192,12 +192,18 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	public synchronized void start() {
 		if (!this.mRunning) {
 			this.mLastTick = System.nanoTime();
+			if (this.mSoundManager != null) {
+				this.mSoundManager.onResume();
+			}
 			this.mRunning = true;
 		}
 	}
 
 	public synchronized void stop() {
 		if (this.mRunning) {
+			if (this.mSoundManager != null) {
+				this.mSoundManager.onPause();
+			}
 			this.mRunning = false;
 		}
 	}

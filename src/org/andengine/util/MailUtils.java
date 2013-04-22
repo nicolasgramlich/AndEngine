@@ -1,5 +1,7 @@
 package org.andengine.util;
 
+import org.andengine.util.mime.MIMEType;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -85,7 +87,7 @@ public final class MailUtils {
 			/* Fallback using ACTION_SEND: */
 			final Intent sendIntent = new Intent(Intent.ACTION_SEND);
 
-			sendIntent.setType("text/plain");
+			sendIntent.setType(MIMEType.TEXT.getTypeString());
 			if (!org.andengine.util.TextUtils.isEmpty(pRecipients)) {
 				sendIntent.putExtra(Intent.EXTRA_EMAIL, pRecipients);
 			}

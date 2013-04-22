@@ -1,6 +1,7 @@
 package org.andengine.ui.activity;
 
 import org.andengine.util.ActivityUtils;
+import org.andengine.util.DialogUtils;
 import org.andengine.util.call.AsyncCallable;
 import org.andengine.util.call.Callable;
 import org.andengine.util.call.Callback;
@@ -62,21 +63,12 @@ public abstract class BaseActivity extends Activity {
 
 	@Deprecated
 	public void showDialogOnUiThread(final int pDialogID) {
-		this.showDialogOnUiThread(pDialogID, null);
+		DialogUtils.showDialogOnUiThread(this, pDialogID);
 	}
 
 	@Deprecated
 	public void showDialogOnUiThread(final int pDialogID, final Bundle pBundle) {
-		if (ActivityUtils.isOnUiThread()) {
-			this.showDialog(pDialogID, pBundle);
-		} else {
-			this.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					BaseActivity.this.showDialog(pDialogID, pBundle);
-				}
-			});
-		}
+		DialogUtils.showDialogOnUiThread(this, pDialogID, pBundle);
 	}
 
 	/**

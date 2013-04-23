@@ -231,7 +231,7 @@ public final class BaseCollisionChecker {
 	/**
 	 * Works with complex polygons!
 	 *
-	 * @see http://alienryderflex.com/polygon/
+	 * @see <a href="http://alienryderflex.com/polygon/">alienryderflex.com/polygon/</a>
 	 *
 	 * @param pVertices
 	 * @param pVertexCount the number of vertices in pVertices

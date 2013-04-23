@@ -16,7 +16,8 @@ import org.andengine.util.math.MathUtils;
  *
  * @author Nicolas Gramlich
  * @since 14:01:18 - 14.09.2010
- * @see http://www.iti.fh-flensburg.de/lang/algorithmen/geo/
+ *
+ * @see <a href="http://www.iti.fh-flensburg.de/lang/algorithmen/geo/">iti.fh-flensburg.de/lang/algorithmen/geo/</a>
  */
 public class JarvisMarch implements IHullAlgorithm {
 	// ===========================================================

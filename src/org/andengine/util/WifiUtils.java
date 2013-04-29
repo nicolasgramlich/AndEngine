@@ -432,7 +432,11 @@ public final class WifiUtils {
 					case 4:
 						return FAILED;
 					default:
-						throw new WifiException("TODO...");
+						if (pWifiApState >= 10) {
+							return WifiHotspotState.fromWifiApState(pWifiApState - 10);
+						} else {
+							throw new WifiException("TODO...");
+						}
 				}
 			}
 		}

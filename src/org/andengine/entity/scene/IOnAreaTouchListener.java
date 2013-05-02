@@ -7,7 +7,7 @@ import org.andengine.input.touch.TouchEvent;
  * dispatched to an {@link ITouchArea} area. The callback will be invoked
  * before the {@link TouchEvent} is passed to the {@link ITouchArea}.
  *
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:01:48 PM - 27.03.2012

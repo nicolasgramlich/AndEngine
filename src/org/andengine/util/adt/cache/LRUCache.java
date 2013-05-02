@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.andengine.util.adt.pool.GenericPool;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 00:24:52 - 02.11.2011

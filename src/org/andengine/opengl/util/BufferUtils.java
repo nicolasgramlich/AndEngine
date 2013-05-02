@@ -8,7 +8,7 @@ import org.andengine.util.system.SystemUtils;
 import android.os.Build;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:06:51 - 11.08.2011

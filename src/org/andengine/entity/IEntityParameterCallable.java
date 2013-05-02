@@ -3,7 +3,7 @@ package org.andengine.entity;
 import org.andengine.util.call.ParameterCallable;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:06:53 - 26.03.2012

@@ -3,7 +3,7 @@ package org.andengine.util.animationpack;
 import java.util.HashMap;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:17:37 - 03.05.2012

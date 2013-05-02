@@ -21,7 +21,7 @@ import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:16:25 - 30.07.2011

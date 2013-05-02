@@ -4,7 +4,7 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.data.operator.StringOperator;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 21:02:01 - 10.10.2011

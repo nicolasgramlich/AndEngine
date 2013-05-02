@@ -1,7 +1,7 @@
 package org.andengine.opengl.view;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:34:13 - 12.05.2012

@@ -7,7 +7,7 @@ import org.andengine.util.progress.IProgressListener;
 import org.andengine.util.progress.ProgressCallable;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 01:24:18 - 03.12.2011

@@ -18,7 +18,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import android.content.res.AssetManager;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:19:26 - 29.07.2011

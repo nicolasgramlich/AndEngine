@@ -3,7 +3,7 @@ package org.andengine.util.adt.list.concurrent;
 import org.andengine.util.adt.list.IList;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:23:50 - 01.02.2012

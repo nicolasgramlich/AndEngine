@@ -2,7 +2,7 @@ package org.andengine.util.modifier;
 
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:17:30 - 10.08.2011

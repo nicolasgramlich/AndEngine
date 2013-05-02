@@ -2,7 +2,7 @@ package org.andengine.util.algorithm.hull;
 
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:52:48 - 08.02.2012

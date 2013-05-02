@@ -10,7 +10,7 @@ import org.andengine.util.adt.io.in.AssetInputStreamOpener;
 import android.content.res.AssetManager;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 10:45:48 - 02.03.2012

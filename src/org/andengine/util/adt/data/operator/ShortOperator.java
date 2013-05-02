@@ -1,7 +1,7 @@
 package org.andengine.util.adt.data.operator;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:24:15 - 02.02.2012

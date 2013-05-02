@@ -6,7 +6,7 @@ import org.andengine.util.adt.data.operator.IntOperator;
 import android.os.Build;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:21:13 - 10.10.2011

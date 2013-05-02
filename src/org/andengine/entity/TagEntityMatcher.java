@@ -1,7 +1,7 @@
 package org.andengine.entity;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:49:11 - 01.05.2012

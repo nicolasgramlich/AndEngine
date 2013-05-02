@@ -8,7 +8,7 @@ import android.opengl.Matrix;
 /**
  * TODO Measure performance with inlined or native Matrix implementations.
  *
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:49:23 - 04.08.2011

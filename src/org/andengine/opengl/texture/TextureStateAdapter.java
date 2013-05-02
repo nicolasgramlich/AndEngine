@@ -3,7 +3,7 @@ package org.andengine.opengl.texture;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:28:20 - 05.04.2012

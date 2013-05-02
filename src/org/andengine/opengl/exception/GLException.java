@@ -3,7 +3,7 @@ package org.andengine.opengl.exception;
 import android.opengl.GLU;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 10:44:27 - 13.02.2012

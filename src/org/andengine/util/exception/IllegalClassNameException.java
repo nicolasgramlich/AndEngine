@@ -3,7 +3,7 @@ package org.andengine.util.exception;
 import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
- * (c) Nicolas Gramlich 2013
+ * (c) 2013 Nicolas Gramlich
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 21:33:53 - 01.05.2013

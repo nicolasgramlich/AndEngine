@@ -17,7 +17,7 @@ import android.opengl.GLES20;
  * 	<li>The content (color, vertices, texturecoordinates) of the {@link LowMemoryVertexBufferObject} is changed not often, or even better: never.</li>
  * </ol>
  *
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:42:18 - 15.11.2011

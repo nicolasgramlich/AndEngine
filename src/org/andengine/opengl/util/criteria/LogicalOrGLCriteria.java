@@ -3,7 +3,7 @@ package org.andengine.opengl.util.criteria;
 import org.andengine.opengl.util.GLState;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 18:10:26 - 12.10.2011

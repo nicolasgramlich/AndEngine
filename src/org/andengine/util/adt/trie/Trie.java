@@ -3,7 +3,7 @@ package org.andengine.util.adt.trie;
 import android.util.SparseArray;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:25:47 - 30.01.2012

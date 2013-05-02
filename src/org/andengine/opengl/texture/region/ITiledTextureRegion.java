@@ -1,7 +1,7 @@
 package org.andengine.opengl.texture.region;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:31:52 - 08.08.2011

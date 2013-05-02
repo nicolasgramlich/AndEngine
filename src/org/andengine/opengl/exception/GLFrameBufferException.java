@@ -2,7 +2,7 @@ package org.andengine.opengl.exception;
 
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 10:47:22 - 13.02.2012

@@ -3,7 +3,7 @@ package org.andengine.opengl.exception;
 import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:59:45 AM - Feb 13, 2012

@@ -5,7 +5,7 @@ import org.andengine.util.adt.map.IIntLookupMap;
 import android.text.TextUtils;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:20:25 - 26.04.2012

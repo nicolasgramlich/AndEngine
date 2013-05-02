@@ -3,7 +3,7 @@ package org.andengine.util.adt.bounds;
 import org.andengine.util.adt.spatial.bounds.util.FloatBoundsUtils;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 21:48:53 - 11.10.2011

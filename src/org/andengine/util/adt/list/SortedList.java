@@ -7,7 +7,7 @@ package org.andengine.util.adt.list;
  * Its {@link java.util.List} like behavior performs better than a plain {@link java.util.ArrayList}, since it automatically shift the contents of its internal Array only when really necessary.
  * Besides sparse allocations to increase the size of the internal Array, {@link com.zynga.mobileville.path.SortedList} is allocation free (unlike the {@link java.util.LinkedList} family).
  *
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @author Greg Haynes

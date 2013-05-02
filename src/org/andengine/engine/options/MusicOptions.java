@@ -2,7 +2,7 @@ package org.andengine.engine.options;
 
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:13:07 - 22.11.2011

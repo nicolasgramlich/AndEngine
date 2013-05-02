@@ -3,7 +3,7 @@ package org.andengine.entity;
 import java.util.Comparator;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:02:56 - 10.04.2012

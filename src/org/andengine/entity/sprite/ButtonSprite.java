@@ -13,7 +13,7 @@ import org.andengine.util.debug.Debug;
  * Note: {@link ButtonSprite} needs to be registered as a {@link ITouchArea} to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}, otherwise it won't be clickable.
  * To make {@link ButtonSprite} function properly, you should consider setting {@link Scene#setTouchAreaBindingOnActionDownEnabled(boolean)} to <code>true</code>.
  *
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Scott Kennedy <skennedy@zynga.com>
  * @author Nicolas Gramlich <ngramlich@zynga.com>

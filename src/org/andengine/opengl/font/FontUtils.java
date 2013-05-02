@@ -8,7 +8,7 @@ import org.andengine.util.exception.MethodNotYetImplementedException;
 
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:06:32 - 25.01.2012

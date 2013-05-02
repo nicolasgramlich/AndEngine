@@ -10,7 +10,7 @@ import org.andengine.util.TextUtils;
 import org.andengine.util.debug.Debug;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 21:48:14 - 22.10.2011

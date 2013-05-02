@@ -7,7 +7,7 @@ import java.util.Stack;
 import org.andengine.util.debug.Debug.DebugLevel;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 13:52:42 - 02.11.2011

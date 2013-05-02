@@ -3,7 +3,7 @@ package org.andengine.util.adt.queue;
 import org.andengine.util.adt.list.IList;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:00:30 - 24.01.2012

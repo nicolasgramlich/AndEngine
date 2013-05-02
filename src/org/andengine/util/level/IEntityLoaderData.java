@@ -1,7 +1,7 @@
 package org.andengine.util.level;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 2:21:46 PM - Apr 19, 2012

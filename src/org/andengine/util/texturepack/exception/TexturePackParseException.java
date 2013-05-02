@@ -3,7 +3,7 @@ package org.andengine.util.texturepack.exception;
 import org.xml.sax.SAXException;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:29:20 - 29.07.2011

@@ -33,7 +33,7 @@ import android.util.SparseArray;
  * <li><a href="http://www.angelcode.com/products/bmfont/">http://www.angelcode.com/products/bmfont/</a> (Free, Windows only)</li>
  * </ul>
  *
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:54:59 - 01.11.2011

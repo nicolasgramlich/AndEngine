@@ -3,7 +3,7 @@ package org.andengine.util.adt.cache.concurrent;
 import org.andengine.util.adt.cache.IntLRUCache;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 18:26:47 - 16.01.2012

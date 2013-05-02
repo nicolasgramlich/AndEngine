@@ -2,7 +2,7 @@ package org.andengine.opengl.vbo.attribute;
 
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:22:06 - 15.08.2011

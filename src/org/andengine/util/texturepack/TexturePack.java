@@ -3,7 +3,7 @@ package org.andengine.util.texturepack;
 import org.andengine.opengl.texture.ITexture;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:23:47 - 30.07.2011

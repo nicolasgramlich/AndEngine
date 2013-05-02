@@ -8,7 +8,7 @@ import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.util.call.Callback;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:17:47 - 23.01.2012

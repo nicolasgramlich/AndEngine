@@ -8,7 +8,7 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import android.opengl.GLES20;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:00:46 - 13.02.2012

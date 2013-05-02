@@ -22,7 +22,7 @@ import android.opengl.GLES20;
  * <li>The content (color, vertices, texturecoordinates) of the {@link ZeroMemoryVertexBufferObject} is changed not often, or even better: never.</li>
  * </ol>
  * <p/>
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @author Greg Haynes

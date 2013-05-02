@@ -1,7 +1,7 @@
 package org.andengine.util.adt.trie;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:18:44 - 30.01.2012

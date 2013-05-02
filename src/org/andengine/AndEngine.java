@@ -16,7 +16,7 @@ import android.content.pm.ConfigurationInfo;
 import android.os.Build;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:03:59 - 19.03.2012

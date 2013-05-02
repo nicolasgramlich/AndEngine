@@ -18,7 +18,7 @@ import org.andengine.util.math.MathUtils;
 import android.opengl.GLES20;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:23:56 - 23.04.2012

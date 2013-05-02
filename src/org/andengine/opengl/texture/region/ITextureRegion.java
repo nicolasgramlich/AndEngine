@@ -4,7 +4,7 @@ import org.andengine.opengl.texture.ITexture;
 import org.andengine.util.modifier.IModifier.DeepCopyNotSupportedException;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:07:17 - 07.08.2011

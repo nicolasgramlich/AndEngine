@@ -16,7 +16,7 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
  * <li>Minimum amount of runtime GarbageCollector activity.</li>
  * </ol>
  * <p/>
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @author Greg Haynes

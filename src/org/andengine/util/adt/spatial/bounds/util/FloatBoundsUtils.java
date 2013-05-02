@@ -4,7 +4,7 @@ import org.andengine.util.adt.bounds.IFloatBounds;
 
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:12:02 - 07.10.2011

@@ -4,7 +4,7 @@ import org.andengine.util.texturepack.TexturePackLibrary;
 
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:58:15 - 03.05.2012

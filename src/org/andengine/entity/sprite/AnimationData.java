@@ -7,7 +7,7 @@ import org.andengine.util.modifier.IModifier.DeepCopyNotSupportedException;
 import org.andengine.util.time.TimeConstants;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:43:01 - 04.05.2012

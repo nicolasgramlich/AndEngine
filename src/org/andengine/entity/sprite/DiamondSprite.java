@@ -22,7 +22,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  * +--------+
  * </pre>
  *
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:26:32 - 24.10.2011

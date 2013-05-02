@@ -219,12 +219,24 @@ public final class MathUtils {
 	}
 
 	/**
+	 * Interval: <code>[pMin, pMax]</code>
+	 *
 	 * @param pMin inclusive!
 	 * @param pMax inclusive!
 	 * @return
 	 */
 	public static final int random(final int pMin, final int pMax) {
 		return pMin + MathUtils.RANDOM.nextInt((pMax - pMin) + 1);
+	}
+
+	/**
+	 * Interval: <code>[0, pMax)</code>
+	 *
+	 * @param pMax exclusive!
+	 * @return
+	 */
+	public static final int random(final int pMax) {
+		return MathUtils.RANDOM.nextInt(pMax);
 	}
 
 	public static final boolean isPowerOfTwo(final int n) {

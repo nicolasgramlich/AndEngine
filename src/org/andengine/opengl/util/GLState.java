@@ -74,6 +74,7 @@ public class GLState {
 
 	private final GLMatrixStack mModelViewGLMatrixStack = new GLMatrixStack();
 	private final GLMatrixStack mProjectionGLMatrixStack = new GLMatrixStack();
+	private final GLScissorStack mScissorStack = new GLScissorStack();
 
 	private final float[] mModelViewGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
 	private final float[] mProjectionGLMatrix = new float[GLMatrixStack.GLMATRIX_SIZE];
@@ -144,6 +145,7 @@ public class GLState {
 
 		this.mModelViewGLMatrixStack.reset();
 		this.mProjectionGLMatrixStack.reset();
+		this.mScissorStack.reset();
 
 		this.mCurrentArrayBufferID = -1;
 		this.mCurrentIndexBufferID = -1;
@@ -628,6 +630,18 @@ public class GLState {
 	public void resetGLMatrixStacks() {
 		this.mModelViewGLMatrixStack.reset();
 		this.mProjectionGLMatrixStack.reset();
+	}
+
+	public void glScissorPush(final int[] pScissor) {
+		this.mScissorStack.glScissorPush(pScissor);
+	}
+
+	public void glScissorPush(final int pX, final int pY, final int pWidth, final int pHeight) {
+		this.mScissorStack.glScissorPush(pX, pY, pWidth, pHeight);
+	}
+
+	public void glScissorPop() {
+		this.mScissorStack.glScissorPop();
 	}
 
 	/**

@@ -6,8 +6,6 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
 import org.andengine.util.math.MathUtils;
 
-import android.opengl.GLES20;
-
 /**
  * A {@link ClipEntity} clips drawing of all its children in a rectangle, which is defined as the axis aligned bounding box around itself.
  * It can be attached anywhere in the scene graph, which means that it inherits transformations from its parents, which have a direct effect on the clipping area.
@@ -100,12 +98,13 @@ public class ClipEntity extends Entity {
 			final int clippingHeight = maxClippingY - minClippingY;
 
 			/* Finally apply the clipping. */
-			GLES20.glScissor(minClippingX, minClippingY, clippingWidth, clippingHeight);
+			pGLState.glScissorPush(minClippingX, minClippingY, clippingWidth, clippingHeight);
 
 			/* Draw children, etc... */
 			super.onManagedDraw(pGLState, pCamera);
 
 			/* Revert scissor test to previous state. */
+			pGLState.glScissorPop();
 			pGLState.setScissorTestEnabled(wasScissorTestEnabled);
 		} else {
 			super.onManagedDraw(pGLState, pCamera);

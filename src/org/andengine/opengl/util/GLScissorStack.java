@@ -85,12 +85,38 @@ public class GLScissorStack {
 	}
 
 	public void glScissorPush(final int[] pScissors) {
-		glScissors(pScissors);
+		if (getStackDepth() == 0) {
+			glScissors(pScissors);
+		} else {
+			/* take a union between old and new clip rect */
+			getScissor(mTemp);
+			final int x1 = Math.max(pScissors[GLSCISSOR_X_POS], mTemp[GLSCISSOR_X_POS]);
+			final int y1 = Math.max(pScissors[GLSCISSOR_Y_POS], mTemp[GLSCISSOR_Y_POS]);
+			final int x2 = Math.min(pScissors[GLSCISSOR_X_POS] + pScissors[GLSCISSOR_WIDTH_POS], mTemp[GLSCISSOR_X_POS] + mTemp[GLSCISSOR_WIDTH_POS]);
+			final int y2 = Math.min(pScissors[GLSCISSOR_Y_POS] + pScissors[GLSCISSOR_HEIGHT_POS], mTemp[GLSCISSOR_Y_POS] + mTemp[GLSCISSOR_HEIGHT_POS]);
+
+			final int w = Math.max(0, x2 - x1);
+			final int h = Math.max(0, y2 - y1);
+			glScissors(x1, y1, w, h);
+		}
 		pushScissor(pScissors);
 	}
 
 	public void glScissorPush(final int pX, final int pY, final int pWidth, final int pHeight) {
-		glScissors(pX, pY, pWidth, pHeight);
+		if (getStackDepth() == 0) {
+			glScissors(pX, pY, pWidth, pHeight);
+		} else {
+			/* take a union between old and new clip rect */
+			getScissor(mTemp);
+			final int x1 = Math.max(pX, mTemp[GLSCISSOR_X_POS]);
+			final int y1 = Math.max(pY, mTemp[GLSCISSOR_Y_POS]);
+			final int x2 = Math.min(pX + pWidth, mTemp[GLSCISSOR_X_POS] + mTemp[GLSCISSOR_WIDTH_POS]);
+			final int y2 = Math.min(pY + pHeight, mTemp[GLSCISSOR_Y_POS] + mTemp[GLSCISSOR_HEIGHT_POS]);
+
+			final int w = Math.max(0, x2 - x1);
+			final int h = Math.max(0, y2 - y1);
+			glScissors(x1, y1, w, h);
+		}
 		pushScissor(pX, pY, pWidth, pHeight);
 	}
 

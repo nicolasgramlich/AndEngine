@@ -107,6 +107,11 @@ public final class SystemUtils {
 		}
 	}
 
+	public static String getApplicationLabel(final Context pContext) throws SystemUtilsException {
+	    final int labelResID = SystemUtils.getApplicationInfo(pContext).labelRes;
+	    return pContext.getString(labelResID);
+	}
+
 	public static int getPackageVersionCode(final Context pContext) throws SystemUtilsException {
 		return SystemUtils.getPackageInfo(pContext).versionCode;
 	}

@@ -52,7 +52,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	 * @param pCapacity
 	 * @param pDrawType
 	 * @param pAutoDispose when passing <code>true</code> this {@link VertexBufferObject} loads itself to the active {@link VertexBufferObjectManager}. <b><u>WARNING:</u></b> When passing <code>false</code> one needs to take care of that by oneself!
-	 * @param pVertexBufferObjectAttributes to be automatically enabled on the {@link ShaderProgram} used in {@link VertexBufferObject#bind(ShaderProgram)}.
+	 * @param pVertexBufferObjectAttributes to be automatically enabled on the {@link ShaderProgram} used in {@link #bind(ShaderProgram)}.
 	 */
 	public VertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		this.mVertexBufferObjectManager = pVertexBufferObjectManager;

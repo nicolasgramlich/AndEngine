@@ -124,7 +124,7 @@ public class SpriteGroup extends DynamicSpriteBatch {
 	// ===========================================================
 
 	/**
-	 * Instead use {@link SpriteGroup#attachChild(BaseSprite)}.
+	 * Instead use {@link #attachChild(BaseSprite)}.
 	 */
 	@Override
 	@Deprecated

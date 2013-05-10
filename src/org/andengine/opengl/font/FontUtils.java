@@ -141,7 +141,7 @@ public class FontUtils {
 	 */
 	public static <L extends List<CharSequence>> L splitLines(final IFont pFont, final CharSequence pText, final L pResult, final AutoWrap pAutoWrap, final float pAutoWrapWidth) {
 		/**
-		 * TODO In order to respect already existing linebreaks, {@link FontUtils#split(CharSequence, List)} could be leveraged and than the following methods could be called for each line.
+		 * TODO In order to respect already existing linebreaks, {@link #split(CharSequence, List)} could be leveraged and than the following methods could be called for each line.
 		 */
 		switch (pAutoWrap) {
 			case LETTERS:

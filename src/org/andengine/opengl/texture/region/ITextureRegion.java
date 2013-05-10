@@ -26,11 +26,11 @@ public interface ITextureRegion {
 	public void setTexturePosition(final float pTextureX, final float pTextureY);
 
 	/**
-	 * Note: Takes {@link ITextureRegion#getScale()} into account!
+	 * Note: Takes {@link #getScale()} into account!
 	 */
 	public float getWidth();
 	/**
-	 * Note: Takes {@link ITextureRegion#getScale()} into account!
+	 * Note: Takes {@link #getScale()} into account!
 	 */
 	public float getHeight();
 

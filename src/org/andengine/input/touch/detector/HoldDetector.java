@@ -91,7 +91,7 @@ public class HoldDetector extends BaseDetector {
 	// ===========================================================
 
 	/**
-	 * When {@link HoldDetector#isHolding()} this method will call through to {@link IHoldDetectorListener#onHoldFinished(HoldDetector, long, int, float, float).
+	 * When {@link #isHolding()} this method will call through to {@link IHoldDetectorListener#onHoldFinished(HoldDetector, long, int, float, float).
 	 */
 	@Override
 	public void reset() {

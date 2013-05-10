@@ -29,11 +29,11 @@ public interface ITiledTextureRegion extends ITextureRegion {
 	public void setTexturePosition(final int pTileIndex, final float pTextureX, final float pTextureY);
 
 	/**
-	 * Note: Takes {@link ITiledTextureRegion#getScale(int)} into account!
+	 * Note: Takes {@link #getScale(int)} into account!
 	 */
 	public float getWidth(final int pTileIndex);
 	/**
-	 * Note: Takes {@link ITiledTextureRegion#getScale(int)} into account!
+	 * Note: Takes {@link #getScale(int)} into account!
 	 */
 	public float getHeight(final int pTileIndex);
 

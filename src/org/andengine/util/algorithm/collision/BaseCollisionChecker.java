@@ -124,7 +124,7 @@ public final class BaseCollisionChecker {
 	}
 
 	/**
-	 * Calls through to {@link BaseCollisionChecker#checkCollisionSub(float[], int, int, int, int, int, float[], int, int, int, int)} with the default parameters internally used by different AndEngine primitives.
+	 * Calls through to {@link #checkCollisionSub(float[], int, int, int, int, int, float[], int, int, int, int)} with the default parameters internally used by different AndEngine primitives.
 	 * @param pVerticesA
 	 * @param pVertexCountA the number of vertices in pVerticesA
 	 * @param pVerticesB
@@ -216,7 +216,7 @@ public final class BaseCollisionChecker {
 	}
 
 	/**
-	 * Calls through to {@link BaseCollisionChecker#checkContains(float[], int, int, int, int, float, float)} with the default parameters internally used by different AndEngine primitives.
+	 * Calls through to {@link #checkContains(float[], int, int, int, int, float, float)} with the default parameters internally used by different AndEngine primitives.
 	 *
 	 * @param pVertices
 	 * @param pVertexCount the number of vertices in pVertices

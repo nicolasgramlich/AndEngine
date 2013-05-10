@@ -20,7 +20,7 @@ import android.graphics.Bitmap.Config;
 import android.opengl.GLES20;
 
 /**
- * The general workflow with a {@link RenderTexture} is: {@link RenderTexture#init(GLState)} -> {@link RenderTexture#begin(GLState)} -> {@link RenderTexture#end(GLState)} -> {@link RenderTexture#destroy(GLState)}.
+ * The general workflow with a {@link RenderTexture} is: {@link #init(GLState)} -> {@link #begin(GLState)} -> {@link #end(GLState)} -> {@link #destroy(GLState)}.
  *
  * (c) 2011 Zynga Inc.
  *
@@ -124,7 +124,7 @@ public class RenderTexture extends Texture {
 
 	/**
 	 * @param pGLState
-	 * @throws RenderTextureInitializationException when this {@link RenderTexture} could not be initialized. The {@link GLException} contains the error code. When this exception is throw, all cleanup will be automatically performed through {@link RenderTexture#destroy(GLState)}.
+	 * @throws RenderTextureInitializationException when this {@link RenderTexture} could not be initialized. The {@link GLException} contains the error code. When this exception is throw, all cleanup will be automatically performed through {@link #destroy(GLState)}.
 	 */
 	public void init(final GLState pGLState) throws GLFrameBufferException, GLException {
 		this.savePreviousFramebufferObjectID(pGLState);
@@ -159,16 +159,16 @@ public class RenderTexture extends Texture {
 	}
 
 	/**
-	 * @see {@link RenderTexture#end(GLState)},
-	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 * @see {@link #end(GLState)},
+	 * 		{@link #end(GLState, boolean, boolean}}.
 	 */
 	public void begin(final GLState pGLState) {
 		this.begin(pGLState, false, false);
 	}
 
 	/**
-	 * @see {@link RenderTexture#end(GLState)},
-	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 * @see {@link #end(GLState)},
+	 * 		{@link #end(GLState, boolean, boolean}}.
 	 *
 	 * @param pColor the {@link Color} to clear this {@link RenderTexture}.
 	 */
@@ -177,8 +177,8 @@ public class RenderTexture extends Texture {
 	}
 
 	/**
-	 * @see {@link RenderTexture#end(GLState)},
-	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 * @see {@link #end(GLState)},
+	 * 		{@link #end(GLState, boolean, boolean}}.
 	 *
 	 * @param pRed the red portion of the color to clear this {@link RenderTexture}.
 	 * @param pGreen the green portion of the color to clear this {@link RenderTexture}.
@@ -190,8 +190,8 @@ public class RenderTexture extends Texture {
 	}
 
 	/**
-	 * @see {@link RenderTexture#end(GLState)},
-	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 * @see {@link #end(GLState)},
+	 * 		{@link #end(GLState, boolean, boolean}}.
 	 *
 	 * @param pColor the {@link Color} to clear this {@link RenderTexture}.
 	 */
@@ -200,8 +200,8 @@ public class RenderTexture extends Texture {
 	}
 
 	/**
-	 * @see {@link RenderTexture#end(GLState)},
-	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 * @see {@link #end(GLState)},
+	 * 		{@link #end(GLState, boolean, boolean}}.
 	 *
 	 * @param pRed the red portion of the color to clear this {@link RenderTexture}.
 	 * @param pGreen the green portion of the color to clear this {@link RenderTexture}.
@@ -222,8 +222,8 @@ public class RenderTexture extends Texture {
 	}
 
 	/**
-	 * @see {@link RenderTexture#end(GLState)},
-	 * 		{@link RenderTexture#end(GLState, boolean, boolean}}.
+	 * @see {@link #end(GLState)},
+	 * 		{@link #end(GLState, boolean, boolean}}.
 	 */
 	public void begin(final GLState pGLState, final boolean pFlipX, final boolean pFlipY) {
 		this.savePreviousViewport();
@@ -273,12 +273,12 @@ public class RenderTexture extends Texture {
 	}
 
 	/**
-	 * @see {@link RenderTexture#begin(GLState)},
-	 * 		{@link RenderTexture#begin(GLState, boolean, boolean)},
-	 * 		{@link RenderTexture#begin(GLState, Color)},
-	 * 		{@link RenderTexture#begin(GLState, float, float, float, float)},
-	 * 		{@link RenderTexture#begin(GLState, boolean, boolean, Color)}.
-	 * 		{@link RenderTexture#begin(GLState, boolean, boolean, float, float, float, float)}.
+	 * @see {@link #begin(GLState)},
+	 * 		{@link #begin(GLState, boolean, boolean)},
+	 * 		{@link #begin(GLState, Color)},
+	 * 		{@link #begin(GLState, float, float, float, float)},
+	 * 		{@link #begin(GLState, boolean, boolean, Color)}.
+	 * 		{@link #begin(GLState, boolean, boolean, float, float, float, float)}.
 	 */
 	public void end(final GLState pGLState) {
 		this.end(pGLState, false, false);
@@ -289,12 +289,12 @@ public class RenderTexture extends Texture {
 	 * @param pFlush {@link GLState#flush()} has lower preference than pFinish.
 	 * @param pFinish {@link GLState#finish()} had higher preference than pFlush.
 	 *
-	 * @see {@link RenderTexture#begin(GLState)},
-	 * 		{@link RenderTexture#begin(GLState, boolean, boolean)},
-	 * 		{@link RenderTexture#begin(GLState, Color)},
-	 * 		{@link RenderTexture#begin(GLState, float, float, float, float)},
-	 * 		{@link RenderTexture#begin(GLState, boolean, boolean, Color)}.
-	 * 		{@link RenderTexture#begin(GLState, boolean, boolean, float, float, float, float)}.
+	 * @see {@link #begin(GLState)},
+	 * 		{@link #begin(GLState, boolean, boolean)},
+	 * 		{@link #begin(GLState, Color)},
+	 * 		{@link #begin(GLState, float, float, float, float)},
+	 * 		{@link #begin(GLState, boolean, boolean, Color)}.
+	 * 		{@link #begin(GLState, boolean, boolean, float, float, float, float)}.
 	 */
 	public void end(final GLState pGLState, final boolean pFlush, final boolean pFinish) {
 		if (pFinish) {

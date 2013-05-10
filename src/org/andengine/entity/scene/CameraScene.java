@@ -29,7 +29,7 @@ public class CameraScene extends Scene {
 	// ===========================================================
 
 	/**
-	 * {@link CameraScene#setCamera(Camera)} needs to be called manually. Otherwise nothing will be drawn.
+	 * {@link #setCamera(Camera)} needs to be called manually. Otherwise nothing will be drawn.
 	 */
 	public CameraScene() {
 		this(null);

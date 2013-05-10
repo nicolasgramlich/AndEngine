@@ -293,7 +293,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public void sortChildren();
 	/**
 	 * Sorts the {@link IEntity}s based on their ZIndex. Sort is stable.
-	 * In contrast to {@link IEntity#sortChildren()} this method is particularly useful to avoid multiple sorts per frame.
+	 * In contrast to {@link #sortChildren()} this method is particularly useful to avoid multiple sorts per frame.
 	 * @param pImmediate if <code>true</code>, the sorting is executed immediately.
 	 * If <code>false</code> the sorting is executed before the next (visible) drawing of the children of this {@link IEntity}.
 	 */
@@ -360,7 +360,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public boolean isCullingEnabled();
 	public void setCullingEnabled(final boolean pCullingEnabled);
 	/**
-	 * Will only be performed if {@link IEntity#isCullingEnabled()} is true.
+	 * Will only be performed if {@link #isCullingEnabled()} is true.
 	 *
 	 * @param pCamera the currently active camera to perform culling checks against.
 	 * @return <code>true</code> when this object is visible by the {@link Camera}, <code>false</code> otherwise.

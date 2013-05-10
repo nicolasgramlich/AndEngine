@@ -229,8 +229,8 @@ public abstract class ZeroMemoryVertexBufferObject implements IVertexBufferObjec
 	}
 
 	/**
-	 * When a non <code>null</code> {@link ByteBuffer} is returned by this function, it is guaranteed that {@link ZeroMemoryVertexBufferObject#releaseByteBuffer(ByteBuffer)} is called.
-	 * @return a {@link ByteBuffer} to be passed to {@link ZeroMemoryVertexBufferObject#onPopulateBufferData(ByteBuffer)}.
+	 * When a non <code>null</code> {@link ByteBuffer} is returned by this function, it is guaranteed that {@link #releaseByteBuffer(ByteBuffer)} is called.
+	 * @return a {@link ByteBuffer} to be passed to {@link #onPopulateBufferData(ByteBuffer)}.
 	 */
 	protected ByteBuffer aquireByteBuffer() {
 		final ByteBuffer byteBuffer = BufferUtils.allocateDirectByteBuffer(this.getByteCapacity());

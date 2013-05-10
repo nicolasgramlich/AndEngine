@@ -504,7 +504,7 @@ public class GLState {
 	}
 
 	/**
-	 * @see {@link GLState#forceBindTexture(GLES20, int)}
+	 * @see {@link #forceBindTexture(GLES20, int)}
 	 * @param GLES20
 	 * @param pHardwareTextureID
 	 */
@@ -658,7 +658,7 @@ public class GLState {
 	/**
 	 * Tells the OpenGL driver to send all pending commands to the GPU immediately.
 	 *
-	 * @see {@link GLState#finish()},
+	 * @see {@link #finish()},
 	 * 		{@link RenderTexture#end(GLState, boolean, boolean)}.
 	 */
 	public void flush() {
@@ -670,7 +670,7 @@ public class GLState {
 	 * and then blocks until the effects of those commands have been completed on the GPU.
 	 * Since this is a costly method it should be only called when really needed.
 	 *
-	 * @see {@link GLState#flush()},
+	 * @see {@link #flush()},
 	 * 		{@link RenderTexture#end(GLState, boolean, boolean)}.
 	 */
 	public void finish() {

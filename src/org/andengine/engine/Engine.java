@@ -485,8 +485,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	 * This method is useful when you want to execute code on the {@link UpdateThread}, even though the Engine is paused.
 	 *
 	 * @param pRunnable the {@link Runnable} to be run on the {@link UpdateThread}.
-	 * @param pOnlyWhenEngineRunning if <code>true</code>, the execution of the {@link Runnable} will be delayed until the next time {@link Engine#onUpdateUpdateHandlers(float)} is picked up, which is when {@link Engine#isRunning()} is <code>true</code>.
-	 * 								 if <code>false</code>, the execution of the {@link Runnable} will happen as soon as possible on the {@link UpdateThread}, no matter what {@link Engine#isRunning()} is.
+	 * @param pOnlyWhenEngineRunning if <code>true</code>, the execution of the {@link Runnable} will be delayed until the next time {@link #onUpdateUpdateHandlers(float)} is picked up, which is when {@link Engine#isRunning()} is <code>true</code>.
+	 * 								 if <code>false</code>, the execution of the {@link Runnable} will happen as soon as possible on the {@link UpdateThread}, no matter what {@link #isRunning()} is.
 	 */
 	public void runOnUpdateThread(final Runnable pRunnable, final boolean pOnlyWhenEngineRunning) {
 		if (pOnlyWhenEngineRunning) {
@@ -499,7 +499,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	/**
 	 * @param pRunnable the {@link Runnable} to run mutually exclusive to the {@link UpdateThread} and the GL-{@link Thread}.
 	 * When the caller already is on the {@link UpdateThread} or the GL-{@link Thread}, the {@link Runnable} is executed immediately.
-	 * @see {@link Engine#getEngineLock()} to manually {@link EngineLock#lock()}/{@link EngineLock#unlock()} on, while avoiding creating a {@link Runnable}.
+	 * @see {@link #getEngineLock()} to manually {@link EngineLock#lock()}/{@link EngineLock#unlock()} on, while avoiding creating a {@link Runnable}.
 	 */
 	public void runSafely(final Runnable pRunnable) {
 		this.mEngineLock.lock();
@@ -694,7 +694,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	/**
-	 * @see {@link Engine#enableAccelerationSensor(Context, IAccelerationListener, AccelerationSensorOptions)}
+	 * @see {@link #enableAccelerationSensor(Context, IAccelerationListener, AccelerationSensorOptions)}
 	 */
 	public boolean enableAccelerationSensor(final Context pContext, final IAccelerationListener pAccelerationListener) {
 		return this.enableAccelerationSensor(pContext, pAccelerationListener, new AccelerationSensorOptions(Engine.SENSORDELAY_DEFAULT));
@@ -736,7 +736,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	/**
-	 * @see {@link Engine#enableOrientationSensor(Context, IOrientationListener, OrientationSensorOptions)}
+	 * @see {@link #enableOrientationSensor(Context, IOrientationListener, OrientationSensorOptions)}
 	 */
 	public boolean enableOrientationSensor(final Context pContext, final IOrientationListener pOrientationListener) {
 		return this.enableOrientationSensor(pContext, pOrientationListener, new OrientationSensorOptions(Engine.SENSORDELAY_DEFAULT));

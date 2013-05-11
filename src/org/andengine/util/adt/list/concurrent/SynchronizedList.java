@@ -1,6 +1,7 @@
 package org.andengine.util.adt.list.concurrent;
 
 import org.andengine.util.adt.list.IList;
+import org.andengine.util.adt.list.ListUtils;
 
 /**
  * (c) 2012 Zynga Inc.
@@ -93,6 +94,11 @@ public class SynchronizedList<T> implements IList<T> {
 	@Override
 	public synchronized void clear() {
 		this.mList.clear();
+	}
+
+	@Override
+	public synchronized String toString() {
+		return ListUtils.toString(this);
 	}
 
 	// ===========================================================

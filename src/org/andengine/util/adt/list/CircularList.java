@@ -226,6 +226,11 @@ public class CircularList<T> implements IList<T> {
 		this.mSize = 0;
 	}
 
+	@Override
+	public String toString() {
+		return ListUtils.toString(this);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

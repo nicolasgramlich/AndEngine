@@ -108,6 +108,11 @@ public class UniqueList<T extends Comparable<T>> implements ISortedList<T> {
 		this.mList.clear();
 	}
 
+	@Override
+	public String toString() {
+		return ListUtils.toString(this);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

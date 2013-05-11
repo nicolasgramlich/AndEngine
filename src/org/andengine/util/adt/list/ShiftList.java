@@ -244,6 +244,11 @@ public class ShiftList<T> implements IQueue<T>, IList<T> {
 		this.mTail = 0;
 	}
 
+	@Override
+	public String toString() {
+		return ListUtils.toString(this);
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

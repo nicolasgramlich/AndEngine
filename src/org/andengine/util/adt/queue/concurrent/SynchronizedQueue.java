@@ -1,5 +1,6 @@
 package org.andengine.util.adt.queue.concurrent;
 
+import org.andengine.util.adt.list.ListUtils;
 import org.andengine.util.adt.queue.IQueue;
 
 /**
@@ -113,6 +114,11 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	@Override
 	public synchronized void clear() {
 		this.mQueue.clear();
+	}
+
+	@Override
+	public synchronized String toString() {
+		return ListUtils.toString(this);
 	}
 
 	// ===========================================================

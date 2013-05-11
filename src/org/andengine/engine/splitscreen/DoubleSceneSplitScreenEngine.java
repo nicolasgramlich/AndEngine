@@ -41,6 +41,9 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * @deprecated Instead use {@link #getFirstCamera()} or {@link #getSecondCamera()}.
+	 */
 	@Deprecated
 	@Override
 	public Camera getCamera() {
@@ -55,6 +58,9 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		return this.mSecondCamera;
 	}
 
+	/**
+	 * @deprecated Instead use {@link #getFirstCamera()} or {@link #getSecondScene()}.
+	 */
 	@Deprecated
 	@Override
 	public Scene getScene() {
@@ -69,6 +75,9 @@ public class DoubleSceneSplitScreenEngine extends Engine {
 		return this.mSecondScene;
 	}
 
+	/**
+	 * @deprecated Instead use {@link #setFirstScene(Scene)} or {@link #setSecondScene(Scene)}.
+	 */
 	@Deprecated
 	@Override
 	public void setScene(final Scene pScene) {

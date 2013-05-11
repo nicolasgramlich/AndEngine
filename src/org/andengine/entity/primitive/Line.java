@@ -117,7 +117,7 @@ public class Line extends Shape {
 	}
 
 	/**
-	 * @deprecatedInstead use {@link #getY1()} or {@link #getY2()}.
+	 * @deprecated Instead use {@link #getY1()} or {@link #getY2()}.
 	 */
 	@Deprecated
 	@Override

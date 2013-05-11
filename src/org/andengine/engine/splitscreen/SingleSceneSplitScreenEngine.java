@@ -39,6 +39,9 @@ public class SingleSceneSplitScreenEngine extends Engine {
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * @deprecated Instead use {@link #getFirstCamera()} or {@link #getSecondCamera()}.
+	 */
 	@Deprecated
 	@Override
 	public Camera getCamera() {

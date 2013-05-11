@@ -109,7 +109,7 @@ public final class ActivityUtils {
 	}
 
 	public static final <T> void doAsync(final Context pContext, final CharSequence pTitle, final CharSequence pMessage, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback, final boolean pCancelable) {
-		AsyncTaskUtils.executeParallel(new AsyncTask<Void, Void, T>() {
+		AsyncTaskUtils.execute(new AsyncTask<Void, Void, T>() {
 			private ProgressDialog mPD;
 			private Exception mException;
 
@@ -178,7 +178,7 @@ public final class ActivityUtils {
 	}
 
 	public static final <T> void doProgressAsync(final Context pContext, final CharSequence pTitle, final int pIconResourceID, final ProgressCallable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
-		AsyncTaskUtils.executeParallel(new AsyncTask<Void, Integer, T>() {
+		AsyncTaskUtils.execute(new AsyncTask<Void, Integer, T>() {
 			private ProgressDialog mPD;
 			private Exception mException;
 

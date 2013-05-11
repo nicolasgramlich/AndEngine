@@ -1,27 +1,30 @@
-package org.andengine.util.adt.list;
+package org.andengine.util.adt.queue.concurrent;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.andengine.util.exception.MethodNotYetImplementedException;
+import org.andengine.util.adt.list.CircularList;
+import org.andengine.util.adt.list.IList;
 
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
 /**
- * The {@link PriorityAggregatorQueue} is a thread-safe queue that internally holds multiple queues each having their own priority.
+ * The {@link PriorityBlockingAggregatorQueue} is a thread-safe queue that internally holds multiple queues each having their own priority.
  * {@link #peek()}, {@link #poll()} and {@link #take()} always return the head of the highest priority internal queue.
- * The {@link PriorityAggregatorQueue} is i.e. useful in networking situations where different {@link Thread}s (producers) put different messages of different priority and the network {@link Thread} (consumer) should always send the highest priority message first. 
+ * The {@link PriorityBlockingAggregatorQueue} is i.e. useful in networking situations where different {@link Thread}s (producers) put different messages of different priority and the network {@link Thread} (consumer) should always send the highest priority message first.
  *
  * (c) 2013 Nicolas Gramlich
  *
  * @author Nicolas Gramlich
  * @since 21:55:23 - 08.05.2013
  */
-public class PriorityAggregatorQueue<T> {
+public class PriorityBlockingAggregatorQueue<T> {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	private static final int QUEUE_INITIAL_CAPACITY_DEFAULT = 10;
 
 	// ===========================================================
 	// Fields
@@ -41,7 +44,7 @@ public class PriorityAggregatorQueue<T> {
 	// Constructors
 	// ===========================================================
 
-	public PriorityAggregatorQueue(final boolean pFair) {
+	public PriorityBlockingAggregatorQueue(final boolean pFair) {
 		this.mLock = new ReentrantLock(pFair);
 		this.mNotEmptyCondition = this.mLock.newCondition();
 	}
@@ -64,6 +67,46 @@ public class PriorityAggregatorQueue<T> {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public String toString() {
+		final ReentrantLock lock = this.mLock;
+		lock.lock();
+		try {
+			final StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(this.getClass().getSimpleName());
+
+			if (this.mQueues.size() > 0) {
+				final SparseArray<IList<T>> queues = this.mQueues;
+				final SparseIntArray queueCapacities = this.mQueueCapacities;
+
+				stringBuilder.append(" [");
+
+				final int queueCount = queues.size();
+				for (int i = 0; i < queueCount; i++) {
+					final int priority = queues.keyAt(i);
+					final IList<T> queue = queues.valueAt(i);
+					final int queueCapacity = queueCapacities.valueAt(i);
+					final int queueSize = queue.size();
+
+					stringBuilder.append("\tPriority: ").append(priority).append(" (Capacity: ").append(queueSize).append('/').append(queueCapacity).append("): ");
+					stringBuilder.append(queue.toString());
+
+					if (i < (queueCount - 1)) {
+						stringBuilder.append(',');
+					}
+					stringBuilder.append('\n');
+				}
+
+				stringBuilder.append(']');
+			}
+
+			return stringBuilder.toString();
+		} finally {
+			lock.unlock();
+		}
+	}
+
 
 	// ===========================================================
 	// Methods
@@ -107,23 +150,18 @@ public class PriorityAggregatorQueue<T> {
 	}
 
 	public void addQueue(final int pPriority, final int pCapacity) {
-		final ReentrantLock lock = this.mLock;
-		lock.lock();
-
-		try {
-			if (this.mQueues.get(pPriority) == null) {
-				this.mQueues.put(pPriority, new CircularList<T>());
-				this.mQueueCapacities.put(pPriority, pCapacity);
-				this.mNotFullConditions.put(pPriority, this.mLock.newCondition());
-			} else {
-				throw new IllegalArgumentException("Queue with priority: '" + pPriority + "' already exists.");
-			}
-		} finally {
-			lock.unlock();
-		}
+		this.addQueue(pPriority, pCapacity, QUEUE_INITIAL_CAPACITY_DEFAULT);
 	}
 
 	public void addQueue(final int pPriority, final int pCapacity, final int pInitialCapacity) {
+		if (pCapacity <= 0) {
+			throw new IllegalArgumentException("pCapacity must be greater than 0.");
+		}
+
+		if (pInitialCapacity <= 0) {
+			throw new IllegalArgumentException("pInitialCapacity must be greater than 0.");
+		}
+
 		final ReentrantLock lock = this.mLock;
 		lock.lock();
 
@@ -263,8 +301,74 @@ public class PriorityAggregatorQueue<T> {
 		}
 	}
 
-	public void set(final int pPriority, final T pItem) { // TODO Same as put but replaces the first
-		throw new MethodNotYetImplementedException();
+	public void clear() {
+		final ReentrantLock lock = this.mLock;
+		lock.lock();
+
+		try {
+			if (this.mSize > 0) {
+				final SparseArray<IList<T>> queues = this.mQueues; 
+				final int queueCount = queues.size();
+				for (int i = 0; i < queueCount; i++) {
+					final int priority = this.mQueues.keyAt(i);
+
+					final IList<T> queue = this.mQueues.valueAt(i);
+					queue.clear();
+
+					final Condition notFullCondition = this.mNotFullConditions.get(priority);
+					notFullCondition.signal();
+				}
+				this.mSize = 0;
+			}
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	public void clear(final int pPriority) {
+		final ReentrantLock lock = this.mLock;
+		lock.lock();
+
+		try {
+			final IList<T> queue = this.mQueues.get(pPriority);
+			if (queue == null) {
+				throw new IllegalArgumentException("No queue found for pPriority: '" + pPriority + "'.");
+			}
+			final int queueSize = queue.size();
+
+			queue.clear();
+
+			final Condition notFullCondition = this.mNotFullConditions.get(pPriority);
+			notFullCondition.signal();
+
+			this.mSize -= queueSize;
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	public void clearAndPut(final int pPriority, final T pItem) throws IllegalArgumentException, InterruptedException {
+		final ReentrantLock lock = this.mLock;
+		lock.lock();
+
+		try {
+			this.clear(pPriority);
+			this.put(pPriority, pItem);
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	public boolean clearAndOffer(final int pPriority, final T pItem) {
+		final ReentrantLock lock = this.mLock;
+		lock.lock();
+
+		try {
+			this.clear(pPriority);
+			return this.offer(pPriority, pItem);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	// ===========================================================

@@ -152,6 +152,10 @@ public final class SystemUtils {
 		}
 	}
 
+	public static int getTargetSDKVersion(final Context pContext) throws SystemUtilsException {
+		return SystemUtils.getApplicationInfo(pContext).targetSdkVersion;
+	}
+
 	public static boolean hasSystemFeature(final Context pContext, final String pFeature) throws SystemUtilsException {
 		final PackageManager packageManager = pContext.getPackageManager();
 		try {

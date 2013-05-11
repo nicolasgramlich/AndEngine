@@ -42,7 +42,7 @@ public final class AsyncTaskUtils {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static <T> void executeParallel(final AsyncTask<T, ?, ?> pAsyncTask, final T ... pParameters) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1) {
 			pAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, pParameters);
 		} else {
 			pAsyncTask.execute(pParameters);

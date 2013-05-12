@@ -1,6 +1,7 @@
 package org.andengine.util.adt.transformation;
 
 import org.andengine.util.math.MathConstants;
+import org.andengine.util.math.MathUtils;
 
 
 /**
@@ -166,6 +167,10 @@ public class Transformation {
 		this.ty = 0.0f;
 
 		return this;
+	}
+
+	public float getRotation() {
+		return MathConstants.RAD_TO_DEG * MathUtils.atan2(this.c, this.d);
 	}
 
 	public final void preScale(final float pScaleX, final float pScaleY) {

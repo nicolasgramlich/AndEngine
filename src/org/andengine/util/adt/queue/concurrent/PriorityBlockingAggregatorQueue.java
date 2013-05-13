@@ -72,15 +72,15 @@ public class PriorityBlockingAggregatorQueue<T> {
 	public String toString() {
 		final ReentrantLock lock = this.mLock;
 		lock.lock();
+
 		try {
 			final StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(this.getClass().getSimpleName());
 
 			if (this.mQueues.size() > 0) {
 				final SparseArray<IList<T>> queues = this.mQueues;
 				final SparseIntArray queueCapacities = this.mQueueCapacities;
 
-				stringBuilder.append(" [");
+				stringBuilder.append(" [\n");
 
 				final int queueCount = queues.size();
 				for (int i = 0; i < queueCount; i++) {

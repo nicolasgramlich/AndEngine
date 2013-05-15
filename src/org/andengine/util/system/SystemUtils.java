@@ -183,29 +183,107 @@ public final class SystemUtils {
 		}
 	}
 
-	public static boolean getMetaDataBoolean(final Context pContext, final String pKey) throws SystemUtilsException {
+	public static boolean optMetaDataBoolean(final Context pContext, final String pKey) throws SystemUtilsException {
 		final Bundle bundle = SystemUtils.getMetaData(pContext);
 		return bundle.getBoolean(pKey);
 	}
 
-	public static int getMetaDataInt(final Context pContext, final String pKey) throws SystemUtilsException {
+	public static boolean optMetaDataBoolean(final Context pContext, final String pKey, final boolean pDefaultValue) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		return bundle.getBoolean(pKey, pDefaultValue);
+	}
+
+	public static int optMetaDataInt(final Context pContext, final String pKey) throws SystemUtilsException {
 		final Bundle bundle = SystemUtils.getMetaData(pContext);
 		return bundle.getInt(pKey);
 	}
 
-	public static float getMetaDataFloat(final Context pContext, final String pKey) throws SystemUtilsException {
+	public static int optMetaDataInt(final Context pContext, final String pKey, final int pDefaultValue) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		return bundle.getInt(pKey, pDefaultValue);
+	}
+
+	public static float optMetaDataFloat(final Context pContext, final String pKey) throws SystemUtilsException {
 		final Bundle bundle = SystemUtils.getMetaData(pContext);
 		return bundle.getFloat(pKey);
 	}
 
-	public static String getMetaDataString(final Context pContext, final String pKey) throws SystemUtilsException {
+	public static float optMetaDataFloat(final Context pContext, final String pKey, final float pDefaultValue) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		return bundle.getFloat(pKey, pDefaultValue);
+	}
+
+	public static String optMetaDataString(final Context pContext, final String pKey) throws SystemUtilsException {
 		final Bundle bundle = SystemUtils.getMetaData(pContext);
 		return bundle.getString(pKey);
 	}
 
-	public static int getMetaDataColor(final Context pContext, final String pKey) throws SystemUtilsException {
+	public static String optMetaDataString(final Context pContext, final String pKey, final String pDefaultValue) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		if (bundle.containsKey(pKey)) {
+			return bundle.getString(pKey);
+		} else {
+			return pDefaultValue;
+		}
+	}
+
+	public static int optMetaDataColor(final Context pContext, final String pKey) throws SystemUtilsException {
 		final Bundle bundle = SystemUtils.getMetaData(pContext);
 		return Color.parseColor(bundle.getString(pKey));
+	}
+
+	public static int optMetaDataColor(final Context pContext, final String pKey, final int pDefaultValue) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		if (bundle.containsKey(pKey)) {
+			return Color.parseColor(bundle.getString(pKey));
+		} else {
+			return pDefaultValue;
+		}
+	}
+
+	public static boolean getMetaDataBoolean(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		if (bundle.containsKey(pKey)) {
+			return bundle.getBoolean(pKey);
+		} else {
+			throw new SystemUtilsException(new IllegalArgumentException("Could not find meta data with key: '" + pKey + "'."));
+		}
+	}
+
+	public static int getMetaDataInt(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		if (bundle.containsKey(pKey)) {
+			return bundle.getInt(pKey);
+		} else {
+			throw new SystemUtilsException(new IllegalArgumentException("Could not find meta data with key: '" + pKey + "'."));
+		}
+	}
+
+	public static float getMetaDataFloat(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		if (bundle.containsKey(pKey)) {
+			return bundle.getFloat(pKey);
+		} else {
+			throw new SystemUtilsException(new IllegalArgumentException("Could not find meta data with key: '" + pKey + "'."));
+		}
+	}
+
+	public static String getMetaDataString(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		if (bundle.containsKey(pKey)) {
+			return bundle.getString(pKey);
+		} else {
+			throw new SystemUtilsException(new IllegalArgumentException("Could not find meta data with key: '" + pKey + "'."));
+		}
+	}
+
+	public static int getMetaDataColor(final Context pContext, final String pKey) throws SystemUtilsException {
+		final Bundle bundle = SystemUtils.getMetaData(pContext);
+		if (bundle.containsKey(pKey)) {
+			return Color.parseColor(bundle.getString(pKey));
+		} else {
+			throw new SystemUtilsException(new IllegalArgumentException("Could not find meta data with key: '" + pKey + "'."));
+		}
 	}
 
 	public static Bundle getMetaData(final Context pContext) throws SystemUtilsException {

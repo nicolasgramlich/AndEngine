@@ -190,6 +190,34 @@ public final class TextUtils {
 		}
 	}
 
+	public static final String join(final char pSeparator, final Object ... pStrings) {
+		final StringBuilder stringBuilder = new StringBuilder();
+
+		final int count = pStrings.length;
+		for (int i = 0; i < count; i++) {
+			stringBuilder.append(pStrings[i]);
+			if (i < count - 1) {
+				stringBuilder.append(pSeparator);
+			}
+		}
+
+		return stringBuilder.toString();
+	}
+
+	public static final String join(final String pSeparator, final Object ... pStrings) {
+		final StringBuilder stringBuilder = new StringBuilder();
+
+		final int count = pStrings.length;
+		for (int i = 0; i < count; i++) {
+			stringBuilder.append(pStrings[i]);
+			if (i < count - 1) {
+				stringBuilder.append(pSeparator);
+			}
+		}
+
+		return stringBuilder.toString();
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

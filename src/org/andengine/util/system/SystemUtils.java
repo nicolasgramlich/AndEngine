@@ -107,6 +107,22 @@ public final class SystemUtils {
 		}
 	}
 
+	public static boolean isNDKSupported(final Context pContext, final boolean pDefault) {
+		try {
+			if (SystemUtils.isGoogleTV(pContext)) {
+				if (SystemUtils.isAndroidVersionOrHigher(Build.VERSION_CODES.JELLY_BEAN_MR1)) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return true;
+			}
+		} catch (final SystemUtilsException e) {
+			return pDefault;
+		}
+	}
+
 	public static String getApplicationLabel(final Context pContext) throws SystemUtilsException {
 	    final int labelResID = SystemUtils.getApplicationInfo(pContext).labelRes;
 	    return pContext.getString(labelResID);

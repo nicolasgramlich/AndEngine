@@ -55,7 +55,10 @@
     </target>
 
     <target name="-build-native" if="do.build-native">
-        <exec executable="${ndk.dir}/ndk-build" failonerror="true"/>
+        <exec executable="${ndk.dir}/ndk-build" failonerror="true">
+            <!-- 8 Threads -->
+            <arg value="-j8"/>
+        </exec>
     </target>
 
     <target name="-clean-native" depends="android_rules.clean" if="do.clean-native">

@@ -61,21 +61,21 @@ public class Line extends Shape {
 	// ===========================================================
 
 	/**
-	 * Uses a default {@link HighPerformanceLineVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link HighPerformanceLineVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link #VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pVertexBufferObjectManager, DrawType.STATIC);
 	}
 
 	/**
-	 * Uses a default {@link HighPerformanceLineVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link HighPerformanceLineVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link #VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
 		this(pX1, pY1, pX2, pY2, Line.LINE_WIDTH_DEFAULT, pVertexBufferObjectManager, pDrawType);
 	}
 
 	/**
-	 * Uses a default {@link HighPerformanceLineVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link Line#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 * Uses a default {@link HighPerformanceLineVertexBufferObject} in {@link DrawType#STATIC} with the {@link VertexBufferObjectAttribute}s: {@link #VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
 	 */
 	public Line(final float pX1, final float pY1, final float pX2, final float pY2, final float pLineWidth, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX1, pY1, pX2, pY2, pLineWidth, pVertexBufferObjectManager, DrawType.STATIC);
@@ -108,7 +108,7 @@ public class Line extends Shape {
 	// ===========================================================
 
 	/**
-	 * @deprecated Instead use {@link Line#getX1()} or {@link Line#getX2()}.
+	 * @deprecated Instead use {@link #getX1()} or {@link #getX2()}.
 	 */
 	@Deprecated
 	@Override
@@ -117,7 +117,7 @@ public class Line extends Shape {
 	}
 
 	/**
-	 * @deprecatedInstead use {@link Line#getY1()} or {@link Line#getY2()}.
+	 * @deprecated Instead use {@link #getY1()} or {@link #getY2()}.
 	 */
 	@Deprecated
 	@Override
@@ -150,7 +150,7 @@ public class Line extends Shape {
 	}
 
 	/**
-	 * Instead use {@link Line#setPosition(float, float, float, float)}.
+	 * Instead use {@link #setPosition(float, float, float, float)}.
 	 */
 	@Deprecated
 	@Override
@@ -165,7 +165,7 @@ public class Line extends Shape {
 	}
 
 	/**
-	 * Instead use {@link Line#setPosition(float, float, float, float)}.
+	 * Instead use {@link #setPosition(float, float, float, float)}.
 	 */
 	@Deprecated
 	@Override
@@ -180,7 +180,7 @@ public class Line extends Shape {
 	}
 
 	/**
-	 * Instead use {@link Line#setPosition(float, float, float, float)}.
+	 * Instead use {@link #setPosition(float, float, float, float)}.
 	 */
 	@Deprecated
 	@Override

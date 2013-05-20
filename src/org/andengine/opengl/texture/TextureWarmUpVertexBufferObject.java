@@ -14,7 +14,7 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import android.opengl.GLES20;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:11:05 - 15.05.2012

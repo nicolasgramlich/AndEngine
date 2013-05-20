@@ -8,7 +8,7 @@ import org.andengine.util.exception.MethodNotYetImplementedException;
 
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:06:32 - 25.01.2012
@@ -141,7 +141,7 @@ public class FontUtils {
 	 */
 	public static <L extends List<CharSequence>> L splitLines(final IFont pFont, final CharSequence pText, final L pResult, final AutoWrap pAutoWrap, final float pAutoWrapWidth) {
 		/**
-		 * TODO In order to respect already existing linebreaks, {@link FontUtils#split(CharSequence, List)} could be leveraged and than the following methods could be called for each line.
+		 * TODO In order to respect already existing linebreaks, {@link #split(CharSequence, List)} could be leveraged and than the following methods could be called for each line.
 		 */
 		switch (pAutoWrap) {
 			case LETTERS:

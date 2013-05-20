@@ -8,7 +8,7 @@ import android.opengl.GLES20;
 import android.os.Build;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 13:58:05 - 15.08.2011

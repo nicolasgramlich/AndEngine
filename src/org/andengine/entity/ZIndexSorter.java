@@ -7,8 +7,8 @@ import org.andengine.util.adt.list.IList;
 import org.andengine.util.algorithm.sort.InsertionSorter;
 
 /**
- * (c) Nicolas Gramlich 2010
- * (c) Zynga 2011
+ * (c) 2010 Nicolas Gramlich
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:08:56 - 06.08.2010

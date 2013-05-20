@@ -13,7 +13,7 @@ import org.andengine.util.adt.queue.IQueue;
  *
  * Supports <code>null</code> items.
  *
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @author Greg Haynes
@@ -242,6 +242,11 @@ public class ShiftList<T> implements IQueue<T>, IList<T> {
 		Arrays.fill(this.mItems, this.mHead, this.mTail, null);
 		this.mHead = 0;
 		this.mTail = 0;
+	}
+
+	@Override
+	public String toString() {
+		return ListUtils.toString(this);
 	}
 
 	// ===========================================================

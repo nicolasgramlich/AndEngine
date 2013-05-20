@@ -5,7 +5,7 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.list.SmartList;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:42:49 - 22.11.2011

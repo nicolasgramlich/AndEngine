@@ -17,7 +17,7 @@ import org.andengine.util.exception.AndEngineRuntimeException;
 /**
  * TODO Make all methods non-synchronized and add a SynchronizedXZYQuadTree subclasses.
  *
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:16:01 - 07.10.2011

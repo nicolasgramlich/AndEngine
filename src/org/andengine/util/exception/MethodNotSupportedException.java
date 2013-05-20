@@ -1,7 +1,7 @@
 package org.andengine.util.exception;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 18:13:32 - 26.12.2011

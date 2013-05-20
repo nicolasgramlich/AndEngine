@@ -7,12 +7,13 @@ import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.IEaseFunction;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:47:24 - 20.03.2012
- * @see {@link http://en.wikipedia.org/wiki/Cubic_Hermite_spline#Cardinal_spline}
- * @see {@link http://algorithmist.wordpress.com/2009/10/06/cardinal-splines-part-4/}
+ *
+ * @see <a href="http://en.wikipedia.org/wiki/Cubic_Hermite_spline#Cardinal_spline">en.wikipedia.org/wiki/Cubic_Hermite_spline#Cardinal_spline</a>
+ * @see <a href="http://algorithmist.wordpress.com/2009/10/06/cardinal-splines-part-4/">algorithmist.wordpress.com/2009/10/06/cardinal-splines-part-4/</a>
  */
 public class CardinalSplineMoveModifier extends DurationEntityModifier {
 	// ===========================================================

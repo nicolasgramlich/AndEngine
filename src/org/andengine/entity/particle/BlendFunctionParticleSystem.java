@@ -8,7 +8,7 @@ import org.andengine.entity.shape.IShape;
 import org.andengine.opengl.util.GLState;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:34:32 - 10.05.2012

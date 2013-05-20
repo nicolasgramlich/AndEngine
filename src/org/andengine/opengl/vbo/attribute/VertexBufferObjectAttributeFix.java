@@ -4,7 +4,7 @@ import org.andengine.opengl.GLES20Fix;
 
 /**
  * The {@link VertexBufferObjectAttributeFix} is a special
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:52:33 - 08.03.2012

@@ -1,9 +1,10 @@
 package org.andengine.util.adt.queue.concurrent;
 
+import org.andengine.util.adt.list.ListUtils;
 import org.andengine.util.adt.queue.IQueue;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:23:50 - 01.02.2012
@@ -113,6 +114,11 @@ public class SynchronizedQueue<T> implements IQueue<T> {
 	@Override
 	public synchronized void clear() {
 		this.mQueue.clear();
+	}
+
+	@Override
+	public synchronized String toString() {
+		return ListUtils.toString(this);
 	}
 
 	// ===========================================================

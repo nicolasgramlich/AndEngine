@@ -98,7 +98,7 @@ public final class StreamUtils {
 	}
 
 	/**
-	 * @see {@link StreamUtils#streamToBytes(InputStream, int, byte[], int)}
+	 * @see {@link #streamToBytes(InputStream, int, byte[], int)}
 	 */
 	public static final void streamToBytes(final InputStream pInputStream, final int pByteLimit, final byte[] pData) throws IOException {
 		StreamUtils.streamToBytes(pInputStream, pByteLimit, pData, 0);
@@ -161,7 +161,7 @@ public final class StreamUtils {
 	 *
 	 * @param pInputStream The input stream to copy from.
 	 * @param pOutputStream The output stream to copy to.
-	 * @param pByteLimit not more than so much bytes to read, or unlimited if {@link StreamUtils#END_OF_STREAM}.
+	 * @param pByteLimit not more than so much bytes to read, or unlimited if {@link #END_OF_STREAM}.
 	 *
 	 * @throws IOException If any error occurs during the copy.
 	 */

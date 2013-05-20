@@ -10,7 +10,7 @@ import org.andengine.util.exception.MethodNotYetImplementedException;
 
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:56:32 - 30.10.2011

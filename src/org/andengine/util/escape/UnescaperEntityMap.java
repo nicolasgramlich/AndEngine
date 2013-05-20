@@ -3,7 +3,7 @@ package org.andengine.util.escape;
 import org.andengine.util.adt.map.IntLookupMap;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:31:08 - 26.04.2012

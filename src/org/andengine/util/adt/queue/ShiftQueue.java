@@ -3,7 +3,7 @@ package org.andengine.util.adt.queue;
 import org.andengine.util.adt.list.ShiftList;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:06:49 - 03.01.2012

@@ -1,6 +1,6 @@
 package org.andengine.opengl.shader.exception;
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 02:31:53 - 07.08.2011

@@ -4,7 +4,7 @@ import org.andengine.entity.primitive.Gradient;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:27:22 - 23.04.2012

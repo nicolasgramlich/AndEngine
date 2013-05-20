@@ -15,7 +15,8 @@ import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
  * @author Nicolas Gramlich
  * @author Jim Scott (BlackPawn)
  * @since 16:03:01 - 12.08.2010
- * @see http://www.blackpawn.com/texts/lightmaps/default.html
+ *
+ * @see <a href="http://www.blackpawn.com/texts/lightmaps/default.html">blackpawn.com/texts/lightmaps/default.html</a>
  */
 public class BlackPawnTextureAtlasBuilder<T extends ITextureAtlasSource, A extends ITextureAtlas<T>> implements ITextureAtlasBuilder<T, A> {
 	// ===========================================================

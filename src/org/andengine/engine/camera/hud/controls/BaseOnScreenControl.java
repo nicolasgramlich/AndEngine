@@ -122,8 +122,8 @@ public abstract class BaseOnScreenControl extends HUD implements IOnSceneTouchLi
 	}
 
 	/**
-	 *  When the touch happened outside of the bounds of this OnScreenControl.
-	 * */
+	 * When the touch happened outside of the bounds of this OnScreenControl.
+	 */
 	protected void onHandleControlBaseLeft() {
 		this.onUpdateControlKnob(0, 0);
 	}

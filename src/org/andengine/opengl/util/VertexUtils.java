@@ -1,7 +1,7 @@
 package org.andengine.opengl.util;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:18:30 - 10.02.2012

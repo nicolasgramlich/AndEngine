@@ -18,7 +18,7 @@ import org.xml.sax.XMLReader;
 import android.content.res.AssetManager;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:05:15 - 29.07.2011

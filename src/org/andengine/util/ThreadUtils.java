@@ -4,7 +4,7 @@ import org.andengine.util.debug.Debug;
 import org.andengine.util.debug.Debug.DebugLevel;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:23:06 - 19.01.2012

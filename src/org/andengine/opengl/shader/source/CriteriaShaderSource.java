@@ -5,7 +5,7 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.util.criteria.IGLCriteria;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:30:12 - 10.10.2011

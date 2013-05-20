@@ -3,7 +3,7 @@ package org.andengine.opengl.shader.exception;
 import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 02:33:27 - 07.08.2011

@@ -4,7 +4,7 @@ import org.andengine.opengl.texture.ITexture;
 import org.andengine.util.modifier.IModifier.DeepCopyNotSupportedException;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:07:17 - 07.08.2011
@@ -26,11 +26,11 @@ public interface ITextureRegion {
 	public void setTexturePosition(final float pTextureX, final float pTextureY);
 
 	/**
-	 * Note: Takes {@link ITextureRegion#getScale()} into account!
+	 * Note: Takes {@link #getScale()} into account!
 	 */
 	public float getWidth();
 	/**
-	 * Note: Takes {@link ITextureRegion#getScale()} into account!
+	 * Note: Takes {@link #getScale()} into account!
 	 */
 	public float getHeight();
 

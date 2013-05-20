@@ -5,7 +5,7 @@ import org.andengine.opengl.texture.PixelFormat;
 import android.graphics.Bitmap.Config;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:36:45 - 05.04.2012

@@ -8,12 +8,13 @@ import org.andengine.util.system.SystemUtils;
 import android.os.Build;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:06:51 - 11.08.2011
- * @see http://code.google.com/p/android/issues/detail?id=11078
- * @see http://code.google.com/p/android/issues/detail?id=16941
+ *
+ * @see <a href="http://code.google.com/p/android/issues/detail?id=11078">Issue 11078</a>
+ * @see <a href="http://code.google.com/p/android/issues/detail?id=16941">Issue 16941</a>
  */
 public class BufferUtils {
 	// ===========================================================

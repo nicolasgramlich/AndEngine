@@ -10,7 +10,7 @@ import org.andengine.util.math.MathConstants;
 import org.andengine.util.math.MathUtils;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:27:09 - 23.04.2012

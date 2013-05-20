@@ -3,7 +3,7 @@ package org.andengine.entity.primitive;
 import android.opengl.GLES20;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 18:46:51 - 28.03.2012

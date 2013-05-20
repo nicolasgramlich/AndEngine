@@ -14,7 +14,7 @@ import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.list.IFloatList;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:38:22 - 29.03.2012

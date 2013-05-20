@@ -95,6 +95,30 @@ public final class ListUtils {
 		return (-pIndex) - 1;
 	}
 
+	public static <T> String toString(final IList<T> pItems) {
+		final int size = pItems.size();
+		if (size == 0) {
+			return "[]";
+		} else {
+			final StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append('[');
+			for (int i = 0; i < size; i++) {
+				final T item = pItems.get(i);
+
+				stringBuilder.append(item.toString());
+
+				if (i < size - 1) {
+					stringBuilder.append(", ");
+				} else {
+					break;
+				}
+			}
+			stringBuilder.append(']');
+
+			return stringBuilder.toString();
+		}
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

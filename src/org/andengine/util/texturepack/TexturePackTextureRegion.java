@@ -5,7 +5,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 
 /**
  *
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:28:48 - 15.08.2011

@@ -3,7 +3,7 @@ package org.andengine.util.adt.list;
 /**
  * TODO This class could take some kind of AllocationStrategy object.
  *
- * (c) Zynga 2013
+ * (c) 2013 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 13:13:55 - 19.01.2013

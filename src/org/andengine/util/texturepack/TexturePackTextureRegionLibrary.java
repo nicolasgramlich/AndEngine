@@ -5,7 +5,7 @@ import java.util.HashMap;
 import android.util.SparseArray;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:34:23 - 15.08.2011

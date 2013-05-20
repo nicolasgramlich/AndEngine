@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 /**
  * TODO Instead of having mMaximumGrow there could be some kind of AllocationStrategy object.
  *
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 02:19:02 - 14.08.2011

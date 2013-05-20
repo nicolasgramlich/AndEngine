@@ -3,7 +3,7 @@ package org.andengine.util.animationpack.exception;
 import org.xml.sax.SAXException;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 18:03:45 - 03.06.2012

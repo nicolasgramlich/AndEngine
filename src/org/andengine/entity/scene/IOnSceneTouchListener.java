@@ -7,7 +7,7 @@ import org.andengine.input.touch.TouchEvent;
  * dispatched to a {@link Scene}. The callback will be invoked
  * after all {@link ITouchArea}s have been checked and none consumed the {@link TouchEvent}.
  *
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 15:02:20 - 27.03.2012

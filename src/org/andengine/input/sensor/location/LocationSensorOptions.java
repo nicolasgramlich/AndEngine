@@ -33,15 +33,7 @@ public class LocationSensorOptions extends Criteria {
 	// ===========================================================
 
 	/**
-	 * @see {@link LocationSensorOptions#setAccuracy(int)},
-	 *      {@link LocationSensorOptions#setAltitudeRequired(boolean)},
-	 *      {@link LocationSensorOptions#setBearingRequired(boolean)},
-	 *      {@link LocationSensorOptions#setCostAllowed(boolean)},
-	 *      {@link LocationSensorOptions#setEnabledOnly(boolean)},
-	 *      {@link LocationSensorOptions#setMinimumTriggerDistance(long)},
-	 *      {@link LocationSensorOptions#setMinimumTriggerTime(long)},
-	 *      {@link LocationSensorOptions#setPowerRequirement(int)},
-	 *      {@link LocationSensorOptions#setSpeedRequired(boolean)}.
+	 * @see {@link #setAccuracy(int)}, {@link #setAltitudeRequired(boolean)}, {@link #setBearingRequired(boolean)}, {@link #setCostAllowed(boolean)}, {@link #setEnabledOnly(boolean)}, {@link #setMinimumTriggerDistance(long)}, {@link #setMinimumTriggerTime(long)}, {@link #setPowerRequirement(int)}, {@link #setSpeedRequired(boolean)}.
 	 */
 	public LocationSensorOptions() {
 

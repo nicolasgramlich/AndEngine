@@ -3,7 +3,7 @@ package org.andengine.input.touch.detector;
 import android.content.Context;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:53:40 - 04.04.2012

@@ -3,7 +3,7 @@ package org.andengine.util.adt.bounds;
 import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 21:13:32 - 11.10.2011

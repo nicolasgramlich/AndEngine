@@ -4,7 +4,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.level.IEntityLoaderData;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:13:09 - 19.04.2012

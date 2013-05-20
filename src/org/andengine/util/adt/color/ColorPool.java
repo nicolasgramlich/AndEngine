@@ -3,7 +3,7 @@ package org.andengine.util.adt.color;
 import org.andengine.util.adt.pool.GenericPool;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 2:25:20 - 12.08.2011

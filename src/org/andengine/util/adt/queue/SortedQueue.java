@@ -3,7 +3,7 @@ package org.andengine.util.adt.queue;
 import org.andengine.util.adt.list.SortedList;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 17:17:33 PM - 03.022012

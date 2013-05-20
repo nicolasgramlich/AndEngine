@@ -3,7 +3,7 @@ package org.andengine.entity.sprite;
 import org.andengine.util.modifier.IModifier.DeepCopyNotSupportedException;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:59:57 - 03.05.2012

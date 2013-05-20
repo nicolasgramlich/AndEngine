@@ -4,7 +4,7 @@ import org.andengine.util.adt.bounds.IBounds;
 
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 20:23:12 - 07.10.2011

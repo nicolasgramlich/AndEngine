@@ -65,7 +65,7 @@ public class ContinuousHoldDetector extends HoldDetector implements IUpdateHandl
 	}
 
 	/**
-	 * When {@link ContinuousHoldDetector#isHolding()} this method will call through to {@link IHoldDetectorListener#onHoldFinished(HoldDetector, long, int, float, float)}.
+	 * When {@link #isHolding()} this method will call through to {@link IHoldDetectorListener#onHoldFinished(HoldDetector, long, int, float, float)}.
 	 */
 	@Override
 	public void reset() {

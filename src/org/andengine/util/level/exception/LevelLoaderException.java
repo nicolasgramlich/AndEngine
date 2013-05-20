@@ -3,7 +3,7 @@ package org.andengine.util.level.exception;
 import org.andengine.util.exception.AndEngineRuntimeException;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:59:01 - 19.04.2012

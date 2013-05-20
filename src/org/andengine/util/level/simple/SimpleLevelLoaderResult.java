@@ -4,7 +4,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.util.level.ILevelLoaderResult;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 16:13:38 - 19.04.2012

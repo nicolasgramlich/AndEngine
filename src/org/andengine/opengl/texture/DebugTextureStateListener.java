@@ -5,7 +5,7 @@ import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
 import org.andengine.util.debug.Debug;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 11:26:41 - 05.04.2012

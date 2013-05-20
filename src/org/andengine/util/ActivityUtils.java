@@ -109,7 +109,7 @@ public final class ActivityUtils {
 	}
 
 	public static final <T> void doAsync(final Context pContext, final CharSequence pTitle, final CharSequence pMessage, final Callable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback, final boolean pCancelable) {
-		new AsyncTask<Void, Void, T>() {
+		AsyncTaskUtils.execute(new AsyncTask<Void, Void, T>() {
 			private ProgressDialog mPD;
 			private Exception mException;
 
@@ -162,7 +162,7 @@ public final class ActivityUtils {
 
 				super.onPostExecute(pResult);
 			}
-		}.execute((Void[]) null);
+		});
 	}
 
 	public static final <T> void doProgressAsync(final Context pContext, final int pTitleResourceID, final int pIconResourceID, final ProgressCallable<T> pCallable, final Callback<T> pCallback) {
@@ -178,7 +178,7 @@ public final class ActivityUtils {
 	}
 
 	public static final <T> void doProgressAsync(final Context pContext, final CharSequence pTitle, final int pIconResourceID, final ProgressCallable<T> pCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {
-		new AsyncTask<Void, Integer, T>() {
+		AsyncTaskUtils.execute(new AsyncTask<Void, Integer, T>() {
 			private ProgressDialog mPD;
 			private Exception mException;
 
@@ -238,7 +238,7 @@ public final class ActivityUtils {
 
 				super.onPostExecute(pResult);
 			}
-		}.execute((Void[]) null);
+		});
 	}
 
 	public static final <T> void doAsync(final Context pContext, final int pTitleResourceID, final int pMessageResourceID, final AsyncCallable<T> pAsyncCallable, final Callback<T> pCallback, final Callback<Exception> pExceptionCallback) {

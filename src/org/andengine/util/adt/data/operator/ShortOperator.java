@@ -1,7 +1,7 @@
 package org.andengine.util.adt.data.operator;
 
 /**
- * (c) Zynga 2012
+ * (c) 2012 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 14:24:15 - 02.02.2012
@@ -17,31 +17,31 @@ public enum ShortOperator {
 			return pShortA == pShortB;
 		}
 	},
-	NOT_EQUALS()  {
+	NOT_EQUALS() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA != pShortB;
 		}
 	},
-	LESS_THAN()  {
+	LESS_THAN() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA < pShortB;
 		}
 	},
-	LESS_OR_EQUAL_THAN()  {
+	LESS_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA <= pShortB;
 		}
 	},
-	MORE_THAN()  {
+	MORE_THAN() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA > pShortB;
 		}
 	},
-	MORE_OR_EQUAL_THAN()  {
+	MORE_OR_EQUAL_THAN() {
 		@Override
 		public boolean check(final short pShortA, final short pShortB) {
 			return pShortA >= pShortB;

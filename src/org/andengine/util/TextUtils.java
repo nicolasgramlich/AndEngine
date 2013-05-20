@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.andengine.util.adt.array.ArrayUtils;
+
 /**
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
@@ -170,6 +172,50 @@ public final class TextUtils {
 			}
 		}
 		return characters;
+	}
+
+	/**
+	 * As opposed to {@link ArrayUtils#isEmpty(Object[])}, this method performs a {@link android.text.TextUtils#isEmpty(String)} check on all elements of the array.
+	 */
+	public static boolean isEmpty(final CharSequence[] pTexts) {
+		if (pTexts == null) {
+			return true;
+		} else {
+			for (int i = pTexts.length - 1; i >= 0; i--) {
+				if (!android.text.TextUtils.isEmpty(pTexts[i])) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+
+	public static final String join(final char pSeparator, final Object ... pStrings) {
+		final StringBuilder stringBuilder = new StringBuilder();
+
+		final int count = pStrings.length;
+		for (int i = 0; i < count; i++) {
+			stringBuilder.append(pStrings[i]);
+			if (i < count - 1) {
+				stringBuilder.append(pSeparator);
+			}
+		}
+
+		return stringBuilder.toString();
+	}
+
+	public static final String join(final String pSeparator, final Object ... pStrings) {
+		final StringBuilder stringBuilder = new StringBuilder();
+
+		final int count = pStrings.length;
+		for (int i = 0; i < count; i++) {
+			stringBuilder.append(pStrings[i]);
+			if (i < count - 1) {
+				stringBuilder.append(pSeparator);
+			}
+		}
+
+		return stringBuilder.toString();
 	}
 
 	// ===========================================================

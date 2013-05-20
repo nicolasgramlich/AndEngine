@@ -1,7 +1,7 @@
 package org.andengine.opengl.texture.region;
 
 /**
- * (c) Zynga 2011
+ * (c) 2011 Zynga Inc.
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 23:31:52 - 08.08.2011
@@ -29,11 +29,11 @@ public interface ITiledTextureRegion extends ITextureRegion {
 	public void setTexturePosition(final int pTileIndex, final float pTextureX, final float pTextureY);
 
 	/**
-	 * Note: Takes {@link ITiledTextureRegion#getScale(int)} into account!
+	 * Note: Takes {@link #getScale(int)} into account!
 	 */
 	public float getWidth(final int pTileIndex);
 	/**
-	 * Note: Takes {@link ITiledTextureRegion#getScale(int)} into account!
+	 * Note: Takes {@link #getScale(int)} into account!
 	 */
 	public float getHeight(final int pTileIndex);
 

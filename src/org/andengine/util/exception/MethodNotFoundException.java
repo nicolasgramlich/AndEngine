@@ -1,7 +1,7 @@
 package org.andengine.util.exception;
 
 /**
- * (c) Nicolas Gramlich 2013
+ * (c) 2013 Nicolas Gramlich
  *
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 18:13:32 - 26.12.2011

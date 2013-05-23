@@ -381,15 +381,19 @@ public final class WifiUtils {
 	}
 
 	private static String stripQuotes(final String pString) {
-		final int stringLength = pString.length();
-		if (stringLength >= 2) {
-			if (pString.startsWith("\"") && pString.endsWith("\"") ) {
-				return pString.substring(1, stringLength - 1);
+		if (pString == null) {
+			return pString;
+		} else {
+			final int stringLength = pString.length();
+			if (stringLength >= 2) {
+				if (pString.startsWith("\"") && pString.endsWith("\"") ) {
+					return pString.substring(1, stringLength - 1);
+				} else {
+					return pString;
+				}
 			} else {
 				return pString;
 			}
-		} else {
-			return pString;
 		}
 	}
 

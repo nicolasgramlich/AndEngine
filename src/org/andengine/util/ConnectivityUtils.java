@@ -162,7 +162,7 @@ public final class ConnectivityUtils {
 		private static final long serialVersionUID = 4955967914807211384L;
 
 		// ===========================================================
-		// COnstructors
+		// Constructors
 		// ===========================================================
 
 		public ConnectivityUtilsException() {

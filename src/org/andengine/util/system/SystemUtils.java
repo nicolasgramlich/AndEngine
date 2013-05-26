@@ -107,6 +107,18 @@ public final class SystemUtils {
 		}
 	}
 
+	public static boolean hasCamera(final Context pContext) throws SystemUtilsException {
+		return SystemUtils.hasSystemFeature(pContext, PackageManager.FEATURE_CAMERA);
+	}
+
+	public static boolean hasCamera(final Context pContext, final boolean pDefault) {
+		try {
+			return SystemUtils.hasCamera(pContext);
+		} catch (final SystemUtilsException e) {
+			return pDefault;
+		}
+	}
+
 	public static boolean isNDKSupported(final Context pContext, final boolean pDefault) {
 		try {
 			if (SystemUtils.isGoogleTV(pContext)) {

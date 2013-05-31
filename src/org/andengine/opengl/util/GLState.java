@@ -632,16 +632,12 @@ public class GLState {
 		this.mProjectionGLMatrixStack.reset();
 	}
 
-	public void glScissorPush(final int[] pScissor) {
-		this.mScissorStack.glScissorPush(pScissor);
+	public void glPushScissor(final int pX, final int pY, final int pWidth, final int pHeight) {
+		this.mScissorStack.glPushScissor(pX, pY, pWidth, pHeight);
 	}
 
-	public void glScissorPush(final int pX, final int pY, final int pWidth, final int pHeight) {
-		this.mScissorStack.glScissorPush(pX, pY, pWidth, pHeight);
-	}
-
-	public void glScissorPop() {
-		this.mScissorStack.glScissorPop();
+	public void glPopScissor() {
+		this.mScissorStack.glPopScissor();
 	}
 
 	/**

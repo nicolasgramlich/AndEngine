@@ -18,10 +18,10 @@ public class GLScissorStack {
 	// Constants
 	// ===========================================================
 
-	public static final int GLSCISSOR_X_POS = 0;
-	public static final int GLSCISSOR_Y_POS = 1;
-	public static final int GLSCISSOR_WIDTH_POS = 2;
-	public static final int GLSCISSOR_HEIGHT_POS = 3;
+	public static final int GLSCISSOR_X_INDEX = 0;
+	public static final int GLSCISSOR_Y_INDEX = 1;
+	public static final int GLSCISSOR_WIDTH_INDEX = 2;
+	public static final int GLSCISSOR_HEIGHT_INDEX = 3;
 
 	public static final int GLSCISSORSTACK_DEPTH_MAX = 32;
 	public static final int GLSCISSOR_SIZE = 4;
@@ -33,7 +33,6 @@ public class GLScissorStack {
 	// Fields
 	// ===========================================================
 
-	private final int[] mTemp = new int[GLScissorStack.GLSCISSOR_SIZE];
 	private final int[] mScissorStack = new int[GLScissorStack.GLSCISSORSTACK_DEPTH_MAX * GLScissorStack.GLSCISSOR_SIZE];
 	private int mScissorStackOffset;
 
@@ -42,6 +41,7 @@ public class GLScissorStack {
 	// ===========================================================
 
 	public GLScissorStack() {
+
 	}
 
 	// ===========================================================
@@ -53,19 +53,12 @@ public class GLScissorStack {
 	// ===========================================================
 
 	public int[] getScissor(final int[] pScissors) {
-		assertNoUnderflow();
+		if (this.mScissorStackOffset - GLScissorStack.GLSCISSOR_SIZE <= GLScissorStack.GLSCISSORSTACKOFFSET_UNDERFLOW) {
+			throw new GLScissorStackUnderflowException();
+		}
 
 		System.arraycopy(this.mScissorStack, this.mScissorStackOffset, pScissors, 0, GLScissorStack.GLSCISSOR_SIZE);
 		return pScissors;
-	}
-
-	public int[] getScissorTmp() {
-		getScissor(this.mTemp);
-		return this.mTemp;
-	}
-
-	protected int getStackDepth() {
-		return mScissorStackOffset / GLSCISSOR_SIZE;
 	}
 
 	// ===========================================================
@@ -76,90 +69,62 @@ public class GLScissorStack {
 	// Methods
 	// ===========================================================
 
-	public void glScissors(final int[] pScissors) {
-		GLES20.glScissor(pScissors[GLSCISSOR_X_POS], pScissors[GLSCISSOR_Y_POS], pScissors[GLSCISSOR_WIDTH_POS], pScissors[GLSCISSOR_HEIGHT_POS]);
-	}
-
-	public void glScissors(final int pX, final int pY, final int pWidth, final int pHeight) {
-		GLES20.glScissor(pX, pY, pWidth, pHeight);
-	}
-
-	public void glScissorPush(final int[] pScissors) {
-		if (getStackDepth() == 0) {
-			glScissors(pScissors);
-		} else {
-			/* take a union between old and new clip rect */
-			getScissor(mTemp);
-			final int x1 = Math.max(pScissors[GLSCISSOR_X_POS], mTemp[GLSCISSOR_X_POS]);
-			final int y1 = Math.max(pScissors[GLSCISSOR_Y_POS], mTemp[GLSCISSOR_Y_POS]);
-			final int x2 = Math.min(pScissors[GLSCISSOR_X_POS] + pScissors[GLSCISSOR_WIDTH_POS], mTemp[GLSCISSOR_X_POS] + mTemp[GLSCISSOR_WIDTH_POS]);
-			final int y2 = Math.min(pScissors[GLSCISSOR_Y_POS] + pScissors[GLSCISSOR_HEIGHT_POS], mTemp[GLSCISSOR_Y_POS] + mTemp[GLSCISSOR_HEIGHT_POS]);
-
-			final int w = Math.max(0, x2 - x1);
-			final int h = Math.max(0, y2 - y1);
-			glScissors(x1, y1, w, h);
-		}
-		pushScissor(pScissors);
-	}
-
-	public void glScissorPush(final int pX, final int pY, final int pWidth, final int pHeight) {
-		if (getStackDepth() == 0) {
-			glScissors(pX, pY, pWidth, pHeight);
-		} else {
-			/* take a union between old and new clip rect */
-			getScissor(mTemp);
-			final int x1 = Math.max(pX, mTemp[GLSCISSOR_X_POS]);
-			final int y1 = Math.max(pY, mTemp[GLSCISSOR_Y_POS]);
-			final int x2 = Math.min(pX + pWidth, mTemp[GLSCISSOR_X_POS] + mTemp[GLSCISSOR_WIDTH_POS]);
-			final int y2 = Math.min(pY + pHeight, mTemp[GLSCISSOR_Y_POS] + mTemp[GLSCISSOR_HEIGHT_POS]);
-
-			final int w = Math.max(0, x2 - x1);
-			final int h = Math.max(0, y2 - y1);
-			glScissors(x1, y1, w, h);
-		}
-		pushScissor(pX, pY, pWidth, pHeight);
-	}
-
-	public void glScissorPop() {
-		popScissor();
-		if (getStackDepth() > 0) {
-			getScissor(this.mTemp);
-			glScissors(this.mTemp);
-		}
-	}
-
-	protected void pushScissor(final int pX, final int pY, final int pWidth, final int pHeight) throws GLScissorStackOverflowException {
-		this.mTemp[GLSCISSOR_X_POS] = pX;
-		this.mTemp[GLSCISSOR_Y_POS] = pY;
-		this.mTemp[GLSCISSOR_WIDTH_POS] = pWidth;
-		this.mTemp[GLSCISSOR_HEIGHT_POS] = pHeight;
-
-		pushScissor(this.mTemp);
-	}
-
-	protected void pushScissor(final int[] pScissors) throws GLScissorStackOverflowException {
-		assertNoOverflow();
-
-		System.arraycopy(pScissors, 0, this.mScissorStack, this.mScissorStackOffset + GLScissorStack.GLSCISSOR_SIZE, GLScissorStack.GLSCISSOR_SIZE);
-		this.mScissorStackOffset += GLScissorStack.GLSCISSOR_SIZE;
-	}
-
-	protected void popScissor() {
-		assertNoUnderflow();
-
-		this.mScissorStackOffset -= GLScissorStack.GLSCISSOR_SIZE;
-	}
-
-	private void assertNoUnderflow() {
-		if (this.mScissorStackOffset - GLScissorStack.GLSCISSOR_SIZE <= GLScissorStack.GLSCISSORSTACKOFFSET_UNDERFLOW) {
-			throw new GLScissorStackUnderflowException();
-		}
-	}
-
-	private void assertNoOverflow() {
+	public void glPushScissor(final int pX, final int pY, final int pWidth, final int pHeight) {
 		if (this.mScissorStackOffset + GLScissorStack.GLSCISSOR_SIZE >= GLScissorStack.GLSCISSORSTACKOFFSET_OVERFLOW) {
 			throw new GLScissorStackOverflowException();
 		}
+
+		final int x;
+		final int y;
+		final int width;
+		final int height;
+		if (this.mScissorStackOffset == 0) {
+			x = pX;
+			y = pY;
+			width = pWidth;
+			height = pHeight;
+		} else {
+			/* Take the intersection between the current and the new scissor: */
+			final int currentX = this.mScissorStack[this.mScissorStackOffset - (GLSCISSOR_SIZE - GLSCISSOR_X_INDEX)];
+			final int currentY = this.mScissorStack[this.mScissorStackOffset - (GLSCISSOR_SIZE - GLSCISSOR_Y_INDEX)];
+			final int currentWidth = this.mScissorStack[this.mScissorStackOffset - (GLSCISSOR_SIZE - GLSCISSOR_WIDTH_INDEX)];
+			final int currentHeight = this.mScissorStack[this.mScissorStackOffset - (GLSCISSOR_SIZE - GLSCISSOR_HEIGHT_INDEX)];
+
+			final float xMin = Math.max(currentX, pX);
+			final float xMax = Math.min(currentX + currentWidth, pX + pWidth);
+
+			final float yMin = Math.max(currentY, pY);
+			final float yMax = Math.min(currentY + currentHeight, pY + pHeight);
+
+			x = (int) xMin;
+			y = (int) yMin;
+			width = (int) (xMax - xMin);
+			height = (int) (yMax - yMin);
+		}
+
+		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_X_INDEX] = pX;
+		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_Y_INDEX] = pY;
+		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_WIDTH_INDEX] = pWidth;
+		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_HEIGHT_INDEX] = pHeight;
+
+		GLES20.glScissor(x, y, width, height);
+
+		this.mScissorStackOffset += GLScissorStack.GLSCISSOR_SIZE;
+	}
+
+	public void glPopScissor() {
+		if (this.mScissorStackOffset - GLScissorStack.GLSCISSOR_SIZE <= GLScissorStack.GLSCISSORSTACKOFFSET_UNDERFLOW) {
+			throw new GLScissorStackUnderflowException();
+		}
+
+		this.mScissorStackOffset -= GLScissorStack.GLSCISSOR_SIZE;
+
+		final int x = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_X_INDEX];
+		final int y = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_Y_INDEX];
+		final int width = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_WIDTH_INDEX];
+		final int height = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_HEIGHT_INDEX];
+
+		GLES20.glScissor(x, y, width, height);
 	}
 
 	public void reset() {

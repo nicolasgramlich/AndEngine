@@ -98,13 +98,13 @@ public class ClipEntity extends Entity {
 			final int clippingHeight = maxClippingY - minClippingY;
 
 			/* Finally apply the clipping. */
-			pGLState.glScissorPush(minClippingX, minClippingY, clippingWidth, clippingHeight);
+			pGLState.glPushScissor(minClippingX, minClippingY, clippingWidth, clippingHeight);
 
 			/* Draw children, etc... */
 			super.onManagedDraw(pGLState, pCamera);
 
 			/* Revert scissor test to previous state. */
-			pGLState.glScissorPop();
+			pGLState.glPopScissor();
 			pGLState.setScissorTestEnabled(wasScissorTestEnabled);
 		} else {
 			super.onManagedDraw(pGLState, pCamera);

@@ -50,6 +50,10 @@ public class GLMatrixStack {
 	// ===========================================================
 
 	public void getMatrix(final float[] pMatrix) {
+		if (this.mMatrixStackOffset - GLMatrixStack.GLMATRIX_SIZE <= GLMatrixStack.GLMATRIXSTACKOFFSET_UNDERFLOW) {
+			throw new GLMatrixStackUnderflowException();
+		}
+
 		System.arraycopy(this.mMatrixStack, this.mMatrixStackOffset, pMatrix, 0, GLMatrixStack.GLMATRIX_SIZE);
 	}
 

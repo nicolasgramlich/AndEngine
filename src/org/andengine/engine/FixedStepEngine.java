@@ -32,6 +32,7 @@ public class FixedStepEngine extends Engine {
 
 	public FixedStepEngine(final EngineOptions pEngineOptions, final int pStepsPerSecond) {
 		super(pEngineOptions);
+
 		this.mStepLength = TimeConstants.NANOSECONDS_PER_SECOND / pStepsPerSecond;
 	}
 

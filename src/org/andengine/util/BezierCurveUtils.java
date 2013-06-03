@@ -77,8 +77,9 @@ public final class BezierCurveUtils {
 			float x = 0;
 			float y = 0;
 			for (int i = 0; i <= n; i++) {
-				x += pXs[i] * BezierCurveUtils.bernstein(t, i, n);
-				y += pYs[i] * BezierCurveUtils.bernstein(t, i, n);
+				final float bernstein = BezierCurveUtils.bernstein(t, i, n);
+				x += pXs[i] * bernstein;
+				y += pYs[i] * bernstein;
 			}
 
 			length += MathUtils.distance(lastX, lastY, x, y);

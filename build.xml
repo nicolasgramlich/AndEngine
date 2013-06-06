@@ -17,7 +17,7 @@
     <loadproperties srcFile="project.properties"/>
 
     <!-- Quick check if sdk.dir exists -->
-    <fail message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through the ANDROID_HOME environment variable." unless="sdk.dir" />
+    <fail message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through the ANDROID_HOME environment variable." unless="sdk.dir"/>
 
     <!-- Macros -->
     <macrodef name="property-require" description="Check if a property is set and not empty.">

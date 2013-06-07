@@ -187,6 +187,56 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	 * @param pY
 	 * @return a shared(!) float[] of length 2.
 	 */
+	public float[] convertLocalCoordinatesToParentCoordinates(final float pX, final float pY);
+	/**
+	 * @param pX
+	 * @param pY
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] convertLocalCoordinatesToParentCoordinates(final float pX, final float pY, final float[] pReuse);
+	/**
+	 * @param pCoordinates must be of length 2.
+	 * @return a shared(!) float[] of length 2.
+	 */
+	public float[] convertLocalCoordinatesToParentCoordinates(final float[] pCoordinates);
+	/**
+	 * @param pCoordinates must be of length 2.
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] convertLocalCoordinatesToParentCoordinates(final float[] pCoordinates, final float[] pReuse);
+
+	/**
+	 * @param pX
+	 * @param pY
+	 * @return a shared(!) float[] of length 2.
+	 */
+	public float[] convertParentCoordinatesToLocalCoordinates(final float pX, final float pY);
+	/**
+	 * @param pX
+	 * @param pY
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] convertParentCoordinatesToLocalCoordinates(final float pX, final float pY, final float[] pReuse);
+	/**
+	 * @param pCoordinates must be of length 2.
+	 * @return a shared(!) float[] of length 2.
+	 */
+	public float[] convertParentCoordinatesToLocalCoordinates(final float[] pCoordinates);
+	/**
+	 * @param pCoordinates must be of length 2.
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public float[] convertParentCoordinatesToLocalCoordinates(final float[] pCoordinates, final float[] pReuse);
+
+	/**
+	 * @param pX
+	 * @param pY
+	 * @return a shared(!) float[] of length 2.
+	 */
 	public float[] convertLocalCoordinatesToSceneCoordinates(final float pX, final float pY);
 	/**
 	 * @param pX

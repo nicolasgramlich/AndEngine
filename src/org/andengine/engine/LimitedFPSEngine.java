@@ -31,6 +31,7 @@ public class LimitedFPSEngine extends Engine {
 
 	public LimitedFPSEngine(final EngineOptions pEngineOptions, final int pFramesPerSecond) {
 		super(pEngineOptions);
+
 		this.mPreferredFrameLengthNanoseconds = TimeConstants.NANOSECONDS_PER_SECOND / pFramesPerSecond;
 	}
 

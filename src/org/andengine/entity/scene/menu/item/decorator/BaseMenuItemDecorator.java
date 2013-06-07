@@ -260,6 +260,16 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public float getRotationOffset() {
+		return this.mMenuItem.getRotationOffset();
+	}
+
+	@Override
+	public void setRotationOffset(final float pRotation) {
+		this.mMenuItem.setRotationOffset(pRotation);
+	}
+
+	@Override
 	public float getRotationCenterX() {
 		return this.mMenuItem.getRotationCenterX();
 	}

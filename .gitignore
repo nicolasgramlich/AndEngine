@@ -28,3 +28,6 @@ gdbserver
 # IntelliJ / Android Studio:
 idea/workspace.xml
 idea/tasks.xml
+
+# Crashlytics
+res/values/com_crashlytics_export_strings.xml

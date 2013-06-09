@@ -6,6 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -46,6 +49,8 @@ public class SecureSharedPreferences implements SharedPreferences {
 	protected final Cipher mEncryptCipher;
 	protected final Cipher mDecryptCipher;
 
+	protected final ReadWriteLock mReadWriteLock = new ReentrantReadWriteLock(true);
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -77,6 +82,14 @@ public class SecureSharedPreferences implements SharedPreferences {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+
+	public Lock getReadLock() {
+		return this.mReadWriteLock.readLock();
+	}
+
+	public Lock getWriteLock() {
+		return this.mReadWriteLock.writeLock();
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

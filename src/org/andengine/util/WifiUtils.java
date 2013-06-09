@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Enumeration;
 
 import org.andengine.util.adt.array.ArrayUtils;
-import org.andengine.util.debug.Debug;
 import org.andengine.util.exception.AndEngineException;
 import org.andengine.util.exception.MethodNotFoundException;
 import org.andengine.util.system.SystemUtils;
@@ -113,10 +112,6 @@ public final class WifiUtils {
 			return false;
 		} else {
 			final WifiManager wifiManager = WifiUtils.getWifiManager(pContext);
-			for (Method m : wifiManager.getClass().getMethods()) {
-				Debug.d("WifiManager." + m.getName());
-			}
-
 			try {
 				final Method WifiManager_isWifiApEnabled = wifiManager.getClass().getMethod("isWifiApEnabled");
 				return WifiManager_isWifiApEnabled != null;

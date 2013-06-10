@@ -398,11 +398,11 @@ public final class MathUtils {
 	}
 
 	public static final int factorial(final int n) {
-		if (n == 0 || n == 1) {
-			return 1;
-		} else {
-			return n * MathUtils.factorial(n - 1);
+		int result = 1;
+		for (int i = 1; i <= n; i++) {
+			result *= i;
 		}
+		return result;
 	}
 
 	// ===========================================================

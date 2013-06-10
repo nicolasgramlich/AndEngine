@@ -22,6 +22,8 @@ public final class BezierCurveUtils {
 
 	private static final int LENGTH_SAMPLES_DEFAULT = 10;
 
+	private static final float[] COORDINATES_TMP = new float[2];
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -50,7 +52,7 @@ public final class BezierCurveUtils {
 	 * Calculates the (x|y|z|...)-coordinate for the given control point (x|y|z|...)-coordinates at value <code>t</code>.
 	 *
 	 * @param t in the interval <code>[0, 1]</code>.
-	 * @param pControlPointCoordinates (x|y|z|...)-coordinates of the Bézier curve.
+	 * @param pControlPointCoordinates (x|y|z|...)-coordinates of control points of the Bézier curve.
 	 * @return
 	 */
 	public static final float getBezierCurveCoordinate(final float t, final float[] pControlPointCoordinates) {
@@ -60,6 +62,39 @@ public final class BezierCurveUtils {
 			result += pControlPointCoordinates[i] * BezierCurveUtils.getBernsteinPolynomial(t, i, n);
 		}
 		return result;
+	}
+
+	/**
+	 * Calculates the x/y-coordinate for the given control point x/y-coordinates at value <code>t</code>.
+	 *
+	 * @param t in the interval <code>[0, 1]</code>.
+	 * @param pXs x-coordinates of the control points of the Bézier curve.
+	 * @param pYs y-coordinates of the control points of the Bézier curve.
+	 * @return a shared(!) float[] of length 2.
+	 */
+	public static final float[] getBezierCurveCoordinates(final float t, final float[] pXs, final float[] pYs) {
+		return BezierCurveUtils.getBezierCurveCoordinates(t, pXs, pYs, COORDINATES_TMP);
+	}
+
+	/**
+	 * Calculates the x/y-coordinate for the given control point x/y-coordinates at value <code>t</code>.
+	 *
+	 * @param t in the interval <code>[0, 1]</code>.
+	 * @param pXs x-coordinates of the control points of the Bézier curve.
+	 * @param pYs y-coordinates of the control points of the Bézier curve.
+	 * @param pReuse must be of length 2.
+	 * @return <code>pReuse</code> as a convenience.
+	 */
+	public static final float[] getBezierCurveCoordinates(final float t, final float[] pXs, final float[] pYs, final float[] pReuse) {
+		final int n = pXs.length - 1;
+		pReuse[Constants.VERTEX_INDEX_X] = 0;
+		pReuse[Constants.VERTEX_INDEX_Y] = 0;
+		for (int i = 0; i <= n; i++) {
+			final float bernsteinPolynomial = BezierCurveUtils.getBernsteinPolynomial(t, i, n);
+			pReuse[Constants.VERTEX_INDEX_X] += pXs[i] * bernsteinPolynomial;
+			pReuse[Constants.VERTEX_INDEX_Y] += pYs[i] * bernsteinPolynomial;
+		}
+		return pReuse;
 	}
 
 	/**

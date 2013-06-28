@@ -90,16 +90,27 @@ public class GLScissorStack {
 			final int currentWidth = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_WIDTH_INDEX];
 			final int currentHeight = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_HEIGHT_INDEX];
 
-			final float xMin = Math.max(currentX, pX);
-			final float xMax = Math.min(currentX + currentWidth, pX + pWidth);
+			final int xMin = Math.max(currentX, pX);
+			final int xMax = Math.min(currentX + currentWidth, pX + pWidth);
 
-			final float yMin = Math.max(currentY, pY);
-			final float yMax = Math.min(currentY + currentHeight, pY + pHeight);
+			final int yMin = Math.max(currentY, pY);
+			final int yMax = Math.min(currentY + currentHeight, pY + pHeight);
 
-			x = (int) xMin;
-			y = (int) yMin;
-			width = (int) (xMax - xMin);
-			height = (int) (yMax - yMin);
+			if (xMax > xMin) {
+				x = xMin;
+				width = xMax - xMin;
+			} else {
+				x = pX;
+				width = 0;
+			}
+
+			if (yMax > yMin) {
+				y = yMin;
+				height = yMax - yMin;
+			} else {
+				y = pY;
+				height = 0;
+			}
 		}
 
 		this.mScissorStackOffset += GLScissorStack.GLSCISSOR_SIZE;

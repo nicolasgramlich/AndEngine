@@ -372,7 +372,9 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 		BaseGameActivity.this.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				BaseGameActivity.this.onResumeGame();
+				if (!BaseGameActivity.this.isFinishing()) {
+					BaseGameActivity.this.onResumeGame();
+				}
 			}
 		});
 	}

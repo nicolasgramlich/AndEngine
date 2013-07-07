@@ -1,16 +1,13 @@
-package org.andengine.util.algorithm.path.astar;
-
-import org.andengine.util.algorithm.path.IPathFinderMap;
-import org.andengine.util.metric.EuclideanMetric;
+package org.andengine.util.metric;
 
 /**
- * (c) 2010 Nicolas Gramlich 
- * (c) 2011 Zynga Inc.
- * 
- * @author Nicolas Gramlich
- * @since 22:58:01 - 16.08.2010
+ * (c) winniehell (2012)
+ *
+ * @author <a href="https://github.com/winniehell">winniehell</a>
+ * @since 2012-08-05
  */
-public class EuclideanHeuristic<T> implements IAStarHeuristic<T> {
+public final class CosineMetric {
+
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,9 +28,23 @@ public class EuclideanHeuristic<T> implements IAStarHeuristic<T> {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public float getExpectedRestCost(final IPathFinderMap<T> pPathFinderMap, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY) {
-		return EuclideanMetric.distance(pFromX, pToY, pToX, pToY);
+	/** @return cosine distance between pX1 and pX2 */
+	public static float distance(final float pX1, final float pX2) {
+		return Math.abs(pX1 - pX2);
+	}
+
+	/** @return cosine distance between (pX1, pY2) and (pX2, pY2) */
+	public static float distance(final float pX1, final float pY1,
+	                            final float pX2, final float pY2) {
+		final float d1 = EuclideanMetric.displacement(pX1, pY1);
+		final float d2 = EuclideanMetric.displacement(pX2, pY2);
+
+		return ((pX1*pX2) + (pY1*pY2))/(d1*d2);
+	}
+
+	/** @return cosine distance between (pX1, pY2) and origin (0,0) */
+	public static float displacement(final float pX, final float pY) {
+		return Math.max(Math.abs(pX), Math.abs(pY));
 	}
 
 	// ===========================================================

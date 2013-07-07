@@ -1,6 +1,7 @@
 package org.andengine.util.algorithm.path.astar;
 
 import org.andengine.util.algorithm.path.IPathFinderMap;
+import org.andengine.util.metric.ManhattanMetric;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -32,7 +33,7 @@ public class ManhattanHeuristic<T> implements IAStarHeuristic<T> {
 
 	@Override
 	public float getExpectedRestCost(final IPathFinderMap<T> pPathFinderMap, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY) {
-		return Math.abs(pFromX - pToX) + Math.abs(pToX - pToY);
+		return ManhattanMetric.distance(pFromX, pToY, pToX, pToY);
 	}
 
 	// ===========================================================

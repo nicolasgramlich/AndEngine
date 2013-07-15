@@ -30,6 +30,10 @@ public class BluetoothException extends AndEngineException {
 		super(pMessage);
 	}
 
+	public BluetoothException(final Throwable pThrowable) {
+		super(pThrowable);
+	}
+
 	public BluetoothException(final String pMessage, final Throwable pThrowable) {
 		super(pMessage, pThrowable);
 	}

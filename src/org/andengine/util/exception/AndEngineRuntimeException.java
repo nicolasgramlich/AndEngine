@@ -21,7 +21,6 @@ public class AndEngineRuntimeException extends RuntimeException {
 	// Constructors
 	// ===========================================================
 
-
 	public AndEngineRuntimeException() {
 		super();
 	}

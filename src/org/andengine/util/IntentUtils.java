@@ -52,7 +52,7 @@ public final class IntentUtils {
 	// Inner and Anonymous Classes
 	// ===========================================================
 
-	public class IntentNotResolveableException extends AndEngineException {
+	public static class IntentNotResolveableException extends AndEngineException {
 		// ===========================================================
 		// Constants
 		// ===========================================================

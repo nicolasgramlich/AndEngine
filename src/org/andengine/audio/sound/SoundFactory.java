@@ -44,7 +44,7 @@ public final class SoundFactory {
 		if (pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
 			SoundFactory.sAssetBasePath = pAssetBasePath;
 		} else {
-			throw new IllegalStateException("pAssetBasePath must end with '/' or be lenght zero.");
+			throw new IllegalStateException("pAssetBasePath must end with '/' or be length zero.");
 		}
 	}
 

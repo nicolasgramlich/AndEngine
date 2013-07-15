@@ -54,7 +54,7 @@ public final class BitmapTextureAtlasTextureRegionFactory {
 		if (pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
 			BitmapTextureAtlasTextureRegionFactory.sAssetBasePath = pAssetBasePath;
 		} else {
-			throw new IllegalArgumentException("pAssetBasePath must end with '/' or be lenght zero.");
+			throw new IllegalArgumentException("pAssetBasePath must end with '/' or be length zero.");
 		}
 	}
 

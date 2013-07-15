@@ -48,7 +48,7 @@ public final class MusicFactory {
 		if (pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
 			MusicFactory.sAssetBasePath = pAssetBasePath;
 		} else {
-			throw new IllegalStateException("pAssetBasePath must end with '/' or be lenght zero.");
+			throw new IllegalStateException("pAssetBasePath must end with '/' or be length zero.");
 		}
 	}
 

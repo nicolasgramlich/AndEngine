@@ -218,6 +218,23 @@ public final class TextUtils {
 		return stringBuilder.toString();
 	}
 
+	public static final String ellipsize(final String pText, final String pEllipsis, final int pMaxLength) throws IllegalArgumentException {
+		final int textLength = pText.length();
+		if (textLength > pMaxLength) {
+			final int ellipsisLength = pEllipsis.length();
+			if (ellipsisLength > pMaxLength) {
+				throw new IllegalArgumentException("pMaxLength: '" + pMaxLength + "' isn't long enough for pEllipsis: '" + pEllipsis + "'.");
+			} else {
+				final StringBuilder result = new StringBuilder();
+				result.append(pText.substring(0, pMaxLength - ellipsisLength));
+				result.append(pEllipsis);
+				return result.toString();
+			}
+		} else {
+			return pText;
+		}
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

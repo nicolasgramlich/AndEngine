@@ -97,7 +97,7 @@ public class AnimatedSprite extends TiledSprite {
 		return this.mAnimationRunning;
 	}
 	
-	public AnimationData getData() {
+	public IAnimationData getData() {
 		return this.mAnimationData;
 	}
 

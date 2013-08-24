@@ -274,7 +274,7 @@ public class AnimationData implements IAnimationData {
 	// Methods
 	// ===========================================================
 
-	private static long[] fillFrameDurations(final long pFrameDurationEach, final int pFrameCount) {
+	public static long[] fillFrameDurations(final long pFrameDurationEach, final int pFrameCount) {
 		final long[] frameDurations = new long[pFrameCount];
 		Arrays.fill(frameDurations, pFrameDurationEach);
 		return frameDurations;

@@ -610,8 +610,8 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			engineLock.waitUntilCanDraw();
 
 			this.mVertexBufferObjectManager.updateVertexBufferObjects(pGLState);
-			this.mTextureManager.updateTextures(pGLState);
 			this.mFontManager.updateFonts(pGLState);
+			this.mTextureManager.updateTextures(pGLState);
 
 			this.onUpdateDrawHandlers(pGLState, this.mCamera);
 			this.onDrawScene(pGLState, this.mCamera);

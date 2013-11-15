@@ -9,7 +9,6 @@ import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.audio.sound.SoundManager;
-import org.andengine.audio.sound.exception.SoundException;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.DrawHandlerList;
 import org.andengine.engine.handler.IDrawHandler;
@@ -56,6 +55,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.Display;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
@@ -116,6 +116,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	private IAccelerationListener mAccelerationListener;
 	private AccelerationData mAccelerationData;
 
+	private OrientationEventListener mOrientationEventListener;
 	private IOrientationListener mOrientationListener;
 	private OrientationData mOrientationData;
 
@@ -364,17 +365,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 			switch (sensorType) {
 				case Sensor.TYPE_ACCELEROMETER:
 					if (this.mAccelerationData != null) {
-						this.mAccelerationData.setDisplayRotation(this.getDisplayOrientation());
 						this.mAccelerationData.setValues(pEvent.values);
 						this.mAccelerationListener.onAccelerationChanged(this.mAccelerationData);
 					} else if (this.mOrientationData != null) {
-						this.mOrientationData.setDisplayRotation(this.getDisplayOrientation());
 						this.mOrientationData.setAccelerationValues(pEvent.values);
 						this.mOrientationListener.onOrientationChanged(this.mOrientationData);
 					}
 					break;
 				case Sensor.TYPE_MAGNETIC_FIELD:
-					this.mOrientationData.setDisplayRotation(this.getDisplayOrientation());
 					this.mOrientationData.setMagneticFieldValues(pEvent.values);
 					this.mOrientationListener.onOrientationChanged(this.mOrientationData);
 					break;
@@ -756,6 +754,14 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 				this.mOrientationData = new OrientationData();
 			}
 
+			this.mOrientationEventListener = new OrientationEventListener(pContext, SensorManager.SENSOR_DELAY_GAME) {
+				@Override
+				public void onOrientationChanged(int orientation) {
+					Engine.this.mOrientationData.setDisplayRotation(orientation);
+				}
+			};
+			this.mOrientationEventListener.enable();
+
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_ACCELEROMETER, pOrientationSensorOptions.getSensorDelay());
 			this.registerSelfAsSensorListener(sensorManager, Sensor.TYPE_MAGNETIC_FIELD, pOrientationSensorOptions.getSensorDelay());
 
@@ -803,14 +809,6 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 
 	private void releaseDefaultDisplay() {
 		this.mDefaultDisplay = null;
-	}
-
-	private int getDisplayOrientation() {
-		if (this.mDefaultDisplay == null) {
-			throw new IllegalStateException();
-		} else {
-			return this.mDefaultDisplay.getOrientation();
-		}
 	}
 
 	// ===========================================================

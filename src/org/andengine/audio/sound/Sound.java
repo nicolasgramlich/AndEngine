@@ -86,7 +86,7 @@ public class Sound extends BaseAudioEntity {
 		return this.mPriority;
 	}
 
-	public void setPrioriyt(final int pPriority) throws SoundReleasedException {
+	public void setPriority(final int pPriority) throws SoundReleasedException {
 		this.assertNotReleased();
 
 		this.mPriority = pPriority;

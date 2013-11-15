@@ -32,7 +32,7 @@ public class ManhattanHeuristic<T> implements IAStarHeuristic<T> {
 
 	@Override
 	public float getExpectedRestCost(final IPathFinderMap<T> pPathFinderMap, final T pEntity, final int pFromX, final int pFromY, final int pToX, final int pToY) {
-		return Math.abs(pFromX - pToX) + Math.abs(pToX - pToY);
+		return Math.abs(pFromX - pToX) + Math.abs(pFromY - pToY);
 	}
 
 	// ===========================================================

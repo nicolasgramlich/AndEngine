@@ -54,6 +54,10 @@ public class ScrollDetector extends BaseDetector {
 	public void setTriggerScrollMinimumDistance(final float pTriggerScrollMinimumDistance) {
 		this.mTriggerScrollMinimumDistance = pTriggerScrollMinimumDistance;
 	}
+	
+	public boolean isScrolling() {
+		return mTriggering;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

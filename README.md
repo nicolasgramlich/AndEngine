@@ -1,5 +1,10 @@
 # AndEngine
 
+## Donations
+![Bitcoin](http://www.andengine.org/donate/bitcoin_16x16.png "Donate via Bitcoin")
+Bitcoin: [`1run6zViD16j2rP9evpayu8FqQ6mcRDqi`][URI_Bitcoin_Wallet] ![Bitcoin Wallet](http://coinwidget.com/widget/icon_wallet.png "Bitcoin Wallet")
+
+
 ## Building
 
 ### Eclipse
@@ -76,3 +81,5 @@ public final class BuildConfig {
 [URI_AndEngineSVGTextureRegionExtension]: https://github.com/nicolasgramlich/AndEngineSVGTextureRegionExtension
 [URI_AndEngineTexturePackerExtension]: https://github.com/nicolasgramlich/AndEngineTexturePackerExtension
 [URI_AndEngineTMXTiledMapExtension]: https://github.com/nicolasgramlich/AndEngineTMXTiledMapExtension
+
+[URI_Bitcoin_Wallet]: bitcoin:1run6zViD16j2rP9evpayu8FqQ6mcRDqi

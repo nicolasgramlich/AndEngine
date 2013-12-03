@@ -11,9 +11,13 @@ The easiest way of donating is via Bitcoin to the AndEngine funds wallet address
 ![Bitcoin](http://www.andengine.org/donate/bitcoin_16x16.png "Donate via Bitcoin")
 Bitcoin Wallet Address: ``1run6zViD16j2rP9evpayu8FqQ6mcRDqi`` ![Bitcoin Wallet](http://www.andengine.org/donate/bitcoin_wallet.png "Bitcoin Wallet")
 
-Thank you,
+### PayPal
+Donation Email: donate@andengine.org
 
-Nicolas Gramlich
+
+Thank you!
+
+/Nicolas Gramlich
 
 
 ## Building

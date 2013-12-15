@@ -1,4 +1,3 @@
-
 package org.andengine.input.touch.detector;
 
 import org.andengine.input.touch.TouchEvent;
@@ -54,10 +53,6 @@ public class ScrollDetector extends BaseDetector {
 
 	public void setTriggerScrollMinimumDistance(final float pTriggerScrollMinimumDistance) {
 		this.mTriggerScrollMinimumDistance = pTriggerScrollMinimumDistance;
-	}
-	
-	public boolean isScrolling() {
-		return mTriggering;
 	}
 
 	// ===========================================================

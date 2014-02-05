@@ -56,6 +56,26 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 			return super.add(pModifier);
 		}
 	}
+	
+    @Override
+    public void clear() {
+    	final int modifierCount = this.size();
+		if(modifierCount > 0) {
+			for(int i = modifierCount - 1; i >= 0; i--) {
+				final IModifier<T> modifier = this.get(i);
+				modifier.onUnregister(this.mTarget);
+			}
+		}
+		super.clear();
+    }
+	
+	@Override
+	public boolean remove(final Object pObject) {
+		@SuppressWarnings("unchecked")
+		final IModifier<T> modifier = (IModifier<T>) pObject;
+		modifier.onUnregister(this.mTarget);
+		return super.remove(pObject);
+	}
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
@@ -66,6 +86,7 @@ public class ModifierList<T> extends SmartList<IModifier<T>> implements IUpdateH
 				modifier.onUpdate(pSecondsElapsed, this.mTarget);
 				if(modifier.isFinished() && modifier.isAutoUnregisterWhenFinished()) {
 					this.remove(i);
+					modifier.onUnregister(this.mTarget);
 				}
 			}
 		}

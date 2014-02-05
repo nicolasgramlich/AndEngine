@@ -204,13 +204,17 @@ public class Sprite extends RectangularShape {
 		this.mSpriteVertexBufferObject.onUpdateColor(this);
 	}
 
-	protected void onUpdateTextureCoordinates() {
-		this.mSpriteVertexBufferObject.onUpdateTextureCoordinates(this);
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	protected void onUpdateTextureCoordinates() {
+		this.mSpriteVertexBufferObject.onUpdateTextureCoordinates(this);
+	}
+	
+	public void markTextureRegionChanged() {
+		onUpdateTextureCoordinates();
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

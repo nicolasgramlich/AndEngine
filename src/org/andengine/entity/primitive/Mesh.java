@@ -65,6 +65,13 @@ public class Mesh extends Shape {
 	public Mesh(final float pX, final float pY, final float[] pBufferData, final int pVertexCount, final DrawMode pDrawMode, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
 		this(pX, pY, pVertexCount, pDrawMode, new HighPerformanceMeshVertexBufferObject(pVertexBufferObjectManager, pBufferData, pVertexCount, pDrawType, true, Mesh.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
 	}
+	
+	/**
+	 * Uses a default {@link HighPerformanceMeshVertexBufferObject} with the {@link VertexBufferObjectAttribute}s: {@link Mesh#VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT}.
+	 */
+	public Mesh(final float pX, final float pY, final float[] pVertexX, final float[] pVertexY, final DrawMode pDrawMode, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+		this(pX, pY, pVertexX.length, pDrawMode, new HighPerformanceMeshVertexBufferObject(pVertexBufferObjectManager, buildVertexList(pVertexX, pVertexY), pVertexX.length, pDrawType, true, Mesh.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT));
+	}
 
 	public Mesh(final float pX, final float pY, final int pVertexCount, final DrawMode pDrawMode, final IMeshVertexBufferObject pMeshVertexBufferObject) {
 		super(pX, pY, PositionColorShaderProgram.getInstance());
@@ -155,6 +162,24 @@ public class Mesh extends Shape {
 	// Methods
 	// ===========================================================
 
+	protected static float[] buildVertexList(float[] pVertexX, float[] pVertexY)
+	{
+		assert( pVertexX.length == pVertexY.length );
+		
+		float[] bufferData = new float[VERTEX_SIZE * pVertexX.length];
+		updateVertexList(pVertexX, pVertexY, bufferData);
+		return bufferData;
+	}
+	
+	protected static void updateVertexList(float[] pVertexX, float[] pVertexY, float[] pBufferData)
+	{
+		for( int i = 0; i < pVertexX.length; i++)
+		{
+			pBufferData[(i * Mesh.VERTEX_SIZE) + Mesh.VERTEX_INDEX_X] = pVertexX[i];
+			pBufferData[(i * Mesh.VERTEX_SIZE) + Mesh.VERTEX_INDEX_Y] = pVertexY[i];
+		}
+	}
+	
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

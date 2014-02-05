@@ -20,16 +20,22 @@ public abstract class BaseTextureAtlasSource implements ITextureAtlasSource {
 	protected int mTextureY;
 	protected int mTextureWidth;
 	protected int mTextureHeight;
+	protected int mSampleSize;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public BaseTextureAtlasSource(final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+	public BaseTextureAtlasSource(final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight, final int pSampleSize) {
 		this.mTextureX = pTextureX;
 		this.mTextureY = pTextureY;
 		this.mTextureWidth = pTextureWidth;
 		this.mTextureHeight = pTextureHeight;
+		this.mSampleSize = pSampleSize;
+	}
+	
+	public BaseTextureAtlasSource(final int pTextureX, final int pTextureY, final int pTextureWidth, final int pTextureHeight) {
+		this(pTextureX, pTextureY, pTextureWidth, pTextureHeight, 1);
 	}
 
 	// ===========================================================
@@ -79,6 +85,11 @@ public abstract class BaseTextureAtlasSource implements ITextureAtlasSource {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public int getSampleSize() {
+		return mSampleSize;
+	}
 
 	@Override
 	public String toString() {

@@ -96,6 +96,10 @@ public class AnimatedSprite extends TiledSprite {
 	public boolean isAnimationRunning() {
 		return this.mAnimationRunning;
 	}
+	
+	public IAnimationData getData() {
+		return this.mAnimationData;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

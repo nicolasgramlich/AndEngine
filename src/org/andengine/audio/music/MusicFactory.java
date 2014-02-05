@@ -7,9 +7,10 @@ import java.io.IOException;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
 
 /**
- * (c) 2010 Nicolas Gramlich 
+ * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
@@ -64,7 +65,9 @@ public class MusicFactory {
 	public static Music createMusicFromFile(final MusicManager pMusicManager, final File pFile) throws IOException {
 		final MediaPlayer mediaPlayer = new MediaPlayer();
 
-		mediaPlayer.setDataSource(new FileInputStream(pFile).getFD());
+		final FileInputStream fileInputStream = new FileInputStream(pFile);
+		mediaPlayer.setDataSource(fileInputStream.getFD());
+		fileInputStream.close();
 		mediaPlayer.prepare();
 
 		final Music music = new Music(pMusicManager, mediaPlayer);
@@ -78,12 +81,45 @@ public class MusicFactory {
 
 		final AssetFileDescriptor assetFileDescritor = pContext.getAssets().openFd(MusicFactory.sAssetBasePath + pAssetPath);
 		mediaPlayer.setDataSource(assetFileDescritor.getFileDescriptor(), assetFileDescritor.getStartOffset(), assetFileDescritor.getLength());
+		assetFileDescritor.close();
 		mediaPlayer.prepare();
 
 		final Music music = new Music(pMusicManager, mediaPlayer);
 		pMusicManager.add(music);
 
 		return music;
+	}
+	
+	public static void createMusicFromAssetAsync(final MusicManager pMusicManager, final Context pContext, final String pAssetPath, final IMusicLoadedListener pListener) throws IOException {
+		final MediaPlayer mediaPlayer = new MediaPlayer();
+		mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+			@Override
+			public boolean onError(final MediaPlayer player, final int what, final int extra) {
+				boolean managed = false;
+				if (pListener != null) {
+					managed = pListener.onError(player, what, extra);
+				}
+				return managed;
+			}
+		});
+		
+		mediaPlayer.setOnPreparedListener(new OnPreparedListener() {
+		    @Override
+			public void onPrepared(final MediaPlayer player) {
+		    	final Music music = new Music(pMusicManager, mediaPlayer);
+				pMusicManager.add(music);
+				if (pListener != null) {
+					pListener.onMusicLoaded(music);
+				}
+		    }
+		});
+
+		final AssetFileDescriptor assetFileDescritor = pContext.getAssets().openFd(MusicFactory.sAssetBasePath + pAssetPath);
+		if (assetFileDescritor != null) {
+			mediaPlayer.setDataSource(assetFileDescritor.getFileDescriptor(), assetFileDescritor.getStartOffset(), assetFileDescritor.getLength());
+			assetFileDescritor.close();
+			mediaPlayer.prepareAsync();
+		}
 	}
 
 	public static Music createMusicFromResource(final MusicManager pMusicManager, final Context pContext, final int pMusicResID) throws IOException {
@@ -98,7 +134,7 @@ public class MusicFactory {
 
 	public static Music createMusicFromAssetFileDescriptor(final MusicManager pMusicManager, final AssetFileDescriptor pAssetFileDescriptor) throws IOException {
 		final MediaPlayer mediaPlayer = new MediaPlayer();
-
+		
 		mediaPlayer.setDataSource(pAssetFileDescriptor.getFileDescriptor(), pAssetFileDescriptor.getStartOffset(), pAssetFileDescriptor.getLength());
 		mediaPlayer.prepare();
 
@@ -111,4 +147,11 @@ public class MusicFactory {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	public interface IMusicLoadedListener {
+		/**
+		 * @see {@link android.media.MediaPlayer.OnErrorListener#onError(MediaPlayer, int, int)}
+		 */
+		boolean onError(final MediaPlayer player, final int what, final int extra);
+		void onMusicLoaded(final Music pMusic);
+	}
 }

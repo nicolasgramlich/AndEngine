@@ -63,6 +63,8 @@ public class Text extends RectangularShape {
 
 	protected final IFont mFont;
 
+	protected float mBaseX;
+	protected float mBaseY;
 	protected float mLineWidthMaximum;
 	protected float mLineAlignmentWidth;
 
@@ -149,6 +151,8 @@ public class Text extends RectangularShape {
 	public Text(final float pX, final float pY, final IFont pFont, final CharSequence pText, final int pCharactersMaximum, final TextOptions pTextOptions, final ITextVertexBufferObject pTextVertexBufferObject, final ShaderProgram pShaderProgram) {
 		super(pX, pY, 0, 0, pShaderProgram);
 
+		this.mBaseX = pX;
+		this.mBaseY = pY;
 		this.mFont = pFont;
 		this.mTextOptions = pTextOptions;
 		this.mCharactersMaximum = pCharactersMaximum;
@@ -220,6 +224,22 @@ public class Text extends RectangularShape {
 		this.mScaleCenterX = this.mRotationCenterX;
 		this.mScaleCenterY = this.mRotationCenterY;
 
+		switch (mTextOptions.mHorizontalAlign) {
+			case LEFT:
+				super.mX = this.mBaseX;
+				super.mY = this.mBaseY;
+				break;
+
+			case RIGHT:
+				super.mX = this.mBaseX - this.mWidth;
+				super.mY = this.mBaseY;
+				break;
+
+			case CENTER:
+				super.mX = this.mBaseX - this.mWidth / 2;
+				super.mY = this.mBaseY;
+				break;
+		}
 		this.onUpdateVertices();
 	}
 

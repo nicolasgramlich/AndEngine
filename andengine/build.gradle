@@ -25,7 +25,3 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 }
-
-artifacts {
-    archives file('build/libs/andengine.aar')
-}

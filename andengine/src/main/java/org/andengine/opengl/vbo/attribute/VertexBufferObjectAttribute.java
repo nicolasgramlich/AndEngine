@@ -1,5 +1,6 @@
 package org.andengine.opengl.vbo.attribute;
 
+import android.annotation.TargetApi;
 import android.opengl.GLES20;
 
 /**
@@ -69,6 +70,7 @@ public class VertexBufferObjectAttribute {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+    @TargetApi(9)
 	public void glVertexAttribPointer(final int pStride) {
 		GLES20.glVertexAttribPointer(this.mLocation, this.mSize, this.mType, this.mNormalized, pStride, this.mOffset);
 	}

@@ -21,6 +21,10 @@ doc/**
 gen/**
 gdb.setup
 gdbserver
+build
+*.iml
+.gradle
+.idea
 
 # Eclipse:
 .settings

@@ -197,6 +197,27 @@ public class PriorityBlockingAggregatorQueue<T> {
 		}
 	}
 
+//	public T peek(final int pPriority) {
+//		final ReentrantLock lock = this.mLock;
+//		lock.lock();
+//
+//		try {
+//			final IList<T> queue = this.mQueues.get(pPriority);
+//			if (queue == null) {
+//				throw new IllegalArgumentException("No queue found for pPriority: '" + pPriority + "'.");
+//			}
+//			final int queueCapacity = this.mQueueCapacities.get(pPriority);
+//
+//			if (queueCapacity == 0) {
+//				return null;
+//			} else {
+//				return queue.get(0);
+//			}
+//		} finally {
+//			lock.unlock();
+//		}
+//	}
+
 	public T poll() {
 		final ReentrantLock lock = this.mLock;
 		lock.lock();
@@ -211,6 +232,22 @@ public class PriorityBlockingAggregatorQueue<T> {
 			lock.unlock();
 		}
 	}
+
+//	public T poll(final int pPriority) {
+//		final ReentrantLock lock = this.mLock;
+//		lock.lock();
+//
+//		try {
+//			final int queueCapacity = this.mQueueCapacities.get(pPriority, -1);
+//			if (queueCapacity == 0) {
+//				return null;
+//			} else {
+//				return this.extract(pPriority);
+//			}
+//		} finally {
+//			lock.unlock();
+//		}
+//	}
 
 	public T take() throws InterruptedException {
 		final ReentrantLock lock = this.mLock;
@@ -231,6 +268,31 @@ public class PriorityBlockingAggregatorQueue<T> {
 			lock.unlock();
 		}
 	}
+
+//	public T take(final int pPriority) throws InterruptedException {
+//		final ReentrantLock lock = this.mLock;
+//		lock.lockInterruptibly();
+//
+//		try {
+//			final IList<T> queue = this.mQueues.get(pPriority);
+//			if (queue == null) {
+//				throw new IllegalArgumentException("No queue found for pPriority: '" + pPriority + "'.");
+//			}
+//
+//			try {
+//				while (queue.size() == 0) {
+//					this.mNotEmptyCondition.await();
+//				}
+//			} catch (final InterruptedException e) {
+//				/* Propagate to non-interrupted thread. */
+//				this.mNotEmptyCondition.signal();
+//				throw e;
+//			}
+//			return this.extract(pPriority);
+//		} finally {
+//			lock.unlock();
+//		}
+//	}
 
 	/**
 	 * Inserts the specified element at the tail of this queue with the given priority, waiting for space to become available if the queue is full.

@@ -85,31 +85,42 @@ public class GLScissorStack {
 			height = pHeight;
 		} else {
 			/* Take the intersection between the current and the new scissor: */
-			final int currentX = this.mScissorStack[this.mScissorStackOffset - (GLSCISSOR_SIZE - GLSCISSOR_X_INDEX)];
-			final int currentY = this.mScissorStack[this.mScissorStackOffset - (GLSCISSOR_SIZE - GLSCISSOR_Y_INDEX)];
-			final int currentWidth = this.mScissorStack[this.mScissorStackOffset - (GLSCISSOR_SIZE - GLSCISSOR_WIDTH_INDEX)];
-			final int currentHeight = this.mScissorStack[this.mScissorStackOffset - (GLSCISSOR_SIZE - GLSCISSOR_HEIGHT_INDEX)];
+			final int currentX = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_X_INDEX];
+			final int currentY = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_Y_INDEX];
+			final int currentWidth = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_WIDTH_INDEX];
+			final int currentHeight = this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_HEIGHT_INDEX];
 
-			final float xMin = Math.max(currentX, pX);
-			final float xMax = Math.min(currentX + currentWidth, pX + pWidth);
+			final int xMin = Math.max(currentX, pX);
+			final int xMax = Math.min(currentX + currentWidth, pX + pWidth);
 
-			final float yMin = Math.max(currentY, pY);
-			final float yMax = Math.min(currentY + currentHeight, pY + pHeight);
+			final int yMin = Math.max(currentY, pY);
+			final int yMax = Math.min(currentY + currentHeight, pY + pHeight);
 
-			x = (int) xMin;
-			y = (int) yMin;
-			width = (int) (xMax - xMin);
-			height = (int) (yMax - yMin);
+			if (xMax > xMin) {
+				x = xMin;
+				width = xMax - xMin;
+			} else {
+				x = pX;
+				width = 0;
+			}
+
+			if (yMax > yMin) {
+				y = yMin;
+				height = yMax - yMin;
+			} else {
+				y = pY;
+				height = 0;
+			}
 		}
 
-		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_X_INDEX] = pX;
-		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_Y_INDEX] = pY;
-		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_WIDTH_INDEX] = pWidth;
-		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_HEIGHT_INDEX] = pHeight;
+		this.mScissorStackOffset += GLScissorStack.GLSCISSOR_SIZE;
+
+		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_X_INDEX] = x;
+		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_Y_INDEX] = y;
+		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_WIDTH_INDEX] = width;
+		this.mScissorStack[this.mScissorStackOffset + GLSCISSOR_HEIGHT_INDEX] = height;
 
 		GLES20.glScissor(x, y, width, height);
-
-		this.mScissorStackOffset += GLScissorStack.GLSCISSOR_SIZE;
 	}
 
 	public void glPopScissor() {

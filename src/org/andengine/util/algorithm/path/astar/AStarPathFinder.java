@@ -77,6 +77,10 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		while (openNodes.size() > 0) {
 			/* The first Node in the open list is the one with the lowest cost. */
 			currentNode = sortedOpenNodes.poll();
+			if (currentNode == null) {
+				break;
+			}
+			
 			final long currentNodeID = currentNode.mID;
 			if (currentNodeID == toNodeID) {
 				break;
@@ -151,7 +155,7 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 		sortedOpenNodes.clear();
 
 		/* Check if a path was found. */
-		if (currentNode.mID != toNodeID) {
+		if (currentNode == null || currentNode.mID != toNodeID) {
 			return null;
 		}
 

@@ -37,6 +37,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public static final float OFFSET_CENTER_Y_DEFAULT = 0.5f;
 
 	public static final float ROTATION_DEFAULT = 0;
+	public static final float ROTATION_OFFSET_DEFAULT = 0;
 	public static final float ROTATION_CENTER_X_DEFAULT = 0.5f;
 	public static final float ROTATION_CENTER_Y_DEFAULT = 0.5f;
 
@@ -115,6 +116,8 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable, ITou
 	public boolean isRotated();
 	public float getRotation();
 	public void setRotation(final float pRotation);
+	public float getRotationOffset();
+	public void setRotationOffset(final float pRotationOffset);
 
 	public float getRotationCenterX();
 	public float getRotationCenterY();

@@ -86,6 +86,7 @@ public class Entity implements IEntity {
 	protected float mHeight;
 
 	protected float mRotation = IEntity.ROTATION_DEFAULT;
+	protected float mRotationOffset = IEntity.ROTATION_OFFSET_DEFAULT;
 
 	protected float mRotationCenterX = IEntity.ROTATION_CENTER_X_DEFAULT;
 	protected float mRotationCenterY = IEntity.ROTATION_CENTER_Y_DEFAULT;
@@ -419,6 +420,16 @@ public class Entity implements IEntity {
 
 		this.mLocalToParentTransformationDirty = true;
 		this.mParentToLocalTransformationDirty = true;
+	}
+
+	@Override
+	public float getRotationOffset() {
+		return this.mRotationOffset;
+	}
+
+	@Override
+	public void setRotationOffset(final float pRotationOffset) {
+		this.mRotationOffset = pRotationOffset;
 	}
 
 	@Override
@@ -1414,6 +1425,7 @@ public class Entity implements IEntity {
 		this.mChildrenVisible = true;
 		this.mChildrenIgnoreUpdate = false;
 
+		this.mRotationOffset = IEntity.ROTATION_OFFSET_DEFAULT;
 		this.mRotation = 0;
 		this.mScaleX = 1;
 		this.mScaleY = 1;
@@ -1550,7 +1562,7 @@ public class Entity implements IEntity {
 	}
 
 	protected void applyRotation(final GLState pGLState) {
-		final float rotation = this.mRotation;
+		final float rotation = this.mRotation + this.mRotationOffset;
 
 		if (rotation != 0) {
 			final float localRotationCenterX = this.mLocalRotationCenterX;

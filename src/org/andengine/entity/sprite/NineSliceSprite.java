@@ -57,8 +57,24 @@ public class NineSliceSprite extends Entity {
 		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pInsetLeft, pInsetTop, pInsetRight, pInsetBottom, pVertexBufferObjectManager, pShaderProgram);
 	}
 
+	public NineSliceSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final float pInsetHorizontal, final float pInsetVertical,  final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pInsetHorizontal, pInsetVertical, pVertexBufferObjectManager);
+	}
+
+	public NineSliceSprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final float pInset, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pInset, pVertexBufferObjectManager);
+	}
+
 	public NineSliceSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final float pInsetLeft, final float pInsetTop, final float pInsetRight, final float pInsetBottom, final VertexBufferObjectManager pVertexBufferObjectManager) {
 		this(pX, pY, pWidth, pHeight, pTextureRegion, pInsetLeft, pInsetTop, pInsetRight, pInsetBottom, pVertexBufferObjectManager, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	}
+
+	public NineSliceSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final float pInsetHorizontal, final float pInsetVertical,  final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pInsetHorizontal, pInsetVertical, pInsetHorizontal, pInsetVertical, pVertexBufferObjectManager, PositionColorTextureCoordinatesShaderProgram.getInstance());
+	}
+
+	public NineSliceSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final float pInset, final VertexBufferObjectManager pVertexBufferObjectManager) {
+		this(pX, pY, pWidth, pHeight, pTextureRegion, pInset, pInset, pInset, pInset, pVertexBufferObjectManager, PositionColorTextureCoordinatesShaderProgram.getInstance());
 	}
 
 	public NineSliceSprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final float pInsetLeft, final float pInsetTop, final float pInsetRight, final float pInsetBottom, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {

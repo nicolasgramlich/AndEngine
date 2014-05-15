@@ -131,7 +131,7 @@ public class FontUtils {
 	}
 
 	/**
-	 * Does not respect linebreaks!
+	 * Wraps given {@link CharSequence} using provided {@link AutoWrap} policy. Respects existing line breaks.
 	 *
 	 * @param pFont
 	 * @param pText
@@ -139,21 +139,46 @@ public class FontUtils {
 	 * @param pAutoWrapWidth
 	 * @return
 	 */
-	public static <L extends List<CharSequence>> L splitLines(final IFont pFont, final CharSequence pText, final L pResult, final AutoWrap pAutoWrap, final float pAutoWrapWidth) {
-		/**
-		 * TODO In order to respect already existing linebreaks, {@link #split(CharSequence, List)} could be leveraged and than the following methods could be called for each line.
-		 */
-		switch (pAutoWrap) {
-			case LETTERS:
-				return FontUtils.splitLinesByLetters(pFont, pText, pResult, pAutoWrapWidth);
-			case WORDS:
-				return FontUtils.splitLinesByWords(pFont, pText, pResult, pAutoWrapWidth);
-			case CJK:
-				return FontUtils.splitLinesByCJK(pFont, pText, pResult, pAutoWrapWidth);
-			case NONE:
-			default:
-				throw new IllegalArgumentException("Unexpected " + AutoWrap.class.getSimpleName() + ": '" + pAutoWrap + "'.");
+	public static <L extends List<CharSequence>> L splitLines(final IFont pFont, final CharSequence pText, L pResult, final AutoWrap pAutoWrap, final float pAutoWrapWidth) {
+
+		/* Split line into paragraphs */
+		splitLines(pText, pResult);
+
+		/* Wrap each paragraph one-by-one*/
+		int totalLines = pResult.size();
+		int paragraphIndex = 0;
+		while(paragraphIndex < totalLines) {
+			final List<CharSequence> paragraphLines = pResult.subList(paragraphIndex, paragraphIndex+1);
+			final CharSequence paragraphText = paragraphLines.get(0);
+			paragraphLines.clear();
+
+			wrapLine(pFont, paragraphText, paragraphLines, pAutoWrap, pAutoWrapWidth);
+
+			final int lines = paragraphLines.size();
+			paragraphIndex += lines;
+			totalLines += lines - 1;
 		}
+
+		return pResult;
+	}
+
+	private static <L extends List<CharSequence>> L wrapLine(final IFont pFont, final CharSequence pTextToWrap, final L pResult, final AutoWrap pAutoWrap, final float pAutoWrapWidth) {
+		switch (pAutoWrap) {
+		case LETTERS:
+			FontUtils.splitLinesByLetters(pFont, pTextToWrap, pResult, pAutoWrapWidth);
+			break;
+		case WORDS:
+			FontUtils.splitLinesByWords(pFont, pTextToWrap, pResult, pAutoWrapWidth);
+			break;
+		case CJK:
+			FontUtils.splitLinesByCJK(pFont, pTextToWrap, pResult, pAutoWrapWidth);
+			break;
+		case NONE:
+		default:
+			throw new IllegalArgumentException("Unexpected " + AutoWrap.class.getSimpleName() + ": '" + pAutoWrap + "'.");
+		}
+
+		return pResult;
 	}
 
 	private static <L extends List<CharSequence>> L splitLinesByLetters(final IFont pFont, final CharSequence pText, final L pResult, final float pAutoWrapWidth) {

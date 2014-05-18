@@ -96,27 +96,29 @@ public class ScrollDetector extends BaseDetector {
 							this.triggerOnScroll(distanceX, distanceY);
 						}
 
-						this.mLastX = touchX;
-						this.mLastY = touchY;
-						this.mTriggering = true;
-					}
-					return true;
-				} else {
-					return false;
-				}
-				case TouchEvent.ACTION_UP:
-				case TouchEvent.ACTION_CANCEL:
-					if (this.mPointerID == pSceneTouchEvent.getPointerID()) {
-						final float distanceX = touchX - this.mLastX;
-						final float distanceY = touchY - this.mLastY;
+                    this.mLastX = touchX;
+                    this.mLastY = touchY;
+                    this.mTriggering = true;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        case TouchEvent.ACTION_UP:
+        case TouchEvent.ACTION_CANCEL:
+            boolean swallowTouch = false;
+            if (this.mPointerID == pSceneTouchEvent.getPointerID()) {
+                final float distanceX = touchX - this.mLastX;
+                final float distanceY = touchY - this.mLastY;
 
 						if (this.mTriggering) {
 							this.triggerOnScrollFinished(distanceX, distanceY);
+							swallowTouch = true;
 						}
 
 						this.mPointerID = TouchEvent.INVALID_POINTER_ID;
 					}
-					return true;
+					return swallowTouch;
 			default:
 				return false;
 		}

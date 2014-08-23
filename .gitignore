@@ -31,3 +31,9 @@ idea/tasks.xml
 
 # Crashlytics
 res/values/com_crashlytics_export_strings.xml
+
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/build

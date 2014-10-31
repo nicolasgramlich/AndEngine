@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="new_in_version_versioncode">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    	<item>4</item>
+    	<item>5</item>
+    	<item>6</item>
+    	<item>7</item>
+    	<item>8</item>
+    	<item>9</item>
+    	<item>10</item>
+    	<item>11</item>
+    	<item>12</item>
+    	<item>13</item>
+    	<item>14</item>
+    	<item>15</item>
+    	<item>16</item>
+    	<item>17</item>
+    	<item>18</item>
+    	<item>19</item>
+    	<item>20</item>
+    	<item>21</item>
+    	<item>22</item>
+    	<item>23</item>
+    	<item>24</item>
+    	<item>25</item>
+    	<item>26</item>
+    	<item>27</item>
+    	<item>28</item>
+    	<item>29</item>
+    	<item>30</item>
+    	<item>31</item>
+    	<item>32</item>
+    	<item>33</item>
+    	<item>34</item>
+    	<item>35</item>
+    	<item>36</item>
+    	<item>37</item>
+    	<item>38</item>
+    	<item>39</item>
+    	<item>40</item>
+    	<item>41</item>
+    	<item>42</item>
+    	<item>43</item>
+    	<item>44</item>
+    	<item>45</item>
+    	<item>46</item>
+    </array>
+    
+    <string-array name="new_in_version_changes">
+    	<item> - Initial import</item>
+    	<item> - Added PathModifier Example</item>
+    	<item> - Added PhysicsRemove Example</item>
+    	<item> - Added Multiplayer Example\n - Added TouchDragMany Example</item>
+    	<item> - Fixed Menu Examples</item>
+    	<item> - Line Example now with random line width\n - Added Zoom Example\n - Added SpriteRemove Example\n - Added Sprites Benchmark</item>
+    	<item> - Benchmark results now can be submitted by mail</item>
+    	<item> - Removed SpritesExample\n - New animation in AnimatedSpritesExample\n - Added PhysicsJump Example\n - Added SpriteBenchmark\n - Added AnimationBenchmark</item>
+ 		<item> - Made Benchmarks harder (so near-future devices do not already cap at 60 FPS)</item>
+ 		<item> - Added possible performance fix for the Droid/Milestone</item>
+ 		<item> - Added TickerText Benchmark</item>
+ 		<item> - Added ParticleSystemCool Example\n - Added ParticleSystemNexus Example\n - Added ParticleSystem Benchmark</item>
+ 		<item> - Added ImageFormat Example (PNG, JPG, GIF, BMP)</item>
+ 		<item> - Added LoadTexure Example\n - Added UpdateTexureExample</item>
+ 		<item> - Benchmarks now get submitted to a Server instead of mail to me.</item>
+ 		<item> - Added ShapeModifierIrregular Example</item>
+ 		<item> - Added TextMenu Example</item>
+ 		<item> - Added ModPlayer Example\n - Added ChangeableText Example</item>
+ 		<item> - Optimized some Examples/Benchmarks by using the new FixedCapacityLayers</item>
+ 		<item> - Added Snake (Game)</item>
+ 		<item> - Added Analog On-Screen Controls\n - Added Digital On-Screen Controls</item>
+ 		<item> - Added Dual Analog On-Screen Controls\n - Improved Snake (Game)</item>
+ 		<item> - Changed TextureOptions Example to show repeating Textures\n - Added a LoopModifier to ShapeModifier Example</item>
+ 		<item> - Added MultiTouch Example\n - Removed TouchDragMany Example</item>
+ 		<item> - Now using the libGDX Box2D Wrapper\n - Added PhysicsRevoluteJoint Example</item>
+ 		<item> - Added Racer (Game)</item>
+ 		<item> - Added CollisionTest Example</item>
+ 		<item> - Added CoordinateConversion Example</item>
+ 		<item> - Added SpriteBackground Example\n - Improved PathModifier Example</item>
+ 		<item> - Added TMXTiledMap Example</item>
+ 		<item> - Added FixedStepPhysics Example</item>
+ 		<item> - Added StrokeFont Example</item>
+ 		<item> - Added BoundCamera Example\n - Improved Racer Game with some boxes to collide with</item>
+ 		<item> - Fixed TMXTiledMap Example</item>
+ 		<item> - Added EaseFunction Example</item>
+ 		<item> - Adaptions due to changes in AndEngine</item>
+ 		<item> - Benchmarks now also submit CPU-speed (MHz)</item>
+ 		<item> - Benchmarks now also submit info about Memory</item>
+ 		<item> - Updated SimpleParticle Example</item>
+ 		<item> - Added PhysicsCollisionFiltering Example</item>
+ 		<item> - Added XMLLayout Example</item>
+ 		<item> - Added Rotation3D Example</item>
+ 		<item> - Added LevelLoader Example</item>
+ 		<item> - Added CityRadar (App)</item>
+ 		<item> - Added PinchZoom Example</item>
+ 		<item> - Moved to new \'EntityContainer\' branch (which is now default)\n - Added Pong (Multiplayer) Game</item>
+    </string-array>
+</resources>

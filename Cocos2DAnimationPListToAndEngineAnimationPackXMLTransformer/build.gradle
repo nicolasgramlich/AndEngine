@@ -1,0 +1,12 @@
+apply plugin: 'java'
+
+dependencies {
+    compile 'args4j:args4j:2.0.16'
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ['src']
+        resources.srcDirs = ['src']
+    }
+}

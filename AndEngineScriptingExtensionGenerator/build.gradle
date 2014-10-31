@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+dependencies {
+    compile 'args4j:args4j:2.0.16'
+    compile 'jalopy:jalopy:1.5rc3'
+    compile 'log4j:log4j:1.2.17'
+    compile 'com.thoughtworks.paranamer:paranamer:2.7'
+    compile 'com.google.android:android:4.1.1.4'
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ['src']
+        resources.srcDirs = ['src']
+    }
+}
+

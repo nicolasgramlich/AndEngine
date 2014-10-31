@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">AndEngine RobotiumExtension Example</string>
+    <string name="hello">Enter two values and click on Calculate to multiply them.</string>
+    <string name="txtFirstNumber">Enter First Number</string>
+    <string name="txtSecondNumber">Enter Second Number</string>
+    <string name="txtSpace"></string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="org.andengine.test"
+	android:versionCode="1"
+	android:versionName="1.0">
+
+	<uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="20"/>
+
+	<application>
+		<uses-library android:name="android.test.runner"/>
+	</application>
+    
+	<instrumentation android:targetPackage="org.andengine" android:name="android.test.InstrumentationTestRunner"/>
+</manifest> 

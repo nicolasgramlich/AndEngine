@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>animations</key>
+	<dict>
+		<key>farm_duck_celebrate</key>
+		<dict>
+			<key>delayPerUnit</key>
+			<real>0.1</real>
+			<key>loops</key>
+			<integer>11</integer>
+			<key>frames</key>
+			<array>
+				<dict>
+					<key>delayUnits</key>
+					<integer>1</integer>
+					<key>spriteframe</key>
+					<string>farm_duck_celebrate_0001.png</string>
+				</dict>
+				<dict>
+					<key>delayUnits</key>
+					<integer>2</integer>
+					<key>spriteframe</key>
+					<string>farm_duck_celebrate_0002.png</string>
+				</dict>
+			</array>
+		</dict>
+		<key>farm_duck_fever</key>
+		<dict>
+			<key>delayPerUnit</key>
+			<real>0.2</real>
+			<key>frames</key>
+			<array>
+				<dict>
+					<key>delayUnits</key>
+					<integer>3</integer>
+					<key>spriteframe</key>
+					<string>farm_duck_fever_0001.png</string>
+				</dict>
+				<dict>
+					<key>delayUnits</key>
+					<integer>4</integer>
+					<key>spriteframe</key>
+					<string>farm_duck_fever_0002.png</string>
+				</dict>
+				<dict>
+					<key>delayUnits</key>
+					<integer>5</integer>
+					<key>spriteframe</key>
+					<string>farm_duck_fever_0003.png</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>properties</key>
+	<dict>
+		<key>format</key>
+		<integer>2</integer>
+		<key>spritesheets</key>
+		<array>
+			<string>farm_storypanel_spritesheet.plist</string>
+		</array>
+	</dict>
+</dict>
+</plist>

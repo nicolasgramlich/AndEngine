@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="640px"
+   height="480px"
+   id="svg2816"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="parallax_background_layer_mid.svg"
+   inkscape:export-filename="E:\android\AndEngineExamples\assets\gfx\parallax_background_layer_2.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.73829668"
+     inkscape:cx="348.99065"
+     inkscape:cy="225.2454"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="988"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <defs
+     id="defs2818">
+    <linearGradient
+       id="linearGradient3989">
+      <stop
+         id="stop3991"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop3993"
+         offset="1"
+         style="stop-color:#e45a14;stop-opacity:1;" />
+    </linearGradient>
+    <inkscape:perspective
+       id="perspective2824"
+       inkscape:persp3d-origin="320 : 160 : 1"
+       inkscape:vp_z="640 : 240 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 240 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       id="perspective2834" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       id="perspective3654" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="398.94189"
+       x2="320"
+       y1="0"
+       x1="320"
+       id="linearGradient3995"
+       xlink:href="#linearGradient3989"
+       inkscape:collect="always" />
+  </defs>
+  <metadata
+     id="metadata2821">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1"
+     id="layer1"
+     style="display:inline">
+    <path
+       id="rect3687"
+       d="M 0.12582409,100.12561 C 34.098328,122.02287 15.116105,126.02708 53.313895,126.02708 91.511685,126.02708 212.01705,80 255.99974,80 c 43.98269,0 -1.08959,39.94803 42.89319,39.94803 43.98277,0 134.59587,-27.460432 215.17705,0.95354 C 594.65116,149.31555 580.90623,65.882089 640,99.999893 c 36.6298,21.148227 46.13313,61.361897 0,39.999567 -46.13313,-21.36233 -64.61235,21.42893 -107.1569,25.23714 -42.54455,3.8082 -40.59593,-36.4743 -84.57862,-36.4743 -43.98269,0 -166.51846,26.05307 -210.50124,26.05307 -43.98277,0 53.54493,-46.56694 0.52761,-50.36926 C 185.27353,100.64379 77.014315,177.28743 0,140.00024 -77.014315,102.71305 -33.84668,78.228349 0.12582409,100.12561 z"
+       style="fill:#c33809;fill-opacity:1;fill-rule:nonzero;stroke:none;opacity:1"
+       sodipodi:nodetypes="cczzzszzzzzzz" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect3687"
+       id="use2827"
+       transform="translate(-639.99984,0)"
+       width="640"
+       height="480"
+       style="fill:#ff0000" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect3687"
+       id="use2829"
+       transform="translate(640.00016,0)"
+       width="640"
+       height="480" />
+    <path
+       style="opacity:0.34999999999999998;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       d="m 250.96875,84.3125 c -39.53486,3.887522 -77.3437,17.8076 -115.63953,27.65107 -26.29553,7.38014 -52.815774,15.79913 -80.14172,17.88018 -12.240959,1.2e-4 -27.445507,2.04787 -35.96662,-8.95524 C 6.6651154,108.47107 -8.8482066,95.278204 -27.625,95.90625 c -4.877176,0.2105 -13.47094,2.668765 -10.96875,9.28125 3.795493,9.96805 14.075819,15.47647 22.21875,21.46875 19.4403881,12.30057 41.778908,20.19028 65.09375,19.59375 47.06714,-0.70635 91.02041,-20.20749 135.04338,-35.00088 20.05473,-6.00675 41.20122,-13.636972 62.39412,-9.84287 6.38292,1.09081 14.07829,6.01586 12.09375,13.5 -4.64099,14.87112 -20.87803,21.63471 -28,35 9.84747,2.15826 20.80951,-0.28658 30.99151,-0.65284 42.78257,-4.36747 85.1439,-12.6425 127.787,-18.485 22.88926,-3.20374 46.04928,-7.06988 69.27352,-5.3741 17.21652,2.3125 30.42431,14.8015 42.29172,26.29319 11.59076,10.1133 28.10515,12.00453 42.5625,7.78125 C 568.52981,152.57256 588.29538,130.01607 615.75,130 c 14.65333,-0.22354 27.31184,7.95583 40.96875,11.65625 3.97048,1.27016 11.46862,0.73658 10.3125,-5.25 -2.42535,-12.50843 -13.46381,-21.72713 -23.12623,-29.23749 -10.63376,-7.15399 -24.44246,-14.544023 -37.43627,-9.91876 -16.04224,7.22412 -25.28353,24.87902 -42.5625,30.28125 -17.73121,6.60499 -37.18142,2.55561 -54.26996,-4.03855 -46.46922,-15.14569 -96.41669,-13.04365 -144.32567,-6.63382 -24.21367,2.28092 -48.39385,7.83982 -72.87312,6.82862 -9.43251,-0.31159 -19.4034,-7.25191 -19,-17.5 -0.38093,-6.630285 2.50179,-17.308793 -5.5625,-20.46875 -5.31979,-2.051933 -11.31318,-1.857611 -16.90625,-1.40625 z"
+       id="path2835" />
+  </g>
+</svg>

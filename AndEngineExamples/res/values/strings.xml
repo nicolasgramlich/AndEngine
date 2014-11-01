@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndEngineExamples</string>
+
+    <string name="btn_get_involved_caption">Open Source - Get involved...</string>
+
+    <string name="dialog_device_not_supported_title">Unsupported Device detected!</string>
+    <string name="dialog_device_not_supported_message">Your device isn\'t supported by <b>AndEngine</b>!\n\nPlease send your device information to nicolasgramlich@gmail.com so that we can hopefully add support in the next release!</string>
+
+    <string name="dialog_first_app_launch_title">AndEngine - Examples</string>
+    <string name="dialog_first_app_launch_message">Welcome to <b>AndEngine</b> the:\n - Free\n - Open Source\n - 2D OpenGL \n - Game-Engine\nfor the Google Android platform.\n\nThese <b>examples</b> are meant for <b>developers</b> to showcase what can be done with <b>AndEngine</b>.\n\nIt\'s Open Source - Get involved!\n\nBest Regards,\nNicolas Gramlich</string>
+
+    <string name="dialog_new_in_this_version_title">New in this version...</string>
+
+    <string name="dialog_benchmark_submit_title">Submitting Result...</string>
+    <string name="dialog_benchmark_submit_message">Please wait a moment...</string>
+
+    <string name="dialog_benchmarks_submit_please_title">Benchmarks</string>
+    <string name="dialog_benchmarks_submit_please_message">Hi,\n\nmaybe you already noticed that the <b>AndEngineExamples</b> contain some <b>Benchmarks</b>.\n\nThe reason for that is that I am building a public <b>Performance-Database</b> that everyone can access and use for i.e. a feasibility analysis.\n\nSo please submit Benchmarks from all your devices and from time to time when there is a new version of AndEngine, so I can analyze if the tweaks I added were for the good or for the bad ;)\n\nBest Regards,\nNicolas</string>
+
+    <string name="dialog_modplayerexample_loading_to_external_title">Loading</string>
+    <string name="dialog_modplayerexample_loading_to_external_message">Transferring \'lepeltheme.mod\' to SDCard...</string>
+
+	<string name="tv_xmllayoutexample_above">You can put <b>one</b> <i>AndEngine</i> View into any Activity.</string>
+	<string name="tv_xmllayoutexample_below">Lorem ipsum dolor sit amat...</string>
+
+	<string name="textbreakexample_text_default">Hello, World!</string>
+
+    <!-- Example-Groups -->
+    <string name="examplegroup_simple">Simple</string>
+	<string name="examplegroup_modifier_and_animation">Modifier &amp; Animation</string>
+	<string name="examplegroup_touch">Touch</string>
+	<string name="examplegroup_particlesystems">ParticleSystems</string>
+	<string name="examplegroup_multiplayer">Multiplayer</string>
+	<string name="examplegroup_physics">Physics</string>
+	<string name="examplegroup_text">Text</string>
+	<string name="examplegroup_audio">Audio</string>
+	<string name="examplegroup_postprocessing">Post-Processing</string>
+	<string name="examplegroup_advanced">Advanced</string>
+	<string name="examplegroup_background">Backgrounds</string>
+	<string name="examplegroup_other">Others</string>
+	<string name="examplegroup_app">Apps</string>
+	<string name="examplegroup_game">Games</string>
+	<string name="examplegroup_benchmark">Benchmarks</string>
+
+	<!-- Examples -->
+	<string name="example_analogonscreencontrol">Analog OnScreen-Control</string>
+	<string name="example_analogonscreencontrols">Dual Analog OnScreen-Control</string>
+	<string name="example_animatedsprites">Drawing Animated Sprites</string>
+	<string name="example_augmentedreality">Using AugmentedReality</string>
+	<string name="example_augmentedrealityhorizon">An AugmentedReality Horizon</string>
+	<string name="example_autoparallaxbackground">Using an AutoParallaxBackground</string>
+	<string name="example_bitmapfont">Using a BitmapFont</string>
+	<string name="example_boundcamera">Using a BoundCamera</string>
+	<string name="example_canvastexturecompositing">Compositing Textures (Canvas)</string>
+	<string name="example_cardinalsplinemovemodifier">Cardinal Spline</string>
+	<string name="example_changeabletext">Changeable Text</string>
+	<string name="example_collisiondetection">Collision Detection</string>
+	<string name="example_colorkeytexturesourcedecorator">Using a ColorKeyTextureSourceDecorator</string>
+	<string name="example_coordinateconversion">Coordinate Conversion</string>
+	<string name="example_customfont">Using a Custom Font</string>
+	<string name="example_digitalonscreencontrol">Digital OnScreen-Control</string>
+	<string name="example_easefunction">Using EaseFunctions</string>
+	<string name="example_entitymodifier">Using EntityModifiers</string>
+	<string name="example_entitymodifierirregular">Irregular EntityModifiers</string>
+	<string name="example_etc1texture">Using ETC1 Textures</string>
+	<string name="example_hullalgorithm">Hull Algorithm</string>
+	<string name="example_imageformats">Using ImageFormats (PNG, JPG, GIF, BMP)</string>
+	<string name="example_levelloader">Loading a Level from XML</string>
+	<string name="example_line">Drawing Lines</string>
+	<string name="example_loadtexture">Load BitmapTextureAtlas Dynamic</string>
+	<string name="example_menu">Using Menus</string>
+	<string name="example_modplayer">Playing .MOD Music</string>
+	<string name="example_motionstreak">Motion Streak</string>
+	<string name="example_movingball">A Moving Ball</string>
+	<string name="example_multiplayer">Multiplayer</string>
+	<string name="example_multiplayerserverdiscovery">Multiplayer Server Discovery</string>
+	<string name="example_multiplayerbluetooth">Multiplayer (Bluetooth)</string>
+	<string name="example_multitouch">MultiTouch</string>
+	<string name="example_music">Playing Music</string>
+	<string name="example_pause">Pausing the Game</string>
+	<string name="example_pathmodifier">Using a PathModifier</string>
+	<string name="example_particlesystemcool">A Cool ParticleSystem</string>
+	<string name="example_particlesystemnexus">A Nexus ParticleSystem</string>
+	<string name="example_particlesystemsimple">A Simple ParticleSystem</string>
+	<string name="example_physicscollisionfiltering">Filtering Collisions</string>
+	<string name="example_physics">Using Physics</string>
+	<string name="example_physicsfixedstep">Using FixedStepPhysics</string>
+	<string name="example_physicsmousejoint">Using a MouseJoint</string>
+	<string name="example_physicsrevolutejoint">Using a RevoluteJoint</string>
+	<string name="example_physicsjump">Combining Physics and Touch</string>
+	<string name="example_physicsremove">Removing a Physics Object</string>
+	<string name="example_pinchzoom">Using PinchZoom</string>
+	<string name="example_pvrccztexture">PVRCCZ Texture</string>
+	<string name="example_pvrgztexture">PVRGZ Texture</string>
+	<string name="example_pvrtexture">PVR Texture</string>
+	<string name="example_radialblur">Radial Blur</string>
+	<string name="example_rectangle">Drawing Rectangles</string>
+	<string name="example_repeatingspritebackground">Using a RepeatingSpriteBackground</string>
+	<string name="example_rotation3d">Rotating in 3D</string>
+	<string name="example_runnablepoolupdatehandler">Using RunnablePoolUpdateHandlers</string>
+	<string name="example_screencapture">Capturing the Screen (Screenshot)</string>
+	<string name="example_sound">Playing Sound</string>
+	<string name="example_splitscreen">Using a SplitScreen</string>
+	<string name="example_spritebatch">Drawing a SpriteBatch</string>
+	<string name="example_sprite">Drawing a Sprite</string>
+	<string name="example_spriteremove">Removing a Sprite</string>
+	<string name="example_strokefont">Using a StrokeFont</string>
+	<string name="example_submenu">Using SubMenus</string>
+	<string name="example_svgtextureregion">Using a SVGTextureRegion</string>
+	<string name="example_text">Drawing Text</string>
+	<string name="example_textbreak">Breaking Text</string>
+	<string name="example_textmenu">Using TextMenus</string>
+	<string name="example_textureoptions">Using TextureOptions</string>
+	<string name="example_texturepacker">Using TexturePack(er)</string>
+	<string name="example_tmxtiledmap">Using a TMXTiledMap</string>
+	<string name="example_tickertext">Drawing a TickerText</string>
+	<string name="example_touchdrag">Touch &amp; Drag Sprites</string>
+	<string name="example_unloadresources">Unloading Resources</string>
+	<string name="example_updatetexture">Updating Textures Dynamically</string>
+	<string name="example_xmllayout">Using an XMLLayout</string>
+	<string name="example_zoom">Using a ZoomCamera</string>
+
+	<!-- Benchmarks -->
+	<string name="example_benchmark_animation">Animation Benchmark</string>
+	<string name="example_benchmark_attachdetach">Attach/Detach Benchmark</string>
+	<string name="example_benchmark_particlesystem">ParticleSystem Benchmark</string>
+	<string name="example_benchmark_physics">Physics Benchmark</string>
+	<string name="example_benchmark_entitymodifier">EntityModifier Benchmark</string>
+	<string name="example_benchmark_sprite">Sprite Benchmark</string>
+	<string name="example_benchmark_tickertext">TickerText Benchmark</string>
+
+	<!-- Games -->
+	<string name="example_game_pong">Pong (Multiplayer)</string>
+	<string name="example_game_snake">Snake</string>
+	<string name="example_game_racer">Racer</string>
+
+	<!-- Apps -->
+	<string name="example_app_cityradar">CityRadar</string>
+</resources>

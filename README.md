@@ -41,6 +41,23 @@ public final class BuildConfig {
 }
 ```
 
+### Android Studio
+ * Specify ndk.dir=/path/to/ndk in local.properties
+ * Import AndEngine as module
+ * Modify build.gradle in AndEngine module
+   ```java
+   defaultConfig {
+        /* ... */
+        
+        // Add below settings
+        ndk {
+            moduleName "andengine_shared"
+            stl "stlport_shared"
+            ldLibs "GLESv2"
+        }
+    }
+   ```
+
 
 ## Branches
  * OpenGL ES 2:

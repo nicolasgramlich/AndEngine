@@ -46,6 +46,7 @@ public class Scene extends Entity {
 
 	private final RunnableHandler mRunnableHandler = new RunnableHandler();
 
+	private boolean canTouch = true;
 	private IOnSceneTouchListener mOnSceneTouchListener;
 
 	private IOnAreaTouchListener mOnAreaTouchListener;
@@ -60,7 +61,7 @@ public class Scene extends Entity {
 	private final SparseArray<ITouchArea> mTouchAreaBindings = new SparseArray<ITouchArea>();
 	private boolean mOnSceneTouchListenerBindingOnActionDownEnabled = false;
 	private final SparseArray<IOnSceneTouchListener> mOnSceneTouchListenerBindings = new SparseArray<IOnSceneTouchListener>();
-
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -288,7 +289,17 @@ public class Scene extends Entity {
 		}
 	}
 
+	public void disableTouch(){
+		canTouch = false;
+	}
+	public void enableTouch(){
+		canTouch = true;
+	}
+
 	public boolean onSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
+		if(!canTouch){
+			return true;
+		}
 		final int action = pSceneTouchEvent.getAction();
 		final boolean isActionDown = pSceneTouchEvent.isActionDown();
 		final boolean isActionMove = pSceneTouchEvent.isActionMove();
@@ -441,6 +452,9 @@ public class Scene extends Entity {
 
 	public void registerTouchArea(final ITouchArea pTouchArea) {
 		this.mTouchAreas.add(pTouchArea);
+	}
+	public void unregisterAllTouchAreas(){
+		this.mTouchAreas.clear();
 	}
 
 	public boolean unregisterTouchArea(final ITouchArea pTouchArea) {

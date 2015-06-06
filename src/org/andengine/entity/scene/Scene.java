@@ -61,6 +61,13 @@ public class Scene extends Entity {
 	private boolean mOnSceneTouchListenerBindingOnActionDownEnabled = false;
 	private final SparseArray<IOnSceneTouchListener> mOnSceneTouchListenerBindings = new SparseArray<IOnSceneTouchListener>();
 
+	private boolean canTouch = true;
+	public void disableTouch(){
+		canTouch = false;
+	}
+	public void enableTouch(){
+		canTouch = true;
+	}
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -289,6 +296,9 @@ public class Scene extends Entity {
 	}
 
 	public boolean onSceneTouchEvent(final TouchEvent pSceneTouchEvent) {
+		if(!canTouch){
+			return true;
+		}
 		final int action = pSceneTouchEvent.getAction();
 		final boolean isActionDown = pSceneTouchEvent.isActionDown();
 		final boolean isActionMove = pSceneTouchEvent.isActionMove();
@@ -441,6 +451,9 @@ public class Scene extends Entity {
 
 	public void registerTouchArea(final ITouchArea pTouchArea) {
 		this.mTouchAreas.add(pTouchArea);
+	}
+	public void unregisterAllTouchAreas(){
+		this.mTouchAreas.clear();
 	}
 
 	public boolean unregisterTouchArea(final ITouchArea pTouchArea) {

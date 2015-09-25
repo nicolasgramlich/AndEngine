@@ -81,23 +81,23 @@ public final class BuildConfig {
  * [`AndEngineTMXTiledMapExtension`][URI_AndEngineTMXTiledMapExtension] (Merged into the 'GLES1' branch.)
 
 
-[URI_AndEngine_GLES2_AnchorCenter]: https://github.com/nicolasgramlich/AndEngine/tree/GLES2-AnchorCenter
-[URI_AndEngine_GLES2]: https://github.com/nicolasgramlich/AndEngine/tree/GLES2
-[URI_AndEngine_master]: https://github.com/nicolasgramlich/AndEngine/tree/master
+[URI_AndEngine_GLES2_AnchorCenter]: https://github.comshiguang1120/AndEngine/tree/GLES2-AnchorCenter
+[URI_AndEngine_GLES2]: https://github.com/shiguang1120/AndEngine/tree/GLES2
+[URI_AndEngine_master]: https://github.com/shiguang1120/AndEngine/tree/master
 [URI_cocos2d]: https://github.com/cocos2d
-[URI_AndEngineExamples]: https://github.com/nicolasgramlich/AndEngineExamples
-[URI_AndEngineRobotiumExtensionExample]: https://github.com/nicolasgramlich/AndEngineRobotiumExtensionExample
-[URI_AndEngineTest]: https://github.com/nicolasgramlich/AndEngineTest
-[URI_AndEngineRobotiumExtensionExampleTest]: https://github.com/nicolasgramlich/AndEngineRobotiumExtensionExampleTest
-[URI_AndEngineAugmentedRealityExtension]: https://github.com/nicolasgramlich/AndEngineAugmentedRealityExtension
-[URI_AndEngineLiveWallpaperExtension]: https://github.com/nicolasgramlich/AndEngineLiveWallpaperExtension
-[URI_AndEngineMODPlayerExtension]: https://github.com/nicolasgramlich/AndEngineMODPlayerExtension
-[URI_AndEngineMultiplayerExtension]: https://github.com/nicolasgramlich/AndEngineMultiplayerExtension
-[URI_AndEngineMultiTouchExtension]: https://github.com/nicolasgramlich/AndEngineMultiTouchExtension
-[URI_AndEnginePhysicsBox2DExtension]: https://github.com/nicolasgramlich/AndEnginePhysicsBox2DExtension
-[URI_AndEngineRobotiumExtension]: https://github.com/nicolasgramlich/AndEngineRobotiumExtension
-[URI_AndEngineScriptingExtension]: https://github.com/nicolasgramlich/AndEngineScriptingExtension
-[URI_AndEngineScriptingExtensionGenerator]: https://github.com/nicolasgramlich/AndEngineScriptingExtensionGenerator
-[URI_AndEngineSVGTextureRegionExtension]: https://github.com/nicolasgramlich/AndEngineSVGTextureRegionExtension
-[URI_AndEngineTexturePackerExtension]: https://github.com/nicolasgramlich/AndEngineTexturePackerExtension
-[URI_AndEngineTMXTiledMapExtension]: https://github.com/nicolasgramlich/AndEngineTMXTiledMapExtension
+[URI_AndEngineExamples]: https://github.com/shiguang1120/AndEngineExamples
+[URI_AndEngineRobotiumExtensionExample]: https://github.com/shiguang1120/AndEngineRobotiumExtensionExample
+[URI_AndEngineTest]: https://github.com/shiguang1120/AndEngineTest
+[URI_AndEngineRobotiumExtensionExampleTest]: https://github.com/shiguang1120/AndEngineRobotiumExtensionExampleTest
+[URI_AndEngineAugmentedRealityExtension]: https://github.com/shiguang1120/AndEngineAugmentedRealityExtension
+[URI_AndEngineLiveWallpaperExtension]: https://github.com/shiguang1120/AndEngineLiveWallpaperExtension
+[URI_AndEngineMODPlayerExtension]: https://github.com/shiguang1120/AndEngineMODPlayerExtension
+[URI_AndEngineMultiplayerExtension]: https://github.com/shiguang1120/AndEngineMultiplayerExtension
+[URI_AndEngineMultiTouchExtension]: https://github.com/shiguang1120/AndEngineMultiTouchExtension
+[URI_AndEnginePhysicsBox2DExtension]: https://github.com/shiguang1120/AndEnginePhysicsBox2DExtension
+[URI_AndEngineRobotiumExtension]: https://github.com/shiguang1120/AndEngineRobotiumExtension
+[URI_AndEngineScriptingExtension]: https://github.com/shiguang1120/AndEngineScriptingExtension
+[URI_AndEngineScriptingExtensionGenerator]: https://github.com/shiguang1120/AndEngineScriptingExtensionGenerator
+[URI_AndEngineSVGTextureRegionExtension]: https://github.com/shiguang1120/AndEngineSVGTextureRegionExtension
+[URI_AndEngineTexturePackerExtension]: https://github.com/shiguang1120/AndEngineTexturePackerExtension
+[URI_AndEngineTMXTiledMapExtension]: https://github.com/shiguang1120/AndEngineTMXTiledMapExtension

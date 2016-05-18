@@ -70,9 +70,9 @@ public class GLHelper {
 	private static float sBlue = -1;
 	private static float sAlpha = -1;
 
-	public static boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
-	public static boolean EXTENSIONS_DRAWTEXTURE = false;
-	public static boolean EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = false;
+	public static final boolean EXTENSIONS_VERTEXBUFFEROBJECTS = false;
+	public static final boolean EXTENSIONS_DRAWTEXTURE = false;
+	public static final boolean EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = false;
 
 	// ===========================================================
 	// Methods

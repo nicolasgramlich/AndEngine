@@ -136,7 +136,7 @@ public class Debug implements Constants {
 		DEBUG,
 		VERBOSE;
 
-		public static DebugLevel ALL = DebugLevel.VERBOSE;
+		public static final DebugLevel ALL = DebugLevel.VERBOSE;
 
 		private boolean isSameOrLessThan(final DebugLevel pDebugLevel) {
 			return this.compareTo(pDebugLevel) >= 0;

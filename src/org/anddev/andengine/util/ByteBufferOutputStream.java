@@ -23,7 +23,7 @@ public class ByteBufferOutputStream extends OutputStream {
 
 	protected final int mMaximumGrow;
 
-	protected byte mData[];
+	protected byte[] mData;
 	protected int mCount;
 
 	// ===========================================================
@@ -51,7 +51,7 @@ public class ByteBufferOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void write(final byte pData[], final int pOffset, final int pLength) {
+	public void write(final byte[] pData, final int pOffset, final int pLength) {
 		this.ensureCapacity(this.mCount + pLength);
 		System.arraycopy(pData, pOffset, this.mData, this.mCount, pLength);
 		this.mCount += pLength;

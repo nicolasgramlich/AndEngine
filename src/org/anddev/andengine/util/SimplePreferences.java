@@ -30,6 +30,8 @@ public class SimplePreferences implements Constants {
 	// Constructors
 	// ===========================================================
 
+	private SimplePreferences() {}
+
 	public static SharedPreferences getInstance(final Context pContext) {
 		if(SimplePreferences.INSTANCE == null) {
 			SimplePreferences.INSTANCE = PreferenceManager.getDefaultSharedPreferences(pContext);

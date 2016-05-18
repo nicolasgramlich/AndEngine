@@ -26,6 +26,8 @@ public class BitmapTextureAtlasFactory {
 	// Constructors
 	// ===========================================================
 
+	private BitmapTextureAtlasFactory() {}
+
 	public static BitmapTextureAtlas createForTextureAtlasSourceSize(final BitmapTextureFormat pBitmapTextureFormat, final TextureRegion pTextureRegion) {
 		return BitmapTextureAtlasFactory.createForTextureRegionSize(pBitmapTextureFormat, pTextureRegion, TextureOptions.DEFAULT);
 	}

@@ -1,7 +1,7 @@
 package org.anddev.andengine.util.pool;
 
 import java.util.Collections;
-import java.util.Stack;
+import java.util.Deque;
 
 import org.anddev.andengine.util.Debug;
 
@@ -24,7 +24,7 @@ public abstract class GenericPool<T> {
 	// Fields
 	// ===========================================================
 
-	private final Stack<T> mAvailableItems = new Stack<T>();
+	private final Deque<T> mAvailableItems = new LinkedList<T>();
 	private int mUnrecycledCount;
 	private final int mGrowth;
 
@@ -89,7 +89,7 @@ public abstract class GenericPool<T> {
 	}
 
 	public synchronized void batchAllocatePoolItems(final int pCount) {
-		final Stack<T> availableItems = this.mAvailableItems;
+		final Deque<T> availableItems = this.mAvailableItems;
 		for(int i = pCount - 1; i >= 0; i--) {
 			availableItems.push(this.onHandleAllocatePoolItem());
 		}
@@ -132,7 +132,7 @@ public abstract class GenericPool<T> {
 	}
 
 	public synchronized void shufflePoolItems() {
-		Collections.shuffle(this.mAvailableItems);
+		Collections.shuffle((List<T>)this.mAvailableItems);
 	}
 
 	// ===========================================================

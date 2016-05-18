@@ -74,7 +74,7 @@ public class MathUtils implements MathConstants {
 	}
 
 	public static final boolean isPowerOfTwo(final int n) {
-		return ((n != 0) && (n & (n - 1)) == 0);
+		return (n != 0) && (n & (n - 1)) == 0;
 	}
 
 	public static final int nextPowerOfTwo(final float f) {

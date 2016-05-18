@@ -31,15 +31,15 @@ public abstract class PVRTexture extends Texture {
 	// Constants
 	// ===========================================================
 
-	public static final int FLAG_MIPMAP = (1<<8); // has mip map levels
-	public static final int FLAG_TWIDDLE = (1<<9); // is twiddled
-	public static final int FLAG_BUMPMAP = (1<<10); // has normals encoded for a bump map
-	public static final int FLAG_TILING = (1<<11); // is bordered for tiled pvr
-	public static final int FLAG_CUBEMAP = (1<<12); // is a cubemap/skybox
-	public static final int FLAG_FALSEMIPCOL = (1<<13); // are there false colored MIP levels
-	public static final int FLAG_VOLUME = (1<<14); // is this a volume texture
-	public static final int FLAG_ALPHA = (1<<15); // v2.1 is there transparency info in the texture
-	public static final int FLAG_VERTICALFLIP = (1<<16); // v2.1 is the texture vertically flipped
+	public static final int FLAG_MIPMAP = 1<<; // has mip map levels
+	public static final int FLAG_TWIDDLE = 1<<9; // is twiddled
+	public static final int FLAG_BUMPMAP = 1<<10; // has normals encoded for a bump map
+	public static final int FLAG_TILING = 1<<11; // is bordered for tiled pvr
+	public static final int FLAG_CUBEMAP = 1<<12; // is a cubemap/skybox
+	public static final int FLAG_FALSEMIPCOL = 1<<13; // are there false colored MIP levels
+	public static final int FLAG_VOLUME = 1<<14; // is this a volume texture
+	public static final int FLAG_ALPHA = 1<<15; // v2.1 is there transparency info in the texture
+	public static final int FLAG_VERTICALFLIP = 1<<16; // v2.1 is the texture vertically flipped
 
 	// ===========================================================
 	// Fields

@@ -45,7 +45,7 @@ public class FastFloatBuffer {
 	 * Constructs a new direct native-ordered buffer
 	 */
 	public FastFloatBuffer(final int pCapacity) {
-		this.mByteBuffer = ByteBuffer.allocateDirect((pCapacity * BYTES_PER_FLOAT)).order(ByteOrder.nativeOrder());
+		this.mByteBuffer = ByteBuffer.allocateDirect(pCapacity * BYTES_PER_FLOAT).order(ByteOrder.nativeOrder());
 		this.mFloatBuffer = this.mByteBuffer.asFloatBuffer();
 		this.mIntBuffer = this.mByteBuffer.asIntBuffer();
 	}

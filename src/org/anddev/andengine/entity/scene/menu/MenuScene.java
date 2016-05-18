@@ -114,7 +114,7 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final ITouchArea pTouchArea, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		final IMenuItem menuItem = ((IMenuItem)pTouchArea);
+		final IMenuItem menuItem = (IMenuItem)pTouchArea;
 
 		switch(pSceneTouchEvent.getAction()) {
 			case MotionEvent.ACTION_DOWN:

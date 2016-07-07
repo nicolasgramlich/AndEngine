@@ -10,14 +10,16 @@ import org.andengine.opengl.vbo.HighPerformanceVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.util.adt.list.IFloatList;
+import org.andengine.util.color.Color;
 
 /**
  * (c) Zynga 2012
- *
+ * 
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 12:38:43 - 29.03.2012
  */
-public class HighPerformanceTextVertexBufferObject extends HighPerformanceVertexBufferObject implements ITextVertexBufferObject {
+public class HighPerformanceTextVertexBufferObject extends HighPerformanceVertexBufferObject implements
+		ITextVertexBufferObject {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -30,7 +32,9 @@ public class HighPerformanceTextVertexBufferObject extends HighPerformanceVertex
 	// Constructors
 	// ===========================================================
 
-	public HighPerformanceTextVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager, final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose, final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
+	public HighPerformanceTextVertexBufferObject(final VertexBufferObjectManager pVertexBufferObjectManager,
+			final int pCapacity, final DrawType pDrawType, final boolean pAutoDispose,
+			final VertexBufferObjectAttributes pVertexBufferObjectAttributes) {
 		super(pVertexBufferObjectManager, pCapacity, pDrawType, pAutoDispose, pVertexBufferObjectAttributes);
 	}
 
@@ -45,20 +49,37 @@ public class HighPerformanceTextVertexBufferObject extends HighPerformanceVertex
 	@Override
 	public void onUpdateColor(final Text pText) {
 		final float[] bufferData = this.mBufferData;
+		if (pText.isRenderRegionColor()) {
+			float packedColor;
 
-		final float packedColor = pText.getColor().getABGRPackedFloat();
+			int bufferDataOffset = 0;
+			final int charactersMaximum = pText.getCharactersMaximum();
+			for (int i = 0; i < charactersMaximum; i++) {
+				packedColor = pText.getColorInRegion(i).getABGRPackedFloat();
+				bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
 
-		int bufferDataOffset = 0;
-		final int charactersMaximum = pText.getCharactersMaximum();
-		for(int i = 0; i < charactersMaximum; i++) {
-			bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
-			bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferDataOffset += Text.LETTER_SIZE;
+			}
+		} else {
+			final float packedColor = pText.getColor().getABGRPackedFloat();
 
-			bufferDataOffset += Text.LETTER_SIZE;
+			int bufferDataOffset = 0;
+			final int charactersMaximum = pText.getCharactersMaximum();
+			for (int i = 0; i < charactersMaximum; i++) {
+				bufferData[bufferDataOffset + 0 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 1 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 2 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 3 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 4 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+				bufferData[bufferDataOffset + 5 * Text.VERTEX_SIZE + Text.COLOR_INDEX] = packedColor;
+
+				bufferDataOffset += Text.LETTER_SIZE;
+			}
 		}
 
 		this.setDirtyOnHardware();
@@ -84,29 +105,29 @@ public class HighPerformanceTextVertexBufferObject extends HighPerformanceVertex
 			final CharSequence line = lines.get(row);
 
 			float xBase;
-			switch(pText.getHorizontalAlign()) {
-				case RIGHT:
-					xBase = lineAlignmentWidth - lineWidths.get(row);
-					break;
-				case CENTER:
-					xBase = (lineAlignmentWidth - lineWidths.get(row)) * 0.5f;
-					break;
-				case LEFT:
-				default:
-					xBase = 0;
+			switch (pText.getHorizontalAlign()) {
+			case RIGHT:
+				xBase = lineAlignmentWidth - lineWidths.get(row);
+				break;
+			case CENTER:
+				xBase = (lineAlignmentWidth - lineWidths.get(row)) * 0.5f;
+				break;
+			case LEFT:
+			default:
+				xBase = 0;
 			}
 
 			final float yBase = row * (lineHeight + pText.getLeading());
 
 			final int lineLength = line.length();
 			Letter previousLetter = null;
-			for(int i = 0; i < lineLength; i++) {
+			for (int i = 0; i < lineLength; i++) {
 				final Letter letter = font.getLetter(line.charAt(i));
-				if(previousLetter != null) {
+				if (previousLetter != null) {
 					xBase += previousLetter.getKerning(letter.mCharacter);
 				}
 
-				if(!letter.isWhitespace()) {
+				if (!letter.isWhitespace()) {
 					final float x = xBase + letter.mOffsetX;
 					final float y = yBase + letter.mOffsetY;
 

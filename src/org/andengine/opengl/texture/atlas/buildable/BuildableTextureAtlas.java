@@ -8,6 +8,7 @@ import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.ExtrudingBitmapTextureAtlasSource.ExtrusionDirection;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.atlas.source.ITextureAtlasSource;
@@ -209,8 +210,8 @@ public class BuildableTextureAtlas<S extends ITextureAtlasSource, T extends ITex
 	// ===========================================================
 
 	@Override
-	public void addEmptyTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight) {
-		this.mTextureAtlas.addEmptyTextureAtlasSource(pTextureX, pTextureY, pWidth, pHeight);
+	public void addExtrudingTextureAtlasSource(final int pTextureX, final int pTextureY, final int pWidth, final int pHeight, final ITextureAtlasSource pExtrusionSource, final ExtrusionDirection pExtrusionDirection, final int pExtrusionSize) {
+		this.mTextureAtlas.addExtrudingTextureAtlasSource(pTextureX, pTextureY, pWidth, pHeight, pExtrusionSource, pExtrusionDirection, pExtrusionSize);
 	}
 
 	@Override

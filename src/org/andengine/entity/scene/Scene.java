@@ -137,6 +137,27 @@ public class Scene extends Entity {
 		return this.mChildScene;
 	}
 
+	/**
+	 * Returns parent scene of this scene
+	 * @return parent of this scene; null if Scene does not have a parent
+	 */
+	public Scene getParentScene() {
+		return this.mParentScene;
+	}
+
+	/**
+	 * Traverses top through the scene's children stack to find the top-most scene
+	 * @return top Scene on the children stack
+	 * @note this scene's instance will be returned, if scene has no child scene
+	 */
+	public Scene getTopLevelScene() {
+		Scene child = this;
+		while (child.getChildScene() != null) {
+			child = child.getChildScene();
+		}
+		return child;
+	}
+
 	public void setChildSceneModal(final Scene pChildScene) {
 		this.setChildScene(pChildScene, true, true, true);
 	}
@@ -460,12 +481,21 @@ public class Scene extends Entity {
 		return this.mTouchAreas;
 	}
 
-	public void back() {
+	/**
+	 * Calls {@link Scene#clearChildScene()} on this {@link Scene} and it's parent, if a scene has one.
+	 * @return instance of a {@link Scene} which just became new top-level scene
+	 */
+	public Scene back() {
 		this.clearChildScene();
 
 		if(this.mParentScene != null) {
-			this.mParentScene.clearChildScene();
+			Scene parent = this.mParentScene;
+			parent.clearChildScene();
 			this.mParentScene = null;
+
+			return parent;
+		} else {
+			return this;
 		}
 	}
 

@@ -160,10 +160,11 @@ public class MenuScene extends CameraScene implements IOnAreaTouchListener, IOnS
 	}
 
 	@Override
-	public void back() {
-		super.back();
+	public Scene back() {
+		Scene ret = super.back();
 
 		this.reset();
+		return ret;
 	}
 
 	@Override

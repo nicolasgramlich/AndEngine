@@ -4,6 +4,7 @@ import org.andengine.audio.BaseAudioEntity;
 import org.andengine.audio.sound.exception.SoundReleasedException;
 
 import android.media.SoundPool;
+import android.media.SoundPool.OnLoadCompleteListener;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -12,7 +13,7 @@ import android.media.SoundPool;
  * @author Nicolas Gramlich
  * @since 13:22:15 - 11.03.2010
  */
-public class Sound extends BaseAudioEntity {
+public class Sound extends BaseAudioEntity implements OnLoadCompleteListener{
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -28,6 +29,9 @@ public class Sound extends BaseAudioEntity {
 
 	private int mLoopCount;
 	private float mRate = 1.0f;
+	
+	private boolean mLoaded = false;
+	private boolean mStarted = false;
 
 	// ===========================================================
 	// Constructors
@@ -35,6 +39,7 @@ public class Sound extends BaseAudioEntity {
 
 	Sound(final SoundManager pSoundManager, final int pSoundID) {
 		super(pSoundManager);
+		this.getSoundPool().setOnLoadCompleteListener(this);
 
 		this.mSoundID = pSoundID;
 	}
@@ -108,6 +113,7 @@ public class Sound extends BaseAudioEntity {
 		final float rightVolume = this.mRightVolume * masterVolume;
 
 		this.mStreamID = this.getSoundPool().play(this.mSoundID, leftVolume, rightVolume, 1, this.mLoopCount, this.mRate);
+		this.mStarted = true;
 	}
 
 	@Override
@@ -117,6 +123,9 @@ public class Sound extends BaseAudioEntity {
 		if(this.mStreamID != 0) {
 			this.getSoundPool().stop(this.mStreamID);
 		}
+		
+		this.mStarted = false;
+		
 	}
 
 	@Override
@@ -148,6 +157,8 @@ public class Sound extends BaseAudioEntity {
 		this.getAudioManager().remove(this);
 
 		super.release();
+		
+		this.mStarted = false;
 	}
 
 	@Override
@@ -175,10 +186,23 @@ public class Sound extends BaseAudioEntity {
 		this.setVolume(this.mLeftVolume, this.mRightVolume);
 	}
 
+	@Override
+	public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+		mLoaded = true;
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
+	public boolean isLoaded(){
+		return mLoaded;
+	}
+
+	public boolean isStarted(){
+		return mStarted;		
+	}
+	
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================

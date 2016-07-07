@@ -110,3 +110,5 @@
   * Added MathUtils.distance.
 * crino
   * Fixed check if OpenGL 1.0 or 1.1 is present.
+* bangnd
+  * Fixed check if OpenGL 1.0 or 1.1 is present.

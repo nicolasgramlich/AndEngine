@@ -91,6 +91,16 @@ public class BoundCamera extends Camera {
 	public float getBoundsHeight() {
 		return this.mBoundsHeight;
 	}
+	/**
+	 * Check whether the camera is with in bounds.
+	 * 
+	 * @return whether the camera is bounds
+	 */
+	public boolean isInBounds() {
+
+		return ((this.mBoundsWidth < this.getWidth()) 
+				&& (this.mBoundsHeight < this.getHeight()));
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces

@@ -633,7 +633,9 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return null;
 		}
-		return this.mChildren.get(this.mChildren.size() - 1);
+		synchronized (this.mChildren) {
+			return this.mChildren.get(this.mChildren.size() - 1);
+		}
 	}
 
 	@Override
@@ -716,7 +718,9 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return;
 		}
-		this.mChildren.clear(Entity.PARAMETERCALLABLE_DETACHCHILD);
+		synchronized (this.mChildren) {
+			this.mChildren.clear(Entity.PARAMETERCALLABLE_DETACHCHILD);
+		}
 	}
 
 	@Override
@@ -726,7 +730,11 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			this.allocateChildren();
 		}
-		this.mChildren.add(pEntity);
+		
+		synchronized (this.mChildren) {
+			this.mChildren.add(pEntity);
+		}
+		
 		pEntity.setParent(this);
 		pEntity.onAttached();
 	}
@@ -761,7 +769,9 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return false;
 		}
-		return this.mChildren.remove(pEntity, Entity.PARAMETERCALLABLE_DETACHCHILD);
+		synchronized (this.mChildren) {
+			return this.mChildren.remove(pEntity, Entity.PARAMETERCALLABLE_DETACHCHILD);
+		}
 	}
 
 	@Override
@@ -769,11 +779,13 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return null;
 		}
-		for(int i = this.mChildren.size() - 1; i >= 0; i--) {
-			if(this.mChildren.get(i).getTag() == pTag) {
-				final IEntity removed = this.mChildren.remove(i);
-				Entity.PARAMETERCALLABLE_DETACHCHILD.call(removed);
-				return removed;
+		synchronized (this.mChildren) {
+			for(int i = this.mChildren.size() - 1; i >= 0; i--) {
+				if(this.mChildren.get(i).getTag() == pTag) {
+					final IEntity removed = this.mChildren.remove(i);
+					Entity.PARAMETERCALLABLE_DETACHCHILD.call(removed);
+					return removed;
+				}
 			}
 		}
 		return null;
@@ -784,7 +796,9 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return null;
 		}
-		return this.mChildren.remove(pEntityMatcher, Entity.PARAMETERCALLABLE_DETACHCHILD);
+		synchronized (this.mChildren) {
+			return this.mChildren.remove(pEntityMatcher, Entity.PARAMETERCALLABLE_DETACHCHILD);
+		}
 	}
 
 	@Override
@@ -792,7 +806,9 @@ public class Entity implements IEntity {
 		if(this.mChildren == null) {
 			return false;
 		}
-		return this.mChildren.removeAll(pEntityMatcher, Entity.PARAMETERCALLABLE_DETACHCHILD);
+		synchronized (this.mChildren) {
+			return this.mChildren.removeAll(pEntityMatcher, Entity.PARAMETERCALLABLE_DETACHCHILD);
+		}
 	}
 
 	@Override
@@ -1349,42 +1365,47 @@ public class Entity implements IEntity {
 			final SmartList<IEntity> children = this.mChildren;
 			if((children == null) || !this.mChildrenVisible) {
 				/* Draw only self. */
-				this.preDraw(pGLState, pCamera);
-				this.draw(pGLState, pCamera);
-				this.postDraw(pGLState, pCamera);
+				drawSelf(pGLState, pCamera);
 			} else {
 				if(this.mChildrenSortPending) {
 					ZIndexSorter.getInstance().sort(this.mChildren);
 					this.mChildrenSortPending = false;
 				}
+				
+				synchronized (this.mChildren) {
+					final int childCount = children.size();
+					int i = 0;
 
-				final int childCount = children.size();
-				int i = 0;
-
-				{ /* Draw children behind this Entity. */
-					for(; i < childCount; i++) {
-						final IEntity child = children.get(i);
-						if(child.getZIndex() < 0) {
-							child.onDraw(pGLState, pCamera);
-						} else {
-							break;
+					{ /* Draw children behind this Entity. */
+						for(; i < childCount; i++) {
+							final IEntity child = children.get(i);
+							if(child.getZIndex() < 0) {
+								child.onDraw(pGLState, pCamera);
+							} else {
+								break;
+							}
 						}
 					}
-				}
 
-				/* Draw self. */
-				this.preDraw(pGLState, pCamera);
-				this.draw(pGLState, pCamera);
-				this.postDraw(pGLState, pCamera);
+					/* Draw self. */
+					drawSelf(pGLState, pCamera);
 
-				{ /* Draw children in front of this Entity. */
-					for(; i < childCount; i++) {
-						children.get(i).onDraw(pGLState, pCamera);
+					{ /* Draw children in front of this Entity. */
+						for(; i < childCount; i++) {
+							children.get(i).onDraw(pGLState, pCamera);
+						}
 					}
 				}
 			}
 		}
 		pGLState.popModelViewGLMatrix();
+	}
+	
+	protected void drawSelf(final GLState pGLState, final Camera pCamera)
+	{
+		this.preDraw(pGLState, pCamera);
+		this.draw(pGLState, pCamera);
+		this.postDraw(pGLState, pCamera);
 	}
 
 	protected void onManagedUpdate(final float pSecondsElapsed) {

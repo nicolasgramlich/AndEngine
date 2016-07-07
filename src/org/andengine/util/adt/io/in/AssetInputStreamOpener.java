@@ -45,6 +45,12 @@ public class AssetInputStreamOpener implements IInputStreamOpener {
 		return this.mAssetManager.open(this.mAssetPath);
 	}
 
+	@Override
+	public String toString() {
+		return "AssetInputStreamOpener [mAssetManager=..., mAssetPath=" + mAssetPath + "]";
+	}
+	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

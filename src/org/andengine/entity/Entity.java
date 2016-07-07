@@ -15,6 +15,7 @@ import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.call.ParameterCallable;
 import org.andengine.util.color.Color;
+import org.andengine.util.debug.Debug;
 
 
 /**
@@ -1229,7 +1230,12 @@ public class Entity implements IEntity {
 			pStringBuilder.append(" [");
 			final SmartList<IEntity> entities = this.mChildren;
 			for(int i = 0; i < entities.size(); i++) {
-				entities.get(i).toString(pStringBuilder);
+				final IEntity lEntity = entities.get(i);
+				if (lEntity == null) {
+					pStringBuilder.append("null");
+				} else {
+					lEntity.toString(pStringBuilder);
+				}
 				if(i < (entities.size() - 1)) {
 					pStringBuilder.append(", ");
 				}
@@ -1363,11 +1369,15 @@ public class Entity implements IEntity {
 
 				{ /* Draw children behind this Entity. */
 					for(; i < childCount; i++) {
-						final IEntity child = children.get(i);
-						if(child.getZIndex() < 0) {
-							child.onDraw(pGLState, pCamera);
-						} else {
-							break;
+						try {
+							final IEntity child = children.get(i);
+							if(child.getZIndex() < 0) {
+								child.onDraw(pGLState, pCamera);
+							} else {
+								break;
+							}
+						} catch (RuntimeException e) {
+							throw new RuntimeException("onManagedDraw(...) entity='" + this.getClass().getName() + "' KO during onDraw of child " + i + " (" + toString() + ")", e);
 						}
 					}
 				}
@@ -1379,7 +1389,11 @@ public class Entity implements IEntity {
 
 				{ /* Draw children in front of this Entity. */
 					for(; i < childCount; i++) {
-						children.get(i).onDraw(pGLState, pCamera);
+						try {
+							children.get(i).onDraw(pGLState, pCamera);
+						} catch (RuntimeException e) {
+							throw new RuntimeException("onManagedDraw(...) entity='" + this.getClass().getName() + "' KO during onDraw of child " + i + " (" + toString() + ")", e);
+						}
 					}
 				}
 			}
@@ -1399,7 +1413,11 @@ public class Entity implements IEntity {
 			final SmartList<IEntity> entities = this.mChildren;
 			final int entityCount = entities.size();
 			for(int i = 0; i < entityCount; i++) {
-				entities.get(i).onUpdate(pSecondsElapsed);
+				try {
+					entities.get(i).onUpdate(pSecondsElapsed);
+				} catch (RuntimeException e) {
+					throw new RuntimeException("onManagedUpdate(...) entity='" + this.getClass().getName() + "' KO during onUpdate of child " + i + " (" + toString() + ")", e);
+				}
 			}
 		}
 	}

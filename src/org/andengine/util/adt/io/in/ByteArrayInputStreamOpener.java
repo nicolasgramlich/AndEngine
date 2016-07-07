@@ -50,6 +50,12 @@ public class ByteArrayInputStreamOpener implements IInputStreamOpener {
 		return new ByteArrayInputStream(this.mBytes, this.mOffset, this.mLength);
 	}
 
+	@Override
+	public String toString() {
+		return "ByteArrayInputStreamOpener [mBytes" + (mBytes == null ? "=null" : ".size=" + mBytes.length) + ", mOffset=" + mOffset + ", mLength=" + mLength + "]";
+	}
+	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

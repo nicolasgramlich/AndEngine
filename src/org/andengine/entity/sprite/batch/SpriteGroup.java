@@ -157,7 +157,11 @@ public class SpriteGroup extends DynamicSpriteBatch {
 		} else {
 			final int childCount = children.size();
 			for(int i = 0; i < childCount; i++) {
-				this.drawWithoutChecks((Sprite)children.get(i));
+				try {
+					this.drawWithoutChecks((Sprite)children.get(i));
+				} catch (RuntimeException e) {
+					throw new RuntimeException("onUpdateSpriteBatch(...) entity='" + this.getClass().getName() + "' KO during onDraw of child " + i + " (" + toString() + ")", e);
+				}
 			}
 			return true;
 		}

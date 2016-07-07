@@ -207,6 +207,10 @@ public class Sprite extends RectangularShape {
 	protected void onUpdateTextureCoordinates() {
 		this.mSpriteVertexBufferObject.onUpdateTextureCoordinates(this);
 	}
+	
+	public void markTextureRegionChanged() {
+		onUpdateTextureCoordinates();
+	}
 
 	// ===========================================================
 	// Methods

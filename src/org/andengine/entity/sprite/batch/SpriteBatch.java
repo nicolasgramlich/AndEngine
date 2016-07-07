@@ -187,6 +187,7 @@ public class SpriteBatch extends Shape {
 		if (this.mBlendingEnabled) {
 			pGLState.enableBlend();
 			pGLState.blendFunction(this.mBlendFunctionSource, this.mBlendFunctionDestination);
+			pGLState.blendEquation(this.mBlendEquation);
 		}
 
 		this.mTexture.bind(pGLState);

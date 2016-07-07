@@ -25,6 +25,8 @@ public interface IShape extends IEntity {
 	public static final int BLENDFUNCTION_SOURCE_PREMULTIPLYALPHA_DEFAULT = GLES20.GL_ONE;
 	public static final int BLENDFUNCTION_DESTINATION_PREMULTIPLYALPHA_DEFAULT = GLES20.GL_ONE_MINUS_SRC_ALPHA;
 
+	public static final int BLENDEQUATION_DEFAULT = GLES20.GL_FUNC_ADD;
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

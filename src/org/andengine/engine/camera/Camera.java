@@ -397,7 +397,7 @@ public class Camera implements IUpdateHandler {
 	private void applySceneRotation(final float[] pCameraSceneCoordinates) {
 		final float rotation = this.mRotation;
 		if(rotation != 0) {
-			MathUtils.rotateAroundCenter(pCameraSceneCoordinates, -rotation, this.getCenterX(), this.getCenterY());
+			MathUtils.rotateAroundCenter(pCameraSceneCoordinates, rotation, this.getCenterX(), this.getCenterY());
 		}
 	}
 
@@ -407,7 +407,7 @@ public class Camera implements IUpdateHandler {
 			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X] = pCameraSceneTouchEvent.getX();
 			Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y] = pCameraSceneTouchEvent.getY();
 
-			MathUtils.rotateAroundCenter(Camera.VERTICES_TMP, -rotation, this.getCenterX(), this.getCenterY());
+			MathUtils.rotateAroundCenter(Camera.VERTICES_TMP, rotation, this.getCenterX(), this.getCenterY());
 
 			pCameraSceneTouchEvent.set(Camera.VERTICES_TMP[Constants.VERTEX_INDEX_X], Camera.VERTICES_TMP[Constants.VERTEX_INDEX_Y]);
 		}

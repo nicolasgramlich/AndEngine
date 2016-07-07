@@ -118,6 +118,22 @@ public class BufferUtils {
 		pByteBuffer.limit(pLength << 2);
 	}
 
+	/** 
+	 * @param pByteBuffer must be a direct Buffer.
+	 * @param pSource
+	 * @param pLength to copy in pSource.
+	 * @param pOffset in pSource.
+	 */
+	public static void putSub(final ByteBuffer pByteBuffer, final float[] pSource, final int pLength, final int pOffset) {
+		for(int i = pOffset; i < pOffset + pLength; i++) {
+			pByteBuffer.putFloat(pSource[i]);
+		}
+
+		pByteBuffer.position(0);
+		if((pLength << 2) > pByteBuffer.limit())
+			pByteBuffer.limit(pLength << 2);	
+	}
+	
 	private native static void jniPut(final ByteBuffer pByteBuffer, final float[] pSource, final int pLength, final int pOffset);
 
 	public static short getUnsignedByte(final ByteBuffer pByteBuffer) {

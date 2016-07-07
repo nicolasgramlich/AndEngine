@@ -2,8 +2,10 @@ package org.andengine.opengl.vbo;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 
 import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.util.BufferSubset;
 import org.andengine.opengl.util.BufferUtils;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
@@ -37,7 +39,8 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 
 	protected int mHardwareBufferID = IVertexBufferObject.HARDWARE_BUFFER_ID_INVALID;
 	protected boolean mDirtyOnHardware = true;
-
+	protected ArrayList<BufferSubset> mDirtyBufferSubsets;
+	
 	protected boolean mDisposed;
 
 	protected final VertexBufferObjectManager mVertexBufferObjectManager;
@@ -60,6 +63,8 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 		this.mUsage = pDrawType.getUsage();
 		this.mAutoDispose = pAutoDispose;
 		this.mVertexBufferObjectAttributes = pVertexBufferObjectAttributes;
+
+		this.mDirtyBufferSubsets = new ArrayList<BufferSubset>();
 
 		this.mByteBuffer = BufferUtils.allocateDirectByteBuffer(pCapacity * DataConstants.BYTES_PER_FLOAT);
 
@@ -112,6 +117,16 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	}
 
 	@Override
+	public boolean isSubsetDirtyOnHardware() {
+		return (mDirtyBufferSubsets.size() > 0);
+	}
+
+	@Override
+	public void setSubsetDirtyOnHardware(int pOffset, int pSize) {
+		this.mDirtyBufferSubsets.add(BufferSubset.obtain(pOffset, pSize));
+	}
+
+	@Override
 	public int getCapacity() {
 		return this.mCapacity;
 	}
@@ -135,6 +150,7 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 	// ===========================================================
 
 	protected abstract void onBufferData();
+	protected abstract void onBufferDataSubset(int pOffset, int pLength);
 
 	@Override
 	public void bind(final GLState pGLState) {
@@ -152,7 +168,18 @@ public abstract class VertexBufferObject implements IVertexBufferObject {
 			this.onBufferData();
 
 			this.mDirtyOnHardware = false;
+			this.mDirtyBufferSubsets.clear();
+		} else if(this.mDirtyBufferSubsets.size() > 0) {
+			for(int i = 0; i < mDirtyBufferSubsets.size(); i++)
+			{
+				final BufferSubset sub = mDirtyBufferSubsets.get(i);
+				this.onBufferDataSubset(sub.getOffset(), sub.getSize());
+				sub.recycle();
+			}
+
+			this.mDirtyBufferSubsets.clear();
 		}
+
 	}
 
 	@Override

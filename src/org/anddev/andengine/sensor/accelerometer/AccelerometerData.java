@@ -19,7 +19,7 @@ public class AccelerometerData extends BaseSensorData {
 	// Constants
 	// ===========================================================
 
-	private static final IAxisSwap AXISSWAPS[] = new IAxisSwap[4];
+	private static final IAxisSwap[] AXISSWAPS = new IAxisSwap[4];
 
 	static {
 		AXISSWAPS[Surface.ROTATION_0] = new IAxisSwap() {

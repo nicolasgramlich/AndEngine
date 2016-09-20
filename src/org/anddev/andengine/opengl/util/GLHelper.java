@@ -32,7 +32,7 @@ public class GLHelper {
 	public static final int BYTES_PER_FLOAT = 4;
 	public static final int BYTES_PER_PIXEL_RGBA = 4;
 
-	private static final boolean IS_LITTLE_ENDIAN = (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN);
+	private static final boolean IS_LITTLE_ENDIAN = ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN;
 
 	private static final int[] HARDWARETEXTUREID_CONTAINER = new int[1];
 	private static final int[] HARDWAREBUFFERID_CONTAINER = new int[1];
@@ -470,9 +470,9 @@ public class GLHelper {
 			for(int i = pPixelsARGB_8888.length - 1, j = pixelsRGB_565.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
-				final int red = ((pixel >> 16) & 0xFF);
-				final int green = ((pixel >> 8) & 0xFF);
-				final int blue = ((pixel) & 0xFF);
+				final int red = (pixel >> 16) & 0xFF;
+				final int green = (pixel >> 8) & 0xFF;
+				final int blue = (pixel) & 0xFF;
 
 				/* Byte1: [R1 R2 R3 R4 R5 G1 G2 G3]
 				 * Byte2: [G4 G5 G6 B1 B2 B3 B4 B5] */
@@ -484,9 +484,9 @@ public class GLHelper {
 			for(int i = pPixelsARGB_8888.length - 1, j = pixelsRGB_565.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
-				final int red = ((pixel >> 16) & 0xFF);
-				final int green = ((pixel >> 8) & 0xFF);
-				final int blue = ((pixel) & 0xFF);
+				final int red = (pixel >> 16) & 0xFF;
+				final int green = (pixel >> 8) & 0xFF;
+				final int blue = (pixel) & 0xFF;
 
 				/* Byte2: [G4 G5 G6 B1 B2 B3 B4 B5]
 				 * Byte1: [R1 R2 R3 R4 R5 G1 G2 G3]*/
@@ -504,9 +504,9 @@ public class GLHelper {
 			for(int i = pPixelsARGB_8888.length - 1, j = pixelsARGB_4444.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
-				final int alpha = ((pixel >> 28) & 0x0F);
-				final int red = ((pixel >> 16) & 0xF0);
-				final int green = ((pixel >> 8) & 0xF0);
+				final int alpha = (pixel >> 28) & 0x0F;
+				final int red = (pixel >> 16) & 0xF0;
+				final int green = (pixel >> 8) & 0xF0;
 				final int blue = ((pixel) & 0x0F);
 
 				/* Byte1: [A1 A2 A3 A4 R1 R2 R3 R4]
@@ -519,10 +519,10 @@ public class GLHelper {
 			for(int i = pPixelsARGB_8888.length - 1, j = pixelsARGB_4444.length - 1; i >= 0; i--) {
 				final int pixel = pPixelsARGB_8888[i];
 
-				final int alpha = ((pixel >> 28) & 0x0F);
-				final int red = ((pixel >> 16) & 0xF0);
-				final int green = ((pixel >> 8) & 0xF0);
-				final int blue = ((pixel) & 0x0F);
+				final int alpha = (pixel >> 28) & 0x0F;
+				final int red = (pixel >> 16) & 0xF0;
+				final int green = (pixel >> 8) & 0xF0;
+				final int blue = (pixel) & 0x0F;
 
 				/* Byte2: [G1 G2 G3 G4 G2 G2 G3 G4]
 				 * Byte1: [A1 A2 A3 A4 R1 R2 R3 R4] */

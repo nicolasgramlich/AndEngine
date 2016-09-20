@@ -64,7 +64,7 @@ public class ExpireModifier implements IParticleModifier {
 
 	@Override
 	public void onInitializeParticle(final Particle pParticle) {
-		pParticle.setDeathTime((RANDOM.nextFloat() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime));
+		pParticle.setDeathTime(RANDOM.nextFloat() * (this.mMaxLifeTime - this.mMinLifeTime) + this.mMinLifeTime);
 	}
 
 	@Override

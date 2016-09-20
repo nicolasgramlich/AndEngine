@@ -100,7 +100,7 @@ public class Sound extends BaseAudioEntity {
 
 	@Override
 	public void setLooping(final boolean pLooping) {
-		this.setLoopCount((pLooping) ? -1 : 0);
+		this.setLoopCount(pLooping ? -1 : 0);
 	}
 
 	@Override

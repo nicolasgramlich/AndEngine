@@ -86,7 +86,7 @@ public class StringUtils {
 		final int partCount = StringUtils.countOccurrences(pString, pCharacter) + 1;
 
 		final boolean reuseable = pReuse != null && pReuse.length == partCount;
-		final String[] out = (reuseable) ? pReuse : new String[partCount];
+		final String[] out = reuseable ? pReuse : new String[partCount];
 
 		if(partCount == 0) {
 			out[0] = pString;

@@ -26,6 +26,7 @@ gdbserver
 .settings
 
 # IntelliJ / Android Studio:
+/build/
 idea/workspace.xml
 idea/tasks.xml
 

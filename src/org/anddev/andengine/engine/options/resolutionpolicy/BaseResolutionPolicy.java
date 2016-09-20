@@ -22,6 +22,8 @@ public abstract class BaseResolutionPolicy implements IResolutionPolicy {
 	// Constructors
 	// ===========================================================
 
+	private BaseResolutionPolicy() {}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

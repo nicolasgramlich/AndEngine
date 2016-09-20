@@ -28,6 +28,8 @@ public class BuildableTextureAtlasTextureRegionFactory {
 	// Constructors
 	// ===========================================================
 
+	private BuildableTextureAtlasTextureRegionFactory() {}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

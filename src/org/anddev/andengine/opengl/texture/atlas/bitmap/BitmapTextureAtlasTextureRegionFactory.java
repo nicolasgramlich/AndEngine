@@ -35,6 +35,8 @@ public class BitmapTextureAtlasTextureRegionFactory {
 	// Constructors
 	// ===========================================================
 
+	private BitmapTextureAtlasTextureRegionFactory() {}
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

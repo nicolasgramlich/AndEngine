@@ -74,6 +74,8 @@ public class GLHelper {
 	public static final boolean EXTENSIONS_DRAWTEXTURE = false;
 	public static final boolean EXTENSIONS_TEXTURE_NON_POWER_OF_TWO = false;
 
+	private GLHelper() {}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

@@ -41,6 +41,8 @@ public class BoundCamera extends Camera {
 		super(pX, pY, pWidth, pHeight);
 		this.setBounds(pBoundMinX, pBoundMaxX, pBoundMinY, pBoundMaxY);
 		this.mBoundsEnabled = true;
+
+		this.ensureInBounds();
 	}
 
 	// ===========================================================
@@ -53,6 +55,10 @@ public class BoundCamera extends Camera {
 
 	public void setBoundsEnabled(final boolean pBoundsEnabled) {
 		this.mBoundsEnabled = pBoundsEnabled;
+
+		if(this.mBoundsEnabled) {
+			this.ensureInBounds();
+		}
 	}
 
 	public void setBounds(final float pBoundMinX, final float pBoundMaxX, final float pBoundMinY, final float pBoundMaxY) {
@@ -66,6 +72,10 @@ public class BoundCamera extends Camera {
 
 		this.mBoundsCenterX = this.mBoundsMinX + this.mBoundsWidth * 0.5f;
 		this.mBoundsCenterY = this.mBoundsMinY + this.mBoundsHeight * 0.5f;
+
+		if(this.mBoundsEnabled) {
+			this.ensureInBounds();
+		}
 	}
 
 	public float getBoundsWidth() {

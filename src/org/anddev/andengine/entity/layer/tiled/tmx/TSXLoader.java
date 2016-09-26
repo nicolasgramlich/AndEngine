@@ -37,6 +37,8 @@ public class TSXLoader {
 	private final TextureManager mTextureManager;
 	private final TextureOptions mTextureOptions;
 
+	private static String sAssetBasePath = "";
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -51,6 +53,17 @@ public class TSXLoader {
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * @param pAssetBasePath must end with '<code>/</code>' or have <code>.length() == 0</code>.
+	 */
+	public static void setAssetBasePath(final String pAssetBasePath) {
+		if(pAssetBasePath.endsWith("/") || pAssetBasePath.length() == 0) {
+			TSXLoader.sAssetBasePath = pAssetBasePath;
+		} else {
+			throw new IllegalArgumentException("pAssetBasePath must end with '/' or be lenght zero.");
+		}
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -61,9 +74,9 @@ public class TSXLoader {
 
 	public TMXTileSet loadFromAsset(final Context pContext, final int pFirstGlobalTileID, final String pAssetPath) throws TSXLoadException {
 		try {
-			return this.load(pFirstGlobalTileID, pContext.getAssets().open(pAssetPath));
+			return this.load(pFirstGlobalTileID, pContext.getAssets().open(TSXLoader.sAssetBasePath + pAssetPath));
 		} catch (final IOException e) {
-			throw new TSXLoadException("Could not load TMXTileSet from asset: " + pAssetPath, e);
+			throw new TSXLoadException("Could not load TMXTileSet from asset: " + TSXLoader.sAssetBasePath + pAssetPath, e);
 		}
 	}
 

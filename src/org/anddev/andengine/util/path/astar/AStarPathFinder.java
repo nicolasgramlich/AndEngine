@@ -1,10 +1,11 @@
 package org.anddev.andengine.util.path.astar;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import org.anddev.andengine.util.path.IPathFinder;
 import org.anddev.andengine.util.path.ITiledMap;
+import org.anddev.andengine.util.path.NegativeStepCostException;
 import org.anddev.andengine.util.path.Path;
 
 /**
@@ -23,8 +24,8 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// Fields
 	// ===========================================================
 
-	private final ArrayList<Node> mVisitedNodes = new ArrayList<Node>();
-	private final ArrayList<Node> mOpenNodes = new ArrayList<Node>();
+	private final TreeSet<Node> mVisitedNodes = new TreeSet<Node>();
+	private final PriorityQueue<Node> mOpenNodes = new PriorityQueue<Node>();
 
 	private final ITiledMap<T> mTiledMap;
 	private final int mMaxSearchDepth;
@@ -66,15 +67,15 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 	// ===========================================================
 
 	@Override
-	public Path findPath(final T pEntity, final int pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) {
+	public Path findPath(final T pEntity, final float pMaxCost, final int pFromTileColumn, final int pFromTileRow, final int pToTileColumn, final int pToTileRow) throws NegativeStepCostException {
 		final ITiledMap<T> tiledMap = this.mTiledMap;
 		if(tiledMap.isTileBlocked(pEntity, pToTileColumn, pToTileRow)) {
 			return null;
 		}
 
 		/* Drag some fields to local variables. */
-		final ArrayList<Node> openNodes = this.mOpenNodes;
-		final ArrayList<Node> visitedNodes = this.mVisitedNodes;
+		final PriorityQueue<Node> openNodes = this.mOpenNodes;
+		final TreeSet<Node> visitedNodes = this.mVisitedNodes;
 
 		final Node[][] nodes = this.mNodes;
 		final Node fromNode = nodes[pFromTileRow][pFromTileColumn];
@@ -96,8 +97,8 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 
 		int currentDepth = 0;
 		while(currentDepth < maxSearchDepth && !openNodes.isEmpty()) {
-			/* The first Node in the open list is the one with the lowest cost. */
-			final Node current = openNodes.remove(0);
+			/* Get the Node with lowest cost+heuristic. */
+			final Node current = openNodes.poll();
 			if(current == toNode) {
 				break;
 			}
@@ -121,18 +122,20 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 					final int neighborTileRow = dY + current.mTileRow;
 
 					if(!this.isTileBlocked(pEntity, pFromTileColumn, pFromTileRow, neighborTileColumn, neighborTileRow)) {
-						final float neighborCost = current.mCost + tiledMap.getStepCost(pEntity, current.mTileColumn, current.mTileRow, neighborTileColumn, neighborTileRow);
+						final float stepCost = tiledMap.getStepCost(pEntity, current.mTileColumn, current.mTileRow, neighborTileColumn, neighborTileRow);
+						
+						if(stepCost < 0) {
+							throw new NegativeStepCostException();
+						}
+						
+						final float neighborCost = current.mCost + stepCost;
 						final Node neighbor = nodes[neighborTileRow][neighborTileColumn];
 						tiledMap.onTileVisitedByPathFinder(neighborTileColumn, neighborTileRow);
 
 						/* Re-evaluate if there is a better path. */
 						if(neighborCost < neighbor.mCost) {
-							// TODO Is this ever possible with AStar ??
 							if(openNodes.contains(neighbor)) {
 								openNodes.remove(neighbor);
-							}
-							if(visitedNodes.contains(neighbor)) {
-								visitedNodes.remove(neighbor);
 							}
 						}
 
@@ -142,10 +145,6 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 								neighbor.mExpectedRestCost = aStarHeuristic.getExpectedRestCost(tiledMap, pEntity, neighborTileColumn, neighborTileRow, pToTileColumn, pToTileRow);
 								currentDepth = Math.max(currentDepth, neighbor.setParent(current));
 								openNodes.add(neighbor);
-
-								/* Ensure always the node with the lowest cost+heuristic
-								 * will be used next, simply by sorting. */
-								Collections.sort(openNodes);
 							}
 						}
 					}
@@ -240,7 +239,18 @@ public class AStarPathFinder<T> implements IPathFinder<T> {
 			} else if (totalCost > totalCostOther) {
 				return 1;
 			} else {
-				return 0;
+				// costs are equal, use coordinates for comparison
+				if(mTileColumn != pOther.mTileColumn)
+				{
+					return (mTileColumn < pOther.mTileColumn)?-1:1;
+				}
+				else if(mTileRow == pOther.mTileRow)
+				{
+					return 0;
+				}
+				else {
+					return (mTileRow < pOther.mTileRow)?-1:1;
+				}
 			}
 		}
 
